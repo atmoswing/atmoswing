@@ -5,12 +5,11 @@
 # NetCDF_LIBRARIES           - list of libraries to link against when using NetCDF
 # NetCDF_FOUND               - Do not attempt to use NetCDF if "no", "0", or undefined.
 
-set( NetCDF_PREFIX "/users/phorton/local" CACHE PATH "Path to search for NetCDF header and library files" )
+set( NetCDF_PREFIX "/usr/local" CACHE PATH "Path to search for NetCDF header and library files" )
 
 find_path( NetCDF_INCLUDE_DIRECTORIES netcdf.h
   /usr/local/include
   /usr/include
-  /users/phorton/local/include
 )
 
 find_library( NetCDF_C_LIBRARY
@@ -20,11 +19,10 @@ find_library( NetCDF_C_LIBRARY
   ${NetCDF_PREFIX}/lib
   /usr/local/lib64
   /usr/lib64
-  /usr/lib64/netcdf-3
+  /usr/lib64/netcdf-4
   /usr/local/lib
   /usr/lib
-  /usr/lib/netcdf-3
-  /users/phorton/local/lib
+  /usr/lib/netcdf-4
 )
 
 find_library( NetCDF_CXX_LIBRARY
@@ -34,11 +32,10 @@ find_library( NetCDF_CXX_LIBRARY
   ${NetCDF_PREFIX}/lib
   /usr/local/lib64
   /usr/lib64
-  /usr/lib64/netcdf-3
+  /usr/lib64/netcdf-4
   /usr/local/lib
   /usr/lib
-  /usr/lib/netcdf-3
-  /users/phorton/local/lib
+  /usr/lib/netcdf-4
 )
 
 find_library( NetCDF_FORTRAN_LIBRARY
@@ -48,10 +45,10 @@ find_library( NetCDF_FORTRAN_LIBRARY
   ${NetCDF_PREFIX}/lib
   /usr/local/lib64
   /usr/lib64
-  /usr/lib64/netcdf-3
+  /usr/lib64/netcdf-4
   /usr/local/lib
   /usr/lib
-  /usr/lib/netcdf-3
+  /usr/lib/netcdf-4
 )
 
 set( NetCDF_LIBRARIES
