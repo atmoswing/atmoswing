@@ -8,30 +8,19 @@ set(EXECUTABLE_OUTPUT_PATH forecaster/${CMAKE_BUILD_TYPE})
 
 #### SOURCE FILES LIST
 
-file(GLOB_RECURSE src_main ../../src/AtmoswingMainForecaster.* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_app ../../src/AtmoswingAppForecaster.* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_core_fcst ../../src/core/forecaster/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_core_shd ../../src/core/shared/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_data_fcst ../../src/data/forecaster/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_data_shd ../../src/data/shared/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_defs_fcst ../../src/defs/forecaster/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_defs_shd ../../src/defs/shared/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_gui_fcst ../../src/gui/forecaster/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_gui_shd ../../src/gui/shared/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_gui_shdimg ../../src/gui/shared/img/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_lib_awxled ../../src/libs/awxled/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_lib_eigen ../../src/libs/eigen/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_lib_ticpp ../../src/libs/ticpp/* PATTERN ".svn" EXCLUDE)
-file(GLOB_RECURSE src_lib_wxemail ../../src/libs/wxemail/* PATTERN ".svn" EXCLUDE)
-list(APPEND src_all ${src_main} ${src_app} ${src_core_fcst} ${src_core_shd} ${src_data_fcst} ${src_data_shd} ${src_defs_fcst} ${src_defs_shd} ${src_gui_fcst} ${src_gui_shd} ${src_gui_shdimg} ${src_lib_awxled} ${src_lib_eigen} ${src_lib_ticpp} ${src_lib_wxemail})
+file(GLOB_RECURSE src_base_core ../../src/shared_base/core/*)
+file(GLOB_RECURSE src_base_gui ../../src/shared_base/gui/*)
+file(GLOB_RECURSE src_base_img ../../src/shared_base/gui/img/*)
+file(GLOB_RECURSE src_lib_awxled ../../src/shared_base/libs/awxled/*)
+file(GLOB_RECURSE src_lib_eigen ../../src/shared_base/libs/eigen/*)
+file(GLOB_RECURSE src_lib_ticpp ../../src/shared_base/libs/ticpp/*)
+file(GLOB_RECURSE src_proc_core ../../src/shared_processing/core/*)
+file(GLOB_RECURSE src_forec_app ../../src/app_forecaster/app/*)
+file(GLOB_RECURSE src_forec_core ../../src/app_forecaster/core/*)
+file(GLOB_RECURSE src_forec_gui ../../src/app_forecaster/gui/*)
+list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_awxled} ${src_lib_eigen} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core} ${src_forec_gui})
 
-# Remove svn and tmp files
-file(GLOB_RECURSE files_to_remove1 ../../src/*.svn*)
-list(REMOVE_ITEM src_all ${files_to_remove1})
-file(GLOB_RECURSE files_to_remove2 ../../src/*.tmp)
-#list(REMOVE_ITEM src_all ${files_to_remove2})
-list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/core/forecaster/asPostprocessor.cpp")
-list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/core/forecaster/asPostprocessor.h")
+# Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
 
 # Display the files list
@@ -67,10 +56,10 @@ foreach(currdir ${inc_dirs})
 endforeach(currdir)
 
 # Select flags.
-if( UNIX )
+if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -s -march=core2")
-endif( UNIX )
+endif (UNIX)
 
 # Display some variables
 message(STATUS "Project source directory : " ${PROJECT_SOURCE_DIR})
@@ -97,7 +86,11 @@ include(FindwxWidgets)
 set( wxWidgets_USE_UNICODE ON ) 
 set( wxWidgets_USE_STATIC OFF )
 set( wxWidgets_USE_DEBUG ON )
-set( wxWidgets_USE_MONOLITHIC ON )
+if (UNIX)
+	set( wxWidgets_USE_MONOLITHIC OFF )
+else (UNIX)
+	set( wxWidgets_USE_MONOLITHIC ON )
+endif (UNIX)
 find_package(wxWidgets REQUIRED core base)
 include(${wxWidgets_USE_FILE})
 include_directories(${wxWidgets_INCLUDE_DIRS})
@@ -111,41 +104,34 @@ target_link_libraries(AtmoswingForecaster ${GDAL_LIBRARIES})
 
 # Proj
 include("../_cmake/FindProj4.cmake")
+find_package(PROJ4 REQUIRED)
 include_directories(${PROJ4_INCLUDE_DIR})
 target_link_libraries(AtmoswingForecaster ${PROJ4_LIBRARIES})
 
 # Netcdf
-include("../_cmake/FindNetcdf.cmake")
+include("../_cmake/FindNetCDF.cmake")
+find_package(NetCDF REQUIRED)
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 target_link_libraries(AtmoswingForecaster ${NetCDF_LIBRARIES})
 
 # libcurl
-include("../_cmake/FindCURL.cmake")
+include("../_cmake/FindcURL.cmake")
 find_package(CURL REQUIRED)
 set(CURL_INCLUDE_DIRS ${CURL_INCLUDE_DIRS}/curl)
 include_directories(${CURL_INCLUDE_DIRS})
 target_link_libraries(AtmoswingForecaster ${CURL_LIBRARIES})
-if(CURL_FOUND)
+if (CURL_FOUND)
 	message(STATUS "Curl found")
 	message("    Please check the cURL include directory.")
 	message("    include: ${CURL_INCLUDE_DIRS}")
-else(CURL_FOUND)
+else (CURL_FOUND)
 	message("Curl not found. please check the cURL include directory.")
 	message("    include: ${CURL_INCLUDE_DIRS}")
-endif(CURL_FOUND)
+endif (CURL_FOUND)
 
 # GTK
-if( UNIX )
+if (UNIX)
 	find_package( GTK2 2.10 REQUIRED gtk )
 	include_directories(${GTK2_INCLUDE_DIRS})
 	target_link_libraries(AtmoswingForecaster ${GTK2_LIBRARIES})
-endif( UNIX )
-
-
-#### VARIOUS
-
-# To use the MT version by default under Windows
-IF (WIN32)
-	include ("../_cmake/UseVisualstudioMT.cmake")
-ENDIF (WIN32)
-
+endif (UNIX)
