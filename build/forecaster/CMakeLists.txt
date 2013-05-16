@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../_cmake/")
 
 #### PROJECT
 
@@ -31,21 +32,16 @@ endforeach(currfile)
 
 # Directories to include
 list(APPEND inc_dirs 
-    "${PROJECT_SOURCE_DIR}/../../src/"
-	"${PROJECT_SOURCE_DIR}/../../src/core/forecaster/"
-	"${PROJECT_SOURCE_DIR}/../../src/core/shared/"
-	"${PROJECT_SOURCE_DIR}/../../src/data/forecaster/"
-	"${PROJECT_SOURCE_DIR}/../../src/data/shared/"
-	"${PROJECT_SOURCE_DIR}/../../src/defs/forecaster/"
-	"${PROJECT_SOURCE_DIR}/../../src/defs/shared/"
-	"${PROJECT_SOURCE_DIR}/../../src/gui/forecaster/"
-	"${PROJECT_SOURCE_DIR}/../../src/gui/shared/"
-	"${PROJECT_SOURCE_DIR}/../../src/gui/shared/img/"
-	"${PROJECT_SOURCE_DIR}/../../src/libs/awxled/"
-	"${PROJECT_SOURCE_DIR}/../../src/libs/eigen/"
-	"${PROJECT_SOURCE_DIR}/../../src/libs/ticpp/"
-    "${PROJECT_SOURCE_DIR}/../../src/libs/wxemail/"
-	"${PROJECT_SOURCE_DIR}/../../src/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/app/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/gui/"
 	)
 include_directories(${inc_dirs})
 
@@ -56,10 +52,10 @@ foreach(currdir ${inc_dirs})
 endforeach(currdir)
 
 # Select flags.
-if (UNIX)
+if( UNIX )
     set(CMAKE_CXX_FLAGS "-Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -s -march=core2")
-endif (UNIX)
+endif( UNIX )
 
 # Display some variables
 message(STATUS "Project source directory : " ${PROJECT_SOURCE_DIR})
@@ -86,11 +82,11 @@ include(FindwxWidgets)
 set( wxWidgets_USE_UNICODE ON ) 
 set( wxWidgets_USE_STATIC OFF )
 set( wxWidgets_USE_DEBUG ON )
-if (UNIX)
-	set( wxWidgets_USE_MONOLITHIC OFF )
-else (UNIX)
-	set( wxWidgets_USE_MONOLITHIC ON )
-endif (UNIX)
+if( UNIX )
+        set( wxWidgets_USE_MONOLITHIC OFF )
+else( UNIX )
+        set( wxWidgets_USE_MONOLITHIC ON )
+endif( UNIX )
 find_package(wxWidgets REQUIRED core base)
 include(${wxWidgets_USE_FILE})
 include_directories(${wxWidgets_INCLUDE_DIRS})
@@ -104,13 +100,13 @@ target_link_libraries(AtmoswingForecaster ${GDAL_LIBRARIES})
 
 # Proj
 include("../_cmake/FindProj4.cmake")
-find_package(PROJ4 REQUIRED)
+#find_package(PROJ4 REQUIRED)
 include_directories(${PROJ4_INCLUDE_DIR})
 target_link_libraries(AtmoswingForecaster ${PROJ4_LIBRARIES})
 
 # Netcdf
 include("../_cmake/FindNetCDF.cmake")
-find_package(NetCDF REQUIRED)
+#find_package(NetCDF REQUIRED)
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 target_link_libraries(AtmoswingForecaster ${NetCDF_LIBRARIES})
 
@@ -120,18 +116,20 @@ find_package(CURL REQUIRED)
 set(CURL_INCLUDE_DIRS ${CURL_INCLUDE_DIRS}/curl)
 include_directories(${CURL_INCLUDE_DIRS})
 target_link_libraries(AtmoswingForecaster ${CURL_LIBRARIES})
-if (CURL_FOUND)
+if( CURL_FOUND )
 	message(STATUS "Curl found")
 	message("    Please check the cURL include directory.")
 	message("    include: ${CURL_INCLUDE_DIRS}")
-else (CURL_FOUND)
+else( CURL_FOUND )
 	message("Curl not found. please check the cURL include directory.")
 	message("    include: ${CURL_INCLUDE_DIRS}")
-endif (CURL_FOUND)
+endif( CURL_FOUND )
 
 # GTK
-if (UNIX)
+if( UNIX )
 	find_package( GTK2 2.10 REQUIRED gtk )
 	include_directories(${GTK2_INCLUDE_DIRS})
 	target_link_libraries(AtmoswingForecaster ${GTK2_LIBRARIES})
-endif (UNIX)
+endif( UNIX )
+
+
