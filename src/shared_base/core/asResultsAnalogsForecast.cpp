@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
 #include "asResultsAnalogsForecast.h"
 
 #include "asFileNetcdf.h"
@@ -349,7 +349,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     m_ReturnPeriods.resize( returnPeriodsNb );
     ncFile.GetVar("returnperiods", &m_ReturnPeriods[0]);
     size_t startReturnPeriodPrecip[2] = {0, 0};
-    size_t countReturnPeriodPrecip[2] = {returnPeriodsNb, Nstations};
+    size_t countReturnPeriodPrecip[2] = {size_t(returnPeriodsNb), size_t(Nstations)};
     m_DailyPrecipitationsForReturnPeriods.resize( Nstations, returnPeriodsNb );
     ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
 
@@ -360,9 +360,9 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Get data
     size_t IndexStart1D[] = {0};
-    size_t IndexCount1D[] = {Nanalogstot};
+    size_t IndexCount1D[] = {size_t(Nanalogstot)};
     size_t IndexStart2D[] = {0,0};
-    size_t IndexCount2D[] = {Nstations, Nanalogstot};
+    size_t IndexCount2D[] = {size_t(Nstations), size_t(Nanalogstot)};
     ncFile.GetVarArray("analogscriteria", IndexStart1D, IndexCount1D, &analogsCriteria[0]);
     ncFile.GetVarArray("analogsdates", IndexStart1D, IndexCount1D, &analogsDates[0]);
     ncFile.GetVarArray("analogsvaluesgross", IndexStart2D, IndexCount2D, &analogsValuesGross[0]);

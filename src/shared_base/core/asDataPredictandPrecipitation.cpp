@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
 #include "asDataPredictandPrecipitation.h"
 
 #include "wx/fileconf.h"
@@ -119,13 +119,13 @@ bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
     m_ReturnPeriods.resize( returnPeriodsNb );
     ncFile.GetVar("returnperiods", &m_ReturnPeriods[0]);
     size_t startReturnPeriodPrecip[2] = {0, 0};
-    size_t countReturnPeriodPrecip[2] = {returnPeriodsNb, m_StationsNb};
+    size_t countReturnPeriodPrecip[2] = {size_t(returnPeriodsNb), size_t(m_StationsNb)};
     m_DailyPrecipitationsForReturnPeriods.resize( m_StationsNb, returnPeriodsNb );
     ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
 
     // Get data
     size_t IndexStart[2] = {0,0};
-    size_t IndexCount[2] = {m_TimeLength, m_StationsNb};
+    size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
     m_DataGross.resize( m_TimeLength, m_StationsNb );
     ncFile.GetVarArray("datagross", IndexStart, IndexCount, &m_DataGross[0]);
     m_DataNormalized.resize( m_TimeLength, m_StationsNb );
@@ -262,15 +262,15 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 
     // Provide sizes for variables
     size_t startTime[] = {0};
-    size_t countTime[] = {m_TimeLength};
+    size_t countTime[] = {size_t(m_TimeLength)};
     size_t startStations[] = {0};
-    size_t countStations[] = {m_StationsNb};
+    size_t countStations[] = {size_t(m_StationsNb)};
     size_t start2[] = {0, 0};
-    size_t count2[] = {m_TimeLength, m_StationsNb};
+    size_t count2[] = {size_t(m_TimeLength), size_t(m_StationsNb)};
     size_t startReturnPeriod[] = {0};
-    size_t countReturnPeriod[] = {m_ReturnPeriods.size()};
+    size_t countReturnPeriod[] = {size_t(m_ReturnPeriods.size())};
     size_t startReturnPeriodPrecip[] = {0, 0};
-    size_t countReturnPeriodPrecip[] = {m_ReturnPeriods.size(), m_StationsNb};
+    size_t countReturnPeriodPrecip[] = {size_t(m_ReturnPeriods.size()), size_t(m_StationsNb)};
 
     // Write data
     ncFile.PutVarArray("time", startTime, countTime, &m_Time(0));
