@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 17 2010)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -53,11 +53,11 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_BpButtonNow = new wxBitmapButton( m_PanelMain, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_BpButtonNow->SetToolTip( _("Set current date.") );
 	
-	m_BpButtonNow->SetToolTip( _("Set current date.") );
-	
 	bSizer35->Add( m_BpButtonNow, 0, wxTOP|wxBOTTOM, 5 );
 	
+	
 	sbSizer13->Add( bSizer35, 1, wxEXPAND, 5 );
+	
 	
 	bSizer19->Add( sbSizer13, 0, wxEXPAND|wxALL, 5 );
 	
@@ -101,9 +101,12 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_StaticTextSaving->Wrap( -1 );
 	fgSizer1->Add( m_StaticTextSaving, 0, wxALL, 5 );
 	
+	
 	sbSizer5->Add( fgSizer1, 0, wxEXPAND, 5 );
 	
+	
 	bSizer19->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
+	
 	
 	bSizer18->Add( bSizer19, 0, wxEXPAND, 5 );
 	
@@ -124,6 +127,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	m_SizerModels = new wxBoxSizer( wxVERTICAL );
 	
+	
 	bSizer32->Add( m_SizerModels, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer34;
@@ -133,26 +137,29 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_BpButtonAdd->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
 	m_BpButtonAdd->SetToolTip( _("Add a model.") );
 	
-	m_BpButtonAdd->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
-	m_BpButtonAdd->SetToolTip( _("Add a model.") );
-	
 	bSizer34->Add( m_BpButtonAdd, 0, wxALL, 5 );
 	
+	
 	bSizer32->Add( bSizer34, 0, wxLEFT, 5 );
+	
 	
 	m_ScrolledWindowModels->SetSizer( bSizer32 );
 	m_ScrolledWindowModels->Layout();
 	bSizer32->Fit( m_ScrolledWindowModels );
 	bSizer22->Add( m_ScrolledWindowModels, 1, wxEXPAND | wxALL, 5 );
 	
+	
 	sbSizer6->Add( bSizer22, 1, wxEXPAND, 5 );
 	
+	
 	bSizer18->Add( sbSizer6, 1, wxALL|wxEXPAND, 5 );
+	
 	
 	m_PanelMain->SetSizer( bSizer18 );
 	m_PanelMain->Layout();
 	bSizer18->Fit( m_PanelMain );
 	bSizer3->Add( m_PanelMain, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
@@ -304,23 +311,28 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	bSizer11->Add( m_CheckBoxReturnPeriod, 0, wxALL, 5 );
 	
 	m_TextCtrlReturnPeriod = new wxTextCtrl( m_PanelDataProcessing, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlReturnPeriod->SetMaxLength( 0 ); 
 	bSizer11->Add( m_TextCtrlReturnPeriod, 0, wxALL, 5 );
 	
 	m_staticText12 = new wxStaticText( m_PanelDataProcessing, wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
 	bSizer11->Add( m_staticText12, 0, wxALL, 5 );
 	
+	
 	bSizer9->Add( bSizer11, 1, wxEXPAND, 5 );
 	
 	m_CheckBoxSqrt = new wxCheckBox( m_PanelDataProcessing, wxID_ANY, _("Process the square root"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer9->Add( m_CheckBoxSqrt, 0, wxALL, 5 );
 	
+	
 	sbSizer1->Add( bSizer9, 1, wxEXPAND, 5 );
+	
 	
 	m_PanelDataProcessing->SetSizer( sbSizer1 );
 	m_PanelDataProcessing->Layout();
 	sbSizer1->Fit( m_PanelDataProcessing );
 	bSizer12->Add( m_PanelDataProcessing, 0, wxEXPAND | wxALL, 5 );
+	
 	
 	bSizer6->Add( bSizer12, 0, wxEXPAND, 5 );
 	
@@ -357,14 +369,18 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	m_ButtonsConfirmationCancel = new wxButton( m_panel2, wxID_CANCEL );
 	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationCancel );
 	m_ButtonsConfirmation->Realize();
+	
 	bSizer15->Add( m_ButtonsConfirmation, 0, 0, 5 );
 	
+	
 	bSizer6->Add( bSizer15, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	
 	
 	m_panel2->SetSizer( bSizer6 );
 	m_panel2->Layout();
 	bSizer6->Fit( m_panel2 );
 	bSizer5->Add( m_panel2, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer5 );
 	this->Layout();
@@ -409,6 +425,7 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_BpButtonClose = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 22,22 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_SizerHeader->Add( m_BpButtonClose, 0, 0, 5 );
 	
+	
 	m_SizerPanel->Add( m_SizerHeader, 0, wxEXPAND, 5 );
 	
 	m_SizerFields = new wxBoxSizer( wxVERTICAL );
@@ -418,6 +435,7 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_SizerFields->Add( m_StaticTextModelNameInput, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
 	m_TextCtrlModelName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlModelName->SetMaxLength( 0 ); 
 	m_SizerFields->Add( m_TextCtrlModelName, 0, wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
 	m_StaticTextModelDescriptionInput = new wxStaticText( this, wxID_ANY, _("Model description (no accent!)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -425,6 +443,7 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_SizerFields->Add( m_StaticTextModelDescriptionInput, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
 	m_TextCtrlModelDescription = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlModelDescription->SetMaxLength( 0 ); 
 	m_SizerFields->Add( m_TextCtrlModelDescription, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextParametersFileName = new wxStaticText( this, wxID_ANY, _("Parameters file name"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -432,6 +451,7 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_SizerFields->Add( m_StaticTextParametersFileName, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
 	m_TextCtrlParametersFileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlParametersFileName->SetMaxLength( 0 ); 
 	m_SizerFields->Add( m_TextCtrlParametersFileName, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextPredictandDB = new wxStaticText( this, wxID_ANY, _("Predictand database"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -439,6 +459,7 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_SizerFields->Add( m_StaticTextPredictandDB, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
 	m_TextCtrlPredictandDB = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlPredictandDB->SetMaxLength( 0 ); 
 	m_SizerFields->Add( m_TextCtrlPredictandDB, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextPredictorsArchiveDir = new wxStaticText( this, wxID_ANY, _("Predictors archive directory (if different from the preferences)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -448,7 +469,9 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_DirPickerPredictorsArchive = new wxDirPickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	m_SizerFields->Add( m_DirPickerPredictorsArchive, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
 	
+	
 	m_SizerPanel->Add( m_SizerFields, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( m_SizerPanel );
 	this->Layout();
