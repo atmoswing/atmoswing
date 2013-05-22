@@ -1,21 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 17 2010)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __AtmoswingForecasterGui__
-#define __AtmoswingForecasterGui__
+#ifndef __ATMOSWINGFORECASTERGUI_H__
+#define __ATMOSWINGFORECASTERGUI_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 #include <wx/calctrl.h>
-#include <wx/string.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
+#include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/bitmap.h>
@@ -181,4 +182,4 @@ class asPanelForecastingModelVirtual : public wxPanel
 	
 };
 
-#endif //__AtmoswingForecasterGui__
+#endif //__ATMOSWINGFORECASTERGUI_H__
