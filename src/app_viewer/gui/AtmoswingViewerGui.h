@@ -1,22 +1,23 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 17 2010)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __AtmoswingViewerGui__
-#define __AtmoswingViewerGui__
+#ifndef __ATMOSWINGVIEWERGUI_H__
+#define __ATMOSWINGVIEWERGUI_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 #include <wx/sizer.h>
 #include <wx/gdicmn.h>
 #include <wx/scrolwin.h>
-#include <wx/string.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
+#include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/panel.h>
 #include <wx/splitter.h>
@@ -322,4 +323,4 @@ class asPanelSidebarVirtual : public wxPanel
 	
 };
 
-#endif //__AtmoswingViewerGui__
+#endif //__ATMOSWINGVIEWERGUI_H__
