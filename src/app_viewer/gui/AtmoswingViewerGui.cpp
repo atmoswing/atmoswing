@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 17 2010)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -38,6 +38,7 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_ScrolledWindowOptions->SetScrollRate( 5, 5 );
 	m_SizerScrolledWindow = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_ScrolledWindowOptions->SetSizer( m_SizerScrolledWindow );
 	m_ScrolledWindowOptions->Layout();
 	m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
@@ -65,11 +66,14 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	
 	m_SizerTopLeft->Add( m_StaticTextForecastModel, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
+	
 	m_SizerTop->Add( m_SizerTopLeft, 1, wxALIGN_LEFT|wxEXPAND, 5 );
 	
 	m_SizerTopRight = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_SizerTop->Add( m_SizerTopRight, 1, wxALIGN_RIGHT|wxEXPAND, 5 );
+	
 	
 	m_PanelTop->SetSizer( m_SizerTop );
 	m_PanelTop->Layout();
@@ -79,10 +83,12 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_PanelGIS = new wxPanel( m_PanelContent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_SizerGIS = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_PanelGIS->SetSizer( m_SizerGIS );
 	m_PanelGIS->Layout();
 	m_SizerGIS->Fit( m_PanelGIS );
 	m_SizerContent->Add( m_PanelGIS, 1, wxEXPAND, 5 );
+	
 	
 	m_PanelContent->SetSizer( m_SizerContent );
 	m_PanelContent->Layout();
@@ -90,10 +96,12 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_SplitterGIS->SplitVertically( m_ScrolledWindowOptions, m_PanelContent, 270 );
 	bSizer11->Add( m_SplitterGIS, 1, wxEXPAND|wxALL, 4 );
 	
+	
 	m_PanelMain->SetSizer( bSizer11 );
 	m_PanelMain->Layout();
 	bSizer11->Fit( m_PanelMain );
 	bSizer3->Add( m_PanelMain, 1, wxEXPAND, 2 );
+	
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
@@ -229,7 +237,9 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 	
 	bSizer37->Add( m_ButtonPrint, 0, wxALL, 5 );
 	
+	
 	bSizer29->Add( bSizer37, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
 	
 	m_PanelStationName->SetSizer( bSizer29 );
 	m_PanelStationName->Layout();
@@ -252,17 +262,20 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 	m_CheckListPast = new wxCheckListBox( m_PanelLeft, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_CheckListPastChoices, 0 );
 	bSizer27->Add( m_CheckListPast, 1, wxEXPAND|wxTOP, 5 );
 	
+	
 	m_PanelLeft->SetSizer( bSizer27 );
 	m_PanelLeft->Layout();
 	bSizer27->Fit( m_PanelLeft );
 	m_PanelRight = new wxPanel( m_Splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
 	m_SizerPlot = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_PanelRight->SetSizer( m_SizerPlot );
 	m_PanelRight->Layout();
 	m_SizerPlot->Fit( m_PanelRight );
 	m_Splitter->SplitVertically( m_PanelLeft, m_PanelRight, 150 );
 	bSizer13->Add( m_Splitter, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer13 );
 	this->Layout();
@@ -331,7 +344,9 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_ChoiceDate->SetSelection( 0 );
 	fgSizer1->Add( m_ChoiceDate, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
+	
 	bSizer29->Add( fgSizer1, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
 	
 	m_PanelOptions->SetSizer( bSizer29 );
 	m_PanelOptions->Layout();
@@ -355,17 +370,20 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_CheckListTocPredictands = new wxCheckListBox( m_PanelPredictandsLeft, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_CheckListTocPredictandsChoices, 0 );
 	bSizer27->Add( m_CheckListTocPredictands, 1, wxEXPAND, 5 );
 	
+	
 	m_PanelPredictandsLeft->SetSizer( bSizer27 );
 	m_PanelPredictandsLeft->Layout();
 	bSizer27->Fit( m_PanelPredictandsLeft );
 	m_PanelPredictandsRight = new wxPanel( m_SplitterPredictands, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
 	m_SizerPlotPredictands = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_PanelPredictandsRight->SetSizer( m_SizerPlotPredictands );
 	m_PanelPredictandsRight->Layout();
 	m_SizerPlotPredictands->Fit( m_PanelPredictandsRight );
 	m_SplitterPredictands->SplitVertically( m_PanelPredictandsLeft, m_PanelPredictandsRight, 150 );
 	bSizer22->Add( m_SplitterPredictands, 1, wxEXPAND|wxTOP, 5 );
+	
 	
 	m_PanelPredictands->SetSizer( bSizer22 );
 	m_PanelPredictands->Layout();
@@ -374,12 +392,14 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_PanelCriteria = new wxPanel( m_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_SizerPlotCriteria = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_PanelCriteria->SetSizer( m_SizerPlotCriteria );
 	m_PanelCriteria->Layout();
 	m_SizerPlotCriteria->Fit( m_PanelCriteria );
 	m_Notebook->AddPage( m_PanelCriteria, _("Criteria distribution"), false );
 	
 	bSizer13->Add( m_Notebook, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer13 );
 	this->Layout();
@@ -446,7 +466,9 @@ asFrameGridAnalogsValuesVirtual::asFrameGridAnalogsValuesVirtual( wxWindow* pare
 	m_ChoiceDate->SetSelection( 0 );
 	fgSizer1->Add( m_ChoiceDate, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
+	
 	bSizer291->Add( fgSizer1, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
 	
 	m_PanelOptions->SetSizer( bSizer291 );
 	m_PanelOptions->Layout();
@@ -486,6 +508,7 @@ asFrameGridAnalogsValuesVirtual::asFrameGridAnalogsValuesVirtual( wxWindow* pare
 	// Cell Defaults
 	m_Grid->SetDefaultCellAlignment( wxALIGN_RIGHT, wxALIGN_TOP );
 	bSizer29->Add( m_Grid, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer29 );
 	this->Layout();
@@ -561,6 +584,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_StaticTextTocRight->Wrap( -1 );
 	m_SizerScrolledWindow->Add( m_StaticTextTocRight, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
+	
 	m_ScrolledWindowOptions->SetSizer( m_SizerScrolledWindow );
 	m_ScrolledWindowOptions->Layout();
 	m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
@@ -583,15 +607,18 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_ChoiceTargetDates->SetSelection( 0 );
 	bSizer34->Add( m_ChoiceTargetDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+	
 	bSizer371->Add( bSizer34, 0, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	m_PanelGISLeft = new wxPanel( m_PanelLeft, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
 	m_SizerGISLeft = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_PanelGISLeft->SetSizer( m_SizerGISLeft );
 	m_PanelGISLeft->Layout();
 	m_SizerGISLeft->Fit( m_PanelGISLeft );
 	bSizer371->Add( m_PanelGISLeft, 1, wxEXPAND, 5 );
+	
 	
 	m_PanelLeft->SetSizer( bSizer371 );
 	m_PanelLeft->Layout();
@@ -611,7 +638,9 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_BpButtonSwitchLeft = new wxBitmapButton( m_PanelSwitch, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 10,28 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_SizerSwitch->Add( m_BpButtonSwitchLeft, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
+	
 	bSizer40->Add( m_SizerSwitch, 1, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
 	
 	m_PanelSwitch->SetSizer( bSizer40 );
 	m_PanelSwitch->Layout();
@@ -634,20 +663,24 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_ChoiceAnalogDates->SetSelection( 0 );
 	bSizer35->Add( m_ChoiceAnalogDates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+	
 	bSizer38->Add( bSizer35, 0, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	m_PanelGISRight = new wxPanel( m_PanelRight, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
 	m_SizerGISRight = new wxBoxSizer( wxVERTICAL );
+	
 	
 	m_PanelGISRight->SetSizer( m_SizerGISRight );
 	m_PanelGISRight->Layout();
 	m_SizerGISRight->Fit( m_PanelGISRight );
 	bSizer38->Add( m_PanelGISRight, 1, wxEXPAND, 5 );
 	
+	
 	m_PanelRight->SetSizer( bSizer38 );
 	m_PanelRight->Layout();
 	bSizer38->Fit( m_PanelRight );
 	m_SizerGIS->Add( m_PanelRight, 1, wxEXPAND, 5 );
+	
 	
 	m_PanelGIS->SetSizer( m_SizerGIS );
 	m_PanelGIS->Layout();
@@ -655,10 +688,12 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_SplitterToc->SplitVertically( m_ScrolledWindowOptions, m_PanelGIS, 170 );
 	bSizer26->Add( m_SplitterToc, 1, wxEXPAND, 5 );
 	
+	
 	m_panel15->SetSizer( bSizer26 );
 	m_panel15->Layout();
 	bSizer26->Fit( m_panel15 );
 	bSizer25->Add( m_panel15, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer25 );
 	this->Layout();
@@ -731,6 +766,7 @@ asPanelPlotVirtual::asPanelPlotVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	bSizer26->Add( m_PlotCtrl, 1, wxEXPAND, 5 );
 	
+	
 	this->SetSizer( bSizer26 );
 	this->Layout();
 	bSizer26->Fit( this );
@@ -759,9 +795,8 @@ asPanelSidebarVirtual::asPanelSidebarVirtual( wxWindow* parent, wxWindowID id, c
 	m_BpButtonReduce = new wxBitmapButton( m_PanelHeader, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 22,22 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_BpButtonReduce->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_SCROLLBAR ) );
 	
-	m_BpButtonReduce->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_SCROLLBAR ) );
-	
 	m_SizerHeader->Add( m_BpButtonReduce, 0, 0, 5 );
+	
 	
 	m_PanelHeader->SetSizer( m_SizerHeader );
 	m_PanelHeader->Layout();
@@ -770,7 +805,9 @@ asPanelSidebarVirtual::asPanelSidebarVirtual( wxWindow* parent, wxWindowID id, c
 	
 	m_SizerContent = new wxBoxSizer( wxVERTICAL );
 	
+	
 	m_SizerMain->Add( m_SizerContent, 0, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( m_SizerMain );
 	this->Layout();
