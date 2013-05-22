@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
 #include "asResultsAnalogsValues.h"
 
 #include "asFileNetcdf.h"
@@ -207,7 +207,7 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     m_TargetValuesGross.resize( Ntime );
     ncFile.GetVar("targetvaluesgross", &m_TargetValuesGross[0]);
     size_t IndexStart[2] = {0,0};
-    size_t IndexCount[2] = {Ntime, Nanalogs};
+    size_t IndexCount[2] = {size_t(Ntime), size_t(Nanalogs)};
     ncFile.GetVarArray("analogscriteria", IndexStart, IndexCount, &analogsCriteria[0]);
     ncFile.GetVarArray("analogsvaluesnorm", IndexStart, IndexCount, &analogsValuesNorm[0]);
     ncFile.GetVarArray("analogsvaluesgross", IndexStart, IndexCount, &analogsValuesGross[0]);
