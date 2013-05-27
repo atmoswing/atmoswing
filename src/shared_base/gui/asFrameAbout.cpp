@@ -17,7 +17,7 @@
 #include "tinyxml.h"
 #ifndef MINIMAL_LINKS
     #include "gdal.h"
-    #include "curl.h"
+    #include "curl/curl.h"
 #endif
 #include "proj_api.h"
 #ifdef __WXMSW__

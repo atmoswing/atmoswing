@@ -16,7 +16,7 @@
 #define ASINTERNET_H
 
 #include <asIncludes.h>
-#include <curl.h>
+#include <curl/curl.h>
 
 
 class asInternet
