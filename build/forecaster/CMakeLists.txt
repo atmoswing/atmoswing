@@ -66,8 +66,10 @@ message(STATUS "Build type is : " ${CMAKE_BUILD_TYPE})
 
 #### DEFINES
 
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DNDEBUG -DAPP_FORECASTER)
-
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DNDEBUG -DAPP_FORECASTER -D_CRT_SECURE_NO_WARNINGS)
+#if (WIN32)
+#	add_definitions(-DNODEFAULTLIB:libc.lib -DNODEFAULTLIB:libcmt.lib -DNODEFAULTLIB:libcd.lib -DNODEFAULTLIB:libcmtd.lib) -DNODEFAULTLIB:msvcrtd.lib)
+#endif (WIN32)
 
 #### LIBRARIES
 
@@ -76,27 +78,31 @@ find_package(wxWidgets COMPONENTS core base adv REQUIRED)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
 
-# GDAL
-find_package(GDAL REQUIRED)
-include_directories(${GDAL_INCLUDE_DIRS})
-
-# Proj
-include("../_cmake/FindProj4.cmake")
-include_directories(${PROJ4_INCLUDE_DIR})
-
-# Netcdf
+# NetCDF (has to be before GDAL)
+mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
+mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
 include("../_cmake/FindNetCDF.cmake")
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 
-# libcurl
+# libcURL
+mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
+mark_as_advanced(CLEAR CURL_LIBRARY)
 find_package(CURL REQUIRED)
 include_directories(${CURL_INCLUDE_DIRS})
+
+# Proj.4
+include("../_cmake/FindProj4.cmake")
+include_directories(${PROJ4_INCLUDE_DIR})
+
+# GDAL
+find_package(GDAL REQUIRED)
+include_directories(${GDAL_INCLUDE_DIRS})
 
 
 #### DECLARE EXECUTABLE
 
 if (WIN32)
-    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ../src/resource.rc)
+    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/resource.rc)
 elseif (UNIX AND NOT APPLE)
     add_executable (${CMAKE_PROJECT_NAME} ${src_all})
 elseif (APPLE)
@@ -109,8 +115,7 @@ endif (WIN32)
 #### LIBRARIES LINKING
 
 target_link_libraries(AtmoswingForecaster ${wxWidgets_LIBRARIES})
-target_link_libraries(AtmoswingForecaster ${GDAL_LIBRARIES})
-target_link_libraries(AtmoswingForecaster ${PROJ4_LIBRARIES})
 target_link_libraries(AtmoswingForecaster ${NetCDF_LIBRARIES})
 target_link_libraries(AtmoswingForecaster ${CURL_LIBRARIES})
-
+target_link_libraries(AtmoswingForecaster ${PROJ4_LIBRARIES})
+target_link_libraries(AtmoswingForecaster ${GDAL_LIBRARIES})

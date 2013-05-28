@@ -15,14 +15,15 @@
 #include "asFrameAbout.h"
 #include "asIncludes.h"
 #include "tinyxml.h"
+#include "netcdf.h"
 #ifndef MINIMAL_LINKS
     #include "gdal.h"
     #include "curl/curl.h"
 #endif
 #include "proj_api.h"
-#ifdef __WXMSW__
-    #include "config.h" // netCDF
-#endif
+//#ifdef __WXMSW__
+//   #include "config.h" // netCDF
+//#endif
 
 asFrameAbout::asFrameAbout( wxWindow* parent )
 :
@@ -97,12 +98,8 @@ asFrameAboutVirtual( parent )
 	m_GridSizer->Add( m_VersionProj, 0, wxRIGHT|wxLEFT, 5 );
 
     // Set NetCDF
-#ifdef __WXMSW__
-    wxString ncVers(PACKAGE_VERSION);
+    wxString ncVers(nc_inq_libvers());
     wxString versionNetCDF = "NetCDF " + ncVers;
-#else
-    wxString versionNetCDF = "NetCDF 4";
-#endif
     m_VersionNetCDF = new wxStaticText( m_Panel, wxID_ANY, versionNetCDF, wxDefaultPosition, wxDefaultSize, 0 );
     m_VersionNetCDF->Wrap( -1 );
     m_GridSizer->Add( m_VersionNetCDF, 0, wxRIGHT|wxLEFT|wxALIGN_RIGHT, 5 );
