@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 #### PROJECT
 
 project(AtmoswingViewer)
-set(EXECUTABLE_OUTPUT_PATH viewer/${CMAKE_BUILD_TYPE})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
 
 #### SOURCE FILES LIST
@@ -16,7 +16,7 @@ file(GLOB_RECURSE src_lib_ticpp ../../src/shared_base/libs/ticpp/*)
 file(GLOB_RECURSE src_viewer_app ../../src/app_viewer/app/*)
 file(GLOB_RECURSE src_viewer_core ../../src/app_viewer/core/*)
 file(GLOB_RECURSE src_viewer_gui ../../src/app_viewer/gui/*)
-list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_awxled} ${src_lib_eigen} ${src_lib_ticpp} ${src_proc_core} ${src_viewer_app} ${src_viewer_core} ${src_viewer_gui})
+list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_ticpp} ${src_viewer_app} ${src_viewer_core} ${src_viewer_gui})
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
@@ -62,33 +62,32 @@ message(STATUS "Build type is : " ${CMAKE_BUILD_TYPE})
 
 #### DEFINES
 
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DNDEBUG -DAPP_VIEWER)
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DNDEBUG -DAPP_VIEWER -D_CRT_SECURE_NO_WARNINGS)
 
 
 #### LIBRARIES
 
 # WxWidgets (adv lib nedded for the caldendar widget)
+mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 find_package(wxWidgets COMPONENTS core base adv REQUIRED)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
+
+# NetCDF (has to be before GDAL)
+mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
+mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
+include("../_cmake/FindNetCDF.cmake")
+include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 
 # GDAL
 find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
-# Proj
-include("../_cmake/FindProj4.cmake")
-include_directories(${PROJ4_INCLUDE_DIR})
-
-# Netcdf
-include("../_cmake/FindNetCDF.cmake")
-include_directories(${NetCDF_INCLUDE_DIRECTORIES})
-
 
 #### DECLARE EXECUTABLE
 
 if (WIN32)
-    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ../src/resource.rc)
+    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/resource.rc)
 elseif (UNIX AND NOT APPLE)
     add_executable (${CMAKE_PROJECT_NAME} ${src_all})
 elseif (APPLE)
@@ -101,7 +100,5 @@ endif (WIN32)
 #### LIBRARIES LINKING
 
 target_link_libraries(AtmoswingViewer ${wxWidgets_LIBRARIES})
-target_link_libraries(AtmoswingViewer ${GDAL_LIBRARIES})
-target_link_libraries(AtmoswingViewer ${PROJ4_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${NetCDF_LIBRARIES})
-
+target_link_libraries(AtmoswingViewer ${GDAL_LIBRARIES})

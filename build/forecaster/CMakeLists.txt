@@ -18,7 +18,7 @@ file(GLOB_RECURSE src_proc_core ../../src/shared_processing/core/*)
 file(GLOB_RECURSE src_forec_app ../../src/app_forecaster/app/*)
 file(GLOB_RECURSE src_forec_core ../../src/app_forecaster/core/*)
 file(GLOB_RECURSE src_forec_gui ../../src/app_forecaster/gui/*)
-list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_awxled} ${src_lib_eigen} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core} ${src_forec_gui})
+list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_awxled} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core} ${src_forec_gui})
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
