@@ -21,33 +21,8 @@ find_library( NetCDF_C_LIBRARY
   /usr/lib/netcdf-3
 )
 
-find_library( NetCDF_CXX_LIBRARY
-  NAMES netcdf_c++
-  /usr/local/lib64
-  /usr/lib64
-  /usr/lib64/netcdf-3
-  /usr/local/lib
-  /usr/lib
-  /usr/lib/netcdf-3
-)
-
-find_library( NetCDF_FORTRAN_LIBRARY
-  NAMES netcdf_g77 netcdf_ifc netcdf_x86_64
-  /usr/local/lib64
-  /usr/lib64
-  /usr/lib64/netcdf-3
-  /usr/local/lib
-  /usr/lib
-  /usr/lib/netcdf-3
-)
-
 set( NetCDF_LIBRARIES
   ${NetCDF_C_LIBRARY}
-  ${NetCDF_CXX_LIBRARY}
-)
-
-set( NetCDF_FORTRAN_LIBRARIES
-  ${NetCDF_FORTRAN_LIBRARY}
 )
 
 if ( NetCDF_INCLUDE_DIRECTORIES AND NetCDF_LIBRARIES )
@@ -71,9 +46,5 @@ endif ( NetCDF_INCLUDE_DIRECTORIES AND NetCDF_LIBRARIES )
 
 mark_as_advanced(
   NetCDF_PREFIX
-  NetCDF_INCLUDE_DIRECTORIES
-  NetCDF_C_LIBRARY
-  NetCDF_CXX_LIBRARY
-  NetCDF_FORTRAN_LIBRARY
 )
 

@@ -319,7 +319,17 @@ bool asFileGrib2::GetUaxis(Array1DFloat &uaxis)
 {
     wxASSERT(m_Opened);
 
-    uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+(GetUPtsnb()-1)*GetUCellSize());
+	if (GDAL_VERSION_MAJOR==1 && GDAL_VERSION_MINOR<9)
+	{
+		// Origin is the center of the cell
+		uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+float(GetUPtsnb()-1)*GetUCellSize());
+	}
+	else
+	{
+		// Origin is the corner of the cell --> we must correct (first point is first value)
+		uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin()+GetUCellSize()/2.0, GetUOrigin()+GetUCellSize()/2.0+float(GetUPtsnb()-1)*GetUCellSize());
+	}
+	
     return true;
 }
 
@@ -327,7 +337,17 @@ bool asFileGrib2::GetVaxis(Array1DFloat &vaxis)
 {
     wxASSERT(m_Opened);
 
-    vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+(GetVPtsnb()-1)*GetVCellSize());
+	if (GDAL_VERSION_MAJOR==1 && GDAL_VERSION_MINOR<9)
+	{
+		// Origin is the center of the cell
+		vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+float(GetVPtsnb()-1)*GetVCellSize());
+	}
+	else
+	{
+		// Origin is the corner of the cell --> we must correct (first point is first value)
+		vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin()+GetVCellSize()/2.0, GetVOrigin()+GetVCellSize()/2.0+float(GetVPtsnb()-1)*GetVCellSize());
+	}
+
     return true;
 }
 
