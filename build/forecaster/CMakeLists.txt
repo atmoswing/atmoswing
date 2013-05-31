@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 #### PROJECT
 
 project(AtmoswingForecaster)
-set(EXECUTABLE_OUTPUT_PATH forecaster/${CMAKE_BUILD_TYPE})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
 
 #### SOURCE FILES LIST
@@ -67,13 +67,12 @@ message(STATUS "Build type is : " ${CMAKE_BUILD_TYPE})
 #### DEFINES
 
 add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DNDEBUG -DAPP_FORECASTER -D_CRT_SECURE_NO_WARNINGS)
-#if (WIN32)
-#	add_definitions(-DNODEFAULTLIB:libc.lib -DNODEFAULTLIB:libcmt.lib -DNODEFAULTLIB:libcd.lib -DNODEFAULTLIB:libcmtd.lib) -DNODEFAULTLIB:msvcrtd.lib)
-#endif (WIN32)
+
 
 #### LIBRARIES
 
 # WxWidgets (adv lib nedded for the caldendar widget)
+mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 find_package(wxWidgets COMPONENTS core base adv REQUIRED)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
