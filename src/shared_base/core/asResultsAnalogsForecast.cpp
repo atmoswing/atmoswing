@@ -17,7 +17,7 @@
 #include "asFileNetcdf.h"
 #include "asThreadsManager.h"
 #ifndef UNIT_TESTING
-    #include "AtmoswingAppForecaster.h"
+    //#include "AtmoswingAppForecaster.h"
 #endif
 
 asResultsAnalogsForecast::asResultsAnalogsForecast(const wxString &modelName)
