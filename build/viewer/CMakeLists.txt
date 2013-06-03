@@ -13,10 +13,16 @@ file(GLOB_RECURSE src_base_core ../../src/shared_base/core/*)
 file(GLOB_RECURSE src_base_gui ../../src/shared_base/gui/*)
 file(GLOB_RECURSE src_base_img ../../src/shared_base/gui/img/*)
 file(GLOB_RECURSE src_lib_ticpp ../../src/shared_base/libs/ticpp/*)
+file(GLOB_RECURSE src_lib_ticpp ../../src/shared_base/libs/awxled/*)
 file(GLOB_RECURSE src_viewer_app ../../src/app_viewer/app/*)
 file(GLOB_RECURSE src_viewer_core ../../src/app_viewer/core/*)
 file(GLOB_RECURSE src_viewer_gui ../../src/app_viewer/gui/*)
-list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_ticpp} ${src_viewer_app} ${src_viewer_core} ${src_viewer_gui})
+file(GLOB_RECURSE src_lib_vroomgis ../../src/app_viewer/libs/vroomgis/vroomgis/src/*)
+file(GLOB_RECURSE src_lib_vroomgis_art ../../src/app_viewer/libs/vroomgis/vroomgis/art/*)
+file(GLOB_RECURSE src_lib_wxmathplot ../../src/app_viewer/libs/wxmathplot/*)
+file(GLOB_RECURSE src_lib_wxplotctrl ../../src/app_viewer/libs/wxplotctrl/src/*)
+file(GLOB_RECURSE src_lib_wxthings ../../src/app_viewer/libs/wxthings/src/*)
+list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_ticpp} ${src_viewer_app} ${src_viewer_core} ${src_viewer_gui} ${src_lib_vroomgis}  ${src_lib_vroomgis_art} ${src_lib_wxmathplot} ${src_lib_wxplotctrl} ${src_lib_wxthings})
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
@@ -34,9 +40,16 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
+	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/app/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/gui/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/vroomgis/vroomgis/src/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/vroomgis/vroomgis/art/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxmathplot/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/include/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxthings/include/"
 	)
 include_directories(${inc_dirs})
 
@@ -78,6 +91,16 @@ mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
 mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
 include("../_cmake/FindNetCDF.cmake")
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
+
+# libcURL
+mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
+mark_as_advanced(CLEAR CURL_LIBRARY)
+find_package(CURL REQUIRED)
+include_directories(${CURL_INCLUDE_DIRS})
+
+# Proj.4
+include("../_cmake/FindProj4.cmake")
+include_directories(${PROJ4_INCLUDE_DIR})
 
 # GDAL
 find_package(GDAL REQUIRED)
