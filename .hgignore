@@ -11,3 +11,11 @@ build/viewer/Debug/*
 build/viewer/ipch/*
 build/viewer/Win32/*
 build/viewer/ZERO_CHECK.*
+build/viewer/Release/*
+build/forecaster/ALL_BUILD.*
+build/forecaster/AtmoswingForecaster.dir/*
+build/forecaster/AtmoswingForecaster.*
+build/forecaster/cmake_install.cmake
+build/forecaster/Debug/*
+build/forecaster/Win32/*
+build/forecaster/ZERO_CHECK.*
