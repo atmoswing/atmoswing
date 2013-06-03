@@ -1,3 +1,13 @@
 syntax: glob
 build/forecaster/CMakeFiles/*
 build/forecaster/CMakeCache.txt
+build/viewer/ALL_BUILD.*
+build/viewer/AtmoswingViewer.dir/*
+build/viewer/AtmoswingViewer.*
+build/viewer/CMakeFiles/*
+build/viewer/CMakeCache.txt
+build/viewer/cmake_install.cmake
+build/viewer/Debug/*
+build/viewer/ipch/*
+build/viewer/Win32/*
+build/viewer/ZERO_CHECK.*
