@@ -19,3 +19,9 @@ build/forecaster/cmake_install.cmake
 build/forecaster/Debug/*
 build/forecaster/Win32/*
 build/forecaster/ZERO_CHECK.*
+build/forecaster/Release/*
+build/viewer/vroomgis.dir/*
+build/viewer/vroomgis.*
+build/viewer/wxhgversion.dir/*
+build/viewer/wxhgversion.*
+build/viewer/wxhgversion_param.h
