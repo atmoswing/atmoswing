@@ -486,14 +486,14 @@ void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 
 void asFrameForecast::OpenFrameAbout( wxCommandEvent& event )
 {
-	wxHgVersionDlg mydlg(this, wxID_ANY,_("test"));
-	//mydlg.SetBitmapLogo(img_led_red);
-	mydlg.SetCopyright(wxString::Format("\u00A9 Pascal Horton, %d", wxDateTime::Now().GetYear()));
-	mydlg.ShowModal();
+	wxHgVersionDlg aboutModal(this, wxID_ANY,_("test"));
+	//aboutModal.SetBitmapLogo(img_led_red);
+	aboutModal.SetCopyright(wxString::Format("\u00A9 Pascal Horton, %d", wxDateTime::Now().GetYear()));
+	aboutModal.ShowModal();
 
-    /*asFrameAbout* frame = new asFrameAbout(this);
+    asFrameAbout* frame = new asFrameAbout(this);
     frame->Fit();
-    frame->Show();*/
+    frame->Show();
 }
 
 void asFrameForecast::OnLogLevel1( wxCommandEvent& event )

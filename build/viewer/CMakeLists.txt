@@ -102,11 +102,11 @@ include_directories(${PROJ4_INCLUDE_DIR})
 find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
-#CREATE VROOMGIS LIBRARY AND WXWIDGETS - GDAL LIB
-INCLUDE("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")	
+# vroomgis
+include("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")	
 
-#USE WXHGVERSION PLUGIN
-INCLUDE("../../src/app_viewer/libs/vroomgis/plugins/wxhgversion/build/use_wxhgversion.cmake")
+# wxhgversion
+include("../../src/app_viewer/libs/vroomgis/plugins/wxhgversion/build/use_wxhgversion.cmake")
 
 
 #### DECLARE EXECUTABLE
@@ -129,10 +129,10 @@ target_link_libraries(AtmoswingViewer ${NetCDF_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${CURL_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${PROJ4_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${GDAL_LIBRARIES})
-TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME} ${VROOMGIS_LIBRARY})
-IF(USE_WXHGVERSION)
-  TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
-ENDIF(USE_WXHGVERSION)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${VROOMGIS_LIBRARY})
+if (USE_WXHGVERSION)
+  target_link_libraries(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
+endif (USE_WXHGVERSION)
 if (WIN32)
     target_link_libraries(AtmoswingViewer Psapi.lib)
 endif (WIN32)
