@@ -103,6 +103,14 @@ find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
 # vroomgis
+mark_as_advanced(SEARCH_GDAL)
+mark_as_advanced(SEARCH_GEOS)
+mark_as_advanced(SEARCH_GIS_LIB_PATH)
+mark_as_advanced(SEARCH_VROOMGIS_LIBS)
+mark_as_advanced(SEARCH_VROOMGIS_WXWIDGETS)
+mark_as_advanced(SQLITE_INCLUDE_DIR)
+mark_as_advanced(SQLITE_PATH)
+mark_as_advanced(wxWIDGETS_USING_SVN)
 include("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")	
 
 # wxhgversion
