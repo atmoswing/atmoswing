@@ -17,12 +17,10 @@ file(GLOB_RECURSE src_lib_awxled ../../src/shared_base/libs/awxled/*)
 file(GLOB_RECURSE src_viewer_app ../../src/app_viewer/app/*)
 file(GLOB_RECURSE src_viewer_core ../../src/app_viewer/core/*)
 file(GLOB_RECURSE src_viewer_gui ../../src/app_viewer/gui/*)
-file(GLOB_RECURSE src_lib_vroomgis ../../src/app_viewer/libs/vroomgis/vroomgis/src/*)
-file(GLOB_RECURSE src_lib_vroomgis_art ../../src/app_viewer/libs/vroomgis/vroomgis/art/*)
 file(GLOB_RECURSE src_lib_wxmathplot ../../src/app_viewer/libs/wxmathplot/*)
 file(GLOB_RECURSE src_lib_wxplotctrl ../../src/app_viewer/libs/wxplotctrl/src/*)
 file(GLOB_RECURSE src_lib_wxthings ../../src/app_viewer/libs/wxthings/src/*)
-list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_ticpp}  ${src_lib_awxled} ${src_viewer_app} ${src_viewer_core} ${src_viewer_gui} ${src_lib_vroomgis}  ${src_lib_vroomgis_art} ${src_lib_wxmathplot} ${src_lib_wxplotctrl} ${src_lib_wxthings})
+list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_ticpp}  ${src_lib_awxled} ${src_viewer_app} ${src_viewer_core} ${src_viewer_gui} ${src_lib_wxmathplot} ${src_lib_wxplotctrl} ${src_lib_wxthings})
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
@@ -44,8 +42,6 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/app/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/gui/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/vroomgis/vroomgis/src/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/vroomgis/vroomgis/art/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxmathplot/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/include/"
@@ -106,6 +102,12 @@ include_directories(${PROJ4_INCLUDE_DIR})
 find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
+#CREATE VROOMGIS LIBRARY AND WXWIDGETS - GDAL LIB
+INCLUDE("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")	
+
+#USE WXHGVERSION PLUGIN
+INCLUDE("../../src/app_viewer/libs/vroomgis/plugins/wxhgversion/build/use_wxhgversion.cmake")
+
 
 #### DECLARE EXECUTABLE
 
@@ -127,6 +129,10 @@ target_link_libraries(AtmoswingViewer ${NetCDF_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${CURL_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${PROJ4_LIBRARIES})
 target_link_libraries(AtmoswingViewer ${GDAL_LIBRARIES})
+TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME} ${VROOMGIS_LIBRARY})
+IF(USE_WXHGVERSION)
+  TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
+ENDIF(USE_WXHGVERSION)
 if (WIN32)
     target_link_libraries(AtmoswingViewer Psapi.lib)
 endif (WIN32)

@@ -38,6 +38,7 @@
 #include <wx/event.h>
 #include "vrrender.h"
 #include "vrlayervector.h"
+#include "wxhgversion_dlg.h"
 
 
 /* vroomDropFiles */
@@ -485,9 +486,14 @@ void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 
 void asFrameForecast::OpenFrameAbout( wxCommandEvent& event )
 {
-    asFrameAbout* frame = new asFrameAbout(this);
+	wxHgVersionDlg mydlg(this, wxID_ANY,_("test"));
+	//mydlg.SetBitmapLogo(img_led_red);
+	mydlg.SetCopyright(wxString::Format("\u00A9 Pascal Horton, %d", wxDateTime::Now().GetYear()));
+	mydlg.ShowModal();
+
+    /*asFrameAbout* frame = new asFrameAbout(this);
     frame->Fit();
-    frame->Show();
+    frame->Show();*/
 }
 
 void asFrameForecast::OnLogLevel1( wxCommandEvent& event )
