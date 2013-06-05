@@ -62,107 +62,91 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry * geometry, void * data)
 	return featureID;
 }
 
-bool vrLayerVectorFcstRing::_DrawPoints(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-								   const vrRender * render, vrLabel * label, double pxsize)
+void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeometry * geometry, const wxRect2DDouble & coord, const vrRender * render,  vrLabel * label, double pxsize)
 {
-    m_ObjectDrawn = 0;
-	wxASSERT(gdc);
-	wxStopWatch sw;
-
     // Set the defaut pen
 	wxASSERT(render->GetType() == vrRENDER_VECTOR);
 	wxPen defaultPen (*wxBLACK, 1);
 	wxPen selPen (*wxGREEN, 3);
-
-	// Iterating and drawing geometries
-	OGRPoint * geom = NULL;
-	long iCount = 0;
-	double width = 0, height = 0;
-	gdc->GetSize(&width, &height);
-	wxRect2DDouble windowRect (0,0,width, height);
-	while (1)
-    {
-		OGRFeature * feat = GetNextFeature(false);
-		if (feat == NULL) break;
-		geom = NULL;
-		geom = (OGRPoint*) feat->GetGeometryRef();
-		wxASSERT(geom);
-
-		// Get lead time size
-		int leadTimeSize = (int)feat->GetFieldAsDouble(0);
-		wxASSERT(leadTimeSize>0);
+	
+	// Get graphics context 
+	wxGraphicsContext *gc = dc->GetGraphicsContext();
+	wxASSERT(gc);
+	
+	if (gc)
+	{
+		// Get extent
+		double extWidth = 0, extHeight = 0;
+		gc->GetSize(&extWidth, &extHeight);
+		wxRect2DDouble extWndRect (0,0,extWidth, extHeight);
+	
+		// Get geometries
+		OGRPoint * geom = (OGRPoint*) geometry;
 
 		wxPoint point = _GetPointFromReal(wxPoint2DDouble(geom->getX(),geom->getY()),
 										 coord.GetLeftTop(),
 										 pxsize);
 
-        // Create graphics path
-        wxGraphicsPath path = gdc->CreatePath();
+		// Get lead time size
+		int leadTimeSize = (int)feature->GetFieldAsDouble(0);
+		wxASSERT(leadTimeSize>0);
 
-        // Create first segment
-        _CreatePath(path, point, leadTimeSize, 0);
+		// Create graphics path
+		wxGraphicsPath path = gc->CreatePath();
 
-        // Ensure intersecting display
-        wxRect2DDouble pathRect = path.GetBox();
-        if (pathRect.Intersects(windowRect) ==false)
-        {
-            OGRFeature::DestroyFeature(feat);
-            feat = NULL;
-            continue;
-        }
+		// Create first segment
+		_CreatePath(path, point, leadTimeSize, 0);
+		
+		// Ensure intersecting display
+		wxRect2DDouble pathRect = path.GetBox();
+		if (pathRect.Intersects(extWndRect) ==false) 
+		{
+			return;
+		}
+		if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1)
+		{
+			return;
+		}
+		
+		// Set the defaut pen
+		gc->SetPen(defaultPen);
+		if (IsFeatureSelected(feature->GetFID())==true) {
+			gc->SetPen(selPen);
+		}
 
-        if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1)
-        {
-            OGRFeature::DestroyFeature(feat);
-            feat = NULL;
-            continue;
-        }
-        iCount++;
+		// Get value to set color
+		double value = feature->GetFieldAsDouble(1);
+		_Paint(gc, path, value);
 
-        // Pen selection
-        gdc->SetPen(defaultPen);
-        if (IsFeatureSelected(feat->GetFID())==true)
-        {
-            gdc->SetPen(selPen);
-        }
+		// Draw next segments
+		for (int i_leadtime=1; i_leadtime<leadTimeSize; i_leadtime++)
+		{
+			// Create shape
+			path = gc->CreatePath();
+			_CreatePath(path, point, leadTimeSize, i_leadtime);
 
-        // Get value to set color
-        double value = feat->GetFieldAsDouble(1);
-        _Paint(gdc, path, value);
+			// Get value to set color
+			double value = feature->GetFieldAsDouble(i_leadtime+1);
+			_Paint(gc, path, value);
 
-        // Draw next segments
-        for (int i_leadtime=1; i_leadtime<leadTimeSize; i_leadtime++)
-        {
-            // Create shape
-            path = gdc->CreatePath();
-            _CreatePath(path, point, leadTimeSize, i_leadtime);
+		}
 
-            // Get value to set color
-            double value = feat->GetFieldAsDouble(i_leadtime+1);
-            _Paint(gdc, path, value);
-
-        }
-
-        // Create a mark at the center
-        path.AddCircle(point.x, point.y, 2);
+		// Create a mark at the center
+		path.AddCircle(point.x, point.y, 2);
 
 /*      // Cross
-        path.MoveToPoint(point.x+2, point.y);
-        path.AddLineToPoint(point.x-2, point.y);
-        path.MoveToPoint(point.x, point.y+2);
-        path.AddLineToPoint(point.x, point.y-2);
+		path.MoveToPoint(point.x+2, point.y);
+		path.AddLineToPoint(point.x-2, point.y);
+		path.MoveToPoint(point.x, point.y+2);
+		path.AddLineToPoint(point.x, point.y-2);
 */
-        gdc->StrokePath(path);
-
-		OGRFeature::DestroyFeature(feat);
-		feat = NULL;
+		gc->StrokePath(path);
 	}
-
-	m_ObjectDrawn = iCount;
-
-	if (iCount == 0) return false;
-
-	return true;
+	else
+	{
+		asLogError(_("Drawing of the symbol failed."));
+	}
+	
 }
 
 void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath & path, const wxPoint & center, int segmentsTotNb, int segmentNb)
@@ -232,25 +216,4 @@ void vrLayerVectorFcstRing::_Paint(wxGraphicsContext * gdc, wxGraphicsPath & pat
     wxBrush brush(colour, wxSOLID);
     gdc->SetBrush(brush);
     gdc->DrawPath(path);
-}
-
-bool vrLayerVectorFcstRing::_DrawLines(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-								  const vrRender * render, const vrLabel * label, double pxsize)
-{
-	m_ObjectDrawn = 0;
-	return false;
-}
-
-bool vrLayerVectorFcstRing::_DrawPolygons(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-									 const vrRender * render, const vrLabel * label, double pxsize)
-{
-	m_ObjectDrawn = 0;
-	return false;
-}
-
-bool vrLayerVectorFcstRing::_DrawMultiPolygons(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-									 const vrRender * render, const vrLabel * label, double pxsize)
-{
-	m_ObjectDrawn = 0;
-	return false;
 }

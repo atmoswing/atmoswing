@@ -56,17 +56,7 @@ public:
 protected:
     double m_ValueMax;
 
-    virtual bool _DrawPoints(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-                             const vrRender * render, vrLabel * label, double pxsize);
-
-    virtual bool _DrawLines(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-                            const vrRender * render, const vrLabel * label, double pxsize);
-
-    virtual bool _DrawPolygons(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-                               const vrRender * render, const vrLabel * label, double pxsize);
-
-    virtual bool _DrawMultiPolygons(wxGraphicsContext * gdc, const wxRect2DDouble & coord,
-                               const vrRender * render, const vrLabel * label, double pxsize);
+    virtual void _DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeometry * geometry, const wxRect2DDouble & coord, const vrRender * render,  vrLabel * label, double pxsize);
 
     void _CreatePath(wxGraphicsPath & path, const wxPoint & center);
 
