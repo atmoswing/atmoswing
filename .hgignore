@@ -25,3 +25,4 @@ build/viewer/vroomgis.*
 build/viewer/wxhgversion.dir/*
 build/viewer/wxhgversion.*
 build/viewer/wxhgversion_param.h
+build/forecaster/ipch/*

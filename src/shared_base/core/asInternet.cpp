@@ -110,11 +110,13 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Do the job
         if(curl) {
-            #ifndef UNIT_TESTING
-                // The progress bar
-                wxString dialogmessage = _("Downloading predictors.\n");
-                asDialogProgressBar ProgressBar(dialogmessage, urls.size());
-            #endif
+			#if wxUSE_GUI
+				#ifndef UNIT_TESTING
+					// The progress bar
+					wxString dialogmessage = _("Downloading predictors.\n");
+					asDialogProgressBar ProgressBar(dialogmessage, urls.size());
+				#endif
+			#endif
 
             // Set a buffer for the error messages
             char* errorbuffer = new char[CURL_ERROR_SIZE];
@@ -146,15 +148,17 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     return asFAILED;
                 }
 
-                #ifndef UNIT_TESTING
-                    // Update the progress bar
-                    wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
-                    if(!ProgressBar.Update(i_file, updatedialogmessage))
-                    {
-                        asLogMessage(_("The download has been canceled by the user."));
-                        return asCANCELLED;
-                    }
-                #endif
+				#if wxUSE_GUI
+					#ifndef UNIT_TESTING
+						// Update the progress bar
+						wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
+						if(!ProgressBar.Update(i_file, updatedialogmessage))
+						{
+							asLogMessage(_("The download has been canceled by the user."));
+							return asCANCELLED;
+						}
+					#endif
+				#endif
 
                 // Download only if not already done
                 if(!wxFileName::FileExists(filePath))
@@ -212,9 +216,11 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 }
             }
 
-            #ifndef UNIT_TESTING
-                ProgressBar.Destroy();
-            #endif
+			#if wxUSE_GUI
+				#ifndef UNIT_TESTING
+					ProgressBar.Destroy();
+				#endif
+			#endif
 
             // Always cleanup
             curl_easy_cleanup(curl);
