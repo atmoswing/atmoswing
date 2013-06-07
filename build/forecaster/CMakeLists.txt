@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(AtmoswingForecaster)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
+SET (USE_GUI CACHE BOOL "Sould we build AtmoswingForecaster with a GUI ?" )
 
 
 #### SOURCE FILES LIST
@@ -18,7 +19,14 @@ file(GLOB_RECURSE src_proc_core ../../src/shared_processing/core/*)
 file(GLOB_RECURSE src_forec_app ../../src/app_forecaster/app/*)
 file(GLOB_RECURSE src_forec_core ../../src/app_forecaster/core/*)
 file(GLOB_RECURSE src_forec_gui ../../src/app_forecaster/gui/*)
-list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_awxled} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core} ${src_forec_gui})
+list(APPEND src_all ${src_base_core} ${src_base_img} ${src_lib_awxled} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core})
+
+if (USE_GUI)
+	list(APPEND src_all ${src_base_gui} ${src_forec_gui})
+else (USE_GUI)
+	list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/app/AtmoswingMainForecaster.h")
+	list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/app/AtmoswingMainForecaster.cpp")
+endif (USE_GUI)
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
@@ -32,9 +40,6 @@ endforeach (currfile)
 # Directories to include
 list(APPEND inc_dirs 
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
@@ -42,6 +47,14 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/gui/"
 	)
+if (USE_GUI)
+	list(APPEND inc_dirs 
+		"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/"
+		"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
+		"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
+		"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/gui/"
+		)
+endif (USE_GUI)
 include_directories(${inc_dirs})
 
 # Display the directories to include
@@ -67,7 +80,11 @@ message(STATUS "Build type is : " ${CMAKE_BUILD_TYPE})
 #### DEFINES
 
 add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DNDEBUG -DAPP_FORECASTER -D_CRT_SECURE_NO_WARNINGS)
-
+if (USE_GUI)
+	add_definitions(-DwxUSE_GUI=1)
+else (USE_GUI)
+	add_definitions(-DwxUSE_GUI=0)
+endif (USE_GUI)
 
 #### LIBRARIES
 
@@ -113,8 +130,8 @@ endif (WIN32)
 
 #### LIBRARIES LINKING
 
-target_link_libraries(AtmoswingForecaster ${wxWidgets_LIBRARIES})
-target_link_libraries(AtmoswingForecaster ${NetCDF_LIBRARIES})
-target_link_libraries(AtmoswingForecaster ${CURL_LIBRARIES})
-target_link_libraries(AtmoswingForecaster ${PROJ4_LIBRARIES})
-target_link_libraries(AtmoswingForecaster ${GDAL_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${wxWidgets_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${NetCDF_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CURL_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
