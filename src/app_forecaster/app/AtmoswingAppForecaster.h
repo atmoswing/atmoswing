@@ -16,7 +16,11 @@
 #include <wx/socket.h>
 #include <asIncludes.h>
 
+#if wxUSE_GUI
 class AtmoswingAppForecaster : public wxApp
+#else
+class AtmoswingAppForecaster : public wxAppConsole
+#endif
 {
 public:
     virtual bool OnInit();
@@ -27,7 +31,9 @@ public:
     bool CommonInit();
 
 private:
-    wxSingleInstanceChecker* m_SingleInstanceChecker;
+	#if wxUSE_GUI
+		wxSingleInstanceChecker* m_SingleInstanceChecker;
+	#endif
 };
 
 DECLARE_APP(AtmoswingAppForecaster);

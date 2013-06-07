@@ -21,7 +21,9 @@ bool g_UnitTesting = false;
 bool g_GuiMode = true;
 bool g_AppViewer = false;
 bool g_AppForecaster = true;
-wxColour g_LinuxBgColour = wxColour(242,241,240);
+#if wxUSE_GUI
+	wxColour g_LinuxBgColour = wxColour(242,241,240);
+#endif
 
 // Constants
 const double g_Cst_Euler = 0.57721566490153286060651209008240243104215933593992; // http://fr.wikipedia.org/wiki/Constante_d%27Euler-Mascheroni
