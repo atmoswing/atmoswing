@@ -25,12 +25,6 @@ list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_t
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
 
-# Display the files list
-message(STATUS "Files : ")
-foreach (currfile ${src_all})
-	message(STATUS "  ${currfile}")
-endforeach (currfile)
-
 # Directories to include
 list(APPEND inc_dirs 
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
@@ -48,12 +42,6 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxthings/include/"
 	)
 include_directories(${inc_dirs})
-
-# Display the directories to include
-message(STATUS "Directories : ")
-foreach (currdir ${inc_dirs})
-	message(STATUS "  ${currdir}")
-endforeach (currdir)
 
 # Select flags
 if (UNIX AND NOT APPLE)

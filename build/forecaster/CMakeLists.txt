@@ -19,10 +19,10 @@ file(GLOB_RECURSE src_proc_core ../../src/shared_processing/core/*)
 file(GLOB_RECURSE src_forec_app ../../src/app_forecaster/app/*)
 file(GLOB_RECURSE src_forec_core ../../src/app_forecaster/core/*)
 file(GLOB_RECURSE src_forec_gui ../../src/app_forecaster/gui/*)
-list(APPEND src_all ${src_base_core} ${src_base_img} ${src_lib_awxled} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core})
+list(APPEND src_all ${src_base_core} ${src_lib_ticpp} ${src_proc_core} ${src_forec_app} ${src_forec_core})
 
 if (USE_GUI)
-	list(APPEND src_all ${src_base_gui} ${src_forec_gui})
+	list(APPEND src_all ${src_base_gui} ${src_forec_gui} ${src_lib_awxled} ${src_base_img})
 else (USE_GUI)
 	list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/app/AtmoswingMainForecaster.h")
 	list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/app/AtmoswingMainForecaster.cpp")
@@ -30,12 +30,6 @@ endif (USE_GUI)
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
-
-# Display the files list
-message(STATUS "Files : ")
-foreach (currfile ${src_all})
-	message(STATUS "  ${currfile}")
-endforeach (currfile)
 
 # Directories to include
 list(APPEND inc_dirs 
@@ -45,7 +39,6 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/app/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/gui/"
 	)
 if (USE_GUI)
 	list(APPEND inc_dirs 
@@ -56,12 +49,6 @@ if (USE_GUI)
 		)
 endif (USE_GUI)
 include_directories(${inc_dirs})
-
-# Display the directories to include
-message(STATUS "Directories : ")
-foreach (currdir ${inc_dirs})
-	message(STATUS "  ${currdir}")
-endforeach (currdir)
 
 # Select flags
 if (UNIX AND NOT APPLE)
@@ -90,7 +77,11 @@ endif (USE_GUI)
 
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
-find_package(wxWidgets COMPONENTS core base adv REQUIRED)
+if (USE_GUI)
+	find_package(wxWidgets COMPONENTS core base adv REQUIRED)
+else (USE_GUI)
+	find_package(wxWidgets COMPONENTS base REQUIRED)
+endif (USE_GUI)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
 
@@ -118,7 +109,11 @@ include_directories(${GDAL_INCLUDE_DIRS})
 #### DECLARE EXECUTABLE
 
 if (WIN32)
-    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/resource.rc)
+	if (USE_GUI)
+		add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/resource.rc)
+	else (USE_GUI)
+		add_executable (${CMAKE_PROJECT_NAME} ${src_all})
+	endif (USE_GUI)
 elseif (UNIX AND NOT APPLE)
     add_executable (${CMAKE_PROJECT_NAME} ${src_all})
 elseif (APPLE)
