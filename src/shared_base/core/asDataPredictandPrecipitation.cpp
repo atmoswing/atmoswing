@@ -306,11 +306,9 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
     // Index for stations
     int stationIndex = 0;
 
-    #ifndef UNIT_TESTING
-        #if wxUSE_GUI
-            // The progress bar
-            asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
-        #endif
+    #if wxUSE_GUI
+        // The progress bar
+        asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
     #endif
 
     // Get the datasets IDs
@@ -337,16 +335,14 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
                 asCatalogPredictands currentData(AlternateCatalogFilePath);
                 if(!currentData.Load(datasetId, stationId)) return false;
 
-                #ifndef UNIT_TESTING
-                    #if wxUSE_GUI
-                        // Update the progress bar.
-                        wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), currentData.GetStationFilename().c_str());
-                        if(!ProgressBar.Update(stationIndex, fileNameMessage))
-                        {
-                            asLogError(_("The process has been canceled by the user."));
-                            return false;
-                        }
-                    #endif
+                #if wxUSE_GUI
+                    // Update the progress bar.
+                    wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), currentData.GetStationFilename().c_str());
+                    if(!ProgressBar.Update(stationIndex, fileNameMessage))
+                    {
+                        asLogError(_("The process has been canceled by the user."));
+                        return false;
+                    }
                 #endif
 
                 // Get station information
@@ -359,10 +355,8 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
             }
         }
     }
-    #ifndef UNIT_TESTING
-        #if wxUSE_GUI
-            ProgressBar.Destroy();
-        #endif
+    #if wxUSE_GUI
+        ProgressBar.Destroy();
     #endif
 
     // Make the Gumbel adjustment
@@ -432,11 +426,9 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
     m_GumbelParamA.resize(m_StationsNb, duration.size());
     m_GumbelParamB.resize(m_StationsNb, duration.size());
 
-    #ifndef UNIT_TESTING
-        #if wxUSE_GUI
-            // The progress bar
-            asDialogProgressBar ProgressBar(_("Making Gumbel adjustments."), duration.size()-1);
-        #endif
+    #if wxUSE_GUI
+        // The progress bar
+        asDialogProgressBar ProgressBar(_("Making Gumbel adjustments."), duration.size()-1);
     #endif
 
     for (float i_duration=0; i_duration<duration.size(); i_duration++)
@@ -444,14 +436,12 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
         // Get the annual max
         Array2DFloat annualMax = GetAnnualMax(duration[i_duration]);
 
-        #ifndef UNIT_TESTING
-            #if wxUSE_GUI
-                if(!ProgressBar.Update(i_duration))
-                {
-                    asLogError(_("The process has been canceled by the user."));
-                    return false;
-                }
-            #endif
+        #if wxUSE_GUI
+            if(!ProgressBar.Update(i_duration))
+            {
+                asLogError(_("The process has been canceled by the user."));
+                return false;
+            }
         #endif
 
         for (int i_st=0; i_st<m_StationsNb; i_st++)
@@ -480,10 +470,8 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
             m_GumbelParamB(i_st,i_duration) = b;
         }
     }
-    #ifndef UNIT_TESTING
-        #if wxUSE_GUI
-            ProgressBar.Destroy();
-        #endif
+    #if wxUSE_GUI
+        ProgressBar.Destroy();
     #endif
 
     return true;

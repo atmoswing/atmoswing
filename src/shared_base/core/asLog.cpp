@@ -123,10 +123,8 @@ void asLog::Error(const wxString &msg)
                     m_Buffer = msg;
                     if (m_MessageBoxOnError)
                     {
-                        #ifndef UNIT_TESTING
-                            #if wxUSE_GUI
-                                wxMessageBox(msg, _("An error occured"));
-                            #endif
+                        #if wxUSE_GUI
+                            wxMessageBox(msg, _("An error occured"));
                         #endif
                     }
                     m_CritSectionLog.Leave();
@@ -138,10 +136,8 @@ void asLog::Error(const wxString &msg)
                 wxLogError(msg);
                 if (m_MessageBoxOnError)
                 {
-                    #ifndef UNIT_TESTING
-                        #if wxUSE_GUI
-                            wxMessageBox(msg, _("An error occured"));
-                        #endif
+                    #if wxUSE_GUI
+                        wxMessageBox(msg, _("An error occured"));
                     #endif
                 }
                 m_CritSectionLog.Leave();

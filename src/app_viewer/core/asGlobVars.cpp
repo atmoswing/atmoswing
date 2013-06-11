@@ -19,8 +19,8 @@ bool g_VerboseMode = true;
 bool g_Responsive = true;
 bool g_UnitTesting = false;
 bool g_GuiMode = true;
-bool g_AppViewer = false;
-bool g_AppForecaster = true;
+bool g_AppViewer = true;
+bool g_AppForecaster = false;
 wxColour g_LinuxBgColour = wxColour(242,241,240);
 wxString g_CmdFilename = wxEmptyString;
 
