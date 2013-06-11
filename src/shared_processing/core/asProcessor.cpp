@@ -26,7 +26,9 @@
 //#include <asDialogProgressBar.h>
 #include <asThreadProcessorGetAnalogsDates.h>
 #include <asThreadProcessorGetAnalogsSubDates.h>
-#include <AtmoswingAppForecaster.h>
+#ifndef UNIT_TESTING
+	#include <AtmoswingAppForecaster.h>
+#endif
 
 bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArchive,
                                   std::vector < asDataPredictor > &predictorsTarget,
@@ -40,7 +42,9 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                                   asResultsAnalogsDates &results,
                                   bool &containsNaNs)
 {
-    wxGetApp().Yield();
+	#if wxUSE_GUI
+		wxGetApp().Yield();
+	#endif
 
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -558,7 +562,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                                      asResultsAnalogsDates &results,
                                      bool &containsNaNs)
 {
-    wxGetApp().Yield();
+	#if wxUSE_GUI
+		wxGetApp().Yield();
+	#endif
 
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -660,7 +666,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
 
-            if (g_Responsive) wxGetApp().Yield();
+			#if wxUSE_GUI
+				if (g_Responsive) wxGetApp().Yield();
+			#endif
 
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
@@ -992,7 +1000,9 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     Array1DFloat finalTargetValuesNorm(targTimeLength);
     Array1DFloat finalTargetValuesGross(targTimeLength);
 
-    if (g_Responsive) wxGetApp().Yield();
+	#if wxUSE_GUI
+		if (g_Responsive) wxGetApp().Yield();
+	#endif
 
     // Get predictand values
     for (int i_targdate=indexTargDatesStart; i_targdate<=indexTargDatesEnd; i_targdate++)

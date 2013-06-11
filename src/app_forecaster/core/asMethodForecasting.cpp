@@ -52,9 +52,7 @@ asMethodForecasting::~asMethodForecasting()
 bool asMethodForecasting::Manager()
 {
 	#if wxUSE_GUI
-		#ifndef UNIT_TESTING
-			if (g_Responsive) wxGetApp().Yield();
-		#endif
+		if (g_Responsive) wxGetApp().Yield();
 	#endif
     m_Cancel = false;
 
@@ -100,9 +98,7 @@ bool asMethodForecasting::Manager()
         while(true)
         {
 			#if wxUSE_GUI
-				#ifndef UNIT_TESTING
-					if (g_Responsive) wxGetApp().Yield();
-				#endif
+				if (g_Responsive) wxGetApp().Yield();
 				if (m_Cancel) return false;
 
 				// Send event
@@ -112,9 +108,7 @@ bool asMethodForecasting::Manager()
 					m_Parent->ProcessWindowEvent(eventRunning);
 				}
 
-				#ifndef UNIT_TESTING
-					if (g_Responsive) wxGetApp().Yield();
-				#endif
+				if (g_Responsive) wxGetApp().Yield();
 			#endif
 
             // Set the content to data members
@@ -138,7 +132,7 @@ bool asMethodForecasting::Manager()
             if(!params.LoadFromFile(m_ParamsFilePath)) return false;
             params.InitValues();
 
-            #ifndef UNIT_TESTING
+            #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
             #endif
 
@@ -211,7 +205,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     bool forecastDateChanged = true;
     while(forecastDateChanged)
     {
-        #ifndef UNIT_TESTING
+        #if wxUSE_GUI
             if (g_Responsive) wxGetApp().Yield();
         #endif
         if (m_Cancel) return false;
@@ -223,7 +217,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         {
             asLogMessage(_("Forecast already exists."));
             m_ResultsFilePaths.push_back(resultsCheck.GetFilePath());
-            #ifndef UNIT_TESTING
+            #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
             #endif
             return true;
@@ -236,15 +230,13 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 				m_Parent->ProcessWindowEvent(eventDownloading);
 			}
 
-			#ifndef UNIT_TESTING
-				if (g_Responsive) wxGetApp().Yield();
-			#endif
+			if (g_Responsive) wxGetApp().Yield();
 		#endif
 
         forecastDateChanged = false;
         for (int i_step=0; i_step<stepsNb; i_step++)
         {
-            #ifndef UNIT_TESTING
+            #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
             #endif
             if (m_Cancel) return false;
@@ -257,7 +249,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         {
             asLogMessage(_("Forecast already exists."));
             m_ResultsFilePaths.push_back(resultsCheck.GetFilePath());
-            #ifndef UNIT_TESTING
+            #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
             #endif
             return true;
@@ -272,7 +264,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 		#endif
     }
 
-    #ifndef UNIT_TESTING
+    #if wxUSE_GUI
         if (g_Responsive) wxGetApp().Yield();
     #endif
     if (m_Cancel) return false;
@@ -282,7 +274,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     if(!LoadPredictandDB(params.GetPredictandDB())) return false;
     asLogMessage(_("Predictand DB loaded."));
 
-    #ifndef UNIT_TESTING
+   #if wxUSE_GUI
         if (g_Responsive) wxGetApp().Yield();
     #endif
     if (m_Cancel) return false;
@@ -293,7 +285,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
     for (int i_step=0; i_step<stepsNb; i_step++)
     {
-        #ifndef UNIT_TESTING
+        #if wxUSE_GUI
             if (g_Responsive) wxGetApp().Yield();
         #endif
         if (m_Cancel) return false;
@@ -310,7 +302,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         // At last get the values
         if (i_step==stepsNb-1)
         {
-            #ifndef UNIT_TESTING
+            #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
             #endif
             if (m_Cancel) return false;
@@ -372,14 +364,14 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 
     for(int i_ptor=0;i_ptor<params.GetPredictorsNb(i_step);i_ptor++)
     {
-        #ifndef UNIT_TESTING
+        #if wxUSE_GUI
             if (g_Responsive) wxGetApp().Yield();
         #endif
         if (m_Cancel) return false;
 
         asLogMessage(_("Downloading data."));
 
-        #ifndef UNIT_TESTING
+        #if wxUSE_GUI
             if (g_Responsive) wxGetApp().Yield();
         #endif
 
@@ -398,7 +390,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             if (resultsCheck.Exists())
             {
                 asLogMessage(_("Forecast already exists."));
-                #ifndef UNIT_TESTING
+                #if wxUSE_GUI
                     if (g_Responsive) wxGetApp().Yield();
                 #endif
                 return true;
@@ -416,7 +408,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             int counterFails = 0;
             while (true)
             {
-                #ifndef UNIT_TESTING
+                #if wxUSE_GUI
                     if (g_Responsive) wxGetApp().Yield();
                 #endif
                 if (m_Cancel) return false;
@@ -439,7 +431,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                         if (resultsCheck.Exists())
                         {
                             asLogMessage(_("Forecast already exists."));
-                            #ifndef UNIT_TESTING
+                            #if wxUSE_GUI
                                 if (g_Responsive) wxGetApp().Yield();
                             #endif
                             return true;
@@ -467,7 +459,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 
             for (int i_prepro=0; i_prepro<preprocessSize; i_prepro++)
             {
-                #ifndef UNIT_TESTING
+                #if wxUSE_GUI
                     if (g_Responsive) wxGetApp().Yield();
                 #endif
                 if (m_Cancel) return false;
@@ -490,7 +482,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                 int counterFails = 0;
                 while (true)
                 {
-                    #ifndef UNIT_TESTING
+                    #if wxUSE_GUI
                         if (g_Responsive) wxGetApp().Yield();
                     #endif
                     if (m_Cancel) return false;
@@ -653,7 +645,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     {
         asLogMessage(wxString::Format(_("Loading data (step %d, predictor nb %d)."), i_step, i_ptor));
 
-        #ifndef UNIT_TESTING
+        #if wxUSE_GUI
             if (g_Responsive) wxGetApp().Yield();
         #endif
 
@@ -756,7 +748,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
             for (int i_prepro=0; i_prepro<preprocessSize; i_prepro++)
             {
-                #ifndef UNIT_TESTING
+                #if wxUSE_GUI
                     if (g_Responsive) wxGetApp().Yield();
                 #endif
 
