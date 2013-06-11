@@ -16,3 +16,5 @@ syntax: glob
 *.vcxproj*
 *.exe
 */wxhgversion_param.h
+*.grib2.ncx
+*.grib2.gbx9
