@@ -17,7 +17,7 @@ int main()
     g_UnitTestExceptions = false;
 
     // Option to process time demanding processing
-    g_UnitTestLongerProcessing = false;
+    g_UnitTestLongerProcessing = true;
     g_UnitTestLongestProcessing = false;
     if(g_UnitTestLongestProcessing) g_UnitTestLongerProcessing = true;
 

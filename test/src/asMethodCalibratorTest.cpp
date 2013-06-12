@@ -112,14 +112,16 @@ void GrenobleComparisonArve1()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
         bool result;
+		bool containsNaNs;
         try
         {
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
             calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -391,6 +393,8 @@ void GrenobleComparisonArve1CalibrationPeriod()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+		
+		bool containsNaNs;
 
         try
         {
@@ -398,8 +402,9 @@ void GrenobleComparisonArve1CalibrationPeriod()
             calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -687,13 +692,16 @@ void GrenobleComparisonArve2()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
         bool result;
+		bool containsNaNs;
         try
         {
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             step++;
-            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step);
+            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -918,13 +926,17 @@ void GrenobleComparisonArve2CalibrationPeriod()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
+		bool containsNaNs;
+
         try
         {
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             step++;
-            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step);
+            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -1126,13 +1138,17 @@ TEST(PreloadingSimple)
         asMethodCalibratorSingle calibrator2 = calibrator1;
         asResultsAnalogsDates anaDatesStd;
         asResultsAnalogsDates anaDatesPreload;
+		
+		bool containsNaNs;
 
         try
         {
-            result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step);
+            result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs);
             CHECK_EQUAL(true, result);
-            result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step);
+			CHECK_EQUAL(true, containsNaNs);
+            result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
         }
         catch(asException& e)
         {
@@ -1215,13 +1231,17 @@ TEST(PreloadingWithPreprocessing)
         asMethodCalibratorSingle calibrator2 = calibrator1;
         asResultsAnalogsDates anaDatesStd;
         asResultsAnalogsDates anaDatesPreload;
+		
+		bool containsNaNs;
 
         try
         {
-            result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step);
+            result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs);
             CHECK_EQUAL(true, result);
-            result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step);
+			CHECK_EQUAL(true, containsNaNs);
+            result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
         }
         catch(asException& e)
         {
@@ -1319,6 +1339,8 @@ void GrenobleComparisonArve1Preloading()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+		
+		bool containsNaNs;
 
         try
         {
@@ -1326,7 +1348,8 @@ void GrenobleComparisonArve1Preloading()
             calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
+			CHECK_EQUAL(true, containsNaNs);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
@@ -1508,6 +1531,8 @@ void GrenobleComparisonArve1PreloadingSubset()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+		
+		bool containsNaNs;
 
         try
         {
@@ -1515,7 +1540,8 @@ void GrenobleComparisonArve1PreloadingSubset()
             calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
+			CHECK_EQUAL(true, containsNaNs);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
@@ -1616,13 +1642,17 @@ void GrenobleComparisonArve2Preloading()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+		
+		bool containsNaNs;
 
         try
         {
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
+			CHECK_EQUAL(true, containsNaNs);
             CHECK_EQUAL(true, result);
             step++;
-            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step);
+            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
+			CHECK_EQUAL(true, containsNaNs);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
@@ -1814,22 +1844,28 @@ void GrenobleComparisonArve2SavingIntermediateResults()
         asResultsAnalogsValues anaValues1, anaValues2;
         asResultsAnalogsForecastScores anaScoresCRPS1, anaScoresCRPS2;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+		
+		bool containsNaNs;
 
         try
         {
             // Create
-            result = calibrator.GetAnalogsDates(anaDates1, params, step);
+            result = calibrator.GetAnalogsDates(anaDates1, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             // Reload
-            result = calibrator.GetAnalogsDates(anaDates2, params, step);
+            result = calibrator.GetAnalogsDates(anaDates2, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             step++;
             // Create
-            result = calibrator.GetAnalogsSubDates(anaSubDates1, params, anaDates2, step);
+            result = calibrator.GetAnalogsSubDates(anaSubDates1, params, anaDates2, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             // Reload
-            result = calibrator.GetAnalogsSubDates(anaSubDates2, params, anaDates2, step);
+            result = calibrator.GetAnalogsSubDates(anaSubDates2, params, anaDates2, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             // Create
             result = calibrator.GetAnalogsValues(anaValues1, params, anaSubDates2, step);
             CHECK_EQUAL(true, result);
@@ -2037,14 +2073,18 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+		
+		bool containsNaNs;
 
         try
         {
-            result = calibrator.GetAnalogsDates(anaDates, params, step);
+            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             step++;
-            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step);
+            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
             CHECK_EQUAL(true, result);
+			CHECK_EQUAL(true, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);

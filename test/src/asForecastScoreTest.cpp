@@ -1253,7 +1253,7 @@ TEST(ProcessTS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessB)
+TEST(ProcessBIAS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1261,7 +1261,7 @@ TEST(ProcessB)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("B");
+    asForecastScore* score = asForecastScore::GetInstance("BIAS");
     score->SetPercentile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1275,7 +1275,7 @@ TEST(ProcessB)
         CHECK(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("B", "Total");
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BIAS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1286,7 +1286,7 @@ TEST(ProcessB)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessFAR)
+TEST(ProcessFARA)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1294,7 +1294,7 @@ TEST(ProcessFAR)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("FAR");
+    asForecastScore* score = asForecastScore::GetInstance("FARA");
     score->SetPercentile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1308,7 +1308,7 @@ TEST(ProcessFAR)
         CHECK(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("FAR", "Total");
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("FARA", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
