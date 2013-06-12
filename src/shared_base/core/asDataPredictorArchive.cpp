@@ -200,11 +200,9 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
         // Containers for the axes
         Array1DFloat axisDataLon, axisDataLat;
 
-        #ifndef UNIT_TESTING
-            #if wxUSE_GUI
-                // The progress bar
-                asDialogProgressBar progressBar(_("Loading data from files.\n"), yearLast-yearFirst);
-            #endif
+        #if wxUSE_GUI
+            // The progress bar
+            asDialogProgressBar progressBar(_("Loading data from files.\n"), yearLast-yearFirst);
         #endif
 
         // Loop through the files
@@ -221,20 +219,18 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
                 fileFullPath = filePath + fileName;
             }
 
-            #ifndef UNIT_TESTING
-                #if wxUSE_GUI
-                    // Update the progress bar
-                    if (m_Catalog.GetDataFileLength()==Year)
+            #if wxUSE_GUI
+                // Update the progress bar
+                if (m_Catalog.GetDataFileLength()==Year)
+                {
+                    wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s%d%s"), fileName.Before(dateStartTag).c_str(), i_year, fileName.After(dateEndTag).c_str());
+                    if(!progressBar.Update(i_year-yearFirst, fileNameMessage))
                     {
-                        wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s%d%s"), fileName.Before(dateStartTag).c_str(), i_year, fileName.After(dateEndTag).c_str());
-                        if(!progressBar.Update(i_year-yearFirst, fileNameMessage))
-                        {
-                            asLogWarning(_("The process has been canceled by the user."));
-                            wxDELETE(dataArea);
-                            return false;
-                        }
+                        asLogWarning(_("The process has been canceled by the user."));
+                        wxDELETE(dataArea);
+                        return false;
                     }
-                #endif
+                }
             #endif
 
             ThreadsManager().CritSectionNetCDF().Enter();
@@ -889,10 +885,8 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
             return false;
         }
 
-        #ifndef UNIT_TESTING
-            #if wxUSE_GUI
-                progressBar.Destroy();
-            #endif
+        #if wxUSE_GUI
+            progressBar.Destroy();
         #endif
 
         wxDELETE(dataArea);

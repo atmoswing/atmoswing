@@ -26,7 +26,9 @@ extern bool g_UnitTesting;
 extern bool g_GuiMode;
 extern bool g_AppViewer;
 extern bool g_AppForecaster;
-extern wxColour g_LinuxBgColour;
+#if wxUSE_GUI
+	extern wxColour g_LinuxBgColour;
+#endif
 
 // Constants
 const extern double g_Cst_Euler;

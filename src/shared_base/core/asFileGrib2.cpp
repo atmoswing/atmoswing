@@ -120,7 +120,7 @@ double asFileGrib2::GetUOrigin()
     double adfGeoTransform[6];
     if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
-        return adfGeoTransform[0];
+        return adfGeoTransform[0]+GetUCellSize()/2.0;
     }
 
     return NaNDouble;
@@ -131,7 +131,7 @@ double asFileGrib2::GetVOrigin()
     double adfGeoTransform[6];
     if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
-        double vOrigin = adfGeoTransform[3];
+        double vOrigin = adfGeoTransform[3]+GetVCellSize()/2.0;
         while (vOrigin>90)
         {
             vOrigin -= 180;
@@ -319,16 +319,8 @@ bool asFileGrib2::GetUaxis(Array1DFloat &uaxis)
 {
     wxASSERT(m_Opened);
 
-	if (GDAL_VERSION_MAJOR==1 && GDAL_VERSION_MINOR<9)
-	{
-		// Origin is the center of the cell
-		uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+float(GetUPtsnb()-1)*GetUCellSize());
-	}
-	else
-	{
-		// Origin is the corner of the cell --> we must correct (first point is first value)
-		uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin()+GetUCellSize()/2.0, GetUOrigin()+GetUCellSize()/2.0+float(GetUPtsnb()-1)*GetUCellSize());
-	}
+	// Origin is the corner of the cell --> we must correct (first point is first value)
+	uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+float(GetUPtsnb()-1)*GetUCellSize());
 	
     return true;
 }
@@ -337,16 +329,8 @@ bool asFileGrib2::GetVaxis(Array1DFloat &vaxis)
 {
     wxASSERT(m_Opened);
 
-	if (GDAL_VERSION_MAJOR==1 && GDAL_VERSION_MINOR<9)
-	{
-		// Origin is the center of the cell
-		vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+float(GetVPtsnb()-1)*GetVCellSize());
-	}
-	else
-	{
-		// Origin is the corner of the cell --> we must correct (first point is first value)
-		vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin()+GetVCellSize()/2.0, GetVOrigin()+GetVCellSize()/2.0+float(GetVPtsnb()-1)*GetVCellSize());
-	}
+	// Origin is the corner of the cell --> we must correct (first point is first value)
+	vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+float(GetVPtsnb()-1)*GetVCellSize());
 
     return true;
 }

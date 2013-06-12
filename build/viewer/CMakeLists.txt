@@ -25,12 +25,6 @@ list(APPEND src_all ${src_base_core} ${src_base_gui} ${src_base_img} ${src_lib_t
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
 
-# Display the files list
-message(STATUS "Files : ")
-foreach (currfile ${src_all})
-	message(STATUS "  ${currfile}")
-endforeach (currfile)
-
 # Directories to include
 list(APPEND inc_dirs 
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
@@ -48,12 +42,6 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxthings/include/"
 	)
 include_directories(${inc_dirs})
-
-# Display the directories to include
-message(STATUS "Directories : ")
-foreach (currdir ${inc_dirs})
-	message(STATUS "  ${currdir}")
-endforeach (currdir)
 
 # Select flags
 if (UNIX AND NOT APPLE)
@@ -132,15 +120,15 @@ endif (WIN32)
 
 #### LIBRARIES LINKING
 
-target_link_libraries(AtmoswingViewer ${wxWidgets_LIBRARIES})
-target_link_libraries(AtmoswingViewer ${NetCDF_LIBRARIES})
-target_link_libraries(AtmoswingViewer ${CURL_LIBRARIES})
-target_link_libraries(AtmoswingViewer ${PROJ4_LIBRARIES})
-target_link_libraries(AtmoswingViewer ${GDAL_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${wxWidgets_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${NetCDF_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CURL_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${VROOMGIS_LIBRARY})
 if (USE_WXHGVERSION)
   target_link_libraries(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
 endif (USE_WXHGVERSION)
 if (WIN32)
-    target_link_libraries(AtmoswingViewer Psapi.lib)
+    target_link_libraries(${CMAKE_PROJECT_NAME} Psapi.lib)
 endif (WIN32)
