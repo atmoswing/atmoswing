@@ -26,8 +26,11 @@
 //#include <asDialogProgressBar.h>
 #include <asThreadProcessorGetAnalogsDates.h>
 #include <asThreadProcessorGetAnalogsSubDates.h>
-#ifndef UNIT_TESTING
+#ifdef APP_FORECASTER
 	#include <AtmoswingAppForecaster.h>
+#endif
+#ifdef APP_CALIBRATOR
+	#include <AtmoswingAppCalibrator.h>
 #endif
 
 bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArchive,
@@ -43,7 +46,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                                   bool &containsNaNs)
 {
 	#if wxUSE_GUI
-		wxGetApp().Yield();
+		if (g_Responsive) wxGetApp().Yield();
 	#endif
 
     // Get the processing method
@@ -563,7 +566,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                                      bool &containsNaNs)
 {
 	#if wxUSE_GUI
-		wxGetApp().Yield();
+		if (g_Responsive) wxGetApp().Yield();
 	#endif
 
     // Get the processing method
