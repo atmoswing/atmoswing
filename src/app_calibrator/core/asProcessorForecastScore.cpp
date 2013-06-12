@@ -40,8 +40,8 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
         {
             if (params.ForecastScoreNeedsPostprocessing())
             {
-                Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(i_targtime), analogsCriteria.row(i_targtime), params));
-                finalForecastScores(i_targtime) = forecastScore->Assess(targetValues(i_targtime), analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
+                //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(i_targtime), analogsCriteria.row(i_targtime), params));
+                //finalForecastScores(i_targtime) = forecastScore->Assess(targetValues(i_targtime), analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
             }
             else
             {
@@ -134,8 +134,8 @@ bool asProcessorForecastScore::GetAnalogsForecastScoresLoadF0(asResultsAnalogsVa
         {
             if (params.ForecastScoreNeedsPostprocessing())
             {
-                Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(i_targtime), analogsCriteria.row(i_targtime), params));
-                finalForecastScores(i_targtime) = forecastScoreF0->Assess(targetValues(i_targtime), freq[i_targtime], analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
+                //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(i_targtime), analogsCriteria.row(i_targtime), params));
+                //finalForecastScores(i_targtime) = forecastScoreF0->Assess(targetValues(i_targtime), freq[i_targtime], analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
             }
             else
             {
