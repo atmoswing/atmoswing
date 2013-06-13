@@ -74,6 +74,11 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
         }
     }
 
+	if (asTools::IsNaN(se))
+	{
+		return NaNFloat;
+	}
+
     wxASSERT(se>=0);
     wxASSERT_MSG(sqrt(se)>=m_ScaleBest, wxString::Format(_("The criteria (%g) is below the lower limit (%g)..."), sqrt(se), m_ScaleBest));
 
