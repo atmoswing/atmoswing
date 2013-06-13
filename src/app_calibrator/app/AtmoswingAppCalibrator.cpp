@@ -21,6 +21,9 @@
 #endif
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
+#include "asMethodOptimizerNelderMead.h"
+#include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 
 
@@ -64,6 +67,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                                 "\n \t\t\t\t classic: classic calibration"
                                 "\n \t\t\t\t classicp: classic+ calibration"
                                 "\n \t\t\t\t varexplocp: variables exploration classic+"
+                                "\n \t\t\t\t neldermead: Nelder-Mead optimization"
+                                "\n \t\t\t\t montecarlo: Monte Carlo exploration"
+                                "\n \t\t\t\t ga: Genetic algorithms"
                                 "\n \t\t\t\t evalscores: Evaluate all scores" },
     { wxCMD_LINE_OPTION, "cpresizeite", "cpresizeite", "options ClassicPlusResizingIterations" },
     { wxCMD_LINE_OPTION, "cplatstepmap", "cplatstepmap", "options ClassicPlusStepsLatPertinenceMap" },
@@ -547,6 +553,209 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         wxFileConfig::Get()->Write("/Calibration/VariablesExplo/Step", option);
     }
 
+    // Monte Carlo
+    if (parser.Found("mcrunsnb", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/MonteCarlo/RandomNb", option);
+    }
+
+    // Nelder Mead optimization
+    if (parser.Found("nmrunsnb", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/NelderMead/NbRuns", option);
+    }
+
+    if (parser.Found("nmrho", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/NelderMead/Rho", option); // reflection
+    }
+
+    if (parser.Found("nmchi", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/NelderMead/Chi", option); // expansion
+    }
+
+    if (parser.Found("nmgamma", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/NelderMead/Gamma", option); // contraction
+    }
+
+    if (parser.Found("nmsigma", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/NelderMead/Sigma", option); // reduction
+    }
+
+    // Genetic algorithms
+    if (parser.Found("gaopenatsel", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", option);
+    }
+
+    if (parser.Found("gaopecoupsel", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/CouplesSelectionOperator", option);
+    }
+
+    if (parser.Found("gaopecross", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/CrossoverOperator", option);
+    }
+
+    if (parser.Found("gaopemut", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationOperator", option);
+    }
+
+    if (parser.Found("garunsnb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/NbRuns", option);
+    }
+
+    if (parser.Found("gapopsize", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/PopulationSize", option);
+    }
+
+    if (parser.Found("gaconvsteps", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/ConvergenceStepsNb", option);
+    }
+
+    if (parser.Found("gaintermgen", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/RatioIntermediateGeneration", option);
+    }
+
+    if (parser.Found("ganatseltourp", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
+    }
+
+    if (parser.Found("gacoupseltournb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
+    }
+
+    if (parser.Found("gacrossmultptnb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverMultiplePointsNb", option);
+    }
+
+    if (parser.Found("gacrossblenptnb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBlendingPointsNb", option);
+    }
+
+    if (parser.Found("gacrossblenshareb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBlendingShareBeta", option);
+    }
+
+    if (parser.Found("gacrosslinptnb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverLinearPointsNb", option);
+    }
+
+    if (parser.Found("gacrossheurptnb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverHeuristicPointsNb", option);
+    }
+
+    if (parser.Found("gacrossheurshareb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverHeuristicShareBeta", option);
+    }
+
+    if (parser.Found("gacrossbinptnb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBinaryLikePointsNb", option);
+    }
+
+    if (parser.Found("gacrossbinshareb", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", option);
+    }
+
+    if (parser.Found("gamutunifcstp", & option))
+    {
+        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/MutationsUniformConstantProbability", option);
+    }
+
+    if (parser.Found("gamutnormcstp", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalConstantProbability", option);
+    }
+
+    if (parser.Found("gamutnormcstdev", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", option);
+    }
+
+    if (parser.Found("gamutunifvargens", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", option);
+    }
+
+    if (parser.Found("gamutunivarpstrt", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", option);
+    }
+
+    if (parser.Found("gamutunivarpend", & option))
+    {
+       wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", option);
+    }
+
+    if (parser.Found("gamutnormvargensp", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", option);
+    }
+
+    if (parser.Found("gamutnormvargensd", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", option);
+    }
+
+    if (parser.Found("gamutnormvarpstrt", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", option);
+    }
+
+    if (parser.Found("gamutnormvarpend", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", option);
+    }
+
+    if (parser.Found("gamutnormvardstrt", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevStart", option);
+    }
+
+    if (parser.Found("gamutnormvardend", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", option);
+    }
+
+    if (parser.Found("gamutnonunip", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformProbability", option);
+    }
+
+    if (parser.Found("gamutnonunigens", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", option);
+    }
+
+    if (parser.Found("gamutnonuniminr", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformMinRate", option);
+    }
+
+    if (parser.Found("gamutmultiscalep", & option))
+    {
+        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsMultiScaleProbability", option);
+    }
+
     // S1 weighted
     if (parser.Found("s1wu", & option))
     {
@@ -767,6 +976,33 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
                 calibrator.Cleanup();
+            }
+            else if (m_CalibMethod.IsSameAs("neldermead", false))
+            {
+                asMethodOptimizerNelderMead optimizer;
+                optimizer.SetParamsFilePath(m_CalibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_PredictandDB);
+                optimizer.SetPredictorDataDir(m_PredictorsDir);
+                optimizer.Manager();
+                optimizer.Cleanup();
+            }
+            else if (m_CalibMethod.IsSameAs("montecarlo", false))
+            {
+                asMethodOptimizerRandomSet optimizer;
+                optimizer.SetParamsFilePath(m_CalibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_PredictandDB);
+                optimizer.SetPredictorDataDir(m_PredictorsDir);
+                optimizer.Manager();
+                optimizer.Cleanup();
+            }
+            else if (m_CalibMethod.IsSameAs("ga", false))
+            {
+                asMethodOptimizerGeneticAlgorithms optimizer;
+                optimizer.SetParamsFilePath(m_CalibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_PredictandDB);
+                optimizer.SetPredictorDataDir(m_PredictorsDir);
+                optimizer.Manager();
+                optimizer.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("evalscores", false))
             {
