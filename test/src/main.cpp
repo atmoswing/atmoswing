@@ -11,7 +11,8 @@
 int main()
 {
     g_UnitTesting = true;
-    g_SilentMode = true;
+    g_SilentMode = false;
+	g_GuiMode = false;
 
     // Option to test or not the exception throwing
     g_UnitTestExceptions = false;

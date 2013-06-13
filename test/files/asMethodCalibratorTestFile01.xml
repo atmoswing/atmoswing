@@ -38,7 +38,8 @@
 		<Url></Url>
 		<Ftp></Ftp>
 		<NaN>-32767</NaN>
-		<NaN>-128</NaN>
+		<NaN>-3276.69995</NaN>
+		<NaN>-127</NaN>
 		<CoordinateSys>WGS84</CoordinateSys>
 		<DataList>
 			<Data id="pwa" name="Precipitable water" enable="1">
@@ -74,7 +75,6 @@
 		<Url></Url>
 		<Ftp></Ftp>
 		<NaN>-32767</NaN>
-		<NaN>-128</NaN>
 		<CoordinateSys>WGS84</CoordinateSys>
 		<DataList>
 			<Data id="hgt" name="Geopotential height at 1000 hPa" enable="1">
@@ -101,7 +101,6 @@
 		<Url></Url>
 		<Ftp></Ftp>
 		<NaN>-32767</NaN>
-		<NaN>-128</NaN>
 		<CoordinateSys>WGS84</CoordinateSys>
 		<DataList>
 		    <Data id="hgt" name="Geopotential height at 500 hPa" enable="1">
