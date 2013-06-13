@@ -79,6 +79,11 @@ float asPredictorCriteriaRMSE::Assess(const Array2DFloat &refData, const Array2D
         }
     }
 
+	if (asTools::IsNaN(mse))
+	{
+		return NaNFloat;
+	}
+
     wxASSERT(mse>=0);
     wxASSERT(refData.size()>0);
 
