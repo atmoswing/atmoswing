@@ -119,7 +119,6 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 
         // Counter representing the current index
         counter = 0;
-        int NaNcounter = 0;
 
         // Loop through the previous analogs for candidate data
         for (int i_prevAnalogs=0; i_prevAnalogs<analogsNbPrevious; i_prevAnalogs++)
@@ -147,12 +146,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
                 }
                 if (asTools::IsNaN(thisscore))
                 {
-                    NaNcounter++;
-                    if (NaNcounter>=10)
-                    {
-                        *m_pContainsNaNs = true;
-                        return 0;
-                    }
+					*m_pContainsNaNs = true;
                 }
 
                 // Check if the array is already full
