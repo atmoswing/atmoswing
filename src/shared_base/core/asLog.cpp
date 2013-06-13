@@ -171,7 +171,7 @@ void asLog::Error(const wxString &msg)
 
 			if(!processed)
 			{
-				printf("Error: %s\n", msg.mb_str(wxConvUTF8).data());
+				//printf("Error: %s\n", msg.mb_str(wxConvUTF8).data());
 			}
         }
     }
@@ -239,7 +239,7 @@ void asLog::Warning(const wxString &msg)
 
 			if(!processed)
 			{
-				printf("Warning: %s\n", msg.mb_str(wxConvUTF8).data());
+				//printf("Warning: %s\n", msg.mb_str(wxConvUTF8).data());
 			}
         }
     }
@@ -306,7 +306,7 @@ void asLog::Message(const wxString &msg, bool force)
 
 			if(!processed)
 			{
-				printf("%s\n", msg.mb_str(wxConvUTF8).data());
+				//printf("%s\n", msg.mb_str(wxConvUTF8).data());
 			}
         }
     }
