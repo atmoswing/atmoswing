@@ -97,6 +97,11 @@ float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, 
 
 	mse += (evalMean - refMean) * (evalMean - refMean);
 
+	if (asTools::IsNaN(mse))
+	{
+		return NaNFloat;
+	}
+
     wxASSERT(mse>=0);
     wxASSERT_MSG(sqrt(mse)>=m_ScaleBest, _("The criteria is below the lower limit..."));
 
