@@ -145,9 +145,12 @@ void asLog::Error(const wxString &msg)
         }
         else
         {
+			bool processed = false;
+
             if (m_Target==asLog::File || m_Target==asLog::Both)
             {
                 wxLogError(msg);
+				processed = true;
             }
 
             // To the command prompt
@@ -158,12 +161,18 @@ void asLog::Error(const wxString &msg)
                 {
                     wxString msgNew = _("Error: ") + msg;
                     msgOut->Printf( msgNew );
+					processed = true;
                 }
                 else
                 {
                     wxFAIL_MSG( _("No wxMessageOutput object?") );
                 }
             }
+
+			if(!processed)
+			{
+				printf("Error: %s\n", msg.mb_str(wxConvUTF8).data());
+			}
         }
     }
 }
@@ -204,9 +213,12 @@ void asLog::Warning(const wxString &msg)
         }
         else
         {
+			bool processed = false;
+
             if (m_Target==asLog::File || m_Target==asLog::Both)
             {
                 wxLogWarning(msg);
+				processed = true;
             }
 
             // To the command prompt
@@ -217,12 +229,18 @@ void asLog::Warning(const wxString &msg)
                 {
                     wxString msgNew = _("Warning: ") + msg;
                     msgOut->Printf( msgNew );
+					processed = true;
                 }
                 else
                 {
                     wxFAIL_MSG( _("No wxMessageOutput object?") );
                 }
             }
+
+			if(!processed)
+			{
+				printf("Warning: %s\n", msg.mb_str(wxConvUTF8).data());
+			}
         }
     }
 }
@@ -263,9 +281,12 @@ void asLog::Message(const wxString &msg, bool force)
         }
         else
         {
+			bool processed = false;
+
             if (m_Target==asLog::File || m_Target==asLog::Both)
             {
                 wxLogMessage(msg);
+				processed = true;
             }
 
             // To the command prompt
@@ -275,12 +296,18 @@ void asLog::Message(const wxString &msg, bool force)
                 if ( msgOut )
                 {
                     msgOut->Printf( msg );
+					processed = true;
                 }
                 else
                 {
                     wxFAIL_MSG( _("No wxMessageOutput object?") );
                 }
             }
+
+			if(!processed)
+			{
+				printf("%s\n", msg.mb_str(wxConvUTF8).data());
+			}
         }
     }
 }
