@@ -135,7 +135,6 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
 
             // Counter representing the current index
             counter = 0;
-            int NaNcounter = 0;
 
             // Reset the index start target
             int i_timeArchStart = 0;
@@ -176,12 +175,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                     }
                     if (asTools::IsNaN(thisscore))
                     {
-                        NaNcounter++;
-                        if (NaNcounter>=10)
-                        {
-                            *m_pContainsNaNs = true;
-                            return 0;
-                        }
+                        *m_pContainsNaNs = true;
                     }
 
                     /* Option to remove analogs within the same day (temporal moving winow)
