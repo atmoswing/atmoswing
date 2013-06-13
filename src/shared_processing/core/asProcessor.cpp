@@ -190,7 +190,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             }
             if (containsNaNs)
             {
-                return true;
+				asLogWarning(_("NaNs were found in the criteria values."));
             }
 
             if (enableMessageBox) Log().EnableMessageBoxOnError();
@@ -270,7 +270,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
 
                     // Counter representing the current index
                     counter = 0;
-                    int NaNcounter = 0;
 
                     // Reset the index start target
                     int i_timeArchStart = 0;
@@ -308,15 +307,12 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
 
                                 // Weight and add the score
                                 thisscore += tmpscore * params.GetPredictorWeight(step, i_ptor);
+
                             }
                             if (asTools::IsNaN(thisscore))
                             {
-                                NaNcounter++;
-                                if (NaNcounter>=10)
-                                {
-                                    containsNaNs = true;
-                                    return true;
-                                }
+                                containsNaNs = true;
+								asLogWarning(_("NaNs were found in the criteria values."));
                             }
 
                             // Check if the array is already full
@@ -450,7 +446,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
 
                     // Counter representing the current index
                     counter = 0;
-                    int NaNcounter = 0;
 
                     // Reset the index start target
                     int i_timeArchStart = 0;
@@ -489,12 +484,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             }
                             if (asTools::IsNaN(thisscore))
                             {
-                                NaNcounter++;
-                                if (NaNcounter>=10)
-                                {
-                                    containsNaNs = true;
-                                    return true;
-                                }
+                                containsNaNs = true;
+                                asLogWarning(_("NaNs were found in the criteria values."));
                             }
 
                             // Store in the result array
@@ -608,13 +599,17 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
     // Extract some data
     Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
     int timeArchiveDataSize = timeArchiveData.size();
+	wxASSERT(timeArchiveDataSize>0);
     Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
     int timeTargetDataSize = timeTargetData.size();
+	wxASSERT(timeTargetDataSize>0);
     Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
     int timeTargetSelectionSize = timeTargetSelection.size();
+	wxASSERT(timeTargetSelectionSize>0);
     Array2DFloat analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder()==Asc);
     int predictorsNb = params.GetPredictorsNb(step);
+	wxASSERT(predictorsNb>0);
 
     // Check the analogs number. Correct if superior to the time serie
     int analogsNb = params.GetAnalogsNumber(step);
@@ -722,7 +717,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
             }
             if (containsNaNs)
             {
-                return true;
+                asLogWarning(_("NaNs were found in the criteria values."));
             }
 
             if (enableMessageBox) Log().EnableMessageBoxOnError();
@@ -772,7 +767,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
 
                 // Counter representing the current index
                 counter = 0;
-                int NaNcounter = 0;
 
                 // Loop through the previous analogs for candidate data
                 for (int i_prevanalogs=0; i_prevanalogs<analogsNbPrevious; i_prevanalogs++)
@@ -800,7 +794,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                                                                                                                 asTime::GetStringTime(timeTargetData[i_timeTarg], "DD.MM.YYYY hh:mm").c_str(), i_timeTarg,
                                                                                                                 (int)vArchData[i_ptor]->size(), (int)vTargData[i_ptor]->size()));
                             tmpscore = criteria[i_ptor]->Assess(*vTargData[i_ptor], *vArchData[i_ptor], vRowsNb[i_ptor], vColsNb[i_ptor]);
-
+			
                             /*
                             // For debugging
                             wxLogMessage("timeTarget = %s",asTime::GetStringTime(timeTargetSelection[i_anadates]).c_str());
@@ -821,12 +815,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                         }
                         if (asTools::IsNaN(thisscore))
                         {
-                            NaNcounter++;
-                            if (NaNcounter>=10)
-                            {
-                                containsNaNs = true;
-                                return true;
-                            }
+                            containsNaNs = true;
+							asLogWarning(_("NaNs were found in the criteria values."));
                         }
 
                         // Check if the array is already full
@@ -901,6 +891,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
 	#endif
 
     // Copy results to the resulting object
+	wxASSERT(timeTargetSelection.size()>0);
+	wxASSERT(finalAnalogsCriteria.size()>0);
+	wxASSERT(finalAnalogsDates.size()>0);
     results.SetTargetDates(timeTargetSelection);
     results.SetAnalogsCriteria(finalAnalogsCriteria);
     results.SetAnalogsDates(finalAnalogsDates);
@@ -1070,9 +1063,11 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
             }
         }
 
-        wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm(i_targdatenew,0), &finalAnalogValuesNorm(i_targdatenew,analogsNb-1)));
-        wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross(i_targdatenew,0), &finalAnalogValuesGross(i_targdatenew,analogsNb-1)));
-        wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(i_targdatenew,0), &finalAnalogCriteria(i_targdatenew,analogsNb-1)));
+		#ifndef UNIT_TESTING
+			wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm(i_targdatenew,0), &finalAnalogValuesNorm(i_targdatenew,analogsNb-1)));
+			wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross(i_targdatenew,0), &finalAnalogValuesGross(i_targdatenew,analogsNb-1)));
+			wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(i_targdatenew,0), &finalAnalogCriteria(i_targdatenew,analogsNb-1)));
+		#endif
     }
 
     //wxASSERT(!asTools::HasNaN(&finalTargetValuesNorm(0), &finalTargetValuesNorm(finalTargetValuesNorm.size()-1)));

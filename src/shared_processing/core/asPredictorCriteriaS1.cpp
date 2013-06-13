@@ -144,9 +144,15 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
         }
     }
 
+	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
+    {
+        asLogWarning(_("NaNs were found in the data."));
+        return NaNFloat;
+    }
+
     if (divisor>0)
     {
-        wxASSERT(dividend>=0);
+        wxASSERT_MSG(dividend>=0, wxString::Format("dividend = %f", dividend));
         wxASSERT(divisor>0);
 
         float val = (float)100*(dividend/divisor);
