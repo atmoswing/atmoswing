@@ -75,6 +75,12 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         }
     }
 
+	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
+    {
+        asLogWarning(_("NaNs were found in the data."));
+        return NaNFloat;
+    }
+
     if (divisor>0)
     {
         wxASSERT(dividend>=0);
@@ -90,15 +96,6 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         if (dividend==0)
         {
             asLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            /*wxString refDataString = "refData gradients = ";
-            wxString evalDataString = "evalData gradients = ";
-            for (int i=0; i<colsNb; i++)
-            {
-                refDataString.Append(wxString::Format("%2.f ",refData(0,i)));
-                evalDataString.Append(wxString::Format("%2.f ",evalData(0,i)));
-            }
-            asLogWarning(refDataString);
-            asLogWarning(evalDataString);*/
             return m_ScaleBest;
         }
         else

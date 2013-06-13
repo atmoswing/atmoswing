@@ -120,6 +120,12 @@ float asPredictorCriteriaS1weights::Assess(const Array2DFloat &refData, const Ar
         }
     }
 
+	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
+    {
+        asLogWarning(_("NaNs were found in the data."));
+        return NaNFloat;
+    }
+
     if (divisor>0)
     {
         wxASSERT(dividend>=0);
