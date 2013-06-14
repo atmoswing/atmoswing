@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 17 2010)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -39,7 +39,9 @@ asDialogFilePickerVirtual::asDialogFilePickerVirtual( wxWindow* parent, wxWindow
 	m_ButtonsConfirmationCancel = new wxButton( this, wxID_CANCEL );
 	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationCancel );
 	m_ButtonsConfirmation->Realize();
+	
 	bSizerMain->Add( m_ButtonsConfirmation, 0, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizerMain );
 	this->Layout();
@@ -69,7 +71,9 @@ asDialogFileSaverVirtual::asDialogFileSaverVirtual( wxWindow* parent, wxWindowID
 	m_ButtonsConfirmationCancel = new wxButton( this, wxID_CANCEL );
 	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationCancel );
 	m_ButtonsConfirmation->Realize();
+	
 	bSizerMain->Add( m_ButtonsConfirmation, 0, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizerMain );
 	this->Layout();
@@ -88,9 +92,11 @@ asFrameXmlEditorVirtual::asFrameXmlEditorVirtual( wxWindow* parent, wxWindowID i
 	
 	m_ToolBar = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL ); 
 	m_ToolBar->AddTool( wxID_ANY, _("save"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	
 	m_ToolBar->Realize(); 
 	
 	bSizer2->Add( m_ToolBar, 0, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer2 );
 	this->Layout();
@@ -174,16 +180,19 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	
 	m_GridSizer = new wxGridSizer( 5, 2, 0, 0 );
 	
+	
 	bSizer4->Add( m_GridSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP, 5 );
 	
 	m_StaticTextSpacer = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextSpacer->Wrap( -1 );
 	bSizer4->Add( m_StaticTextSpacer, 0, wxALL, 5 );
 	
+	
 	m_Panel->SetSizer( bSizer4 );
 	m_Panel->Layout();
 	bSizer4->Fit( m_Panel );
 	bSizer3->Add( m_Panel, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
@@ -240,11 +249,15 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	bSizer21->Add( m_CheckBoxSaveLogFFile, 0, wxALL, 5 );
 	
+	
 	sbSizer8->Add( bSizer21, 1, wxEXPAND, 5 );
+	
 	
 	bSizer20->Add( sbSizer8, 1, wxALL|wxEXPAND, 5 );
 	
+	
 	sbSizer7->Add( bSizer20, 1, wxEXPAND, 5 );
+	
 	
 	bSizer16->Add( sbSizer7, 0, wxALL|wxEXPAND, 5 );
 	
@@ -276,11 +289,15 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	bSizer211->Add( m_CheckBoxSaveLogVFile, 0, wxALL, 5 );
 	
+	
 	sbSizer81->Add( bSizer211, 1, wxEXPAND, 5 );
+	
 	
 	bSizer201->Add( sbSizer81, 1, wxEXPAND|wxALL, 5 );
 	
+	
 	sbSizer71->Add( bSizer201, 1, wxEXPAND, 5 );
+	
 	
 	bSizer16->Add( sbSizer71, 0, wxEXPAND|wxALL, 5 );
 	
@@ -298,6 +315,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer34->Add( m_StaticTextProxyAddress, 0, wxALL, 5 );
 	
 	m_TextCtrlProxyAddress = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 180,-1 ), 0 );
+	m_TextCtrlProxyAddress->SetMaxLength( 0 ); 
 	bSizer34->Add( m_TextCtrlProxyAddress, 1, wxALL, 5 );
 	
 	m_StaticTextProxyPort = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Port"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -305,7 +323,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer34->Add( m_StaticTextProxyPort, 0, wxALL, 5 );
 	
 	m_TextCtrlProxyPort = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlProxyPort->SetMaxLength( 0 ); 
 	bSizer34->Add( m_TextCtrlProxyPort, 0, wxALL, 5 );
+	
 	
 	sbSizer14->Add( bSizer34, 1, wxEXPAND, 5 );
 	
@@ -317,6 +337,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer35->Add( m_StaticTextProxyUser, 0, wxALL, 5 );
 	
 	m_TextCtrlProxyUser = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_TextCtrlProxyUser->SetMaxLength( 0 ); 
 	bSizer35->Add( m_TextCtrlProxyUser, 1, wxALL, 5 );
 	
 	m_StaticTextProxyPasswd = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -324,11 +345,15 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer35->Add( m_StaticTextProxyPasswd, 0, wxALL, 5 );
 	
 	m_TextCtrlProxyPasswd = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	m_TextCtrlProxyPasswd->SetMaxLength( 0 ); 
 	bSizer35->Add( m_TextCtrlProxyPasswd, 1, wxALL, 5 );
+	
 	
 	sbSizer14->Add( bSizer35, 1, wxEXPAND, 5 );
 	
+	
 	bSizer16->Add( sbSizer14, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelGeneralCommon->SetSizer( bSizer16 );
 	m_PanelGeneralCommon->Layout();
@@ -353,6 +378,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	m_FilePickerViewer = new wxFilePickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
 	sbSizer132->Add( m_FilePickerViewer, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	
 	
 	m_SizerPanelPaths->Add( sbSizer132, 0, wxALL|wxEXPAND, 5 );
 	
@@ -394,7 +420,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_DirPickerPredictandDB = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	sbSizer18->Add( m_DirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
+	
 	m_SizerPanelPaths->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelPathsCommon->SetSizer( m_SizerPanelPaths );
 	m_PanelPathsCommon->Layout();
@@ -422,6 +450,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	fgSizer81->Add( m_StaticTextColorbarMaxValue, 0, wxALL, 5 );
 	
 	m_TextCtrlColorbarMaxValue = new wxTextCtrl( m_PanelForecastDisplay, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlColorbarMaxValue->SetMaxLength( 0 ); 
 	fgSizer81->Add( m_TextCtrlColorbarMaxValue, 0, wxALL, 5 );
 	
 	m_StaticTextColorbarMaxUnit = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("mm/d"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -433,9 +462,12 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	fgSizer81->Add( m_StaticTextPastDaysNb, 0, wxALL, 5 );
 	
 	m_TextCtrlPastDaysNb = new wxTextCtrl( m_PanelForecastDisplay, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlPastDaysNb->SetMaxLength( 0 ); 
 	fgSizer81->Add( m_TextCtrlPastDaysNb, 0, wxALL, 5 );
 	
+	
 	sbSizer141->Add( fgSizer81, 1, wxEXPAND, 5 );
+	
 	
 	bSizer261->Add( sbSizer141, 0, wxEXPAND|wxALL, 5 );
 	
@@ -466,15 +498,19 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	fgSizer13->Add( m_StaticTextAlarmsPercentile, 0, wxALL, 5 );
 	
 	m_TextCtrlAlarmsPercentile = new wxTextCtrl( m_PanelForecastDisplay, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlAlarmsPercentile->SetMaxLength( 0 ); 
 	fgSizer13->Add( m_TextCtrlAlarmsPercentile, 0, wxALL, 5 );
 	
 	m_StaticTextAlarmsPercentileRange = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("(in between 0 - 1)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextAlarmsPercentileRange->Wrap( -1 );
 	fgSizer13->Add( m_StaticTextAlarmsPercentileRange, 0, wxALL, 5 );
 	
+	
 	sbSizer191->Add( fgSizer13, 1, wxEXPAND, 5 );
 	
+	
 	bSizer261->Add( sbSizer191, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelForecastDisplay->SetSizer( bSizer261 );
 	m_PanelForecastDisplay->Layout();
@@ -516,6 +552,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_TextCtrlGISLayerHillshadeTransp = new wxTextCtrl( m_PanelLayerHillshade, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_TextCtrlGISLayerHillshadeTransp->SetMaxLength( 3 ); 
 	fgSizer4->Add( m_TextCtrlGISLayerHillshadeTransp, 0, wxALL, 5 );
+	
 	
 	m_PanelLayerHillshade->SetSizer( fgSizer4 );
 	m_PanelLayerHillshade->Layout();
@@ -565,6 +602,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_TextCtrlGISLayerCatchmentsSize->SetMaxLength( 2 ); 
 	fgSizer5->Add( m_TextCtrlGISLayerCatchmentsSize, 0, wxALL, 5 );
 	
+	
 	m_PanelLayerCatchments->SetSizer( fgSizer5 );
 	m_PanelLayerCatchments->Layout();
 	fgSizer5->Fit( m_PanelLayerCatchments );
@@ -613,6 +651,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_TextCtrlGISLayerHydroSize->SetMaxLength( 2 ); 
 	fgSizer6->Add( m_TextCtrlGISLayerHydroSize, 0, wxALL, 5 );
 	
+	
 	m_PanelLayerHydrography->SetSizer( fgSizer6 );
 	m_PanelLayerHydrography->Layout();
 	fgSizer6->Fit( m_PanelLayerHydrography );
@@ -653,6 +692,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_ColourPickerGISLayerLakesColor = new wxColourPickerCtrl( m_PanelLayerLakes, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
 	fgSizer7->Add( m_ColourPickerGISLayerLakesColor, 0, wxALL, 5 );
 	
+	
 	m_PanelLayerLakes->SetSizer( fgSizer7 );
 	m_PanelLayerLakes->Layout();
 	fgSizer7->Fit( m_PanelLayerLakes );
@@ -686,6 +726,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_TextCtrlGISLayerBasemapTransp->SetMaxLength( 3 ); 
 	fgSizer8->Add( m_TextCtrlGISLayerBasemapTransp, 0, wxALL, 5 );
 	
+	
 	m_PanelLayerBasemap->SetSizer( fgSizer8 );
 	m_PanelLayerBasemap->Layout();
 	fgSizer8->Fit( m_PanelLayerBasemap );
@@ -693,7 +734,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	sbSizer13->Add( m_notebook5, 1, wxEXPAND | wxALL, 5 );
 	
+	
 	bSizer23->Add( sbSizer13, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelGISForecast->SetSizer( bSizer23 );
 	m_PanelGISForecast->Layout();
@@ -701,6 +744,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_NotebookViewer->AddPage( m_PanelGISForecast, _("Forecast GIS options"), false );
 	
 	bSizer39->Add( m_NotebookViewer, 1, wxEXPAND | wxALL, 5 );
+	
 	
 	m_PanelViewer->SetSizer( bSizer39 );
 	m_PanelViewer->Layout();
@@ -751,7 +795,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	fgSizer2->Add( m_CheckBoxRestrictDownloads, 0, wxALL, 5 );
 	
+	
 	sbSizer11->Add( fgSizer2, 1, wxEXPAND, 5 );
+	
 	
 	bSizer271->Add( sbSizer11, 0, wxALL|wxEXPAND, 5 );
 	
@@ -768,7 +814,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_CheckBoxMultiInstancesViewer = new wxCheckBox( m_PanelGeneral, wxID_ANY, _("Allow multiple instances of the viewer"), wxDefaultPosition, wxDefaultSize, 0 );
 	sbSizer151->Add( m_CheckBoxMultiInstancesViewer, 0, wxALL, 5 );
 	
+	
 	bSizer271->Add( sbSizer151, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelGeneral->SetSizer( bSizer271 );
 	m_PanelGeneral->Layout();
@@ -792,7 +840,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer221->Add( m_StaticTextThreadsNb, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_TextCtrlThreadsNb = new wxTextCtrl( m_PanelProcessing, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,-1 ), 0 );
+	m_TextCtrlThreadsNb->SetMaxLength( 0 ); 
 	bSizer221->Add( m_TextCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
+	
 	
 	sbSizer15->Add( bSizer221, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -806,7 +856,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_SliderThreadsPriority = new wxSlider( m_PanelProcessing, wxID_ANY, 95, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_LABELS );
 	bSizer241->Add( m_SliderThreadsPriority, 1, wxRIGHT|wxLEFT, 5 );
 	
+	
 	sbSizer15->Add( bSizer241, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
 	
 	bSizer1611->Add( sbSizer15, 0, wxALL|wxEXPAND, 5 );
 	
@@ -823,6 +875,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_RadioBoxLinearAlgebra = new wxRadioBox( m_PanelProcessing, wxID_ANY, _("Linear algebra options"), wxDefaultPosition, wxDefaultSize, m_RadioBoxLinearAlgebraNChoices, m_RadioBoxLinearAlgebraChoices, 1, wxRA_SPECIFY_COLS );
 	m_RadioBoxLinearAlgebra->SetSelection( 0 );
 	bSizer1611->Add( m_RadioBoxLinearAlgebra, 0, wxALL|wxEXPAND, 5 );
+	
 	
 	m_PanelProcessing->SetSizer( bSizer1611 );
 	m_PanelProcessing->Layout();
@@ -841,6 +894,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	m_DirPickerIntermediateResults = new wxDirPickerCtrl( m_PanelUserDirectories, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	sbSizer411->Add( m_DirPickerIntermediateResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
 	
 	bSizer24->Add( sbSizer411, 0, wxEXPAND|wxALL, 5 );
 	
@@ -892,9 +946,12 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_StaticTextPrefFileViewer->Wrap( -1 );
 	fgSizer9->Add( m_StaticTextPrefFileViewer, 0, wxALL, 5 );
 	
+	
 	sbSizer17->Add( fgSizer9, 1, wxEXPAND, 5 );
 	
+	
 	bSizer24->Add( sbSizer17, 0, wxALL|wxEXPAND, 5 );
+	
 	
 	m_PanelUserDirectories->SetSizer( bSizer24 );
 	m_PanelUserDirectories->Layout();
@@ -928,7 +985,9 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_FilePickerCatalogPredictands = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
 	sbSizer61->Add( m_FilePickerCatalogPredictands, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
+	
 	bSizer171->Add( sbSizer61, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelPathsCatalogs->SetSizer( bSizer171 );
 	m_PanelPathsCatalogs->Layout();
@@ -936,6 +995,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), false );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
+	
 	
 	m_PanelAdvanced->SetSizer( bSizer26 );
 	m_PanelAdvanced->Layout();
@@ -952,12 +1012,15 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_ButtonsConfirmationCancel = new wxButton( m_PanelBase, wxID_CANCEL );
 	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationCancel );
 	m_ButtonsConfirmation->Realize();
+	
 	bSizer15->Add( m_ButtonsConfirmation, 0, wxEXPAND|wxALL, 5 );
+	
 	
 	m_PanelBase->SetSizer( bSizer15 );
 	m_PanelBase->Layout();
 	bSizer15->Fit( m_PanelBase );
 	bSizer14->Add( m_PanelBase, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer14 );
 	this->Layout();
