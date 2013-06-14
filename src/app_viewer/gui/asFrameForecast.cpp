@@ -27,9 +27,10 @@
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
+#include "asFramePredictors.h"
 #include "asPanelPlot.h"
 #include "asCatalog.h"
-#include "asFileAscii.h"
+#include "asFileAscii.h
 #include "img_bullets.h"
 #include "img_toolbar.h"
 #include <wx/colour.h>
@@ -94,6 +95,7 @@ asFrameForecastVirtual( parent, id )
 	m_ToolBar->AddSeparator();
 	m_ToolBar->AddTool( asID_FRAME_PLOTS, wxT("Open distributions plots"), img_frame_plots, img_frame_plots, wxITEM_NORMAL, _("Open distributions plots"), _("Open distributions plots"), NULL );
 	m_ToolBar->AddTool( asID_FRAME_GRID, wxT("Open analogs list"), img_frame_grid, img_frame_grid, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), NULL );
+	m_ToolBar->AddTool( asID_FRAME_PREDICTORS, wxT("Open predictors maps"), img_frame_predictors, img_frame_predictors, wxITEM_NORMAL, _("Open predictors maps"), _("Open predictors maps"), NULL );
 	m_ToolBar->AddTool( asID_FRAME_FORECASTER, wxT("Open forecaster"), img_frame_forecaster, img_frame_forecaster, wxITEM_NORMAL, _("Open forecaster"), _("Open forecaster"), NULL );
 	m_ToolBar->AddSeparator();
 	m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
@@ -133,6 +135,7 @@ asFrameForecastVirtual( parent, id )
     this->Connect( asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameForecaster ) );
     this->Connect( asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePlots ) );
     this->Connect( asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameGrid ) );
+    this->Connect( asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePredictors ) );
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingNow ) );
     this->Connect( asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingPast ) );
     this->Connect( asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OnOpenForecast ) );
@@ -217,6 +220,7 @@ asFrameForecast::~asFrameForecast()
     this->Disconnect( asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameForecaster ) );
     this->Disconnect( asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePlots ) );
     this->Disconnect( asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameGrid ) );
+    this->Disconnect( asID_FRAME_PREDICTORS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePredictors ) );
     this->Disconnect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingNow ) );
     this->Disconnect( asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingPast ) );
     this->Disconnect( asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OnOpenForecast ) );
@@ -475,6 +479,15 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
     frameGrid->Layout();
     frameGrid->Init();
     frameGrid->Show();
+}
+
+void asFrameForecast::OpenFramePredictors( wxCommandEvent& event )
+{
+    asFramePredictors* framePredictors = new asFramePredictors(this, m_ForecastViewer->GetModelSelection(), m_ForecastManager);
+    framePredictors->Layout();
+    framePredictors->Refresh();
+    framePredictors->Show();
+    framePredictors->Init();
 }
 
 void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )

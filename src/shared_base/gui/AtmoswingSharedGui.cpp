@@ -427,7 +427,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelPathsCommon->SetSizer( m_SizerPanelPaths );
 	m_PanelPathsCommon->Layout();
 	m_SizerPanelPaths->Fit( m_PanelPathsCommon );
-	m_NotebookBase->AddPage( m_PanelPathsCommon, _("Paths"), false );
+	m_NotebookBase->AddPage( m_PanelPathsCommon, _("Paths"), true );
 	m_PanelViewer = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer39;
 	bSizer39 = new wxBoxSizer( wxVERTICAL );
@@ -515,7 +515,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelForecastDisplay->SetSizer( bSizer261 );
 	m_PanelForecastDisplay->Layout();
 	bSizer261->Fit( m_PanelForecastDisplay );
-	m_NotebookViewer->AddPage( m_PanelForecastDisplay, _("Forecast display"), false );
+	m_NotebookViewer->AddPage( m_PanelForecastDisplay, _("Forecast display"), true );
 	m_PanelGISForecast = new wxPanel( m_NotebookViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer23;
 	bSizer23 = new wxBoxSizer( wxVERTICAL );
@@ -742,6 +742,221 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelGISForecast->Layout();
 	bSizer23->Fit( m_PanelGISForecast );
 	m_NotebookViewer->AddPage( m_PanelGISForecast, _("Forecast GIS options"), false );
+	m_PanelGISPredictors = new wxPanel( m_NotebookViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer231;
+	bSizer231 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer131;
+	sbSizer131 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGISPredictors, wxID_ANY, _("Default map layers") ), wxVERTICAL );
+	
+	m_notebook51 = new wxNotebook( m_PanelGISPredictors, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelLayerContinents = new wxPanel( m_notebook51, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer51;
+	fgSizer51 = new wxFlexGridSizer( 5, 2, 0, 0 );
+	fgSizer51->AddGrowableCol( 1 );
+	fgSizer51->SetFlexibleDirection( wxBOTH );
+	fgSizer51->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGISLayerContinentsVisibility = new wxStaticText( m_PanelLayerContinents, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerContinentsVisibility->Wrap( -1 );
+	fgSizer51->Add( m_StaticTextGISLayerContinentsVisibility, 0, wxALL, 5 );
+	
+	m_CheckBoxGISLayerContinentsVisibility = new wxCheckBox( m_PanelLayerContinents, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer51->Add( m_CheckBoxGISLayerContinentsVisibility, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerContinentsFile = new wxStaticText( m_PanelLayerContinents, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerContinentsFile->Wrap( -1 );
+	fgSizer51->Add( m_StaticTextGISLayerContinentsFile, 0, wxALL, 5 );
+	
+	m_FilePickerGISLayerContinents = new wxFilePickerCtrl( m_PanelLayerContinents, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
+	fgSizer51->Add( m_FilePickerGISLayerContinents, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGISLayerContinentsTransp = new wxStaticText( m_PanelLayerContinents, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerContinentsTransp->Wrap( -1 );
+	fgSizer51->Add( m_StaticTextGISLayerContinentsTransp, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerContinentsTransp = new wxTextCtrl( m_PanelLayerContinents, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerContinentsTransp->SetMaxLength( 3 ); 
+	fgSizer51->Add( m_TextCtrlGISLayerContinentsTransp, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerContinentsColor = new wxStaticText( m_PanelLayerContinents, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerContinentsColor->Wrap( -1 );
+	fgSizer51->Add( m_StaticTextGISLayerContinentsColor, 0, wxALL, 5 );
+	
+	m_ColourPickerGISLayerContinentsColor = new wxColourPickerCtrl( m_PanelLayerContinents, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer51->Add( m_ColourPickerGISLayerContinentsColor, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerContinentsSize = new wxStaticText( m_PanelLayerContinents, wxID_ANY, _("Line width"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerContinentsSize->Wrap( -1 );
+	fgSizer51->Add( m_StaticTextGISLayerContinentsSize, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerContinentsSize = new wxTextCtrl( m_PanelLayerContinents, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerContinentsSize->SetMaxLength( 2 ); 
+	fgSizer51->Add( m_TextCtrlGISLayerContinentsSize, 0, wxALL, 5 );
+	
+	
+	m_PanelLayerContinents->SetSizer( fgSizer51 );
+	m_PanelLayerContinents->Layout();
+	fgSizer51->Fit( m_PanelLayerContinents );
+	m_notebook51->AddPage( m_PanelLayerContinents, _("Continents"), false );
+	m_PanelLayerCountries = new wxPanel( m_notebook51, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer511;
+	fgSizer511 = new wxFlexGridSizer( 5, 2, 0, 0 );
+	fgSizer511->AddGrowableCol( 1 );
+	fgSizer511->SetFlexibleDirection( wxBOTH );
+	fgSizer511->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGISLayerCountriesVisibility = new wxStaticText( m_PanelLayerCountries, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerCountriesVisibility->Wrap( -1 );
+	fgSizer511->Add( m_StaticTextGISLayerCountriesVisibility, 0, wxALL, 5 );
+	
+	m_CheckBoxGISLayerCountriesVisibility = new wxCheckBox( m_PanelLayerCountries, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer511->Add( m_CheckBoxGISLayerCountriesVisibility, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerCountriesFile = new wxStaticText( m_PanelLayerCountries, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerCountriesFile->Wrap( -1 );
+	fgSizer511->Add( m_StaticTextGISLayerCountriesFile, 0, wxALL, 5 );
+	
+	m_FilePickerGISLayerCountries = new wxFilePickerCtrl( m_PanelLayerCountries, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
+	fgSizer511->Add( m_FilePickerGISLayerCountries, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGISLayerCountriesTransp = new wxStaticText( m_PanelLayerCountries, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerCountriesTransp->Wrap( -1 );
+	fgSizer511->Add( m_StaticTextGISLayerCountriesTransp, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerCountriesTransp = new wxTextCtrl( m_PanelLayerCountries, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerCountriesTransp->SetMaxLength( 3 ); 
+	fgSizer511->Add( m_TextCtrlGISLayerCountriesTransp, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerCountriesColor = new wxStaticText( m_PanelLayerCountries, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerCountriesColor->Wrap( -1 );
+	fgSizer511->Add( m_StaticTextGISLayerCountriesColor, 0, wxALL, 5 );
+	
+	m_ColourPickerGISLayerCountriesColor = new wxColourPickerCtrl( m_PanelLayerCountries, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer511->Add( m_ColourPickerGISLayerCountriesColor, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerCountriesSize = new wxStaticText( m_PanelLayerCountries, wxID_ANY, _("Line width"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerCountriesSize->Wrap( -1 );
+	fgSizer511->Add( m_StaticTextGISLayerCountriesSize, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerCountriesSize = new wxTextCtrl( m_PanelLayerCountries, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerCountriesSize->SetMaxLength( 2 ); 
+	fgSizer511->Add( m_TextCtrlGISLayerCountriesSize, 0, wxALL, 5 );
+	
+	
+	m_PanelLayerCountries->SetSizer( fgSizer511 );
+	m_PanelLayerCountries->Layout();
+	fgSizer511->Fit( m_PanelLayerCountries );
+	m_notebook51->AddPage( m_PanelLayerCountries, _("Countries"), false );
+	m_PanelLayerGeogrid = new wxPanel( m_notebook51, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer512;
+	fgSizer512 = new wxFlexGridSizer( 5, 2, 0, 0 );
+	fgSizer512->AddGrowableCol( 1 );
+	fgSizer512->SetFlexibleDirection( wxBOTH );
+	fgSizer512->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGISLayerGeogridVisibility = new wxStaticText( m_PanelLayerGeogrid, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerGeogridVisibility->Wrap( -1 );
+	fgSizer512->Add( m_StaticTextGISLayerGeogridVisibility, 0, wxALL, 5 );
+	
+	m_CheckBoxGISLayerGeogridVisibility = new wxCheckBox( m_PanelLayerGeogrid, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer512->Add( m_CheckBoxGISLayerGeogridVisibility, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerGeogridFile = new wxStaticText( m_PanelLayerGeogrid, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerGeogridFile->Wrap( -1 );
+	fgSizer512->Add( m_StaticTextGISLayerGeogridFile, 0, wxALL, 5 );
+	
+	m_FilePickerGISLayerGeogrid = new wxFilePickerCtrl( m_PanelLayerGeogrid, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
+	fgSizer512->Add( m_FilePickerGISLayerGeogrid, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGISLayerGeogridTransp = new wxStaticText( m_PanelLayerGeogrid, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerGeogridTransp->Wrap( -1 );
+	fgSizer512->Add( m_StaticTextGISLayerGeogridTransp, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerGeogridTransp = new wxTextCtrl( m_PanelLayerGeogrid, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerGeogridTransp->SetMaxLength( 3 ); 
+	fgSizer512->Add( m_TextCtrlGISLayerGeogridTransp, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerGeogridColor = new wxStaticText( m_PanelLayerGeogrid, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerGeogridColor->Wrap( -1 );
+	fgSizer512->Add( m_StaticTextGISLayerGeogridColor, 0, wxALL, 5 );
+	
+	m_ColourPickerGISLayerGeogridColor = new wxColourPickerCtrl( m_PanelLayerGeogrid, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer512->Add( m_ColourPickerGISLayerGeogridColor, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerGeogridSize = new wxStaticText( m_PanelLayerGeogrid, wxID_ANY, _("Line width"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerGeogridSize->Wrap( -1 );
+	fgSizer512->Add( m_StaticTextGISLayerGeogridSize, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerGeogridSize = new wxTextCtrl( m_PanelLayerGeogrid, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerGeogridSize->SetMaxLength( 2 ); 
+	fgSizer512->Add( m_TextCtrlGISLayerGeogridSize, 0, wxALL, 5 );
+	
+	
+	m_PanelLayerGeogrid->SetSizer( fgSizer512 );
+	m_PanelLayerGeogrid->Layout();
+	fgSizer512->Fit( m_PanelLayerGeogrid );
+	m_notebook51->AddPage( m_PanelLayerGeogrid, _("Geogrid"), false );
+	m_PanelLayerLatLong = new wxPanel( m_notebook51, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer513;
+	fgSizer513 = new wxFlexGridSizer( 5, 2, 0, 0 );
+	fgSizer513->AddGrowableCol( 1 );
+	fgSizer513->SetFlexibleDirection( wxBOTH );
+	fgSizer513->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGISLayerLatLongVisibility = new wxStaticText( m_PanelLayerLatLong, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerLatLongVisibility->Wrap( -1 );
+	fgSizer513->Add( m_StaticTextGISLayerLatLongVisibility, 0, wxALL, 5 );
+	
+	m_CheckBoxGISLayerLatLongVisibility = new wxCheckBox( m_PanelLayerLatLong, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer513->Add( m_CheckBoxGISLayerLatLongVisibility, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerLatLongFile = new wxStaticText( m_PanelLayerLatLong, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerLatLongFile->Wrap( -1 );
+	fgSizer513->Add( m_StaticTextGISLayerLatLongFile, 0, wxALL, 5 );
+	
+	m_FilePickerGISLayerLatLong = new wxFilePickerCtrl( m_PanelLayerLatLong, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
+	fgSizer513->Add( m_FilePickerGISLayerLatLong, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGISLayerLatLongTransp = new wxStaticText( m_PanelLayerLatLong, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerLatLongTransp->Wrap( -1 );
+	fgSizer513->Add( m_StaticTextGISLayerLatLongTransp, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerLatLongTransp = new wxTextCtrl( m_PanelLayerLatLong, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerLatLongTransp->SetMaxLength( 3 ); 
+	fgSizer513->Add( m_TextCtrlGISLayerLatLongTransp, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerLatLongColor = new wxStaticText( m_PanelLayerLatLong, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerLatLongColor->Wrap( -1 );
+	fgSizer513->Add( m_StaticTextGISLayerLatLongColor, 0, wxALL, 5 );
+	
+	m_ColourPickerGISLayerLatLongColor = new wxColourPickerCtrl( m_PanelLayerLatLong, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
+	fgSizer513->Add( m_ColourPickerGISLayerLatLongColor, 0, wxALL, 5 );
+	
+	m_StaticTextGISLayerLatLongSize = new wxStaticText( m_PanelLayerLatLong, wxID_ANY, _("Line width"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGISLayerLatLongSize->Wrap( -1 );
+	fgSizer513->Add( m_StaticTextGISLayerLatLongSize, 0, wxALL, 5 );
+	
+	m_TextCtrlGISLayerLatLongSize = new wxTextCtrl( m_PanelLayerLatLong, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlGISLayerLatLongSize->SetMaxLength( 2 ); 
+	fgSizer513->Add( m_TextCtrlGISLayerLatLongSize, 0, wxALL, 5 );
+	
+	
+	m_PanelLayerLatLong->SetSizer( fgSizer513 );
+	m_PanelLayerLatLong->Layout();
+	fgSizer513->Fit( m_PanelLayerLatLong );
+	m_notebook51->AddPage( m_PanelLayerLatLong, _("Lat-long grid"), false );
+	
+	sbSizer131->Add( m_notebook51, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	bSizer231->Add( sbSizer131, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelGISPredictors->SetSizer( bSizer231 );
+	m_PanelGISPredictors->Layout();
+	bSizer231->Fit( m_PanelGISPredictors );
+	m_NotebookViewer->AddPage( m_PanelGISPredictors, _("Predictors GIS options"), false );
 	
 	bSizer39->Add( m_NotebookViewer, 1, wxEXPAND | wxALL, 5 );
 	
@@ -749,7 +964,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelViewer->SetSizer( bSizer39 );
 	m_PanelViewer->Layout();
 	bSizer39->Fit( m_PanelViewer );
-	m_NotebookBase->AddPage( m_PanelViewer, _("Viewer"), true );
+	m_NotebookBase->AddPage( m_PanelViewer, _("Viewer"), false );
 	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );

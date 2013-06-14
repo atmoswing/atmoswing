@@ -286,6 +286,66 @@ void asFramePreferences::LoadPreferences()
     bool LayerBasemapVisibility;
     pConfigViewer->Read("/GIS/LayerBasemapVisibility", &LayerBasemapVisibility, false);
     m_CheckBoxGISLayerBasemapVisibility->SetValue(LayerBasemapVisibility);
+        // Continents
+    wxString LayerContinentsFilePath = pConfigViewer->Read("/GIS/LayerContinentsFilePath", dirData+"gis"+DS+"World"+DS+"continents.shp");
+    m_FilePickerGISLayerContinents->SetPath(LayerContinentsFilePath);
+    wxString LayerContinentsTransp = pConfigViewer->Read("/GIS/LayerContinentsTransp", "50");
+    m_TextCtrlGISLayerContinentsTransp->SetValue(LayerContinentsTransp);
+    long LayerContinentsColor = (long)0x99999999;
+    LayerContinentsColor = pConfigViewer->Read("/GIS/LayerContinentsColor", LayerContinentsColor);
+    wxColour colorContinents;
+    colorContinents.SetRGB((wxUint32)LayerContinentsColor);
+    m_ColourPickerGISLayerContinentsColor->SetColour(colorContinents);
+    wxString LayerContinentsSize = pConfigViewer->Read("/GIS/LayerContinentsSize", "1");
+    m_TextCtrlGISLayerContinentsSize->SetValue(LayerContinentsSize);
+    bool LayerContinentsVisibility;
+    pConfigViewer->Read("/GIS/LayerContinentsVisibility", &LayerContinentsVisibility, true);
+    m_CheckBoxGISLayerContinentsVisibility->SetValue(LayerContinentsVisibility);
+        // Countries
+    wxString LayerCountriesFilePath = pConfigViewer->Read("/GIS/LayerCountriesFilePath", dirData+"gis"+DS+"World"+DS+"countries.shp");
+    m_FilePickerGISLayerCountries->SetPath(LayerCountriesFilePath);
+    wxString LayerCountriesTransp = pConfigViewer->Read("/GIS/LayerCountriesTransp", "0");
+    m_TextCtrlGISLayerCountriesTransp->SetValue(LayerCountriesTransp);
+    long LayerCountriesColor = (long)0x77999999;
+    LayerCountriesColor = pConfigViewer->Read("/GIS/LayerCountriesColor", LayerCountriesColor);
+    wxColour colorCountries;
+    colorCountries.SetRGB((wxUint32)LayerCountriesColor);
+    m_ColourPickerGISLayerCountriesColor->SetColour(colorCountries);
+    wxString LayerCountriesSize = pConfigViewer->Read("/GIS/LayerCountriesSize", "1");
+    m_TextCtrlGISLayerCountriesSize->SetValue(LayerCountriesSize);
+    bool LayerCountriesVisibility;
+    pConfigViewer->Read("/GIS/LayerCountriesVisibility", &LayerCountriesVisibility, true);
+    m_CheckBoxGISLayerCountriesVisibility->SetValue(LayerCountriesVisibility);
+        // Geogrid
+    wxString LayerGeogridFilePath = pConfigViewer->Read("/GIS/LayerGeogridFilePath", dirData+"gis"+DS+"World"+DS+"geogrid.shp");
+    m_FilePickerGISLayerGeogrid->SetPath(LayerGeogridFilePath);
+    wxString LayerGeogridTransp = pConfigViewer->Read("/GIS/LayerGeogridTransp", "50");
+    m_TextCtrlGISLayerGeogridTransp->SetValue(LayerGeogridTransp);
+    long LayerGeogridColor = (long)0xff999999;
+    LayerGeogridColor = pConfigViewer->Read("/GIS/LayerGeogridColor", LayerGeogridColor);
+    wxColour colorGeogrid;
+    colorGeogrid.SetRGB((wxUint32)LayerGeogridColor);
+    m_ColourPickerGISLayerGeogridColor->SetColour(colorGeogrid);
+    wxString LayerGeogridSize = pConfigViewer->Read("/GIS/LayerGeogridSize", "2");
+    m_TextCtrlGISLayerGeogridSize->SetValue(LayerGeogridSize);
+    bool LayerGeogridVisibility;
+    pConfigViewer->Read("/GIS/LayerGeogridVisibility", &LayerGeogridVisibility, false);
+    m_CheckBoxGISLayerGeogridVisibility->SetValue(LayerGeogridVisibility);
+        // LatLong
+    wxString LayerLatLongFilePath = pConfigViewer->Read("/GIS/LayerLatLongFilePath", dirData+"gis"+DS+"World"+DS+"latlong.shp");
+    m_FilePickerGISLayerLatLong->SetPath(LayerLatLongFilePath);
+    wxString LayerLatLongTransp = pConfigViewer->Read("/GIS/LayerLatLongTransp", "80");
+    m_TextCtrlGISLayerLatLongTransp->SetValue(LayerLatLongTransp);
+    long LayerLatLongColor = (long)0xff999999;
+    LayerLatLongColor = pConfigViewer->Read("/GIS/LayerLatLongColor", LayerLatLongColor);
+    wxColour colorLatLong;
+    colorLatLong.SetRGB((wxUint32)LayerLatLongColor);
+    m_ColourPickerGISLayerLatLongColor->SetColour(colorLatLong);
+    wxString LayerLatLongSize = pConfigViewer->Read("/GIS/LayerLatLongSize", "1");
+    m_TextCtrlGISLayerLatLongSize->SetValue(LayerLatLongSize);
+    bool LayerLatLongVisibility;
+    pConfigViewer->Read("/GIS/LayerLatLongVisibility", &LayerLatLongVisibility, true);
+    m_CheckBoxGISLayerLatLongVisibility->SetValue(LayerLatLongVisibility);
 
     // Forecast display
     wxString ColorbarMaxValue = pConfigViewer->Read("/GIS/ColorbarMaxValue", "50");
@@ -547,6 +607,50 @@ void asFramePreferences::SavePreferences( )
     pConfigViewer->Write("/GIS/LayerBasemapTransp", LayerBasemapTransp);
     bool LayerBasemapVisibility = m_CheckBoxGISLayerBasemapVisibility->GetValue();
     pConfigViewer->Write("/GIS/LayerBasemapVisibility", LayerBasemapVisibility);
+	    // Continents
+    wxString LayerContinentsFilePath = m_FilePickerGISLayerContinents->GetPath();
+    pConfigViewer->Write("/GIS/LayerContinentsFilePath", LayerContinentsFilePath);
+    wxString LayerContinentsTransp = m_TextCtrlGISLayerContinentsTransp->GetValue();
+    pConfigViewer->Write("/GIS/LayerContinentsTransp", LayerContinentsTransp);
+    wxColour colorContinents = m_ColourPickerGISLayerContinentsColor->GetColour();
+    pConfigViewer->Write("/GIS/LayerContinentsColor", (long)colorContinents.GetRGB());
+    wxString LayerContinentsSize = m_TextCtrlGISLayerContinentsSize->GetValue();
+    pConfigViewer->Write("/GIS/LayerContinentsSize", LayerContinentsSize);
+    bool LayerContinentsVisibility = m_CheckBoxGISLayerContinentsVisibility->GetValue();
+    pConfigViewer->Write("/GIS/LayerContinentsVisibility", LayerContinentsVisibility);
+	    // Countries
+    wxString LayerCountriesFilePath = m_FilePickerGISLayerCountries->GetPath();
+    pConfigViewer->Write("/GIS/LayerCountriesFilePath", LayerCountriesFilePath);
+    wxString LayerCountriesTransp = m_TextCtrlGISLayerCountriesTransp->GetValue();
+    pConfigViewer->Write("/GIS/LayerCountriesTransp", LayerCountriesTransp);
+    wxColour colorCountries = m_ColourPickerGISLayerCountriesColor->GetColour();
+    pConfigViewer->Write("/GIS/LayerCountriesColor", (long)colorCountries.GetRGB());
+    wxString LayerCountriesSize = m_TextCtrlGISLayerCountriesSize->GetValue();
+    pConfigViewer->Write("/GIS/LayerCountriesSize", LayerCountriesSize);
+    bool LayerCountriesVisibility = m_CheckBoxGISLayerCountriesVisibility->GetValue();
+    pConfigViewer->Write("/GIS/LayerCountriesVisibility", LayerCountriesVisibility);
+	    // Geogrid
+    wxString LayerGeogridFilePath = m_FilePickerGISLayerGeogrid->GetPath();
+    pConfigViewer->Write("/GIS/LayerGeogridFilePath", LayerGeogridFilePath);
+    wxString LayerGeogridTransp = m_TextCtrlGISLayerGeogridTransp->GetValue();
+    pConfigViewer->Write("/GIS/LayerGeogridTransp", LayerGeogridTransp);
+    wxColour colorGeogrid = m_ColourPickerGISLayerGeogridColor->GetColour();
+    pConfigViewer->Write("/GIS/LayerGeogridColor", (long)colorGeogrid.GetRGB());
+    wxString LayerGeogridSize = m_TextCtrlGISLayerGeogridSize->GetValue();
+    pConfigViewer->Write("/GIS/LayerGeogridSize", LayerGeogridSize);
+    bool LayerGeogridVisibility = m_CheckBoxGISLayerGeogridVisibility->GetValue();
+    pConfigViewer->Write("/GIS/LayerGeogridVisibility", LayerGeogridVisibility);
+	    // LatLong
+    wxString LayerLatLongFilePath = m_FilePickerGISLayerLatLong->GetPath();
+    pConfigViewer->Write("/GIS/LayerLatLongFilePath", LayerLatLongFilePath);
+    wxString LayerLatLongTransp = m_TextCtrlGISLayerLatLongTransp->GetValue();
+    pConfigViewer->Write("/GIS/LayerLatLongTransp", LayerLatLongTransp);
+    wxColour colorLatLong = m_ColourPickerGISLayerLatLongColor->GetColour();
+    pConfigViewer->Write("/GIS/LayerLatLongColor", (long)colorLatLong.GetRGB());
+    wxString LayerLatLongSize = m_TextCtrlGISLayerLatLongSize->GetValue();
+    pConfigViewer->Write("/GIS/LayerLatLongSize", LayerLatLongSize);
+    bool LayerLatLongVisibility = m_CheckBoxGISLayerLatLongVisibility->GetValue();
+    pConfigViewer->Write("/GIS/LayerLatLongVisibility", LayerLatLongVisibility);
 
     // Forecast display
     wxString ColorbarMaxValue = m_TextCtrlColorbarMaxValue->GetValue();

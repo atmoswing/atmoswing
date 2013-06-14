@@ -110,7 +110,8 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 	protected:
 		wxPanel* m_PanelStationName;
 		wxStaticText* m_StaticTextStationName;
-		wxButton* m_ButtonSaveTxt;
+		wxButton* m_ButtonSVG;
+		wxButton* m_ButtonSavePdf;
 		wxButton* m_ButtonPreview;
 		wxButton* m_ButtonPrint;
 		wxSplitterWindow* m_Splitter;
@@ -121,6 +122,7 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 		wxBoxSizer* m_SizerPlot;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnExportSVG( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnExportTXT( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPreview( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPrint( wxCommandEvent& event ) { event.Skip(); }

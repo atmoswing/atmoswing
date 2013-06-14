@@ -220,10 +220,15 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 	
 	bSizer37->Add( m_StaticTextStationName, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_ButtonSaveTxt = new wxButton( m_PanelStationName, wxID_ANY, _("Export as txt"), wxDefaultPosition, wxSize( 80,20 ), 0 );
-	m_ButtonSaveTxt->SetFont( wxFont( 8, 70, 90, 90, false, wxEmptyString ) );
+	m_ButtonSVG = new wxButton( m_PanelStationName, wxID_ANY, _("Export as svg"), wxDefaultPosition, wxSize( 80,20 ), 0 );
+	m_ButtonSVG->SetFont( wxFont( 8, 70, 90, 90, false, wxEmptyString ) );
 	
-	bSizer37->Add( m_ButtonSaveTxt, 0, wxALL, 5 );
+	bSizer37->Add( m_ButtonSVG, 0, wxALL, 5 );
+	
+	m_ButtonSavePdf = new wxButton( m_PanelStationName, wxID_ANY, _("Export as txt"), wxDefaultPosition, wxSize( 80,20 ), 0 );
+	m_ButtonSavePdf->SetFont( wxFont( 8, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer37->Add( m_ButtonSavePdf, 0, wxALL, 5 );
 	
 	m_ButtonPreview = new wxButton( m_PanelStationName, wxID_ANY, _("Preview"), wxDefaultPosition, wxSize( 50,20 ), 0 );
 	m_ButtonPreview->Enable( false );
@@ -283,7 +288,8 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_ButtonSaveTxt->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportTXT ), NULL, this );
+	m_ButtonSVG->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportSVG ), NULL, this );
+	m_ButtonSavePdf->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportTXT ), NULL, this );
 	m_ButtonPreview->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPreview ), NULL, this );
 	m_ButtonPrint->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPrint ), NULL, this );
 	m_CheckListToc->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnTocSelectionChange ), NULL, this );
@@ -293,7 +299,8 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 asFramePlotTimeSeriesVirtual::~asFramePlotTimeSeriesVirtual()
 {
 	// Disconnect Events
-	m_ButtonSaveTxt->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportTXT ), NULL, this );
+	m_ButtonSVG->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportSVG ), NULL, this );
+	m_ButtonSavePdf->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnExportTXT ), NULL, this );
 	m_ButtonPreview->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPreview ), NULL, this );
 	m_ButtonPrint->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnPrint ), NULL, this );
 	m_CheckListToc->Disconnect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( asFramePlotTimeSeriesVirtual::OnTocSelectionChange ), NULL, this );

@@ -159,6 +159,7 @@ protected:
     void OpenFrameForecaster( wxCommandEvent& event );
     void OpenFramePlots( wxCommandEvent& event );
     void OpenFrameGrid( wxCommandEvent& event );
+    void OpenFramePredictors( wxCommandEvent& event );
     void OpenFramePreferences( wxCommandEvent& event );
     void OpenFrameAbout( wxCommandEvent& event );
     void OnLogLevel1( wxCommandEvent& event );
@@ -175,7 +176,7 @@ protected:
     void OnOpenForecast( wxCommandEvent & event );
 	void OnMoveLayer( wxCommandEvent & event );
 	void OnToolDisplayValue( wxCommandEvent & event );
-	void ReloadViewerLayerManager( );
+	void ReloadViewerLayerManager( )
 	#if defined (__WIN32__)
         wxCriticalSection m_CritSectionViewerLayerManager;
     #endif
