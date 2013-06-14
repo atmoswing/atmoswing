@@ -1,15 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 17 2010)
+// C++ code generated with wxFormBuilder (version Oct  8 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __AtmoswingSharedGui__
-#define __AtmoswingSharedGui__
+#ifndef __ATMOSWINGSHAREDGUI_H__
+#define __ATMOSWINGSHAREDGUI_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 #include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/gdicmn.h>
@@ -294,4 +295,4 @@ class asFramePreferencesVirtual : public wxFrame
 	
 };
 
-#endif //__AtmoswingSharedGui__
+#endif //__ATMOSWINGSHAREDGUI_H__
