@@ -326,7 +326,6 @@ void asForecastViewer::Redraw()
             vrRenderVector * render = new vrRenderVector();
             render->SetSize(1);
             render->SetColorPen(*wxBLACK);
-			render->SetTransparency(1);
 
             m_ViewerLayerManager->Add(-1, layer, render);
             m_ViewerLayerManager->FreezeEnd();
@@ -446,7 +445,6 @@ void asForecastViewer::Redraw()
             vrRenderVector * render = new vrRenderVector();
             render->SetSize(1);
             render->SetColorPen(*wxBLACK);
-			render->SetTransparency(1);
 
             m_ViewerLayerManager->Add(-1, layer, render);
             m_ViewerLayerManager->FreezeEnd();
