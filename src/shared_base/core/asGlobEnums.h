@@ -100,12 +100,37 @@ enum
     asFULL_ARRAY = 2
 };
 
+// Optimization stages
+enum
+{
+    asINITIALIZATION,
+    asSORTING_AND_REFLECTION,
+    asEVALUATE_REFLECTION,
+    asCOMPARE_EXPANSION_REFLECTION,
+    asEVALUATE_EXTERNAL_CONTRACTION,
+    asEVALUATE_INTERNAL_CONTRACTION,
+    asPROCESS_REDUCTION,
+    asREASSESSMENT,
+    asFINAL_REASSESSMENT,
+    asCREATE_ROUGH_MAP,
+    asEXPLORE_ROUGH_MAP,
+    asCREATE_FINE_MAP,
+    asEXPLORE_FINE_MAP,
+    asRESIZE_DOMAIN,
+    asOPTIMIZE_WEIGHTS,
+    asOPTIMIZE_ANALOGSNB_STEP,
+    asOPTIMIZE_ANALOGSNB_FINAL,
+    asOPTIMIZE_DAYS_INTERVAL,
+    asCHECK_CONVERGENCE
+};
+
 // Windows ID
 #if wxUSE_GUI
 enum
 {
     asWINDOW_MAIN = 101,
     asWINDOW_PREFERENCES = 102,
+    asWINDOW_CALIBRATION = 103,
     asWINDOW_PREDICTANDDB = 104,
     asWINDOW_VIEWER_RINGS = 106,
     asWINDOW_VIEWER_DOTS = 107,
@@ -283,6 +308,12 @@ enum ParametersList //!< Define available parameters sets (for the GUI)
     AreaMoving
 };
 
+enum Mode //!< Define frame mode
+{
+    Standard,
+    Calibration,
+    Optimization
+};
 
 #include <asIncludes.h>
 
