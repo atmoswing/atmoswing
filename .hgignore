@@ -18,3 +18,4 @@ syntax: glob
 */wxhgversion_param.h
 *.grib2.ncx
 *.grib2.gbx9
+*.bak
