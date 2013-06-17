@@ -15,9 +15,12 @@ file(GLOB_RECURSE src_lib_ticpp ../../src/shared_base/libs/ticpp/*)
 file(GLOB_RECURSE src_proc_core ../../src/shared_processing/core/*)
 file(GLOB_RECURSE src_forec_core ../../src/app_forecaster/core/*)
 file(GLOB_RECURSE src_viewer_core ../../src/app_viewer/core/*)
-list(APPEND src_all ${src_test} ${src_base_core} ${src_lib_ticpp} ${src_proc_core} ${src_forec_core} ${src_viewer_core})
+file(GLOB_RECURSE src_calib_core ../../src/app_calibrator/core/*)
+list(APPEND src_all ${src_test} ${src_base_core} ${src_lib_ticpp} ${src_proc_core} ${src_forec_core} ${src_viewer_core} ${src_calib_core})
 
 # Remove some files
+list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/asGlobVars.h")
+list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/asGlobVars.cpp")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/asGlobVars.h")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/asGlobVars.cpp")
 	
@@ -33,6 +36,7 @@ list(APPEND inc_dirs
 	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
+	"${PROJECT_SOURCE_DIR}/../../src/app_calibrator/core/"
 	)
 include_directories(${inc_dirs})
 

@@ -11,13 +11,14 @@
 int main()
 {
     g_UnitTesting = true;
-    g_SilentMode = true;
+    g_SilentMode = false;
+	g_GuiMode = false;
 
     // Option to test or not the exception throwing
     g_UnitTestExceptions = false;
 
     // Option to process time demanding processing
-    g_UnitTestLongerProcessing = false;
+    g_UnitTestLongerProcessing = true;
     g_UnitTestLongestProcessing = false;
     if(g_UnitTestLongestProcessing) g_UnitTestLongerProcessing = true;
 
