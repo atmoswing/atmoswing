@@ -15,10 +15,10 @@
 #ifndef ASFILENETCDF_H
 #define ASFILENETCDF_H
 
-#include "netcdf.h"
-
 #include "asIncludes.h"
 #include <asFile.h>
+#include "netcdf.h"
+
 
 class asFileNetcdf : public asFile
 {
