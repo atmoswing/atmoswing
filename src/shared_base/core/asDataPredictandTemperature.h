@@ -22,14 +22,14 @@
 class asDataPredictandTemperature: public asDataPredictand
 {
 public:
-    asDataPredictandTemperature(PredictandDB predictandDB);
+    asDataPredictandTemperature(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
     virtual ~asDataPredictandTemperature();
 
-    virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    virtual bool Load(const wxString &filePath);
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &AlternateCatalogFilePath = wxEmptyString, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
 
 
 protected:

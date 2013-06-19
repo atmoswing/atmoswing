@@ -20,14 +20,18 @@
 #include <asTimeArray.h>
 #include <asDataPredictandPrecipitation.h>
 #include <asDataPredictandLightnings.h>
+#include <asDataPredictandTemperature.h>
 
 
-asDataPredictand::asDataPredictand(PredictandDB predictandDB)
+asDataPredictand::asDataPredictand(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
 {
-    m_PredictandDBType = predictandDB;
+    m_DataParameter = dataParameter;
+	m_DataTemporalResolution = dataTemporalResolution;
+	m_DataSpatialAggregation = dataSpatialAggregation;
     m_FileVersion = 1.1f;
 	m_HasNormalizedData = false;
 	m_HasReferenceValues = false;
+	m_DatasetId = wxEmptyString;
 }
 
 asDataPredictand::~asDataPredictand()
@@ -35,140 +39,141 @@ asDataPredictand::~asDataPredictand()
     //dtor
 }
 
-asDataPredictand* asDataPredictand::GetInstance(const wxString& PredictandDBStr)
+asDataPredictand* asDataPredictand::GetInstance(const wxString& dataParameterStr, const wxString& dataTemporalResolutionStr, const wxString& dataSpatialAggregationStr)
 {
-    if (PredictandDBStr.CmpNoCase("StationsDailyPrecipitation")==0)
-    {
-        asDataPredictand* db = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
-        return db;
-    }
-    else if (PredictandDBStr.CmpNoCase("Stations6HourlyPrecipitation")==0)
-    {
-        asDataPredictand* db = new asDataPredictandPrecipitation(Stations6HourlyPrecipitation);
-        return db;
-    }
-    else if (PredictandDBStr.CmpNoCase("Stations6HourlyOfDailyPrecipitation")==0)
-    {
-        asDataPredictand* db = new asDataPredictandPrecipitation(Stations6HourlyOfDailyPrecipitation);
-        return db;
-    }
-    else if (PredictandDBStr.CmpNoCase("RegionalDailyPrecipitation")==0)
-    {
-        asDataPredictand* db = new asDataPredictandPrecipitation(RegionalDailyPrecipitation);
-        return db;
-    }
-    else if (PredictandDBStr.CmpNoCase("ResearchDailyPrecipitation")==0)
-    {
-        asDataPredictand* db = new asDataPredictandPrecipitation(ResearchDailyPrecipitation);
-        return db;
-    }
-    else if (PredictandDBStr.CmpNoCase("StationsDailyLightnings")==0)
-    {
-        asDataPredictand* db = new asDataPredictandLightnings(StationsDailyLightnings);
-        return db;
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The given predictand DB type (%s) in unknown"), PredictandDBStr.c_str()));
-    }
+	DataParameter dataParameter = asGlobEnums::StringToDataParameterEnum(dataTemporalResolutionStr);
+	DataTemporalResolution dataTemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(dataTemporalResolutionStr);
+	DataSpatialAggregation dataSpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(dataSpatialAggregationStr);
 
-    return NULL;
+	if (dataParameter==NoDataParameter)
+	{
+		asLogError(_("The given data parameter is unknown. Cannot get an instance of the predictand DB."));
+		return NULL;
+	}
+	
+	if (dataTemporalResolution==NoDataTemporalResolution)
+	{
+		asLogError(_("The given data temporal resolution is unknown. Cannot get an instance of the predictand DB."));
+		return NULL;
+	}
+	
+	if (dataSpatialAggregation==NoDataSpatialAggregation)
+	{
+		asLogError(_("The given data spatial aggregation is unknown. Cannot get an instance of the predictand DB."));
+		return NULL;
+	}
+
+	asDataPredictand* db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+    return db;
 }
 
-wxString asDataPredictand::GetDBFilePathLoading(const wxString &AlternateFilePath)
+asDataPredictand* asDataPredictand::GetInstance(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
 {
-	wxString PredictandDBFilePath;
-    if (AlternateFilePath.IsEmpty())
+	switch (dataParameter)
     {
-        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
-        ThreadsManager().CritSectionConfig().Enter();
-        PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir() + FileName + ".nc");
-        ThreadsManager().CritSectionConfig().Leave();
+        case (Precipitation):
+        {
+			asDataPredictand* db = new asDataPredictandPrecipitation(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+			return db;
+		}
+        case (AirTemperature):
+        {
+			asDataPredictand* db = new asDataPredictandTemperature(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+			return db;
+		}
+        case (Lightnings):
+        {
+			asDataPredictand* db = new asDataPredictandLightnings(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+			return db;
+		}
+		default:
+			asLogError(_("The predictand parameter is not listed in the asDataPredictand instance factory."));
+			return NULL;
+	}
+	return NULL;
+}
+
+asDataPredictand* asDataPredictand::GetInstance(const wxString& filePath)
+{
+	// Open the NetCDF file
+    asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
+    asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
+    if(!ncFile.Open())
+    {
+        asLogError(wxString::Format(_("Couldn't open file %s"), filePath.c_str()));
+        return NULL;
     }
     else
     {
-        PredictandDBFilePath = AlternateFilePath;
+        asLogMessage(_("File successfully opened"));
     }
 
-	return PredictandDBFilePath;
+	// Check version
+	float version = ncFile.GetAttFloat("version");
+    if (asTools::IsNaN(version) || version<1.1)
+    {
+		asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        return NULL;
+    }
+
+	// Get basic information
+	DataParameter dataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
+	DataTemporalResolution dataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+	DataSpatialAggregation dataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
+
+	// Close the netCDF file
+	ncFile.Close();
+
+	// Get instance
+	asDataPredictand* db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+    return db;
 }
 
 wxString asDataPredictand::GetDBFilePathSaving(const wxString &AlternateDestinationDir)
 {
 	wxString PredictandDBFilePath;
+
+	wxString dataParameterStr = asGlobEnums::DataParameterEnumToString(m_DataParameter);
+	wxString dataTemporalResolutionStr = asGlobEnums::DataTemporalResolutionEnumToString(m_DataTemporalResolution);
+	wxString dataSpatialAggregationStr = asGlobEnums::DataSpatialAggregationEnumToString(m_DataSpatialAggregation);
+    wxString FileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_DatasetId;
+
     if (AlternateDestinationDir.IsEmpty())
     {
-        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
         ThreadsManager().CritSectionConfig().Enter();
         PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir()) + DS + FileName + ".nc";
         ThreadsManager().CritSectionConfig().Leave();
     }
     else
     {
-        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
         PredictandDBFilePath = AlternateDestinationDir + DS + FileName + ".nc";
     }
 
 	return PredictandDBFilePath;
 }
 
-bool asDataPredictand::InitMembers(const wxString &AlternateFilePath)
+bool asDataPredictand::InitMembers(const wxString &catalogFilePath)
 {
     // Starting and ending date of the DB, to be overwritten
     m_DateStart = asTime::GetMJD(2100,1,1);
     m_DateEnd = asTime::GetMJD(1800,1,1);
 
-    // Get the datasets IDs
-    asCatalog::DatasetIdList datsetList = asCatalog::GetDatasetIdList(Predictand, AlternateFilePath);
+    // Get the catalog information
+    asCatalogPredictands catalog(catalogFilePath);
+    if(!catalog.Load()) return false;
 
-    // Look for final matrix dimension
-    m_StationsNb = 0;
-    for (size_t i_set=0; i_set<datsetList.Id.size(); i_set++)
-    {
-        // Get the catalog information
-        asCatalogPredictands catalog(AlternateFilePath);
-        if(!catalog.Load(datsetList.Id[i_set])) return false;
+    // Get first and last date
+    if (catalog.GetStart()<m_DateStart)
+        m_DateStart = catalog.GetStart();
+    if (catalog.GetEnd()>m_DateEnd)
+        m_DateEnd = catalog.GetEnd();
 
-        // Check if the dataset should be included in the DB
-        bool includeinDB = false;
-        VectorPredictandDB datasetDBs = catalog.GetDBInclude();
-        for (size_t i_db=0; i_db<datasetDBs.size(); i_db++)
-        {
-            if (m_PredictandDBType==datasetDBs[i_db]) includeinDB = true;
-        }
-
-        //Include in DB
-        if (includeinDB)
-        {
-            // Get first and last date
-            if (catalog.GetStart()<m_DateStart)
-                m_DateStart = catalog.GetStart();
-            if (catalog.GetEnd()>m_DateEnd)
-                m_DateEnd = catalog.GetEnd();
-
-            // Get the number of stations
-            asCatalog::DataIdListInt datListCheck = asCatalog::GetDataIdListInt(Predictand, datsetList.Id[i_set], AlternateFilePath);
-            m_StationsNb += datListCheck.Id.size();
-        }
-    }
+    // Get the number of stations
+    asCatalog::DataIdListInt datListCheck = asCatalog::GetDataIdListInt(Predictand, catalogFilePath);
+    m_StationsNb = datListCheck.Id.size();
 
     // Get the timestep
-    switch (m_PredictandDBType)
-    {
-        case (StationsDailyPrecipitation):
-        case (RegionalDailyPrecipitation):
-        case (ResearchDailyPrecipitation):
-        case (StationsDailyLightnings):
-            m_TimeStepDays = 1;
-            break;
-        case (Stations6HourlyPrecipitation):
-        case (Stations6HourlyOfDailyPrecipitation):
-            m_TimeStepDays = 6.0/24.0;
-            break;
-        default:
-            wxFAIL;
-            m_TimeStepDays = 0;
-    }
+	m_TimeStepDays = catalog.GetTimeStepDays();
 
     // Get the time length
     m_TimeLength = ((m_DateEnd-m_DateStart) / m_TimeStepDays) + 1;
@@ -216,13 +221,19 @@ bool asDataPredictand::InitBaseContainers()
 
 bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
 {
-	// Get global attributes
-    float version = ncFile.GetAttFloat("version");
-    if (asTools::IsNaN(version) || version<1.0)
+	// Check version
+	float version = ncFile.GetAttFloat("version");
+    if (asTools::IsNaN(version) || version<1.1)
     {
-        asLogError(_("The predictand DB file was made with an older version of Atmoswing and is not compatible. Please generate the file with the actual version."));
+		asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return false;
     }
+
+	// Get global attributes
+	m_DataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
+	m_DataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+	m_DataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
+	m_DatasetId = ncFile.GetAttString("dataset_id");
 
 	// Get time
     m_TimeLength = ncFile.GetDimLength("time");
@@ -277,6 +288,13 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
 
 	// Put general attributes
     ncFile.PutAtt("version", &m_FileVersion);
+	int dataParameter = (int)m_DataParameter;
+	ncFile.PutAtt("data_parameter", &dataParameter);
+	int dataTemporalResolution = (int)m_DataTemporalResolution;
+	ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
+	int dataSpatialAggregation = (int)m_DataSpatialAggregation;
+	ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
+	ncFile.PutAtt("dataset_id", m_DatasetId);
 
     // Define variables: the scores and the corresponding dates
     ncFile.DefVar("time", NC_DOUBLE, 1, DimNameTime);
@@ -367,21 +385,6 @@ bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
 	return true;
 }
 
-bool asDataPredictand::IncludeInDB(const wxString &datasetID, const wxString &AlternateFilePath)
-{
-    // Get some dataset information
-    asCatalogPredictands currentDataset(AlternateFilePath);
-    if(!currentDataset.Load(datasetID)) return false;
-
-    // Check if the dataset should be included in the DB
-    VectorPredictandDB datasetDBs = currentDataset.GetDBInclude();
-    for (size_t i_db=0; i_db<datasetDBs.size(); i_db++)
-    {
-        if (m_PredictandDBType==datasetDBs[i_db]) return true;
-    }
-    return false;
-}
-
 bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex)
 {
     m_StationsName[stationIndex] = currentData.GetStationName();
@@ -398,7 +401,7 @@ bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, s
     return true;
 }
 
-bool asDataPredictand::ParseData(const wxString &AlternateCatalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)
+bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)
 {
 	// Index for stations
     int stationIndex = 0;
@@ -408,50 +411,37 @@ bool asDataPredictand::ParseData(const wxString &AlternateCatalogFilePath, const
         asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
     #endif
 
-    // Get the datasets IDs
-    asCatalog::DatasetIdList datsetList = asCatalog::GetDatasetIdList(Predictand, AlternateCatalogFilePath);
+    // Get the stations list
+	asCatalog::DataIdListInt stationsList = asCatalog::GetDataIdListInt(Predictand, m_DatasetId, catalogFilePath);
 
-    // Get the data
-    for (size_t i_set=0; i_set<datsetList.Id.size(); i_set++)
+    for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
     {
-        // The dataset ID
-        wxString datasetId = datsetList.Id[i_set];
+        // The station ID
+        int stationId = stationsList.Id[i_station];
 
-        //Include in DB
-        if (IncludeInDB(datasetId, AlternateCatalogFilePath))
-        {
-            // Get the stations list
-            asCatalog::DataIdListInt stationsList = asCatalog::GetDataIdListInt(Predictand, datasetId, AlternateCatalogFilePath);
+        // Load data properties
+        asCatalogPredictands catalog(catalogFilePath);
+        if(!catalog.Load(stationId)) return false;
 
-            for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
+        #if wxUSE_GUI
+            // Update the progress bar.
+            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename().c_str());
+            if(!ProgressBar.Update(stationIndex, fileNameMessage))
             {
-                // The station ID
-                int stationId = stationsList.Id[i_station];
-
-                // Load data properties
-                asCatalogPredictands currentData(AlternateCatalogFilePath);
-                if(!currentData.Load(datasetId, stationId)) return false;
-
-                #if wxUSE_GUI
-                    // Update the progress bar.
-                    wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), currentData.GetStationFilename().c_str());
-                    if(!ProgressBar.Update(stationIndex, fileNameMessage))
-                    {
-                        asLogError(_("The process has been canceled by the user."));
-                        return false;
-                    }
-                #endif
-
-                // Get station information
-                if(!SetStationProperties(currentData, stationIndex)) return false;
-
-                // Get file content
-                if(!GetFileContent(currentData, stationIndex, AlternateDataDir, AlternatePatternDir)) return false;
-
-                stationIndex++;
+                asLogError(_("The process has been canceled by the user."));
+                return false;
             }
-        }
+        #endif
+
+        // Get station information
+        if(!SetStationProperties(catalog, stationIndex)) return false;
+
+        // Get file content
+        if(!GetFileContent(catalog, stationIndex, AlternateDataDir, AlternatePatternDir)) return false;
+
+        stationIndex++;
     }
+
     #if wxUSE_GUI
         ProgressBar.Destroy();
     #endif
