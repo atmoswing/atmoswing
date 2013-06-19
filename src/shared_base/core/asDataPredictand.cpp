@@ -16,6 +16,7 @@
 
 #include <asCatalogPredictands.h>
 #include <asFileDat.h>
+#include <asFileNetcdf.h>
 #include <asTimeArray.h>
 #include <asDataPredictandPrecipitation.h>
 #include <asDataPredictandLightnings.h>
@@ -23,8 +24,10 @@
 
 asDataPredictand::asDataPredictand(PredictandDB predictandDB)
 {
-    m_PredictandDB = predictandDB;
-    m_FileVersion = 1.0;
+    m_PredictandDBType = predictandDB;
+    m_FileVersion = 1.1f;
+	m_HasNormalizedData = false;
+	m_HasReferenceValues = false;
 }
 
 asDataPredictand::~asDataPredictand()
@@ -72,6 +75,43 @@ asDataPredictand* asDataPredictand::GetInstance(const wxString& PredictandDBStr)
     return NULL;
 }
 
+wxString asDataPredictand::GetDBFilePathLoading(const wxString &AlternateFilePath)
+{
+	wxString PredictandDBFilePath;
+    if (AlternateFilePath.IsEmpty())
+    {
+        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
+        ThreadsManager().CritSectionConfig().Enter();
+        PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir() + FileName + ".nc");
+        ThreadsManager().CritSectionConfig().Leave();
+    }
+    else
+    {
+        PredictandDBFilePath = AlternateFilePath;
+    }
+
+	return PredictandDBFilePath;
+}
+
+wxString asDataPredictand::GetDBFilePathSaving(const wxString &AlternateDestinationDir)
+{
+	wxString PredictandDBFilePath;
+    if (AlternateDestinationDir.IsEmpty())
+    {
+        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
+        ThreadsManager().CritSectionConfig().Enter();
+        PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir()) + DS + FileName + ".nc";
+        ThreadsManager().CritSectionConfig().Leave();
+    }
+    else
+    {
+        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
+        PredictandDBFilePath = AlternateDestinationDir + DS + FileName + ".nc";
+    }
+
+	return PredictandDBFilePath;
+}
+
 bool asDataPredictand::InitMembers(const wxString &AlternateFilePath)
 {
     // Starting and ending date of the DB, to be overwritten
@@ -94,7 +134,7 @@ bool asDataPredictand::InitMembers(const wxString &AlternateFilePath)
         VectorPredictandDB datasetDBs = catalog.GetDBInclude();
         for (size_t i_db=0; i_db<datasetDBs.size(); i_db++)
         {
-            if (m_PredictandDB==datasetDBs[i_db]) includeinDB = true;
+            if (m_PredictandDBType==datasetDBs[i_db]) includeinDB = true;
         }
 
         //Include in DB
@@ -113,7 +153,7 @@ bool asDataPredictand::InitMembers(const wxString &AlternateFilePath)
     }
 
     // Get the timestep
-    switch (m_PredictandDB)
+    switch (m_PredictandDBType)
     {
         case (StationsDailyPrecipitation):
         case (RegionalDailyPrecipitation):
@@ -132,6 +172,11 @@ bool asDataPredictand::InitMembers(const wxString &AlternateFilePath)
 
     // Get the time length
     m_TimeLength = ((m_DateEnd-m_DateStart) / m_TimeStepDays) + 1;
+
+	// Get time array
+	asTimeArray timeArray(m_DateStart, m_DateEnd, m_TimeStepDays*24.0, asTimeArray::Simple);
+    timeArray.Init();
+    m_Time = timeArray.GetTimeArray();
 
     return true;
 }
@@ -160,10 +205,166 @@ bool asDataPredictand::InitBaseContainers()
     m_Time.resize(m_TimeLength);
     m_DataGross.resize(m_TimeLength, m_StationsNb);
     m_DataGross.fill(NaNFloat);
-    m_DataNormalized.resize(m_TimeLength, m_StationsNb);
-    m_DataNormalized.fill(NaNFloat);
+	if(m_HasNormalizedData)
+	{
+		m_DataNormalized.resize(m_TimeLength, m_StationsNb);
+		m_DataNormalized.fill(NaNFloat);
+	}
 
     return true;
+}
+
+bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
+{
+	// Get global attributes
+    float version = ncFile.GetAttFloat("version");
+    if (asTools::IsNaN(version) || version<1.0)
+    {
+        asLogError(_("The predictand DB file was made with an older version of Atmoswing and is not compatible. Please generate the file with the actual version."));
+        return false;
+    }
+
+	// Get time
+    m_TimeLength = ncFile.GetDimLength("time");
+    m_Time.resize( m_TimeLength );
+    ncFile.GetVar("time", &m_Time[0]);
+
+    // Get stations properties
+    m_StationsNb = ncFile.GetDimLength("stations");
+    wxASSERT(m_StationsNb>0);
+    m_StationsName.resize( m_StationsNb );
+    ncFile.GetVar("stationsname", &m_StationsName[0], m_StationsNb);
+    m_StationsIds.resize( m_StationsNb );
+    ncFile.GetVar("stationsids", &m_StationsIds[0]);
+    m_StationsHeight.resize( m_StationsNb );
+    ncFile.GetVar("stationsheight", &m_StationsHeight[0]);
+    m_StationsLon.resize( m_StationsNb );
+    ncFile.GetVar("lon", &m_StationsLon[0]);
+    m_StationsLat.resize( m_StationsNb );
+    ncFile.GetVar("lat", &m_StationsLat[0]);
+    m_StationsLocCoordU.resize( m_StationsNb );
+    ncFile.GetVar("loccoordu", &m_StationsLocCoordU[0]);
+    m_StationsLocCoordV.resize( m_StationsNb );
+    ncFile.GetVar("loccoordv", &m_StationsLocCoordV[0]);
+    m_StationsStart.resize( m_StationsNb );
+    ncFile.GetVar("start", &m_StationsStart[0]);
+    m_StationsEnd.resize( m_StationsNb );
+    ncFile.GetVar("end", &m_StationsEnd[0]);
+
+	// Get data
+    size_t IndexStart[2] = {0,0};
+    size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
+    m_DataGross.resize( m_TimeLength, m_StationsNb );
+    ncFile.GetVarArray("datagross", IndexStart, IndexCount, &m_DataGross[0]);
+
+	return true;
+}
+
+void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
+{
+	 // Define dimensions. Time is the unlimited dimension.
+    ncFile.DefDim("stations", m_StationsNb);
+    ncFile.DefDim("time");
+
+    // The dimensions name array is used to pass the dimensions to the variable.
+    VectorStdString DimNameTime;
+    DimNameTime.push_back("time");
+    VectorStdString DimNameStations;
+    DimNameStations.push_back("stations");
+    VectorStdString DimNames2D;
+    DimNames2D.push_back("time");
+    DimNames2D.push_back("stations");
+
+	// Put general attributes
+    ncFile.PutAtt("version", &m_FileVersion);
+
+    // Define variables: the scores and the corresponding dates
+    ncFile.DefVar("time", NC_DOUBLE, 1, DimNameTime);
+    ncFile.DefVar("datagross", NC_FLOAT, 2, DimNames2D);
+    ncFile.DefVar("stationsname", NC_STRING, 1, DimNameStations);
+    ncFile.DefVar("stationsids", NC_INT, 1, DimNameStations);
+    ncFile.DefVar("stationsheight", NC_FLOAT, 1, DimNameStations);
+    ncFile.DefVar("lon", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("lat", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("loccoordu", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("loccoordv", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("start", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("end", NC_DOUBLE, 1, DimNameStations);
+	
+    // Put attributes for the stations
+    ncFile.PutAtt("long_name", "Stations names", "stationsname");
+    ncFile.PutAtt("var_desc", "Name of the predictand stations", "stationsname");
+
+    // Put attributes for the stations
+    ncFile.PutAtt("long_name", "Stations IDs", "stationsids");
+    ncFile.PutAtt("var_desc", "Internal IDs of the predictand stations", "stationsids");
+
+    // Put attributes for the stations
+    ncFile.PutAtt("long_name", "Stations height", "stationsheight");
+    ncFile.PutAtt("var_desc", "Altitude of the predictand stations", "stationsheight");
+    ncFile.PutAtt("units", "m", "stationsheight");
+
+    // Put attributes for the lon variable
+    ncFile.PutAtt("long_name", "Longitude", "lon");
+    ncFile.PutAtt("var_desc", "Longitudes of the stations positions", "lon");
+    ncFile.PutAtt("units", "degrees", "lon");
+
+    // Put attributes for the lat variable
+    ncFile.PutAtt("long_name", "Latitude", "lat");
+    ncFile.PutAtt("var_desc", "Latitudes of the stations positions", "lat");
+    ncFile.PutAtt("units", "degrees", "lat");
+
+    // Put attributes for the loccoordu variable
+    ncFile.PutAtt("long_name", "Local coordinate U", "loccoordu");
+    ncFile.PutAtt("var_desc", "Local coordinate for the U axis (west-east)", "loccoordu");
+    ncFile.PutAtt("units", "m", "loccoordu");
+
+    // Put attributes for the loccoordv variable
+    ncFile.PutAtt("long_name", "Local coordinate V", "loccoordv");
+    ncFile.PutAtt("var_desc", "Local coordinate for the V axis (west-east)", "loccoordv");
+    ncFile.PutAtt("units", "m", "loccoordv");
+
+    // Put attributes for the start variable
+    ncFile.PutAtt("long_name", "Start", "start");
+    ncFile.PutAtt("var_desc", "Start of the stations data", "start");
+    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "start");
+
+    // Put attributes for the end variable
+    ncFile.PutAtt("long_name", "End", "end");
+    ncFile.PutAtt("var_desc", "End of the stations data", "end");
+    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "end");
+
+	// Put attributes for the data variable
+    ncFile.PutAtt("long_name", "Gross data", "datagross");
+    ncFile.PutAtt("var_desc", "Gross data, whithout any treatment", "datagross");
+    ncFile.PutAtt("units", "mm", "datagross");
+
+}
+
+bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
+{
+	// Provide sizes for variables
+    size_t startTime[] = {0};
+    size_t countTime[] = {size_t(m_TimeLength)};
+    size_t startStations[] = {0};
+    size_t countStations[] = {size_t(m_StationsNb)};
+    size_t start2[] = {0, 0};
+    size_t count2[] = {size_t(m_TimeLength), size_t(m_StationsNb)};
+
+    // Write data
+    ncFile.PutVarArray("time", startTime, countTime, &m_Time(0));
+    ncFile.PutVarArray("stationsname", startStations, countStations, &m_StationsName[0], m_StationsName.size());
+    ncFile.PutVarArray("stationsids", startStations, countStations, &m_StationsIds(0));
+    ncFile.PutVarArray("stationsheight", startStations, countStations, &m_StationsHeight(0));
+    ncFile.PutVarArray("lon", startStations, countStations, &m_StationsLon(0));
+    ncFile.PutVarArray("lat", startStations, countStations, &m_StationsLat(0));
+    ncFile.PutVarArray("loccoordu", startStations, countStations, &m_StationsLocCoordU(0));
+    ncFile.PutVarArray("loccoordv", startStations, countStations, &m_StationsLocCoordV(0));
+    ncFile.PutVarArray("start", startStations, countStations, &m_StationsStart(0));
+    ncFile.PutVarArray("end", startStations, countStations, &m_StationsEnd(0));
+    ncFile.PutVarArray("datagross", start2, count2, &m_DataGross(0,0));
+
+	return true;
 }
 
 bool asDataPredictand::IncludeInDB(const wxString &datasetID, const wxString &AlternateFilePath)
@@ -176,7 +377,7 @@ bool asDataPredictand::IncludeInDB(const wxString &datasetID, const wxString &Al
     VectorPredictandDB datasetDBs = currentDataset.GetDBInclude();
     for (size_t i_db=0; i_db<datasetDBs.size(); i_db++)
     {
-        if (m_PredictandDB==datasetDBs[i_db]) return true;
+        if (m_PredictandDBType==datasetDBs[i_db]) return true;
     }
     return false;
 }
@@ -195,6 +396,67 @@ bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, s
     m_StationsEnd(stationIndex) = currentData.GetStationEnd();
 
     return true;
+}
+
+bool asDataPredictand::ParseData(const wxString &AlternateCatalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)
+{
+	// Index for stations
+    int stationIndex = 0;
+
+    #if wxUSE_GUI
+        // The progress bar
+        asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
+    #endif
+
+    // Get the datasets IDs
+    asCatalog::DatasetIdList datsetList = asCatalog::GetDatasetIdList(Predictand, AlternateCatalogFilePath);
+
+    // Get the data
+    for (size_t i_set=0; i_set<datsetList.Id.size(); i_set++)
+    {
+        // The dataset ID
+        wxString datasetId = datsetList.Id[i_set];
+
+        //Include in DB
+        if (IncludeInDB(datasetId, AlternateCatalogFilePath))
+        {
+            // Get the stations list
+            asCatalog::DataIdListInt stationsList = asCatalog::GetDataIdListInt(Predictand, datasetId, AlternateCatalogFilePath);
+
+            for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
+            {
+                // The station ID
+                int stationId = stationsList.Id[i_station];
+
+                // Load data properties
+                asCatalogPredictands currentData(AlternateCatalogFilePath);
+                if(!currentData.Load(datasetId, stationId)) return false;
+
+                #if wxUSE_GUI
+                    // Update the progress bar.
+                    wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), currentData.GetStationFilename().c_str());
+                    if(!ProgressBar.Update(stationIndex, fileNameMessage))
+                    {
+                        asLogError(_("The process has been canceled by the user."));
+                        return false;
+                    }
+                #endif
+
+                // Get station information
+                if(!SetStationProperties(currentData, stationIndex)) return false;
+
+                // Get file content
+                if(!GetFileContent(currentData, stationIndex, AlternateDataDir, AlternatePatternDir)) return false;
+
+                stationIndex++;
+            }
+        }
+    }
+    #if wxUSE_GUI
+        ProgressBar.Destroy();
+    #endif
+
+	return true;
 }
 
 bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stationIndex, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)

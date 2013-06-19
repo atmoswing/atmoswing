@@ -80,12 +80,6 @@ enum
 
 enum
 {
-    asMAKE_SQRT,
-    asDONT_MAKE_SQRT
-};
-
-enum
-{
     asCOEFF, // Direct access to the coefficients
     asCOEFF_NOVAR, // Direct access to the coefficients without any other variable declaration
     asLIN_ALGEBRA,	// Linear algebra using a library
