@@ -29,29 +29,17 @@ public:
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &AlternateDestinationDir = wxEmptyString);
-
-    virtual Array1DFloat &GetReferenceAxis()
-    {
-        return m_Quantiles;
-    }
-
-    virtual float GetReferenceValue(int i_station, double duration, float reference)
-    {
-        return 0;
-    }
-
-    virtual Array2DFloat &GetReferenceValuesArray()
-    {
-        return m_DailyTemperatureForQuantiles;
-    }
+    virtual bool BuildPredictandDB(const wxString &AlternateCatalogFilePath = wxEmptyString, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
 
 
 protected:
 
 private:
-    Array1DFloat m_Quantiles;
-    Array2DFloat m_DailyTemperatureForQuantiles;
+	
+    /** Initialize the containers
+     * \return True on success
+     */
+    bool InitContainers();
 
 };
 

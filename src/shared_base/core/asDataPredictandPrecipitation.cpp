@@ -27,6 +27,10 @@ asDataPredictandPrecipitation::asDataPredictandPrecipitation(PredictandDB predic
 asDataPredictand(predictandDB)
 {
     //ctor
+	m_HasNormalizedData = true;
+	m_HasReferenceValues = true;
+	m_ReturnPeriodNormalization = 10;
+	m_IsSqrt = false;
 }
 
 asDataPredictandPrecipitation::~asDataPredictandPrecipitation()
@@ -37,32 +41,13 @@ asDataPredictandPrecipitation::~asDataPredictandPrecipitation()
 bool asDataPredictandPrecipitation::InitContainers()
 {
     if (!InitBaseContainers()) return false;
-
-    //m_ReturnPeriodValues.resize(m_StationsNb);
-    //m_ReturnPeriodValues.fill(NaNFloat);
-
-    asTimeArray timeArray(m_DateStart, m_DateEnd, m_TimeStepDays*24.0, asTimeArray::Simple);
-    timeArray.Init();
-    m_Time = timeArray.GetTimeArray();
-
     return true;
 }
 
 bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
 {
     // Get the file path
-    wxString PredictandDBFilePath;
-    if (AlternateFilePath.IsEmpty())
-    {
-        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDB);
-        ThreadsManager().CritSectionConfig().Enter();
-        PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir() + FileName + ".nc");
-        ThreadsManager().CritSectionConfig().Leave();
-    }
-    else
-    {
-        PredictandDBFilePath = AlternateFilePath;
-    }
+    wxString PredictandDBFilePath = GetDBFilePathLoading(AlternateFilePath);
 
     // Open the NetCDF file
     asLogMessage(wxString::Format(_("Opening the file %s"), PredictandDBFilePath.c_str()));
@@ -77,42 +62,24 @@ bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
         asLogMessage(_("File successfully opened"));
     }
 
-    // Get global attributes
+	// Load common data
+	LoadCommonData(ncFile);
+
+	// Get global attributes
     m_ReturnPeriodNormalization = ncFile.GetAttFloat("return_period_normalization");
-    float version = ncFile.GetAttFloat("version");
-
-    if (asTools::IsNaN(version) || version<m_FileVersion)
-    {
-        asLogError(_("The predictand DB file was made with an older version of Atmoswing and is not compatible. Please generate the file with the actual version."));
-        return false;
-    }
-
-    // Get time
-    m_TimeLength = ncFile.GetDimLength("time");
-    m_Time.resize( m_TimeLength );
-    ncFile.GetVar("time", &m_Time[0]);
-
-    // Get stations properties
-    m_StationsNb = ncFile.GetDimLength("stations");
-    wxASSERT(m_StationsNb>0);
-    m_StationsName.resize( m_StationsNb );
-    ncFile.GetVar("stationsname", &m_StationsName[0], m_StationsNb);
-    m_StationsIds.resize( m_StationsNb );
-    ncFile.GetVar("stationsids", &m_StationsIds[0]);
-    m_StationsHeight.resize( m_StationsNb );
-    ncFile.GetVar("stationsheight", &m_StationsHeight[0]);
-    m_StationsLon.resize( m_StationsNb );
-    ncFile.GetVar("lon", &m_StationsLon[0]);
-    m_StationsLat.resize( m_StationsNb );
-    ncFile.GetVar("lat", &m_StationsLat[0]);
-    m_StationsLocCoordU.resize( m_StationsNb );
-    ncFile.GetVar("loccoordu", &m_StationsLocCoordU[0]);
-    m_StationsLocCoordV.resize( m_StationsNb );
-    ncFile.GetVar("loccoordv", &m_StationsLocCoordV[0]);
-    m_StationsStart.resize( m_StationsNb );
-    ncFile.GetVar("start", &m_StationsStart[0]);
-    m_StationsEnd.resize( m_StationsNb );
-    ncFile.GetVar("end", &m_StationsEnd[0]);
+	m_IsSqrt = false;
+	float version = ncFile.GetAttFloat("version");
+	if (version>=1.1)
+	{
+		if (ncFile.GetAttShort("uses_square_root") == 1)
+		{
+			m_IsSqrt = true;
+		}
+	}
+	else
+	{
+		asLogWarning(_("The predictand DB file was made with an older version of Atmoswing. We cannot verify if the square root was applied to the data."));
+	}
 
     // Get return periods properties
     int returnPeriodsNb = ncFile.GetDimLength("returnperiods");
@@ -123,13 +90,14 @@ bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
     m_DailyPrecipitationsForReturnPeriods.resize( m_StationsNb, returnPeriodsNb );
     ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
 
-    // Get data
+    // Get normalized data
     size_t IndexStart[2] = {0,0};
     size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
-    m_DataGross.resize( m_TimeLength, m_StationsNb );
-    ncFile.GetVarArray("datagross", IndexStart, IndexCount, &m_DataGross[0]);
     m_DataNormalized.resize( m_TimeLength, m_StationsNb );
     ncFile.GetVarArray("datanormalized", IndexStart, IndexCount, &m_DataNormalized[0]);
+
+	// Close the netCDF file
+	ncFile.Close();
 
     return true;
 }
@@ -137,34 +105,19 @@ bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
 bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir)
 {
     // Get the file path
-    wxString PredictandDBFilePath;
-    if (AlternateDestinationDir.IsEmpty())
-    {
-        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDB);
-        ThreadsManager().CritSectionConfig().Enter();
-        PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir()) + DS + FileName + ".nc";
-        ThreadsManager().CritSectionConfig().Leave();
-    }
-    else
-    {
-        wxString FileName = asGlobEnums::PredictandDBEnumToString(m_PredictandDB);
-        PredictandDBFilePath = AlternateDestinationDir + DS + FileName + ".nc";
-    }
+    wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
     if(!ncFile.Open()) return false;
 
-    // Define dimensions. Time is the unlimited dimension.
-    ncFile.DefDim("stations", m_StationsNb);
+	// Set common definitions
+	SetCommonDefinitions(ncFile);
+
+    // Define specific dimensions. 
     ncFile.DefDim("returnperiods", (int)m_ReturnPeriods.size());
-    ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNameTime;
-    DimNameTime.push_back("time");
-    VectorStdString DimNameStations;
-    DimNameStations.push_back("stations");
     VectorStdString DimNames2D;
     DimNames2D.push_back("time");
     DimNames2D.push_back("stations");
@@ -174,77 +127,23 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
     DimNames2DReturnPeriods.push_back("returnperiods");
     DimNames2DReturnPeriods.push_back("stations");
 
-    // Define variables: the scores and the corresponding dates
-    ncFile.DefVar("time", NC_DOUBLE, 1, DimNameTime);
-    ncFile.DefVar("datagross", NC_FLOAT, 2, DimNames2D);
+    // Define specific variables
     ncFile.DefVar("datanormalized", NC_FLOAT, 2, DimNames2D);
     ncFile.DefVar("returnperiods", NC_FLOAT, 1, DimNameReturnPeriods);
     ncFile.DefVar("dailyprecipitationsforreturnperiods", NC_FLOAT, 2, DimNames2DReturnPeriods);
-    ncFile.DefVar("stationsname", NC_STRING, 1, DimNameStations);
-    ncFile.DefVar("stationsids", NC_INT, 1, DimNameStations);
-    ncFile.DefVar("stationsheight", NC_FLOAT, 1, DimNameStations);
-    ncFile.DefVar("lon", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("lat", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("loccoordu", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("loccoordv", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("start", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("end", NC_DOUBLE, 1, DimNameStations);
 
     // Put general attributes
     ncFile.PutAtt("return_period_normalization", &m_ReturnPeriodNormalization);
-    ncFile.PutAtt("version", &m_FileVersion);
-
-    // Put attributes for the stations
-    ncFile.PutAtt("long_name", "Stations names", "stationsname");
-    ncFile.PutAtt("var_desc", "Name of the predictand stations", "stationsname");
-
-    // Put attributes for the stations
-    ncFile.PutAtt("long_name", "Stations IDs", "stationsids");
-    ncFile.PutAtt("var_desc", "Internal IDs of the predictand stations", "stationsids");
-
-    // Put attributes for the stations
-    ncFile.PutAtt("long_name", "Stations height", "stationsheight");
-    ncFile.PutAtt("var_desc", "Altitude of the predictand stations", "stationsheight");
-    ncFile.PutAtt("units", "m", "stationsheight");
-
-    // Put attributes for the lon variable
-    ncFile.PutAtt("long_name", "Longitude", "lon");
-    ncFile.PutAtt("var_desc", "Longitudes of the stations positions", "lon");
-    ncFile.PutAtt("units", "degrees", "lon");
-
-    // Put attributes for the lat variable
-    ncFile.PutAtt("long_name", "Latitude", "lat");
-    ncFile.PutAtt("var_desc", "Latitudes of the stations positions", "lat");
-    ncFile.PutAtt("units", "degrees", "lat");
-
-    // Put attributes for the loccoordu variable
-    ncFile.PutAtt("long_name", "Local coordinate U", "loccoordu");
-    ncFile.PutAtt("var_desc", "Local coordinate for the U axis (west-east)", "loccoordu");
-    ncFile.PutAtt("units", "m", "loccoordu");
-
-    // Put attributes for the loccoordv variable
-    ncFile.PutAtt("long_name", "Local coordinate V", "loccoordv");
-    ncFile.PutAtt("var_desc", "Local coordinate for the V axis (west-east)", "loccoordv");
-    ncFile.PutAtt("units", "m", "loccoordv");
-
-    // Put attributes for the start variable
-    ncFile.PutAtt("long_name", "Start", "start");
-    ncFile.PutAtt("var_desc", "Start of the stations data", "start");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "start");
-
-    // Put attributes for the end variable
-    ncFile.PutAtt("long_name", "End", "end");
-    ncFile.PutAtt("var_desc", "End of the stations data", "end");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "end");
+	short isSqrt = 0;
+	if (m_IsSqrt)
+	{
+		isSqrt = 1;
+	}
+    ncFile.PutAtt("uses_square_root", &isSqrt);
 
     // Put attributes for the data variable
-    ncFile.PutAtt("long_name", "Precipitation gross", "datagross");
-    ncFile.PutAtt("var_desc", "Predictand gross data, whithout any treatment", "datagross");
-    ncFile.PutAtt("units", "mm", "datagross");
-
-    // Put attributes for the data variable
-    ncFile.PutAtt("long_name", "Precipitation normalized", "datanormalized");
-    ncFile.PutAtt("var_desc", "Predictand normalized data", "datanormalized");
+    ncFile.PutAtt("long_name", "Normalized data", "datanormalized");
+    ncFile.PutAtt("var_desc", "Normalized data", "datanormalized");
     ncFile.PutAtt("units", "-", "datanormalized");
 
     // Put attributes for the return periods variable
@@ -259,12 +158,11 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 
     // End definitions: leave define mode
     ncFile.EndDef();
+	
+	// Save common data
+    SaveCommonData(ncFile);
 
-    // Provide sizes for variables
-    size_t startTime[] = {0};
-    size_t countTime[] = {size_t(m_TimeLength)};
-    size_t startStations[] = {0};
-    size_t countStations[] = {size_t(m_StationsNb)};
+    // Provide sizes for specific variables
     size_t start2[] = {0, 0};
     size_t count2[] = {size_t(m_TimeLength), size_t(m_StationsNb)};
     size_t startReturnPeriod[] = {0};
@@ -272,18 +170,7 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
     size_t startReturnPeriodPrecip[] = {0, 0};
     size_t countReturnPeriodPrecip[] = {size_t(m_ReturnPeriods.size()), size_t(m_StationsNb)};
 
-    // Write data
-    ncFile.PutVarArray("time", startTime, countTime, &m_Time(0));
-    ncFile.PutVarArray("stationsname", startStations, countStations, &m_StationsName[0], m_StationsName.size());
-    ncFile.PutVarArray("stationsids", startStations, countStations, &m_StationsIds(0));
-    ncFile.PutVarArray("stationsheight", startStations, countStations, &m_StationsHeight(0));
-    ncFile.PutVarArray("lon", startStations, countStations, &m_StationsLon(0));
-    ncFile.PutVarArray("lat", startStations, countStations, &m_StationsLat(0));
-    ncFile.PutVarArray("loccoordu", startStations, countStations, &m_StationsLocCoordU(0));
-    ncFile.PutVarArray("loccoordv", startStations, countStations, &m_StationsLocCoordV(0));
-    ncFile.PutVarArray("start", startStations, countStations, &m_StationsStart(0));
-    ncFile.PutVarArray("end", startStations, countStations, &m_StationsEnd(0));
-    ncFile.PutVarArray("datagross", start2, count2, &m_DataGross(0,0));
+    // Write specific data
     ncFile.PutVarArray("datanormalized", start2, count2, &m_DataNormalized(0,0));
     ncFile.PutVarArray("returnperiods", startReturnPeriod, countReturnPeriod, &m_ReturnPeriods(0));
     ncFile.PutVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
@@ -293,7 +180,7 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 
     return true;
 }
-bool asDataPredictandPrecipitation::BuildPrecipitationDB(float returnPeriodNormalization, int makeSqrt, const wxString &AlternateCatalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
+bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &AlternateCatalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
 {
     if(!g_UnitTesting) asLogMessage(_("Building the predictand DB."));
 
@@ -301,69 +188,16 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
     if(!InitMembers(AlternateCatalogFilePath)) return false;
 
     // Resize matrices
-    if(!InitContainers()) return false;;
+    if(!InitContainers()) return false;
 
-    // Index for stations
-    int stationIndex = 0;
-
-    #if wxUSE_GUI
-        // The progress bar
-        asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
-    #endif
-
-    // Get the datasets IDs
-    asCatalog::DatasetIdList datsetList = asCatalog::GetDatasetIdList(Predictand, AlternateCatalogFilePath);
-
-    // Get the data
-    for (size_t i_set=0; i_set<datsetList.Id.size(); i_set++)
-    {
-        // The dataset ID
-        wxString datasetId = datsetList.Id[i_set];
-
-        //Include in DB
-        if (IncludeInDB(datasetId, AlternateCatalogFilePath))
-        {
-            // Get the stations list
-            asCatalog::DataIdListInt stationsList = asCatalog::GetDataIdListInt(Predictand, datasetId, AlternateCatalogFilePath);
-
-            for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
-            {
-                // The station ID
-                int stationId = stationsList.Id[i_station];
-
-                // Load data properties
-                asCatalogPredictands currentData(AlternateCatalogFilePath);
-                if(!currentData.Load(datasetId, stationId)) return false;
-
-                #if wxUSE_GUI
-                    // Update the progress bar.
-                    wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), currentData.GetStationFilename().c_str());
-                    if(!ProgressBar.Update(stationIndex, fileNameMessage))
-                    {
-                        asLogError(_("The process has been canceled by the user."));
-                        return false;
-                    }
-                #endif
-
-                // Get station information
-                if(!SetStationProperties(currentData, stationIndex)) return false;
-
-                // Get file content
-                if(!GetFileContent(currentData, stationIndex, AlternateDataDir, AlternatePatternDir)) return false;
-
-                stationIndex++;
-            }
-        }
-    }
-    #if wxUSE_GUI
-        ProgressBar.Destroy();
-    #endif
+	// Load data from files
+    if(!ParseData(AlternateCatalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
 
     // Make the Gumbel adjustment
     if(!MakeGumbelAdjustment()) return false;
 
     // Process the normalized Precipitation
-    if(!BuildDataNormalized(returnPeriodNormalization, makeSqrt)) return false;
+    if(!BuildDataNormalized()) return false;
 
     // Process daily precipitations for all return periods
     if(!BuildDailyPrecipitationsForAllReturnPeriods()) return false;
@@ -509,27 +343,27 @@ bool asDataPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods(
     return true;
 }
 
-bool asDataPredictandPrecipitation::BuildDataNormalized(float returnPeriod, int makeSqrt)
+bool asDataPredictandPrecipitation::BuildDataNormalized()
 {
-    m_ReturnPeriodNormalization = returnPeriod;
+    m_ReturnPeriodNormalization = m_ReturnPeriodNormalization;
 
     for (int i_st=0; i_st<m_StationsNb; i_st++)
     {
         float Prt = 1.0;
-        if (returnPeriod!=0)
+        if (m_ReturnPeriodNormalization!=0)
         {
-            Prt = GetPrecipitationOfReturnPeriod(i_st, 1, returnPeriod);
+            Prt = GetPrecipitationOfReturnPeriod(i_st, 1, m_ReturnPeriodNormalization);
         }
 
         for (int i_time=0; i_time<m_TimeLength; i_time++)
         {
-            if (makeSqrt==asDONT_MAKE_SQRT)
+            if (m_IsSqrt)
             {
-                m_DataNormalized(i_time,i_st) = m_DataGross(i_time, i_st)/Prt;
+				m_DataNormalized(i_time,i_st) = sqrt(m_DataGross(i_time, i_st)/Prt);
             }
             else
             {
-                m_DataNormalized(i_time,i_st) = sqrt(m_DataGross(i_time, i_st)/Prt);
+                m_DataNormalized(i_time,i_st) = m_DataGross(i_time, i_st)/Prt;
             }
         }
     }

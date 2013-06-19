@@ -18,6 +18,7 @@
 #include <asIncludes.h>
 
 class asCatalogPredictands;
+class asFileNetcdf;
 
 
 class asDataPredictand: public wxObject
@@ -36,31 +37,38 @@ class asDataPredictand: public wxObject
 
         virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) = 0;
 
-        virtual bool BuildPredictandDB(const wxString &AlternateDestinationDir = wxEmptyString) = 0;
+        virtual bool BuildPredictandDB(const wxString &AlternateCatalogFilePath = wxEmptyString, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString) = 0;
 
-        virtual Array1DFloat &GetReferenceAxis() = 0;
-
-        virtual float GetReferenceValue(int i_station, double duration, float reference) = 0;
-
-        virtual Array2DFloat &GetReferenceValuesArray() = 0;
-
-
-        Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10);
+        /** Access m_HasNormalizedData
+         * \return The current value of m_HasNormalizedData
+         */
+        bool HasNormalizedData()
+        {
+            return m_HasNormalizedData;
+        }
+		
+		/** Access m_HasReferenceValues
+         * \return The current value of m_HasReferenceValues
+         */
+        bool HasReferenceValues()
+        {
+            return m_HasReferenceValues;
+        }
 
         /** Access m_PredictandDB
          * \return The current value of m_PredictandDB
          */
-        PredictandDB GetPredictandDB()
+        PredictandDB GetPredictandDBType()
         {
-            return m_PredictandDB;
+            return m_PredictandDBType;
         }
 
         /** Access m_PredictandDB as a string
          * \return The current value of m_PredictandDB as a string
          */
-        wxString GetPredictandDBString()
+        wxString GetPredictandDBTypeString()
         {
-            return asGlobEnums::PredictandDBEnumToString(m_PredictandDB);
+            return asGlobEnums::PredictandDBEnumToString(m_PredictandDBType);
         }
 
         /** Access m_TimeStepDays
@@ -173,7 +181,14 @@ class asDataPredictand: public wxObject
          */
         Array2DFloat& GetDataNormalized()
         {
-            return m_DataNormalized;
+			if(m_HasNormalizedData)
+			{
+				return m_DataNormalized;
+			}
+			else
+			{
+				return m_DataGross;
+			}
         }
 
         /** Access m_DataNormalized for 1 station: data(station,time)
@@ -182,7 +197,14 @@ class asDataPredictand: public wxObject
         Array1DFloat GetDataNormalizedStation(int predictandStationId)
         {
             int indexStation = GetStationIndex(predictandStationId);
-            return m_DataNormalized.col(indexStation);
+			if(m_HasNormalizedData)
+			{
+				return m_DataNormalized.col(indexStation);
+			}
+			else
+			{
+				return m_DataGross.col(indexStation);
+			}
         }
 
         /** Access m_Time
@@ -202,13 +224,15 @@ class asDataPredictand: public wxObject
     protected:
         // Single value
         float m_FileVersion;
-        PredictandDB m_PredictandDB;
+        PredictandDB m_PredictandDBType;
         double m_TimeStepDays;
         int m_TimeLength;
         int m_StationsNb;
         double m_DateProcessed;
         double m_DateStart;
         double m_DateEnd;
+		bool m_HasNormalizedData;
+		bool m_HasReferenceValues;
         // Matrix data
         Array2DFloat m_DataGross;
         Array2DFloat m_DataNormalized;
@@ -225,6 +249,12 @@ class asDataPredictand: public wxObject
         Array1DDouble m_StationsStart;
         Array1DDouble m_StationsEnd;
 
+
+		wxString GetDBFilePathLoading(const wxString &AlternateFilePath);
+
+		wxString GetDBFilePathSaving(const wxString &AlternateDestinationDir);
+
+
         /** Initialize the members
          * \param predictandDB The DB to build
          * \return True on success
@@ -236,6 +266,18 @@ class asDataPredictand: public wxObject
          * \return True on success
          */
         bool InitBaseContainers();
+
+
+		bool LoadCommonData(asFileNetcdf &ncFile);
+
+		void SetCommonDefinitions(asFileNetcdf &ncFile);
+
+		bool SaveCommonData(asFileNetcdf &ncFile);
+
+		bool ParseData(const wxString &AlternateCatalogFilePath = wxEmptyString, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString);
+        
+		Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10);
+
 
         /** Check if the dataset should be included in the DB
          * \param datasetID The dataset ID

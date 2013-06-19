@@ -1343,7 +1343,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
 {
     // Initialize the result object
     results.SetCurrentStep(i_step);
-    results.SetPredictandDBName(m_PredictandDB->GetPredictandDBString());
+    results.SetPredictandDBName(m_PredictandDB->GetPredictandDBTypeString());
 
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_PredictandDB);
