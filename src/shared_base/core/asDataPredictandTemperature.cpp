@@ -22,9 +22,9 @@
 #include <asCatalogPredictands.h>
 
 
-asDataPredictandTemperature::asDataPredictandTemperature(PredictandDB predictandDB)
+asDataPredictandTemperature::asDataPredictandTemperature(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
 :
-asDataPredictand(predictandDB)
+asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
 	m_HasNormalizedData = false;
@@ -42,17 +42,14 @@ bool asDataPredictandTemperature::InitContainers()
     return true;
 }
 
-bool asDataPredictandTemperature::Load(const wxString &AlternateFilePath)
+bool asDataPredictandTemperature::Load(const wxString &filePath)
 {
-    // Get the file path
-    wxString PredictandDBFilePath = GetDBFilePathLoading(AlternateFilePath);
-
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), PredictandDBFilePath.c_str()));
-    asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::ReadOnly);
+    asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
+    asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if(!ncFile.Open())
     {
-        asLogError(wxString::Format(_("Couldn't open file %s"), PredictandDBFilePath.c_str()));
+        asLogError(wxString::Format(_("Couldn't open file %s"), filePath.c_str()));
         return false;
     }
     else
@@ -93,18 +90,18 @@ bool asDataPredictandTemperature::Save(const wxString &AlternateDestinationDir)
     return true;
 }
 
-bool asDataPredictandTemperature::BuildPredictandDB(const wxString &AlternateCatalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
+bool asDataPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
 {
     if(!g_UnitTesting) asLogMessage(_("Building the predictand DB."));
 
     // Initialize the members
-    if(!InitMembers(AlternateCatalogFilePath)) return false;
+    if(!InitMembers(catalogFilePath)) return false;
 
     // Resize matrices
     if(!InitContainers()) return false;
 
 	// Load data from files
-    if(!ParseData(AlternateCatalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
+    if(!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
 
     Save(AlternateDestinationDir);
 

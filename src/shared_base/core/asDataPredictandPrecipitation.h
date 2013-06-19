@@ -22,14 +22,14 @@
 class asDataPredictandPrecipitation: public asDataPredictand
 {
 public:
-    asDataPredictandPrecipitation(PredictandDB predictandDB);
+    asDataPredictandPrecipitation(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
     virtual ~asDataPredictandPrecipitation();
 
-    virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    virtual bool Load(const wxString &filePath);
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &AlternateCatalogFilePath = wxEmptyString, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
 
     virtual Array1DFloat &GetReferenceAxis()
     {

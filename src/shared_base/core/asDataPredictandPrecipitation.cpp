@@ -22,15 +22,21 @@
 #include <asCatalogPredictands.h>
 
 
-asDataPredictandPrecipitation::asDataPredictandPrecipitation(PredictandDB predictandDB)
+asDataPredictandPrecipitation::asDataPredictandPrecipitation(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
 :
-asDataPredictand(predictandDB)
+asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
 	m_HasNormalizedData = true;
 	m_HasReferenceValues = true;
 	m_ReturnPeriodNormalization = 10;
 	m_IsSqrt = false;
+
+	if(dataTemporalResolution==SixHourlyMovingDailyTemporalWindow)
+	{
+		m_HasNormalizedData = false;
+		m_HasReferenceValues = false;
+	}
 }
 
 asDataPredictandPrecipitation::~asDataPredictandPrecipitation()
@@ -44,17 +50,14 @@ bool asDataPredictandPrecipitation::InitContainers()
     return true;
 }
 
-bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
+bool asDataPredictandPrecipitation::Load(const wxString &filePath)
 {
-    // Get the file path
-    wxString PredictandDBFilePath = GetDBFilePathLoading(AlternateFilePath);
-
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), PredictandDBFilePath.c_str()));
-    asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::ReadOnly);
+    asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
+    asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if(!ncFile.Open())
     {
-        asLogError(wxString::Format(_("Couldn't open file %s"), PredictandDBFilePath.c_str()));
+        asLogError(wxString::Format(_("Couldn't open file %s"), filePath.c_str()));
         return false;
     }
     else
@@ -65,36 +68,31 @@ bool asDataPredictandPrecipitation::Load(const wxString &AlternateFilePath)
 	// Load common data
 	LoadCommonData(ncFile);
 
-	// Get global attributes
-    m_ReturnPeriodNormalization = ncFile.GetAttFloat("return_period_normalization");
-	m_IsSqrt = false;
-	float version = ncFile.GetAttFloat("version");
-	if (version>=1.1)
+	if(m_DataTemporalResolution!=SixHourlyMovingDailyTemporalWindow)
 	{
+		// Get global attributes
+		m_ReturnPeriodNormalization = ncFile.GetAttFloat("return_period_normalization");
+		m_IsSqrt = false;
 		if (ncFile.GetAttShort("uses_square_root") == 1)
 		{
 			m_IsSqrt = true;
 		}
-	}
-	else
-	{
-		asLogWarning(_("The predictand DB file was made with an older version of Atmoswing. We cannot verify if the square root was applied to the data."));
-	}
 
-    // Get return periods properties
-    int returnPeriodsNb = ncFile.GetDimLength("returnperiods");
-    m_ReturnPeriods.resize( returnPeriodsNb );
-    ncFile.GetVar("returnperiods", &m_ReturnPeriods[0]);
-    size_t startReturnPeriodPrecip[2] = {0, 0};
-    size_t countReturnPeriodPrecip[2] = {size_t(returnPeriodsNb), size_t(m_StationsNb)};
-    m_DailyPrecipitationsForReturnPeriods.resize( m_StationsNb, returnPeriodsNb );
-    ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
+		// Get return periods properties
+		int returnPeriodsNb = ncFile.GetDimLength("returnperiods");
+		m_ReturnPeriods.resize( returnPeriodsNb );
+		ncFile.GetVar("returnperiods", &m_ReturnPeriods[0]);
+		size_t startReturnPeriodPrecip[2] = {0, 0};
+		size_t countReturnPeriodPrecip[2] = {size_t(returnPeriodsNb), size_t(m_StationsNb)};
+		m_DailyPrecipitationsForReturnPeriods.resize( m_StationsNb, returnPeriodsNb );
+		ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
 
-    // Get normalized data
-    size_t IndexStart[2] = {0,0};
-    size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
-    m_DataNormalized.resize( m_TimeLength, m_StationsNb );
-    ncFile.GetVarArray("datanormalized", IndexStart, IndexCount, &m_DataNormalized[0]);
+		// Get normalized data
+		size_t IndexStart[2] = {0,0};
+		size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
+		m_DataNormalized.resize( m_TimeLength, m_StationsNb );
+		ncFile.GetVarArray("datanormalized", IndexStart, IndexCount, &m_DataNormalized[0]);
+	}
 
 	// Close the netCDF file
 	ncFile.Close();
@@ -114,47 +112,50 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 	// Set common definitions
 	SetCommonDefinitions(ncFile);
 
-    // Define specific dimensions. 
-    ncFile.DefDim("returnperiods", (int)m_ReturnPeriods.size());
-
-    // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNames2D;
-    DimNames2D.push_back("time");
-    DimNames2D.push_back("stations");
-    VectorStdString DimNameReturnPeriods;
-    DimNameReturnPeriods.push_back("returnperiods");
-    VectorStdString DimNames2DReturnPeriods;
-    DimNames2DReturnPeriods.push_back("returnperiods");
-    DimNames2DReturnPeriods.push_back("stations");
-
-    // Define specific variables
-    ncFile.DefVar("datanormalized", NC_FLOAT, 2, DimNames2D);
-    ncFile.DefVar("returnperiods", NC_FLOAT, 1, DimNameReturnPeriods);
-    ncFile.DefVar("dailyprecipitationsforreturnperiods", NC_FLOAT, 2, DimNames2DReturnPeriods);
-
-    // Put general attributes
-    ncFile.PutAtt("return_period_normalization", &m_ReturnPeriodNormalization);
-	short isSqrt = 0;
-	if (m_IsSqrt)
+	if(m_DataTemporalResolution!=SixHourlyMovingDailyTemporalWindow)
 	{
-		isSqrt = 1;
+		// Define specific dimensions. 
+		ncFile.DefDim("returnperiods", (int)m_ReturnPeriods.size());
+
+		// The dimensions name array is used to pass the dimensions to the variable.
+		VectorStdString DimNames2D;
+		DimNames2D.push_back("time");
+		DimNames2D.push_back("stations");
+		VectorStdString DimNameReturnPeriods;
+		DimNameReturnPeriods.push_back("returnperiods");
+		VectorStdString DimNames2DReturnPeriods;
+		DimNames2DReturnPeriods.push_back("returnperiods");
+		DimNames2DReturnPeriods.push_back("stations");
+
+		// Define specific variables
+		ncFile.DefVar("datanormalized", NC_FLOAT, 2, DimNames2D);
+		ncFile.DefVar("returnperiods", NC_FLOAT, 1, DimNameReturnPeriods);
+		ncFile.DefVar("dailyprecipitationsforreturnperiods", NC_FLOAT, 2, DimNames2DReturnPeriods);
+
+		// Put general attributes
+		ncFile.PutAtt("return_period_normalization", &m_ReturnPeriodNormalization);
+		short isSqrt = 0;
+		if (m_IsSqrt)
+		{
+			isSqrt = 1;
+		}
+		ncFile.PutAtt("uses_square_root", &isSqrt);
+
+		// Put attributes for the data variable
+		ncFile.PutAtt("long_name", "Normalized data", "datanormalized");
+		ncFile.PutAtt("var_desc", "Normalized data", "datanormalized");
+		ncFile.PutAtt("units", "-", "datanormalized");
+
+		// Put attributes for the return periods variable
+		ncFile.PutAtt("long_name", "Return periods", "returnperiods");
+		ncFile.PutAtt("var_desc", "Return periods", "returnperiods");
+		ncFile.PutAtt("units", "year", "returnperiods");
+
+		// Put attributes for the daily precipitations corresponding to the return periods
+		ncFile.PutAtt("long_name", "Daily precipitation for return periods", "dailyprecipitationsforreturnperiods");
+		ncFile.PutAtt("var_desc", "Daily precipitation corresponding to the return periods", "dailyprecipitationsforreturnperiods");
+		ncFile.PutAtt("units", "mm", "dailyprecipitationsforreturnperiods");
 	}
-    ncFile.PutAtt("uses_square_root", &isSqrt);
-
-    // Put attributes for the data variable
-    ncFile.PutAtt("long_name", "Normalized data", "datanormalized");
-    ncFile.PutAtt("var_desc", "Normalized data", "datanormalized");
-    ncFile.PutAtt("units", "-", "datanormalized");
-
-    // Put attributes for the return periods variable
-    ncFile.PutAtt("long_name", "Return periods", "returnperiods");
-    ncFile.PutAtt("var_desc", "Return periods", "returnperiods");
-    ncFile.PutAtt("units", "year", "returnperiods");
-
-    // Put attributes for the daily precipitations corresponding to the return periods
-    ncFile.PutAtt("long_name", "Daily precipitation for return periods", "dailyprecipitationsforreturnperiods");
-    ncFile.PutAtt("var_desc", "Daily precipitation corresponding to the return periods", "dailyprecipitationsforreturnperiods");
-    ncFile.PutAtt("units", "mm", "dailyprecipitationsforreturnperiods");
 
     // End definitions: leave define mode
     ncFile.EndDef();
@@ -162,45 +163,51 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 	// Save common data
     SaveCommonData(ncFile);
 
-    // Provide sizes for specific variables
-    size_t start2[] = {0, 0};
-    size_t count2[] = {size_t(m_TimeLength), size_t(m_StationsNb)};
-    size_t startReturnPeriod[] = {0};
-    size_t countReturnPeriod[] = {size_t(m_ReturnPeriods.size())};
-    size_t startReturnPeriodPrecip[] = {0, 0};
-    size_t countReturnPeriodPrecip[] = {size_t(m_ReturnPeriods.size()), size_t(m_StationsNb)};
+	if(m_DataTemporalResolution!=SixHourlyMovingDailyTemporalWindow)
+	{
+		// Provide sizes for specific variables
+		size_t start2[] = {0, 0};
+		size_t count2[] = {size_t(m_TimeLength), size_t(m_StationsNb)};
+		size_t startReturnPeriod[] = {0};
+		size_t countReturnPeriod[] = {size_t(m_ReturnPeriods.size())};
+		size_t startReturnPeriodPrecip[] = {0, 0};
+		size_t countReturnPeriodPrecip[] = {size_t(m_ReturnPeriods.size()), size_t(m_StationsNb)};
 
-    // Write specific data
-    ncFile.PutVarArray("datanormalized", start2, count2, &m_DataNormalized(0,0));
-    ncFile.PutVarArray("returnperiods", startReturnPeriod, countReturnPeriod, &m_ReturnPeriods(0));
-    ncFile.PutVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
+		// Write specific data
+		ncFile.PutVarArray("datanormalized", start2, count2, &m_DataNormalized(0,0));
+		ncFile.PutVarArray("returnperiods", startReturnPeriod, countReturnPeriod, &m_ReturnPeriods(0));
+		ncFile.PutVarArray("dailyprecipitationsforreturnperiods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
+	}
 
     // Close:save new netCDF dataset
     ncFile.Close();
 
     return true;
 }
-bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &AlternateCatalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
+bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
 {
     if(!g_UnitTesting) asLogMessage(_("Building the predictand DB."));
 
     // Initialize the members
-    if(!InitMembers(AlternateCatalogFilePath)) return false;
+    if(!InitMembers(catalogFilePath)) return false;
 
     // Resize matrices
     if(!InitContainers()) return false;
 
 	// Load data from files
-    if(!ParseData(AlternateCatalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
+    if(!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
 
-    // Make the Gumbel adjustment
-    if(!MakeGumbelAdjustment()) return false;
+	if(m_DataTemporalResolution!=SixHourlyMovingDailyTemporalWindow)
+	{
+		// Make the Gumbel adjustment
+		if(!MakeGumbelAdjustment()) return false;
 
-    // Process the normalized Precipitation
-    if(!BuildDataNormalized()) return false;
+		// Process the normalized Precipitation
+		if(!BuildDataNormalized()) return false;
 
-    // Process daily precipitations for all return periods
-    if(!BuildDailyPrecipitationsForAllReturnPeriods()) return false;
+		// Process daily precipitations for all return periods
+		if(!BuildDailyPrecipitationsForAllReturnPeriods()) return false;
+	}
 
     Save(AlternateDestinationDir);
 
@@ -244,6 +251,21 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
     {
         duration.resize(8);
         duration << 12.0/24.0,1,2,3,4,5,7,10;
+    }
+    else if (m_TimeStepDays==2)
+    {
+        duration.resize(5);
+        duration << 2,4,6,8,10;
+    }
+    else if (m_TimeStepDays==3)
+    {
+        duration.resize(5);
+        duration << 3,6,9,12,15;
+    }
+    else if (m_TimeStepDays==7)
+    {
+        duration.resize(4);
+        duration << 7,14,21,28;
     }
     else
     {

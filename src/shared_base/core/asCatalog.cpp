@@ -89,7 +89,8 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
         ThreadsManager().CritSectionConfig().Enter();
         if (Purpose==Predictand)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictandsFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictands.xml");
+            asLogError(_("asCatalog::GetDatasetIdList should not be called any more for predictand data, as there is supposed to be only 1 catalog per dataset."));
+			return SetList;
         }
         else if (Purpose==PredictorArchive)
         {
