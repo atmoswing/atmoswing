@@ -31,7 +31,7 @@ public:
 
     virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual Array1DFloat &GetReferenceAxis()
+    virtual Array1DFloat GetReferenceAxis()
     {
         return m_ReturnPeriods;
     }
@@ -41,7 +41,7 @@ public:
         return GetPrecipitationOfReturnPeriod(i_station, duration, reference);
     }
 
-    virtual Array2DFloat &GetReferenceValuesArray()
+    virtual Array2DFloat GetReferenceValuesArray()
     {
         return m_DailyPrecipitationsForReturnPeriods;
     }

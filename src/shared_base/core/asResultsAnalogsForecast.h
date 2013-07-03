@@ -34,20 +34,53 @@ public:
      */
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
-    /** Access m_PredictandDBName
-     * \return The predictand DB name
-     */
-    wxString GetPredictandDBName()
+
+	wxString GetDatasetId()
     {
-        return m_PredictandDBName;
+        return m_DatasetId;
     }
 
-    /** Set m_PredictandDBName
-     * \param val The predictand DB name to set
-     */
-    void SetPredictandDBName(const wxString &val)
+    void SetDatasetId(const wxString &val)
     {
-        m_PredictandDBName = val;
+        m_DatasetId = val;
+    }
+
+	DataParameter GetDataParameter()
+    {
+        return m_DataParameter;
+    }
+
+    void SetDataParameter(DataParameter val)
+    {
+        m_DataParameter = val;
+    }
+
+	DataTemporalResolution GetDataTemporalResolution()
+    {
+        return m_DataTemporalResolution;
+    }
+
+    void SetDataTemporalResolution(DataTemporalResolution val)
+    {
+        m_DataTemporalResolution = val;
+    }
+
+	DataSpatialAggregation GetDataSpatialAggregation()
+    {
+        return m_DataSpatialAggregation;
+    }
+
+    void SetDataSpatialAggregation(DataSpatialAggregation val)
+    {
+        m_DataSpatialAggregation = val;
+    }
+
+	/** Access m_HasReferenceValues
+    * \return The current value of m_HasReferenceValues
+    */
+    bool HasReferenceValues()
+    {
+        return m_HasReferenceValues;
     }
 
     /** Access m_ModelName
@@ -268,48 +301,60 @@ public:
         m_StationsLocCoordV = stationsLocCoordV;
     }
 
-    /** Access m_ReturnPeriods
-     * \return The whole array m_ReturnPeriods
+    /** Access m_ReferenceAxis
+     * \return The whole array m_ReferenceAxis
      */
-    Array1DFloat GetReturnPeriods()
+    Array1DFloat GetReferenceAxis()
     {
-        return m_ReturnPeriods;
+        return m_ReferenceAxis;
     }
 
-    /** Set m_ReturnPeriods
-     * \param returnPeriods The new array to set
+    /** Set m_ReferenceAxis
+     * \param referenceAxis The new array to set
      */
-    void SetReturnPeriods(Array1DFloat &returnPeriods)
+    void SetReferenceAxis(Array1DFloat &referenceAxis)
     {
-        m_ReturnPeriods = returnPeriods;
+        m_ReferenceAxis = referenceAxis;
     }
 
-    /** Access an element of m_DailyPrecipitationsForReturnPeriods
-     * \return An item of m_StationsLocCoordV
+    /** Access an element of m_ReferenceValues
      */
-    float GetDailyPrecipitationForReturnPeriod(int i_stat, int i_ret)
+    float GetReferenceValue(int i_stat, int i_ref)
     {
+		if (!m_HasReferenceValues) 
+		{
+			asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
+			return NaNFloat;
+		}
+
         wxASSERT(i_stat>=0);
-        wxASSERT(i_ret>=0);
-        wxASSERT(i_stat<m_DailyPrecipitationsForReturnPeriods.rows());
-        wxASSERT(i_ret<m_DailyPrecipitationsForReturnPeriods.cols());
-        return m_DailyPrecipitationsForReturnPeriods(i_stat, i_ret);
+        wxASSERT(i_ref>=0);
+        wxASSERT(i_stat<m_ReferenceValues.rows());
+        wxASSERT(i_ref<m_ReferenceValues.cols());
+        return m_ReferenceValues(i_stat, i_ref);
     }
 
-    /** Access m_DailyPrecipitationsForReturnPeriods
-     * \return The whole array m_DailyPrecipitationsForReturnPeriods
+    /** Access m_ReferenceValues
+     * \return The whole array m_ReferenceValues
      */
-    Array2DFloat GetDailyPrecipitationsForReturnPeriods()
+    Array2DFloat GetReferenceValues()
     {
-        return m_DailyPrecipitationsForReturnPeriods;
+		if (!m_HasReferenceValues) 
+		{
+			asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
+			Array2DFloat nodata(0,0);
+			return nodata;
+		}
+
+        return m_ReferenceValues;
     }
 
-    /** Set m_DailyPrecipitationsForReturnPeriods
-     * \param dailyPrecipitationsForReturnPeriods The new array to set
+    /** Set m_ReferenceValues
+     * \param referenceValues The new array to set
      */
-    void SetDailyPrecipitationsForReturnPeriods(Array2DFloat &dailyPrecipitationsForReturnPeriods)
+    void SetReferenceValues(Array2DFloat &referenceValues)
     {
-        m_DailyPrecipitationsForReturnPeriods = dailyPrecipitationsForReturnPeriods;
+        m_ReferenceValues = referenceValues;
     }
 
     /** Get the size of m_TargetDates
@@ -482,6 +527,7 @@ public:
      */
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
+
 protected:
 
     /** Build the result file path
@@ -489,14 +535,17 @@ protected:
     void BuildFileName();
 
 private:
-    wxString m_PredictandDBName;
-    wxString m_ModelName;
+    DataParameter m_DataParameter;
+	DataTemporalResolution m_DataTemporalResolution;
+	DataSpatialAggregation m_DataSpatialAggregation;
+	wxString m_DatasetId;
 
+
+    wxString m_ModelName;
     wxString m_ModelLongName;
 
 
-
-
+	bool m_HasReferenceValues;
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
     Array1DInt m_AnalogsNb; //!< Member variable "m_AnalogsNb"
@@ -507,8 +556,8 @@ private:
     Array1DDouble m_StationsLon; //!< Member variable "m_StationsLon"
     Array1DDouble m_StationsLocCoordU; //!< Member variable "m_StationsLocCoordU"
     Array1DDouble m_StationsLocCoordV; //!< Member variable "m_StationsLocCoordV"
-    Array1DFloat m_ReturnPeriods;
-    Array2DFloat m_DailyPrecipitationsForReturnPeriods;
+    Array1DFloat m_ReferenceAxis;
+    Array2DFloat m_ReferenceValues;
     VArray1DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogCriteria"
     VArray2DFloat m_AnalogsValuesGross; //!< Member variable "m_AnalogsValuesGross"
     VArray1DFloat m_AnalogsDates; //!< Member variable "m_AnalogDates"

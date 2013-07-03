@@ -1342,8 +1342,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step)
 {
     // Initialize the result object
-    results.SetCurrentStep(i_step);
-    results.SetPredictandDBName(m_PredictandDB->GetPredictandDBTypeString());
+    results.SetCurrentStep(i_step);	
+	results.SetDatasetId(m_PredictandDB->GetDatasetId());
+	results.SetDataParameter(m_PredictandDB->GetDataParameter());
+	results.SetDataTemporalResolution(m_PredictandDB->GetDataTemporalResolution());
+	results.SetDataSpatialAggregation(m_PredictandDB->GetDataSpatialAggregation());
 
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_PredictandDB);
@@ -1359,8 +1362,8 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     results.SetStationsLon(m_PredictandDB->GetStationsLonArray());
     results.SetStationsLocCoordU(m_PredictandDB->GetStationsLocCoordUArray());
     results.SetStationsLocCoordV(m_PredictandDB->GetStationsLocCoordVArray());
-    results.SetReturnPeriods(m_PredictandDB->GetReferenceAxis());
-    results.SetDailyPrecipitationsForReturnPeriods(m_PredictandDB->GetReferenceValuesArray());
+    results.SetReferenceAxis(m_PredictandDB->GetReferenceAxis());
+    results.SetReferenceValues(m_PredictandDB->GetReferenceValuesArray());
 
     Array1DFloat leadTimes = results.GetTargetDates();
 

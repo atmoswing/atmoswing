@@ -26,6 +26,7 @@ asResults::asResults()
     m_LoadIntermediateResults = false;
     m_CurrentStep = 0;
     m_PredictandStationId = 0;
+    m_FileVersion = 1.1f;
 }
 
 asResults::~asResults()
