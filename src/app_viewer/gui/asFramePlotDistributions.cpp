@@ -349,10 +349,13 @@ bool asFramePlotDistributions::PlotPredictands()
         PlotBestAnalogsCurve(10);
     if (DoPlotBestAnalogs5Curve)
         PlotBestAnalogsCurve(5);
-    if (DoPlotClassicReturnPeriod)
-        PlotReturnPeriod(10);
-    if (DoPlotAllReturnPeriods)
-        PlotAllReturnPeriods();
+	if(forecast->HasReferenceValues())
+	{
+		if (DoPlotClassicReturnPeriod)
+			PlotReturnPeriod(10);
+		if (DoPlotAllReturnPeriods)
+			PlotAllReturnPeriods();
+	}
 
     // Set the view rectangle (wxRect2DDouble(x, y, w, h))
     wxRect2DDouble currentView(0, 0, m_XmaxPredictands*1.1, 1);
@@ -422,14 +425,14 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReturnPeriods();
+    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceAxis();
 
     for (int i=retPeriods.size()-1; i>=0; i--)
     {
         if (abs(retPeriods[i]-2.33)<0.1) continue;
 
         // Get precipitation value
-        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetDailyPrecipitationForReturnPeriod(m_SelectedStation, i);
+		float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i/(float)(retPeriods.size()-1);
@@ -488,7 +491,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReturnPeriods();
+    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceAxis();
 
     // Find the value 10
     int index = asTools::SortedArraySearch(&retPeriods[0], &retPeriods[retPeriods.size()-1], returnPeriod);
@@ -496,7 +499,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
     if ( (index!=asNOT_FOUND) && (index!=asOUT_OF_RANGE) )
     {
         // Get precipitation value
-        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetDailyPrecipitationForReturnPeriod(m_SelectedStation, index);
+        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, index);
 
         // Color (red)
         wxGenericPen pen(wxGenericColour(255,0,0), 2);
