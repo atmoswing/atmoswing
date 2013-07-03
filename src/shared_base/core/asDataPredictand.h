@@ -42,7 +42,25 @@ class asDataPredictand: public wxObject
         virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) = 0;
 
         virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString) = 0;
+		
+		virtual Array1DFloat GetReferenceAxis()
+		{
+			Array1DFloat nodata(1);
+			nodata << NaNFloat;
+			return nodata;
+		}
 
+		virtual float GetReferenceValue(int i_station, double duration, float reference)
+		{
+			return NaNFloat;
+		}
+
+		virtual Array2DFloat GetReferenceValuesArray()
+		{
+			Array1DFloat nodata(1);
+			nodata << NaNFloat;
+			return nodata;
+		}
 
         /** Access m_DatasetId
          * \return The current value of m_DatasetId
@@ -51,6 +69,36 @@ class asDataPredictand: public wxObject
         {
             return m_DatasetId;
         }
+		
+		DataParameter GetDataParameter()
+		{
+			return m_DataParameter;
+		}
+
+		void SetDataParameter(DataParameter val)
+		{
+			m_DataParameter = val;
+		}
+
+		DataTemporalResolution GetDataTemporalResolution()
+		{
+			return m_DataTemporalResolution;
+		}
+
+		void SetDataTemporalResolution(DataTemporalResolution val)
+		{
+			m_DataTemporalResolution = val;
+		}
+
+		DataSpatialAggregation GetDataSpatialAggregation()
+		{
+			return m_DataSpatialAggregation;
+		}
+
+		void SetDataSpatialAggregation(DataSpatialAggregation val)
+		{
+			m_DataSpatialAggregation = val;
+		}
 
         /** Access m_HasNormalizedData
          * \return The current value of m_HasNormalizedData
