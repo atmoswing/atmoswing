@@ -180,6 +180,7 @@ enum DataParameter
     RelativeHumidity,
     SpecificHumidity,
     Omega,
+	Wind,
     Uwind,
     Vwind,
     SurfaceLiftedIndex,

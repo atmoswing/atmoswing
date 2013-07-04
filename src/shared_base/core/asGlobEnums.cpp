@@ -141,6 +141,10 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
     {
         return Omega;
     }
+    else if (ParameterStr.CmpNoCase("Wind")==0)
+    {
+        return Wind;
+    }
     else if (ParameterStr.CmpNoCase("Uwind")==0)
     {
         return Uwind;
@@ -246,6 +250,8 @@ wxString asGlobEnums::DataParameterEnumToString(DataParameter dataParameter)
 			return "SpecificHumidity";
 		case(Omega):
 			return "Omega";
+		case(Wind):
+			return "Wind";
 		case(Uwind):
 			return "Uwind";
 		case(Vwind):
