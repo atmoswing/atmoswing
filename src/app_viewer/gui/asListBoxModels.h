@@ -17,6 +17,8 @@
 
 #include <wx/listbox.h>
 
+#include "asIncludes.h"
+
 class asForecastViewer;
 
 class asListBoxModels : public wxListBox
@@ -24,7 +26,7 @@ class asListBoxModels : public wxListBox
 public:
     asListBoxModels(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL, long style = 0);
     virtual ~asListBoxModels();
-    bool Add(const wxString &modelName, const wxString &leadTimeOriginStr);
+    bool Add(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
 
 protected:
 

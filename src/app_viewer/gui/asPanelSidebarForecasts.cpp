@@ -60,7 +60,7 @@ void asPanelSidebarForecasts::ClearForecasts()
     m_ModelsCtrl->Clear();
 }
 
-void asPanelSidebarForecasts::AddForecast(const wxString &modelName, const wxString &leadTimeOriginStr)
+void asPanelSidebarForecasts::AddForecast(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
 {
     m_ModelsCtrl->Add(modelName, leadTimeOriginStr);
 }

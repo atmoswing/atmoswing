@@ -212,8 +212,7 @@ void asFrameForecastDots::OnForecastSelectionChange( wxCommandEvent& event )
 void asFrameForecastDots::OnForecastNewAdded( wxCommandEvent& event )
 {
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
-    wxString modelName = forecast->GetModelName();
-    m_PanelSidebarForecasts->AddForecast(modelName, forecast->GetLeadTimeOriginString());
+	m_PanelSidebarForecasts->AddForecast(forecast->GetModelName(), forecast->GetLeadTimeOriginString(), forecast->GetDataParameter(), forecast->GetDataTemporalResolution());
 
     m_ForecastViewer->SetModel(event.GetInt());
 
