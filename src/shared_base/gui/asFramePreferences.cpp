@@ -76,7 +76,6 @@ void asFramePreferences::LoadPreferences()
     {
         m_FilePickerCatalogPredictorsArchive->SetBackgroundColour(col);
         m_FilePickerCatalogPredictorsRealtime->SetBackgroundColour(col);
-        m_FilePickerCatalogPredictands->SetBackgroundColour(col);
         m_DirPickerPredictandDB->SetBackgroundColour(col);
         m_DirPickerIntermediateResults->SetBackgroundColour(col);
         m_DirPickerForecastResults->SetBackgroundColour(col);
@@ -184,8 +183,6 @@ void asFramePreferences::LoadPreferences()
     m_FilePickerCatalogPredictorsArchive->SetPath(CatalogPredictorsArchiveFilePath);
     wxString CatalogPredictorsRealtimeFilePath = pConfigForecaster->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", dirConfig+"CatalogPredictorsRealtime.xml");
     m_FilePickerCatalogPredictorsRealtime->SetPath(CatalogPredictorsRealtimeFilePath);
-    wxString CatalogPredictandsFilePath = pConfigForecaster->Read("/StandardPaths/CatalogPredictandsFilePath", dirConfig+"CatalogPredictands.xml");
-    m_FilePickerCatalogPredictands->SetPath(CatalogPredictandsFilePath);
     wxString PredictandDBDir = pConfigForecaster->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
     m_DirPickerPredictandDB->SetPath(PredictandDBDir);
     wxString IntermediateResultsDir = pConfigForecaster->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"Atmoswing");
@@ -466,9 +463,6 @@ void asFramePreferences::SavePreferences( )
     wxString CatalogPredictorsRealtimeFilePath = m_FilePickerCatalogPredictorsRealtime->GetPath();
     pConfigForecaster->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
     pConfigViewer->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
-    wxString CatalogPredictandsFilePath = m_FilePickerCatalogPredictands->GetPath();
-    pConfigForecaster->Write("/StandardPaths/CatalogPredictandsFilePath", CatalogPredictandsFilePath);
-    pConfigViewer->Write("/StandardPaths/CatalogPredictandsFilePath", CatalogPredictandsFilePath);
     wxString PredictandDBDir = m_DirPickerPredictandDB->GetPath();
     pConfigForecaster->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
     pConfigViewer->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);

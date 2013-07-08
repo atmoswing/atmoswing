@@ -168,8 +168,11 @@ bool asDataPredictand::InitMembers(const wxString &catalogFilePath)
     if (catalog.GetEnd()>m_DateEnd)
         m_DateEnd = catalog.GetEnd();
 
+	// Get dataset ID
+	m_DatasetId = catalog.GetSetId();
+
     // Get the number of stations
-    asCatalog::DataIdListInt datListCheck = asCatalog::GetDataIdListInt(Predictand, catalogFilePath);
+    asCatalog::DataIdListInt datListCheck = asCatalog::GetDataIdListInt(Predictand, wxEmptyString, catalogFilePath);
     m_StationsNb = datListCheck.Id.size();
 
     // Get the timestep
@@ -244,19 +247,19 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     m_StationsNb = ncFile.GetDimLength("stations");
     wxASSERT(m_StationsNb>0);
     m_StationsName.resize( m_StationsNb );
-    ncFile.GetVar("stationsname", &m_StationsName[0], m_StationsNb);
+    ncFile.GetVar("stations_name", &m_StationsName[0], m_StationsNb);
     m_StationsIds.resize( m_StationsNb );
-    ncFile.GetVar("stationsids", &m_StationsIds[0]);
+    ncFile.GetVar("stations_ids", &m_StationsIds[0]);
     m_StationsHeight.resize( m_StationsNb );
-    ncFile.GetVar("stationsheight", &m_StationsHeight[0]);
+    ncFile.GetVar("stations_height", &m_StationsHeight[0]);
     m_StationsLon.resize( m_StationsNb );
     ncFile.GetVar("lon", &m_StationsLon[0]);
     m_StationsLat.resize( m_StationsNb );
     ncFile.GetVar("lat", &m_StationsLat[0]);
     m_StationsLocCoordU.resize( m_StationsNb );
-    ncFile.GetVar("loccoordu", &m_StationsLocCoordU[0]);
+    ncFile.GetVar("loc_coord_u", &m_StationsLocCoordU[0]);
     m_StationsLocCoordV.resize( m_StationsNb );
-    ncFile.GetVar("loccoordv", &m_StationsLocCoordV[0]);
+    ncFile.GetVar("loc_coord_v", &m_StationsLocCoordV[0]);
     m_StationsStart.resize( m_StationsNb );
     ncFile.GetVar("start", &m_StationsStart[0]);
     m_StationsEnd.resize( m_StationsNb );
@@ -266,7 +269,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     size_t IndexStart[2] = {0,0};
     size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
     m_DataGross.resize( m_TimeLength, m_StationsNb );
-    ncFile.GetVarArray("datagross", IndexStart, IndexCount, &m_DataGross[0]);
+    ncFile.GetVarArray("data_gross", IndexStart, IndexCount, &m_DataGross[0]);
 
 	return true;
 }
@@ -298,29 +301,29 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
 
     // Define variables: the scores and the corresponding dates
     ncFile.DefVar("time", NC_DOUBLE, 1, DimNameTime);
-    ncFile.DefVar("datagross", NC_FLOAT, 2, DimNames2D);
-    ncFile.DefVar("stationsname", NC_STRING, 1, DimNameStations);
-    ncFile.DefVar("stationsids", NC_INT, 1, DimNameStations);
-    ncFile.DefVar("stationsheight", NC_FLOAT, 1, DimNameStations);
+    ncFile.DefVar("data_gross", NC_FLOAT, 2, DimNames2D);
+    ncFile.DefVar("stations_name", NC_STRING, 1, DimNameStations);
+    ncFile.DefVar("stations_ids", NC_INT, 1, DimNameStations);
+    ncFile.DefVar("stations_height", NC_FLOAT, 1, DimNameStations);
     ncFile.DefVar("lon", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("lat", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("loccoordu", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("loccoordv", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("loc_coord_u", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("loc_coord_v", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("start", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("end", NC_DOUBLE, 1, DimNameStations);
 	
     // Put attributes for the stations
-    ncFile.PutAtt("long_name", "Stations names", "stationsname");
-    ncFile.PutAtt("var_desc", "Name of the predictand stations", "stationsname");
+    ncFile.PutAtt("long_name", "Stations names", "stations_name");
+    ncFile.PutAtt("var_desc", "Name of the predictand stations", "stations_name");
 
     // Put attributes for the stations
-    ncFile.PutAtt("long_name", "Stations IDs", "stationsids");
-    ncFile.PutAtt("var_desc", "Internal IDs of the predictand stations", "stationsids");
+    ncFile.PutAtt("long_name", "Stations IDs", "stations_ids");
+    ncFile.PutAtt("var_desc", "Internal IDs of the predictand stations", "stations_ids");
 
     // Put attributes for the stations
-    ncFile.PutAtt("long_name", "Stations height", "stationsheight");
-    ncFile.PutAtt("var_desc", "Altitude of the predictand stations", "stationsheight");
-    ncFile.PutAtt("units", "m", "stationsheight");
+    ncFile.PutAtt("long_name", "Stations height", "stations_height");
+    ncFile.PutAtt("var_desc", "Altitude of the predictand stations", "stations_height");
+    ncFile.PutAtt("units", "m", "stations_height");
 
     // Put attributes for the lon variable
     ncFile.PutAtt("long_name", "Longitude", "lon");
@@ -333,14 +336,14 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.PutAtt("units", "degrees", "lat");
 
     // Put attributes for the loccoordu variable
-    ncFile.PutAtt("long_name", "Local coordinate U", "loccoordu");
-    ncFile.PutAtt("var_desc", "Local coordinate for the U axis (west-east)", "loccoordu");
-    ncFile.PutAtt("units", "m", "loccoordu");
+    ncFile.PutAtt("long_name", "Local coordinate U", "loc_coord_u");
+    ncFile.PutAtt("var_desc", "Local coordinate for the U axis (west-east)", "loc_coord_u");
+    ncFile.PutAtt("units", "m", "loc_coord_u");
 
     // Put attributes for the loccoordv variable
-    ncFile.PutAtt("long_name", "Local coordinate V", "loccoordv");
-    ncFile.PutAtt("var_desc", "Local coordinate for the V axis (west-east)", "loccoordv");
-    ncFile.PutAtt("units", "m", "loccoordv");
+    ncFile.PutAtt("long_name", "Local coordinate V", "loc_coord_v");
+    ncFile.PutAtt("var_desc", "Local coordinate for the V axis (west-east)", "loc_coord_v");
+    ncFile.PutAtt("units", "m", "loc_coord_v");
 
     // Put attributes for the start variable
     ncFile.PutAtt("long_name", "Start", "start");
@@ -353,9 +356,8 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "end");
 
 	// Put attributes for the data variable
-    ncFile.PutAtt("long_name", "Gross data", "datagross");
-    ncFile.PutAtt("var_desc", "Gross data, whithout any treatment", "datagross");
-    ncFile.PutAtt("units", "mm", "datagross");
+    ncFile.PutAtt("long_name", "Gross data", "data_gross");
+    ncFile.PutAtt("var_desc", "Gross data, whithout any treatment", "data_gross");
 
 }
 
@@ -371,16 +373,16 @@ bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
 
     // Write data
     ncFile.PutVarArray("time", startTime, countTime, &m_Time(0));
-    ncFile.PutVarArray("stationsname", startStations, countStations, &m_StationsName[0], m_StationsName.size());
-    ncFile.PutVarArray("stationsids", startStations, countStations, &m_StationsIds(0));
-    ncFile.PutVarArray("stationsheight", startStations, countStations, &m_StationsHeight(0));
+    ncFile.PutVarArray("stations_name", startStations, countStations, &m_StationsName[0], m_StationsName.size());
+    ncFile.PutVarArray("stations_ids", startStations, countStations, &m_StationsIds(0));
+    ncFile.PutVarArray("stations_height", startStations, countStations, &m_StationsHeight(0));
     ncFile.PutVarArray("lon", startStations, countStations, &m_StationsLon(0));
     ncFile.PutVarArray("lat", startStations, countStations, &m_StationsLat(0));
-    ncFile.PutVarArray("loccoordu", startStations, countStations, &m_StationsLocCoordU(0));
-    ncFile.PutVarArray("loccoordv", startStations, countStations, &m_StationsLocCoordV(0));
+    ncFile.PutVarArray("loc_coord_u", startStations, countStations, &m_StationsLocCoordU(0));
+    ncFile.PutVarArray("loc_coord_v", startStations, countStations, &m_StationsLocCoordV(0));
     ncFile.PutVarArray("start", startStations, countStations, &m_StationsStart(0));
     ncFile.PutVarArray("end", startStations, countStations, &m_StationsEnd(0));
-    ncFile.PutVarArray("datagross", start2, count2, &m_DataGross(0,0));
+    ncFile.PutVarArray("data_gross", start2, count2, &m_DataGross(0,0));
 
 	return true;
 }
@@ -411,8 +413,11 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
         asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
     #endif
 
+	// Get catalog
+	asCatalogPredictands catalog(catalogFilePath);
+
     // Get the stations list
-	asCatalog::DataIdListInt stationsList = asCatalog::GetDataIdListInt(Predictand, m_DatasetId, catalogFilePath);
+	asCatalog::DataIdListInt stationsList = catalog.GetDataIdListInt(Predictand, m_DatasetId, catalogFilePath);
 
     for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
     {
@@ -420,7 +425,6 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
         int stationId = stationsList.Id[i_station];
 
         // Load data properties
-        asCatalogPredictands catalog(catalogFilePath);
         if(!catalog.Load(stationId)) return false;
 
         #if wxUSE_GUI

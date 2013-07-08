@@ -273,8 +273,6 @@ class asFramePreferencesVirtual : public wxFrame
 		wxFilePickerCtrl* m_FilePickerCatalogPredictorsArchive;
 		wxStaticText* m_StaticTextCatalogPredictorRealtime;
 		wxFilePickerCtrl* m_FilePickerCatalogPredictorsRealtime;
-		wxStaticText* m_StaticTextCatalogPredictand;
-		wxFilePickerCtrl* m_FilePickerCatalogPredictands;
 		wxStdDialogButtonSizer* m_ButtonsConfirmation;
 		wxButton* m_ButtonsConfirmationOK;
 		wxButton* m_ButtonsConfirmationApply;
