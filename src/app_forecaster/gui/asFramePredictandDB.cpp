@@ -247,14 +247,14 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
             case 1: // Temperature
             {
 				// Instiantiate a predictand object
-				asDataPredictandTemperature predictand(Precipitation, dataTemporalResolution, dataSpatialAggregation);
+				asDataPredictandTemperature predictand(AirTemperature, dataTemporalResolution, dataSpatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 2: // Lightnings
             {
                 // Instiantiate a predictand object
-				asDataPredictandLightnings predictand(Precipitation, dataTemporalResolution, dataSpatialAggregation);
+				asDataPredictandLightnings predictand(Lightnings, dataTemporalResolution, dataSpatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
