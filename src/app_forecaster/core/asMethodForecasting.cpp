@@ -271,7 +271,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-    if(!LoadPredictandDB(params.GetPredictandDB())) return false;
+	if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
     asLogMessage(_("Predictand DB loaded."));
 
    #if wxUSE_GUI
@@ -1343,10 +1343,10 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
 {
     // Initialize the result object
     results.SetCurrentStep(i_step);	
-	results.SetDatasetId(m_PredictandDB->GetDatasetId());
-	results.SetDataParameter(m_PredictandDB->GetDataParameter());
-	results.SetDataTemporalResolution(m_PredictandDB->GetDataTemporalResolution());
-	results.SetDataSpatialAggregation(m_PredictandDB->GetDataSpatialAggregation());
+	results.SetPredictandDatasetId(m_PredictandDB->GetDatasetId());
+	results.SetPredictandParameter(m_PredictandDB->GetDataParameter());
+	results.SetPredictandTemporalResolution(m_PredictandDB->GetDataTemporalResolution());
+	results.SetPredictandSpatialAggregation(m_PredictandDB->GetDataSpatialAggregation());
 
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_PredictandDB);
