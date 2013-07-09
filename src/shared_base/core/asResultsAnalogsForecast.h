@@ -35,44 +35,44 @@ public:
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
 
-	wxString GetDatasetId()
+	wxString GetPredictandDatasetId()
     {
-        return m_DatasetId;
+        return m_PredictandDatasetId;
     }
 
-    void SetDatasetId(const wxString &val)
+    void SetPredictandDatasetId(const wxString &val)
     {
-        m_DatasetId = val;
+        m_PredictandDatasetId = val;
     }
 
-	DataParameter GetDataParameter()
+	DataParameter GetPredictandParameter()
     {
-        return m_DataParameter;
+        return m_PredictandParameter;
     }
 
-    void SetDataParameter(DataParameter val)
+    void SetPredictandParameter(DataParameter val)
     {
-        m_DataParameter = val;
+        m_PredictandParameter = val;
     }
 
-	DataTemporalResolution GetDataTemporalResolution()
+	DataTemporalResolution GetPredictandTemporalResolution()
     {
-        return m_DataTemporalResolution;
+        return m_PredictandTemporalResolution;
     }
 
-    void SetDataTemporalResolution(DataTemporalResolution val)
+    void SetPredictandTemporalResolution(DataTemporalResolution val)
     {
-        m_DataTemporalResolution = val;
+        m_PredictandTemporalResolution = val;
     }
 
-	DataSpatialAggregation GetDataSpatialAggregation()
+	DataSpatialAggregation GetPredictandSpatialAggregation()
     {
-        return m_DataSpatialAggregation;
+        return m_PredictandSpatialAggregation;
     }
 
-    void SetDataSpatialAggregation(DataSpatialAggregation val)
+    void SetPredictandSpatialAggregation(DataSpatialAggregation val)
     {
-        m_DataSpatialAggregation = val;
+        m_PredictandSpatialAggregation = val;
     }
 
 	/** Access m_HasReferenceValues
@@ -535,10 +535,10 @@ protected:
     void BuildFileName();
 
 private:
-    DataParameter m_DataParameter;
-	DataTemporalResolution m_DataTemporalResolution;
-	DataSpatialAggregation m_DataSpatialAggregation;
-	wxString m_DatasetId;
+    DataParameter m_PredictandParameter;
+	DataTemporalResolution m_PredictandTemporalResolution;
+	DataSpatialAggregation m_PredictandSpatialAggregation;
+	wxString m_PredictandDatasetId;
 
 
     wxString m_ModelName;

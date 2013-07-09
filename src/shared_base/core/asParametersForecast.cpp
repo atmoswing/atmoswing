@@ -315,6 +315,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     }
     if(!fileParams.GoANodeBack()) return false;
 
+	/*
     // Get Analogs Values process
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Values")) return false;
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
@@ -327,6 +328,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoANodeBack()) return false;
+	*/
 
     // Set sizes
     SetSizes();

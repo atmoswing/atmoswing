@@ -26,10 +26,10 @@ asResults()
 	m_HasReferenceValues = false;
 
 	// Default values for former versions
-    m_DataParameter = Precipitation;
-	m_DataTemporalResolution = Daily;
-	m_DataSpatialAggregation = Station;
-	m_DatasetId = wxEmptyString;
+    m_PredictandParameter = Precipitation;
+	m_PredictandTemporalResolution = Daily;
+	m_PredictandSpatialAggregation = Station;
+	m_PredictandDatasetId = wxEmptyString;
 }
 
 asResultsAnalogsForecast::~asResultsAnalogsForecast()
@@ -149,13 +149,13 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
 
 	// Set general attributes
     ncFile.PutAtt("version", &m_FileVersion);
-	int dataParameter = (int)m_DataParameter;
-	ncFile.PutAtt("data_parameter", &dataParameter);
-	int dataTemporalResolution = (int)m_DataTemporalResolution;
-	ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
-	int dataSpatialAggregation = (int)m_DataSpatialAggregation;
-	ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
-	ncFile.PutAtt("dataset_id", m_DatasetId);
+	int dataParameter = (int)m_PredictandParameter;
+	ncFile.PutAtt("predictand_parameter", &dataParameter);
+	int dataTemporalResolution = (int)m_PredictandTemporalResolution;
+	ncFile.PutAtt("predictand_temporal_resolution", &dataTemporalResolution);
+	int dataSpatialAggregation = (int)m_PredictandSpatialAggregation;
+	ncFile.PutAtt("predictand_spatial_aggregation", &dataSpatialAggregation);
+	ncFile.PutAtt("predictand_dataset_id", m_PredictandDatasetId);
     ncFile.PutAtt("model_name", m_ModelName);
     ncFile.PutAtt("date_processed", &m_DateProcessed);
     ncFile.PutAtt("lead_time_origin", &m_LeadTimeOrigin);
@@ -335,10 +335,10 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     if (asTools::IsNaN(version) || version<1.1)
     {
 		asLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
-		m_DataParameter = Precipitation;
-		m_DataTemporalResolution = Daily;
-		m_DataSpatialAggregation = Station;
-		m_DatasetId = wxEmptyString;
+		m_PredictandParameter = Precipitation;
+		m_PredictandTemporalResolution = Daily;
+		m_PredictandSpatialAggregation = Station;
+		m_PredictandDatasetId = wxEmptyString;
 		m_ModelName = ncFile.GetAttString("modelName");
 		m_DateProcessed = ncFile.GetAttDouble("dateProcessed");
 		m_LeadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
@@ -346,10 +346,10 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     }
 	else
 	{
-		m_DataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
-		m_DataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
-		m_DataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
-		m_DatasetId = ncFile.GetAttString("dataset_id");
+		m_PredictandParameter = (DataParameter)ncFile.GetAttInt("predictand_parameter");
+		m_PredictandTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("predictand_temporal_resolution");
+		m_PredictandSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("predictand_spatial_aggregation");
+		m_PredictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
 		m_ModelName = ncFile.GetAttString("model_name");
 		m_DateProcessed = ncFile.GetAttDouble("date_processed");
 		m_LeadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
@@ -490,7 +490,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     }
 
     wxASSERT(!m_ModelName.IsEmpty());
-    wxASSERT(!m_DatasetId.IsEmpty());
+    wxASSERT(!m_PredictandDatasetId.IsEmpty());
     wxASSERT(m_TargetDates.size()>0);
     wxASSERT(m_AnalogsNb.size()>0);
     wxASSERT(m_StationsIds.size()>0);

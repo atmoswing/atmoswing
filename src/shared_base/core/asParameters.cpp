@@ -33,7 +33,10 @@ asParameters::asParameters()
     m_TimeArrayAnalogsIntervalDays = 0;
     m_PredictandStationId = 0;
     m_PredictandDTimeHours = 0;
-    m_PredictandDB = wxEmptyString;
+	m_PredictandParameter = (DataParameter)0;
+	m_PredictandTemporalResolution = (DataTemporalResolution)0;
+	m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
+	m_PredictandDatasetId = wxEmptyString;
 }
 
 asParameters::~asParameters()
@@ -527,6 +530,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     }
     if(!fileParams.GoANodeBack()) return false;
 
+	/*
     // Get first Analogs Dates process
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Values")) return false;
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
@@ -541,6 +545,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoANodeBack()) return false;
+	*/
 
     // Set sizes
     SetSizes();

@@ -53,7 +53,7 @@ bool asMethodStandard::Manager()
     return false;
 }
 
-bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBType, const wxString &predictandDBFilePath)
+bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
 {
     wxDELETE(m_PredictandDB);
 
