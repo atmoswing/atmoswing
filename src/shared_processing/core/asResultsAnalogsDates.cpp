@@ -175,9 +175,9 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
     DimNames2.push_back("analogs");
 
     // Define variables: the analogcriteria and the corresponding dates
-    ncFile.DefVar("targetdates", NC_FLOAT, 1, DimNames1);
-    ncFile.DefVar("analogscriteria", NC_FLOAT, 2, DimNames2);
-    ncFile.DefVar("analogsdates", NC_FLOAT, 2, DimNames2);
+    ncFile.DefVar("target_dates", NC_FLOAT, 1, DimNames1);
+    ncFile.DefVar("analogs_criteria", NC_FLOAT, 2, DimNames2);
+    ncFile.DefVar("analogs_dates", NC_FLOAT, 2, DimNames2);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -211,9 +211,9 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
     }
 
     // Write data
-    ncFile.PutVarArray("targetdates", start1D, count1D, &m_TargetDates(0));
-    ncFile.PutVarArray("analogscriteria", start2D, count2D, &analogsCriteria[0]);
-    ncFile.PutVarArray("analogsdates", start2D, count2D, &analogsDates[0]);
+    ncFile.PutVarArray("target_dates", start1D, count1D, &m_TargetDates(0));
+    ncFile.PutVarArray("analogs_criteria", start2D, count2D, &analogsCriteria[0]);
+    ncFile.PutVarArray("analogs_dates", start2D, count2D, &analogsDates[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -364,7 +364,7 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
 
     // Get time
     m_TargetDates.resize( Ntime );
-    ncFile.GetVar("targetdates", &m_TargetDates[0]);
+    ncFile.GetVar("target_dates", &m_TargetDates[0]);
 
     // Check last value
     if(m_TargetDates[m_TargetDates.size()-1]<m_TargetDates[0])
@@ -382,8 +382,8 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     // Get data
     size_t IndexStart[2] = {0,0};
     size_t IndexCount[2] = {size_t(Ntime), size_t(Nanalogs)};
-    ncFile.GetVarArray("analogsdates", IndexStart, IndexCount, &analogsDates[0]);
-    ncFile.GetVarArray("analogscriteria", IndexStart, IndexCount, &analogsCriteria[0]);
+    ncFile.GetVarArray("analogs_dates", IndexStart, IndexCount, &analogsDates[0]);
+    ncFile.GetVarArray("analogs_criteria", IndexStart, IndexCount, &analogsCriteria[0]);
 
     // Set data into the matrices
     m_AnalogsDates.resize( Ntime, Nanalogs );
