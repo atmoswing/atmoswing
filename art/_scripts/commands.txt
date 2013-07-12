@@ -1,0 +1,2 @@
+./libexec-png2wx.pl -C bullets.cpp -H bullets.h -M _BULLETS_H_ bullets/*.png
+./libexec-png2wx.pl -C toolbar.cpp -H toolbar.h -M _TOOLBAR_H_ toolbar/*.png
