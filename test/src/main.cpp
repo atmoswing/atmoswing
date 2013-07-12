@@ -18,7 +18,7 @@ int main()
 
     // Option to process time demanding processing
     g_UnitTestLongerProcessing = true;
-    g_UnitTestLongestProcessing = true;
+    g_UnitTestLongestProcessing = false;
     if(g_UnitTestLongestProcessing) g_UnitTestLongerProcessing = true;
 
     // Test random distribution: write ouput in files
