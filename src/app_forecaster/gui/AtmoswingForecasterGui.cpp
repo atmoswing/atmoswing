@@ -283,15 +283,44 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 	
-	m_StaticTextData = new wxStaticText( m_panel2, wxID_ANY, _("Select the type of predictand data"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextData->Wrap( -1 );
-	bSizer6->Add( m_StaticTextData, 0, wxALL, 5 );
+	wxFlexGridSizer* fgSizer2;
+	fgSizer2 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer2->AddGrowableCol( 1 );
+	fgSizer2->SetFlexibleDirection( wxBOTH );
+	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	wxString m_ChoiceDataChoices[] = { _("Stations daily precipitation"), _("Stations 6-hourly series of daily precipitation"), _("Stations 6-hourly precipitation"), _("Regional daily precipitation"), _("Research daily precipitation"), _("Stations daily lightnings") };
-	int m_ChoiceDataNChoices = sizeof( m_ChoiceDataChoices ) / sizeof( wxString );
-	m_ChoiceData = new wxChoice( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceDataNChoices, m_ChoiceDataChoices, 0 );
-	m_ChoiceData->SetSelection( 0 );
-	bSizer6->Add( m_ChoiceData, 0, wxALL, 5 );
+	m_StaticTextDataParam = new wxStaticText( m_panel2, wxID_ANY, _("Predictand parameter"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextDataParam->Wrap( -1 );
+	fgSizer2->Add( m_StaticTextDataParam, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxString m_ChoiceDataParamChoices[] = { _("Precipitation"), _("Temperature"), _("Lightnings"), _("Other") };
+	int m_ChoiceDataParamNChoices = sizeof( m_ChoiceDataParamChoices ) / sizeof( wxString );
+	m_ChoiceDataParam = new wxChoice( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceDataParamNChoices, m_ChoiceDataParamChoices, 0 );
+	m_ChoiceDataParam->SetSelection( 0 );
+	fgSizer2->Add( m_ChoiceDataParam, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	m_StaticTextDataTempResol = new wxStaticText( m_panel2, wxID_ANY, _("Temporal resolution"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextDataTempResol->Wrap( -1 );
+	fgSizer2->Add( m_StaticTextDataTempResol, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxString m_ChoiceDataTempResolChoices[] = { _("24 hours"), _("6 hours"), _("Moving temporal window (6/24 hours)") };
+	int m_ChoiceDataTempResolNChoices = sizeof( m_ChoiceDataTempResolChoices ) / sizeof( wxString );
+	m_ChoiceDataTempResol = new wxChoice( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceDataTempResolNChoices, m_ChoiceDataTempResolChoices, 0 );
+	m_ChoiceDataTempResol->SetSelection( 0 );
+	fgSizer2->Add( m_ChoiceDataTempResol, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	m_StaticTextDataSpatAggreg = new wxStaticText( m_panel2, wxID_ANY, _("Spatial aggregation"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextDataSpatAggreg->Wrap( -1 );
+	fgSizer2->Add( m_StaticTextDataSpatAggreg, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxString m_ChoiceDataSpatAggregChoices[] = { _("Station"), _("Groupment"), _("Catchment") };
+	int m_ChoiceDataSpatAggregNChoices = sizeof( m_ChoiceDataSpatAggregChoices ) / sizeof( wxString );
+	m_ChoiceDataSpatAggreg = new wxChoice( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceDataSpatAggregNChoices, m_ChoiceDataSpatAggregChoices, 0 );
+	m_ChoiceDataSpatAggreg->SetSelection( 0 );
+	fgSizer2->Add( m_ChoiceDataSpatAggreg, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	
+	bSizer6->Add( fgSizer2, 1, wxTOP|wxBOTTOM|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer12;
 	bSizer12 = new wxBoxSizer( wxVERTICAL );
@@ -308,15 +337,15 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	
 	m_CheckBoxReturnPeriod = new wxCheckBox( m_PanelDataProcessing, wxID_ANY, _("Normalize by the return period of"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_CheckBoxReturnPeriod->SetValue(true); 
-	bSizer11->Add( m_CheckBoxReturnPeriod, 0, wxALL, 5 );
+	bSizer11->Add( m_CheckBoxReturnPeriod, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_TextCtrlReturnPeriod = new wxTextCtrl( m_PanelDataProcessing, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	m_TextCtrlReturnPeriod->SetMaxLength( 0 ); 
-	bSizer11->Add( m_TextCtrlReturnPeriod, 0, wxALL, 5 );
+	bSizer11->Add( m_TextCtrlReturnPeriod, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticText12 = new wxStaticText( m_PanelDataProcessing, wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText12->Wrap( -1 );
-	bSizer11->Add( m_staticText12, 0, wxALL, 5 );
+	m_StaticTextYears = new wxStaticText( m_PanelDataProcessing, wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextYears->Wrap( -1 );
+	bSizer11->Add( m_StaticTextYears, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	bSizer9->Add( bSizer11, 1, wxEXPAND, 5 );
@@ -335,6 +364,13 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	
 	
 	bSizer6->Add( bSizer12, 0, wxEXPAND, 5 );
+	
+	m_StaticTextCatalogPath = new wxStaticText( m_panel2, wxID_ANY, _("Select the predictand catalog"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextCatalogPath->Wrap( -1 );
+	bSizer6->Add( m_StaticTextCatalogPath, 0, wxALL, 5 );
+	
+	m_FilePickerCatalogPath = new wxFilePickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	bSizer6->Add( m_FilePickerCatalogPath, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextDataDir = new wxStaticText( m_panel2, wxID_ANY, _("Select the predictand data directory"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextDataDir->Wrap( -1 );
@@ -389,7 +425,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_ChoiceData->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictandDBVirtual::OnDataSelection ), NULL, this );
+	m_ChoiceDataParam->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictandDBVirtual::OnDataSelection ), NULL, this );
 	m_ButtonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictandDBVirtual::OnSaveDefault ), NULL, this );
 	m_ButtonsConfirmationCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictandDBVirtual::CloseFrame ), NULL, this );
 	m_ButtonsConfirmationOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictandDBVirtual::BuildDatabase ), NULL, this );
@@ -398,7 +434,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 asFramePredictandDBVirtual::~asFramePredictandDBVirtual()
 {
 	// Disconnect Events
-	m_ChoiceData->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictandDBVirtual::OnDataSelection ), NULL, this );
+	m_ChoiceDataParam->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asFramePredictandDBVirtual::OnDataSelection ), NULL, this );
 	m_ButtonSaveDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictandDBVirtual::OnSaveDefault ), NULL, this );
 	m_ButtonsConfirmationCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictandDBVirtual::CloseFrame ), NULL, this );
 	m_ButtonsConfirmationOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePredictandDBVirtual::BuildDatabase ), NULL, this );

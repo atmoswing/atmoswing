@@ -89,7 +89,8 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
         ThreadsManager().CritSectionConfig().Enter();
         if (Purpose==Predictand)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictandsFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictands.xml");
+            asLogError(_("asCatalog::GetDatasetIdList should not be called any more for predictand data, as there is supposed to be only 1 catalog per dataset."));
+			return SetList;
         }
         else if (Purpose==PredictorArchive)
         {
@@ -147,7 +148,7 @@ asCatalog::DataIdListStr asCatalog::GetDataIdListStr(DataPurpose Purpose, const 
         ThreadsManager().CritSectionConfig().Enter();
         if (Purpose==Predictand)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictandsFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictands.xml");
+            asLogError(_("You must provide the path to the predictand catalog."));
         }
         else if (Purpose==PredictorArchive)
         {
@@ -203,7 +204,7 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
         ThreadsManager().CritSectionConfig().Enter();
         if (Purpose==Predictand)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictandsFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictands.xml");
+            asLogError(_("You must provide the path to the predictand catalog."));
         }
         else if (Purpose==PredictorArchive)
         {
@@ -221,24 +222,43 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return DataList;
 
     // XML struct for the dataset information
-    wxString DataAccess = wxString::Format("AtmoswingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+	if (Purpose==Predictand)
+	{
+		wxString DataAccess = "AtmoswingFile.DataSet.DataList.Data";
+		
+		// Get the first data
+		DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
+		DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
 
-    // Get the first data
-    if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
-    {
-        DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
-        DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
-    }
+		// Get the other datasets
+		while(xmlFile.GetNextElement(DataAccess))
+		{
+			DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
+			DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
+		}
+	}
+	else
+	{
+		wxString DataAccess = wxString::Format("AtmoswingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+		
+		// Get the first data
+		if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
+		{
+			DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
+			DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
+		}
 
-    // Get the other datasets
-    while(xmlFile.GetNextElement(DataAccess))
-    {
-        if(xmlFile.GetThisElementAttributeValueBool("enable", true))
-        {
-            DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
-            DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
-        }
-    }
+		// Get the other datasets
+		while(xmlFile.GetNextElement(DataAccess))
+		{
+			if(xmlFile.GetThisElementAttributeValueBool("enable", true))
+			{
+				DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
+				DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
+			}
+		}
+	}
+
 
     return DataList;
 

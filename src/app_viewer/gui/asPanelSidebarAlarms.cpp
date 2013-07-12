@@ -27,7 +27,7 @@ asPanelSidebar( parent, id, pos, size, style )
     m_Gdc = NULL;
     m_PanelDrawing = NULL;
     m_Mode = 1; // 1: values
-                // 2: thresholds
+                // 2: thresholds -> not available yet
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarAlarms::OnPaint ), NULL, this );
 
@@ -301,15 +301,18 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
                 int stationsNb = forecast->GetStationsNb();
 
                 // Get return period index
-                int indexReturnPeriod;
-                Array1DFloat forecastReturnPeriod = forecast->GetReturnPeriods();
+                int indexReferenceAxis;
+				if(forecast->HasReferenceValues())
+				{
+					Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
-                indexReturnPeriod = asTools::SortedArraySearch(&forecastReturnPeriod[0], &forecastReturnPeriod[forecastReturnPeriod.size()-1], returnPeriodRef);
-                if ( (indexReturnPeriod==asNOT_FOUND) || (indexReturnPeriod==asOUT_OF_RANGE) )
-                {
-                    asLogError(_("The desired return period is not available in the forecast file."));
-                    return;
-                }
+					indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodRef);
+					if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
+					{
+						asLogError(_("The desired return period is not available in the forecast file."));
+						return;
+					}
+				}
 
                 // Check lead times effectively available for the current model
                 int leadtimeMin = 0;
@@ -338,11 +341,14 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
 
                         // Get values for return period
                         float factor = 1;
-                        float precip = forecast->GetDailyPrecipitationForReturnPeriod(i_station, indexReturnPeriod);
-                        wxASSERT(precip>0);
-                        wxASSERT(precip<500);
-                        factor = 1.0/precip;
-                        wxASSERT(factor>0);
+						if(forecast->HasReferenceValues())
+						{
+							float precip = forecast->GetReferenceValue(i_station, indexReferenceAxis);
+							wxASSERT(precip>0);
+							wxASSERT(precip<500);
+							factor = 1.0/precip;
+							wxASSERT(factor>0);
+						}
 
                         // Get values
                         Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);
@@ -404,19 +410,22 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
                 int stationsNb = forecast->GetStationsNb();
 
                 // Get return period index
-                int indexReturnPeriod1, indexReturnPeriod2;
-                if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
-                {
-                    Array1DFloat forecastReturnPeriod = forecast->GetReturnPeriods();
+                int indexReferenceAxis1, indexReferenceAxis2;
+				if(forecast->HasReferenceValues())
+				{
+					if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
+					{
+						Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
-                    indexReturnPeriod1 = asTools::SortedArraySearch(&forecastReturnPeriod[0], &forecastReturnPeriod[forecastReturnPeriod.size()-1], returnPeriodThreshold1);
-                    indexReturnPeriod2 = asTools::SortedArraySearch(&forecastReturnPeriod[0], &forecastReturnPeriod[forecastReturnPeriod.size()-1], returnPeriodThreshold2);
-                    if ( (indexReturnPeriod1==asNOT_FOUND) || (indexReturnPeriod1==asOUT_OF_RANGE) || (indexReturnPeriod2==asNOT_FOUND) || (indexReturnPeriod2==asOUT_OF_RANGE) )
-                    {
-                        asLogError(_("The desired return period is not available in the forecast file."));
-                        return;
-                    }
-                }
+						indexReferenceAxis1 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold1);
+						indexReferenceAxis2 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold2);
+						if ( (indexReferenceAxis1==asNOT_FOUND) || (indexReferenceAxis1==asOUT_OF_RANGE) || (indexReferenceAxis2==asNOT_FOUND) || (indexReferenceAxis2==asOUT_OF_RANGE) )
+						{
+							asLogError(_("The desired return period is not available in the forecast file."));
+							return;
+						}
+					}
+				}
 
                 // Check lead times effectively available for the current model
                 int leadtimeMin = 0;
@@ -448,19 +457,22 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
                         // Get values for return period
                         float factor1 = 1;
                         float factor2 = 1;
-                        if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
-                        {
-                            float precip1 = forecast->GetDailyPrecipitationForReturnPeriod(i_station, indexReturnPeriod1);
-                            float precip2 = forecast->GetDailyPrecipitationForReturnPeriod(i_station, indexReturnPeriod2);
-                            wxASSERT(precip1>0);
-                            wxASSERT(precip2>0);
-                            wxASSERT(precip1<500);
-                            wxASSERT(precip2<500);
-                            factor1 = 1.0/precip1;
-                            factor2 = 1.0/precip2;
-                            wxASSERT(factor1>0);
-                            wxASSERT(factor2>0);
-                        }
+						if(forecast->HasReferenceValues())
+						{
+							if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
+							{
+								float precip1 = forecast->GetReferenceValue(i_station, indexReferenceAxis1);
+								float precip2 = forecast->GetReferenceValue(i_station, indexReferenceAxis2);
+								wxASSERT(precip1>0);
+								wxASSERT(precip2>0);
+								wxASSERT(precip1<500);
+								wxASSERT(precip2<500);
+								factor1 = 1.0/precip1;
+								factor2 = 1.0/precip2;
+								wxASSERT(factor1>0);
+								wxASSERT(factor2>0);
+							}
+						}
 
                         // Get values
                         Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);

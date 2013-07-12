@@ -97,6 +97,7 @@ public:
     virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
 protected:
+    float m_FileVersion;
     int m_CurrentStep;
     int m_PredictandStationId;
     double m_DateProcessed; //!< Member variable "m_DateProcessed"

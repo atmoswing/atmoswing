@@ -189,16 +189,16 @@ void asForecastViewer::Redraw()
     float percentile = m_Percentiles[m_PercentileSelection];
     float returnPeriod = m_ReturnPeriods[m_ForecastDisplaySelection];
 
-    // Get return period index
-    int indexReturnPeriod;
-    if (returnPeriod!=0)
+    // Get reference axis index
+    int indexReferenceAxis;
+    if (forecast->HasReferenceValues() && returnPeriod!=0)
     {
-        Array1DFloat forecastReturnPeriod = forecast->GetReturnPeriods();
+		Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
-        indexReturnPeriod = asTools::SortedArraySearch(&forecastReturnPeriod[0], &forecastReturnPeriod[forecastReturnPeriod.size()-1], returnPeriod);
-        if ( (indexReturnPeriod==asNOT_FOUND) || (indexReturnPeriod==asOUT_OF_RANGE) )
+        indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriod);
+        if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
         {
-            asLogError(_("The desired return period is not available in the forecast file."));
+            asLogError(_("The desired reference value is not available in the forecast file."));
             m_ViewerLayerManager->FreezeEnd();
             return;
         }
@@ -261,9 +261,9 @@ void asForecastViewer::Redraw()
 
                 // For normalization by the return period
                 double factor = 1;
-                if (returnPeriod!=0)
+                if (forecast->HasReferenceValues() && returnPeriod!=0)
                 {
-                    float precip = forecast->GetDailyPrecipitationForReturnPeriod(i_stat, indexReturnPeriod);
+					float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
                     wxASSERT(precip>0);
                     wxASSERT(precip<500);
                     factor = 1.0/precip;
@@ -375,9 +375,9 @@ void asForecastViewer::Redraw()
 
                 // For normalization by the return period
                 double factor = 1;
-                if (returnPeriod!=0)
+                if (forecast->HasReferenceValues() && returnPeriod!=0)
                 {
-                    float precip = forecast->GetDailyPrecipitationForReturnPeriod(i_stat, indexReturnPeriod);
+					float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
                     wxASSERT(precip>0);
                     wxASSERT(precip<500);
                     factor = 1.0/precip;

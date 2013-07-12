@@ -50,7 +50,6 @@ typedef std::vector < float > VectorFloat;
 typedef std::vector < double > VectorDouble;
 typedef std::vector < std::string > VectorStdString;
 typedef std::vector < wxString > VectorString;
-typedef std::vector < PredictandDB > VectorPredictandDB;
 
 typedef std::vector < VectorBool > VVectorBool;
 typedef std::vector < VectorShort > VVectorShort;
@@ -59,7 +58,6 @@ typedef std::vector < VectorFloat > VVectorFloat;
 typedef std::vector < VectorDouble > VVectorDouble;
 typedef std::vector < VectorStdString > VVectorStdString;
 typedef std::vector < VectorString > VVectorString;
-typedef std::vector < VectorPredictandDB > VVectorPredictandDB;
 
 
 

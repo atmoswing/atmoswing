@@ -51,7 +51,7 @@ FileFormat asGlobEnums::StringToFileFormatEnum(const wxString &FormatStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Format enumeration (%s) entry doesn't exists"), FormatStr));
+        asLogError(wxString::Format(_("The Format enumeration (%s) entry doesn't exists"), FormatStr.c_str()));
     }
     return NoFileFormat;
 }
@@ -106,7 +106,7 @@ FileTimeLength asGlobEnums::StringToFileLengthEnum(const wxString &LengthStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr));
+        asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr.c_str()));
     }
     return NoFileLength;
 }
@@ -140,6 +140,10 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
     else if (ParameterStr.CmpNoCase("Omega")==0)
     {
         return Omega;
+    }
+    else if (ParameterStr.CmpNoCase("Wind")==0)
+    {
+        return Wind;
     }
     else if (ParameterStr.CmpNoCase("Uwind")==0)
     {
@@ -223,9 +227,71 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
     }
     else
     {
-        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
+        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr.c_str()));
     }
     return NoDataParameter;
+}
+
+wxString asGlobEnums::DataParameterEnumToString(DataParameter dataParameter)
+{
+	switch (dataParameter)
+	{
+		case(Precipitation):
+			return "Precipitation";
+		case(AirTemperature):
+			return "AirTemperature";
+		case(GeopotentialHeight):
+			return "GeopotentialHeight";
+		case(PrecipitableWater):
+			return "PrecipitableWater";
+		case(RelativeHumidity):
+			return "RelativeHumidity";
+		case(SpecificHumidity):
+			return "SpecificHumidity";
+		case(Omega):
+			return "Omega";
+		case(Wind):
+			return "Wind";
+		case(Uwind):
+			return "Uwind";
+		case(Vwind):
+			return "Vwind";
+		case(SurfaceLiftedIndex):
+			return "SurfaceLiftedIndex";
+		case(PotentialTemperature):
+			return "PotentialTemperature";
+		case(Pressure):
+			return "Pressure";
+		case(PotentialEvaporation):
+			return "PotentialEvaporation";
+		case(SurfaceTemperature):
+			return "SurfaceTemperature";
+		case(ConvectivePrecipitation):
+			return "ConvectivePrecipitation";
+		case(LongwaveRadiation):
+			return "LongwaveRadiation";
+		case(ShortwaveRadiation):
+			return "ShortwaveRadiation";
+		case(SolarRadiation):
+			return "SolarRadiation";
+		case(GroundHeatFlux):
+			return "GroundHeatFlux";
+		case(LatentHeatFlux):
+			return "LatentHeatFlux";
+		case(NearIRFlux):
+			return "NearIRFlux";
+		case(SensibleHeatFlux):
+			return "SensibleHeatFlux";
+		case(Lightnings):
+			return "Lightnings";
+		case(SeaSurfaceTemperature):
+			return "SeaSurfaceTemperature";
+		case(SeaSurfaceTemperatureAnomaly):
+			return "SeaSurfaceTemperatureAnomaly";
+		default:
+        asLogError(_("The given data parameter type in unknown."));
+	}
+	return wxEmptyString;
 }
 
 DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
@@ -313,9 +379,137 @@ DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
+        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr.c_str()));
     }
     return NoDataUnit;
+}
+
+DataTemporalResolution asGlobEnums::StringToDataTemporalResolutionEnum(const wxString &TemporalResolution)
+{
+
+    if (TemporalResolution.CmpNoCase("Daily")==0)
+    {
+        return Daily;
+    }
+    else if (TemporalResolution.CmpNoCase("1 day")==0)
+    {
+        return Daily;
+    }
+    else if (TemporalResolution.CmpNoCase("SixHourly")==0)
+    {
+        return SixHourly;
+    }
+    else if (TemporalResolution.CmpNoCase("6 hours")==0)
+    {
+        return SixHourly;
+    }
+    else if (TemporalResolution.CmpNoCase("Hourly")==0)
+    {
+        return Hourly;
+    }
+    else if (TemporalResolution.CmpNoCase("1 hour")==0)
+    {
+        return Hourly;
+    }
+    else if (TemporalResolution.CmpNoCase("SixHourlyMovingDailyTemporalWindow")==0)
+    {
+        return SixHourlyMovingDailyTemporalWindow;
+    }
+    else if (TemporalResolution.CmpNoCase("MovingTemporalWindow")==0)
+    {
+        return SixHourlyMovingDailyTemporalWindow;
+    }
+    else if (TemporalResolution.CmpNoCase("TwoDays")==0)
+    {
+        return TwoDays;
+    }
+    else if (TemporalResolution.CmpNoCase("2 days")==0)
+    {
+        return TwoDays;
+    }
+    else if (TemporalResolution.CmpNoCase("ThreeDays")==0)
+    {
+        return ThreeDays;
+    }
+    else if (TemporalResolution.CmpNoCase("3 days")==0)
+    {
+        return ThreeDays;
+    }
+    else if (TemporalResolution.CmpNoCase("Weekly")==0)
+    {
+        return Weekly;
+    }
+    else if (TemporalResolution.CmpNoCase("1 week")==0)
+    {
+        return Weekly;
+    }
+    else
+    {
+        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"), TemporalResolution.c_str()));
+    }
+    return NoDataTemporalResolution;
+}
+
+wxString asGlobEnums::DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution)
+{
+	switch (dataTemporalResolution)
+	{
+		case(Daily):
+			return "Daily";
+		case(SixHourly):
+			return "SixHourly";
+		case(Hourly):
+			return "Hourly";
+		case(SixHourlyMovingDailyTemporalWindow):
+			return "SixHourlyMovingDailyTemporalWindow";
+		case(TwoDays):
+			return "TwoDays";
+		case(ThreeDays):
+			return "ThreeDays";
+		case(Weekly):
+			return "Weekly";
+		default:
+        asLogError(_("The given data temporal resolution type in unknown."));
+	}
+	return wxEmptyString;
+}
+
+DataSpatialAggregation asGlobEnums::StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation)
+{
+
+    if (SpatialAggregation.CmpNoCase("Station")==0)
+    {
+        return Station;
+    }
+    else if (SpatialAggregation.CmpNoCase("Groupment")==0)
+    {
+        return Groupment;
+    }
+    else if (SpatialAggregation.CmpNoCase("Catchment")==0)
+    {
+        return Catchment;
+    }
+    else
+    {
+        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"), SpatialAggregation.c_str()));
+    }
+    return NoDataSpatialAggregation;
+}
+
+wxString asGlobEnums::DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation)
+{
+	switch (dataSpatialAggregation)
+	{
+		case(Station):
+			return "Station";
+		case(Groupment):
+			return "Groupment";
+		case(Catchment):
+			return "Catchment";
+		default:
+        asLogError(_("The given data spatial aggregation type in unknown."));
+	}
+	return wxEmptyString;
 }
 
 CoordSys asGlobEnums::StringToCoordSysEnum(const wxString &CoordSysStr)
@@ -337,73 +531,4 @@ CoordSys asGlobEnums::StringToCoordSysEnum(const wxString &CoordSysStr)
         asLogError(_("The coordinate system in unknown"));
     }
     return NoCoordSys;
-}
-
-PredictandDB asGlobEnums::StringToPredictandDBEnum(const wxString &PredictandDBStr)
-{
-    if (PredictandDBStr.CmpNoCase("StationsDailyPrecipitation")==0)
-    {
-        return StationsDailyPrecipitation;
-    }
-    else if (PredictandDBStr.CmpNoCase("Stations6HourlyPrecipitation")==0)
-    {
-        return Stations6HourlyPrecipitation;
-    }
-    else if (PredictandDBStr.CmpNoCase("Stations6HourlyOfDailyPrecipitation")==0)
-    {
-        return Stations6HourlyOfDailyPrecipitation;
-    }
-    else if (PredictandDBStr.CmpNoCase("RegionalDailyPrecipitation")==0)
-    {
-        return RegionalDailyPrecipitation;
-    }
-    else if (PredictandDBStr.CmpNoCase("ResearchDailyPrecipitation")==0)
-    {
-        return ResearchDailyPrecipitation;
-    }
-    else if (PredictandDBStr.CmpNoCase("StationsDailyLightnings")==0)
-    {
-        return StationsDailyLightnings;
-    }
-    else if (PredictandDBStr.CmpNoCase("NoPredictandDB")==0)
-    {
-        return NoPredictandDB;
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The given predictand DB type (%s) in unknown"), PredictandDBStr.c_str()));
-    }
-    return NoPredictandDB;
-}
-
-wxString asGlobEnums::PredictandDBEnumToString(PredictandDB predictandDB)
-{
-    switch (predictandDB)
-    {
-        case(StationsDailyPrecipitation):
-            return "StationsDailyPrecipitation";
-            break;
-        case(Stations6HourlyPrecipitation):
-            return "Stations6HourlyPrecipitation";
-            break;
-        case(Stations6HourlyOfDailyPrecipitation):
-            return "Stations6HourlyOfDailyPrecipitation";
-            break;
-        case(RegionalDailyPrecipitation):
-            return "RegionalDailyPrecipitation";
-            break;
-        case(ResearchDailyPrecipitation):
-            return "ResearchDailyPrecipitation";
-            break;
-        case(StationsDailyLightnings):
-            return "StationsDailyLightnings";
-            break;
-        case(NoPredictandDB):
-            return "NoPredictandDB";
-            break;
-
-        default:
-        asLogError(_("The given predictand DB type in unknown"));
-    }
-    return wxEmptyString;
 }

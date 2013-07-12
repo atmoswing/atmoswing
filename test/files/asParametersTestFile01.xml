@@ -91,7 +91,6 @@
             <Options />
 			<Data name="Predictand">
 				<Params name="Database">
-					<Predictand value="StationsDailyPrecipitation" />
 		            <PredictandStationId value="40" />
 		        </Params>
 			</Data>
