@@ -14,7 +14,6 @@
  
 #include "asListBoxModels.h"
 
-#include "asIncludes.h"
 #include <asForecastViewer.h>
 
 
@@ -37,9 +36,23 @@ asListBoxModels::~asListBoxModels()
     //dtor
 }
 
-bool asListBoxModels::Add(const wxString &modelName, const wxString &leadTimeOriginStr)
+bool asListBoxModels::Add(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
 {
     wxString newOption = wxString::Format("%d. ", (int)GetStrings().GetCount()+1) + modelName + " (" + leadTimeOriginStr + ") ";
+	/*
+	switch (dataParameter)
+	{
+		case (Precipitation):
+			break;
+		case (AirTemperature):
+			break;
+		case (Wind):
+			break;
+		case (Lightnings):
+			break;
+		default:
+
+	}*/
 
     Append(newOption);
 

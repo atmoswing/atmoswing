@@ -3,15 +3,13 @@
 <AtmoswingFile version="0.2">
 
 	<DataSet id="MCHDR" enable="1" name="MeteoSwiss daily rainfall measurements" description="Precipitation measurements made by MeteoSwiss at a daily timestep">
-		<IncludeinDB>StationsDailyPrecipitation</IncludeinDB>
 		<Parameter>Precipitation</Parameter>
 		<Unit>mm</Unit>
-		<Type>Sum</Type>
-		<Nature>Measurement</Nature>
+		<TemporalResolution>Daily</TemporalResolution>
+		<SpatialAggregation>Groupment</SpatialAggregation>
 		<TimeZoneHours>0</TimeZoneHours>
 		<Start note="first value of all stations">01/01/1940</Start>
 		<End note="last value of all stations">31/12/2007</End>
-		<TimeStepHours>24</TimeStepHours>
 		<FirstTimeStepHour>0</FirstTimeStepHour>
 		<FormatRaw>dat</FormatRaw>
 		<FormatStorage>netcdf</FormatStorage>

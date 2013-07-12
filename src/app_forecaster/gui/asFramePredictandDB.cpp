@@ -24,8 +24,12 @@ asFramePredictandDBVirtual( parent, id )
 {
     // Set the defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long PredictandSelection = pConfig->Read("/PredictandDBToolbox/PredictandSelection", 0l);
-    m_ChoiceData->SetSelection((int)PredictandSelection);
+	long choiceDataParam = pConfig->Read("/PredictandDBToolbox/ChoiceDataParam", 0l);
+	m_ChoiceDataParam->SetSelection((int)choiceDataParam);
+	long choiceDataTempResol = pConfig->Read("/PredictandDBToolbox/ChoiceDataTempResol", 0l);
+	m_ChoiceDataTempResol->SetSelection((int)choiceDataTempResol);
+	long choiceDataSpatAggreg = pConfig->Read("/PredictandDBToolbox/ChoiceDataSpatAggreg", 0l);
+	m_ChoiceDataSpatAggreg->SetSelection((int)choiceDataSpatAggreg);
     wxString ReturnPeriodNorm = pConfig->Read("/PredictandDBToolbox/ReturnPeriodNorm", "10");
     m_TextCtrlReturnPeriod->SetValue(ReturnPeriodNorm);
     bool NormalizeByReturnPeriod = true;
@@ -34,12 +38,16 @@ asFramePredictandDBVirtual( parent, id )
     bool ProcessSquareRoot = false;
     pConfig->Read("/PredictandDBToolbox/ProcessSquareRoot", &ProcessSquareRoot);
     m_CheckBoxSqrt->SetValue(ProcessSquareRoot);
+    wxString catalogPath = pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString);
+    m_FilePickerCatalogPath->SetPath(catalogPath);
     wxString PredictandDataDir = pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString);
     m_DirPickerDataDir->SetPath(PredictandDataDir);
     wxString DestinationDir = pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString);
     m_DirPickerDestinationDir->SetPath(DestinationDir);
     wxString PatternsDir = pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
     m_DirPickerPatternsDir->SetPath(PatternsDir);
+
+	ToggleProcessing();
 
     // Icon
 #ifdef __WXMSW__
@@ -51,14 +59,23 @@ void asFramePredictandDB::OnSaveDefault( wxCommandEvent& event )
 {
     // Save as defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long PredictandSelection = (long)m_ChoiceData->GetSelection();
-    pConfig->Write("/PredictandDBToolbox/PredictandSelection", PredictandSelection);
+	long choiceDataParam = (long)m_ChoiceDataParam->GetSelection();
+	pConfig->Write("/PredictandDBToolbox/ChoiceDataParam", choiceDataParam);
+	m_ChoiceDataParam->SetSelection((int)choiceDataParam);
+	long choiceDataTempResol = (long)m_ChoiceDataTempResol->GetSelection();
+	pConfig->Write("/PredictandDBToolbox/ChoiceDataTempResol", choiceDataTempResol);
+	m_ChoiceDataTempResol->SetSelection((int)choiceDataTempResol);
+	long choiceDataSpatAggreg = (long)m_ChoiceDataSpatAggreg->GetSelection();
+	pConfig->Write("/PredictandDBToolbox/ChoiceDataSpatAggreg", choiceDataSpatAggreg);
+	m_ChoiceDataSpatAggreg->SetSelection((int)choiceDataSpatAggreg);
     wxString ReturnPeriodNorm = m_TextCtrlReturnPeriod->GetValue();
     pConfig->Write("/PredictandDBToolbox/ReturnPeriodNorm", ReturnPeriodNorm);
     bool NormalizeByReturnPeriod = m_CheckBoxReturnPeriod->GetValue();
     pConfig->Write("/PredictandDBToolbox/NormalizeByReturnPeriod", NormalizeByReturnPeriod);
     bool ProcessSquareRoot = m_CheckBoxSqrt->GetValue();
     pConfig->Write("/PredictandDBToolbox/ProcessSquareRoot", ProcessSquareRoot);
+	wxString catalogPath = m_FilePickerCatalogPath->GetPath();
+    pConfig->Write("/PredictandDBToolbox/CatalogPath", catalogPath);
     wxString PredictandDataDir = m_DirPickerDataDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/PredictandDataDir", PredictandDataDir);
     wxString DestinationDir = m_DirPickerDestinationDir->GetPath();
@@ -76,20 +93,29 @@ void asFramePredictandDB::CloseFrame( wxCommandEvent& event )
 
 void asFramePredictandDB::OnDataSelection( wxCommandEvent& event )
 {
-    switch (m_ChoiceData->GetSelection())
+    ToggleProcessing();
+}
+
+void asFramePredictandDB::ToggleProcessing()
+{
+    switch (m_ChoiceDataParam->GetSelection())
     {
-        case wxNOT_FOUND:
-        {
-            break;
-        }
         case 0: // precipitation
         {
             m_PanelDataProcessing->Enable();
+			m_CheckBoxReturnPeriod->Enable();
+			m_TextCtrlReturnPeriod->Enable();
+			m_StaticTextYears->Enable();
+			m_CheckBoxSqrt->Enable();
             break;
         }
-        case 1: // temperature
+        default: // other
         {
-            //m_PanelDataProcessing->Disable();
+            m_PanelDataProcessing->Disable();
+			m_CheckBoxReturnPeriod->Disable();
+			m_TextCtrlReturnPeriod->Disable();
+			m_StaticTextYears->Disable();
+			m_CheckBoxSqrt->Disable();
             break;
         }
     }
@@ -97,41 +123,15 @@ void asFramePredictandDB::OnDataSelection( wxCommandEvent& event )
 
 void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
 {
-
-    asLogError("The predictandDB builder is currently not working !!");
-    return;
-
-
-
-/*
     try
     {
-        // Get data processing options
-        // Return period
-        double valReturnPeriod = 0;
-        if (m_CheckBoxReturnPeriod->GetValue())
-        {
-            wxString valReturnPeriodString = m_TextCtrlReturnPeriod->GetValue();
-            valReturnPeriodString.ToDouble(&valReturnPeriod);
-            if ( (valReturnPeriod<1) | (valReturnPeriod>1000) )
-            {
-                asLogError(_("The given return period is not consistent."));
-                return;
-            }
-        }
-
-        // Sqrt option
-        int makeSqrt;
-        if (m_CheckBoxSqrt->GetValue())
-        {
-            makeSqrt = asMAKE_SQRT;
-        }
-        else
-        {
-            makeSqrt = asDONT_MAKE_SQRT;
-        }
-
         // Get paths
+        wxString catalogFilePath = m_FilePickerCatalogPath->GetPath();
+        if (catalogFilePath.IsEmpty())
+        {
+            asLogError(_("The given path for the predictand catalog is empty."));
+            return;
+        }
         wxString pathDataDir = m_DirPickerDataDir->GetPath();
         if (pathDataDir.IsEmpty())
         {
@@ -151,52 +151,120 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
             return;
         }
 
-        switch (m_ChoiceData->GetSelection())
+		// Get temporal resolution
+		DataTemporalResolution dataTemporalResolution;
+		switch (m_ChoiceDataTempResol->GetSelection())
         {
             case wxNOT_FOUND:
             {
-                asLogError(_("Wrong option selection."));
+                asLogError(_("Wrong selection of the temporal resolution option."));
                 break;
             }
-            case 0: // Stations daily precipitation
+            case 0: // 24 hours
             {
-                // Instiantiate a predictand object
-                asDataPredictandPrecipitation predictand(StationsDailyPrecipitation);
-                predictand.BuildPredictandDB((float) valReturnPeriod, makeSqrt, wxEmptyString, pathDataDir, pathPatternsDir, pathDestinationDir);
+				dataTemporalResolution = Daily;
                 break;
             }
-            case 1: // Stations 6-hourly series of daily precipitation
+            case 1: // 6 hours
             {
-                asDataPredictandPrecipitation predictand(Stations6HourlyOfDailyPrecipitation);
-                predictand.BuildPredictandDB((float) valReturnPeriod, makeSqrt, wxEmptyString, pathDataDir, pathPatternsDir, pathDestinationDir);
+				dataTemporalResolution = SixHourly;
                 break;
             }
-            case 2: // Stations 6-hourly precipitation
+            case 2: // Moving temporal window (6/24 hours)
             {
-                asDataPredictandPrecipitation predictand(Stations6HourlyPrecipitation);
-                predictand.BuildPredictandDB((float) valReturnPeriod, makeSqrt, wxEmptyString, pathDataDir, pathPatternsDir, pathDestinationDir);
-                break;
-            }
-            case 3: // Regional daily precipitation
-            {
-                asDataPredictandPrecipitation predictand(RegionalDailyPrecipitation);
-                predictand.BuildPredictandDB((float) valReturnPeriod, makeSqrt, wxEmptyString, pathDataDir, pathPatternsDir, pathDestinationDir);
-                break;
-            }
-            case 4: // Research daily precipitation
-            {
-                asDataPredictandPrecipitation predictand(ResearchDailyPrecipitation);
-                predictand.BuildPredictandDB((float) valReturnPeriod, makeSqrt, wxEmptyString, pathDataDir, pathPatternsDir, pathDestinationDir);
-                break;
-            }
-            case 5: // Daily lightnings
-            {
-                asDataPredictandLightnings predictand(StationsDailyLightnings);
-                predictand.BuildPredictandDB((float) valReturnPeriod, makeSqrt, wxEmptyString, pathDataDir, pathPatternsDir, pathDestinationDir);
+				dataTemporalResolution = SixHourlyMovingDailyTemporalWindow;
                 break;
             }
             default:
-                asLogError(_("Data selection not defined yet."));
+                asLogError(_("Wrong selection of the temporal resolution option."));
+        }
+
+		// Get temporal resolution
+		DataSpatialAggregation dataSpatialAggregation;
+		switch (m_ChoiceDataSpatAggreg->GetSelection())
+        {
+            case wxNOT_FOUND:
+            {
+                asLogError(_("Wrong selection of the spatial aggregation option."));
+                break;
+            }
+            case 0: // Station
+            {
+				dataSpatialAggregation = Station;
+                break;
+            }
+            case 1: // Groupment
+            {
+				dataSpatialAggregation = Groupment;
+                break;
+            }
+            case 2: // Catchment
+            {
+				dataSpatialAggregation = Catchment;
+                break;
+            }
+            default:
+                asLogError(_("Wrong selection of the spatial aggregation option."));
+        }
+
+		// Get data parameter
+		switch (m_ChoiceDataParam->GetSelection())
+        {
+            case wxNOT_FOUND:
+            {
+                asLogError(_("Wrong selection of the data parameter option."));
+                break;
+            }
+            case 0: // Precipitation
+            {
+				// Get data processing options
+				// Return period
+				double valReturnPeriod = 0;
+				if (m_CheckBoxReturnPeriod->GetValue())
+				{
+					wxString valReturnPeriodString = m_TextCtrlReturnPeriod->GetValue();
+					valReturnPeriodString.ToDouble(&valReturnPeriod);
+					if ( (valReturnPeriod<1) | (valReturnPeriod>1000) )
+					{
+						asLogError(_("The given return period is not consistent."));
+						return;
+					}
+				}
+
+				// Sqrt option
+				bool makeSqrt = false;
+				if (m_CheckBoxSqrt->GetValue())
+				{
+					makeSqrt = true;
+				}
+
+                // Instiantiate a predictand object
+				asDataPredictandPrecipitation predictand(Precipitation, dataTemporalResolution, dataSpatialAggregation);
+				predictand.SetIsSqrt(makeSqrt);
+                predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
+                break;
+            }
+            case 1: // Temperature
+            {
+				// Instiantiate a predictand object
+				asDataPredictandTemperature predictand(AirTemperature, dataTemporalResolution, dataSpatialAggregation);
+                predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
+                break;
+            }
+            case 2: // Lightnings
+            {
+                // Instiantiate a predictand object
+				asDataPredictandLightnings predictand(Lightnings, dataTemporalResolution, dataSpatialAggregation);
+                predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
+                break;
+            }
+            case 3: // Other
+            {
+				asLogError(_("Generic predictand database not yet implemented."));
+                break;
+            }
+            default:
+                asLogError(_("Wrong selection of the data parameter option."));
         }
     }
     catch(asException& e)
@@ -206,5 +274,5 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
 		{
 			asLogError(fullMessage);
 		}
-    }*/
+	}
 }

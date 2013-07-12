@@ -749,7 +749,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelViewer->SetSizer( bSizer39 );
 	m_PanelViewer->Layout();
 	bSizer39->Fit( m_PanelViewer );
-	m_NotebookBase->AddPage( m_PanelViewer, _("Viewer"), true );
+	m_NotebookBase->AddPage( m_PanelViewer, _("Viewer"), false );
 	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -956,7 +956,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelUserDirectories->SetSizer( bSizer24 );
 	m_PanelUserDirectories->Layout();
 	bSizer24->Fit( m_PanelUserDirectories );
-	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), true );
+	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), false );
 	m_PanelPathsCatalogs = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer171;
 	bSizer171 = new wxBoxSizer( wxVERTICAL );
@@ -978,13 +978,6 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_FilePickerCatalogPredictorsRealtime = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
 	sbSizer61->Add( m_FilePickerCatalogPredictorsRealtime, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_StaticTextCatalogPredictand = new wxStaticText( m_PanelPathsCatalogs, wxID_ANY, _("Path to the predictand catalog"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextCatalogPredictand->Wrap( -1 );
-	sbSizer61->Add( m_StaticTextCatalogPredictand, 0, wxALL, 5 );
-	
-	m_FilePickerCatalogPredictands = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
-	sbSizer61->Add( m_FilePickerCatalogPredictands, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
 	
 	bSizer171->Add( sbSizer61, 0, wxEXPAND|wxALL, 5 );
 	
@@ -992,7 +985,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelPathsCatalogs->SetSizer( bSizer171 );
 	m_PanelPathsCatalogs->Layout();
 	bSizer171->Fit( m_PanelPathsCatalogs );
-	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), false );
+	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), true );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
 	
@@ -1000,7 +993,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelAdvanced->SetSizer( bSizer26 );
 	m_PanelAdvanced->Layout();
 	bSizer26->Fit( m_PanelAdvanced );
-	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), false );
+	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), true );
 	
 	bSizer15->Add( m_NotebookBase, 1, wxEXPAND | wxALL, 5 );
 	

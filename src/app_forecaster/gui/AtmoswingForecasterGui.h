@@ -110,13 +110,19 @@ class asFramePredictandDBVirtual : public wxFrame
 	
 	protected:
 		wxPanel* m_panel2;
-		wxStaticText* m_StaticTextData;
-		wxChoice* m_ChoiceData;
+		wxStaticText* m_StaticTextDataParam;
+		wxChoice* m_ChoiceDataParam;
+		wxStaticText* m_StaticTextDataTempResol;
+		wxChoice* m_ChoiceDataTempResol;
+		wxStaticText* m_StaticTextDataSpatAggreg;
+		wxChoice* m_ChoiceDataSpatAggreg;
 		wxPanel* m_PanelDataProcessing;
 		wxCheckBox* m_CheckBoxReturnPeriod;
 		wxTextCtrl* m_TextCtrlReturnPeriod;
-		wxStaticText* m_staticText12;
+		wxStaticText* m_StaticTextYears;
 		wxCheckBox* m_CheckBoxSqrt;
+		wxStaticText* m_StaticTextCatalogPath;
+		wxFilePickerCtrl* m_FilePickerCatalogPath;
 		wxStaticText* m_StaticTextDataDir;
 		wxDirPickerCtrl* m_DirPickerDataDir;
 		wxStaticText* m_StaticTextPatternsDir;
