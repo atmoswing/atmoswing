@@ -315,20 +315,23 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     }
     if(!fileParams.GoANodeBack()) return false;
 
-	/*
     // Get Analogs Values process
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Values")) return false;
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    SetPredictandDB(fileParams.GetFirstElementAttributeValueText("Predictand", "value"));
-    if(!fileParams.GoANodeBack()) return false;
-    if(!fileParams.GoANodeBack()) return false;
+    if(fileParams.GoToChildNodeWithAttributeValue("name", "Predictand"))
+	{
+		if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database"))
+		{
+			// May do something here
+
+			if(!fileParams.GoANodeBack()) return false;
+		}
+		if(!fileParams.GoANodeBack()) return false;
+	}
 
     if(!fileParams.GoANodeBack()) return false;
-	*/
 
     // Set sizes
     SetSizes();
