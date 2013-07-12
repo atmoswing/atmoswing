@@ -41,23 +41,23 @@ public:
      * \param DataSetId The dataset ID
      * \param StationId The station ID. If not set, load the whole database information
      */
-    asCatalogPredictands(const wxString &alternateFilePath = wxEmptyString);
+    asCatalogPredictands(const wxString &filePath);
 
     /** Default destructor */
     virtual ~asCatalogPredictands();
 
-    bool Load(const wxString &DataSetId, int StationId = 0);
+    bool Load(int StationId = 0);
 
     /** Method that get data information from file
     * \param DataSetId The data Set ID
     */
-    bool LoadDatasetProp(const wxString &DataSetId);
+    bool LoadDatasetProp();
 
     /** Method that get data information from file
     * \param DataSetId The data Set ID
     * \param DataId The station ID
     */
-    bool LoadDataProp(const wxString &DataSetId, int StationId);
+    bool LoadDataProp(int StationId);
 
     /** Access m_Station
      * \return The current value of m_Station
@@ -97,22 +97,6 @@ public:
     void SetUnit(DataUnit val)
     {
         m_Unit = val;
-    }
-
-    /** Access m_DBInclude
-     * \return The current value of m_DBInclude
-     */
-    VectorPredictandDB GetDBInclude()
-    {
-        return m_DBInclude;
-    }
-
-    /** Set m_DBInclude
-     * \param val New value to set
-     */
-    void SetDBInclude(const VectorPredictandDB &val)
-    {
-        m_DBInclude = val;
     }
 
     /** Access m_Station.Id
@@ -264,7 +248,8 @@ protected:
     DataParameter m_Parameter; //!< Member variable "m_Parameter"
     DataUnit m_Unit; //!< Member variable "m_Unit"
     DataStruct m_Station; //!< Member variable "m_Station"
-    VectorPredictandDB m_DBInclude; //!< Member variable "m_DBInclude"
+	DataTemporalResolution m_TemporalResolution;
+	DataSpatialAggregation m_SpatialAggregation;
 
 
 private:

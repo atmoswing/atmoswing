@@ -33,7 +33,10 @@ asParameters::asParameters()
     m_TimeArrayAnalogsIntervalDays = 0;
     m_PredictandStationId = 0;
     m_PredictandDTimeHours = 0;
-    m_PredictandDB = wxEmptyString;
+	m_PredictandParameter = (DataParameter)0;
+	m_PredictandTemporalResolution = (DataTemporalResolution)0;
+	m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
+	m_PredictandDatasetId = wxEmptyString;
 }
 
 asParameters::~asParameters()
@@ -534,7 +537,6 @@ bool asParameters::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    SetPredictandDB(fileParams.GetFirstElementAttributeValueText("Predictand", "value"));
     SetPredictandStationId(fileParams.GetFirstElementAttributeValueInt("PredictandStationId", "value"));
     SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0));
     if(!fileParams.GoANodeBack()) return false;

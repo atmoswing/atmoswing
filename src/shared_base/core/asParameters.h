@@ -250,6 +250,46 @@ public:
     {
         m_PredictandStationId = val;
     }
+	
+	wxString GePredictandtDatasetId()
+    {
+        return m_PredictandDatasetId;
+    }
+
+    void SetPredictandDatasetId(const wxString &val)
+    {
+        m_PredictandDatasetId = val;
+    }
+
+	DataParameter GetPredictandParameter()
+    {
+        return m_PredictandParameter;
+    }
+
+    void SetPredictandParameter(DataParameter val)
+    {
+        m_PredictandParameter = val;
+    }
+
+	DataTemporalResolution GetPredictandTemporalResolution()
+    {
+        return m_PredictandTemporalResolution;
+    }
+
+    void SetPredictandTemporalResolution(DataTemporalResolution val)
+    {
+        m_PredictandTemporalResolution = val;
+    }
+
+	DataSpatialAggregation GetPredictandSpatialAggregation()
+    {
+        return m_PredictandSpatialAggregation;
+    }
+
+    void SetPredictandSpatialAggregation(DataSpatialAggregation val)
+    {
+        m_PredictandSpatialAggregation = val;
+    }
 
     double GetPredictandDTimeHours()
     {
@@ -265,16 +305,6 @@ public:
     {
         m_PredictandDTimeHours = val;
         m_PredictandDTimeDays = val/24.0;
-    }
-
-    wxString GetPredictandDB()
-    {
-        return m_PredictandDB;
-    }
-
-    void SetPredictandDB(const wxString& val)
-    {
-        m_PredictandDB = val;
     }
 
     wxString GetMethodName(int i_step)
@@ -741,9 +771,12 @@ private:
     wxString m_TimeArrayAnalogsMode;
     double m_TimeArrayAnalogsTimeStepHours;
     int m_TimeArrayAnalogsExcludeDays;
+	DataParameter m_PredictandParameter;
+	DataTemporalResolution m_PredictandTemporalResolution;
+	DataSpatialAggregation m_PredictandSpatialAggregation;
+	wxString m_PredictandDatasetId;
     double m_PredictandDTimeHours;
     double m_PredictandDTimeDays;
-    wxString m_PredictandDB;
 
 };
 

@@ -31,7 +31,7 @@ public:
 
     virtual bool Manager();
 
-    bool LoadPredictandDB(const wxString &predictandDBType, const wxString &predictandDBFilePath = wxEmptyString);
+    bool LoadPredictandDB(const wxString &predictandDBFilePath);
 
     void Cancel();
 

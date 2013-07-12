@@ -53,12 +53,10 @@ bool asMethodStandard::Manager()
     return false;
 }
 
-bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBType, const wxString &predictandDBFilePath)
+bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
 {
     wxDELETE(m_PredictandDB);
-    m_PredictandDB = asDataPredictand::GetInstance(predictandDBType);
-    if (!m_PredictandDB) return false;
-    wxASSERT(m_PredictandDB);
+
     if (predictandDBFilePath.IsEmpty())
     {
         if (m_PredictandDBFilePath.IsEmpty())
@@ -66,6 +64,9 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBType, const 
             asLogError(_("There is no predictand database file selected."));
             return false;
         }
+
+		m_PredictandDB = asDataPredictand::GetInstance(m_PredictandDBFilePath);
+
         if(!m_PredictandDB->Load(m_PredictandDBFilePath))
         {
             asLogError(_("Couldn't load the predictand database."));
@@ -74,12 +75,17 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBType, const 
     }
     else
     {
+		m_PredictandDB = asDataPredictand::GetInstance(predictandDBFilePath);
+
         if(!m_PredictandDB->Load(predictandDBFilePath))
         {
             asLogError(_("Couldn't load the predictand database."));
             return false;
         }
     }
+
+	if (!m_PredictandDB) return false;
+    wxASSERT(m_PredictandDB);
 
     return true;
 }
