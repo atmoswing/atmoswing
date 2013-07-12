@@ -11,7 +11,7 @@ namespace
 
 TEST(GumbelAdjustment)
 {
-    asDataPredictandPrecipitation predictand(StationsDailyPrecipitation);
+    asDataPredictandPrecipitation predictand(Precipitation, Daily, Station);
 
     wxString datasetFilePath = wxFileName::GetCwd();
     datasetFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -23,7 +23,9 @@ TEST(GumbelAdjustment)
     wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
     bool success;
-    success = predictand.BuildPrecipitationDB(10, asDONT_MAKE_SQRT, datasetFilePath, dataFileDir, patternFileDir, tmpDir);
+    success = predictand.BuildPredictandDB(datasetFilePath, dataFileDir, patternFileDir, tmpDir);
+	predictand.SetIsSqrt(false);
+	predictand.SetReturnPeriodNormalization(10);
     CHECK_EQUAL(true, success);
 
     // Checked against Martin Froidevaux

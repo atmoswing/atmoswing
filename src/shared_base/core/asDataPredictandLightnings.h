@@ -22,36 +22,24 @@
 class asDataPredictandLightnings: public asDataPredictand
 {
 public:
-    asDataPredictandLightnings(PredictandDB predictandDB);
+    asDataPredictandLightnings(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
     virtual ~asDataPredictandLightnings();
 
-    virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    virtual bool Load(const wxString &filePath);
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &AlternateDestinationDir = wxEmptyString);
-
-    virtual Array1DFloat &GetReferenceAxis()
-    {
-        return m_Lightnings;
-    }
-
-    virtual float GetReferenceValue(int i_station, double duration, float reference)
-    {
-        return 0;
-    }
-
-    virtual Array2DFloat &GetReferenceValuesArray()
-    {
-        return m_DailyTemperatureForLightnings;
-    }
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
 
 
 protected:
 
 private:
-    Array1DFloat m_Lightnings;
-    Array2DFloat m_DailyTemperatureForLightnings;
+	
+    /** Initialize the containers
+     * \return True on success
+     */
+    bool InitContainers();
 };
 
 #endif // ASDATAPREDICTANDLIGHTNINGS_H
