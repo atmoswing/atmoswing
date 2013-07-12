@@ -149,7 +149,7 @@ void asFrameForecastRings::OnForecastSelectionChange( wxCommandEvent& event )
 void asFrameForecastRings::OnForecastNewAdded( wxCommandEvent& event )
 {
     asResultsAnalogsForecast* forecastLast = m_ForecastManager->GetCurrentForecast(event.GetInt());
-    m_PanelSidebarForecasts->AddForecast(forecastLast->GetModelName(), forecastLast->GetLeadTimeOriginString(), forecastLast->GetDataParameter(), forecastLast->GetDataTemporalResolution());
+    m_PanelSidebarForecasts->AddForecast(forecastLast->GetModelName(), forecastLast->GetLeadTimeOriginString(), forecastLast->GetPredictandParameter(), forecastLast->GetPredictandTemporalResolution());
 
     if (event.GetString().IsSameAs("last"))
     {
