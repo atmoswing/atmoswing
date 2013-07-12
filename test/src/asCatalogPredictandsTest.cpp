@@ -8,25 +8,13 @@
 namespace
 {
 
-TEST(ConstructorException)
-{
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogPredictandsTestFile01.xml");
-
-    if(g_UnitTestExceptions)
-    {
-        asCatalogPredictands catalog = asCatalogPredictands(filepath);
-        CHECK_THROW(catalog.Load("WrongCatalogId",0), asException);
-    }
-}
-
 TEST(LoadCatalogProp)
 {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/asCatalogPredictandsTestFile01.xml");
 
     asCatalogPredictands catalog(filepath);
-    catalog.Load("MCHDR",0);
+    catalog.Load(0);
 
     int samestr = catalog.GetSetId().CompareTo(_T("MCHDR"));
     CHECK_EQUAL(0,samestr);
@@ -34,9 +22,9 @@ TEST(LoadCatalogProp)
     CHECK_EQUAL(0,samestr);
     samestr = catalog.GetDescription().CompareTo(_T("Precipitation measurements made by MeteoSwiss at a daily timestep"));
     CHECK_EQUAL(0,samestr);
-    PredictandDB preddbval = catalog.GetDBInclude()[0];
-    PredictandDB preddbref = StationsDailyPrecipitation;
-    CHECK_EQUAL(preddbref,preddbval);
+    DataParameter paramval = catalog.GetParameter();
+    DataParameter paramref = Precipitation;
+    CHECK_EQUAL(paramref,paramval);
     int parameter = catalog.GetParameter();
     int parameterreal = Precipitation;
     CHECK_EQUAL(parameterreal,parameter);
@@ -72,7 +60,7 @@ TEST(LoadDataProp)
     filepath.Append("/files/asCatalogPredictandsTestFile01.xml");
 
     asCatalogPredictands catalog(filepath);
-    catalog.Load("MCHDR",1);
+    catalog.Load(1);
 
     CHECK_EQUAL(1,catalog.GetStationId());
     int samestr = catalog.GetStationName().CompareTo(_T("Disentis / Sedrun"));
