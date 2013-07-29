@@ -38,7 +38,7 @@ include_directories(${inc_dirs})
 
 # Select flags
 if (UNIX AND NOT APPLE)
-    set(CMAKE_CXX_FLAGS "-Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes")
+    set(CMAKE_CXX_FLAGS "-Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes -Wno-unused-local-typedefs -Wno-unused-variable")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -s -march=core2")
 endif (UNIX AND NOT APPLE)
 

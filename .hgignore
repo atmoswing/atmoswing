@@ -22,3 +22,6 @@ syntax: glob
 *.cbp
 *.layout
 *.dll
+*~
+*/Makefile
+*.a
