@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<AtmoswingFile version="0.2">
+
+	<!--CAUTION:    No accent (UTF-8 code OK)!
+		            Strictly respect the formats! 
+	-->
+		            
+	<!--FORMATS:    Start: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
+		            End: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
+		            TimeZoneHours: GMT+- "x" h
+		            TimeStepHours: "x" hours
+		            FirstTimeStepHour: "x" hours, UTC
+		            RunTimeStepHours: "x" hours
+					FileLength: See enum FileLength
+		            Parameter: See enum Parameter
+		            Unit: See enum DataUnit
+		            Type: See enum DataType
+		            Nature: See enum DataNature
+		            FormatRaw: See enum FileFormat
+		            FormatStorage: See enum FileFormat
+		            CoordinateSys: See enum mmGeo::CoordSys
+	-->
+		            
+	<!--Data aquisition information-->
+
+	<Header description="List of preditor real-time datasets" date="18.03.2009" author="Pascal Horton"></Header>
+
+	<DataSet id="GFS_F-2" enable="1" name="GFS Forecast version grib2" description="GFS Forecast version grib2">
+		<TimeZoneHours>0</TimeZoneHours>
+        <ForecastLeadTimeStart>0</ForecastLeadTimeStart>
+        <ForecastLeadTimeEnd>168</ForecastLeadTimeEnd>
+        <ForecastLeadTimeStep>6</ForecastLeadTimeStep>
+        <RunHourStart>0</RunHourStart>
+        <RunUpdate>6</RunUpdate>
+		<Start></Start>
+		<End></End>
+		<TimeStepHours></TimeStepHours>
+		<FirstTimeStepHour>0</FirstTimeStepHour>
+		<FormatRaw>grib2</FormatRaw>
+		<FormatStorage>netcdf</FormatStorage>
+		<Website>http://nomads.ncep.noaa.gov/</Website>
+		<NaN></NaN>
+		<CoordinateSys>WGS84</CoordinateSys>
+		<DataList>
+		    <Data id="hgt" name="Geopotential height" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>HGT</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_1000_mb=on&amp;lev_200_mb=on&amp;lev_300_mb=on&amp;lev_500_mb=on&amp;lev_700_mb=on&amp;lev_850_mb=on&amp;var_HGT=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>GeopotentialHeight</Parameter>
+                <VarNameInFile>HGT</VarNameInFile>
+		        <Unit>m</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+            <Data id="pwat" name="Precipitable water" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>PWAT</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&amp;var_PWAT=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>PrecipitableWater</Parameter>
+		        <Unit>mm</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+            <Data id="rhum" name="Relative humidity" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>RHUM</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_1000_mb=on&amp;lev_200_mb=on&amp;lev_300_mb=on&amp;lev_500_mb=on&amp;lev_700_mb=on&amp;lev_850_mb=on&amp;var_RH=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>RelativeHumidity</Parameter>
+		        <Unit>percent</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+            <Data id="temp" name="Temperature" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>TEMP</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_1000_mb=on&amp;lev_200_mb=on&amp;lev_300_mb=on&amp;lev_500_mb=on&amp;lev_700_mb=on&amp;lev_850_mb=on&amp;var_TMP=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>RelativeHumidity</Parameter>
+		        <Unit>percent</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+            <Data id="vvel" name="Vertical velocity" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>VVEL</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_1000_mb=on&amp;lev_200_mb=on&amp;lev_300_mb=on&amp;lev_500_mb=on&amp;lev_700_mb=on&amp;lev_850_mb=on&amp;var_VVEL=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>VerticalVelocity</Parameter>
+		        <Unit>Pa/s</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+            <Data id="uwnd" name="U-component of wind" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>UGRD</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_1000_mb=on&amp;lev_200_mb=on&amp;lev_300_mb=on&amp;lev_500_mb=on&amp;lev_700_mb=on&amp;lev_850_mb=on&amp;var_UGRD=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>Uwind</Parameter>
+		        <Unit>m/s</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+            <Data id="vwnd" name="V-component of wind" enable="1">
+		        <FileLength>Instantaneous</FileLength>
+                <FileVarName>VGRD</FileVarName>
+		        <CommandDownload>http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LAPSE-hh].grib2&amp;lev_1000_mb=on&amp;lev_200_mb=on&amp;lev_300_mb=on&amp;lev_500_mb=on&amp;lev_700_mb=on&amp;lev_850_mb=on&amp;var_VGRD=on&amp;subregion=&amp;leftlon=0&amp;rightlon=30&amp;toplat=60&amp;bottomlat=30&amp;dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]</CommandDownload>
+		        <Parameter>Vwind</Parameter>
+		        <Unit>m/s</Unit>
+				<UaxisStep>1.0</UaxisStep>
+				<VaxisStep>1.0</VaxisStep>
+		    </Data>
+		</DataList>
+	</DataSet>
+</AtmoswingFile>
