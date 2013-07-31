@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
 #include "asConfig.h"
 
 #include "wx/stdpaths.h"        // wxStandardPaths returns the standard locations in the file system
@@ -101,7 +101,7 @@ wxString asConfig::GetUserDataDir(const wxString &appName)
 #elif defined(__WXMAC__)
     DirUserData.Append(DS+appName);
 #elif defined(__UNIX__)
-    DirUserData.Append(DS+"."+appName);
+    DirUserData.Append(appName);
 #endif
 
     stdPth.UseAppInfo(1);
