@@ -101,7 +101,8 @@ mark_as_advanced(SEARCH_VROOMGIS_WXWIDGETS)
 mark_as_advanced(SQLITE_INCLUDE_DIR)
 mark_as_advanced(SQLITE_PATH)
 mark_as_advanced(wxWIDGETS_USING_SVN)
-include("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")	
+include("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")
+link_libraries(${wxWidgets_LIBRARIES})
 
 # wxhgversion
 include("../../src/app_viewer/libs/vroomgis/plugins/wxhgversion/build/use_wxhgversion.cmake")
