@@ -30,7 +30,7 @@ asDialogFilePickerVirtual::asDialogFilePickerVirtual( wxWindow* parent, wxWindow
 	m_StaticTextDescription->Wrap( -1 );
 	bSizerMain->Add( m_StaticTextDescription, 0, wxALL, 5 );
 	
-	m_FilePicker = new wxFilePickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxSize( -1,-1 ), wxFLP_DEFAULT_STYLE );
+	m_FilePicker = new wxFilePickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxSize( -1,-1 ), wxFLP_USE_TEXTCTRL );
 	bSizerMain->Add( m_FilePicker, 0, wxALL|wxEXPAND, 5 );
 	
 	m_ButtonsConfirmation = new wxStdDialogButtonSizer();
