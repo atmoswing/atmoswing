@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<AtmoswingFile version="0.2">
+
+	<!--CAUTION:    No accent (UTF-8 code OK)!
+		            Strictly respect the formats! 
+	-->
+		            
+	<!--FORMATS:    Start: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
+		            End: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
+		            TimeZoneHours: GMT+- "x" h
+		            TimeStepHours: "x" hours
+		            FirstTimeStepHour: "x" hours, UTC
+		            RunTimeStepHours: "x" hours
+		            Parameter: See enum mmDataSet::Parameter
+		            Unit: See enum mmDataSet::Unit
+		            Type: See enum mmDataSet::Type
+		            Nature: See enum mmDataSet::Nature
+		            FormatRaw: See enum mmDataSet::Format
+		            FormatStorage: See enum mmDataSet::Format
+		            CoordinateSys: See enum mmGeo::CoordSys
+	-->
+		            
+	<!--Data aquisition information-->
+
+	<Header description="List of preditor DataSets properties" date="18.03.2009" author="Pascal Horton"></Header>
+
+	<DataSet id="NCEP_R-1" enable="1" name="NCEP/NCAR Reanalysis 1" description="NCEP/NCAR Reanalysis 1, first data set">
+		<TimeZoneHours>0</TimeZoneHours>
+		<Start>01/01/1948 00:00</Start>
+		<End>31/12/2008 23:59</End>
+		<TimeStepHours>6</TimeStepHours>
+		<FirstTimeStepHour>0</FirstTimeStepHour>
+		<FormatRaw>netcdf</FormatRaw>
+		<FormatStorage>netcdf</FormatStorage>
+		<Path>M:\_METEODATA\NCEP Reanalysis\pressure</Path>
+		<Ftp>ftp://ftp.cdc.noaa.gov/datasets/ncep.reanalysis</Ftp>
+		<NaN>32767</NaN>
+		<NaN>9360000000000000000000000000000000000</NaN>
+		<CoordinateSys>WGS84</CoordinateSys>
+		<DataList>
+		    <Data id="hgt" name="Geopotential height" enable="1">
+		        <FileLength>Y</FileLength>
+		        <FileName>hgt.[YYYY].nc</FileName>
+                <FileVarName>hgt</FileVarName>
+		        <Parameter>GeopotentialHeight</Parameter>
+		        <Unit>mm</Unit>
+				<UaxisStep>2.5</UaxisStep>
+				<VaxisStep>2.5</VaxisStep>
+		    </Data>
+		    <Data id="rhum" name="Relative humidity" enable="0">
+		        <FileLength>Y</FileLength>
+		        <FileName>rhum.[YYYY].nc</FileName>
+                <FileVarName>rhum</FileVarName>
+		        <Parameter>RelativeHumidity</Parameter>
+		        <Unit>percent</Unit>
+				<UaxisStep>2.5</UaxisStep>
+				<VaxisStep>2.5</VaxisStep>
+		    </Data>
+		</DataList>
+	</DataSet>
+
+</AtmoswingFile>
