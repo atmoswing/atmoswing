@@ -80,12 +80,6 @@ enum
 
 enum
 {
-    asMAKE_SQRT,
-    asDONT_MAKE_SQRT
-};
-
-enum
-{
     asCOEFF, // Direct access to the coefficients
     asCOEFF_NOVAR, // Direct access to the coefficients without any other variable declaration
     asLIN_ALGEBRA,	// Linear algebra using a library
@@ -191,17 +185,6 @@ enum Season
     JJA,    // Summer
     SON,    // Fall
     NoSeason
-};
-
-enum PredictandDB
-{
-    StationsDailyPrecipitation,
-    Stations6HourlyPrecipitation,
-    Stations6HourlyOfDailyPrecipitation,
-    RegionalDailyPrecipitation,
-    ResearchDailyPrecipitation,
-    StationsDailyLightnings,
-    NoPredictandDB
 };
 
 enum DataPurpose
@@ -331,8 +314,18 @@ public:
 
     static DataParameter StringToDataParameterEnum(const wxString &ParameterStr);
 
+	static wxString DataParameterEnumToString(DataParameter dataParameter);
+
 
     static DataUnit StringToDataUnitEnum(const wxString &UnitStr);
+
+	static DataTemporalResolution StringToDataTemporalResolutionEnum(const wxString &TemporalResolution);
+	
+	static wxString DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution);
+
+	static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
+	
+	static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
 
 
     /** Transform a string to the corresponding CoordSys enum entry
@@ -341,12 +334,6 @@ public:
      */
     static CoordSys StringToCoordSysEnum(const wxString &CoordSysStr);
 
-
-
-    static PredictandDB StringToPredictandDBEnum(const wxString &PredictandDBStr);
-
-
-    static wxString PredictandDBEnumToString(PredictandDB predictandDB);
 
 protected:
 
