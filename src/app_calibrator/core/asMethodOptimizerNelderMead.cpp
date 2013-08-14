@@ -194,10 +194,7 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-    wxDELETE(m_PredictandDB);
-    m_PredictandDB = asDataPredictand::GetInstance(params.GetPredictandDB());
-    if (!m_PredictandDB) return false;
-    m_PredictandDB->Load(m_PredictandDBFilePath);
+    if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
     asLogMessage(_("Predictand DB loaded."));
 
     // Watch

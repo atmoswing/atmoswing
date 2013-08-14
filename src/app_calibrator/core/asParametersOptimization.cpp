@@ -679,7 +679,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    SetPredictandDB(fileParams.GetFirstElementAttributeValueText("Predictand", "value"));
     SetPredictandStationId(fileParams.GetFirstElementAttributeValueInt("PredictandStationId", "value"));
     SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0));
     if(!fileParams.GoANodeBack()) return false;
