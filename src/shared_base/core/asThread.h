@@ -43,7 +43,9 @@ public:
     {
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
-        PreprocessorGradients
+        PreprocessorGradients,
+		MethodOptimizerRandomSet,
+		MethodOptimizerGeneticAlgorithms
     };
 
     /** Default constructor */

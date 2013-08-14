@@ -14,6 +14,7 @@
 #include <asResultsAnalogsForecastScoreFinal.h>
 #include <asResultsAnalogsScoresMap.h>
 #include <asParametersCalibration.h>
+#include <asParametersOptimization.h>
 #include <asPredictorCriteria.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asTimeArray.h>
