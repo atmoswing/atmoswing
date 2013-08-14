@@ -44,7 +44,8 @@ bool asMethodCalibrator::Manager()
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-    if(!LoadPredictandDB(params.GetPredictandDB())) return false;
+    wxASSERT(!m_PredictandDBFilePath.IsEmpty());
+    if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
     asLogMessage(_("Predictand DB loaded."));
 
     // Get a forecast score object to extract the score order
