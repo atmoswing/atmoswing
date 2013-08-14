@@ -26,7 +26,7 @@ void GrenobleComparisonArve1()
         pLog->SetLevel(1);
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
         datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -37,7 +37,10 @@ void GrenobleComparisonArve1()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -357,7 +360,7 @@ void GrenobleComparisonArve1CalibrationPeriod()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
         datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -368,7 +371,10 @@ void GrenobleComparisonArve1CalibrationPeriod()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -393,7 +399,7 @@ void GrenobleComparisonArve1CalibrationPeriod()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -535,7 +541,7 @@ TEST(GrenobleComparisonArve1CalibrationPeriodProcessingMethodInsert)
     pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
-    wxString str("Processing GrenobleComparisonArve1 on calibration period  with the array insertion option\n");
+    wxString str("Processing GrenobleComparisonArve1 on calibration period with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
     GrenobleComparisonArve1CalibrationPeriod();
@@ -547,7 +553,7 @@ TEST(GrenobleComparisonArve1CalibrationPeriodProcessingMethodSplitting)
     pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asFULL_ARRAY);
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
-    wxString str("Processing GrenobleComparisonArve1 on calibration period  with the array splitting option\n");
+    wxString str("Processing GrenobleComparisonArve1 on calibration period with the array splitting option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
     GrenobleComparisonArve1CalibrationPeriod();
@@ -561,10 +567,10 @@ void GrenobleComparisonArve2()
         asLog* pLog = new asLog();
         pLog->DisableMessageBoxOnError();
         pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
+        pLog->SetLevel(2);
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
         catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -575,7 +581,10 @@ void GrenobleComparisonArve2()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -797,6 +806,12 @@ void GrenobleComparisonArve2()
                 CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
                 CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
                 CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+
+                if (abs(fileAnalogsDates[i_ana]-resultsAnalogsDates(rowTargetDate, i_ana))>0.0001)
+                {
+                    wxString strdates = wxString::Format(("Date is %s and should be %s.\n"), asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, i_ana)), asTime::GetStringTime(fileAnalogsDates[i_ana]));
+                    printf("%s", strdates.mb_str(wxConvUTF8).data());
+                }
             }
 
             // The CRPS tolerence is huge, as it is not processed with the same P10 !
@@ -881,7 +896,7 @@ void GrenobleComparisonArve2CalibrationPeriod()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
         catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -892,7 +907,10 @@ void GrenobleComparisonArve2CalibrationPeriod()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -1133,7 +1151,7 @@ TEST(PreloadingSimple)
         asMethodCalibratorSingle calibrator2 = calibrator1;
         asResultsAnalogsDates anaDatesStd;
         asResultsAnalogsDates anaDatesPreload;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -1224,7 +1242,7 @@ TEST(PreloadingWithPreprocessing)
         asMethodCalibratorSingle calibrator2 = calibrator1;
         asResultsAnalogsDates anaDatesStd;
         asResultsAnalogsDates anaDatesPreload;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -1290,7 +1308,7 @@ void GrenobleComparisonArve1Preloading()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
         datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -1301,7 +1319,10 @@ void GrenobleComparisonArve1Preloading()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -1330,7 +1351,7 @@ void GrenobleComparisonArve1Preloading()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -1481,7 +1502,7 @@ void GrenobleComparisonArve1PreloadingSubset()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
         datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -1492,7 +1513,9 @@ void GrenobleComparisonArve1PreloadingSubset()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         // Predictor file path
         wxString catalogPredictorFilePath = wxFileName::GetCwd();
@@ -1521,7 +1544,7 @@ void GrenobleComparisonArve1PreloadingSubset()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -1590,7 +1613,7 @@ void GrenobleComparisonArve2Preloading()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
         catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -1601,7 +1624,10 @@ void GrenobleComparisonArve2Preloading()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -1631,7 +1657,7 @@ void GrenobleComparisonArve2Preloading()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -1792,7 +1818,7 @@ void GrenobleComparisonArve2SavingIntermediateResults()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
         catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -1803,7 +1829,10 @@ void GrenobleComparisonArve2SavingIntermediateResults()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -1831,7 +1860,7 @@ void GrenobleComparisonArve2SavingIntermediateResults()
         asResultsAnalogsValues anaValues1, anaValues2;
         asResultsAnalogsForecastScores anaScoresCRPS1, anaScoresCRPS2;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		
+
 		bool containsNaNs = false;
 
         try
@@ -2015,7 +2044,7 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
         bool result;
 
         // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(StationsDailyPrecipitation);
+        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
         catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
@@ -2026,7 +2055,10 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
 
         wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
-        predictand->BuildPrecipitationDB(10, asMAKE_SQRT, catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+        predictand->SetIsSqrt(true);
+        predictand->SetReturnPeriodNormalization(10);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+
         float P10 = 68.42240f;
 
         // Predictor file path
@@ -2056,7 +2088,7 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		
+
 		bool containsNaNs = false;
 
         try
