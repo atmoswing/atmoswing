@@ -30,7 +30,7 @@ asDialogFilePickerVirtual::asDialogFilePickerVirtual( wxWindow* parent, wxWindow
 	m_StaticTextDescription->Wrap( -1 );
 	bSizerMain->Add( m_StaticTextDescription, 0, wxALL, 5 );
 	
-	m_FilePicker = new wxFilePickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxSize( -1,-1 ), wxFLP_DEFAULT_STYLE );
+	m_FilePicker = new wxFilePickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxSize( -1,-1 ), wxFLP_USE_TEXTCTRL );
 	bSizerMain->Add( m_FilePicker, 0, wxALL|wxEXPAND, 5 );
 	
 	m_ButtonsConfirmation = new wxStdDialogButtonSizer();
@@ -358,7 +358,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelGeneralCommon->SetSizer( bSizer16 );
 	m_PanelGeneralCommon->Layout();
 	bSizer16->Fit( m_PanelGeneralCommon );
-	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), false );
+	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), true );
 	m_PanelPathsCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_SizerPanelPaths = new wxBoxSizer( wxVERTICAL );
 	
@@ -369,14 +369,14 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_StaticTextForecasterPath->Wrap( -1 );
 	sbSizer132->Add( m_StaticTextForecasterPath, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_FilePickerForecaster = new wxFilePickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
+	m_FilePickerForecaster = new wxFilePickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
 	sbSizer132->Add( m_FilePickerForecaster, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
 	m_StaticTextViewerPath = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Viewer"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextViewerPath->Wrap( -1 );
 	sbSizer132->Add( m_StaticTextViewerPath, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_FilePickerViewer = new wxFilePickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
+	m_FilePickerViewer = new wxFilePickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
 	sbSizer132->Add( m_FilePickerViewer, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
 	
@@ -389,14 +389,14 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_StaticTextParametersDir->Wrap( -1 );
 	sbSizer18->Add( m_StaticTextParametersDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_DirPickerParameters = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerParameters = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_DirPickerParameters, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
 	m_StaticTextArchivePredictorsDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextArchivePredictorsDir->Wrap( -1 );
 	sbSizer18->Add( m_StaticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_DirPickerArchivePredictors = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerArchivePredictors = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_DirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
 	m_StaticTextRealtimePredictorSavingDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory to save downloaded real-time predictors (GCM forecasts)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -417,7 +417,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_StaticTextPredictandDBDir->Wrap( -1 );
 	sbSizer18->Add( m_StaticTextPredictandDBDir, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_DirPickerPredictandDB = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerPredictandDB = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_DirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -515,7 +515,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelForecastDisplay->SetSizer( bSizer261 );
 	m_PanelForecastDisplay->Layout();
 	bSizer261->Fit( m_PanelForecastDisplay );
-	m_NotebookViewer->AddPage( m_PanelForecastDisplay, _("Forecast display"), false );
+	m_NotebookViewer->AddPage( m_PanelForecastDisplay, _("Forecast display"), true );
 	m_PanelGISForecast = new wxPanel( m_NotebookViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer23;
 	bSizer23 = new wxBoxSizer( wxVERTICAL );
@@ -821,7 +821,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelGeneral->SetSizer( bSizer271 );
 	m_PanelGeneral->Layout();
 	bSizer271->Fit( m_PanelGeneral );
-	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), false );
+	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), true );
 	m_PanelProcessing = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1611;
 	bSizer1611 = new wxBoxSizer( wxVERTICAL );
@@ -892,7 +892,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_StaticTextIntermediateResultsDir->Wrap( -1 );
 	sbSizer411->Add( m_StaticTextIntermediateResultsDir, 0, wxALL, 5 );
 	
-	m_DirPickerIntermediateResults = new wxDirPickerCtrl( m_PanelUserDirectories, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerIntermediateResults = new wxDirPickerCtrl( m_PanelUserDirectories, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer411->Add( m_DirPickerIntermediateResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -968,14 +968,14 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_StaticTextCatalogPredictorArchive->Wrap( -1 );
 	sbSizer61->Add( m_StaticTextCatalogPredictorArchive, 0, wxALL, 5 );
 	
-	m_FilePickerCatalogPredictorsArchive = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
+	m_FilePickerCatalogPredictorsArchive = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
 	sbSizer61->Add( m_FilePickerCatalogPredictorsArchive, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextCatalogPredictorRealtime = new wxStaticText( m_PanelPathsCatalogs, wxID_ANY, _("Path to the real-time predictors catalog"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextCatalogPredictorRealtime->Wrap( -1 );
 	sbSizer61->Add( m_StaticTextCatalogPredictorRealtime, 0, wxALL, 5 );
 	
-	m_FilePickerCatalogPredictorsRealtime = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST );
+	m_FilePickerCatalogPredictorsRealtime = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
 	sbSizer61->Add( m_FilePickerCatalogPredictorsRealtime, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -985,7 +985,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelPathsCatalogs->SetSizer( bSizer171 );
 	m_PanelPathsCatalogs->Layout();
 	bSizer171->Fit( m_PanelPathsCatalogs );
-	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), true );
+	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), false );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
 	
@@ -993,7 +993,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelAdvanced->SetSizer( bSizer26 );
 	m_PanelAdvanced->Layout();
 	bSizer26->Fit( m_PanelAdvanced );
-	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), true );
+	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), false );
 	
 	bSizer15->Add( m_NotebookBase, 1, wxEXPAND | wxALL, 5 );
 	

@@ -369,28 +369,28 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	m_StaticTextCatalogPath->Wrap( -1 );
 	bSizer6->Add( m_StaticTextCatalogPath, 0, wxALL, 5 );
 	
-	m_FilePickerCatalogPath = new wxFilePickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	m_FilePickerCatalogPath = new wxFilePickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_USE_TEXTCTRL );
 	bSizer6->Add( m_FilePickerCatalogPath, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextDataDir = new wxStaticText( m_panel2, wxID_ANY, _("Select the predictand data directory"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextDataDir->Wrap( -1 );
 	bSizer6->Add( m_StaticTextDataDir, 0, wxALL, 5 );
 	
-	m_DirPickerDataDir = new wxDirPickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerDataDir = new wxDirPickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	bSizer6->Add( m_DirPickerDataDir, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_StaticTextPatternsDir = new wxStaticText( m_panel2, wxID_ANY, _("Select the directory containing the file patterns description"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextPatternsDir->Wrap( -1 );
 	bSizer6->Add( m_StaticTextPatternsDir, 0, wxALL, 5 );
 	
-	m_DirPickerPatternsDir = new wxDirPickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerPatternsDir = new wxDirPickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	bSizer6->Add( m_DirPickerPatternsDir, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
 	m_StaticDestinationDir = new wxStaticText( m_panel2, wxID_ANY, _("Select the destination directory"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticDestinationDir->Wrap( -1 );
 	bSizer6->Add( m_StaticDestinationDir, 0, wxALL, 5 );
 	
-	m_DirPickerDestinationDir = new wxDirPickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	m_DirPickerDestinationDir = new wxDirPickerCtrl( m_panel2, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	bSizer6->Add( m_DirPickerDestinationDir, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	wxBoxSizer* bSizer15;

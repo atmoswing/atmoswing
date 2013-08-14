@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
 #include "asMethodForecasting.h"
 
 #include "asCatalogPredictorsRealtime.h"
@@ -1342,7 +1342,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step)
 {
     // Initialize the result object
-    results.SetCurrentStep(i_step);	
+    results.SetCurrentStep(i_step);
 	results.SetPredictandDatasetId(m_PredictandDB->GetDatasetId());
 	results.SetPredictandParameter(m_PredictandDB->GetDataParameter());
 	results.SetPredictandTemporalResolution(m_PredictandDB->GetDataTemporalResolution());
@@ -1362,8 +1362,10 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     results.SetStationsLon(m_PredictandDB->GetStationsLonArray());
     results.SetStationsLocCoordU(m_PredictandDB->GetStationsLocCoordUArray());
     results.SetStationsLocCoordV(m_PredictandDB->GetStationsLocCoordVArray());
-    results.SetReferenceAxis(m_PredictandDB->GetReferenceAxis());
-    results.SetReferenceValues(m_PredictandDB->GetReferenceValuesArray());
+    Array1DFloat refAxis = m_PredictandDB->GetReferenceAxis();
+    results.SetReferenceAxis(refAxis);
+    Array2DFloat refValues = m_PredictandDB->GetReferenceValuesArray();
+    results.SetReferenceValues(refValues);
 
     Array1DFloat leadTimes = results.GetTargetDates();
 
