@@ -979,6 +979,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	sbSizer61->Add( m_FilePickerCatalogPredictorsRealtime, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
+	
 	bSizer171->Add( sbSizer61, 0, wxEXPAND|wxALL, 5 );
 	
 	
