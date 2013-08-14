@@ -44,7 +44,6 @@ bool asMethodCalibrator::Manager()
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-    wxASSERT(!m_PredictandDBFilePath.IsEmpty());
     if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
     asLogMessage(_("Predictand DB loaded."));
 
@@ -493,7 +492,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         {
                             for (unsigned int tmp_hour=0; tmp_hour<preloadDTimeHours.size(); tmp_hour++)
                             {
-                                if(preloadDTimeHours[tmp_hour]<6)                                {
+                                if(preloadDTimeHours[tmp_hour]<6)
+                                {
 // FIXME (phorton#1#): Change that to allow for more hours
                                     asLogError(wxString::Format(_("The predictor hour cannot be inferior to 6 yet in preloading. %.2f given"), preloadDTimeHours[tmp_hour]));
                                     DeletePreloadedData();
