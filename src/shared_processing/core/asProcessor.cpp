@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
 #include "asProcessor.h"
 
 #include <asTimeArray.h>
@@ -313,6 +313,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             {
                                 containsNaNs = true;
 								asLogWarning(_("NaNs were found in the criteria values."));
+								asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]).c_str()));
                             }
 
                             // Check if the array is already full
@@ -486,6 +487,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             {
                                 containsNaNs = true;
                                 asLogWarning(_("NaNs were found in the criteria values."));
+								asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]).c_str()));
                             }
 
                             // Store in the result array
@@ -794,7 +796,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                                                                                                                 asTime::GetStringTime(timeTargetData[i_timeTarg], "DD.MM.YYYY hh:mm").c_str(), i_timeTarg,
                                                                                                                 (int)vArchData[i_ptor]->size(), (int)vTargData[i_ptor]->size()));
                             tmpscore = criteria[i_ptor]->Assess(*vTargData[i_ptor], *vArchData[i_ptor], vRowsNb[i_ptor], vColsNb[i_ptor]);
-			
+
                             /*
                             // For debugging
                             wxLogMessage("timeTarget = %s",asTime::GetStringTime(timeTargetSelection[i_anadates]).c_str());
@@ -817,6 +819,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                         {
                             containsNaNs = true;
 							asLogWarning(_("NaNs were found in the criteria values."));
+							asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetData[i_timeTarg]).c_str() , asTime::GetStringTime(timeArchiveData[i_timeArch]).c_str()));
                         }
 
                         // Check if the array is already full

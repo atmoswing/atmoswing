@@ -1,17 +1,17 @@
-/** 
+/**
  *
  *  This file is part of the AtmoSwing software.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
+ *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch).
  *  All rights reserved.
  *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
+ *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
  *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
  *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
  *  PURPOSE.
  *
  */
- 
+
  #include "asPredictorCriteriaS1grads.h"
 
 asPredictorCriteriaS1grads::asPredictorCriteriaS1grads(int linAlgebraMethod)
@@ -77,7 +77,8 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
 
 	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
     {
-        asLogWarning(_("NaNs were found in the data."));
+        // Message disabled here as it is already processed in the processor (and not well handled here in multithreading mode).
+        // asLogWarning(_("NaNs were found in the data."));
         return NaNFloat;
     }
 
