@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<AtmoswingFile version="0.2">
+	<DataSet id="DSet1" enable="1" name="Dataset 1" description="Dataset 1 description">
+		<Something>1</Something>
+		<SomethingElse>Meters</SomethingElse>
+	</DataSet>
+	<DataSet id="DSet2" enable="1" name="Dataset 2" description="Dataset 2 description">
+		<Something>1</Something>
+		<SomethingElse>Meters</SomethingElse>
+	</DataSet>
+	<DataSet id="DSet3" enable="1" name="Dataset 3" description="Dataset 3 description">
+		<Something>1</Something>
+		<SomethingElse>Meters</SomethingElse>
+	</DataSet>
+	<DataSet id="DSet4" enable="1" name="Dataset 4" description="Dataset 4 description">
+		<Something>1</Something>
+		<SomethingElse>Meters</SomethingElse>
+	</DataSet>
+</AtmoswingFile>
