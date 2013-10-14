@@ -9,8 +9,9 @@ The software is written in C++, is cross-platform and open source (under the Com
 ## What's in there ##
 
 This repository contains 2 separate tools:
-- The Forecaster: automatically processes the forecast (build files in "build/forecaster")
-- The Viewer: displays the resulting files in a GIS environment (build files in "build/viewer")
+
+* The Forecaster: automatically processes the forecast (build files in "build/forecaster")
+* The Viewer: displays the resulting files in a GIS environment (build files in "build/viewer")
 
 Additionally, multiple unit tests are available in the "test" directory. It is highly recommended to run these tests before using AtmoSwing operationally.
 
@@ -27,9 +28,13 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 ## Credits ##
 
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
+
 Developed by Pascal Horton.
+
 Financed by the cantons of Valais and Vaud, Switzerland.
+
 Resulting from the MINERVE project (2011).
+
 See both license.txt and notice.txt files for details about the license and its enforcement.
 
 ## Contact ##
