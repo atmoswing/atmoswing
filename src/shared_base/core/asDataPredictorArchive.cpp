@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asDataPredictorArchive.h"
@@ -525,7 +538,7 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
 
                     if(lonMax==dataArea->GetAxisUmax())
                     {
-                        // Correction if the lon 360° is required (doesn't exist)
+                        // Correction if the lon 360 degrees is required (doesn't exist)
                         load360 = true;
                         for (int i_check = 0; i_check<iterationNb; i_check++)
                         {
@@ -548,7 +561,7 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
                     }
                     if(indexStartLon==asOUT_OF_RANGE)
                     {
-                        // If not found, try with angles above 360°
+                        // If not found, try with angles above 360 degrees
                         indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin+360, 0.01f);
                     }
                     if(indexStartLon<0)
@@ -659,7 +672,7 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
                     ncFile.GetVarSample(dataName, indexStartData3, indexCountData3, indexStrideData3, &data[indexBegining]);
                 }
 
-                // Load data at lon = 360°
+                // Load data at lon = 360 degrees
                 if(load360)
                 {
                     // Resize the arrays to store the new data
@@ -717,7 +730,7 @@ bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArr
                         }
                     }
 
-                    // Load data at 0° (corresponds to 360°)
+                    // Load data at 0 degrees (corresponds to 360 degrees)
                     if (nDims==4)
                     {
                         ncFile.GetVarSample(dataName, indexStartData4, indexCountData4, indexStrideData4, &data360[indexBegining]);
