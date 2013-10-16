@@ -1,4 +1,4 @@
-# AtmoSwing #
+![AtmoSwing](https://bitbucket.org/atmoswing/atmoswing/raw/f9df834e9ea072b3deb0834931e0160846451ebb/art/icon/logo.png)
 
 AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day. This method is used in different institutions for hydro-meteorological forecasting in the framework of real-time flood management or electricity production.
 
