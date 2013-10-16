@@ -24,7 +24,6 @@
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- */
  
 #ifndef ASPARAMETERS_H
 #define ASPARAMETERS_H
