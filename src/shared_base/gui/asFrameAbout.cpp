@@ -46,6 +46,10 @@ asFrameAboutVirtual( parent )
     // Set Atmoswing version
     m_StaticTextVersion->SetLabel(asVersion::GetFullString());
 
+	// Set changeset number
+	wxString changesetLabel = wxString::Format("Changeset %s",wxHgVersion::GetSoftNumber().c_str());
+	m_StaticTextChangeset->SetLabel(changesetLabel);
+
 	// Set libraries versions
 	m_TextCtrlLibraries->SetValue(wxHgVersion::GetAllModuleInfo(false));
 	

@@ -46,6 +46,7 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include "vroomgis_bmp.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
+#include "img_logo.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
@@ -100,6 +101,7 @@ bool AtmoswingAppViewer::OnInit()
     // Initialize images
     initialize_images_bullets();
     initialize_images_toolbar();
+	initialize_images_logo();
     vroomgis_initialize_images();
 
     // Init cURL

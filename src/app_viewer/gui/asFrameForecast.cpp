@@ -45,13 +45,13 @@
 #include "asFileAscii.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
+#include "img_logo.h"
 #include <wx/colour.h>
 #include <wx/statline.h>
 #include <wx/app.h>
 #include <wx/event.h>
 #include "vrrender.h"
 #include "vrlayervector.h"
-#include "wxhgversion_dlg.h"
 
 
 /* vroomDropFiles */
@@ -499,11 +499,6 @@ void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 
 void asFrameForecast::OpenFrameAbout( wxCommandEvent& event )
 {
-	wxHgVersionDlg aboutModal(this, wxID_ANY,_("test"));
-	//aboutModal.SetBitmapLogo(img_led_red);
-	aboutModal.SetCopyright(wxString::Format("\u00A9 Pascal Horton, %d", wxDateTime::Now().GetYear()));
-	aboutModal.ShowModal();
-
     asFrameAbout* frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
