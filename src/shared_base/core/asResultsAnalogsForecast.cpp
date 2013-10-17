@@ -351,7 +351,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 		m_PredictandParameter = Precipitation;
 		m_PredictandTemporalResolution = Daily;
 		m_PredictandSpatialAggregation = Station;
-		m_PredictandDatasetId = wxEmptyString;
+		m_PredictandDatasetId = "MeteoSwiss-Rhone";
 		m_ModelName = ncFile.GetAttString("modelName");
 		m_DateProcessed = ncFile.GetAttDouble("dateProcessed");
 		m_LeadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
