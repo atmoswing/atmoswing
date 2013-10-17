@@ -126,7 +126,11 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	m_StaticTextVersion->Wrap( -1 );
 	m_StaticTextVersion->SetFont( wxFont( 12, 70, 90, 90, false, wxEmptyString ) );
 	
-	bSizer27->Add( m_StaticTextVersion, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 20 );
+	bSizer27->Add( m_StaticTextVersion, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextChangeset = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextChangeset->Wrap( -1 );
+	bSizer27->Add( m_StaticTextChangeset, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 20 );
 	
 	m_Notebook = new wxNotebook( m_Panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_PanelCredits = new wxPanel( m_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -186,8 +190,8 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	wxBoxSizer* bSizer32;
 	bSizer32 = new wxBoxSizer( wxVERTICAL );
 	
-	m_TextCtrlLicense = new wxTextCtrl( m_PanelLicense, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-	bSizer32->Add( m_TextCtrlLicense, 1, wxALL|wxEXPAND, 5 );
+	m_TextCtrlLicense = new wxTextCtrl( m_PanelLicense, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	bSizer32->Add( m_TextCtrlLicense, 1, wxEXPAND, 5 );
 	
 	
 	m_PanelLicense->SetSizer( bSizer32 );
@@ -198,8 +202,8 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	wxBoxSizer* bSizer31;
 	bSizer31 = new wxBoxSizer( wxVERTICAL );
 	
-	m_TextCtrlLibraries = new wxTextCtrl( m_PanelLibraries, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-	bSizer31->Add( m_TextCtrlLibraries, 1, wxALL|wxEXPAND, 5 );
+	m_TextCtrlLibraries = new wxTextCtrl( m_PanelLibraries, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	bSizer31->Add( m_TextCtrlLibraries, 1, wxEXPAND, 5 );
 	
 	
 	m_PanelLibraries->SetSizer( bSizer31 );

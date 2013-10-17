@@ -111,6 +111,7 @@ class asFrameAboutVirtual : public wxFrame
 		wxPanel* m_Panel;
 		wxStaticBitmap* m_Logo;
 		wxStaticText* m_StaticTextVersion;
+		wxStaticText* m_StaticTextChangeset;
 		wxNotebook* m_Notebook;
 		wxPanel* m_PanelCredits;
 		wxStaticText* m_StaticTextDevelopers;
