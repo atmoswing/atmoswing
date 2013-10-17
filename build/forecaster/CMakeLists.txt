@@ -108,6 +108,12 @@ include_directories(${PROJ4_INCLUDE_DIR})
 find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
+# Eigen
+set(EIGEN_INCLUDE_DIR "../../src/shared_base/libs/eigen")
+
+# wxhgversion
+include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+
 
 #### DECLARE EXECUTABLE
 
@@ -133,3 +139,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${NetCDF_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${CURL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
+if (USE_WXHGVERSION)
+  target_link_libraries(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
+endif (USE_WXHGVERSION)

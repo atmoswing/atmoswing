@@ -28,13 +28,13 @@
 #include <wx/frame.h>
 #include <wx/statbmp.h>
 #include <wx/panel.h>
+#include <wx/textctrl.h>
+#include <wx/notebook.h>
 #include <wx/radiobox.h>
 #include <wx/checkbox.h>
 #include <wx/statbox.h>
-#include <wx/textctrl.h>
 #include <wx/choice.h>
 #include <wx/clrpicker.h>
-#include <wx/notebook.h>
 #include <wx/slider.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -109,9 +109,10 @@ class asFrameAboutVirtual : public wxFrame
 	
 	protected:
 		wxPanel* m_Panel;
-		wxStaticText* m_StaticTextTitle;
+		wxStaticBitmap* m_Logo;
 		wxStaticText* m_StaticTextVersion;
-		wxStaticBitmap* m_bitmap1;
+		wxNotebook* m_Notebook;
+		wxPanel* m_PanelCredits;
 		wxStaticText* m_StaticTextDevelopers;
 		wxStaticText* m_StaticTextDevelopersList;
 		wxStaticText* m_StaticTextSupervision;
@@ -120,9 +121,11 @@ class asFrameAboutVirtual : public wxFrame
 		wxStaticText* m_StaticTextThanksList;
 		wxStaticText* m_StaticTextOtherCredits;
 		wxStaticText* m_StaticTextOtherCreditsList;
-		wxStaticText* m_StaticTextLibraries;
-		wxGridSizer* m_GridSizer;
-		wxStaticText* m_StaticTextSpacer;
+		wxStaticText* m_staticTextSpacer;
+		wxPanel* m_PanelLicense;
+		wxTextCtrl* m_TextCtrlLicense;
+		wxPanel* m_PanelLibraries;
+		wxTextCtrl* m_TextCtrlLibraries;
 	
 	public:
 		

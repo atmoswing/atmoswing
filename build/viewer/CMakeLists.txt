@@ -92,6 +92,9 @@ include_directories(${PROJ4_INCLUDE_DIR})
 find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
+# Eigen
+set(EIGEN_INCLUDE_DIR "../../src/shared_base/libs/eigen")
+
 # vroomgis
 mark_as_advanced(SEARCH_GDAL)
 mark_as_advanced(SEARCH_GEOS)
@@ -105,7 +108,7 @@ include("../../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib
 link_libraries(${wxWidgets_LIBRARIES})
 
 # wxhgversion
-include("../../src/app_viewer/libs/vroomgis/plugins/wxhgversion/build/use_wxhgversion.cmake")
+include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
 
 
 #### DECLARE EXECUTABLE

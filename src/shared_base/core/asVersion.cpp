@@ -51,11 +51,5 @@ wxString asVersion::GetFullString()
         versionNb << " -Linux";
     #endif
 
-    #if wxUSE_UNICODE
-        versionNb << " -Unicode";
-    #else
-        versionNb << " -ANSI";
-    #endif
-
     return versionNb;
 }
