@@ -7,6 +7,11 @@ project(AtmoswingViewer)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
 
+#### ADDITION OF CUSTOM MODULES
+
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../_cmake)
+
+
 #### SOURCE FILES LIST
 
 file(GLOB_RECURSE src_base_core ../../src/shared_base/core/*)
