@@ -49,6 +49,7 @@ asCatalog(filePath)
     m_Station.Name = wxEmptyString;
     m_Station.Filename = wxEmptyString;
     m_Station.Filepattern = wxEmptyString;
+    m_DataPath = wxEmptyString;
 }
 
 asCatalogPredictands::~asCatalogPredictands()
@@ -140,7 +141,6 @@ bool asCatalogPredictands::LoadDatasetProp()
     m_Start = ConvertStringToDatasetDate(xmlFile.GetFirstElementValueText("Start"), asSERIE_BEGINNING, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
     m_End = ConvertStringToDatasetDate(xmlFile.GetFirstElementValueText("End"), asSERIE_END, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
     m_FormatRaw = asGlobEnums::StringToFileFormatEnum(xmlFile.GetFirstElementValueText("FormatRaw"));
-    m_DataPath = xmlFile.GetFirstElementValueText("Path");
     m_CoordSys = asGlobEnums::StringToCoordSysEnum(xmlFile.GetFirstElementValueText("CoordinateSys"));
     m_Nan.push_back(xmlFile.GetFirstElementValueDouble("NaN", -9999));
     while(xmlFile.GetNextElement("NaN"))
