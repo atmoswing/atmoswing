@@ -121,7 +121,7 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return SetList;
 
     // XML struct for the dataset information
-    wxString DatasetAccess = "AtmoswingFile.DataSet";
+    wxString DatasetAccess = "AtmoSwingFile.DataSet";
 
     // Get the first dataset
     if(xmlFile.GetFirstElementAttributeValueBool(DatasetAccess, "enable", true))
@@ -179,7 +179,7 @@ asCatalog::DataIdListStr asCatalog::GetDataIdListStr(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return DataList;
 
     // XML struct for the dataset information
-    wxString DataAccess = wxString::Format("AtmoswingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+    wxString DataAccess = wxString::Format("AtmoSwingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
 
     // Get the first data
     if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
@@ -237,7 +237,7 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
     // XML struct for the dataset information
 	if (Purpose==Predictand)
 	{
-		wxString DataAccess = "AtmoswingFile.DataSet.DataList.Data";
+		wxString DataAccess = "AtmoSwingFile.DataSet.DataList.Data";
 		
 		// Get the first data
 		DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
@@ -252,7 +252,7 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
 	}
 	else
 	{
-		wxString DataAccess = wxString::Format("AtmoswingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+		wxString DataAccess = wxString::Format("AtmoSwingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
 		
 		// Get the first data
 		if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))

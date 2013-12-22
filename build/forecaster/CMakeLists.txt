@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 2.8)
 
 #### PROJECT
 
-project(AtmoswingForecaster)
+project(AtmoSwingForecaster)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
-set(USE_GUI 1 CACHE BOOL "Sould we build AtmoswingForecaster with a GUI ?" )
+set(USE_GUI 1 CACHE BOOL "Sould we build AtmoSwingForecaster with a GUI ?" )
 
 
 #### ADDITION OF CUSTOM MODULES

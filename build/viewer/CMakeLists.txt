@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 #### PROJECT
 
-project(AtmoswingViewer)
+project(AtmoSwingViewer)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
 

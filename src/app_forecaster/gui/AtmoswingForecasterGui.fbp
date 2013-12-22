@@ -45,7 +45,7 @@
             <property name="size">-1,-1</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass"></property>
-            <property name="title">Atmoswing Forecaster</property>
+            <property name="title">AtmoSwing Forecaster</property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>

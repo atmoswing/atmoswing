@@ -41,7 +41,7 @@ asFileParametersStandard::~asFileParametersStandard()
 
 bool asFileParametersStandard::InsertRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile")) return false;
+    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
     if(!InsertElement(wxEmptyString, "StandardSet")) return false;
     if(!GoToFirstNodeWithPath("StandardSet")) return false;
     return true;
@@ -49,9 +49,9 @@ bool asFileParametersStandard::InsertRootElement()
 
 bool asFileParametersStandard::GoToRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile.StandardSet"))
+    if(!GoToFirstNodeWithPath("AtmoSwingFile.StandardSet"))
     {
-        asLogError(wxString::Format(_("The file %s is not an Atmoswing parameters file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing parameters file."), m_FileName.GetFullName()));
         return false;
     }
     return true;

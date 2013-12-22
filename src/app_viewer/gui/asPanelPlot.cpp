@@ -218,21 +218,21 @@ void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event)
 
 void asPanelPlot::Print()
 {
-    wxPlotPrintout plotPrint(m_PlotCtrl, wxT("Atmoswing Printout"));
+    wxPlotPrintout plotPrint(m_PlotCtrl, wxT("AtmoSwing Printout"));
 
     plotPrint.ShowPrintDialog();
 }
 
 void asPanelPlot::PrintPreview()
 {
-    wxPlotPrintout plotPrint(m_PlotCtrl, wxT("Atmoswing Printout"));
+    wxPlotPrintout plotPrint(m_PlotCtrl, wxT("AtmoSwing Printout"));
 
-    plotPrint.ShowPrintPreviewDialog(wxT("Atmoswing Print Preview"));
+    plotPrint.ShowPrintPreviewDialog(wxT("AtmoSwing Print Preview"));
 }
 
 void asPanelPlot::ExportSVG()
 {
-    wxFileDialog dialog(this, wxT("Save SVG file as"), wxEmptyString, "Atmoswing_timeseries",
+    wxFileDialog dialog(this, wxT("Save SVG file as"), wxEmptyString, "AtmoSwing_timeseries",
         wxT("SVG vector picture files (*.svg)|*.svg"),
         wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 

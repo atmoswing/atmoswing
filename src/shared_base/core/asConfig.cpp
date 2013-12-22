@@ -134,12 +134,12 @@ wxString asConfig::GetDocumentsDir()
 
 wxString asConfig::GetDefaultUserWorkingDir()
 {
-    wxString DirData = GetUserDataDir("Atmoswing") + DS + "Data" + DS;
+    wxString DirData = GetUserDataDir("AtmoSwing") + DS + "Data" + DS;
     return DirData;
 }
 
 wxString asConfig::GetDefaultUserConfigDir()
 {
-    wxString DirConfig = GetUserDataDir("Atmoswing") + DS + "Config" + DS;
+    wxString DirConfig = GetUserDataDir("AtmoSwing") + DS + "Config" + DS;
     return DirConfig;
 }
