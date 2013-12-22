@@ -41,7 +41,6 @@
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
 #include "asPanelPlot.h"
-#include "asCatalog.h"
 #include "asFileAscii.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
@@ -136,7 +135,7 @@ asFrameForecastVirtual( parent, id )
     m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
 
 	// Status bar
-	SetStatusText(_("Welcome to Atmoswing"));
+	SetStatusText(_("Welcome to AtmoSwing"));
 
 	// Connect Events
 	m_DisplayCtrl->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( asFrameForecast::OnRightClick ), NULL, this );
@@ -886,7 +885,7 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
 void asFrameForecast::OpenForecastsFromTmpList()
 {
     // Write the resulting files path into a temp file.
-    wxString tempFile = asConfig::GetTempDir() + "AtmoswingForecatsFilePaths.txt";
+    wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
     filePaths.Open();

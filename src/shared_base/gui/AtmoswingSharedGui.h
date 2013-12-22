@@ -130,7 +130,7 @@ class asFrameAboutVirtual : public wxFrame
 	
 	public:
 		
-		asFrameAboutVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxFRAME_FLOAT_ON_PARENT|wxSTAY_ON_TOP|wxTAB_TRAVERSAL );
+		asFrameAboutVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxFRAME_FLOAT_ON_PARENT|wxSTAY_ON_TOP|wxTAB_TRAVERSAL );
 		
 		~asFrameAboutVirtual();
 	
@@ -272,11 +272,6 @@ class asFramePreferencesVirtual : public wxFrame
 		wxStaticText* m_StaticTextPrefFileForecaster;
 		wxStaticText* m_StaticTextPrefFileViewerLabel;
 		wxStaticText* m_StaticTextPrefFileViewer;
-		wxPanel* m_PanelPathsCatalogs;
-		wxStaticText* m_StaticTextCatalogPredictorArchive;
-		wxFilePickerCtrl* m_FilePickerCatalogPredictorsArchive;
-		wxStaticText* m_StaticTextCatalogPredictorRealtime;
-		wxFilePickerCtrl* m_FilePickerCatalogPredictorsRealtime;
 		wxStdDialogButtonSizer* m_ButtonsConfirmation;
 		wxButton* m_ButtonsConfirmationOK;
 		wxButton* m_ButtonsConfirmationApply;
