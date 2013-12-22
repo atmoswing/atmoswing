@@ -41,7 +41,7 @@ asFileForecastingModels::~asFileForecastingModels()
 
 bool asFileForecastingModels::InsertRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile")) return false;
+    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
     if(!InsertElement(wxEmptyString, "ForecastingModels")) return false;
     if(!GoToFirstNodeWithPath("ForecastingModels")) return false;
     return true;
@@ -49,6 +49,6 @@ bool asFileForecastingModels::InsertRootElement()
 
 bool asFileForecastingModels::GoToRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile.ForecastingModels")) return false;
+    if(!GoToFirstNodeWithPath("AtmoSwingFile.ForecastingModels")) return false;
     return true;
 }

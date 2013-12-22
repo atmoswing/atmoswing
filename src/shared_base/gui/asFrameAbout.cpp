@@ -43,7 +43,7 @@ asFrameAboutVirtual( parent )
 	// Set logo
 	m_Logo->SetBitmap(img_logo);
 
-    // Set Atmoswing version
+    // Set AtmoSwing version
     m_StaticTextVersion->SetLabel(asVersion::GetFullString());
 
 	// Set changeset number

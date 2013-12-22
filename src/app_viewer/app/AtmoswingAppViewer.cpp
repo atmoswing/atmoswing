@@ -39,7 +39,7 @@
 IMPLEMENT_APP(AtmoswingAppViewer);
 
 #include <wx/debug.h>
-#include "wx/fileconf.h"
+#include "wx/fileconf.h"S
 #include <asIncludes.h>
 #include <asThreadsManager.h>
 #include <asInternet.h>
@@ -68,7 +68,7 @@ bool AtmoswingAppViewer::OnInit()
     #endif
 
     // Set application name and create user directory
-    wxString appName = "Atmoswing viewer";
+    wxString appName = "AtmoSwing viewer";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
@@ -77,7 +77,7 @@ bool AtmoswingAppViewer::OnInit()
     g_AppForecaster = false;
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir()+"Atmoswing.ini",asConfig::GetUserDataDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
@@ -86,7 +86,7 @@ bool AtmoswingAppViewer::OnInit()
 
     if (!multipleInstances)
     {
-        const wxString instanceName = wxString::Format(wxT("AtmoswingViewer-%s"),wxGetUserId().c_str());
+        const wxString instanceName = wxString::Format(wxT("AtmoSwingViewer-%s"),wxGetUserId().c_str());
         m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if ( m_SingleInstanceChecker->IsAnotherRunning() )
         {
@@ -134,7 +134,7 @@ bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
     {
         logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
     }
-    Log().CreateFile("AtmoswingViewer.log");
+    Log().CreateFile("AtmoSwingViewer.log");
     Log().SetLevel((int)logLevel);
 
     return true;
@@ -167,7 +167,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("Atmoswing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
 
             msgOut->Printf( wxT("%s"), msg.c_str() );
         }

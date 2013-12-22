@@ -92,7 +92,7 @@ bool asCatalogPredictands::LoadDatasetProp()
     if(!xmlFile.Open()) return false;
 
     // XML struct for the dataset information
-    DatasetAccess = wxString::Format("AtmoswingFile.DataSet");
+    DatasetAccess = wxString::Format("AtmoSwingFile.DataSet");
     if(!xmlFile.GoToFirstNodeWithPath(DatasetAccess)) return false;
 
     // Get the data set informations
@@ -183,7 +183,7 @@ bool asCatalogPredictands::LoadDataProp(int StationId)
     if(!xmlFile.Open()) return false;
 
     // XML struct for the dataset information
-    DataAccess = wxString::Format("AtmoswingFile.DataSet.DataList.Data[%d]",StationId);
+    DataAccess = wxString::Format("AtmoSwingFile.DataSet.DataList.Data[%d]",StationId);
     if(!xmlFile.GoToFirstNodeWithPath(DataAccess))
 	{
 		asLogError(_("The requested station id was not found in the predictand catalog."));

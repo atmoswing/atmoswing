@@ -35,7 +35,7 @@
 class asLogWindow: public wxLogWindow
 {
 public:
-    asLogWindow(wxFrame *parent, const wxString& title = _("Atmoswing log window"), bool show = true, bool passToOld = false);
+    asLogWindow(wxFrame *parent, const wxString& title = _("AtmoSwing log window"), bool show = true, bool passToOld = false);
     virtual ~asLogWindow();
 
     virtual void DoShow(bool bShow = true);
