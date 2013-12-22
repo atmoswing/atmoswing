@@ -31,8 +31,9 @@
 #include <asGeoAreaCompositeGrid.h>
 
 
-asDataPredictor::asDataPredictor()
+asDataPredictor::asDataPredictor(const wxString &dataId)
 {
+    m_DataId = dataId;
     m_Level = 0;
     m_IsPreprocessed = false;
     m_CanBeClipped = true;
@@ -45,11 +46,6 @@ asDataPredictor::asDataPredictor()
 asDataPredictor::~asDataPredictor()
 {
 
-}
-
-bool asDataPredictor::Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray, const VectorString &AlternatePredictorDataPath)
-{
-    return false;
 }
 
 bool asDataPredictor::SetData(VArray2DFloat &val)

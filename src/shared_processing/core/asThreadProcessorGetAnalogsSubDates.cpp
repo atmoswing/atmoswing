@@ -32,8 +32,8 @@
 #include <asTimeArray.h>
 
 
-asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor >* predictorsArchive,
-                                                                                   std::vector < asDataPredictor >* predictorsTarget,
+asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
+                                                                                   std::vector < asDataPredictor* > predictorsTarget,
                                                                                    asTimeArray* timeArrayArchiveData,
                                                                                    asTimeArray* timeArrayTargetData,
                                                                                    Array1DFloat* timeTargetSelection,
@@ -104,8 +104,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     bool isasc = (m_Criteria[0]->GetOrder()==Asc);
 
     wxASSERT(m_End<m_pTimeTargetSelection->size());
-    wxASSERT(timeArchiveDataSize==(*m_pPredictorsArchive)[0].GetData().size());
-    wxASSERT(timeTargetDataSize==(*m_pPredictorsTarget)[0].GetData().size());
+    wxASSERT(timeArchiveDataSize==(m_pPredictorsArchive)[0]->GetData().size());
+    wxASSERT(timeTargetDataSize==(m_pPredictorsTarget)[0]->GetData().size());
 
     // Containers for daily results
     Array1DFloat currentAnalogsDates(analogsNbPrevious);
@@ -123,7 +123,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
         // Extract target data
         for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
         {
-            m_vTargData[i_ptor] = &(*m_pPredictorsTarget)[i_ptor].GetData()[i_timeTarg];
+            m_vTargData[i_ptor] = &(m_pPredictorsTarget)[i_ptor]->GetData()[i_timeTarg];
         }
 
         // Get dates
@@ -148,7 +148,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
                 for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                 {
                     // Get data
-                    m_vArchData[i_ptor] = &(*m_pPredictorsArchive)[i_ptor].GetData()[i_timeArch];
+                    m_vArchData[i_ptor] = &(m_pPredictorsArchive)[i_ptor]->GetData()[i_timeArch];
 
                     // Assess the criteria
                     wxASSERT(m_Criteria.size()>(unsigned)i_ptor);

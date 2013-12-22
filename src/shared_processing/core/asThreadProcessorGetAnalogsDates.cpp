@@ -32,20 +32,20 @@
 #include <asTimeArray.h>
 
 
-asThreadProcessorGetAnalogsDates::asThreadProcessorGetAnalogsDates(std::vector < asDataPredictor >* predictorsArchive,
-                                                                                   std::vector < asDataPredictor >* predictorsTarget,
-                                                                                   asTimeArray* timeArrayArchiveData,
-                                                                                   asTimeArray* timeArrayArchiveSelection,
-                                                                                   asTimeArray* timeArrayTargetData,
-                                                                                   asTimeArray* timeArrayTargetSelection,
-                                                                                   std::vector < asPredictorCriteria* > criteria,
-                                                                                   asParameters &params, int step,
-                                                                                   VpArray2DFloat &vTargData,
-                                                                                   VpArray2DFloat &vArchData,
-                                                                                   Array1DInt &vRowsNb, Array1DInt &vColsNb,
-                                                                                   int start, int end,
-                                                                                   Array2DFloat* finalAnalogsCriteria, Array2DFloat* finalAnalogsDates,
-                                                                                   bool* containsNaNs)
+asThreadProcessorGetAnalogsDates::asThreadProcessorGetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
+                                                                    std::vector < asDataPredictor* > predictorsTarget,
+                                                                    asTimeArray* timeArrayArchiveData,
+                                                                    asTimeArray* timeArrayArchiveSelection,
+                                                                    asTimeArray* timeArrayTargetData,
+                                                                    asTimeArray* timeArrayTargetSelection,
+                                                                    std::vector < asPredictorCriteria* > criteria,
+                                                                    asParameters &params, int step,
+                                                                    VpArray2DFloat &vTargData,
+                                                                    VpArray2DFloat &vArchData,
+                                                                    Array1DInt &vRowsNb, Array1DInt &vColsNb,
+                                                                    int start, int end,
+                                                                    Array2DFloat* finalAnalogsCriteria, Array2DFloat* finalAnalogsDates,
+                                                                    bool* containsNaNs)
 :
 asThread()
 {
@@ -103,8 +103,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     bool isasc = (m_Criteria[0]->GetOrder()==Asc);
 
     wxASSERT(m_End<timeTargetSelection.size());
-    wxASSERT(timeArchiveDataSize==(*m_pPredictorsArchive)[0].GetData().size());
-    wxASSERT(timeTargetDataSize==(*m_pPredictorsTarget)[0].GetData().size());
+    wxASSERT(timeArchiveDataSize==(m_pPredictorsArchive)[0]->GetData().size());
+    wxASSERT(timeTargetDataSize==(m_pPredictorsTarget)[0]->GetData().size());
 
     // Containers for daily results
     Array1DFloat ScoreArrayOneDay(analogsNb);
@@ -139,7 +139,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
             // Extract target data
             for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
             {
-                m_vTargData[i_ptor] = &(*m_pPredictorsTarget)[i_ptor].GetData()[i_timeTarg];
+                m_vTargData[i_ptor] = &(m_pPredictorsTarget)[i_ptor]->GetData()[i_timeTarg];
             }
 
             // DateArray object initialization.
@@ -177,7 +177,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                     {
                         // Get data
-                        m_vArchData[i_ptor] = &(*m_pPredictorsArchive)[i_ptor].GetData()[i_timeArch];
+                        m_vArchData[i_ptor] = &(m_pPredictorsArchive)[i_ptor]->GetData()[i_timeArch];
 
                         // Assess the criteria
                         wxASSERT(m_Criteria.size()>(unsigned)i_ptor);

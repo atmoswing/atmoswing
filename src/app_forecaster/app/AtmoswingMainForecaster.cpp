@@ -35,11 +35,6 @@
 
 #include "AtmoswingMainForecaster.h"
 
-#include "asCatalog.h"
-#include "asCatalogPredictands.h"
-#include "asCatalogPredictors.h"
-#include "asCatalogPredictorsArchive.h"
-#include "asCatalogPredictorsRealtime.h"
 #include "asGeo.h"
 #include "asGeoArea.h"
 #include "asGeoAreaCompositeGrid.h"
@@ -71,7 +66,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     : asFrameMain(frame)
 {
 #if wxUSE_STATUSBAR
-    wxLogStatus(_("Welcome to Atmoswing %s."), asVersion::GetFullString().c_str());
+    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString().c_str());
 #endif
 
     // Config file
@@ -83,8 +78,8 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     // Create log window and file
     bool displayLogWindow;
     pConfig->Read("/Standard/DisplayLogWindow", &displayLogWindow, true);
-    m_LogWindow = new asLogWindow(this, _("Atmoswing log window"), displayLogWindow);
-    Log().CreateFile("AtmoswingForecaster.log");
+    m_LogWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
+    Log().CreateFile("AtmoSwingForecaster.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
@@ -106,40 +101,6 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     Move(x, y);
     SetClientSize(w, h);
     Fit();
-
-    // Check that the paths to the catalogs are well defined
-    bool doConfigure = false;
-    wxString CatalogPredictorsArchiveFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", wxEmptyString);
-    wxString CatalogPredictorsRealtimeFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", wxEmptyString);
-
-    if (CatalogPredictorsArchiveFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictorsArchiveFilePath))
-        {
-            asLogError(_("The path to the archive predictors catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (CatalogPredictorsRealtimeFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictorsRealtimeFilePath))
-        {
-            asLogError(_("The path to the real-time predictors catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (doConfigure)
-    {
-        asLogError(_("The software is not configured. Please go to Options > Preferences and set the minimum required information."));
-    }
 
     // Get the GUI mode -> silent or not
     long guiOptions = pConfig->Read("/Standard/GuiOptions", 0l);
@@ -206,21 +167,17 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
     wxString dirData = asConfig::GetDataDir()+"data"+DS;
-    wxString CatalogPredictorsArchiveFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", dirConfig+"CatalogPredictorsArchive.xml");
-    pConfig->Write("/StandardPaths/CatalogPredictorsArchiveFilePath", CatalogPredictorsArchiveFilePath);
-    wxString CatalogPredictorsRealtimeFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", dirConfig+"CatalogPredictorsRealtime.xml");
-    pConfig->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
     wxString PredictandDBDir = pConfig->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
     pConfig->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"Atmoswing");
+    wxString IntermediateResultsDir = pConfig->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
     pConfig->Write("/StandardPaths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"Atmoswing"+DS+"Forecasts");
+    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
     pConfig->Write("/StandardPaths/ForecastResultsDir", ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"Atmoswing"+DS+"Predictors");
+    wxString RealtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
     pConfig->Write("/StandardPaths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoswingForecaster.exe");
+    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoSwingForecaster.exe");
     pConfig->Write("/StandardPaths/ForecasterPath", ForecasterPath);
-    wxString ViewerPath = pConfig->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoswingViewer.exe");
+    wxString ViewerPath = pConfig->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoSwingViewer.exe");
     pConfig->Write("/StandardPaths/ViewerPath", ViewerPath);
     wxString ArchivePredictorsDir = pConfig->Read("/StandardPaths/ArchivePredictorsDir", dirData+"predictors");
     pConfig->Write("/StandardPaths/ArchivePredictorsDir", ArchivePredictorsDir);

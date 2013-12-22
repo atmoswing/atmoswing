@@ -27,7 +27,6 @@
  
 #include "asFileDat.h"
 
-#include <asCatalog.h>
 #include <asFileXml.h>
 
 

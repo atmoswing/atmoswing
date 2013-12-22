@@ -46,8 +46,8 @@
 	#include <AtmoswingAppCalibrator.h>
 #endif
 
-bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArchive,
-                                  std::vector < asDataPredictor > &predictorsTarget,
+bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
+                                  std::vector < asDataPredictor* > predictorsTarget,
                                   asTimeArray &timeArrayArchiveData,
                                   asTimeArray &timeArrayArchiveSelection,
                                   asTimeArray &timeArrayTargetData,
@@ -122,8 +122,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
 
     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
     {
-        vRowsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].rows();
-        vColsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].cols();
+        vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
+        vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
 
         // Check criteria ordering
         if(isasc != (criteria[i_ptor]->GetOrder()==Asc))
@@ -178,7 +178,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                 end = ceil(((float)(i_threads+1)*(float)(timeTargetSelectionSize-1)/(float)threadsNb));
                 wxASSERT_MSG(end>=start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end, timeTargetSelectionSize));
 
-                asThreadProcessorGetAnalogsDates* thread = new asThreadProcessorGetAnalogsDates(&predictorsArchive, &predictorsTarget,
+                asThreadProcessorGetAnalogsDates* thread = new asThreadProcessorGetAnalogsDates(predictorsArchive, predictorsTarget,
                                                                                                 &timeArrayArchiveData, &timeArrayArchiveSelection,
                                                                                                 &timeArrayTargetData, &timeArrayTargetSelection,
                                                                                                 criteria, params, step,
@@ -218,11 +218,11 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             int timeArchiveDataSize = timeArchiveData.size();
             wxASSERT(timeArchiveDataSize>0);
             wxASSERT(predictorsArchive.size()>0);
-            wxASSERT(predictorsArchive[0].GetData().size()>0);
-            wxASSERT_MSG(timeArchiveDataSize==predictorsArchive[0].GetData().size(), wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d", timeArchiveDataSize, (int)predictorsArchive[0].GetData().size()));
+            wxASSERT(predictorsArchive[0]->GetData().size()>0);
+            wxASSERT_MSG(timeArchiveDataSize==predictorsArchive[0]->GetData().size(), wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d", timeArchiveDataSize, (int)predictorsArchive[0]->GetData().size()));
             Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
-            wxASSERT(timeTargetDataSize==predictorsTarget[0].GetData().size());
+            wxASSERT(timeTargetDataSize==predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
             Array1DFloat ScoreArrayOneDay(analogsNb);
@@ -276,7 +276,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                     // Extract target data
                     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                     {
-                        vTargData[i_ptor] = &predictorsTarget[i_ptor].GetData()[i_timeTarg];
+                        vTargData[i_ptor] = &predictorsTarget[i_ptor]->GetData()[i_timeTarg];
                     }
 
                     // DateArray object initialization.
@@ -311,7 +311,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                             {
                                 // Get data
-                                vArchData[i_ptor] = &predictorsArchive[i_ptor].GetData()[i_timeArch];
+                                vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
 
                                 // Assess the criteria
                                 wxASSERT(criteria.size()>(unsigned)i_ptor);
@@ -396,10 +396,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             // Extract some data
             Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
             int timeArchiveDataSize = timeArchiveData.size();
-            wxASSERT(timeArchiveDataSize==predictorsArchive[0].GetData().size());
+            wxASSERT(timeArchiveDataSize==predictorsArchive[0]->GetData().size());
             Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
-            wxASSERT(timeTargetDataSize==predictorsTarget[0].GetData().size());
+            wxASSERT(timeTargetDataSize==predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
             Array1DFloat ScoreArrayOneDay(timeArrayArchiveSelection.GetSize());
@@ -453,7 +453,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                     // Extract target data
                     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                     {
-                        vTargData[i_ptor] = &predictorsTarget[i_ptor].GetData()[i_timeTarg];
+                        vTargData[i_ptor] = &predictorsTarget[i_ptor]->GetData()[i_timeTarg];
                     }
 
                     // DateArray initialization
@@ -488,7 +488,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                             {
                                 // Get data
-                                vArchData[i_ptor] = &predictorsArchive[i_ptor].GetData()[i_timeArch];
+                                vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
 
                                 // Assess the criteria
                                 wxASSERT(criteria.size()>(unsigned)i_ptor);
@@ -560,8 +560,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
     return true;
 }
 
-bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictorsArchive,
-                                     std::vector < asDataPredictor > &predictorsTarget,
+bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
+                                     std::vector < asDataPredictor* > predictorsTarget,
                                      asTimeArray &timeArrayArchiveData,
                                      asTimeArray &timeArrayTargetData,
                                      asResultsAnalogsDates &anaDates,
@@ -643,8 +643,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
 
     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
     {
-        vRowsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].rows();
-        vColsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].cols();
+        vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
+        vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
 
         // Check criteria ordering
         if(isasc != (criteria[i_ptor]->GetOrder()==Asc))
@@ -705,7 +705,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                 end = ceil(((float)(i_threads+1)*(float)(timeTargetSelectionSize-1)/(float)threadsNb));
                 wxASSERT_MSG(end>=start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end, timeTargetSelectionSize));
 
-                asThreadProcessorGetAnalogsSubDates* thread = new asThreadProcessorGetAnalogsSubDates(&predictorsArchive, &predictorsTarget,
+                asThreadProcessorGetAnalogsSubDates* thread = new asThreadProcessorGetAnalogsSubDates(predictorsArchive, predictorsTarget,
                                                                                                         &timeArrayArchiveData,
                                                                                                         &timeArrayTargetData,
                                                                                                         &timeTargetSelection,
@@ -773,7 +773,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                 // Extract target data
                 for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                 {
-                    vTargData[i_ptor] = &predictorsTarget[i_ptor].GetData()[i_timeTarg];
+                    vTargData[i_ptor] = &predictorsTarget[i_ptor]->GetData()[i_timeTarg];
                 }
 
                 // Get dates
@@ -797,7 +797,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                         for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                         {
                             // Get data
-                            vArchData[i_ptor] = &predictorsArchive[i_ptor].GetData()[i_timeArch];
+                            vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
 
                             // Assess the criteria
                             wxASSERT(criteria.size()>(unsigned)i_ptor);
