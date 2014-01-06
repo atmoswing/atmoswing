@@ -328,6 +328,7 @@ public:
     void SetReferenceAxis(Array1DFloat &referenceAxis)
     {
         m_ReferenceAxis = referenceAxis;
+		m_HasReferenceValues = true;
     }
 
     /** Access an element of m_ReferenceValues

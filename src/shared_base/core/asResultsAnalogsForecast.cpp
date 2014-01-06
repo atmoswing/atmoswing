@@ -357,7 +357,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 		m_LeadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
 		m_HasReferenceValues = true;
     }
-	else if (version==1.1)
+	else if (version==1.1f)
 	{
 		m_PredictandParameter = (DataParameter)ncFile.GetAttInt("predictand_parameter");
 		m_PredictandTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("predictand_temporal_resolution");
@@ -374,7 +374,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 	}
     else
     {
-        asLogError(_("The forecast file was made with more recent version of AtmoSwing. It cannot be opened here."));
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
         return false;
     }
 
@@ -388,7 +388,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 		Nanalogstot = ncFile.GetDimLength("analogstot");
 		Nstations = ncFile.GetDimLength("stations");
 	}
-	else if (version==1.1)
+	else if (version==1.1f)
 	{
 		Nleadtime = ncFile.GetDimLength("lead_time");
 		Nanalogstot = ncFile.GetDimLength("analogs_tot");
@@ -396,7 +396,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 	}
     else
     {
-        asLogError(_("The forecast file was made with more recent version of AtmoSwing. It cannot be opened here."));
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
         return false;
     }
 
@@ -421,7 +421,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 		ncFile.GetVar("loccoordu", &m_StationsLocCoordU[0]);
 		ncFile.GetVar("loccoordv", &m_StationsLocCoordV[0]);
 	}
-	else if (version==1.1)
+	else if (version==1.1f)
 	{
 		ncFile.GetVar("target_dates", &m_TargetDates[0]);
 		ncFile.GetVar("analogs_nb", &m_AnalogsNb[0]);
@@ -433,7 +433,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 	}
     else
     {
-        asLogError(_("The forecast file was made with more recent version of AtmoSwing. It cannot be opened here."));
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
         return false;
     }
     
@@ -453,7 +453,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 			m_ReferenceValues.resize( Nstations, referenceAxisLength );
 			ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReferenceValues, countReferenceValues, &m_ReferenceValues(0,0));
 		}
-		else if (version==1.1)
+		else if (version==1.1f)
 		{
 			int referenceAxisLength = ncFile.GetDimLength("reference_axis");
 			m_ReferenceAxis.resize( referenceAxisLength );
@@ -465,7 +465,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 		}
         else
         {
-            asLogError(_("The forecast file was made with more recent version of AtmoSwing. It cannot be opened here."));
+            asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
             return false;
         }
 	}
@@ -486,7 +486,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 		ncFile.GetVarArray("analogsdates", IndexStart1D, IndexCount1D, &analogsDates[0]);
 		ncFile.GetVarArray("analogsvaluesgross", IndexStart2D, IndexCount2D, &analogsValuesGross[0]);
 	}
-	else if (version==1.1)
+	else if (version==1.1f)
 	{
 		ncFile.GetVarArray("analogs_criteria", IndexStart1D, IndexCount1D, &analogsCriteria[0]);
 		ncFile.GetVarArray("analogs_dates", IndexStart1D, IndexCount1D, &analogsDates[0]);
@@ -494,7 +494,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 	}
     else
     {
-        asLogError(_("The forecast file was made with more recent version of AtmoSwing. It cannot be opened here."));
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
         return false;
     }
 
