@@ -723,7 +723,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor));
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
             if (!predictorArchive)
             {
                 asPredictorCriteria::DeleteArray(criteria);
@@ -797,7 +797,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
             // Archive data loading
             asLogMessage(_("Loading archive data."));
-            predictorArchive->SetDirectoryPath(m_PredictorsArchiveDir);
             if(!predictorArchive->Load(area, timeArrayDataArchive))
             {
                 asLogError(_("Archive data could not be loaded."));
@@ -853,7 +852,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro));
+                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
                 if (!predictorArchivePreprocess)
                 {
                     asPredictorCriteria::DeleteArray(criteria);
@@ -937,7 +936,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 // Archive data loading
                 asLogMessage(_("Loading archive data."));
-                predictorArchivePreprocess->SetDirectoryPath(m_PredictorsArchiveDir);
                 if(!predictorArchivePreprocess->Load(area, timeArrayDataArchive))
                 {
                     asLogError(_("Archive data could not be loaded."));
@@ -1264,7 +1262,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor));
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
             if (!predictorArchive)
             {
                 asPredictorCriteria::DeleteArray(criteria);
@@ -1337,7 +1335,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             }
 
             // Archive data loading
-            predictorArchive->SetDirectoryPath(m_PredictorsArchiveDir);
             if(!predictorArchive->Load(area, timeArrayDataArchive))
             {
                 asLogError(_("Archive data could not be loaded."));
@@ -1388,7 +1385,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro));
+                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
                 if (!predictorArchivePreprocess)
                 {
                     asPredictorCriteria::DeleteArray(criteria);
@@ -1471,7 +1468,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 }
 
                 // Archive data loading
-                predictorArchivePreprocess->SetDirectoryPath(m_PredictorsArchiveDir);
                 if(!predictorArchivePreprocess->Load(area, timeArrayDataArchive))
                 {
                     asLogError(_("Archive data could not be loaded."));
