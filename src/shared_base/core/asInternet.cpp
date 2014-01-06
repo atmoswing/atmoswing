@@ -148,8 +148,8 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 wxString fileName = fileNames[i_file];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[i_file];
-                //asLogMessage(wxString::Format(_("Downloading file %s from url: %s"), filePath.c_str(), url.c_str())); Causes bug in string formatting
-                asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str()));
+                asLogMessage(wxString::Format(_("Downloading from url: %s"), url.c_str()));
+                asLogMessage(wxString::Format(_("To file %s."), filePath.c_str()));
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
