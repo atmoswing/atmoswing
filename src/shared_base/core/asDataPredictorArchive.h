@@ -43,7 +43,7 @@ public:
     /** Default destructor */
     virtual ~asDataPredictorArchive();
 
-    static asDataPredictorArchive* GetInstance(const wxString &datasetId, const wxString &dataId);
+    static asDataPredictorArchive* GetInstance(const wxString &datasetId, const wxString &dataId, const wxString &directory = wxEmptyString);
     
     virtual bool Init();
 

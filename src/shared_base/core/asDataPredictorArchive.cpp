@@ -49,7 +49,7 @@ asDataPredictorArchive::~asDataPredictorArchive()
 
 }
 
-asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &datasetId, const wxString &dataId)
+asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &datasetId, const wxString &dataId, const wxString &directory)
 {
     asDataPredictorArchive* predictor = NULL;
 
@@ -78,6 +78,10 @@ asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &data
         asLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return NULL;
     }
+
+	if (!directory.IsEmpty()) {
+		predictor->SetDirectoryPath(directory);
+	}
 
     if(!predictor->Init())
     {
