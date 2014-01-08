@@ -28,13 +28,13 @@
 #include <wx/frame.h>
 #include <wx/statbmp.h>
 #include <wx/panel.h>
+#include <wx/textctrl.h>
+#include <wx/notebook.h>
 #include <wx/radiobox.h>
 #include <wx/checkbox.h>
 #include <wx/statbox.h>
-#include <wx/textctrl.h>
 #include <wx/choice.h>
 #include <wx/clrpicker.h>
-#include <wx/notebook.h>
 #include <wx/slider.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -109,9 +109,11 @@ class asFrameAboutVirtual : public wxFrame
 	
 	protected:
 		wxPanel* m_Panel;
-		wxStaticText* m_StaticTextTitle;
+		wxStaticBitmap* m_Logo;
 		wxStaticText* m_StaticTextVersion;
-		wxStaticBitmap* m_bitmap1;
+		wxStaticText* m_StaticTextChangeset;
+		wxNotebook* m_Notebook;
+		wxPanel* m_PanelCredits;
 		wxStaticText* m_StaticTextDevelopers;
 		wxStaticText* m_StaticTextDevelopersList;
 		wxStaticText* m_StaticTextSupervision;
@@ -120,13 +122,15 @@ class asFrameAboutVirtual : public wxFrame
 		wxStaticText* m_StaticTextThanksList;
 		wxStaticText* m_StaticTextOtherCredits;
 		wxStaticText* m_StaticTextOtherCreditsList;
-		wxStaticText* m_StaticTextLibraries;
-		wxGridSizer* m_GridSizer;
-		wxStaticText* m_StaticTextSpacer;
+		wxStaticText* m_staticTextSpacer;
+		wxPanel* m_PanelLicense;
+		wxTextCtrl* m_TextCtrlLicense;
+		wxPanel* m_PanelLibraries;
+		wxTextCtrl* m_TextCtrlLibraries;
 	
 	public:
 		
-		asFrameAboutVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxFRAME_FLOAT_ON_PARENT|wxSTAY_ON_TOP|wxTAB_TRAVERSAL );
+		asFrameAboutVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 350,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxFRAME_FLOAT_ON_PARENT|wxSTAY_ON_TOP|wxTAB_TRAVERSAL );
 		
 		~asFrameAboutVirtual();
 	
@@ -268,11 +272,6 @@ class asFramePreferencesVirtual : public wxFrame
 		wxStaticText* m_StaticTextPrefFileForecaster;
 		wxStaticText* m_StaticTextPrefFileViewerLabel;
 		wxStaticText* m_StaticTextPrefFileViewer;
-		wxPanel* m_PanelPathsCatalogs;
-		wxStaticText* m_StaticTextCatalogPredictorArchive;
-		wxFilePickerCtrl* m_FilePickerCatalogPredictorsArchive;
-		wxStaticText* m_StaticTextCatalogPredictorRealtime;
-		wxFilePickerCtrl* m_FilePickerCatalogPredictorsRealtime;
 		wxStdDialogButtonSizer* m_ButtonsConfirmation;
 		wxButton* m_ButtonsConfirmationOK;
 		wxButton* m_ButtonsConfirmationApply;

@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asFrameMain.h"
@@ -22,21 +35,22 @@
 #include <asFileForecastingModels.h>
 #include "img_bullets.h"
 #include "img_toolbar.h"
+#include "img_logo.h"
 
 
 BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_STARTING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_RUNNING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_FAILED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_SUCCESS, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_STARTING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_RUNNING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_FAILED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_SUCCESS, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
 END_EVENT_TABLE()
 
 
@@ -49,15 +63,15 @@ asFrameMainVirtual( parent )
     // Toolbar
     m_ToolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL );
     m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
-	m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
-	m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
-	m_ToolBar->AddSeparator();
-	m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
-	m_ToolBar->Realize();
+    m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
+    m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+    m_ToolBar->AddSeparator();
+    m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
+    m_ToolBar->Realize();
 
-	// Buttons
-	m_BpButtonNow->SetBitmapLabel(img_clock_now);
-	m_BpButtonAdd->SetBitmapLabel(img_plus);
+    // Buttons
+    m_BpButtonNow->SetBitmapLabel(img_clock_now);
+    m_BpButtonAdd->SetBitmapLabel(img_plus);
 
     // Create panels manager
     m_PanelsManager = new asPanelsManagerForecastingModels();
@@ -65,9 +79,9 @@ asFrameMainVirtual( parent )
     // Connect events
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
     this->Connect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
-	this->Connect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
-	this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-	this->Connect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
+    this->Connect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
+    this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
+    this->Connect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 
     // Icon
 #ifdef __WXMSW__
@@ -82,9 +96,9 @@ asFrameMain::~asFrameMain()
     // Disconnect events
     this->Disconnect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
     this->Disconnect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
-	this->Disconnect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
-	this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-	this->Disconnect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
+    this->Disconnect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
+    this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
+    this->Disconnect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 }
 
 void asFrameMain::OnInit()

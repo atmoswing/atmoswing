@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asPanelSidebarAlarms.h"
@@ -52,13 +65,13 @@ void asPanelSidebarAlarms::SetData(Array1DFloat &dates, const VectorString &mode
 void asPanelSidebarAlarms::DrawAlarms(Array1DFloat &dates, const VectorString &models, Array2DFloat &values)
 {
     // Get sizes
-	int cols = dates.size();
-	int rows = models.size();
-	wxASSERT_MSG( (values.cols()==cols) , wxString::Format("values.cols()=%d, cols=%d", (int)values.cols(), cols));
-	wxASSERT_MSG( (values.rows()==rows) , wxString::Format("values.rows()=%d, rows=%d", (int)values.rows(), rows));
+    int cols = dates.size();
+    int rows = models.size();
+    wxASSERT_MSG( (values.cols()==cols) , wxString::Format("values.cols()=%d, cols=%d", (int)values.cols(), cols));
+    wxASSERT_MSG( (values.rows()==rows) , wxString::Format("values.rows()=%d, rows=%d", (int)values.rows(), rows));
 
-	// Height of a grid row
-	int cellHeight = 20;
+    // Height of a grid row
+    int cellHeight = 20;
 
     // Create bitmap
     int totHeight = cellHeight*rows+20;
@@ -66,15 +79,15 @@ void asPanelSidebarAlarms::DrawAlarms(Array1DFloat &dates, const VectorString &m
     wxASSERT(bmp);
 
     // Create device context
-	wxMemoryDC dc (*bmp);
-	dc.SetBackground(wxBrush(GetBackgroundColour()));
-	#if defined(__UNIX__)
+    wxMemoryDC dc (*bmp);
+    dc.SetBackground(wxBrush(GetBackgroundColour()));
+    #if defined(__UNIX__)
         dc.SetBackground(wxBrush(g_LinuxBgColour));
     #endif
-	dc.Clear();
+    dc.Clear();
 
     // Create graphics context
-	wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
+    wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
 
     if ( gc && cols>0 && rows>0 )
     {
@@ -116,10 +129,10 @@ void asPanelSidebarAlarms::DrawAlarms(Array1DFloat &dates, const VectorString &m
     dc.SelectObject(wxNullBitmap);
 
     this->SetBitmapAlarms(bmp);
-	wxDELETE(bmp);
-	wxASSERT(!bmp);
+    wxDELETE(bmp);
+    wxASSERT(!bmp);
 
-	Refresh();
+    Refresh();
 }
 
 void asPanelSidebarAlarms::SetBitmapAlarms(wxBitmap * bmp)
@@ -127,17 +140,17 @@ void asPanelSidebarAlarms::SetBitmapAlarms(wxBitmap * bmp)
     wxWindow* topFrame = GetTopFrame(this);
     topFrame->Freeze();
 
-	wxDELETE(m_BmpAlarms);
-	wxASSERT(!m_BmpAlarms);
+    wxDELETE(m_BmpAlarms);
+    wxASSERT(!m_BmpAlarms);
 
-	if (bmp != NULL)
+    if (bmp != NULL)
     {
         wxASSERT(bmp);
-		m_BmpAlarms = new wxBitmap(*bmp);
-		wxASSERT(m_BmpAlarms);
-	}
+        m_BmpAlarms = new wxBitmap(*bmp);
+        wxASSERT(m_BmpAlarms);
+    }
 
-	if (m_PanelDrawing != NULL)
+    if (m_PanelDrawing != NULL)
     {
         m_PanelDrawing->Destroy();
     }
@@ -161,16 +174,16 @@ void asPanelSidebarAlarms::SetBitmapAlarms(wxBitmap * bmp)
 
 void asPanelSidebarAlarms::OnPaint(wxPaintEvent & event)
 {
-	if (m_BmpAlarms != NULL)
+    if (m_BmpAlarms != NULL)
     {
         wxASSERT(m_PanelDrawing);
         wxPaintDC dc(m_PanelDrawing);
-		dc.DrawBitmap(*m_BmpAlarms, 0,0, true);
-	}
+        dc.DrawBitmap(*m_BmpAlarms, 0,0, true);
+    }
 
     Layout();
 
-	event.Skip();
+    event.Skip();
 }
 
 void asPanelSidebarAlarms::CreatePath(wxGraphicsPath & path, const wxPoint & start, int cellWitdh, int cellHeight, int i_col, int i_row, int cols, int rows)
@@ -302,17 +315,17 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
 
                 // Get return period index
                 int indexReferenceAxis;
-				if(forecast->HasReferenceValues())
-				{
-					Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
+                if(forecast->HasReferenceValues())
+                {
+                    Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
-					indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodRef);
-					if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
-					{
-						asLogError(_("The desired return period is not available in the forecast file."));
-						return;
-					}
-				}
+                    indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodRef);
+                    if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
+                    {
+                        asLogError(_("The desired return period is not available in the forecast file."));
+                        return;
+                    }
+                }
 
                 // Check lead times effectively available for the current model
                 int leadtimeMin = 0;
@@ -341,14 +354,14 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
 
                         // Get values for return period
                         float factor = 1;
-						if(forecast->HasReferenceValues())
-						{
-							float precip = forecast->GetReferenceValue(i_station, indexReferenceAxis);
-							wxASSERT(precip>0);
-							wxASSERT(precip<500);
-							factor = 1.0/precip;
-							wxASSERT(factor>0);
-						}
+                        if(forecast->HasReferenceValues())
+                        {
+                            float precip = forecast->GetReferenceValue(i_station, indexReferenceAxis);
+                            wxASSERT(precip>0);
+                            wxASSERT(precip<500);
+                            factor = 1.0/precip;
+                            wxASSERT(factor>0);
+                        }
 
                         // Get values
                         Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);
@@ -411,21 +424,21 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
 
                 // Get return period index
                 int indexReferenceAxis1, indexReferenceAxis2;
-				if(forecast->HasReferenceValues())
-				{
-					if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
-					{
-						Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
+                if(forecast->HasReferenceValues())
+                {
+                    if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
+                    {
+                        Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
-						indexReferenceAxis1 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold1);
-						indexReferenceAxis2 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold2);
-						if ( (indexReferenceAxis1==asNOT_FOUND) || (indexReferenceAxis1==asOUT_OF_RANGE) || (indexReferenceAxis2==asNOT_FOUND) || (indexReferenceAxis2==asOUT_OF_RANGE) )
-						{
-							asLogError(_("The desired return period is not available in the forecast file."));
-							return;
-						}
-					}
-				}
+                        indexReferenceAxis1 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold1);
+                        indexReferenceAxis2 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold2);
+                        if ( (indexReferenceAxis1==asNOT_FOUND) || (indexReferenceAxis1==asOUT_OF_RANGE) || (indexReferenceAxis2==asNOT_FOUND) || (indexReferenceAxis2==asOUT_OF_RANGE) )
+                        {
+                            asLogError(_("The desired return period is not available in the forecast file."));
+                            return;
+                        }
+                    }
+                }
 
                 // Check lead times effectively available for the current model
                 int leadtimeMin = 0;
@@ -457,22 +470,22 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
                         // Get values for return period
                         float factor1 = 1;
                         float factor2 = 1;
-						if(forecast->HasReferenceValues())
-						{
-							if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
-							{
-								float precip1 = forecast->GetReferenceValue(i_station, indexReferenceAxis1);
-								float precip2 = forecast->GetReferenceValue(i_station, indexReferenceAxis2);
-								wxASSERT(precip1>0);
-								wxASSERT(precip2>0);
-								wxASSERT(precip1<500);
-								wxASSERT(precip2<500);
-								factor1 = 1.0/precip1;
-								factor2 = 1.0/precip2;
-								wxASSERT(factor1>0);
-								wxASSERT(factor2>0);
-							}
-						}
+                        if(forecast->HasReferenceValues())
+                        {
+                            if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
+                            {
+                                float precip1 = forecast->GetReferenceValue(i_station, indexReferenceAxis1);
+                                float precip2 = forecast->GetReferenceValue(i_station, indexReferenceAxis2);
+                                wxASSERT(precip1>0);
+                                wxASSERT(precip2>0);
+                                wxASSERT(precip1<500);
+                                wxASSERT(precip2<500);
+                                factor1 = 1.0/precip1;
+                                factor2 = 1.0/precip2;
+                                wxASSERT(factor1>0);
+                                wxASSERT(factor2>0);
+                            }
+                        }
 
                         // Get values
                         Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);

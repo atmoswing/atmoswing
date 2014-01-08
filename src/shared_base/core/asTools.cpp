@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asTools.h"
@@ -1650,7 +1663,7 @@ bool asTools::SortArrayT(T* pArrRefStart, T* pArrRefEnd, Order order)
 
     if (vlength>0)
     {
-        int	low = 0, high = vlength;
+        int    low = 0, high = vlength;
         asTools::QuickSort<T>(pArrRefStart,low,high,order);
     } else if (vlength==0){
         asLogMessage(_("The array has an unique value."));
@@ -1688,7 +1701,7 @@ bool asTools::SortArraysT(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherStart, T* 
 
     if (vlength>0 && vlength==ovlength)
     {
-        int	low = 0, high = vlength;
+        int    low = 0, high = vlength;
         asTools::QuickSortMulti<T>(pArrRefStart,pArrOtherStart,low,high,order);
     } else if (vlength!=ovlength){
         asLogError(_("The dimension of the two arrays are not equal."));
@@ -1706,15 +1719,15 @@ bool asTools::SortArraysT(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherStart, T* 
 template <class T>
 void asTools::QuickSort(T *pArr, int low, int high, Order order )
 {
-	int L, R;
-	T pivot, tmp;
+    int L, R;
+    T pivot, tmp;
 
-	R = high;
-	L = low;
+    R = high;
+    L = low;
 
-	pivot = pArr[((int) ((low+high) / 2))];
+    pivot = pArr[((int) ((low+high) / 2))];
 
-	do {
+    do {
 
         switch(order){
             case (Asc):
@@ -1756,15 +1769,15 @@ void asTools::QuickSort(T *pArr, int low, int high, Order order )
 template <class T>
 void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, int low, int high, Order order )
 {
-	int L, R;
-	T pivot, tmp;
+    int L, R;
+    T pivot, tmp;
 
-	R = high;
-	L = low;
+    R = high;
+    L = low;
 
-	pivot = pArrRef[((int) ((low+high) / 2))];
+    pivot = pArrRef[((int) ((low+high) / 2))];
 
-	do {
+    do {
 
         switch(order){
             case (Asc):
