@@ -35,7 +35,6 @@ list(APPEND inc_dirs
     "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
     "${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/"
     "${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
-    "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
     "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
     "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
     "${PROJECT_SOURCE_DIR}/../../src/app_viewer/app/"
@@ -117,7 +116,9 @@ find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
 
 # Eigen
-set(EIGEN_INCLUDE_DIR "../../src/shared_base/libs/eigen")
+mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
+find_package(Eigen3 3.0.0)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 # vroomgis
 mark_as_advanced(SEARCH_GDAL)
