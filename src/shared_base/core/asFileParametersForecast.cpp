@@ -41,7 +41,7 @@ asFileParametersForecast::~asFileParametersForecast()
 
 bool asFileParametersForecast::InsertRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile")) return false;
+    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
     if(!InsertElement(wxEmptyString, "ForecastSet")) return false;
     if(!GoToFirstNodeWithPath("ForecastSet")) return false;
     return true;
@@ -49,9 +49,9 @@ bool asFileParametersForecast::InsertRootElement()
 
 bool asFileParametersForecast::GoToRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile.ForecastSet"))
+    if(!GoToFirstNodeWithPath("AtmoSwingFile.ForecastSet"))
     {
-        asLogError(wxString::Format(_("The file %s is not an Atmoswing forecast parameters file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing forecast parameters file."), m_FileName.GetFullName()));
         return false;
     }
     return true;

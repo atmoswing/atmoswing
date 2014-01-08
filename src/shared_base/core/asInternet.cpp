@@ -123,11 +123,11 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Do the job
         if(curl) {
-			#if wxUSE_GUI
-				// The progress bar
-				wxString dialogmessage = _("Downloading predictors.\n");
-				asDialogProgressBar ProgressBar(dialogmessage, urls.size());
-			#endif
+            #if wxUSE_GUI
+                // The progress bar
+                wxString dialogmessage = _("Downloading predictors.\n");
+                asDialogProgressBar ProgressBar(dialogmessage, urls.size());
+            #endif
 
             // Set a buffer for the error messages
             char* errorbuffer = new char[CURL_ERROR_SIZE];
@@ -148,8 +148,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 wxString fileName = fileNames[i_file];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[i_file];
-                //asLogMessage(wxString::Format(_("Downloading file %s from url: %s"), filePath.c_str(), url.c_str())); Causes bug in string formatting
-                asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str()));
+                asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str())); // Do not log the URL, it bugs !
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
@@ -159,15 +158,15 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     return asFAILED;
                 }
 
-				#if wxUSE_GUI
-					// Update the progress bar
-					wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
-					if(!ProgressBar.Update(i_file, updatedialogmessage))
-					{
-						asLogMessage(_("The download has been canceled by the user."));
-						return asCANCELLED;
-					}
-				#endif
+                #if wxUSE_GUI
+                    // Update the progress bar
+                    wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
+                    if(!ProgressBar.Update(i_file, updatedialogmessage))
+                    {
+                        asLogMessage(_("The download has been canceled by the user."));
+                        return asCANCELLED;
+                    }
+                #endif
 
                 // Download only if not already done
                 if(!wxFileName::FileExists(filePath))
@@ -225,9 +224,9 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 }
             }
 
-			#if wxUSE_GUI
-				ProgressBar.Destroy();
-			#endif
+            #if wxUSE_GUI
+                ProgressBar.Destroy();
+            #endif
 
             // Always cleanup
             curl_easy_cleanup(curl);

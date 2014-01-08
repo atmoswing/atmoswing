@@ -40,8 +40,8 @@ asDataPredictandLightnings::asDataPredictandLightnings(DataParameter dataParamet
 asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
-	m_HasNormalizedData = false;
-	m_HasReferenceValues = false;
+    m_HasNormalizedData = false;
+    m_HasReferenceValues = false;
 }
 
 asDataPredictandLightnings::~asDataPredictandLightnings()
@@ -70,11 +70,11 @@ bool asDataPredictandLightnings::Load(const wxString &filePath)
         asLogMessage(_("File successfully opened"));
     }
 
-	// Load common data
-	LoadCommonData(ncFile);
+    // Load common data
+    LoadCommonData(ncFile);
 
-	// Close the netCDF file
-	ncFile.Close();
+    // Close the netCDF file
+    ncFile.Close();
 
     return true;
 }
@@ -88,13 +88,13 @@ bool asDataPredictandLightnings::Save(const wxString &AlternateDestinationDir)
     asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
     if(!ncFile.Open()) return false;
 
-	// Set common definitions
-	SetCommonDefinitions(ncFile);
-	
+    // Set common definitions
+    SetCommonDefinitions(ncFile);
+    
     // End definitions: leave define mode
     ncFile.EndDef();
 
-	// Save common data
+    // Save common data
     SaveCommonData(ncFile);
 
     // Close:save new netCDF dataset
@@ -113,7 +113,7 @@ bool asDataPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePa
     // Resize matrices
     if(!InitContainers()) return false;
 
-	// Load data from files
+    // Load data from files
     if(!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
 
     Save(AlternateDestinationDir);

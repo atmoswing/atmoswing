@@ -45,8 +45,8 @@ public:
         Multiplication // Multiplication
     };
 
-    static bool Preprocess(std::vector < asDataPredictorArchive > predictors, const wxString& method, asDataPredictor *result);
-    static bool Preprocess(std::vector < asDataPredictorRealtime > predictors, const wxString& method, asDataPredictor *result);
+    static bool Preprocess(std::vector < asDataPredictorArchive* > predictors, const wxString& method, asDataPredictor *result);
+    static bool Preprocess(std::vector < asDataPredictorRealtime* > predictors, const wxString& method, asDataPredictor *result);
     static bool Preprocess(std::vector < asDataPredictor* > predictors, const wxString& method, asDataPredictor *result);
 
     /** Preprocess gradients

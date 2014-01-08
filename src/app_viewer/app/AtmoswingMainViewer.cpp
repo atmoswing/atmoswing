@@ -54,7 +54,7 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
     : asFrameForecastRings(frame)
 {
 #if wxUSE_STATUSBAR
-    wxLogStatus(_("Welcome to Atmoswing %s."), asVersion::GetFullString().c_str());
+    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString().c_str());
 #endif
 
     // Config file
@@ -66,55 +66,8 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
     // Create log window and file
     bool displayLogWindow;
     pConfig->Read("/Standard/DisplayLogWindow", &displayLogWindow, false);
-    m_LogWindow = new asLogWindow(this, _("Atmoswing log window"), displayLogWindow);
-    Log().CreateFile("AtmoswingViewer.log");
-
-    // Check that the paths to the catalogs are well defined
-    bool doConfigure = false;
-    wxString CatalogPredictorsArchiveFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", wxEmptyString);
-    wxString CatalogPredictorsRealtimeFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", wxEmptyString);
-    wxString CatalogPredictandsFilePath = pConfig->Read("/StandardPaths/CatalogPredictandsFilePath", wxEmptyString);
-
-    if (CatalogPredictorsArchiveFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictorsArchiveFilePath))
-        {
-            asLogError(_("The path to the archive predictors catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (CatalogPredictorsRealtimeFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictorsRealtimeFilePath))
-        {
-            asLogError(_("The path to the real-time predictors catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (CatalogPredictandsFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictandsFilePath))
-        {
-            asLogError(_("The path to the predictand catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (doConfigure)
-    {
-        asLogError(_("The software is not configured. Please go to Options > Preferences and set the minimum required information."));
-    }
+    m_LogWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
+    Log().CreateFile("AtmoSwingViewer.log");
 }
 
 void AtmoswingFrameViewer::SetDefaultOptions()
@@ -153,13 +106,13 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     pConfig->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
     wxString CatalogPredictandsFilePath = pConfig->Read("/StandardPaths/CatalogPredictandsFilePath", dirConfig+"CatalogPredictands.xml");
     pConfig->Write("/StandardPaths/CatalogPredictandsFilePath", CatalogPredictandsFilePath);
-    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+DS+"Atmoswing"+DS+"Forecasts");
+    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+DS+"AtmoSwing"+DS+"Forecasts");
     pConfig->Write("/StandardPaths/ForecastResultsDir", ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"Atmoswing"+DS+"Predictors");
+    wxString RealtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
     pConfig->Write("/StandardPaths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoswingForecaster.exe");
+    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoSwingForecaster.exe");
     pConfig->Write("/StandardPaths/ForecasterPath", ForecasterPath);
-    wxString ViewerPath = pConfig->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoswingViewer.exe");
+    wxString ViewerPath = pConfig->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoSwingViewer.exe");
     pConfig->Write("/StandardPaths/ViewerPath", ViewerPath);
 
     // GIS

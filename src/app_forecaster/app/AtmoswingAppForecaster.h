@@ -49,9 +49,9 @@ public:
     bool CommonInit();
 
 private:
-	#if wxUSE_GUI
-		wxSingleInstanceChecker* m_SingleInstanceChecker;
-	#endif
+    #if wxUSE_GUI
+        wxSingleInstanceChecker* m_SingleInstanceChecker;
+    #endif
 };
 
 DECLARE_APP(AtmoswingAppForecaster);

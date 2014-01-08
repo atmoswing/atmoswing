@@ -52,7 +52,7 @@ public:
     * \param results The result object to store outputs in
     * \return true if succeeded
     */
-    static bool GetAnalogsDates(std::vector < asDataPredictor > &predictorsArchive, std::vector < asDataPredictor > &predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData, asTimeArray &timeArrayTargetSelection, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
+    static bool GetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive, std::vector < asDataPredictor* > predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData, asTimeArray &timeArrayTargetSelection, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
 
     /** Analogs method processing at a second level
     * \param predictors The vector of predictors
@@ -64,7 +64,7 @@ public:
     * \param results The result object to store outputs in
     * \return true if succeeded
     */
-    static bool GetAnalogsSubDates(std::vector < asDataPredictor > &predictorsArchive, std::vector < asDataPredictor > &predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayTargetData, asResultsAnalogsDates &anaDates, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
+    static bool GetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive, std::vector < asDataPredictor* > predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayTargetData, asResultsAnalogsDates &anaDates, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
 
     /** Analogs predictands values attribution
     * \param predictand The predictand data

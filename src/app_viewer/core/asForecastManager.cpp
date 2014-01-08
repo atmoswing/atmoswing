@@ -101,12 +101,12 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
         ClearArrays();
         m_DirectoriesPastForecasts.Clear();
 
-		#if wxUSE_GUI
-			wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
-			if (m_Parent != NULL) {
-				m_Parent->ProcessWindowEvent(eventClear);
-			}
-		#endif
+        #if wxUSE_GUI
+            wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
+            if (m_Parent != NULL) {
+                m_Parent->ProcessWindowEvent(eventClear);
+            }
+        #endif
 
     }
     m_LeadTimeOrigin = forecast->GetLeadTimeOrigin();
@@ -115,18 +115,18 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     std::vector <asResultsAnalogsForecast*> emptyVector;
     m_PastForecasts.push_back(emptyVector);
 
-	#if wxUSE_GUI
-		// Send event
-		wxCommandEvent eventNew (asEVT_ACTION_FORECAST_NEW_ADDED);
-		if (m_Parent != NULL) {
-			eventNew.SetInt(m_CurrentForecasts.size()-1);
-			if (doRefresh)
-			{
-				eventNew.SetString("last");
-			}
-			m_Parent->ProcessWindowEvent(eventNew);
-		}
-	#endif
+    #if wxUSE_GUI
+        // Send event
+        wxCommandEvent eventNew (asEVT_ACTION_FORECAST_NEW_ADDED);
+        if (m_Parent != NULL) {
+            eventNew.SetInt(m_CurrentForecasts.size()-1);
+            if (doRefresh)
+            {
+                eventNew.SetString("last");
+            }
+            m_Parent->ProcessWindowEvent(eventNew);
+        }
+    #endif
 
     return true;
 }

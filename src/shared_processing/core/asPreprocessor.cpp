@@ -35,26 +35,26 @@
 #include <asThreadPreprocessorGradients.h>
 
 
-bool asPreprocessor::Preprocess(std::vector < asDataPredictorArchive > predictors, const wxString& method, asDataPredictor *result)
+bool asPreprocessor::Preprocess(std::vector < asDataPredictorArchive* > predictors, const wxString& method, asDataPredictor *result)
 {
     std::vector < asDataPredictor* > ptorsPredictors;
 
     for (unsigned int i=0; i<predictors.size(); i++)
     {
-        ptorsPredictors.push_back(&predictors[i]);
+        ptorsPredictors.push_back(predictors[i]);
     }
 
     return Preprocess(ptorsPredictors, method, result);
 }
 
 #ifndef MINIMAL_LINKS
-bool asPreprocessor::Preprocess(std::vector < asDataPredictorRealtime > predictors, const wxString& method, asDataPredictor *result)
+bool asPreprocessor::Preprocess(std::vector < asDataPredictorRealtime* > predictors, const wxString& method, asDataPredictor *result)
 {
     std::vector < asDataPredictor* > ptorsPredictors;
 
     for (unsigned int i=0; i<predictors.size(); i++)
     {
-        ptorsPredictors.push_back(&predictors[i]);
+        ptorsPredictors.push_back(predictors[i]);
     }
 
     return Preprocess(ptorsPredictors, method, result);

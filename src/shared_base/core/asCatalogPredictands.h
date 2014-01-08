@@ -261,8 +261,8 @@ protected:
     DataParameter m_Parameter; //!< Member variable "m_Parameter"
     DataUnit m_Unit; //!< Member variable "m_Unit"
     DataStruct m_Station; //!< Member variable "m_Station"
-	DataTemporalResolution m_TemporalResolution;
-	DataSpatialAggregation m_SpatialAggregation;
+    DataTemporalResolution m_TemporalResolution;
+    DataSpatialAggregation m_SpatialAggregation;
 
 
 private:

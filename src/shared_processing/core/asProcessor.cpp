@@ -40,14 +40,14 @@
 #include <asThreadProcessorGetAnalogsDates.h>
 #include <asThreadProcessorGetAnalogsSubDates.h>
 #ifdef APP_FORECASTER
-	#include <AtmoswingAppForecaster.h>
+    #include <AtmoswingAppForecaster.h>
 #endif
 #ifdef APP_CALIBRATOR
-	#include <AtmoswingAppCalibrator.h>
+    #include <AtmoswingAppCalibrator.h>
 #endif
 
-bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArchive,
-                                  std::vector < asDataPredictor > &predictorsTarget,
+bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
+                                  std::vector < asDataPredictor* > predictorsTarget,
                                   asTimeArray &timeArrayArchiveData,
                                   asTimeArray &timeArrayArchiveSelection,
                                   asTimeArray &timeArrayTargetData,
@@ -58,9 +58,9 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                                   asResultsAnalogsDates &results,
                                   bool &containsNaNs)
 {
-	#if wxUSE_GUI
-		if (g_Responsive) wxGetApp().Yield();
-	#endif
+    #if wxUSE_GUI
+        if (g_Responsive) wxGetApp().Yield();
+    #endif
 
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -122,8 +122,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
 
     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
     {
-        vRowsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].rows();
-        vColsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].cols();
+        vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
+        vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
 
         // Check criteria ordering
         if(isasc != (criteria[i_ptor]->GetOrder()==Asc))
@@ -139,9 +139,9 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
 
     // The progress bar
     wxString dialogmessage = _("Processing the data comparison.\n");
-	#if wxUSE_GUI
-		asDialogProgressBar ProgressBar(dialogmessage, timeTargetSelectionSize);
-	#endif
+    #if wxUSE_GUI
+        asDialogProgressBar ProgressBar(dialogmessage, timeTargetSelectionSize);
+    #endif
 
     switch (method)
     {
@@ -152,9 +152,9 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
 
-			#if wxUSE_GUI
-				if (g_Responsive) wxGetApp().Yield();
-			#endif
+            #if wxUSE_GUI
+                if (g_Responsive) wxGetApp().Yield();
+            #endif
 
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
@@ -178,7 +178,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                 end = ceil(((float)(i_threads+1)*(float)(timeTargetSelectionSize-1)/(float)threadsNb));
                 wxASSERT_MSG(end>=start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end, timeTargetSelectionSize));
 
-                asThreadProcessorGetAnalogsDates* thread = new asThreadProcessorGetAnalogsDates(&predictorsArchive, &predictorsTarget,
+                asThreadProcessorGetAnalogsDates* thread = new asThreadProcessorGetAnalogsDates(predictorsArchive, predictorsTarget,
                                                                                                 &timeArrayArchiveData, &timeArrayArchiveSelection,
                                                                                                 &timeArrayTargetData, &timeArrayTargetSelection,
                                                                                                 criteria, params, step,
@@ -203,7 +203,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             }
             if (containsNaNs)
             {
-				asLogWarning(_("NaNs were found in the criteria values."));
+                asLogWarning(_("NaNs were found in the criteria values."));
             }
 
             if (enableMessageBox) Log().EnableMessageBoxOnError();
@@ -218,11 +218,11 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             int timeArchiveDataSize = timeArchiveData.size();
             wxASSERT(timeArchiveDataSize>0);
             wxASSERT(predictorsArchive.size()>0);
-            wxASSERT(predictorsArchive[0].GetData().size()>0);
-            wxASSERT_MSG(timeArchiveDataSize==predictorsArchive[0].GetData().size(), wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d", timeArchiveDataSize, (int)predictorsArchive[0].GetData().size()));
+            wxASSERT(predictorsArchive[0]->GetData().size()>0);
+            wxASSERT_MSG(timeArchiveDataSize==predictorsArchive[0]->GetData().size(), wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d", timeArchiveDataSize, (int)predictorsArchive[0]->GetData().size()));
             Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
-            wxASSERT(timeTargetDataSize==predictorsTarget[0].GetData().size());
+            wxASSERT(timeTargetDataSize==predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
             Array1DFloat ScoreArrayOneDay(analogsNb);
@@ -246,17 +246,17 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             // Loop through every timestep as target data
             for (int i_dateTarg=0; i_dateTarg<timeTargetSelectionSize; i_dateTarg++)
             {
-				#if wxUSE_GUI
-					if (g_Responsive) wxGetApp().Yield();
+                #if wxUSE_GUI
+                    if (g_Responsive) wxGetApp().Yield();
 
-					// Update the progress bar
-					wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), i_dateTarg+1, timeTargetSelectionSize);
-					if(!ProgressBar.Update(i_dateTarg, updatedialogmessage))
-					{
-						asLogMessage(_("The process has been canceled by the user."));
-						return false;
-					}
-				#endif
+                    // Update the progress bar
+                    wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), i_dateTarg+1, timeTargetSelectionSize);
+                    if(!ProgressBar.Update(i_dateTarg, updatedialogmessage))
+                    {
+                        asLogMessage(_("The process has been canceled by the user."));
+                        return false;
+                    }
+                #endif
 
                 // Check if the next data is the following. If not, search for it in the array.
                 if(timeTargetDataSize>i_timeTargStart+1 && abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
@@ -276,7 +276,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                     // Extract target data
                     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                     {
-                        vTargData[i_ptor] = &predictorsTarget[i_ptor].GetData()[i_timeTarg];
+                        vTargData[i_ptor] = &predictorsTarget[i_ptor]->GetData()[i_timeTarg];
                     }
 
                     // DateArray object initialization.
@@ -311,7 +311,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                             {
                                 // Get data
-                                vArchData[i_ptor] = &predictorsArchive[i_ptor].GetData()[i_timeArch];
+                                vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
 
                                 // Assess the criteria
                                 wxASSERT(criteria.size()>(unsigned)i_ptor);
@@ -326,7 +326,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             if (asTools::IsNaN(thisscore))
                             {
                                 containsNaNs = true;
-								asLogWarning(_("NaNs were found in the criteria values."));
+                                asLogWarning(_("NaNs were found in the criteria values."));
                             }
 
                             // Check if the array is already full
@@ -396,10 +396,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             // Extract some data
             Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
             int timeArchiveDataSize = timeArchiveData.size();
-            wxASSERT(timeArchiveDataSize==predictorsArchive[0].GetData().size());
+            wxASSERT(timeArchiveDataSize==predictorsArchive[0]->GetData().size());
             Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
-            wxASSERT(timeTargetDataSize==predictorsTarget[0].GetData().size());
+            wxASSERT(timeTargetDataSize==predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
             Array1DFloat ScoreArrayOneDay(timeArrayArchiveSelection.GetSize());
@@ -423,17 +423,17 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             // Loop through every timestep as target data
             for (int i_dateTarg=0; i_dateTarg<timeTargetSelectionSize; i_dateTarg++)
             {
-				#if wxUSE_GUI
-					if (g_Responsive) wxGetApp().Yield();
+                #if wxUSE_GUI
+                    if (g_Responsive) wxGetApp().Yield();
 
-					// Update the progress bar
-					wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), (int)i_dateTarg, timeTargetSelectionSize-1);
-					if(!ProgressBar.Update(i_dateTarg, updatedialogmessage))
-					{
-						asLogMessage(_("The process has been canceled by the user."));
-						return false;
-					}
-				#endif
+                    // Update the progress bar
+                    wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), (int)i_dateTarg, timeTargetSelectionSize-1);
+                    if(!ProgressBar.Update(i_dateTarg, updatedialogmessage))
+                    {
+                        asLogMessage(_("The process has been canceled by the user."));
+                        return false;
+                    }
+                #endif
 
                 // Check if the next data is the following. If not, search for it in the array.
                 if(timeTargetDataSize>i_timeTargStart+1 && abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
@@ -453,7 +453,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                     // Extract target data
                     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                     {
-                        vTargData[i_ptor] = &predictorsTarget[i_ptor].GetData()[i_timeTarg];
+                        vTargData[i_ptor] = &predictorsTarget[i_ptor]->GetData()[i_timeTarg];
                     }
 
                     // DateArray initialization
@@ -488,7 +488,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
                             for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                             {
                                 // Get data
-                                vArchData[i_ptor] = &predictorsArchive[i_ptor].GetData()[i_timeArch];
+                                vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
 
                                 // Assess the criteria
                                 wxASSERT(criteria.size()>(unsigned)i_ptor);
@@ -544,10 +544,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
             asThrowException(_("The processing method is not correctly defined."));
     }
 
-	#if wxUSE_GUI
-		ProgressBar.Destroy();
-		if (g_Responsive) wxGetApp().Yield();
-	#endif
+    #if wxUSE_GUI
+        ProgressBar.Destroy();
+        if (g_Responsive) wxGetApp().Yield();
+    #endif
 
     // Copy results to the resulting object
     results.SetTargetDates(timeTargetSelection);
@@ -560,8 +560,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor > &predictorsArc
     return true;
 }
 
-bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictorsArchive,
-                                     std::vector < asDataPredictor > &predictorsTarget,
+bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
+                                     std::vector < asDataPredictor* > predictorsTarget,
                                      asTimeArray &timeArrayArchiveData,
                                      asTimeArray &timeArrayTargetData,
                                      asResultsAnalogsDates &anaDates,
@@ -571,9 +571,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                                      asResultsAnalogsDates &results,
                                      bool &containsNaNs)
 {
-	#if wxUSE_GUI
-		if (g_Responsive) wxGetApp().Yield();
-	#endif
+    #if wxUSE_GUI
+        if (g_Responsive) wxGetApp().Yield();
+    #endif
 
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -614,17 +614,17 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
     // Extract some data
     Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
     int timeArchiveDataSize = timeArchiveData.size();
-	wxASSERT(timeArchiveDataSize>0);
+    wxASSERT(timeArchiveDataSize>0);
     Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
     int timeTargetDataSize = timeTargetData.size();
-	wxASSERT(timeTargetDataSize>0);
+    wxASSERT(timeTargetDataSize>0);
     Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
     int timeTargetSelectionSize = timeTargetSelection.size();
-	wxASSERT(timeTargetSelectionSize>0);
+    wxASSERT(timeTargetSelectionSize>0);
     Array2DFloat analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder()==Asc);
     int predictorsNb = params.GetPredictorsNb(step);
-	wxASSERT(predictorsNb>0);
+    wxASSERT(predictorsNb>0);
 
     // Check the analogs number. Correct if superior to the time serie
     int analogsNb = params.GetAnalogsNumber(step);
@@ -643,8 +643,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
 
     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
     {
-        vRowsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].rows();
-        vColsNb[i_ptor] = predictorsArchive[i_ptor].GetData()[0].cols();
+        vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
+        vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
 
         // Check criteria ordering
         if(isasc != (criteria[i_ptor]->GetOrder()==Asc))
@@ -665,11 +665,11 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
     float tmpscore, thisscore;
     int i_timeArch, i_timeTarg, counter = 0;
 
-	#if wxUSE_GUI
-		// The progress bar
-		wxString dialogmessage = _("Processing the data comparison.\n");
-		asDialogProgressBar ProgressBar(dialogmessage, timeTargetSelectionSize);
-	#endif
+    #if wxUSE_GUI
+        // The progress bar
+        wxString dialogmessage = _("Processing the data comparison.\n");
+        asDialogProgressBar ProgressBar(dialogmessage, timeTargetSelectionSize);
+    #endif
 
     switch (method)
     {
@@ -679,9 +679,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
 
-			#if wxUSE_GUI
-				if (g_Responsive) wxGetApp().Yield();
-			#endif
+            #if wxUSE_GUI
+                if (g_Responsive) wxGetApp().Yield();
+            #endif
 
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
@@ -705,7 +705,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                 end = ceil(((float)(i_threads+1)*(float)(timeTargetSelectionSize-1)/(float)threadsNb));
                 wxASSERT_MSG(end>=start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end, timeTargetSelectionSize));
 
-                asThreadProcessorGetAnalogsSubDates* thread = new asThreadProcessorGetAnalogsSubDates(&predictorsArchive, &predictorsTarget,
+                asThreadProcessorGetAnalogsSubDates* thread = new asThreadProcessorGetAnalogsSubDates(predictorsArchive, predictorsTarget,
                                                                                                         &timeArrayArchiveData,
                                                                                                         &timeArrayTargetData,
                                                                                                         &timeTargetSelection,
@@ -753,17 +753,17 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
             // Loop through every timestep as target data
             for (int i_anadates=0; i_anadates<timeTargetSelectionSize; i_anadates++)
             {
-				#if wxUSE_GUI
-					if (g_Responsive) wxGetApp().Yield();
+                #if wxUSE_GUI
+                    if (g_Responsive) wxGetApp().Yield();
 
-					// Update the progress bar
-					wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), i_anadates+1, timeTargetSelectionSize);
-					if(!ProgressBar.Update(i_anadates, updatedialogmessage))
-					{
-						asLogMessage(_("The process has been canceled by the user."));
-						return false;
-					}
-				#endif
+                    // Update the progress bar
+                    wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), i_anadates+1, timeTargetSelectionSize);
+                    if(!ProgressBar.Update(i_anadates, updatedialogmessage))
+                    {
+                        asLogMessage(_("The process has been canceled by the user."));
+                        return false;
+                    }
+                #endif
 
                 i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], timeTargetSelection[i_anadates], 0.01);
                 wxASSERT_MSG(i_timeTarg>=0, wxString::Format(_("Looking for %s in betwwen %s and %s."), asTime::GetStringTime(timeTargetSelection[i_anadates], "DD.MM.YYYY hh:mm").c_str(),
@@ -773,7 +773,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                 // Extract target data
                 for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                 {
-                    vTargData[i_ptor] = &predictorsTarget[i_ptor].GetData()[i_timeTarg];
+                    vTargData[i_ptor] = &predictorsTarget[i_ptor]->GetData()[i_timeTarg];
                 }
 
                 // Get dates
@@ -797,7 +797,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                         for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                         {
                             // Get data
-                            vArchData[i_ptor] = &predictorsArchive[i_ptor].GetData()[i_timeArch];
+                            vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
 
                             // Assess the criteria
                             wxASSERT(criteria.size()>(unsigned)i_ptor);
@@ -809,7 +809,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                                                                                                                 asTime::GetStringTime(timeTargetData[i_timeTarg], "DD.MM.YYYY hh:mm").c_str(), i_timeTarg,
                                                                                                                 (int)vArchData[i_ptor]->size(), (int)vTargData[i_ptor]->size()));
                             tmpscore = criteria[i_ptor]->Assess(*vTargData[i_ptor], *vArchData[i_ptor], vRowsNb[i_ptor], vColsNb[i_ptor]);
-			
+            
                             /*
                             // For debugging
                             wxLogMessage("timeTarget = %s",asTime::GetStringTime(timeTargetSelection[i_anadates]).c_str());
@@ -831,7 +831,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
                         if (asTools::IsNaN(thisscore))
                         {
                             containsNaNs = true;
-							asLogWarning(_("NaNs were found in the criteria values."));
+                            asLogWarning(_("NaNs were found in the criteria values."));
                         }
 
                         // Check if the array is already full
@@ -901,14 +901,14 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor > &predictors
             asThrowException(_("The processing method is not correctly defined."));
     }
 
-	#if wxUSE_GUI
-		ProgressBar.Destroy();
-	#endif
+    #if wxUSE_GUI
+        ProgressBar.Destroy();
+    #endif
 
     // Copy results to the resulting object
-	wxASSERT(timeTargetSelection.size()>0);
-	wxASSERT(finalAnalogsCriteria.size()>0);
-	wxASSERT(finalAnalogsDates.size()>0);
+    wxASSERT(timeTargetSelection.size()>0);
+    wxASSERT(finalAnalogsCriteria.size()>0);
+    wxASSERT(finalAnalogsDates.size()>0);
     results.SetTargetDates(timeTargetSelection);
     results.SetAnalogsCriteria(finalAnalogsCriteria);
     results.SetAnalogsDates(finalAnalogsDates);
@@ -1011,9 +1011,9 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     Array1DFloat finalTargetValuesNorm(targTimeLength);
     Array1DFloat finalTargetValuesGross(targTimeLength);
 
-	#if wxUSE_GUI
-		if (g_Responsive) wxGetApp().Yield();
-	#endif
+    #if wxUSE_GUI
+        if (g_Responsive) wxGetApp().Yield();
+    #endif
 
     // Get predictand values
     for (int i_targdate=indexTargDatesStart; i_targdate<=indexTargDatesEnd; i_targdate++)
@@ -1078,11 +1078,11 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
             }
         }
 
-		#ifndef UNIT_TESTING
-			wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm(i_targdatenew,0), &finalAnalogValuesNorm(i_targdatenew,analogsNb-1)));
-			wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross(i_targdatenew,0), &finalAnalogValuesGross(i_targdatenew,analogsNb-1)));
-			wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(i_targdatenew,0), &finalAnalogCriteria(i_targdatenew,analogsNb-1)));
-		#endif
+        #ifndef UNIT_TESTING
+            wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm(i_targdatenew,0), &finalAnalogValuesNorm(i_targdatenew,analogsNb-1)));
+            wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross(i_targdatenew,0), &finalAnalogValuesGross(i_targdatenew,analogsNb-1)));
+            wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(i_targdatenew,0), &finalAnalogCriteria(i_targdatenew,analogsNb-1)));
+        #endif
     }
 
     //wxASSERT(!asTools::HasNaN(&finalTargetValuesNorm(0), &finalTargetValuesNorm(finalTargetValuesNorm.size()-1)));

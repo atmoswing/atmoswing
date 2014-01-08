@@ -33,10 +33,10 @@
 
 class asFrameAbout : public asFrameAboutVirtual
 {
-	public:
-		/** Constructor */
-		asFrameAbout( wxWindow* parent );
-		static wxString GetLicense();
+    public:
+        /** Constructor */
+        asFrameAbout( wxWindow* parent );
+        static wxString GetLicense();
 
     protected:
 };

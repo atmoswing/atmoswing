@@ -34,10 +34,10 @@
 class asGeoAreaGaussianGrid: public asGeoArea
 {
 public:
-	enum GaussianGridType
-	{
-		T62
-	};
+    enum GaussianGridType
+    {
+        T62
+    };
 
     /** Default constructor
      * \param coosys The coordinate system

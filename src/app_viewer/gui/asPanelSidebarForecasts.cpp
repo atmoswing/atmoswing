@@ -47,7 +47,7 @@ asPanelSidebar( parent, id, pos, size, style )
     m_SizerContent->Add( staticline, 0, 0, 0 );
 
     wxBoxSizer* subSizer;
-	subSizer = new wxBoxSizer( wxHORIZONTAL );
+    subSizer = new wxBoxSizer( wxHORIZONTAL );
 
     wxSize displaySize = wxSize();
     displaySize.SetHeight(100);
@@ -60,7 +60,7 @@ asPanelSidebar( parent, id, pos, size, style )
     m_SizerContent->Add( subSizer, 0, wxEXPAND, 5 );
 
     Layout();
-	m_SizerContent->Fit( this );
+    m_SizerContent->Fit( this );
 }
 
 asPanelSidebarForecasts::~asPanelSidebarForecasts()

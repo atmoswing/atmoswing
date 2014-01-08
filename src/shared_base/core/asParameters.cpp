@@ -46,10 +46,10 @@ asParameters::asParameters()
     m_TimeArrayAnalogsIntervalDays = 0;
     m_PredictandStationId = 0;
     m_PredictandDTimeHours = 0;
-	m_PredictandParameter = (DataParameter)0;
-	m_PredictandTemporalResolution = (DataTemporalResolution)0;
-	m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
-	m_PredictandDatasetId = wxEmptyString;
+    m_PredictandParameter = (DataParameter)0;
+    m_PredictandTemporalResolution = (DataTemporalResolution)0;
+    m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
+    m_PredictandDatasetId = wxEmptyString;
 }
 
 asParameters::~asParameters()
@@ -740,7 +740,7 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath)
 
     if(filePath.IsEmpty())
     {
-        saveFilePath = asConfig::GetTempDir() + "/AtmoswingCurrentParameters.txt";
+        saveFilePath = asConfig::GetTempDir() + "/AtmoSwingCurrentParameters.txt";
     }
     else
     {
@@ -753,7 +753,7 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath)
     wxString content = Print();
 
     wxString header;
-    header = _("Atmoswing current parameters, run ") + asTime::GetStringTime(asTime::NowMJD(asLOCAL));
+    header = _("AtmoSwing current parameters, run ") + asTime::GetStringTime(asTime::NowMJD(asLOCAL));
     fileRes.AddLineContent(header);
     fileRes.AddLineContent(content);
     fileRes.Close();

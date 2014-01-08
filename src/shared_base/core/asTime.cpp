@@ -69,14 +69,14 @@ double asTime::TimeTmToMJD(const struct tm &Date)
 
 double asTime::NowMJD(int timezone)
 {
-	struct tm Todaytm;
-	time_t Todayepoch;
+    struct tm Todaytm;
+    time_t Todayepoch;
 
-	time(&Todayepoch);
+    time(&Todayepoch);
 
-	switch (timezone)
-	{
-	    case asUTM:
+    switch (timezone)
+    {
+        case asUTM:
             Todaytm = *gmtime(&Todayepoch);
             break;
         case asLOCAL:
@@ -84,21 +84,21 @@ double asTime::NowMJD(int timezone)
             break;
         default:
             asThrowException(_("The timezone is not correctly set"));
-	}
+    }
 
     return TimeTmToMJD(Todaytm);
 }
 
 TimeStruct asTime::NowTimeStruct(int timezone)
 {
-	struct tm Todaytm;
-	time_t Todayepoch;
+    struct tm Todaytm;
+    time_t Todayepoch;
 
-	time(&Todayepoch);
+    time(&Todayepoch);
 
-	switch (timezone)
-	{
-	    case asUTM:
+    switch (timezone)
+    {
+        case asUTM:
             Todaytm = *gmtime(&Todayepoch);
             break;
         case asLOCAL:
@@ -106,19 +106,19 @@ TimeStruct asTime::NowTimeStruct(int timezone)
             break;
         default:
             asThrowException(_("The timezone is not correctly set"));
-	}
+    }
 
     return TimeTmToTimeStruct(Todaytm);
 }
 
 wxDateTime asTime::NowWxDateTime(int timezone)
 {
-	TimeStruct now = NowTimeStruct(timezone);
+    TimeStruct now = NowTimeStruct(timezone);
 
-	wxDateTime::Month month;
+    wxDateTime::Month month;
 
-	switch(now.month)
-	{
+    switch(now.month)
+    {
     case 1:
         month = wxDateTime::Jan;
         break;
@@ -157,10 +157,10 @@ wxDateTime asTime::NowWxDateTime(int timezone)
         break;
     default:
         month = wxDateTime::Inv_Month;
-	}
+    }
 
     // Create datetime object.
-	wxDateTime nowWx(now.day, month, now.year, now.hour, now.min, now.sec, 0);
+    wxDateTime nowWx(now.day, month, now.year, now.hour, now.min, now.sec, 0);
 
     return nowWx;
 }

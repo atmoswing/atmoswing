@@ -49,7 +49,7 @@ protected:
     void OnSaveDefault( wxCommandEvent& event );
     void CloseFrame( wxCommandEvent& event );
     void OnDataSelection( wxCommandEvent& event );
-	void ToggleProcessing();
+    void ToggleProcessing();
     void BuildDatabase( wxCommandEvent& event );
 
 };

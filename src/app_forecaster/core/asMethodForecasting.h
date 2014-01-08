@@ -31,8 +31,9 @@
 #include <asIncludes.h>
 #include <asMethodStandard.h>
 #include <asParametersForecast.h>
+#include <asDataPredictorRealtime.h>
+#include <asDataPredictorArchive.h>
 
-class asCatalogPredictorsRealtime;
 class asResultsAnalogsDates;
 class asResultsAnalogsForecast;
 
@@ -45,6 +46,10 @@ public:
     virtual bool Manager();
 
     bool Forecast(asParametersForecast &params);
+
+    void DeleteArray(std::vector < asDataPredictor* > predictors);
+    void DeleteArray(std::vector < asDataPredictorArchive* > predictors);
+    void DeleteArray(std::vector < asDataPredictorRealtime* > predictors);
 
     /** Access m_ForecastDate
      * \return The current value of m_ForecastDate

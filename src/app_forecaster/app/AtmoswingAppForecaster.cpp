@@ -35,7 +35,7 @@
 
 #include "AtmoswingAppForecaster.h"
 #if wxUSE_GUI
-	#include "AtmoswingMainForecaster.h"
+    #include "AtmoswingMainForecaster.h"
 #endif
 
 IMPLEMENT_APP(AtmoswingAppForecaster);
@@ -49,9 +49,9 @@ IMPLEMENT_APP(AtmoswingAppForecaster);
 #include <asMethodForecasting.h>
 #include <asFileAscii.h>
 #if wxUSE_GUI
-	#include "img_bullets.h"
-	#include "img_toolbar.h"
-	#include "img_logo.h"
+    #include "img_bullets.h"
+    #include "img_toolbar.h"
+    #include "img_logo.h"
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
@@ -81,7 +81,7 @@ bool AtmoswingAppForecaster::OnInit()
     #endif
 
     // Set application name and create user directory
-    wxString appName = "Atmoswing forecaster";
+    wxString appName = "AtmoSwing forecaster";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
@@ -91,25 +91,25 @@ bool AtmoswingAppForecaster::OnInit()
     g_GuiMode = true;
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir()+"Atmoswing.ini",asConfig::GetUserDataDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
-	#if wxUSE_GUI
-		// Check that it is the unique instance
-		bool multipleInstances;
-		pConfig->Read("/Standard/MultiInstances", &multipleInstances, false);
+    #if wxUSE_GUI
+        // Check that it is the unique instance
+        bool multipleInstances;
+        pConfig->Read("/Standard/MultiInstances", &multipleInstances, false);
 
-		if (!multipleInstances)
-		{
-			const wxString instanceName = wxString::Format(wxT("AtmoswingForecaster-%s"),wxGetUserId().c_str());
-			m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-			if ( m_SingleInstanceChecker->IsAnotherRunning() )
-			{
-				wxMessageBox(_("Program already running, aborting."));
-				return false;
-			}
-		}
-	#endif
+        if (!multipleInstances)
+        {
+            const wxString instanceName = wxString::Format(wxT("AtmoSwingForecaster-%s"),wxGetUserId().c_str());
+            m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+            if ( m_SingleInstanceChecker->IsAnotherRunning() )
+            {
+                wxMessageBox(_("Program already running, aborting."));
+                return false;
+            }
+        }
+    #endif
 
     // Init cURL
     asInternet::Init();
@@ -118,25 +118,25 @@ bool AtmoswingAppForecaster::OnInit()
     if (!wxApp::OnInit()) // When false, we are in CL mode
         return false;
 
-	#if wxUSE_GUI
-		// Following for GUI only
-		wxInitAllImageHandlers();
+    #if wxUSE_GUI
+        // Following for GUI only
+        wxInitAllImageHandlers();
 
-		// Initialize images
-		initialize_images_bullets();
-		initialize_images_toolbar();
-		initialize_images_logo();
+        // Initialize images
+        initialize_images_bullets();
+        initialize_images_toolbar();
+        initialize_images_logo();
 
-		// Create frame
-		AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
-		frame->OnInit();
+        // Create frame
+        AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
+        frame->OnInit();
 
-		#ifdef __WXMSW__
-			frame->SetIcon(wxICON(myicon)); // To Set App Icon
-		#endif
-		frame->Show();
-		SetTopWindow(frame);
-	#endif
+        #ifdef __WXMSW__
+            frame->SetIcon(wxICON(myicon)); // To Set App Icon
+        #endif
+        frame->Show();
+        SetTopWindow(frame);
+    #endif
 
     return true;
 }
@@ -152,7 +152,7 @@ bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
     {
         logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
     }
-    Log().CreateFileOnly("AtmoswingForecaster.log");
+    Log().CreateFileOnly("AtmoSwingForecaster.log");
     Log().SetLevel((int)logLevel);
     Log().DisableMessageBoxOnError();
 
@@ -186,7 +186,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("Atmoswing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
 
             msgOut->Printf( wxT("%s"), msg.c_str() );
         }
@@ -296,7 +296,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
 
         // Write the resulting files path into a temp file.
-        wxString tempFile = asConfig::GetTempDir() + "AtmoswingForecatsFilePaths.txt";
+        wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
         asFileAscii filePaths(tempFile, asFile::Replace);
         VectorString filePathsVect = forecaster.GetResultsFilePaths();
 
@@ -409,10 +409,10 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
 
 int AtmoswingAppForecaster::OnExit()
 {
-	#if wxUSE_GUI
-		// Instance checker
-		delete m_SingleInstanceChecker;
-	#endif
+    #if wxUSE_GUI
+        // Instance checker
+        delete m_SingleInstanceChecker;
+    #endif
 
     // Config file (from wxWidgets samples)
     delete wxFileConfig::Set((wxFileConfig *) NULL);

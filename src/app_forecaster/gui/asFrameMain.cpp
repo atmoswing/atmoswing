@@ -39,18 +39,18 @@
 
 
 BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_STARTING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_RUNNING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_FAILED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_SUCCESS, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameMain::OnStatusMethodUpdate)
-	EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_STARTING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_RUNNING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_FAILED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_SUCCESS, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_DOWNLOADED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_LOADED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
 END_EVENT_TABLE()
 
 
@@ -63,15 +63,15 @@ asFrameMainVirtual( parent )
     // Toolbar
     m_ToolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL );
     m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
-	m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
-	m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
-	m_ToolBar->AddSeparator();
-	m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
-	m_ToolBar->Realize();
+    m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
+    m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+    m_ToolBar->AddSeparator();
+    m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
+    m_ToolBar->Realize();
 
-	// Buttons
-	m_BpButtonNow->SetBitmapLabel(img_clock_now);
-	m_BpButtonAdd->SetBitmapLabel(img_plus);
+    // Buttons
+    m_BpButtonNow->SetBitmapLabel(img_clock_now);
+    m_BpButtonAdd->SetBitmapLabel(img_plus);
 
     // Create panels manager
     m_PanelsManager = new asPanelsManagerForecastingModels();
@@ -79,9 +79,9 @@ asFrameMainVirtual( parent )
     // Connect events
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
     this->Connect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
-	this->Connect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
-	this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-	this->Connect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
+    this->Connect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
+    this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
+    this->Connect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 
     // Icon
 #ifdef __WXMSW__
@@ -96,9 +96,9 @@ asFrameMain::~asFrameMain()
     // Disconnect events
     this->Disconnect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
     this->Disconnect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
-	this->Disconnect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
-	this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-	this->Disconnect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
+    this->Disconnect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
+    this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
+    this->Disconnect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 }
 
 void asFrameMain::OnInit()
