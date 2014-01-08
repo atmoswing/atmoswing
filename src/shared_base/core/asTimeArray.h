@@ -42,12 +42,12 @@ public:
     {
         SingleDay,      // A single day
         Simple,         // A simple full time array
-        SameSeason,	    // Into the same season in reference to a date
+        SameSeason,        // Into the same season in reference to a date
         SeasonDJF,      // The DJF season
         SeasonMAM,      // The MAM season
         SeasonJJA,      // The JJA season
         SeasonSON,      // The SON season
-        DaysInterval,	// + or - an amount of days in reference to a date
+        DaysInterval,    // + or - an amount of days in reference to a date
         PredictandThresholds,
         Custom
     };

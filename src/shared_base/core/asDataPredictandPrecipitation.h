@@ -61,25 +61,25 @@ public:
 
     float GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod);
 
-	void SetReturnPeriodNormalization(float val)
-	{
-		m_ReturnPeriodNormalization = val;
-	}
+    void SetReturnPeriodNormalization(float val)
+    {
+        m_ReturnPeriodNormalization = val;
+    }
 
-	float GetReturnPeriodNormalization()
-	{
-		return m_ReturnPeriodNormalization;
-	}
-	
-	void SetIsSqrt(bool val)
-	{
-		m_IsSqrt = val;
-	}
+    float GetReturnPeriodNormalization()
+    {
+        return m_ReturnPeriodNormalization;
+    }
+    
+    void SetIsSqrt(bool val)
+    {
+        m_IsSqrt = val;
+    }
 
-	bool IsSqrt()
-	{
-		return m_IsSqrt;
-	}
+    bool IsSqrt()
+    {
+        return m_IsSqrt;
+    }
 
 
 protected:
@@ -87,7 +87,7 @@ protected:
 private:
 
     float m_ReturnPeriodNormalization;
-	bool m_IsSqrt;
+    bool m_IsSqrt;
     // Vector (dim = return periods)
     Array1DFloat m_ReturnPeriods;
     // Matrix data

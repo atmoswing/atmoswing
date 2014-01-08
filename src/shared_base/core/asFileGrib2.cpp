@@ -332,9 +332,9 @@ bool asFileGrib2::GetUaxis(Array1DFloat &uaxis)
 {
     wxASSERT(m_Opened);
 
-	// Origin is the corner of the cell --> we must correct (first point is first value)
-	uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+float(GetUPtsnb()-1)*GetUCellSize());
-	
+    // Origin is the corner of the cell --> we must correct (first point is first value)
+    uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+float(GetUPtsnb()-1)*GetUCellSize());
+    
     return true;
 }
 
@@ -342,8 +342,8 @@ bool asFileGrib2::GetVaxis(Array1DFloat &vaxis)
 {
     wxASSERT(m_Opened);
 
-	// Origin is the corner of the cell --> we must correct (first point is first value)
-	vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+float(GetVPtsnb()-1)*GetVCellSize());
+    // Origin is the corner of the cell --> we must correct (first point is first value)
+    vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+float(GetVPtsnb()-1)*GetVCellSize());
 
     return true;
 }

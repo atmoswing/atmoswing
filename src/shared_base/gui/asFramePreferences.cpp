@@ -204,7 +204,7 @@ void asFramePreferences::LoadPreferences()
     m_FilePickerViewer->SetPath(ViewerPath);
     wxString ArchivePredictorsDir = pConfigForecaster->Read("/StandardPaths/ArchivePredictorsDir", dirData+"predictors");
     m_DirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
-	wxString ForecastParametersDir = pConfigForecaster->Read("/StandardPaths/ForecastParametersDir", dirConfig);
+    wxString ForecastParametersDir = pConfigForecaster->Read("/StandardPaths/ForecastParametersDir", dirConfig);
     m_DirPickerParameters->SetPath(ForecastParametersDir);
 
     // Processing
@@ -481,8 +481,8 @@ void asFramePreferences::SavePreferences( )
     pConfigViewer->Write("/StandardPaths/ViewerPath", ViewerPath);
     wxString ArchivePredictorsDir = m_DirPickerArchivePredictors->GetPath();
     pConfigForecaster->Write("/StandardPaths/ArchivePredictorsDir", ArchivePredictorsDir);
-	wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
-	pConfigForecaster->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
+    wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
+    pConfigForecaster->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
 
     // Processing
     long ProcessingMethod = (long)m_RadioBoxProcessingMethods->GetSelection();

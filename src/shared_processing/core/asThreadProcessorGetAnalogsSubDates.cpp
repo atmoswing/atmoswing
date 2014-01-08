@@ -159,7 +159,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
                 }
                 if (asTools::IsNaN(thisscore))
                 {
-					*m_pContainsNaNs = true;
+                    *m_pContainsNaNs = true;
                 }
 
                 // Check if the array is already full

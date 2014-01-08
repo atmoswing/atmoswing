@@ -48,7 +48,7 @@ public:
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
 
-	wxString GetPredictandDatasetId()
+    wxString GetPredictandDatasetId()
     {
         return m_PredictandDatasetId;
     }
@@ -58,7 +58,7 @@ public:
         m_PredictandDatasetId = val;
     }
 
-	DataParameter GetPredictandParameter()
+    DataParameter GetPredictandParameter()
     {
         return m_PredictandParameter;
     }
@@ -68,7 +68,7 @@ public:
         m_PredictandParameter = val;
     }
 
-	DataTemporalResolution GetPredictandTemporalResolution()
+    DataTemporalResolution GetPredictandTemporalResolution()
     {
         return m_PredictandTemporalResolution;
     }
@@ -78,7 +78,7 @@ public:
         m_PredictandTemporalResolution = val;
     }
 
-	DataSpatialAggregation GetPredictandSpatialAggregation()
+    DataSpatialAggregation GetPredictandSpatialAggregation()
     {
         return m_PredictandSpatialAggregation;
     }
@@ -88,7 +88,7 @@ public:
         m_PredictandSpatialAggregation = val;
     }
 
-	/** Access m_HasReferenceValues
+    /** Access m_HasReferenceValues
     * \return The current value of m_HasReferenceValues
     */
     bool HasReferenceValues()
@@ -328,18 +328,18 @@ public:
     void SetReferenceAxis(Array1DFloat &referenceAxis)
     {
         m_ReferenceAxis = referenceAxis;
-		m_HasReferenceValues = true;
+        m_HasReferenceValues = true;
     }
 
     /** Access an element of m_ReferenceValues
      */
     float GetReferenceValue(int i_stat, int i_ref)
     {
-		if (!m_HasReferenceValues) 
-		{
-			asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
-			return NaNFloat;
-		}
+        if (!m_HasReferenceValues) 
+        {
+            asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
+            return NaNFloat;
+        }
 
         wxASSERT(i_stat>=0);
         wxASSERT(i_ref>=0);
@@ -353,12 +353,12 @@ public:
      */
     Array2DFloat GetReferenceValues()
     {
-		if (!m_HasReferenceValues) 
-		{
-			asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
-			Array2DFloat nodata(0,0);
-			return nodata;
-		}
+        if (!m_HasReferenceValues) 
+        {
+            asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
+            Array2DFloat nodata(0,0);
+            return nodata;
+        }
 
         return m_ReferenceValues;
     }
@@ -550,16 +550,16 @@ protected:
 
 private:
     DataParameter m_PredictandParameter;
-	DataTemporalResolution m_PredictandTemporalResolution;
-	DataSpatialAggregation m_PredictandSpatialAggregation;
-	wxString m_PredictandDatasetId;
+    DataTemporalResolution m_PredictandTemporalResolution;
+    DataSpatialAggregation m_PredictandSpatialAggregation;
+    wxString m_PredictandDatasetId;
 
 
     wxString m_ModelName;
     wxString m_ModelLongName;
 
 
-	bool m_HasReferenceValues;
+    bool m_HasReferenceValues;
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
     Array1DInt m_AnalogsNb; //!< Member variable "m_AnalogsNb"
