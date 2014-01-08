@@ -756,13 +756,13 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Load(asGeoAreaCompositeGrid *d
     }
     catch(asException& e)
     {
-		wxString fullMessage = e.GetFullMessage();
-		if (!fullMessage.IsEmpty())
-		{
-			asLogError(fullMessage);
-		}
-		asLogError(_("Failed to load data."));
-		return false;
+        wxString fullMessage = e.GetFullMessage();
+        if (!fullMessage.IsEmpty())
+        {
+            asLogError(fullMessage);
+        }
+        asLogError(_("Failed to load data."));
+        return false;
     }
 
     return true;

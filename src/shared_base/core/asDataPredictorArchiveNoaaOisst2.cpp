@@ -860,13 +860,13 @@ bool asDataPredictorArchiveNoaaOisst2::Load(asGeoAreaCompositeGrid *desiredArea,
     }
     catch(asException& e)
     {
-		wxString fullMessage = e.GetFullMessage();
-		if (!fullMessage.IsEmpty())
-		{
-			asLogError(fullMessage);
-		}
-		asLogError(_("Failed to load data."));
-		return false;
+        wxString fullMessage = e.GetFullMessage();
+        if (!fullMessage.IsEmpty())
+        {
+            asLogError(fullMessage);
+        }
+        asLogError(_("Failed to load data."));
+        return false;
     }
 
     return true;

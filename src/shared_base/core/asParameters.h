@@ -263,8 +263,8 @@ public:
     {
         m_PredictandStationId = val;
     }
-	
-	wxString GePredictandtDatasetId()
+    
+    wxString GePredictandtDatasetId()
     {
         return m_PredictandDatasetId;
     }
@@ -274,7 +274,7 @@ public:
         m_PredictandDatasetId = val;
     }
 
-	DataParameter GetPredictandParameter()
+    DataParameter GetPredictandParameter()
     {
         return m_PredictandParameter;
     }
@@ -284,7 +284,7 @@ public:
         m_PredictandParameter = val;
     }
 
-	DataTemporalResolution GetPredictandTemporalResolution()
+    DataTemporalResolution GetPredictandTemporalResolution()
     {
         return m_PredictandTemporalResolution;
     }
@@ -294,7 +294,7 @@ public:
         m_PredictandTemporalResolution = val;
     }
 
-	DataSpatialAggregation GetPredictandSpatialAggregation()
+    DataSpatialAggregation GetPredictandSpatialAggregation()
     {
         return m_PredictandSpatialAggregation;
     }
@@ -360,7 +360,7 @@ public:
         m_Steps[i_step].Predictors[i_predictor].PreloadDTimeHours = val;
     }
 
-	VectorFloat GetPreloadLevels(int i_step, int i_predictor)
+    VectorFloat GetPreloadLevels(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].PreloadLevels;
     }
@@ -370,7 +370,7 @@ public:
         m_Steps[i_step].Predictors[i_predictor].PreloadLevels = val;
     }
 
-	double GetPreloadUmin(int i_step, int i_predictor)
+    double GetPreloadUmin(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].PreloadUmin;
     }
@@ -390,7 +390,7 @@ public:
         m_Steps[i_step].Predictors[i_predictor].PreloadUptsnb = val;
     }
 
-	double GetPreloadVmin(int i_step, int i_predictor)
+    double GetPreloadVmin(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].PreloadVmin;
     }
@@ -784,10 +784,10 @@ private:
     wxString m_TimeArrayAnalogsMode;
     double m_TimeArrayAnalogsTimeStepHours;
     int m_TimeArrayAnalogsExcludeDays;
-	DataParameter m_PredictandParameter;
-	DataTemporalResolution m_PredictandTemporalResolution;
-	DataSpatialAggregation m_PredictandSpatialAggregation;
-	wxString m_PredictandDatasetId;
+    DataParameter m_PredictandParameter;
+    DataTemporalResolution m_PredictandTemporalResolution;
+    DataSpatialAggregation m_PredictandSpatialAggregation;
+    wxString m_PredictandDatasetId;
     double m_PredictandDTimeHours;
     double m_PredictandDTimeDays;
 

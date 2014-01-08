@@ -41,7 +41,7 @@ class asFileAscii : public asFile
     //!< The file structure type
     enum FileStructType
     {
-		ConstantWidth,
+        ConstantWidth,
         TabsDelimited
     };
 

@@ -103,7 +103,7 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
         if (Purpose==Predictand)
         {
             asLogError(_("asCatalog::GetDatasetIdList should not be called any more for predictand data, as there is supposed to be only 1 catalog per dataset."));
-			return SetList;
+            return SetList;
         }
         else if (Purpose==PredictorArchive)
         {
@@ -235,42 +235,42 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return DataList;
 
     // XML struct for the dataset information
-	if (Purpose==Predictand)
-	{
-		wxString DataAccess = "AtmoSwingFile.DataSet.DataList.Data";
-		
-		// Get the first data
-		DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
-		DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
+    if (Purpose==Predictand)
+    {
+        wxString DataAccess = "AtmoSwingFile.DataSet.DataList.Data";
+        
+        // Get the first data
+        DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
+        DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
 
-		// Get the other datasets
-		while(xmlFile.GetNextElement(DataAccess))
-		{
-			DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
-			DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
-		}
-	}
-	else
-	{
-		wxString DataAccess = wxString::Format("AtmoSwingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
-		
-		// Get the first data
-		if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
-		{
-			DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
-			DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
-		}
+        // Get the other datasets
+        while(xmlFile.GetNextElement(DataAccess))
+        {
+            DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
+            DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
+        }
+    }
+    else
+    {
+        wxString DataAccess = wxString::Format("AtmoSwingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+        
+        // Get the first data
+        if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
+        {
+            DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
+            DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
+        }
 
-		// Get the other datasets
-		while(xmlFile.GetNextElement(DataAccess))
-		{
-			if(xmlFile.GetThisElementAttributeValueBool("enable", true))
-			{
-				DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
-				DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
-			}
-		}
-	}
+        // Get the other datasets
+        while(xmlFile.GetNextElement(DataAccess))
+        {
+            if(xmlFile.GetThisElementAttributeValueBool("enable", true))
+            {
+                DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
+                DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
+            }
+        }
+    }
 
 
     return DataList;

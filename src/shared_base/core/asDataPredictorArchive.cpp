@@ -79,9 +79,9 @@ asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &data
         return NULL;
     }
 
-	if (!directory.IsEmpty()) {
-		predictor->SetDirectoryPath(directory);
-	}
+    if (!directory.IsEmpty()) {
+        predictor->SetDirectoryPath(directory);
+    }
 
     if(!predictor->Init())
     {

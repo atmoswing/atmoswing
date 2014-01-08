@@ -40,7 +40,7 @@ extern bool g_GuiMode;
 extern bool g_AppViewer;
 extern bool g_AppForecaster;
 #if wxUSE_GUI
-	extern wxColour g_LinuxBgColour;
+    extern wxColour g_LinuxBgColour;
 #endif
 
 // Constants

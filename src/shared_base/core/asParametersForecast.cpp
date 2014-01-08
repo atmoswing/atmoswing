@@ -334,15 +334,15 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Predictand"))
-	{
-		if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database"))
-		{
-			// May do something here
+    {
+        if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database"))
+        {
+            // May do something here
 
-			if(!fileParams.GoANodeBack()) return false;
-		}
-		if(!fileParams.GoANodeBack()) return false;
-	}
+            if(!fileParams.GoANodeBack()) return false;
+        }
+        if(!fileParams.GoANodeBack()) return false;
+    }
 
     if(!fileParams.GoANodeBack()) return false;
 

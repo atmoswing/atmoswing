@@ -40,8 +40,8 @@ asDataPredictandTemperature::asDataPredictandTemperature(DataParameter dataParam
 asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
-	m_HasNormalizedData = false;
-	m_HasReferenceValues = false;
+    m_HasNormalizedData = false;
+    m_HasReferenceValues = false;
 }
 
 asDataPredictandTemperature::~asDataPredictandTemperature()
@@ -70,11 +70,11 @@ bool asDataPredictandTemperature::Load(const wxString &filePath)
         asLogMessage(_("File successfully opened"));
     }
 
-	// Load common data
-	LoadCommonData(ncFile);
+    // Load common data
+    LoadCommonData(ncFile);
 
-	// Close the netCDF file
-	ncFile.Close();
+    // Close the netCDF file
+    ncFile.Close();
 
     return true;
 }
@@ -88,13 +88,13 @@ bool asDataPredictandTemperature::Save(const wxString &AlternateDestinationDir)
     asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
     if(!ncFile.Open()) return false;
 
-	// Set common definitions
-	SetCommonDefinitions(ncFile);
-	
+    // Set common definitions
+    SetCommonDefinitions(ncFile);
+    
     // End definitions: leave define mode
     ncFile.EndDef();
 
-	// Save common data
+    // Save common data
     SaveCommonData(ncFile);
 
     // Close:save new netCDF dataset
@@ -113,7 +113,7 @@ bool asDataPredictandTemperature::BuildPredictandDB(const wxString &catalogFileP
     // Resize matrices
     if(!InitContainers()) return false;
 
-	// Load data from files
+    // Load data from files
     if(!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
 
     Save(AlternateDestinationDir);

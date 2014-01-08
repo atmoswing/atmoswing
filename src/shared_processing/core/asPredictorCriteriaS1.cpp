@@ -157,7 +157,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
         }
     }
 
-	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
+    if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
     {
         asLogWarning(_("NaNs were found in the data."));
         return NaNFloat;

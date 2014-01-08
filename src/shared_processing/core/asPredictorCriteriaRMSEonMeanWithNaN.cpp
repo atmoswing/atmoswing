@@ -76,8 +76,8 @@ float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, 
                 {
                     if (!asTools::IsNaN(evalData(i,j)) && !asTools::IsNaN(refData(i,j)))
                     {
-						evalMean += evalData(i,j);
-						refMean += refData(i,j);
+                        evalMean += evalData(i,j);
+                        refMean += refData(i,j);
                     }
                     else
                     {
@@ -105,15 +105,15 @@ float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, 
         return NaNFloat;
     }
 
-	evalMean /= finalsize;
-	refMean /= finalsize;
+    evalMean /= finalsize;
+    refMean /= finalsize;
 
-	mse += (evalMean - refMean) * (evalMean - refMean);
+    mse += (evalMean - refMean) * (evalMean - refMean);
 
-	if (asTools::IsNaN(mse))
-	{
-		return NaNFloat;
-	}
+    if (asTools::IsNaN(mse))
+    {
+        return NaNFloat;
+    }
 
     wxASSERT(mse>=0);
     wxASSERT_MSG(sqrt(mse)>=m_ScaleBest, _("The criteria is below the lower limit..."));

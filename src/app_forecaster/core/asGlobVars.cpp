@@ -35,7 +35,7 @@ bool g_GuiMode = true;
 bool g_AppViewer = false;
 bool g_AppForecaster = true;
 #if wxUSE_GUI
-	wxColour g_LinuxBgColour = wxColour(242,241,240);
+    wxColour g_LinuxBgColour = wxColour(242,241,240);
 #endif
 
 // Constants

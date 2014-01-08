@@ -104,10 +104,10 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
         return NaNFloat;
     }
 
-	if (asTools::IsNaN(mse))
-	{
-		return NaNFloat;
-	}
+    if (asTools::IsNaN(mse))
+    {
+        return NaNFloat;
+    }
 
     mse /= finalsize;
 

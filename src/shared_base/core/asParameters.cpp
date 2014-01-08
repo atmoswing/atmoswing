@@ -46,10 +46,10 @@ asParameters::asParameters()
     m_TimeArrayAnalogsIntervalDays = 0;
     m_PredictandStationId = 0;
     m_PredictandDTimeHours = 0;
-	m_PredictandParameter = (DataParameter)0;
-	m_PredictandTemporalResolution = (DataTemporalResolution)0;
-	m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
-	m_PredictandDatasetId = wxEmptyString;
+    m_PredictandParameter = (DataParameter)0;
+    m_PredictandTemporalResolution = (DataTemporalResolution)0;
+    m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
+    m_PredictandDatasetId = wxEmptyString;
 }
 
 asParameters::~asParameters()
