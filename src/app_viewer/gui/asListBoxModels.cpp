@@ -31,7 +31,7 @@
 
 
 BEGIN_EVENT_TABLE(asListBoxModels, wxListBox)
-	EVT_LISTBOX(wxID_ANY, asListBoxModels::OnModelSlctChange)
+    EVT_LISTBOX(wxID_ANY, asListBoxModels::OnModelSlctChange)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, wxCommandEvent);
@@ -52,20 +52,20 @@ asListBoxModels::~asListBoxModels()
 bool asListBoxModels::Add(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
 {
     wxString newOption = wxString::Format("%d. ", (int)GetStrings().GetCount()+1) + modelName + " (" + leadTimeOriginStr + ") ";
-	/*
-	switch (dataParameter)
-	{
-		case (Precipitation):
-			break;
-		case (AirTemperature):
-			break;
-		case (Wind):
-			break;
-		case (Lightnings):
-			break;
-		default:
+    /*
+    switch (dataParameter)
+    {
+        case (Precipitation):
+            break;
+        case (AirTemperature):
+            break;
+        case (Wind):
+            break;
+        case (Lightnings):
+            break;
+        default:
 
-	}*/
+    }*/
 
     Append(newOption);
 

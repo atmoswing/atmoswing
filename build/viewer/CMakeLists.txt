@@ -32,20 +32,20 @@ list(REMOVE_DUPLICATES src_all)
 
 # Directories to include
 list(APPEND inc_dirs 
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/app/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/gui/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxmathplot/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/include/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxthings/include/"
-	)
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/img/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/awxled/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/app/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/gui/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxmathplot/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxplotctrl/include/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/libs/wxthings/include/"
+    )
 include_directories(${inc_dirs})
 
 # Select flags
@@ -72,21 +72,21 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 #### LIBRARIES
 
 if (WIN32)
-	set(USE_PROVIDED_LIBRARIES 1 CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
-	if(USE_PROVIDED_LIBRARIES)
-		set(USE_PROVIDED_LIBRARIES_PATH CACHE PATH "Path to the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
-		if ("${USE_PROVIDED_LIBRARIES_PATH}" STREQUAL "")
-			message(FATAL_ERROR "Please provide the path to the downloaded libraries, or disable the option USE_PROVIDED_LIBRARIES.")
-		else()
-			set(CUSTOM_LIBRARY_PATH "${USE_PROVIDED_LIBRARIES_PATH}")
-			file(GLOB sub-dir ${CUSTOM_LIBRARY_PATH}/*)
-			foreach(dir ${sub-dir})
-				if(IS_DIRECTORY ${dir})
-					set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
-				endif()
-			endforeach()
-		endif()
-	endif(USE_PROVIDED_LIBRARIES)
+    set(USE_PROVIDED_LIBRARIES 1 CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+    if(USE_PROVIDED_LIBRARIES)
+        set(USE_PROVIDED_LIBRARIES_PATH CACHE PATH "Path to the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+        if ("${USE_PROVIDED_LIBRARIES_PATH}" STREQUAL "")
+            message(FATAL_ERROR "Please provide the path to the downloaded libraries, or disable the option USE_PROVIDED_LIBRARIES.")
+        else()
+            set(CUSTOM_LIBRARY_PATH "${USE_PROVIDED_LIBRARIES_PATH}")
+            file(GLOB sub-dir ${CUSTOM_LIBRARY_PATH}/*)
+            foreach(dir ${sub-dir})
+                if(IS_DIRECTORY ${dir})
+                    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+                endif()
+            endforeach()
+        endif()
+    endif(USE_PROVIDED_LIBRARIES)
 endif (WIN32)
 
 
