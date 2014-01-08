@@ -74,7 +74,7 @@ bool asFileXml::Open()
         ticpp::Declaration decl("1.0", "UTF-8", "");
         m_Document->InsertEndChild (decl);
 
-        ticpp::Element root("AtmoswingFile");
+        ticpp::Element root("AtmoSwingFile");
         root.SetAttribute("version", 0.3);
         m_Document->InsertEndChild(root);
     }

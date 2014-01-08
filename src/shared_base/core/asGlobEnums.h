@@ -95,8 +95,8 @@ enum
 {
     asCOEFF, // Direct access to the coefficients
     asCOEFF_NOVAR, // Direct access to the coefficients without any other variable declaration
-    asLIN_ALGEBRA,	// Linear algebra using a library
-    asLIN_ALGEBRA_NOVAR	// Linear algebra using a library without any other variable declaration
+    asLIN_ALGEBRA,    // Linear algebra using a library
+    asLIN_ALGEBRA_NOVAR    // Linear algebra using a library without any other variable declaration
 };
 
 // Processor methods
@@ -109,42 +109,42 @@ enum
 
 // Windows ID
 #if wxUSE_GUI
-	enum
-	{
-		asWINDOW_MAIN = 101,
-		asWINDOW_PREFERENCES = 102,
-		asWINDOW_PREDICTANDDB = 104,
-		asWINDOW_VIEWER_RINGS = 106,
-		asWINDOW_VIEWER_DOTS = 107,
-		asWINDOW_PLOTS_TIMESERIES = 108,
-		asWINDOW_PLOTS_DISTRIBUTIONS = 109,
-		asWINDOW_GRID_ANALOGS = 110,
-		asWINDOW_PREDICTORS = 111
-	};
+    enum
+    {
+        asWINDOW_MAIN = 101,
+        asWINDOW_PREFERENCES = 102,
+        asWINDOW_PREDICTANDDB = 104,
+        asWINDOW_VIEWER_RINGS = 106,
+        asWINDOW_VIEWER_DOTS = 107,
+        asWINDOW_PLOTS_TIMESERIES = 108,
+        asWINDOW_PLOTS_DISTRIBUTIONS = 109,
+        asWINDOW_GRID_ANALOGS = 110,
+        asWINDOW_PREDICTORS = 111
+    };
 
-	// Menus & Controls ID
-	enum
-	{
-		asID_PREFERENCES = wxID_HIGHEST+1,
-		asID_OPEN = wxID_HIGHEST+2,
-		asID_RUN = wxID_HIGHEST+3,
-		asID_RUN_PREVIOUS = wxID_HIGHEST+4,
-		asID_CANCEL = wxID_HIGHEST+5,
-		asID_DB_OPTIONS = wxID_HIGHEST+6,
-		asID_DB_CREATE = wxID_HIGHEST+7,
-		asID_PRINT = wxID_HIGHEST+9,
-		asID_SELECT = wxID_HIGHEST+10,
-		asID_ZOOM_IN = wxID_HIGHEST+11,
-		asID_ZOOM_OUT = wxID_HIGHEST+12,
-		asID_ZOOM_FIT = wxID_HIGHEST+13,
-		asID_PAN = wxID_HIGHEST+14,
-		asID_CROSS_MARKER = wxID_HIGHEST+15,
-		asID_FRAME_VIEWER = wxID_HIGHEST+16,
-		asID_FRAME_FORECASTER = wxID_HIGHEST+17,
-		asID_FRAME_DOTS = wxID_HIGHEST+18,
-		asID_FRAME_PLOTS = wxID_HIGHEST+19,
-		asID_FRAME_GRID = wxID_HIGHEST+20,
-	};
+    // Menus & Controls ID
+    enum
+    {
+        asID_PREFERENCES = wxID_HIGHEST+1,
+        asID_OPEN = wxID_HIGHEST+2,
+        asID_RUN = wxID_HIGHEST+3,
+        asID_RUN_PREVIOUS = wxID_HIGHEST+4,
+        asID_CANCEL = wxID_HIGHEST+5,
+        asID_DB_OPTIONS = wxID_HIGHEST+6,
+        asID_DB_CREATE = wxID_HIGHEST+7,
+        asID_PRINT = wxID_HIGHEST+9,
+        asID_SELECT = wxID_HIGHEST+10,
+        asID_ZOOM_IN = wxID_HIGHEST+11,
+        asID_ZOOM_OUT = wxID_HIGHEST+12,
+        asID_ZOOM_FIT = wxID_HIGHEST+13,
+        asID_PAN = wxID_HIGHEST+14,
+        asID_CROSS_MARKER = wxID_HIGHEST+15,
+        asID_FRAME_VIEWER = wxID_HIGHEST+16,
+        asID_FRAME_FORECASTER = wxID_HIGHEST+17,
+        asID_FRAME_DOTS = wxID_HIGHEST+18,
+        asID_FRAME_PLOTS = wxID_HIGHEST+19,
+        asID_FRAME_GRID = wxID_HIGHEST+20,
+    };
 #endif
 
 
@@ -154,15 +154,15 @@ enum
 
 enum Order
 {
-    Asc,	// Ascendant
-    Desc,	// Descendant
+    Asc,    // Ascendant
+    Desc,    // Descendant
     NoOrder
 };
 
 enum CoordSys //!< Enumaration of managed coordinate systems
 {
-    WGS84,	// World Geodetic System 1984
-    CH1903,	// Former swiss projection
+    WGS84,    // World Geodetic System 1984
+    CH1903,    // Former swiss projection
     CH1903p,// New swiss projection
     NoCoordSys
 };
@@ -193,7 +193,7 @@ enum DataParameter
     RelativeHumidity,
     SpecificHumidity,
     Omega,
-	Wind,
+    Wind,
     Uwind,
     Vwind,
     SurfaceLiftedIndex,
@@ -238,11 +238,11 @@ enum DataTemporalResolution
     Daily,
     SixHourly,
     Hourly,
-	SixHourlyMovingDailyTemporalWindow,
+    SixHourlyMovingDailyTemporalWindow,
     TwoDays,
-	ThreeDays,
-	Weekly,
-	NoDataTemporalResolution
+    ThreeDays,
+    Weekly,
+    NoDataTemporalResolution
 };
 
 enum DataSpatialAggregation
@@ -250,7 +250,7 @@ enum DataSpatialAggregation
     Station,
     Groupment,
     Catchment,
-	NoDataSpatialAggregation
+    NoDataSpatialAggregation
 };
 
 enum FileFormat
@@ -318,18 +318,18 @@ public:
 
     static DataParameter StringToDataParameterEnum(const wxString &ParameterStr);
 
-	static wxString DataParameterEnumToString(DataParameter dataParameter);
+    static wxString DataParameterEnumToString(DataParameter dataParameter);
 
 
     static DataUnit StringToDataUnitEnum(const wxString &UnitStr);
 
-	static DataTemporalResolution StringToDataTemporalResolutionEnum(const wxString &TemporalResolution);
-	
-	static wxString DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution);
+    static DataTemporalResolution StringToDataTemporalResolutionEnum(const wxString &TemporalResolution);
+    
+    static wxString DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution);
 
-	static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
-	
-	static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
+    static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
+    
+    static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
 
     /** Transform a string to the corresponding CoordSys enum entry
      * \param CoordSysStr The entry to match

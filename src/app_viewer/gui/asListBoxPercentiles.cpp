@@ -32,7 +32,7 @@
 
 
 BEGIN_EVENT_TABLE(asListBoxPercentiles, wxListBox)
-	EVT_LISTBOX(wxID_ANY, asListBoxPercentiles::OnPercentileSlctChange)
+    EVT_LISTBOX(wxID_ANY, asListBoxPercentiles::OnPercentileSlctChange)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, wxCommandEvent);
@@ -52,7 +52,7 @@ asListBoxPercentiles::~asListBoxPercentiles()
 
 void asListBoxPercentiles::OnPercentileSlctChange( wxCommandEvent & event )
 {
-	wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED);
+    wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED);
     eventSlct.SetInt(event.GetInt());
     GetParent()->ProcessWindowEvent(eventSlct);
 }

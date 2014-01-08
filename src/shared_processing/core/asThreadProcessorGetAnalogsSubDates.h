@@ -41,8 +41,8 @@ class asThreadProcessorGetAnalogsSubDates: public asThread
 {
 public:
     /** Default constructor */
-    asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor >* predictorsArchive,
-                                        std::vector < asDataPredictor >* predictorsTarget,
+    asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
+                                        std::vector < asDataPredictor* > predictorsTarget,
                                         asTimeArray* timeArrayArchiveData,
                                         asTimeArray* timeArrayTargetData,
                                         Array1DFloat* timeTargetSelection,
@@ -66,8 +66,8 @@ public:
 
 protected:
 private:
-    std::vector < asDataPredictor >* m_pPredictorsArchive;
-    std::vector < asDataPredictor >* m_pPredictorsTarget;
+    std::vector < asDataPredictor* > m_pPredictorsArchive;
+    std::vector < asDataPredictor* > m_pPredictorsTarget;
     asTimeArray* m_pTimeArrayArchiveData;
     asTimeArray* m_pTimeArrayTargetData;
     Array1DFloat* m_pTimeTargetSelection;

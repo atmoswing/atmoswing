@@ -39,12 +39,12 @@
 asDataPredictand::asDataPredictand(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
 {
     m_DataParameter = dataParameter;
-	m_DataTemporalResolution = dataTemporalResolution;
-	m_DataSpatialAggregation = dataSpatialAggregation;
+    m_DataTemporalResolution = dataTemporalResolution;
+    m_DataSpatialAggregation = dataSpatialAggregation;
     m_FileVersion = 1.1f;
-	m_HasNormalizedData = false;
-	m_HasReferenceValues = false;
-	m_DatasetId = wxEmptyString;
+    m_HasNormalizedData = false;
+    m_HasReferenceValues = false;
+    m_DatasetId = wxEmptyString;
 }
 
 asDataPredictand::~asDataPredictand()
@@ -54,61 +54,61 @@ asDataPredictand::~asDataPredictand()
 
 asDataPredictand* asDataPredictand::GetInstance(const wxString& dataParameterStr, const wxString& dataTemporalResolutionStr, const wxString& dataSpatialAggregationStr)
 {
-	DataParameter dataParameter = asGlobEnums::StringToDataParameterEnum(dataTemporalResolutionStr);
-	DataTemporalResolution dataTemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(dataTemporalResolutionStr);
-	DataSpatialAggregation dataSpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(dataSpatialAggregationStr);
+    DataParameter dataParameter = asGlobEnums::StringToDataParameterEnum(dataTemporalResolutionStr);
+    DataTemporalResolution dataTemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(dataTemporalResolutionStr);
+    DataSpatialAggregation dataSpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(dataSpatialAggregationStr);
 
-	if (dataParameter==NoDataParameter)
-	{
-		asLogError(_("The given data parameter is unknown. Cannot get an instance of the predictand DB."));
-		return NULL;
-	}
-	
-	if (dataTemporalResolution==NoDataTemporalResolution)
-	{
-		asLogError(_("The given data temporal resolution is unknown. Cannot get an instance of the predictand DB."));
-		return NULL;
-	}
-	
-	if (dataSpatialAggregation==NoDataSpatialAggregation)
-	{
-		asLogError(_("The given data spatial aggregation is unknown. Cannot get an instance of the predictand DB."));
-		return NULL;
-	}
+    if (dataParameter==NoDataParameter)
+    {
+        asLogError(_("The given data parameter is unknown. Cannot get an instance of the predictand DB."));
+        return NULL;
+    }
+    
+    if (dataTemporalResolution==NoDataTemporalResolution)
+    {
+        asLogError(_("The given data temporal resolution is unknown. Cannot get an instance of the predictand DB."));
+        return NULL;
+    }
+    
+    if (dataSpatialAggregation==NoDataSpatialAggregation)
+    {
+        asLogError(_("The given data spatial aggregation is unknown. Cannot get an instance of the predictand DB."));
+        return NULL;
+    }
 
-	asDataPredictand* db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+    asDataPredictand* db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
     return db;
 }
 
 asDataPredictand* asDataPredictand::GetInstance(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
 {
-	switch (dataParameter)
+    switch (dataParameter)
     {
         case (Precipitation):
         {
-			asDataPredictand* db = new asDataPredictandPrecipitation(dataParameter, dataTemporalResolution, dataSpatialAggregation);
-			return db;
-		}
+            asDataPredictand* db = new asDataPredictandPrecipitation(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+            return db;
+        }
         case (AirTemperature):
         {
-			asDataPredictand* db = new asDataPredictandTemperature(dataParameter, dataTemporalResolution, dataSpatialAggregation);
-			return db;
-		}
+            asDataPredictand* db = new asDataPredictandTemperature(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+            return db;
+        }
         case (Lightnings):
         {
-			asDataPredictand* db = new asDataPredictandLightnings(dataParameter, dataTemporalResolution, dataSpatialAggregation);
-			return db;
-		}
-		default:
-			asLogError(_("The predictand parameter is not listed in the asDataPredictand instance factory."));
-			return NULL;
-	}
-	return NULL;
+            asDataPredictand* db = new asDataPredictandLightnings(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+            return db;
+        }
+        default:
+            asLogError(_("The predictand parameter is not listed in the asDataPredictand instance factory."));
+            return NULL;
+    }
+    return NULL;
 }
 
 asDataPredictand* asDataPredictand::GetInstance(const wxString& filePath)
 {
-	// Open the NetCDF file
+    // Open the NetCDF file
     asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if(!ncFile.Open())
@@ -121,34 +121,34 @@ asDataPredictand* asDataPredictand::GetInstance(const wxString& filePath)
         asLogMessage(_("File successfully opened"));
     }
 
-	// Check version
-	float version = ncFile.GetAttFloat("version");
+    // Check version
+    float version = ncFile.GetAttFloat("version");
     if (asTools::IsNaN(version) || version<1.1)
     {
-		asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return NULL;
     }
 
-	// Get basic information
-	DataParameter dataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
-	DataTemporalResolution dataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
-	DataSpatialAggregation dataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
+    // Get basic information
+    DataParameter dataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
+    DataTemporalResolution dataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+    DataSpatialAggregation dataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
 
-	// Close the netCDF file
-	ncFile.Close();
+    // Close the netCDF file
+    ncFile.Close();
 
-	// Get instance
-	asDataPredictand* db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+    // Get instance
+    asDataPredictand* db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
     return db;
 }
 
 wxString asDataPredictand::GetDBFilePathSaving(const wxString &AlternateDestinationDir)
 {
-	wxString PredictandDBFilePath;
+    wxString PredictandDBFilePath;
 
-	wxString dataParameterStr = asGlobEnums::DataParameterEnumToString(m_DataParameter);
-	wxString dataTemporalResolutionStr = asGlobEnums::DataTemporalResolutionEnumToString(m_DataTemporalResolution);
-	wxString dataSpatialAggregationStr = asGlobEnums::DataSpatialAggregationEnumToString(m_DataSpatialAggregation);
+    wxString dataParameterStr = asGlobEnums::DataParameterEnumToString(m_DataParameter);
+    wxString dataTemporalResolutionStr = asGlobEnums::DataTemporalResolutionEnumToString(m_DataTemporalResolution);
+    wxString dataSpatialAggregationStr = asGlobEnums::DataSpatialAggregationEnumToString(m_DataSpatialAggregation);
     wxString FileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_DatasetId;
 
     if (AlternateDestinationDir.IsEmpty())
@@ -162,7 +162,7 @@ wxString asDataPredictand::GetDBFilePathSaving(const wxString &AlternateDestinat
         PredictandDBFilePath = AlternateDestinationDir + DS + FileName + ".nc";
     }
 
-	return PredictandDBFilePath;
+    return PredictandDBFilePath;
 }
 
 bool asDataPredictand::InitMembers(const wxString &catalogFilePath)
@@ -181,21 +181,21 @@ bool asDataPredictand::InitMembers(const wxString &catalogFilePath)
     if (catalog.GetEnd()>m_DateEnd)
         m_DateEnd = catalog.GetEnd();
 
-	// Get dataset ID
-	m_DatasetId = catalog.GetSetId();
+    // Get dataset ID
+    m_DatasetId = catalog.GetSetId();
 
     // Get the number of stations
     asCatalog::DataIdListInt datListCheck = asCatalog::GetDataIdListInt(Predictand, wxEmptyString, catalogFilePath);
     m_StationsNb = datListCheck.Id.size();
 
     // Get the timestep
-	m_TimeStepDays = catalog.GetTimeStepDays();
+    m_TimeStepDays = catalog.GetTimeStepDays();
 
     // Get the time length
     m_TimeLength = ((m_DateEnd-m_DateStart) / m_TimeStepDays) + 1;
 
-	// Get time array
-	asTimeArray timeArray(m_DateStart, m_DateEnd, m_TimeStepDays*24.0, asTimeArray::Simple);
+    // Get time array
+    asTimeArray timeArray(m_DateStart, m_DateEnd, m_TimeStepDays*24.0, asTimeArray::Simple);
     timeArray.Init();
     m_Time = timeArray.GetTimeArray();
 
@@ -226,32 +226,32 @@ bool asDataPredictand::InitBaseContainers()
     m_Time.resize(m_TimeLength);
     m_DataGross.resize(m_TimeLength, m_StationsNb);
     m_DataGross.fill(NaNFloat);
-	if(m_HasNormalizedData)
-	{
-		m_DataNormalized.resize(m_TimeLength, m_StationsNb);
-		m_DataNormalized.fill(NaNFloat);
-	}
+    if(m_HasNormalizedData)
+    {
+        m_DataNormalized.resize(m_TimeLength, m_StationsNb);
+        m_DataNormalized.fill(NaNFloat);
+    }
 
     return true;
 }
 
 bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
 {
-	// Check version
-	float version = ncFile.GetAttFloat("version");
+    // Check version
+    float version = ncFile.GetAttFloat("version");
     if (asTools::IsNaN(version) || version<1.1)
     {
-		asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return false;
     }
 
-	// Get global attributes
-	m_DataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
-	m_DataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
-	m_DataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
-	m_DatasetId = ncFile.GetAttString("dataset_id");
+    // Get global attributes
+    m_DataParameter = (DataParameter)ncFile.GetAttInt("data_parameter");
+    m_DataTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+    m_DataSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
+    m_DatasetId = ncFile.GetAttString("dataset_id");
 
-	// Get time
+    // Get time
     m_TimeLength = ncFile.GetDimLength("time");
     m_Time.resize( m_TimeLength );
     ncFile.GetVar("time", &m_Time[0]);
@@ -278,18 +278,18 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     m_StationsEnd.resize( m_StationsNb );
     ncFile.GetVar("end", &m_StationsEnd[0]);
 
-	// Get data
+    // Get data
     size_t IndexStart[2] = {0,0};
     size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
     m_DataGross.resize( m_TimeLength, m_StationsNb );
     ncFile.GetVarArray("data_gross", IndexStart, IndexCount, &m_DataGross[0]);
 
-	return true;
+    return true;
 }
 
 void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
 {
-	 // Define dimensions. Time is the unlimited dimension.
+     // Define dimensions. Time is the unlimited dimension.
     ncFile.DefDim("stations", m_StationsNb);
     ncFile.DefDim("time");
 
@@ -302,15 +302,15 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     DimNames2D.push_back("time");
     DimNames2D.push_back("stations");
 
-	// Put general attributes
+    // Put general attributes
     ncFile.PutAtt("version", &m_FileVersion);
-	int dataParameter = (int)m_DataParameter;
-	ncFile.PutAtt("data_parameter", &dataParameter);
-	int dataTemporalResolution = (int)m_DataTemporalResolution;
-	ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
-	int dataSpatialAggregation = (int)m_DataSpatialAggregation;
-	ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
-	ncFile.PutAtt("dataset_id", m_DatasetId);
+    int dataParameter = (int)m_DataParameter;
+    ncFile.PutAtt("data_parameter", &dataParameter);
+    int dataTemporalResolution = (int)m_DataTemporalResolution;
+    ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
+    int dataSpatialAggregation = (int)m_DataSpatialAggregation;
+    ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
+    ncFile.PutAtt("dataset_id", m_DatasetId);
 
     // Define variables: the scores and the corresponding dates
     ncFile.DefVar("time", NC_DOUBLE, 1, DimNameTime);
@@ -324,7 +324,7 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.DefVar("loc_coord_v", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("start", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("end", NC_DOUBLE, 1, DimNameStations);
-	
+    
     // Put attributes for the stations
     ncFile.PutAtt("long_name", "Stations names", "stations_name");
     ncFile.PutAtt("var_desc", "Name of the predictand stations", "stations_name");
@@ -368,7 +368,7 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.PutAtt("var_desc", "End of the stations data", "end");
     ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "end");
 
-	// Put attributes for the data variable
+    // Put attributes for the data variable
     ncFile.PutAtt("long_name", "Gross data", "data_gross");
     ncFile.PutAtt("var_desc", "Gross data, whithout any treatment", "data_gross");
 
@@ -376,7 +376,7 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
 
 bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
 {
-	// Provide sizes for variables
+    // Provide sizes for variables
     size_t startTime[] = {0};
     size_t countTime[] = {size_t(m_TimeLength)};
     size_t startStations[] = {0};
@@ -397,7 +397,7 @@ bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
     ncFile.PutVarArray("end", startStations, countStations, &m_StationsEnd(0));
     ncFile.PutVarArray("data_gross", start2, count2, &m_DataGross(0,0));
 
-	return true;
+    return true;
 }
 
 bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex)
@@ -418,7 +418,7 @@ bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, s
 
 bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)
 {
-	// Index for stations
+    // Index for stations
     int stationIndex = 0;
 
     #if wxUSE_GUI
@@ -426,11 +426,11 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
         asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
     #endif
 
-	// Get catalog
-	asCatalogPredictands catalog(catalogFilePath);
+    // Get catalog
+    asCatalogPredictands catalog(catalogFilePath);
 
     // Get the stations list
-	asCatalog::DataIdListInt stationsList = catalog.GetDataIdListInt(Predictand, m_DatasetId, catalogFilePath);
+    asCatalog::DataIdListInt stationsList = catalog.GetDataIdListInt(Predictand, m_DatasetId, catalogFilePath);
 
     for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
     {
@@ -463,7 +463,7 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
         ProgressBar.Destroy();
     #endif
 
-	return true;
+    return true;
 }
 
 bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stationIndex, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)

@@ -92,9 +92,9 @@ public:
     void OnForecastProcessTerminate( wxProcessEvent &event );
     void OnToolSelect (wxCommandEvent & event);
     void OnToolZoomIn (wxCommandEvent & event);
-	void OnToolZoomOut (wxCommandEvent & event);
-	void OnToolPan (wxCommandEvent & event);
-	void OnKeyDown(wxKeyEvent & event);
+    void OnToolZoomOut (wxCommandEvent & event);
+    void OnToolPan (wxCommandEvent & event);
+    void OnKeyDown(wxKeyEvent & event);
     void OnKeyUp(wxKeyEvent & event);
     void OnToolAction (wxCommandEvent & event);
     void OnToolZoomToFit (wxCommandEvent & event);
@@ -155,17 +155,17 @@ public:
 
 protected:
     wxProcess* m_ProcessForecast;
-	// vroomgis
-	vrLayerManager *m_LayerManager;
-	vrViewerLayerManager *m_ViewerLayerManager;
-	vrViewerDisplay *m_DisplayCtrl;
-	wxKeyboardState m_KeyBoardState;
-	asForecastManager *m_ForecastManager;
-	asForecastViewer *m_ForecastViewer;
-	asPanelSidebarGisLayers *m_PanelSidebarGisLayers;
-	asPanelSidebarForecasts *m_PanelSidebarForecasts;
-	asPanelSidebarStationsList *m_PanelSidebarStationsList;
-	bool m_LaunchedPresentForecast;
+    // vroomgis
+    vrLayerManager *m_LayerManager;
+    vrViewerLayerManager *m_ViewerLayerManager;
+    vrViewerDisplay *m_DisplayCtrl;
+    wxKeyboardState m_KeyBoardState;
+    asForecastManager *m_ForecastManager;
+    asForecastViewer *m_ForecastViewer;
+    asPanelSidebarGisLayers *m_PanelSidebarGisLayers;
+    asPanelSidebarForecasts *m_PanelSidebarForecasts;
+    asPanelSidebarStationsList *m_PanelSidebarStationsList;
+    bool m_LaunchedPresentForecast;
     //    void Update();
     void LaunchForecastingNow( wxCommandEvent& event );
     void LaunchForecastingPast( wxCommandEvent& event );
@@ -186,17 +186,17 @@ protected:
     void OnOpenLayer( wxCommandEvent & event );
     void OnCloseLayer( wxCommandEvent & event );
     void OnOpenForecast( wxCommandEvent & event );
-	void OnMoveLayer( wxCommandEvent & event );
-	void OnToolDisplayValue( wxCommandEvent & event );
-	void ReloadViewerLayerManager( );
-	#if defined (__WIN32__)
+    void OnMoveLayer( wxCommandEvent & event );
+    void OnToolDisplayValue( wxCommandEvent & event );
+    void ReloadViewerLayerManager( );
+    #if defined (__WIN32__)
         wxCriticalSection m_CritSectionViewerLayerManager;
     #endif
 
 
-	virtual void OnRightClick( wxMouseEvent& event )
-	{
-	    event.Skip();
+    virtual void OnRightClick( wxMouseEvent& event )
+    {
+        event.Skip();
     }
 
 private:

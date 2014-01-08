@@ -41,9 +41,9 @@ asForecastViewer::asForecastViewer( wxWindow* parent, asForecastManager *forecas
     m_Parent = parent;
     m_ForecastManager = forecastManager;
     m_LayerManager = layerManager;
-	m_ViewerLayerManager = viewerLayerManager;
-	m_LeadTimeIndex = 0;
-	m_LayerMaxValue = 1;
+    m_ViewerLayerManager = viewerLayerManager;
+    m_LeadTimeIndex = 0;
+    m_LayerMaxValue = 1;
 
     m_DisplayForecast.Add(_("Value"));
     m_DisplayForecast.Add(_("Ratio P/P2"));
@@ -182,21 +182,21 @@ void asForecastViewer::Redraw()
 
     // Check if memory layer already added
     m_ViewerLayerManager->FreezeBegin();
-	for (int i = 0; i < m_ViewerLayerManager->GetCount(); i++)
+    for (int i = 0; i < m_ViewerLayerManager->GetCount(); i++)
     {
-		if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerName)
+        if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerName)
         {
-			vrRenderer *renderer = m_ViewerLayerManager->GetRenderer(i);
-			vrLayer *layer = renderer->GetLayer();
-			wxASSERT(renderer);
-			m_ViewerLayerManager->Remove(renderer);
-			// Close layer
-			m_LayerManager->Close(layer);
-		}
-	}
+            vrRenderer *renderer = m_ViewerLayerManager->GetRenderer(i);
+            vrLayer *layer = renderer->GetLayer();
+            wxASSERT(renderer);
+            m_ViewerLayerManager->Remove(renderer);
+            // Close layer
+            m_LayerManager->Close(layer);
+        }
+    }
 
-	// Get data
-	asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ModelSelection);
+    // Get data
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ModelSelection);
 
     // Get display option
     float percentile = m_Percentiles[m_PercentileSelection];
@@ -206,7 +206,7 @@ void asForecastViewer::Redraw()
     int indexReferenceAxis;
     if (forecast->HasReferenceValues() && returnPeriod!=0)
     {
-		Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
+        Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
         indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriod);
         if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
@@ -218,7 +218,7 @@ void asForecastViewer::Redraw()
     }
 
     // Get the maximum value
-	wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase *pConfig = wxFileConfig::Get();
     double colorbarMaxValue = pConfig->ReadDouble("/GIS/ColorbarMaxValue", 50.0);
 
     // Display according to the chosen display type
@@ -276,7 +276,7 @@ void asForecastViewer::Redraw()
                 double factor = 1;
                 if (forecast->HasReferenceValues() && returnPeriod!=0)
                 {
-					float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                    float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
                     wxASSERT(precip>0);
                     wxASSERT(precip<500);
                     factor = 1.0/precip;
@@ -390,7 +390,7 @@ void asForecastViewer::Redraw()
                 double factor = 1;
                 if (forecast->HasReferenceValues() && returnPeriod!=0)
                 {
-					float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                    float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
                     wxASSERT(precip>0);
                     wxASSERT(precip<500);
                     factor = 1.0/precip;

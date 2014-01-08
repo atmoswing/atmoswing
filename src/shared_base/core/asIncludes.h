@@ -114,7 +114,7 @@ using namespace std;
 
 
 //---------------------------------
-// Some Atmoswing stuff - frequently used classes
+// Some AtmoSwing stuff - frequently used classes
 //---------------------------------
 
 #include "asVersion.h"

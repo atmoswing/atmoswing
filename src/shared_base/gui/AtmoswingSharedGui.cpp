@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
-#include "AtmoswingSharedGui.h"
+#include "AtmoSwingSharedGui.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -110,7 +110,7 @@ asFrameXmlEditorVirtual::~asFrameXmlEditorVirtual()
 
 asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 350,-1 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
@@ -222,7 +222,6 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
-	bSizer3->Fit( this );
 	
 	this->Centre( wxBOTH );
 }
@@ -983,35 +982,6 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelUserDirectories->Layout();
 	bSizer24->Fit( m_PanelUserDirectories );
 	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), false );
-	m_PanelPathsCatalogs = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer171;
-	bSizer171 = new wxBoxSizer( wxVERTICAL );
-	
-	wxStaticBoxSizer* sbSizer61;
-	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( m_PanelPathsCatalogs, wxID_ANY, _("Catalog files paths") ), wxVERTICAL );
-	
-	m_StaticTextCatalogPredictorArchive = new wxStaticText( m_PanelPathsCatalogs, wxID_ANY, _("Path to the archive predictors catalog"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextCatalogPredictorArchive->Wrap( -1 );
-	sbSizer61->Add( m_StaticTextCatalogPredictorArchive, 0, wxALL, 5 );
-	
-	m_FilePickerCatalogPredictorsArchive = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
-	sbSizer61->Add( m_FilePickerCatalogPredictorsArchive, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	m_StaticTextCatalogPredictorRealtime = new wxStaticText( m_PanelPathsCatalogs, wxID_ANY, _("Path to the real-time predictors catalog"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextCatalogPredictorRealtime->Wrap( -1 );
-	sbSizer61->Add( m_StaticTextCatalogPredictorRealtime, 0, wxALL, 5 );
-	
-	m_FilePickerCatalogPredictorsRealtime = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
-	sbSizer61->Add( m_FilePickerCatalogPredictorsRealtime, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	
-	bSizer171->Add( sbSizer61, 0, wxEXPAND|wxALL, 5 );
-	
-	
-	m_PanelPathsCatalogs->SetSizer( bSizer171 );
-	m_PanelPathsCatalogs->Layout();
-	bSizer171->Fit( m_PanelPathsCatalogs );
-	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), false );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
 	

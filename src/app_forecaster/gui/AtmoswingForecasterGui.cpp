@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Nov  6 2013)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -73,7 +73,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_LedDownloading->SetState( awxLED_OFF );
 	fgSizer1->Add( m_LedDownloading, 0, wxALL, 5 );
 	
-	m_StaticTextDownloading = new wxStaticText( m_PanelMain, wxID_ANY, _("Downloading GCM forecast"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextDownloading = new wxStaticText( m_PanelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextDownloading->Wrap( -1 );
 	fgSizer1->Add( m_StaticTextDownloading, 0, wxALL, 5 );
 	

@@ -40,17 +40,15 @@ class asDataPredictor: public wxObject
 public:
 
     /** Default constructor */
-    asDataPredictor();
+    asDataPredictor(const wxString &dataId);
 
     /** Default destructor */
     virtual ~asDataPredictor();
+    
+    virtual bool Init() = 0;
 
-    /** Method to load a tensor of data for a given area and a given time array
-     * \param area The desired area
-     * \param timeArray The desired time array
-     */
-    virtual bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray, const VectorString &AlternatePredictorDataPath = VectorString(0));
-
+    virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray) = 0;
+    
     /** Set m_Data: data[time](lat,lon)
      * \return The new value of m_Data
      */
@@ -88,6 +86,20 @@ public:
         return m_AxisLat;
     }
 
+    void SetDirectoryPath(wxString directoryPath)
+    {
+        if ( (directoryPath.Last()!='/') && (directoryPath.Last()!='\\') )
+        {
+            directoryPath.Append('/');
+        }
+
+        m_DirectoryPath = directoryPath;
+    }
+
+    wxString GetDirectoryPath()
+    {
+        return m_DirectoryPath;
+    }
 
     /** Access m_SizeTime
      * \return The current value of m_SizeTime
@@ -185,8 +197,100 @@ public:
         m_PreprocessMethod = val;
     }
 
+    /** Access m_FinalProviderWebsite
+     * \return The current value of m_FinalProviderWebsite
+     */
+    wxString GetFinalProviderWebsite()
+    {
+        return m_FinalProviderWebsite;
+    }
+
+    /** Access m_FinalProviderFTP
+     * \return The current value of m_FinalProviderFTP
+     */
+    wxString GetFinalProviderFTP()
+    {
+        return m_FinalProviderFTP;
+    }
+
+    /** Access m_DataId
+     * \return The current value of m_DataId
+     */
+    wxString GetDataId()
+    {
+        return m_DataId;
+    }
+
+    /** Access m_DatasetName
+     * \return The current value of m_DatasetName
+     */
+    wxString GetDatasetName()
+    {
+        return m_DatasetName;
+    }
+
+    /** Access m_UaxisStep
+     * \return The current value of m_UaxisStep
+     */
+    double GetUaxisStep()
+    {
+        return m_UaxisStep;
+    }
+
+    /** Access m_UaxisShift
+     * \return The current value of m_UaxisShift
+     */
+    double GetUaxisShift()
+    {
+        return m_UaxisShift;
+    }
+
+    /** Access m_VaxisStep
+     * \return The current value of m_VaxisStep
+     */
+    double GetVaxisStep()
+    {
+        return m_VaxisStep;
+    }
+
+    /** Access m_VaxisShift
+     * \return The current value of m_VaxisShift
+     */
+    double GetVaxisShift()
+    {
+        return m_VaxisShift;
+    }
+
+    /** Access m_CoordinateSystem
+     * \return The current value of m_CoordinateSystem
+     */
+    CoordSys GetCoordSys()
+    {
+        return m_CoordinateSystem;
+    }
 
 protected:
+    wxString m_DirectoryPath;
+    bool m_Initialized;
+    wxString m_DataId;
+    wxString m_DatasetId;
+    wxString m_OriginalProvider;
+    wxString m_FinalProvider;
+    wxString m_FinalProviderWebsite;
+    wxString m_FinalProviderFTP;
+    wxString m_DatasetName;
+    double m_TimeZoneHours;
+    double m_TimeStepHours;
+    double m_FirstTimeStepHours;
+    VectorDouble m_NanValues;
+    CoordSys m_CoordinateSystem;
+    DataParameter m_DataParameter;
+    wxString m_FileVariableName;
+    DataUnit m_Unit;
+    float m_UaxisStep;
+    float m_VaxisStep;
+    float m_UaxisShift;
+    float m_VaxisShift;
     float m_Level;
     Array1DDouble m_Time; //!< Member variable "m_Time"
     VArray2DFloat m_Data; //!< Member variable "m_Data"
@@ -230,6 +334,7 @@ protected:
      * \return True if succeeded
      */
     bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
+
 
 private:
 

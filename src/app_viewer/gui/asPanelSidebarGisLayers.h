@@ -48,9 +48,9 @@ public:
 
 private:
     // vroomgis
-	vrViewerTOCList *m_TocCtrl;
+    vrViewerTOCList *m_TocCtrl;
 
-	//void OnPaint( wxCommandEvent& event );
+    //void OnPaint( wxCommandEvent& event );
 };
 
 #endif // __asPanelSidebarGisLayers__

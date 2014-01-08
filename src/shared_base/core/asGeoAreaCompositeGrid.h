@@ -40,7 +40,7 @@ public:
         GaussianT62
     };
 
-	asGeoAreaCompositeGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     asGeoAreaCompositeGrid(CoordSys coosys, double Umin, double Uwidth, double Vmin, double Vwidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 

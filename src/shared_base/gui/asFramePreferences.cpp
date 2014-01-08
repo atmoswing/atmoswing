@@ -60,35 +60,33 @@ void asFramePreferences::LoadPreferences()
 
     if (g_AppViewer)
     {
-        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("Atmoswing forecaster"));
+        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing forecaster"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
-        pConfigForecaster = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir("Atmoswing forecaster") + "Atmoswing.ini",asConfig::GetUserDataDir() + "Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        pConfigForecaster = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing forecaster") + "AtmoSwing.ini",asConfig::GetUserDataDir() + "AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
         pConfigViewer = wxFileConfig::Get();
     }
     else if (g_AppForecaster)
     {
-        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("Atmoswing viewer"));
+        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
-        pConfigViewer = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir("Atmoswing viewer") + "Atmoswing.ini",asConfig::GetUserDataDir() + "Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer") + "AtmoSwing.ini",asConfig::GetUserDataDir() + "AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     }
     else
     {
-        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("Atmoswing viewer"));
+        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
-        pConfigViewer = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir("Atmoswing viewer") + "Atmoswing.ini",asConfig::GetUserDataDir() + "Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer") + "AtmoSwing.ini",asConfig::GetUserDataDir() + "AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     }
 
     // Fix the color of the file/dir pickers
     wxColour col = m_NotebookBase->GetThemeBackgroundColour();
     if (col.IsOk())
     {
-        m_FilePickerCatalogPredictorsArchive->SetBackgroundColour(col);
-        m_FilePickerCatalogPredictorsRealtime->SetBackgroundColour(col);
         m_DirPickerPredictandDB->SetBackgroundColour(col);
         m_DirPickerIntermediateResults->SetBackgroundColour(col);
         m_DirPickerForecastResults->SetBackgroundColour(col);
@@ -192,25 +190,21 @@ void asFramePreferences::LoadPreferences()
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
     wxString dirData = asConfig::GetDataDir()+"data"+DS;
-    wxString CatalogPredictorsArchiveFilePath = pConfigForecaster->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", dirConfig+"CatalogPredictorsArchive.xml");
-    m_FilePickerCatalogPredictorsArchive->SetPath(CatalogPredictorsArchiveFilePath);
-    wxString CatalogPredictorsRealtimeFilePath = pConfigForecaster->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", dirConfig+"CatalogPredictorsRealtime.xml");
-    m_FilePickerCatalogPredictorsRealtime->SetPath(CatalogPredictorsRealtimeFilePath);
     wxString PredictandDBDir = pConfigForecaster->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
     m_DirPickerPredictandDB->SetPath(PredictandDBDir);
-    wxString IntermediateResultsDir = pConfigForecaster->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"Atmoswing");
+    wxString IntermediateResultsDir = pConfigForecaster->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
     m_DirPickerIntermediateResults->SetPath(IntermediateResultsDir);
-    wxString ForecastResultsDir = pConfigForecaster->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"Atmoswing"+DS+"Forecasts");
+    wxString ForecastResultsDir = pConfigForecaster->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
     m_DirPickerForecastResults->SetPath(ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfigForecaster->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"Atmoswing"+DS+"Predictors");
+    wxString RealtimePredictorSavingDir = pConfigForecaster->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
     m_DirPickerRealtimePredictorSaving->SetPath(RealtimePredictorSavingDir);
-    wxString ForecasterPath = pConfigForecaster->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoswingForecaster.exe");
+    wxString ForecasterPath = pConfigForecaster->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoSwingForecaster.exe");
     m_FilePickerForecaster->SetPath(ForecasterPath);
-    wxString ViewerPath = pConfigForecaster->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoswingViewer.exe");
+    wxString ViewerPath = pConfigForecaster->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoSwingViewer.exe");
     m_FilePickerViewer->SetPath(ViewerPath);
     wxString ArchivePredictorsDir = pConfigForecaster->Read("/StandardPaths/ArchivePredictorsDir", dirData+"predictors");
     m_DirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
-	wxString ForecastParametersDir = pConfigForecaster->Read("/StandardPaths/ForecastParametersDir", dirConfig);
+    wxString ForecastParametersDir = pConfigForecaster->Read("/StandardPaths/ForecastParametersDir", dirConfig);
     m_DirPickerParameters->SetPath(ForecastParametersDir);
 
     // Processing
@@ -335,13 +329,13 @@ void asFramePreferences::LoadPreferences()
     wxString userpath = asConfig::GetUserDataDir();
     m_StaticTextUserDir->SetLabel(userpath);
     wxString logpathForecaster = asConfig::GetLogDir();
-    logpathForecaster.Append("AtmoswingForecaster.log");
+    logpathForecaster.Append("AtmoSwingForecaster.log");
     m_StaticTextLogFileForecaster->SetLabel(logpathForecaster);
     wxString logpathViewer = asConfig::GetLogDir();
-    logpathViewer.Append("AtmoswingViewer.log");
+    logpathViewer.Append("AtmoSwingViewer.log");
     m_StaticTextLogFileViewer->SetLabel(logpathViewer);
-    m_StaticTextPrefFileForecaster->SetLabel(asConfig::GetUserDataDir("Atmoswing forecaster")+"Atmoswing.ini");
-    m_StaticTextPrefFileViewer->SetLabel(asConfig::GetUserDataDir("Atmoswing viewer")+"Atmoswing.ini");
+    m_StaticTextPrefFileForecaster->SetLabel(asConfig::GetUserDataDir("AtmoSwing forecaster")+"AtmoSwing.ini");
+    m_StaticTextPrefFileViewer->SetLabel(asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini");
 
     if (g_AppViewer)
     {
@@ -364,27 +358,27 @@ void asFramePreferences::SavePreferences( )
 
     if (g_AppViewer)
     {
-        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("Atmoswing forecaster"));
+        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing forecaster"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
-        pConfigForecaster = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir("Atmoswing forecaster")+"Atmoswing.ini",asConfig::GetUserDataDir()+DS+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        pConfigForecaster = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing forecaster")+"AtmoSwing.ini",asConfig::GetUserDataDir()+DS+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
         pConfigViewer = wxFileConfig::Get();
     }
     else if (g_AppForecaster)
     {
-        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("Atmoswing viewer"));
+        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
-        pConfigViewer = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir("Atmoswing viewer")+"Atmoswing.ini",asConfig::GetUserDataDir()+DS+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini",asConfig::GetUserDataDir()+DS+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     }
     else
     {
-        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("Atmoswing viewer"));
+        wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
-        pConfigViewer = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir("Atmoswing viewer")+"Atmoswing.ini",asConfig::GetUserDataDir()+DS+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini",asConfig::GetUserDataDir()+DS+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     }
 
     // General
@@ -468,12 +462,6 @@ void asFramePreferences::SavePreferences( )
     pConfigViewer->Write("/Internet/ProxyPasswd", ProxyPasswd);
 
     // Paths
-    wxString CatalogPredictorsArchiveFilePath = m_FilePickerCatalogPredictorsArchive->GetPath();
-    pConfigForecaster->Write("/StandardPaths/CatalogPredictorsArchiveFilePath", CatalogPredictorsArchiveFilePath);
-    pConfigViewer->Write("/StandardPaths/CatalogPredictorsArchiveFilePath", CatalogPredictorsArchiveFilePath);
-    wxString CatalogPredictorsRealtimeFilePath = m_FilePickerCatalogPredictorsRealtime->GetPath();
-    pConfigForecaster->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
-    pConfigViewer->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
     wxString PredictandDBDir = m_DirPickerPredictandDB->GetPath();
     pConfigForecaster->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
     pConfigViewer->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
@@ -493,8 +481,8 @@ void asFramePreferences::SavePreferences( )
     pConfigViewer->Write("/StandardPaths/ViewerPath", ViewerPath);
     wxString ArchivePredictorsDir = m_DirPickerArchivePredictors->GetPath();
     pConfigForecaster->Write("/StandardPaths/ArchivePredictorsDir", ArchivePredictorsDir);
-	wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
-	pConfigForecaster->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
+    wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
+    pConfigForecaster->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
 
     // Processing
     long ProcessingMethod = (long)m_RadioBoxProcessingMethods->GetSelection();
@@ -595,7 +583,6 @@ void asFramePreferences::SavePreferences( )
         alarmsPercentileVal = 0.9;
     pConfigViewer->Write("/SidebarAlarms/Percentile", alarmsPercentileVal);
 
-    // Display the paths to the catalogs on the main GUI
     GetParent()->Update();
 
     if (g_AppViewer)

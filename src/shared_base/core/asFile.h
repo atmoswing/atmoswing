@@ -39,11 +39,11 @@ public:
     //!< The file access mode
     enum ListFileMode
     {
-        ReadOnly,	// file exists, open read-only
-        Write,		// file exists, open for writing
-        Replace,	// create new file, even if already exists
-        New,	    // create new file, even if already exists
-        Append	    // add content to an already existing file
+        ReadOnly,    // file exists, open read-only
+        Write,        // file exists, open for writing
+        Replace,    // create new file, even if already exists
+        New,        // create new file, even if already exists
+        Append        // add content to an already existing file
     };
 
     /** Default constructor */
