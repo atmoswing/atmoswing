@@ -113,7 +113,7 @@ asDataPredictorArchive(dataId)
     else if (m_DataId.IsSameAs("surf_prwtr", false))
     {
         m_DataParameter = PrecipitableWater;
-        m_FileNamePattern = "pr_wtr.eatm.%d.nc";
+        m_FileNamePattern = "pr_wtr.nc";
         m_FileVariableName = "pr_wtr";
         m_Unit = DataUnit::mm;
     }

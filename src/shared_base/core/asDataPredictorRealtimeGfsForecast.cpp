@@ -68,49 +68,49 @@ asDataPredictorRealtime(dataId)
     if (m_DataId.IsSameAs("hgt", false))
     {
         m_DataParameter = GeopotentialHeight;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "HGT";
         m_Unit = DataUnit::m;
     }
     else if (m_DataId.IsSameAs("air", false))
     {
         m_DataParameter = AirTemperature;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "TEMP";
         m_Unit = DataUnit::degK;
     }
     else if (m_DataId.IsSameAs("omega", false))
     {
         m_DataParameter = Omega;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "VVEL";
         m_Unit = DataUnit::PascalsPerSec;
     }
     else if (m_DataId.IsSameAs("rhum", false))
     {
         m_DataParameter = RelativeHumidity;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "RH";
         m_Unit = DataUnit::percent;
     }
     else if (m_DataId.IsSameAs("uwnd", false))
     {
         m_DataParameter = Uwind;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "UGRD";
         m_Unit = DataUnit::mPerSec;
     }
     else if (m_DataId.IsSameAs("vwnd", false))
     {
         m_DataParameter = Vwind;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "VGRD";
         m_Unit = DataUnit::mPerSec;
     }
     else if (m_DataId.IsSameAs("surf_prwtr", false))
     {
         m_DataParameter = PrecipitableWater;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_entire_atmosphere_\%5C\%28considered_as_a_single_layer\%5C\%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=\%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "PWAT";
         m_Unit = DataUnit::mm;
     }

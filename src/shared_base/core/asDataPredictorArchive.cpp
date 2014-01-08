@@ -86,6 +86,7 @@ asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &data
     if(!predictor->Init())
     {
         asLogError(_("The predictor did not initialize correctly."));
+        return NULL;
     }
 
     return predictor;
