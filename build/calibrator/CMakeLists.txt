@@ -3,9 +3,14 @@ cmake_minimum_required(VERSION 2.8)
 
 #### PROJECT
 
-project(AtmoswingCalibrator)
+project(AtmoSwingCalibrator)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
-SET (USE_GUI CACHE BOOL "Sould we build AtmoswingCalibrator with a GUI ?" )
+set(USE_GUI 1 CACHE BOOL "Sould we build AtmoswingCalibrator with a GUI ?" )
+
+
+#### ADDITION OF CUSTOM MODULES
+
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../_cmake)
 
 
 #### SOURCE FILES LIST
@@ -54,7 +59,6 @@ list(REMOVE_DUPLICATES src_all)
 # Directories to include
 list(APPEND inc_dirs 
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_calibrator/app/"
@@ -114,6 +118,11 @@ include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 # Proj.4
 include("../_cmake/FindProj4.cmake")
 include_directories(${PROJ4_INCLUDE_DIR})
+
+# Eigen
+mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
+find_package(Eigen3 3.0.0)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 
 #### DECLARE EXECUTABLE
