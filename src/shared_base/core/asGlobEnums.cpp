@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asGlobEnums.h"
@@ -234,64 +247,64 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
 
 wxString asGlobEnums::DataParameterEnumToString(DataParameter dataParameter)
 {
-	switch (dataParameter)
-	{
-		case(Precipitation):
-			return "Precipitation";
-		case(AirTemperature):
-			return "AirTemperature";
-		case(GeopotentialHeight):
-			return "GeopotentialHeight";
-		case(PrecipitableWater):
-			return "PrecipitableWater";
-		case(RelativeHumidity):
-			return "RelativeHumidity";
-		case(SpecificHumidity):
-			return "SpecificHumidity";
-		case(Omega):
-			return "Omega";
-		case(Wind):
-			return "Wind";
-		case(Uwind):
-			return "Uwind";
-		case(Vwind):
-			return "Vwind";
-		case(SurfaceLiftedIndex):
-			return "SurfaceLiftedIndex";
-		case(PotentialTemperature):
-			return "PotentialTemperature";
-		case(Pressure):
-			return "Pressure";
-		case(PotentialEvaporation):
-			return "PotentialEvaporation";
-		case(SurfaceTemperature):
-			return "SurfaceTemperature";
-		case(ConvectivePrecipitation):
-			return "ConvectivePrecipitation";
-		case(LongwaveRadiation):
-			return "LongwaveRadiation";
-		case(ShortwaveRadiation):
-			return "ShortwaveRadiation";
-		case(SolarRadiation):
-			return "SolarRadiation";
-		case(GroundHeatFlux):
-			return "GroundHeatFlux";
-		case(LatentHeatFlux):
-			return "LatentHeatFlux";
-		case(NearIRFlux):
-			return "NearIRFlux";
-		case(SensibleHeatFlux):
-			return "SensibleHeatFlux";
-		case(Lightnings):
-			return "Lightnings";
-		case(SeaSurfaceTemperature):
-			return "SeaSurfaceTemperature";
-		case(SeaSurfaceTemperatureAnomaly):
-			return "SeaSurfaceTemperatureAnomaly";
-		default:
+    switch (dataParameter)
+    {
+        case(Precipitation):
+            return "Precipitation";
+        case(AirTemperature):
+            return "AirTemperature";
+        case(GeopotentialHeight):
+            return "GeopotentialHeight";
+        case(PrecipitableWater):
+            return "PrecipitableWater";
+        case(RelativeHumidity):
+            return "RelativeHumidity";
+        case(SpecificHumidity):
+            return "SpecificHumidity";
+        case(Omega):
+            return "Omega";
+        case(Wind):
+            return "Wind";
+        case(Uwind):
+            return "Uwind";
+        case(Vwind):
+            return "Vwind";
+        case(SurfaceLiftedIndex):
+            return "SurfaceLiftedIndex";
+        case(PotentialTemperature):
+            return "PotentialTemperature";
+        case(Pressure):
+            return "Pressure";
+        case(PotentialEvaporation):
+            return "PotentialEvaporation";
+        case(SurfaceTemperature):
+            return "SurfaceTemperature";
+        case(ConvectivePrecipitation):
+            return "ConvectivePrecipitation";
+        case(LongwaveRadiation):
+            return "LongwaveRadiation";
+        case(ShortwaveRadiation):
+            return "ShortwaveRadiation";
+        case(SolarRadiation):
+            return "SolarRadiation";
+        case(GroundHeatFlux):
+            return "GroundHeatFlux";
+        case(LatentHeatFlux):
+            return "LatentHeatFlux";
+        case(NearIRFlux):
+            return "NearIRFlux";
+        case(SensibleHeatFlux):
+            return "SensibleHeatFlux";
+        case(Lightnings):
+            return "Lightnings";
+        case(SeaSurfaceTemperature):
+            return "SeaSurfaceTemperature";
+        case(SeaSurfaceTemperatureAnomaly):
+            return "SeaSurfaceTemperatureAnomaly";
+        default:
         asLogError(_("The given data parameter type in unknown."));
-	}
-	return wxEmptyString;
+    }
+    return wxEmptyString;
 }
 
 DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
@@ -452,26 +465,26 @@ DataTemporalResolution asGlobEnums::StringToDataTemporalResolutionEnum(const wxS
 
 wxString asGlobEnums::DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution)
 {
-	switch (dataTemporalResolution)
-	{
-		case(Daily):
-			return "Daily";
-		case(SixHourly):
-			return "SixHourly";
-		case(Hourly):
-			return "Hourly";
-		case(SixHourlyMovingDailyTemporalWindow):
-			return "SixHourlyMovingDailyTemporalWindow";
-		case(TwoDays):
-			return "TwoDays";
-		case(ThreeDays):
-			return "ThreeDays";
-		case(Weekly):
-			return "Weekly";
-		default:
+    switch (dataTemporalResolution)
+    {
+        case(Daily):
+            return "Daily";
+        case(SixHourly):
+            return "SixHourly";
+        case(Hourly):
+            return "Hourly";
+        case(SixHourlyMovingDailyTemporalWindow):
+            return "SixHourlyMovingDailyTemporalWindow";
+        case(TwoDays):
+            return "TwoDays";
+        case(ThreeDays):
+            return "ThreeDays";
+        case(Weekly):
+            return "Weekly";
+        default:
         asLogError(_("The given data temporal resolution type in unknown."));
-	}
-	return wxEmptyString;
+    }
+    return wxEmptyString;
 }
 
 DataSpatialAggregation asGlobEnums::StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation)
@@ -498,18 +511,18 @@ DataSpatialAggregation asGlobEnums::StringToDataSpatialAggregationEnum(const wxS
 
 wxString asGlobEnums::DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation)
 {
-	switch (dataSpatialAggregation)
-	{
-		case(Station):
-			return "Station";
-		case(Groupment):
-			return "Groupment";
-		case(Catchment):
-			return "Catchment";
-		default:
+    switch (dataSpatialAggregation)
+    {
+        case(Station):
+            return "Station";
+        case(Groupment):
+            return "Groupment";
+        case(Catchment):
+            return "Catchment";
+        default:
         asLogError(_("The given data spatial aggregation type in unknown."));
-	}
-	return wxEmptyString;
+    }
+    return wxEmptyString;
 }
 
 CoordSys asGlobEnums::StringToCoordSysEnum(const wxString &CoordSysStr)

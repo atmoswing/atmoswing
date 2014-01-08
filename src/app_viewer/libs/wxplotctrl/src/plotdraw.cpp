@@ -1183,10 +1183,10 @@ void wxPlotDrawerDataCurve::Draw(wxGraphicsContext *gc, wxPlotData* curve, int c
         sd.EndSpline();
     }
 
-	if (draw_lines || draw_spline)
-	{
-		gc->StrokePath(path);
-	}
+    if (draw_lines || draw_spline)
+    {
+        gc->StrokePath(path);
+    }
     gc->SetPen(wxNullPen);
 }
 

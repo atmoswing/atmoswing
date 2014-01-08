@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #ifndef ASPROCESSOR_H
@@ -39,7 +52,7 @@ public:
     * \param results The result object to store outputs in
     * \return true if succeeded
     */
-    static bool GetAnalogsDates(std::vector < asDataPredictor > &predictorsArchive, std::vector < asDataPredictor > &predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData, asTimeArray &timeArrayTargetSelection, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
+    static bool GetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive, std::vector < asDataPredictor* > predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData, asTimeArray &timeArrayTargetSelection, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
 
     /** Analogs method processing at a second level
     * \param predictors The vector of predictors
@@ -51,7 +64,7 @@ public:
     * \param results The result object to store outputs in
     * \return true if succeeded
     */
-    static bool GetAnalogsSubDates(std::vector < asDataPredictor > &predictorsArchive, std::vector < asDataPredictor > &predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayTargetData, asResultsAnalogsDates &anaDates, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
+    static bool GetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive, std::vector < asDataPredictor* > predictorsTarget, asTimeArray &timeArrayArchiveData, asTimeArray &timeArrayTargetData, asResultsAnalogsDates &anaDates, std::vector < asPredictorCriteria* > criteria, asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
 
     /** Analogs predictands values attribution
     * \param predictand The predictand data

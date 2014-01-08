@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asInternet.h"
@@ -110,11 +123,11 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Do the job
         if(curl) {
-			#if wxUSE_GUI
-				// The progress bar
-				wxString dialogmessage = _("Downloading predictors.\n");
-				asDialogProgressBar ProgressBar(dialogmessage, urls.size());
-			#endif
+            #if wxUSE_GUI
+                // The progress bar
+                wxString dialogmessage = _("Downloading predictors.\n");
+                asDialogProgressBar ProgressBar(dialogmessage, urls.size());
+            #endif
 
             // Set a buffer for the error messages
             char* errorbuffer = new char[CURL_ERROR_SIZE];
@@ -135,8 +148,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 wxString fileName = fileNames[i_file];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[i_file];
-                //asLogMessage(wxString::Format(_("Downloading file %s from url: %s"), filePath.c_str(), url.c_str())); Causes bug in string formatting
-                asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str()));
+                asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str())); // Do not log the URL, it bugs !
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
@@ -146,15 +158,15 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     return asFAILED;
                 }
 
-				#if wxUSE_GUI
-					// Update the progress bar
-					wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
-					if(!ProgressBar.Update(i_file, updatedialogmessage))
-					{
-						asLogMessage(_("The download has been canceled by the user."));
-						return asCANCELLED;
-					}
-				#endif
+                #if wxUSE_GUI
+                    // Update the progress bar
+                    wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
+                    if(!ProgressBar.Update(i_file, updatedialogmessage))
+                    {
+                        asLogMessage(_("The download has been canceled by the user."));
+                        return asCANCELLED;
+                    }
+                #endif
 
                 // Download only if not already done
                 if(!wxFileName::FileExists(filePath))
@@ -212,9 +224,9 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 }
             }
 
-			#if wxUSE_GUI
-				ProgressBar.Destroy();
-			#endif
+            #if wxUSE_GUI
+                ProgressBar.Destroy();
+            #endif
 
             // Always cleanup
             curl_easy_cleanup(curl);

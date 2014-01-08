@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #ifndef ASFRAMEFORECAST_H
@@ -79,9 +92,9 @@ public:
     void OnForecastProcessTerminate( wxProcessEvent &event );
     void OnToolSelect (wxCommandEvent & event);
     void OnToolZoomIn (wxCommandEvent & event);
-	void OnToolZoomOut (wxCommandEvent & event);
-	void OnToolPan (wxCommandEvent & event);
-	void OnKeyDown(wxKeyEvent & event);
+    void OnToolZoomOut (wxCommandEvent & event);
+    void OnToolPan (wxCommandEvent & event);
+    void OnKeyDown(wxKeyEvent & event);
     void OnKeyUp(wxKeyEvent & event);
     void OnToolAction (wxCommandEvent & event);
     void OnToolZoomToFit (wxCommandEvent & event);
@@ -142,17 +155,17 @@ public:
 
 protected:
     wxProcess* m_ProcessForecast;
-	// vroomgis
-	vrLayerManager *m_LayerManager;
-	vrViewerLayerManager *m_ViewerLayerManager;
-	vrViewerDisplay *m_DisplayCtrl;
-	wxKeyboardState m_KeyBoardState;
-	asForecastManager *m_ForecastManager;
-	asForecastViewer *m_ForecastViewer;
-	asPanelSidebarGisLayers *m_PanelSidebarGisLayers;
-	asPanelSidebarForecasts *m_PanelSidebarForecasts;
-	asPanelSidebarStationsList *m_PanelSidebarStationsList;
-	bool m_LaunchedPresentForecast;
+    // vroomgis
+    vrLayerManager *m_LayerManager;
+    vrViewerLayerManager *m_ViewerLayerManager;
+    vrViewerDisplay *m_DisplayCtrl;
+    wxKeyboardState m_KeyBoardState;
+    asForecastManager *m_ForecastManager;
+    asForecastViewer *m_ForecastViewer;
+    asPanelSidebarGisLayers *m_PanelSidebarGisLayers;
+    asPanelSidebarForecasts *m_PanelSidebarForecasts;
+    asPanelSidebarStationsList *m_PanelSidebarStationsList;
+    bool m_LaunchedPresentForecast;
     //    void Update();
     void LaunchForecastingNow( wxCommandEvent& event );
     void LaunchForecastingPast( wxCommandEvent& event );
@@ -173,17 +186,17 @@ protected:
     void OnOpenLayer( wxCommandEvent & event );
     void OnCloseLayer( wxCommandEvent & event );
     void OnOpenForecast( wxCommandEvent & event );
-	void OnMoveLayer( wxCommandEvent & event );
-	void OnToolDisplayValue( wxCommandEvent & event );
-	void ReloadViewerLayerManager( );
-	#if defined (__WIN32__)
+    void OnMoveLayer( wxCommandEvent & event );
+    void OnToolDisplayValue( wxCommandEvent & event );
+    void ReloadViewerLayerManager( );
+    #if defined (__WIN32__)
         wxCriticalSection m_CritSectionViewerLayerManager;
     #endif
 
 
-	virtual void OnRightClick( wxMouseEvent& event )
-	{
-	    event.Skip();
+    virtual void OnRightClick( wxMouseEvent& event )
+    {
+        event.Skip();
     }
 
 private:

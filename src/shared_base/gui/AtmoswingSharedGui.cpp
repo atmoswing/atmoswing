@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
-#include "AtmoswingSharedGui.h"
+#include "AtmoSwingSharedGui.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -110,93 +110,118 @@ asFrameXmlEditorVirtual::~asFrameXmlEditorVirtual()
 
 asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 350,-1 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 	
 	m_Panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer4;
-	bSizer4 = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bSizer27;
+	bSizer27 = new wxBoxSizer( wxVERTICAL );
 	
-	m_StaticTextTitle = new wxStaticText( m_Panel, wxID_ANY, _("Atmoswing"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextTitle->Wrap( -1 );
-	m_StaticTextTitle->SetFont( wxFont( 15, 70, 90, 92, false, wxT("Arial") ) );
-	
-	bSizer4->Add( m_StaticTextTitle, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 20 );
+	m_Logo = new wxStaticBitmap( m_Panel, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer27->Add( m_Logo, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 20 );
 	
 	m_StaticTextVersion = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_StaticTextVersion->Wrap( -1 );
-	bSizer4->Add( m_StaticTextVersion, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 20 );
+	m_StaticTextVersion->SetFont( wxFont( 12, 70, 90, 90, false, wxEmptyString ) );
 	
-	m_bitmap1 = new wxStaticBitmap( m_Panel, wxID_ANY, wxBitmap( wxT("../../../art/icon/icon.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer4->Add( m_bitmap1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer27->Add( m_StaticTextVersion, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_StaticTextDevelopers = new wxStaticText( m_Panel, wxID_ANY, _("Developed by:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextChangeset = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextChangeset->Wrap( -1 );
+	bSizer27->Add( m_StaticTextChangeset, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 20 );
+	
+	m_Notebook = new wxNotebook( m_Panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelCredits = new wxPanel( m_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer28;
+	bSizer28 = new wxBoxSizer( wxVERTICAL );
+	
+	m_StaticTextDevelopers = new wxStaticText( m_PanelCredits, wxID_ANY, _("Developed by:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextDevelopers->Wrap( -1 );
 	m_StaticTextDevelopers->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	bSizer4->Add( m_StaticTextDevelopers, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 20 );
+	bSizer28->Add( m_StaticTextDevelopers, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 20 );
 	
-	m_StaticTextDevelopersList = new wxStaticText( m_Panel, wxID_ANY, _("University of Lausanne - Pascal Horton"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_StaticTextDevelopersList = new wxStaticText( m_PanelCredits, wxID_ANY, _("Pascal Horton (University of Lausanne)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_StaticTextDevelopersList->Wrap( -1 );
-	bSizer4->Add( m_StaticTextDevelopersList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer28->Add( m_StaticTextDevelopersList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_StaticTextSupervision = new wxStaticText( m_Panel, wxID_ANY, _("Under the supervision of:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextSupervision = new wxStaticText( m_PanelCredits, wxID_ANY, _("Under the supervision of:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextSupervision->Wrap( -1 );
 	m_StaticTextSupervision->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	bSizer4->Add( m_StaticTextSupervision, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
+	bSizer28->Add( m_StaticTextSupervision, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
 	
-	m_StaticTextSupervisionList = new wxStaticText( m_Panel, wxID_ANY, _("Michel Jaboyedoff (Unil) and Charles Obled (INPG)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_StaticTextSupervisionList = new wxStaticText( m_PanelCredits, wxID_ANY, _("Michel Jaboyedoff (Unil) and Charles Obled (INPG)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_StaticTextSupervisionList->Wrap( -1 );
-	bSizer4->Add( m_StaticTextSupervisionList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer28->Add( m_StaticTextSupervisionList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_StaticTextThanks = new wxStaticText( m_Panel, wxID_ANY, _("Special thanks to:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextThanks = new wxStaticText( m_PanelCredits, wxID_ANY, _("Special thanks to:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextThanks->Wrap( -1 );
 	m_StaticTextThanks->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	bSizer4->Add( m_StaticTextThanks, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 10 );
+	bSizer28->Add( m_StaticTextThanks, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 10 );
 	
-	m_StaticTextThanksList = new wxStaticText( m_Panel, wxID_ANY, _("Lucien Schreiber (Crealp), Richard Metzger (Terr@num)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextThanksList = new wxStaticText( m_PanelCredits, wxID_ANY, _("Lucien Schreiber (CREALP), Richard Metzger (Terr@num)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextThanksList->Wrap( -1 );
-	bSizer4->Add( m_StaticTextThanksList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer28->Add( m_StaticTextThanksList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_StaticTextOtherCredits = new wxStaticText( m_Panel, wxID_ANY, _("Other credits:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextOtherCredits = new wxStaticText( m_PanelCredits, wxID_ANY, _("Other credits:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextOtherCredits->Wrap( -1 );
 	m_StaticTextOtherCredits->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	bSizer4->Add( m_StaticTextOtherCredits, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
+	bSizer28->Add( m_StaticTextOtherCredits, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
 	
-	m_StaticTextOtherCreditsList = new wxStaticText( m_Panel, wxID_ANY, _("Icons by FatCow Web Hosting (http://www.fatcow.com/)\nand Gasyoun (http://twitter.com/gasyoun)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_StaticTextOtherCreditsList = new wxStaticText( m_PanelCredits, wxID_ANY, _("Icons by FatCow Web Hosting (http://www.fatcow.com/)\nand Gasyoun (http://twitter.com/gasyoun)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_StaticTextOtherCreditsList->Wrap( -1 );
-	bSizer4->Add( m_StaticTextOtherCreditsList, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	bSizer28->Add( m_StaticTextOtherCreditsList, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
-	m_StaticTextLibraries = new wxStaticText( m_Panel, wxID_ANY, _("Libraries:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextLibraries->Wrap( -1 );
-	m_StaticTextLibraries->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	bSizer4->Add( m_StaticTextLibraries, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
-	
-	m_GridSizer = new wxGridSizer( 5, 2, 0, 0 );
+	m_staticTextSpacer = new wxStaticText( m_PanelCredits, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextSpacer->Wrap( -1 );
+	bSizer28->Add( m_staticTextSpacer, 0, wxALL, 5 );
 	
 	
-	bSizer4->Add( m_GridSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP, 5 );
+	m_PanelCredits->SetSizer( bSizer28 );
+	m_PanelCredits->Layout();
+	bSizer28->Fit( m_PanelCredits );
+	m_Notebook->AddPage( m_PanelCredits, _("Credits"), true );
+	m_PanelLicense = new wxPanel( m_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer32;
+	bSizer32 = new wxBoxSizer( wxVERTICAL );
 	
-	m_StaticTextSpacer = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextSpacer->Wrap( -1 );
-	bSizer4->Add( m_StaticTextSpacer, 0, wxALL, 5 );
+	m_TextCtrlLicense = new wxTextCtrl( m_PanelLicense, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	bSizer32->Add( m_TextCtrlLicense, 1, wxEXPAND, 5 );
 	
 	
-	m_Panel->SetSizer( bSizer4 );
+	m_PanelLicense->SetSizer( bSizer32 );
+	m_PanelLicense->Layout();
+	bSizer32->Fit( m_PanelLicense );
+	m_Notebook->AddPage( m_PanelLicense, _("License"), false );
+	m_PanelLibraries = new wxPanel( m_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer31;
+	bSizer31 = new wxBoxSizer( wxVERTICAL );
+	
+	m_TextCtrlLibraries = new wxTextCtrl( m_PanelLibraries, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	bSizer31->Add( m_TextCtrlLibraries, 1, wxEXPAND, 5 );
+	
+	
+	m_PanelLibraries->SetSizer( bSizer31 );
+	m_PanelLibraries->Layout();
+	bSizer31->Fit( m_PanelLibraries );
+	m_Notebook->AddPage( m_PanelLibraries, _("Libraries"), false );
+	
+	bSizer27->Add( m_Notebook, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	m_Panel->SetSizer( bSizer27 );
 	m_Panel->Layout();
-	bSizer4->Fit( m_Panel );
+	bSizer27->Fit( m_Panel );
 	bSizer3->Add( m_Panel, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
-	bSizer3->Fit( this );
 	
 	this->Centre( wxBOTH );
 }
@@ -957,35 +982,6 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelUserDirectories->Layout();
 	bSizer24->Fit( m_PanelUserDirectories );
 	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), false );
-	m_PanelPathsCatalogs = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer171;
-	bSizer171 = new wxBoxSizer( wxVERTICAL );
-	
-	wxStaticBoxSizer* sbSizer61;
-	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( m_PanelPathsCatalogs, wxID_ANY, _("Catalog files paths") ), wxVERTICAL );
-	
-	m_StaticTextCatalogPredictorArchive = new wxStaticText( m_PanelPathsCatalogs, wxID_ANY, _("Path to the archive predictors catalog"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextCatalogPredictorArchive->Wrap( -1 );
-	sbSizer61->Add( m_StaticTextCatalogPredictorArchive, 0, wxALL, 5 );
-	
-	m_FilePickerCatalogPredictorsArchive = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
-	sbSizer61->Add( m_FilePickerCatalogPredictorsArchive, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	m_StaticTextCatalogPredictorRealtime = new wxStaticText( m_PanelPathsCatalogs, wxID_ANY, _("Path to the real-time predictors catalog"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextCatalogPredictorRealtime->Wrap( -1 );
-	sbSizer61->Add( m_StaticTextCatalogPredictorRealtime, 0, wxALL, 5 );
-	
-	m_FilePickerCatalogPredictorsRealtime = new wxFilePickerCtrl( m_PanelPathsCatalogs, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_USE_TEXTCTRL );
-	sbSizer61->Add( m_FilePickerCatalogPredictorsRealtime, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	
-	bSizer171->Add( sbSizer61, 0, wxEXPAND|wxALL, 5 );
-	
-	
-	m_PanelPathsCatalogs->SetSizer( bSizer171 );
-	m_PanelPathsCatalogs->Layout();
-	bSizer171->Fit( m_PanelPathsCatalogs );
-	m_NotebookAdvanced->AddPage( m_PanelPathsCatalogs, _("Catalogs"), false );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
 	

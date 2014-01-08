@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #ifndef ASRESULTSANALOGSFORECAST_H
@@ -35,7 +48,7 @@ public:
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
 
-	wxString GetPredictandDatasetId()
+    wxString GetPredictandDatasetId()
     {
         return m_PredictandDatasetId;
     }
@@ -45,7 +58,7 @@ public:
         m_PredictandDatasetId = val;
     }
 
-	DataParameter GetPredictandParameter()
+    DataParameter GetPredictandParameter()
     {
         return m_PredictandParameter;
     }
@@ -55,7 +68,7 @@ public:
         m_PredictandParameter = val;
     }
 
-	DataTemporalResolution GetPredictandTemporalResolution()
+    DataTemporalResolution GetPredictandTemporalResolution()
     {
         return m_PredictandTemporalResolution;
     }
@@ -65,7 +78,7 @@ public:
         m_PredictandTemporalResolution = val;
     }
 
-	DataSpatialAggregation GetPredictandSpatialAggregation()
+    DataSpatialAggregation GetPredictandSpatialAggregation()
     {
         return m_PredictandSpatialAggregation;
     }
@@ -75,7 +88,7 @@ public:
         m_PredictandSpatialAggregation = val;
     }
 
-	/** Access m_HasReferenceValues
+    /** Access m_HasReferenceValues
     * \return The current value of m_HasReferenceValues
     */
     bool HasReferenceValues()
@@ -315,17 +328,18 @@ public:
     void SetReferenceAxis(Array1DFloat &referenceAxis)
     {
         m_ReferenceAxis = referenceAxis;
+        m_HasReferenceValues = true;
     }
 
     /** Access an element of m_ReferenceValues
      */
     float GetReferenceValue(int i_stat, int i_ref)
     {
-		if (!m_HasReferenceValues) 
-		{
-			asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
-			return NaNFloat;
-		}
+        if (!m_HasReferenceValues) 
+        {
+            asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
+            return NaNFloat;
+        }
 
         wxASSERT(i_stat>=0);
         wxASSERT(i_ref>=0);
@@ -339,12 +353,12 @@ public:
      */
     Array2DFloat GetReferenceValues()
     {
-		if (!m_HasReferenceValues) 
-		{
-			asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
-			Array2DFloat nodata(0,0);
-			return nodata;
-		}
+        if (!m_HasReferenceValues) 
+        {
+            asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
+            Array2DFloat nodata(0,0);
+            return nodata;
+        }
 
         return m_ReferenceValues;
     }
@@ -536,16 +550,16 @@ protected:
 
 private:
     DataParameter m_PredictandParameter;
-	DataTemporalResolution m_PredictandTemporalResolution;
-	DataSpatialAggregation m_PredictandSpatialAggregation;
-	wxString m_PredictandDatasetId;
+    DataTemporalResolution m_PredictandTemporalResolution;
+    DataSpatialAggregation m_PredictandSpatialAggregation;
+    wxString m_PredictandDatasetId;
 
 
     wxString m_ModelName;
     wxString m_ModelLongName;
 
 
-	bool m_HasReferenceValues;
+    bool m_HasReferenceValues;
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
     Array1DInt m_AnalogsNb; //!< Member variable "m_AnalogsNb"

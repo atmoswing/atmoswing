@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asThreadProcessorGetAnalogsDates.h"
@@ -19,20 +32,20 @@
 #include <asTimeArray.h>
 
 
-asThreadProcessorGetAnalogsDates::asThreadProcessorGetAnalogsDates(std::vector < asDataPredictor >* predictorsArchive,
-                                                                                   std::vector < asDataPredictor >* predictorsTarget,
-                                                                                   asTimeArray* timeArrayArchiveData,
-                                                                                   asTimeArray* timeArrayArchiveSelection,
-                                                                                   asTimeArray* timeArrayTargetData,
-                                                                                   asTimeArray* timeArrayTargetSelection,
-                                                                                   std::vector < asPredictorCriteria* > criteria,
-                                                                                   asParameters &params, int step,
-                                                                                   VpArray2DFloat &vTargData,
-                                                                                   VpArray2DFloat &vArchData,
-                                                                                   Array1DInt &vRowsNb, Array1DInt &vColsNb,
-                                                                                   int start, int end,
-                                                                                   Array2DFloat* finalAnalogsCriteria, Array2DFloat* finalAnalogsDates,
-                                                                                   bool* containsNaNs)
+asThreadProcessorGetAnalogsDates::asThreadProcessorGetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
+                                                                    std::vector < asDataPredictor* > predictorsTarget,
+                                                                    asTimeArray* timeArrayArchiveData,
+                                                                    asTimeArray* timeArrayArchiveSelection,
+                                                                    asTimeArray* timeArrayTargetData,
+                                                                    asTimeArray* timeArrayTargetSelection,
+                                                                    std::vector < asPredictorCriteria* > criteria,
+                                                                    asParameters &params, int step,
+                                                                    VpArray2DFloat &vTargData,
+                                                                    VpArray2DFloat &vArchData,
+                                                                    Array1DInt &vRowsNb, Array1DInt &vColsNb,
+                                                                    int start, int end,
+                                                                    Array2DFloat* finalAnalogsCriteria, Array2DFloat* finalAnalogsDates,
+                                                                    bool* containsNaNs)
 :
 asThread()
 {
@@ -90,8 +103,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     bool isasc = (m_Criteria[0]->GetOrder()==Asc);
 
     wxASSERT(m_End<timeTargetSelection.size());
-    wxASSERT(timeArchiveDataSize==(*m_pPredictorsArchive)[0].GetData().size());
-    wxASSERT(timeTargetDataSize==(*m_pPredictorsTarget)[0].GetData().size());
+    wxASSERT(timeArchiveDataSize==(m_pPredictorsArchive)[0]->GetData().size());
+    wxASSERT(timeTargetDataSize==(m_pPredictorsTarget)[0]->GetData().size());
 
     // Containers for daily results
     Array1DFloat ScoreArrayOneDay(analogsNb);
@@ -126,7 +139,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
             // Extract target data
             for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
             {
-                m_vTargData[i_ptor] = &(*m_pPredictorsTarget)[i_ptor].GetData()[i_timeTarg];
+                m_vTargData[i_ptor] = &(m_pPredictorsTarget)[i_ptor]->GetData()[i_timeTarg];
             }
 
             // DateArray object initialization.
@@ -164,7 +177,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                     {
                         // Get data
-                        m_vArchData[i_ptor] = &(*m_pPredictorsArchive)[i_ptor].GetData()[i_timeArch];
+                        m_vArchData[i_ptor] = &(m_pPredictorsArchive)[i_ptor]->GetData()[i_timeArch];
 
                         // Assess the criteria
                         wxASSERT(m_Criteria.size()>(unsigned)i_ptor);

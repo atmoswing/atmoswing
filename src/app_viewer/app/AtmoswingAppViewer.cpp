@@ -1,11 +1,29 @@
-/***************************************************************
- * Name:      AtmoswingAppViewer.cpp
- * Purpose:   Code for Application Class
- * Author:    Pascal Horton (pascal.horton@unil.ch)
- * Created:   2009-06-08
- * Copyright: Pascal Horton (www.unil.ch/igar)
- * License:
- **************************************************************/
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
+ *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
+ */
 
 #ifdef WX_PRECOMP
 #include "wx_pch.h"
@@ -28,6 +46,7 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include "vroomgis_bmp.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
+#include "img_logo.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
@@ -49,7 +68,7 @@ bool AtmoswingAppViewer::OnInit()
     #endif
 
     // Set application name and create user directory
-    wxString appName = "Atmoswing viewer";
+    wxString appName = "AtmoSwing viewer";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
@@ -58,7 +77,7 @@ bool AtmoswingAppViewer::OnInit()
     g_AppForecaster = false;
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir()+"Atmoswing.ini",asConfig::GetUserDataDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
@@ -67,7 +86,7 @@ bool AtmoswingAppViewer::OnInit()
 
     if (!multipleInstances)
     {
-        const wxString instanceName = wxString::Format(wxT("AtmoswingViewer-%s"),wxGetUserId().c_str());
+        const wxString instanceName = wxString::Format(wxT("AtmoSwingViewer-%s"),wxGetUserId().c_str());
         m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if ( m_SingleInstanceChecker->IsAnotherRunning() )
         {
@@ -82,6 +101,7 @@ bool AtmoswingAppViewer::OnInit()
     // Initialize images
     initialize_images_bullets();
     initialize_images_toolbar();
+    initialize_images_logo();
     vroomgis_initialize_images();
 
     // Init cURL
@@ -93,7 +113,8 @@ bool AtmoswingAppViewer::OnInit()
 
     // Create frame
     AtmoswingFrameViewer* frame = new AtmoswingFrameViewer(0L);
-    frame->OnInit();
+    frame->OnInit();
+
 #ifdef __WXMSW__
     frame->SetIcon(wxICON(myicon)); // To Set App Icon
 #endif
@@ -113,7 +134,7 @@ bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
     {
         logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
     }
-    Log().CreateFile("AtmoswingViewer.log");
+    Log().CreateFile("AtmoSwingViewer.log");
     Log().SetLevel((int)logLevel);
 
     return true;
@@ -146,7 +167,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("Atmoswing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
 
             msgOut->Printf( wxT("%s"), msg.c_str() );
         }

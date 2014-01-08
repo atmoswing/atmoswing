@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asTime.h"
@@ -56,14 +69,14 @@ double asTime::TimeTmToMJD(const struct tm &Date)
 
 double asTime::NowMJD(int timezone)
 {
-	struct tm Todaytm;
-	time_t Todayepoch;
+    struct tm Todaytm;
+    time_t Todayepoch;
 
-	time(&Todayepoch);
+    time(&Todayepoch);
 
-	switch (timezone)
-	{
-	    case asUTM:
+    switch (timezone)
+    {
+        case asUTM:
             Todaytm = *gmtime(&Todayepoch);
             break;
         case asLOCAL:
@@ -71,21 +84,21 @@ double asTime::NowMJD(int timezone)
             break;
         default:
             asThrowException(_("The timezone is not correctly set"));
-	}
+    }
 
     return TimeTmToMJD(Todaytm);
 }
 
 TimeStruct asTime::NowTimeStruct(int timezone)
 {
-	struct tm Todaytm;
-	time_t Todayepoch;
+    struct tm Todaytm;
+    time_t Todayepoch;
 
-	time(&Todayepoch);
+    time(&Todayepoch);
 
-	switch (timezone)
-	{
-	    case asUTM:
+    switch (timezone)
+    {
+        case asUTM:
             Todaytm = *gmtime(&Todayepoch);
             break;
         case asLOCAL:
@@ -93,19 +106,19 @@ TimeStruct asTime::NowTimeStruct(int timezone)
             break;
         default:
             asThrowException(_("The timezone is not correctly set"));
-	}
+    }
 
     return TimeTmToTimeStruct(Todaytm);
 }
 
 wxDateTime asTime::NowWxDateTime(int timezone)
 {
-	TimeStruct now = NowTimeStruct(timezone);
+    TimeStruct now = NowTimeStruct(timezone);
 
-	wxDateTime::Month month;
+    wxDateTime::Month month;
 
-	switch(now.month)
-	{
+    switch(now.month)
+    {
     case 1:
         month = wxDateTime::Jan;
         break;
@@ -144,10 +157,10 @@ wxDateTime asTime::NowWxDateTime(int timezone)
         break;
     default:
         month = wxDateTime::Inv_Month;
-	}
+    }
 
     // Create datetime object.
-	wxDateTime nowWx(now.day, month, now.year, now.hour, now.min, now.sec, 0);
+    wxDateTime nowWx(now.day, month, now.year, now.hour, now.min, now.sec, 0);
 
     return nowWx;
 }

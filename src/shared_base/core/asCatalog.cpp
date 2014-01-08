@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asCatalog.h"
@@ -90,7 +103,7 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
         if (Purpose==Predictand)
         {
             asLogError(_("asCatalog::GetDatasetIdList should not be called any more for predictand data, as there is supposed to be only 1 catalog per dataset."));
-			return SetList;
+            return SetList;
         }
         else if (Purpose==PredictorArchive)
         {
@@ -108,7 +121,7 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return SetList;
 
     // XML struct for the dataset information
-    wxString DatasetAccess = "AtmoswingFile.DataSet";
+    wxString DatasetAccess = "AtmoSwingFile.DataSet";
 
     // Get the first dataset
     if(xmlFile.GetFirstElementAttributeValueBool(DatasetAccess, "enable", true))
@@ -166,7 +179,7 @@ asCatalog::DataIdListStr asCatalog::GetDataIdListStr(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return DataList;
 
     // XML struct for the dataset information
-    wxString DataAccess = wxString::Format("AtmoswingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+    wxString DataAccess = wxString::Format("AtmoSwingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
 
     // Get the first data
     if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
@@ -222,42 +235,42 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
     if(!xmlFile.Open()) return DataList;
 
     // XML struct for the dataset information
-	if (Purpose==Predictand)
-	{
-		wxString DataAccess = "AtmoswingFile.DataSet.DataList.Data";
-		
-		// Get the first data
-		DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
-		DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
+    if (Purpose==Predictand)
+    {
+        wxString DataAccess = "AtmoSwingFile.DataSet.DataList.Data";
+        
+        // Get the first data
+        DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
+        DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
 
-		// Get the other datasets
-		while(xmlFile.GetNextElement(DataAccess))
-		{
-			DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
-			DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
-		}
-	}
-	else
-	{
-		wxString DataAccess = wxString::Format("AtmoswingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
-		
-		// Get the first data
-		if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
-		{
-			DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
-			DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
-		}
+        // Get the other datasets
+        while(xmlFile.GetNextElement(DataAccess))
+        {
+            DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
+            DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
+        }
+    }
+    else
+    {
+        wxString DataAccess = wxString::Format("AtmoSwingFile.DataSet[%s].DataList.Data", DataSetId.c_str());
+        
+        // Get the first data
+        if(xmlFile.GetFirstElementAttributeValueBool(DataAccess, "enable", true))
+        {
+            DataList.Id.push_back(xmlFile.GetFirstElementAttributeValueInt(DataAccess, "id", 0));
+            DataList.Name.push_back(xmlFile.GetFirstElementAttributeValueText(DataAccess, "name", wxEmptyString));
+        }
 
-		// Get the other datasets
-		while(xmlFile.GetNextElement(DataAccess))
-		{
-			if(xmlFile.GetThisElementAttributeValueBool("enable", true))
-			{
-				DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
-				DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
-			}
-		}
-	}
+        // Get the other datasets
+        while(xmlFile.GetNextElement(DataAccess))
+        {
+            if(xmlFile.GetThisElementAttributeValueBool("enable", true))
+            {
+                DataList.Id.push_back(xmlFile.GetThisElementAttributeValueInt("id", 0));
+                DataList.Name.push_back(xmlFile.GetThisElementAttributeValueText("name", wxEmptyString));
+            }
+        }
+    }
 
 
     return DataList;

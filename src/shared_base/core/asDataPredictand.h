@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #ifndef ASDATAPREDICTAND_H
@@ -28,9 +41,9 @@ class asDataPredictand: public wxObject
         virtual ~asDataPredictand();
 
         static asDataPredictand* GetInstance(const wxString& dataParameterStr, const wxString& dataTemporalResolutionStr, const wxString& dataSpatialAggregationStr);
-		
+        
         static asDataPredictand* GetInstance(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
-		
+        
         static asDataPredictand* GetInstance(const wxString& filePath);
 
         /** Load the database from a local file
@@ -42,25 +55,25 @@ class asDataPredictand: public wxObject
         virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) = 0;
 
         virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString) = 0;
-		
-		virtual Array1DFloat GetReferenceAxis()
-		{
-			Array1DFloat nodata(1);
-			nodata << NaNFloat;
-			return nodata;
-		}
+        
+        virtual Array1DFloat GetReferenceAxis()
+        {
+            Array1DFloat nodata(1);
+            nodata << NaNFloat;
+            return nodata;
+        }
 
-		virtual float GetReferenceValue(int i_station, double duration, float reference)
-		{
-			return NaNFloat;
-		}
+        virtual float GetReferenceValue(int i_station, double duration, float reference)
+        {
+            return NaNFloat;
+        }
 
-		virtual Array2DFloat GetReferenceValuesArray()
-		{
-			Array1DFloat nodata(1);
-			nodata << NaNFloat;
-			return nodata;
-		}
+        virtual Array2DFloat GetReferenceValuesArray()
+        {
+            Array1DFloat nodata(1);
+            nodata << NaNFloat;
+            return nodata;
+        }
 
         /** Access m_DatasetId
          * \return The current value of m_DatasetId
@@ -69,36 +82,36 @@ class asDataPredictand: public wxObject
         {
             return m_DatasetId;
         }
-		
-		DataParameter GetDataParameter()
-		{
-			return m_DataParameter;
-		}
+        
+        DataParameter GetDataParameter()
+        {
+            return m_DataParameter;
+        }
 
-		void SetDataParameter(DataParameter val)
-		{
-			m_DataParameter = val;
-		}
+        void SetDataParameter(DataParameter val)
+        {
+            m_DataParameter = val;
+        }
 
-		DataTemporalResolution GetDataTemporalResolution()
-		{
-			return m_DataTemporalResolution;
-		}
+        DataTemporalResolution GetDataTemporalResolution()
+        {
+            return m_DataTemporalResolution;
+        }
 
-		void SetDataTemporalResolution(DataTemporalResolution val)
-		{
-			m_DataTemporalResolution = val;
-		}
+        void SetDataTemporalResolution(DataTemporalResolution val)
+        {
+            m_DataTemporalResolution = val;
+        }
 
-		DataSpatialAggregation GetDataSpatialAggregation()
-		{
-			return m_DataSpatialAggregation;
-		}
+        DataSpatialAggregation GetDataSpatialAggregation()
+        {
+            return m_DataSpatialAggregation;
+        }
 
-		void SetDataSpatialAggregation(DataSpatialAggregation val)
-		{
-			m_DataSpatialAggregation = val;
-		}
+        void SetDataSpatialAggregation(DataSpatialAggregation val)
+        {
+            m_DataSpatialAggregation = val;
+        }
 
         /** Access m_HasNormalizedData
          * \return The current value of m_HasNormalizedData
@@ -107,8 +120,8 @@ class asDataPredictand: public wxObject
         {
             return m_HasNormalizedData;
         }
-		
-		/** Access m_HasReferenceValues
+        
+        /** Access m_HasReferenceValues
          * \return The current value of m_HasReferenceValues
          */
         bool HasReferenceValues()
@@ -226,14 +239,14 @@ class asDataPredictand: public wxObject
          */
         Array2DFloat& GetDataNormalized()
         {
-			if(m_HasNormalizedData)
-			{
-				return m_DataNormalized;
-			}
-			else
-			{
-				return m_DataGross;
-			}
+            if(m_HasNormalizedData)
+            {
+                return m_DataNormalized;
+            }
+            else
+            {
+                return m_DataGross;
+            }
         }
 
         /** Access m_DataNormalized for 1 station: data(station,time)
@@ -242,14 +255,14 @@ class asDataPredictand: public wxObject
         Array1DFloat GetDataNormalizedStation(int predictandStationId)
         {
             int indexStation = GetStationIndex(predictandStationId);
-			if(m_HasNormalizedData)
-			{
-				return m_DataNormalized.col(indexStation);
-			}
-			else
-			{
-				return m_DataGross.col(indexStation);
-			}
+            if(m_HasNormalizedData)
+            {
+                return m_DataNormalized.col(indexStation);
+            }
+            else
+            {
+                return m_DataGross.col(indexStation);
+            }
         }
 
         /** Access m_Time
@@ -270,17 +283,17 @@ class asDataPredictand: public wxObject
         // Single value
         float m_FileVersion;
         DataParameter m_DataParameter;
-		DataTemporalResolution m_DataTemporalResolution;
-		DataSpatialAggregation m_DataSpatialAggregation;
-		wxString m_DatasetId;
+        DataTemporalResolution m_DataTemporalResolution;
+        DataSpatialAggregation m_DataSpatialAggregation;
+        wxString m_DatasetId;
         double m_TimeStepDays;
         int m_TimeLength;
         int m_StationsNb;
         double m_DateProcessed;
         double m_DateStart;
         double m_DateEnd;
-		bool m_HasNormalizedData;
-		bool m_HasReferenceValues;
+        bool m_HasNormalizedData;
+        bool m_HasReferenceValues;
         // Matrix data
         Array2DFloat m_DataGross;
         Array2DFloat m_DataNormalized;
@@ -299,7 +312,7 @@ class asDataPredictand: public wxObject
 
 
 
-		wxString GetDBFilePathSaving(const wxString &AlternateDestinationDir);
+        wxString GetDBFilePathSaving(const wxString &AlternateDestinationDir);
 
 
         /** Initialize the members
@@ -315,15 +328,15 @@ class asDataPredictand: public wxObject
         bool InitBaseContainers();
 
 
-		bool LoadCommonData(asFileNetcdf &ncFile);
+        bool LoadCommonData(asFileNetcdf &ncFile);
 
-		void SetCommonDefinitions(asFileNetcdf &ncFile);
+        void SetCommonDefinitions(asFileNetcdf &ncFile);
 
-		bool SaveCommonData(asFileNetcdf &ncFile);
+        bool SaveCommonData(asFileNetcdf &ncFile);
 
-		bool ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString);
+        bool ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString);
         
-		Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10);
+        Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10);
 
 
         /** Set the stations properties

@@ -1,15 +1,28 @@
-/** 
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- *  This file is part of the AtmoSwing software.
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
  *
- *  Copyright (c) 2008-2012  University of Lausanne, Pascal Horton (pascal.horton@unil.ch). 
- *  All rights reserved.
- *
- *  THIS CODE, SOFTWARE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY  
- *  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
- *  PURPOSE.
- *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
  */
  
 #include "asForecastViewer.h"
@@ -28,9 +41,9 @@ asForecastViewer::asForecastViewer( wxWindow* parent, asForecastManager *forecas
     m_Parent = parent;
     m_ForecastManager = forecastManager;
     m_LayerManager = layerManager;
-	m_ViewerLayerManager = viewerLayerManager;
-	m_LeadTimeIndex = 0;
-	m_LayerMaxValue = 1;
+    m_ViewerLayerManager = viewerLayerManager;
+    m_LeadTimeIndex = 0;
+    m_LayerMaxValue = 1;
 
     m_DisplayForecast.Add(_("Value"));
     m_DisplayForecast.Add(_("Ratio P/P2"));
@@ -169,21 +182,21 @@ void asForecastViewer::Redraw()
 
     // Check if memory layer already added
     m_ViewerLayerManager->FreezeBegin();
-	for (int i = 0; i < m_ViewerLayerManager->GetCount(); i++)
+    for (int i = 0; i < m_ViewerLayerManager->GetCount(); i++)
     {
-		if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerName)
+        if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerName)
         {
-			vrRenderer *renderer = m_ViewerLayerManager->GetRenderer(i);
-			vrLayer *layer = renderer->GetLayer();
-			wxASSERT(renderer);
-			m_ViewerLayerManager->Remove(renderer);
-			// Close layer
-			m_LayerManager->Close(layer);
-		}
-	}
+            vrRenderer *renderer = m_ViewerLayerManager->GetRenderer(i);
+            vrLayer *layer = renderer->GetLayer();
+            wxASSERT(renderer);
+            m_ViewerLayerManager->Remove(renderer);
+            // Close layer
+            m_LayerManager->Close(layer);
+        }
+    }
 
-	// Get data
-	asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ModelSelection);
+    // Get data
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ModelSelection);
 
     // Get display option
     float percentile = m_Percentiles[m_PercentileSelection];
@@ -193,7 +206,7 @@ void asForecastViewer::Redraw()
     int indexReferenceAxis;
     if (forecast->HasReferenceValues() && returnPeriod!=0)
     {
-		Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
+        Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
 
         indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriod);
         if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
@@ -205,7 +218,7 @@ void asForecastViewer::Redraw()
     }
 
     // Get the maximum value
-	wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase *pConfig = wxFileConfig::Get();
     double colorbarMaxValue = pConfig->ReadDouble("/GIS/ColorbarMaxValue", 50.0);
 
     // Display according to the chosen display type
@@ -263,7 +276,7 @@ void asForecastViewer::Redraw()
                 double factor = 1;
                 if (forecast->HasReferenceValues() && returnPeriod!=0)
                 {
-					float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                    float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
                     wxASSERT(precip>0);
                     wxASSERT(precip<500);
                     factor = 1.0/precip;
@@ -377,7 +390,7 @@ void asForecastViewer::Redraw()
                 double factor = 1;
                 if (forecast->HasReferenceValues() && returnPeriod!=0)
                 {
-					float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                    float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
                     wxASSERT(precip>0);
                     wxASSERT(precip<500);
                     factor = 1.0/precip;
