@@ -37,14 +37,14 @@ asPanelSidebar( parent, id, pos, size, style )
     m_Header->SetLabelText(_("Station selection"));
 
     wxArrayString stationSelectionChoices;
-	m_ChoiceStationSelection = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices, 0 );
-	m_ChoiceStationSelection->SetSelection( 0 );
-	m_SizerContent->Add( m_ChoiceStationSelection, 0, wxALL|wxEXPAND, 5 );
+    m_ChoiceStationSelection = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, stationSelectionChoices, 0 );
+    m_ChoiceStationSelection->SetSelection( 0 );
+    m_SizerContent->Add( m_ChoiceStationSelection, 0, wxALL|wxEXPAND, 5 );
 
-	m_ChoiceStationSelection->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asPanelSidebarStationsList::OnStationSelection ), NULL, this );
+    m_ChoiceStationSelection->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( asPanelSidebarStationsList::OnStationSelection ), NULL, this );
 
     Layout();
-	m_SizerContent->Fit( this );
+    m_SizerContent->Fit( this );
 }
 
 asPanelSidebarStationsList::~asPanelSidebarStationsList()

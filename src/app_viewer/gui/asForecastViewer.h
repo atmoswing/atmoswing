@@ -118,7 +118,7 @@ private:
     wxWindow* m_Parent;
     asForecastManager* m_ForecastManager;
     vrLayerManager *m_LayerManager;
-	vrViewerLayerManager *m_ViewerLayerManager;
+    vrViewerLayerManager *m_ViewerLayerManager;
     wxArrayString m_DisplayForecast;
     wxArrayString m_DisplayPercentiles;
     VectorFloat m_ReturnPeriods;

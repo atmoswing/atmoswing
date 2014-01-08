@@ -36,30 +36,30 @@ BEGIN_EVENT_TABLE(asFrameForecastRings, wxFrame)
     EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
 /*    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
     EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
-	EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
-	EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
-	EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
-	EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
-	EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
-	EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
-	EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
-	EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)/*
-	EVT_MENU (vlID_MOVE_LAYER, asFrameForecast::OnMoveLayer)
+    EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
+    EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
+    EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
+    EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
+    EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
+    EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
+    EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
+    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)/*
+    EVT_MENU (vlID_MOVE_LAYER, asFrameForecast::OnMoveLayer)
 */
     EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
-	EVT_KEY_UP(asFrameForecast::OnKeyUp)
+    EVT_KEY_UP(asFrameForecast::OnKeyUp)
 
-	EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
-	EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
-	EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
-	EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
 
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecastRings::OnForecastNewAdded)
-	EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecastRings::OnForecastRatioSelectionChange)
-	EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, asFrameForecastRings::OnForecastModelSelectionChange)
-	EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecastRings::OnForecastPercentileSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecastRings::OnForecastRatioSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, asFrameForecastRings::OnForecastModelSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecastRings::OnForecastPercentileSelectionChange)
 END_EVENT_TABLE()
 
 
@@ -73,15 +73,15 @@ asFrameForecast( parent, id )
     m_ToolBar->InsertTool(13, asID_FRAME_DOTS, wxT("Open time evolution"), img_frame_dots, img_frame_dots, wxITEM_NORMAL, _("Open time evolution"), _("Open time evolution"), NULL);
     m_ToolBar->Realize();
 
-	// Alarms
+    // Alarms
     m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
-	m_PanelSidebarAlarms->Layout();
-	m_SizerScrolledWindow->Add( m_PanelSidebarAlarms, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    m_PanelSidebarAlarms->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarAlarms, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
     // Caption panel
     m_PanelSidebarCaptionForecastRing = new asPanelSidebarCaptionForecastRing( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
-	m_PanelSidebarCaptionForecastRing->Layout();
-	m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastRing, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    m_PanelSidebarCaptionForecastRing->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastRing, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
     // Events
     this->Connect( asID_FRAME_DOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecastRings::OpenFrameDots ) );
@@ -130,7 +130,7 @@ void asFrameForecastRings::OnInit()
 
 void asFrameForecastRings::OnQuit( wxCommandEvent& event )
 {
-	event.Skip();
+    event.Skip();
 }
 
 void asFrameForecastRings::OnForecastRatioSelectionChange( wxCommandEvent& event )
@@ -179,13 +179,13 @@ void asFrameForecastRings::OnForecastNewAdded( wxCommandEvent& event )
 void asFrameForecastRings::UpdateHeaderTexts()
 {
     // Set header text
-	wxString date = asTime::GetStringTime(m_ForecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY");
-	int length = m_ForecastManager->GetLeadTimeLength(m_ForecastViewer->GetModelSelection());
-	wxString dateStr = wxString::Format(_("Forecast of the %s for the next %d days"), date.c_str(), length);
-	m_StaticTextForecastDate->SetLabel(dateStr);
+    wxString date = asTime::GetStringTime(m_ForecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY");
+    int length = m_ForecastManager->GetLeadTimeLength(m_ForecastViewer->GetModelSelection());
+    wxString dateStr = wxString::Format(_("Forecast of the %s for the next %d days"), date.c_str(), length);
+    m_StaticTextForecastDate->SetLabel(dateStr);
 
-	wxString model = m_ForecastManager->GetModelName(m_ForecastViewer->GetModelSelection());
-	wxString modelStr = wxString::Format(_("Model selected : %s"), model.c_str());
+    wxString model = m_ForecastManager->GetModelName(m_ForecastViewer->GetModelSelection());
+    wxString modelStr = wxString::Format(_("Model selected : %s"), model.c_str());
     m_StaticTextForecastModel->SetLabel(modelStr);
 }
 

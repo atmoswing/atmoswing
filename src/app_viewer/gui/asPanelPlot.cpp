@@ -108,112 +108,112 @@ void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event)
 
     // Process according to event
     if (eventType == wxEVT_PLOTCTRL_ADD_CURVE)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_DELETING_CURVE)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_DELETED_CURVE)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGING)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_MOUSE_MOTION)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_CLICKED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_DOUBLECLICKED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_POINT_CLICKED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATING)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CHANGING)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGING)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGING)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGED)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_ERROR)
-	{
-	    asLogError(event.GetString());
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_END_TITLE_EDIT)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
-	{
-		event.Skip();
-	}
-	else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
-	{
-		event.Skip();
-	}
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_DELETING_CURVE)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_DELETED_CURVE)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGING)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_MOUSE_MOTION)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_CLICKED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_DOUBLECLICKED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_POINT_CLICKED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATING)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CHANGING)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGING)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGING)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGED)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_ERROR)
+    {
+        asLogError(event.GetString());
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_END_TITLE_EDIT)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
+    {
+        event.Skip();
+    }
+    else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
+    {
+        event.Skip();
+    }
 
-	event.Skip();
+    event.Skip();
 }
 
 void asPanelPlot::Print()

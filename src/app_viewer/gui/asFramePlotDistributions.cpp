@@ -362,13 +362,13 @@ bool asFramePlotDistributions::PlotPredictands()
         PlotBestAnalogsCurve(10);
     if (DoPlotBestAnalogs5Curve)
         PlotBestAnalogsCurve(5);
-	if(forecast->HasReferenceValues())
-	{
-		if (DoPlotClassicReturnPeriod)
-			PlotReturnPeriod(10);
-		if (DoPlotAllReturnPeriods)
-			PlotAllReturnPeriods();
-	}
+    if(forecast->HasReferenceValues())
+    {
+        if (DoPlotClassicReturnPeriod)
+            PlotReturnPeriod(10);
+        if (DoPlotAllReturnPeriods)
+            PlotAllReturnPeriods();
+    }
 
     // Set the view rectangle (wxRect2DDouble(x, y, w, h))
     wxRect2DDouble currentView(0, 0, m_XmaxPredictands*1.1, 1);
@@ -445,7 +445,7 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
         if (abs(retPeriods[i]-2.33)<0.1) continue;
 
         // Get precipitation value
-		float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
+        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i/(float)(retPeriods.size()-1);

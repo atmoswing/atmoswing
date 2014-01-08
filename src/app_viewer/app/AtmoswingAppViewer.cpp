@@ -101,7 +101,7 @@ bool AtmoswingAppViewer::OnInit()
     // Initialize images
     initialize_images_bullets();
     initialize_images_toolbar();
-	initialize_images_logo();
+    initialize_images_logo();
     vroomgis_initialize_images();
 
     // Init cURL

@@ -32,7 +32,7 @@
 
 
 BEGIN_EVENT_TABLE(asListBoxForecastDisplay, wxListBox)
-	EVT_LISTBOX(wxID_ANY, asListBoxForecastDisplay::OnForecastDisplaySlctChange)
+    EVT_LISTBOX(wxID_ANY, asListBoxForecastDisplay::OnForecastDisplaySlctChange)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, wxCommandEvent);

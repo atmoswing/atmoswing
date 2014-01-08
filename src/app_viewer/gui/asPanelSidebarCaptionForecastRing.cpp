@@ -40,8 +40,8 @@ asPanelSidebar( parent, id, pos, size, style )
     m_Gdc = NULL;
 
     m_PanelDrawing = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize(240,240), wxTAB_TRAVERSAL );
-	m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
-	m_SizerContent->Fit(this);
+    m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
+    m_SizerContent->Fit(this);
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarCaptionForecastRing::OnPaint ), NULL, this );
 
@@ -76,15 +76,15 @@ void asPanelSidebarCaptionForecastRing::DrawDates(Array1DFloat & dates)
     wxASSERT(bmp);
 
     // Create device context
-	wxMemoryDC dc (*bmp);
-	dc.SetBackground(wxBrush(GetBackgroundColour()));
-	#if defined(__UNIX__)
+    wxMemoryDC dc (*bmp);
+    dc.SetBackground(wxBrush(GetBackgroundColour()));
+    #if defined(__UNIX__)
         dc.SetBackground(wxBrush(g_LinuxBgColour));
     #endif
-	dc.Clear();
+    dc.Clear();
 
     // Create graphics context
-	wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
+    wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
 
     if (gc)
     {
@@ -120,10 +120,10 @@ void asPanelSidebarCaptionForecastRing::DrawDates(Array1DFloat & dates)
     dc.SelectObject(wxNullBitmap);
 
     this->SetBitmapDates(bmp);
-	wxDELETE(bmp);
-	wxASSERT(!bmp);
+    wxDELETE(bmp);
+    wxASSERT(!bmp);
 
-	Refresh();
+    Refresh();
 }
 
 void asPanelSidebarCaptionForecastRing::DrawColorbar(double valmax)
@@ -132,15 +132,15 @@ void asPanelSidebarCaptionForecastRing::DrawColorbar(double valmax)
     wxASSERT(bmp);
 
     // Create device context
-	wxMemoryDC dc (*bmp);
-	dc.SetBackground(wxBrush(GetBackgroundColour()));
-	#if defined(__UNIX__)
+    wxMemoryDC dc (*bmp);
+    dc.SetBackground(wxBrush(GetBackgroundColour()));
+    #if defined(__UNIX__)
         dc.SetBackground(wxBrush(g_LinuxBgColour));
     #endif
-	dc.Clear();
+    dc.Clear();
 
     // Create graphics context
-	wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
+    wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
 
     if (gc)
     {
@@ -160,57 +160,57 @@ void asPanelSidebarCaptionForecastRing::DrawColorbar(double valmax)
     dc.SelectObject(wxNullBitmap);
 
     this->SetBitmapColorbar(bmp);
-	wxDELETE(bmp);
-	wxASSERT(!bmp);
+    wxDELETE(bmp);
+    wxASSERT(!bmp);
 
-	Refresh();
+    Refresh();
 }
 
 void asPanelSidebarCaptionForecastRing::SetBitmapDates(wxBitmap * bmp)
 {
-	wxDELETE(m_BmpDates);
-	wxASSERT(!m_BmpDates);
+    wxDELETE(m_BmpDates);
+    wxASSERT(!m_BmpDates);
 
-	if (bmp != NULL)
+    if (bmp != NULL)
     {
         wxASSERT(bmp);
-		m_BmpDates = new wxBitmap(*bmp);
-		wxASSERT(m_BmpDates);
-	}
+        m_BmpDates = new wxBitmap(*bmp);
+        wxASSERT(m_BmpDates);
+    }
 }
 
 void asPanelSidebarCaptionForecastRing::SetBitmapColorbar(wxBitmap * bmp)
 {
-	wxDELETE(m_BmpColorbar);
-	wxASSERT(!m_BmpColorbar);
+    wxDELETE(m_BmpColorbar);
+    wxASSERT(!m_BmpColorbar);
 
-	if (bmp != NULL)
+    if (bmp != NULL)
     {
         wxASSERT(bmp);
-		m_BmpColorbar = new wxBitmap(*bmp);
-		wxASSERT(m_BmpColorbar);
-	}
+        m_BmpColorbar = new wxBitmap(*bmp);
+        wxASSERT(m_BmpColorbar);
+    }
 }
 
 void asPanelSidebarCaptionForecastRing::OnPaint(wxPaintEvent & event)
 {
     wxASSERT(m_PanelDrawing);
 
-	wxPaintDC dc(m_PanelDrawing);
+    wxPaintDC dc(m_PanelDrawing);
 
-	if (m_BmpDates != NULL)
+    if (m_BmpDates != NULL)
     {
-		dc.DrawBitmap(*m_BmpDates, 0,0, true);
-	}
+        dc.DrawBitmap(*m_BmpDates, 0,0, true);
+    }
 
     if (m_BmpColorbar != NULL)
     {
-		dc.DrawBitmap(*m_BmpColorbar, 0,190, true);
-	}
+        dc.DrawBitmap(*m_BmpColorbar, 0,190, true);
+    }
 
-	Layout();
+    Layout();
 
-	event.Skip();
+    event.Skip();
 }
 
 void asPanelSidebarCaptionForecastRing::CreateDatesPath(wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb)

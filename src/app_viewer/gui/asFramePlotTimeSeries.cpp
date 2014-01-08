@@ -208,7 +208,7 @@ void asFramePlotTimeSeries::InitPlotCtrl()
 
 void asFramePlotTimeSeries::OnTocSelectionChange( wxCommandEvent& event )
 {
-	Plot();
+    Plot();
 }
 
 void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
@@ -370,17 +370,17 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
 
 void asFramePlotTimeSeries::OnExportSVG( wxCommandEvent& event )
 {
-	m_PanelPlot->ExportSVG();
+    m_PanelPlot->ExportSVG();
 }
 
 void asFramePlotTimeSeries::OnPreview( wxCommandEvent& event )
 {
-	m_PanelPlot->PrintPreview();
+    m_PanelPlot->PrintPreview();
 }
 
 void asFramePlotTimeSeries::OnPrint( wxCommandEvent& event )
 {
-	m_PanelPlot->Print();
+    m_PanelPlot->Print();
 }
 
 bool asFramePlotTimeSeries::Plot()
@@ -482,13 +482,13 @@ bool asFramePlotTimeSeries::Plot()
         PlotBestAnalogs(10);
     if (DoPlotBestAnalogs5)
         PlotBestAnalogs(5);
-	if(forecast->HasReferenceValues())
-	{
-		if (DoPlotAllReturnPeriods)
-			PlotAllReturnPeriods();
-		if (DoPlotClassicReturnPeriod)
-			PlotReturnPeriod(10);
-	}
+    if(forecast->HasReferenceValues())
+    {
+        if (DoPlotAllReturnPeriods)
+            PlotAllReturnPeriods();
+        if (DoPlotClassicReturnPeriod)
+            PlotReturnPeriod(10);
+    }
     if (DoPlotPreviousForecasts)
         PlotPastForecasts();
     if (DoPlotClassicPercentiles)
