@@ -60,9 +60,9 @@ asMethodForecasting::~asMethodForecasting()
 
 bool asMethodForecasting::Manager()
 {
-	#if wxUSE_GUI
-		if (g_Responsive) wxGetApp().Yield();
-	#endif
+    #if wxUSE_GUI
+        if (g_Responsive) wxGetApp().Yield();
+    #endif
     m_Cancel = false;
 
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -75,13 +75,13 @@ bool asMethodForecasting::Manager()
 
     try
     {
-		#if wxUSE_GUI
-			// Switch off all leds
-			wxCommandEvent eventStart (asEVT_STATUS_STARTING);
-			if (m_Parent != NULL) {
-				m_Parent->ProcessWindowEvent(eventStart);
-			}
-		#endif
+        #if wxUSE_GUI
+            // Switch off all leds
+            wxCommandEvent eventStart (asEVT_STATUS_STARTING);
+            if (m_Parent != NULL) {
+                m_Parent->ProcessWindowEvent(eventStart);
+            }
+        #endif
 
         // Get models list file
         wxString filePath = asConfig::GetDefaultUserConfigDir() + "CurrentForecastingModelsList.xml";
@@ -106,19 +106,19 @@ bool asMethodForecasting::Manager()
         int counter = 0;
         while(true)
         {
-			#if wxUSE_GUI
-				if (g_Responsive) wxGetApp().Yield();
-				if (m_Cancel) return false;
+            #if wxUSE_GUI
+                if (g_Responsive) wxGetApp().Yield();
+                if (m_Cancel) return false;
 
-				// Send event
-				wxCommandEvent eventRunning (asEVT_STATUS_RUNNING);
-				eventRunning.SetInt(counter);
-				if (m_Parent != NULL) {
-					m_Parent->ProcessWindowEvent(eventRunning);
-				}
+                // Send event
+                wxCommandEvent eventRunning (asEVT_STATUS_RUNNING);
+                eventRunning.SetInt(counter);
+                if (m_Parent != NULL) {
+                    m_Parent->ProcessWindowEvent(eventRunning);
+                }
 
-				if (g_Responsive) wxGetApp().Yield();
-			#endif
+                if (g_Responsive) wxGetApp().Yield();
+            #endif
 
             // Set the content to data members
             wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
@@ -153,28 +153,28 @@ bool asMethodForecasting::Manager()
             {
                 asLogError(_("The forecast could not be achived"));
 
-				#if wxUSE_GUI
-					// Send event
-					wxCommandEvent eventFailed (asEVT_STATUS_FAILED);
-					eventFailed.SetInt(counter);
-					if (m_Parent != NULL) {
-						m_Parent->ProcessWindowEvent(eventFailed);
-					}
-				#endif
+                #if wxUSE_GUI
+                    // Send event
+                    wxCommandEvent eventFailed (asEVT_STATUS_FAILED);
+                    eventFailed.SetInt(counter);
+                    if (m_Parent != NULL) {
+                        m_Parent->ProcessWindowEvent(eventFailed);
+                    }
+                #endif
             }
             else
             {
                 // Display processing time
                 asLogMessageImportant(wxString::Format(_("Processing of the model %s took %ldms to execute"), m_ModelName.c_str(), sw.Time()));
 
-				#if wxUSE_GUI
-					// Send event
-					wxCommandEvent eventSuccess (asEVT_STATUS_SUCCESS);
-					eventSuccess.SetInt(counter);
-					if (m_Parent != NULL) {
-						m_Parent->ProcessWindowEvent(eventSuccess);
-					}
-				#endif
+                #if wxUSE_GUI
+                    // Send event
+                    wxCommandEvent eventSuccess (asEVT_STATUS_SUCCESS);
+                    eventSuccess.SetInt(counter);
+                    if (m_Parent != NULL) {
+                        m_Parent->ProcessWindowEvent(eventSuccess);
+                    }
+                #endif
             }
 
             // Find the next model
@@ -186,17 +186,17 @@ bool asMethodForecasting::Manager()
     }
     catch(asException& e)
     {
-		wxString fullMessage = e.GetFullMessage();
-		if (!fullMessage.IsEmpty())
-		{
-			#if wxUSE_GUI
-				if (!g_SilentMode)
-					wxMessageBox(fullMessage);
-			#else
-				asLogError(fullMessage);
-			#endif
-		}
-		return false;
+        wxString fullMessage = e.GetFullMessage();
+        if (!fullMessage.IsEmpty())
+        {
+            #if wxUSE_GUI
+                if (!g_SilentMode)
+                    wxMessageBox(fullMessage);
+            #else
+                asLogError(fullMessage);
+            #endif
+        }
+        return false;
     }
 
     asLogState(_("Forecasting over."));
@@ -233,14 +233,14 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         }
 
         // Send event
-		#if wxUSE_GUI
-			wxCommandEvent eventDownloading (asEVT_STATUS_DOWNLOADING);
-			if (m_Parent != NULL) {
-				m_Parent->ProcessWindowEvent(eventDownloading);
-			}
+        #if wxUSE_GUI
+            wxCommandEvent eventDownloading (asEVT_STATUS_DOWNLOADING);
+            if (m_Parent != NULL) {
+                m_Parent->ProcessWindowEvent(eventDownloading);
+            }
 
-			if (g_Responsive) wxGetApp().Yield();
-		#endif
+            if (g_Responsive) wxGetApp().Yield();
+        #endif
 
         forecastDateChanged = false;
         for (int i_step=0; i_step<stepsNb; i_step++)
@@ -265,12 +265,12 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         }
 
         // Send event
-		#if wxUSE_GUI
-			wxCommandEvent eventDownloaded (asEVT_STATUS_DOWNLOADED);
-			if (m_Parent != NULL) {
-				m_Parent->ProcessWindowEvent(eventDownloaded);
-			}
-		#endif
+        #if wxUSE_GUI
+            wxCommandEvent eventDownloaded (asEVT_STATUS_DOWNLOADED);
+            if (m_Parent != NULL) {
+                m_Parent->ProcessWindowEvent(eventDownloaded);
+            }
+        #endif
     }
 
     #if wxUSE_GUI
@@ -280,7 +280,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-	if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
+    if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
     asLogMessage(_("Predictand DB loaded."));
 
    #if wxUSE_GUI
@@ -318,13 +318,13 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
             if(!GetAnalogsValues(results, params, i_step)) return false;
 
-			#if wxUSE_GUI
-				// Send event
-				wxCommandEvent eventSaving (asEVT_STATUS_SAVING);
-				if (m_Parent != NULL) {
-					m_Parent->ProcessWindowEvent(eventSaving);
-				}
-			#endif
+            #if wxUSE_GUI
+                // Send event
+                wxCommandEvent eventSaving (asEVT_STATUS_SAVING);
+                if (m_Parent != NULL) {
+                    m_Parent->ProcessWindowEvent(eventSaving);
+                }
+            #endif
 
             try
             {
@@ -335,21 +335,21 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
                 wxString fullMessage = e.GetFullMessage();
                 if (!fullMessage.IsEmpty())
                 {
-					#if wxUSE_GUI
-						if (!g_SilentMode)
-							wxMessageBox(fullMessage);
-					#endif
+                    #if wxUSE_GUI
+                        if (!g_SilentMode)
+                            wxMessageBox(fullMessage);
+                    #endif
                 }
                 return false;
             }
 
-			#if wxUSE_GUI
-				// Send event
-				wxCommandEvent eventSaved (asEVT_STATUS_SAVED);
-				if (m_Parent != NULL) {
-					m_Parent->ProcessWindowEvent(eventSaved);
-				}
-			#endif
+            #if wxUSE_GUI
+                // Send event
+                wxCommandEvent eventSaved (asEVT_STATUS_SAVED);
+                if (m_Parent != NULL) {
+                    m_Parent->ProcessWindowEvent(eventSaved);
+                }
+            #endif
         }
 
         // Keep the analogs dates of the best parameters set
@@ -692,13 +692,13 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         }
     }
 
-	#if wxUSE_GUI
-		// Send event
-		wxCommandEvent eventLoading (asEVT_STATUS_LOADING);
-		if (m_Parent != NULL) {
-			m_Parent->ProcessWindowEvent(eventLoading);
-		}
-	#endif
+    #if wxUSE_GUI
+        // Send event
+        wxCommandEvent eventLoading (asEVT_STATUS_LOADING);
+        if (m_Parent != NULL) {
+            m_Parent->ProcessWindowEvent(eventLoading);
+        }
+    #endif
 
     // Loop through every predictor
     for(int i_ptor=0;i_ptor<params.GetPredictorsNb(i_step);i_ptor++)
@@ -977,7 +977,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             }
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, 0), params.GetPreprocessArchiveDataId(i_step, i_ptor, 0));
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, 0), params.GetPreprocessArchiveDataId(i_step, i_ptor, 0), m_PredictorsArchiveDir);
+            *predictorArchive = *predictorsArchivePreprocess[0];
             if (!predictorArchive)
             {
                 asPredictorCriteria::DeleteArray(criteria);
@@ -1003,6 +1004,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
             // Instanciate an realtime predictor object
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, 0), params.GetPreprocessRealtimeDataId(i_step, i_ptor, 0));
+            *predictorRealtime = *predictorsRealtimePreprocess[0];
             if (!predictorRealtime)
             {
                 asPredictorCriteria::DeleteArray(criteria);
@@ -1044,15 +1046,15 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
     }
 
-	#if wxUSE_GUI
-		// Send events
-		wxCommandEvent eventLoaded (asEVT_STATUS_LOADED);
-		wxCommandEvent eventProcessing (asEVT_STATUS_PROCESSING);
-		if (m_Parent != NULL) {
-			m_Parent->ProcessWindowEvent(eventLoaded);
-			m_Parent->ProcessWindowEvent(eventProcessing);
-		}
-	#endif
+    #if wxUSE_GUI
+        // Send events
+        wxCommandEvent eventLoaded (asEVT_STATUS_LOADED);
+        wxCommandEvent eventProcessing (asEVT_STATUS_PROCESSING);
+        if (m_Parent != NULL) {
+            m_Parent->ProcessWindowEvent(eventLoaded);
+            m_Parent->ProcessWindowEvent(eventProcessing);
+        }
+    #endif
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
@@ -1235,13 +1237,13 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         }
     }
 
-	#if wxUSE_GUI
-		// Send event
-		wxCommandEvent eventLoading (asEVT_STATUS_LOADING);
-		if (m_Parent != NULL) {
-			m_Parent->ProcessWindowEvent(eventLoading);
-		}
-	#endif
+    #if wxUSE_GUI
+        // Send event
+        wxCommandEvent eventLoading (asEVT_STATUS_LOADING);
+        if (m_Parent != NULL) {
+            m_Parent->ProcessWindowEvent(eventLoading);
+        }
+    #endif
 
     // Loop through every predictor
     for(int i_ptor=0;i_ptor<params.GetPredictorsNb(i_step);i_ptor++)
@@ -1511,7 +1513,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             }
             
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, 0), params.GetPreprocessArchiveDataId(i_step, i_ptor, 0));
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, 0), params.GetPreprocessArchiveDataId(i_step, i_ptor, 0), m_PredictorsArchiveDir);
+            *predictorArchive = *predictorsArchivePreprocess[0];
             if (!predictorArchive)
             {
                 asPredictorCriteria::DeleteArray(criteria);
@@ -1537,6 +1540,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             // Instanciate an realtime predictor object
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, 0), params.GetPreprocessRealtimeDataId(i_step, i_ptor, 0));
+            *predictorRealtime = *predictorsRealtimePreprocess[0];
             if (!predictorRealtime)
             {
                 asPredictorCriteria::DeleteArray(criteria);
@@ -1580,15 +1584,15 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
     }
 
-	#if wxUSE_GUI
-		// Send events
-		wxCommandEvent eventLoaded (asEVT_STATUS_LOADED);
-		wxCommandEvent eventProcessing (asEVT_STATUS_PROCESSING);
-		if (m_Parent != NULL) {
-			m_Parent->ProcessWindowEvent(eventLoaded);
-			m_Parent->ProcessWindowEvent(eventProcessing);
-		}
-	#endif
+    #if wxUSE_GUI
+        // Send events
+        wxCommandEvent eventLoaded (asEVT_STATUS_LOADED);
+        wxCommandEvent eventProcessing (asEVT_STATUS_PROCESSING);
+        if (m_Parent != NULL) {
+            m_Parent->ProcessWindowEvent(eventLoaded);
+            m_Parent->ProcessWindowEvent(eventProcessing);
+        }
+    #endif
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
@@ -1660,10 +1664,10 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
 {
     // Initialize the result object
     results.SetCurrentStep(i_step);
-	results.SetPredictandDatasetId(m_PredictandDB->GetDatasetId());
-	results.SetPredictandParameter(m_PredictandDB->GetDataParameter());
-	results.SetPredictandTemporalResolution(m_PredictandDB->GetDataTemporalResolution());
-	results.SetPredictandSpatialAggregation(m_PredictandDB->GetDataSpatialAggregation());
+    results.SetPredictandDatasetId(m_PredictandDB->GetDatasetId());
+    results.SetPredictandParameter(m_PredictandDB->GetDataParameter());
+    results.SetPredictandTemporalResolution(m_PredictandDB->GetDataTemporalResolution());
+    results.SetPredictandSpatialAggregation(m_PredictandDB->GetDataSpatialAggregation());
 
     // Set the predictands values to the corresponding analog dates
     wxASSERT(m_PredictandDB);
@@ -1738,13 +1742,13 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
         }
     }
 
-	#if wxUSE_GUI
-		// Send event
-		wxCommandEvent eventProcessed (asEVT_STATUS_PROCESSED);
-		if (m_Parent != NULL) {
-			m_Parent->ProcessWindowEvent(eventProcessed);
-		}
-	#endif
+    #if wxUSE_GUI
+        // Send event
+        wxCommandEvent eventProcessed (asEVT_STATUS_PROCESSED);
+        if (m_Parent != NULL) {
+            m_Parent->ProcessWindowEvent(eventProcessed);
+        }
+    #endif
 
     asLogMessage(_("Predictands association over."));
 
