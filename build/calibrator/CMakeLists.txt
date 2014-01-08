@@ -99,6 +99,25 @@ endif (USE_GUI)
 
 #### LIBRARIES
 
+if (WIN32)
+    set(USE_PROVIDED_LIBRARIES 1 CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+    if(USE_PROVIDED_LIBRARIES)
+        set(USE_PROVIDED_LIBRARIES_PATH CACHE PATH "Path to the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+        if ("${USE_PROVIDED_LIBRARIES_PATH}" STREQUAL "")
+            message(FATAL_ERROR "Please provide the path to the downloaded libraries, or disable the option USE_PROVIDED_LIBRARIES.")
+        else()
+            set(CUSTOM_LIBRARY_PATH "${USE_PROVIDED_LIBRARIES_PATH}")
+            file(GLOB sub-dir ${CUSTOM_LIBRARY_PATH}/*)
+            foreach(dir ${sub-dir})
+                if(IS_DIRECTORY ${dir})
+                    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+                endif()
+            endforeach()
+        endif()
+    endif(USE_PROVIDED_LIBRARIES)
+endif (WIN32)
+
+
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 if (USE_GUI)
