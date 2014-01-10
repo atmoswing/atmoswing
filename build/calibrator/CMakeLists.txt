@@ -46,6 +46,8 @@ list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/as
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/asFileForecastingModels.cpp")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtime.h")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtime.cpp")
+list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtimeGfsForecast.h")
+list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtimeGfsForecast.cpp")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asFileGrib2.h")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asFileGrib2.cpp")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asFileParametersForecast.h")
@@ -128,7 +130,7 @@ endif (USE_GUI)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
 
-# NetCDF (has to be before GDAL)
+# NetCDF
 mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
 mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
 include("../_cmake/FindNetCDF.cmake")
@@ -142,6 +144,13 @@ include_directories(${PROJ4_INCLUDE_DIR})
 mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
 find_package(Eigen3 3.0.0)
 include_directories(${EIGEN3_INCLUDE_DIR})
+
+# wxhgversion
+if (USE_GUI)
+	set(USE_WXHGVERSION 1)
+	mark_as_advanced(USE_WXHGVERSION)
+	include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+endif (USE_GUI)
 
 
 #### DECLARE EXECUTABLE
@@ -166,3 +175,6 @@ endif (WIN32)
 target_link_libraries(${CMAKE_PROJECT_NAME} ${wxWidgets_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${NetCDF_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
+if (USE_WXHGVERSION)
+    target_link_libraries(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
+endif (USE_WXHGVERSION)

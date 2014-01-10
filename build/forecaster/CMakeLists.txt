@@ -137,9 +137,11 @@ find_package(Eigen3 3.0.0)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # wxhgversion
-set(USE_WXHGVERSION 1)
-mark_as_advanced(USE_WXHGVERSION)
-include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+if (USE_GUI)
+	set(USE_WXHGVERSION 1)
+	mark_as_advanced(USE_WXHGVERSION)
+	include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+endif (USE_GUI)
 
 
 #### DECLARE EXECUTABLE
