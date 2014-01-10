@@ -59,7 +59,7 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	m_FilePickerPredictand = new wxFilePickerCtrl( m_PanelControls, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.nc"), wxDefaultPosition, wxSize( -1,-1 ), wxFLP_DEFAULT_STYLE );
 	bSizer5->Add( m_FilePickerPredictand, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_StaticTextPredictorDir = new wxStaticText( m_PanelControls, wxID_ANY, _("Select the predictors directory (if not set in the catalog file)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPredictorDir = new wxStaticText( m_PanelControls, wxID_ANY, _("Select the predictors directory"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextPredictorDir->Wrap( -1 );
 	bSizer5->Add( m_StaticTextPredictorDir, 0, wxALL, 5 );
 	
