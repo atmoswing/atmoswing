@@ -186,12 +186,3 @@ asPredictorCriteria* asPredictorCriteria::GetInstance(const wxString &criteriaSt
     return NULL;
 }
 
-void asPredictorCriteria::DeleteArray(std::vector < asPredictorCriteria* > criteria)
-{
-    if (criteria.size()==0) return;
-
-    for (int i=0; (unsigned)i<criteria.size(); i++)
-    {
-        wxDELETE(criteria[i]);
-    }
-}

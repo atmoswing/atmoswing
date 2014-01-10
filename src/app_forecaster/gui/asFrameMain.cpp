@@ -347,7 +347,6 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
         smtp->Destroy();
         */
 
-        m_Forecaster->Cleanup();
         wxDELETE(m_Forecaster);
 
         return;
@@ -360,7 +359,6 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
     asLogMessage(wxString::Format(_("Forecast processed for the date %s"), realForecastDateStr.c_str()));
 
-    m_Forecaster->Cleanup();
     wxDELETE(m_Forecaster);
 }
 

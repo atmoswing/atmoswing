@@ -33,6 +33,7 @@
 #include <asParametersForecast.h>
 #include <asDataPredictorRealtime.h>
 #include <asDataPredictorArchive.h>
+#include <asPredictorCriteria.h>
 
 class asResultsAnalogsDates;
 class asResultsAnalogsForecast;
@@ -46,10 +47,6 @@ public:
     virtual bool Manager();
 
     bool Forecast(asParametersForecast &params);
-
-    void DeleteArray(std::vector < asDataPredictor* > predictors);
-    void DeleteArray(std::vector < asDataPredictorArchive* > predictors);
-    void DeleteArray(std::vector < asDataPredictorRealtime* > predictors);
 
     /** Access m_ForecastDate
      * \return The current value of m_ForecastDate
@@ -80,6 +77,9 @@ protected:
     bool GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step);
     bool GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params, asResultsAnalogsForecast &resultsPrev, int i_step);
     bool GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step);
+    
+    void DeletePreprocessData();
+    void Cleanup();
 
 
 private:
@@ -88,6 +88,11 @@ private:
     wxString m_PredictorsArchiveDir;
     VectorString m_ResultsFilePaths;
     wxWindow* m_Parent;
+    std::vector < asDataPredictorArchive* > m_StoragePredictorsArchivePreprocess;
+	std::vector < asDataPredictorRealtime* > m_StoragePredictorsRealtimePreprocess;
+    std::vector < asDataPredictor* > m_StoragePredictorsArchive;
+	std::vector < asDataPredictor* > m_StoragePredictorsRealtime;
+    std::vector < asPredictorCriteria* > m_StorageCriteria;
 };
 
 #endif // ASMETHODFORECASTING_H

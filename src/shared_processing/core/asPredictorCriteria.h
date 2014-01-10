@@ -59,8 +59,6 @@ public:
     static asPredictorCriteria* GetInstance(Criteria criteriaEnum, int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
     static asPredictorCriteria* GetInstance(const wxString &criteriaString, int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
 
-    static void DeleteArray(std::vector < asPredictorCriteria* > criteria);
-
     /** Default destructor */
     virtual ~asPredictorCriteria();
 

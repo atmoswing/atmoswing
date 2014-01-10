@@ -347,8 +347,5 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
 
     }
 
-    // Delete preloaded data
-    DeletePreloadedData();
-
     return true;
 }

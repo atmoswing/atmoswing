@@ -209,8 +209,5 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
         }
     }
 
-    // Delete preloaded data
-    DeletePreloadedData();
-
     return true;
 }

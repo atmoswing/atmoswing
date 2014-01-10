@@ -55,7 +55,7 @@ asMethodStandard()
 
 asMethodForecasting::~asMethodForecasting()
 {
-    //dtor
+    
 }
 
 bool asMethodForecasting::Manager()
@@ -200,6 +200,7 @@ bool asMethodForecasting::Manager()
     }
 
     asLogState(_("Forecasting over."));
+    Cleanup();
 
     return true;
 }
@@ -357,6 +358,8 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     }
 
     m_ResultsFilePaths.push_back(results.GetFilePath());
+
+    Cleanup();
 
     return true;
 }
@@ -573,11 +576,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     results.SetCurrentStep(i_step);
     results.Init(params, m_ForecastDate);
 
-    // Create the vectors to put the data in
-    std::vector < asDataPredictor* > predictorsArchive;
-    std::vector < asDataPredictor* > predictorsRealtime;
-    std::vector < asPredictorCriteria* > criteria;
-
     // Date array object instantiation for the processor
     asLogMessage(_("Creating date arrays for the processor."));
 
@@ -598,9 +596,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
             if (!predictorRealtime)
             {
-                wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -617,9 +612,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
                 if (!predictorRealtimePreprocess)
                 {
-                    wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
                     return false;
                 }
 
@@ -652,8 +644,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     if(timeArrayArchive.GetSize()<100)
     {
         asLogError(wxString::Format(_("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),timeArrayArchive.GetSize()));
-        DeleteArray(predictorsArchive);
-        DeleteArray(predictorsRealtime);
         return false;
     }
     asLogMessage(_("Date array created."));
@@ -686,8 +676,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         if(neededMemMb>freeMemMb)
         {
             asLogError(_("Data cannot fit into available memory."));
-            DeleteArray(predictorsArchive);
-            DeleteArray(predictorsRealtime);
             return false;
         }
     }
@@ -726,10 +714,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
             if (!predictorArchive)
             {
-                asPredictorCriteria::DeleteArray(criteria);
-                wxDELETE(predictorArchive);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -737,11 +721,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
             if (!predictorRealtime)
             {
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
-                wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
@@ -753,11 +733,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             // Update
             if(!predictorRealtime->BuildFilenamesUrls())
             {
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -769,11 +746,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 if(listTimeArray[i]!=timeArrayDataTarget[i])
                 {
                     asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
                     return false;
                 }
             }
@@ -787,11 +761,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."), asTime::GetStringTime(ptorStartArchive), asTime::GetStringTime(predictorArchive->GetOriginalProviderStart())));
                 wxDELETE(area);
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -801,14 +772,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 asLogError(_("Archive data could not be loaded."));
                 wxDELETE(area);
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
-            predictorsArchive.push_back(predictorArchive);
+            m_StoragePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
             asLogMessage(_("Loading GCM forecast data."));
@@ -816,21 +784,15 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 asLogError(_("Real-time data could not be loaded."));
                 wxDELETE(area);
-                asPredictorCriteria::DeleteArray(criteria);
-                wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
             wxDELETE(area);
-            predictorsRealtime.push_back(predictorRealtime);
+            m_StoragePredictorsRealtime.push_back(predictorRealtime);
         }
         else
         {
             int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
-            std::vector < asDataPredictorArchive* > predictorsArchivePreprocess;
-            std::vector < asDataPredictorRealtime* > predictorsRealtimePreprocess;
 
             asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
 
@@ -855,12 +817,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
                 if (!predictorArchivePreprocess)
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
-                    wxDELETE(predictorArchivePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
 
@@ -868,13 +824,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
                 if (!predictorRealtimePreprocess)
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
-                    wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
@@ -886,13 +836,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 // Update
                 if(!predictorRealtimePreprocess->BuildFilenamesUrls())
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
 
@@ -904,13 +849,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
                         asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                        asPredictorCriteria::DeleteArray(criteria);
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
-                        DeleteArray(predictorsArchive);
-                        DeleteArray(predictorsRealtime);
-                        DeleteArray(predictorsArchivePreprocess);
-                        DeleteArray(predictorsRealtimePreprocess);
                         return false;
                     }
                 }
@@ -924,13 +864,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."), asTime::GetStringTime(ptorStartArchive), asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart())));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
 
@@ -940,16 +875,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     asLogError(_("Archive data could not be loaded."));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
-                predictorsArchivePreprocess.push_back(predictorArchivePreprocess);
+                m_StoragePredictorsArchivePreprocess.push_back(predictorArchivePreprocess);
 
                 // Realtime data loading
                 asLogMessage(_("Loading forecast data."));
@@ -957,17 +887,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     asLogError(_("Real-time data could not be loaded."));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
-                    wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
                 wxDELETE(area);
-                predictorsRealtimePreprocess.push_back(predictorRealtimePreprocess);
+                m_StoragePredictorsRealtimePreprocess.push_back(predictorRealtimePreprocess);
             }
 
             // Fix the criteria if S1
@@ -977,63 +901,38 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             }
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, 0), params.GetPreprocessArchiveDataId(i_step, i_ptor, 0), m_PredictorsArchiveDir);
-            *predictorArchive = *predictorsArchivePreprocess[0];
+            asDataPredictorArchive* predictorArchive = new asDataPredictorArchive(*m_StoragePredictorsArchivePreprocess[0]);
             if (!predictorArchive)
             {
-                asPredictorCriteria::DeleteArray(criteria);
-                wxDELETE(predictorArchive);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
-            if(!asPreprocessor::Preprocess(predictorsArchivePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorArchive))
+            if(!asPreprocessor::Preprocess(m_StoragePredictorsArchivePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorArchive))
             {
                 asLogError(_("Data preprocessing failed."));
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
             // Instanciate an realtime predictor object
-            asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, 0), params.GetPreprocessRealtimeDataId(i_step, i_ptor, 0));
-            *predictorRealtime = *predictorsRealtimePreprocess[0];
+            asDataPredictorRealtime* predictorRealtime = new asDataPredictorRealtime(*m_StoragePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime)
             {
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
-                wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
-            if(!asPreprocessor::Preprocess(predictorsRealtimePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime))
+            if(!asPreprocessor::Preprocess(m_StoragePredictorsRealtimePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime))
             {
                 asLogError(_("Data preprocessing failed."));
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
-            predictorsArchive.push_back(predictorArchive);
-            predictorsRealtime.push_back(predictorRealtime);
-            DeleteArray(predictorsArchivePreprocess);
-            DeleteArray(predictorsRealtimePreprocess);
+            m_StoragePredictorsArchive.push_back(predictorArchive);
+            m_StoragePredictorsRealtime.push_back(predictorRealtime);
+            DeletePreprocessData();
         }
 
         asLogMessage(_("Data loaded"));
@@ -1041,7 +940,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         // Instantiate a score object
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria* criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor), linAlgebraMethod);
-        criteria.push_back(criterion);
+        m_StorageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
     }
@@ -1078,14 +977,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         asTimeArray timeArrayTargetLeadTime = asTimeArray(timeArrayTargetVectUnique);
         bool containsNaNs = false;
 
-        if(!asProcessor::GetAnalogsDates(predictorsArchive, predictorsRealtime,
+        if(!asProcessor::GetAnalogsDates(m_StoragePredictorsArchive, m_StoragePredictorsRealtime,
                                          timeArrayArchive, timeArrayArchive, timeArrayTarget, timeArrayTargetLeadTime,
-                                         criteria, params, i_step, anaDates, containsNaNs))
+                                         m_StorageCriteria, params, i_step, anaDates, containsNaNs))
         {
             asLogError(_("Failed processing the analogs dates."));
-            asPredictorCriteria::DeleteArray(criteria);
-            DeleteArray(predictorsArchive);
-            DeleteArray(predictorsRealtime);
             return false;
         }
 
@@ -1102,9 +998,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
     results.SetTargetDates(timeArrayTarget.GetTimeArray());
 
-    asPredictorCriteria::DeleteArray(criteria);
-    DeleteArray(predictorsArchive);
-    DeleteArray(predictorsRealtime);
+    Cleanup();
 
     return true;
 }
@@ -1117,11 +1011,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params, m_ForecastDate);
-
-    // Create the vectors to put the data in
-    std::vector < asDataPredictor* > predictorsArchive;
-    std::vector < asDataPredictor* > predictorsRealtime;
-    std::vector < asPredictorCriteria* > criteria;
 
     // Date array object instantiation for the processor
     asLogMessage(_("Creating a date arrays for the processor."));
@@ -1143,9 +1032,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
             if (!predictorRealtime)
             {
-                wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -1162,9 +1048,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
                 if (!predictorRealtimePreprocess)
                 {
-                    wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
                     return false;
                 }
 
@@ -1197,8 +1080,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     if(timeArrayArchive.GetSize()<100)
     {
         asLogError(wxString::Format(_("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),timeArrayArchive.GetSize()));
-        DeleteArray(predictorsArchive);
-        DeleteArray(predictorsRealtime);
         return false;
     }
     asLogMessage(_("Date array created."));
@@ -1231,8 +1112,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         if(neededMemMb>freeMemMb)
         {
             asLogError(_("Data cannot fit into available memory."));
-            DeleteArray(predictorsArchive);
-            DeleteArray(predictorsRealtime);
             return false;
         }
     }
@@ -1267,10 +1146,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
             if (!predictorArchive)
             {
-                asPredictorCriteria::DeleteArray(criteria);
-                wxDELETE(predictorArchive);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -1278,11 +1153,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
             if (!predictorRealtime)
             {
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
-                wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
@@ -1294,11 +1165,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             // Update
             if(!predictorRealtime->BuildFilenamesUrls())
             {
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -1310,11 +1178,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 if(listTimeArray[i]!=timeArrayDataTarget[i])
                 {
                     asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
                     return false;
                 }
             }
@@ -1328,11 +1193,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             {
                 asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."), asTime::GetStringTime(ptorStartArchive), asTime::GetStringTime(predictorArchive->GetOriginalProviderStart())));
                 wxDELETE(area);
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
 
@@ -1341,35 +1203,26 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             {
                 asLogError(_("Archive data could not be loaded."));
                 wxDELETE(area);
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
-            predictorsArchive.push_back(predictorArchive);
+            m_StoragePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
             if(!predictorRealtime->Load(area, timeArrayDataTarget))
             {
                 asLogError(_("Real-time data could not be loaded."));
                 wxDELETE(area);
-                asPredictorCriteria::DeleteArray(criteria);
-                wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
                 return false;
             }
             wxDELETE(area);
-            predictorsRealtime.push_back(predictorRealtime);
+            m_StoragePredictorsRealtime.push_back(predictorRealtime);
         }
         else
         {
             int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
-            std::vector < asDataPredictorArchive* > predictorsArchivePreprocess;
-            std::vector < asDataPredictorRealtime* > predictorsRealtimePreprocess;
 
             asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
 
@@ -1390,12 +1243,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
                 if (!predictorArchivePreprocess)
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
-                    wxDELETE(predictorArchivePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
 
@@ -1403,13 +1250,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
                 if (!predictorRealtimePreprocess)
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
-                    wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
@@ -1421,13 +1262,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 // Update
                 if(!predictorRealtimePreprocess->BuildFilenamesUrls())
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
 
@@ -1439,13 +1275,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
                         asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                        asPredictorCriteria::DeleteArray(criteria);
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
-                        DeleteArray(predictorsArchive);
-                        DeleteArray(predictorsRealtime);
-                        DeleteArray(predictorsArchivePreprocess);
-                        DeleteArray(predictorsRealtimePreprocess);
                         return false;
                     }
                 }
@@ -1459,13 +1290,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 {
                     asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."), asTime::GetStringTime(ptorStartArchive), asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart())));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
 
@@ -1474,33 +1300,22 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 {
                     asLogError(_("Archive data could not be loaded."));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
-                predictorsArchivePreprocess.push_back(predictorArchivePreprocess);
+                m_StoragePredictorsArchivePreprocess.push_back(predictorArchivePreprocess);
 
                 // Realtime data loading
                 if(!predictorRealtimePreprocess->Load(area, timeArrayDataTarget))
                 {
                     asLogError(_("Real-time data could not be loaded."));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
-                    wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
-                    DeleteArray(predictorsArchive);
-                    DeleteArray(predictorsRealtime);
-                    DeleteArray(predictorsArchivePreprocess);
-                    DeleteArray(predictorsRealtimePreprocess);
                     return false;
                 }
                 wxDELETE(area);
-                predictorsRealtimePreprocess.push_back(predictorRealtimePreprocess);
+                m_StoragePredictorsRealtimePreprocess.push_back(predictorRealtimePreprocess);
 
                 wxASSERT_MSG(predictorArchivePreprocess->GetLatPtsnb()==predictorRealtimePreprocess->GetLatPtsnb(), wxString::Format("predictorArchivePreprocess.GetLatPtsnb()=%d, predictorRealtimePreprocess.GetLatPtsnb()=%d",predictorArchivePreprocess->GetLatPtsnb(), predictorRealtimePreprocess->GetLatPtsnb()));
                 wxASSERT_MSG(predictorArchivePreprocess->GetLonPtsnb()==predictorRealtimePreprocess->GetLonPtsnb(), wxString::Format("predictorArchivePreprocess.GetLonPtsnb()=%d, predictorRealtimePreprocess.GetLonPtsnb()=%d",predictorArchivePreprocess->GetLonPtsnb(), predictorRealtimePreprocess->GetLonPtsnb()));
@@ -1513,65 +1328,40 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             }
             
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, 0), params.GetPreprocessArchiveDataId(i_step, i_ptor, 0), m_PredictorsArchiveDir);
-            *predictorArchive = *predictorsArchivePreprocess[0];
+            asDataPredictorArchive* predictorArchive = new asDataPredictorArchive(*m_StoragePredictorsArchivePreprocess[0]);
             if (!predictorArchive)
             {
-                asPredictorCriteria::DeleteArray(criteria);
-                wxDELETE(predictorArchive);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
-            if(!asPreprocessor::Preprocess(predictorsArchivePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorArchive))
+            if(!asPreprocessor::Preprocess(m_StoragePredictorsArchivePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorArchive))
             {
                 asLogError(_("Data preprocessing failed."));
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
             // Instanciate an realtime predictor object
-            asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, 0), params.GetPreprocessRealtimeDataId(i_step, i_ptor, 0));
-            *predictorRealtime = *predictorsRealtimePreprocess[0];
+            asDataPredictorRealtime* predictorRealtime = new asDataPredictorRealtime(*m_StoragePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime)
             {
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
-                wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
-            if(!asPreprocessor::Preprocess(predictorsRealtimePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime))
+            if(!asPreprocessor::Preprocess(m_StoragePredictorsRealtimePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime))
             {
                 asLogError(_("Data preprocessing failed."));
-                asPredictorCriteria::DeleteArray(criteria);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
-                DeleteArray(predictorsArchive);
-                DeleteArray(predictorsRealtime);
-                DeleteArray(predictorsArchivePreprocess);
-                DeleteArray(predictorsRealtimePreprocess);
                 return false;
             }
 
             wxASSERT(predictorArchive->GetLatPtsnb()==predictorRealtime->GetLatPtsnb());
             wxASSERT(predictorArchive->GetLonPtsnb()==predictorRealtime->GetLonPtsnb());
-            predictorsArchive.push_back(predictorArchive);
-            predictorsRealtime.push_back(predictorRealtime);
-            DeleteArray(predictorsArchivePreprocess);
-            DeleteArray(predictorsRealtimePreprocess);
+            m_StoragePredictorsArchive.push_back(predictorArchive);
+            m_StoragePredictorsRealtime.push_back(predictorRealtime);
+            DeletePreprocessData();
         }
 
         asLogMessage(_("Data loaded"));
@@ -1579,7 +1369,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         // Instantiate a score object
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria* criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor), linAlgebraMethod);
-        criteria.push_back(criterion);
+        m_StorageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
     }
@@ -1631,12 +1421,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         anaDatesPrev.SetAnalogsCriteria(criteriaPrev2D);
         bool containsNaNs = false;
 
-        if(!asProcessor::GetAnalogsSubDates(predictorsArchive, predictorsRealtime, timeArrayArchive, timeArrayTarget, anaDatesPrev, criteria, params, i_step, anaDates, containsNaNs))
+        if(!asProcessor::GetAnalogsSubDates(m_StoragePredictorsArchive, m_StoragePredictorsRealtime, timeArrayArchive, timeArrayTarget, anaDatesPrev, m_StorageCriteria, params, i_step, anaDates, containsNaNs))
         {
             asLogError(_("Failed processing the analogs dates."));
-            asPredictorCriteria::DeleteArray(criteria);
-            DeleteArray(predictorsArchive);
-            DeleteArray(predictorsRealtime);
             return false;
         }
 
@@ -1653,9 +1440,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
     results.SetTargetDates(leadTimes);
 
-    asPredictorCriteria::DeleteArray(criteria);
-    DeleteArray(predictorsArchive);
-    DeleteArray(predictorsRealtime);
+    Cleanup();
 
     return true;
 }
@@ -1755,32 +1540,51 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     return true;
 }
 
-void asMethodForecasting::DeleteArray(std::vector < asDataPredictor* > predictors)
+void asMethodForecasting::Cleanup()
 {
-    if (predictors.size()==0) return;
+    DeletePreprocessData();
 
-    for (int i=0; (unsigned)i<predictors.size(); i++)
+    if (m_StoragePredictorsArchive.size()>0)
     {
-        wxDELETE(predictors[i]);
+        for (unsigned int i=0; i<m_StoragePredictorsArchive.size(); i++)
+        {
+            wxDELETE(m_StoragePredictorsArchive[i]);
+        }
+        m_StoragePredictorsArchive.resize(0);
     }
+
+    if (m_StoragePredictorsRealtime.size()>0)
+    {
+        for (unsigned int i=0; i<m_StoragePredictorsRealtime.size(); i++)
+        {
+            wxDELETE(m_StoragePredictorsRealtime[i]);
+        }
+        m_StoragePredictorsRealtime.resize(0);
+    }
+
+    if (m_StorageCriteria.size()>0)
+    {
+        for (unsigned int i=0; i<m_StorageCriteria.size(); i++)
+        {
+            wxDELETE(m_StorageCriteria[i]);
+        }
+        m_StorageCriteria.resize(0);
+    }
+
+    // Do not delete preloaded data here !
 }
 
-void asMethodForecasting::DeleteArray(std::vector < asDataPredictorRealtime* > predictors)
+void asMethodForecasting::DeletePreprocessData()
 {
-    if (predictors.size()==0) return;
-
-    for (int i=0; (unsigned)i<predictors.size(); i++)
+    for (unsigned int i=0; i<m_StoragePredictorsArchivePreprocess.size(); i++)
     {
-        wxDELETE(predictors[i]);
+        wxDELETE(m_StoragePredictorsArchivePreprocess[i]);
     }
-}
-
-void asMethodForecasting::DeleteArray(std::vector < asDataPredictorArchive* > predictors)
-{
-    if (predictors.size()==0) return;
-
-    for (int i=0; (unsigned)i<predictors.size(); i++)
+    m_StoragePredictorsArchivePreprocess.resize(0);
+    
+    for (unsigned int i=0; i<m_StoragePredictorsRealtimePreprocess.size(); i++)
     {
-        wxDELETE(predictors[i]);
+        wxDELETE(m_StoragePredictorsRealtimePreprocess[i]);
     }
+    m_StoragePredictorsRealtimePreprocess.resize(0);
 }
