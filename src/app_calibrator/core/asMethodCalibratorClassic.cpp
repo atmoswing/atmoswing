@@ -376,8 +376,5 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         if(!results_all.Print()) return false;
     }
 
-    // Delete preloaded data
-    DeletePreloadedData();
-
     return true;
 }

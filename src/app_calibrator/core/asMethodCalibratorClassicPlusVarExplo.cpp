@@ -116,8 +116,5 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
         }
     }
 
-    // Delete preloaded data
-    DeletePreloadedData();
-
     return true;
 }

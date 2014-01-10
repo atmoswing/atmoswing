@@ -53,11 +53,6 @@ asMethodStandard::asMethodStandard()
 
 asMethodStandard::~asMethodStandard()
 {
-
-}
-
-void asMethodStandard::Cleanup()
-{
     wxDELETE(m_PredictandDB);
 }
 

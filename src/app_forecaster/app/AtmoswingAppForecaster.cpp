@@ -300,8 +300,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         asFileAscii filePaths(tempFile, asFile::Replace);
         VectorString filePathsVect = forecaster.GetResultsFilePaths();
 
-        forecaster.Cleanup();
-
         filePaths.Open();
 
         for (int i=0; (unsigned)i<filePathsVect.size(); i++)
@@ -352,8 +350,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             }
             double realForecastDate = forecaster.GetForecastDate();
 
-            forecaster.Cleanup();
-
             // Log message
             wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
             asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
@@ -393,8 +389,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             return false;
         }
         double realForecastDate = forecaster.GetForecastDate();
-
-        forecaster.Cleanup();
 
         // Log message
         wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");

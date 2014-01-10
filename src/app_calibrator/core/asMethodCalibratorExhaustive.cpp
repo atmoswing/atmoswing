@@ -405,8 +405,5 @@ bool asMethodCalibratorExhaustive::Calibrate(asParametersCalibration &params)
         }
     }
 
-    // Delete preloaded data
-    DeletePreloadedData();
-
     return true;
 }

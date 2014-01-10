@@ -40,8 +40,6 @@ public:
     /** Default destructor */
     virtual ~asMethodStandard();
 
-    void Cleanup();
-
     virtual bool Manager();
 
     bool LoadPredictandDB(const wxString &predictandDBFilePath);

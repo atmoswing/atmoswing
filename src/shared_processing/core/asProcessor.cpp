@@ -101,6 +101,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
     // Extract some data
     Array1DDouble timeTargetSelection = timeArrayTargetSelection.GetTimeArray();
     int timeTargetSelectionSize = timeTargetSelection.size();
+    wxASSERT(criteria[0]);
     bool isasc = (criteria[0]->GetOrder()==Asc);
     int predictorsNb = params.GetPredictorsNb(step);
     wxASSERT(predictorsArchive.size()>0);

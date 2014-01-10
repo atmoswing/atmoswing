@@ -33,7 +33,6 @@
 #include <asMethodStandard.h>
 #include <asParametersCalibration.h>
 #include <asResultsAnalogsDates.h>
-#include <asCatalogPredictorsArchive.h>
 #include <asDataPredictorArchive.h>
 #include <asResultsParametersArray.h>
 #include <asResultsAnalogsDates.h>
@@ -64,6 +63,8 @@ public:
     bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScoreFinal &results, asParametersScoring &params, asResultsAnalogsForecastScores &anaScores, int i_step);
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int i_step = 0);
 
+    void Cleanup();
+    void DeletePreprocessData();
     void DeletePreloadedData();
     void ClearAll();
     void ClearTemp();
@@ -104,16 +105,6 @@ public:
         m_ScoreClimatology = val;
     }
 
-    void SetAlternateCatalogPredictorsArchiveFilePath(const wxString &val)
-    {
-        m_AlternateCatalogPredictorsArchiveFilePath = val;
-    }
-
-    wxString GetAlternateCatalogPredictorsArchiveFilePath()
-    {
-        return m_AlternateCatalogPredictorsArchiveFilePath;
-    }
-
 
 protected:
     VectorFloat m_ScoresCalib;
@@ -121,9 +112,11 @@ protected:
     Order m_ScoreOrder;
     float m_ScoreValid;
     float m_ScoreClimatology;
-    wxString m_AlternateCatalogPredictorsArchiveFilePath;
     std::vector <asParametersCalibration> m_Parameters;
     std::vector <asParametersCalibration> m_ParametersTemp;
+    std::vector < asDataPredictorArchive* > m_StoragePredictorsPreprocess;
+    std::vector < asDataPredictor* > m_StoragePredictors;
+    std::vector < asPredictorCriteria* > m_StorageCriteria;
     asParametersCalibration m_OriginalParams;
     bool m_Preloaded;
     bool m_ValidationMode;

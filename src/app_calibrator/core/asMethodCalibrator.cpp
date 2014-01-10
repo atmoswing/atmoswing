@@ -38,7 +38,6 @@ asMethodCalibrator::asMethodCalibrator()
 {
     m_PredictorDataDir = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
-    m_AlternateCatalogPredictorsArchiveFilePath = wxEmptyString;
     m_ScoreClimatology = 0;
     m_Preloaded = false;
     m_ValidationMode = false;
@@ -50,7 +49,8 @@ asMethodCalibrator::asMethodCalibrator()
 
 asMethodCalibrator::~asMethodCalibrator()
 {
-
+    DeletePreloadedData();
+    Cleanup();
 }
 
 bool asMethodCalibrator::Manager()
@@ -79,18 +79,26 @@ bool asMethodCalibrator::Manager()
     asForecastScore* forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
     Order scoreOrder = forecastScore->GetOrder();
     SetScoreOrder(scoreOrder);
+    wxDELETE(forecastScore);
 
     // Watch
     wxStopWatch sw;
 
     // Calibrate
-    if(!Calibrate(params)) asLogError(_("The parameters could not be calibrated"));
+    if(Calibrate(params))
+    {
+        // Display processing time
+        asLogMessageImportant(wxString::Format(_("The whole processing took %ldms to execute"), sw.Time()));
+        asLogState(_("Calibration over."));
+    }
+    else
+    {
+        asLogError(_("The parameters could not be calibrated"));
+    }
 
-    // Display processing time
-    asLogMessageImportant(wxString::Format(_("The whole processing took %ldms to execute"), sw.Time()));
-    asLogState(_("Calibration over."));
-
-    wxDELETE(forecastScore);
+    // Delete preloaded data and cleanup
+    DeletePreloadedData();
+    Cleanup();
 
     return true;
 }
@@ -358,8 +366,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         // Set preload to true here, so cleanup is made in case of exceptions.
         m_Preloaded = true;
 
-        asCatalogPredictorsArchive catalog(m_AlternateCatalogPredictorsArchiveFilePath);
-
         // Archive date array
         double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
         double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
@@ -492,10 +498,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         }
 
                         // Loading the datasets information
-                        if(!catalog.Load(params.GetPredictorDatasetId(tmp_step, tmp_ptor),
-                                         params.GetPredictorDataId(tmp_step, tmp_ptor)))
-                        {
-                            DeletePreloadedData();
+                        asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);
+                        if(!predictor) {
                             return false;
                         }
 
@@ -524,7 +528,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 {
 // FIXME (phorton#1#): Change that to allow for more hours
                                     asLogError(wxString::Format(_("The predictor hour cannot be inferior to 6 yet in preloading. %.2f given"), preloadDTimeHours[tmp_hour]));
-                                    DeletePreloadedData();
+                                    wxDELETE(predictor);
                                     return false;
                                 }
 
@@ -532,7 +536,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 {
 // FIXME (phorton#1#): Change that to allow for more hours
                                     asLogError(wxString::Format(_("The predictor hour cannot be superior to 24 yet in preloading. %.2f given"), preloadDTimeHours[tmp_hour]));
-                                    DeletePreloadedData();
+                                    wxDELETE(predictor);
                                     return false;
                                 }
 
@@ -553,7 +557,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                                       asTimeArray::Simple);
                                 timeArray.Init();
 
-                                asGeo geo(catalog.GetCoordSys());
+                                asGeo geo(predictor->GetCoordSys());
                                 double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
                                 if (Vmax > geo.GetAxisVmax())
                                 {
@@ -574,7 +578,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 wxASSERT(params.GetPreloadVptsnb(tmp_step, tmp_ptor)>0);
 
                                 // Area object instantiation
-                                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(),
                                                                params.GetPredictorGridType(tmp_step, tmp_ptor),
                                                                params.GetPreloadUmin(tmp_step, tmp_ptor),
                                                                params.GetPreloadUptsnb(tmp_step, tmp_ptor),
@@ -588,26 +592,24 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 wxASSERT(area);
 
                                 // Check the starting dates coherence
-                                if (catalog.GetStart()>ptorStart)
+                                if (predictor->GetOriginalProviderStart()>ptorStart)
                                 {
-                                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the catalog (%s) (in asMethodCalibrator::PreloadData)."),
-                                                                asTime::GetStringTime(ptorStart), asTime::GetStringTime(catalog.GetStart())));
+                                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData)."),
+                                                                asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
                                     wxDELETE(area);
-                                    DeletePreloadedData();
+                                    wxDELETE(predictor);
                                     return false;
                                 }
 
                                 // Data loading
                                 asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."), params.GetPredictorDataId(tmp_step, tmp_ptor).c_str(), (int)preloadLevels[tmp_level], (int)preloadDTimeHours[tmp_hour]));
-                                asDataPredictorArchive* predictor = new asDataPredictorArchive(catalog);
                                 try
                                 {
-                                    if(!predictor->Load(area, timeArray, m_PredictorDataDir))
+                                    if(!predictor->Load(area, timeArray))
                                     {
                                         asLogError(_("The data could not be loaded."));
                                         wxDELETE(area);
                                         wxDELETE(predictor);
-                                        DeletePreloadedData();
                                         return false;
                                     }
                                 }
@@ -617,7 +619,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     asLogError(wxString::Format(_("Bad allocation in the data preloading: %s"), msg.c_str()));
                                     wxDELETE(area);
                                     wxDELETE(predictor);
-                                    DeletePreloadedData();
                                     return false;
                                 }
                                 catch (exception& e)
@@ -626,7 +627,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg.c_str()));
                                     wxDELETE(area);
                                     wxDELETE(predictor);
-                                    DeletePreloadedData();
                                     return false;
                                 }
                                 asLogMessage(_("Data loaded."));
@@ -641,7 +641,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         asLogMessage(wxString::Format(_("Preloading data for predictor preprocessed %d of step %d."), tmp_ptor, tmp_step));
 
                         int preprocessSize = params.GetPreprocessSize(tmp_step, tmp_ptor);
-                        std::vector < asDataPredictorArchive > predictorsPreprocess;
 
                         asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."),
                                                       preprocessSize));
@@ -659,17 +658,17 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             timeArray.Init();
 
                             // Loading the datasets information
-                            if(!catalog.Load(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro),
-                                             params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro)))
+                            asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro), 
+                                                                                                              params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro), 
+                                                                                                              m_PredictorDataDir);
+                            if(!predictorPreprocess)
                             {
-                                DeletePreloadedData();
                                 return false;
                             }
 
-
                             asLogMessage(_("Creating maximum area."));
 
-                            asGeo geo(catalog.GetCoordSys());
+                            asGeo geo(predictorPreprocess->GetCoordSys());
                             double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
                             if (Vmax > geo.GetAxisVmax())
                             {
@@ -680,7 +679,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             }
 
                             // Area object instantiation
-                            asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                            asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
                                                            params.GetPredictorGridType(tmp_step, tmp_ptor),
                                                            params.GetPreloadUmin(tmp_step, tmp_ptor),
                                                            params.GetPreloadUptsnb(tmp_step, tmp_ptor),
@@ -696,12 +695,12 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             asLogMessage(_("Area created."));
 
                             // Check the starting dates coherence
-                            if (catalog.GetStart()>ptorStart)
+                            if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
                             {
-                                asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the catalog (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
-                                                            asTime::GetStringTime(ptorStart), asTime::GetStringTime(catalog.GetStart())));
+                                asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
+                                                            asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                                 wxDELETE(area);
-                                DeletePreloadedData();
+                                wxDELETE(predictorPreprocess);
                                 return false;
                             }
 
@@ -710,16 +709,15 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                                           params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).c_str(),
                                                           (int)params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro),
                                                           (int)params.GetPreprocessDTimeHours(tmp_step, tmp_ptor, tmp_prepro)));
-                            asDataPredictorArchive predictorPreprocess(catalog);
-                            if(!predictorPreprocess.Load(area, timeArray, m_PredictorDataDir))
+                            if(!predictorPreprocess->Load(area, timeArray))
                             {
                                 asLogError(_("The data could not be loaded."));
                                 wxDELETE(area);
-                                DeletePreloadedData();
+                                wxDELETE(predictorPreprocess);
                                 return false;
                             }
                             wxDELETE(area);
-                            predictorsPreprocess.push_back(predictorPreprocess);
+                            m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
                         }
 
                         // Fix the criteria if S1
@@ -729,13 +727,14 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         }
 
                         asLogMessage(_("Preprocessing data."));
-                        asDataPredictorArchive* predictor = new asDataPredictorArchive(predictorsPreprocess[0]);
+                        asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
                         try
                         {
-                            if(!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(tmp_step, tmp_ptor), predictor))
+                            if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(tmp_step, tmp_ptor), predictor))
                             {
-                               asLogError(_("Data preprocessing failed."));
-                               return false;
+                                asLogError(_("Data preprocessing failed."));
+                                wxDELETE(predictor);
+                                return false;
                             }
                             m_PreloadedArchive[tmp_step][tmp_ptor][0][0]=predictor;
                         }
@@ -745,7 +744,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             wxString msg(ba.what(), wxConvUTF8);
                             asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg.c_str()));
                             wxDELETE(predictor);
-                            DeletePreloadedData();
                             return false;
                         }
                         catch (exception& e)
@@ -754,9 +752,9 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             wxString msg(e.what(), wxConvUTF8);
                             asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg.c_str()));
                             wxDELETE(predictor);
-                            DeletePreloadedData();
                             return false;
                         }
+                        DeletePreprocessData();
                         asLogMessage(_("Preprocessing over."));
                     }
                 }
@@ -784,7 +782,44 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
             }
         }
     }
+
+    Cleanup();
+
     return true;
+}
+
+void asMethodCalibrator::Cleanup()
+{
+    DeletePreprocessData();
+
+    if (m_StoragePredictors.size()>0)
+    {
+        for (unsigned int i=0; i<m_StoragePredictors.size(); i++)
+        {
+            wxDELETE(m_StoragePredictors[i]);
+        }
+        m_StoragePredictors.resize(0);
+    }
+
+    if (m_StorageCriteria.size()>0)
+    {
+        for (unsigned int i=0; i<m_StorageCriteria.size(); i++)
+        {
+            wxDELETE(m_StorageCriteria[i]);
+        }
+        m_StorageCriteria.resize(0);
+    }
+
+    // Do not delete preloaded data here !
+}
+
+void asMethodCalibrator::DeletePreprocessData()
+{
+    for (unsigned int i=0; i<m_StoragePredictorsPreprocess.size(); i++)
+    {
+        wxDELETE(m_StoragePredictorsPreprocess[i]);
+    }
+    m_StoragePredictorsPreprocess.resize(0);
 }
 
 void asMethodCalibrator::DeletePreloadedData()
@@ -818,9 +853,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asCOEFF_NOVAR));
     ThreadsManager().CritSectionConfig().Leave();
 
-    // Catalogs
-    asCatalogPredictorsArchive catalog(m_AlternateCatalogPredictorsArchiveFilePath);
-
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
@@ -830,10 +862,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     {
         return true;
     }
-
-    // Create the vectors to put the data in
-    std::vector < asDataPredictor > predictorsArchive;
-    std::vector < asPredictorCriteria* > criteria;
 
     // Archive date array
     asLogMessage(_("Creating a date arrays."));
@@ -954,21 +982,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
             if(!params.NeedsPreprocessing(i_step, i_ptor))
             {
-                // Loading the datasets information
-                if(!catalog.Load(params.GetPredictorDatasetId(i_step, i_ptor),
-                                 params.GetPredictorDataId(i_step, i_ptor)))
-                {
-                    asPredictorCriteria::DeleteArray(criteria);
-                    return false;
-                }
-
                 VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
                 VectorDouble preloadDTimeHours = params.GetPreloadDTimeHours(i_step, i_ptor);
                 wxASSERT(preloadLevels.size()>0);
                 wxASSERT(preloadDTimeHours.size()>0);
-
-                // Set the correct data
-                asDataPredictorArchive desiredPredictor(catalog);
 
                 // Get level and hour indices
                 int i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size()-1], params.GetPredictorLevel(i_step, i_ptor));
@@ -995,12 +1012,13 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     asLogError(_("The pointer to preloaded data is null."));
                     return false;
                 }
+                // Copy the data
                 wxASSERT(m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
-                desiredPredictor = *m_PreloadedArchive[i_step][i_ptor][i_level][i_hour];
+                asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
                 ThreadsManager().CritSectionPreloadedData().Leave();
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
                                                params.GetPredictorGridType(i_step, i_ptor),
                                                params.GetPredictorUmin(i_step, i_ptor),
                                                params.GetPredictorUptsnb(i_step, i_ptor),
@@ -1014,30 +1032,20 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
                 wxASSERT(desiredArea);
 
-                if(!desiredPredictor.ClipToArea(desiredArea))
+                if(!desiredPredictor->ClipToArea(desiredArea))
                 {
                     asLogError(_("The data could not be extracted."));
                     wxDELETE(desiredArea);
+                    wxDELETE(desiredPredictor);
                     return false;
                 }
                 wxDELETE(desiredArea);
 
-                wxASSERT(desiredPredictor.GetSizeTime()>0);
-                predictorsArchive.push_back(desiredPredictor);
+                wxASSERT(desiredPredictor->GetSizeTime()>0);
+                m_StoragePredictors.push_back(desiredPredictor);
             }
             else
             {
-                // Loading the datasets information
-                if(!catalog.Load(params.GetPreprocessDatasetId(i_step, i_ptor, 0),
-                                 params.GetPreprocessDataId(i_step, i_ptor, 0)))
-                {
-                    asPredictorCriteria::DeleteArray(criteria);
-                    return false;
-                }
-
-                // Set the correct data
-                asDataPredictorArchive desiredPredictor(catalog);
-
                 // Get data on the desired domain
                 wxASSERT_MSG((unsigned)i_step<m_PreloadedArchive.size(), wxString::Format("i_step=%d, m_PreloadedArchive.size()=%d", i_step, (int)m_PreloadedArchive.size()));
                 wxASSERT_MSG((unsigned)i_ptor<m_PreloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_PreloadedArchive[i_step].size()=%d", i_ptor, (int)m_PreloadedArchive[i_step].size()));
@@ -1050,11 +1058,11 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     return false;
                 }
                 wxASSERT(m_PreloadedArchive[i_step][i_ptor][0][0]);
-                desiredPredictor = *m_PreloadedArchive[i_step][i_ptor][0][0];
+                asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][0][0]);
                 ThreadsManager().CritSectionPreloadedData().Leave();
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
                                                params.GetPredictorGridType(i_step, i_ptor),
                                                params.GetPredictorUmin(i_step, i_ptor),
                                                params.GetPredictorUptsnb(i_step, i_ptor),
@@ -1068,16 +1076,17 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
                 wxASSERT(desiredArea);
 
-                if(!desiredPredictor.ClipToArea(desiredArea))
+                if(!desiredPredictor->ClipToArea(desiredArea))
                 {
                     asLogError(_("The data could not be extracted."));
                     wxDELETE(desiredArea);
+                    wxDELETE(desiredPredictor);
                     return false;
                 }
                 wxDELETE(desiredArea);
 
-                wxASSERT(desiredPredictor.GetSizeTime()>0);
-                predictorsArchive.push_back(desiredPredictor);
+                wxASSERT(desiredPredictor->GetSizeTime()>0);
+                m_StoragePredictors.push_back(desiredPredictor);
             }
 
         }
@@ -1098,15 +1107,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                 timeArray.Init();
 
                 // Loading the datasets information
-                if(!catalog.Load(params.GetPredictorDatasetId(i_step, i_ptor),
-                                 params.GetPredictorDataId(i_step, i_ptor)))
+                asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(i_step, i_ptor), params.GetPredictorDataId(i_step, i_ptor), m_PredictorDataDir);
+                if(!predictor)
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
                     return false;
                 }
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(),
                                                params.GetPredictorGridType(i_step, i_ptor),
                                                params.GetPredictorUmin(i_step, i_ptor),
                                                params.GetPredictorUptsnb(i_step, i_ptor),
@@ -1120,31 +1128,29 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                 wxASSERT(area);
 
                 // Check the starting dates coherence
-                if (catalog.GetStart()>ptorStart)
+                if (predictor->GetOriginalProviderStart()>ptorStart)
                 {
-                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the catalog (%s) (in asMethodCalibrator::GetAnalogsDates, no preprocessing)."),
-                                                asTime::GetStringTime(ptorStart), asTime::GetStringTime(catalog.GetStart())));
+                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, no preprocessing)."),
+                                                asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
+                    wxDELETE(predictor);
                     return false;
                 }
 
                 // Data loading
-                asDataPredictorArchive predictor(catalog);
-                if(!predictor.Load(area, timeArray, m_PredictorDataDir))
+                if(!predictor->Load(area, timeArray))
                 {
                     asLogError(_("The data could not be loaded."));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
+                    wxDELETE(predictor);
                     return false;
                 }
                 wxDELETE(area);
-                predictorsArchive.push_back(predictor);
+                m_StoragePredictors.push_back(predictor);
             }
             else
             {
                 int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
-                std::vector < asDataPredictorArchive > predictorsPreprocess;
 
                 asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."),
                                               preprocessSize));
@@ -1160,12 +1166,16 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     timeArray.Init();
 
                     // Loading the datasets information
-                    if(!catalog.Load(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro),
-                                     params.GetPreprocessDataId(i_step, i_ptor, i_prepro)))
-                                        return false;
+                    asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro), 
+                                                                                                             params.GetPreprocessDataId(i_step, i_ptor, i_prepro), 
+                                                                                                             m_PredictorDataDir);
+                    if(!predictorPreprocess)
+                    {
+                        return false;
+                    }
 
                     // Area object instantiation
-                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
                                                                                        params.GetPredictorGridType(i_step, i_ptor),
                                                                                        params.GetPredictorUmin(i_step, i_ptor),
                                                                                        params.GetPredictorUptsnb(i_step, i_ptor),
@@ -1179,26 +1189,25 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     wxASSERT(area);
 
                     // Check the starting dates coherence
-                    if (catalog.GetStart()>ptorStart)
+                    if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
                     {
-                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the catalog (%s) (in asMethodCalibrator::GetAnalogsDates, preprocessing)."),
-                                                    asTime::GetStringTime(ptorStart), asTime::GetStringTime(catalog.GetStart())));
+                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, preprocessing)."),
+                                                    asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                         wxDELETE(area);
-                        asPredictorCriteria::DeleteArray(criteria);
+                        wxDELETE(predictorPreprocess);
                         return false;
                     }
 
                     // Data loading
-                    asDataPredictorArchive predictorPreprocess(catalog);
-                    if(!predictorPreprocess.Load(area, timeArray, m_PredictorDataDir))
+                    if(!predictorPreprocess->Load(area, timeArray))
                     {
                         asLogError(_("The data could not be loaded."));
                         wxDELETE(area);
-                        asPredictorCriteria::DeleteArray(criteria);
+                        wxDELETE(predictorPreprocess);
                         return false;
                     }
                     wxDELETE(area);
-                    predictorsPreprocess.push_back(predictorPreprocess);
+                    m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
                 }
 
                 // Fix the criteria if S1
@@ -1207,14 +1216,15 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
                 }
 
-                asDataPredictorArchive predictor(predictorsPreprocess[0]);
-                if(!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), &predictor))
+                asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
+                if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictor))
                 {
                    asLogError(_("Data preprocessing failed."));
                    return false;
                 }
 
-                predictorsArchive.push_back(predictor);
+                DeletePreprocessData();
+                m_StoragePredictors.push_back(predictor);
             }
 
             asLogMessage(_("Data loaded"));
@@ -1224,29 +1234,29 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria* criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
-        criteria.push_back(criterion);
+        m_StorageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
     }
 
     // Check time sizes
     int prevTimeSize = 0;
-    for (unsigned int i=0; i<predictorsArchive.size(); i++)
+    for (unsigned int i=0; i<m_StoragePredictors.size(); i++)
     {
         if (i>0)
         {
-            wxASSERT(predictorsArchive[i].GetSizeTime()==prevTimeSize);
+            wxASSERT(m_StoragePredictors[i]->GetSizeTime()==prevTimeSize);
         }
-        prevTimeSize = predictorsArchive[i].GetSizeTime();
+        prevTimeSize = m_StoragePredictors[i]->GetSizeTime();
     }
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
     //asDataPredictor predictors = predictorsArchive;
 
-    if(!asProcessor::GetAnalogsDates(predictorsArchive, predictorsArchive,
+    if(!asProcessor::GetAnalogsDates(m_StoragePredictors, m_StoragePredictors,
                                      timeArrayData, timeArrayArchive, timeArrayData, timeArrayTarget,
-                                     criteria, params, i_step, results, containsNaNs))
+                                     m_StorageCriteria, params, i_step, results, containsNaNs))
     {
         asLogError(_("Failed processing the analogs dates."));
         return false;
@@ -1256,7 +1266,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     // Saving intermediate results
     results.Save();
 
-    asPredictorCriteria::DeleteArray(criteria);
+    Cleanup();
 
     return true;
 }
@@ -1268,19 +1278,12 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asCOEFF_NOVAR));
     ThreadsManager().CritSectionConfig().Leave();
 
-    // Catalog
-    asCatalogPredictorsArchive catalog(m_AlternateCatalogPredictorsArchiveFilePath);
-
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
 
     // If result file already exists, load it
     if (results.Load()) return true;
-
-    // Create the vectors to put the data in
-    std::vector < asDataPredictor > predictorsArchive;
-    std::vector < asPredictorCriteria* > criteria;
 
     // Date array object instantiation for the processor
     asLogMessage(_("Creating a date arrays for the processor."));
@@ -1300,21 +1303,10 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
             if(!params.NeedsPreprocessing(i_step, i_ptor))
             {
-                // Loading the datasets information
-                if(!catalog.Load(params.GetPredictorDatasetId(i_step, i_ptor),
-                                 params.GetPredictorDataId(i_step, i_ptor)))
-                {
-                    asPredictorCriteria::DeleteArray(criteria);
-                    return false;
-                }
-
                 VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
                 VectorDouble preloadDTimeHours = params.GetPreloadDTimeHours(i_step, i_ptor);
                 wxASSERT(preloadLevels.size()>0);
                 wxASSERT(preloadDTimeHours.size()>0);
-
-                // Set the correct data
-                asDataPredictorArchive desiredPredictor(catalog);
 
                 // Get level and hour indices
                 int i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size()-1], params.GetPredictorLevel(i_step, i_ptor));
@@ -1342,11 +1334,11 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                     return false;
                 }
                 wxASSERT(m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
-                desiredPredictor = *m_PreloadedArchive[i_step][i_ptor][i_level][i_hour];
+                asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
                 ThreadsManager().CritSectionPreloadedData().Leave();
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
+                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
                                                params.GetPredictorGridType(i_step, i_ptor),
                                                params.GetPredictorUmin(i_step, i_ptor),
                                                params.GetPredictorUptsnb(i_step, i_ptor),
@@ -1360,28 +1352,18 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
                 wxASSERT(desiredArea);
 
-                if(!desiredPredictor.ClipToArea(desiredArea))
+                if(!desiredPredictor->ClipToArea(desiredArea))
                 {
                     asLogError(_("The data could not be extracted."));
                     wxDELETE(desiredArea);
+                    wxDELETE(desiredPredictor);
                     return false;
                 }
                 wxDELETE(desiredArea);
-                predictorsArchive.push_back(desiredPredictor);
+                m_StoragePredictors.push_back(desiredPredictor);
             }
             else
             {
-                // Loading the datasets information
-                if(!catalog.Load(params.GetPreprocessDatasetId(i_step, i_ptor, 0),
-                                 params.GetPreprocessDataId(i_step, i_ptor, 0)))
-                {
-                    asPredictorCriteria::DeleteArray(criteria);
-                    return false;
-                }
-
-                // Set the correct data
-                asDataPredictorArchive desiredPredictor(catalog);
-
                 // Get data on the desired domain
                 wxASSERT_MSG((unsigned)i_step<m_PreloadedArchive.size(), wxString::Format("i_step=%d, m_PreloadedArchive.size()=%d", i_step, (int)m_PreloadedArchive.size()));
                 wxASSERT_MSG((unsigned)i_ptor<m_PreloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_PreloadedArchive[i_step].size()=%d", i_ptor, (int)m_PreloadedArchive[i_step].size()));
@@ -1394,32 +1376,33 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                     return false;
                 }
                 wxASSERT(m_PreloadedArchive[i_step][i_ptor][0][0]);
-                desiredPredictor = *m_PreloadedArchive[i_step][i_ptor][0][0];
+                asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][0][0]);
                 ThreadsManager().CritSectionPreloadedData().Leave();
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(),
-                                               params.GetPredictorGridType(i_step, i_ptor),
-                                               params.GetPredictorUmin(i_step, i_ptor),
-                                               params.GetPredictorUptsnb(i_step, i_ptor),
-                                               params.GetPredictorUstep(i_step, i_ptor),
-                                               params.GetPredictorVmin(i_step, i_ptor),
-                                               params.GetPredictorVptsnb(i_step, i_ptor),
-                                               params.GetPredictorVstep(i_step, i_ptor),
-                                               params.GetPreprocessLevel(i_step, i_ptor, 0),
-                                               asNONE,
-                                               params.GetPredictorFlatAllowed(i_step, i_ptor));
+                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
+                                                                                        params.GetPredictorGridType(i_step, i_ptor),
+                                                                                        params.GetPredictorUmin(i_step, i_ptor),
+                                                                                        params.GetPredictorUptsnb(i_step, i_ptor),
+                                                                                        params.GetPredictorUstep(i_step, i_ptor),
+                                                                                        params.GetPredictorVmin(i_step, i_ptor),
+                                                                                        params.GetPredictorVptsnb(i_step, i_ptor),
+                                                                                        params.GetPredictorVstep(i_step, i_ptor),
+                                                                                        params.GetPreprocessLevel(i_step, i_ptor, 0),
+                                                                                        asNONE,
+                                                                                        params.GetPredictorFlatAllowed(i_step, i_ptor));
 
                 wxASSERT(desiredArea);
 
-                if(!desiredPredictor.ClipToArea(desiredArea))
+                if(!desiredPredictor->ClipToArea(desiredArea))
                 {
                     asLogError(_("The data could not be extracted."));
                     wxDELETE(desiredArea);
+                    wxDELETE(desiredPredictor);
                     return false;
                 }
                 wxDELETE(desiredArea);
-                predictorsArchive.push_back(desiredPredictor);
+                m_StoragePredictors.push_back(desiredPredictor);
             }
         }
         else
@@ -1435,41 +1418,39 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                 timeArray.Init();
 
                 // Loading the datasets information
-                if(!catalog.Load(params.GetPredictorDatasetId(i_step, i_ptor), params.GetPredictorDataId(i_step, i_ptor)))
+                asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(i_step, i_ptor), params.GetPredictorDataId(i_step, i_ptor), m_PredictorDataDir);
+                if(!predictor)
                 {
-                    asPredictorCriteria::DeleteArray(criteria);
                     return false;
                 }
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPredictorLevel(i_step, i_ptor), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
+                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPredictorLevel(i_step, i_ptor), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
                 wxASSERT(area);
 
                 // Check the starting dates coherence
-                if (catalog.GetStart()>ptorStart)
+                if (predictor->GetOriginalProviderStart()>ptorStart)
                 {
-                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the catalog (%s) (in asMethodCalibrator::GetAnalogsSubDates, no preprocessing)."), asTime::GetStringTime(ptorStart), asTime::GetStringTime(catalog.GetStart())));
+                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsSubDates, no preprocessing)."), asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
+                    wxDELETE(predictor);
                     return false;
                 }
 
                 // Data loading
-                asDataPredictorArchive predictor(catalog);
-                if(!predictor.Load(area, timeArray, m_PredictorDataDir))
+                if(!predictor->Load(area, timeArray))
                 {
                     asLogError(_("The data could not be loaded."));
                     wxDELETE(area);
-                    asPredictorCriteria::DeleteArray(criteria);
+                    wxDELETE(predictor);
                     return false;
                 }
                 wxDELETE(area);
-                predictorsArchive.push_back(predictor);
+                m_StoragePredictors.push_back(predictor);
             }
             else
             {
                 int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
-                std::vector < asDataPredictorArchive > predictorsPreprocess;
 
                 for (int i_prepro=0; i_prepro<preprocessSize; i_prepro++)
                 {
@@ -1480,32 +1461,35 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                     timeArray.Init();
 
                     // Loading the datasets information
-                    if(!catalog.Load(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessDataId(i_step, i_ptor, i_prepro))) return false;
+                    asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessDataId(i_step, i_ptor, i_prepro), m_PredictorDataDir);
+                    if(!predictorPreprocess) 
+                    {
+                        return false;
+                    }
 
                     // Area object instantiation
-                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(catalog.GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPreprocessLevel(i_step, i_ptor, i_prepro), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
+                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPreprocessLevel(i_step, i_ptor, i_prepro), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
                     wxASSERT(area);
 
                     // Check the starting dates coherence
-                    if (catalog.GetStart()>ptorStart)
+                    if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
                     {
-                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the catalog (%s) (in asMethodCalibrator::GetAnalogsSubDates, preprocessing)."), asTime::GetStringTime(ptorStart), asTime::GetStringTime(catalog.GetStart())));
+                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsSubDates, preprocessing)."), asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                         wxDELETE(area);
-                        asPredictorCriteria::DeleteArray(criteria);
+                        wxDELETE(predictorPreprocess);
                         return false;
                     }
 
                     // Data loading
-                    asDataPredictorArchive predictorPreprocess(catalog);
-                    if(!predictorPreprocess.Load(area, timeArray, m_PredictorDataDir))
+                    if(!predictorPreprocess->Load(area, timeArray))
                     {
                         asLogError(_("The data could not be loaded."));
                         wxDELETE(area);
-                        asPredictorCriteria::DeleteArray(criteria);
+                        wxDELETE(predictorPreprocess);
                         return false;
                     }
                     wxDELETE(area);
-                    predictorsPreprocess.push_back(predictorPreprocess);
+                    m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
                 }
 
                 // Fix the criteria if S1
@@ -1514,14 +1498,16 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                     params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
                 }
 
-                asDataPredictorArchive predictor(predictorsPreprocess[0]);
-                if(!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), &predictor))
+                asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
+                if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictor))
                 {
                    asLogError(_("Data preprocessing failed."));
                    return false;
                 }
+                
+                m_StoragePredictors.push_back(predictor);
 
-                predictorsArchive.push_back(predictor);
+                DeletePreprocessData();
             }
 
             asLogMessage(_("Data loaded"));
@@ -1530,14 +1516,14 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
         // Instantiate a score object
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria* criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor), linAlgebraMethod);
-        criteria.push_back(criterion);
+        m_StorageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
     }
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
-    if(!asProcessor::GetAnalogsSubDates(predictorsArchive, predictorsArchive, timeArrayArchive, timeArrayArchive, anaDates, criteria, params, i_step, results, containsNaNs))
+    if(!asProcessor::GetAnalogsSubDates(m_StoragePredictors, m_StoragePredictors, timeArrayArchive, timeArrayArchive, anaDates, m_StorageCriteria, params, i_step, results, containsNaNs))
     {
         asLogError(_("Failed processing the analogs dates."));
         return false;
@@ -1547,7 +1533,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     // Saving intermediate results
     results.Save();
 
-    asPredictorCriteria::DeleteArray(criteria);
+    Cleanup();
 
     return true;
 }
