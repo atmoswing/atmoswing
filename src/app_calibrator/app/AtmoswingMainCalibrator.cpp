@@ -36,11 +36,6 @@
 
 #include "AtmoswingMainCalibrator.h"
 
-#include "asCatalog.h"
-#include "asCatalogPredictands.h"
-#include "asCatalogPredictors.h"
-#include "asCatalogPredictorsArchive.h"
-#include "asCatalogPredictorsRealtime.h"
 #include "asGeo.h"
 #include "asGeoArea.h"
 #include "asGeoAreaCompositeGrid.h"
@@ -104,53 +99,6 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
     SetClientSize(w, h);
     Fit();
 
-    // Check that the paths to the catalogs are well defined
-    bool doConfigure = false;
-    wxString CatalogPredictorsArchiveFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", wxEmptyString);
-    wxString CatalogPredictorsRealtimeFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", wxEmptyString);
-    wxString CatalogPredictandsFilePath = pConfig->Read("/StandardPaths/CatalogPredictandsFilePath", wxEmptyString);
-
-    if (CatalogPredictorsArchiveFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictorsArchiveFilePath))
-        {
-            asLogError(_("The path to the archive predictors catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (CatalogPredictorsRealtimeFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictorsRealtimeFilePath))
-        {
-            asLogError(_("The path to the real-time predictors catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (CatalogPredictandsFilePath.IsEmpty())
-    {
-        doConfigure = true;
-    }
-    else
-    {
-        if (!wxFileName::FileExists(CatalogPredictandsFilePath))
-        {
-            asLogError(_("The path to the predictand catalog is not correct. Please give the path to the file under Options > Preferences > Paths"));
-        }
-    }
-
-    if (doConfigure)
-    {
-        asLogError(_("The software is not configured. Please go to Options > Preferences and set the minimum required information."));
-    }
-
     // Get the GUI mode -> silent or not
     long guiOptions = pConfig->Read("/Standard/GuiOptions", 0l);
     if (guiOptions==0l)
@@ -200,12 +148,6 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+DS+"config";
     wxString dirData = asConfig::GetDataDir()+DS+"data";
-    wxString CatalogPredictorsArchiveFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", dirConfig+"CatalogPredictorsArchive.xml");
-    pConfig->Write("/StandardPaths/CatalogPredictorsArchiveFilePath", CatalogPredictorsArchiveFilePath);
-    wxString CatalogPredictorsRealtimeFilePath = pConfig->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", dirConfig+"CatalogPredictorsRealtime.xml");
-    pConfig->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", CatalogPredictorsRealtimeFilePath);
-    wxString CatalogPredictandsFilePath = pConfig->Read("/StandardPaths/CatalogPredictandsFilePath", dirConfig+"CatalogPredictands.xml");
-    pConfig->Write("/StandardPaths/CatalogPredictandsFilePath", CatalogPredictandsFilePath);
     wxString PredictandDBDir = pConfig->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
     pConfig->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
     wxString IntermediateResultsDir = pConfig->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"Atmoswing");
