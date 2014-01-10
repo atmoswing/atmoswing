@@ -266,9 +266,6 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/Standard/Responsive", false);
         pConfig->Write("/Standard/DisplayLogWindow", false);
         pConfig->Write("/Standard/ProcessingThreadsPriority", 100);
-        pConfig->Write("/StandardPaths/CatalogPredictorsArchiveFilePath", dirConfig+"CatalogPredictorsArchive.xml");
-        pConfig->Write("/StandardPaths/CatalogPredictorsRealtimeFilePath", dirConfig+"CatalogPredictorsRealtime.xml");
-        pConfig->Write("/StandardPaths/CatalogPredictandsFilePath", dirConfig+"CatalogPredictands.xml");
         pConfig->Write("/StandardPaths/DataPredictandDBDir", dirData);
         pConfig->Write("/StandardPaths/IntermediateResultsDir", localPath+"temp");
         pConfig->Write("/StandardPaths/CalibrationResultsDir", localPath+"results");
@@ -498,24 +495,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
             asLogError(wxString::Format(_("The given config directory (%s) couldn't be found."), configDir.c_str()));
             return false;
         }
-
-        wxString CatalogPredictorsArchiveFilePath = configDir+DS+"CatalogPredictorsArchive.xml";
-        wxString CatalogPredictandsFilePath = configDir+DS+"CatalogPredictands.xml";
-        // Not checking CatalogPredictorsRealtimeFilePath as we should not using it
-
-        if (!wxFileName::FileExists(CatalogPredictorsArchiveFilePath))
-        {
-            asLogError(wxString::Format(_("The file (%s) couldn't be found."), CatalogPredictorsArchiveFilePath.c_str()));
-            return false;
-        }
-        if (!wxFileName::FileExists(CatalogPredictandsFilePath))
-        {
-            asLogError(wxString::Format(_("The file (%s) couldn't be found."), CatalogPredictandsFilePath.c_str()));
-            return false;
-        }
-
-        wxFileConfig::Get()->Write("/StandardPaths/CatalogPredictorsArchiveFilePath", CatalogPredictorsArchiveFilePath);
-        wxFileConfig::Get()->Write("/StandardPaths/CatalogPredictandsFilePath", CatalogPredictandsFilePath);
     }
 
     // Check for a predictors directory
