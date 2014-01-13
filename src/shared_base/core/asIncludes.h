@@ -28,23 +28,6 @@
 #ifndef ATMOSWINGINC_H_INCLUDED
 #define ATMOSWINGINC_H_INCLUDED
 
-//---------------------------------
-// Automatic leak detection with Microsoft VisualC++
-// http://msdn.microsoft.com/en-us/library/e5ewb1h3(v=VS.90).aspx
-// http://wiki.wxwidgets.org/Avoiding_Memory_Leaks
-//---------------------------------
-
-#ifdef _DEBUG
-   #define _CRTDBG_MAP_ALLOC
-   #include <stdlib.h>
-   #include <crtdbg.h>
-   #include <wx/debug.h>   // wxASSERT
-
-   #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
-        #error Debug CRT functions have not been included!
-    #endif
-#endif
-
 
 //---------------------------------
 // Standard wxWidgets headers
@@ -60,9 +43,6 @@
 #ifndef WX_PRECOMP
     #include "wx/wx.h"
 #endif
-
-// Memory checking
-//#define wxUSE_DEBUG_NEW_ALWAYS 1
 
 
 //---------------------------------
@@ -86,11 +66,6 @@
 // Eigen library
 //---------------------------------
 
-// SHOULD MAYBE REMOVE THAT !!!
-//#if defined (__WIN32__)
-    #define EIGEN_NO_STATIC_ASSERT
-//#endif
-
 #define EIGEN_DEFAULT_TO_ROW_MAJOR
 #ifndef EIGEN_NO_DEBUG
     #define EIGEN_NO_DEBUG
@@ -108,9 +83,32 @@
 #include <algorithm>
 #include <vector>
 #include <exception>
-//#include <math.h>
-//#include <cmath>
 using namespace std;
+
+
+//---------------------------------
+// Automatic leak detection with Microsoft VisualC++
+// http://msdn.microsoft.com/en-us/library/e5ewb1h3(v=VS.90).aspx
+// http://wiki.wxwidgets.org/Avoiding_Memory_Leaks
+//---------------------------------
+
+#ifdef _DEBUG
+    #include <stdlib.h>
+    #include <crtdbg.h>
+    #include <wx/debug.h> // wxASSERT
+
+    #ifdef __WXMSW__
+        #include <wx/msw/msvcrt.h> // redefines the new() operator 
+    #endif
+
+    #ifdef USE_VLD
+        #include <vld.h> // Visual Leak Detector (https://vld.codeplex.com/)
+    #endif
+
+    #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
+        #error Debug CRT functions have not been included!
+    #endif
+#endif
 
 
 //---------------------------------
@@ -133,19 +131,6 @@ using namespace std;
     #include "asDialogFilePicker.h"
     #include "asDialogFileSaver.h"
     #include "asDialogProgressBar.h"
-#endif
-
-
-//---------------------------------
-// Others
-//---------------------------------
-
-// Remove stupid #defines from the evil windows.h -> from Hugin project
-#ifdef __WXMSW__
-//    #undef DIFFERENCE
-//    #undef FindWindow
-//    #undef min
-//    #undef max
 #endif
 
 
