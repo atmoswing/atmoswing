@@ -232,6 +232,7 @@ void asForecastViewer::Redraw()
             {
                 wxFAIL;
                 m_ViewerLayerManager->FreezeEnd();
+                wxDELETE(layer);
                 return;
             }
 
@@ -355,6 +356,7 @@ void asForecastViewer::Redraw()
             {
                 wxFAIL;
                 m_ViewerLayerManager->FreezeEnd();
+                wxDELETE(layer);
                 return;
             }
 
