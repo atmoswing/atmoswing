@@ -104,7 +104,7 @@ bool asDataPredictandPrecipitation::Load(const wxString &filePath)
         size_t IndexStart[2] = {0,0};
         size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
         m_DataNormalized.resize( m_TimeLength, m_StationsNb );
-        ncFile.GetVarArray("data_normalized", IndexStart, IndexCount, &m_DataNormalized[0]);
+        ncFile.GetVarArray("data_normalized", IndexStart, IndexCount, &m_DataNormalized(0,0));
     }
 
     // Close the netCDF file

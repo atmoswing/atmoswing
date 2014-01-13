@@ -282,7 +282,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     size_t IndexStart[2] = {0,0};
     size_t IndexCount[2] = {size_t(m_TimeLength), size_t(m_StationsNb)};
     m_DataGross.resize( m_TimeLength, m_StationsNb );
-    ncFile.GetVarArray("data_gross", IndexStart, IndexCount, &m_DataGross[0]);
+    ncFile.GetVarArray("data_gross", IndexStart, IndexCount, &m_DataGross(0,0));
 
     return true;
 }
