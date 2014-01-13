@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asDataPredictorArchiveNoaaOisst2Subset.h"
 
 #include <asTimeArray.h>
@@ -53,7 +53,7 @@ asDataPredictorArchive(dataId)
     m_FirstTimeStepHours = 12;
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*10^34);
-    m_CoordinateSystem = CoordSys::WGS84;
+    m_CoordinateSystem = WGS84;
     m_UaxisShift = 0.125;
     m_VaxisShift = 0.125;
     m_UaxisStep = 1;
@@ -66,20 +66,20 @@ asDataPredictorArchive(dataId)
         m_DataParameter = SeaSurfaceTemperature;
         m_FileNamePattern = "sst_1deg.nc";
         m_FileVariableName = "sst";
-        m_Unit = DataUnit::degC;
+        m_Unit = degC;
     }
     else if (m_DataId.IsSameAs("sst_anom", false))
     {
         m_DataParameter = SeaSurfaceTemperatureAnomaly;
         m_FileNamePattern = "sst_anom_1deg.nc";
         m_FileVariableName = "anom";
-        m_Unit = DataUnit::degC;
+        m_Unit = degC;
     }
     else
     {
         m_DataParameter = NoDataParameter;
         m_FileVariableName = wxEmptyString;
-        m_Unit = DataUnit::NoDataUnit;
+        m_Unit = NoDataUnit;
     }
 }
 
@@ -95,7 +95,7 @@ bool asDataPredictorArchiveNoaaOisst2Subset::Init()
         asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
         return false;
     }
-    
+
     // Check directory is set
     if (m_DirectoryPath.IsEmpty()) {
         asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));

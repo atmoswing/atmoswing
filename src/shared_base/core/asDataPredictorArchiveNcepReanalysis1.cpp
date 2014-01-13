@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asDataPredictorArchiveNcepReanalysis1.h"
 
 #include <asTimeArray.h>
@@ -53,7 +53,7 @@ asDataPredictorArchive(dataId)
     m_FirstTimeStepHours = 0;
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*10^34);
-    m_CoordinateSystem = CoordSys::WGS84;
+    m_CoordinateSystem = WGS84;
     m_UaxisShift = 0;
     m_VaxisShift = 0;
 
@@ -68,7 +68,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "hgt.%d.nc";
         m_FileVariableName = "hgt";
-        m_Unit = DataUnit::m;
+        m_Unit = m;
     }
     else if (m_DataId.IsSameAs("air", false))
     {
@@ -76,7 +76,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "air.%d.nc";
         m_FileVariableName = "air";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("omega", false))
     {
@@ -84,7 +84,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "omega.%d.nc";
         m_FileVariableName = "omega";
-        m_Unit = DataUnit::PascalsPerSec;
+        m_Unit = PascalsPerSec;
     }
     else if (m_DataId.IsSameAs("rhum", false))
     {
@@ -92,7 +92,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "rhum.%d.nc";
         m_FileVariableName = "rhum";
-        m_Unit = DataUnit::percent;
+        m_Unit = percent;
     }
     else if (m_DataId.IsSameAs("shum", false))
     {
@@ -100,7 +100,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "shum.%d.nc";
         m_FileVariableName = "shum";
-        m_Unit = DataUnit::kgPerKg;
+        m_Unit = kgPerKg;
     }
     else if (m_DataId.IsSameAs("uwnd", false))
     {
@@ -108,7 +108,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "uwnd.%d.nc";
         m_FileVariableName = "uwnd";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("vwnd", false))
     {
@@ -116,7 +116,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "pressure";
         m_FileNamePattern = "vwnd.%d.nc";
         m_FileVariableName = "vwnd";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("surf_air", false))
     {
@@ -124,7 +124,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "air.sig995.%d.nc";
         m_FileVariableName = "air";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("surf_lftx", false))
     {
@@ -132,7 +132,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "lftx.sfc.%d.nc";
         m_FileVariableName = "lftx";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("surf_lftx4", false))
     {
@@ -140,7 +140,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "lftx4.sfc.%d.nc";
         m_FileVariableName = "lftx4";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("surf_omega", false))
     {
@@ -148,7 +148,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "omega.sig995.%d.nc";
         m_FileVariableName = "omega";
-        m_Unit = DataUnit::PascalsPerSec;
+        m_Unit = PascalsPerSec;
     }
     else if (m_DataId.IsSameAs("surf_pottmp", false))
     {
@@ -156,7 +156,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "pottmp.sig995.%d.nc";
         m_FileVariableName = "pottmp";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("surf_prwtr", false))
     {
@@ -164,7 +164,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "pr_wtr.eatm.%d.nc";
         m_FileVariableName = "pr_wtr";
-        m_Unit = DataUnit::mm;
+        m_Unit = mm;
     }
     else if (m_DataId.IsSameAs("surf_pres", false))
     {
@@ -172,7 +172,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "pres.sfc.%d.nc";
         m_FileVariableName = "pres";
-        m_Unit = DataUnit::Pascals;
+        m_Unit = Pascals;
     }
     else if (m_DataId.IsSameAs("surf_rhum", false))
     {
@@ -180,7 +180,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "rhum.sig995.%d.nc";
         m_FileVariableName = "rhum";
-        m_Unit = DataUnit::percent;
+        m_Unit = percent;
     }
     else if (m_DataId.IsSameAs("surf_slp", false))
     {
@@ -188,7 +188,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "slp.%d.nc";
         m_FileVariableName = "slp";
-        m_Unit = DataUnit::Pascals;
+        m_Unit = Pascals;
     }
     else if (m_DataId.IsSameAs("surf_uwnd", false))
     {
@@ -196,7 +196,7 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "uwnd.sig995.%d.nc";
         m_FileVariableName = "uwnd";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("surf_vwnd", false))
     {
@@ -204,20 +204,20 @@ asDataPredictorArchive(dataId)
         m_SubFolder = "surface";
         m_FileNamePattern = "vwnd.sig995.%d.nc";
         m_FileVariableName = "vwnd";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else
     {
         m_UaxisStep = NaNFloat;
         m_VaxisStep = NaNFloat;
-    
+
         if (m_DataId.IsSameAs("flux_air2m", false))
         {
             m_DataParameter = AirTemperature;
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "air.2m.gauss.%d.nc";
             m_FileVariableName = "air";
-            m_Unit = DataUnit::degK;
+            m_Unit = degK;
         }
         else if (m_DataId.IsSameAs("flux_pevpr", false))
         {
@@ -225,7 +225,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "pevpr.sfc.gauss.%d.nc";
             m_FileVariableName = "pevpr";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_shum2m", false))
         {
@@ -233,7 +233,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "shum.2m.gauss.%d.nc";
             m_FileVariableName = "shum";
-            m_Unit = DataUnit::kgPerKg;
+            m_Unit = kgPerKg;
         }
         else if (m_DataId.IsSameAs("flux_sktmp", false))
         {
@@ -241,7 +241,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "skt.sfc.gauss.%d.nc";
             m_FileVariableName = "skt";
-            m_Unit = DataUnit::degK;
+            m_Unit = degK;
         }
         else if (m_DataId.IsSameAs("flux_tmp0-10", false))
         {
@@ -249,7 +249,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "tmp.0-10cm.gauss.%d.nc";
             m_FileVariableName = "tmp";
-            m_Unit = DataUnit::degK;
+            m_Unit = degK;
         }
         else if (m_DataId.IsSameAs("flux_tmp10-200", false))
         {
@@ -257,7 +257,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "tmp.10-200cm.gauss.%d.nc";
             m_FileVariableName = "tmp";
-            m_Unit = DataUnit::degK;
+            m_Unit = degK;
         }
         else if (m_DataId.IsSameAs("flux_tmp300", false))
         {
@@ -265,7 +265,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "tmp.300cm.gauss.%d.nc";
             m_FileVariableName = "tmp";
-            m_Unit = DataUnit::degK;
+            m_Unit = degK;
         }
         else if (m_DataId.IsSameAs("flux_uwnd10m", false))
         {
@@ -273,7 +273,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "uwnd.10m.gauss.%d.nc";
             m_FileVariableName = "uwnd";
-            m_Unit = DataUnit::mPerSec;
+            m_Unit = mPerSec;
         }
         else if (m_DataId.IsSameAs("flux_vwnd10m", false))
         {
@@ -281,7 +281,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "vwnd.10m.gauss.%d.nc";
             m_FileVariableName = "vwnd";
-            m_Unit = DataUnit::mPerSec;
+            m_Unit = mPerSec;
         }
         else if (m_DataId.IsSameAs("flux_cprat", false))
         {
@@ -289,7 +289,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "cprat.sfc.gauss.%d.nc";
             m_FileVariableName = "cprat";
-            m_Unit = DataUnit::kgPerm2Pers;
+            m_Unit = kgPerm2Pers;
         }
         else if (m_DataId.IsSameAs("flux_dlwrf", false))
         {
@@ -297,7 +297,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "dlwrf.sfc.gauss.%d.nc";
             m_FileVariableName = "dlwrf";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_dswrf", false))
         {
@@ -305,7 +305,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "dswrf.sfc.gauss.%d.nc";
             m_FileVariableName = "dswrf";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_gflux", false))
         {
@@ -313,7 +313,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "gflux.sfc.gauss.%d.nc";
             m_FileVariableName = "gflux";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_lhtfl", false))
         {
@@ -321,7 +321,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "lhtfl.sfc.gauss.%d.nc";
             m_FileVariableName = "lhtfl";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_nbdsf", false))
         {
@@ -329,7 +329,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "nbdsf.sfc.gauss.%d.nc";
             m_FileVariableName = "nbdsf";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_nddsf", false))
         {
@@ -337,7 +337,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "nddsf.sfc.gauss.%d.nc";
             m_FileVariableName = "nddsf";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_nlwrs", false))
         {
@@ -345,7 +345,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "nlwrs.sfc.gauss.%d.nc";
             m_FileVariableName = "nlwrs";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_nswrs", false))
         {
@@ -353,7 +353,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "nswrs.sfc.gauss.%d.nc";
             m_FileVariableName = "nswrs";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else if (m_DataId.IsSameAs("flux_prate", false))
         {
@@ -361,7 +361,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "prate.sfc.gauss.%d.nc";
             m_FileVariableName = "prate";
-            m_Unit = DataUnit::kgPerm2Pers;
+            m_Unit = kgPerm2Pers;
         }
         else if (m_DataId.IsSameAs("flux_shtfl", false))
         {
@@ -369,7 +369,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = "surface_gauss";
             m_FileNamePattern = "shtfl.sfc.gauss.%d.nc";
             m_FileVariableName = "shtfl";
-            m_Unit = DataUnit::WPerm2;
+            m_Unit = WPerm2;
         }
         else
         {
@@ -377,7 +377,7 @@ asDataPredictorArchive(dataId)
             m_SubFolder = wxEmptyString;
             m_FileNamePattern = wxEmptyString;
             m_FileVariableName = wxEmptyString;
-            m_Unit = DataUnit::NoDataUnit;
+            m_Unit = NoDataUnit;
         }
     }
 
@@ -395,7 +395,7 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
         asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
         return false;
     }
-    
+
     // Check directory is set
     if (m_DirectoryPath.IsEmpty()) {
         asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));

@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asDataPredictorArchiveNcepReanalysis1Subset.h"
 
 #include <asTimeArray.h>
@@ -53,7 +53,7 @@ asDataPredictorArchive(dataId)
     m_FirstTimeStepHours = 0;
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*10^34);
-    m_CoordinateSystem = CoordSys::WGS84;
+    m_CoordinateSystem = WGS84;
     m_UaxisShift = 0;
     m_VaxisShift = 0;
     m_UaxisStep = 2.5;
@@ -66,63 +66,63 @@ asDataPredictorArchive(dataId)
         m_DataParameter = GeopotentialHeight;
         m_FileNamePattern = "hgt.nc";
         m_FileVariableName = "hgt";
-        m_Unit = DataUnit::m;
+        m_Unit = m;
     }
     else if (m_DataId.IsSameAs("air", false))
     {
         m_DataParameter = AirTemperature;
         m_FileNamePattern = "air.nc";
         m_FileVariableName = "air";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("omega", false))
     {
         m_DataParameter = Omega;
         m_FileNamePattern = "omega.nc";
         m_FileVariableName = "omega";
-        m_Unit = DataUnit::PascalsPerSec;
+        m_Unit = PascalsPerSec;
     }
     else if (m_DataId.IsSameAs("rhum", false))
     {
         m_DataParameter = RelativeHumidity;
         m_FileNamePattern = "rhum.nc";
         m_FileVariableName = "rhum";
-        m_Unit = DataUnit::percent;
+        m_Unit = percent;
     }
     else if (m_DataId.IsSameAs("shum", false))
     {
         m_DataParameter = SpecificHumidity;
         m_FileNamePattern = "shum.nc";
         m_FileVariableName = "shum";
-        m_Unit = DataUnit::kgPerKg;
+        m_Unit = kgPerKg;
     }
     else if (m_DataId.IsSameAs("uwnd", false))
     {
         m_DataParameter = Uwind;
         m_FileNamePattern = "uwnd.nc";
         m_FileVariableName = "uwnd";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("vwnd", false))
     {
         m_DataParameter = Vwind;
         m_FileNamePattern = "vwnd.nc";
         m_FileVariableName = "vwnd";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("surf_prwtr", false))
     {
         m_DataParameter = PrecipitableWater;
         m_FileNamePattern = "pr_wtr.nc";
         m_FileVariableName = "pr_wtr";
-        m_Unit = DataUnit::mm;
+        m_Unit = mm;
     }
     else
     {
         m_DataParameter = NoDataParameter;
         m_FileNamePattern = wxEmptyString;
         m_FileVariableName = wxEmptyString;
-        m_Unit = DataUnit::NoDataUnit;
+        m_Unit = NoDataUnit;
     }
 }
 
@@ -138,7 +138,7 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Init()
         asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
         return false;
     }
-    
+
     // Check directory is set
     if (m_DirectoryPath.IsEmpty()) {
         asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
