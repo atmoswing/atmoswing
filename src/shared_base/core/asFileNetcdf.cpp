@@ -27,6 +27,8 @@
  
 #include "asFileNetcdf.h"
 
+#include <stdint.h> // To get  int32_t and int64_t 
+
 asFileNetcdf::asFileNetcdf(const wxString &FileName, const ListFileMode &FileMode)
 :
 asFile(FileName, FileMode)
@@ -45,15 +47,6 @@ asFileNetcdf::~asFileNetcdf()
     // If file opened
     if (m_FileId!=0)
     {
-        // If in define mode, needs to finish parsing the structure to clean it correctly.
-        if(m_DefineMode)
-        {
-            m_Status = nc_enddef(m_FileId);
-            if(m_Status) HandleErrorNetcdf();
-            m_DefineMode = false;
-            ParseStruct();
-        }
-        ClearStruct();
         Close();
     }
 }
@@ -139,11 +132,10 @@ bool asFileNetcdf::Close()
     // If not already closed
     if (m_FileId!=0)
     {
-        // Check that the file is not in define mode
-        CheckDefModeClosed();
+        CheckDefModeClosed(); // Check that the file is not in define mode
+        ClearStruct();
         m_Status = nc_close(m_FileId);
         if (m_Status) HandleErrorNetcdf();
-        m_DefineMode = false;
         m_FileId = 0;
     }
 
@@ -1477,37 +1469,37 @@ void asFileNetcdf::ClearStruct()
                 switch( nctype ) {
                     case NC_CHAR: // NC_CHAR - ISO/ASCII character
                     {
-                        delete reinterpret_cast<char*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<char*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
                         break;
                     }
 
                     case NC_SHORT: // NC_SHORT - signed 2 byte integer
                     {
-                        delete reinterpret_cast<short*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<short*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
                         break;
                     }
 
                     case NC_INT: // NC_INT - signed 4 byte integer
                     {
-                        delete reinterpret_cast<int*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<int32_t*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
                         break;
                     }
 
                     case NC_INT64: // NC_INT64 - signed 8 byte integer
                     {
-                        delete reinterpret_cast<long*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<int64_t*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
                         break;
                     }
 
                     case NC_FLOAT: // NC_FLOAT - single precision floating point number
                     {
-                        delete reinterpret_cast<float*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<float*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
                         break;
                     }
 
                     case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                     {
-                        delete reinterpret_cast<double*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<double*>( m_Struct.Vars[i_var].Atts[i_att].pValue);
                         break;
                     }
 
@@ -1530,37 +1522,37 @@ void asFileNetcdf::ClearStruct()
             switch( nctype ) {
                 case NC_CHAR: // NC_CHAR - ISO/ASCII character
                 {
-                    delete reinterpret_cast<char*>( m_Struct.Atts[i_att].pValue);
+                    delete static_cast<char*>( m_Struct.Atts[i_att].pValue);
                     break;
                 }
 
                 case NC_SHORT: // NC_SHORT - signed 2 byte integer
                 {
-                    delete reinterpret_cast<short*>( m_Struct.Atts[i_att].pValue);
+                    delete static_cast<short*>( m_Struct.Atts[i_att].pValue);
                     break;
                 }
 
                 case NC_INT: // NC_INT - signed 4 byte integer
                 {
-                    delete reinterpret_cast<int*>( m_Struct.Atts[i_att].pValue);
+                    delete static_cast<int32_t*>( m_Struct.Atts[i_att].pValue);
                     break;
                 }
 
                 case NC_INT64: // NC_INT64 - signed 8 byte integer
                 {
-                    delete reinterpret_cast<long*>( m_Struct.Atts[i_att].pValue);
+                    delete static_cast<int64_t*>( m_Struct.Atts[i_att].pValue);
                     break;
                 }
 
                 case NC_FLOAT: // NC_FLOAT - single precision floating point number
                 {
-                    delete reinterpret_cast<float*>( m_Struct.Atts[i_att].pValue);
+                    delete static_cast<float*>( m_Struct.Atts[i_att].pValue);
                     break;
                 }
 
                 case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                 {
-                    delete reinterpret_cast<double*>( m_Struct.Atts[i_att].pValue);
+                    delete static_cast<double*>( m_Struct.Atts[i_att].pValue);
                     break;
                 }
 
@@ -1683,13 +1675,13 @@ bool asFileNetcdf::ParseStruct()
 
                 case NC_INT: // NC_INT - signed 4 byte integer
                 {
-                    m_Struct.Atts[AttId].pValue = new int();
+                    m_Struct.Atts[AttId].pValue = new int32_t();
                     break;
                 }
 
                 case NC_INT64: // NC_INT64 - signed 8 byte integer
                 {
-                    m_Struct.Atts[AttId].pValue = new long();
+                    m_Struct.Atts[AttId].pValue = new int64_t();
                     break;
                 }
 
@@ -1787,13 +1779,13 @@ bool asFileNetcdf::ParseStruct()
 
                     case NC_INT: // NC_INT - signed 4 byte integer
                     {
-                        m_Struct.Vars[VarId].Atts[AttId].pValue = new int();
+                        m_Struct.Vars[VarId].Atts[AttId].pValue = new int32_t();
                         break;
                     }
 
                     case NC_INT64: // NC_INT64 - signed 8 byte integer
                     {
-                        m_Struct.Vars[VarId].Atts[AttId].pValue = new long();
+                        m_Struct.Vars[VarId].Atts[AttId].pValue = new int64_t();
                         break;
                     }
 
