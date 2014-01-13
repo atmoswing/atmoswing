@@ -8,29 +8,29 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asThreadPreprocessorGradients.h"
 
 #include <asDataPredictor.h>
 
 
-asThreadPreprocessorGradients::asThreadPreprocessorGradients(VArray2DFloat* gradients, std::vector < asDataPredictor >* predictors, int start, int end)
+asThreadPreprocessorGradients::asThreadPreprocessorGradients(VArray2DFloat* gradients, std::vector < asDataPredictor* > predictors, int start, int end)
 :
 asThread()
 {
@@ -55,9 +55,9 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
 {
     m_Status = Working;
 
-    int rowsNb = (*m_pPredictors)[0].GetLatPtsnb();
-    int colsNb = (*m_pPredictors)[0].GetLonPtsnb();
-    int timeSize = (*m_pPredictors)[0].GetSizeTime();
+    int rowsNb = m_pPredictors[0]->GetLatPtsnb();
+    int colsNb = m_pPredictors[0]->GetLonPtsnb();
+    int timeSize = m_pPredictors[0]->GetSizeTime();
 
     Array1DFloat tmpgrad = Array1DFloat::Constant((rowsNb-1)*colsNb+rowsNb*(colsNb-1), NaNFloat);
 
@@ -70,7 +70,7 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
         {
             for (int i_col=0; i_col<colsNb; i_col++)
             {
-                tmpgrad(counter) = (*m_pPredictors)[0].GetData()[i_time](i_row+1,i_col)-(*m_pPredictors)[0].GetData()[i_time](i_row,i_col);
+                tmpgrad(counter) = m_pPredictors[0]->GetData()[i_time](i_row+1,i_col)-m_pPredictors[0]->GetData()[i_time](i_row,i_col);
                 counter++;
             }
         }
@@ -81,7 +81,7 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
             for (int i_col=0; i_col<colsNb-1; i_col++)
             {
                 // The matrix is transposed to be coherent with the dimensions
-                tmpgrad(counter) = (*m_pPredictors)[0].GetData()[i_time](i_row,i_col+1)-(*m_pPredictors)[0].GetData()[i_time](i_row,i_col);
+                tmpgrad(counter) = m_pPredictors[0]->GetData()[i_time](i_row,i_col+1)-m_pPredictors[0]->GetData()[i_time](i_row,i_col);
                 counter++;
             }
         }

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -37,7 +37,7 @@ class asThreadPreprocessorGradients: public asThread
 {
 public:
     /** Default constructor */
-    asThreadPreprocessorGradients(VArray2DFloat* gradients, std::vector < asDataPredictor >* predictors, int start, int end);
+    asThreadPreprocessorGradients(VArray2DFloat* gradients, std::vector < asDataPredictor* > predictors, int start, int end);
     /** Default destructor */
     virtual ~asThreadPreprocessorGradients();
 
@@ -46,7 +46,7 @@ public:
 
 protected:
 private:
-    std::vector < asDataPredictor >* m_pPredictors;
+    std::vector < asDataPredictor* > m_pPredictors;
     VArray2DFloat* m_pGradients;
     int m_Start;
     int m_End;
