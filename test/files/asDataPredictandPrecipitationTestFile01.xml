@@ -2,65 +2,65 @@
 
 <AtmoswingFile version="0.2">
 
-	<!--CAUTION:    No accent (UTF-8 code OK)!
-		            Strictly respect the formats!
-	-->
+    <!--CAUTION:    No accent (UTF-8 code OK)!
+                    Strictly respect the formats!
+    -->
 
-	<!--FORMATS:    Start: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
-		            End: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
-		            Timezone: GMT+- "x" h
-		            TimeStep: "x" hours
-		            FirstTimeStep: "x" hours, UTC
-		            IncludeinDB: See enum mmDatasetPredictand::PredictandDB
-		            Parameter: See enum mmDataset::Parameter
-		            Unit: See enum mmDataset::Unit
-		            Type: See enum mmDataset::Type
-		            Nature: See enum mmDataset::Nature
-		            FormatRaw: See enum mmDataset::Format
-		            FormatStorage: See enum mmDataset::Format
-		            CoordinateSys: See enum mmGeo::CoordSys
-		            FilePattern: Files in folder "conf\Ascii File Patterns"
-	-->
+    <!--FORMATS:    Start: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
+                    End: "dd/mm/yyyy hh:mm" or "dd/mm/yyyy" or "+-x" hours
+                    Timezone: GMT+- "x" h
+                    TimeStep: "x" hours
+                    FirstTimeStep: "x" hours, UTC
+                    IncludeinDB: See enum mmDatasetPredictand::PredictandDB
+                    Parameter: See enum mmDataset::Parameter
+                    Unit: See enum mmDataset::Unit
+                    Type: See enum mmDataset::Type
+                    Nature: See enum mmDataset::Nature
+                    FormatRaw: See enum mmDataset::Format
+                    FormatStorage: See enum mmDataset::Format
+                    CoordinateSys: See enum mmGeo::CoordSys
+                    FilePattern: Files in folder "conf\Ascii File Patterns"
+    -->
 
-	<!--Data aquisition information-->
+    <!--Data aquisition information-->
 
-	<Header description="List of predictand DataSets properties" date="20.08.2009" author="Pascal Horton"></Header>
+    <Header description="List of predictand DataSets properties" date="20.08.2009" author="Pascal Horton"></Header>
 
-	<DataSet id="UnitTesting" enable="1" name="Data for unit testing" description="Arve data for unit testing">
-		<Parameter>Precipitation</Parameter>
-		<Unit>mm</Unit>
-		<TemporalResolution>Daily</TemporalResolution>
-		<SpatialAggregation>Groupment</SpatialAggregation>
-		<TimeZoneHours>0</TimeZoneHours>
-		<Start note="first value of all stations">01/01/1962</Start>
-		<End note="last value of all stations">31/12/2001</End>
-		<FirstTimeStepHour>0</FirstTimeStepHour>
-		<FormatRaw>dat</FormatRaw>
-		<FormatStorage>netcdf</FormatStorage>
-		<Path>/files/</Path>
-		<NaN>-9999</NaN>
-		<CoordinateSys>CH1903</CoordinateSys>
-		<DataList>
-		    <Data id="1" name="Arve" enable="1">
-		        <LocalID>1234</LocalID>
-		        <XCoordinate>708200</XCoordinate>
-		        <YCoordinate>173800</YCoordinate>
-		        <Height>0</Height>
-		        <FileName>asDataPredictandPrecipitationTestFile03.txt</FileName>
-		        <FilePattern>asDataPredictandPrecipitationTestFile02</FilePattern>
-		        <Start>01/01/1962</Start>
-		        <End>31/12/2001</End>
-		    </Data>
-		    <Data id="2" name="Arve copy" enable="1">
-		        <LocalID>5678</LocalID>
-		        <XCoordinate>690140</XCoordinate>
-		        <YCoordinate>167590</YCoordinate>
-		        <Height>0</Height>
-		        <FileName>asDataPredictandPrecipitationTestFile03.txt</FileName>
-		        <FilePattern>asDataPredictandPrecipitationTestFile02</FilePattern>
-		        <Start>01/01/1962</Start>
-		        <End>31/12/2001</End>
-		    </Data>
-		</DataList>
-	</DataSet>
+    <DataSet id="UnitTesting" enable="1" name="Data for unit testing" description="Arve data for unit testing">
+        <Parameter>Precipitation</Parameter>
+        <Unit>mm</Unit>
+        <TemporalResolution>Daily</TemporalResolution>
+        <SpatialAggregation>Groupment</SpatialAggregation>
+        <TimeZoneHours>0</TimeZoneHours>
+        <Start note="first value of all stations">01/01/1962</Start>
+        <End note="last value of all stations">31/12/2001</End>
+        <FirstTimeStepHour>0</FirstTimeStepHour>
+        <FormatRaw>dat</FormatRaw>
+        <FormatStorage>netcdf</FormatStorage>
+        <Path>/files/</Path>
+        <NaN>-9999</NaN>
+        <CoordinateSys>CH1903</CoordinateSys>
+        <DataList>
+            <Data id="1" name="Arve" enable="1">
+                <LocalID>1234</LocalID>
+                <XCoordinate>708200</XCoordinate>
+                <YCoordinate>173800</YCoordinate>
+                <Height>0</Height>
+                <FileName>asDataPredictandPrecipitationTestFile03.txt</FileName>
+                <FilePattern>asDataPredictandPrecipitationTestFile02</FilePattern>
+                <Start>01/01/1962</Start>
+                <End>31/12/2001</End>
+            </Data>
+            <Data id="2" name="Arve copy" enable="1">
+                <LocalID>5678</LocalID>
+                <XCoordinate>690140</XCoordinate>
+                <YCoordinate>167590</YCoordinate>
+                <Height>0</Height>
+                <FileName>asDataPredictandPrecipitationTestFile03.txt</FileName>
+                <FilePattern>asDataPredictandPrecipitationTestFile02</FilePattern>
+                <Start>01/01/1962</Start>
+                <End>31/12/2001</End>
+            </Data>
+        </DataList>
+    </DataSet>
 </AtmoswingFile>

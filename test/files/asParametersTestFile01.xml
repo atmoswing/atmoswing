@@ -5,18 +5,18 @@
             <Options />
             <Params name="Archive Period">
                 <YearStart value="1962" />
-				<YearEnd value="2008" />
+                <YearEnd value="2008" />
             </Params>
-			<Params name="Time Properties">
+            <Params name="Time Properties">
                 <TimeStepHours value="24" />
             </Params>
-			<Params name="Time Array Target">
+            <Params name="Time Array Target">
                 <TimeArrayMode value="Simple" />
             </Params>
-			<Params name="Time Array Analogs">
-				<TimeArrayMode value="DaysInterval" />
-				<IntervalDays value="60" />
-				<ExcludeDays value="60" />
+            <Params name="Time Array Analogs">
+                <TimeArrayMode value="DaysInterval" />
+                <IntervalDays value="60" />
+                <ExcludeDays value="60" />
             </Params>
         </General>
         <Process name="Analogs Dates">
@@ -27,73 +27,73 @@
             <Params name="Analogs Number">
                 <AnalogsNumber value="100" />
             </Params>
-			<Data name="Predictor">
-		        <Options />
-				<Params name="Data">
-		            <DatasetId value="NCEP_R-1" />
-					<DataId value="hgt" />
-		        </Params>
-				<Params name="Level">
-		            <Level value="500" />
-		        </Params>
-				<Params name="Time frame">
-		            <DTimeHours value="24" />
-		        </Params>
-		        <Params name="Preprocessing">
-					<Preprocess value="0" />
-		        </Params>
-		        <Params name="Area">
-					<GridType value="Regular" />
-					<Umin value="-10" />
-					<Uptsnb value="9" />
-					<Ustep value="2.5" />
-					<Vmin value="30" />
-					<Vptsnb value="5" />
-					<Vstep value="2.5" />
-		        </Params>
-		        <Params name="Criteria">
-		            <Criteria value="S1" />
-		        </Params>
-		        <Params name="Weight">
-		            <Weight value="0.6" />
-		        </Params>
-		    </Data>
-			<Data name="Predictor Preprocessed">
-		        <Options />
-		        <Params name="Preprocessing">
-					<Preprocess value="1" />
-					<PreprocessMethod value="Gradients" />
-					<SubData>
-						<PreprocessDatasetId value="NCEP_R-1" />
-						<PreprocessDataId value="hgt" />
-						<PreprocessLevel value="1000" />
-						<PreprocessDTimeHours value="12" />
-					</SubData>
-		        </Params>
-		        <Params name="Area">
-					<GridType value="Regular" />
-					<Umin value="-15" />
-					<Uptsnb value="11" />
-					<Ustep value="2.5" />
-					<Vmin value="35" />
-					<Vptsnb value="7" />
-					<Vstep value="2.5" />
-		        </Params>
-		        <Params name="Criteria">
-		            <Criteria value="S1" />
-		        </Params>
-		        <Params name="Weight">
-		            <Weight value="0.4" />
-		        </Params>
-		    </Data>
+            <Data name="Predictor">
+                <Options />
+                <Params name="Data">
+                    <DatasetId value="NCEP_R-1" />
+                    <DataId value="hgt" />
+                </Params>
+                <Params name="Level">
+                    <Level value="500" />
+                </Params>
+                <Params name="Time frame">
+                    <DTimeHours value="24" />
+                </Params>
+                <Params name="Preprocessing">
+                    <Preprocess value="0" />
+                </Params>
+                <Params name="Area">
+                    <GridType value="Regular" />
+                    <Umin value="-10" />
+                    <Uptsnb value="9" />
+                    <Ustep value="2.5" />
+                    <Vmin value="30" />
+                    <Vptsnb value="5" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.6" />
+                </Params>
+            </Data>
+            <Data name="Predictor Preprocessed">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="1" />
+                    <PreprocessMethod value="Gradients" />
+                    <SubData>
+                        <PreprocessDatasetId value="NCEP_R-1" />
+                        <PreprocessDataId value="hgt" />
+                        <PreprocessLevel value="1000" />
+                        <PreprocessDTimeHours value="12" />
+                    </SubData>
+                </Params>
+                <Params name="Area">
+                    <GridType value="Regular" />
+                    <Umin value="-15" />
+                    <Uptsnb value="11" />
+                    <Ustep value="2.5" />
+                    <Vmin value="35" />
+                    <Vptsnb value="7" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.4" />
+                </Params>
+            </Data>
         </Process>
         <Process name="Analogs Values">
             <Options />
-			<Data name="Predictand">
-				<Params name="Database">
-		            <PredictandStationId value="40" />
-		        </Params>
-			</Data>
+            <Data name="Predictand">
+                <Params name="Database">
+                    <PredictandStationId value="40" />
+                </Params>
+            </Data>
         </Process>
     </StandardSet>
 </AtmoswingFile>
