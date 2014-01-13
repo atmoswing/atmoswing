@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,7 +29,6 @@
 
 #include "include_tests.h"
 #include <asPredictorCriteria.h>
-#include <asCatalogPredictors.h>
 #include <asGeoAreaCompositeRegularGrid.h>
 #include <asDataPredictorArchive.h>
 #include <asPreprocessor.h>
@@ -203,16 +202,6 @@ TEST(ProcessS1)
 
 TEST(ProcessS1preprocessed)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/asDataPredictorArchiveTestFile01.xml"));
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load(_("NCEP_R-1"),_("hgt"));
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/"));
-    catalog.SetDataPath(filepath);
-
     double Umin = 10;
     double Uwidth = 10;
     double Vmin = 35;
@@ -227,16 +216,20 @@ TEST(ProcessS1preprocessed)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
-    vector < asDataPredictorArchive > vdata;
-    vdata.push_back(data);
-    VArray2DFloat hgtOriginal = data.GetData();
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
+
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(&geoarea, timearray);
+    vector < asDataPredictorArchive* > vdata;
+    vdata.push_back(predictor);
+    VArray2DFloat hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
-    asDataPredictorArchive gradients(data);
-    asPreprocessor::Preprocess(vdata, method, &gradients);
-    VArray2DFloat hgtPreproc = gradients.GetData();
+    asDataPredictorArchive* gradients = new asDataPredictorArchive(*predictor);
+    asPreprocessor::Preprocess(vdata, method, gradients);
+    VArray2DFloat hgtPreproc = gradients->GetData();
 
     // Resize the containers
     int lonsOriginal = hgtOriginal[0].cols();
@@ -297,6 +290,8 @@ TEST(ProcessS1preprocessed)
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         CHECK_CLOSE(S1Original, S1Preproc, 0.0001);
     }
+
+    wxDELETE(predictor);
 
 }
 

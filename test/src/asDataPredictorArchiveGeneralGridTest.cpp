@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -39,16 +39,6 @@ namespace
 
 TEST(LoadEasy)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = 10;
     int Uptsnb = 5;
     double Vmin = 35;
@@ -64,10 +54,14 @@ TEST(LoadEasy)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -127,20 +121,11 @@ TEST(LoadEasy)
     CHECK_CLOSE(65, hgt[40](2,4), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadComposite)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = -10;
     int Uptsnb = 7;
     double Vmin = 35;
@@ -156,10 +141,14 @@ TEST(LoadComposite)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -227,20 +216,11 @@ TEST(LoadComposite)
     CHECK_CLOSE(-2, hgt[40](2,6), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderLeft)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = 0;
     int Uptsnb = 3;
     double Vmin = 35;
@@ -256,10 +236,14 @@ TEST(LoadBorderLeft)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -299,20 +283,11 @@ TEST(LoadBorderLeft)
     CHECK_CLOSE(-2, hgt[40](2,2), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderLeftOn720)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = 360;
     int Uptsnb = 3;
     double Vmin = 35;
@@ -328,10 +303,14 @@ TEST(LoadBorderLeftOn720)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -371,20 +350,11 @@ TEST(LoadBorderLeftOn720)
     CHECK_CLOSE(-2, hgt[40](2,2), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderRight)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = 350;
     int Uptsnb = 5;
     double Vmin = 35;
@@ -400,10 +370,14 @@ TEST(LoadBorderRight)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -449,20 +423,11 @@ TEST(LoadBorderRight)
     CHECK_CLOSE(7, hgt[40](2,4), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLon)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = -10;
     int Uptsnb = 7;
     double Vmin = 35;
@@ -479,10 +444,14 @@ TEST(LoadCompositeStepLon)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -525,20 +494,11 @@ TEST(LoadCompositeStepLon)
     CHECK_CLOSE(-2, hgt[40](2,3), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonMoved)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = -7.5;
     int Uptsnb = 5;
     double Vmin = 35;
@@ -555,10 +515,14 @@ TEST(LoadCompositeStepLonMoved)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -586,20 +550,11 @@ TEST(LoadCompositeStepLonMoved)
     CHECK_CLOSE(1, hgt[40](2,2), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonLat)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = -10;
     int Uptsnb = 4;
     double Vmin = 35;
@@ -616,10 +571,14 @@ TEST(LoadCompositeStepLonLat)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -656,20 +615,11 @@ TEST(LoadCompositeStepLonLat)
     CHECK_CLOSE(-2, hgt[40](1,3), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonLatTime)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = -10;
     int Uptsnb = 4;
     double Vmin = 35;
@@ -686,10 +636,14 @@ TEST(LoadCompositeStepLonLatTime)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
 
-    VArray2DFloat hgt = data.GetData();
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -715,21 +669,11 @@ TEST(LoadCompositeStepLonLatTime)
     CHECK_CLOSE(-2, hgt[10](1,3), 0.0001);
 
     wxDELETE(geoarea);
-
+    wxDELETE(predictor);
 }
 
 TEST(SetData)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorArchiveTestFile01.xml");
-
-    asCatalogPredictorsArchive catalog(filepath);
-    catalog.Load("NCEP_R-1","hgt");
-
-    filepath = wxFileName::GetCwd();
-    filepath.Append("/files/");
-    catalog.SetDataPath(filepath);
-
     double Umin = -10;
     int Uptsnb = 4;
     double Vmin = 35;
@@ -746,8 +690,13 @@ TEST(SetData)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    asDataPredictorArchive data(catalog);
-    data.Load(geoarea, timearray);
+
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
+
+    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+
+    predictor->Load(geoarea, timearray);
 
     Array2DFloat tmp;
     tmp.resize(1,4);
@@ -764,18 +713,19 @@ TEST(SetData)
     tmp << 41,42,43,44;
     newdata.push_back(tmp);
 
-    data.SetData(newdata);
+    predictor->SetData(newdata);
 
-    CHECK_CLOSE(1, data.GetLatPtsnb(), 0.0001);
-    CHECK_CLOSE(4, data.GetLonPtsnb(), 0.0001);
-    CHECK_CLOSE(1, data.GetData()[0](0,0), 0.0001);
-    CHECK_CLOSE(2, data.GetData()[0](0,1), 0.0001);
-    CHECK_CLOSE(4, data.GetData()[0](0,3), 0.0001);
-    CHECK_CLOSE(14, data.GetData()[1](0,3), 0.0001);
-    CHECK_CLOSE(41, data.GetData()[4](0,0), 0.0001);
-    CHECK_CLOSE(44, data.GetData()[4](0,3), 0.0001);
+    CHECK_CLOSE(1, predictor->GetLatPtsnb(), 0.0001);
+    CHECK_CLOSE(4, predictor->GetLonPtsnb(), 0.0001);
+    CHECK_CLOSE(1, predictor->GetData()[0](0,0), 0.0001);
+    CHECK_CLOSE(2, predictor->GetData()[0](0,1), 0.0001);
+    CHECK_CLOSE(4, predictor->GetData()[0](0,3), 0.0001);
+    CHECK_CLOSE(14, predictor->GetData()[1](0,3), 0.0001);
+    CHECK_CLOSE(41, predictor->GetData()[4](0,0), 0.0001);
+    CHECK_CLOSE(44, predictor->GetData()[4](0,3), 0.0001);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 }

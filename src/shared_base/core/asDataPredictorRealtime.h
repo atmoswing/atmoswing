@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #ifndef ASDATAPREDICTORREALTIME_H
 #define ASDATAPREDICTORREALTIME_H
 
@@ -44,7 +44,7 @@ public:
     virtual ~asDataPredictorRealtime();
 
     static asDataPredictorRealtime* GetInstance(const wxString &datasetId, const wxString &dataId);
-    
+
     virtual bool Init();
 
     int Download();
@@ -54,7 +54,7 @@ public:
     bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
 
     virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
-    
+
     /** Update the RunDateInUse to the most recent hour or to the given date
      * \param now The desired date
      */
@@ -211,11 +211,27 @@ public:
     }
 
     /** Access
+     * \param val New value to set
+     */
+    void SetUrls(const VectorString &val)
+    {
+        m_Urls = val;
+    }
+
+    /** Access
      * \return The file names of the downloaded files
      */
     VectorString GetFileNames()
     {
         return m_FileNames;
+    }
+
+    /** Access
+     * \param val New value to set
+     */
+    void SetFileNames(const VectorString &val)
+    {
+        m_FileNames = val;
     }
 
     /** Access

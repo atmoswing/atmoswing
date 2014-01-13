@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include <wx/filename.h>
 
 #include "include_tests.h"
@@ -70,12 +70,6 @@ void GrenobleComparisonArve1()
         predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
-
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
 
         // Get parameters
         asParametersCalibration params;
@@ -146,8 +140,9 @@ void GrenobleComparisonArve1()
 		bool containsNaNs = false;
         try
         {
+            wxString dataPredictorFilePath = wxFileName::GetCwd();
+            dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
-            calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
@@ -405,12 +400,6 @@ void GrenobleComparisonArve1CalibrationPeriod()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
         paramsFilePath.Append("/files/asMethodCalibratorTestFile08.xml");
@@ -432,8 +421,9 @@ void GrenobleComparisonArve1CalibrationPeriod()
 
         try
         {
+            wxString dataPredictorFilePath = wxFileName::GetCwd();
+            dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
-            calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
@@ -615,12 +605,6 @@ void GrenobleComparisonArve2()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration params;
         params.AddStep();
@@ -716,8 +700,9 @@ void GrenobleComparisonArve2()
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         asResultsAnalogsDates anaDates;
@@ -941,12 +926,6 @@ void GrenobleComparisonArve2CalibrationPeriod()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
@@ -957,8 +936,9 @@ void GrenobleComparisonArve2CalibrationPeriod()
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         asResultsAnalogsDates anaDates;
@@ -1152,12 +1132,6 @@ TEST(PreloadingSimple)
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration paramsStd;
         asParametersCalibration paramsPreload;
@@ -1173,8 +1147,9 @@ TEST(PreloadingSimple)
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator1;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator1.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator1.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         calibrator1.SetPredictandDB(NULL);
         asMethodCalibratorSingle calibrator2 = calibrator1;
         asResultsAnalogsDates anaDatesStd;
@@ -1243,12 +1218,6 @@ TEST(PreloadingWithPreprocessing)
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration paramsStd;
         asParametersCalibration paramsPreload;
@@ -1264,8 +1233,9 @@ TEST(PreloadingWithPreprocessing)
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator1;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator1.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator1.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         calibrator1.SetPredictandDB(NULL);
         asMethodCalibratorSingle calibrator2 = calibrator1;
         asResultsAnalogsDates anaDatesStd;
@@ -1353,12 +1323,6 @@ void GrenobleComparisonArve1Preloading()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
         paramsFilePath.Append("/files/asMethodCalibratorTestFile12.xml");
@@ -1384,8 +1348,9 @@ void GrenobleComparisonArve1Preloading()
 
         try
         {
+            wxString dataPredictorFilePath = wxFileName::GetCwd();
+            dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
-            calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
@@ -1545,12 +1510,6 @@ void GrenobleComparisonArve1PreloadingSubset()
         predictand->SetReturnPeriodNormalization(10);
         predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
         paramsFilePath.Append("/files/asMethodCalibratorTestFile12.xml");
@@ -1577,8 +1536,9 @@ void GrenobleComparisonArve1PreloadingSubset()
 
         try
         {
+            wxString dataPredictorFilePath = wxFileName::GetCwd();
+            dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
-            calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
@@ -1658,12 +1618,6 @@ void GrenobleComparisonArve2Preloading()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
@@ -1674,8 +1628,9 @@ void GrenobleComparisonArve2Preloading()
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         asResultsAnalogsDates anaDates;
@@ -1863,12 +1818,6 @@ void GrenobleComparisonArve2SavingIntermediateResults()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
@@ -1879,8 +1828,9 @@ void GrenobleComparisonArve2SavingIntermediateResults()
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         asResultsAnalogsDates anaDates1, anaDates2;
@@ -2089,12 +2039,6 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
 
         float P10 = 68.42240f;
 
-        // Predictor file path
-        wxString catalogPredictorFilePath = wxFileName::GetCwd();
-        catalogPredictorFilePath.Append("/files/asMethodCalibratorTestFile01.xml");
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
@@ -2105,8 +2049,9 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
         // Proceed to the calculations
         int step = 0;
         asMethodCalibratorSingle calibrator;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
-        calibrator.SetAlternateCatalogPredictorsArchiveFilePath(catalogPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         asResultsAnalogsDates anaDates;

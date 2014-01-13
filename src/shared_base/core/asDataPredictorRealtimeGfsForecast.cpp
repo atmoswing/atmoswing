@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asDataPredictorRealtimeGfsForecast.h"
 
 #include <asTimeArray.h>
@@ -70,56 +70,56 @@ asDataPredictorRealtime(dataId)
         m_DataParameter = GeopotentialHeight;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "HGT";
-        m_Unit = DataUnit::m;
+        m_Unit = m;
     }
     else if (m_DataId.IsSameAs("air", false))
     {
         m_DataParameter = AirTemperature;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "TEMP";
-        m_Unit = DataUnit::degK;
+        m_Unit = degK;
     }
     else if (m_DataId.IsSameAs("omega", false))
     {
         m_DataParameter = Omega;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "VVEL";
-        m_Unit = DataUnit::PascalsPerSec;
+        m_Unit = PascalsPerSec;
     }
     else if (m_DataId.IsSameAs("rhum", false))
     {
         m_DataParameter = RelativeHumidity;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "RH";
-        m_Unit = DataUnit::percent;
+        m_Unit = percent;
     }
     else if (m_DataId.IsSameAs("uwnd", false))
     {
         m_DataParameter = Uwind;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "UGRD";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("vwnd", false))
     {
         m_DataParameter = Vwind;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "VGRD";
-        m_Unit = DataUnit::mPerSec;
+        m_Unit = mPerSec;
     }
     else if (m_DataId.IsSameAs("surf_prwtr", false))
     {
         m_DataParameter = PrecipitableWater;
         m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_FileVariableName = "PWAT";
-        m_Unit = DataUnit::mm;
+        m_Unit = mm;
     }
     else
     {
         m_DataParameter = NoDataParameter;
         m_CommandDownload = wxEmptyString;
         m_FileVariableName = wxEmptyString;
-        m_Unit = DataUnit::NoDataUnit;
+        m_Unit = NoDataUnit;
     }
 }
 

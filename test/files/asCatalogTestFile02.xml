@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<AtmoswingFile version="0.2">
+<AtmoSwingFile version="0.2">
     <DataSet id="DSet1" enable="1" name="Dataset 1" description="Dataset 1 description">
         <Something>1</Something>
         <SomethingElse>Meters</SomethingElse>
@@ -73,5 +73,5 @@
             </Data>
         </DataList>
     </DataSet>
-</AtmoswingFile>
+</AtmoSwingFile>
 

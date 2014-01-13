@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AtmoswingFile version="0.2">
+<AtmoSwingFile version="0.2">
     <StandardSet>
         <General name="General">
             <Options />
@@ -96,4 +96,4 @@
             </Data>
         </Process>
     </StandardSet>
-</AtmoswingFile>
+</AtmoSwingFile>

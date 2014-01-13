@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AtmoswingFile version="0.3">
+<AtmoSwingFile version="0.3">
     <CalibrationSet>
         <General name="General">
             <Options />
@@ -186,4 +186,4 @@
             </Params>
         </Process>
     </CalibrationSet>
-</AtmoswingFile>
+</AtmoSwingFile>
