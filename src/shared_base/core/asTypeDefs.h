@@ -84,7 +84,7 @@ typedef Eigen::Matrix < float , Eigen::Dynamic , Eigen::Dynamic , Eigen::RowMajo
 typedef Eigen::Matrix < double , Eigen::Dynamic , Eigen::Dynamic , Eigen::RowMajor > Matrix2DDouble;
 
 // Arrays are used for element-wise calculations. It is often the case here.
-typedef Eigen::Array < int , Eigen::Dynamic , 1 , Eigen::RowMajor > Array1DInt;
+typedef Eigen::Array < int , Eigen::Dynamic , 1 > Array1DInt;
 typedef Eigen::Array < int , Eigen::Dynamic , Eigen::Dynamic , Eigen::RowMajor > Array2DInt;
 typedef std::vector < Array1DInt > VArray1DInt;
 typedef std::vector < Array2DInt > VArray2DInt;
@@ -94,7 +94,7 @@ typedef std::vector < std::vector < Array2DInt* > > VVpArray2DInt;
 typedef std::vector < std::vector < std::vector < Array2DInt > > > VVVArray2DInt;
 typedef std::vector < std::vector < std::vector < Array2DInt* > > > VVVpArray2DInt;
 
-typedef Eigen::Array < float , Eigen::Dynamic , 1 , Eigen::RowMajor > Array1DFloat;
+typedef Eigen::Array < float , Eigen::Dynamic , 1 > Array1DFloat;
 typedef Eigen::Array < float , Eigen::Dynamic , Eigen::Dynamic , Eigen::RowMajor > Array2DFloat;
 typedef std::vector < Array1DFloat > VArray1DFloat;
 typedef std::vector < Array2DFloat > VArray2DFloat;
@@ -104,7 +104,7 @@ typedef std::vector < std::vector < Array2DFloat* > > VVpArray2DFloat;
 typedef std::vector < std::vector < std::vector < Array2DFloat > > > VVVArray2DFloat;
 typedef std::vector < std::vector < std::vector < Array2DFloat* > > > VVVpArray2DFloat;
 
-typedef Eigen::Array < double , Eigen::Dynamic , 1 , Eigen::RowMajor > Array1DDouble;
+typedef Eigen::Array < double , Eigen::Dynamic , 1  > Array1DDouble;
 typedef Eigen::Array < double , Eigen::Dynamic , Eigen::Dynamic , Eigen::RowMajor > Array2DDouble;
 typedef std::vector < Array1DDouble > VArray1DDouble;
 typedef std::vector < Array2DDouble > VArray2DDouble;

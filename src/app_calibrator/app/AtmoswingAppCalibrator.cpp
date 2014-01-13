@@ -160,25 +160,6 @@ bool AtmoswingAppCalibrator::OnInit()
     m_PredictorsDir = wxEmptyString;
     m_CalibMethod = wxEmptyString;
 
-    // Saving and loading of intermediate results files: reinitialized as it may be catastrophic to forget that it is enabled...
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesAllSteps", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesAllSteps", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadFinalForecastScore", false);
-
     // Call default behaviour (mandatory for command-line mode)
     if (!wxApp::OnInit()) // When false, we are in CL mode
         return false;
@@ -187,8 +168,9 @@ bool AtmoswingAppCalibrator::OnInit()
     if (g_GuiMode)
     {
         // Check that it is the unique instance
-        bool multipleInstances;
-        pConfig->Read("/Standard/MultiInstances", &multipleInstances, false);
+        bool multipleInstances = false;
+
+        wxFileConfig::Get()->Read("/Standard/MultiInstances", &multipleInstances, false);
 
         if (!multipleInstances)
         {
@@ -562,7 +544,24 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         wxFileConfig::Get()->Write("/Calibration/SkipValidation", option);
     }
 
-    // Saving/loading options
+    // Saving and loading of intermediate results files: reinitialized as it may be catastrophic to forget that it is enabled...
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesAllSteps", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesAllSteps", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
+    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadFinalForecastScore", false);
+
     wxString saveDatesStep;
     if (parser.Found("savedatesstep", & saveDatesStep))
     {
@@ -681,16 +680,11 @@ int AtmoswingAppCalibrator::OnExit()
     delete wxFileConfig::Set((wxFileConfig *) NULL);
 
     // Delete threads manager and log
-//    DeleteThreadsManager();
+    DeleteThreadsManager();
     DeleteLog();
 
-// TODO (phorton#5#): Do the cleanup here
-// Override this member function for any processing which needs to be done as the application is about to exit.
-// OnExit is called after destroying all application windows and controls, but before wxWidgets cleanup.
-
-    #ifdef _CRTDBG_MAP_ALLOC
-        _CrtDumpMemoryLeaks();
-    #endif
+    // CleanUp
+    wxApp::CleanUp();
 
     return 0;
 }

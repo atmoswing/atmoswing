@@ -239,15 +239,8 @@ int AtmoswingAppViewer::OnExit()
     // Cleanup cURL
     asInternet::Cleanup();
 
+    // Cleanup vroomgis
     vroomgis_clear_images();
-
-// TODO (phorton#5#): Do the cleanup here
-// Override this member function for any processing which needs to be done as the application is about to exit.
-// OnExit is called after destroying all application windows and controls, but before wxWidgets cleanup.
-
-    #ifdef _CRTDBG_MAP_ALLOC
-        _CrtDumpMemoryLeaks();
-    #endif
 
     return 1;
 }

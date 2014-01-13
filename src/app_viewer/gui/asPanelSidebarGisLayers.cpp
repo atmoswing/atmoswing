@@ -45,9 +45,3 @@ asPanelSidebarGisLayers::~asPanelSidebarGisLayers()
 {
 
 }
-/*
-void asPanelSidebarGisLayers::OnPaint( wxCommandEvent& event )
-{
-    event.Skip();
-}
-*/

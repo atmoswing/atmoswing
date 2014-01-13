@@ -155,6 +155,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
                 {
                     asLogError(_("The directory to save real-time predictors data cannot be created."));
+                    wxDELETE(errorbuffer);
                     return asFAILED;
                 }
 
@@ -164,6 +165,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     if(!ProgressBar.Update(i_file, updatedialogmessage))
                     {
                         asLogMessage(_("The download has been canceled by the user."));
+                        wxDELETE(errorbuffer);
                         return asCANCELLED;
                     }
                 #endif
@@ -215,6 +217,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     if(CURLE_OK != res) {
                         asLogWarning(wxString::Format(_("Failed downloading file. Curl error code: %d"), res));
                         asLogWarning(wxString::Format(_("Curl error message: %s"), errorbuffer));
+                        wxDELETE(errorbuffer);
                         return asFAILED;
                     }
                     else
