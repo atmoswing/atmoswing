@@ -3,8 +3,16 @@ cmake_minimum_required(VERSION 2.8)
 
 #### PROJECT
 
-project(AtmoswingTests)
+project(AtmoSwingTests)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
+if (WIN32)
+	set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
+endif (WIN32)
+
+
+#### ADDITION OF CUSTOM MODULES
+
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../build/_cmake)
 
 
 #### SOURCE FILES LIST
@@ -31,7 +39,6 @@ list(REMOVE_DUPLICATES src_all)
 list(APPEND inc_dirs 
 	"${PROJECT_SOURCE_DIR}/../src/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/eigen/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
 	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
 	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
@@ -40,28 +47,46 @@ list(APPEND inc_dirs
 	)
 include_directories(${inc_dirs})
 
-# Select flags
+
+#### FLAGS & DEFINES
+
 if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "-Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes -Wno-unused-local-typedefs -Wno-unused-variable")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -s -march=core2")
 endif (UNIX AND NOT APPLE)
-
-# Display some variables
-message(STATUS "Project source directory : " ${PROJECT_SOURCE_DIR})
-message(STATUS "Building in : " ${CMAKE_BINARY_DIR})
-message(STATUS "Building in (check) : " ${CMAKE_CURRENT_BINARY_DIR})
-message(STATUS "Executable will be : " ${EXECUTABLE_OUTPUT_PATH})
-message(STATUS "Build type is : " ${CMAKE_BUILD_TYPE})
-
-
-#### DEFINES
-
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -D_CRT_SECURE_NO_WARNINGS -DwxUSE_GUI=0 -DUNIT_TESTING)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DwxUSE_GUI=0 -DUNIT_TESTING)
+
+if (WIN32)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	add_definitions(-D_CRTDBG_MAP_ALLOC)
+	if (USE_VLD)
+		add_definitions(-DUSE_VLD)
+	endif (USE_VLD)
+endif (WIN32)
 
 
 #### LIBRARIES
+
+if (WIN32)
+    set(USE_PROVIDED_LIBRARIES 1 CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+    if(USE_PROVIDED_LIBRARIES)
+        set(USE_PROVIDED_LIBRARIES_PATH CACHE PATH "Path to the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+        if ("${USE_PROVIDED_LIBRARIES_PATH}" STREQUAL "")
+            message(FATAL_ERROR "Please provide the path to the downloaded libraries, or disable the option USE_PROVIDED_LIBRARIES.")
+        else()
+            set(CUSTOM_LIBRARY_PATH "${USE_PROVIDED_LIBRARIES_PATH}")
+            file(GLOB sub-dir ${CUSTOM_LIBRARY_PATH}/*)
+            foreach(dir ${sub-dir})
+                if(IS_DIRECTORY ${dir})
+                    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+                endif()
+            endforeach()
+        endif()
+    endif(USE_PROVIDED_LIBRARIES)
+endif (WIN32)
+
 
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
@@ -85,6 +110,11 @@ include_directories(${CURL_INCLUDE_DIRS})
 include("../../build/_cmake/FindProj4.cmake")
 include_directories(${PROJ4_INCLUDE_DIR})
 
+# Eigen
+mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
+find_package(Eigen3 3.0.0)
+include_directories(${EIGEN3_INCLUDE_DIR})
+
 # GDAL
 find_package(GDAL REQUIRED)
 include_directories(${GDAL_INCLUDE_DIRS})
@@ -92,6 +122,14 @@ include_directories(${GDAL_INCLUDE_DIRS})
 # UnitTest++
 include("../../build/_cmake/FindUnitTest++.cmake")
 include_directories(${UNITTEST++_INCLUDE_DIR})
+
+# Visual Leak Detector
+if (WIN32)
+	if (USE_VLD)
+		find_package(VLD)
+		include_directories(${VLD_INCLUDE_DIRS})
+	endif (USE_VLD)
+endif (WIN32)
 
 
 #### DECLARE EXECUTABLE
@@ -108,3 +146,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${CURL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${UNITTEST++_LIBRARY})
+if (WIN32)
+	if (USE_VLD)
+		target_link_libraries(${CMAKE_PROJECT_NAME} ${VLD_LIBRARIES})
+	endif (USE_VLD)
+endif (WIN32)
