@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<AtmoswingFile version="0.2">
+<AtmoSwingFile version="0.2">
 
     <DataSet id="MCHDR" enable="1" name="MeteoSwiss daily rainfall measurements" description="Precipitation measurements made by MeteoSwiss at a daily timestep">
         <Parameter>Precipitation</Parameter>
@@ -1150,4 +1150,4 @@
         </DataList>
     </DataSet>
 
-</AtmoswingFile>
+</AtmoSwingFile>

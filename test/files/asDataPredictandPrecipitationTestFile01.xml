@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<AtmoswingFile version="0.2">
+<AtmoSwingFile version="0.2">
 
     <!--CAUTION:    No accent (UTF-8 code OK)!
                     Strictly respect the formats!
@@ -63,4 +63,4 @@
             </Data>
         </DataList>
     </DataSet>
-</AtmoswingFile>
+</AtmoSwingFile>

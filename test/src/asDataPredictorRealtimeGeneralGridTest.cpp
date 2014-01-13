@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -39,12 +39,6 @@ namespace
 
 TEST(LoadEasySmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -62,10 +56,17 @@ TEST(LoadEasySmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -123,16 +124,11 @@ TEST(LoadEasySmallFile)
     CHECK_CLOSE(9295, hgt[2](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadEasyLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -150,10 +146,17 @@ TEST(LoadEasyLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -211,16 +214,11 @@ TEST(LoadEasyLargeFile)
     CHECK_CLOSE(9295, hgt[2](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -238,10 +236,17 @@ TEST(LoadCompositeSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -263,16 +268,11 @@ TEST(LoadCompositeSmallFile)
     CHECK_CLOSE(9395, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -290,10 +290,17 @@ TEST(LoadCompositeLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -315,16 +322,11 @@ TEST(LoadCompositeLargeFile)
     CHECK_CLOSE(9395, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderLeftSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -342,10 +344,17 @@ TEST(LoadBorderLeftSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -367,16 +376,11 @@ TEST(LoadBorderLeftSmallFile)
     CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderLeftLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -394,10 +398,17 @@ TEST(LoadBorderLeftLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -419,16 +430,11 @@ TEST(LoadBorderLeftLargeFile)
     CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderLeftOn720SmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -446,10 +452,17 @@ TEST(LoadBorderLeftOn720SmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -471,16 +484,11 @@ TEST(LoadBorderLeftOn720SmallFile)
     CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderLeftOn720LargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -498,10 +506,17 @@ TEST(LoadBorderLeftOn720LargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -523,16 +538,11 @@ TEST(LoadBorderLeftOn720LargeFile)
     CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderRightSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -550,10 +560,17 @@ TEST(LoadBorderRightSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -575,16 +592,11 @@ TEST(LoadBorderRightSmallFile)
     CHECK_CLOSE(9423, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadBorderRightLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -602,10 +614,17 @@ TEST(LoadBorderRightLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -627,16 +646,11 @@ TEST(LoadBorderRightLargeFile)
     CHECK_CLOSE(9423, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -655,10 +669,17 @@ TEST(LoadCompositeStepLonSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -680,16 +701,11 @@ TEST(LoadCompositeStepLonSmallFile)
     CHECK_CLOSE(9360, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -708,10 +724,17 @@ TEST(LoadCompositeStepLonLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -733,16 +756,11 @@ TEST(LoadCompositeStepLonLargeFile)
     CHECK_CLOSE(9360, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonLatSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -761,10 +779,17 @@ TEST(LoadCompositeStepLonLatSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -784,16 +809,11 @@ TEST(LoadCompositeStepLonLatSmallFile)
     CHECK_CLOSE(9360, hgt[0](2,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStepLonLatLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -812,10 +832,17 @@ TEST(LoadCompositeStepLonLatLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -835,16 +862,11 @@ TEST(LoadCompositeStepLonLatLargeFile)
     CHECK_CLOSE(9360, hgt[0](2,5), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -863,10 +885,17 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -889,16 +918,11 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     CHECK_CLOSE(9373, hgt[0](2,4), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -917,10 +941,17 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -943,16 +974,11 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     CHECK_CLOSE(9373, hgt[0](2,4), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -971,10 +997,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -992,16 +1025,11 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     CHECK_CLOSE(9316, hgt[0](1,3), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -1020,10 +1048,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -1041,16 +1076,11 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     CHECK_CLOSE(9316, hgt[0](1,3), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18h.grib2");
@@ -1069,10 +1099,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -1088,16 +1125,11 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 
 TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asDataPredictorRealtimeTestFile01.xml");
-
-    asCatalogPredictorsRealtime catalog(filepath);
-    catalog.Load("GFS_F-2","hgt");
-
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile12hL.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/asDataPredictorRealtimeTestFile18hL.grib2");
@@ -1116,10 +1148,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime data(catalog);
-    data.Load(geoarea, dates, filepaths);
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    wxASSERT(predictor);
 
-    VArray2DFloat hgt = data.GetData();
+    // Create file names
+    predictor->SetFileNames(filepaths);
+
+    // Load
+    bool successLoad = predictor->Load(geoarea, dates);
+    CHECK_EQUAL(true, successLoad);
+
+    VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -1135,5 +1174,6 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);
 
     wxDELETE(geoarea);
+    wxDELETE(predictor);
 }
 }
