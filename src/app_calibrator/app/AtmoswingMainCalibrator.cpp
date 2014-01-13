@@ -198,7 +198,7 @@ AtmoswingFrameCalibrator::~AtmoswingFrameCalibrator()
     pConfig->Write("/MainFrameCalibrator/w", (long) w);
     pConfig->Write("/MainFrameCalibrator/h", (long) h);
 
-    //wxDELETE(m_LogWindow);
+    Destroy();
 }
 
 void AtmoswingFrameCalibrator::OnClose(wxCloseEvent &event)
