@@ -46,8 +46,8 @@
                 <XCoordinate>708200</XCoordinate>
                 <YCoordinate>173800</YCoordinate>
                 <Height>0</Height>
-                <FileName>asDataPredictandPrecipitationTestFile03.txt</FileName>
-                <FilePattern>asDataPredictandPrecipitationTestFile02</FilePattern>
+                <FileName>precipitation_file.txt</FileName>
+                <FilePattern>precipitation_file_pattern</FilePattern>
                 <Start>01/01/1962</Start>
                 <End>31/12/2001</End>
             </Data>
@@ -56,8 +56,8 @@
                 <XCoordinate>690140</XCoordinate>
                 <YCoordinate>167590</YCoordinate>
                 <Height>0</Height>
-                <FileName>asDataPredictandPrecipitationTestFile03.txt</FileName>
-                <FilePattern>asDataPredictandPrecipitationTestFile02</FilePattern>
+                <FileName>precipitation_file.txt</FileName>
+                <FilePattern>precipitation_file_pattern</FilePattern>
                 <Start>01/01/1962</Start>
                 <End>31/12/2001</End>
             </Data>

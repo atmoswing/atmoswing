@@ -27,3 +27,7 @@ syntax: glob
 *.a
 *.orig
 desktop.ini
+*.exp
+*.lib
+*.pdb
+*.tlog

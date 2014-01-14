@@ -69,6 +69,11 @@ public:
         return m_OriginalProviderStart;
     }
 
+    void SetFileNamePattern(const wxString &val)
+    {
+        m_FileNamePattern = val;
+    }
+
 protected:
     double m_OriginalProviderStart;
     double m_OriginalProviderEnd;
