@@ -1,4 +1,4 @@
-Date  Arve-G 
+Date somewhere 
 P10 70.82
 P en mm
 19620101  25.8

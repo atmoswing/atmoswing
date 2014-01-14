@@ -1,4 +1,4 @@
-<pattern id="asDataPredictandPrecipitationTestFile02" name="Data pattern for unit testing">
+<pattern id="precipitation_file_pattern" name="Data pattern for unit testing">
     <structtype>constantwidth</structtype>
     <headerlines>3</headerlines>
     <parsetime>1</parsetime>
