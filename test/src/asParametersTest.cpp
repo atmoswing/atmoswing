@@ -36,7 +36,7 @@ namespace
 TEST(LoadFromFile)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asParametersTestFile01.xml");
+    filepath.Append("/files/parameters_standard_read.xml");
 
     asParameters params;
     params.LoadFromFile(filepath);

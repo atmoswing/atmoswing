@@ -57,7 +57,7 @@ void GrenobleComparisonArve1()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
-        datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -386,7 +386,7 @@ void GrenobleComparisonArve1CalibrationPeriod()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
-        datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -402,7 +402,7 @@ void GrenobleComparisonArve1CalibrationPeriod()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile08.xml");
+        paramsFilePath.Append("/files/parameters_calibration_01.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -591,7 +591,7 @@ void GrenobleComparisonArve2()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
-        catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -912,7 +912,7 @@ void GrenobleComparisonArve2CalibrationPeriod()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
-        catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -929,7 +929,7 @@ void GrenobleComparisonArve2CalibrationPeriod()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile09.xml");
+        paramsFilePath.Append("/files/parameters_calibration_02.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
@@ -1137,8 +1137,8 @@ TEST(PreloadingSimple)
         asParametersCalibration paramsPreload;
         wxString paramsFilePathStd = wxFileName::GetCwd();
         wxString paramsFilePathPreload = wxFileName::GetCwd();
-        paramsFilePathStd.Append("/files/asMethodCalibratorTestFile14.xml");
-        paramsFilePathPreload.Append("/files/asMethodCalibratorTestFile15.xml");
+        paramsFilePathStd.Append("/files/parameters_calibration_05.xml");
+        paramsFilePathPreload.Append("/files/parameters_calibration_06.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
         CHECK_EQUAL(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
@@ -1223,8 +1223,8 @@ TEST(PreloadingWithPreprocessing)
         asParametersCalibration paramsPreload;
         wxString paramsFilePathStd = wxFileName::GetCwd();
         wxString paramsFilePathPreload = wxFileName::GetCwd();
-        paramsFilePathStd.Append("/files/asMethodCalibratorTestFile16.xml");
-        paramsFilePathPreload.Append("/files/asMethodCalibratorTestFile17.xml");
+        paramsFilePathStd.Append("/files/parameters_calibration_07.xml");
+        paramsFilePathPreload.Append("/files/parameters_calibration_08.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
         CHECK_EQUAL(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
@@ -1309,7 +1309,7 @@ void GrenobleComparisonArve1Preloading()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
-        datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -1325,7 +1325,7 @@ void GrenobleComparisonArve1Preloading()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile12.xml");
+        paramsFilePath.Append("/files/parameters_calibration_03.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -1498,7 +1498,7 @@ void GrenobleComparisonArve1PreloadingSubset()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString datasetPredictandFilePath = wxFileName::GetCwd();
-        datasetPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -1512,7 +1512,7 @@ void GrenobleComparisonArve1PreloadingSubset()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile12.xml");
+        paramsFilePath.Append("/files/parameters_calibration_03.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -1604,7 +1604,7 @@ void GrenobleComparisonArve2Preloading()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
-        catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -1621,7 +1621,7 @@ void GrenobleComparisonArve2Preloading()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile13.xml");
+        paramsFilePath.Append("/files/parameters_calibration_04.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
@@ -1804,7 +1804,7 @@ void GrenobleComparisonArve2SavingIntermediateResults()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
-        catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -1821,7 +1821,7 @@ void GrenobleComparisonArve2SavingIntermediateResults()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile09.xml");
+        paramsFilePath.Append("/files/parameters_calibration_02.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
@@ -2025,7 +2025,7 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
         wxString catalogPredictandFilePath = wxFileName::GetCwd();
-        catalogPredictandFilePath.Append("/files/asDataPredictandPrecipitationTestFile01.xml");
+        catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
         wxString dataFileDir = wxFileName::GetCwd();
         dataFileDir.Append("/files/");
         wxString patternFileDir = wxFileName::GetCwd();
@@ -2042,7 +2042,7 @@ void GrenobleComparisonArve2MergeByHalfAndMultiply()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/asMethodCalibratorTestFile18.xml");
+        paramsFilePath.Append("/files/parameters_calibration_09.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 

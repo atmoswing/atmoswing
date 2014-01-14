@@ -182,7 +182,7 @@ TEST(ConvertStringToDatasetDateEndEx06)
 TEST(GetDatasetIdList)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile01.xml");
+    filepath.Append("/files/catalog_general_dataset.xml");
 
     asCatalog::DatasetIdList SetList = asCatalog::GetDatasetIdList(NoDataPurpose, filepath);
 
@@ -219,7 +219,7 @@ TEST(GetDatasetIdList)
 TEST(GetDataIdListStr)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile02.xml");
+    filepath.Append("/files/catalog_general_data.xml");
 
     asCatalog::DataIdListStr DataList = asCatalog::GetDataIdListStr(NoDataPurpose, "DSet1", filepath);
 
@@ -244,7 +244,7 @@ TEST(GetDataIdListStr)
 TEST(GetDataIdListStrEnable)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile02.xml");
+    filepath.Append("/files/catalog_general_data.xml");
 
     asCatalog::DataIdListStr DataList = asCatalog::GetDataIdListStr(NoDataPurpose, "DSet2", filepath);
 
@@ -278,7 +278,7 @@ TEST(GetDataIdListStrEnable)
 TEST(GetDataIdListStrAllDisabled)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile02.xml");
+    filepath.Append("/files/catalog_general_data.xml");
 
     asCatalog::DataIdListStr DataList = asCatalog::GetDataIdListStr(NoDataPurpose, "DSet4", filepath);
 
@@ -290,7 +290,7 @@ TEST(GetDataIdListStrAllDisabled)
 TEST(GetDataIdListInt)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile02.xml");
+    filepath.Append("/files/catalog_general_data.xml");
 
     asCatalog::DataIdListInt DataList = asCatalog::GetDataIdListInt(NoDataPurpose, "DSet1", filepath);
 
@@ -312,7 +312,7 @@ TEST(GetDataIdListInt)
 TEST(GetDataIdListIntEnable)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile02.xml");
+    filepath.Append("/files/catalog_general_data.xml");
 
     asCatalog::DataIdListInt DataList = asCatalog::GetDataIdListInt(NoDataPurpose, "DSet2", filepath);
 
@@ -340,7 +340,7 @@ TEST(GetDataIdListIntEnable)
 TEST(GetDataIdListIntAllDisabled)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogTestFile02.xml");
+    filepath.Append("/files/catalog_general_data.xml");
 
     asCatalog::DataIdListInt DataList = asCatalog::GetDataIdListInt(NoDataPurpose, "DSet4", filepath);
 

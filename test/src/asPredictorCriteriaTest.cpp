@@ -44,7 +44,7 @@ TEST(ProcessS1)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/asPredictorCriteriaTestFile01.txt"));
+    filepath.Append(_T("/files/predictor_criteria_S1.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -299,7 +299,7 @@ TEST(ProcessRSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/asPredictorCriteriaTestFile02.txt"));
+    filepath.Append(_T("/files/predictor_criteria_RMSE.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -518,7 +518,7 @@ TEST(ProcessRMSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/asPredictorCriteriaTestFile02.txt"));
+    filepath.Append(_T("/files/predictor_criteria_RMSE.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 

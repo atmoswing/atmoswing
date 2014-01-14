@@ -42,7 +42,7 @@ TEST(ProcessCRPSapproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile01.txt");
+    filepath.Append("/files/forecast_score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -95,7 +95,7 @@ TEST(ProcessCRPSexactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile01.txt");
+    filepath.Append("/files/forecast_score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -148,7 +148,7 @@ TEST(ProcessCRPSapproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile02.txt");
+    filepath.Append("/files/forecast_score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -201,7 +201,7 @@ TEST(ProcessCRPSexactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile02.txt");
+    filepath.Append("/files/forecast_score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -254,7 +254,7 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile03.txt");
+    filepath.Append("/files/forecast_score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -307,7 +307,7 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile03.txt");
+    filepath.Append("/files/forecast_score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -360,7 +360,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile01.txt");
+    filepath.Append("/files/forecast_score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -414,7 +414,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile01.txt");
+    filepath.Append("/files/forecast_score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -468,7 +468,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile02.txt");
+    filepath.Append("/files/forecast_score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -522,7 +522,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile02.txt");
+    filepath.Append("/files/forecast_score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -576,7 +576,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile03.txt");
+    filepath.Append("/files/forecast_score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -630,7 +630,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile03.txt");
+    filepath.Append("/files/forecast_score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -684,7 +684,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile01.txt");
+    filepath.Append("/files/forecast_score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -738,7 +738,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile01.txt");
+    filepath.Append("/files/forecast_score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -792,7 +792,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile02.txt");
+    filepath.Append("/files/forecast_score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -846,7 +846,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile02.txt");
+    filepath.Append("/files/forecast_score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -900,7 +900,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile03.txt");
+    filepath.Append("/files/forecast_score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -954,7 +954,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asForecastScoreTestFile03.txt");
+    filepath.Append("/files/forecast_score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 

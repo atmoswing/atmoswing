@@ -38,7 +38,7 @@ namespace
 TEST(LoadCatalogProp)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogPredictandsTestFile01.xml");
+    filepath.Append("/files/catalog_predictands_MCH.xml");
 
     asCatalogPredictands catalog(filepath);
     catalog.Load(0);
@@ -78,7 +78,7 @@ TEST(LoadCatalogProp)
 TEST(LoadDataProp)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asCatalogPredictandsTestFile01.xml");
+    filepath.Append("/files/catalog_predictands_MCH.xml");
 
     asCatalogPredictands catalog(filepath);
     catalog.Load(1);
