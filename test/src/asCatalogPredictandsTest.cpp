@@ -68,12 +68,6 @@ TEST(LoadCatalogProp)
     int formatraw = catalog.GetFormatRaw();
     int formatrawreal = dat;
     CHECK_EQUAL(formatrawreal,formatraw);
-    int formatstorage = catalog.GetFormatStorage();
-    int formatstoragereal = netcdf;
-    CHECK_EQUAL(formatstoragereal,formatstorage);
-    wxString realpath = "C:\\Data\\_PROJETS\\MINERVE2\\201 Series meteo predictands\\MeteoSuisse\\P jour\\";
-    samestr = catalog.GetDataPath().CompareTo(realpath);
-    CHECK_EQUAL(0,samestr);
     VectorDouble nans = catalog.GetNan();
     CHECK_EQUAL(32767,nans[0]);
     int coordinatesys = catalog.GetCoordSys();
