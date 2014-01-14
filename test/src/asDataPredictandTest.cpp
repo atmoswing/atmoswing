@@ -25,9 +25,6 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
 
-#define protected public
-#define private public
-
 #include <wx/filename.h>
 
 #include "asDataPredictand.h"

@@ -2,7 +2,7 @@
 
 <AtmoSwingFile version="0.2">
 
-    <DataSet id="MCHDR" enable="1" name="MeteoSwiss daily rainfall measurements" description="Precipitation measurements made by MeteoSwiss at a daily timestep">
+    <DataSet id="MCHDR" name="MeteoSwiss daily rainfall measurements" description="Precipitation measurements made by MeteoSwiss at a daily timestep">
         <Parameter>Precipitation</Parameter>
         <Unit>mm</Unit>
         <TemporalResolution>Daily</TemporalResolution>
@@ -12,8 +12,6 @@
         <End note="last value of all stations">31/12/2007</End>
         <FirstTimeStepHour>0</FirstTimeStepHour>
         <FormatRaw>dat</FormatRaw>
-        <FormatStorage>netcdf</FormatStorage>
-        <Path>C:\Data\_PROJETS\MINERVE2\201 Series meteo predictands\MeteoSuisse\P jour\</Path>
         <NaN>32767</NaN>
         <CoordinateSys>CH1903</CoordinateSys>
         <DataList>
