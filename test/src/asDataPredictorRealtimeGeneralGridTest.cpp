@@ -56,7 +56,7 @@ TEST(LoadEasySmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -146,7 +146,7 @@ TEST(LoadEasyLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -236,7 +236,7 @@ TEST(LoadCompositeSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -290,7 +290,7 @@ TEST(LoadCompositeLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -344,7 +344,7 @@ TEST(LoadBorderLeftSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -398,7 +398,7 @@ TEST(LoadBorderLeftLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -452,7 +452,7 @@ TEST(LoadBorderLeftOn720SmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -506,7 +506,7 @@ TEST(LoadBorderLeftOn720LargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -560,7 +560,7 @@ TEST(LoadBorderRightSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -614,7 +614,7 @@ TEST(LoadBorderRightLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -669,7 +669,7 @@ TEST(LoadCompositeStepLonSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -724,7 +724,7 @@ TEST(LoadCompositeStepLonLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -779,7 +779,7 @@ TEST(LoadCompositeStepLonLatSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -832,7 +832,7 @@ TEST(LoadCompositeStepLonLatLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -885,7 +885,7 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -941,7 +941,7 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -997,7 +997,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1048,7 +1048,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1099,7 +1099,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1148,7 +1148,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, Ustep, Vmin, Vptsnb, Vstep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast_Forecast", "hgt");
+    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
