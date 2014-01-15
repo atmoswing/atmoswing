@@ -3,6 +3,7 @@ syntax: glob
 */ipch/*
 */Debug/*
 */Release/*
+*/RelWithDebInfo/*
 */Win32/*
 */ALL_BUILD.*
 */ZERO_CHECK.*
@@ -26,8 +27,9 @@ syntax: glob
 *.dll
 *.a
 *.orig
-desktop.ini
 *.exp
 *.lib
 *.pdb
 *.tlog
+*.ilk
+desktop.ini

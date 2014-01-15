@@ -225,9 +225,16 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
     for (int i_file=0; i_file<timeArray.GetSize(); i_file++)
     {
         // Extract file path
-        wxString filePath;
-        filePath = realtimePredictorDir;
-        filePath.Append(DS);
+        wxString filePath = wxEmptyString;
+
+        // Check if the volume is present
+        wxFileName fileName(filePaths[i_file]);
+        if (!fileName.HasVolume() && !realtimePredictorDir.IsEmpty())
+        {
+            filePath = realtimePredictorDir;
+            filePath.Append(DS);
+        }
+
         filePath.Append(filePaths[i_file]);
 
         // Open the Grib2 file
