@@ -305,7 +305,9 @@ bool asPreprocessor::PreprocessMergeCouplesAndMultiply(std::vector < asDataPredi
     VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
     copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
     int counter = 0;
-    int prevTimeSize = 0;
+    #ifdef _DEBUG
+        int prevTimeSize = 0;
+    #endif // _DEBUG
 
     for(unsigned int i_dat=0; i_dat<predictors.size(); i_dat+=2)
     {
@@ -319,11 +321,13 @@ bool asPreprocessor::PreprocessMergeCouplesAndMultiply(std::vector < asDataPredi
         int colsNb2 = predictors[i_dat+1]->GetLonPtsnb();
         int timeSize = predictors[i_dat]->GetSizeTime();
 
-        if (i_dat>0)
-        {
-            wxASSERT(prevTimeSize==timeSize);
-        }
-        prevTimeSize = timeSize;
+        #ifdef _DEBUG
+            if (i_dat>0)
+            {
+                wxASSERT(prevTimeSize==timeSize);
+            }
+            prevTimeSize = timeSize;
+        #endif // _DEBUG
 
         wxASSERT(rowsNb1>0);
         wxASSERT(colsNb1>0);
@@ -498,7 +502,9 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
     VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
     copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
     int counter = 0;
-    int prevTimeSize = 0;
+    #ifdef _DEBUG
+        int prevTimeSize = 0;
+    #endif
 
     for(unsigned int i_dat=0; i_dat<predictors.size(); i_dat+=2)
     {
@@ -512,11 +518,13 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
         int colsNb2 = predictors[i_dat+1]->GetLonPtsnb();
         int timeSize = predictors[i_dat]->GetSizeTime();
 
-        if (i_dat>0)
-        {
-            wxASSERT(prevTimeSize==timeSize);
-        }
-        prevTimeSize = timeSize;
+        #ifdef _DEBUG
+            if (i_dat>0)
+            {
+                wxASSERT(prevTimeSize==timeSize);
+            }
+            prevTimeSize = timeSize;
+        #endif
 
         wxASSERT(rowsNb1>0);
         wxASSERT(colsNb1>0);
