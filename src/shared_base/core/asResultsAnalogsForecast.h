@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #ifndef ASRESULTSANALOGSFORECAST_H
 #define ASRESULTSANALOGSFORECAST_H
 
@@ -335,7 +335,7 @@ public:
      */
     float GetReferenceValue(int i_stat, int i_ref)
     {
-        if (!m_HasReferenceValues) 
+        if (!m_HasReferenceValues)
         {
             asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
             return NaNFloat;
@@ -353,7 +353,7 @@ public:
      */
     Array2DFloat GetReferenceValues()
     {
-        if (!m_HasReferenceValues) 
+        if (!m_HasReferenceValues)
         {
             asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
             Array2DFloat nodata(0,0);
@@ -412,18 +412,18 @@ public:
     /** Access m_AnalogCriteria
      * \return The whole array m_AnalogCriteria
      */
-    Array1DFloat &GetAnalogsCriteria(int i)
+    Array1DFloat &GetAnalogsCriteria(unsigned int i)
     {
-        wxASSERT(m_AnalogsCriteria.size()>(unsigned)i);
+        wxASSERT(m_AnalogsCriteria.size()>i);
         return m_AnalogsCriteria[i];
     }
 
     /** Set m_AnalogCriteria
      * \param analogCriteria The new array to set
      */
-    void SetAnalogsCriteria(int i, Array1DFloat &analogsCriteria)
+    void SetAnalogsCriteria(unsigned int i, Array1DFloat &analogsCriteria)
     {
-        if (m_AnalogsCriteria.size()>=(unsigned)i+1)
+        if (m_AnalogsCriteria.size()>=i+1)
         {
             m_AnalogsCriteria[i] = analogsCriteria;
         }
@@ -440,18 +440,18 @@ public:
     /** Access m_AnalogValuesGross
      * \return The whole array m_AnalogValuesGross
      */
-    Array2DFloat &GetAnalogsValuesGross(int i_leadtime)
+    Array2DFloat &GetAnalogsValuesGross(unsigned int i_leadtime)
     {
-        wxASSERT(m_AnalogsValuesGross.size()>(unsigned)i_leadtime);
+        wxASSERT(m_AnalogsValuesGross.size()>i_leadtime);
         return m_AnalogsValuesGross[i_leadtime];
     }
 
     /** Access m_AnalogValuesGross
      * \return The whole array m_AnalogValuesGross
      */
-    Array1DFloat GetAnalogsValuesGross(int i_leadtime, int i_station)
+    Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station)
     {
-        wxASSERT(m_AnalogsValuesGross.size()>(unsigned)i_leadtime);
+        wxASSERT(m_AnalogsValuesGross.size()>i_leadtime);
         wxASSERT(m_AnalogsValuesGross[i_leadtime].rows()>i_station);
         Array1DFloat vals = m_AnalogsValuesGross[i_leadtime].row(i_station);
         return vals;
@@ -460,9 +460,9 @@ public:
     /** Set m_AnalogValuesGross
      * \param analogValuesGross The new array to set
      */
-    void SetAnalogsValuesGross(int i_leadtime, int i_station, Array1DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(unsigned int i_leadtime, int i_station, Array1DFloat &analogsValuesGross)
     {
-        if (m_AnalogsValuesGross.size()>=(unsigned)i_leadtime+1)
+        if (m_AnalogsValuesGross.size()>=i_leadtime+1)
         {
             wxASSERT(m_AnalogsValuesGross[i_leadtime].rows()>i_station);
             wxASSERT(m_AnalogsValuesGross[i_leadtime].cols()==analogsValuesGross.size());
@@ -513,9 +513,9 @@ public:
     /** Set m_AnalogsDates
      * \param analogDates The new array to set
      */
-    void SetAnalogsDates(int i, Array1DFloat &analogsDates)
+    void SetAnalogsDates(unsigned int i, Array1DFloat &analogsDates)
     {
-        if (m_AnalogsDates.size()>=(unsigned)i+1)
+        if (m_AnalogsDates.size()>=i+1)
         {
             m_AnalogsDates[i] = analogsDates;
         }

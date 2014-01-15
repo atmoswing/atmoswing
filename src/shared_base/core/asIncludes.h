@@ -94,20 +94,22 @@ using namespace std;
 
 #ifdef _DEBUG
     #include <stdlib.h>
-    #include <crtdbg.h>
     #include <wx/debug.h> // wxASSERT
 
     #ifdef __WXMSW__
+        #include <crtdbg.h>
         #include <wx/msw/msvcrt.h> // redefines the new() operator 
+
+        #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
+            #error Debug CRT functions have not been included!
+        #endif
     #endif
 
     #ifdef USE_VLD
         #include <vld.h> // Visual Leak Detector (https://vld.codeplex.com/)
     #endif
 
-    #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
-        #error Debug CRT functions have not been included!
-    #endif
+    
 #endif
 
 

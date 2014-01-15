@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asDataPredictor.h"
 
 #include <asTimeArray.h>
@@ -87,13 +87,13 @@ bool asDataPredictor::InitContainers()
 
 bool asDataPredictor::CheckTimeLength(int counter)
 {
-    if (m_Data.size()!=counter)
+    if (m_Data.size()!=(unsigned)counter)
     {
         asLogError(_("The data time dimension does not match the check counter."));
         return false;
     }
 
-    if (m_Time.size()!=m_Data.size())
+    if ((unsigned)m_Time.size()!=m_Data.size())
     {
         asLogError(_("The date and the data array lengths do not match."));
         return false;

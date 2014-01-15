@@ -455,7 +455,7 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::Load(asGeoAreaCompositeGrid *desi
             {
                 // Get the spatial extent
                 float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-                float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
+                //float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
                 float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
                 float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
 

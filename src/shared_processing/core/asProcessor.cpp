@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asProcessor.h"
 
 #include <asTimeArray.h>
@@ -123,6 +123,11 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
     for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
     {
+        wxASSERT(predictorsArchive.size()>i_ptor);
+        wxASSERT(predictorsArchive[i_ptor]);
+        wxASSERT(predictorsArchive[i_ptor]->GetData().size()>0);
+        wxASSERT(vRowsNb.size()>i_ptor);
+        wxASSERT(vColsNb.size()>i_ptor);
         vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
         vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
 
@@ -223,6 +228,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             wxASSERT_MSG(timeArchiveDataSize==predictorsArchive[0]->GetData().size(), wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d", timeArchiveDataSize, (int)predictorsArchive[0]->GetData().size()));
             Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
+            wxASSERT(predictorsTarget[0]);
             wxASSERT(timeTargetDataSize==predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
@@ -812,7 +818,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
                                                                                                                 asTime::GetStringTime(timeTargetData[i_timeTarg], "DD.MM.YYYY hh:mm").c_str(), i_timeTarg,
                                                                                                                 (int)vArchData[i_ptor]->size(), (int)vTargData[i_ptor]->size()));
                             tmpscore = criteria[i_ptor]->Assess(*vTargData[i_ptor], *vArchData[i_ptor], vRowsNb[i_ptor], vColsNb[i_ptor]);
-            
+
                             /*
                             // For debugging
                             wxLogMessage("timeTarget = %s",asTime::GetStringTime(timeTargetSelection[i_anadates]).c_str());
