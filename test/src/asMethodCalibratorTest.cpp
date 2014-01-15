@@ -183,7 +183,7 @@ void GrenobleComparison1()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile06.txt");
+        resultFilePath.Append("/files/forecast_score_04.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -462,7 +462,7 @@ void GrenobleComparison1CalibrationPeriod()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile10.txt");
+        resultFilePath.Append("/files/forecast_score_06.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -756,7 +756,7 @@ void GrenobleComparison2()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile07.txt");
+        resultFilePath.Append("/files/forecast_score_05.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -992,7 +992,7 @@ void GrenobleComparison2CalibrationPeriod()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile11.txt");
+        resultFilePath.Append("/files/forecast_score_07.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -1390,7 +1390,7 @@ void GrenobleComparison1Preloading()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile10.txt");
+        resultFilePath.Append("/files/forecast_score_06.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -1684,7 +1684,7 @@ void GrenobleComparison2Preloading()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile11.txt");
+        resultFilePath.Append("/files/forecast_score_07.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -1889,7 +1889,7 @@ void GrenobleComparison2SavingIntermediateResults()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile11.txt");
+        resultFilePath.Append("/files/forecast_score_07.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
@@ -2105,7 +2105,7 @@ void GrenobleComparison2MergeByHalfAndMultiply()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/asMethodCalibratorTestFile11.txt");
+        resultFilePath.Append("/files/forecast_score_07.txt");
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
 
