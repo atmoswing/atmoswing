@@ -7,7 +7,7 @@ project(AtmoSwingForecaster)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 set(USE_GUI 1 CACHE BOOL "Sould we build AtmoSwingForecaster with a GUI ?" )
 if (WIN32)
-	set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
+    set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
 endif (WIN32)
 
 
@@ -56,31 +56,6 @@ if (USE_GUI)
         )
 endif (USE_GUI)
 include_directories(${inc_dirs})
-
-
-#### FLAGS & DEFINES
-
-if (UNIX AND NOT APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes -Wno-unused-local-typedefs -Wno-unused-variable")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s -march=core2")
-endif (UNIX AND NOT APPLE)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
-
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DAPP_FORECASTER)
-
-if (WIN32)
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-	add_definitions(-D_CRTDBG_MAP_ALLOC)
-	if (USE_VLD)
-		add_definitions(-DUSE_VLD)
-	endif (USE_VLD)
-endif (WIN32)
-
-if (USE_GUI)
-    add_definitions(-DwxUSE_GUI=1)
-else (USE_GUI)
-    add_definitions(-DwxUSE_GUI=0)
-endif (USE_GUI)
 
 
 #### LIBRARIES
@@ -141,18 +116,50 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 
 # wxhgversion
 if (USE_GUI)
-	set(USE_WXHGVERSION 1)
-	mark_as_advanced(USE_WXHGVERSION)
-	include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+    set(USE_WXHGVERSION 1)
+    mark_as_advanced(USE_WXHGVERSION)
+    include("../../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
 endif (USE_GUI)
 
 # Visual Leak Detector
 if (WIN32)
-	if (USE_VLD)
-		find_package(VLD)
-		include_directories(${VLD_INCLUDE_DIRS})
-	endif (USE_VLD)
+    if (USE_VLD)
+        find_package(VLD)
+        include_directories(${VLD_INCLUDE_DIRS})
+    endif (USE_VLD)
 endif (WIN32)
+
+
+#### FLAGS & DEFINES
+
+if (UNIX AND NOT APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-sign-compare")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s -march=core2")
+endif (UNIX AND NOT APPLE)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")
+
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DAPP_FORECASTER)
+
+if (WIN32)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-D_CRTDBG_MAP_ALLOC)
+    if (USE_VLD)
+        add_definitions(-DUSE_VLD)
+    endif (USE_VLD)
+endif (WIN32)
+
+if (USE_GUI)
+    add_definitions(-DwxUSE_GUI=1)
+else (USE_GUI)
+    add_definitions(-DwxUSE_GUI=0)
+endif (USE_GUI)
+
+message("CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
+message("CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
+message("CMAKE_CXX_FLAGS_DEBUG = ${CMAKE_CXX_FLAGS_DEBUG}")
 
 
 #### DECLARE EXECUTABLE
@@ -183,7 +190,7 @@ if (USE_WXHGVERSION)
     target_link_libraries(${CMAKE_PROJECT_NAME} ${WXHGVERSION_NAME})
 endif (USE_WXHGVERSION)
 if (WIN32)
-	if (USE_VLD)
-		target_link_libraries(${CMAKE_PROJECT_NAME} ${VLD_LIBRARIES})
-	endif (USE_VLD)
+    if (USE_VLD)
+        target_link_libraries(${CMAKE_PROJECT_NAME} ${VLD_LIBRARIES})
+    endif (USE_VLD)
 endif (WIN32)
