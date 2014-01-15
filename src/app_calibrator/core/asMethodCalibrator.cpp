@@ -783,8 +783,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         }
     }
 
-    Cleanup();
-
     return true;
 }
 
