@@ -8,33 +8,34 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asDataPredictorArchive.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asFileNetcdf.h>
 #include <asDataPredictorArchiveNcepReanalysis1.h>
-#include <asDataPredictorArchiveNcepReanalysis1Subset.h>
+#include <asDataPredictorArchiveNcepReanalysis1Terranum.h>
+#include <asDataPredictorArchiveNcepReanalysis1Lthe.h>
 #include <asDataPredictorArchiveNcepReanalysis2.h>
 #include <asDataPredictorArchiveNoaaOisst2.h>
-#include <asDataPredictorArchiveNoaaOisst2Subset.h>
+#include <asDataPredictorArchiveNoaaOisst2Terranum.h>
 
 
 asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
@@ -57,9 +58,13 @@ asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &data
     {
         predictor = new asDataPredictorArchiveNcepReanalysis1(dataId);
     }
-    else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_subset", false))
+    else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_terranum", false))
     {
-        predictor = new asDataPredictorArchiveNcepReanalysis1Subset(dataId);
+        predictor = new asDataPredictorArchiveNcepReanalysis1Terranum(dataId);
+    }
+    else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_lthe", false))
+    {
+        predictor = new asDataPredictorArchiveNcepReanalysis1Lthe(dataId);
     }
     else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false))
     {
@@ -69,9 +74,9 @@ asDataPredictorArchive* asDataPredictorArchive::GetInstance(const wxString &data
     {
         predictor = new asDataPredictorArchiveNoaaOisst2(dataId);
     }
-    else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false))
+    else if (datasetId.IsSameAs("NOAA_OISST_v2_terranum", false))
     {
-        predictor = new asDataPredictorArchiveNoaaOisst2Subset(dataId);
+        predictor = new asDataPredictorArchiveNoaaOisst2Terranum(dataId);
     }
     else
     {
@@ -349,26 +354,26 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
 bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray)
 {
-    if (!timeArray.IsSimpleMode()) 
+    if (!timeArray.IsSimpleMode())
     {
         asLogError(_("The data loading only accepts time arrays in simple mode."));
         return false;
     }
 
     // Check against original dataset
-    if (timeArray.GetFirst()<m_OriginalProviderStart) 
+    if (timeArray.GetFirst()<m_OriginalProviderStart)
     {
-        asLogError(wxString::Format(_("The requested date (%s) is anterior to the beginning of the original dataset (%s)."), 
-                                    asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD).c_str(), 
+        asLogError(wxString::Format(_("The requested date (%s) is anterior to the beginning of the original dataset (%s)."),
+                                    asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD).c_str(),
                                     asTime::GetStringTime(m_OriginalProviderStart, YYYYMMDD).c_str()));
         return false;
     }
     if (!asTools::IsNaN(m_OriginalProviderEnd))
     {
-        if (timeArray.GetLast()>m_OriginalProviderEnd) 
+        if (timeArray.GetLast()>m_OriginalProviderEnd)
         {
-            asLogError(wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."), 
-                                        asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD).c_str(), 
+            asLogError(wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
+                                        asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD).c_str(),
                                         asTime::GetStringTime(m_OriginalProviderEnd, YYYYMMDD).c_str()));
             return false;
         }
@@ -390,7 +395,7 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray)
     fractpart = modf((timeArray.GetFirstDayHour()-m_FirstTimeStepHours)/m_TimeStepHours, &intpart);
     if (fractpart>0.0000001)
     {
-        asLogError(wxString::Format(_("The desired start (%gh) is not coherent with the data properties."), 
+        asLogError(wxString::Format(_("The desired start (%gh) is not coherent with the data properties."),
                                     timeArray.GetFirstDayHour()));
         return false;
     }

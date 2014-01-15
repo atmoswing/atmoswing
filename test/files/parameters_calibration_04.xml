@@ -43,8 +43,8 @@
                     <Preload value="1" />
                 </Params>
                 <Params name="Data">
-                    <DatasetId value="NCEP_Grenoble_start12h_step24h" />
-                    <DataId value="hgt" />
+                    <DatasetId value="NCEP_Reanalysis_v1_lthe" />
+                    <DataId value="hgt_1000hPa" />
                 </Params>
                 <Params name="Level">
                     <Level value="1000" min="" max="" step="" method="fixed" />
@@ -77,8 +77,8 @@
                     <Preload value="1" />
                 </Params>
                 <Params name="Data">
-                    <DatasetId value="NCEP_Grenoble_start0h_step24h" />
-                    <DataId value="hgt" />
+                    <DatasetId value="NCEP_Reanalysis_v1_lthe" />
+                    <DataId value="hgt_500hPa" />
                 </Params>
                 <Params name="Level">
                     <Level value="500" min="" max="" step="" method="fixed" />
@@ -120,25 +120,25 @@
                     <Preprocess value="1" />
                     <PreprocessMethod value="MergeCouplesAndMultiply" />
                     <SubData>
-                        <PreprocessDatasetId value="NCEP_Grenoble_start0h_step12h" />
-                        <PreprocessDataId value="pwa" />
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
+                        <PreprocessDataId value="prwtr" />
                         <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
                         <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
-                        <PreprocessDatasetId value="NCEP_Grenoble_start0h_step12h" />
-                        <PreprocessDataId value="pwa" />
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
+                        <PreprocessDataId value="prwtr" />
                         <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
                         <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
-                        <PreprocessDatasetId value="NCEP_Grenoble_start0h_step12h" />
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="rhum" />
                         <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
                         <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
-                        <PreprocessDatasetId value="NCEP_Grenoble_start0h_step12h" />
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="rhum" />
                         <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
                         <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
@@ -165,7 +165,6 @@
             <Options />
             <Data name="Predictand">
                 <Params name="Database">
-                    <Predictand value="StationsDailyPrecipitation" />
                     <PredictandStationId value="1" min="" max="" step="" method="fixed" />
                 </Params>
             </Data>
