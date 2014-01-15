@@ -48,25 +48,6 @@ list(APPEND inc_dirs
 include_directories(${inc_dirs})
 
 
-#### FLAGS & DEFINES
-
-if (UNIX AND NOT APPLE)
-    set(CMAKE_CXX_FLAGS "-Wall -fno-strict-aliasing -Wno-sign-compare -Wno-attributes -Wno-unused-local-typedefs -Wno-unused-variable")
-    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -s -march=core2")
-endif (UNIX AND NOT APPLE)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
-
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DwxUSE_GUI=0 -DUNIT_TESTING)
-
-if (WIN32)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_definitions(-D_CRTDBG_MAP_ALLOC)
-    if (USE_VLD)
-        add_definitions(-DUSE_VLD)
-    endif (USE_VLD)
-endif (WIN32)
-
-
 #### LIBRARIES
 
 if (WIN32)
@@ -130,6 +111,32 @@ if (WIN32)
         include_directories(${VLD_INCLUDE_DIRS})
     endif (USE_VLD)
 endif (WIN32)
+
+
+#### FLAGS & DEFINES
+
+if (UNIX AND NOT APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-sign-compare")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s -march=core2")
+endif (UNIX AND NOT APPLE)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")
+
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DwxUSE_GUI=0 -DUNIT_TESTING)
+
+if (WIN32)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-D_CRTDBG_MAP_ALLOC)
+    if (USE_VLD)
+        add_definitions(-DUSE_VLD)
+    endif (USE_VLD)
+endif (WIN32)
+
+message("CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
+message("CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
+message("CMAKE_CXX_FLAGS_DEBUG = ${CMAKE_CXX_FLAGS_DEBUG}")
 
 
 #### DECLARE EXECUTABLE
