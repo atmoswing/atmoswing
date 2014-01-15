@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8)
 project(AtmoSwingTests)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 if (WIN32)
-	set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
+    set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
 endif (WIN32)
 
 
@@ -31,20 +31,20 @@ list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/as
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/asGlobVars.cpp")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/asGlobVars.h")
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/asGlobVars.cpp")
-	
+    
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
 
 # Directories to include
 list(APPEND inc_dirs 
-	"${PROJECT_SOURCE_DIR}/../src/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
-	"${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
-	"${PROJECT_SOURCE_DIR}/../../src/app_calibrator/core/"
-	)
+    "${PROJECT_SOURCE_DIR}/../src/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_base/libs/ticpp/"
+    "${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_forecaster/core/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/"
+    "${PROJECT_SOURCE_DIR}/../../src/app_calibrator/core/"
+    )
 include_directories(${inc_dirs})
 
 
@@ -59,11 +59,11 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEB
 add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DwxUSE_GUI=0 -DUNIT_TESTING)
 
 if (WIN32)
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-	add_definitions(-D_CRTDBG_MAP_ALLOC)
-	if (USE_VLD)
-		add_definitions(-DUSE_VLD)
-	endif (USE_VLD)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-D_CRTDBG_MAP_ALLOC)
+    if (USE_VLD)
+        add_definitions(-DUSE_VLD)
+    endif (USE_VLD)
 endif (WIN32)
 
 
@@ -125,10 +125,10 @@ include_directories(${UNITTEST++_INCLUDE_DIR})
 
 # Visual Leak Detector
 if (WIN32)
-	if (USE_VLD)
-		find_package(VLD)
-		include_directories(${VLD_INCLUDE_DIRS})
-	endif (USE_VLD)
+    if (USE_VLD)
+        find_package(VLD)
+        include_directories(${VLD_INCLUDE_DIRS})
+    endif (USE_VLD)
 endif (WIN32)
 
 
@@ -147,7 +147,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${UNITTEST++_LIBRARY})
 if (WIN32)
-	if (USE_VLD)
-		target_link_libraries(${CMAKE_PROJECT_NAME} ${VLD_LIBRARIES})
-	endif (USE_VLD)
+    if (USE_VLD)
+        target_link_libraries(${CMAKE_PROJECT_NAME} ${VLD_LIBRARIES})
+    endif (USE_VLD)
 endif (WIN32)
+
