@@ -197,6 +197,8 @@ TEST(ProcessS1)
         res = (resZ500+resZ1000)/2;
         CHECK_CLOSE(critS1[i_cand], res, 0.05);
     }
+    
+    wxDELETE(criteria);
 
 }
 
@@ -293,6 +295,9 @@ TEST(ProcessS1preprocessed)
     }
 
     wxDELETE(predictor);
+    wxDELETE(gradients);
+    wxDELETE(criteria);
+    wxDELETE(criteriaGrads);
 
 }
 
@@ -512,6 +517,8 @@ TEST(ProcessRSE)
         res = criteria->Assess(RefMulti, CandMulti);
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
     }
+
+    wxDELETE(criteria);
 
 }
 
@@ -748,6 +755,8 @@ TEST(ProcessRMSE)
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
     }
 
+    wxDELETE(criteria);
+
 }
 
 TEST(ProcessDifferences)
@@ -906,6 +915,8 @@ TEST(ProcessDifferences)
         CHECK_CLOSE(Results[i], res, 0.00001);
     }
 
+    wxDELETE(criteriaSAD);
+
     // MD
 
     Results[0] = 1191.25;
@@ -937,6 +948,8 @@ TEST(ProcessDifferences)
         res = criteriaMD->Assess(RefData[i], CandData[i]);
         CHECK_CLOSE(Results[i], res, 0.00001);
     }
+
+    wxDELETE(criteriaMD);
 
     // MRDtoMax
 
@@ -985,6 +998,8 @@ TEST(ProcessDifferences)
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
         CHECK_CLOSE(Results[i], res, 0.0001);
     }
+
+    wxDELETE(criteriaMRDtoMax);
 
     // MRDtoMean
 
@@ -1049,6 +1064,8 @@ TEST(ProcessDifferences)
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
         CHECK_CLOSE(Results[i], res, 0.001);
     }
+
+    wxDELETE(criteriaMRDtoMean);
 
 }
 }
