@@ -221,6 +221,7 @@ TEST(ProcessS1preprocessed)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
     vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
