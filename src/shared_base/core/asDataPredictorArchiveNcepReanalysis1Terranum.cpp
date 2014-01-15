@@ -26,69 +26,112 @@
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
 
-#include "asDataPredictorArchiveNoaaOisst2Subset.h"
+#include "asDataPredictorArchiveNcepReanalysis1Terranum.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asFileNetcdf.h>
 
 
-asDataPredictorArchiveNoaaOisst2Subset::asDataPredictorArchiveNoaaOisst2Subset(const wxString &dataId)
+asDataPredictorArchiveNcepReanalysis1Terranum::asDataPredictorArchiveNcepReanalysis1Terranum(const wxString &dataId)
 :
 asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_Initialized = false;
     m_DataId = dataId;
-    m_DatasetId = "NOAA_OISST_v2_subset";
-    m_OriginalProvider = "NOAA";
+    m_DatasetId = "NCEP_Reanalysis_v1_terranum";
+    m_OriginalProvider = "NCEP/NCAR";
     m_FinalProvider = "Terranum";
     m_FinalProviderWebsite = "http://www.terranum.ch";
-    m_FinalProviderFTP = "";
-    m_DatasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
-    m_OriginalProviderStart = asTime::GetMJD(1982, 1, 1);
+    m_FinalProviderFTP = wxEmptyString;
+    m_DatasetName = "Reanalysis 1 subset from terranum";
+    m_OriginalProviderStart = asTime::GetMJD(1948, 1, 1);
     m_OriginalProviderEnd = NaNDouble;
     m_TimeZoneHours = 0;
-    m_TimeStepHours = 24;
-    m_FirstTimeStepHours = 12;
+    m_TimeStepHours = 6;
+    m_FirstTimeStepHours = 0;
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*10^34);
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0.125;
-    m_VaxisShift = 0.125;
-    m_UaxisStep = 1;
-    m_VaxisStep = 1;
+    m_UaxisShift = 0;
+    m_VaxisShift = 0;
+    m_UaxisStep = 2.5;
+    m_VaxisStep = 2.5;
     m_SubFolder = wxEmptyString;
 
     // Identify data ID and set the corresponding properties.
-    if (m_DataId.IsSameAs("sst", false))
+    if (m_DataId.IsSameAs("hgt", false))
     {
-        m_DataParameter = SeaSurfaceTemperature;
-        m_FileNamePattern = "sst_1deg.nc";
-        m_FileVariableName = "sst";
-        m_Unit = degC;
+        m_DataParameter = GeopotentialHeight;
+        m_FileNamePattern = "hgt.nc";
+        m_FileVariableName = "hgt";
+        m_Unit = m;
     }
-    else if (m_DataId.IsSameAs("sst_anom", false))
+    else if (m_DataId.IsSameAs("air", false))
     {
-        m_DataParameter = SeaSurfaceTemperatureAnomaly;
-        m_FileNamePattern = "sst_anom_1deg.nc";
-        m_FileVariableName = "anom";
-        m_Unit = degC;
+        m_DataParameter = AirTemperature;
+        m_FileNamePattern = "air.nc";
+        m_FileVariableName = "air";
+        m_Unit = degK;
+    }
+    else if (m_DataId.IsSameAs("omega", false))
+    {
+        m_DataParameter = Omega;
+        m_FileNamePattern = "omega.nc";
+        m_FileVariableName = "omega";
+        m_Unit = PascalsPerSec;
+    }
+    else if (m_DataId.IsSameAs("rhum", false))
+    {
+        m_DataParameter = RelativeHumidity;
+        m_FileNamePattern = "rhum.nc";
+        m_FileVariableName = "rhum";
+        m_Unit = percent;
+    }
+    else if (m_DataId.IsSameAs("shum", false))
+    {
+        m_DataParameter = SpecificHumidity;
+        m_FileNamePattern = "shum.nc";
+        m_FileVariableName = "shum";
+        m_Unit = kgPerKg;
+    }
+    else if (m_DataId.IsSameAs("uwnd", false))
+    {
+        m_DataParameter = Uwind;
+        m_FileNamePattern = "uwnd.nc";
+        m_FileVariableName = "uwnd";
+        m_Unit = mPerSec;
+    }
+    else if (m_DataId.IsSameAs("vwnd", false))
+    {
+        m_DataParameter = Vwind;
+        m_FileNamePattern = "vwnd.nc";
+        m_FileVariableName = "vwnd";
+        m_Unit = mPerSec;
+    }
+    else if (m_DataId.IsSameAs("surf_prwtr", false))
+    {
+        m_DataParameter = PrecipitableWater;
+        m_FileNamePattern = "pr_wtr.nc";
+        m_FileVariableName = "pr_wtr";
+        m_Unit = mm;
     }
     else
     {
         m_DataParameter = NoDataParameter;
+        m_FileNamePattern = wxEmptyString;
         m_FileVariableName = wxEmptyString;
         m_Unit = NoDataUnit;
     }
 }
 
-asDataPredictorArchiveNoaaOisst2Subset::~asDataPredictorArchiveNoaaOisst2Subset()
+asDataPredictorArchiveNcepReanalysis1Terranum::~asDataPredictorArchiveNcepReanalysis1Terranum()
 {
 
 }
 
-bool asDataPredictorArchiveNoaaOisst2Subset::Init()
+bool asDataPredictorArchiveNcepReanalysis1Terranum::Init()
 {
     // Check data ID
     if (m_FileNamePattern.IsEmpty() || m_FileVariableName.IsEmpty()) {
@@ -108,27 +151,39 @@ bool asDataPredictorArchiveNoaaOisst2Subset::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNoaaOisst2Subset::GetDataIdList()
+VectorString asDataPredictorArchiveNcepReanalysis1Terranum::GetDataIdList()
 {
     VectorString list;
 
-    list.push_back("sst"); // Sea surface temperature
-    list.push_back("sst_anom"); // Anomaly
+    list.push_back("hgt"); // Geopotential Height
+    list.push_back("air"); // Air Temperature
+    list.push_back("omega"); // Omega (Vertical Velocity)
+    list.push_back("rhum"); // Relative Humidity
+    list.push_back("shum"); // Specific Humidity
+    list.push_back("uwnd"); // U-Wind
+    list.push_back("vwnd"); // V-Wind
+    list.push_back("surf_prwtr"); // Precipitable Water
 
     return list;
 }
 
-VectorString asDataPredictorArchiveNoaaOisst2Subset::GetDataIdDescriptionList()
+VectorString asDataPredictorArchiveNcepReanalysis1Terranum::GetDataIdDescriptionList()
 {
     VectorString list;
 
-    list.push_back("Sea surface temperature");
-    list.push_back("Sea surface temperature anomaly");
+    list.push_back("Geopotential Height");
+    list.push_back("Air Temperature");
+    list.push_back("Omega (Vertical Velocity)");
+    list.push_back("Relative Humidity");
+    list.push_back("Specific Humidity");
+    list.push_back("U-Wind");
+    list.push_back("V-Wind");
+    list.push_back("Precipitable Water");
 
     return list;
 }
 
-bool asDataPredictorArchiveNoaaOisst2Subset::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
+bool asDataPredictorArchiveNcepReanalysis1Terranum::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
 {
     if (!m_Initialized)
     {

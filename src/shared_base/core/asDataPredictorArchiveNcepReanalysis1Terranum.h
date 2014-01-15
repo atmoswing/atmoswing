@@ -8,59 +8,59 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
-#ifndef ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
-#define ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
+
+#ifndef ASDATAPREDICTORARCHIVENCEPREANALYSIS1TERRANUM_H
+#define ASDATAPREDICTORARCHIVENCEPREANALYSIS1TERRANUM_H
 
 #include <asIncludes.h>
 #include <asDataPredictorArchive.h>
 
 class asGeoArea;
 
-class asDataPredictorArchiveNoaaOisst2Subset: public asDataPredictorArchive
+class asDataPredictorArchiveNcepReanalysis1Terranum: public asDataPredictorArchive
 {
 public:
 
     /** Default constructor */
-    asDataPredictorArchiveNoaaOisst2Subset(const wxString &dataId);
+    asDataPredictorArchiveNcepReanalysis1Terranum(const wxString &dataId);
 
     /** Default destructor */
-    virtual ~asDataPredictorArchiveNoaaOisst2Subset();
+    virtual ~asDataPredictorArchiveNcepReanalysis1Terranum();
 
-    bool Init();
+    virtual bool Init();
 
     /** Method to load a tensor of data for a given area and a given time array
      * \param desiredArea The desired area
      * \param timeArray The desired time array
      */
-    bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
+    virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
 
     static VectorString GetDataIdList();
-    
+
     static VectorString GetDataIdDescriptionList();
 
 
 protected:
-    
+
 private:
 
 };
 
-#endif // ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
+#endif // ASDATAPREDICTORARCHIVENCEPREANALYSIS1TERRANUM_H
