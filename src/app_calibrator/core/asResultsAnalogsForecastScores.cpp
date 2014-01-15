@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asResultsAnalogsForecastScores.h"
 
 #include "asFileNetcdf.h"
@@ -105,8 +105,8 @@ bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath)
     DimNames1.push_back("time");
 
     // Define variables: the scores and the corresponding dates
-    ncFile.DefVar("targetdates", NC_FLOAT, 1, DimNames1);
-    ncFile.DefVar("forecastscores", NC_FLOAT, 1, DimNames1);
+    ncFile.DefVar("target_dates", NC_FLOAT, 1, DimNames1);
+    ncFile.DefVar("forecast_scores", NC_FLOAT, 1, DimNames1);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -120,8 +120,8 @@ bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath)
     size_t count1D[] = {Ntime};
 
     // Write data
-    ncFile.PutVarArray("targetdates", start1D, count1D, &m_TargetDates(0));
-    ncFile.PutVarArray("forecastscores", start1D, count1D, &m_ForecastScores(0));
+    ncFile.PutVarArray("target_dates", start1D, count1D, &m_TargetDates(0));
+    ncFile.PutVarArray("forecast_scores", start1D, count1D, &m_ForecastScores(0));
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -164,9 +164,9 @@ bool asResultsAnalogsForecastScores::Load(const wxString &AlternateFilePath)
 
     // Get time and data
     m_TargetDates.resize( TimeLength );
-    ncFile.GetVar("targetdates", &m_TargetDates[0]);
+    ncFile.GetVar("target_dates", &m_TargetDates[0]);
     m_ForecastScores.resize( TimeLength );
-    ncFile.GetVar("forecastscores", &m_ForecastScores[0]);
+    ncFile.GetVar("forecast_scores", &m_ForecastScores[0]);
 
     ncFile.Close();
 

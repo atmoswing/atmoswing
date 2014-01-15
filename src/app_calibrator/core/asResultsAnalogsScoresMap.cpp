@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asResultsAnalogsScoresMap.h"
 
 #include <asParametersCalibration.h>
@@ -168,7 +168,7 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
     DimNames3.push_back("lon");
 
     // Define variables: the scores and the corresponding dates
-    ncFile.DefVar("forecastscores", NC_FLOAT, 3, DimNames3);
+    ncFile.DefVar("forecast_scores", NC_FLOAT, 3, DimNames3);
     ncFile.DefVar("lat", NC_FLOAT, 1, DimNamesLat);
     ncFile.DefVar("level", NC_FLOAT, 1, DimNamesLevel);
     ncFile.DefVar("lon", NC_FLOAT, 1, DimNamesLon);
@@ -219,7 +219,7 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
     ncFile.PutVarArray("lon", startLon, countLon, &m_MapLon(0));
     ncFile.PutVarArray("lat", startLat, countLat, &m_MapLat(0));
     ncFile.PutVarArray("level", startLevel, countLevel, &m_MapLevel(0));
-    ncFile.PutVarArray("forecastscores", start3, count3, &scores[0]);
+    ncFile.PutVarArray("forecast_scores", start3, count3, &scores[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
