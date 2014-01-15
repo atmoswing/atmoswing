@@ -71,6 +71,7 @@ TEST(Gradients)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
     CHECK_EQUAL(5, predictor->GetLonPtsnb());
@@ -200,6 +201,7 @@ TEST(GradientsMultithreading)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
     CHECK_EQUAL(5, predictor->GetLonPtsnb());
