@@ -33,3 +33,5 @@ syntax: glob
 *.tlog
 *.ilk
 desktop.ini
+CMakeCache.txt
+cmake.check_cache

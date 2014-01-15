@@ -40,8 +40,8 @@
                     <Preprocess value="1" />
                     <PreprocessMethod value="Gradients" />
                     <SubData>
-                        <PreprocessDatasetId value="NCEP_Grenoble_start12h_step24h" />
-                        <PreprocessDataId value="hgt" />
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
+                        <PreprocessDataId value="hgt_1000hPa" />
                         <PreprocessLevel value="1000" min="" max="" step="" method="fixed" />
                         <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
@@ -68,8 +68,8 @@
                     <Preprocess value="1" />
                     <PreprocessMethod value="Gradients" />
                     <SubData>
-                        <PreprocessDatasetId value="NCEP_Grenoble_start0h_step24h" />
-                        <PreprocessDataId value="hgt" />
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
+                        <PreprocessDataId value="hgt_500hPa" />
                         <PreprocessLevel value="500" min="" max="" step="" method="fixed" />
                         <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
@@ -95,7 +95,6 @@
             <Options />
             <Data name="Predictand">
                 <Params name="Database">
-                    <Predictand value="StationsDailyPrecipitation" />
                     <PredictandStationId value="1" min="" max="" step="" method="fixed" />
                 </Params>
             </Data>
