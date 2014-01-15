@@ -166,6 +166,8 @@ TEST(Gradients)
     CHECK_CLOSE(-16, hgt[11](0,14), 0.0001);
     CHECK_CLOSE(-2, hgt[11](0,21), 0.0001);
 
+    wxDELETE(gradients);
+    wxDELETE(predictor);
 }
 
 TEST(GradientsMultithreading)
@@ -296,6 +298,8 @@ TEST(GradientsMultithreading)
     CHECK_CLOSE(-16, hgt[11](0,14), 0.0001);
     CHECK_CLOSE(-2, hgt[11](0,21), 0.0001);
 
+    wxDELETE(gradients);
+    wxDELETE(predictor);
 }
 
 }

@@ -53,6 +53,10 @@ int main()
 
     wxInitialize(); // Initialize the library because wxApp is not called
 
+    // Set the local config object
+    wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetTempDir()+"Atmoswing.ini",asConfig::GetTempDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig::Set(pConfig);
+
 	// Check path
 	wxString filepath = wxFileName::GetCwd();
 	wxString filepath1 = filepath;
@@ -87,6 +91,9 @@ int main()
     bool result = UnitTest::RunAllTests();
 
     wxUninitialize();
+    DeleteThreadsManager();
+    DeleteLog();
+    delete wxFileConfig::Set((wxFileConfig *) NULL);
 
     return result;
 }
