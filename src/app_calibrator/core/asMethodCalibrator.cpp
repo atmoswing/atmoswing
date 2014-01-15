@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asMethodCalibrator.h"
 
 #ifndef UNIT_TESTING
@@ -658,8 +658,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             timeArray.Init();
 
                             // Loading the datasets information
-                            asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro), 
-                                                                                                              params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro), 
+                            asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro),
+                                                                                                              params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro),
                                                                                                               m_PredictorDataDir);
                             if(!predictorPreprocess)
                             {
@@ -1166,8 +1166,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     timeArray.Init();
 
                     // Loading the datasets information
-                    asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro), 
-                                                                                                             params.GetPreprocessDataId(i_step, i_ptor, i_prepro), 
+                    asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro),
+                                                                                                             params.GetPreprocessDataId(i_step, i_ptor, i_prepro),
                                                                                                              m_PredictorDataDir);
                     if(!predictorPreprocess)
                     {
@@ -1240,15 +1240,18 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
 
     // Check time sizes
-    int prevTimeSize = 0;
-    for (unsigned int i=0; i<m_StoragePredictors.size(); i++)
-    {
-        if (i>0)
+    #ifdef _DEBUG
+        int prevTimeSize = 0;
+
+        for (unsigned int i=0; i<m_StoragePredictors.size(); i++)
         {
-            wxASSERT(m_StoragePredictors[i]->GetSizeTime()==prevTimeSize);
+            if (i>0)
+            {
+                wxASSERT(m_StoragePredictors[i]->GetSizeTime()==prevTimeSize);
+            }
+            prevTimeSize = m_StoragePredictors[i]->GetSizeTime();
         }
-        prevTimeSize = m_StoragePredictors[i]->GetSizeTime();
-    }
+    #endif // _DEBUG
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
@@ -1462,7 +1465,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
                     // Loading the datasets information
                     asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessDataId(i_step, i_ptor, i_prepro), m_PredictorDataDir);
-                    if(!predictorPreprocess) 
+                    if(!predictorPreprocess)
                     {
                         return false;
                     }
@@ -1504,7 +1507,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                    asLogError(_("Data preprocessing failed."));
                    return false;
                 }
-                
+
                 m_StoragePredictors.push_back(predictor);
 
                 DeletePreprocessData();
