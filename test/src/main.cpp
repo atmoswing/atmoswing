@@ -39,6 +39,7 @@ int main()
 {
     g_UnitTesting = true;
     g_SilentMode = true;
+    g_GuiMode = false;
 
     // Option to test or not the exception throwing
     g_UnitTestExceptions = false;
@@ -51,7 +52,14 @@ int main()
     // Test random distribution: write ouput in files
     g_UnitTestRandomDistributions = false;
 
-    wxInitialize(); // Initialize the library because wxApp is not called
+    // Initialize the library because wxApp is not called
+    wxInitialize();
+
+    // Set the log
+    Log().CreateFile("AtmoSwingUnitTest.log");
+    Log().SetTarget(asLog::Both);
+    Log().SetLevel(2);
+    Log().DisableMessageBoxOnError();
 
     // Set the local config object
     wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetTempDir()+"Atmoswing.ini",asConfig::GetTempDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);

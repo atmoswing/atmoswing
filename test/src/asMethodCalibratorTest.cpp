@@ -47,12 +47,6 @@ void GrenobleComparison1()
 {
     if (g_UnitTestLongestProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         // Create predictand database
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
@@ -258,8 +252,6 @@ void GrenobleComparison1()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -374,12 +366,6 @@ void GrenobleComparison1CalibrationPeriod()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -534,8 +520,6 @@ void GrenobleComparison1CalibrationPeriod()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -581,12 +565,6 @@ void GrenobleComparison2()
 {
     if (g_UnitTestLongestProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(2);
-
         // Create predictand database
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
@@ -838,8 +816,6 @@ void GrenobleComparison2()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -900,12 +876,6 @@ void GrenobleComparison2CalibrationPeriod()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -1065,8 +1035,6 @@ void GrenobleComparison2CalibrationPeriod()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -1118,12 +1086,6 @@ TEST(PreloadingSimple)
 
         wxString str("Processing PreloadingSimple\n");
         printf("%s", str.mb_str(wxConvUTF8).data());
-
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        //pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
 
         bool result;
 
@@ -1189,8 +1151,6 @@ TEST(PreloadingSimple)
                 CHECK_EQUAL(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
             }
         }
-
-        wxDELETE(pLog);
     }
 }
 
@@ -1204,12 +1164,6 @@ TEST(PreloadingWithPreprocessing)
 
         wxString str("Processing PreloadingWithPreprocessing\n");
         printf("%s", str.mb_str(wxConvUTF8).data());
-
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        //pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
 
         bool result;
 
@@ -1288,8 +1242,6 @@ TEST(PreloadingWithPreprocessing)
 
             break;
         }
-
-        wxDELETE(pLog);
     }
 }
 
@@ -1297,12 +1249,6 @@ void GrenobleComparison1Preloading()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFile("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -1463,8 +1409,6 @@ void GrenobleComparison1Preloading()
 
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -1486,12 +1430,6 @@ void GrenobleComparison1PreloadingSubset()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFile("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -1569,8 +1507,6 @@ void GrenobleComparison1PreloadingSubset()
 
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -1592,12 +1528,6 @@ void GrenobleComparison2Preloading()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -1757,8 +1687,6 @@ void GrenobleComparison2Preloading()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -1792,12 +1720,6 @@ void GrenobleComparison2SavingIntermediateResults()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -1962,8 +1884,6 @@ void GrenobleComparison2SavingIntermediateResults()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        wxDELETE(pLog);
-
         asRemoveDir(tmpDir);
     }
 }
@@ -2013,12 +1933,6 @@ void GrenobleComparison2MergeByHalfAndMultiply()
 {
     if (g_UnitTestLongerProcessing)
     {
-        // Set log
-        asLog* pLog = new asLog();
-        pLog->DisableMessageBoxOnError();
-        pLog->CreateFileOnly("AtmoswingUnitTesting.log");
-        pLog->SetLevel(1);
-
         bool result;
 
         // Create predictand database
@@ -2177,8 +2091,6 @@ void GrenobleComparison2MergeByHalfAndMultiply()
 
         file.Close();
         // predictand pointer deleted by asMethodCalibration
-
-        wxDELETE(pLog);
 
         asRemoveDir(tmpDir);
     }
