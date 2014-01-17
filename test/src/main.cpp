@@ -96,7 +96,7 @@ int main()
 		}
 	}
 
-    bool result = UnitTest::RunAllTests();
+    int result = UnitTest::RunAllTests();
 
     wxUninitialize();
     DeleteThreadsManager();

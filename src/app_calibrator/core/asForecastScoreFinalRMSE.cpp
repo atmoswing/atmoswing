@@ -114,6 +114,4 @@ float asForecastScoreFinalRMSE::Assess(Array1DFloat &targetDates, Array1DFloat &
             asThrowException(_("Period not yet implemented in asForecastScoreFinalRMSE."));
         }
     }
-
-    return NaNFloat;
 }

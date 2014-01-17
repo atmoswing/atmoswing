@@ -164,6 +164,4 @@ float asPredictorCriteriaS1weights::Assess(const Array2DFloat &refData, const Ar
         }
     }
 
-    return asNOT_VALID;
-
 }

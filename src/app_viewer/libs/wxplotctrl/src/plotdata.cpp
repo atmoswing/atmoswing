@@ -38,6 +38,12 @@
 #include "wx/things/range.h"
 #include <math.h>
 
+#ifdef _MSC_VER
+    #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
+    #pragma warning( disable : 4100 ) // C4100: unreferenced formal parameter
+#endif
+
+
 #define wxPLOTDATA_MAX_DATA_COLUMNS 64
 
 #define CHECK_INDEX_COUNT_MSG(index, count, max_count, ret) \

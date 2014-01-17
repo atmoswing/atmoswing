@@ -54,7 +54,7 @@ asDataPredictand::~asDataPredictand()
 
 asDataPredictand* asDataPredictand::GetInstance(const wxString& dataParameterStr, const wxString& dataTemporalResolutionStr, const wxString& dataSpatialAggregationStr)
 {
-    DataParameter dataParameter = asGlobEnums::StringToDataParameterEnum(dataTemporalResolutionStr);
+    DataParameter dataParameter = asGlobEnums::StringToDataParameterEnum(dataParameterStr);
     DataTemporalResolution dataTemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(dataTemporalResolutionStr);
     DataSpatialAggregation dataSpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(dataSpatialAggregationStr);
 
@@ -103,7 +103,6 @@ asDataPredictand* asDataPredictand::GetInstance(DataParameter dataParameter, Dat
             asLogError(_("The predictand parameter is not listed in the asDataPredictand instance factory."));
             return NULL;
     }
-    return NULL;
 }
 
 asDataPredictand* asDataPredictand::GetInstance(const wxString& filePath)

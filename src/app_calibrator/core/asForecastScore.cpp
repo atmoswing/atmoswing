@@ -312,8 +312,6 @@ asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
         asForecastScore* score = new asForecastScoreCRPSAR();
         return score;
     }
-
-    return NULL;
 }
 
 asForecastScore::~asForecastScore()

@@ -68,8 +68,6 @@ public:
             default:
                 return "Not found";
         }
-
-        return "Not found";
     }
 
     virtual double GetUstep() = 0;

@@ -59,8 +59,6 @@ asGeoAreaCompositeGrid* asGeoAreaCompositeGrid::GetInstance(CoordSys coosys, con
         asLogError(wxString::Format(_("Given grid type: %s"), type.c_str()));
         asThrowException("The given grid type doesn't correspond to any existing option.");
     }
-
-    return NULL;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)

@@ -28,8 +28,8 @@
 #ifndef ASFORECASTVIEWER_H
 #define ASFORECASTVIEWER_H
 
-#include "vroomgis.h"
 #include "asIncludes.h"
+#include "vroomgis.h"
 
 
 class asForecastManager;

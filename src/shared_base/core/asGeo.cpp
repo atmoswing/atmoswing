@@ -190,7 +190,6 @@ Coo asGeo::ProjWGS84toCH1903(Coo coo_src)
     // http://spatialreference.org/ref/epsg/21781/
     // based on: cs2cs +proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs +to +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs
 
-    projPJ ref_src, ref_dst;
     projUV data;
     double height = 0;
     Coo coo_dst;
@@ -200,12 +199,14 @@ Coo asGeo::ProjWGS84toCH1903(Coo coo_src)
     data.u *= DEG_TO_RAD;
     data.v *= DEG_TO_RAD;
 
-    if ( ! (ref_src = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")) ) {
+    projPJ ref_src = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs");
+    if (!ref_src) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
 
-    if ( ! (ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_dst) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
@@ -239,7 +240,6 @@ Coo asGeo::ProjCH1903toWGS84(Coo coo_src)
     // http://spatialreference.org/ref/epsg/21781/
     // based on: cs2cs +proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs +to +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs
 
-    projPJ ref_src, ref_dst;
     projUV data;
     double height = 0;
     Coo coo_dst;
@@ -247,12 +247,14 @@ Coo asGeo::ProjCH1903toWGS84(Coo coo_src)
     data.u = coo_src.u;
     data.v = coo_src.v;
 
-    if ( ! (ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_src) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
 
-    if ( ! (ref_dst = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")) ) {
+    projPJ ref_dst = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs");
+    if (!ref_dst) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
@@ -288,7 +290,6 @@ Coo asGeo::ProjWGS84toCH1903p(Coo coo_src)
     // EPSG:2056
     // http://spatialreference.org/ref/epsg/2056/
 
-    projPJ ref_src, ref_dst;
     projUV data;
     double height = 0;
     Coo coo_dst;
@@ -298,12 +299,14 @@ Coo asGeo::ProjWGS84toCH1903p(Coo coo_src)
     data.u *= DEG_TO_RAD;
     data.v *= DEG_TO_RAD;
 
-    if ( ! (ref_src = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")) ) {
+    projPJ ref_src = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs");
+    if (!ref_src) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
 
-    if ( ! (ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_dst) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
@@ -336,7 +339,6 @@ Coo asGeo::ProjCH1903ptoWGS84(Coo coo_src)
     // EPSG:2056
     // http://spatialreference.org/ref/epsg/2056/
 
-    projPJ ref_src, ref_dst;
     projUV data;
     double height = 0;
     Coo coo_dst;
@@ -344,12 +346,14 @@ Coo asGeo::ProjCH1903ptoWGS84(Coo coo_src)
     data.u = coo_src.u;
     data.v = coo_src.v;
 
-    if ( ! (ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_src) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
 
-    if ( ! (ref_dst = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")) ) {
+    projPJ ref_dst = pj_init_plus("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs");
+    if (!ref_dst) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
@@ -384,7 +388,6 @@ Coo asGeo::ProjCH1903ptoCH1903(Coo coo_src)
 {
     // EPSG:2056 & 21781
 
-    projPJ ref_src, ref_dst;
     projUV data;
     double height = 0;
     Coo coo_dst;
@@ -392,12 +395,14 @@ Coo asGeo::ProjCH1903ptoCH1903(Coo coo_src)
     data.u = coo_src.u;
     data.v = coo_src.v;
 
-    if ( ! (ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_src) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
 
-    if ( ! (ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_dst) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
@@ -429,7 +434,6 @@ Coo asGeo::ProjCH1903toCH1903p(Coo coo_src)
 {
     // EPSG:2056 & 21781
 
-    projPJ ref_src, ref_dst;
     projUV data;
     double height = 0;
     Coo coo_dst;
@@ -437,12 +441,14 @@ Coo asGeo::ProjCH1903toCH1903p(Coo coo_src)
     data.u = coo_src.u;
     data.v = coo_src.v;
 
-    if ( ! (ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_src  = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_src) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }
 
-    if ( ! (ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs")) ) {
+    projPJ ref_dst = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
+    if (!ref_dst) {
         wxString errnost(pj_strerrno(pj_errno), wxConvUTF8);
         asThrowException(wxString::Format(_("Projection initialization failed : %s"), errnost.c_str()));
     }

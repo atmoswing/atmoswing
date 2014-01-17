@@ -188,6 +188,4 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
         }
     }
 
-    return asNOT_VALID;
-
 }

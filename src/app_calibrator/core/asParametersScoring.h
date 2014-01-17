@@ -178,8 +178,6 @@ public:
     {
         if (m_ValidationYears.size()>0) return true;
         else return false;
-
-        return false;
     }
 
     wxString GetForecastScoreName()

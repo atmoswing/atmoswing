@@ -349,7 +349,7 @@ bool asFileXml::SetPointerNextSameSibling(const bool &throwIfNoSiblings)
     if (!UpdateElementName()) return false;
     if (m_ElementName.length()==0) asThrowException(_("There was no previous element. Please choose an element first before looking for siblings."));
 
-    pElementTmp = m_ElementPointer->NextSiblingElement (m_ElementName.mb_str(), false);
+    pElementTmp = m_ElementPointer->NextSiblingElement (m_ElementName.mb_str(), throwIfNoSiblings);
     if (pElementTmp)
     {
         m_ElementPointer = pElementTmp;

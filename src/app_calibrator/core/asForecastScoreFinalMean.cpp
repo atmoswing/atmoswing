@@ -112,6 +112,4 @@ float asForecastScoreFinalMean::Assess(Array1DFloat &targetDates, Array1DFloat &
             asThrowException(_("Period not yet implemented in asForecastScoreFinalMean."));
         }
     }
-
-    return NaNFloat;
 }

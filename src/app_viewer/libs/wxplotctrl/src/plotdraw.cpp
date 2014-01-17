@@ -49,6 +49,11 @@
     #undef GetYValue
 #endif
 
+#ifdef _MSC_VER
+    #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
+    #pragma warning( disable : 4100 ) // C4100: unreferenced formal parameter
+#endif
+
 // Draw borders around the axes, title, and labels for sizing testing
 //#define DRAW_BORDERS
 
@@ -1221,9 +1226,9 @@ void wxPlotDrawerDataCurve::Draw(wxDC *dc, wxPlotData* curve, int curve_index)
     wxASSERT(bitmap.Ok());
 
     int bitmapWidth = bitmap.GetWidth();
-    int bitmapHalfWidth = bitmapWidth/2;
+    //int bitmapHalfWidth = bitmapWidth/2;
     int bitmapHeight = bitmap.GetHeight();
-    int bitmapHalfHeight = bitmapHeight/2;
+    //int bitmapHalfHeight = bitmapHeight/2;
 
     // find the starting and ending indexes into the data curve
     int n, n_start, n_end;
@@ -1360,7 +1365,7 @@ void wxPlotDrawerDataCurve::Draw(wxDC *dc, wxPlotData* curve, int curve_index)
                   m_owner->GetClientCoordFromPlotY(y_data[s_start+1]));*/
     }
 
-    bool firstPointLine = true;
+    //bool firstPointLine = true;
 
     for (n = n_start; n < n_end; n++)
     {
