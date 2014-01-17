@@ -167,7 +167,7 @@ void asLog::Error(const wxString &msg)
             }
 
             // To the command prompt
-            if (m_Target==asLog::Screen || m_Target==asLog::Both)
+            if (m_Target==asLog::Screen)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -184,7 +184,7 @@ void asLog::Error(const wxString &msg)
 
 			if(!processed)
 			{
-				//printf("Error: %s\n", msg.mb_str(wxConvUTF8).data());
+				printf("Error: %s\n", msg.mb_str(wxConvUTF8).data());
 			}
         }
     }
@@ -235,7 +235,7 @@ void asLog::Warning(const wxString &msg)
             }
 
             // To the command prompt
-            if (m_Target==asLog::Screen || m_Target==asLog::Both)
+            if (m_Target==asLog::Screen)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -252,7 +252,7 @@ void asLog::Warning(const wxString &msg)
 
 			if(!processed)
 			{
-				//printf("Warning: %s\n", msg.mb_str(wxConvUTF8).data());
+				printf("Warning: %s\n", msg.mb_str(wxConvUTF8).data());
 			}
         }
     }
@@ -303,7 +303,7 @@ void asLog::Message(const wxString &msg, bool force)
             }
 
             // To the command prompt
-            if (m_Target==asLog::Screen || m_Target==asLog::Both)
+            if (m_Target==asLog::Screen)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -319,7 +319,7 @@ void asLog::Message(const wxString &msg, bool force)
 
 			if(!processed)
 			{
-				//printf("%s\n", msg.mb_str(wxConvUTF8).data());
+				printf("%s\n", msg.mb_str(wxConvUTF8).data());
 			}
         }
     }
