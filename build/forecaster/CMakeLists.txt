@@ -92,7 +92,7 @@ include_directories(${wxWidgets_INCLUDE_DIRS})
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
 mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
-include("../_cmake/FindNetCDF.cmake")
+find_package(NetCDF REQUIRED)
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 
 # libcURL
@@ -102,7 +102,7 @@ find_package(CURL REQUIRED)
 include_directories(${CURL_INCLUDE_DIRS})
 
 # Proj.4
-include("../_cmake/FindProj4.cmake")
+find_package(Proj4 REQUIRED)
 include_directories(${PROJ4_INCLUDE_DIR})
 
 # GDAL
@@ -111,7 +111,7 @@ include_directories(${GDAL_INCLUDE_DIRS})
 
 # Eigen
 mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
-find_package(Eigen3 3.0.0)
+find_package(Eigen3 3.0.0 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # wxhgversion
@@ -133,10 +133,12 @@ endif (WIN32)
 #### FLAGS & DEFINES
 
 if (UNIX AND NOT APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-sign-compare")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s -march=core2")
 endif (UNIX AND NOT APPLE)
-
+if (WIN32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+endif (WIN32)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")

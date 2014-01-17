@@ -97,7 +97,7 @@ include_directories(${wxWidgets_INCLUDE_DIRS})
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
 mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
-include("../../build/_cmake/FindNetCDF.cmake")
+find_package(NetCDF REQUIRED)
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 
 # libcURL
@@ -107,12 +107,12 @@ find_package(CURL REQUIRED)
 include_directories(${CURL_INCLUDE_DIRS})
 
 # Proj.4
-include("../../build/_cmake/FindProj4.cmake")
+find_package(Proj4 REQUIRED)
 include_directories(${PROJ4_INCLUDE_DIR})
 
 # Eigen
 mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
-find_package(Eigen3 3.0.0)
+find_package(Eigen3 3.0.0 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # GDAL
@@ -122,13 +122,13 @@ if (TEST_FORECASTER)
 endif (TEST_FORECASTER)
 
 # UnitTest++
-include("../../build/_cmake/FindUnitTest++.cmake")
+find_package(UnitTest++ REQUIRED)
 include_directories(${UNITTEST++_INCLUDE_DIR})
 
 # Visual Leak Detector
 if (WIN32)
     if (USE_VLD)
-        find_package(VLD)
+        find_package(VLD REQUIRED)
         include_directories(${VLD_INCLUDE_DIRS})
     endif (USE_VLD)
 endif (WIN32)
@@ -140,7 +140,9 @@ if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s -march=core2")
 endif (UNIX AND NOT APPLE)
-
+if (WIN32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+endif (WIN32)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")
@@ -172,7 +174,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${wxWidgets_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${NetCDF_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${CURL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
-target_link_libraries(${CMAKE_PROJECT_NAME} ${UNITTEST++_LIBRARY})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${UNITTEST++_LIBRARIES})
 if (TEST_FORECASTER)
     target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
 endif (TEST_FORECASTER)
