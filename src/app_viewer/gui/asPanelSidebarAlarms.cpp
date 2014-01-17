@@ -314,7 +314,7 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
                 int stationsNb = forecast->GetStationsNb();
 
                 // Get return period index
-                int indexReferenceAxis;
+                int indexReferenceAxis=asNOT_FOUND;
                 if(forecast->HasReferenceValues())
                 {
                     Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
@@ -423,7 +423,8 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
                 int stationsNb = forecast->GetStationsNb();
 
                 // Get return period index
-                int indexReferenceAxis1, indexReferenceAxis2;
+                int indexReferenceAxis1=asNOT_FOUND;
+                int indexReferenceAxis2=asNOT_FOUND;
                 if(forecast->HasReferenceValues())
                 {
                     if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )

@@ -139,8 +139,6 @@ int asGeoAreaCompositeRegularGrid::GetUaxisCompositePtsnb(int compositeNb)
     {
         return size;
     }
-
-    return asNOT_VALID;
 }
 
 int asGeoAreaCompositeRegularGrid::GetVaxisCompositePtsnb(int compositeNb)
@@ -158,8 +156,6 @@ int asGeoAreaCompositeRegularGrid::GetVaxisCompositePtsnb(int compositeNb)
     {
         asThrowException(_("The latitude split is not implemented yet."));
     }
-
-    return asNOT_VALID;
 }
 
 double asGeoAreaCompositeRegularGrid::GetUaxisCompositeWidth(int compositeNb)
@@ -251,7 +247,6 @@ double asGeoAreaCompositeRegularGrid::GetUaxisCompositeEnd(int compositeNb)
         {
             return GetComposite(compositeNb).GetUmax()-rest;
         }
-        return GetComposite(compositeNb).GetUmax();
     }
     else if (compositeNb==0) // from 0
     {

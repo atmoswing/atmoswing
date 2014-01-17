@@ -203,7 +203,7 @@ void asForecastViewer::Redraw()
     float returnPeriod = m_ReturnPeriods[m_ForecastDisplaySelection];
 
     // Get reference axis index
-    int indexReferenceAxis;
+    int indexReferenceAxis = asNOT_FOUND;
     if (forecast->HasReferenceValues() && returnPeriod!=0)
     {
         Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();

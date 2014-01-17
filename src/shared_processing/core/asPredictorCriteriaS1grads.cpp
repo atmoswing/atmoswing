@@ -119,6 +119,4 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         }
     }
 
-    return asNOT_VALID;
-
 }

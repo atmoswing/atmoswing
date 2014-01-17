@@ -216,8 +216,6 @@ asForecastScoreFinal* asForecastScoreFinal::GetInstance(const wxString& scoreStr
         asForecastScoreFinal* score = new asForecastScoreFinalMean(periodString);
         return score;
     }
-
-    return NULL;
 }
 
 asForecastScoreFinal::~asForecastScoreFinal()

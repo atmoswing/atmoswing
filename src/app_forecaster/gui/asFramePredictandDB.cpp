@@ -165,7 +165,7 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
         }
 
         // Get temporal resolution
-        DataTemporalResolution dataTemporalResolution;
+        DataTemporalResolution dataTemporalResolution = Daily;
         switch (m_ChoiceDataTempResol->GetSelection())
         {
             case wxNOT_FOUND:
@@ -193,7 +193,7 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
         }
 
         // Get temporal resolution
-        DataSpatialAggregation dataSpatialAggregation;
+        DataSpatialAggregation dataSpatialAggregation = Station;
         switch (m_ChoiceDataSpatAggreg->GetSelection())
         {
             case wxNOT_FOUND:

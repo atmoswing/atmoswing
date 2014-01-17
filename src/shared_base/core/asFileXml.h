@@ -337,7 +337,7 @@ private:
     /** Find the next sibling element in the xml file according to the given structure
      * \param throwIfNoSiblings If true, will throw an exception if there are no sibling element.
      */
-    bool SetPointerNextSameSibling(const bool &throwIfNoSiblings = true);
+    bool SetPointerNextSameSibling(const bool &throwIfNoSiblings = false);
 
 
 

@@ -130,6 +130,11 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
             }
             m_Parent->ProcessWindowEvent(eventNew);
         }
+    #else
+        if (doRefresh)
+        {
+            asLogMessage("The GUI should be refreshed.");
+        }
     #endif
 
     return true;

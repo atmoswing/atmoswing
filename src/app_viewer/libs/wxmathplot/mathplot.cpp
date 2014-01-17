@@ -71,6 +71,11 @@
 // See doxygen comments.
 double mpWindow::zoomIncrementalFactor = 1.5;
 
+#ifdef _MSC_VER
+    #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
+    #pragma warning( disable : 4100 ) // C4100: unreferenced formal parameter
+#endif
+
 //-----------------------------------------------------------------------------
 // mpLayer
 //-----------------------------------------------------------------------------
@@ -2198,7 +2203,8 @@ void mpWindow::GetBoundingBox(double* bbox)
 bool mpWindow::SaveScreenshot(const wxString& filename, int type, wxSize imageSize, bool fit)
 {
     int sizeX, sizeY;
-    int bk_scrX, bk_scrY;
+    int bk_scrX = 0;
+    int bk_scrY = 0;
     if (imageSize == wxDefaultSize) {
         sizeX = m_scrX;
         sizeY = m_scrY;
@@ -2236,7 +2242,7 @@ bool mpWindow::SaveScreenshot(const wxString& filename, int type, wxSize imageSi
     }
     // Once drawing is complete, actually save screen shot
     wxImage screenImage = screenBuffer.ConvertToImage();
-    return screenImage.SaveFile(filename, type);
+    return screenImage.SaveFile(filename, (wxBitmapType)type);
 }
 
 void mpWindow::SetMargins(int top, int right, int bottom, int left)

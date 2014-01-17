@@ -33,6 +33,10 @@
 #    include <wx/wx.h>
 #endif
 
+#ifdef _MSC_VER
+    #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
+#endif
+
 extern void initialize_images_logo(void);
 
 extern wxBitmap img_logo;

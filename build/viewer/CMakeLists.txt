@@ -129,15 +129,29 @@ if (WIN32)
 endif (WIN32)
 
 
+#### DECLARE EXECUTABLE
+
+if (WIN32)
+    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/resource.rc)
+elseif (UNIX AND NOT APPLE)
+    add_executable (${CMAKE_PROJECT_NAME} ${src_all})
+elseif (APPLE)
+    add_executable (${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${src_all})
+else (WIN32)
+    add_executable (${CMAKE_PROJECT_NAME} ${src_all})
+endif (WIN32)
+
+
 #### FLAGS & DEFINES
 
 if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -s -march=core2")
+elseif (WIN32)
+    set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+    set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
+    set_target_properties(wxhgversion PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
 endif (UNIX AND NOT APPLE)
-if (WIN32)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-endif (WIN32)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")
@@ -155,19 +169,6 @@ endif (WIN32)
 message("CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
 message("CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
 message("CMAKE_CXX_FLAGS_DEBUG = ${CMAKE_CXX_FLAGS_DEBUG}")
-
-
-#### DECLARE EXECUTABLE
-
-if (WIN32)
-    add_executable (${CMAKE_PROJECT_NAME} WIN32 ${src_all} ${PROJECT_SOURCE_DIR}/../../src/shared_base/gui/resource.rc)
-elseif (UNIX AND NOT APPLE)
-    add_executable (${CMAKE_PROJECT_NAME} ${src_all})
-elseif (APPLE)
-    add_executable (${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${src_all})
-else (WIN32)
-    add_executable (${CMAKE_PROJECT_NAME} ${src_all})
-endif (WIN32)
 
 
 #### LIBRARIES LINKING

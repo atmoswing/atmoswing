@@ -115,8 +115,6 @@ asPredictorCriteria* asPredictorCriteria::GetInstance(Criteria criteriaEnum, int
             return criteria;
         }
     }
-    return NULL;
-
 }
 
 asPredictorCriteria* asPredictorCriteria::GetInstance(const wxString &criteriaString, int linAlgebraMethod)
@@ -182,7 +180,5 @@ asPredictorCriteria* asPredictorCriteria::GetInstance(const wxString &criteriaSt
         asPredictorCriteria* criteria = new asPredictorCriteriaSAD(linAlgebraMethod);
         return criteria;
     }
-    asLogError(_("The predictor criteria was not correctly defined."));
-    return NULL;
 }
 
