@@ -576,7 +576,6 @@ void asFrameForecast::OpenDefaultLayers()
 
     // Try to open layers
     m_ViewerLayerManager->FreezeBegin();
-    vrLayer * layer;
 
     // Hillshade
     if (wxFileName::FileExists(LayerHillshadeFilePath))
@@ -591,7 +590,7 @@ void asFrameForecast::OpenDefaultLayers()
             vrRenderRaster* renderHillshade = new vrRenderRaster();
             renderHillshade->SetTransparency(LayerHillshadeTransp);
 
-            layer = m_LayerManager->GetLayer( wxFileName(LayerHillshadeFilePath));
+            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerHillshadeFilePath));
             wxASSERT(layer);
             m_ViewerLayerManager->Add(-1, layer, renderHillshade, NULL, LayerHillshadeVisibility);
         }
@@ -627,7 +626,7 @@ void asFrameForecast::OpenDefaultLayers()
             renderCatchments->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
             renderCatchments->SetSize(LayerCatchmentsSize);
 
-            layer = m_LayerManager->GetLayer( wxFileName(LayerCatchmentsFilePath));
+            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerCatchmentsFilePath));
             wxASSERT(layer);
             m_ViewerLayerManager->Add(-1, layer, renderCatchments, NULL, LayerCatchmentsVisibility);
         }
@@ -662,7 +661,7 @@ void asFrameForecast::OpenDefaultLayers()
             renderHydro->SetColorPen(colorHydro);
             renderHydro->SetSize(LayerHydroSize);
 
-            layer = m_LayerManager->GetLayer( wxFileName(LayerHydroFilePath));
+            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerHydroFilePath));
             wxASSERT(layer);
             m_ViewerLayerManager->Add(-1, layer, renderHydro, NULL, LayerHydroVisibility);
         }
@@ -696,7 +695,7 @@ void asFrameForecast::OpenDefaultLayers()
             renderLakes->SetColorBrush(colorLakes);
             renderLakes->SetSize(0);
 
-            layer = m_LayerManager->GetLayer( wxFileName(LayerLakesFilePath));
+            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerLakesFilePath));
             wxASSERT(layer);
             m_ViewerLayerManager->Add(-1, layer, renderLakes, NULL, LayerLakesVisibility);
         }
@@ -723,7 +722,7 @@ void asFrameForecast::OpenDefaultLayers()
             vrRenderRaster* renderBasemap = new vrRenderRaster();
             renderBasemap->SetTransparency(LayerBasemapTransp);
 
-            layer = m_LayerManager->GetLayer( wxFileName(LayerBasemapFilePath));
+            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerBasemapFilePath));
             wxASSERT(layer);
             m_ViewerLayerManager->Add(-1, layer, renderBasemap, NULL, LayerBasemapVisibility);
         }
