@@ -59,7 +59,7 @@ void asForecastManager::ClearArrays()
     {
         wxDELETE(m_CurrentForecasts[i]);
     }
-    m_CurrentForecasts.clear();
+    m_CurrentForecasts.resize(0);
 
     for (int i=0; (unsigned)i<m_PastForecasts.size(); i++)
     {
@@ -68,7 +68,7 @@ void asForecastManager::ClearArrays()
             wxDELETE(m_PastForecasts[i][j]);
         }
     }
-    m_PastForecasts.clear();
+    m_PastForecasts.resize(0);
 }
 
 bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
@@ -161,10 +161,18 @@ bool asForecastManager::OpenPastForecast(const wxString &filePath, int forecastS
     // Create and load the forecast
     asResultsAnalogsForecast* forecast = new asResultsAnalogsForecast(wxEmptyString);
 
-    if(!forecast->Load(filePath)) return false;
+    if(!forecast->Load(filePath))
+    {
+        wxDELETE(forecast);
+        return false;
+    }
 
     // Check the lead time origin
-    if(forecast->GetLeadTimeOrigin()>=m_LeadTimeOrigin) return false;
+    if(forecast->GetLeadTimeOrigin()>=m_LeadTimeOrigin)
+    {
+        wxDELETE(forecast);
+        return false;
+    }
     m_PastForecasts[forecastSelection].push_back(forecast);
 
     asLogMessage(wxString::Format("Past forecast of %s of the %s loaded", forecast->GetModelName().c_str(), forecast->GetLeadTimeOriginString().c_str()));
