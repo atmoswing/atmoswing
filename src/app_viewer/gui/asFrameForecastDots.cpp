@@ -33,8 +33,8 @@
 
 BEGIN_EVENT_TABLE(asFrameForecastDots, wxFrame)
     EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
-/*    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
-    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
+    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
+/*    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
     EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
     EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
     EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
@@ -98,6 +98,8 @@ asFrameForecast( parent, id )
     m_PanelSidebarCaptionForecastDots = new asPanelSidebarCaptionForecastDots( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarCaptionForecastDots->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastDots, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
+    m_SizerScrolledWindow->Fit(this);
 
     // Connect Events
     m_SliderLeadTime->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( asFrameForecastDots::OnLeadtimeChange ), NULL, this );
