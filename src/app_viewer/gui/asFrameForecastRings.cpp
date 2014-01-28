@@ -34,8 +34,8 @@
 
 BEGIN_EVENT_TABLE(asFrameForecastRings, wxFrame)
     EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
-/*    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
-    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
+    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
+/*    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
     EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
     EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
     EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
@@ -82,6 +82,8 @@ asFrameForecast( parent, id )
     m_PanelSidebarCaptionForecastRing = new asPanelSidebarCaptionForecastRing( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarCaptionForecastRing->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastRing, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
+    m_SizerScrolledWindow->Fit(this);
 
     // Events
     this->Connect( asID_FRAME_DOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecastRings::OpenFrameDots ) );
