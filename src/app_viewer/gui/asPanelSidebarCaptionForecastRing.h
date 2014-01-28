@@ -33,26 +33,24 @@
 #include "asIncludes.h"
 #include <wx/graphics.h>
 
-/** Implementing asPanelSidebarCaptionForecastRing */
-class asPanelSidebarCaptionForecastRing : public asPanelSidebar
+
+/** Implementing asPanelSidebarCaptionForecastRingDrawing */
+class asPanelSidebarCaptionForecastRingDrawing : public wxPanel
 {
 public:
     /** Constructor */
-    asPanelSidebarCaptionForecastRing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
-    ~asPanelSidebarCaptionForecastRing();
+    asPanelSidebarCaptionForecastRingDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    ~asPanelSidebarCaptionForecastRingDrawing();
 
-    void SetBitmapDates(wxBitmap * bmp);
-    void SetBitmapColorbar(wxBitmap * bmp);
-    void SetDates(Array1DFloat & dates);
-    void SetColorbarMax(double maxval);
+    void DrawDates( Array1DFloat & dates );
+    void DrawColorbar( double maxval );
 
 private:
-    wxPanel *m_PanelDrawing;
     wxBitmap *m_BmpDates;
     wxBitmap *m_BmpColorbar;
     wxGraphicsContext* m_Gdc;
-    void DrawDates( Array1DFloat & dates );
-    void DrawColorbar( double maxval );
+    void SetBitmapDates(wxBitmap * bmp);
+    void SetBitmapColorbar(wxBitmap * bmp);
     void CreateDatesPath( wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb );
     void CreateDatesText( wxGraphicsContext * gc, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb, const wxString &label);
     void CreateColorbarPath( wxGraphicsPath & path );
@@ -61,5 +59,23 @@ private:
     void FillColorbar(wxGraphicsContext * gdc, wxGraphicsPath & path );
     void OnPaint( wxPaintEvent & event );
 };
+
+
+/** Implementing asPanelSidebarCaptionForecastRing */
+class asPanelSidebarCaptionForecastRing : public asPanelSidebar
+{
+public:
+    /** Constructor */
+    asPanelSidebarCaptionForecastRing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    ~asPanelSidebarCaptionForecastRing();
+
+    void SetDates(Array1DFloat & dates);
+    void SetColorbarMax(double maxval);
+
+private:
+    asPanelSidebarCaptionForecastRingDrawing *m_PanelDrawing;
+    void OnPaint( wxPaintEvent & event );
+};
+
 
 #endif // __asPanelSidebar__

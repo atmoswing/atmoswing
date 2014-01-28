@@ -33,6 +33,27 @@
 #include "asIncludes.h"
 #include <wx/graphics.h>
 
+/** Implementing asPanelSidebarCaptionForecastDotsDrawing */
+class asPanelSidebarCaptionForecastDotsDrawing : public wxPanel
+{
+public:
+    /** Constructor */
+    asPanelSidebarCaptionForecastDotsDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    ~asPanelSidebarCaptionForecastDotsDrawing();
+
+    void DrawColorbar( double maxval );
+
+private:
+    wxBitmap *m_BmpColorbar;
+    wxGraphicsContext* m_Gdc;
+    void SetBitmapColorbar(wxBitmap * bmp);
+    void CreateColorbarPath( wxGraphicsPath & path );
+    void CreateColorbarText( wxGraphicsContext * gc, wxGraphicsPath & path, double valmax);
+    void CreateColorbarOtherClasses(wxGraphicsContext * gc, wxGraphicsPath & path );
+    void FillColorbar(wxGraphicsContext * gdc, wxGraphicsPath & path );
+    void OnPaint( wxPaintEvent & event );
+};
+
 /** Implementing asPanelSidebarCaptionForecastDots */
 class asPanelSidebarCaptionForecastDots : public asPanelSidebar
 {
@@ -41,19 +62,11 @@ public:
     asPanelSidebarCaptionForecastDots( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarCaptionForecastDots();
 
-    void SetBitmapColorbar(wxBitmap * bmp);
     void SetColorbarMax(double maxval);
 
 private:
-    wxPanel *m_PanelDrawing;
-    wxBitmap *m_BmpColorbar;
-    wxGraphicsContext* m_Gdc;
-    void DrawColorbar( double maxval );
-    void CreateColorbarPath( wxGraphicsPath & path );
-    void CreateColorbarText( wxGraphicsContext * gc, wxGraphicsPath & path, double valmax);
-    void CreateColorbarOtherClasses(wxGraphicsContext * gc, wxGraphicsPath & path );
-    void FillColorbar(wxGraphicsContext * gdc, wxGraphicsPath & path );
+    asPanelSidebarCaptionForecastDotsDrawing *m_PanelDrawing;
     void OnPaint( wxPaintEvent & event );
 };
 
-#endif // __asPanelSidebar__
+#endif // __asPanelSidebarCaptionForecastDots__
