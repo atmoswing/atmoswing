@@ -83,7 +83,9 @@ asFrameForecast( parent, id )
     m_PanelSidebarCaptionForecastRing->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastRing, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
-    m_SizerScrolledWindow->Fit(this);
+    m_SizerScrolledWindow->Fit(m_ScrolledWindowOptions);
+
+    Layout();
 
     // Events
     this->Connect( asID_FRAME_DOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecastRings::OpenFrameDots ) );

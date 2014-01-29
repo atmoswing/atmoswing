@@ -41,12 +41,12 @@ asPanelSidebar( parent, id, pos, size, style )
 
     m_PanelDrawing = new asPanelSidebarCaptionForecastDotsDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,50), wxTAB_TRAVERSAL );
     m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
-    m_SizerContent->Fit(this);
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarCaptionForecastDots::OnPaint ), NULL, this );
 
     Layout();
     m_SizerMain->Fit( this );
+    FitInside();
 }
 
 asPanelSidebarCaptionForecastDots::~asPanelSidebarCaptionForecastDots()

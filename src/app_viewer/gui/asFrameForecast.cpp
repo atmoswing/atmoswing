@@ -1329,10 +1329,13 @@ void asFrameForecast::DrawPlotStation( int station )
 
 void asFrameForecast::ReloadViewerLayerManager( )
 {
+    m_ViewerLayerManager->Reload();
+
+    /* Not sure there is any way to make it safe with threads.
     #if defined (__WIN32__)
         asThreadViewerLayerManagerReload *thread = new asThreadViewerLayerManagerReload(m_ViewerLayerManager, &m_CritSectionViewerLayerManager);
         ThreadsManager().AddThread(thread);
     #else
         m_ViewerLayerManager->Reload();
-    #endif
+    #endif*/
 }
