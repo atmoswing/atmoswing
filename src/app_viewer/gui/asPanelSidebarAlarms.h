@@ -34,6 +34,31 @@
 #include "asResultsAnalogsForecast.h"
 #include <wx/graphics.h>
 
+class asPanelSidebarAlarms; // predefinition
+
+/** Implementing asPanelSidebarAlarmsDrawing */
+class asPanelSidebarAlarmsDrawing : public wxPanel
+{
+public:
+    /** Constructor */
+    asPanelSidebarAlarmsDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    ~asPanelSidebarAlarmsDrawing();
+    
+    void DrawAlarms( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
+    void SetParent( asPanelSidebarAlarms* parent );
+
+private:
+    wxBitmap *m_BmpAlarms;
+    wxGraphicsContext* m_Gdc;
+    asPanelSidebarAlarms* m_Parent;
+    void SetBitmapAlarms(wxBitmap *bmp);
+    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols, int rows);
+    void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
+    void CreateDatesText( wxGraphicsContext *gc, const wxPoint& start, int cellWitdh, int i_col, const wxString &label);
+    void CreateNbText( wxGraphicsContext *gc, const wxPoint& start, int cellHeight, int i_row, const wxString &label);
+    void OnPaint( wxPaintEvent &event );
+};
+
 /** Implementing asPanelSidebarAlarms */
 class asPanelSidebarAlarms : public asPanelSidebar
 {
@@ -43,19 +68,15 @@ public:
     ~asPanelSidebarAlarms();
 
     void SetData( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
-    void SetBitmapAlarms(wxBitmap *bmp);
     void UpdateAlarms(Array1DFloat &dates, VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts);
+    int GetMode()
+    {
+        return m_Mode;
+    }
 
 private:
-    wxPanel *m_PanelDrawing;
-    wxBitmap *m_BmpAlarms;
-    wxGraphicsContext* m_Gdc;
+    asPanelSidebarAlarmsDrawing *m_PanelDrawing;
     int m_Mode;
-    void DrawAlarms( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
-    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols, int rows);
-    void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
-    void CreateDatesText( wxGraphicsContext *gc, const wxPoint& start, int cellWitdh, int i_col, const wxString &label);
-    void CreateNbText( wxGraphicsContext *gc, const wxPoint& start, int cellHeight, int i_row, const wxString &label);
     void OnPaint( wxPaintEvent &event );
 };
 

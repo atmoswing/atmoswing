@@ -42,7 +42,7 @@ class asPanelSidebar : public asPanelSidebarVirtual
 public:
     /** Constructor */
     asPanelSidebar( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL );
-
+    
     void ReducePanel();
     bool IsReduced()
     {
@@ -53,7 +53,6 @@ protected:
     // Handlers for asPanelSidebar events.
     void OnReducePanel( wxCommandEvent& event );
     void OnPaint( wxCommandEvent& event );
-    wxWindow* GetTopFrame(wxWindow* element);
 
 };
 
