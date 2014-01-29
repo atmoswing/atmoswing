@@ -99,7 +99,9 @@ asFrameForecast( parent, id )
     m_PanelSidebarCaptionForecastDots->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastDots, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
-    m_SizerScrolledWindow->Fit(this);
+    m_SizerScrolledWindow->Fit(m_ScrolledWindowOptions);
+
+    Layout();
 
     // Connect Events
     m_SliderLeadTime->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( asFrameForecastDots::OnLeadtimeChange ), NULL, this );

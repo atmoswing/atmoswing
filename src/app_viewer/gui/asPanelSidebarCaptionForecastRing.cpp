@@ -41,12 +41,12 @@ asPanelSidebar( parent, id, pos, size, style )
 
     m_PanelDrawing = new asPanelSidebarCaptionForecastRingDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,240), wxTAB_TRAVERSAL );
     m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
-    m_SizerContent->Fit(this);
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarCaptionForecastRing::OnPaint ), NULL, this );
 
     Layout();
     m_SizerMain->Fit( this );
+    FitInside();
 }
 
 asPanelSidebarCaptionForecastRing::~asPanelSidebarCaptionForecastRing()
