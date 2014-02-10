@@ -313,12 +313,17 @@ float asTools::Percentile(float* pArrStart, float* pArrEnd, float percentile)
     }
 }
 
-bool  asTools::IsNaN(float value)
+bool asTools::IsNaN(int value)
+{
+    return value == NaNInt;
+}
+
+bool asTools::IsNaN(float value)
 {
     return value != value;
 }
 
-bool  asTools::IsNaN(double value)
+bool asTools::IsNaN(double value)
 {
     return value != value;
 }

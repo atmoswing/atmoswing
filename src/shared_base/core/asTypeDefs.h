@@ -121,10 +121,10 @@ typedef std::vector < std::vector < std::vector < Array2DDouble* > > > VVVpArray
 // NaN & Inf
 //---------------------------------
 
-/* NaN (http://www.developpez.net/forums/d261774/c-cpp/outils-c-cpp-edi-compilateurs-etc/visual-cpp/vcpp-net/constantes-mathematiques-nan/) */
-static const unsigned long long minus1 = 0xFFFFFFFFFFFFFFFF;
-static const float NaNFloat = *((float*)&minus1);
-static const double NaNDouble = *((double*)&minus1);
+/* NaN (http://www.cplusplus.com/reference/limits/numeric_limits/) */
+static const int NaNInt = numeric_limits<int>::max();
+static const float NaNFloat = numeric_limits<float>::quiet_NaN();
+static const double NaNDouble = numeric_limits<double>::quiet_NaN();
 
 /* Inf (http://msdn.microsoft.com/en-us/library/6hthw3cb%28VS.80%29.aspx) */
 const double InfFloat = numeric_limits<float>::infinity();
