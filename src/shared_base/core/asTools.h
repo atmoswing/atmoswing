@@ -158,6 +158,12 @@ public:
     /** Check if the value is a NaN
      * \param value The value to check
      * \return True if NaN.
+     */
+    static bool IsNaN(int value);
+
+    /** Check if the value is a NaN
+     * \param value The value to check
+     * \return True if NaN.
      * \link http://www.parashift.com/c++-faq-lite/newbie.html
      */
     static bool IsNaN(float value);
