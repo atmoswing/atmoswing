@@ -118,49 +118,39 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "LeadTime"))
-    {
-        asLogError(_("The LeadTime tag is no more valid. Please update the parameters file."));
-        return false;
-    }
-
+    if(!fileParams.CheckDeprecatedChildNode("LeadTime")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Lead Time")) return false;
-    SetLeadTimeDaysVector(GetFileParamInt(fileParams, "LeadTimeDays"));
+    if(!SetLeadTimeDaysVector(GetFileParamInt(fileParams, "LeadTimeDays"))) return false;
     if(!fileParams.GoANodeBack()) return false;
-
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "ArchivePeriod"))
-    {
-        asLogError(_("The ArchivePeriod tag is no more valid. Please update the parameters file."));
-        return false;
-    }
-
+    
+    if(!fileParams.CheckDeprecatedChildNode("ArchivePeriod")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
-    SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"));
-    SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"));
+    if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+    if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties"))
+    if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties", asHIDE_WARNINGS))
     {
-        SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
-        SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
-        SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0));
+        if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
+        if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
+        if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
     else
     {
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
-        SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
-        SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0));
+        if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
+        if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0))) return false;
         if(!fileParams.GoANodeBack()) return false;
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
-        SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
+        if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
-    SetTimeArrayAnalogsMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"));
-    SetTimeArrayAnalogsExcludeDays(fileParams.GetFirstElementAttributeValueInt("ExcludeDays", "value"));
-    SetTimeArrayAnalogsIntervalDays(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "value"));
+    if(!SetTimeArrayAnalogsMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"))) return false;
+    if(!SetTimeArrayAnalogsExcludeDays(fileParams.GetFirstElementAttributeValueInt("ExcludeDays", "value"))) return false;
+    if(!SetTimeArrayAnalogsIntervalDays(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoANodeBack()) return false;
@@ -177,11 +167,11 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
         if(!fileParams.GoANodeBack()) return false;
 
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method Name")) return false;
-        SetMethodName(i_step, fileParams.GetFirstElementAttributeValueText("MethodName", "value"));
+        if(!SetMethodName(i_step, fileParams.GetFirstElementAttributeValueText("MethodName", "value"))) return false;
         if(!fileParams.GoANodeBack()) return false;
 
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-        SetAnalogsNumberLeadTimeVector(i_step, GetFileParamInt(fileParams, "AnalogsNumber"));
+        if(!SetAnalogsNumberLeadTimeVector(i_step, GetFileParamInt(fileParams, "AnalogsNumber"))) return false;
         if(!fileParams.GoANodeBack()) return false;
 
         // Get data
@@ -206,21 +196,21 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Data Realtime")) return false;
-                SetPredictorRealtimeDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"));
-                SetPredictorRealtimeDataId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DataId", "value"));
+                if(!SetPredictorRealtimeDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"))) return false;
+                if(!SetPredictorRealtimeDataId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DataId", "value"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Data Archive")) return false;
-                SetPredictorArchiveDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"));
-                SetPredictorArchiveDataId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DataId", "value"));
+                if(!SetPredictorArchiveDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"))) return false;
+                if(!SetPredictorArchiveDataId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DataId", "value"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Level")) return false;
-                SetPredictorLevel(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Level", "value"));
+                if(!SetPredictorLevel(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Level", "value"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Frame")) return false;
-                SetPredictorDTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("DTimeHours", "value"));
+                if(!SetPredictorDTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("DTimeHours", "value"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
             }
@@ -231,7 +221,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
                 SetPreprocess(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preprocess", "value"));
-                SetPreprocessMethod(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("PreprocessMethod", "value"));
+                if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("PreprocessMethod", "value"))) return false;
                 if(!NeedsPreprocessing(i_step, i_ptor))
                 {
                     asLogError(_("Preprocessing option is not coherent."));
@@ -242,12 +232,12 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 bool preprocessDataOver = false;
                 while(!preprocessDataOver)
                 {
-                    SetPreprocessRealtimeDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessRealtimeDatasetId", "value"));
-                    SetPreprocessRealtimeDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessRealtimeDataId", "value"));
-                    SetPreprocessArchiveDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessArchiveDatasetId", "value"));
-                    SetPreprocessArchiveDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessArchiveDataId", "value"));
-                    SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueFloat("PreprocessLevel", "value"));
-                    SetPreprocessDTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessDTimeHours", "value"));
+                    if(!SetPreprocessRealtimeDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessRealtimeDatasetId", "value"))) return false;
+                    if(!SetPreprocessRealtimeDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessRealtimeDataId", "value"))) return false;
+                    if(!SetPreprocessArchiveDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessArchiveDatasetId", "value"))) return false;
+                    if(!SetPreprocessArchiveDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessArchiveDataId", "value"))) return false;
+                    if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueFloat("PreprocessLevel", "value"))) return false;
+                    if(!SetPreprocessDTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessDTimeHours", "value"))) return false;
 
                     if(fileParams.GoToNextSameNode())
                     {
@@ -283,15 +273,15 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
             }
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area")) return false;
-            SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"));
-            SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"));
-            SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "value"));
+            if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
+            if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
+            if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "value"))) return false;
             if (GetPredictorUptsnb(i_step, i_ptor)==0) SetPredictorUptsnb(i_step, i_ptor, 1);
-            SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"));
-            SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"));
-            SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "value"));
+            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
+            if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
+            if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "value"))) return false;
             if (GetPredictorVptsnb(i_step, i_ptor)==0) SetPredictorVptsnb(i_step, i_ptor, 1);
-            SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value"));
+            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value"))) return false;
 
             if (GetPredictorUptsnb(i_step, i_ptor)==1 || GetPredictorVptsnb(i_step, i_ptor)==1)
             {
@@ -300,11 +290,11 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
             if(!fileParams.GoANodeBack()) return false;
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Criteria")) return false;
-            SetPredictorCriteria(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("Criteria", "value"));
+            if(!SetPredictorCriteria(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("Criteria", "value"))) return false;
             if(!fileParams.GoANodeBack()) return false;
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Weight")) return false;
-            SetPredictorWeight(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "value"));
+            if(!SetPredictorWeight(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "value"))) return false;
             if(!fileParams.GoANodeBack()) return false;
 
             if(fileParams.GoToNextSameNode())
@@ -333,7 +323,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Predictand"))
+    if(fileParams.GoToChildNodeWithAttributeValue("name", "Predictand", asHIDE_WARNINGS))
     {
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database"))
         {

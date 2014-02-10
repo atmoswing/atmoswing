@@ -65,9 +65,9 @@ public:
 
 
 
-    bool GoToFirstNodeWithPath(const wxString node);
+    bool GoToFirstNodeWithPath(const wxString node, const int &showWarnings = asSHOW_WARNINGS);
 
-    bool GoToLastNodeWithPath(const wxString node);
+    bool GoToLastNodeWithPath(const wxString node, const int &showWarnings = asSHOW_WARNINGS);
 
     bool GoToNextSameNode();
 
@@ -75,7 +75,7 @@ public:
 
     bool GoANodeBack();
 
-    bool GoToChildNodeWithAttributeValue(const wxString &AttributeName, const wxString &AttributeValue);
+    bool GoToChildNodeWithAttributeValue(const wxString &AttributeName, const wxString &AttributeValue, const int &showWarnings = asSHOW_WARNINGS);
 
     wxString GetCurrenNodePath();
 
@@ -117,21 +117,21 @@ public:
      * \param ValDefault The default value
      * \return The element value
      */
-    int GetFirstElementValueInt(const wxString &ElementAccess, const int &ValDefault = 0);
+    int GetFirstElementValueInt(const wxString &ElementAccess, const int &ValDefault = NaNInt);
 
     /** Get the element value for the given structure. Interface for floats
      * \param ElementAccess The structure to access to a certain node
      * \param ValDefault The default value
      * \return The element value
      */
-    float GetFirstElementValueFloat(const wxString &ElementAccess, const float &ValDefault = 0);
+    float GetFirstElementValueFloat(const wxString &ElementAccess, const float &ValDefault = NaNFloat);
 
     /** Get the element value for the given structure. Interface for doubles
      * \param ElementAccess The structure to access to a certain node
      * \param ValDefault The default value
      * \return The element value
      */
-    double GetFirstElementValueDouble(const wxString &ElementAccess, const double &ValDefault = 0);
+    double GetFirstElementValueDouble(const wxString &ElementAccess, const double &ValDefault = NaNDouble);
 
     /** Get the element value for the given structure. Interface for bools
      * \param ElementAccess The structure to access to a certain node
@@ -163,19 +163,19 @@ public:
      * \param ValDefault The default value
      * \return The element value
      */
-    int GetThisElementValueInt(const int &ValDefault = 0);
+    int GetThisElementValueInt(const int &ValDefault = NaNInt);
 
     /** Get the current element value. Interface for floats
      * \param ValDefault The default value
      * \return The element value
      */
-    float GetThisElementValueFloat(const float &ValDefault = 0);
+    float GetThisElementValueFloat(const float &ValDefault = NaNFloat);
 
     /** Get the current element value. Interface for doubles
      * \param ValDefault The default value
      * \return The element value
      */
-    double GetThisElementValueDouble(const double &ValDefault = 0);
+    double GetThisElementValueDouble(const double &ValDefault = NaNDouble);
 
     /** Get the current element value. Interface for bools
      * \param ValDefault The default value
@@ -206,7 +206,7 @@ public:
      * \param ValDefault The default value
      * \return The element value
      */
-    int GetFirstElementAttributeValueInt(const wxString &ElementAccess, const wxString &AttributeName, const int &ValDefault = 0);
+    int GetFirstElementAttributeValueInt(const wxString &ElementAccess, const wxString &AttributeName, const int &ValDefault = NaNInt);
 
     /** Get the attribute value for the given structure. Interface for floats
      * \param ElementAccess The structure to access to a certain node
@@ -214,7 +214,7 @@ public:
      * \param ValDefault The default value
      * \return The element value
      */
-    float GetFirstElementAttributeValueFloat(const wxString &ElementAccess, const wxString &AttributeName, const float &ValDefault = 0);
+    float GetFirstElementAttributeValueFloat(const wxString &ElementAccess, const wxString &AttributeName, const float &ValDefault = NaNFloat);
 
     /** Get the attribute value for the given structure. Interface for doubles
      * \param ElementAccess The structure to access to a certain node
@@ -222,7 +222,7 @@ public:
      * \param ValDefault The default value
      * \return The element value
      */
-    double GetFirstElementAttributeValueDouble(const wxString &ElementAccess, const wxString &AttributeName, const double &ValDefault = 0);
+    double GetFirstElementAttributeValueDouble(const wxString &ElementAccess, const wxString &AttributeName, const double &ValDefault = NaNDouble);
 
     /** Get the attribute value for the given structure. Interface for bools
      * \param ElementAccess The structure to access to a certain node
@@ -252,21 +252,21 @@ public:
      * \param ValDefault The default value
      * \return The element value
      */
-    int GetThisElementAttributeValueInt(const wxString &AttributeName, const int &ValDefault = 0);
+    int GetThisElementAttributeValueInt(const wxString &AttributeName, const int &ValDefault = NaNInt);
 
     /** Get the attribute value for the current element. Interface for floats
      * \param AttributeName The attribute name
      * \param ValDefault The default value
      * \return The element value
      */
-    float GetThisElementAttributeValueFloat(const wxString &AttributeName, const float &ValDefault = 0);
+    float GetThisElementAttributeValueFloat(const wxString &AttributeName, const float &ValDefault = NaNFloat);
 
     /** Get the attribute value for the current element. Interface for doubles
      * \param AttributeName The attribute name
      * \param ValDefault The default value
      * \return The element value
      */
-    double GetThisElementAttributeValueDouble(const wxString &AttributeName, const double &ValDefault = 0);
+    double GetThisElementAttributeValueDouble(const wxString &AttributeName, const double &ValDefault = NaNDouble);
 
     /** Get the attribute value for the current element. Interface for bools
      * \param AttributeName The attribute name

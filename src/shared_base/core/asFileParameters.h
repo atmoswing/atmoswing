@@ -43,6 +43,8 @@ public:
     virtual bool InsertRootElement() = 0;
     virtual bool GoToRootElement() = 0;
 
+    bool CheckDeprecatedChildNode(const wxString &field);
+
 protected:
 private:
 
