@@ -149,9 +149,15 @@ public:
         return m_CalibrationYearStart;
     }
 
-    void SetCalibrationYearStart(int val)
+    bool SetCalibrationYearStart(int val)
     {
+        if (asTools::IsNaN(val))
+        {
+            asLogError(_("The provided value for the calibration year start is null"));
+            return false;
+        }
         m_CalibrationYearStart = val;
+        return true;
     }
 
     int GetCalibrationYearEnd()
@@ -159,9 +165,15 @@ public:
         return m_CalibrationYearEnd;
     }
 
-    void SetCalibrationYearEnd(int val)
+    bool SetCalibrationYearEnd(int val)
     {
+        if (asTools::IsNaN(val))
+        {
+            asLogError(_("The provided value for the calibration year end is null"));
+            return false;
+        }
         m_CalibrationYearEnd = val;
+        return true;
     }
 
     VectorInt GetValidationYearsVector()
@@ -169,9 +181,26 @@ public:
         return m_ValidationYears;
     }
 
-    void SetValidationYearsVector(VectorInt val)
+    bool SetValidationYearsVector(VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided validation years vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided validation years vector."));
+                    return false;
+                }
+            }
+        }
         m_ValidationYears = val;
+        return true;
     }
 
     bool HasValidationPeriod()
@@ -265,9 +294,15 @@ public:
         return m_ForecastScore.PostprocessMethod;
     }
 
-    void SetForecastScorePostprocessMethod(const wxString& val)
+    bool SetForecastScorePostprocessMethod(const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the postprocessing method is null"));
+            return false;
+        }
         m_ForecastScore.PostprocessMethod = val;
+        return true;
     }
 
     float GetForecastScorePostprocessDupliExp()

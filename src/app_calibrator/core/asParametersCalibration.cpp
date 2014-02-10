@@ -74,63 +74,53 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Period"))
-    {
-        asLogError(_("The Period tag is no more valid. Please update the parameters file."));
-        return false;
-    }
-
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period"))
-    {
-        asLogError(_("The 'Archive Period' tag is missing"));
-        return false;
-    }
-    SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"));
-    SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"));
+    if(!fileParams.CheckDeprecatedChildNode("Period")) return false;
+    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
+    if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+    if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Calibration Period"))
-    {
-        asLogError(_("The 'Calibration Period' tag is missing"));
-        return false;
-    }
-    SetCalibrationYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"));
-    SetCalibrationYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"));
+    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Calibration Period")) return false;
+    if(!SetCalibrationYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+    if(!SetCalibrationYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Validation Period"))
     {
-        SetValidationYearsVector(GetFileParamIntVector(fileParams, "Years"));
+        if(!SetValidationYearsVector(GetFileParamIntVector(fileParams, "Years"))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties"))
     {
-        SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
-        SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
+        if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
+        if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
     else
     {
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
-        SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
+        if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
         if(!fileParams.GoANodeBack()) return false;
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
-        SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"));
+        if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
-    SetTimeArrayTargetMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"));
-    SetTimeArrayTargetPredictandSerieName(fileParams.GetFirstElementAttributeValueText("PredictandSerieName", "value"));
-    SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFirstElementAttributeValueFloat("PredictandMinThreshold", "value"));
-    SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFirstElementAttributeValueFloat("PredictandMaxThreshold", "value"));
+    if(!SetTimeArrayTargetMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"))) return false;
+    if(GetTimeArrayTargetMode().IsSameAs("PredictandThresholds"))
+    {
+        if(!SetTimeArrayTargetPredictandSerieName(fileParams.GetFirstElementAttributeValueText("PredictandSerieName", "value"))) return false;
+        if(!SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFirstElementAttributeValueFloat("PredictandMinThreshold", "value"))) return false;
+        if(!SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFirstElementAttributeValueFloat("PredictandMaxThreshold", "value"))) return false;
+    }
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
-    SetTimeArrayAnalogsMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"));
-    SetTimeArrayAnalogsExcludeDays(fileParams.GetFirstElementAttributeValueInt("ExcludeDays", "value"));
-    SetTimeArrayAnalogsIntervalDaysVector(GetFileParamIntVector(fileParams, "IntervalDays"));
+    if(!SetTimeArrayAnalogsMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"))) return false;
+    if(!SetTimeArrayAnalogsExcludeDays(fileParams.GetFirstElementAttributeValueInt("ExcludeDays", "value"))) return false;
+    if(!SetTimeArrayAnalogsIntervalDaysVector(GetFileParamIntVector(fileParams, "IntervalDays"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoANodeBack()) return false;
@@ -147,11 +137,11 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
         if(!fileParams.GoANodeBack()) return false;
 
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method Name")) return false;
-        SetMethodName(i_step, fileParams.GetFirstElementAttributeValueText("MethodName", "value"));
+        if(!SetMethodName(i_step, fileParams.GetFirstElementAttributeValueText("MethodName", "value"))) return false;
         if(!fileParams.GoANodeBack()) return false;
 
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-        SetAnalogsNumberVector(i_step, GetFileParamIntVector(fileParams, "AnalogsNumber"));
+        if(!SetAnalogsNumberVector(i_step, GetFileParamIntVector(fileParams, "AnalogsNumber"))) return false;
         if(!fileParams.GoANodeBack()) return false;
 
         // Get data
@@ -160,7 +150,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
         int i_ptor = 0;
         while(!dataOver)
         {
-            wxString predictorNature = fileParams.GetThisElementAttributeValueText("name", "value");
+            wxString predictorNature = fileParams.GetThisElementAttributeValueText("name");
 
             if(predictorNature.IsSameAs("Predictor", false))
             {
@@ -176,7 +166,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 }
                 if(!fileParams.GoANodeBack()) return false;
 
-                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload"))
+                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload", asHIDE_WARNINGS))
                 {
                     SetPreload(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preload", "value"));
                     if(!fileParams.GoANodeBack()) return false;
@@ -187,21 +177,21 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 }
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Data")) return false;
-                SetPredictorDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"));
-                SetPredictorDataIdVector(i_step, i_ptor, GetFileParamStringVector(fileParams, "DataId"));
+                if(!SetPredictorDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"))) return false;
+                if(!SetPredictorDataIdVector(i_step, i_ptor, GetFileParamStringVector(fileParams, "DataId"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Level")) return false;
-                SetPredictorLevelVector(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Level"));
+                if(!SetPredictorLevelVector(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Level"))) return false;
                 if (NeedsPreloading(i_step, i_ptor))
                 {
-                    SetPreloadLevels(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Level"));
+                    if(!SetPreloadLevels(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Level"))) return false;
                 }
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Frame")) return false;
-                SetPredictorDTimeHoursVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "DTimeHours"));
-                SetPreloadDTimeHours(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "DTimeHours"));
+                if(!SetPredictorDTimeHoursVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "DTimeHours"))) return false;
+                if(!SetPreloadDTimeHours(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "DTimeHours"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
             }
@@ -210,7 +200,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
-                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload"))
+                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload", asHIDE_WARNINGS))
                 {
                     SetPreload(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preload", "value"));
                     if(!fileParams.GoANodeBack()) return false;
@@ -222,7 +212,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
                 SetPreprocess(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preprocess", "value"));
-                SetPreprocessMethod(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("PreprocessMethod", "value"));
+                if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("PreprocessMethod", "value"))) return false;
                 if(!NeedsPreprocessing(i_step, i_ptor))
                 {
                     asLogError(_("Preprocessing option is not coherent."));
@@ -234,10 +224,10 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 bool preprocessDataOver = false;
                 while(!preprocessDataOver)
                 {
-                    SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"));
-                    SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, GetFileParamStringVector(fileParams, "PreprocessDataId"));
-                    SetPreprocessLevelVector(i_step, i_ptor, i_dataset, GetFileParamFloatVector(fileParams, "PreprocessLevel"));
-                    SetPreprocessDTimeHoursVector(i_step, i_ptor, i_dataset, GetFileParamDoubleVector(fileParams, "PreprocessDTimeHours"));
+                    if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"))) return false;
+                    if(!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, GetFileParamStringVector(fileParams, "PreprocessDataId"))) return false;
+                    if(!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, GetFileParamFloatVector(fileParams, "PreprocessLevel"))) return false;
+                    if(!SetPreprocessDTimeHoursVector(i_step, i_ptor, i_dataset, GetFileParamDoubleVector(fileParams, "PreprocessDTimeHours"))) return false;
 
                     if(fileParams.GoToNextSameNode())
                     {
@@ -252,8 +242,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 // Set data for predictor
                 SetPredictorDatasetId(i_step, i_ptor, "mix");
                 SetPredictorDataId(i_step, i_ptor, "mix");
-                SetPredictorLevel(i_step, i_ptor, NaNFloat);
-                SetPredictorDTimeHours(i_step, i_ptor, NaNDouble);
+                SetPredictorLevel(i_step, i_ptor, 0);
+                SetPredictorDTimeHours(i_step, i_ptor, 0);
 
                 if(!fileParams.GoANodeBack()) return false;
                 if(!fileParams.GoANodeBack()) return false;
@@ -264,19 +254,19 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
             }
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area Moving")) return false;
-            SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"));
-            SetPredictorUminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Umin"));
-            SetPredictorUptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Uptsnb"));
-            SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"));
+            if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
+            if(!SetPredictorUminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Umin"))) return false;
+            if(!SetPredictorUptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Uptsnb"))) return false;
+            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
             double Ushift = fmod(GetPredictorUminVector(i_step, i_ptor)[0], GetPredictorUstep(i_step, i_ptor));
             if (Ushift<0) Ushift += GetPredictorUstep(i_step, i_ptor);
-            SetPredictorUshift(i_step, i_ptor, Ushift);
-            SetPredictorVminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Vmin"));
-            SetPredictorVptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Vptsnb"));
-            SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value", 0));
+            if(!SetPredictorUshift(i_step, i_ptor, Ushift)) return false;
+            if(!SetPredictorVminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Vmin"))) return false;
+            if(!SetPredictorVptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Vptsnb"))) return false;
+            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value"))) return false;
             double Vshift = fmod(GetPredictorVminVector(i_step, i_ptor)[0], GetPredictorVstep(i_step, i_ptor));
             if (Vshift<0) Vshift += GetPredictorVstep(i_step, i_ptor);
-            SetPredictorVshift(i_step, i_ptor, Vshift);
+            if(!SetPredictorVshift(i_step, i_ptor, Vshift)) return false;
             VectorInt uptsnbs = GetPredictorUptsnbVector(i_step, i_ptor);
             VectorInt vptsnbs = GetPredictorVptsnbVector(i_step, i_ptor);
             if (asTools::MinArray(&uptsnbs[0], &uptsnbs[uptsnbs.size()-1])<=1 || asTools::MinArray(&vptsnbs[0], &vptsnbs[vptsnbs.size()-1])<=1)
@@ -286,21 +276,21 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
             if (NeedsPreloading(i_step, i_ptor))
             {
                 // Set maximum extent
-                SetPreloadUmin(i_step, i_ptor, GetPredictorUminVector(i_step, i_ptor)[0]);
-                SetPreloadVmin(i_step, i_ptor, GetPredictorVminVector(i_step, i_ptor)[0]);
+                if(!SetPreloadUmin(i_step, i_ptor, GetPredictorUminVector(i_step, i_ptor)[0])) return false;
+                if(!SetPreloadVmin(i_step, i_ptor, GetPredictorVminVector(i_step, i_ptor)[0])) return false;
                 int Ubaseptsnb = abs(GetPredictorUminVector(i_step, i_ptor)[0]-GetPredictorUminVector(i_step, i_ptor)[GetPredictorUminVector(i_step, i_ptor).size()-1])/GetPredictorUstep(i_step, i_ptor);
-                SetPreloadUptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorUptsnbVector(i_step, i_ptor)[GetPredictorUptsnbVector(i_step, i_ptor).size()-1]);
+                if(!SetPreloadUptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorUptsnbVector(i_step, i_ptor)[GetPredictorUptsnbVector(i_step, i_ptor).size()-1])) return false;
                 int Vbaseptsnb = abs(GetPredictorVminVector(i_step, i_ptor)[0]-GetPredictorVminVector(i_step, i_ptor)[GetPredictorVminVector(i_step, i_ptor).size()-1])/GetPredictorVstep(i_step, i_ptor);
-                SetPreloadVptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorVptsnbVector(i_step, i_ptor)[GetPredictorVptsnbVector(i_step, i_ptor).size()-1]);
+                if(!SetPreloadVptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorVptsnbVector(i_step, i_ptor)[GetPredictorVptsnbVector(i_step, i_ptor).size()-1])) return false;
             }
             if(!fileParams.GoANodeBack()) return false;
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Criteria")) return false;
-            SetPredictorCriteriaVector(i_step, i_ptor, GetFileParamStringVector(fileParams, "Criteria"));
+            if(!SetPredictorCriteriaVector(i_step, i_ptor, GetFileParamStringVector(fileParams, "Criteria"))) return false;
             if(!fileParams.GoANodeBack()) return false;
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Weight")) return false;
-            SetPredictorWeightVector(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Weight"));
+            if(!SetPredictorWeightVector(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Weight"))) return false;
             if(!fileParams.GoANodeBack()) return false;
 
             if(fileParams.GoToNextSameNode())
@@ -318,7 +308,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
         if(!fileParams.GoANodeBack()) return false;
 
         // Find the next analogs date block
-        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates")) break;
+        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates", asHIDE_WARNINGS)) break;
 
         i_step++;
     }
@@ -331,8 +321,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    SetPredictandStationsIdVector(GetFileParamIntVector(fileParams, "PredictandStationId"));
-    SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0));
+    if(!SetPredictandStationsIdVector(GetFileParamIntVector(fileParams, "PredictandStationId"))) return false;
+    if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
     if(!fileParams.GoANodeBack()) return false;
 
@@ -344,20 +334,20 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method")) return false;
-    SetForecastScoreNameVector(GetFileParamStringVector(fileParams, "Name"));
-    SetForecastScoreThreshold(fileParams.GetFirstElementAttributeValueFloat("Threshold", "value", NaNFloat));
-    SetForecastScorePercentile(fileParams.GetFirstElementAttributeValueFloat("Percentile", "value", NaNFloat));
+    if(!SetForecastScoreNameVector(GetFileParamStringVector(fileParams, "Name"))) return false;
+    SetForecastScoreThreshold(fileParams.GetFirstElementAttributeValueFloat("Threshold", "value")); // optional
+    SetForecastScorePercentile(fileParams.GetFirstElementAttributeValueFloat("Percentile", "value")); // optional
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-    SetForecastScoreAnalogsNumberVector(GetFileParamIntVector(fileParams, "AnalogsNumber"));
+    if(!SetForecastScoreAnalogsNumberVector(GetFileParamIntVector(fileParams, "AnalogsNumber"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Postprocessing"))
     {
         SetForecastScorePostprocess(1);
-        SetForecastScorePostprocessMethod(fileParams.GetFirstElementAttributeValueText("Method", "value"));
-        SetForecastScorePostprocessDupliExpVector(GetFileParamFloatVector(fileParams, "DuplicationExponent"));
+        if(!SetForecastScorePostprocessMethod(fileParams.GetFirstElementAttributeValueText("Method", "value"))) return false;
+        if(!SetForecastScorePostprocessDupliExpVector(GetFileParamFloatVector(fileParams, "DuplicationExponent"))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
     else
@@ -374,16 +364,12 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array")) return false;
-    SetForecastScoreTimeArrayModeVector(GetFileParamStringVector(fileParams, "Mode"));
-    SetForecastScoreTimeArrayDateVector(GetFileParamDoubleVector(fileParams, "Date"));
-    SetForecastScoreTimeArrayIntervalDaysVector(GetFileParamIntVector(fileParams, "IntervalDays"));
+    if(!SetForecastScoreTimeArrayModeVector(GetFileParamStringVector(fileParams, "Mode"))) return false;
+    if(!SetForecastScoreTimeArrayDateVector(GetFileParamDoubleVector(fileParams, "Date"))) return false;
+    if(!SetForecastScoreTimeArrayIntervalDaysVector(GetFileParamIntVector(fileParams, "IntervalDays"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Validation"))
-    {
-        asLogError(_("The validation in the final score calculation is no more valid. Please update the parameters file."));
-        return false;
-    }
+    if(!fileParams.CheckDeprecatedChildNode("Validation")) return false;
 
     // Set sizes
     SetSizes();

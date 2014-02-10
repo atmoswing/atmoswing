@@ -191,7 +191,7 @@ bool asFileXml::GoToNextSameNode()
     return result;
 }
 
-bool asFileXml::GoToNextSameNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue)
+bool asFileXml::GoToNextSameNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue, const int &showWarnings)
 {
     wxASSERT(m_Opened);
 
@@ -206,6 +206,10 @@ bool asFileXml::GoToNextSameNodeWithAttributeValue(const wxString &attributeName
         if (!SetPointerNextSameSibling(false))
         {
             m_ElementPointer = m_BaseNodePointer; // Restore pointer
+            if(showWarnings==asSHOW_WARNINGS) 
+            {
+                asLogError(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
+            }
             return false;
         }
 
@@ -216,6 +220,11 @@ bool asFileXml::GoToNextSameNodeWithAttributeValue(const wxString &attributeName
             m_BaseNodePointer = m_ElementPointer; // Set base node pointer
             return true;
         }
+    }
+    
+    if(showWarnings==asSHOW_WARNINGS) 
+    {
+        asLogError(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
     }
 
     return false;

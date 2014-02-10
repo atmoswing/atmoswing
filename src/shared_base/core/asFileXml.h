@@ -71,7 +71,7 @@ public:
 
     bool GoToNextSameNode();
 
-    bool GoToNextSameNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue);
+    bool GoToNextSameNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue, const int &showWarnings = asSHOW_WARNINGS);
 
     bool GoANodeBack();
 

@@ -54,9 +54,26 @@ public:
         return m_PredictandStationsIdVect;
     }
 
-    void SetPredictandStationsIdVector(VectorInt val)
+    bool SetPredictandStationsIdVector(VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided predictand ID vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided predictand ID vector."));
+                    return false;
+                }
+            }
+        }
         m_PredictandStationsIdVect = val;
+        return true;
     }
 
     VectorInt GetTimeArrayAnalogsIntervalDaysVector()
@@ -64,9 +81,26 @@ public:
         return m_TimeArrayAnalogsIntervalDaysVect;
     }
 
-    void SetTimeArrayAnalogsIntervalDaysVector(VectorInt val)
+    bool SetTimeArrayAnalogsIntervalDaysVector(VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided 'interval days' vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided 'interval days' vector."));
+                    return false;
+                }
+            }
+        }
         m_TimeArrayAnalogsIntervalDaysVect = val;
+        return true;
     }
 
     VectorInt GetAnalogsNumberVector(int i_step)
@@ -74,9 +108,26 @@ public:
         return m_StepsVect[i_step].AnalogsNumber;
     }
 
-    void SetAnalogsNumberVector(int i_step, VectorInt val)
+    bool SetAnalogsNumberVector(int i_step, VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided analogs number vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided analogs number vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].AnalogsNumber = val;
+        return true;
     }
 
     VectorString GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset)
@@ -93,8 +144,25 @@ public:
         }
     }
 
-    void SetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset, VectorString val)
+    bool SetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset, VectorString val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided preprocess data ID vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (val[i].IsEmpty())
+                {
+                    asLogError(_("There are NaN values in the provided preprocess data ID vector."));
+                    return false;
+                }
+            }
+        }
+
         if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset].clear();
@@ -104,6 +172,8 @@ public:
         {
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
         }
+
+        return true;
     }
 
     VectorFloat GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset)
@@ -120,8 +190,25 @@ public:
         }
     }
 
-    void SetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset, VectorFloat val)
+    bool SetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset, VectorFloat val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided preprocess levels vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided preprocess levels vector."));
+                    return false;
+                }
+            }
+        }
+
         if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].clear();
@@ -131,6 +218,8 @@ public:
         {
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
         }
+
+        return true;
     }
 
     VectorDouble GetPreprocessDTimeHoursVector(int i_step, int i_predictor, int i_dataset)
@@ -147,8 +236,25 @@ public:
         }
     }
 
-    void SetPreprocessDTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
+    bool SetPreprocessDTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided 'preprocess dTime (hours)' vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided 'preprocess dTime (hours)' vector."));
+                    return false;
+                }
+            }
+        }
+
         if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset].clear();
@@ -178,6 +284,8 @@ public:
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeDays.push_back(dTimeDays);
             m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHour.push_back(timeHour);
         }
+
+        return true;
     }
 
     VectorString GetPredictorDataIdVector(int i_step, int i_predictor)
@@ -185,9 +293,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].DataId;
     }
 
-    void SetPredictorDataIdVector(int i_step, int i_predictor, VectorString val)
+    bool SetPredictorDataIdVector(int i_step, int i_predictor, VectorString val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided data ID vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (val[i].IsEmpty())
+                {
+                    asLogError(_("There are NaN values in the provided data ID vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].DataId = val;
+        return true;
     }
 
     VectorFloat GetPredictorLevelVector(int i_step, int i_predictor)
@@ -195,9 +320,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Level;
     }
 
-    void SetPredictorLevelVector(int i_step, int i_predictor, VectorFloat val)
+    bool SetPredictorLevelVector(int i_step, int i_predictor, VectorFloat val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided predictor levels vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided predictor levels vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Level = val;
+        return true;
     }
 
     VectorDouble GetPredictorUminVector(int i_step, int i_predictor)
@@ -205,9 +347,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Umin;
     }
 
-    void SetPredictorUminVector(int i_step, int i_predictor, VectorDouble val)
+    bool SetPredictorUminVector(int i_step, int i_predictor, VectorDouble val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided Umin vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided Umin vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Umin = val;
+        return true;
     }
 
     VectorInt GetPredictorUptsnbVector(int i_step, int i_predictor)
@@ -215,9 +374,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Uptsnb;
     }
 
-    void SetPredictorUptsnbVector(int i_step, int i_predictor, VectorInt val)
+    bool SetPredictorUptsnbVector(int i_step, int i_predictor, VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided Uptsnb vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided Uptsnb vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Uptsnb = val;
+        return true;
     }
 
     VectorDouble GetPredictorVminVector(int i_step, int i_predictor)
@@ -225,9 +401,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Vmin;
     }
 
-    void SetPredictorVminVector(int i_step, int i_predictor, VectorDouble val)
+    bool SetPredictorVminVector(int i_step, int i_predictor, VectorDouble val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided Vmin vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided Vmin vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Vmin = val;
+        return true;
     }
 
     VectorInt GetPredictorVptsnbVector(int i_step, int i_predictor)
@@ -235,9 +428,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Vptsnb;
     }
 
-    void SetPredictorVptsnbVector(int i_step, int i_predictor, VectorInt val)
+    bool SetPredictorVptsnbVector(int i_step, int i_predictor, VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided Vptsnb vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided Vptsnb vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Vptsnb = val;
+        return true;
     }
 
     VectorDouble GetPredictorDTimeHoursVector(int i_step, int i_predictor)
@@ -245,9 +455,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].DTimeHours;
     }
 
-    void SetPredictorDTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
+    bool SetPredictorDTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided predictor 'dTime (hours)' vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided predictor 'dTime (hours)' vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].DTimeHours = val;
+        return true;
     }
 
     VectorString GetPredictorCriteriaVector(int i_step, int i_predictor)
@@ -255,9 +482,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Criteria;
     }
 
-    void SetPredictorCriteriaVector(int i_step, int i_predictor, VectorString val)
+    bool SetPredictorCriteriaVector(int i_step, int i_predictor, VectorString val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided predictor criteria vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (val[i].IsEmpty())
+                {
+                    asLogError(_("There are NaN values in the provided predictor criteria vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Criteria = val;
+        return true;
     }
 
     VectorFloat GetPredictorWeightVector(int i_step, int i_predictor)
@@ -265,9 +509,26 @@ public:
         return m_StepsVect[i_step].Predictors[i_predictor].Weight;
     }
 
-    void SetPredictorWeightVector(int i_step, int i_predictor, VectorFloat val)
+    bool SetPredictorWeightVector(int i_step, int i_predictor, VectorFloat val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided predictor weights vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided predictor weights vector."));
+                    return false;
+                }
+            }
+        }
         m_StepsVect[i_step].Predictors[i_predictor].Weight = val;
+        return true;
     }
 
     VectorString GetForecastScoreNameVector()
@@ -275,9 +536,26 @@ public:
         return m_ForecastScoreVect.Name;
     }
 
-    void SetForecastScoreNameVector(VectorString val)
+    bool SetForecastScoreNameVector(VectorString val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided forecast scores vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (val[i].IsEmpty())
+                {
+                    asLogError(_("There are NaN values in the provided forecast scores vector."));
+                    return false;
+                }
+            }
+        }
         m_ForecastScoreVect.Name = val;
+        return true;
     }
 
     VectorInt GetForecastScoreAnalogsNumberVector()
@@ -285,9 +563,26 @@ public:
         return m_ForecastScoreVect.AnalogsNumber;
     }
 
-    void SetForecastScoreAnalogsNumberVector(VectorInt val)
+    bool SetForecastScoreAnalogsNumberVector(VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided final analogs number vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided final analogs number vector."));
+                    return false;
+                }
+            }
+        }
         m_ForecastScoreVect.AnalogsNumber = val;
+        return true;
     }
 
     VectorString GetForecastScoreTimeArrayModeVector()
@@ -295,9 +590,26 @@ public:
         return m_ForecastScoreVect.TimeArrayMode;
     }
 
-    void SetForecastScoreTimeArrayModeVector(VectorString val)
+    bool SetForecastScoreTimeArrayModeVector(VectorString val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided time array mode vector for the forecast score is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (val[i].IsEmpty())
+                {
+                    asLogError(_("There are NaN values in the provided time array mode vector for the forecast score."));
+                    return false;
+                }
+            }
+        }
         m_ForecastScoreVect.TimeArrayMode = val;
+        return true;
     }
 
     VectorDouble GetForecastScoreTimeArrayDateVector()
@@ -305,9 +617,26 @@ public:
         return m_ForecastScoreVect.TimeArrayDate;
     }
 
-    void SetForecastScoreTimeArrayDateVector(VectorDouble val)
+    bool SetForecastScoreTimeArrayDateVector(VectorDouble val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided time array date vector for the forecast score is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided time array date vector for the forecast score."));
+                    return false;
+                }
+            }
+        }
         m_ForecastScoreVect.TimeArrayDate = val;
+        return true;
     }
 
     VectorInt GetForecastScoreTimeArrayIntervalDaysVector()
@@ -315,9 +644,26 @@ public:
         return m_ForecastScoreVect.TimeArrayIntervalDays;
     }
 
-    void SetForecastScoreTimeArrayIntervalDaysVector(VectorInt val)
+    bool SetForecastScoreTimeArrayIntervalDaysVector(VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided time array interval vector for the forecast score is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided time array interval vector for the forecast score."));
+                    return false;
+                }
+            }
+        }
         m_ForecastScoreVect.TimeArrayIntervalDays = val;
+        return true;
     }
 
     VectorFloat GetForecastScorePostprocessDupliExpVector()
@@ -325,9 +671,26 @@ public:
         return m_ForecastScoreVect.PostprocessDupliExp;
     }
 
-    void SetForecastScorePostprocessDupliExpVector(VectorFloat val)
+    bool SetForecastScorePostprocessDupliExpVector(VectorFloat val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided 'PostprocessDupliExp' vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided 'PostprocessDupliExp' vector."));
+                    return false;
+                }
+            }
+        }
         m_ForecastScoreVect.PostprocessDupliExp = val;
+        return true;
     }
 
     int GetPredictandStationIdLowerLimit()
