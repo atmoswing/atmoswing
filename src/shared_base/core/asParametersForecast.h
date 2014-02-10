@@ -85,9 +85,26 @@ public:
         return m_LeadTimeDaysVect.size();
     }
 
-    void SetLeadTimeDaysVector(VectorInt val)
+    bool SetLeadTimeDaysVector(VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided 'lead time (days)' vector is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided 'lead time (days)' vector."));
+                    return false;
+                }
+            }
+        }
         m_LeadTimeDaysVect = val;
+        return true;
     }
 
     VectorInt GetLeadTimeDaysVector()
@@ -105,9 +122,26 @@ public:
         return m_LeadTimeDaysVect[i_leadtime]*24.0;
     }
 
-    void SetAnalogsNumberLeadTimeVector(int i_step, VectorInt val)
+    bool SetAnalogsNumberLeadTimeVector(int i_step, VectorInt val)
     {
+        if (val.size()<1)
+        {
+            asLogError(_("The provided analogs numbers vector (fct of the lead time) is empty."));
+            return false;
+        }
+        else
+        {
+            for (int i=0; i<val.size(); i++)
+            {
+                if (asTools::IsNaN(val[i]))
+                {
+                    asLogError(_("There are NaN values in the provided analogs numbers vector (fct of the lead time)."));
+                    return false;
+                }
+            }
+        }
         m_StepsForecast[i_step].AnalogsNumberLeadTime = val;
+        return true;
     }
 
     VectorInt GetAnalogsNumberLeadTimeVector(int i_step)
@@ -130,9 +164,15 @@ public:
         return m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId;
     }
 
-    void SetPredictorArchiveDatasetId(int i_step, int i_predictor, const wxString& val)
+    bool SetPredictorArchiveDatasetId(int i_step, int i_predictor, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the predictor archive dataset ID is null"));
+            return false;
+        }
         m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId = val;
+        return true;
     }
 
     wxString GetPredictorArchiveDataId(int i_step, int i_predictor)
@@ -140,9 +180,15 @@ public:
         return m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDataId;
     }
 
-    void SetPredictorArchiveDataId(int i_step, int i_predictor, const wxString& val)
+    bool SetPredictorArchiveDataId(int i_step, int i_predictor, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the predictor archive data ID is null"));
+            return false;
+        }
         m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDataId = val;
+        return true;
     }
 
     wxString GetPredictorRealtimeDatasetId(int i_step, int i_predictor)
@@ -150,9 +196,15 @@ public:
         return m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId;
     }
 
-    void SetPredictorRealtimeDatasetId(int i_step, int i_predictor, const wxString& val)
+    bool SetPredictorRealtimeDatasetId(int i_step, int i_predictor, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the predictor realtime dataset ID is null"));
+            return false;
+        }
         m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId = val;
+        return true;
     }
 
     wxString GetPredictorRealtimeDataId(int i_step, int i_predictor)
@@ -160,9 +212,15 @@ public:
         return m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDataId;
     }
 
-    void SetPredictorRealtimeDataId(int i_step, int i_predictor, const wxString& val)
+    bool SetPredictorRealtimeDataId(int i_step, int i_predictor, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the predictor realtime data ID is null"));
+            return false;
+        }
         m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDataId = val;
+        return true;
     }
 
     int GetPreprocessSize(int i_step, int i_predictor)
@@ -183,8 +241,14 @@ public:
         }
     }
 
-    void SetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val)
+    bool SetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the preprocess archive dataset ID is null"));
+            return false;
+        }
+
         if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset] = val;
@@ -193,6 +257,8 @@ public:
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.push_back(val);
         }
+
+        return true;
     }
 
     wxString GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset)
@@ -208,8 +274,14 @@ public:
         }
     }
 
-    void SetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset, const wxString& val)
+    bool SetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the preprocess archive data ID is null"));
+            return false;
+        }
+
         if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset] = val;
@@ -218,6 +290,8 @@ public:
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.push_back(val);
         }
+
+        return true;
     }
 
     wxString GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset)
@@ -233,8 +307,14 @@ public:
         }
     }
 
-    void SetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val)
+    bool SetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the preprocess realtime dataset ID is null"));
+            return false;
+        }
+
         if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset] = val;
@@ -243,6 +323,8 @@ public:
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.push_back(val);
         }
+        
+        return true;
     }
 
     wxString GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset)
@@ -258,8 +340,14 @@ public:
         }
     }
 
-    void SetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset, const wxString& val)
+    bool SetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset, const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided value for the preprocess realtime data ID is null"));
+            return false;
+        }
+
         if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size()>=(unsigned)(i_dataset+1))
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset] = val;
@@ -268,6 +356,8 @@ public:
         {
             m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.push_back(val);
         }
+
+        return true;
     }
 
 

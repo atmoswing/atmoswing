@@ -116,7 +116,7 @@ bool asFileXml::UpdateElementName()
     return true;
 }
 
-bool asFileXml::GoToFirstNodeWithPath(const wxString node)
+bool asFileXml::GoToFirstNodeWithPath(const wxString node, const int &showWarnings)
 {
     wxASSERT(m_Opened);
 
@@ -126,15 +126,29 @@ bool asFileXml::GoToFirstNodeWithPath(const wxString node)
     } else {
         m_BaseNodeName = node;
     }
-    if (!SetPointerFirstElement(node)) return false;
+    if (!SetPointerFirstElement(node)) 
+    {
+        if (showWarnings==asSHOW_WARNINGS)
+        {
+            asLogError(wxString::Format(_("Cannot find node %s"), node.c_str()));
+        }
+        return false;
+    }
 
     m_BaseNodePointer = m_ElementPointer;
-    if (!UpdateElementName()) return false;
+    if (!UpdateElementName())
+    {
+        if (showWarnings==asSHOW_WARNINGS)
+        {
+            asLogError(wxString::Format(_("Cannot go to node %s"), node.c_str()));
+        }
+        return false;
+    }
 
     return true;
 }
 
-bool asFileXml::GoToLastNodeWithPath(const wxString node)
+bool asFileXml::GoToLastNodeWithPath(const wxString node, const int &showWarnings)
 {
     wxASSERT(m_Opened);
 
@@ -144,10 +158,24 @@ bool asFileXml::GoToLastNodeWithPath(const wxString node)
     } else {
         m_BaseNodeName = node;
     }
-    if (!SetPointerLastElement(node)) return false;
+    if (!SetPointerLastElement(node)) 
+    {
+        if (showWarnings==asSHOW_WARNINGS)
+        {
+            asLogError(wxString::Format(_("Cannot find node %s"), node.c_str()));
+        }
+        return false;
+    }
 
     m_BaseNodePointer = m_ElementPointer;
-    if (!UpdateElementName()) return false;
+    if (!UpdateElementName())
+    {
+        if (showWarnings==asSHOW_WARNINGS)
+        {
+            asLogError(wxString::Format(_("Cannot go to node %s"), node.c_str()));
+        }
+        return false;
+    }
 
     return true;
 }
@@ -205,7 +233,7 @@ bool asFileXml::GoANodeBack()
     return true;
 }
 
-bool asFileXml::GoToChildNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue)
+bool asFileXml::GoToChildNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue, const int &showWarnings)
 {
     wxASSERT(m_Opened);
 
@@ -215,7 +243,10 @@ bool asFileXml::GoToChildNodeWithAttributeValue(const wxString &attributeName, c
     if (m_ElementPointer==NULL)
     {
         m_ElementPointer = elementPointerBkp;
-        asLogMessage(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
+        if(showWarnings==asSHOW_WARNINGS) 
+        {
+            asLogError(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
+        }
         return false;
     }
     m_BaseNodePointer = m_ElementPointer;
@@ -224,7 +255,14 @@ bool asFileXml::GoToChildNodeWithAttributeValue(const wxString &attributeName, c
     m_BaseNodeName.Append(".");
     m_BaseNodeName.Append(nodeName);
 
-    if (!UpdateElementName()) return false;
+    if (!UpdateElementName())
+    {
+        if(showWarnings==asSHOW_WARNINGS) 
+        {
+            asLogError(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
+        }
+        return false;
+    }
 
     return true;
 }
