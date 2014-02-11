@@ -23,7 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
  
 #ifndef ASPARAMETERSSCORING_H
@@ -57,16 +57,14 @@ public:
     {
         VVectorString PreprocessDataId;
         VVectorFloat PreprocessLevels;
-        VVectorDouble PreprocessDTimeHours;
-        VVectorDouble PreprocessDTimeDays;
-        VVectorDouble PreprocessTimeHour;
+        VVectorDouble PreprocessTimeHours;
         VectorString DataId;
         VectorFloat Level;
         VectorDouble Umin;
         VectorInt Uptsnb;
         VectorDouble Vmin;
         VectorInt Vptsnb;
-        VectorDouble DTimeHours;
+        VectorDouble TimeHours;
         VectorString Criteria;
         VectorFloat Weight;
     } ParamsPredictorVect;
@@ -96,14 +94,14 @@ public:
     {
         VectorBool PreprocessDataId;
         VectorBool PreprocessLevels;
-        VectorBool PreprocessDTimeHours;
+        VectorBool PreprocessTimeHours;
         bool DataId;
         bool Level;
         bool Umin;
         bool Uptsnb;
         bool Vmin;
         bool Vptsnb;
-        bool DTimeHours;
+        bool TimeHours;
         bool Weight;
         bool Criteria;
     } ParamsPredictorBool;
@@ -207,6 +205,36 @@ public:
     {
         if (m_ValidationYears.size()>0) return true;
         else return false;
+    }
+
+    int GetValidationYearStart()
+    {
+        if (!HasValidationPeriod()) {
+            return NaNInt;
+        }
+
+        int minVal = m_ValidationYears[0];
+        for (int i=0; i<m_ValidationYears.size(); i++)
+        {
+            minVal = wxMin(minVal, m_ValidationYears[i]);
+        }
+
+        return minVal;
+    }
+
+    int GetValidationYearEnd()
+    {
+        if (!HasValidationPeriod()) {
+            return NaNInt;
+        }
+
+        int maxVal = m_ValidationYears[0];
+        for (int i=0; i<m_ValidationYears.size(); i++)
+        {
+            maxVal = wxMax(maxVal, m_ValidationYears[i]);
+        }
+
+        return maxVal;
     }
 
     wxString GetForecastScoreName()

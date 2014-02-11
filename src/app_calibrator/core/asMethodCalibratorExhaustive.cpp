@@ -82,12 +82,12 @@ bool asMethodCalibratorExhaustive::Calibrate(asParametersCalibration &params)
                 {
                     for(int i_dataset=0; i_dataset<params.GetPreprocessSize(i_step, i_ptor); i_dataset++)
                     {
-                        VectorDouble vPreprocessDTimeHours = params.GetPreprocessDTimeHoursVector(i_step, i_ptor, i_dataset);
+                        VectorDouble vPreprocessTimeHours = params.GetPreprocessTimeHoursVector(i_step, i_ptor, i_dataset);
 
-                        for(unsigned int i_preprocessdtime=0; i_preprocessdtime<vPreprocessDTimeHours.size(); i_preprocessdtime++)
+                        for(unsigned int i_preprocessdtime=0; i_preprocessdtime<vPreprocessTimeHours.size(); i_preprocessdtime++)
                         {
-                            params.SetPreprocessDTimeHours(i_step, i_ptor, i_dataset, vPreprocessDTimeHours[i_preprocessdtime]);
-                            params.SetPredictorDTimeHours(i_step, i_ptor, vPreprocessDTimeHours[i_preprocessdtime]);
+                            params.SetPreprocessTimeHours(i_step, i_ptor, i_dataset, vPreprocessTimeHours[i_preprocessdtime]);
+                            params.SetPredictorTimeHours(i_step, i_ptor, vPreprocessTimeHours[i_preprocessdtime]);
 
                             VectorFloat vPreprocessLevels = params.GetPreprocessLevelVector(i_step, i_ptor, i_dataset);
 
@@ -156,7 +156,6 @@ bool asMethodCalibratorExhaustive::Calibrate(asParametersCalibration &params)
 
                                                                 // Analogs dates
                                                                 asLogMessage(_("Processing analogs dates."));
-                                                                params.FixTimeShift();
                                                                 params.FixAnalogsNb();
                                                                 params.FixCoordinates();
                                                                 params.FixWeights();
@@ -244,11 +243,11 @@ bool asMethodCalibratorExhaustive::Calibrate(asParametersCalibration &params)
                 }
                 else
                 {
-                    VectorDouble vPredictorDTimeHours = params.GetPredictorDTimeHoursVector(i_step, i_ptor);
+                    VectorDouble vPredictorTimeHours = params.GetPredictorTimeHoursVector(i_step, i_ptor);
 
-                    for(unsigned int i_predictordtime=0; i_predictordtime<vPredictorDTimeHours.size(); i_predictordtime++)
+                    for(unsigned int i_predictordtime=0; i_predictordtime<vPredictorTimeHours.size(); i_predictordtime++)
                     {
-                        params.SetPredictorDTimeHours(i_step, i_ptor, vPredictorDTimeHours[i_predictordtime]);
+                        params.SetPredictorTimeHours(i_step, i_ptor, vPredictorTimeHours[i_predictordtime]);
 
                         VectorFloat vPredictorLevels = params.GetPredictorLevelVector(i_step, i_ptor);
 
@@ -316,7 +315,6 @@ bool asMethodCalibratorExhaustive::Calibrate(asParametersCalibration &params)
 
                                                             // Analogs dates
                                                             asLogMessage(_("Processing analogs dates."));
-                                                            params.FixTimeShift();
                                                             params.FixAnalogsNb();
                                                             params.FixCoordinates();
                                                             params.FixWeights();

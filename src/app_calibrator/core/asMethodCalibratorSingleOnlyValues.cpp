@@ -74,10 +74,10 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
                         checkSizes = false;
                         errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", i_step, i_predictor, i_pre));
                     }
-                    if( params.GetPreprocessDTimeHoursVector(i_step, i_predictor, i_pre).size()>1 )
+                    if( params.GetPreprocessTimeHoursVector(i_step, i_predictor, i_pre).size()>1 )
                     {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessDTimeHours (step %d, predictor %d, preprocess %d), ", i_step, i_predictor, i_pre));
+                        errorField.Append(wxString::Format("PreprocessTimeHours (step %d, predictor %d, preprocess %d), ", i_step, i_predictor, i_pre));
                     }
                 }
             }
@@ -93,10 +93,10 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
                 checkSizes = false;
                 errorField.Append(wxString::Format("PredictorLevel (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorDTimeHoursVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorTimeHoursVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorDTimeHours (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorTimeHours (step %d, predictor %d), ", i_step, i_predictor));
             }
             if( params.GetPredictorUminVector(i_step, i_predictor).size()>1 )
             {
@@ -138,10 +138,10 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
                         checkSizes = false;
                         errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d), ", i_step, i_predictor));
                     }
-                    if( params.GetPreprocessDTimeHoursVector(i_step, i_predictor, i_dataset).size()>1 )
+                    if( params.GetPreprocessTimeHoursVector(i_step, i_predictor, i_dataset).size()>1 )
                     {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessDTimeHoursV (step %d, predictor %d), ", i_step, i_predictor));
+                        errorField.Append(wxString::Format("PreprocessTimeHoursV (step %d, predictor %d), ", i_step, i_predictor));
                     }
                 }
             }

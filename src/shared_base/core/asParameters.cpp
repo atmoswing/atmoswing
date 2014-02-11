@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
  
 #include "asParameters.h"
@@ -36,8 +37,8 @@ asParameters::asParameters()
     m_DateProcessed = asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL));
     m_ArchiveYearStart = 0;
     m_ArchiveYearEnd = 0;
-    m_TimeShiftDays = 0;
-    m_TimeSpanDays = 0;
+    m_TimeMinHours = 0;
+    m_TimeMaxHours = 0;
     m_TimeArrayTargetMode = "Simple";
     m_TimeArrayTargetTimeStepHours = 0;
     m_TimeArrayAnalogsMode = "DaysInterval";
@@ -45,7 +46,7 @@ asParameters::asParameters()
     m_TimeArrayAnalogsExcludeDays = 0;
     m_TimeArrayAnalogsIntervalDays = 0;
     m_PredictandStationId = 0;
-    m_PredictandDTimeHours = 0;
+    m_PredictandTimeHours = 0;
     m_PredictandParameter = (DataParameter)0;
     m_PredictandTemporalResolution = (DataTemporalResolution)0;
     m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
@@ -132,9 +133,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.Vstep = 0;
     predictor.Vshift = 0;
     predictor.FlatAllowed = asFLAT_FORBIDDEN;
-    predictor.DTimeHours = 0;
-    predictor.DTimeDays = 0;
-    predictor.TimeHour = 0;
+    predictor.TimeHours = 0;
     predictor.Criteria = wxEmptyString;
     predictor.Weight = 1;
 
@@ -166,9 +165,7 @@ void asParameters::AddPredictor(int i_step)
     predictor.Vstep = 0;
     predictor.Vshift = 0;
     predictor.FlatAllowed = asFLAT_FORBIDDEN;
-    predictor.DTimeHours = 0;
-    predictor.DTimeDays = 0;
-    predictor.TimeHour = 0;
+    predictor.TimeHours = 0;
     predictor.Criteria = wxEmptyString;
     predictor.Weight = 1;
 
@@ -439,7 +436,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time frame")) return false;
-                if(!SetPredictorDTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("DTimeHours", "value"))) return false;
+                if(!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("TimeHours", "value"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
             }
@@ -464,7 +461,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
                     if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"))) return false;
                     if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDataId", "value"))) return false;
                     if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueFloat("PreprocessLevel", "value"))) return false;
-                    if(!SetPreprocessDTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessDTimeHours", "value"))) return false;
+                    if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "value"))) return false;
 
                     if(fileParams.GoToNextSameNode())
                     {
@@ -482,14 +479,14 @@ bool asParameters::LoadFromFile(const wxString &filePath)
                     SetPredictorDatasetId(i_step, i_ptor, "mix");
                     SetPredictorDataId(i_step, i_ptor, "mix");
                     SetPredictorLevel(i_step, i_ptor, -1);
-                    SetPredictorDTimeHours(i_step, i_ptor, GetPreprocessDTimeHours(i_step, i_ptor, 0));
+                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
                 }
                 else
                 {
                     SetPredictorDatasetId(i_step, i_ptor, GetPreprocessDatasetId(i_step, i_ptor, 0));
                     SetPredictorDataId(i_step, i_ptor, GetPreprocessDataId(i_step, i_ptor, 0));
                     SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
-                    SetPredictorDTimeHours(i_step, i_ptor, GetPreprocessDTimeHours(i_step, i_ptor, 0));
+                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
                 }
                 if(!fileParams.GoANodeBack()) return false;
                 if(!fileParams.GoANodeBack()) return false;
@@ -555,7 +552,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
     if(!SetPredictandStationId(fileParams.GetFirstElementAttributeValueInt("PredictandStationId", "value"))) return false;
-    if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0))) return false;
+    if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0.0))) return false;
     if(!fileParams.GoANodeBack()) return false;
     if(!fileParams.GoANodeBack()) return false;
 
@@ -565,7 +562,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     SetSizes();
 
     // Fixes
-    FixTimeShift();
+    FixTimeLimits();
     FixWeights();
     FixCoordinates();
 
@@ -575,37 +572,33 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     return true;
 }
 
-bool asParameters::FixTimeShift()
+bool asParameters::FixTimeLimits()
 {
     SetSizes();
 
-    double minDays = 100.0, maxDays = -1.0;
+    double minHour = 200.0, maxHour = -50.0;
     for(int i=0;i<m_StepsNb;i++)
     {
         for(int j=0;j<m_PredictorsNb[i];j++)
         {
             if (NeedsPreprocessing(i,j))
             {
-                double minDaysPredictor = 100.0, maxDaysPredictor = -1.0;
                 for(int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    minDays = wxMin(m_Steps[i].Predictors[j].PreprocessDTimeDays[k], minDays);
-                    maxDays = wxMax(m_Steps[i].Predictors[j].PreprocessDTimeDays[k], maxDays);
-                    minDaysPredictor = wxMin(m_Steps[i].Predictors[j].PreprocessDTimeDays[k], minDaysPredictor);
-                    maxDaysPredictor = wxMax(m_Steps[i].Predictors[j].PreprocessDTimeDays[k], maxDaysPredictor);
-                    m_Steps[i].Predictors[j].DTimeDays = minDaysPredictor;
+                    minHour = wxMin(m_Steps[i].Predictors[j].PreprocessTimeHours[k], minHour);
+                    maxHour = wxMax(m_Steps[i].Predictors[j].PreprocessTimeHours[k], maxHour);
                 }
             }
             else
             {
-                minDays = wxMin(m_Steps[i].Predictors[j].DTimeDays, minDays);
-                maxDays = wxMax(m_Steps[i].Predictors[j].DTimeDays, maxDays);
+                minHour = wxMin(m_Steps[i].Predictors[j].TimeHours, minHour);
+                maxHour = wxMax(m_Steps[i].Predictors[j].TimeHours, maxHour);
             }
         }
     }
 
-    m_TimeShiftDays = (int)floor(minDays);
-    m_TimeSpanDays = (int)ceil(maxDays)-m_TimeShiftDays;
+    m_TimeMinHours = minHour;
+    m_TimeMaxHours = maxHour;
 
     return true;
 }
@@ -713,14 +706,14 @@ wxString asParameters::Print()
                 {
                     content.Append(wxString::Format("| %s %s\t", GetPreprocessDatasetId(i_step, i_ptor, i_dataset).c_str(), GetPreprocessDataId(i_step, i_ptor, i_dataset)).c_str());
                     content.Append(wxString::Format("Level\t%g\t", GetPreprocessLevel(i_step, i_ptor, i_dataset)));
-                    content.Append(wxString::Format("DtimeH\t%g\t", GetPreprocessDTimeHours(i_step, i_ptor, i_dataset)));
+                    content.Append(wxString::Format("Time\t%g\t", GetPreprocessTimeHours(i_step, i_ptor, i_dataset)));
                 }
             }
             else
             {
                 content.Append(wxString::Format("%s %s\t", GetPredictorDatasetId(i_step, i_ptor).c_str(), GetPredictorDataId(i_step, i_ptor)).c_str());
                 content.Append(wxString::Format("Level\t%g\t", GetPredictorLevel(i_step, i_ptor)));
-                content.Append(wxString::Format("DtimeH\t%g\t", GetPredictorDTimeHours(i_step, i_ptor)));
+                content.Append(wxString::Format("Time\t%g\t", GetPredictorTimeHours(i_step, i_ptor)));
             }
 
             content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(i_step, i_ptor).c_str()));

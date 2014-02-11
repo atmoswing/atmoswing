@@ -23,7 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
  
 #ifndef ASPARAMETERSCALIBRATION_H
@@ -45,6 +45,8 @@ public:
     void AddStep();
 
     bool LoadFromFile(const wxString &filePath);
+
+    bool FixTimeLimits();
 
     void InitValues();
 
@@ -222,25 +224,25 @@ public:
         return true;
     }
 
-    VectorDouble GetPreprocessDTimeHoursVector(int i_step, int i_predictor, int i_dataset)
+    VectorDouble GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset)
     {
-        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            return m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset];
+            return m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
         }
         else
         {
-            asLogError(_("Trying to access to an element outside of PreprocessDTimeHours (vect) in the parameters object."));
+            asLogError(_("Trying to access to an element outside of PreprocessTimeHours (vect) in the parameters object."));
             VectorDouble empty;
             return empty;
         }
     }
 
-    bool SetPreprocessDTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
+    bool SetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided 'preprocess dTime (hours)' vector is empty."));
+            asLogError(_("The provided preprocess time (hours) vector is empty."));
             return false;
         }
         else
@@ -249,40 +251,20 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided 'preprocess dTime (hours)' vector."));
+                    asLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
                     return false;
                 }
             }
         }
 
-        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset].clear();
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset] = val;
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeDays[i_dataset].clear();
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHour[i_dataset].clear();
-            VectorDouble dTimeDays;
-            VectorDouble timeHour;
-            for(unsigned int i=0;i<val.size();i++)
-            {
-                dTimeDays.push_back((double)val[i]/24);
-                timeHour.push_back(fmod(val[i], 24));
-            }
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeDays[i_dataset] = dTimeDays;
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHour[i_dataset] = timeHour;
+            m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].clear();
+            m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
         }
         else
         {
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.push_back(val);
-            VectorDouble dTimeDays;
-            VectorDouble timeHour;
-            for(unsigned int i=0;i<val.size();i++)
-            {
-                dTimeDays.push_back((double)val[i]/24);
-                timeHour.push_back(fmod(val[i], 24));
-            }
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeDays.push_back(dTimeDays);
-            m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHour.push_back(timeHour);
+            m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
         }
 
         return true;
@@ -450,16 +432,16 @@ public:
         return true;
     }
 
-    VectorDouble GetPredictorDTimeHoursVector(int i_step, int i_predictor)
+    VectorDouble GetPredictorTimeHoursVector(int i_step, int i_predictor)
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].DTimeHours;
+        return m_StepsVect[i_step].Predictors[i_predictor].TimeHours;
     }
 
-    bool SetPredictorDTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
+    bool SetPredictorTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided predictor 'dTime (hours)' vector is empty."));
+            asLogError(_("The provided predictor time (hours) vector is empty."));
             return false;
         }
         else
@@ -468,12 +450,12 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided predictor 'dTime (hours)' vector."));
+                    asLogError(_("There are NaN values in the provided predictor time (hours) vector."));
                     return false;
                 }
             }
         }
-        m_StepsVect[i_step].Predictors[i_predictor].DTimeHours = val;
+        m_StepsVect[i_step].Predictors[i_predictor].TimeHours = val;
         return true;
     }
 
@@ -696,6 +678,7 @@ public:
     int GetPredictandStationIdLowerLimit()
     {
         int lastrow = m_PredictandStationsIdVect.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_PredictandStationsIdVect[0],&m_PredictandStationsIdVect[lastrow]);
         return val;
     }
@@ -703,6 +686,7 @@ public:
     int GetTimeArrayAnalogsIntervalDaysLowerLimit()
     {
         int lastrow = m_TimeArrayAnalogsIntervalDaysVect.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_TimeArrayAnalogsIntervalDaysVect[0],&m_TimeArrayAnalogsIntervalDaysVect[lastrow]);
         return val;
     }
@@ -710,15 +694,18 @@ public:
     int GetAnalogsNumberLowerLimit(int i_step)
     {
         int lastrow = m_StepsVect[i_step].AnalogsNumber.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_StepsVect[i_step].AnalogsNumber[0],&m_StepsVect[i_step].AnalogsNumber[lastrow]);
         return val;
     }
 
     float GetPreprocessLevelLowerLimit(int i_step, int i_predictor, int i_dataset)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
         {
             int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size()-1;
+            wxASSERT(lastrow>=0);
             float val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
             return val;
         }
@@ -729,66 +716,82 @@ public:
         }
     }
 
-    double GetPreprocessDTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset)
+    double GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset)
     {
-        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
+        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset].size()-1;
-            double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset][lastrow]);
+            int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()-1;
+            wxASSERT(lastrow>=0);
+            double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
             return val;
         }
         else
         {
-            asLogError(_("Trying to access to an element outside of PreprocessDTimeHours (lower limit) in the parameters object."));
+            asLogError(_("Trying to access to an element outside of PreprocessTimeHours (lower limit) in the parameters object."));
             return NaNDouble;
         }
     }
 
     float GetPredictorLevelLowerLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Level.size()-1;
+        wxASSERT(lastrow>=0);
         float val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Level[0],&m_StepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
         return val;
     }
 
     double GetPredictorUminLowerLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Umin.size()-1;
+        wxASSERT(lastrow>=0);
         double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Umin[0],&m_StepsVect[i_step].Predictors[i_predictor].Umin[lastrow]);
         return val;
     }
 
     int GetPredictorUptsnbLowerLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Uptsnb.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[lastrow]);
         return val;
     }
 
     double GetPredictorVminLowerLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vmin.size()-1;
+        wxASSERT(lastrow>=0);
         double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Vmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Vmin[lastrow]);
         return val;
     }
 
     int GetPredictorVptsnbLowerLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vptsnb.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[lastrow]);
         return val;
     }
 
-    double GetPredictorDTimeHoursLowerLimit(int i_step, int i_predictor)
+    double GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor)
     {
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].DTimeHours.size()-1;
-        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].DTimeHours[0],&m_StepsVect[i_step].Predictors[i_predictor].DTimeHours[lastrow]);
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].TimeHours.size()-1;
+        wxASSERT(lastrow>=0);
+        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[0],&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
         return val;
     }
 
     float GetPredictorWeightLowerLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Weight.size()-1;
+        wxASSERT(lastrow>=0);
         float val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Weight[0],&m_StepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
         return val;
     }
@@ -796,6 +799,7 @@ public:
     int GetForecastScoreAnalogsNumberLowerLimit()
     {
         int lastrow = m_ForecastScoreVect.AnalogsNumber.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_ForecastScoreVect.AnalogsNumber[0],&m_ForecastScoreVect.AnalogsNumber[lastrow]);
         return val;
     }
@@ -803,6 +807,7 @@ public:
     double GetForecastScoreTimeArrayDateLowerLimit()
     {
         int lastrow = m_ForecastScoreVect.TimeArrayDate.size()-1;
+        wxASSERT(lastrow>=0);
         double val = asTools::MinArray(&m_ForecastScoreVect.TimeArrayDate[0],&m_ForecastScoreVect.TimeArrayDate[lastrow]);
         return val;
     }
@@ -810,6 +815,7 @@ public:
     int GetForecastScoreTimeArrayIntervalDaysLowerLimit()
     {
         int lastrow = m_ForecastScoreVect.TimeArrayIntervalDays.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MinArray(&m_ForecastScoreVect.TimeArrayIntervalDays[0],&m_ForecastScoreVect.TimeArrayIntervalDays[lastrow]);
         return val;
     }
@@ -817,6 +823,7 @@ public:
     float GetForecastScorePostprocessDupliExpLowerLimit()
     {
         int lastrow = m_ForecastScoreVect.PostprocessDupliExp.size()-1;
+        wxASSERT(lastrow>=0);
         float val = asTools::MinArray(&m_ForecastScoreVect.PostprocessDupliExp[0],&m_ForecastScoreVect.PostprocessDupliExp[lastrow]);
         return val;
     }
@@ -824,6 +831,7 @@ public:
     int GetPredictandStationsIdUpperLimit()
     {
         int lastrow = m_PredictandStationsIdVect.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_PredictandStationsIdVect[0],&m_PredictandStationsIdVect[lastrow]);
         return val;
     }
@@ -831,6 +839,7 @@ public:
     int GetTimeArrayAnalogsIntervalDaysUpperLimit()
     {
         int lastrow = m_TimeArrayAnalogsIntervalDaysVect.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_TimeArrayAnalogsIntervalDaysVect[0],&m_TimeArrayAnalogsIntervalDaysVect[lastrow]);
         return val;
     }
@@ -838,15 +847,18 @@ public:
     int GetAnalogsNumberUpperLimit(int i_step)
     {
         int lastrow = m_StepsVect[i_step].AnalogsNumber.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_StepsVect[i_step].AnalogsNumber[0],&m_StepsVect[i_step].AnalogsNumber[lastrow]);
         return val;
     }
 
     float GetPreprocessLevelUpperLimit(int i_step, int i_predictor, int i_dataset)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
         {
             int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size()-1;
+            wxASSERT(lastrow>=0);
             float val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
             return val;
         }
@@ -857,66 +869,82 @@ public:
         }
     }
 
-    double GetPreprocessDTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset)
+    double GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset)
     {
-        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
+        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset].size()-1;
-            double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset][lastrow]);
+            int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()-1;
+            wxASSERT(lastrow>=0);
+            double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
             return val;
         }
         else
         {
-            asLogError(_("Trying to access to an element outside of PreprocessDTimeHours (upper limit) in the parameters object."));
+            asLogError(_("Trying to access to an element outside of PreprocessTimeHours (upper limit) in the parameters object."));
             return NaNDouble;
         }
     }
 
     float GetPredictorLevelUpperLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Level.size()-1;
+        wxASSERT(lastrow>=0);
         float val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Level[0],&m_StepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
         return val;
     }
 
     double GetPredictorUminUpperLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Umin.size()-1;
+        wxASSERT(lastrow>=0);
         double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Umin[0],&m_StepsVect[i_step].Predictors[i_predictor].Umin[lastrow]);
         return val;
     }
 
     int GetPredictorUptsnbUpperLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Uptsnb.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[lastrow]);
         return val;
     }
 
     double GetPredictorVminUpperLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vmin.size()-1;
+        wxASSERT(lastrow>=0);
         double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Vmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Vmin[lastrow]);
         return val;
     }
 
     int GetPredictorVptsnbUpperLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vptsnb.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[lastrow]);
         return val;
     }
 
-    double GetPredictorDTimeHoursUpperLimit(int i_step, int i_predictor)
+    double GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor)
     {
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].DTimeHours.size()-1;
-        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].DTimeHours[0],&m_StepsVect[i_step].Predictors[i_predictor].DTimeHours[lastrow]);
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].TimeHours.size()-1;
+        wxASSERT(lastrow>=0);
+        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[0],&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
         return val;
     }
 
     float GetPredictorWeightUpperLimit(int i_step, int i_predictor)
     {
+        wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
         int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Weight.size()-1;
+        wxASSERT(lastrow>=0);
         float val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Weight[0],&m_StepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
         return val;
     }
@@ -924,6 +952,7 @@ public:
     int GetForecastScoreAnalogsNumberUpperLimit()
     {
         int lastrow = m_ForecastScoreVect.AnalogsNumber.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_ForecastScoreVect.AnalogsNumber[0],&m_ForecastScoreVect.AnalogsNumber[lastrow]);
         return val;
     }
@@ -931,6 +960,7 @@ public:
     double GetForecastScoreTimeArrayDateUpperLimit()
     {
         int lastrow = m_ForecastScoreVect.TimeArrayDate.size()-1;
+        wxASSERT(lastrow>=0);
         double val = asTools::MaxArray(&m_ForecastScoreVect.TimeArrayDate[0],&m_ForecastScoreVect.TimeArrayDate[lastrow]);
         return val;
     }
@@ -938,6 +968,7 @@ public:
     int GetForecastScoreTimeArrayIntervalDaysUpperLimit()
     {
         int lastrow = m_ForecastScoreVect.TimeArrayIntervalDays.size()-1;
+        wxASSERT(lastrow>=0);
         int val = asTools::MaxArray(&m_ForecastScoreVect.TimeArrayIntervalDays[0],&m_ForecastScoreVect.TimeArrayIntervalDays[lastrow]);
         return val;
     }
@@ -945,6 +976,7 @@ public:
     float GetForecastScorePostprocessDupliExpUpperLimit()
     {
         int lastrow = m_ForecastScoreVect.PostprocessDupliExp.size()-1;
+        wxASSERT(lastrow>=0);
         float val = asTools::MaxArray(&m_ForecastScoreVect.PostprocessDupliExp[0],&m_ForecastScoreVect.PostprocessDupliExp[lastrow]);
         return val;
     }
@@ -970,17 +1002,17 @@ public:
         return val;
     }
 
-    double GetPreprocessDTimeHoursIteration(int i_step, int i_predictor, int i_dataset)
+    double GetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset)
     {
-        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            if (m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset].size()<2) return 0;
-            double val = m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset][1] - m_StepsVect[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset][0];
+            if (m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()<2) return 0;
+            double val = m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][1] - m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0];
             return val;
         }
         else
         {
-            asLogError(_("Trying to access to an element outside of PreprocessDTimeHours (iteration) in the parameters object."));
+            asLogError(_("Trying to access to an element outside of PreprocessTimeHours (iteration) in the parameters object."));
             return NaNDouble;
         }
     }
@@ -1015,10 +1047,10 @@ public:
         return val;
     }
 
-    double GetPredictorDTimeHoursIteration(int i_step, int i_predictor)
+    double GetPredictorTimeHoursIteration(int i_step, int i_predictor)
     {
-        if (m_StepsVect[i_step].Predictors[i_predictor].DTimeHours.size()<2) return 0;
-        double val = m_StepsVect[i_step].Predictors[i_predictor].DTimeHours[1] - m_StepsVect[i_step].Predictors[i_predictor].DTimeHours[0];
+        if (m_StepsVect[i_step].Predictors[i_predictor].TimeHours.size()<2) return 0;
+        double val = m_StepsVect[i_step].Predictors[i_predictor].TimeHours[1] - m_StepsVect[i_step].Predictors[i_predictor].TimeHours[0];
         return val;
     }
 

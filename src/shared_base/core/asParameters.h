@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
  
 #ifndef ASPARAMETERS_H
@@ -41,7 +42,7 @@ public:
         wxString DatasetId;
         wxString DataId;
         bool Preload;
-        VectorDouble PreloadDTimeHours;
+        VectorDouble PreloadTimeHours;
         VectorFloat PreloadLevels;
         double PreloadUmin;
         int PreloadUptsnb;
@@ -52,9 +53,7 @@ public:
         VectorString PreprocessDatasetIds;
         VectorString PreprocessDataIds;
         VectorFloat PreprocessLevels;
-        VectorDouble PreprocessDTimeHours;
-        VectorDouble PreprocessDTimeDays;
-        VectorDouble PreprocessTimeHour;
+        VectorDouble PreprocessTimeHours;
         float Level;
         wxString GridType;
         double Umin;
@@ -66,9 +65,7 @@ public:
         double Vstep;
         double Vshift;
         int FlatAllowed;
-        double DTimeHours;
-        double DTimeDays;
-        double TimeHour;
+        double TimeHours;
         wxString Criteria;
         float Weight;
     } ParamsPredictor;
@@ -113,7 +110,7 @@ public:
 
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 
-    bool FixTimeShift();
+    bool FixTimeLimits();
 
     bool FixWeights();
 
@@ -166,14 +163,32 @@ public:
         return true;
     }
 
-    int GetTimeShiftDays()
+    double GetTimeMinHours()
     {
-        return m_TimeShiftDays;
+        return m_TimeMinHours;
     }
 
-    int GetTimeSpanDays()
+    double GetTimeMaxHours()
     {
-        return m_TimeSpanDays;
+        return m_TimeMaxHours;
+    }
+
+    int GetTimeSplitStartDays()
+    {
+        int split = 0;
+        if (m_TimeMinHours<0) {
+            split = ceil(abs(m_TimeMinHours/24));
+        }
+        return split;
+    }
+
+    int GetTimeSplitEndDays()
+    {
+        int split = 0;
+        if (m_TimeMaxHours>24) {
+            split = ceil(abs(m_TimeMinHours/24)-1);
+        }
+        return split;
     }
 
     double GetTimeArrayTargetTimeStepHours()
@@ -382,25 +397,19 @@ public:
         m_PredictandSpatialAggregation = val;
     }
 
-    double GetPredictandDTimeHours()
+    double GetPredictandTimeHours()
     {
-        return m_PredictandDTimeHours;
+        return m_PredictandTimeHours;
     }
-
-    double GetPredictandDTimeDays()
-    {
-        return m_PredictandDTimeDays;
-    }
-
-    bool SetPredictandDTimeHours(double val)
+    
+    bool SetPredictandTimeHours(double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictand dTime (hours) is null"));
+            asLogError(_("The provided value for the predictand time (hours) is null"));
             return false;
         }
-        m_PredictandDTimeHours = val;
-        m_PredictandDTimeDays = val/24.0;
+        m_PredictandTimeHours = val;
         return true;
     }
 
@@ -446,16 +455,16 @@ public:
         m_Steps[i_step].Predictors[i_predictor].Preload = val;
     }
 
-    VectorDouble GetPreloadDTimeHours(int i_step, int i_predictor)
+    VectorDouble GetPreloadTimeHours(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadDTimeHours;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours;
     }
 
-    bool SetPreloadDTimeHours(int i_step, int i_predictor, VectorDouble val)
+    bool SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided 'dTime (hours)' vector is empty."));
+            asLogError(_("The provided preload time (hours) vector is empty."));
             return false;
         }
         else
@@ -464,12 +473,12 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided 'dTime (hours)' vector."));
+                    asLogError(_("There are NaN values in the provided preload time (hours) vector."));
                     return false;
                 }
             }
         }
-        m_Steps[i_step].Predictors[i_predictor].PreloadDTimeHours = val;
+        m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours = val;
         return true;
     }
 
@@ -697,68 +706,38 @@ public:
         return true;
     }
 
-    double GetPreprocessDTimeHours(int i_step, int i_predictor, int i_dataset)
+    double GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset)
     {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset];
+            return m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
         }
         else
         {
-            asLogError(_("Trying to access to an element outside of PreprocessDTimeHours (std) in the parameters object."));
+            asLogError(_("Trying to access to an element outside of PreprocessTimeHours (std) in the parameters object."));
             return NaNDouble;
         }
     }
 
-    bool SetPreprocessDTimeHours(int i_step, int i_predictor, int i_dataset, double val)
+    bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preprocess dTime (hours) is null"));
+            asLogError(_("The provided value for the preprocess time (hours) is null"));
             return false;
         }
 
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()>=(unsigned)(i_dataset+1))
+        if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
         {
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeHours[i_dataset] = val;
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeDays[i_dataset] = val/24.0;
-            m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHour[i_dataset] = fmod(val, 24.0);
+            m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
         }
         else
         {
-            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeHours.size()==i_dataset);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeHours.push_back(val);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeDays.push_back(val/24.0);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHour.push_back(fmod(val, 24.0));
+            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=i_dataset);
+            m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
         }
 
         return true;
-    }
-
-    double GetPreprocessDTimeDays(int i_step, int i_predictor, int i_dataset)
-    {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeDays.size()>=(unsigned)(i_dataset+1))
-        {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessDTimeDays[i_dataset];
-        }
-        else
-        {
-            asLogError(_("Trying to access to an element outside of PreprocessDTimeDays in the parameters object."));
-            return NaNDouble;
-        }
-    }
-
-    double GetPreprocessTimeHour(int i_step, int i_predictor, int i_dataset)
-    {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHour.size()>=(unsigned)(i_dataset+1))
-        {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHour[i_dataset];
-        }
-        else
-        {
-            asLogError(_("Trying to access to an element outside of PreprocessTimeHour in the parameters object."));
-            return NaNDouble;
-        }
     }
 
     wxString GetPredictorDatasetId(int i_step, int i_predictor)
@@ -969,39 +948,22 @@ public:
         return true;
     }
 
-    double GetPredictorDTimeHours(int i_step, int i_predictor)
+    double GetPredictorTimeHours(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].DTimeHours;
+        return m_Steps[i_step].Predictors[i_predictor].TimeHours;
     }
 
-    bool SetPredictorDTimeHours(int i_step, int i_predictor, double val)
+    bool SetPredictorTimeHours(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor 'dTime (hours)' is null"));
+            asLogError(_("The provided value for the predictor time (hours) is null"));
             return false;
         }
 
-        m_Steps[i_step].Predictors[i_predictor].DTimeHours = val;
-        m_Steps[i_step].Predictors[i_predictor].DTimeDays = val/24.0;
-        m_Steps[i_step].Predictors[i_predictor].TimeHour = fmod(val, 24.0);
-
-        if(m_Steps[i_step].Predictors[i_predictor].TimeHour<0)
-        {
-            m_Steps[i_step].Predictors[i_predictor].TimeHour += 24.0;
-        }
+        m_Steps[i_step].Predictors[i_predictor].TimeHours = val;
         
         return true;
-    }
-
-    double GetPredictorDTimeDays(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].DTimeDays;
-    }
-
-    double GetPredictorTimeHour(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].TimeHour;
     }
 
     wxString GetPredictorCriteria(int i_step, int i_predictor)
@@ -1058,14 +1020,14 @@ protected:
     int m_ArchiveYearEnd;
     int m_TimeArrayAnalogsIntervalDays;
     int m_PredictandStationId;
+    double m_TimeMinHours;
+    double m_TimeMaxHours;
 
 private:
     VectorParamsStep m_Steps; // Set as private to force use of setters.
     VectorInt m_PredictorsNb;
     int m_StepsNb;
     wxString m_DateProcessed;
-    int m_TimeShiftDays;
-    int m_TimeSpanDays;
     wxString m_TimeArrayTargetMode;
     double m_TimeArrayTargetTimeStepHours;
     wxString m_TimeArrayTargetPredictandSerieName;
@@ -1078,8 +1040,7 @@ private:
     DataTemporalResolution m_PredictandTemporalResolution;
     DataSpatialAggregation m_PredictandSpatialAggregation;
     wxString m_PredictandDatasetId;
-    double m_PredictandDTimeHours;
-    double m_PredictandDTimeDays;
+    double m_PredictandTimeHours;
 
 };
 

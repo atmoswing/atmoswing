@@ -133,14 +133,14 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     {
         if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
         if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
-        if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0))) return false;
+        if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0.0))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
     else
     {
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
         if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
-        if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value", 0.0))) return false;
+        if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0.0))) return false;
         if(!fileParams.GoANodeBack()) return false;
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
         if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
@@ -210,7 +210,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Frame")) return false;
-                if(!SetPredictorDTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("DTimeHours", "value"))) return false;
+                if(!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("TimeHours", "value"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
             }
@@ -237,7 +237,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                     if(!SetPreprocessArchiveDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessArchiveDatasetId", "value"))) return false;
                     if(!SetPreprocessArchiveDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessArchiveDataId", "value"))) return false;
                     if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueFloat("PreprocessLevel", "value"))) return false;
-                    if(!SetPreprocessDTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessDTimeHours", "value"))) return false;
+                    if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "value"))) return false;
 
                     if(fileParams.GoToNextSameNode())
                     {
@@ -255,14 +255,14 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                     SetPredictorDatasetId(i_step, i_ptor, "mix");
                     SetPredictorDataId(i_step, i_ptor, "mix");
                     SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
-                    SetPredictorDTimeHours(i_step, i_ptor, GetPreprocessDTimeHours(i_step, i_ptor, 0));
+                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
                 }
                 else
                 {
                     SetPredictorDatasetId(i_step, i_ptor, GetPreprocessDatasetId(i_step, i_ptor, 0));
                     SetPredictorDataId(i_step, i_ptor, GetPreprocessDataId(i_step, i_ptor, 0));
                     SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
-                    SetPredictorDTimeHours(i_step, i_ptor, GetPreprocessDTimeHours(i_step, i_ptor, 0));
+                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
                 }
                 if(!fileParams.GoANodeBack()) return false;
                 if(!fileParams.GoANodeBack()) return false;
@@ -342,7 +342,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     InitValues();
 
     // Fixes
-    FixTimeShift();
+    FixTimeLimits();
     FixWeights();
     FixCoordinates();
 
@@ -360,7 +360,6 @@ void asParametersForecast::InitValues()
     }
 
     // Fixes and checks
-    FixTimeShift();
     FixWeights();
     FixCoordinates();
     FixAnalogsNb();
