@@ -35,7 +35,7 @@
                         <PreprocessDatasetId value="NCEP_R-1" />
                         <PreprocessDataId value="hgt" />
                         <PreprocessLevel value="300,500,850,1000" min="" max="" step="" method="array" />
-                        <PreprocessDTimeHours value="" min="-24" max="24" step="6" method="minmax" />
+                        <PreprocessTimeHours value="" min="-24" max="24" step="6" method="minmax" />
                     </SubData>
                 </Params>
                 <Params name="Area Moving">

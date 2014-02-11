@@ -43,10 +43,12 @@
 namespace
 {
 
-void GrenobleComparison1()
+void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 {
     if (g_UnitTestLongestProcessing)
     {
+        bool result;
+
         // Create predictand database
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
@@ -66,60 +68,12 @@ void GrenobleComparison1()
         float P10 = 68.42240f;
 
         // Get parameters
+        wxString paramsFilePath = wxFileName::GetCwd();
+        paramsFilePath.Append("/files/");
+        paramsFilePath.Append(paramsFile);
         asParametersCalibration params;
-        params.AddStep();
-
-        params.SetArchiveYearStart(1962);
-        params.SetArchiveYearEnd(2001);
-        params.SetCalibrationYearStart(1962);
-        params.SetCalibrationYearEnd(2001);
-        params.SetTimeArrayTargetTimeStepHours(24);
-        params.SetTimeArrayAnalogsTimeStepHours(24);
-        params.SetTimeArrayTargetMode("Simple");
-        params.SetTimeArrayAnalogsMode("DaysInterval");
-        params.SetTimeArrayAnalogsExcludeDays(60);
-        params.SetTimeArrayAnalogsIntervalDays(60);
-        params.SetMethodName(0, "Analogs");
-        params.SetAnalogsNumber(0, 50);
-
-        params.SetPredictorDatasetId(0, 0, "NCEP_Reanalysis_v1_lthe");
-        params.SetPredictorDataId(0, 0, "hgt_1000hPa");
-        params.SetPredictorLevel(0, 0, 1000);
-        params.SetPredictorUmin(0, 0, -5);
-        params.SetPredictorUptsnb(0, 0, 9);
-        params.SetPredictorUstep(0, 0, 2.5);
-        params.SetPredictorVmin(0, 0, 40);
-        params.SetPredictorVptsnb(0, 0, 5);
-        params.SetPredictorVstep(0, 0, 2.5);
-        params.SetPredictorDTimeHours(0, 0, 12);
-        params.SetPredictorCriteria(0, 0, "S1");
-        params.SetPredictorWeight(0, 0, 0.5);
-
-        params.AddPredictor();
-        params.SetPredictorDatasetId(0, 1, "NCEP_Reanalysis_v1_lthe");
-        params.SetPredictorDataId(0, 1, "hgt_500hPa");
-        params.SetPredictorLevel(0, 1, 500);
-        params.SetPredictorUmin(0, 1, -5);
-        params.SetPredictorUptsnb(0, 1, 9);
-        params.SetPredictorUstep(0, 1, 2.5);
-        params.SetPredictorVmin(0, 1, 40);
-        params.SetPredictorVptsnb(0, 1, 5);
-        params.SetPredictorVstep(0, 1, 2.5);
-        params.SetPredictorDTimeHours(0, 1, 24);
-        params.SetPredictorCriteria(0, 1, "S1");
-        params.SetPredictorWeight(0, 1, 0.5);
-
-        params.SetForecastScorePostprocess(false);
-
-        params.SetForecastScoreName("CRPSAR");
-        params.SetForecastScoreAnalogsNumber(50);
-        params.SetPredictandStationId(1);
-        params.SetForecastScoreTimeArrayMode("Simple");
-
-        // Fixes
-        params.FixTimeShift();
-        params.FixWeights();
-        params.FixCoordinates();
+        result = params.LoadFromFile(paramsFilePath);
+        CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
         int step = 0;
@@ -130,8 +84,9 @@ void GrenobleComparison1()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-        bool result;
+
 		bool containsNaNs = false;
+
         try
         {
             wxString dataPredictorFilePath = wxFileName::GetCwd();
@@ -177,12 +132,19 @@ void GrenobleComparison1()
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/forecast_score_04.txt");
+        int nbtests = 0;
+        if (!shortVersion)
+        {
+            resultFilePath.Append("/files/forecast_score_04.txt");
+            nbtests = 43;
+        }
+        else
+        {
+            resultFilePath.Append("/files/forecast_score_06.txt");
+            nbtests = 20;
+        }
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
-
-        // Test numbers
-        int nbtests = 43; //43
 
         // Resize the containers
         int nanalogs = 50;
@@ -213,20 +175,34 @@ void GrenobleComparison1()
                 day = file.GetInt();
                 month = file.GetInt();
                 year = file.GetInt();
-                fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
+                if(year>0)
+                {
+                    fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
+                }
+                else
+                {
+                    fileAnalogsDates[i_ana] = 0;
+                }
                 fileAnalogsValues[i_ana] = sqrt(file.GetFloat()/P10);
                 fileAnalogsCriteria[i_ana] = file.GetFloat();
 
                 file.SkipLines(1);
             }
 
-            file.SkipLines(2);
+            float fileForecastScoreCRPS, fileForecastScoreCRPSaccuracy, fileForecastScoreCRPSsharpness;
 
-            float fileForecastScoreCRPS = file.GetFloat();
-            float fileForecastScoreCRPSaccuracy = file.GetFloat();
-            float fileForecastScoreCRPSsharpness = file.GetFloat();
-
-            file.SkipLines(1);
+            if (!shortVersion)
+            {
+                file.SkipLines(2);
+                fileForecastScoreCRPS = file.GetFloat();
+                fileForecastScoreCRPSaccuracy = file.GetFloat();
+                fileForecastScoreCRPSsharpness = file.GetFloat();
+                file.SkipLines(1);
+            }
+            else
+            {
+                file.SkipLines(3);
+            }
 
             // Find target date in the array
             int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
@@ -236,18 +212,27 @@ void GrenobleComparison1()
 
             for (int i_ana=0; i_ana<nanalogs; i_ana++)
             {
-                CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
-                CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
-                CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+                if (fileAnalogsDates[i_ana]>0) // If we have the data
+                {
+                    CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
+                    CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
+                    CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+                }
             }
 
-            // The CRPS tolerence is hughe, as it is not processed with the same P10 !
-            CHECK_CLOSE(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.01);
-            CHECK_CLOSE(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.01);
-            CHECK_CLOSE(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.01);
+            // The CRPS tolerence is huge, as it is not processed with the same P10 !
+            if (!shortVersion)
+            {
+                CHECK_CLOSE(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.01);
+                CHECK_CLOSE(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.01);
+                CHECK_CLOSE(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.01);
+            }
         }
 
-        CHECK_CLOSE(asTools::Mean(&resultsForecastScoreCRPS[0],&resultsForecastScoreCRPS[resultsForecastScoreCRPS.size()-1]), scoreFinal, 0.0001);
+        if (!shortVersion)
+        {
+            CHECK_CLOSE(asTools::Mean(&resultsForecastScoreCRPS[0],&resultsForecastScoreCRPS[resultsForecastScoreCRPS.size()-1]), scoreFinal, 0.0001);
+        }
 
         file.Close();
         // predictand pointer deleted by asMethodCalibration
@@ -268,7 +253,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
 
     wxStopWatch sw;
 
-    GrenobleComparison1();
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -286,7 +271,25 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVar)
 
     wxStopWatch sw;
 
-    GrenobleComparison1();
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
+
+    wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
+    printf("%s", msg.mb_str(wxConvUTF8).data());
+}
+
+TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVarNoPreprocessing)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Standard/AllowMultithreading", true);
+    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
+    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+
+    wxString str("Processing GrenobleComparison1 with the multithreaded option (lin algebra no var) no preprocessing\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+
+    wxStopWatch sw;
+
+    GrenobleComparison1("parameters_calibration_R1_full_no_preproc.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -304,7 +307,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeff)
 
     wxStopWatch sw;
 
-    GrenobleComparison1();
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -322,7 +325,25 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVar)
 
     wxStopWatch sw;
 
-    GrenobleComparison1();
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
+
+    wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
+    printf("%s", msg.mb_str(wxConvUTF8).data());
+}
+
+TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVarNoPreprocessing)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Standard/AllowMultithreading", true);
+    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
+    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
+
+    wxString str("Processing GrenobleComparison1 with the multithreaded option (coeff no var) no preprocessing\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+
+    wxStopWatch sw;
+
+    GrenobleComparison1("parameters_calibration_R1_full_no_preproc.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -339,7 +360,7 @@ TEST(GrenobleComparison1ProcessingMethodInsert)
 
     wxStopWatch sw;
 
-    GrenobleComparison1();
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -356,172 +377,10 @@ TEST(GrenobleComparison1ProcessingMethodSplitting)
 
     wxStopWatch sw;
 
-    GrenobleComparison1();
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
-}
-
-void GrenobleComparison1CalibrationPeriod()
-{
-    if (g_UnitTestLongerProcessing)
-    {
-        bool result;
-
-        // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
-
-        wxString datasetPredictandFilePath = wxFileName::GetCwd();
-        datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
-        wxString dataFileDir = wxFileName::GetCwd();
-        dataFileDir.Append("/files/");
-        wxString patternFileDir = wxFileName::GetCwd();
-        patternFileDir.Append("/files/");
-
-        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
-        predictand->SetIsSqrt(true);
-        predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
-
-        float P10 = 68.42240f;
-
-        // Get parameters
-        wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_01.xml");
-        asParametersCalibration params;
-        result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
-
-        // Proceed to the calculations
-        int step = 0;
-        asMethodCalibratorSingle calibrator;
-        asResultsAnalogsDates anaDates;
-        asResultsAnalogsValues anaValues;
-        asResultsAnalogsForecastScores anaScoresCRPS;
-        asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-        asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-        asResultsAnalogsForecastScoreFinal anaScoreFinal;
-
-		bool containsNaNs = false;
-
-        try
-        {
-            wxString dataPredictorFilePath = wxFileName::GetCwd();
-            dataPredictorFilePath.Append("/files/");
-            calibrator.SetPredictorDataDir(dataPredictorFilePath);
-            wxASSERT(predictand);
-            calibrator.SetPredictandDB(predictand);
-            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
-            CHECK_EQUAL(true, result);
-            result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
-            result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
-
-            // Sharpness and Accuracy
-            params.SetForecastScoreName("CRPSsharpnessAR");
-            result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
-            params.SetForecastScoreName("CRPSaccuracyAR");
-            result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
-        }
-        catch(asException& e)
-        {
-            wxString eMessage = e.GetFullMessage();
-            printf("%s", eMessage.mb_str(wxConvUTF8).data());
-            return;
-        }
-
-        // Extract data
-        Array1DFloat resultsTargetDates(anaDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
-        Array2DFloat resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
-        Array2DFloat resultsAnalogsDates(anaDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
-        Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-        Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-        Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
-
-        // Open a result file from Grenoble
-        wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/forecast_score_06.txt");
-        asFileAscii file(resultFilePath, asFile::ReadOnly);
-        file.Open();
-
-        // Test numbers
-        int nbtests = 20; //20 //43
-
-        // Resize the containers
-        int nanalogs = 50; //50
-        Array1DFloat fileAnalogsDates, fileAnalogsCriteria, fileAnalogsValues;
-        fileAnalogsDates.resize(nanalogs);
-        fileAnalogsCriteria.resize(nanalogs);
-        fileAnalogsValues.resize(nanalogs);
-
-        for (int i_test=0;i_test<nbtests;i_test++)
-        {
-            // Skip the header
-            file.SkipLines(1);
-
-            // Get target date from file
-            int day = file.GetInt();
-            int month = file.GetInt();
-            int year = file.GetInt();
-            float fileTargetDate = asTime::GetMJD(year, month, day);
-            float fileTargetValue = sqrt(file.GetFloat()/P10);
-
-            file.SkipLines(2);
-
-            // Get analogs from file
-            for (int i_ana=0; i_ana<nanalogs; i_ana++)
-            {
-                file.SkipElements(1);
-
-                day = file.GetInt();
-                month = file.GetInt();
-                year = file.GetInt();
-                if(year>0)
-                {
-                    fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
-                }
-                else
-                {
-                    fileAnalogsDates[i_ana] = 0;
-                }
-                fileAnalogsValues[i_ana] = sqrt(file.GetFloat()/P10);
-                fileAnalogsCriteria[i_ana] = file.GetFloat();
-
-                file.SkipLines(1);
-            }
-
-            file.SkipLines(3);
-
-            // Find target date in the array
-            int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
-
-            // Compare the file and the processing
-            CHECK_CLOSE(fileTargetValue, resultsTargetValues(rowTargetDate), 0.0001);
-
-            for (int i_ana=0; i_ana<nanalogs; i_ana++)
-            {
-                if (fileAnalogsDates[i_ana]>0) // If we have the data
-                {
-                    CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
-                    CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
-                    CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
-                }
-            }
-        }
-
-        file.Close();
-        // predictand pointer deleted by asMethodCalibration
-
-        asRemoveDir(tmpDir);
-    }
 }
 
 TEST(GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
@@ -534,7 +393,7 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
     wxString str("Processing GrenobleComparison1 on calibration period with the multithreaded option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
-    GrenobleComparison1CalibrationPeriod();
+    GrenobleComparison1("parameters_calibration_R1_calib_period.xml", true);
 }
 
 TEST(GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
@@ -546,7 +405,7 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
     wxString str("Processing GrenobleComparison1 on calibration period with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
-    GrenobleComparison1CalibrationPeriod();
+    GrenobleComparison1("parameters_calibration_R1_calib_period.xml", true);
 }
 
 TEST(GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
@@ -558,13 +417,15 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
     wxString str("Processing GrenobleComparison1 on calibration period with the array splitting option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
-    GrenobleComparison1CalibrationPeriod();
+    GrenobleComparison1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-void GrenobleComparison2()
+void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 {
     if (g_UnitTestLongestProcessing)
     {
+        bool result;
+
         // Create predictand database
         asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
@@ -585,95 +446,11 @@ void GrenobleComparison2()
 
         // Get parameters
         asParametersCalibration params;
-        params.AddStep();
-
-        params.SetArchiveYearStart(1962);
-        params.SetArchiveYearEnd(2001);
-        params.SetCalibrationYearStart(1962);
-        params.SetCalibrationYearEnd(2001);
-        params.SetTimeArrayTargetTimeStepHours(24);
-        params.SetTimeArrayAnalogsTimeStepHours(24);
-        params.SetTimeArrayTargetMode("Simple");
-        params.SetTimeArrayAnalogsMode("DaysInterval");
-        params.SetTimeArrayAnalogsExcludeDays(60);
-        params.SetTimeArrayAnalogsIntervalDays(60);
-
-        params.SetMethodName(0, "Analogs");
-        params.SetAnalogsNumber(0, 70);
-
-        params.SetPredictorDatasetId(0, 0, "NCEP_Reanalysis_v1_lthe");
-        params.SetPredictorDataId(0, 0, "hgt_1000hPa");
-        params.SetPredictorLevel(0, 0, 1000);
-        params.SetPredictorUmin(0, 0, -5);
-        params.SetPredictorUptsnb(0, 0, 9);
-        params.SetPredictorUstep(0, 0, 2.5);
-        params.SetPredictorVmin(0, 0, 40);
-        params.SetPredictorVptsnb(0, 0, 5);
-        params.SetPredictorVstep(0, 0, 2.5);
-        params.SetPredictorDTimeHours(0, 0, 12);
-        params.SetPredictorCriteria(0, 0, "S1");
-        params.SetPredictorWeight(0, 0, 0.5);
-
-        params.AddPredictor();
-        params.SetPredictorDatasetId(0, 1, "NCEP_Reanalysis_v1_lthe");
-        params.SetPredictorDataId(0, 1, "hgt_500hPa");
-        params.SetPredictorLevel(0, 1, 500);
-        params.SetPredictorUmin(0, 1, -5);
-        params.SetPredictorUptsnb(0, 1, 9);
-        params.SetPredictorUstep(0, 1, 2.5);
-        params.SetPredictorVmin(0, 1, 40);
-        params.SetPredictorVptsnb(0, 1, 5);
-        params.SetPredictorVstep(0, 1, 2.5);
-        params.SetPredictorDTimeHours(0, 1, 24);
-        params.SetPredictorCriteria(0, 1, "S1");
-        params.SetPredictorWeight(0, 1, 0.5);
-
-        params.AddStep();
-        params.SetMethodName(1, "Analogs");
-        params.SetAnalogsNumber(1, 30);
-
-        params.SetPredictorDatasetId(1, 0, "NCEP_Reanalysis_v1_lthe");
-        params.SetPredictorDataId(1, 0, "humidity");
-        params.SetPreprocess(1, 0, true);
-        params.SetPreprocessMethod(1, 0, "MergeCouplesAndMultiply");
-        params.SetPreprocessDatasetId(1, 0, 0, "NCEP_Reanalysis_v1_lthe");
-        params.SetPreprocessDatasetId(1, 0, 1, "NCEP_Reanalysis_v1_lthe");
-        params.SetPreprocessDatasetId(1, 0, 2, "NCEP_Reanalysis_v1_lthe");
-        params.SetPreprocessDatasetId(1, 0, 3, "NCEP_Reanalysis_v1_lthe");
-        params.SetPreprocessDataId(1, 0, 0, "prwtr");
-        params.SetPreprocessDataId(1, 0, 1, "prwtr");
-        params.SetPreprocessDataId(1, 0, 2, "rhum");
-        params.SetPreprocessDataId(1, 0, 3, "rhum");
-        params.SetPreprocessLevel(1, 0, 0, 0);
-        params.SetPreprocessLevel(1, 0, 1, 0);
-        params.SetPreprocessLevel(1, 0, 2, 850);
-        params.SetPreprocessLevel(1, 0, 3, 850);
-        params.SetPreprocessDTimeHours(1, 0, 0, 12);
-        params.SetPreprocessDTimeHours(1, 0, 1, 24);
-        params.SetPreprocessDTimeHours(1, 0, 2, 12);
-        params.SetPreprocessDTimeHours(1, 0, 3, 24);
-        params.SetPredictorLevel(1, 0, 0);
-        params.SetPredictorUmin(1, 0, 5);
-        params.SetPredictorUptsnb(1, 0, 2);
-        params.SetPredictorUstep(1, 0, 2.5);
-        params.SetPredictorVmin(1, 0, 45);
-        params.SetPredictorVptsnb(1, 0, 2);
-        params.SetPredictorVstep(1, 0, 2.5);
-        params.SetPredictorDTimeHours(1, 0, 12);
-        params.SetPredictorCriteria(1, 0, "RSE");
-        params.SetPredictorWeight(1, 0, 1);
-
-        params.SetForecastScorePostprocess(false);
-
-        params.SetForecastScoreName("CRPSEP");
-        params.SetForecastScoreAnalogsNumber(30);
-        params.SetPredictandStationId(1);
-        params.SetForecastScoreTimeArrayMode("Simple");
-
-        // Fixes
-        params.FixTimeShift();
-        params.FixWeights();
-        params.FixCoordinates();
+        wxString paramsFilePath = wxFileName::GetCwd();
+        paramsFilePath.Append("/files/");
+        paramsFilePath.Append(paramsFile);
+        result = params.LoadFromFile(paramsFilePath);
+        CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
         int step = 0;
@@ -690,7 +467,6 @@ void GrenobleComparison2()
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-        bool result;
 		bool containsNaNs = false;
         try
         {
@@ -730,16 +506,28 @@ void GrenobleComparison2()
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
-        float scoreFinal = anaScoreFinal.GetForecastScore();
+
+        float scoreFinal = 0;
+        if(!shortVersion)
+        {
+            scoreFinal = anaScoreFinal.GetForecastScore();
+        }
 
         // Open a result file from Grenoble
         wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/forecast_score_05.txt");
+        int nbtests = 0;
+        if(!shortVersion)
+        {
+            resultFilePath.Append("/files/forecast_score_05.txt");
+            nbtests = 30;
+        }
+        else
+        {
+            resultFilePath.Append("/files/forecast_score_07.txt");
+            nbtests = 4;
+        }
         asFileAscii file(resultFilePath, asFile::ReadOnly);
         file.Open();
-
-        // Test numbers
-        int nbtests = 30;
 
         // Resize the containers
         int nanalogs = 30;
@@ -770,7 +558,14 @@ void GrenobleComparison2()
                 day = file.GetInt();
                 month = file.GetInt();
                 year = file.GetInt();
-                fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
+                if(year>0)
+                {
+                    fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
+                }
+                else
+                {
+                    fileAnalogsDates[i_ana] = 0;
+                }
                 fileAnalogsValues[i_ana] = sqrt(file.GetFloat()/P10);
                 file.SkipElements(1); // Skip S1
                 fileAnalogsCriteria[i_ana] = file.GetFloat();
@@ -778,14 +573,21 @@ void GrenobleComparison2()
                 file.SkipLines(1);
             }
 
-            file.SkipLines(2);
+            float fileForecastScoreCRPS, fileForecastScoreCRPSaccuracy, fileForecastScoreCRPSsharpness;
 
-            float fileForecastScoreCRPS = file.GetFloat();
-            float fileForecastScoreCRPSaccuracy = file.GetFloat();
-            float fileForecastScoreCRPSsharpness = file.GetFloat();
-
-            file.SkipLines(1);
-
+            if (!shortVersion)
+            {
+                file.SkipLines(2);
+                fileForecastScoreCRPS = file.GetFloat();
+                fileForecastScoreCRPSaccuracy = file.GetFloat();
+                fileForecastScoreCRPSsharpness = file.GetFloat();
+                file.SkipLines(1);
+            }
+            else
+            {
+                file.SkipLines(3);
+            }
+            
             // Find target date in the array
             int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
 
@@ -805,13 +607,19 @@ void GrenobleComparison2()
                 }
             }
 
-            // The CRPS tolerence is huge, as it is not processed with the same P10 !
-            CHECK_CLOSE(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.01);
-            CHECK_CLOSE(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.01);
-            CHECK_CLOSE(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.01);
+            if (!shortVersion)
+            {
+                // The CRPS tolerence is huge, as it is not processed with the same P10 !
+                CHECK_CLOSE(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.01);
+                CHECK_CLOSE(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.01);
+                CHECK_CLOSE(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.01);
+            }
         }
 
-        CHECK_CLOSE(asTools::Mean(&resultsForecastScoreCRPS[0],&resultsForecastScoreCRPS[resultsForecastScoreCRPS.size()-1]), scoreFinal, 0.0001);
+        if (!shortVersion)
+        {
+            CHECK_CLOSE(asTools::Mean(&resultsForecastScoreCRPS[0],&resultsForecastScoreCRPS[resultsForecastScoreCRPS.size()-1]), scoreFinal, 0.0001);
+        }
 
         file.Close();
         // predictand pointer deleted by asMethodCalibration
@@ -832,7 +640,7 @@ TEST(GrenobleComparison2ProcessingMethodMultithreads)
 
     wxStopWatch sw;
 
-    GrenobleComparison2();
+    GrenobleComparison2("parameters_calibration_R2_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -849,7 +657,7 @@ TEST(GrenobleComparison2ProcessingMethodInsert)
 
     wxStopWatch sw;
 
-    GrenobleComparison2();
+    GrenobleComparison2("parameters_calibration_R2_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
@@ -866,177 +674,10 @@ TEST(GrenobleComparison2ProcessingMethodSplitting)
 
     wxStopWatch sw;
 
-    GrenobleComparison2();
+    GrenobleComparison2("parameters_calibration_R2_full.xml", false);
 
     wxString msg = wxString::Format(" -> took %ldms to execute\n", sw.Time());
     printf("%s", msg.mb_str(wxConvUTF8).data());
-}
-
-void GrenobleComparison2CalibrationPeriod()
-{
-    if (g_UnitTestLongerProcessing)
-    {
-        bool result;
-
-        // Create predictand database
-        asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
-
-        wxString catalogPredictandFilePath = wxFileName::GetCwd();
-        catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
-        wxString dataFileDir = wxFileName::GetCwd();
-        dataFileDir.Append("/files/");
-        wxString patternFileDir = wxFileName::GetCwd();
-        patternFileDir.Append("/files/");
-
-        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
-        predictand->SetIsSqrt(true);
-        predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
-
-        float P10 = 68.42240f;
-
-        // Get parameters
-        asParametersCalibration params;
-        wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_02.xml");
-        result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
-
-        // Proceed to the calculations
-        int step = 0;
-        asMethodCalibratorSingle calibrator;
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/");
-        calibrator.SetPredictorDataDir(dataPredictorFilePath);
-        wxASSERT(predictand);
-        calibrator.SetPredictandDB(predictand);
-        asResultsAnalogsDates anaDates;
-        asResultsAnalogsDates anaSubDates;
-        asResultsAnalogsValues anaValues;
-        asResultsAnalogsForecastScores anaScoresCRPS;
-        asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-        asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-        asResultsAnalogsForecastScoreFinal anaScoreFinal;
-
-		bool containsNaNs = false;
-
-        try
-        {
-            result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            step++;
-            result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
-            CHECK_EQUAL(true, result);
-            result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
-            result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
-
-            // Sharpness and Accuracy
-            params.SetForecastScoreName("CRPSsharpnessEP");
-            result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
-            params.SetForecastScoreName("CRPSaccuracyEP");
-            result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
-        }
-        catch(asException& e)
-        {
-            wxString eMessage = e.GetFullMessage();
-            printf("%s", eMessage.mb_str(wxConvUTF8).data());
-            return;
-        }
-
-        // Extract data
-        Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
-        Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
-        Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
-        Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-        Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-        Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
-
-        // Open a result file from Grenoble
-        wxString resultFilePath = wxFileName::GetCwd();
-        resultFilePath.Append("/files/forecast_score_07.txt");
-        asFileAscii file(resultFilePath, asFile::ReadOnly);
-        file.Open();
-
-        // Test numbers
-        int nbtests = 4;
-
-        // Resize the containers
-        int nanalogs = 30;
-        Array1DFloat fileAnalogsDates, fileAnalogsCriteria, fileAnalogsValues;
-        fileAnalogsDates.resize(nanalogs);
-        fileAnalogsCriteria.resize(nanalogs);
-        fileAnalogsValues.resize(nanalogs);
-
-        for (int i_test=0;i_test<nbtests;i_test++)
-        {
-            // Skip the header
-            file.SkipLines(1);
-
-            // Get target date from file
-            int day = file.GetInt();
-            int month = file.GetInt();
-            int year = file.GetInt();
-            float fileTargetDate = asTime::GetMJD(year, month, day);
-            float fileTargetValue = sqrt(file.GetFloat()/P10);
-
-            file.SkipLines(2);
-
-            // Get analogs from file
-            for (int i_ana=0; i_ana<nanalogs; i_ana++)
-            {
-                file.SkipElements(1);
-
-                day = file.GetInt();
-                month = file.GetInt();
-                year = file.GetInt();
-                if(year>0)
-                {
-                    fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
-                }
-                else
-                {
-                    fileAnalogsDates[i_ana] = 0;
-                }
-                fileAnalogsValues[i_ana] = sqrt(file.GetFloat()/P10);
-                file.SkipElements(1); // Skip S1
-                fileAnalogsCriteria[i_ana] = file.GetFloat();
-
-                file.SkipLines(1);
-            }
-
-            file.SkipLines(3);
-
-            // Find target date in the array
-            int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
-
-            // Compare the file and the processing
-            CHECK_CLOSE(fileTargetValue, resultsTargetValues(rowTargetDate), 0.0001);
-
-            for (int i_ana=0; i_ana<nanalogs; i_ana++)
-            {
-                if(fileAnalogsDates[i_ana]>0)
-                {
-                    CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
-                    CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
-                    CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
-                }
-            }
-        }
-
-        file.Close();
-        // predictand pointer deleted by asMethodCalibration
-
-        asRemoveDir(tmpDir);
-    }
 }
 
 TEST(GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
@@ -1049,7 +690,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
     wxString str("Processing GrenobleComparison2 on calibration period with the multithreaded option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
-    GrenobleComparison2CalibrationPeriod();
+    GrenobleComparison2("parameters_calibration_R2_calib_period.xml", true);
 }
 
 TEST(GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
@@ -1061,7 +702,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
     wxString str("Processing GrenobleComparison2 with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
-    GrenobleComparison2CalibrationPeriod();
+    GrenobleComparison2("parameters_calibration_R2_calib_period.xml", true);
 }
 
 TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
@@ -1073,7 +714,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
     wxString str("Processing GrenobleComparison2 with the array splitting option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
-    GrenobleComparison2CalibrationPeriod();
+    GrenobleComparison2("parameters_calibration_R2_calib_period.xml", true);
 }
 
 TEST(PreloadingSimple)
@@ -1743,7 +1384,7 @@ void GrenobleComparison2SavingIntermediateResults()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_02.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R2_calib_period.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 

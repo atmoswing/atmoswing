@@ -8,11 +8,8 @@
                 <YearEnd value="2001" />
             </Params>
             <Params name="Calibration Period">
-                <YearStart value="1970" />
-                <YearEnd value="1972" />
-            </Params>
-            <Params name="Validation Period">
-                <Years value="1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000" method="array" />
+                <YearStart value="1962" />
+                <YearEnd value="2001" />
             </Params>
             <Params name="Time Properties">
                 <TimeStepHours value="24" />
@@ -32,7 +29,7 @@
                 <MethodName value="Analogs" />
             </Params>
             <Params name="Analogs Number">
-                <AnalogsNumber value="70" min="" max="" step="" method="fixed" />
+                <AnalogsNumber value="50" min="" max="" step="" method="fixed" />
             </Params>
             <Data name="Predictor Preprocessed">
                 <Options />
@@ -43,7 +40,7 @@
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="hgt_1000hPa" />
                         <PreprocessLevel value="1000" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                 </Params>
                 <Params name="Area Moving">
@@ -71,7 +68,7 @@
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="hgt_500hPa" />
                         <PreprocessLevel value="500" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
                 </Params>
                 <Params name="Area Moving">
@@ -91,61 +88,6 @@
                 </Params>
             </Data>
         </Process>
-        <Process name="Analogs Dates">
-            <Options />
-            <Params name="Method Name">
-                <MethodName value="Analogs" />
-            </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="30" min="" max="" step="" method="fixed" />
-            </Params>
-            <Data name="Predictor Preprocessed">
-                <Options />
-                <Params name="Preprocessing">
-                    <Preprocess value="1" />
-                    <PreprocessMethod value="MergeCouplesAndMultiply" />
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="prwtr" />
-                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
-                    </SubData>
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="prwtr" />
-                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
-                    </SubData>
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="rhum" />
-                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
-                    </SubData>
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="rhum" />
-                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
-                    </SubData>
-                </Params>
-                <Params name="Area Moving">
-                    <GridType value="Regular" />
-                    <Umin value="5" min="" max="" step="" method="fixed" />
-                    <Uptsnb value="2" min="" max="" step="" method="fixed" />
-                    <Ustep value="2.5" />
-                    <Vmin value="45" min="" max="" step="" method="fixed" />
-                    <Vptsnb value="2" min="" max="" step="" method="fixed" />
-                    <Vstep value="2.5" />
-                </Params>
-                <Params name="Criteria">
-                    <Criteria value="RSE" method="fixed" />
-                </Params>
-                <Params name="Weight">
-                    <Weight value="1" min="" max="" step="" method="fixed" />
-                </Params>
-            </Data>
-        </Process>
         <Process name="Analogs Values">
             <Options />
             <Data name="Predictand">
@@ -157,10 +99,10 @@
         <Process name="Analogs Forecast Scores">
             <Options />
             <Params name="Method">
-                <Name value="CRPSEP" method="fixed" />
+                <Name value="CRPSAR" method="fixed" />
             </Params>
             <Params name="Analogs Number">
-                <AnalogsNumber value="30" min="" max="" step="" method="fixed" />
+                <AnalogsNumber value="50" min="" max="" step="" method="fixed" />
             </Params>
         </Process>
         <Process name="Analogs Forecast Score Final">

@@ -32,13 +32,75 @@
                 <MethodName value="Analogs" />
             </Params>
             <Params name="Analogs Number">
+                <AnalogsNumber value="70" min="" max="" step="" method="fixed" />
+            </Params>
+            <Data name="Predictor Preprocessed">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="1" />
+                    <PreprocessMethod value="Gradients" />
+                    <SubData>
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
+                        <PreprocessDataId value="hgt_1000hPa" />
+                        <PreprocessLevel value="1000" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
+                    </SubData>
+                </Params>
+                <Params name="Area Moving">
+                    <GridType value="Regular" />
+                    <Umin value="-5" min="" max="" step="" method="fixed" />
+                    <Uptsnb value="9" min="" max="" step="" method="fixed" />
+                    <Ustep value="2.5" />
+                    <Vmin value="40" min="" max="" step="" method="fixed" />
+                    <Vptsnb value="5" min="" max="" step="" method="fixed" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" method="fixed" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.5" min="" max="" step="" method="fixed" />
+                </Params>
+            </Data>
+            <Data name="Predictor Preprocessed">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="1" />
+                    <PreprocessMethod value="Gradients" />
+                    <SubData>
+                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
+                        <PreprocessDataId value="hgt_500hPa" />
+                        <PreprocessLevel value="500" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
+                    </SubData>
+                </Params>
+                <Params name="Area Moving">
+                    <GridType value="Regular" />
+                    <Umin value="-5" min="" max="" step="" method="fixed" />
+                    <Uptsnb value="9" min="" max="" step="" method="fixed" />
+                    <Ustep value="2.5" />
+                    <Vmin value="40" min="" max="" step="" method="fixed" />
+                    <Vptsnb value="5" min="" max="" step="" method="fixed" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" method="fixed" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.5" min="" max="" step="" method="fixed" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Dates">
+            <Options />
+            <Params name="Method Name">
+                <MethodName value="Analogs" />
+            </Params>
+            <Params name="Analogs Number">
                 <AnalogsNumber value="30" min="" max="" step="" method="fixed" />
             </Params>
             <Data name="Predictor Preprocessed">
                 <Options />
-                <Params name="Preload">
-                    <Preload value="0" />
-                </Params>
                 <Params name="Preprocessing">
                     <Preprocess value="1" />
                     <PreprocessMethod value="MergeCouplesAndMultiply" />

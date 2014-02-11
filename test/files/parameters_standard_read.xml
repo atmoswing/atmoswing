@@ -37,7 +37,7 @@
                     <Level value="500" />
                 </Params>
                 <Params name="Time frame">
-                    <DTimeHours value="24" />
+                    <TimeHours value="24" />
                 </Params>
                 <Params name="Preprocessing">
                     <Preprocess value="0" />
@@ -67,7 +67,7 @@
                         <PreprocessDatasetId value="NCEP_R-1" />
                         <PreprocessDataId value="hgt" />
                         <PreprocessLevel value="1000" />
-                        <PreprocessDTimeHours value="12" />
+                        <PreprocessTimeHours value="12" />
                     </SubData>
                 </Params>
                 <Params name="Area">
