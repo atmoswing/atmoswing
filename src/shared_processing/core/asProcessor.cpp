@@ -950,17 +950,6 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
 
     wxASSERT(timeTargetSelectionLength>0);
 
-    // Correct the time arrays to account for predictand time and not predictors time
-    for (int i_time=0; i_time<timeTargetSelectionLength; i_time++)
-    {
-        timeTargetSelection[i_time] -= params.GetTimeShiftDays();
-
-        for (int i_analog=0; i_analog<analogsNb; i_analog++)
-        {
-            analogsDates(i_time, i_analog) -= params.GetTimeShiftDays();
-        }
-    }
-
     // Get start and end dates
     double timeStart, timeEnd;
     timeStart = wxMax(predictandTime[0],asTime::GetMJD(params.GetArchiveYearStart(),1,1));
@@ -1009,7 +998,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     float currentAnalogDate, currentTargetDate;
     float predictandValueNorm, predictandValueGross;
     int predictandIndex;
-    float predictandDTimeDays = (float)params.GetPredictandDTimeDays();
+    float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
 
     // Resize containers
     wxASSERT(targTimeLength>0);
@@ -1032,7 +1021,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
         int i_targdatenew = i_targdate-indexTargDatesStart;
         currentTargetDate = timeTargetSelection(i_targdate);
         finalTargetDates[i_targdatenew] = currentTargetDate;
-        predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandDTimeDays);
+        predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandTimeDays);
         if( ignoreTargetValues | (predictandIndex==asOUT_OF_RANGE) | (predictandIndex==asNOT_FOUND) )
         {
             finalTargetValuesNorm(i_targdatenew) = NaNFloat;
@@ -1055,10 +1044,10 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
                 // Check that the date is in the range
                 if ((currentAnalogDate>=timeStart) && (currentAnalogDate<=timeEnd))
                 {
-                    predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTime.size()-1],currentAnalogDate+predictandDTimeDays);
+                    predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTime.size()-1],currentAnalogDate+predictandTimeDays);
                     if( (predictandIndex==asOUT_OF_RANGE) | (predictandIndex==asNOT_FOUND))
                     {
-                        wxString currDate = asTime::GetStringTime(currentAnalogDate+predictandDTimeDays);
+                        wxString currDate = asTime::GetStringTime(currentAnalogDate+predictandTimeDays);
                         wxString startDate = asTime::GetStringTime(predictandTime[0]);
                         wxString endDate = asTime::GetStringTime(predictandTime[predictandTime.size()-1]);
                         asLogWarning(wxString::Format(_("The current analog date (%s) was not found in the predictand time array (%s-%s)."), currDate.c_str(), startDate.c_str(), endDate.c_str()));

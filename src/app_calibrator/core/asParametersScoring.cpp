@@ -23,7 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
  
 #include "asParametersScoring.h"
@@ -61,7 +61,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
     predictor.Uptsnb.push_back(0);
     predictor.Vmin.push_back(0);
     predictor.Vptsnb.push_back(0);
-    predictor.DTimeHours.push_back(0);
+    predictor.TimeHours.push_back(0);
     predictor.Criteria.push_back(wxEmptyString);
     predictor.Weight.push_back(0);
 

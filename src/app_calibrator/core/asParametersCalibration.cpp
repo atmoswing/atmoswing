@@ -23,7 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
  
 #include "asParametersCalibration.h"
@@ -190,8 +190,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoANodeBack()) return false;
 
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Frame")) return false;
-                if(!SetPredictorDTimeHoursVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "DTimeHours"))) return false;
-                if(!SetPreloadDTimeHours(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "DTimeHours"))) return false;
+                if(!SetPredictorTimeHoursVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "TimeHours"))) return false;
+                if(!SetPreloadTimeHours(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "TimeHours"))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
             }
@@ -227,7 +227,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"))) return false;
                     if(!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, GetFileParamStringVector(fileParams, "PreprocessDataId"))) return false;
                     if(!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, GetFileParamFloatVector(fileParams, "PreprocessLevel"))) return false;
-                    if(!SetPreprocessDTimeHoursVector(i_step, i_ptor, i_dataset, GetFileParamDoubleVector(fileParams, "PreprocessDTimeHours"))) return false;
+                    if(!SetPreprocessTimeHoursVector(i_step, i_ptor, i_dataset, GetFileParamDoubleVector(fileParams, "PreprocessTimeHours"))) return false;
 
                     if(fileParams.GoToNextSameNode())
                     {
@@ -243,7 +243,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 SetPredictorDatasetId(i_step, i_ptor, "mix");
                 SetPredictorDataId(i_step, i_ptor, "mix");
                 SetPredictorLevel(i_step, i_ptor, 0);
-                SetPredictorDTimeHours(i_step, i_ptor, 0);
+                SetPredictorTimeHours(i_step, i_ptor, 0);
 
                 if(!fileParams.GoANodeBack()) return false;
                 if(!fileParams.GoANodeBack()) return false;
@@ -322,7 +322,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
     if(!SetPredictandStationsIdVector(GetFileParamIntVector(fileParams, "PredictandStationId"))) return false;
-    if(!SetPredictandDTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandDTimeHours", "value"))) return false;
+    if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
     if(!fileParams.GoANodeBack()) return false;
 
@@ -377,11 +377,42 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     InitValues();
 
     // Fixes
-    FixTimeShift();
+    FixTimeLimits();
     FixWeights();
     FixCoordinates();
 
     asLogMessage(_("Parameters file loaded."));
+
+    return true;
+}
+
+bool asParametersCalibration::FixTimeLimits()
+{
+    SetSizes();
+
+    double minHour = 200.0, maxHour = -50.0;
+    for(int i=0;i<GetStepsNb();i++)
+    {
+        for(int j=0;j<GetPredictorsNb(i);j++)
+        {
+            if (NeedsPreprocessing(i,j))
+            {
+                for(int k=0; k<GetPreprocessSize(i,j); k++)
+                {
+                    minHour = wxMin(GetPreprocessTimeHoursLowerLimit(i, j, k), minHour);
+                    maxHour = wxMax(GetPreprocessTimeHoursUpperLimit(i, j, k), maxHour);
+                }
+            }
+            else
+            {
+                minHour = wxMin(GetPredictorTimeHoursLowerLimit(i, j), minHour);
+                maxHour = wxMax(GetPredictorTimeHoursUpperLimit(i, j), maxHour);
+            }
+        }
+    }
+
+    m_TimeMinHours = minHour;
+    m_TimeMaxHours = maxHour;
 
     return true;
 }
@@ -423,18 +454,18 @@ void asParametersCalibration::InitValues()
                     wxASSERT(m_StepsVect[i].Predictors[j].PreprocessDataId[k].size()>0);
                     wxASSERT(m_StepsVect[i].Predictors[j].PreprocessLevels.size()>0);
                     wxASSERT(m_StepsVect[i].Predictors[j].PreprocessLevels[k].size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessDTimeHours.size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessDTimeHours[k].size()>0);
+                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessTimeHours.size()>0);
+                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessTimeHours[k].size()>0);
                     SetPreprocessDataId(i,j,k, m_StepsVect[i].Predictors[j].PreprocessDataId[k][0]);
                     SetPreprocessLevel(i,j,k, m_StepsVect[i].Predictors[j].PreprocessLevels[k][0]);
-                    SetPreprocessDTimeHours(i,j,k, m_StepsVect[i].Predictors[j].PreprocessDTimeHours[k][0]);
+                    SetPreprocessTimeHours(i,j,k, m_StepsVect[i].Predictors[j].PreprocessTimeHours[k][0]);
                 }
             }
             else
             {
                 SetPredictorDataId(i,j, m_StepsVect[i].Predictors[j].DataId[0]);
                 SetPredictorLevel(i,j, m_StepsVect[i].Predictors[j].Level[0]);
-                SetPredictorDTimeHours(i,j, m_StepsVect[i].Predictors[j].DTimeHours[0]);
+                SetPredictorTimeHours(i,j, m_StepsVect[i].Predictors[j].TimeHours[0]);
             }
 
             SetPredictorUmin(i,j, m_StepsVect[i].Predictors[j].Umin[0]);
@@ -448,7 +479,6 @@ void asParametersCalibration::InitValues()
     }
 
     // Fixes and checks
-    FixTimeShift();
     FixWeights();
     FixCoordinates();
     FixAnalogsNb();

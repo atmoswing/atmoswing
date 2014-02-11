@@ -57,9 +57,7 @@ TEST(LoadFromFile)
     CHECK_EQUAL(true, params.GetPredictorDatasetId(0,0).IsSameAs("NCEP_R-1"));
     CHECK_EQUAL(true, params.GetPredictorDataId(0,0).IsSameAs("hgt"));
     CHECK_EQUAL(500, params.GetPredictorLevel(0,0));
-    CHECK_EQUAL(24, params.GetPredictorDTimeHours(0,0));
-    CHECK_EQUAL(1, params.GetPredictorDTimeDays(0,0));
-    CHECK_EQUAL(0, params.GetPredictorTimeHour(0,0));
+    CHECK_EQUAL(24, params.GetPredictorTimeHours(0,0));
     CHECK_EQUAL(true, params.GetPredictorGridType(0,0).IsSameAs("Regular"));
     CHECK_EQUAL(-10, params.GetPredictorUmin(0,0));
     CHECK_EQUAL(9, params.GetPredictorUptsnb(0,0));
@@ -75,11 +73,9 @@ TEST(LoadFromFile)
     CHECK_EQUAL(true, params.GetPreprocessDatasetId(0,1,0).IsSameAs("NCEP_R-1"));
     CHECK_EQUAL(true, params.GetPreprocessDataId(0,1,0).IsSameAs("hgt"));
     CHECK_EQUAL(1000, params.GetPreprocessLevel(0,1,0));
-    CHECK_EQUAL(12, params.GetPreprocessDTimeHours(0,1,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(0,1,0));
     CHECK_EQUAL(1000, params.GetPredictorLevel(0,1));
-    CHECK_EQUAL(12, params.GetPredictorDTimeHours(0,1));
-    CHECK_EQUAL(0.5, params.GetPredictorDTimeDays(0,1));
-    CHECK_EQUAL(12, params.GetPredictorTimeHour(0,1));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(0,1));
     CHECK_EQUAL(-15, params.GetPredictorUmin(0,1));
     CHECK_EQUAL(11, params.GetPredictorUptsnb(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorUstep(0,1));

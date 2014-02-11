@@ -49,7 +49,7 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
     asLogMessageImportant(wxString::Format(_("Processing variables exploration for step %d"), i_step));
     asLogMessageImportant(wxString::Format(_("Processing %d variables, %d hours, %d levels, %d criteria."),
                                            (int)params.GetPredictorDataIdVector(i_step, 0).size(),
-                                           (int)params.GetPredictorDTimeHoursVector(i_step, 0).size(),
+                                           (int)params.GetPredictorTimeHoursVector(i_step, 0).size(),
                                            (int)params.GetPredictorLevelVector(i_step, 0).size(),
                                            (int)params.GetPredictorCriteriaVector(i_step, 0).size()));
 
@@ -75,12 +75,11 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
             {
                 params.SetPredictorDataId(i_step, i_ptor, vPredictorDataId[i_predictordata]);
 
-                VectorDouble vPredictorDTimeHours = params.GetPredictorDTimeHoursVector(i_step, i_ptor);
+                VectorDouble vPredictorTimeHours = params.GetPredictorTimeHoursVector(i_step, i_ptor);
 
-                for(unsigned int i_predictortime=0; i_predictortime<vPredictorDTimeHours.size(); i_predictortime++)
+                for(unsigned int i_predictortime=0; i_predictortime<vPredictorTimeHours.size(); i_predictortime++)
                 {
-                    params.SetPredictorDTimeHours(i_step, i_ptor, vPredictorDTimeHours[i_predictortime]);
-                    params.FixTimeShift();
+                    params.SetPredictorTimeHours(i_step, i_ptor, vPredictorTimeHours[i_predictortime]);
 
                     VectorFloat vPredictorLevels = params.GetPredictorLevelVector(i_step, i_ptor);
 
@@ -98,9 +97,9 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
                             slctPredictorLevels.push_back(vPredictorLevels[i_predictorlevel]);
                             params.SetPreloadLevels(i_step, i_ptor, slctPredictorLevels);
 
-                            VectorDouble slctPreloadDTimeHours;
-                            slctPreloadDTimeHours.push_back(vPredictorDTimeHours[i_predictortime]);
-                            params.SetPreloadDTimeHours(i_step, i_ptor, slctPreloadDTimeHours);
+                            VectorDouble slctPreloadTimeHours;
+                            slctPreloadTimeHours.push_back(vPredictorTimeHours[i_predictortime]);
+                            params.SetPreloadTimeHours(i_step, i_ptor, slctPreloadTimeHours);
 
                             m_OriginalParams = params;
 
