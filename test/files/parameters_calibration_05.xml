@@ -50,7 +50,7 @@
                     <Level value="1000" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Time frame">
-                    <DTimeHours value="12" min="" max="" step="" method="fixed" />
+                    <TimeHours value="12" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
@@ -84,7 +84,7 @@
                     <Level value="500" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Time frame">
-                    <DTimeHours value="24" min="" max="" step="" method="fixed" />
+                    <TimeHours value="24" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />

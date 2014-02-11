@@ -50,7 +50,7 @@
                     <Level value="1000" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Time frame">
-                    <DTimeHours value="12" min="" max="" step="" method="fixed" />
+                    <TimeHours value="12" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
@@ -84,7 +84,7 @@
                     <Level value="500" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Time frame">
-                    <DTimeHours value="24" min="" max="" step="" method="fixed" />
+                    <TimeHours value="24" min="" max="" step="" method="fixed" />
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
@@ -123,25 +123,25 @@
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="prwtr" />
                         <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="prwtr" />
                         <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="rhum" />
                         <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="12" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
                         <PreprocessDataId value="rhum" />
                         <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
-                        <PreprocessDTimeHours value="24" min="" max="" step="" method="fixed" />
+                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
                 </Params>
                 <Params name="Area Moving">
