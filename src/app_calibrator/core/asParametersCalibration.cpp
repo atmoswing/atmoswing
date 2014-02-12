@@ -343,7 +343,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!SetForecastScoreAnalogsNumberVector(GetFileParamIntVector(fileParams, "AnalogsNumber"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Postprocessing"))
+    if(fileParams.GoToChildNodeWithAttributeValue("name", "Postprocessing", asHIDE_WARNINGS))
     {
         SetForecastScorePostprocess(1);
         if(!SetForecastScorePostprocessMethod(fileParams.GetFirstElementAttributeValueText("Method", "value"))) return false;
