@@ -1633,7 +1633,7 @@ bool asTools::SortedArraysInsert(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherSta
     switch(order){
         case (Asc):
         {
-            i_next = asTools::SortedArraySearchCeil(pArrRefStart, pArrRefEnd, valRef);
+            i_next = asTools::SortedArraySearchCeil(pArrRefStart, pArrRefEnd, valRef, asHIDE_WARNINGS);
             if (i_next==asOUT_OF_RANGE)
             {
                 i_next = 0;
@@ -1642,7 +1642,7 @@ bool asTools::SortedArraysInsert(T* pArrRefStart, T* pArrRefEnd, T* pArrOtherSta
         }
         case (Desc):
         {
-            i_next = asTools::SortedArraySearchFloor(pArrRefStart, pArrRefEnd, valRef);
+            i_next = asTools::SortedArraySearchFloor(pArrRefStart, pArrRefEnd, valRef, asHIDE_WARNINGS);
             if (i_next==asOUT_OF_RANGE)
             {
                 i_next = 0;

@@ -519,11 +519,11 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::Load(asGeoAreaCompositeGrid 
                 indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
 
                 // Get the spatial indices of the desired data
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin, 0.01f);
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin, 0.01f, asHIDE_WARNINGS);
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
                     // If not found, try with negative angles
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin-360, 0.01f);
+                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin-360, 0.01f, asHIDE_WARNINGS);
                 }
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
