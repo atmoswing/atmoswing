@@ -601,22 +601,6 @@ public:
 
     bool SetForecastScoreTimeArrayDateVector(VectorDouble val)
     {
-        if (val.size()<1)
-        {
-            asLogError(_("The provided time array date vector for the forecast score is empty."));
-            return false;
-        }
-        else
-        {
-            for (int i=0; i<val.size(); i++)
-            {
-                if (asTools::IsNaN(val[i]))
-                {
-                    asLogError(_("There are NaN values in the provided time array date vector for the forecast score."));
-                    return false;
-                }
-            }
-        }
         m_ForecastScoreVect.TimeArrayDate = val;
         return true;
     }
@@ -628,22 +612,6 @@ public:
 
     bool SetForecastScoreTimeArrayIntervalDaysVector(VectorInt val)
     {
-        if (val.size()<1)
-        {
-            asLogError(_("The provided time array interval vector for the forecast score is empty."));
-            return false;
-        }
-        else
-        {
-            for (int i=0; i<val.size(); i++)
-            {
-                if (asTools::IsNaN(val[i]))
-                {
-                    asLogError(_("There are NaN values in the provided time array interval vector for the forecast score."));
-                    return false;
-                }
-            }
-        }
         m_ForecastScoreVect.TimeArrayIntervalDays = val;
         return true;
     }
