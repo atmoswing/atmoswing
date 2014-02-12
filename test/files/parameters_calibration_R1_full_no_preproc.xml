@@ -62,7 +62,7 @@
                     <Weight value="0.5" min="" max="" step="" method="fixed" />
                 </Params>
             </Data>
-            <Data name="Predictor Preprocessed">
+            <Data name="Predictor">
                 <Options />
                 <Params name="Preprocessing">
                     <Preprocess value="0" />

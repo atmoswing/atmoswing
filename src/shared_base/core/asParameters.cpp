@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
- 
+
 #include "asParameters.h"
 
 #include "asFileParametersStandard.h"
@@ -345,7 +345,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToFirstNodeWithPath("General")) return false;
     if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
     if(!fileParams.GoANodeBack()) return false;
-    
+
     if(!fileParams.CheckDeprecatedChildNode("Period")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
     if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
@@ -538,7 +538,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
         if(!fileParams.GoANodeBack()) return false;
 
         // Find the next analogs date block
-        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates")) break;
+        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates", asHIDE_WARNINGS)) break;
 
         i_step++;
     }
