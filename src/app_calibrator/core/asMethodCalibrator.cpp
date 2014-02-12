@@ -366,27 +366,20 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         // Set preload to true here, so cleanup is made in case of exceptions.
         m_Preloaded = true;
 
-        // Get first year
-        int yearStart = wxMin(params.GetArchiveYearStart(), params.GetCalibrationYearStart());
-        int validationStart = params.GetValidationYearStart();
-        if (!asTools::IsNaN(validationStart)) {
-            yearStart = wxMin(yearStart, validationStart);
-        }
+        // Archive date array
+        double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
+        double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+        timeStartArchive += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+        timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
 
-        // Get last year
-        int yearEnd = wxMax(params.GetArchiveYearEnd(), params.GetCalibrationYearEnd());
-        int validationEnd = params.GetValidationYearEnd();
-        if (!asTools::IsNaN(validationEnd)) {
-            yearEnd = wxMax(yearEnd, validationEnd);
-        }
+        // Target date array
+        double timeStartCalibration = asTime::GetMJD(params.GetCalibrationYearStart(),1,1); // Always Jan 1st
+        double timeEndCalibration = asTime::GetMJD(params.GetCalibrationYearEnd(),12,31);
+        timeStartCalibration += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+        timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
 
-        // Get dates
-        double timeStartData = asTime::GetMJD(yearStart,1,1); // Always Jan 1st
-        double timeEndData = asTime::GetMJD(yearEnd,12,31); // Always Dec 31
-        asTimeArray timeArrayData(timeStartData, timeEndData,
-                                     params.GetTimeArrayAnalogsTimeStepHours(),
-                                     asTimeArray::Simple);
-        timeArrayData.Init();
+        double timeStartData = wxMin(timeStartCalibration, timeStartArchive); // Always Jan 1st
+        double timeEndData = wxMax(timeEndCalibration, timeEndArchive);
 
         // Resize container
         if (m_PreloadedArchive.size()==0)
@@ -531,6 +524,24 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         {
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
                             {
+
+                                // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                                double ptorStart = timeStartData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
+
+                                // For debugging:
+                                // wxLogMessage("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()), preloadDTimeHours[tmp_hour]/24.0, ptorStart);
+                                // wxLogMessage("ptorStart = %s", asTime::GetStringTime(ptorStart));
+                                // wxLogMessage("timeStartData = %s", asTime::GetStringTime(timeStartData));
+                                // wxLogMessage("params.GetTimeShiftDays() = %f", double(params.GetTimeShiftDays()));
+                                // wxLogMessage("preloadDTimeHours[tmp_hour]/24.0 = %f", preloadDTimeHours[tmp_hour]/24.0);
+
+                                double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
+
+                                asTimeArray timeArray(ptorStart, ptorEnd,
+                                                      params.GetTimeArrayAnalogsTimeStepHours(),
+                                                      asTimeArray::Simple);
+                                timeArray.Init();
+
                                 asGeo geo(predictor->GetCoordSys());
                                 double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
                                 if (Vmax > geo.GetAxisVmax())
@@ -560,10 +571,10 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 wxASSERT(area);
 
                                 // Check the starting dates coherence
-                                if (predictor->GetOriginalProviderStart()>timeStartData)
+                                if (predictor->GetOriginalProviderStart()>ptorStart)
                                 {
                                     asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData)."),
-                                                                asTime::GetStringTime(timeStartData), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
+                                                                asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
                                     wxDELETE(area);
                                     wxDELETE(predictor);
                                     return false;
@@ -573,7 +584,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."), params.GetPredictorDataId(tmp_step, tmp_ptor).c_str(), (int)preloadLevels[tmp_level], (int)preloadTimeHours[tmp_hour]));
                                 try
                                 {
-                                    if(!predictor->Load(area, timeArrayData))
+                                    if(!predictor->Load(area, timeArray))
                                     {
                                         asLogError(_("The data could not be loaded."));
                                         wxDELETE(area);
@@ -616,6 +627,14 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
                         {
                             asLogMessage(wxString::Format(_("Preloading data for predictor %d (preprocess %d) of step %d."), tmp_ptor, tmp_prepro, tmp_step));
+                            
+                            // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                            double ptorStart = timeStartData-double(params.GetTimeShiftDays())+params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)/24.0;
+                            double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)/24.0;
+                            asTimeArray timeArray(ptorStart, ptorEnd,
+                                                  params.GetTimeArrayAnalogsTimeStepHours(),
+                                                  asTimeArray::Simple);
+                            timeArray.Init();
 
                             // Loading the datasets information
                             asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro),
@@ -655,10 +674,10 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             asLogMessage(_("Area created."));
 
                             // Check the starting dates coherence
-                            if (predictorPreprocess->GetOriginalProviderStart()>timeStartData)
+                            if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
                             {
                                 asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
-                                                            asTime::GetStringTime(timeStartData), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
+                                                            asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                                 wxDELETE(area);
                                 wxDELETE(predictorPreprocess);
                                 return false;
@@ -669,7 +688,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                                           params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).c_str(),
                                                           (int)params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro),
                                                           (int)params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)));
-                            if(!predictorPreprocess->Load(area, timeArrayData))
+                            if(!predictorPreprocess->Load(area, timeArray))
                             {
                                 asLogError(_("The data could not be loaded."));
                                 wxDELETE(area);
@@ -821,33 +840,11 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         return true;
     }
 
-    // Get first year
-    int yearStart = wxMin(params.GetArchiveYearStart(), params.GetCalibrationYearStart());
-    int validationStart = params.GetValidationYearStart();
-    if (!asTools::IsNaN(validationStart)) {
-        yearStart = wxMin(yearStart, validationStart);
-    }
-
-    // Get last year
-    int yearEnd = wxMax(params.GetArchiveYearEnd(), params.GetCalibrationYearEnd());
-    int validationEnd = params.GetValidationYearEnd();
-    if (!asTools::IsNaN(validationEnd)) {
-        yearEnd = wxMax(yearEnd, validationEnd);
-    }
-
-    // Get full time array for the data
-    double timeStartData = asTime::GetMJD(yearStart,1,1); // Always Jan 1st
-    double timeEndData = asTime::GetMJD(yearEnd,12,31); // Always Dec 31
-    asTimeArray timeArrayData(timeStartData, timeEndData,
-                                params.GetTimeArrayAnalogsTimeStepHours(),
-                                asTimeArray::Simple);
-    timeArrayData.Init();
-
     // Archive date array
-    double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); 
+    double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
     double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
-    timeStartArchive += params.GetTimeSplitStartDays(); // To avoid having dates before the start of the archive
-    timeEndArchive += params.GetTimeSplitEndDays(); // Adjust so the predictors search won't overtake the array
+    timeStartArchive += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+    timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive,
                                  params.GetTimeArrayAnalogsTimeStepHours(),
                                  asTimeArray::Simple);
@@ -858,13 +855,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     timeArrayArchive.Init();
 
     // Target date array
-    double timeStartCalibration = asTime::GetMJD(params.GetCalibrationYearStart(),1,1);
+    double timeStartCalibration = asTime::GetMJD(params.GetCalibrationYearStart(),1,1); // Always Jan 1st
     double timeEndCalibration = asTime::GetMJD(params.GetCalibrationYearEnd(),12,31);
-    timeStartCalibration += params.GetTimeSplitStartDays(); // To avoid having dates before the start of the archive
-    timeEndCalibration += params.GetTimeSplitEndDays(); // Adjust so the predictors search won't overtake the array
+    timeStartCalibration += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+    timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayTarget(timeStartCalibration, timeEndCalibration,
                                 params.GetTimeArrayTargetTimeStepHours(),
                                 params.GetTimeArrayTargetMode());
+
     if(!m_ValidationMode)
     {
         if(params.HasValidationPeriod()) // remove validation years
@@ -895,6 +893,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     {
         timeArrayTarget.KeepOnlyYears(params.GetValidationYearsVector());
     }
+
+    // Data date array
+    double timeStartData = wxMin(timeStartCalibration, timeStartArchive); // Always Jan 1st
+    double timeEndData = wxMax(timeEndCalibration, timeEndArchive);
+    asTimeArray timeArrayData(timeStartData, timeEndData,
+                                 params.GetTimeArrayAnalogsTimeStepHours(),
+                                 asTimeArray::Simple);
+    timeArrayData.Init();
 
     // Check on the archive length
     if(timeArrayArchive.GetSize()<100)
@@ -1067,6 +1073,16 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
             if(!params.NeedsPreprocessing(i_step, i_ptor))
             {
+                // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                double ptorStart = timeStartData-params.GetTimeShiftDays()
+                                   +params.GetPredictorTimeHours(i_step, i_ptor)/24.0;
+                double ptorEnd = timeEndData-params.GetTimeShiftDays()
+                                 +params.GetPredictorTimeHours(i_step, i_ptor)/24.0;
+                asTimeArray timeArray(ptorStart, ptorEnd,
+                                      params.GetTimeArrayAnalogsTimeStepHours(),
+                                      asTimeArray::Simple);
+                timeArray.Init();
+
                 // Loading the datasets information
                 asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(i_step, i_ptor), params.GetPredictorDataId(i_step, i_ptor), m_PredictorDataDir);
                 if(!predictor)
@@ -1089,17 +1105,17 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                 wxASSERT(area);
 
                 // Check the starting dates coherence
-                if (predictor->GetOriginalProviderStart()>timeStartData)
+                if (predictor->GetOriginalProviderStart()>ptorStart)
                 {
                     asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, no preprocessing)."),
-                                                asTime::GetStringTime(timeStartData), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
+                                                asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
                     wxDELETE(area);
                     wxDELETE(predictor);
                     return false;
                 }
 
                 // Data loading
-                if(!predictor->Load(area, timeArrayData))
+                if(!predictor->Load(area, timeArray))
                 {
                     asLogError(_("The data could not be loaded."));
                     wxDELETE(area);
@@ -1118,6 +1134,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
                 for (int i_prepro=0; i_prepro<preprocessSize; i_prepro++)
                 {
+                    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                    double ptorStart = timeStartData-double(params.GetTimeShiftDays())+params.GetPreprocessTimeHours(i_step, i_ptor, i_prepro)/24.0;
+                    double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+params.GetPreprocessTimeHours(i_step, i_ptor, i_prepro)/24.0;
+                    asTimeArray timeArray(ptorStart, ptorEnd,
+                                          params.GetTimeArrayAnalogsTimeStepHours(),
+                                          asTimeArray::Simple);
+                    timeArray.Init();
+
                     // Loading the datasets information
                     asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro),
                                                                                                              params.GetPreprocessDataId(i_step, i_ptor, i_prepro),
@@ -1142,17 +1166,17 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                     wxASSERT(area);
 
                     // Check the starting dates coherence
-                    if (predictorPreprocess->GetOriginalProviderStart()>timeStartData)
+                    if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
                     {
                         asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, preprocessing)."),
-                                                    asTime::GetStringTime(timeStartData), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
+                                                    asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                         wxDELETE(area);
                         wxDELETE(predictorPreprocess);
                         return false;
                     }
 
                     // Data loading
-                    if(!predictorPreprocess->Load(area, timeArrayData))
+                    if(!predictorPreprocess->Load(area, timeArray))
                     {
                         asLogError(_("The data could not be loaded."));
                         wxDELETE(area);
@@ -1241,27 +1265,14 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     // If result file already exists, load it
     if (results.Load()) return true;
 
-    // Get first year
-    int yearStart = wxMin(params.GetArchiveYearStart(), params.GetCalibrationYearStart());
-    int validationStart = params.GetValidationYearStart();
-    if (!asTools::IsNaN(validationStart)) {
-        yearStart = wxMin(yearStart, validationStart);
-    }
-
-    // Get last year
-    int yearEnd = wxMax(params.GetArchiveYearEnd(), params.GetCalibrationYearEnd());
-    int validationEnd = params.GetValidationYearEnd();
-    if (!asTools::IsNaN(validationEnd)) {
-        yearEnd = wxMax(yearEnd, validationEnd);
-    }
-
-    // Get full time array for the data
-    double timeStartData = asTime::GetMJD(yearStart,1,1); // Always Jan 1st
-    double timeEndData = asTime::GetMJD(yearEnd,12,31); // Always Dec 31
-    asTimeArray timeArrayData(timeStartData, timeEndData,
-                              params.GetTimeArrayAnalogsTimeStepHours(),
-                              asTimeArray::Simple);
-    timeArrayData.Init();
+    // Date array object instantiation for the processor
+    asLogMessage(_("Creating a date arrays for the processor."));
+    double timeStart = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
+    double timeEnd = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+    timeEnd = wxMin(timeEnd, timeEnd-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
+    asTimeArray timeArrayArchive(timeStart, timeEnd, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+    timeArrayArchive.Init();
+    asLogMessage(_("Date arrays created."));
 
     // Loop through every predictor
     for(int i_ptor=0; i_ptor<params.GetPredictorsNb(i_step); i_ptor++)
@@ -1380,6 +1391,12 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
             if(!params.NeedsPreprocessing(i_step, i_ptor))
             {
+                // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                double ptorStart = timeStart-params.GetTimeShiftDays()+params.GetPredictorTimeHours(i_step, i_ptor)/24.0;
+                double ptorEnd = timeEnd-params.GetTimeShiftDays()+params.GetPredictorTimeHours(i_step, i_ptor)/24.0;
+                asTimeArray timeArray(ptorStart, ptorEnd, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                timeArray.Init();
+
                 // Loading the datasets information
                 asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(i_step, i_ptor), 
                                                                                         params.GetPredictorDataId(i_step, i_ptor), 
@@ -1404,16 +1421,16 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                 wxASSERT(area);
 
                 // Check the starting dates coherence
-                if (predictor->GetOriginalProviderStart()>timeStartData)
+                if (predictor->GetOriginalProviderStart()>ptorStart)
                 {
-                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsSubDates, no preprocessing)."), asTime::GetStringTime(timeStartData), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
+                    asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsSubDates, no preprocessing)."), asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
                     wxDELETE(area);
                     wxDELETE(predictor);
                     return false;
                 }
 
                 // Data loading
-                if(!predictor->Load(area, timeArrayData))
+                if(!predictor->Load(area, timeArray))
                 {
                     asLogError(_("The data could not be loaded."));
                     wxDELETE(area);
@@ -1429,6 +1446,12 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
                 for (int i_prepro=0; i_prepro<preprocessSize; i_prepro++)
                 {
+                    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                    double ptorStart = timeStart-params.GetTimeShiftDays()+params.GetPreprocessTimeHours(i_step, i_ptor, i_prepro)/24.0;
+                    double ptorEnd = timeEnd-params.GetTimeShiftDays()+params.GetPreprocessTimeHours(i_step, i_ptor, i_prepro)/24.0;
+                    asTimeArray timeArray(ptorStart, ptorEnd, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                    timeArray.Init();
+
                     // Loading the datasets information
                     asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro), 
                                                                                                       params.GetPreprocessDataId(i_step, i_ptor, i_prepro), 
@@ -1453,16 +1476,16 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
                     wxASSERT(area);
 
                     // Check the starting dates coherence
-                    if (predictorPreprocess->GetOriginalProviderStart()>timeStartData)
+                    if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
                     {
-                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsSubDates, preprocessing)."), asTime::GetStringTime(timeStartData), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
+                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsSubDates, preprocessing)."), asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                         wxDELETE(area);
                         wxDELETE(predictorPreprocess);
                         return false;
                     }
 
                     // Data loading
-                    if(!predictorPreprocess->Load(area, timeArrayData))
+                    if(!predictorPreprocess->Load(area, timeArray))
                     {
                         asLogError(_("The data could not be loaded."));
                         wxDELETE(area);
@@ -1504,7 +1527,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
-    if(!asProcessor::GetAnalogsSubDates(m_StoragePredictors, m_StoragePredictors, timeArrayData, timeArrayData, anaDates, m_StorageCriteria, params, i_step, results, containsNaNs))
+    if(!asProcessor::GetAnalogsSubDates(m_StoragePredictors, m_StoragePredictors, timeArrayArchive, timeArrayArchive, anaDates, m_StorageCriteria, params, i_step, results, containsNaNs))
     {
         asLogError(_("Failed processing the analogs dates."));
         return false;
@@ -1569,16 +1592,13 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
             Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(params.GetPredictandStationId());
             Array1DDouble predictandTime = m_PredictandDB->GetTime();
 
-            // Archive date array
-            double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); 
-            double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
-            timeStartArchive += params.GetTimeSplitStartDays(); // To avoid having dates before the start of the archive
-            timeEndArchive += params.GetTimeSplitEndDays(); // Adjust so the predictors search won't overtake the array
-
             // Get start and end dates
-            float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
-            double timeStart = wxMax(predictandTime[0],timeStartArchive);
-            double timeEnd = wxMin(predictandTime[predictandTime.size()-1],timeEndArchive);
+            float predictandDTimeDays = params.GetPredictandTimeHours()/24.0;
+            double timeStart, timeEnd;
+            timeStart = wxMax(predictandTime[0],asTime::GetMJD(params.GetArchiveYearStart(),1,1));
+            timeStart = floor(timeStart)+predictandDTimeDays;
+            timeEnd = wxMin(predictandTime[predictandTime.size()-1],asTime::GetMJD(params.GetArchiveYearEnd(),12,31));
+            timeEnd = floor(timeEnd)+predictandDTimeDays;
 
             // Check if data are effectively available for this period
             int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);

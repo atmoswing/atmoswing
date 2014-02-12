@@ -576,17 +576,22 @@ bool asParameters::FixTimeLimits()
 {
     SetSizes();
 
-    double minHour = 200.0, maxHour = -50.0;
+    double minHour = 1000.0, maxHour = -1000.0;
     for(int i=0;i<m_StepsNb;i++)
     {
         for(int j=0;j<m_PredictorsNb[i];j++)
         {
             if (NeedsPreprocessing(i,j))
             {
+                double minHourPredictor = 1000.0, maxHourPredictor = -1000.0;
+
                 for(int k=0; k<GetPreprocessSize(i,j); k++)
                 {
                     minHour = wxMin(m_Steps[i].Predictors[j].PreprocessTimeHours[k], minHour);
                     maxHour = wxMax(m_Steps[i].Predictors[j].PreprocessTimeHours[k], maxHour);
+                    minHourPredictor = wxMin(m_Steps[i].Predictors[j].PreprocessTimeHours[k], minHourPredictor);
+                    maxHourPredictor = wxMax(m_Steps[i].Predictors[j].PreprocessTimeHours[k], maxHourPredictor);
+                    m_Steps[i].Predictors[j].TimeHours = minHourPredictor;
                 }
             }
             else
