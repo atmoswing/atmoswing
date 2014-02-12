@@ -173,22 +173,18 @@ public:
         return m_TimeMaxHours;
     }
 
-    int GetTimeSplitStartDays()
+    int GetTimeShiftDays()
     {
-        int split = 0;
+        int shift = 0;
         if (m_TimeMinHours<0) {
-            split = ceil(abs(m_TimeMinHours/24));
+            shift = floor(m_TimeMinHours/24.0);
         }
-        return split;
+        return shift;
     }
 
-    int GetTimeSplitEndDays()
+    int GetTimeSpanDays()
     {
-        int split = 0;
-        if (m_TimeMaxHours>24) {
-            split = ceil(abs(m_TimeMinHours/24)-1);
-        }
-        return split;
+        return ceil(m_TimeMaxHours/24.0)+abs(GetTimeShiftDays());
     }
 
     double GetTimeArrayTargetTimeStepHours()

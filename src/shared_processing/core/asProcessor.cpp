@@ -950,6 +950,17 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
 
     wxASSERT(timeTargetSelectionLength>0);
 
+    // Correct the time arrays to account for predictand time and not predictors time
+    for (int i_time=0; i_time<timeTargetSelectionLength; i_time++)
+    {
+        timeTargetSelection[i_time] -= params.GetTimeShiftDays();
+
+        for (int i_analog=0; i_analog<analogsNb; i_analog++)
+        {
+            analogsDates(i_time, i_analog) -= params.GetTimeShiftDays();
+        }
+    }
+
     // Get start and end dates
     double timeStart, timeEnd;
     timeStart = wxMax(predictandTime[0],asTime::GetMJD(params.GetArchiveYearStart(),1,1));
