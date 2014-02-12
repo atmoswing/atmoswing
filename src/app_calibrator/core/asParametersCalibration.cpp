@@ -85,13 +85,13 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!SetCalibrationYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
     if(!fileParams.GoANodeBack()) return false;
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Validation Period"))
+    if(fileParams.GoToChildNodeWithAttributeValue("name", "Validation Period", asHIDE_WARNINGS))
     {
         if(!SetValidationYearsVector(GetFileParamIntVector(fileParams, "Years"))) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
 
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties"))
+    if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties", asHIDE_WARNINGS))
     {
         if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
         if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
@@ -322,7 +322,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
     if(!SetPredictandStationsIdVector(GetFileParamIntVector(fileParams, "PredictandStationId"))) return false;
-    if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value"))) return false;
+    if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0))) return false;
     if(!fileParams.GoANodeBack()) return false;
     if(!fileParams.GoANodeBack()) return false;
 

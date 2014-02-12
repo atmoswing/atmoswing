@@ -36,6 +36,8 @@ namespace
 
 TEST(GetAnnualMax)
 {
+	wxString str("Testing predictand data...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
     //MatrixFloat& GetAnnualMax(const asDatasetPredictand &currentData);
 }
 

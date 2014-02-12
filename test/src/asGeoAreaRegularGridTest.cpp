@@ -35,6 +35,9 @@ namespace
 
 TEST(ConstructorLimitsException)
 {
+	wxString str("Testing regular grids...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.u = -10;
     CornerUL.v = 40;

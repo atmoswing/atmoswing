@@ -33,13 +33,11 @@
 namespace
 {
 
-
-
-
-
-
 TEST(StringToCoordSysWGS84)
 {
+	wxString str("Testing global enumerations...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     wxString CoordSysChar = "WGS84";
     const CoordSys Result = asGlobEnums::StringToCoordSysEnum(CoordSysChar);
     const CoordSys Ref = WGS84;

@@ -1001,7 +1001,7 @@ int asTimeArray::GetIndexFirstBefore(double date)
         return NaNDouble;
     }
 
-    int index = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[GetSize()-1], date);
+    int index = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[GetSize()-1], date, asHIDE_WARNINGS);
 
     if (index==asOUT_OF_RANGE) return GetSize()-1;
 

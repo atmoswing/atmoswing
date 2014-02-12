@@ -336,11 +336,11 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
                 }
 
                 // Get the spatial indices of the desired data
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin, 0.0001f);
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin, 0.0001f, asHIDE_WARNINGS);
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
                     // If not found, try with negative angles
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin-360, 0.0001f);
+                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin-360, 0.0001f, asHIDE_WARNINGS);
                 }
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
@@ -391,7 +391,7 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
                 data360.resize(totlength360);
 
                 // Set the indices
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], 360, 0.0001f);
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], 360, 0.0001f, asHIDE_WARNINGS);
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
                     // If not found, try with negative angles

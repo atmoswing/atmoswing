@@ -39,6 +39,9 @@ namespace
 
 TEST(LoadEasy)
 {
+	wxString str("Testing regular archive predictors...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     double Umin = 10;
     double Uwidth = 10;
     double Vmin = 35;
