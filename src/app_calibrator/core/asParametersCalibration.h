@@ -655,12 +655,12 @@ public:
 
     bool SetForecastScorePostprocessDupliExpVector(VectorFloat val)
     {
-        if (val.size()<1)
+        if (val.size()<1 && ForecastScoreNeedsPostprocessing())
         {
             asLogError(_("The provided 'PostprocessDupliExp' vector is empty."));
             return false;
         }
-        else
+        else if (ForecastScoreNeedsPostprocessing())
         {
             for (int i=0; i<val.size(); i++)
             {

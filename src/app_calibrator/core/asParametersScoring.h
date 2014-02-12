@@ -324,7 +324,7 @@ public:
 
     bool SetForecastScorePostprocessMethod(const wxString& val)
     {
-        if (val.IsEmpty())
+        if (val.IsEmpty() && ForecastScoreNeedsPostprocessing())
         {
             asLogError(_("The provided value for the postprocessing method is null"));
             return false;
