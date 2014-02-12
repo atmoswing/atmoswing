@@ -35,6 +35,9 @@ namespace
 
 TEST(LoadFromFile)
 {
+	wxString str("Testing base parameters...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_read.xml");
 

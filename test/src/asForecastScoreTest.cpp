@@ -40,6 +40,9 @@ namespace
 
 TEST(ProcessCRPSapproxRectangle)
 {
+	wxString str("Testing forecast scores...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/forecast_score_01.txt");

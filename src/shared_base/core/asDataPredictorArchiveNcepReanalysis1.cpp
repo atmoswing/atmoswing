@@ -1011,7 +1011,7 @@ bool asDataPredictorArchiveNcepReanalysis1::Load(asGeoAreaCompositeGrid *desired
                     data360.resize(totlength360);
 
                     // Set the indices
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], 360, 0.01f);
+                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], 360, 0.01f, asHIDE_WARNINGS);
                     if(indexStartLon==asOUT_OF_RANGE)
                     {
                         // If not found, try with negative angles

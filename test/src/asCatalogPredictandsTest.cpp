@@ -37,6 +37,9 @@ namespace
 
 TEST(LoadCatalogProp)
 {
+    wxString str("Testing predictand catalogs...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/catalog_precipitation_MCH.xml");
 

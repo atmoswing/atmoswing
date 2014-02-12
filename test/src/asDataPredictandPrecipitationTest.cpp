@@ -38,6 +38,9 @@ namespace
 
 TEST(GumbelAdjustment)
 {
+	wxString str("Testing precipitation predictand...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     asDataPredictandPrecipitation predictand(Precipitation, Daily, Station);
 
     wxString datasetFilePath = wxFileName::GetCwd();

@@ -986,10 +986,14 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue>*pArrEnd || targetvalue<*pArrStart)
                 {
-                    if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+                    if (showWarning == asSHOW_WARNINGS){
+                        asLogWarning(_("The value is out of the array range."));
+                    }
                     return asOUT_OF_RANGE;
                 }
-                if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value was not found in the array."));
+                if (showWarning == asSHOW_WARNINGS){
+                    asLogWarning(_("The value was not found in the array."));
+                }
                 return asNOT_FOUND;
             }
         } else {
@@ -1000,10 +1004,14 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue>*pArrEnd || targetvalue<*pArrStart)
                 {
-                    if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+                    if (showWarning == asSHOW_WARNINGS){
+                        asLogWarning(_("The value is out of the array range."));
+                    }
                     return asOUT_OF_RANGE;
                 }
-                if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value was not found in the array."));
+                if (showWarning == asSHOW_WARNINGS){
+                    asLogWarning(_("The value was not found in the array."));
+                }
                 return asNOT_FOUND;
             }
         }
@@ -1048,10 +1056,14 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue<*pArrEnd || targetvalue>*pArrStart)
                 {
-                    if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+                    if (showWarning == asSHOW_WARNINGS){
+                        asLogWarning(_("The value is out of the array range."));
+                    }
                     return asOUT_OF_RANGE;
                 }
-                if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value was not found in the array."));
+                if (showWarning == asSHOW_WARNINGS){
+                    asLogWarning(_("The value was not found in the array."));
+                }
                 return asNOT_FOUND;
             }
         } else {
@@ -1062,10 +1074,14 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue<*pArrEnd || targetvalue>*pArrStart)
                 {
-                    if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+                    if (showWarning == asSHOW_WARNINGS){
+                        asLogWarning(_("The value is out of the array range."));
+                    }
                     return asOUT_OF_RANGE;
                 }
-                if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value was not found in the array."));
+                if (showWarning == asSHOW_WARNINGS){
+                    asLogWarning(_("The value was not found in the array."));
+                }
                 return asNOT_FOUND;
             }
         }
@@ -1074,7 +1090,6 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
     {
         if (pLast-pFirst==0)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("There is only one value in the array."));
             if( *pFirst>=targetvalue-tolerance && *pFirst<=targetvalue+tolerance )
             {
                 return 0; // Value corresponds
@@ -1128,7 +1143,9 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         // Check that the value is whithin the array
         if (targetvalue>*pLast || targetvalue<*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+            if (showWarning == asSHOW_WARNINGS){
+                asLogWarning(_("The value is out of the array range."));
+            }
             return asOUT_OF_RANGE;
         }
 
@@ -1174,7 +1191,9 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         // Check that the value is whithin the array
         if (targetvalue<*pLast || targetvalue>*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+            if (showWarning == asSHOW_WARNINGS){
+                asLogWarning(_("The value is out of the array range."));
+            }
             return asOUT_OF_RANGE;
         }
 
@@ -1219,7 +1238,6 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
     {
         if (pLast-pFirst==0)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("There is only one value in the array."));
             if( *pFirst==targetvalue )
             {
                 return 0; // Value corresponds
@@ -1272,7 +1290,10 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
         // Check that the value is whithin the array
         if (targetvalue>*pLast || targetvalue<*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+            if (showWarning == asSHOW_WARNINGS) 
+            {
+                asLogWarning(_("The value is out of the array range."));
+            }
             return asOUT_OF_RANGE;
         }
 
@@ -1312,7 +1333,9 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
         // Check that the value is whithin the array
         if (targetvalue<*pLast || targetvalue>*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+            if (showWarning == asSHOW_WARNINGS){
+                asLogWarning(_("The value is out of the array range."));
+            }
             return asOUT_OF_RANGE;
         }
 
@@ -1351,7 +1374,6 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
     {
         if (pLast-pFirst==0)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("There is only one value in the array."));
             if( *pFirst==targetvalue )
             {
                 return 0; // Value corresponds
@@ -1405,7 +1427,9 @@ int asTools::SortedArraySearchCeilT(T* pArrStart, T* pArrEnd, T targetvalue, int
         // Check that the value is whithin the array
         if (targetvalue>*pLast || targetvalue<*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+            if (showWarning == asSHOW_WARNINGS){
+                asLogWarning(_("The value is out of the array range."));
+            }
             return asOUT_OF_RANGE;
         }
 
@@ -1445,7 +1469,9 @@ int asTools::SortedArraySearchCeilT(T* pArrStart, T* pArrEnd, T targetvalue, int
         // Check that the value is whithin the array
         if (targetvalue<*pLast || targetvalue>*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("The value is out of the array range."));
+            if (showWarning == asSHOW_WARNINGS){
+                asLogWarning(_("The value is out of the array range."));
+            }
             return asOUT_OF_RANGE;
         }
 
@@ -1484,7 +1510,6 @@ int asTools::SortedArraySearchCeilT(T* pArrStart, T* pArrEnd, T targetvalue, int
     {
         if (pLast-pFirst==0)
         {
-            if (showWarning == asSHOW_WARNINGS) asLogWarning(_("There is only one value in the array."));
             if( *pFirst==targetvalue )
             {
                 return 0; // Value corresponds

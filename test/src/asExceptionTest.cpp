@@ -35,6 +35,9 @@ namespace
 
 TEST(asThrowException)
 {
+	wxString str("Testing exceptions...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     if(g_UnitTestExceptions)
     {
         CHECK_THROW(asThrowException("My exception"),asException);

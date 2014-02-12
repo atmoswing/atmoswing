@@ -42,6 +42,9 @@ namespace
 
 TEST(ProcessS1)
 {
+	wxString str("Testing the criteria...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/predictor_criteria_S1.txt"));

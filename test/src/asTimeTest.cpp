@@ -35,6 +35,9 @@ namespace
 
 TEST(IsLeapYearDivisableBy4)
 {
+	wxString str("Testing time functionalities...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+	
     const bool Result = asTime::IsLeapYear(1972);
     CHECK_EQUAL(true, Result);
 }
