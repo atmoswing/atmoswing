@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -39,7 +39,7 @@ TEST(IsRoundFloatTrue)
 {
 	wxString str("Testing tools...\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
-	
+
     float Value = 2;
     const bool Result = asTools::IsRound(Value);
     CHECK_EQUAL(true, Result);
@@ -358,7 +358,7 @@ TEST(SortedArraySearchIntAscOutofRange)
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 1000;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -369,7 +369,7 @@ TEST(SortedArraySearchIntAscNotFound)
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 6;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
     CHECK_EQUAL(notfound, Result);
 }
@@ -470,7 +470,7 @@ TEST(SortedArraySearchIntDescOutofRange)
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = -1;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -481,7 +481,7 @@ TEST(SortedArraySearchIntDescNotFound)
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 6;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
     CHECK_EQUAL(notfound, Result);
 }
@@ -572,7 +572,7 @@ TEST(SortedArraySearchIntUniqueValOutofRange)
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[0];
     int targetvalue = 11;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -613,7 +613,7 @@ TEST(SortedArraySearchIntArraySameValOutofRange)
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[3];
     int targetvalue = 11;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -654,7 +654,7 @@ TEST(SortedArraySearchDoubleAscOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 1000;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -665,7 +665,7 @@ TEST(SortedArraySearchDoubleAscNotFound)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 6;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
     CHECK_EQUAL(notfound, Result);
 }
@@ -696,7 +696,7 @@ TEST(SortedArraySearchDoubleAscTolerFirstOutLimit)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -727,7 +727,7 @@ TEST(SortedArraySearchDoubleAscTolerMidLimitOut)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 11.45;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.99);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.99, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
     CHECK_EQUAL(notfound, Result);
 }
@@ -758,7 +758,7 @@ TEST(SortedArraySearchDoubleAscTolerLastOutLimit)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 101.5;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.499);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.499, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -799,7 +799,7 @@ TEST(SortedArraySearchDoubleDescOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1.23;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -810,7 +810,7 @@ TEST(SortedArraySearchDoubleDescNotFound)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 6.2;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
     CHECK_EQUAL(notfound, Result);
 }
@@ -841,7 +841,7 @@ TEST(SortedArraySearchDoubleDescTolerFirstOutLimit)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -872,7 +872,7 @@ TEST(SortedArraySearchDoubleDescTolerMidOutLimit)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 11.45;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.999);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.999, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
     CHECK_EQUAL(notfound, Result);
 }
@@ -903,7 +903,7 @@ TEST(SortedArraySearchDoubleDescTolerLastOutLimit)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 102.21;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.2);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.2, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -934,7 +934,7 @@ TEST(SortedArraySearchDoubleUniqueValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -975,7 +975,7 @@ TEST(SortedArraySearchDoubleArraySameValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1028,7 +1028,7 @@ TEST(SortedArraySearchClosestDoubleAscOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 1000;
-    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1069,7 +1069,7 @@ TEST(SortedArraySearchClosestDoubleDescOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1.23;
-    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1090,7 +1090,7 @@ TEST(SortedArraySearchClosestDoubleUniqueValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1111,7 +1111,7 @@ TEST(SortedArraySearchClosestDoubleArraySameValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1162,7 +1162,7 @@ TEST(SortedArraySearchFloorDoubleAscOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 1000;
-    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1213,7 +1213,7 @@ TEST(SortedArraySearchFloorDoubleDescOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1.23;
-    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1234,7 +1234,7 @@ TEST(SortedArraySearchFloorDoubleUniqueValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1255,7 +1255,7 @@ TEST(SortedArraySearchFloorDoubleArraySameValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1306,7 +1306,7 @@ TEST(SortedArraySearchCeilDoubleAscOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 1000;
-    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1357,7 +1357,7 @@ TEST(SortedArraySearchCeilDoubleDescOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1.23;
-    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1378,7 +1378,7 @@ TEST(SortedArraySearchCeilDoubleUniqueValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }
@@ -1399,7 +1399,7 @@ TEST(SortedArraySearchCeilDoubleArraySameValOutofRange)
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 11;
-    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
     CHECK_EQUAL(outofrange, Result);
 }

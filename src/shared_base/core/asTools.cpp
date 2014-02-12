@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asTools.h"
 
 void asTools::InitRandom()
@@ -1098,7 +1098,6 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
             }
         }
 
-        asLogWarning(_("The first and the last values are equal but the size is larger than 1."));
         if( *pFirst>=targetvalue-tolerance && *pFirst<=targetvalue+tolerance )
         {
             return 0; // Value corresponds
@@ -1246,7 +1245,6 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
             }
         }
 
-        asLogWarning(_("The first and the last values are equal but the size is larger than 1."));
         if( *pFirst==targetvalue )
         {
             return 0; // Value corresponds
@@ -1290,7 +1288,7 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
         // Check that the value is whithin the array
         if (targetvalue>*pLast || targetvalue<*pFirst)
         {
-            if (showWarning == asSHOW_WARNINGS) 
+            if (showWarning == asSHOW_WARNINGS)
             {
                 asLogWarning(_("The value is out of the array range."));
             }
@@ -1382,7 +1380,6 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
             }
         }
 
-        asLogWarning(_("The first and the last values are equal but the size is larger than 1."));
         if( *pFirst==targetvalue )
         {
             return 0; // Value corresponds
@@ -1518,7 +1515,6 @@ int asTools::SortedArraySearchCeilT(T* pArrStart, T* pArrEnd, T targetvalue, int
             }
         }
 
-        asLogWarning(_("The first and the last values are equal but the size is larger than 1."));
         if( *pFirst==targetvalue )
         {
             return 0; // Value corresponds
@@ -1556,7 +1552,7 @@ bool asTools::SortedArrayInsert(T* pArrStart, T* pArrEnd, Order order, T val)
     switch(order){
         case (Asc):
         {
-            i_next = asTools::SortedArraySearchCeil(pArrStart, pArrEnd, val);
+            i_next = asTools::SortedArraySearchCeil(pArrStart, pArrEnd, val, asHIDE_WARNINGS);
             if (i_next==asOUT_OF_RANGE)
             {
                 i_next = 0;
@@ -1565,7 +1561,7 @@ bool asTools::SortedArrayInsert(T* pArrStart, T* pArrEnd, Order order, T val)
         }
         case (Desc):
         {
-            i_next = asTools::SortedArraySearchFloor(pArrStart, pArrEnd, val);
+            i_next = asTools::SortedArraySearchFloor(pArrStart, pArrEnd, val, asHIDE_WARNINGS);
             if (i_next==asOUT_OF_RANGE)
             {
                 i_next = 0;

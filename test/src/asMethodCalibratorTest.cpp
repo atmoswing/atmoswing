@@ -587,7 +587,7 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
             {
                 file.SkipLines(3);
             }
-            
+
             // Find target date in the array
             int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
 

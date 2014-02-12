@@ -137,8 +137,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double Umin = desiredArea->GetAbsoluteUmin();
     double Umax = desiredArea->GetAbsoluteUmax();
     wxASSERT(m_AxisLon.size()>0);
-    int UstartIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umin);
-    int UendIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umax);
+    int UstartIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umin, 0.0, asHIDE_WARNINGS);
+    int UendIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umax, 0.0, asHIDE_WARNINGS);
     if (UstartIndex<0)
     {
         UstartIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umin+desiredArea->GetAxisUmax());
@@ -164,8 +164,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double Vmin = desiredArea->GetAbsoluteVmin();
     double Vmax = desiredArea->GetAbsoluteVmax();
     wxASSERT(m_AxisLat.size()>0);
-    int VstartIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmin);
-    int VendIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmax);
+    int VstartIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmin, 0.0, asHIDE_WARNINGS);
+    int VendIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmax, 0.0, asHIDE_WARNINGS);
     if (UstartIndex<0)
     {
         VstartIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmin+desiredArea->GetAxisVmax());
