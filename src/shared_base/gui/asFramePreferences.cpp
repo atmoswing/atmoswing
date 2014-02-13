@@ -152,8 +152,9 @@ void asFramePreferences::LoadPreferences()
     m_CheckBoxDisplayLogVWindow->SetValue(displayLogWindowViewer);
     // Multithreading
     bool allowMultithreading;
-    pConfigForecaster->Read("/Standard/AllowMultithreading", &allowMultithreading, false);
+    pConfigForecaster->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
     m_CheckBoxAllowMultithreading->SetValue(allowMultithreading);
+
     // Set the number of threads
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads==-1) maxThreads = 2;
@@ -208,7 +209,7 @@ void asFramePreferences::LoadPreferences()
     m_DirPickerParameters->SetPath(ForecastParametersDir);
 
     // Processing
-    long defaultMethod = (long)asINSERT;
+    long defaultMethod = (long)asMULTITHREADS;
     long ProcessingMethod = pConfigForecaster->Read("/ProcessingOptions/ProcessingMethod", defaultMethod);
     if (!allowMultithreading)
     {
@@ -223,10 +224,7 @@ void asFramePreferences::LoadPreferences()
         m_RadioBoxProcessingMethods->Enable(0, true);
     }
     m_RadioBoxProcessingMethods->SetSelection((int)ProcessingMethod);
-    long defaultLinAlgebra = (long)asCOEFF;
-    #if defined (__WIN32__)
-        defaultLinAlgebra = (long)asCOEFF;
-    #endif
+    long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
     long ProcessingLinAlgebra = pConfigForecaster->Read("/ProcessingOptions/ProcessingLinAlgebra", defaultLinAlgebra);
     m_RadioBoxLinearAlgebra->SetSelection((int)ProcessingLinAlgebra);
 

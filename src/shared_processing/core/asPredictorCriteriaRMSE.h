@@ -38,7 +38,7 @@ public:
     /** Default constructor
      * \param criteria The chosen criteria
      */
-    asPredictorCriteriaRMSE(int linAlgebraMethod=asCOEFF_NOVAR);
+    asPredictorCriteriaRMSE(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
 
     /** Default destructor */
     ~asPredictorCriteriaRMSE();

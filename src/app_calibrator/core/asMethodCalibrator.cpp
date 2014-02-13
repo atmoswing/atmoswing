@@ -827,7 +827,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 {
     // Get the linear algebra method
     ThreadsManager().CritSectionConfig().Enter();
-    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asCOEFF_NOVAR));
+    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
     ThreadsManager().CritSectionConfig().Leave();
 
     // Initialize the result object
@@ -1255,7 +1255,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 {
     // Get the linear algebra method
     ThreadsManager().CritSectionConfig().Enter();
-    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asCOEFF_NOVAR));
+    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
     ThreadsManager().CritSectionConfig().Leave();
 
     // Initialize the result object

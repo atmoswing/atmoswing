@@ -38,7 +38,7 @@ public:
     /** Default constructor
      * \param criteria The chosen criteria
      */
-    asPredictorCriteriaMRDtoMean(int linAlgebraMethod=asCOEFF_NOVAR);
+    asPredictorCriteriaMRDtoMean(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
 
     /** Default destructor */
     ~asPredictorCriteriaMRDtoMean();

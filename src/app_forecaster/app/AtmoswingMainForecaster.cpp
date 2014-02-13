@@ -139,7 +139,7 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     pConfig->Write("/Standard/DisplayLogWindow", displayLogWindow);
     // Multithreading
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, false);
+    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
     pConfig->Write("/Standard/AllowMultithreading", allowMultithreading);
     // Set the number of threads
     int maxThreads = wxThread::GetCPUCount();
@@ -185,14 +185,14 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     pConfig->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
 
     // Processing
-    long defaultMethod = (long)asINSERT;
+    long defaultMethod = (long)asMULTITHREADS;
     long ProcessingMethod = pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod);
     if (!allowMultithreading)
     {
-        ProcessingMethod = (long)asINSERT;
+        ProcessingMethod = (long)asMULTITHREADS;
     }
     pConfig->Write("/ProcessingOptions/ProcessingMethod", ProcessingMethod);
-    long defaultLinAlgebra = (long)asCOEFF;
+    long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
     long ProcessingLinAlgebra = pConfig->Read("/ProcessingOptions/ProcessingLinAlgebra", defaultLinAlgebra);
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", ProcessingLinAlgebra);
 
