@@ -38,7 +38,7 @@ public:
     /** Default constructor
      * \param criteria The chosen criteria
      */
-    asPredictorCriteriaRMSEonMeanWithNaN(int linAlgebraMethod=asCOEFF_NOVAR);
+    asPredictorCriteriaRMSEonMeanWithNaN(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
 
     /** Default destructor */
     ~asPredictorCriteriaRMSEonMeanWithNaN();

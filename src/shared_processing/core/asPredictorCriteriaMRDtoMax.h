@@ -38,7 +38,7 @@ public:
     /** Default constructor
      * \param criteria The chosen criteria
      */
-    asPredictorCriteriaMRDtoMax(int linAlgebraMethod=asCOEFF_NOVAR);
+    asPredictorCriteriaMRDtoMax(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
 
     /** Default destructor */
     ~asPredictorCriteriaMRDtoMax();

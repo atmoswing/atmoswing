@@ -88,7 +88,7 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     pConfig->Write("/Standard/DisplayLogWindowViewer", displayLogWindow);
     // Multithreading
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, false);
+    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
     pConfig->Write("/Standard/AllowMultithreading", allowMultithreading);
     // Set the number of threads
     int maxThreads = wxThread::GetCPUCount();

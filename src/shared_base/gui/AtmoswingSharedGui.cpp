@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Nov  6 2013)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
-#include "AtmoSwingSharedGui.h"
+#include "AtmoswingSharedGui.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -855,6 +855,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	sbSizer15 = new wxStaticBoxSizer( new wxStaticBox( m_PanelProcessing, wxID_ANY, _("Multithreading") ), wxVERTICAL );
 	
 	m_CheckBoxAllowMultithreading = new wxCheckBox( m_PanelProcessing, wxID_ANY, _("Allow multithreading"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxAllowMultithreading->SetValue(true); 
 	sbSizer15->Add( m_CheckBoxAllowMultithreading, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer221;
@@ -887,18 +888,20 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	
 	bSizer1611->Add( sbSizer15, 0, wxALL|wxEXPAND, 5 );
 	
-	wxString m_RadioBoxProcessingMethodsChoices[] = { _("Multithreaded (only if allowed hereabove)"), _("Date array insertions (safer)"), _("Date array splitting (slower)") };
+	wxString m_RadioBoxProcessingMethodsChoices[] = { _("Multithreaded (only if allowed hereabove)"), _("Date array insertions (slower)"), _("Date array splitting (slower)") };
 	int m_RadioBoxProcessingMethodsNChoices = sizeof( m_RadioBoxProcessingMethodsChoices ) / sizeof( wxString );
 	m_RadioBoxProcessingMethods = new wxRadioBox( m_PanelProcessing, wxID_ANY, _("Processing options"), wxDefaultPosition, wxDefaultSize, m_RadioBoxProcessingMethodsNChoices, m_RadioBoxProcessingMethodsChoices, 1, wxRA_SPECIFY_COLS );
-	m_RadioBoxProcessingMethods->SetSelection( 1 );
+	m_RadioBoxProcessingMethods->SetSelection( 0 );
 	m_RadioBoxProcessingMethods->SetToolTip( _("These options don't affect the results, only the processor efficiency.") );
 	
 	bSizer1611->Add( m_RadioBoxProcessingMethods, 0, wxALL|wxEXPAND, 5 );
 	
-	wxString m_RadioBoxLinearAlgebraChoices[] = { _("Direct access to the coefficients (recommanded)"), _("Direct access to the coefficients and minimizing variable declarations"), _("Linear algebra using Eigen"), _("Linear algebra using Eigen and minimizing variable declarations") };
+	wxString m_RadioBoxLinearAlgebraChoices[] = { _("Direct access to the coefficients"), _("Direct access to the coefficients and minimizing variable declarations"), _("Linear algebra using Eigen"), _("Linear algebra using Eigen and minimizing variable declarations (recommended)") };
 	int m_RadioBoxLinearAlgebraNChoices = sizeof( m_RadioBoxLinearAlgebraChoices ) / sizeof( wxString );
 	m_RadioBoxLinearAlgebra = new wxRadioBox( m_PanelProcessing, wxID_ANY, _("Linear algebra options"), wxDefaultPosition, wxDefaultSize, m_RadioBoxLinearAlgebraNChoices, m_RadioBoxLinearAlgebraChoices, 1, wxRA_SPECIFY_COLS );
-	m_RadioBoxLinearAlgebra->SetSelection( 0 );
+	m_RadioBoxLinearAlgebra->SetSelection( 3 );
+	m_RadioBoxLinearAlgebra->Enable( false );
+	
 	bSizer1611->Add( m_RadioBoxLinearAlgebra, 0, wxALL|wxEXPAND, 5 );
 	
 	

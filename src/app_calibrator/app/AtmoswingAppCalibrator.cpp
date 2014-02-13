@@ -253,7 +253,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/StandardPaths/CalibrationResultsDir", localPath+"results");
         pConfig->Write("/StandardPaths/ArchivePredictorsDir", dirData);
         pConfig->Write("/StandardPaths/ForecastParametersDir", dirConfig);
-        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (long)asCOEFF);
+        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Calibration/ParallelEvaluations", true);
         pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
         pConfig->Write("/Standard/AllowMultithreading", true);

@@ -65,10 +65,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long defaultMethod = (long)asINSERT;
+    long defaultMethod = (long)asMULTITHREADS;
     int method = (int)(pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod));
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, false);
+    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
@@ -587,10 +587,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long defaultMethod = (long)asINSERT;
+    long defaultMethod = (long)asMULTITHREADS;
     int method = (int)(pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod));
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, false);
+    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
