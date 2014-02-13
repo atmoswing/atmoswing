@@ -28,6 +28,7 @@
 #include "asGlobVars.h"
 #include "include_tests.h"
 #include "UnitTest++.h"
+#include <TestReporterStdout.h>
 #include <wx/app.h>
 #include <wx/filename.h>
 
@@ -35,19 +36,23 @@
     #define UNIT_TESTING
 #endif
 
-int main()
+/*
+ * Provide tests names as arguments in order to test specific tests. Otherwise process all tests.
+ * Examples:
+ * ./AtmoSwingTests IsRoundFloatTrue LoadCatalogProp -> test specific tests
+ * ./AtmoSwingTests quick -> test only the fast ones (not the method calibration)  
+ * ./AtmoSwingTests -> test everything  
+ */
+
+int main( int argc, char** argv )
 {
+    // Override some globals
     g_UnitTesting = true;
     g_SilentMode = true;
     g_GuiMode = false;
 
     // Option to test or not the exception throwing
     g_UnitTestExceptions = false;
-
-    // Option to process time demanding processing
-    g_UnitTestLongerProcessing = true;
-    g_UnitTestLongestProcessing = true;
-    if(g_UnitTestLongestProcessing) g_UnitTestLongerProcessing = true;
 
     // Test random distribution: write ouput in files
     g_UnitTestRandomDistributions = false;
@@ -94,9 +99,57 @@ int main()
 				return 0;
 			}
 		}
-	}
+    }
 
-    int result = UnitTest::RunAllTests();
+    // Process only the selected tests or all of them is none is selected
+    // from http://stackoverflow.com/questions/3546054/how-do-i-run-a-single-test-with-unittest
+    int result;
+    if( argc > 1 )
+    {
+        // If first arg is "quick", we only process the fast ones
+        const bool shortOnly = strcmp( "quick", argv[ 1 ] ) == 0;
+        if (shortOnly)
+        {
+            // Option to process time demanding processing
+            g_UnitTestLongProcessing = false;
+
+            result = UnitTest::RunAllTests();
+        }
+        else
+        {
+            // If first arg is "suite", we search for suite names instead of test names
+            const bool suite = strcmp( "suite", argv[ 1 ] ) == 0;
+
+            // Walk list of all tests, add those with a name that matches one of the arguments to a new TestList
+            const UnitTest::TestList& allTests( UnitTest::Test::GetTestList() );
+            UnitTest::TestList selectedTests;
+            UnitTest::Test* p = allTests.GetHead();
+            while( p )
+            {
+                for( int i=1 ; i<argc ; ++i )
+                {
+                    if( strcmp( suite ? p->m_details.suiteName
+                                    : p->m_details.testName, argv[ i ] ) == 0 )
+                    {
+                        selectedTests.Add( p );
+                    }
+                }
+                p = p->m_nextTest;
+            }
+
+            // To close the queue (otherwise it continues on the allTests list)
+            selectedTests.Add( 0 );
+
+            //run selected test(s) only
+            UnitTest::TestReporterStdout reporter;
+            UnitTest::TestRunner runner( reporter );
+            return runner.RunTestsIf( selectedTests, 0, UnitTest::True(), 0 );
+        }
+    }
+    else
+    {
+        result = UnitTest::RunAllTests();
+    }
 
     wxUninitialize();
     DeleteThreadsManager();
