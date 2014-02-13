@@ -45,7 +45,7 @@ namespace
 
 void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 {
-    if (g_UnitTestLongestProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 
@@ -355,7 +355,7 @@ TEST(GrenobleComparison1ProcessingMethodInsert)
     pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
-    wxString str("Processing GrenobleComparison1 with the array insertion option\n");
+    wxString str("Processing GrenobleComparison1 with the array insertion option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
     wxStopWatch sw;
@@ -372,7 +372,7 @@ TEST(GrenobleComparison1ProcessingMethodSplitting)
     pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asFULL_ARRAY);
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
-    wxString str("Processing GrenobleComparison1 with the array splitting option\n");
+    wxString str("Processing GrenobleComparison1 with the array splitting option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
     wxStopWatch sw;
@@ -422,7 +422,7 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
 
 void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 {
-    if (g_UnitTestLongestProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 
@@ -596,14 +596,17 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 
             for (int i_ana=0; i_ana<nanalogs; i_ana++)
             {
-                CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
-                CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
-                CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
-
-                if (abs(fileAnalogsDates[i_ana]-resultsAnalogsDates(rowTargetDate, i_ana))>0.0001)
+                if(fileAnalogsDates[i_ana]>0)
                 {
-                    wxString strdates = wxString::Format(("Date is %s and should be %s.\n"), asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, i_ana)), asTime::GetStringTime(fileAnalogsDates[i_ana]));
-                    printf("%s", strdates.mb_str(wxConvUTF8).data());
+                    CHECK_CLOSE(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana), 0.0001);
+                    CHECK_CLOSE(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana), 0.0001);
+                    CHECK_CLOSE(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+
+                    if (abs(fileAnalogsDates[i_ana]-resultsAnalogsDates(rowTargetDate, i_ana))>0.0001)
+                    {
+                        wxString strdates = wxString::Format(("Date is %s and should be %s.\n"), asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, i_ana)), asTime::GetStringTime(fileAnalogsDates[i_ana]));
+                        printf("%s", strdates.mb_str(wxConvUTF8).data());
+                    }
                 }
             }
 
@@ -719,7 +722,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
 
 TEST(PreloadingSimple)
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
@@ -797,7 +800,7 @@ TEST(PreloadingSimple)
 
 TEST(PreloadingWithPreprocessing)
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
@@ -888,7 +891,7 @@ TEST(PreloadingWithPreprocessing)
 
 void GrenobleComparison1Preloading()
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 
@@ -1069,7 +1072,7 @@ TEST(GrenobleComparison1PreloadingMultithreaded)
 
 void GrenobleComparison1PreloadingSubset()
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 
@@ -1167,7 +1170,7 @@ TEST(GrenobleComparison1PreloadingSubsetMultithreaded)
 
 void GrenobleComparison2Preloading()
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 
@@ -1359,7 +1362,7 @@ TEST(GrenobleComparison2PreloadingProcessingMethodInsert)
 
 void GrenobleComparison2SavingIntermediateResults()
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 
@@ -1572,7 +1575,7 @@ TEST(GrenobleComparison2SavingIntermediateResults)
 
 void GrenobleComparison2MergeByHalfAndMultiply()
 {
-    if (g_UnitTestLongerProcessing)
+    if (g_UnitTestLongProcessing)
     {
         bool result;
 

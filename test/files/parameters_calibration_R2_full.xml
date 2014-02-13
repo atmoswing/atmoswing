@@ -154,7 +154,7 @@
         <Process name="Analogs Forecast Scores">
             <Options />
             <Params name="Method">
-                <Name value="CRPSEP" method="fixed" />
+                <Name value="CRPSAR" method="fixed" />
             </Params>
             <Params name="Analogs Number">
                 <AnalogsNumber value="30" min="" max="" step="" method="fixed" />
