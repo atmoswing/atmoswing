@@ -1032,7 +1032,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
         int i_targdatenew = i_targdate-indexTargDatesStart;
         currentTargetDate = timeTargetSelection(i_targdate);
         finalTargetDates[i_targdatenew] = currentTargetDate;
-        predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandTimeDays);
+        predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandTimeDays,asHIDE_WARNINGS);
         if( ignoreTargetValues | (predictandIndex==asOUT_OF_RANGE) | (predictandIndex==asNOT_FOUND) )
         {
             finalTargetValuesNorm(i_targdatenew) = NaNFloat;

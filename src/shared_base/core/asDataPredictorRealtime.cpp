@@ -40,7 +40,7 @@ asDataPredictor(dataId)
 {
     m_RunDateInUse = 0;
     m_RestrictDownloads = false;
-    m_RestrictDTimeHours = 0;
+    m_RestrictTimeHours = 0;
     m_RestrictTimeStepHours = 0;
 }
 
@@ -154,14 +154,14 @@ double asDataPredictorRealtime::DecrementRunDateInUse()
     return m_RunDateInUse;
 }
 
-void asDataPredictorRealtime::RestrictTimeArray(double restrictDTimeHours, double restrictTimeStepHours)
+void asDataPredictorRealtime::RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours)
 {
     m_RestrictDownloads = true;
-    m_RestrictDTimeHours = restrictDTimeHours;
+    m_RestrictTimeHours = restrictTimeHours;
     m_RestrictTimeStepHours = restrictTimeStepHours;
     wxASSERT(m_RestrictTimeStepHours>0);
-    wxASSERT(m_RestrictDTimeHours>-100);
-    wxASSERT(m_RestrictDTimeHours<100);
+    wxASSERT(m_RestrictTimeHours>-100);
+    wxASSERT(m_RestrictTimeHours<100);
 }
 
 bool asDataPredictorRealtime::BuildFilenamesUrls()
@@ -195,7 +195,7 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
     {
         // Get the real lead time
         double dayRun = floor(m_RunDateInUse);
-        double desiredTime = dayRun+m_RestrictDTimeHours/24.0;
+        double desiredTime = dayRun+m_RestrictTimeHours/24.0;
         double diff = desiredTime-m_RunDateInUse;
         m_ForecastLeadTimeStart = (int)(diff*24.0);
         m_ForecastLeadTimeStep = m_RestrictTimeStepHours;

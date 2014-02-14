@@ -72,7 +72,7 @@ public:
     bool BuildFilenamesUrls();
 
     /** Restrict the downloads to used data */
-    void RestrictTimeArray(double restrictDTimeHours, double restrictTimeStepHours);
+    void RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours);
 
     void SetRestrictDownloads(bool val)
     {
@@ -294,7 +294,7 @@ protected:
     double m_RunDateInUse;
     wxString m_CommandDownload;
     bool m_RestrictDownloads;
-    double m_RestrictDTimeHours;
+    double m_RestrictTimeHours;
     double m_RestrictTimeStepHours;
     VectorString m_FileNames;
     VectorString m_Urls;
