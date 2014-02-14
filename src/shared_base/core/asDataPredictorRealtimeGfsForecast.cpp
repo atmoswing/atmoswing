@@ -60,7 +60,7 @@ asDataPredictorRealtime(dataId)
     m_VaxisShift = 0;
     m_UaxisStep = 1;
     m_VaxisStep = 1;
-    m_RestrictDTimeHours = 0;
+    m_RestrictTimeHours = 0;
     m_RestrictTimeStepHours = 24;
     m_FileFormat = grib2;
 

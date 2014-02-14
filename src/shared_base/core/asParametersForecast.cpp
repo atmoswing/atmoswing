@@ -312,7 +312,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
         if(!fileParams.GoANodeBack()) return false;
 
         // Find the next analogs date block
-        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates")) break;
+        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates", asHIDE_WARNINGS)) break;
 
         i_step++;
     }

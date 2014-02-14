@@ -985,7 +985,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         bool containsNaNs = false;
 
         if(!asProcessor::GetAnalogsDates(m_StoragePredictorsArchive, m_StoragePredictorsRealtime,
-                                         timeArrayArchive, timeArrayArchive, timeArrayArchive, timeArrayTargetLeadTime,
+                                         timeArrayArchive, timeArrayArchive, timeArrayTarget, timeArrayTargetLeadTime,
                                          m_StorageCriteria, params, i_step, anaDates, containsNaNs))
         {
             asLogError(_("Failed processing the analogs dates."));
