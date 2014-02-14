@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -127,7 +127,7 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 
     if(m_DataTemporalResolution!=SixHourlyMovingDailyTemporalWindow)
     {
-        // Define specific dimensions. 
+        // Define specific dimensions.
         ncFile.DefDim("return_periods", (int)m_ReturnPeriods.size());
 
         // The dimensions name array is used to pass the dimensions to the variable.
@@ -172,7 +172,7 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 
     // End definitions: leave define mode
     ncFile.EndDef();
-    
+
     // Save common data
     SaveCommonData(ncFile);
 
@@ -316,8 +316,11 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
 
         for (int i_st=0; i_st<m_StationsNb; i_st++)
         {
+            Array1DFloat currentAnnualMax = annualMax.row(i_st);
+            int arrayEnd = currentAnnualMax.size()-1;
+
             // Check the length of the data
-            int dataLength = asTools::CountNotNaN(&annualMax(i_st,0), &annualMax(i_st, annualMax.cols()-1));
+            int dataLength = asTools::CountNotNaN(&currentAnnualMax(0), &currentAnnualMax(arrayEnd));
             if(dataLength<20)
             {
                 asLogError(_("Caution, a time serie is shorter than 20 years. It is too short to process a Gumbel adjustment."));
@@ -328,9 +331,9 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
                 asLogWarning(_("Caution, a time serie is shorter than 30 years. It is a bit short to process a Gumbel adjustment."));
             }
 
-            if(!asTools::SortArray(&annualMax(i_st,0), &annualMax(i_st,annualMax.cols()-1), Asc)) return false;
-            float mean = asTools::Mean(&annualMax(i_st,0), &annualMax(i_st,annualMax.cols()-1));
-            float stdev = asTools::StDev(&annualMax(i_st,0), &annualMax(i_st,annualMax.cols()-1), asSAMPLE);
+            if(!asTools::SortArray(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), Asc)) return false;
+            float mean = asTools::Mean(&currentAnnualMax(0), &currentAnnualMax(arrayEnd));
+            float stdev = asTools::StDev(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), asSAMPLE);
 
             float b = b_cst*stdev;
             float a = mean-b*g_Cst_Euler; // EUCON: Euler-Mascheroni constant in math.h
@@ -351,7 +354,8 @@ float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int i_statio
 {
     float F = 1-(1/returnPeriod); // Probability of not overtaking
     float u = -log(-log(F)); // Gumbel variable
-    int i_duration = asTools::SortedArraySearch(&m_GumbelDuration(i_station,0), &m_GumbelDuration(i_station,m_GumbelDuration.cols()-1),duration,0.00001f);
+    Array1DFloat durations = m_GumbelDuration.row(i_station);
+    int i_duration = asTools::SortedArraySearch(&durations(0), &durations(durations.size()-1),duration,0.00001f);
     return m_GumbelParamB(i_station,i_duration)*u + m_GumbelParamA(i_station,i_duration);
 }
 
