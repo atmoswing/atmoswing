@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -51,7 +51,6 @@ IMPLEMENT_APP(AtmoswingAppCalibrator);
 #include <asIncludes.h>
 #include <asFileAscii.h>
 #include <asMethodCalibratorSingle.h>
-#include <asMethodCalibratorExhaustive.h>
 #include <asMethodCalibratorClassic.h>
 #if wxUSE_GUI
     #include "img_toolbar.h"
@@ -79,7 +78,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, "di", "dirpredictors", "choice of the predictors directory" },
     { wxCMD_LINE_OPTION, "cm", "calibmethod", "choice of the calibration method"
                                 "\n \t\t\t\t single: single assessment"
-                                "\n \t\t\t\t exhaustive: exhaustive exploration"
                                 "\n \t\t\t\t classic: classic calibration"
                                 "\n \t\t\t\t classicp: classic+ calibration"
                                 "\n \t\t\t\t varexplocp: variables exploration classic+"
@@ -718,15 +716,6 @@ int AtmoswingAppCalibrator::OnRun()
             if (m_CalibMethod.IsSameAs("single", false))
             {
                 asMethodCalibratorSingle calibrator;
-                calibrator.SetParamsFilePath(m_CalibParamsFile);
-                calibrator.SetPredictandDBFilePath(m_PredictandDB);
-                calibrator.SetPredictorDataDir(m_PredictorsDir);
-                calibrator.Manager();
-                calibrator.Cleanup();
-            }
-            else if (m_CalibMethod.IsSameAs("exhaustive", false))
-            {
-                asMethodCalibratorExhaustive calibrator;
                 calibrator.SetParamsFilePath(m_CalibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);

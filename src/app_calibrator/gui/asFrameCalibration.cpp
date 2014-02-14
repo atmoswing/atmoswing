@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asFrameCalibration.h"
 
 #include "wx/fileconf.h"
@@ -33,7 +33,6 @@
 #include "asMethodCalibratorClassic.h"
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
-#include "asMethodCalibratorExhaustive.h"
 #include "asMethodCalibratorSingle.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
@@ -356,32 +355,27 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
                 m_MethodCalibrator = new asMethodCalibratorSingle();
                 break;
             }
-            case 1: // Exhaustive
-            {
-                m_MethodCalibrator = new asMethodCalibratorExhaustive();
-                break;
-            }
-            case 2: // Classic
+            case 1: // Classic
             {
                 m_MethodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
-            case 3: // Classic+
+            case 2: // Classic+
             {
                 m_MethodCalibrator = new asMethodCalibratorClassicPlus();
                 break;
             }
-            case 4: // Variables exploration with classic+
+            case 3: // Variables exploration with classic+
             {
                 m_MethodCalibrator = new asMethodCalibratorClassicPlusVarExplo();
                 break;
             }
-            case 5: // Scores evaluation
+            case 4: // Scores evaluation
             {
                 m_MethodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
-            case 6: // Only predictand values
+            case 5: // Only predictand values
             {
                 m_MethodCalibrator = new asMethodCalibratorSingleOnlyValues();
                 break;
