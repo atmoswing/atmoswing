@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asDataPredictand.h"
 
 #include <asCatalogPredictands.h>
@@ -63,13 +63,13 @@ asDataPredictand* asDataPredictand::GetInstance(const wxString& dataParameterStr
         asLogError(_("The given data parameter is unknown. Cannot get an instance of the predictand DB."));
         return NULL;
     }
-    
+
     if (dataTemporalResolution==NoDataTemporalResolution)
     {
         asLogError(_("The given data temporal resolution is unknown. Cannot get an instance of the predictand DB."));
         return NULL;
     }
-    
+
     if (dataSpatialAggregation==NoDataSpatialAggregation)
     {
         asLogError(_("The given data spatial aggregation is unknown. Cannot get an instance of the predictand DB."));
@@ -323,7 +323,7 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.DefVar("loc_coord_v", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("start", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("end", NC_DOUBLE, 1, DimNameStations);
-    
+
     // Put attributes for the stations
     ncFile.PutAtt("long_name", "Stations names", "stations_name");
     ncFile.PutAtt("var_desc", "Name of the predictand stations", "stations_name");
