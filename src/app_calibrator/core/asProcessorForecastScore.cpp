@@ -193,9 +193,17 @@ bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsFore
 // TODO (phorton#1#): Specify the period in the parameter
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance(params.GetForecastScoreName(), "Total");
 
-    float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetForecastScores(), timeArray);
-
-    results.SetForecastScore(result);
+    if (finalScore->SingleValue())
+    {
+        float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetForecastScores(), timeArray);
+        results.SetForecastScore(result);
+    }
+    else
+    {
+        finalScore->SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
+        Array1DFloat result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetForecastScores(), timeArray);
+        results.SetForecastScore(result);
+    }
 
     wxDELETE(finalScore);
 

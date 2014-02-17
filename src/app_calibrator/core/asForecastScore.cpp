@@ -41,6 +41,7 @@
 #include "asForecastScoreBS.h"
 #include "asForecastScoreBSS.h"
 #include "asForecastScoreSEEPS.h"
+#include "asForecastScoreRankHistogram.h"
 
 asForecastScore::asForecastScore()
 {
@@ -167,6 +168,16 @@ asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
         case (SEEPS):
         {
             asForecastScore* score = new asForecastScoreSEEPS();
+            return score;
+        }
+        case (RankHistogram):
+        {
+            asForecastScore* score = new asForecastScoreRankHistogram();
+            return score;
+        }
+        case (RankHistogramReliability):
+        {
+            asForecastScore* score = new asForecastScoreRankHistogram();
             return score;
         }
     }
@@ -304,6 +315,16 @@ asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
     else if (scoreString.CmpNoCase("SEEPS")==0)
     {
         asForecastScore* score = new asForecastScoreSEEPS();
+        return score;
+    }
+    else if (scoreString.CmpNoCase("RankHistogram")==0)
+    {
+        asForecastScore* score = new asForecastScoreRankHistogram();
+        return score;
+    }
+    else if (scoreString.CmpNoCase("RankHistogramReliability")==0)
+    {
+        asForecastScore* score = new asForecastScoreRankHistogram();
         return score;
     }
     else

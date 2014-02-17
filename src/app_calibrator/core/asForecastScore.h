@@ -59,7 +59,9 @@ public:
 		RMSE, // Root mean squared error
 		BS, // Brier score
 		BSS, // Brier skill score
-		SEEPS // Stable equitable error in probability space
+		SEEPS ,// Stable equitable error in probability space
+        RankHistogram, // The Verification Rank Histogram (Talagrand Diagram)
+        RankHistogramReliability // Reliability of the Verification Rank Histogram (Talagrand Diagram)
     };
 
     /** Default constructor

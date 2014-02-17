@@ -1719,5 +1719,158 @@ TEST(ProcessBSS)
     wxDELETE(finalScore);
 }
 
+TEST(ProcessRankHistogram)
+{
+    // Sizes
+    int timeLength = 20;
+    int nanalogs = 30;
+
+    // Resize the containers
+    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
+    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+
+    vecForecast.row(0) << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
+    vecForecast.row(1) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
+    vecForecast.row(2) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
+    vecForecast.row(3) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
+    vecForecast.row(4) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
+    vecForecast.row(5) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
+    vecForecast.row(6) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
+    vecForecast.row(7) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
+    vecForecast.row(8) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
+    vecForecast.row(9) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
+    vecForecast.row(10) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
+    vecForecast.row(11) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
+    vecForecast.row(12) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
+    vecForecast.row(13) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
+    vecForecast.row(14) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
+    vecForecast.row(15) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
+    vecForecast.row(16) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
+    vecForecast.row(17) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
+    vecForecast.row(18) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
+    vecForecast.row(19) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
+
+    vecObs << 0.0f, 6.3f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
+
+    // Instantiate the score
+    asForecastScore* score = asForecastScore::GetInstance("RankHistogram");
+    
+    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
+    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+
+    for (int i_time=0;i_time<vecObs.size();i_time++)
+    {
+        pseudoDates[i_time] = i_time;
+        float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
+        results[i_time] = res;
+        CHECK(!asTools::IsNaN(results[i_time]));
+    }
+
+
+    // Values processed on Excel
+    bool isTrue = (results[0]>=1 && results[0]<5); // Contains random value
+    CHECK_EQUAL(true,isTrue);
+    isTrue = (results[1]>=26 && results[1]<28); // Contains random value
+    CHECK_EQUAL(true,isTrue);
+    CHECK_EQUAL(29,results[2]);
+    CHECK_EQUAL(24,results[3]);
+    CHECK_EQUAL(24,results[4]);
+    CHECK_EQUAL(31,results[5]);
+    CHECK_EQUAL(15,results[6]);
+    CHECK_EQUAL(16,results[7]);
+    CHECK_EQUAL(24,results[8]);
+    CHECK_EQUAL(24,results[9]);
+    CHECK_EQUAL(29,results[10]);
+    CHECK_EQUAL(18,results[11]);
+    CHECK_EQUAL(25,results[12]);
+    CHECK_EQUAL(14,results[13]);
+    CHECK_EQUAL(24,results[14]);
+    CHECK_EQUAL(15,results[15]);
+    CHECK_EQUAL(28,results[16]);
+    CHECK_EQUAL(16,results[17]);
+    CHECK_EQUAL(20,results[18]);
+    CHECK_EQUAL(24,results[19]);
+
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
+    finalScore->SetRanksNb(nanalogs+1);
+    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    Array1DFloat scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
+
+    float total=scoreVal.sum();
+    CHECK_CLOSE(100, total, 0.00001);
+
+    // Values processed on Excel
+    CHECK_CLOSE(5,scoreVal[13],0.00001);
+    CHECK_CLOSE(10,scoreVal[14],0.00001);
+    CHECK_CLOSE(10,scoreVal[15],0.00001);
+    CHECK_CLOSE(5,scoreVal[17],0.00001);
+    CHECK_CLOSE(5,scoreVal[19],0.00001);
+    CHECK_CLOSE(30,scoreVal[23],0.00001);
+    CHECK_CLOSE(5,scoreVal[24],0.00001);
+    CHECK_CLOSE(10,scoreVal[28],0.00001);
+    CHECK_CLOSE(5,scoreVal[30],0.00001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);
+}
+
+TEST(ProcessRankHistogramReliability)
+{
+    // Sizes
+    int timeLength = 20;
+    int nanalogs = 30;
+
+    // Resize the containers
+    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
+    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+
+    vecForecast.row(0) << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
+    vecForecast.row(1) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
+    vecForecast.row(2) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
+    vecForecast.row(3) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
+    vecForecast.row(4) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
+    vecForecast.row(5) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
+    vecForecast.row(6) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
+    vecForecast.row(7) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
+    vecForecast.row(8) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
+    vecForecast.row(9) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
+    vecForecast.row(10) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
+    vecForecast.row(11) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
+    vecForecast.row(12) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
+    vecForecast.row(13) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
+    vecForecast.row(14) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
+    vecForecast.row(15) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
+    vecForecast.row(16) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
+    vecForecast.row(17) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
+    vecForecast.row(18) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
+    vecForecast.row(19) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
+
+    vecObs << 0.3f, 6.4f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
+
+    // Instantiate the score
+    asForecastScore* score = asForecastScore::GetInstance("RankHistogramReliability");
+    
+    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
+    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+
+    for (int i_time=0;i_time<vecObs.size();i_time++)
+    {
+        pseudoDates[i_time] = i_time;
+        float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
+        results[i_time] = res;
+        CHECK(!asTools::IsNaN(results[i_time]));
+    }
+
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogramReliability", "Total");
+    finalScore->SetRanksNb(nanalogs+1);
+    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
+
+    // Values processed on Excel
+    CHECK_CLOSE(2.3300, scoreVal, 0.0001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);
+}
 }
 

@@ -46,6 +46,14 @@
 
 int main( int argc, char** argv )
 {
+
+    /*
+    // In order to debug just one test
+    argc=2;
+    char* chars = "ProcessRankHistogramReliability";
+    argv[1] = chars;
+    */
+
     // Override some globals
     g_UnitTesting = true;
     g_SilentMode = true;
@@ -143,7 +151,7 @@ int main( int argc, char** argv )
             //run selected test(s) only
             UnitTest::TestReporterStdout reporter;
             UnitTest::TestRunner runner( reporter );
-            return runner.RunTestsIf( selectedTests, 0, UnitTest::True(), 0 );
+            result = runner.RunTestsIf( selectedTests, 0, UnitTest::True(), 0 );
         }
     }
     else

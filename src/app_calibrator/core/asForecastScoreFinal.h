@@ -56,14 +56,28 @@ public:
     static asForecastScoreFinal* GetInstance(const wxString& scoreString, const wxString& periodString);
 
     virtual float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) = 0;
+    
+    virtual Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
 
     Period GetPeriod()
     {
         return m_Period;
     }
 
+    bool SingleValue()
+    {
+        return m_SingleValue;
+    }
+
+    void SetRanksNb(int val)
+    {
+        m_RanksNb = val;
+    }
+
 protected:
     Period m_Period;
+    bool m_SingleValue;
+    int m_RanksNb;
 
 private:
 
