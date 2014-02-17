@@ -36,6 +36,8 @@ asResultsAnalogsForecastScoreFinal::asResultsAnalogsForecastScoreFinal()
 :
 asResults()
 {
+    m_HasSingleValue = true;
+
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveFinalForecastScore", &m_SaveIntermediateResults, false);
     wxFileConfig::Get()->Read("/Calibration/IntermediateResults/LoadFinalForecastScore", &m_LoadIntermediateResults, false);

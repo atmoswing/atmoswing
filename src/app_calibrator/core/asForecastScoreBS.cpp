@@ -58,12 +58,12 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if(nbForecasts==asNOT_FOUND)
     {
-        asLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
+        asLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
         return NaNFloat;
     }
     else if(nbForecasts<=2)
     {
-        asLogWarning(_("Not enough elements to process the CRPS."));
+        asLogWarning(_("Not enough elements to process the Brier score."));
         return NaNFloat;
     }
 

@@ -39,10 +39,14 @@
 #include "asForecastScoreFinalPSS.h"
 #include "asForecastScoreFinalGSS.h"
 #include "asForecastScoreFinalRMSE.h"
+#include "asForecastScoreFinalRankHistogram.h"
+#include "asForecastScoreFinalRankHistogramReliability.h"
 
 asForecastScoreFinal::asForecastScoreFinal(Period period)
 {
     m_Period = period;
+    m_SingleValue = true;
+    m_RanksNb = 0;
 }
 
 asForecastScoreFinal::asForecastScoreFinal(const wxString& periodString)
@@ -210,6 +214,16 @@ asForecastScoreFinal* asForecastScoreFinal::GetInstance(const wxString& scoreStr
         asForecastScoreFinal* score = new asForecastScoreFinalMean(periodString);
         return score;
     }
+    else if (scoreString.CmpNoCase("RankHistogram")==0)
+    {
+        asForecastScoreFinal* score = new asForecastScoreFinalRankHistogram(periodString);
+        return score;
+    }
+    else if (scoreString.CmpNoCase("RankHistogramReliability")==0)
+    {
+        asForecastScoreFinal* score = new asForecastScoreFinalRankHistogramReliability(periodString);
+        return score;
+    }
     else
     {
         asLogError(_("The final forecast score was not correctly set."));
@@ -221,4 +235,11 @@ asForecastScoreFinal* asForecastScoreFinal::GetInstance(const wxString& scoreStr
 asForecastScoreFinal::~asForecastScoreFinal()
 {
     //dtor
+}
+
+Array1DFloat asForecastScoreFinal::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
+{
+    asLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
+
+    return Array1DFloat();
 }

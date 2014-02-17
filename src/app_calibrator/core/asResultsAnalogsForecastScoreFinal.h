@@ -64,6 +64,32 @@ public:
     {
         m_ForecastScore = val;
     }
+    
+    /** Access m_ForecastScoreArray
+     * \return The value of m_ForecastScoreArray
+     */
+    Array1DFloat GetForecastScoreArray()
+    {
+        return m_ForecastScoreArray;
+    }
+
+    /** Set m_ForecastScoreArray
+     * \param val The new value to set
+     */
+    void SetForecastScore(Array1DFloat val)
+    {
+        m_ForecastScoreArray = val;
+        m_HasSingleValue = false;
+    }
+
+    /** Set m_ForecastScoreArray
+     * \param val The new value to set
+     */
+    void SetForecastScoreArray(Array1DFloat val)
+    {
+        m_ForecastScoreArray = val;
+        m_HasSingleValue = false;
+    }
 
     /** Save the result file
      * \param AlternateFilePath An optional file path
@@ -85,7 +111,9 @@ protected:
     void BuildFileName(asParametersScoring &params);
 
 private:
+    bool m_HasSingleValue;
     float m_ForecastScore; //!< Member variable "m_ForecastScore"
+    Array1DFloat m_ForecastScoreArray; //!< Member variable "m_ForecastScoreArray"
 };
 
 #endif // ASRESULTSANALOGSFORECASTSCOREFINAL_H

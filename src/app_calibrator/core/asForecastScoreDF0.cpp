@@ -53,7 +53,7 @@ float asForecastScoreDF0::Assess(float ObservedVal, const Array1DFloat &ForcastV
     // Check the element numbers vs vector length and the observed value
     if(!CheckInputs(ObservedVal, ForcastVals, nbElements))
     {
-        asLogWarning(_("The inputs are not conform in the CRPS processing function"));
+        asLogWarning(_("The inputs are not conform in the DF0 processing function"));
         return NaNFloat;
     }
 
