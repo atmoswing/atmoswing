@@ -41,11 +41,14 @@
 #include "asForecastScoreFinalRMSE.h"
 #include "asForecastScoreFinalRankHistogram.h"
 #include "asForecastScoreFinalRankHistogramReliability.h"
+#include "asForecastScoreFinalCRPSreliability.h"
+#include "asForecastScoreFinalCRPSpotential.h"
 
 asForecastScoreFinal::asForecastScoreFinal(Period period)
 {
     m_Period = period;
     m_SingleValue = true;
+    m_Has2DArrayArgument = false;
     m_RanksNb = 0;
 }
 
@@ -137,6 +140,16 @@ asForecastScoreFinal* asForecastScoreFinal::GetInstance(const wxString& scoreStr
     else if (scoreString.CmpNoCase("CRPSsharpnessEP")==0)
     {
         asForecastScoreFinal* score = new asForecastScoreFinalMean(periodString);
+        return score;
+    }
+    else if (scoreString.CmpNoCase("CRPSreliability")==0)
+    {
+        asForecastScoreFinal* score = new asForecastScoreFinalCRPSreliability(periodString);
+        return score;
+    }
+    else if (scoreString.CmpNoCase("CRPSpotential")==0)
+    {
+        asForecastScoreFinal* score = new asForecastScoreFinalCRPSpotential(periodString);
         return score;
     }
     else if (scoreString.CmpNoCase("DF0")==0)
@@ -240,6 +253,11 @@ asForecastScoreFinal::~asForecastScoreFinal()
 Array1DFloat asForecastScoreFinal::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
 {
     asLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
-
     return Array1DFloat();
+}
+
+float asForecastScoreFinal::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray)
+{
+    asLogError(_("This asForecastScoreFinal class has no Assess method implemented with a 2D array as argument !"));
+    return NaNFloat;
 }

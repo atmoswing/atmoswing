@@ -34,6 +34,7 @@
 #include "asForecastScoreCRPSaccuracyEP.h"
 #include "asForecastScoreCRPSsharpnessAR.h"
 #include "asForecastScoreCRPSsharpnessEP.h"
+#include "asForecastScoreCRPSHersbachDecomp.h"
 #include "asForecastScoreDF0.h"
 #include "asForecastScoreContingencyTable.h"
 #include "asForecastScoreMAE.h"
@@ -88,6 +89,16 @@ asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
         case (CRPSsharpnessEP):
         {
             asForecastScore* score = new asForecastScoreCRPSsharpnessEP();
+            return score;
+        }
+        case (CRPSreliability):
+        {
+            asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+            return score;
+        }
+        case (CRPSpotential):
+        {
+            asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
             return score;
         }
         case (DF0):
@@ -242,6 +253,16 @@ asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
         asForecastScore* score = new asForecastScoreCRPSsharpnessEP();
         return score;
     }
+    else if (scoreString.CmpNoCase("CRPSreliability")==0)
+    {
+        asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+        return score;
+    }
+    else if (scoreString.CmpNoCase("CRPSpotential")==0)
+    {
+        asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+        return score;
+    }
     else if (scoreString.CmpNoCase("DF0")==0)
     {
         asForecastScore* score = new asForecastScoreDF0();
@@ -338,6 +359,13 @@ asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
 asForecastScore::~asForecastScore()
 {
     //dtor
+}
+
+Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements)
+{
+    asLogError(_("This asForecastScore class has no AssessOnArrays method implemented !"));
+
+    return Array1DFloat();
 }
 
 bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)

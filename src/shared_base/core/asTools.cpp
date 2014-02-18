@@ -328,6 +328,21 @@ bool asTools::IsNaN(double value)
     return value != value;
 }
 
+bool asTools::IsInf(float value)
+{
+    return value == InfFloat;
+}
+
+bool asTools::IsInf(double value)
+{
+    return value == InfDouble;
+}
+
+bool asTools::IsInf(long double value)
+{
+    return value == InfLongDouble;
+}
+
 int asTools::CountNotNaN(const float* pArrStart, const float* pArrEnd)
 {
     int counter = 0;

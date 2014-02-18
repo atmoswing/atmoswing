@@ -94,6 +94,76 @@ TEST(ProcessCRPSapproxRectangle)
     wxDELETE(score);
 }
 
+TEST(ProcessCRPSapproxRectangle2)
+{/*
+    // Sizes
+    int timeLength = 15;
+    int nanalogs = 21;
+
+    // Resize the containers
+    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
+    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+
+    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+
+    vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
+
+    // Instantiate the score
+    asForecastScore* score = asForecastScore::GetInstance("CRPS");
+    
+    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
+    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+
+    for (int i_time=0;i_time<vecObs.size();i_time++)
+    {
+        pseudoDates[i_time] = i_time;
+        float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
+        results[i_time] = res;
+        CHECK(!asTools::IsNaN(results[i_time]));
+    }
+
+    CHECK_CLOSE(0.6372,results[0],0.0001);
+    CHECK_CLOSE(1.5669,results[1],0.0001);
+    CHECK_CLOSE(1.4172,results[2],0.0001);
+    CHECK_CLOSE(4.3152,results[3],0.0001);
+    CHECK_CLOSE(2.0907,results[4],0.0001);
+    CHECK_CLOSE(0.3129,results[5],0.0001);
+    CHECK_CLOSE(0.5034,results[6],0.0001);
+    CHECK_CLOSE(0.2925,results[7],0.0001);
+    CHECK_CLOSE(0.8186,results[8],0.0001);
+    CHECK_CLOSE(0.1837,results[9],0.0001);
+    CHECK_CLOSE(1.0454,results[10],0.0001);
+    CHECK_CLOSE(1.6667,results[11],0.0001);
+    CHECK_CLOSE(0.5351,results[12],0.0001);
+    CHECK_CLOSE(1.4717,results[13],0.0001);
+    CHECK_CLOSE(1.2766,results[14],0.0001);
+
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPS", "Total");
+    finalScore->SetRanksNb(nanalogs+1);
+    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
+
+    // Final values
+    CHECK_CLOSE(1.20892, scoreVal, 0.0001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);*/
+}
+
 TEST(ProcessCRPSexactPrimitive)
 {
     // Get the data file
@@ -1766,7 +1836,6 @@ TEST(ProcessRankHistogram)
         CHECK(!asTools::IsNaN(results[i_time]));
     }
 
-
     // Values processed on Excel
     bool isTrue = (results[0]>=1 && results[0]<5); // Contains random value
     CHECK_EQUAL(true,isTrue);
@@ -1872,5 +1941,113 @@ TEST(ProcessRankHistogramReliability)
     wxDELETE(score);
     wxDELETE(finalScore);
 }
+
+TEST(ProcessCRPSreliability)
+{
+    // Sizes
+    int timeLength = 15;
+    int nanalogs = 21;
+
+    // Resize the containers
+    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
+    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+
+    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+
+    vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
+
+    // Instantiate the score
+    asForecastScore* score = asForecastScore::GetInstance("CRPSreliability");
+    
+    Array2DFloat results = Array2DFloat::Zero(vecObs.size(),3*(nanalogs+1));
+    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+
+    for (int i_time=0;i_time<vecObs.size();i_time++)
+    {
+        pseudoDates[i_time] = i_time;
+        Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
+        results.row(i_time) = res;
+        CHECK(!asTools::HasNaN(&res[0], &res[res.size()-1]));
+    }
+
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPSreliability", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
+
+    // Final values
+    CHECK_CLOSE(0.6381, scoreVal, 0.0001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);
+}
+
+TEST(ProcessCRPSpotential)
+{
+    // Sizes
+    int timeLength = 15;
+    int nanalogs = 21;
+
+    // Resize the containers
+    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
+    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+
+    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+
+    vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
+
+    // Instantiate the score
+    asForecastScore* score = asForecastScore::GetInstance("CRPSpotential");
+    
+    Array2DFloat results = Array2DFloat::Zero(vecObs.size(),3*(nanalogs+1));
+    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+
+    for (int i_time=0;i_time<vecObs.size();i_time++)
+    {
+        pseudoDates[i_time] = i_time;
+        Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
+        results.row(i_time) = res;
+        CHECK(!asTools::HasNaN(&res[0], &res[res.size()-1]));
+    }
+
+    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPSpotential", "Total");
+    finalScore->SetRanksNb(nanalogs+1);
+    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
+
+    // Final values
+    CHECK_CLOSE(0.5708, scoreVal, 0.0001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);
+}
+
 }
 

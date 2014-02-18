@@ -40,10 +40,13 @@ public:
         CRPSS, // CRPS skill score using the approximation with the rectangle method
         CRPSAR, // approximation with the rectangle method
         CRPSEP, // exact by means of primitive
-        CRPSaccuracyAR, // approximation with the rectangle method
-        CRPSaccuracyEP, // exact by means of primitive
-        CRPSsharpnessAR, // approximation with the rectangle method
-        CRPSsharpnessEP, // exact by means of primitive
+        CRPSaccuracyAR, // approximation with the rectangle method (Bontron, 2004)
+        CRPSaccuracyEP, // exact by means of primitive (Bontron, 2004)
+        CRPSsharpnessAR, // approximation with the rectangle method (Bontron, 2004)
+        CRPSsharpnessEP, // exact by means of primitive (Bontron, 2004)
+        CRPSHersbachDecomp, // Hersbach (2000) decomposition of the CRPS
+        CRPSreliability, // reliability of the CRPS (Hersbach, 2000)
+        CRPSpotential, // CRPS potential (Hersbach, 2000)
 		DF0, // absolute difference of the frequency of null precipitations
 		ContingencyTable, // Contingency table
 		PC, // Proportion correct
@@ -89,6 +92,14 @@ public:
      * \return The score
      */
     virtual float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) = 0;
+    
+    /** Process the score
+     * \param ObservedVal The observed value
+     * \param ForcastVals The array of analogs values
+     * \param NbElements The number of analogs to consider
+     * \return The score
+     */
+    virtual Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements);
 
     /** Process some checks on the inputs
      * \param ObservedVal The observed value
@@ -258,6 +269,11 @@ public:
         return m_UsesClimatology;
     }
 
+    bool SingleValue()
+    {
+        return m_SingleValue;
+    }
+
 
 
 protected:
@@ -270,6 +286,7 @@ protected:
     Array1DFloat m_ArrayScoresClimatology; //!< Member variable "m_ArrayScoresClimatology"
     float m_ScoreClimatology; //!< Member variable "m_ScoreClimatology"
     bool m_UsesClimatology;
+    bool m_SingleValue;
     float m_Threshold; //!< For discrete scores
     float m_Percentile; //!< For discrete scores
 

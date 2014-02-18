@@ -87,6 +87,14 @@ public:
         return m_ForecastScores;
     }
 
+    /** Access m_ForecastScores2DArray
+     * \return The whole array m_ForecastScores2DArray
+     */
+    Array2DFloat &GetForecastScores2DArray()
+    {
+        return m_ForecastScores2DArray;
+    }
+
     /** Set m_ForecastScores
      * \param forecastScores The new array to set
      */
@@ -106,6 +114,15 @@ public:
     {
         m_ForecastScores.resize(forecastScores.rows());
         m_ForecastScores = forecastScores;
+    }
+
+    /** Set m_ForecastScores
+     * \param forecastScores The new array to set
+     */
+    void SetForecastScores2DArray(Array2DFloat &forecastScores)
+    {
+        m_ForecastScores2DArray.resize(forecastScores.rows(),forecastScores.cols());
+        m_ForecastScores2DArray = forecastScores;
     }
 
     /** Get the length of the target time dimension
@@ -138,6 +155,7 @@ protected:
 private:
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
     Array1DFloat m_ForecastScores; //!< Member variable "m_ForecastScores"
+    Array2DFloat m_ForecastScores2DArray; //!< Member variable "m_ForecastScores2DArray"
 };
 
 #endif // ASRESULTSANALOGSFORECASTSCORES_H

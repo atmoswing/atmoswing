@@ -199,6 +199,48 @@ TEST(IsNaNDoubleTrue)
     CHECK_EQUAL(true, Result);
 }
 
+TEST(IsInfFloatFalse)
+{
+    float Value = -2151;
+    const bool Result = asTools::IsInf(Value);
+    CHECK_EQUAL(false, Result);
+}
+
+TEST(IsInfDoubleFalse)
+{
+    double Value = -2151;
+    const bool Result = asTools::IsInf(Value);
+    CHECK_EQUAL(false, Result);
+}
+
+TEST(IsInfLongDoubleFalse)
+{
+    long double Value = -2151;
+    const bool Result = asTools::IsInf(Value);
+    CHECK_EQUAL(false, Result);
+}
+
+TEST(IsInfFloatTrue)
+{
+    float Value = InfFloat;
+    const bool Result = asTools::IsInf(Value);
+    CHECK_EQUAL(true, Result);
+}
+
+TEST(IsInfDoubleTrue)
+{
+    double Value = InfDouble;
+    const bool Result = asTools::IsInf(Value);
+    CHECK_EQUAL(true, Result);
+}
+
+TEST(IsInfLongDoubleTrue)
+{
+    long double Value = InfLongDouble;
+    const bool Result = asTools::IsInf(Value);
+    CHECK_EQUAL(true, Result);
+}
+
 TEST(CountNotNaNFloat)
 {
     float Array[] = {0.3465f,1.345f,2.76f,3.69f,5.58f,NaNFloat,8.34f,9.75f,10.0f,NaNFloat};

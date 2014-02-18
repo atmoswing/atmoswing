@@ -54,6 +54,7 @@ void asResultsAnalogsForecastScores::Init(asParametersScoring &params)
     // Resize to 0 to avoid keeping old results
     m_TargetDates.resize(0);
     m_ForecastScores.resize(0);
+    m_ForecastScores2DArray.resize(0,0);
 }
 
 void asResultsAnalogsForecastScores::BuildFileName(asParametersScoring &params)

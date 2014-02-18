@@ -175,6 +175,24 @@ public:
      */
     static bool IsNaN(double value);
 
+    /** Check if the value is an Inf
+     * \param value The value to check
+     * \return True if Inf.
+     */
+    static bool IsInf(float value);
+
+    /** Check if the value is an Inf
+     * \param value The value to check
+     * \return True if Inf.
+     */
+    static bool IsInf(double value);
+
+    /** Check if the value is an Inf
+     * \param value The value to check
+     * \return True if Inf.
+     */
+    static bool IsInf(long double value);
+
     /** Counts the number of not NaNs in the array
      * \param pArrStart The beginning (pointer) of the vector/array
      * \param pArrEnd The end (pointer) of the vector/array
