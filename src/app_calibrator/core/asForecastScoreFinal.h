@@ -57,6 +57,8 @@ public:
 
     virtual float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) = 0;
     
+    virtual float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray);
+
     virtual Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
 
     Period GetPeriod()
@@ -69,6 +71,11 @@ public:
         return m_SingleValue;
     }
 
+    bool Has2DArrayArgument()
+    {
+        return m_Has2DArrayArgument;
+    }
+
     void SetRanksNb(int val)
     {
         m_RanksNb = val;
@@ -77,6 +84,7 @@ public:
 protected:
     Period m_Period;
     bool m_SingleValue;
+    bool m_Has2DArrayArgument;
     int m_RanksNb;
 
 private:

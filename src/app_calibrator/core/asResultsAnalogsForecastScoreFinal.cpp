@@ -55,6 +55,7 @@ void asResultsAnalogsForecastScoreFinal::Init(asParametersScoring &params)
 
     // Set to nan to avoid keeping old results
     m_ForecastScore = NaNFloat;
+    m_ForecastScoreArray.resize(0);
 }
 
 void asResultsAnalogsForecastScoreFinal::BuildFileName(asParametersScoring &params)
