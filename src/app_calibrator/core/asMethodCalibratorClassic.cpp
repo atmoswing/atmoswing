@@ -76,6 +76,9 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         results_tested.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
         asResultsParametersArray results_best;
         results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
+        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+        wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+        resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
 
         // Create a complete relevance map
         asLogState(_("Calibration: creating the complete relevance map for a given predictor."));
@@ -374,6 +377,8 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         if(!results_best.Print()) return false;
         results_all.Add(m_Parameters[0],m_ScoresCalib[0],m_ScoreValid);
         if(!results_all.Print()) return false;
+        if(!results_all.Print()) return false;
+        if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
     }
 
     return true;

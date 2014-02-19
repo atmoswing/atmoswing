@@ -1830,7 +1830,7 @@ TEST(RandomUniformDistributionToFile)
         double result1, result2, result3, result4, result5, result6, result7, result8;
 
         // Create a file
-        wxString tmpFile = asConfig::CreateTempFileName("test_unidist");
+        wxString tmpFile = wxFileName::CreateTempFileName("test_unidist");
         tmpFile.Append(".txt");
 
         asFileAscii fileRes(tmpFile, asFileAscii::Replace);
@@ -1874,7 +1874,7 @@ TEST(RandomNormalDistributionToFile)
         double result1, result2, result3, result4, result5, result6, result7, result8;
 
         // Create a file
-        wxString tmpFile = asConfig::CreateTempFileName("test_normdist");
+        wxString tmpFile = wxFileName::CreateTempFileName("test_normdist");
         tmpFile.Append(".txt");
 
         asFileAscii fileRes(tmpFile, asFileAscii::Replace);

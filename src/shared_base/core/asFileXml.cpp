@@ -276,6 +276,48 @@ bool asFileXml::GoToChildNodeWithAttributeValue(const wxString &attributeName, c
     return true;
 }
 
+bool asFileXml::GoToLastChildNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue, const int &showWarnings)
+{
+    wxASSERT(m_Opened);
+
+    ticpp::Element* elementPointerBkp = m_ElementPointer;
+
+    m_ElementPointer = GetChildFromAttributeValue(m_ElementPointer, attributeName, attributeValue);
+    if (m_ElementPointer==NULL)
+    {
+        m_ElementPointer = elementPointerBkp;
+        if(showWarnings==asSHOW_WARNINGS) 
+        {
+            asLogError(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
+        }
+        return false;
+    }
+
+    m_BaseNodePointer = m_ElementPointer;
+    std::string name = m_ElementPointer->Value();
+    wxString nodeName (name.c_str(), wxConvUTF8);
+    m_BaseNodeName.Append(".");
+    m_BaseNodeName.Append(nodeName);
+
+    if (!UpdateElementName())
+    {
+        if(showWarnings==asSHOW_WARNINGS) 
+        {
+            asLogError(wxString::Format(_("The attribute '%s' with value '%s' cannot be found in the xml file for the element '%s'"), attributeName.c_str(), attributeValue.c_str(), m_ElementName.c_str()));
+        }
+        return false;
+    }
+
+    // Go to next same node
+    bool doContinue = true;
+    while (doContinue)
+    {
+        doContinue = GoToNextSameNodeWithAttributeValue(attributeName, attributeValue, asHIDE_WARNINGS);
+    }
+
+    return true;
+}
+
 wxString asFileXml::GetCurrenNodePath()
 {
     wxASSERT(m_Opened);

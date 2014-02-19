@@ -27,6 +27,8 @@
 
 #include "include_tests.h"
 #include "asParameters.h"
+#include "asParametersCalibration.h"
+#include "asParametersForecast.h"
 
 #include "UnitTest++.h"
 
@@ -91,4 +93,19 @@ TEST(LoadFromFile)
     CHECK_EQUAL(40, params.GetPredictandStationId());
 }
 
+TEST(GenerateSimpleParametersFileCalibration)
+{
+    // Get original parameters
+    wxString paramsFilePath = wxFileName::GetCwd();
+    paramsFilePath.Append("/files/");
+    paramsFilePath.Append("parameters_calibration_R1_calib_period.xml");
+    asParametersCalibration params;
+    bool result = params.LoadFromFile(paramsFilePath);
+    CHECK_EQUAL(true, result);
+
+    // Generate simple file
+    wxString tmpPath = wxFileName::CreateTempFileName("GenerateSimpleParametersFileCalibrationTest");
+    result = params.GenerateSimpleParametersFile(tmpPath);
+    CHECK_EQUAL(true, result);
+}
 }
