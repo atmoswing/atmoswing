@@ -281,7 +281,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                     m_ScoreClimatology=0;
                 }
             }
-            if(!results.Print()) return false;
         }
 
         VectorString scoresPercentile;
@@ -303,7 +302,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
                 m_ScoreClimatology=0;
             }
-            if(!results.Print()) return false;
         }
 
         VectorString scoresThreshold;
@@ -324,7 +322,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
                 m_ScoreClimatology=0;
             }
-            if(!results.Print()) return false;
         }
 
         VectorString scoresContinuous;

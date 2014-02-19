@@ -242,8 +242,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
 
             // Store the result
             results_tested.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
-            if(!results_tested.Print()) return false;
-
+            
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
         }
@@ -255,6 +254,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         // Keep the best parameters set
         results_all.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
         if(!results_all.Print()) return false;
+        if(!results_tested.Print()) return false;
     }
 
     return true;
