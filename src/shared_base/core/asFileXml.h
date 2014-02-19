@@ -77,6 +77,8 @@ public:
 
     bool GoToChildNodeWithAttributeValue(const wxString &AttributeName, const wxString &AttributeValue, const int &showWarnings = asSHOW_WARNINGS);
 
+    bool GoToLastChildNodeWithAttributeValue(const wxString &attributeName, const wxString &attributeValue, const int &showWarnings = asSHOW_WARNINGS);
+
     wxString GetCurrenNodePath();
 
 

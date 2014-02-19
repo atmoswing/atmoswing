@@ -60,27 +60,6 @@ wxString asConfig::GetTempDir()
     return TempDir;
 }
 
-wxString asConfig::CreateTempFileName(const wxString& prefix)
-{
-    wxString path = asConfig::GetTempDir() + DS + prefix;
-    wxString pathTry;
-
-    static const size_t numTries = 1000;
-    for ( size_t n = 0; n < numTries; n++ )
-    {
-        // 3 hex digits is enough for numTries == 1000 < 4096
-        pathTry = path + wxString::Format(wxT("%.03x"), (unsigned int) n);
-        if ( !wxFileName::FileExists(pathTry) )
-        {
-            break;
-        }
-
-        pathTry.clear();
-    }
-
-    return pathTry;
-}
-
 wxString asConfig::GetDataDir()
 {
     ThreadsManager().CritSectionConfig().Enter();

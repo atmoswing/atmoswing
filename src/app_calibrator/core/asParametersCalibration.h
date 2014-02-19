@@ -46,6 +46,8 @@ public:
 
     bool LoadFromFile(const wxString &filePath);
 
+    bool GenerateSimpleParametersFile(const wxString &filePath);
+
     bool FixTimeLimits();
 
     void InitValues();
