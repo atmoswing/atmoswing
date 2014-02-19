@@ -226,7 +226,6 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 // Store the result
                 m_ScoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
                 results_tested.Add(m_ParametersTemp[i_param],anaScoreFinal.GetForecastScore());
-                if(!results_tested.Print()) return false;
             }
 
             // Keep the best parameter set
@@ -313,7 +312,6 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                     if(!GetAnalogsForecastScores(anaScores, params, anaValues, i_step)) return false;
                     if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, i_step)) return false;
                     results_tested.Add(params,anaScoreFinal.GetForecastScore());
-                    results_tested.Print();
 
                     // If better, store it and try again to resize.
                     if (PushBackInTempIfBetter(params, anaScoreFinal))

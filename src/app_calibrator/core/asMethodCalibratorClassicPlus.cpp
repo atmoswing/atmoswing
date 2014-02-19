@@ -308,7 +308,6 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                     // Store the result
                     m_ScoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
                     results_tested.Add(m_ParametersTemp[i_param],anaScoreFinal.GetForecastScore());
-                    if(!results_tested.Print()) return false;
                 }
 
                 asLogMessageImportant(wxString::Format(_("Time to process the relevance map: %ldms"), swMap.Time()));
@@ -438,7 +437,6 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                         }
 
                         results_tested.Add(params,anaScoreFinal.GetForecastScore());
-                        results_tested.Print();
 
                         // If better, store it and try again to resize.
                         if (PushBackInTempIfBetter(params, anaScoreFinal))
@@ -726,7 +724,6 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                         }
 
                         results_tested.Add(params,anaScoreFinal.GetForecastScore());
-                        results_tested.Print();
 
                         // If better, keep it and start again
                         if (KeepIfBetter(params, anaScoreFinal))
