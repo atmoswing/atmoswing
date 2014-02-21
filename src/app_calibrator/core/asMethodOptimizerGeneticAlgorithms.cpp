@@ -1746,7 +1746,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1775,7 +1774,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1800,7 +1798,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1836,7 +1833,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1862,7 +1858,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1880,7 +1875,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1898,7 +1892,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1916,7 +1909,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1934,7 +1926,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }
@@ -1957,7 +1948,6 @@ bool asMethodOptimizerGeneticAlgorithms::Mutatation()
                 m_Parameters[i_ind].FixCoordinates();
                 m_Parameters[i_ind].CheckRange();
                 m_Parameters[i_ind].FixAnalogsNb();
-                m_Parameters[i_ind].FixTimeShift();
             }
             break;
         }

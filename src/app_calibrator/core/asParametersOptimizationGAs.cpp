@@ -56,7 +56,7 @@ void asParametersOptimizationGAs::BuildChromosomes()
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         indices.push_back(counter);
                     }
@@ -77,7 +77,7 @@ void asParametersOptimizationGAs::BuildChromosomes()
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     indices.push_back(counter);
                 }
@@ -222,7 +222,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index) return false;
                     }
@@ -255,7 +255,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index) return false;
                 }
@@ -387,7 +387,7 @@ bool asParametersOptimizationGAs::IsParamList(int index)
                     }
                     counter++;
 
-                    // PreprocessDTimeHours
+                    // PreprocessTimeHours
                     if (counter==index)
                     {
                         return false;
@@ -411,7 +411,7 @@ bool asParametersOptimizationGAs::IsParamList(int index)
                 }
                 counter++;
 
-                // DTimeHours
+                // TimeHours
                 if (counter==index)
                 {
                     return false;
@@ -475,7 +475,6 @@ bool asParametersOptimizationGAs::IsParamList(int index)
 
     asThrowException(_("We should never reach that point..."));
 
-    return false;
 }
 
 double asParametersOptimizationGAs::GetParameterValue(int index)
@@ -545,11 +544,11 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
-                            return (double)GetPreprocessDTimeHours(i,j,k);
+                            return (double)GetPreprocessTimeHours(i,j,k);
                         }
                     }
                     counter++;
@@ -593,11 +592,11 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
-                        return (double)GetPredictorDTimeHours(i,j);
+                        return (double)GetPredictorTimeHours(i,j);
                     }
                 }
                 counter++;
@@ -734,11 +733,11 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
-                            return (double)GetPreprocessDTimeHoursUpperLimit(i,j,k);
+                            return (double)GetPreprocessTimeHoursUpperLimit(i,j,k);
                         }
                     }
                     counter++;
@@ -766,11 +765,11 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
-                        return (double)GetPredictorDTimeHoursUpperLimit(i,j);
+                        return (double)GetPredictorTimeHoursUpperLimit(i,j);
                     }
                 }
                 counter++;
@@ -897,11 +896,11 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
-                            return (double)GetPreprocessDTimeHoursLowerLimit(i,j,k);
+                            return (double)GetPreprocessTimeHoursLowerLimit(i,j,k);
                         }
                     }
                     counter++;
@@ -927,11 +926,11 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
-                        return (double)GetPredictorDTimeHoursLowerLimit(i,j);
+                        return (double)GetPredictorTimeHoursLowerLimit(i,j);
                     }
                 }
                 counter++;
@@ -1057,11 +1056,11 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
-                            return (double)GetPreprocessDTimeHoursIteration(i,j,k);
+                            return (double)GetPreprocessTimeHoursIteration(i,j,k);
                         }
                     }
                     counter++;
@@ -1087,11 +1086,11 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
-                        return (double)GetPredictorDTimeHoursIteration(i,j);
+                        return (double)GetPredictorTimeHoursIteration(i,j);
                     }
                 }
                 counter++;
@@ -1236,12 +1235,12 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
                             int val = asTools::Round(newVal);
-                            SetPreprocessDTimeHours(i, j, k, val);
+                            SetPreprocessTimeHours(i, j, k, val);
                             return;
                         }
                     }
@@ -1284,12 +1283,12 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].DTimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
                         int val = asTools::Round(newVal);
-                        SetPredictorDTimeHours(i, j, val);
+                        SetPredictorTimeHours(i, j, val);
                         return;
                     }
                 }
