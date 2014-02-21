@@ -130,6 +130,8 @@ public:
 
     void AddPredictorVect(ParamsStepVect &step);
 
+    bool GenerateSimpleParametersFile(const wxString &filePath);
+
     VectorInt GetFileParamIntVector(asFileParameters &fileParams, const wxString &tag);
 
     VectorFloat GetFileParamFloatVector(asFileParameters &fileParams, const wxString &tag);

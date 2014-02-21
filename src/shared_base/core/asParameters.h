@@ -336,6 +336,13 @@ public:
         return m_PredictandStationId;
     }
 
+    VectorInt GetPredictandStationsIdVector()
+    {
+        VectorInt vec;
+        vec.push_back(m_PredictandStationId);
+        return vec;
+    }
+
     bool SetPredictandStationId(int val)
     {
         if (asTools::IsNaN(val))

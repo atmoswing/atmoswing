@@ -50,7 +50,7 @@ int main( int argc, char** argv )
     /*
     // In order to debug just one test
     argc=2;
-    char* chars = "ProcessCRPSpotential";
+    char* chars = "GenerateSimpleParametersFileCalibration";
     argv[1] = chars;
     */
 
