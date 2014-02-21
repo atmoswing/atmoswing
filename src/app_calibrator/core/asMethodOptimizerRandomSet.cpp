@@ -30,20 +30,24 @@ bool asMethodOptimizerRandomSet::Manager()
     // Seeds the random generator
     asTools::InitRandom();
 
-    // Reset the score of the climatology
-    m_ScoreClimatology = 0;
-
-    // Create a result object to save the parameters sets
-    asResultsParametersArray results_all;
-    results_all.Init("tested_parameters");
-    asResultsParametersArray results_best;
-    results_best.Init("best_parameters");
-
     // Load parameters
     asParametersOptimization params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
     InitParameters(params);
     m_OriginalParams = params;
+
+    // Reset the score of the climatology
+    m_ScoreClimatology = 0;
+
+    // Create a result object to save the parameters sets
+    int stationId = m_OriginalParams.GetPredictandStationId();
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+    asResultsParametersArray results_all;
+    results_all.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+    asResultsParametersArray results_best;
+    results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
 
     // Preload data
     if (!PreloadData(params))
@@ -238,6 +242,9 @@ bool asMethodOptimizerRandomSet::Manager()
     // Print parameters in a text file
     SetBestParameters(results_best);
     if(!results_best.Print()) return false;
+
+    // Generate xml file with the best parameters set
+    if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
 
     // Delete preloaded data
     DeletePreloadedData();
