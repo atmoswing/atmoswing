@@ -201,6 +201,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     asParametersOptimizationGAs params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
     InitParameters(params);
+    if (m_PredictandStationId>0)
+    {
+        params.SetPredictandStationId(m_PredictandStationId);
+    }
     m_OriginalParams = params;
 
     // Create a result object to save the parameters sets
