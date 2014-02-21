@@ -212,17 +212,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     results_best_individual.Init(wxString::Format(_("station_%d_best_individual"), stationId));
     asResultsParametersArray results_generations;
     results_generations.Init(wxString::Format(_("station_%d_generations"), stationId));
-    results_generations.CreateFile();
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
-
-    // File for stats
-    ThreadsManager().CritSectionConfig().Enter();
-    wxString filePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-    ThreadsManager().CritSectionConfig().Leave();
-    filePath.Append(wxString::Format("/Calibration/%s_generations_stats.txt", time.c_str()));
-    asFileAscii results_generations_stats(filePath, asFile::Replace);
-    results_generations_stats.Open();
 
     // Preload data
     try
@@ -374,9 +365,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 #endif
                 if (m_Cancel) return false;
 
-                // Print in logs
-                asLogMessage(params.Print());
-
                 // Create results objects
                 asResultsAnalogsDates anaDates;
                 asResultsAnalogsDates anaDatesPrevious;
@@ -430,12 +418,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 ElitismAfterMutation();
 
                 // Clear actual results and recreate
-                results_generations.Clear();
                 for (unsigned int i=0; i<m_Parameters.size(); i++)
                 {
                     results_generations.Add(m_Parameters[i],m_ScoresCalib[i]);
                 }
-                if(!results_generations.AppendContent()) return false;
 
                 // Display stats
                 float meanScore = asTools::Mean(&m_ScoresCalib[0], &m_ScoresCalib[m_ScoresCalib.size()-1]);
@@ -462,8 +448,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 m_MeanScores.push_back(meanScore);
 
                 asLogMessageImportant(wxString::Format(_("Mean %g, best %g"), meanScore, bestScore));
-                wxString msg = wxString::Format("Generation \t %d \t NbEvaluations \t %d \t mean \t %g \t best \t %g", m_GenerationNb, m_AssessmentCounter, meanScore, bestScore);
-                results_generations_stats.AddLineContent(msg);
             }
         }
 
@@ -488,7 +472,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     if(!results_final_population.Print()) return false;
     SetBestParameters(results_best_individual);
     if(!results_best_individual.Print()) return false;
-    results_generations_stats.Close();
+    if(!results_generations.Print()) return false;
 
     // Generate xml file with the best parameters set
     if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;

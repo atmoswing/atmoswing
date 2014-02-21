@@ -224,9 +224,6 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
 
         if(!SkipNext() && !IsOver())
         {
-            // Print in a temp file
-            //params.PrintAndSaveTemp();
-
             // Process every step one after the other
             int stepsNb = params.GetStepsNb();
             for (int i_step=0; i_step<stepsNb; i_step++)
@@ -263,9 +260,8 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
             }
             wxASSERT(m_ScoresCalib.size()<=(unsigned)m_ParamsNb);
 
-            // Print all tested parameters in a text file
+            // Save all tested parameters in a text file
             results_all.Add(params,anaScoreFinal.GetForecastScore());
-            if(!results_all.Print()) return false;
 
             // Clear actual simplex result and recreate
             results_simplex.Clear();
@@ -293,6 +289,7 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
     SetBestParameters(results_best);
     if(!results_best.Print()) return false;
     if(!results_simplex.Print()) return false;
+    if(!results_all.Print()) return false;
 
     // Generate xml file with the best parameters set
     if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;

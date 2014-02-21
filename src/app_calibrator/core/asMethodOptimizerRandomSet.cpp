@@ -179,9 +179,6 @@ bool asMethodOptimizerRandomSet::Manager()
                 #endif
                 if (m_Cancel) return false;
 
-                // Print in a temp file
-                //params.PrintAndSaveTemp();
-
                 // Create results objects
                 asResultsAnalogsDates anaDates;
                 asResultsAnalogsDates anaDatesPrevious;
@@ -225,9 +222,8 @@ bool asMethodOptimizerRandomSet::Manager()
                 }
                 wxASSERT(m_ScoresCalib.size()<=(unsigned)m_ParamsNb);
 
-                // Print all tested parameters in a text file
+                // Save all tested parameters in a text file
                 results_all.Add(params,anaScoreFinal.GetForecastScore());
-                if(!results_all.Print()) return false;
 
                 // Increment iterator
                 IncrementIterator();
@@ -242,6 +238,7 @@ bool asMethodOptimizerRandomSet::Manager()
     // Print parameters in a text file
     SetBestParameters(results_best);
     if(!results_best.Print()) return false;
+    if(!results_all.Print()) return false;
 
     // Generate xml file with the best parameters set
     if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
