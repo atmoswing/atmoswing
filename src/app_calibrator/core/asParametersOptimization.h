@@ -29,6 +29,8 @@ public:
 
     bool IsInRange();
 
+    bool FixTimeLimits();
+
     void FixTimeHours();
 
     void LockAll();
