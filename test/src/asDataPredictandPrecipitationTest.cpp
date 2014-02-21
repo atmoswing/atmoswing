@@ -50,10 +50,10 @@ TEST(GumbelAdjustment)
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
     bool success;
-    success = predictand.BuildPredictandDB(datasetFilePath, dataFileDir, patternFileDir, tmpPath);
+    success = predictand.BuildPredictandDB(datasetFilePath, dataFileDir, patternFileDir, tmpDir);
 	predictand.SetIsSqrt(false);
 	predictand.SetReturnPeriodNormalization(10);
     CHECK_EQUAL(true, success);
@@ -114,7 +114,7 @@ TEST(GumbelAdjustment)
     P100 = predictand.GetPrecipitationOfReturnPeriod(0, 3, 100);
     CHECK_CLOSE(2.1209689*72, P100, 0.001);
 
-    asRemoveDir(tmpPath);
+    asRemoveDir(tmpDir);
 
 }
 
