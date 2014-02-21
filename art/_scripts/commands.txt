@@ -1,0 +1,6 @@
+LINUX examples:
+./libexec-png2wx.pl -C bullets.cpp -H bullets.h -M _BULLETS_H_ bullets/*.png
+./libexec-png2wx.pl -C toolbar.cpp -H toolbar.h -M _TOOLBAR_H_ toolbar/*.png
+
+WINDOWS example:
+perl libexec-png2wx.pl -C logo.cpp -H logo.h -M _LOGO_H_ logo.png
