@@ -156,28 +156,32 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
     // Seeds the random generator
     asTools::InitRandom();
 
+    // Load parameters
+    asParametersOptimizationNelderMead params;
+    if (!params.LoadFromFile(m_ParamsFilePath)) return false;
+    InitParameters(params);
+    m_OriginalParams = params;
+
     // Create a result object to save the parameters sets
+    int stationId = m_OriginalParams.GetPredictandStationId();
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
-    results_all.Init("tested_parameters");
+    results_all.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
     asResultsParametersArray results_slct;
-    results_slct.Init("selected_parameters");
+    results_slct.Init(wxString::Format(_("station_%d_selected_parameters"), stationId));
     asResultsParametersArray results_best;
-    results_best.Init("best_parameters");
+    results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
     asResultsParametersArray results_simplex;
-    results_simplex.Init("simplex");
+    results_simplex.Init(wxString::Format(_("station_%d_simplex"), stationId));
     results_simplex.CreateFile();
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
 
     // Reset some data members
     m_Iterator = 0;
     m_OptimizerStage = asINITIALIZATION;
     m_SkipNext = false;
     m_IsOver = false;
-
-    // Load parameters
-    asParametersOptimizationNelderMead params;
-    if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    InitParameters(params);
-    m_OriginalParams = params;
 
     // Preload data
     if (!PreloadData(params))
@@ -289,6 +293,9 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
     SetBestParameters(results_best);
     if(!results_best.Print()) return false;
     if(!results_simplex.Print()) return false;
+
+    // Generate xml file with the best parameters set
+    if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
 
     return true;
 }

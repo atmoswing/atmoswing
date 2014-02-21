@@ -197,15 +197,24 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Seeds the random generator
     asTools::InitRandom();
 
+    // Load parameters
+    asParametersOptimizationGAs params;
+    if (!params.LoadFromFile(m_ParamsFilePath)) return false;
+    InitParameters(params);
+    m_OriginalParams = params;
+
     // Create a result object to save the parameters sets
+    int stationId = m_OriginalParams.GetPredictandStationId();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_final_population;
-    results_final_population.Init("final_population");
+    results_final_population.Init(wxString::Format(_("station_%d_final_population"), stationId));
     asResultsParametersArray results_best_individual;
-    results_best_individual.Init("best_individual");
+    results_best_individual.Init(wxString::Format(_("station_%d_best_individual"), stationId));
     asResultsParametersArray results_generations;
-    results_generations.Init("generations");
+    results_generations.Init(wxString::Format(_("station_%d_generations"), stationId));
     results_generations.CreateFile();
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
 
     // File for stats
     ThreadsManager().CritSectionConfig().Enter();
@@ -214,12 +223,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     filePath.Append(wxString::Format("/Calibration/%s_generations_stats.txt", time.c_str()));
     asFileAscii results_generations_stats(filePath, asFile::Replace);
     results_generations_stats.Open();
-
-    // Load parameters
-    asParametersOptimizationGAs params;
-    if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    InitParameters(params);
-    m_OriginalParams = params;
 
     // Preload data
     try
@@ -486,6 +489,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     SetBestParameters(results_best_individual);
     if(!results_best_individual.Print()) return false;
     results_generations_stats.Close();
+
+    // Generate xml file with the best parameters set
+    if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
 
     // Print stats
     ThreadsManager().CritSectionConfig().Enter();
