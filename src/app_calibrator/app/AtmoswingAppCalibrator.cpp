@@ -305,7 +305,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("Atmoswing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing version %s, %s", g_Version.c_str(), (const wxChar*) date);
 
             msgOut->Printf( wxT("%s"), msg.c_str() );
         }
