@@ -748,6 +748,40 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 
     // Set sizes
     SetSizes();
+    
+    // Fixes
+    FixTimeLimits();
+
+    return true;
+}
+
+bool asParametersOptimization::FixTimeLimits()
+{
+    SetSizes();
+
+    double minHour = 200.0, maxHour = -50.0;
+    for(int i=0;i<GetStepsNb();i++)
+    {
+        for(int j=0;j<GetPredictorsNb(i);j++)
+        {
+            if (NeedsPreprocessing(i,j))
+            {
+                for(int k=0; k<GetPreprocessSize(i,j); k++)
+                {
+                    minHour = wxMin(GetPreprocessTimeHoursLowerLimit(i, j, k), minHour);
+                    maxHour = wxMax(GetPreprocessTimeHoursUpperLimit(i, j, k), maxHour);
+                }
+            }
+            else
+            {
+                minHour = wxMin(GetPredictorTimeHoursLowerLimit(i, j), minHour);
+                maxHour = wxMax(GetPredictorTimeHoursUpperLimit(i, j), maxHour);
+            }
+        }
+    }
+
+    m_TimeMinHours = minHour;
+    m_TimeMaxHours = maxHour;
 
     return true;
 }
