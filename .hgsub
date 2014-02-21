@@ -1,2 +1,1 @@
-src/shared_base/libs/eigen = ssh://hg@bitbucket.org/eigen/eigen
 src/app_viewer/libs/vroomgis = ssh://hg@bitbucket.org/lucsch/vroomgis
