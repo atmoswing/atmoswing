@@ -12,6 +12,7 @@ asMethodOptimizer::asMethodOptimizer()
 :
 asMethodCalibrator()
 {
+    m_PredictandStationId = 0;
     m_Iterator = 0;
     m_OptimizerStage = asINITIALIZATION;
     m_SkipNext = false;

@@ -14,8 +14,14 @@ public:
 
     bool Manager() = 0;
 
+    void SetPredictandStationId(int val)
+    {
+        m_PredictandStationId = val;
+    }
+
 
 protected:
+    int m_PredictandStationId;
     bool m_IsOver;
     bool m_SkipNext;
     int m_OptimizerStage;

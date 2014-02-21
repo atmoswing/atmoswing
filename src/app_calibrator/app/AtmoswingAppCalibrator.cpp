@@ -141,6 +141,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, "savevalues", "savevalues", "options SaveAnalogValues" },
     { wxCMD_LINE_OPTION, "savescores", "savescores", "options SaveForecastScores" },
     { wxCMD_LINE_OPTION, "skipvalid", "skipvalid", "Skip the validation calculation" },
+    { wxCMD_LINE_OPTION, "stationid", "stationid", "The predictand station ID" },
 
     { wxCMD_LINE_NONE }
 };
@@ -161,6 +162,7 @@ bool AtmoswingAppCalibrator::OnInit()
     g_Local = false;
     m_CalibParamsFile = wxEmptyString;
     m_PredictandDB = wxEmptyString;
+    m_PredictandStationId = 0;
     m_PredictorsDir = wxEmptyString;
     m_CalibMethod = wxEmptyString;
 
@@ -261,7 +263,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/Calibration/ParallelEvaluations", true);
         pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
         pConfig->Write("/Standard/AllowMultithreading", true);
-        pConfig->Write("/ProcessingOptions/ProcessingMethod", (long)asMULTITHREADS);
+        pConfig->Write("/ProcessingOptions/ProcessingMethod", (long)asINSERT);
 
         pConfig->Flush();
 
@@ -751,6 +753,15 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         wxFileConfig::Get()->Write("/Calibration/SkipValidation", option);
     }
 
+    // Station ID
+    wxString stationIdStr = wxEmptyString;
+    if (parser.Found("stationid", & stationIdStr))
+    {
+        long stationId = 0;
+        stationIdStr.ToLong(&stationId);
+        m_PredictandStationId = stationId;
+    }
+
     // Saving and loading of intermediate results files: reinitialized as it may be catastrophic to forget that it is enabled...
     wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
     wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
@@ -963,6 +974,7 @@ int AtmoswingAppCalibrator::OnRun()
                 asMethodOptimizerNelderMead optimizer;
                 optimizer.SetParamsFilePath(m_CalibParamsFile);
                 optimizer.SetPredictandDBFilePath(m_PredictandDB);
+                optimizer.SetPredictandStationId(m_PredictandStationId);
                 optimizer.SetPredictorDataDir(m_PredictorsDir);
                 optimizer.Manager();
                 optimizer.Cleanup();
@@ -972,6 +984,7 @@ int AtmoswingAppCalibrator::OnRun()
                 asMethodOptimizerRandomSet optimizer;
                 optimizer.SetParamsFilePath(m_CalibParamsFile);
                 optimizer.SetPredictandDBFilePath(m_PredictandDB);
+                optimizer.SetPredictandStationId(m_PredictandStationId);
                 optimizer.SetPredictorDataDir(m_PredictorsDir);
                 optimizer.Manager();
                 optimizer.Cleanup();
@@ -981,6 +994,7 @@ int AtmoswingAppCalibrator::OnRun()
                 asMethodOptimizerGeneticAlgorithms optimizer;
                 optimizer.SetParamsFilePath(m_CalibParamsFile);
                 optimizer.SetPredictandDBFilePath(m_PredictandDB);
+                optimizer.SetPredictandStationId(m_PredictandStationId);
                 optimizer.SetPredictorDataDir(m_PredictorsDir);
                 optimizer.Manager();
                 optimizer.Cleanup();
