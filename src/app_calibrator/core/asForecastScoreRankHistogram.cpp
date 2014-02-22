@@ -71,18 +71,15 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
     else {
         // Indices for the left and right part
         int indLeft = asTools::SortedArraySearchFloor(&x[0], &x[nbElements-1], ObservedVal);
-        int indRight = asTools::SortedArraySearchCeil(&x[0], &x[nbElements-1], ObservedVal);
         wxASSERT(indLeft>=0);
-        wxASSERT(indRight>=0);
-        wxASSERT(indLeft<=indRight);
 
         int rankVal = indLeft+1; // as the indices are 0-based
 
         // If the exact value was found in the analogs
         // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Eta–RSM short-range ensemble
-        // forecasts. Monthly Weather Review, 125, 1312–1327.
+        // forecasts. Monthly Weather Review, 125, 1312-1327.
         // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Eta–RSM ensemble probabilistic
-        // precipitation forecasts. Monthly Weather Review, 126, 711–724.
+        // precipitation forecasts. Monthly Weather Review, 126, 711-724.
         if (x[indLeft]==ObservedVal) {
 
             // Count the number of same values
