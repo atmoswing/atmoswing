@@ -529,11 +529,11 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 double ptorStart = timeStartData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
 
                                 // For debugging:
-                                // wxLogMessage("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()), preloadDTimeHours[tmp_hour]/24.0, ptorStart);
+                                // wxLogMessage("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()), preloadTimeHours[tmp_hour]/24.0, ptorStart);
                                 // wxLogMessage("ptorStart = %s", asTime::GetStringTime(ptorStart));
                                 // wxLogMessage("timeStartData = %s", asTime::GetStringTime(timeStartData));
                                 // wxLogMessage("params.GetTimeShiftDays() = %f", double(params.GetTimeShiftDays()));
-                                // wxLogMessage("preloadDTimeHours[tmp_hour]/24.0 = %f", preloadDTimeHours[tmp_hour]/24.0);
+                                // wxLogMessage("preloadTimeHours[tmp_hour]/24.0 = %f", preloadTimeHours[tmp_hour]/24.0);
 
                                 double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
 
