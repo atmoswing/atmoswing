@@ -54,6 +54,10 @@ asForecastScoreFinal::asForecastScoreFinal(Period period)
 
 asForecastScoreFinal::asForecastScoreFinal(const wxString& periodString)
 {
+    m_SingleValue = true;
+    m_Has2DArrayArgument = false;
+    m_RanksNb = 0;
+
     if (periodString.CmpNoCase("Total")==0)
     {
         m_Period = asForecastScoreFinal::Total;

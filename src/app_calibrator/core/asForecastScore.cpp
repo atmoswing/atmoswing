@@ -50,6 +50,7 @@ asForecastScore::asForecastScore()
     m_Threshold = NaNFloat;
     m_Percentile = NaNFloat;
     m_UsesClimatology = false;
+    m_SingleValue = true;
 }
 
 asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
