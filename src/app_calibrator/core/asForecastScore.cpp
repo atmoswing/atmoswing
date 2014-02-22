@@ -101,6 +101,11 @@ asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
             asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
             return score;
         }
+        case (CRPSHersbachDecomp):
+        {
+            asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+            return score;
+        }
         case (DF0):
         {
             asForecastScore* score = new asForecastScoreDF0();
