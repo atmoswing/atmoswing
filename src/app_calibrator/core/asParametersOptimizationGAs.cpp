@@ -1995,7 +1995,6 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
 {
     wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()>0);
     wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()==GetChromosomeLength());
-    int chromosomeLength = m_ChromosomeSelfAdaptationMutationRate.size();
 
     // Mutate mutation probability
     for (unsigned int i=0; i<m_ChromosomeSelfAdaptationMutationRate.size(); i++)
@@ -2014,7 +2013,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
     {
         if (!IsParamLocked(counter))
         {
-            wxASSERT(counterSelfAdapt<chromosomeLength);
+            wxASSERT(counterSelfAdapt<m_ChromosomeSelfAdaptationMutationRate.size());
 
             if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[counterSelfAdapt])
             {
@@ -2039,7 +2038,6 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     wxASSERT(m_ChromosomeSelfAdaptationMutationRadius.size()>0);
     wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()==m_ChromosomeSelfAdaptationMutationRadius.size());
     wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()==GetChromosomeLength());
-    int chromosomeLength = m_ChromosomeSelfAdaptationMutationRate.size();
 
     // Mutate mutation probability
     for (unsigned int i=0; i<m_ChromosomeSelfAdaptationMutationRate.size(); i++)
@@ -2068,7 +2066,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     {
         if (!IsParamLocked(counter))
         {
-            wxASSERT(counterSelfAdapt<chromosomeLength);
+            wxASSERT(counterSelfAdapt<m_ChromosomeSelfAdaptationMutationRate.size());
 
             if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[counterSelfAdapt])
             {

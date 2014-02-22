@@ -50,7 +50,7 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
             if(!m_Optimizer->GetAnalogsDates(anaDates, m_Params, i_step, containsNaNs))
             {
                 asLogError(_("Failed processing the analogs dates"));
-                return 0;
+                return NULL;
             }
             anaDatesPrevious = anaDates;
         }
@@ -59,30 +59,30 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
             if(!m_Optimizer->GetAnalogsSubDates(anaDates, m_Params, anaDatesPrevious, i_step, containsNaNs))
             {
                 asLogError(_("Failed processing the analogs sub dates"));
-                return 0;
+                return NULL;
             }
             anaDatesPrevious = anaDates;
         }
         if (containsNaNs)
         {
             asLogError(_("The dates selection contains NaNs"));
-            return false;
+            return NULL;
         }
     }
     if(!m_Optimizer->GetAnalogsValues(anaValues, m_Params, anaDates, stepsNb-1))
     {
         asLogError(_("Failed processing the analogs values"));
-        return 0;
+        return NULL;
     }
     if(!m_Optimizer->GetAnalogsForecastScores(anaScores, m_Params, anaValues, stepsNb-1))
     {
         asLogError(_("Failed processing the forecast scores"));
-        return 0;
+        return NULL;
     }
     if(!m_Optimizer->GetAnalogsForecastScoreFinal(anaScoreFinal, m_Params, anaScores, stepsNb-1))
     {
         asLogError(_("Failed processing the final score"));
-        return 0;
+        return NULL;
     }
     *m_FinalScoreCalib = anaScoreFinal.GetForecastScore();
 
