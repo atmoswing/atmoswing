@@ -696,6 +696,16 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         timeHours = params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro);
                                     }
 
+                                    // Correct according to the method
+                                    if (method.IsSameAs("Gradients"))
+                                    {
+                                        // Nothing to change
+                                    }
+                                    else if (method.IsSameAs("HumidityFlux"))
+                                    {
+                                        if(tmp_prepro==2) level = 0; // pr_wtr
+                                    }
+
                                     // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
                                     double ptorStart = timeStartData-double(params.GetTimeShiftDays())+timeHours/24.0;
                                     double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+timeHours/24.0;
