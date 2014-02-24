@@ -615,11 +615,55 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             }
                         }
                     }
-                    else
+                    else // preloading with preprocessing
                     {
                         asLogMessage(wxString::Format(_("Preloading data for predictor preprocessed %d of step %d."), tmp_ptor, tmp_step));
 
+                        // Check the preprocessing method
+                        wxString method = params.GetPreprocessMethod(tmp_step, tmp_ptor);
+
+                        // Get the number of sub predictors
                         int preprocessSize = params.GetPreprocessSize(tmp_step, tmp_ptor);
+                        int finalTimeHoursSize = 1;
+                        int finalLevelsSize = 1;
+
+                        if (method.IsSameAs("Gradients"))
+                        {
+                            if (preprocessSize!=1)
+                            {
+                                asLogError(wxString::Format(_("The number of provided data (%d) is not compatible with the Gradients preloading option (1)."), preprocessSize));
+                                return false;
+                            }
+
+                            finalTimeHoursSize = 1;
+                            finalLevelsSize = 1;
+
+                            // Fix the criteria if S1
+                            if (params.GetPredictorCriteria(tmp_step, tmp_ptor).IsSameAs("S1"))
+                            {
+                                params.SetPredictorCriteria(tmp_step, tmp_ptor, "S1grads");
+                            }
+                        }
+                        else if (method.IsSameAs("HumidityFlux"))
+                        {
+                            asLogError(_("HumidityFlux preloading not implemented yet."));
+                            return false;
+
+
+                            if (preprocessSize!=6)
+                            {
+                                asLogError(wxString::Format(_("The number of provided data (%d) is not compatible with the Gradients preloading option (1)."), preprocessSize));
+                                return false;
+                            }
+
+                            finalTimeHoursSize = 2;
+                            finalLevelsSize = 1;
+                        }
+                        else
+                        {
+                            asLogError(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+                            return false;
+                        }
 
                         asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."),
                                                       preprocessSize));
@@ -699,12 +743,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
                         }
 
-                        // Fix the criteria if S1
-                        if(params.GetPredictorCriteria(tmp_step, tmp_ptor).IsSameAs("S1"))
-                        {
-                            params.SetPredictorCriteria(tmp_step, tmp_ptor, "S1grads");
-                        }
-
                         asLogMessage(_("Preprocessing data."));
                         asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
                         try
@@ -737,7 +775,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         asLogMessage(_("Preprocessing over."));
                     }
                 }
-                else
+                else // no preloading
                 {
                     VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
                     VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
