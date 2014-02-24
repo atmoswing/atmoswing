@@ -367,15 +367,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                         if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset))) return false;
                     }
 
-                    if(NeedsPreloading(i_step, i_ptor))
-                    {
-                        if(!IsPreprocessDataIdLocked(i_step, i_ptor, i_dataset))
-                        {
-                            asLogWarning(_("The preprocess DataId option unlocked is not compatible with the preload option."));
-                            return false;
-                        }
-                    }
-
                     if(fileParams.GoToNextSameNode())
                     {
                         i_dataset++;
@@ -383,6 +374,77 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                     else
                     {
                         preprocessDataOver = true;
+                    }
+                }
+
+                if(NeedsPreloading(i_step, i_ptor))
+                {
+                    // Check the preprocessing method
+                    wxString method = GetPreprocessMethod(i_step, i_ptor);
+                    VectorFloat preprocLevels;
+                    VectorDouble preprocTimeHours;
+                    int preprocSize = GetPreprocessSize(i_step, i_ptor);
+
+                    // Check that the data ID is locked
+                    for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
+                    {
+                        if(!IsPreprocessDataIdLocked(i_step, i_ptor, i_preproc))
+                        {
+                            asLogError(_("The preprocess DataId option unlocked is not compatible with the preload option."));
+                            return false;
+                        }
+                    }
+
+                    // Different actions depending on the preprocessing method.
+                    if (method.IsSameAs("Gradients"))
+                    {
+                        if (preprocSize!=1)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                    }
+                    else if (method.IsSameAs("HumidityFlux"))
+                    {
+                        if (preprocSize!=4)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                    }
+                    else
+                    {
+                        asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+
+                        for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
+                        {
+                            if(!IsPreprocessLevelLocked(i_step, i_ptor, i_preproc))
+                            {
+                                asLogError(_("The preprocess Level option unlocked is not compatible with the preload option."));
+                                return false;
+                            }
+                            if(!IsPreprocessTimeHoursLocked(i_step, i_ptor, i_preproc))
+                            {
+                                asLogError(_("The preprocess TimeHours option unlocked is not compatible with the preload option."));
+                                return false;
+                            }
+                        }
+                    }
+
+                    if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;
+                    if(!SetPreloadTimeHours(i_step, i_ptor, preprocTimeHours)) return false;
+
+                    // Fix the criteria if S1
+                    if (method.IsSameAs("Gradients"))
+                    {
+                        if (GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1"))
+                        {
+                            SetPredictorCriteria(i_step, i_ptor, "S1grads");
+                        }
                     }
                 }
 
