@@ -56,7 +56,6 @@ private:
     int m_TimeArrayAnalogsIntervalDaysUpperLimit;
     int m_TimeArrayAnalogsIntervalDaysLowerLimit;
     bool m_TimeArrayAnalogsIntervalDaysLocks;
-    bool m_TimeArrayAnalogsIntervalDaysRandomInit;
     int m_AllParametersCount;
     bool m_ParametersListOver;
 

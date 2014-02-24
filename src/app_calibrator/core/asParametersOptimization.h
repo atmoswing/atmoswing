@@ -19,7 +19,6 @@ public:
     void AddPredictorUpperLimit(ParamsStep &step);
     void AddPredictorLowerLimit(ParamsStep &step);
     void AddPredictorLocks(ParamsStepBool &step);
-    void AddPredictorRandomInits(ParamsStepBool &step);
 
     void InitRandomValues();
 
@@ -735,183 +734,6 @@ public:
         m_ForecastScoreLocks.AnalogsNumber = val;
     }
 
-    bool IsTimeArrayAnalogsIntervalDaysRandomInit()
-    {
-        return m_TimeArrayAnalogsIntervalDaysRandomInit;
-    }
-
-    void SetTimeArrayAnalogsIntervalDaysRandomInit(bool val)
-    {
-        m_TimeArrayAnalogsIntervalDaysRandomInit = val;
-    }
-
-    bool IsAnalogsNumberRandomInit(int i_step)
-    {
-        return m_StepsRandomInits[i_step].AnalogsNumber;
-    }
-
-    void SetAnalogsNumberRandomInit(int i_step, bool val)
-    {
-        m_StepsRandomInits[i_step].AnalogsNumber = val;
-    }
-
-    bool IsPreprocessDataIdRandomInit(int i_step, int i_predictor, int i_preprocess)
-    {
-        wxASSERT(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessDataId.size()>(unsigned)i_preprocess);
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessDataId[i_preprocess];
-    }
-
-    void SetPreprocessDataIdRandomInit(int i_step, int i_predictor, int i_preprocess, bool val)
-    {
-        if(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessDataId.size()>(unsigned)(i_preprocess))
-        {
-            m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessDataId[i_preprocess] = val;
-        }
-        else
-        {
-            wxASSERT(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessDataId.size()==(unsigned)i_preprocess);
-            m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
-        }
-    }
-
-    bool IsPreprocessLevelRandomInit(int i_step, int i_predictor, int i_preprocess)
-    {
-        wxASSERT(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessLevels.size()>(unsigned)i_preprocess);
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessLevels[i_preprocess];
-    }
-
-    void SetPreprocessLevelRandomInit(int i_step, int i_predictor, int i_preprocess, bool val)
-    {
-        if(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessLevels.size()>(unsigned)(i_preprocess))
-        {
-            m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessLevels[i_preprocess] = val;
-        }
-        else
-        {
-            wxASSERT(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessLevels.size()==(unsigned)i_preprocess);
-            m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
-        }
-    }
-
-    bool IsPreprocessTimeHoursRandomInit(int i_step, int i_predictor, int i_preprocess)
-    {
-        wxASSERT(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>(unsigned)i_preprocess);
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessTimeHours[i_preprocess];
-    }
-
-    void SetPreprocessTimeHoursRandomInit(int i_step, int i_predictor, int i_preprocess, bool val)
-    {
-        if(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>(unsigned)(i_preprocess))
-        {
-            m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessTimeHours[i_preprocess] = val;
-        }
-        else
-        {
-            wxASSERT(m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessTimeHours.size()==(unsigned)i_preprocess);
-            m_StepsRandomInits[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
-        }
-    }
-
-    bool IsPredictorDataIdRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].DataId;
-    }
-
-    void SetPredictorDataIdRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].DataId = val;
-    }
-
-    bool IsPredictorLevelRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Level;
-    }
-
-    void SetPredictorLevelRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Level = val;
-    }
-
-    bool IsPredictorUminRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Umin;
-    }
-
-    void SetPredictorUminRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Umin = val;
-    }
-
-    bool IsPredictorUptsnbRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Uptsnb;
-    }
-
-    void SetPredictorUptsnbRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Uptsnb = val;
-    }
-
-    bool IsPredictorVminRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Vmin;
-    }
-
-    void SetPredictorVminRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Vmin = val;
-    }
-
-    bool IsPredictorVptsnbRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Vptsnb;
-    }
-
-    void SetPredictorVptsnbRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Vptsnb = val;
-    }
-
-    bool IsPredictorTimeHoursRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].TimeHours;
-    }
-
-    void SetPredictorTimeHoursRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].TimeHours = val;
-    }
-
-    bool IsPredictorWeightRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Weight;
-    }
-
-    void SetPredictorWeightRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Weight = val;
-    }
-
-    bool IsPredictorCriteriaRandomInit(int i_step, int i_predictor)
-    {
-        return m_StepsRandomInits[i_step].Predictors[i_predictor].Criteria;
-    }
-
-    void SetPredictorCriteriaRandomInit(int i_step, int i_predictor, bool val)
-    {
-        m_StepsRandomInits[i_step].Predictors[i_predictor].Criteria = val;
-    }
-
-    bool IsForecastScoreAnalogsNumberRandomInit()
-    {
-        return m_ForecastScoreRandomInits.AnalogsNumber;
-    }
-
-    void SetForecastScoreAnalogsNumberRandomInit(bool val)
-    {
-        m_ForecastScoreRandomInits.AnalogsNumber = val;
-    }
-
     bool IncrementAnalogsNumber(int i_step)
     {
         if (GetAnalogsNumber(i_step)+m_StepsIteration[i_step].AnalogsNumber <= m_StepsUpperLimit[i_step].AnalogsNumber)
@@ -1344,17 +1166,14 @@ protected:
     int m_TimeArrayAnalogsIntervalDaysUpperLimit;
     int m_TimeArrayAnalogsIntervalDaysLowerLimit;
     bool m_TimeArrayAnalogsIntervalDaysLocks;
-    bool m_TimeArrayAnalogsIntervalDaysRandomInit;
     VectorParamsStep m_StepsIteration;
     VectorParamsStep m_StepsUpperLimit;
     VectorParamsStep m_StepsLowerLimit;
     VectorParamsStepBool m_StepsLocks;
-    VectorParamsStepBool m_StepsRandomInits;
     ParamsForecastScore m_ForecastScoreIteration;
     ParamsForecastScore m_ForecastScoreUpperLimit;
     ParamsForecastScore m_ForecastScoreLowerLimit;
     ParamsForecastScoreBool m_ForecastScoreLocks;
-    ParamsForecastScoreBool m_ForecastScoreRandomInits;
     VectorParamsStepVect m_StepsVect;
 
 private:

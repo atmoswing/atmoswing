@@ -11,12 +11,10 @@ asParametersScoring()
     m_ForecastScoreUpperLimit.AnalogsNumber = 100;
     m_ForecastScoreLowerLimit.AnalogsNumber = 10;
     m_ForecastScoreLocks.AnalogsNumber = false;
-    m_ForecastScoreRandomInits.AnalogsNumber = true;
     m_TimeArrayAnalogsIntervalDaysIteration = 1;
     m_TimeArrayAnalogsIntervalDaysUpperLimit = 182;
     m_TimeArrayAnalogsIntervalDaysLowerLimit = 10;
     m_TimeArrayAnalogsIntervalDaysLocks = false;
-    m_TimeArrayAnalogsIntervalDaysRandomInit = true;
 }
 
 asParametersOptimization::~asParametersOptimization()
@@ -32,28 +30,24 @@ void asParametersOptimization::AddStep()
     ParamsStep stepUpperLimit;
     ParamsStep stepLowerLimit;
     ParamsStepBool stepLocks;
-    ParamsStepBool stepRandomInits;
     ParamsStepVect stepVect;
 
     stepIteration.AnalogsNumber = 1;
     stepUpperLimit.AnalogsNumber = 1000;
     stepLowerLimit.AnalogsNumber = 5;
     stepLocks.AnalogsNumber = true;
-    stepRandomInits.AnalogsNumber = false;
     stepVect.AnalogsNumber.push_back(0);
 
     AddPredictorIteration(stepIteration);
     AddPredictorUpperLimit(stepUpperLimit);
     AddPredictorLowerLimit(stepLowerLimit);
     AddPredictorLocks(stepLocks);
-    AddPredictorRandomInits(stepRandomInits);
     AddPredictorVect(stepVect);
 
     m_StepsIteration.push_back(stepIteration);
     m_StepsUpperLimit.push_back(stepUpperLimit);
     m_StepsLowerLimit.push_back(stepLowerLimit);
     m_StepsLocks.push_back(stepLocks);
-    m_StepsRandomInits.push_back(stepRandomInits);
     m_StepsVect.push_back(stepVect);
 
     // Set sizes
@@ -116,23 +110,6 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step)
     predictor.TimeHours = true;
     predictor.Weight = false;
     predictor.Criteria = false;
-
-    step.Predictors.push_back(predictor);
-}
-
-void asParametersOptimization::AddPredictorRandomInits(ParamsStepBool &step)
-{
-    ParamsPredictorBool predictor;
-
-    predictor.DataId = true;
-    predictor.Level = true;
-    predictor.Umin = true;
-    predictor.Uptsnb = true;
-    predictor.Vmin = true;
-    predictor.Vptsnb = true;
-    predictor.TimeHours = false;
-    predictor.Weight = true;
-    predictor.Criteria = true;
 
     step.Predictors.push_back(predictor);
 }
@@ -207,8 +184,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     if(!SetTimeArrayAnalogsIntervalDaysUpperLimit(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "upperlimit"))) return false;
     if(!SetTimeArrayAnalogsIntervalDaysIteration(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "iteration"))) return false;
     SetTimeArrayAnalogsIntervalDaysLock(fileParams.GetFirstElementAttributeValueBool("IntervalDays", "lock", true));
-    SetTimeArrayAnalogsIntervalDaysRandomInit(fileParams.GetFirstElementAttributeValueBool("IntervalDays", "random", false));
-    if(!IsTimeArrayAnalogsIntervalDaysRandomInit())
+    if(IsTimeArrayAnalogsIntervalDaysLocked())
     {
         if(!SetTimeArrayAnalogsIntervalDays(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "value"))) return false;
     }
@@ -236,8 +212,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
         if(!SetAnalogsNumberUpperLimit(i_step, fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "upperlimit"))) return false;
         if(!SetAnalogsNumberIteration(i_step, fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "iteration"))) return false;
         SetAnalogsNumberLock(i_step, fileParams.GetFirstElementAttributeValueBool("AnalogsNumber", "lock", true));
-        SetAnalogsNumberRandomInit(i_step, fileParams.GetFirstElementAttributeValueBool("AnalogsNumber", "random", false));
-        if(!IsAnalogsNumberRandomInit(i_step))
+        if(IsAnalogsNumberLocked(i_step))
         {
             if(!SetAnalogsNumber(i_step, fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "value"))) return false;
         }
@@ -279,8 +254,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"))) return false;
                 if(!SetPredictorDataIdVector(i_step, i_ptor, GetFileParamStringVector(fileParams, "DataId"))) return false;
                 SetPredictorDataIdLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("DataId", "lock", true));
-                SetPredictorDataIdRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("DataId", "random", false));
-                if(!IsPredictorDataIdRandomInit(i_step, i_ptor))
+                if(IsPredictorDataIdLocked(i_step, i_ptor))
                 {
                     if(!SetPredictorDataId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DataId", "value"))) return false;
                 }
@@ -289,12 +263,11 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Level")) return false;
                 if(!SetPredictorLevelVector(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Level"))) return false;
                 SetPredictorLevelLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Level", "lock", true));
-                SetPredictorLevelRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Level", "random", false));
                 if (NeedsPreloading(i_step, i_ptor))
                 {
                     if(!SetPreloadLevels(i_step, i_ptor, GetFileParamFloatVector(fileParams, "Level"))) return false;
                 }
-                if(!IsPredictorLevelRandomInit(i_step, i_ptor))
+                if(IsPredictorLevelLocked(i_step, i_ptor))
                 {
                     if(!SetPredictorLevel(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Level", "value"))) return false;
                 }
@@ -305,8 +278,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorTimeHoursUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("TimeHours", "upperlimit"))) return false;
                 if(!SetPredictorTimeHoursIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("TimeHours", "iteration"))) return false;
                 SetPredictorTimeHoursLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("TimeHours", "lock", true));
-                SetPredictorTimeHoursRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("TimeHours", "random", false));
-                if(!IsPredictorTimeHoursRandomInit(i_step, i_ptor))
+                if(IsPredictorTimeHoursLocked(i_step, i_ptor))
                 {
                     if(!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("TimeHours", "value"))) return false;
                     VectorDouble vTimeHours;
@@ -359,8 +331,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                     if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"))) return false;
                     if(!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, GetFileParamStringVector(fileParams, "PreprocessDataId"))) return false;
                     SetPreprocessDataIdLock(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueBool("PreprocessDataId", "lock", true));
-                    SetPreprocessDataIdRandomInit(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueBool("PreprocessDataId", "random", false));
-                    if(!IsPreprocessDataIdRandomInit(i_step, i_ptor, i_dataset))
+                    if(IsPreprocessDataIdLocked(i_step, i_ptor, i_dataset))
                     {
                         if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDataId", "value"))) return false;
                     }
@@ -372,8 +343,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 
                     if(!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, GetFileParamFloatVector(fileParams, "PreprocessLevel"))) return false;
                     SetPreprocessLevelLock(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueBool("PreprocessLevel", "lock", true));
-                    SetPreprocessLevelRandomInit(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueBool("PreprocessLevel", "random", false));
-                    if(!IsPreprocessLevelRandomInit(i_step, i_ptor, i_dataset))
+                    if(IsPreprocessLevelLocked(i_step, i_ptor, i_dataset))
                     {
                         if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueFloat("PreprocessLevel", "value"))) return false;
                     }
@@ -387,8 +357,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                     if(!SetPreprocessTimeHoursUpperLimit(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "upperlimit"))) return false;
                     if(!SetPreprocessTimeHoursIteration(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "iteration"))) return false;
                     SetPreprocessTimeHoursLock(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueBool("PreprocessTimeHours", "lock", true));
-                    SetPreprocessTimeHoursRandomInit(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueBool("PreprocessTimeHours", "random", false));
-                    if(!IsPreprocessTimeHoursRandomInit(i_step, i_ptor, i_dataset))
+                    if(IsPreprocessTimeHoursLocked(i_step, i_ptor, i_dataset))
                     {
                         if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "value"))) return false;
                     }
@@ -402,33 +371,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                     {
                         if(!IsPreprocessDataIdLocked(i_step, i_ptor, i_dataset))
                         {
-                            asLogWarning(_("The preprocess DataId option unlocked is not compatible with the preload option. Preload option changed."));
-                            SetPreload(i_step, i_ptor, false);
-                        }
-                        if(IsPreprocessDataIdRandomInit(i_step, i_ptor, i_dataset))
-                        {
-                            asLogWarning(_("The preprocess DataId option with ramdon initialization is not compatible with the preload option. Preload option changed."));
-                            SetPreload(i_step, i_ptor, false);
-                        }
-                        if(!IsPreprocessLevelLocked(i_step, i_ptor, i_dataset))
-                        {
-                            asLogWarning(_("The preprocess Level option unlocked is not compatible with the preload option. Preload option changed."));
-                            SetPreload(i_step, i_ptor, false);
-                        }
-                        if(IsPreprocessLevelRandomInit(i_step, i_ptor, i_dataset))
-                        {
-                            asLogWarning(_("The preprocess Level option with ramdon initialization is not compatible with the preload option. Preload option changed."));
-                            SetPreload(i_step, i_ptor, false);
-                        }
-                        if(!IsPreprocessTimeHoursLocked(i_step, i_ptor, i_dataset))
-                        {
-                            asLogWarning(_("The preprocess TimeHours option unlocked is not compatible with the preload option. Preload option changed."));
-                            SetPreload(i_step, i_ptor, false);
-                        }
-                        if(IsPreprocessTimeHoursRandomInit(i_step, i_ptor, i_dataset))
-                        {
-                            asLogWarning(_("The preprocess TimeHours option with ramdon initialization is not compatible with the preload option. Preload option changed."));
-                            SetPreload(i_step, i_ptor, false);
+                            asLogWarning(_("The preprocess DataId option unlocked is not compatible with the preload option."));
+                            return false;
                         }
                     }
 
@@ -462,32 +406,24 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(!SetPredictorUminUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "upperlimit"))) return false;
             if(!SetPredictorUminIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "iteration"))) return false;
             SetPredictorUminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Umin", "lock", true));
-            SetPredictorUminRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Umin", "random", false));
-            if(!IsPredictorUminRandomInit(i_step, i_ptor))
+            if(IsPredictorUminLocked(i_step, i_ptor))
             {
                 if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
-            }
-            if (IsPredictorUminLocked(i_step, i_ptor))
-            {
                 if(!SetPredictorUminLowerLimit(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor))) return false;
                 if(!SetPredictorUminUpperLimit(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor))) return false;
             }
 
             if(!SetPredictorUptsnbLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "lowerlimit"))) return false;
-            if (GetPredictorUptsnbLowerLimit(i_step, i_ptor)==0) 
+            if (GetPredictorUptsnbLowerLimit(i_step, i_ptor)==0)
             {
                 SetPredictorUptsnbLowerLimit(i_step, i_ptor, 1);
             }
             if(!SetPredictorUptsnbUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "upperlimit"))) return false;
             if(!SetPredictorUptsnbIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "iteration"))) return false;
             SetPredictorUptsnbLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Uptsnb", "lock", true));
-            SetPredictorUptsnbRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Uptsnb", "random", false));
-            if(!IsPredictorUptsnbRandomInit(i_step, i_ptor))
+            if(IsPredictorUptsnbLocked(i_step, i_ptor))
             {
                 if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "value"))) return false;
-            }
-            if (IsPredictorUptsnbLocked(i_step, i_ptor))
-            {
                 if(!SetPredictorUptsnbLowerLimit(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor))) return false;
                 if(!SetPredictorUptsnbUpperLimit(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor))) return false;
             }
@@ -500,13 +436,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(!SetPredictorVminUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "upperlimit"))) return false;
             if(!SetPredictorVminIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "iteration"))) return false;
             SetPredictorVminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Vmin", "lock", true));
-            SetPredictorVminRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Vmin", "random", false));
-            if(!IsPredictorVminRandomInit(i_step, i_ptor))
+            if(IsPredictorVminLocked(i_step, i_ptor))
             {
                 if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
-            }
-            if (IsPredictorVminLocked(i_step, i_ptor))
-            {
                 if(!SetPredictorVminLowerLimit(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor))) return false;
                 if(!SetPredictorVminUpperLimit(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor))) return false;
             }
@@ -516,13 +448,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(!SetPredictorVptsnbUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "upperlimit"))) return false;
             if(!SetPredictorVptsnbIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "iteration"))) return false;
             SetPredictorVptsnbLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Vptsnb", "lock", true));
-            SetPredictorVptsnbRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Vptsnb", "random", false));
-            if(!IsPredictorVptsnbRandomInit(i_step, i_ptor))
+            if(IsPredictorVptsnbLocked(i_step, i_ptor))
             {
                 if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "value"))) return false;
-            }
-            if (IsPredictorVptsnbLocked(i_step, i_ptor))
-            {
                 if(!SetPredictorVptsnbLowerLimit(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor))) return false;
                 if(!SetPredictorVptsnbUpperLimit(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor))) return false;
             }
@@ -533,8 +461,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(!SetPredictorVshift(i_step, i_ptor, Vshift)) return false;
 
             if (GetPredictorUptsnbLowerLimit(i_step, i_ptor)<=1 || GetPredictorVptsnbLowerLimit(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if (!IsPredictorUptsnbRandomInit(i_step, i_ptor) && GetPredictorUptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if (!IsPredictorVptsnbRandomInit(i_step, i_ptor) && GetPredictorVptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if (IsPredictorUptsnbLocked(i_step, i_ptor) && GetPredictorUptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if (IsPredictorVptsnbLocked(i_step, i_ptor) && GetPredictorVptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
             if (NeedsPreloading(i_step, i_ptor))
             {
                 // Set maximum extent
@@ -581,8 +509,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Criteria")) return false;
             if(!SetPredictorCriteriaVector(i_step, i_ptor, GetFileParamStringVector(fileParams, "Criteria"))) return false;
             SetPredictorCriteriaLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Criteria", "lock", true));
-            SetPredictorCriteriaRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Criteria", "random", false));
-            if(!IsPredictorCriteriaRandomInit(i_step, i_ptor))
+            if(IsPredictorCriteriaLocked(i_step, i_ptor))
             {
                 if(!SetPredictorCriteria(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("Criteria", "value"))) return false;
             }
@@ -593,8 +520,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(!SetPredictorWeightUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "upperlimit"))) return false;
             if(!SetPredictorWeightIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "iteration"))) return false;
             SetPredictorWeightLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Weight", "lock", true));
-            SetPredictorWeightRandomInit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Weight", "random", false));
-            if(!IsPredictorWeightRandomInit(i_step, i_ptor))
+            if(IsPredictorWeightLocked(i_step, i_ptor))
             {
                 if(!SetPredictorWeight(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "value"))) return false;
             }
@@ -608,7 +534,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 AddPredictorUpperLimit(m_StepsUpperLimit[i_step]);
                 AddPredictorLowerLimit(m_StepsLowerLimit[i_step]);
                 AddPredictorLocks(m_StepsLocks[i_step]);
-                AddPredictorRandomInits(m_StepsRandomInits[i_step]);
                 AddPredictorVect(m_StepsVect[i_step]);
             }
             else
@@ -655,8 +580,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     if(!SetForecastScoreAnalogsNumberUpperLimit(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "upperlimit"))) return false;
     if(!SetForecastScoreAnalogsNumberIteration(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "iteration"))) return false;
     SetForecastScoreAnalogsNumberLock(fileParams.GetFirstElementAttributeValueBool("AnalogsNumber", "lock", true));
-    SetForecastScoreAnalogsNumberRandomInit(fileParams.GetFirstElementAttributeValueBool("AnalogsNumber", "random", false));
-    if(!IsForecastScoreAnalogsNumberRandomInit())
+    if(IsForecastScoreAnalogsNumberLocked())
     {
         if(!SetForecastScoreAnalogsNumber(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "value"))) return false;
     }
@@ -687,12 +611,12 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     SetForecastScoreTimeArrayDate(fileParams.GetFirstElementAttributeValueDouble("Date", "value"));
     SetForecastScoreTimeArrayIntervalDays(fileParams.GetFirstElementAttributeValueDouble("IntervalDays", "value"));
     if(!fileParams.GoANodeBack()) return false;
-    
+
     if(!fileParams.CheckDeprecatedChildNode("Validation")) return false;
 
     // Set sizes
     SetSizes();
-    
+
     // Fixes
     FixTimeLimits();
 
@@ -732,14 +656,14 @@ bool asParametersOptimization::FixTimeLimits()
 
 void asParametersOptimization::InitRandomValues()
 {
-    if(m_TimeArrayAnalogsIntervalDaysRandomInit)
+    if(!m_TimeArrayAnalogsIntervalDaysLocks)
     {
         m_TimeArrayAnalogsIntervalDays = asTools::Random(m_TimeArrayAnalogsIntervalDaysLowerLimit, m_TimeArrayAnalogsIntervalDaysUpperLimit, m_TimeArrayAnalogsIntervalDaysIteration);
     }
 
     for (int i=0; i<GetStepsNb(); i++)
     {
-        if(m_StepsRandomInits[i].AnalogsNumber)
+        if(!m_StepsLocks[i].AnalogsNumber)
         {
             SetAnalogsNumber(i,asTools::Random(m_StepsLowerLimit[i].AnalogsNumber, m_StepsUpperLimit[i].AnalogsNumber, m_StepsIteration[i].AnalogsNumber));
         }
@@ -750,7 +674,7 @@ void asParametersOptimization::InitRandomValues()
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(m_StepsRandomInits[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         int length = m_StepsVect[i].Predictors[j].PreprocessDataId[k].size();
                         int row = asTools::Random(0,length-1);
@@ -759,7 +683,7 @@ void asParametersOptimization::InitRandomValues()
                         SetPreprocessDataId(i,j,k, m_StepsVect[i].Predictors[j].PreprocessDataId[k][row]);
                     }
 
-                    if(m_StepsRandomInits[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         int length = m_StepsVect[i].Predictors[j].PreprocessLevels[k].size();
                         int row = asTools::Random(0,length-1);
@@ -768,7 +692,7 @@ void asParametersOptimization::InitRandomValues()
                         SetPreprocessLevel(i,j,k, m_StepsVect[i].Predictors[j].PreprocessLevels[k][row]);
                     }
 
-                    if(m_StepsRandomInits[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         SetPreprocessTimeHours(i,j,k, asTools::Random(m_StepsLowerLimit[i].Predictors[j].PreprocessTimeHours[k], m_StepsUpperLimit[i].Predictors[j].PreprocessTimeHours[k], m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k]));
                     }
@@ -776,7 +700,7 @@ void asParametersOptimization::InitRandomValues()
             }
             else
             {
-                if(m_StepsRandomInits[i].Predictors[j].DataId)
+                if(!m_StepsLocks[i].Predictors[j].DataId)
                 {
                     int length = m_StepsVect[i].Predictors[j].DataId.size();
                     int row = asTools::Random(0,length-1);
@@ -785,7 +709,7 @@ void asParametersOptimization::InitRandomValues()
                     SetPredictorDataId(i,j, m_StepsVect[i].Predictors[j].DataId[row]);
                 }
 
-                if(m_StepsRandomInits[i].Predictors[j].Level)
+                if(!m_StepsLocks[i].Predictors[j].Level)
                 {
                     int length = m_StepsVect[i].Predictors[j].Level.size();
                     int row = asTools::Random(0,length-1);
@@ -794,39 +718,39 @@ void asParametersOptimization::InitRandomValues()
                     SetPredictorLevel(i,j, m_StepsVect[i].Predictors[j].Level[row]);
                 }
 
-                if(m_StepsRandomInits[i].Predictors[j].TimeHours)
+                if(!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
                     SetPredictorTimeHours(i,j, asTools::Random(m_StepsLowerLimit[i].Predictors[j].TimeHours, m_StepsUpperLimit[i].Predictors[j].TimeHours, m_StepsIteration[i].Predictors[j].TimeHours));
                 }
 
             }
 
-            if(m_StepsRandomInits[i].Predictors[j].Umin)
+            if(!m_StepsLocks[i].Predictors[j].Umin)
             {
                 SetPredictorUmin(i,j, asTools::Random(m_StepsLowerLimit[i].Predictors[j].Umin, m_StepsUpperLimit[i].Predictors[j].Umin, m_StepsIteration[i].Predictors[j].Umin));
             }
 
-            if(m_StepsRandomInits[i].Predictors[j].Uptsnb)
+            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
             {
                 SetPredictorUptsnb(i,j, asTools::Random(m_StepsLowerLimit[i].Predictors[j].Uptsnb, m_StepsUpperLimit[i].Predictors[j].Uptsnb, m_StepsIteration[i].Predictors[j].Uptsnb));
             }
 
-            if(m_StepsRandomInits[i].Predictors[j].Vmin)
+            if(!m_StepsLocks[i].Predictors[j].Vmin)
             {
                 SetPredictorVmin(i,j, asTools::Random(m_StepsLowerLimit[i].Predictors[j].Vmin, m_StepsUpperLimit[i].Predictors[j].Vmin, m_StepsIteration[i].Predictors[j].Vmin));
             }
 
-            if(m_StepsRandomInits[i].Predictors[j].Vptsnb)
+            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
             {
                 SetPredictorVptsnb(i,j, asTools::Random(m_StepsLowerLimit[i].Predictors[j].Vptsnb, m_StepsUpperLimit[i].Predictors[j].Vptsnb, m_StepsIteration[i].Predictors[j].Vptsnb));
             }
 
-            if(m_StepsRandomInits[i].Predictors[j].Weight)
+            if(!m_StepsLocks[i].Predictors[j].Weight)
             {
                 SetPredictorWeight(i,j, asTools::Random(m_StepsLowerLimit[i].Predictors[j].Weight, m_StepsUpperLimit[i].Predictors[j].Weight, m_StepsIteration[i].Predictors[j].Weight));
             }
 
-            if(m_StepsRandomInits[i].Predictors[j].Criteria)
+            if(!m_StepsLocks[i].Predictors[j].Criteria)
             {
                 int length = m_StepsVect[i].Predictors[j].Criteria.size();
                 int row = asTools::Random(0,length-1);
@@ -838,7 +762,7 @@ void asParametersOptimization::InitRandomValues()
         }
     }
 
-    if(m_ForecastScoreRandomInits.AnalogsNumber)
+    if(!m_ForecastScoreLocks.AnalogsNumber)
     {
         SetForecastScoreAnalogsNumber(asTools::Random(m_ForecastScoreLowerLimit.AnalogsNumber, m_ForecastScoreUpperLimit.AnalogsNumber, m_ForecastScoreIteration.AnalogsNumber));
     }
@@ -1076,12 +1000,10 @@ void asParametersOptimization::FixTimeHours()
 void asParametersOptimization::LockAll()
 {
     m_TimeArrayAnalogsIntervalDaysLocks = true;
-    m_TimeArrayAnalogsIntervalDaysRandomInit = false;
 
     for (int i=0; i<GetStepsNb(); i++)
     {
         m_StepsLocks[i].AnalogsNumber = true;
-        m_StepsRandomInits[i].AnalogsNumber = false;
 
         for (int j=0; j<GetPredictorsNb(i); j++)
         {
@@ -1090,40 +1012,27 @@ void asParametersOptimization::LockAll()
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
                     m_StepsLocks[i].Predictors[j].PreprocessDataId[k] = true;
-                    m_StepsRandomInits[i].Predictors[j].PreprocessDataId[k] = false;
                     m_StepsLocks[i].Predictors[j].PreprocessLevels[k] = true;
-                    m_StepsRandomInits[i].Predictors[j].PreprocessLevels[k] = false;
                     m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k] = true;
-                    m_StepsRandomInits[i].Predictors[j].PreprocessTimeHours[k] = false;
                 }
             }
             else
             {
                 m_StepsLocks[i].Predictors[j].DataId = true;
-                m_StepsRandomInits[i].Predictors[j].DataId = false;
                 m_StepsLocks[i].Predictors[j].Level = true;
-                m_StepsRandomInits[i].Predictors[j].Level = false;
                 m_StepsLocks[i].Predictors[j].TimeHours = true;
-                m_StepsRandomInits[i].Predictors[j].TimeHours = false;
             }
 
             m_StepsLocks[i].Predictors[j].Umin = true;
-            m_StepsRandomInits[i].Predictors[j].Umin = false;
             m_StepsLocks[i].Predictors[j].Uptsnb = true;
-            m_StepsRandomInits[i].Predictors[j].Uptsnb = false;
             m_StepsLocks[i].Predictors[j].Vmin = true;
-            m_StepsRandomInits[i].Predictors[j].Vmin = false;
             m_StepsLocks[i].Predictors[j].Vptsnb = true;
-            m_StepsRandomInits[i].Predictors[j].Vptsnb = false;
             m_StepsLocks[i].Predictors[j].Weight = true;
-            m_StepsRandomInits[i].Predictors[j].Weight = false;
             m_StepsLocks[i].Predictors[j].Criteria = true;
-            m_StepsRandomInits[i].Predictors[j].Criteria = false;
         }
     }
 
     m_ForecastScoreLocks.AnalogsNumber = true;
-    m_ForecastScoreRandomInits.AnalogsNumber = false;
 
     return;
 }
@@ -1137,7 +1046,6 @@ void asParametersOptimization::Unlock(VectorInt &indices)
     if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
     {
         m_TimeArrayAnalogsIntervalDaysLocks = false;
-        m_TimeArrayAnalogsIntervalDaysRandomInit = true;
     }
     counter++;
 
@@ -1146,7 +1054,6 @@ void asParametersOptimization::Unlock(VectorInt &indices)
         if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
         {
             m_StepsLocks[i].AnalogsNumber = false;
-            m_StepsRandomInits[i].AnalogsNumber = true;
         }
         counter++;
 
@@ -1159,19 +1066,16 @@ void asParametersOptimization::Unlock(VectorInt &indices)
                     if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
                     {
                         m_StepsLocks[i].Predictors[j].PreprocessDataId[k] = false;
-                        m_StepsRandomInits[i].Predictors[j].PreprocessDataId[k] = true;
                     }
                     counter++;
                     if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
                     {
                         m_StepsLocks[i].Predictors[j].PreprocessLevels[k] = false;
-                        m_StepsRandomInits[i].Predictors[j].PreprocessLevels[k] = true;
                     }
                     counter++;
                     if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
                     {
                         m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k] = false;
-                        m_StepsRandomInits[i].Predictors[j].PreprocessTimeHours[k] = true;
                     }
                     counter++;
                 }
@@ -1181,19 +1085,16 @@ void asParametersOptimization::Unlock(VectorInt &indices)
                 if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
                 {
                     m_StepsLocks[i].Predictors[j].DataId = false;
-                    m_StepsRandomInits[i].Predictors[j].DataId = true;
                 }
                 counter++;
                 if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
                 {
                     m_StepsLocks[i].Predictors[j].Level = false;
-                    m_StepsRandomInits[i].Predictors[j].Level = true;
                 }
                 counter++;
                 if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
                 {
                     m_StepsLocks[i].Predictors[j].TimeHours = false;
-                    m_StepsRandomInits[i].Predictors[j].TimeHours = true;
                 }
                 counter++;
             }
@@ -1201,37 +1102,31 @@ void asParametersOptimization::Unlock(VectorInt &indices)
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
                 m_StepsLocks[i].Predictors[j].Umin = false;
-                m_StepsRandomInits[i].Predictors[j].Umin = true;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
                 m_StepsLocks[i].Predictors[j].Uptsnb = false;
-                m_StepsRandomInits[i].Predictors[j].Uptsnb = true;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
                 m_StepsLocks[i].Predictors[j].Vmin = false;
-                m_StepsRandomInits[i].Predictors[j].Vmin = true;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
                 m_StepsLocks[i].Predictors[j].Vptsnb = false;
-                m_StepsRandomInits[i].Predictors[j].Vptsnb = true;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
                 m_StepsLocks[i].Predictors[j].Weight = false;
-                m_StepsRandomInits[i].Predictors[j].Weight = true;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
                 m_StepsLocks[i].Predictors[j].Criteria = false;
-                m_StepsRandomInits[i].Predictors[j].Criteria = true;
             }
             counter++;
         }
@@ -1240,7 +1135,6 @@ void asParametersOptimization::Unlock(VectorInt &indices)
     if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
     {
         m_ForecastScoreLocks.AnalogsNumber = false;
-        m_ForecastScoreRandomInits.AnalogsNumber = true;
     }
     counter++;
 }
