@@ -6,10 +6,13 @@
 namespace
 {
 
-TEST(LoadFromFile)
+TEST(ParametersOptimizationLoadFromFile)
 {
+	wxString str("Testing optimization parameters...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asParametersOptimizationTestFile01.xml");
+    filepath.Append("/files/parameters_optimization.xml");
 
     asParametersOptimization params;
     params.LoadFromFile(filepath);
@@ -24,7 +27,6 @@ TEST(LoadFromFile)
     CHECK_EQUAL(10, params.GetTimeArrayAnalogsIntervalDaysLowerLimit());
     CHECK_EQUAL(182, params.GetTimeArrayAnalogsIntervalDaysUpperLimit());
     CHECK_EQUAL(false, params.IsTimeArrayAnalogsIntervalDaysLocked());
-    CHECK_EQUAL(true, params.IsTimeArrayAnalogsIntervalDaysRandomInit());
     CHECK_EQUAL(60, params.GetTimeArrayAnalogsExcludeDays());
     CHECK_EQUAL(true, params.GetTimeArrayAnalogsMode().IsSameAs("DaysInterval"));
     CHECK_EQUAL(true, params.GetTimeArrayTargetMode().IsSameAs("Simple"));
@@ -35,7 +37,6 @@ TEST(LoadFromFile)
     CHECK_EQUAL(5, params.GetAnalogsNumberLowerLimit(0));
     CHECK_EQUAL(200, params.GetAnalogsNumberUpperLimit(0));
     CHECK_EQUAL(true, params.IsAnalogsNumberLocked(0));
-    CHECK_EQUAL(false, params.IsAnalogsNumberRandomInit(0));
 
     CHECK_EQUAL(false, params.NeedsPreprocessing(0,0));
     CHECK_EQUAL(true, params.GetPredictorDatasetId(0,0).IsSameAs("NCEP_R-1"));
@@ -46,36 +47,30 @@ TEST(LoadFromFile)
     CHECK_EQUAL(-48, params.GetPredictorTimeHoursLowerLimit(0,0));
     CHECK_EQUAL(48, params.GetPredictorTimeHoursUpperLimit(0,0));
     CHECK_EQUAL(true, params.IsPredictorTimeHoursLocked(0,0));
-    CHECK_EQUAL(false, params.IsPredictorTimeHoursRandomInit(0,0));
     CHECK_EQUAL(true, params.GetPredictorGridType(0,0).IsSameAs("Regular"));
     CHECK_EQUAL(2.5, params.GetPredictorUminIteration(0,0));
     CHECK_EQUAL(300, params.GetPredictorUminLowerLimit(0,0));
     CHECK_EQUAL(450, params.GetPredictorUminUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorUminLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorUminRandomInit(0,0));
     CHECK_EQUAL(1, params.GetPredictorUptsnbIteration(0,0));
     CHECK_EQUAL(1, params.GetPredictorUptsnbLowerLimit(0,0));
     CHECK_EQUAL(21, params.GetPredictorUptsnbUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorUptsnbLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorUptsnbRandomInit(0,0));
     CHECK_EQUAL(2.5, params.GetPredictorUstep(0,0));
     CHECK_EQUAL(2.5, params.GetPredictorVminIteration(0,0));
     CHECK_EQUAL(0, params.GetPredictorVminLowerLimit(0,0));
     CHECK_EQUAL(70, params.GetPredictorVminUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorVminLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorVminRandomInit(0,0));
     CHECK_EQUAL(1, params.GetPredictorVptsnbIteration(0,0));
     CHECK_EQUAL(1, params.GetPredictorVptsnbLowerLimit(0,0));
     CHECK_EQUAL(13, params.GetPredictorVptsnbUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorVptsnbLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorVptsnbRandomInit(0,0));
     CHECK_EQUAL(2.5, params.GetPredictorVstep(0,0));
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,0).IsSameAs("S1"));
     CHECK_CLOSE(0.01, params.GetPredictorWeightIteration(0,0), 0.0001);
     CHECK_CLOSE(0, params.GetPredictorWeightLowerLimit(0,0), 0.0001);
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,0), 0.0001);
     CHECK_EQUAL(false, params.IsPredictorWeightLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorWeightRandomInit(0,0));
 
     CHECK_EQUAL(true, params.NeedsPreprocessing(0,1));
     CHECK_EQUAL(true, params.GetPreprocessMethod(0,1).IsSameAs("Gradients"));
@@ -88,30 +83,25 @@ TEST(LoadFromFile)
     CHECK_EQUAL(300, params.GetPredictorUminLowerLimit(0,1));
     CHECK_EQUAL(450, params.GetPredictorUminUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorUminLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorUminRandomInit(0,1));
     CHECK_EQUAL(1, params.GetPredictorUptsnbIteration(0,1));
     CHECK_EQUAL(3, params.GetPredictorUptsnbLowerLimit(0,1));
     CHECK_EQUAL(19, params.GetPredictorUptsnbUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorUptsnbLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorUptsnbRandomInit(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorUstep(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorVminIteration(0,1));
     CHECK_EQUAL(0, params.GetPredictorVminLowerLimit(0,1));
     CHECK_EQUAL(70, params.GetPredictorVminUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorVminLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorVminRandomInit(0,1));
     CHECK_EQUAL(1, params.GetPredictorVptsnbIteration(0,1));
     CHECK_EQUAL(1, params.GetPredictorVptsnbLowerLimit(0,1));
     CHECK_EQUAL(9, params.GetPredictorVptsnbUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorVptsnbLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorVptsnbRandomInit(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorVstep(0,1));
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
     CHECK_CLOSE(0.01, params.GetPredictorWeightIteration(0,1), 0.0001);
     CHECK_CLOSE(0, params.GetPredictorWeightLowerLimit(0,1), 0.0001);
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,1), 0.0001);
     CHECK_EQUAL(false, params.IsPredictorWeightLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorWeightRandomInit(0,1));
 
     CHECK_EQUAL(40, params.GetPredictandStationId());
 
@@ -120,7 +110,6 @@ TEST(LoadFromFile)
     CHECK_EQUAL(5, params.GetForecastScoreAnalogsNumberLowerLimit());
     CHECK_EQUAL(150, params.GetForecastScoreAnalogsNumberUpperLimit());
     CHECK_EQUAL(false, params.IsForecastScoreAnalogsNumberLocked());
-    CHECK_EQUAL(true, params.IsForecastScoreAnalogsNumberRandomInit());
 
     CHECK_EQUAL(true, params.ForecastScoreNeedsPostprocessing());
     CHECK_EQUAL(true, params.GetForecastScorePostprocessMethod().IsSameAs("DuplicationOnCriteriaExponent"));
@@ -131,10 +120,10 @@ TEST(LoadFromFile)
     CHECK_CLOSE(60, params.GetForecastScoreTimeArrayIntervalDays(), 0.0001);
 }
 
-TEST(LoadFromFileAndInitRandomValues)
+TEST(ParametersOptimizationLoadFromFileAndInitRandomValues)
 {
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/asParametersOptimizationTestFile01.xml");
+    filepath.Append("/files/parameters_optimization.xml");
 
     asParametersOptimization params;
     params.LoadFromFile(filepath);
@@ -151,7 +140,6 @@ TEST(LoadFromFileAndInitRandomValues)
     CHECK_EQUAL(10, params.GetTimeArrayAnalogsIntervalDaysLowerLimit());
     CHECK_EQUAL(182, params.GetTimeArrayAnalogsIntervalDaysUpperLimit());
     CHECK_EQUAL(false, params.IsTimeArrayAnalogsIntervalDaysLocked());
-    CHECK_EQUAL(true, params.IsTimeArrayAnalogsIntervalDaysRandomInit());
     CHECK_EQUAL(60, params.GetTimeArrayAnalogsExcludeDays());
     CHECK_EQUAL(true, params.GetTimeArrayAnalogsMode().IsSameAs("DaysInterval"));
     CHECK_EQUAL(true, params.GetTimeArrayTargetMode().IsSameAs("Simple"));
@@ -162,7 +150,6 @@ TEST(LoadFromFileAndInitRandomValues)
     CHECK_EQUAL(5, params.GetAnalogsNumberLowerLimit(0));
     CHECK_EQUAL(200, params.GetAnalogsNumberUpperLimit(0));
     CHECK_EQUAL(true, params.IsAnalogsNumberLocked(0));
-    CHECK_EQUAL(false, params.IsAnalogsNumberRandomInit(0));
 
     CHECK_EQUAL(false, params.NeedsPreprocessing(0,0));
     CHECK_EQUAL(true, params.GetPredictorDatasetId(0,0).IsSameAs("NCEP_R-1"));
@@ -173,36 +160,30 @@ TEST(LoadFromFileAndInitRandomValues)
     CHECK_EQUAL(-48, params.GetPredictorTimeHoursLowerLimit(0,0));
     CHECK_EQUAL(48, params.GetPredictorTimeHoursUpperLimit(0,0));
     CHECK_EQUAL(true, params.IsPredictorTimeHoursLocked(0,0));
-    CHECK_EQUAL(false, params.IsPredictorTimeHoursRandomInit(0,0));
     CHECK_EQUAL(true, params.GetPredictorGridType(0,0).IsSameAs("Regular"));
     CHECK_EQUAL(2.5, params.GetPredictorUminIteration(0,0));
     CHECK_EQUAL(300, params.GetPredictorUminLowerLimit(0,0));
     CHECK_EQUAL(450, params.GetPredictorUminUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorUminLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorUminRandomInit(0,0));
     CHECK_EQUAL(1, params.GetPredictorUptsnbIteration(0,0));
     CHECK_EQUAL(1, params.GetPredictorUptsnbLowerLimit(0,0));
     CHECK_EQUAL(21, params.GetPredictorUptsnbUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorUptsnbLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorUptsnbRandomInit(0,0));
     CHECK_EQUAL(2.5, params.GetPredictorUstep(0,0));
     CHECK_EQUAL(2.5, params.GetPredictorVminIteration(0,0));
     CHECK_EQUAL(0, params.GetPredictorVminLowerLimit(0,0));
     CHECK_EQUAL(70, params.GetPredictorVminUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorVminLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorVminRandomInit(0,0));
     CHECK_EQUAL(1, params.GetPredictorVptsnbIteration(0,0));
     CHECK_EQUAL(1, params.GetPredictorVptsnbLowerLimit(0,0));
     CHECK_EQUAL(13, params.GetPredictorVptsnbUpperLimit(0,0));
     CHECK_EQUAL(false, params.IsPredictorVptsnbLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorVptsnbRandomInit(0,0));
     CHECK_EQUAL(2.5, params.GetPredictorVstep(0,0));
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,0).IsSameAs("S1"));
     CHECK_CLOSE(0.01, params.GetPredictorWeightIteration(0,0), 0.0001);
     CHECK_CLOSE(0, params.GetPredictorWeightLowerLimit(0,0), 0.0001);
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,0), 0.0001);
     CHECK_EQUAL(false, params.IsPredictorWeightLocked(0,0));
-    CHECK_EQUAL(true, params.IsPredictorWeightRandomInit(0,0));
 
     CHECK_EQUAL(true, params.NeedsPreprocessing(0,1));
     CHECK_EQUAL(true, params.GetPreprocessMethod(0,1).IsSameAs("Gradients"));
@@ -215,30 +196,25 @@ TEST(LoadFromFileAndInitRandomValues)
     CHECK_EQUAL(300, params.GetPredictorUminLowerLimit(0,1));
     CHECK_EQUAL(450, params.GetPredictorUminUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorUminLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorUminRandomInit(0,1));
     CHECK_EQUAL(1, params.GetPredictorUptsnbIteration(0,1));
     CHECK_EQUAL(3, params.GetPredictorUptsnbLowerLimit(0,1));
     CHECK_EQUAL(19, params.GetPredictorUptsnbUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorUptsnbLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorUptsnbRandomInit(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorUstep(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorVminIteration(0,1));
     CHECK_EQUAL(0, params.GetPredictorVminLowerLimit(0,1));
     CHECK_EQUAL(70, params.GetPredictorVminUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorVminLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorVminRandomInit(0,1));
     CHECK_EQUAL(1, params.GetPredictorVptsnbIteration(0,1));
     CHECK_EQUAL(1, params.GetPredictorVptsnbLowerLimit(0,1));
     CHECK_EQUAL(9, params.GetPredictorVptsnbUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorVptsnbLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorVptsnbRandomInit(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorVstep(0,1));
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
     CHECK_CLOSE(0.01, params.GetPredictorWeightIteration(0,1), 0.0001);
     CHECK_CLOSE(0, params.GetPredictorWeightLowerLimit(0,1), 0.0001);
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,1), 0.0001);
     CHECK_EQUAL(false, params.IsPredictorWeightLocked(0,1));
-    CHECK_EQUAL(true, params.IsPredictorWeightRandomInit(0,1));
 
     CHECK_EQUAL(40, params.GetPredictandStationId());
 
@@ -247,7 +223,6 @@ TEST(LoadFromFileAndInitRandomValues)
     CHECK_EQUAL(5, params.GetForecastScoreAnalogsNumberLowerLimit());
     CHECK_EQUAL(150, params.GetForecastScoreAnalogsNumberUpperLimit());
     CHECK_EQUAL(false, params.IsForecastScoreAnalogsNumberLocked());
-    CHECK_EQUAL(true, params.IsForecastScoreAnalogsNumberRandomInit());
 
     CHECK_EQUAL(true, params.ForecastScoreNeedsPostprocessing());
     CHECK_EQUAL(true, params.GetForecastScorePostprocessMethod().IsSameAs("DuplicationOnCriteriaExponent"));
