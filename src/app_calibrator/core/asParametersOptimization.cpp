@@ -231,14 +231,16 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
-                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
-                SetPreprocess(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preprocess", "value"));
-                if(NeedsPreprocessing(i_step, i_ptor))
+                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing", asHIDE_WARNINGS))
                 {
-                    asLogError(_("Preprocessing option is not coherent."));
-                    return false;
+                    SetPreprocess(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preprocess", "value"));
+                    if(NeedsPreprocessing(i_step, i_ptor))
+                    {
+                        asLogError(_("Preprocessing option is not coherent."));
+                        return false;
+                    }
+                    if(!fileParams.GoANodeBack()) return false;
                 }
-                if(!fileParams.GoANodeBack()) return false;
 
                 if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload", asHIDE_WARNINGS))
                 {
@@ -304,7 +306,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
-                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload"))
+                if(fileParams.GoToChildNodeWithAttributeValue("name", "Preload", asHIDE_WARNINGS))
                 {
                     SetPreload(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preload", "value"));
                     if(!fileParams.GoANodeBack()) return false;
@@ -606,7 +608,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
         if(!fileParams.GoANodeBack()) return false;
 
         // Find the next analogs date block
-        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates")) break;
+        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates", asHIDE_WARNINGS)) break;
 
         i_step++;
     }
@@ -864,7 +866,7 @@ void asParametersOptimization::CheckRange()
                     {
                         SetPreprocessTimeHours(i, j, k, wxMax( wxMin(GetPreprocessTimeHours(i,j,k), m_StepsUpperLimit[i].Predictors[j].PreprocessTimeHours[k]), m_StepsLowerLimit[i].Predictors[j].PreprocessTimeHours[k]));
                     }
-                    SetPredictorTimeHours(i, j, NaNDouble);
+                    SetPredictorTimeHours(i, j, 0);
                 }
             }
             else
