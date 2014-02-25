@@ -633,8 +633,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
 
                         // Check on which variable to loop
-                        int preloadLevelsSize = preloadLevels.size();
-                        int preloadTimeHoursSize = preloadTimeHours.size();
+                        unsigned int preloadLevelsSize = preloadLevels.size();
+                        unsigned int preloadTimeHoursSize = preloadTimeHours.size();
                         bool loopOnLevels = true;
                         bool loopOnTimeHours = true;
 
