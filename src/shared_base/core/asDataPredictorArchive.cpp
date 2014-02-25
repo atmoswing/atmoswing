@@ -237,7 +237,48 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         if (IsPreprocessed())
         {
             wxString method = GetPreprocessMethod();
-            if (method.IsSameAs("MergeCouplesAndMultiply"))
+            if (method.IsSameAs("Gradients"))
+            {
+                VArray2DFloat originalData = m_Data;
+
+                if(originalData[0].cols()!=m_AxisLon.size() || originalData[0].rows()!=2*m_AxisLat.size() )
+                {
+                    asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    asLogError(wxString::Format("originalData[0].cols() = %d, m_AxisLon.size() = %d, originalData[0].rows() = %d, m_AxisLat.size() = %d", (int)originalData[0].cols(), (int)m_AxisLon.size(), (int)originalData[0].rows(), (int)m_AxisLat.size()));
+                    return false;
+                }
+
+                for (unsigned int i=0; i<originalData.size(); i++)
+                {
+                    Array2DFloat dat1 = originalData[i].block(VstartIndexReal,UstartIndex,Vlength,Ulength);
+                    Array2DFloat dat2 = originalData[i].block(VstartIndexReal+m_AxisLat.size(),UstartIndex,Vlength,Ulength);
+                    Array2DFloat datMerged(2*Vlength, Ulength);
+                    datMerged.block(0,0,Vlength,Ulength) = dat1;
+                    datMerged.block(Vlength,0,Vlength,Ulength) = dat2;
+                    m_Data[i] = datMerged;
+                }
+
+                Array1DFloat newAxisLon(Ulength);
+                for (int i=0; i<Ulength; i++)
+                {
+                    newAxisLon[i] = NaNFloat;
+                }
+                m_AxisLon = newAxisLon;
+
+                Array1DFloat newAxisLat(2*Vlength);
+                for (int i=0; i<2*Vlength; i++)
+                {
+                    newAxisLat[i] = NaNFloat;
+                }
+                m_AxisLat = newAxisLat;
+
+                m_LatPtsnb = m_AxisLat.size();
+                m_LonPtsnb = m_AxisLon.size();
+
+                return true;
+
+            }
+            else if (method.IsSameAs("MergeCouplesAndMultiply"))
             {
                 VArray2DFloat originalData = m_Data;
 

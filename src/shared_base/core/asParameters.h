@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
- 
+
 #ifndef ASPARAMETERS_H
 #define ASPARAMETERS_H
 
@@ -353,7 +353,7 @@ public:
         m_PredictandStationId = val;
         return true;
     }
-    
+
     wxString GePredictandtDatasetId()
     {
         return m_PredictandDatasetId;
@@ -404,7 +404,7 @@ public:
     {
         return m_PredictandTimeHours;
     }
-    
+
     bool SetPredictandTimeHours(double val)
     {
         if (asTools::IsNaN(val))
@@ -627,7 +627,7 @@ public:
             asLogError(_("The provided value for the preprocess dataset ID is null"));
             return false;
         }
-        
+
         if(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()>=(unsigned)(i_dataset+1))
         {
             m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds[i_dataset] = val;
@@ -705,7 +705,7 @@ public:
             wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()==i_dataset);
             m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
         }
-        
+
         return true;
     }
 
@@ -736,7 +736,7 @@ public:
         }
         else
         {
-            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=i_dataset);
+            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()==i_dataset);
             m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
         }
 
@@ -965,7 +965,7 @@ public:
         }
 
         m_Steps[i_step].Predictors[i_predictor].TimeHours = val;
-        
+
         return true;
     }
 

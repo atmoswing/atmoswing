@@ -529,11 +529,11 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 double ptorStart = timeStartData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
 
                                 // For debugging:
-                                // wxLogMessage("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()), preloadDTimeHours[tmp_hour]/24.0, ptorStart);
+                                // wxLogMessage("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()), preloadTimeHours[tmp_hour]/24.0, ptorStart);
                                 // wxLogMessage("ptorStart = %s", asTime::GetStringTime(ptorStart));
                                 // wxLogMessage("timeStartData = %s", asTime::GetStringTime(timeStartData));
                                 // wxLogMessage("params.GetTimeShiftDays() = %f", double(params.GetTimeShiftDays()));
-                                // wxLogMessage("preloadDTimeHours[tmp_hour]/24.0 = %f", preloadDTimeHours[tmp_hour]/24.0);
+                                // wxLogMessage("preloadTimeHours[tmp_hour]/24.0 = %f", preloadTimeHours[tmp_hour]/24.0);
 
                                 double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
 
@@ -581,7 +581,10 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 }
 
                                 // Data loading
-                                asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."), params.GetPredictorDataId(tmp_step, tmp_ptor).c_str(), (int)preloadLevels[tmp_level], (int)preloadTimeHours[tmp_hour]));
+                                asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
+                                                              params.GetPredictorDataId(tmp_step, tmp_ptor).c_str(),
+                                                              (int)preloadLevels[tmp_level],
+                                                              (int)preloadTimeHours[tmp_hour]));
                                 try
                                 {
                                     if(!predictor->Load(area, timeArray))
@@ -615,129 +618,196 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             }
                         }
                     }
-                    else
+                    else // preloading with preprocessing
                     {
                         asLogMessage(wxString::Format(_("Preloading data for predictor preprocessed %d of step %d."), tmp_ptor, tmp_step));
 
+                        // Check the preprocessing method
+                        wxString method = params.GetPreprocessMethod(tmp_step, tmp_ptor);
+
+                        // Get the number of sub predictors
                         int preprocessSize = params.GetPreprocessSize(tmp_step, tmp_ptor);
+
+                        // Levels and time arrays
+                        VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
+                        VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
+
+                        // Check on which variable to loop
+                        unsigned int preloadLevelsSize = preloadLevels.size();
+                        unsigned int preloadTimeHoursSize = preloadTimeHours.size();
+                        bool loopOnLevels = true;
+                        bool loopOnTimeHours = true;
+
+
+                        if(preloadLevelsSize==0)
+                        {
+                            loopOnLevels = false;
+                            preloadLevelsSize = 1;
+                        }
+
+                        if(preloadTimeHoursSize==0)
+                        {
+                            loopOnTimeHours = false;
+                            preloadTimeHoursSize = 1;
+                        }
+
+                        // Resize container and set null pointers
+                        m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevelsSize);
+                        for (unsigned int tmp_level=0; tmp_level<preloadLevelsSize; tmp_level++)
+                        {
+                            m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHoursSize);
+                            for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHoursSize; tmp_hour++)
+                            {
+                                m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour] = NULL;
+                            }
+                        }
 
                         asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."),
                                                       preprocessSize));
 
-                        for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
+                        // Load data for every level and every hour
+                        for (unsigned int tmp_level=0; tmp_level<preloadLevelsSize; tmp_level++)
                         {
-                            asLogMessage(wxString::Format(_("Preloading data for predictor %d (preprocess %d) of step %d."), tmp_ptor, tmp_prepro, tmp_step));
-
-                            // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-                            double ptorStart = timeStartData-double(params.GetTimeShiftDays())+params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)/24.0;
-                            double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)/24.0;
-                            asTimeArray timeArray(ptorStart, ptorEnd,
-                                                  params.GetTimeArrayAnalogsTimeStepHours(),
-                                                  asTimeArray::Simple);
-                            timeArray.Init();
-
-                            // Loading the datasets information
-                            asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro),
-                                                                                                              params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro),
-                                                                                                              m_PredictorDataDir);
-                            if(!predictorPreprocess)
+                            for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHoursSize; tmp_hour++)
                             {
-                                return false;
+                                for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
+                                {
+                                    asLogMessage(wxString::Format(_("Preloading data for predictor %d (preprocess %d) of step %d."), tmp_ptor, tmp_prepro, tmp_step));
+
+                                    // Get level
+                                    float level;
+                                    if (loopOnLevels)
+                                    {
+                                        level = preloadLevels[tmp_level];
+                                    }
+                                    else
+                                    {
+                                        level = params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro);
+                                    }
+
+                                    // Get time
+                                    double timeHours;
+                                    if (loopOnTimeHours)
+                                    {
+                                        timeHours = preloadTimeHours[tmp_hour];
+                                    }
+                                    else
+                                    {
+                                        timeHours = params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro);
+                                    }
+
+                                    // Correct according to the method
+                                    if (method.IsSameAs("Gradients"))
+                                    {
+                                        // Nothing to change
+                                    }
+                                    else if (method.IsSameAs("HumidityFlux"))
+                                    {
+                                        if(tmp_prepro==2) level = 0; // pr_wtr
+                                    }
+
+                                    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+                                    double ptorStart = timeStartData-double(params.GetTimeShiftDays())+timeHours/24.0;
+                                    double ptorEnd = timeEndData-double(params.GetTimeShiftDays())+timeHours/24.0;
+                                    asTimeArray timeArray(ptorStart, ptorEnd,
+                                                          params.GetTimeArrayAnalogsTimeStepHours(),
+                                                          asTimeArray::Simple);
+                                    timeArray.Init();
+
+                                    // Loading the datasets information
+                                    asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro),
+                                                                                                                      params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro),
+                                                                                                                      m_PredictorDataDir);
+                                    if(!predictorPreprocess)
+                                    {
+                                        return false;
+                                    }
+
+                                    asGeo geo(predictorPreprocess->GetCoordSys());
+                                    double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
+                                    if (Vmax > geo.GetAxisVmax())
+                                    {
+                                        double diff = Vmax-geo.GetAxisVmax();
+                                        int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
+                                        params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
+                                        asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.2f to %.2f)."), Vmax, Vmax-diff));
+                                    }
+
+                                    // Area object instantiation
+                                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
+                                                                   params.GetPredictorGridType(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadUmin(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadUptsnb(tmp_step, tmp_ptor),
+                                                                   params.GetPredictorUstep(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadVmin(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadVptsnb(tmp_step, tmp_ptor),
+                                                                   params.GetPredictorVstep(tmp_step, tmp_ptor),
+                                                                   level,
+                                                                   asNONE,
+                                                                   params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
+                                    wxASSERT(area);
+
+                                    // Check the starting dates coherence
+                                    if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
+                                    {
+                                        asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
+                                                                    asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
+                                        wxDELETE(area);
+                                        wxDELETE(predictorPreprocess);
+                                        return false;
+                                    }
+
+                                    // Data loading
+                                    asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
+                                                                  params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).c_str(),
+                                                                  (int)level,
+                                                                  (int)timeHours));
+                                    if(!predictorPreprocess->Load(area, timeArray))
+                                    {
+                                        asLogError(_("The data could not be loaded."));
+                                        wxDELETE(area);
+                                        wxDELETE(predictorPreprocess);
+                                        return false;
+                                    }
+                                    wxDELETE(area);
+                                    m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
+                                }
+
+                                asLogMessage(_("Preprocessing data."));
+                                asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
+                                try
+                                {
+                                    if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(tmp_step, tmp_ptor), predictor))
+                                    {
+                                        asLogError(_("Data preprocessing failed."));
+                                        wxDELETE(predictor);
+                                        return false;
+                                    }
+                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
+                                }
+                                catch(bad_alloc& ba)
+                                {
+                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
+                                    wxString msg(ba.what(), wxConvUTF8);
+                                    asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg.c_str()));
+                                    wxDELETE(predictor);
+                                    return false;
+                                }
+                                catch (exception& e)
+                                {
+                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
+                                    wxString msg(e.what(), wxConvUTF8);
+                                    asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg.c_str()));
+                                    wxDELETE(predictor);
+                                    return false;
+                                }
+                                DeletePreprocessData();
+                                asLogMessage(_("Preprocessing over."));
                             }
-
-                            asLogMessage(_("Creating maximum area."));
-
-                            asGeo geo(predictorPreprocess->GetCoordSys());
-                            double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
-                            if (Vmax > geo.GetAxisVmax())
-                            {
-                                double diff = Vmax-geo.GetAxisVmax();
-                                int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
-                                params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.2f to %.2f)."), Vmax, Vmax-diff));
-                            }
-
-                            // Area object instantiation
-                            asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
-                                                           params.GetPredictorGridType(tmp_step, tmp_ptor),
-                                                           params.GetPreloadUmin(tmp_step, tmp_ptor),
-                                                           params.GetPreloadUptsnb(tmp_step, tmp_ptor),
-                                                           params.GetPredictorUstep(tmp_step, tmp_ptor),
-                                                           params.GetPreloadVmin(tmp_step, tmp_ptor),
-                                                           params.GetPreloadVptsnb(tmp_step, tmp_ptor),
-                                                           params.GetPredictorVstep(tmp_step, tmp_ptor),
-                                                           params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro),
-                                                           asNONE,
-                                                           params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
-                            wxASSERT(area);
-
-                            asLogMessage(_("Area created."));
-
-                            // Check the starting dates coherence
-                            if (predictorPreprocess->GetOriginalProviderStart()>ptorStart)
-                            {
-                                asLogError(wxString::Format(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
-                                                            asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
-                                wxDELETE(area);
-                                wxDELETE(predictorPreprocess);
-                                return false;
-                            }
-
-                            // Data loading
-                            asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
-                                                          params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).c_str(),
-                                                          (int)params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro),
-                                                          (int)params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)));
-                            if(!predictorPreprocess->Load(area, timeArray))
-                            {
-                                asLogError(_("The data could not be loaded."));
-                                wxDELETE(area);
-                                wxDELETE(predictorPreprocess);
-                                return false;
-                            }
-                            wxDELETE(area);
-                            m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
                         }
-
-                        // Fix the criteria if S1
-                        if(params.GetPredictorCriteria(tmp_step, tmp_ptor).IsSameAs("S1"))
-                        {
-                            params.SetPredictorCriteria(tmp_step, tmp_ptor, "S1grads");
-                        }
-
-                        asLogMessage(_("Preprocessing data."));
-                        asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
-                        try
-                        {
-                            if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(tmp_step, tmp_ptor), predictor))
-                            {
-                                asLogError(_("Data preprocessing failed."));
-                                wxDELETE(predictor);
-                                return false;
-                            }
-                            m_PreloadedArchive[tmp_step][tmp_ptor][0][0]=predictor;
-                        }
-                        catch(bad_alloc& ba)
-                        {
-                            m_PreloadedArchive[tmp_step][tmp_ptor][0][0]=NULL;
-                            wxString msg(ba.what(), wxConvUTF8);
-                            asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg.c_str()));
-                            wxDELETE(predictor);
-                            return false;
-                        }
-                        catch (exception& e)
-                        {
-                            m_PreloadedArchive[tmp_step][tmp_ptor][0][0]=NULL;
-                            wxString msg(e.what(), wxConvUTF8);
-                            asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg.c_str()));
-                            wxDELETE(predictor);
-                            return false;
-                        }
-                        DeletePreprocessData();
-                        asLogMessage(_("Preprocessing over."));
                     }
                 }
-                else
+                else // no preloading
                 {
                     VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
                     VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
