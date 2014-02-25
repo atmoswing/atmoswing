@@ -97,7 +97,7 @@ TEST(ParametersOptimizationLoadFromFile)
     CHECK_EQUAL(9, params.GetPredictorVptsnbUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorVptsnbLocked(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorVstep(0,1));
-    CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
+    CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1grads"));
     CHECK_CLOSE(0.01, params.GetPredictorWeightIteration(0,1), 0.0001);
     CHECK_CLOSE(0, params.GetPredictorWeightLowerLimit(0,1), 0.0001);
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,1), 0.0001);
@@ -210,7 +210,7 @@ TEST(ParametersOptimizationLoadFromFileAndInitRandomValues)
     CHECK_EQUAL(9, params.GetPredictorVptsnbUpperLimit(0,1));
     CHECK_EQUAL(false, params.IsPredictorVptsnbLocked(0,1));
     CHECK_EQUAL(2.5, params.GetPredictorVstep(0,1));
-    CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
+    CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1grads"));
     CHECK_CLOSE(0.01, params.GetPredictorWeightIteration(0,1), 0.0001);
     CHECK_CLOSE(0, params.GetPredictorWeightLowerLimit(0,1), 0.0001);
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,1), 0.0001);
