@@ -218,6 +218,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     results_generations.Init(wxString::Format(_("station_%d_generations"), stationId));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
+    int counterPrint = 0;
 
     // Preload data
     try
@@ -426,6 +427,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 {
                     results_generations.Add(m_Parameters[i],m_ScoresCalib[i]);
                 }
+
+                // Print results every 100 generation
+                if (counterPrint>100)
+                {
+                    results_generations.Print();
+                    counterPrint = 0;
+                }
+                counterPrint++;
 
                 // Display stats
                 float meanScore = asTools::Mean(&m_ScoresCalib[0], &m_ScoresCalib[m_ScoresCalib.size()-1]);
