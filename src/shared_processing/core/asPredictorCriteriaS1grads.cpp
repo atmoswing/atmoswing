@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
  #include "asPredictorCriteriaS1grads.h"
 
 asPredictorCriteriaS1grads::asPredictorCriteriaS1grads(int linAlgebraMethod)
@@ -48,6 +48,11 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
 {
     wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
     wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
+    wxASSERT_MSG(refData.rows()>0, wxString::Format("refData.rows()=%d", (int)refData.rows()));
+    wxASSERT_MSG(refData.cols()>0, wxString::Format("refData.cols()=%d", (int)refData.cols()));
+
+    if (refData.rows()<1) asThrowException(_("The number of rows of the data is null in the S1grads criteria processing."));
+    if (refData.cols()<1) asThrowException(_("The number of cols of the data is null in the S1grads criteria processing."));
 
     if (rowsNb==0 || colsNb==0)
     {
@@ -55,28 +60,22 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         colsNb = refData.cols();
     }
 
+    int rowsNbReal = rowsNb/2;
+
     float dividend = 0, divisor = 0;
-    wxASSERT(rowsNb==1);
 
     switch (m_LinAlgebraMethod)
     {
+        // Only linear algebra implemented
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):
-        {
-            dividend = ((refData-evalData).abs()).sum();
-            divisor = (refData.abs().max(evalData.abs())).sum();
-
-            break;
-        }
-
         case (asCOEFF_NOVAR):
         case (asCOEFF):
         {
-            for (int i=0; i<colsNb; i++)
-            {
-                dividend += abs(refData(0,i)-evalData(0,i));
-                divisor += wxMax(abs(refData(0,i)),abs(evalData(0,i)));
-            }
+            dividend = ((refData.block(rowsNbReal,0,rowsNbReal,colsNb-1)-evalData.block(rowsNbReal,0,rowsNbReal,colsNb-1)).abs()).sum() +
+                        ((refData.block(0,0,rowsNbReal-1,colsNb)-evalData.block(0,0,rowsNbReal-1,colsNb)).abs()).sum();
+            divisor = (refData.block(rowsNbReal,0,rowsNbReal,colsNb-1).abs().max(evalData.block(rowsNbReal,0,rowsNbReal,colsNb-1).abs())).sum() +
+                        (refData.block(0,0,rowsNbReal-1,colsNb).abs().max(evalData.block(0,0,rowsNbReal-1,colsNb).abs())).sum();
 
             break;
         }

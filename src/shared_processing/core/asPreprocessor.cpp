@@ -127,77 +127,25 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 
     // Create container
     VArray2DFloat gradients(timeSize);
-//    gradients.reserve(timeSize*tmpgrad.rows()*tmpgrad.cols());
+    gradients.reserve(timeSize*2*rowsNb*colsNb);
 
-// FIXME (Pascal#1#): Error under Linux
-/*
-    if (allowMultithreading)
+    Array2DFloat tmpgrad = Array2DFloat::Zero(2*rowsNb,colsNb);
+
+    for (int i_time=0; i_time<timeSize; i_time++)
     {
-        // Get threads number
-        int threadsNb = ThreadsManager().GetAvailableThreadsNb();
+        // Vertical gradients
+        tmpgrad.block(0,0,rowsNb-1,colsNb) = predictors[0]->GetData()[i_time].block(1,0,rowsNb-1,colsNb)-predictors[0]->GetData()[i_time].block(0,0,rowsNb-1,colsNb);
 
-        int threadType = -1;
+        // Horizontal gradients
+        tmpgrad.block(rowsNb,0,rowsNb,colsNb-1) = predictors[0]->GetData()[i_time].block(0,1,rowsNb,colsNb-1)-predictors[0]->GetData()[i_time].block(0,0,rowsNb,colsNb-1);
 
-        // Adapt to the number of targets
-        if (2*threadsNb>timeSize)
-        {
-            threadsNb = 1;
-        }
-
-        // Create and give data
-        int start = 0, end = -1;
-        for (int i_threads=0; i_threads<threadsNb; i_threads++)
-        {
-            start = end+1;
-            end = ceil(((float)(i_threads+1)*(float)(timeSize-1)/(float)threadsNb));
-            wxASSERT_MSG(end>=start, wxString::Format(_("start = %d, end = %d, timeSize = %d"), start, end, timeSize));
-
-            asThreadPreprocessorGradients* thread = new asThreadPreprocessorGradients(&gradients, predictors, start, end);
-            threadType = thread->GetType();
-            ThreadsManager().AddThread(thread);
-        }
-
-        // Wait until all done
-        ThreadsManager().Wait(threadType);
+        gradients[i_time] = tmpgrad;
     }
-    else
-    {*/
-        Array1DFloat tmpgrad = Array1DFloat::Constant((rowsNb-1)*colsNb+rowsNb*(colsNb-1), NaNFloat);
-
-        for (int i_time=0; i_time<timeSize; i_time++)
-        {
-            int counter=0;
-
-            // Vertical gradients
-            for (int i_row=0; i_row<rowsNb-1; i_row++)
-            {
-                for (int i_col=0; i_col<colsNb; i_col++)
-                {
-                    tmpgrad(counter) = predictors[0]->GetData()[i_time](i_row+1,i_col)-predictors[0]->GetData()[i_time](i_row,i_col);
-                    counter++;
-                }
-            }
-
-            // Horizontal gradients
-            for (int i_row=0; i_row<rowsNb; i_row++)
-            {
-                for (int i_col=0; i_col<colsNb-1; i_col++)
-                {
-                    // The matrix is transposed to be coherent with the dimensions
-                    tmpgrad(counter) = predictors[0]->GetData()[i_time](i_row,i_col+1)-predictors[0]->GetData()[i_time](i_row,i_col);
-                    counter++;
-                }
-            }
-
-            //gradients.push_back(tmpgrad.transpose());
-            gradients[i_time] = tmpgrad.transpose();
-        }
-    //}
 
     // Overwrite the data in the predictor object
     result->SetData(gradients);
     result->SetIsPreprocessed(true);
-    result->SetCanBeClipped(false);
+    result->SetCanBeClipped(true);
 
     return true;
 }
