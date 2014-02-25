@@ -60,8 +60,6 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         colsNb = refData.cols();
     }
 
-    int rowsNbReal = rowsNb/2;
-
     float dividend = 0, divisor = 0;
 
     switch (m_LinAlgebraMethod)
@@ -69,13 +67,23 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         // Only linear algebra implemented
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):
+        {
+            dividend = ((refData-evalData).abs()).sum();
+            divisor = (refData.abs().max(evalData.abs())).sum();
+
+            break;
+        }
         case (asCOEFF_NOVAR):
         case (asCOEFF):
         {
-            dividend = ((refData.block(rowsNbReal,0,rowsNbReal,colsNb-1)-evalData.block(rowsNbReal,0,rowsNbReal,colsNb-1)).abs()).sum() +
-                        ((refData.block(0,0,rowsNbReal-1,colsNb)-evalData.block(0,0,rowsNbReal-1,colsNb)).abs()).sum();
-            divisor = (refData.block(rowsNbReal,0,rowsNbReal,colsNb-1).abs().max(evalData.block(rowsNbReal,0,rowsNbReal,colsNb-1).abs())).sum() +
-                        (refData.block(0,0,rowsNbReal-1,colsNb).abs().max(evalData.block(0,0,rowsNbReal-1,colsNb).abs())).sum();
+            for (int i=0; i<rowsNb; i++)
+            {
+                for (int j=0; j<colsNb; j++)
+                {
+                    dividend += abs(refData(i,j)-evalData(i,j));
+                    divisor += wxMax(abs(refData(i,j)),abs(evalData(i,j)));
+                }
+            }
 
             break;
         }
