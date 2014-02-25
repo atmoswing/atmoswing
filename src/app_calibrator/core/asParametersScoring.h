@@ -244,9 +244,15 @@ public:
         return m_ForecastScore.Name;
     }
 
-    void SetForecastScoreName(const wxString& val)
+    bool SetForecastScoreName(const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided forecast score is null"));
+            return false;
+        }
         m_ForecastScore.Name = val;
+        return true;
     }
 
     float GetForecastScoreThreshold()
@@ -274,9 +280,15 @@ public:
         return m_ForecastScore.AnalogsNumber;
     }
 
-    void SetForecastScoreAnalogsNumber(int val)
+    bool SetForecastScoreAnalogsNumber(int val)
     {
+        if (asTools::IsNaN(val))
+        {
+            asLogError(_("The provided value for the final analogs number is null"));
+            return false;
+        }
         m_ForecastScore.AnalogsNumber = val;
+        return true;
     }
 
     wxString GetForecastScoreTimeArrayMode()
@@ -284,9 +296,15 @@ public:
         return m_ForecastScore.TimeArrayMode;
     }
 
-    void SetForecastScoreTimeArrayMode(const wxString& val)
+    bool SetForecastScoreTimeArrayMode(const wxString& val)
     {
+        if (val.IsEmpty())
+        {
+            asLogError(_("The provided time array mode for the forecast score is null"));
+            return false;
+        }
         m_ForecastScore.TimeArrayMode = val;
+        return true;
     }
 
     double GetForecastScoreTimeArrayDate()

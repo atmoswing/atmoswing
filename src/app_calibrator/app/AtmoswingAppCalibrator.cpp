@@ -74,7 +74,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, "r", "runnumber", "choice of number associated with the run" },
     { wxCMD_LINE_OPTION, "fp", "fileparams", "choice of the calibration parameters file" },
     { wxCMD_LINE_OPTION, "fd", "filepredicand", "choice of the predictand DB" },
-    { wxCMD_LINE_OPTION, "dc", "dirconfig", "choice of the config directory" },
     { wxCMD_LINE_OPTION, "di", "dirpredictors", "choice of the predictors directory" },
     { wxCMD_LINE_OPTION, "cm", "calibmethod", "choice of the calibration method"
                                 "\n \t\t\t\t single: single assessment"
@@ -235,7 +234,6 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
 
     if (g_Local)
     {
-        wxString dirConfig = wxFileName::GetCwd()+DS+"config"+DS;
         wxString dirData = wxFileName::GetCwd()+DS+"data"+DS;
 
         wxConfigBase *pConfig = wxFileConfig::Get();
@@ -250,7 +248,6 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/StandardPaths/IntermediateResultsDir", localPath+"temp");
         pConfig->Write("/StandardPaths/CalibrationResultsDir", localPath+"results");
         pConfig->Write("/StandardPaths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/StandardPaths/ForecastParametersDir", dirConfig);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Calibration/ParallelEvaluations", true);
         pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
@@ -457,22 +454,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         if (!wxFileName::FileExists(m_PredictandDB))
         {
             asLogError(wxString::Format(_("The given predictand DB (%s) couldn't be found."), m_PredictandDB.c_str()));
-            return false;
-        }
-    }
-
-    // Check for a config directory
-    wxString configDir;
-    if (parser.Found("dc", & configDir))
-    {
-        if (g_Local)
-        {
-            configDir = wxFileName::GetCwd() + DS + configDir;
-        }
-
-        if (!wxFileName::DirExists(configDir))
-        {
-            asLogError(wxString::Format(_("The given config directory (%s) couldn't be found."), configDir.c_str()));
             return false;
         }
     }

@@ -365,8 +365,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array")) return false;
     if(!SetForecastScoreTimeArrayModeVector(GetFileParamStringVector(fileParams, "Mode"))) return false;
-    if(!SetForecastScoreTimeArrayDateVector(GetFileParamDoubleVector(fileParams, "Date"))) return false;
-    if(!SetForecastScoreTimeArrayIntervalDaysVector(GetFileParamIntVector(fileParams, "IntervalDays"))) return false;
+    SetForecastScoreTimeArrayDateVector(GetFileParamDoubleVector(fileParams, "Date"));
+    SetForecastScoreTimeArrayIntervalDaysVector(GetFileParamIntVector(fileParams, "IntervalDays"));
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.CheckDeprecatedChildNode("Validation")) return false;
