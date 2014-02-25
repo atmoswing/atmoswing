@@ -406,7 +406,13 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                             return false;
                         }
                         preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+
+                        for (double h=GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
+                             h<=GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0);
+                             h+=GetPreprocessTimeHoursIteration(i_step, i_ptor, 0))
+                        {
+                            preprocTimeHours.push_back(h);
+                        }
                     }
                     else if (method.IsSameAs("HumidityFlux"))
                     {
@@ -416,7 +422,13 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                             return false;
                         }
                         preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+
+                        for (double h=GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
+                             h<=GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0);
+                             h+=GetPreprocessTimeHoursIteration(i_step, i_ptor, 0))
+                        {
+                            preprocTimeHours.push_back(h);
+                        }
                     }
                     else
                     {
