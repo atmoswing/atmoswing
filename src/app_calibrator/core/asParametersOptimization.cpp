@@ -451,15 +451,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 
                     if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;
                     if(!SetPreloadTimeHours(i_step, i_ptor, preprocTimeHours)) return false;
-
-                    // Fix the criteria if S1
-                    if (method.IsSameAs("Gradients"))
-                    {
-                        if (GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1"))
-                        {
-                            SetPredictorCriteria(i_step, i_ptor, "S1grads");
-                        }
-                    }
                 }
 
                 // Set data for predictor
@@ -590,6 +581,15 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorCriteria(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("Criteria", "value"))) return false;
             }
             if(!fileParams.GoANodeBack()) return false;
+
+            // Fix the criteria if preprocessed
+            if (NeedsPreprocessing(i_step, i_ptor))
+            {
+                if(GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients") && GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1"))
+                {
+                    SetPredictorCriteria(i_step, i_ptor, "S1grads");
+                }
+            }
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Weight")) return false;
             if(!SetPredictorWeightLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "lowerlimit"))) return false;

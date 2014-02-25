@@ -805,6 +805,12 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 asLogMessage(_("Preprocessing over."));
                             }
                         }
+
+                        // Fix the criteria if S1
+                        if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(tmp_step, tmp_ptor).IsSameAs("S1"))
+                        {
+                            params.SetPredictorCriteria(tmp_step, tmp_ptor, "S1grads");
+                        }
                     }
                 }
                 else // no preloading
@@ -1258,7 +1264,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                 }
 
                 // Fix the criteria if S1
-                if(params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1"))
+                if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1"))
                 {
                     params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
                 }
