@@ -125,7 +125,7 @@ protected:
 
 	virtual bool Calibrate(asParametersCalibration &params) = 0;
 	bool PreloadData(asParametersScoring &params);
-	bool LoadData(std::vector < asDataPredictor* > predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
+	bool LoadData(std::vector < asDataPredictor* > &predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
 
 private:
 
