@@ -199,7 +199,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             // Wait until all done
             ThreadsManager().Wait(threadType);
 
-            for (unsigned int i_threads=0; i_threads<vContainsNaNs.size()-1; i_threads++)
+            for (unsigned int i_threads=0; i_threads<vContainsNaNs.size(); i_threads++)
             {
                 if(*vContainsNaNs[i_threads])
                 {
