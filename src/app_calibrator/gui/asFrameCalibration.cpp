@@ -588,7 +588,6 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
             m_MethodCalibrator->SetPredictandDBFilePath(m_FilePickerPredictand->GetPath());
             m_MethodCalibrator->SetPredictorDataDir(m_DirPickerPredictor->GetPath());
             m_MethodCalibrator->Manager();
-            m_MethodCalibrator->Cleanup();
         }
     }
     catch(bad_alloc& ba)

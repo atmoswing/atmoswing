@@ -105,7 +105,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
     bool isasc = (criteria[0]->GetOrder()==Asc);
     int predictorsNb = params.GetPredictorsNb(step);
     wxASSERT(predictorsArchive.size()>0);
-    wxASSERT(predictorsArchive.size()==predictorsNb);
+    wxASSERT_MSG(predictorsArchive.size()==predictorsNb, wxString::Format("predictorsArchive.size() = %d, predictorsNb = %d", (int)predictorsArchive.size(), predictorsNb));
 
     // Check analogs number. Correct if superior to the time serie
     int analogsNb = params.GetAnalogsNumber(step);

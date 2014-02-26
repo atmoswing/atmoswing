@@ -64,8 +64,10 @@ public:
     bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScoreFinal &results, asParametersScoring &params, asResultsAnalogsForecastScores &anaScores, int i_step);
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int i_step = 0);
 
-    void Cleanup();
-    void DeletePreprocessData();
+    void Cleanup(std::vector < asDataPredictorArchive* > predictorsPreprocess);
+    void Cleanup(std::vector < asDataPredictor* > predictors);
+    void Cleanup(std::vector < asPredictorCriteria* > criteria);
+
     void DeletePreloadedData();
     void ClearAll();
     void ClearTemp();
@@ -115,9 +117,6 @@ protected:
     float m_ScoreClimatology;
     std::vector <asParametersCalibration> m_Parameters;
     std::vector <asParametersCalibration> m_ParametersTemp;
-    std::vector < asDataPredictorArchive* > m_StoragePredictorsPreprocess;
-    std::vector < asDataPredictor* > m_StoragePredictors;
-    std::vector < asPredictorCriteria* > m_StorageCriteria;
     asParametersCalibration m_OriginalParams;
     bool m_Preloaded;
     bool m_ValidationMode;
@@ -126,7 +125,7 @@ protected:
 
 	virtual bool Calibrate(asParametersCalibration &params) = 0;
 	bool PreloadData(asParametersScoring &params);
-	bool LoadData(asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
+	bool LoadData(std::vector < asDataPredictor* > predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
 
 private:
 

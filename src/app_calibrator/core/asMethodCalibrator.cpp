@@ -50,7 +50,6 @@ asMethodCalibrator::asMethodCalibrator()
 asMethodCalibrator::~asMethodCalibrator()
 {
     DeletePreloadedData();
-    Cleanup();
 }
 
 bool asMethodCalibrator::Manager()
@@ -98,7 +97,6 @@ bool asMethodCalibrator::Manager()
 
     // Delete preloaded data and cleanup
     DeletePreloadedData();
-    Cleanup();
 
     return true;
 }
@@ -670,6 +668,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         {
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHoursSize; tmp_hour++)
                             {
+                                std::vector < asDataPredictorArchive* > predictorsPreprocess;
+
                                 for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
                                 {
                                     asLogMessage(wxString::Format(_("Preloading data for predictor %d (preprocess %d) of step %d."), tmp_ptor, tmp_prepro, tmp_step));
@@ -720,6 +720,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                                                                                                       m_PredictorDataDir);
                                     if(!predictorPreprocess)
                                     {
+                                        Cleanup(predictorsPreprocess);
                                         return false;
                                     }
 
@@ -754,6 +755,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                                                     asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                                         wxDELETE(area);
                                         wxDELETE(predictorPreprocess);
+                                        Cleanup(predictorsPreprocess);
                                         return false;
                                     }
 
@@ -767,20 +769,22 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         asLogError(_("The data could not be loaded."));
                                         wxDELETE(area);
                                         wxDELETE(predictorPreprocess);
+                                        Cleanup(predictorsPreprocess);
                                         return false;
                                     }
                                     wxDELETE(area);
-                                    m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
+                                    predictorsPreprocess.push_back(predictorPreprocess);
                                 }
 
                                 asLogMessage(_("Preprocessing data."));
-                                asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
+                                asDataPredictorArchive* predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
                                 try
                                 {
-                                    if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(tmp_step, tmp_ptor), predictor))
+                                    if(!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(tmp_step, tmp_ptor), predictor))
                                     {
                                         asLogError(_("Data preprocessing failed."));
                                         wxDELETE(predictor);
+                                        Cleanup(predictorsPreprocess);
                                         return false;
                                     }
                                     m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
@@ -791,6 +795,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     wxString msg(ba.what(), wxConvUTF8);
                                     asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg.c_str()));
                                     wxDELETE(predictor);
+                                    Cleanup(predictorsPreprocess);
                                     return false;
                                 }
                                 catch (exception& e)
@@ -799,9 +804,10 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     wxString msg(e.what(), wxConvUTF8);
                                     asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg.c_str()));
                                     wxDELETE(predictor);
+                                    Cleanup(predictorsPreprocess);
                                     return false;
                                 }
-                                DeletePreprocessData();
+                                Cleanup(predictorsPreprocess);
                                 asLogMessage(_("Preprocessing over."));
                             }
                         }
@@ -841,7 +847,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
     return true;
 }
 
-bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, double timeStartData, double timeEndData)
+bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData)
 {
     // Loop through every predictor
     for(int i_ptor=0; i_ptor<params.GetPredictorsNb(i_step); i_ptor++)
@@ -958,7 +964,7 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
             wxDELETE(desiredArea);
 
             wxASSERT(desiredPredictor->GetSizeTime()>0);
-            m_StoragePredictors.push_back(desiredPredictor);
+            predictors.push_back(desiredPredictor);
         }
         else
         {
@@ -1018,10 +1024,12 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
                     return false;
                 }
                 wxDELETE(area);
-                m_StoragePredictors.push_back(predictor);
+                predictors.push_back(predictor);
             }
             else
             {
+                std::vector < asDataPredictorArchive* > predictorsPreprocess;
+
                 int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
 
                 asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."),
@@ -1043,6 +1051,7 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
                                                                                                              m_PredictorDataDir);
                     if(!predictorPreprocess)
                     {
+                        Cleanup(predictorsPreprocess);
                         return false;
                     }
 
@@ -1067,6 +1076,7 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
                                                     asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
                         wxDELETE(area);
                         wxDELETE(predictorPreprocess);
+                        Cleanup(predictorsPreprocess);
                         return false;
                     }
 
@@ -1076,10 +1086,11 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
                         asLogError(_("The data could not be loaded."));
                         wxDELETE(area);
                         wxDELETE(predictorPreprocess);
+                        Cleanup(predictorsPreprocess);
                         return false;
                     }
                     wxDELETE(area);
-                    m_StoragePredictorsPreprocess.push_back(predictorPreprocess);
+                    predictorsPreprocess.push_back(predictorPreprocess);
                 }
 
                 // Fix the criteria if S1
@@ -1088,15 +1099,16 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
                     params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
                 }
 
-                asDataPredictorArchive* predictor = new asDataPredictorArchive(*m_StoragePredictorsPreprocess[0]);
-                if(!asPreprocessor::Preprocess(m_StoragePredictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictor))
+                asDataPredictorArchive* predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
+                if(!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictor))
                 {
                    asLogError(_("Data preprocessing failed."));
+                   Cleanup(predictorsPreprocess);
                    return false;
                 }
 
-                DeletePreprocessData();
-                m_StoragePredictors.push_back(predictor);
+                Cleanup(predictorsPreprocess);
+                predictors.push_back(predictor);
             }
 
             asLogMessage(_("Data loaded"));
@@ -1106,39 +1118,40 @@ bool asMethodCalibrator::LoadData(asParametersScoring &params, int i_step, doubl
     return true;
 }
 
-
-void asMethodCalibrator::Cleanup()
+void asMethodCalibrator::Cleanup(std::vector < asDataPredictorArchive* > predictorsPreprocess)
 {
-    DeletePreprocessData();
-
-    if (m_StoragePredictors.size()>0)
+    if (predictorsPreprocess.size()>0)
     {
-        for (unsigned int i=0; i<m_StoragePredictors.size(); i++)
+        for (unsigned int i=0; i<predictorsPreprocess.size(); i++)
         {
-            wxDELETE(m_StoragePredictors[i]);
+            wxDELETE(predictorsPreprocess[i]);
         }
-        m_StoragePredictors.resize(0);
+        predictorsPreprocess.resize(0);
     }
-
-    if (m_StorageCriteria.size()>0)
-    {
-        for (unsigned int i=0; i<m_StorageCriteria.size(); i++)
-        {
-            wxDELETE(m_StorageCriteria[i]);
-        }
-        m_StorageCriteria.resize(0);
-    }
-
-    // Do not delete preloaded data here !
 }
 
-void asMethodCalibrator::DeletePreprocessData()
+void asMethodCalibrator::Cleanup(std::vector < asDataPredictor* > predictors)
 {
-    for (unsigned int i=0; i<m_StoragePredictorsPreprocess.size(); i++)
+    if (predictors.size()>0)
     {
-        wxDELETE(m_StoragePredictorsPreprocess[i]);
+        for (unsigned int i=0; i<predictors.size(); i++)
+        {
+            wxDELETE(predictors[i]);
+        }
+        predictors.resize(0);
     }
-    m_StoragePredictorsPreprocess.resize(0);
+}
+
+void asMethodCalibrator::Cleanup(std::vector < asPredictorCriteria* > criteria)
+{
+    if (criteria.size()>0)
+    {
+        for (unsigned int i=0; i<criteria.size(); i++)
+        {
+            wxDELETE(criteria[i]);
+        }
+        criteria.resize(0);
+    }
 }
 
 void asMethodCalibrator::DeletePreloadedData()
@@ -1287,56 +1300,57 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
 */
     // Load the predictor data
-    if(!LoadData(params, i_step, timeStartData, timeEndData))
+    std::vector < asDataPredictor* > predictors;
+    if(!LoadData(predictors, params, i_step, timeStartData, timeEndData))
     {
         asLogError(_("Failed loading predictor data."));
+        Cleanup(predictors);
         return false;
     }
 
     // Create the score objects
+    std::vector < asPredictorCriteria* > criteria;
     for(int i_ptor=0; i_ptor<params.GetPredictorsNb(i_step); i_ptor++)
     {
         // Instantiate a score object
-        asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria* criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
-        m_StorageCriteria.push_back(criterion);
-        asLogMessage(_("Criterion object created."));
-
+        criteria.push_back(criterion);
     }
 
     // Check time sizes
     #ifdef _DEBUG
         int prevTimeSize = 0;
 
-        for (unsigned int i=0; i<m_StoragePredictors.size(); i++)
+        for (unsigned int i=0; i<predictors.size(); i++)
         {
             if (i>0)
             {
-                wxASSERT(m_StoragePredictors[i]->GetSizeTime()==prevTimeSize);
+                wxASSERT(predictors[i]->GetSizeTime()==prevTimeSize);
             }
-            prevTimeSize = m_StoragePredictors[i]->GetSizeTime();
+            prevTimeSize = predictors[i]->GetSizeTime();
         }
     #endif // _DEBUG
 
     // Inline the data when possible
-    for (int i_ptor=0; i_ptor<m_StoragePredictors.size(); i_ptor++)
+    for (int i_ptor=0; i_ptor<predictors.size(); i_ptor++)
     {
-        if (m_StorageCriteria[i_ptor]->CanUseInline())
+        if (criteria[i_ptor]->CanUseInline())
         {
-            m_StoragePredictors[i_ptor]->Inline();
+            predictors[i_ptor]->Inline();
         }
     }
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
-    //asDataPredictor predictors = predictorsArchive;
 
-    if(!asProcessor::GetAnalogsDates(m_StoragePredictors, m_StoragePredictors,
+    if(!asProcessor::GetAnalogsDates(predictors, predictors,
                                      timeArrayData, timeArrayArchive, timeArrayData, timeArrayTarget,
-                                     m_StorageCriteria, params, i_step, results, containsNaNs))
+                                     criteria, params, i_step, results, containsNaNs))
     {
         asLogError(_("Failed processing the analogs dates."));
+        Cleanup(predictors);
+        Cleanup(criteria);
         return false;
     }
     asLogMessage(_("The processing is over."));
@@ -1344,7 +1358,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     // Saving intermediate results
     results.Save();
 
-    Cleanup();
+    Cleanup(predictors);
+    Cleanup(criteria);
 
     return true;
 }
@@ -1373,36 +1388,41 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     asLogMessage(_("Date arrays created."));
 
     // Load the predictor data
-    if(!LoadData(params, i_step, timeStart, timeEnd))
+    std::vector < asDataPredictor* > predictors;
+    if(!LoadData(predictors, params, i_step, timeStart, timeEnd))
     {
         asLogError(_("Failed loading predictor data."));
+        Cleanup(predictors);
         return false;
     }
 
     // Create the score objects
+    std::vector < asPredictorCriteria* > criteria;
     for(int i_ptor=0; i_ptor<params.GetPredictorsNb(i_step); i_ptor++)
     {
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria* criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor), linAlgebraMethod);
-        m_StorageCriteria.push_back(criterion);
+        criteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
     }
 
     // Inline the data when possible
-    for (int i_ptor=0; i_ptor<m_StoragePredictors.size(); i_ptor++)
+    for (int i_ptor=0; i_ptor<predictors.size(); i_ptor++)
     {
-        if (m_StorageCriteria[i_ptor]->CanUseInline())
+        if (criteria[i_ptor]->CanUseInline())
         {
-            m_StoragePredictors[i_ptor]->Inline();
+            predictors[i_ptor]->Inline();
         }
     }
 
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
-    if(!asProcessor::GetAnalogsSubDates(m_StoragePredictors, m_StoragePredictors, timeArrayArchive, timeArrayArchive, anaDates, m_StorageCriteria, params, i_step, results, containsNaNs))
+    if(!asProcessor::GetAnalogsSubDates(predictors, predictors, timeArrayArchive, timeArrayArchive, anaDates, criteria, params, i_step, results, containsNaNs))
     {
         asLogError(_("Failed processing the analogs dates."));
+        Cleanup(predictors);
+        Cleanup(criteria);
         return false;
     }
     asLogMessage(_("The processing is over."));
@@ -1410,7 +1430,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     // Saving intermediate results
     results.Save();
 
-    Cleanup();
+    Cleanup(predictors);
+    Cleanup(criteria);
 
     return true;
 }
