@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #ifndef ASMETHODCALIBRATOR_H
 #define ASMETHODCALIBRATOR_H
 
@@ -41,6 +41,7 @@
 #include <asResultsAnalogsForecastScoreFinal.h>
 #include <asResultsAnalogsScoresMap.h>
 #include <asParametersCalibration.h>
+#include <asParametersOptimization.h>
 #include <asPredictorCriteria.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asTimeArray.h>
@@ -63,8 +64,10 @@ public:
     bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScoreFinal &results, asParametersScoring &params, asResultsAnalogsForecastScores &anaScores, int i_step);
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int i_step = 0);
 
-    void Cleanup();
-    void DeletePreprocessData();
+    void Cleanup(std::vector < asDataPredictorArchive* > predictorsPreprocess);
+    void Cleanup(std::vector < asDataPredictor* > predictors);
+    void Cleanup(std::vector < asPredictorCriteria* > criteria);
+
     void DeletePreloadedData();
     void ClearAll();
     void ClearTemp();
@@ -114,9 +117,6 @@ protected:
     float m_ScoreClimatology;
     std::vector <asParametersCalibration> m_Parameters;
     std::vector <asParametersCalibration> m_ParametersTemp;
-    std::vector < asDataPredictorArchive* > m_StoragePredictorsPreprocess;
-    std::vector < asDataPredictor* > m_StoragePredictors;
-    std::vector < asPredictorCriteria* > m_StorageCriteria;
     asParametersCalibration m_OriginalParams;
     bool m_Preloaded;
     bool m_ValidationMode;
@@ -125,6 +125,7 @@ protected:
 
 	virtual bool Calibrate(asParametersCalibration &params) = 0;
 	bool PreloadData(asParametersScoring &params);
+	bool LoadData(std::vector < asDataPredictor* > &predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
 
 private:
 

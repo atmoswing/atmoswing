@@ -101,6 +101,47 @@ bool asDataPredictor::CheckTimeLength(int counter)
     return true;
 }
 
+bool asDataPredictor::Inline()
+{
+    //Already inlined
+    if (m_LonPtsnb==1 || m_LatPtsnb==1)
+    {
+        return true;
+    }
+
+    wxASSERT(m_Data.size()>0);
+
+    int timeSize = m_Data.size();
+    int cols = m_Data[0].cols();
+    int rows = m_Data[0].rows();
+
+    Array2DFloat inlineData = Array2DFloat::Zero(1,cols*rows);
+
+    VArray2DFloat newData;
+    newData.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
+    newData.resize(timeSize);
+
+    for (int i_time=0; i_time<timeSize; i_time++)
+    {
+        for (int i_row=0; i_row<rows; i_row++)
+        {
+            inlineData.block(0,i_row*cols,1,cols) = m_Data[i_time].row(i_row);
+        }
+        newData[i_time] = inlineData;
+    }
+
+    m_Data = newData;
+
+    m_LatPtsnb = m_Data[0].rows();
+    m_LonPtsnb = m_Data[0].cols();
+    Array1DFloat emptyAxis(1);
+    emptyAxis[0] = NaNFloat;
+    m_AxisLat = emptyAxis;
+    m_AxisLon = emptyAxis;
+
+    return true;
+}
+
 bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area)
 {
     if (area)
