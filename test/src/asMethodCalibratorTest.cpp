@@ -59,11 +59,11 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
 
@@ -237,7 +237,7 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 
@@ -436,11 +436,11 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
 
@@ -627,7 +627,7 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 
@@ -905,11 +905,11 @@ void GrenobleComparison1Preloading()
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
 
@@ -1053,7 +1053,7 @@ void GrenobleComparison1Preloading()
 
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 
@@ -1086,11 +1086,11 @@ void GrenobleComparison1PreloadingSubset()
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
@@ -1151,7 +1151,7 @@ void GrenobleComparison1PreloadingSubset()
 
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 
@@ -1184,11 +1184,11 @@ void GrenobleComparison2Preloading()
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
 
@@ -1331,7 +1331,7 @@ void GrenobleComparison2Preloading()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 
@@ -1376,11 +1376,11 @@ void GrenobleComparison2SavingIntermediateResults()
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
 
@@ -1528,7 +1528,7 @@ void GrenobleComparison2SavingIntermediateResults()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 
@@ -1589,11 +1589,11 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         wxString patternFileDir = wxFileName::GetCwd();
         patternFileDir.Append("/files/");
 
-        wxString tmpPath = wxFileName::CreateTempFileName("predictandDBtest");
+        wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
 
         predictand->SetIsSqrt(true);
         predictand->SetReturnPeriodNormalization(10);
-        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpPath);
+        predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
 
         float P10 = 68.42240f;
 
@@ -1736,7 +1736,7 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         file.Close();
         // predictand pointer deleted by asMethodCalibration
 
-        asRemoveDir(tmpPath);
+        asRemoveDir(tmpDir);
     }
 }
 

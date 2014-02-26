@@ -48,7 +48,14 @@ class asConfig : public wxObject
         * \return The full path
         */
         static wxString GetTempDir();
-        
+
+        /** Get temp directory
+        * \param prefix Prefix to use for the temporary file name construction
+        * \return The full path
+        * \note From wxFileName::CreateTempFileName. Change to avoid file auto creation.
+        */
+        static wxString CreateTempFileName(const wxString& prefix);
+
         /** Get common data directory
         * \return The full path
         */
