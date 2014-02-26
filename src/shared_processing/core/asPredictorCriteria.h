@@ -165,6 +165,11 @@ public:
         m_LinAlgebraMethod = val;
     }
 
+    bool CanUseInline()
+    {
+        return m_CanUseInline;
+    }
+    
 
 protected:
     enum Criteria m_Criteria; //!< Member variable "m_Criteria"
@@ -174,6 +179,7 @@ protected:
     float m_ScaleBest; //!< Member variable "m_ScaleBest"
     float m_ScaleWorst; //!< Member variable "m_ScaleWorst"
     int m_LinAlgebraMethod; //!< Member variable "m_LinAlgebraMethod"
+    bool m_CanUseInline;
 
 private:
 
