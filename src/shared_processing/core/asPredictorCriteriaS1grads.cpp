@@ -37,6 +37,7 @@ asPredictorCriteria(linAlgebraMethod)
     m_Order = Asc;
     m_ScaleBest = 0;
     m_ScaleWorst = 200;
+    m_CanUseInline = true;
 }
 
 asPredictorCriteriaS1grads::~asPredictorCriteriaS1grads()

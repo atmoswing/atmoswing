@@ -37,6 +37,7 @@ asPredictorCriteria(linAlgebraMethod)
     m_Order = Asc;
     m_ScaleBest = 0;
     m_ScaleWorst = NaNFloat;
+    m_CanUseInline = true;
 }
 
 asPredictorCriteriaRMSE::~asPredictorCriteriaRMSE()
