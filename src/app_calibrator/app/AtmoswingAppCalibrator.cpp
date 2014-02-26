@@ -924,7 +924,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("classic", false))
             {
@@ -933,7 +932,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("classicp", false))
             {
@@ -942,7 +940,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("varexplocp", false))
             {
@@ -951,7 +948,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("neldermead", false))
             {
@@ -961,7 +957,6 @@ int AtmoswingAppCalibrator::OnRun()
                 optimizer.SetPredictandStationId(m_PredictandStationId);
                 optimizer.SetPredictorDataDir(m_PredictorsDir);
                 optimizer.Manager();
-                optimizer.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("montecarlo", false))
             {
@@ -971,7 +966,6 @@ int AtmoswingAppCalibrator::OnRun()
                 optimizer.SetPredictandStationId(m_PredictandStationId);
                 optimizer.SetPredictorDataDir(m_PredictorsDir);
                 optimizer.Manager();
-                optimizer.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("ga", false))
             {
@@ -981,7 +975,6 @@ int AtmoswingAppCalibrator::OnRun()
                 optimizer.SetPredictandStationId(m_PredictandStationId);
                 optimizer.SetPredictorDataDir(m_PredictorsDir);
                 optimizer.Manager();
-                optimizer.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("evalscores", false))
             {
@@ -990,7 +983,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else
             {
