@@ -1033,115 +1033,87 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         {
             asLogMessage(_("Using preloaded data."));
 
+            // Get preload arrays
+            VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
+            VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
+            int i_level = 0, i_hour = 0;
+
             if(!params.NeedsPreprocessing(i_step, i_ptor))
             {
-                VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
-                VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
                 wxASSERT(preloadLevels.size()>0);
                 wxASSERT(preloadTimeHours.size()>0);
 
                 // Get level and hour indices
-                int i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size()-1], params.GetPredictorLevel(i_step, i_ptor));
-                int i_hour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size()-1], params.GetPredictorTimeHours(i_step, i_ptor));
-                if (i_level==asNOT_FOUND || i_level==asOUT_OF_RANGE)
-                {
-                    asLogError(_("The level could not be found in the preloaded data."));
-                    return false;
-                }
-                if (i_hour==asNOT_FOUND || i_hour==asOUT_OF_RANGE)
-                {
-                    asLogError(_("The hour could not be found in the preloaded data."));
-                    return false;
-                }
-
-                // Get data on the desired domain
-                wxASSERT_MSG((unsigned)i_step<m_PreloadedArchive.size(), wxString::Format("i_step=%d, m_PreloadedArchive.size()=%d", i_step, (int)m_PreloadedArchive.size()));
-                wxASSERT_MSG((unsigned)i_ptor<m_PreloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_PreloadedArchive[i_step].size()=%d", i_ptor, (int)m_PreloadedArchive[i_step].size()));
-                wxASSERT_MSG((unsigned)i_level<m_PreloadedArchive[i_step][i_ptor].size(), wxString::Format("i_level=%d, m_PreloadedArchive[i_step][i_ptor].size()=%d", i_level, (int)m_PreloadedArchive[i_step][i_ptor].size()));
-                wxASSERT_MSG((unsigned)i_hour<m_PreloadedArchive[i_step][i_ptor][i_level].size(), wxString::Format("i_hour=%d, m_PreloadedArchive[i_step][i_ptor][i_level].size()=%d", i_hour, (int)m_PreloadedArchive[i_step][i_ptor][i_level].size()));
-                ThreadsManager().CritSectionPreloadedData().Enter();
-                if (m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]==NULL)
-                {
-                    asLogError(_("The pointer to preloaded data is null."));
-                    return false;
-                }
-                // Copy the data
-                wxASSERT(m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
-                asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
-                ThreadsManager().CritSectionPreloadedData().Leave();
-
-                // Area object instantiation
-                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
-                                               params.GetPredictorGridType(i_step, i_ptor),
-                                               params.GetPredictorUmin(i_step, i_ptor),
-                                               params.GetPredictorUptsnb(i_step, i_ptor),
-                                               params.GetPredictorUstep(i_step, i_ptor),
-                                               params.GetPredictorVmin(i_step, i_ptor),
-                                               params.GetPredictorVptsnb(i_step, i_ptor),
-                                               params.GetPredictorVstep(i_step, i_ptor),
-                                               params.GetPredictorLevel(i_step, i_ptor),
-                                               asNONE,
-                                               params.GetPredictorFlatAllowed(i_step, i_ptor));
-
-                wxASSERT(desiredArea);
-
-                if(!desiredPredictor->ClipToArea(desiredArea))
-                {
-                    asLogError(_("The data could not be extracted."));
-                    wxDELETE(desiredArea);
-                    wxDELETE(desiredPredictor);
-                    return false;
-                }
-                wxDELETE(desiredArea);
-
-                wxASSERT(desiredPredictor->GetSizeTime()>0);
-                m_StoragePredictors.push_back(desiredPredictor);
+                i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size()-1], params.GetPredictorLevel(i_step, i_ptor));
+                i_hour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size()-1], params.GetPredictorTimeHours(i_step, i_ptor));
             }
             else
             {
-                // Get data on the desired domain
-                wxASSERT_MSG((unsigned)i_step<m_PreloadedArchive.size(), wxString::Format("i_step=%d, m_PreloadedArchive.size()=%d", i_step, (int)m_PreloadedArchive.size()));
-                wxASSERT_MSG((unsigned)i_ptor<m_PreloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_PreloadedArchive[i_step].size()=%d", i_ptor, (int)m_PreloadedArchive[i_step].size()));
-                wxASSERT_MSG((unsigned)m_PreloadedArchive[i_step][i_ptor].size()==1, wxString::Format("m_PreloadedArchive[i_step][i_ptor].size()=%d!=1", (int)m_PreloadedArchive[i_step][i_ptor].size()));
-                wxASSERT_MSG((unsigned)m_PreloadedArchive[i_step][i_ptor][0].size()==1, wxString::Format("m_PreloadedArchive[i_step][i_ptor][0].size()=%d!=1", (int)m_PreloadedArchive[i_step][i_ptor][0].size()));
-                ThreadsManager().CritSectionPreloadedData().Enter();
-                if (m_PreloadedArchive[i_step][i_ptor][0][0]==NULL)
+                // Get level and hour indices
+                if (preloadLevels.size()>0)
                 {
-                    asLogError(_("The pointer to preloaded data is null."));
-                    return false;
+                    i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size()-1], params.GetPredictorLevel(i_step, i_ptor));
                 }
-                wxASSERT(m_PreloadedArchive[i_step][i_ptor][0][0]);
-                asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][0][0]);
-                ThreadsManager().CritSectionPreloadedData().Leave();
-
-                // Area object instantiation
-                asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
-                                               params.GetPredictorGridType(i_step, i_ptor),
-                                               params.GetPredictorUmin(i_step, i_ptor),
-                                               params.GetPredictorUptsnb(i_step, i_ptor),
-                                               params.GetPredictorUstep(i_step, i_ptor),
-                                               params.GetPredictorVmin(i_step, i_ptor),
-                                               params.GetPredictorVptsnb(i_step, i_ptor),
-                                               params.GetPredictorVstep(i_step, i_ptor),
-                                               params.GetPreprocessLevel(i_step, i_ptor, 0),
-                                               asNONE,
-                                               params.GetPredictorFlatAllowed(i_step, i_ptor));
-
-                wxASSERT(desiredArea);
-
-                if(!desiredPredictor->ClipToArea(desiredArea))
+                if (preloadTimeHours.size()>0)
                 {
-                    asLogError(_("The data could not be extracted."));
-                    wxDELETE(desiredArea);
-                    wxDELETE(desiredPredictor);
-                    return false;
+                    i_hour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size()-1], params.GetPredictorTimeHours(i_step, i_ptor));
                 }
-                wxDELETE(desiredArea);
-
-                wxASSERT(desiredPredictor->GetSizeTime()>0);
-                m_StoragePredictors.push_back(desiredPredictor);
             }
 
+            // Check indices
+            if (i_level==asNOT_FOUND || i_level==asOUT_OF_RANGE)
+            {
+                asLogError(_("The level could not be found in the preloaded data."));
+                return false;
+            }
+            if (i_hour==asNOT_FOUND || i_hour==asOUT_OF_RANGE)
+            {
+                asLogError(_("The hour could not be found in the preloaded data."));
+                return false;
+            }
+
+            // Get data on the desired domain
+            wxASSERT_MSG((unsigned)i_step<m_PreloadedArchive.size(), wxString::Format("i_step=%d, m_PreloadedArchive.size()=%d", i_step, (int)m_PreloadedArchive.size()));
+            wxASSERT_MSG((unsigned)i_ptor<m_PreloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_PreloadedArchive[i_step].size()=%d", i_ptor, (int)m_PreloadedArchive[i_step].size()));
+            wxASSERT_MSG((unsigned)i_level<m_PreloadedArchive[i_step][i_ptor].size(), wxString::Format("i_level=%d, m_PreloadedArchive[i_step][i_ptor].size()=%d", i_level, (int)m_PreloadedArchive[i_step][i_ptor].size()));
+            wxASSERT_MSG((unsigned)i_hour<m_PreloadedArchive[i_step][i_ptor][i_level].size(), wxString::Format("i_hour=%d, m_PreloadedArchive[i_step][i_ptor][i_level].size()=%d", i_hour, (int)m_PreloadedArchive[i_step][i_ptor][i_level].size()));
+            ThreadsManager().CritSectionPreloadedData().Enter();
+            if (m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]==NULL)
+            {
+                asLogError(_("The pointer to preloaded data is null."));
+                return false;
+            }
+            // Copy the data
+            wxASSERT(m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
+            asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
+            ThreadsManager().CritSectionPreloadedData().Leave();
+
+            // Area object instantiation
+            asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
+                                            params.GetPredictorGridType(i_step, i_ptor),
+                                            params.GetPredictorUmin(i_step, i_ptor),
+                                            params.GetPredictorUptsnb(i_step, i_ptor),
+                                            params.GetPredictorUstep(i_step, i_ptor),
+                                            params.GetPredictorVmin(i_step, i_ptor),
+                                            params.GetPredictorVptsnb(i_step, i_ptor),
+                                            params.GetPredictorVstep(i_step, i_ptor),
+                                            params.GetPredictorLevel(i_step, i_ptor),
+                                            asNONE,
+                                            params.GetPredictorFlatAllowed(i_step, i_ptor));
+
+            wxASSERT(desiredArea);
+
+            if(!desiredPredictor->ClipToArea(desiredArea))
+            {
+                asLogError(_("The data could not be extracted."));
+                wxDELETE(desiredArea);
+                wxDELETE(desiredPredictor);
+                return false;
+            }
+            wxDELETE(desiredArea);
+
+            wxASSERT(desiredPredictor->GetSizeTime()>0);
+            m_StoragePredictors.push_back(desiredPredictor);
         }
         else
         {
