@@ -148,7 +148,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 bool AtmoswingAppCalibrator::OnInit()
 {
     #if _DEBUG
-        _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+        #ifdef __WXMSW__
+            _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+        #endif
     #endif
 
     // Set application name
