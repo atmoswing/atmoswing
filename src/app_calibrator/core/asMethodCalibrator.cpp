@@ -847,7 +847,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
     return true;
 }
 
-bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData)
+bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData)
 {
     // Loop through every predictor
     for(int i_ptor=0; i_ptor<params.GetPredictorsNb(i_step); i_ptor++)
