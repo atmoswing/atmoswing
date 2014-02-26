@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AtmoSwingFile version="0.2">
+    <OptimizationSet>
+        <General name="General">
+            <Options />
+            <Params name="Archive Period">
+                <YearStart value="1962" />
+                <YearEnd value="2007" />
+            </Params>
+            <Params name="Calibration Period">
+                <YearStart value="1982" />
+                <YearEnd value="2000" />
+            </Params>
+            <Params name="Time Array Analogs">
+                <TimeStepHours value="24" />
+                <TimeArrayMode value="DaysInterval" />
+                <IntervalDays value="60" min="10" max="100" step="10" method="minmax" />
+                <ExcludeDays value="60" />
+            </Params>
+        </General>
+        <Process name="Analogs Dates">
+            <Options />
+            <Params name="Method Name">
+                <MethodName value="Analogs" />
+            </Params>
+            <Params name="Analogs Number">
+                <AnalogsNumber value="100" min="" max="" step="" method="fixed" />
+            </Params>
+            <Data name="Predictor preprocessed">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="1" />
+                    <PreprocessMethod value="Gradients" />
+                    <SubData>
+                        <PreprocessDatasetId value="NCEP_R-1" />
+                        <PreprocessDataId value="hgt" />
+                        <PreprocessLevel value="300,500,850,1000" min="" max="" step="" method="array" />
+                        <PreprocessTimeHours value="" min="-24" max="24" step="6" method="minmax" />
+                    </SubData>
+                </Params>
+                <Params name="Area Moving">
+                    <GridType value="Regular" />
+                    <Ucenter value="" min="-10" max="20" step="2.5" method="minmax" />
+                    <Uptsnb value="2" min="" max="" step="" method="fixed" />
+                    <Ustep value="2.5" />
+                    <Vcenter value="" min="10" max="70" step="2.5" method="minmax" />
+                    <Vptsnb value="2" min="" max="" step="" method="fixed" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" method="fixed" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="1" min="" max="" step="" method="fixed" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Values">
+            <Options />
+            <Data name="Predictand">
+                <Params name="Database">
+                    <PredictandStationId value="40,81,90,68,56" min="" max="" step="" method="array" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Forecast Scores">
+            <Options />
+            <Params name="Method">
+                <Name value="CRPSAR, CRPSaccuracyAR, CRPSsharpnessAR" method="array" />
+            </Params>
+            <Params name="Analogs Number">
+                <AnalogsNumber value="" min="10" max="100" step="10" method="minmax" />
+            </Params>
+            <Params name="Postprocessing">
+                <Postprocess value="0" />
+                <Method value="" method="" />
+                <DuplicationExponent value="1" min="" max="" step="" method="fixed" />
+            </Params>
+        </Process>
+        <Process name="Analogs Forecast Score Final">
+            <Options />
+            <Params name="Time Array">
+                <Mode value="Simple" method="fixed" />
+                <Date value="0" min="" max="" step="" method="fixed" />
+                <IntervalDays value="0" min="" max="" step="" method="fixed" />
+            </Params>
+        </Process>
+    </OptimizationSet>
+</AtmoSwingFile>

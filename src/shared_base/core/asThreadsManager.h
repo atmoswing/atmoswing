@@ -1,0 +1,162 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
+ *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
+ */
+ 
+#ifndef ASTHREADSMANAGER_H
+#define ASTHREADSMANAGER_H
+
+#include <asIncludes.h>
+
+// Predefinition
+class asThread;
+
+class asThreadsManager: public wxObject
+{
+public:
+    /** Default constructor */
+    asThreadsManager();
+
+    /** Default destructor */
+    virtual ~asThreadsManager();
+
+    void Init();
+
+    void OnClose(wxCloseEvent&);
+
+    /** Add a thread
+     * \param thread New thread
+     */
+    bool AddThread(asThread* thread);
+
+
+    void Wait(int type);
+    void WaitForFreeThread(int type);
+    void SetNull(int id);
+    bool CleanArray();
+    void PauseAll();
+    void ResumeAll();
+
+
+    /** Count the total number of threads
+     * \return The total number of threads
+     */
+    int GetTotalThreadsNb();
+
+    /** Count the number of running threads
+     * \return The number of running threads
+     */
+    int GetRunningThreadsNb(int type = -1);
+
+    /** Count the number of available threads
+     * \return The number of available threads
+     */
+    int GetAvailableThreadsNb();
+
+    /** Access m_Cancelled
+     * \return The current value of m_Cancelled
+     */
+    bool Cancelled()
+    {
+        wxCriticalSectionLocker lock(m_CritSectionManager);
+        return m_Cancelled;
+    }
+
+    /** Set m_Cancelled to true
+     */
+    void Cancel()
+    {
+        wxCriticalSectionLocker lock(m_CritSectionManager);
+        m_Cancelled = true;
+    }
+
+    /** Get a reference to the critical section of the data access
+     * \return A reference to the critical section of the data access
+     */
+    wxCriticalSection& CritSectionNetCDF()
+    {
+        return m_CritSectionNetCDF;
+    }
+
+    /** Get a reference to the critical section of the config pointer
+     * \return A reference to the critical section of the config pointer
+     */
+    wxCriticalSection& CritSectionConfig()
+    {
+        return m_CritSectionConfig;
+    }
+
+    wxCriticalSection& CritSectionTiCPP()
+    {
+        return m_CritSectionTiCPP;
+    }
+
+    wxCriticalSection& CritSectionPreloadedData()
+    {
+        return m_CritSectionPreloadedData;
+    }
+
+    /** Get a reference to the semaphore
+     * \return A reference to the semaphore
+     */
+    wxSemaphore& SemAllDone()
+    {
+        return m_SemAllDone;
+    }
+
+    /** Get the m_WaitingUntilAllDone tag
+     * \return The m_WaitingUntilAllDone current value
+     */
+    bool GetWaitingUntilAllDone()
+    {
+        return m_WaitingUntilAllDone;
+    }
+
+    /** Set the m_WaitingUntilAllDone tag
+     * \param The new value
+     */
+    void SetWaitingUntilAllDone(bool val)
+    {
+        m_WaitingUntilAllDone = val;
+    }
+
+
+protected:
+private:
+    int m_IdCounter;
+    std::vector < asThread* > m_Threads; //!< Member variable "m_Threads". All the threads currently alive (as soon as the thread terminates, it's removed from the array)
+    wxCriticalSection m_CritSectionManager; //!< Member variable "m_CritSectionManager". Critical section.
+    wxCriticalSection m_CritSectionPreloadedData;
+    wxCriticalSection m_CritSectionNetCDF;
+    wxCriticalSection m_CritSectionConfig;
+    wxCriticalSection m_CritSectionTiCPP;
+    wxSemaphore m_SemAllDone; //!< Member variable "m_SemAllDone". Semaphore used to wait for the threads to exit.
+    bool m_WaitingUntilAllDone; //!< Member variable "m_WaitingUntilAllDone". The last exiting thread should post to m_semAllDone if this is true.
+    bool m_Cancelled;
+    int m_MaxThreadsNb;
+    long m_Priority;
+};
+
+#endif // ASTHREADSMANAGER_H
