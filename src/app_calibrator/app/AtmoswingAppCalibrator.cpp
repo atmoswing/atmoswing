@@ -141,8 +141,10 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 bool AtmoswingAppCalibrator::OnInit()
 {
     #if _DEBUG
-        _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-    #endif
+		#ifdef __WXMSW__
+			_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+		#endif
+	#endif
 
     // Set application name
     wxString appName = "Atmoswing calibrator";
@@ -162,6 +164,7 @@ bool AtmoswingAppCalibrator::OnInit()
         return false;
 
     #if wxUSE_GUI
+	m_SingleInstanceChecker = NULL;
     if (g_GuiMode)
     {
         // Check that it is the unique instance
@@ -652,7 +655,7 @@ int AtmoswingAppCalibrator::OnExit()
 {
 	#if wxUSE_GUI
 		// Instance checker
-		delete m_SingleInstanceChecker;
+		wxDELETE(m_SingleInstanceChecker);
 	#endif
 
     // Config file (from wxWidgets samples)
@@ -701,7 +704,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("classic", false))
             {
@@ -710,7 +712,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("classicp", false))
             {
@@ -719,7 +720,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("varexplocp", false))
             {
@@ -728,7 +728,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else if (m_CalibMethod.IsSameAs("evalscores", false))
             {
@@ -737,7 +736,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-                calibrator.Cleanup();
             }
             else
             {

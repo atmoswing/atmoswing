@@ -42,6 +42,7 @@
 asPredictorCriteria::asPredictorCriteria(int linAlgebraMethod)
 {
     m_LinAlgebraMethod = linAlgebraMethod;
+    m_CanUseInline = false;
 }
 
 asPredictorCriteria::~asPredictorCriteria()
