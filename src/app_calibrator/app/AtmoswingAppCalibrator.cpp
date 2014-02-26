@@ -170,6 +170,7 @@ bool AtmoswingAppCalibrator::OnInit()
         return false;
 
     #if wxUSE_GUI
+    m_SingleInstanceChecker = NULL;
     if (g_GuiMode)
     {
         // Check that it is the unique instance
@@ -872,7 +873,7 @@ int AtmoswingAppCalibrator::OnExit()
 {
 	#if wxUSE_GUI
 		// Instance checker
-		delete m_SingleInstanceChecker;
+		wxDELETE(m_SingleInstanceChecker);
 	#endif
 
     // Config file (from wxWidgets samples)

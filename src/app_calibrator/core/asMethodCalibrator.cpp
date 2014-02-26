@@ -1278,6 +1278,15 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         }
     #endif // _DEBUG
 
+    // Inline the data when possible
+    for (int i_ptor=0; i_ptor<m_StoragePredictors.size(); i_ptor++)
+    {
+        if (m_StorageCriteria[i_ptor]->CanUseInline())
+        {
+            m_StoragePredictors[i_ptor]->Inline();
+        }
+    }
+
     // Send data and criteria to processor
     asLogMessage(_("Start processing the comparison."));
     //asDataPredictor predictors = predictorsArchive;
@@ -1571,6 +1580,15 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
         m_StorageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
+    }
+
+    // Inline the data when possible
+    for (int i_ptor=0; i_ptor<m_StoragePredictors.size(); i_ptor++)
+    {
+        if (m_StorageCriteria[i_ptor]->CanUseInline())
+        {
+            m_StoragePredictors[i_ptor]->Inline();
+        }
     }
 
     // Send data and criteria to processor
