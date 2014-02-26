@@ -48,6 +48,8 @@ public:
     virtual bool Init() = 0;
 
     virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray) = 0;
+
+    bool Inline();
     
     /** Set m_Data: data[time](lat,lon)
      * \return The new value of m_Data
