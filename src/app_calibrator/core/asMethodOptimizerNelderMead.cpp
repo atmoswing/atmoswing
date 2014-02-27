@@ -159,11 +159,11 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
     // Load parameters
     asParametersOptimizationNelderMead params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    InitParameters(params);
     if (m_PredictandStationId>0)
     {
         params.SetPredictandStationId(m_PredictandStationId);
     }
+    InitParameters(params);
     m_OriginalParams = params;
 
     // Create a result object to save the parameters sets

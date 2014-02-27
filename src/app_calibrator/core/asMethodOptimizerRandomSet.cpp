@@ -33,11 +33,11 @@ bool asMethodOptimizerRandomSet::Manager()
     // Load parameters
     asParametersOptimization params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    InitParameters(params);
     if (m_PredictandStationId>0)
     {
         params.SetPredictandStationId(m_PredictandStationId);
     }
+    InitParameters(params);
     m_OriginalParams = params;
 
     // Reset the score of the climatology
