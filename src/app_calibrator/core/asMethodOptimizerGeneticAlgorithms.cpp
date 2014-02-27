@@ -200,15 +200,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Load parameters
     asParametersOptimizationGAs params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    InitParameters(params);
     if (m_PredictandStationId>0)
     {
         params.SetPredictandStationId(m_PredictandStationId);
     }
+    InitParameters(params);
     m_OriginalParams = params;
 
     // Create a result object to save the parameters sets
-    int stationId = m_OriginalParams.GetPredictandStationId();
+    int stationId = params.GetPredictandStationId();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_final_population;
     results_final_population.Init(wxString::Format(_("station_%d_final_population"), stationId));
