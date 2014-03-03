@@ -197,6 +197,19 @@ void asFileNetcdf::DefVar(const wxString &VarName, nc_type DataType, const int &
     if(m_Status) HandleErrorNetcdf();
 }
 
+void asFileNetcdf::DefVarDeflate(const wxString &VarName, int shuffle, int deflateLevel)
+{
+    wxASSERT(m_Opened);
+
+    int VarId;
+
+    m_Status = nc_inq_varid (m_FileId, VarName.mb_str(), &VarId);
+    if(m_Status) HandleErrorNetcdf();
+
+    m_Status = nc_def_var_deflate(m_FileId, VarId, shuffle, 1, deflateLevel);
+    if(m_Status) HandleErrorNetcdf();
+}
+
 void asFileNetcdf::PutAtt(const wxString &AttName, const wxString &TextStr, const wxString &VarName)
 {
     wxASSERT(m_Opened);
