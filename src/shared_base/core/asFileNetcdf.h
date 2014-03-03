@@ -104,6 +104,13 @@ public:
      * \param DimNames The corresponding dimensions
      */
     void DefVar(const wxString &VarName, nc_type DataType, const int &VarSize, const VectorStdString &DimNames);
+    
+    /** Add a variable to the file
+     * \param VarName The variable name
+     * \param shuffle If non-zero, turn on the shuffle filter
+     * \param deflateLevel Deflate level (0-9)
+     */
+    void DefVarDeflate(const wxString &VarName, int shuffle = 0, int deflateLevel = 2);
 
     /** Set a text attribute value
      * \param AttName The attribute name

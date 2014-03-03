@@ -41,7 +41,7 @@ asDataPredictand::asDataPredictand(DataParameter dataParameter, DataTemporalReso
     m_DataParameter = dataParameter;
     m_DataTemporalResolution = dataTemporalResolution;
     m_DataSpatialAggregation = dataSpatialAggregation;
-    m_FileVersion = 1.1f;
+    m_FileVersion = 1.2f;
     m_HasNormalizedData = false;
     m_HasReferenceValues = false;
     m_DatasetId = wxEmptyString;
@@ -238,7 +238,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
 {
     // Check version
     float version = ncFile.GetAttFloat("version");
-    if (asTools::IsNaN(version) || version<1.1)
+    if (asTools::IsNaN(version) || version<1.2)
     {
         asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return false;

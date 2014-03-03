@@ -96,7 +96,7 @@ bool asDataPredictandPrecipitation::Load(const wxString &filePath)
         m_ReturnPeriods.resize( returnPeriodsNb );
         ncFile.GetVar("return_periods", &m_ReturnPeriods[0]);
         size_t startReturnPeriodPrecip[2] = {0, 0};
-        size_t countReturnPeriodPrecip[2] = {size_t(returnPeriodsNb), size_t(m_StationsNb)};
+        size_t countReturnPeriodPrecip[2] = {size_t(m_StationsNb),size_t(returnPeriodsNb)};
         m_DailyPrecipitationsForReturnPeriods.resize( m_StationsNb, returnPeriodsNb );
         ncFile.GetVarArray("daily_precipitations_for_return_periods", startReturnPeriodPrecip, countReturnPeriodPrecip, &m_DailyPrecipitationsForReturnPeriods(0,0));
 
@@ -137,8 +137,8 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
         VectorStdString DimNameReturnPeriods;
         DimNameReturnPeriods.push_back("return_periods");
         VectorStdString DimNames2DReturnPeriods;
-        DimNames2DReturnPeriods.push_back("return_periods");
         DimNames2DReturnPeriods.push_back("stations");
+        DimNames2DReturnPeriods.push_back("return_periods");
 
         // Define specific variables
         ncFile.DefVar("data_normalized", NC_FLOAT, 2, DimNames2D);
@@ -184,7 +184,7 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
         size_t startReturnPeriod[] = {0};
         size_t countReturnPeriod[] = {size_t(m_ReturnPeriods.size())};
         size_t startReturnPeriodPrecip[] = {0, 0};
-        size_t countReturnPeriodPrecip[] = {size_t(m_ReturnPeriods.size()), size_t(m_StationsNb)};
+        size_t countReturnPeriodPrecip[] = {size_t(m_StationsNb),size_t(m_ReturnPeriods.size())};
 
         // Write specific data
         ncFile.PutVarArray("data_normalized", start2, count2, &m_DataNormalized(0,0));

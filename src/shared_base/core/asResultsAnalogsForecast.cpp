@@ -179,8 +179,8 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     }
     ncFile.PutAtt("has_reference_values", &hasReferenceValues);
 
-    // Define dimensions. Time is the unlimited dimension.
-    ncFile.DefDim("lead_time");
+    // Define dimensions. No unlimited dimension.
+    ncFile.DefDim("lead_time", Nleadtime);
     ncFile.DefDim("analogs_tot", Nanalogstot);
     ncFile.DefDim("stations", Nstations);
     if (m_HasReferenceValues)
@@ -203,8 +203,8 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     if (m_HasReferenceValues)
     {
         DimNameReferenceAxis.push_back("reference_axis");
-        DimNameReferenceValues.push_back("reference_axis");
         DimNameReferenceValues.push_back("stations");
+        DimNameReferenceValues.push_back("reference_axis");
     }
 
     // Define variables: the analogcriteria and the corresponding dates
@@ -220,6 +220,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     ncFile.DefVar("analogs_criteria", NC_FLOAT, 1, DimNamesAnalogsTot);
     ncFile.DefVar("analogs_dates", NC_FLOAT, 1, DimNamesAnalogsTot);
     ncFile.DefVar("analogs_values_gross", NC_FLOAT, 2, DimNamesAnalogsStations);
+    ncFile.DefVarDeflate("analogs_values_gross");
     if (m_HasReferenceValues)
     {
         ncFile.DefVar("reference_axis", NC_FLOAT, 1, DimNameReferenceAxis);
@@ -276,7 +277,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     VectorFloat analogsCriteria(Nanalogstot);
     VectorFloat analogsDates(Nanalogstot);
     VectorFloat analogsValuesGross(Nanalogstot*Nstations);
-
+    
     int ind = 0, indVal = 0;
     for (unsigned int i_time=0; i_time<Nleadtime; i_time++)
     {
@@ -285,8 +286,11 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
             analogsCriteria[ind] = m_AnalogsCriteria[i_time][i_analog];
             analogsDates[ind] = m_AnalogsDates[i_time][i_analog];
             ind++;
+        }
 
-            for (unsigned int i_station=0; i_station<Nstations; i_station++)
+        for (unsigned int i_station=0; i_station<Nstations; i_station++)
+        {
+            for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
             {
                 analogsValuesGross[indVal] = m_AnalogsValuesGross[i_time](i_station, i_analog);
                 indVal++;
@@ -312,7 +316,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
         size_t startReferenceAxis[] = {0};
         size_t countReferenceAxis[] = {Nreferenceaxis};
         size_t startReferenceValues[] = {0, 0};
-        size_t countReferenceValues[] = {Nreferenceaxis, Nstations};
+        size_t countReferenceValues[] = {Nstations, Nreferenceaxis};
         ncFile.PutVarArray("reference_axis", startReferenceAxis, countReferenceAxis, &m_ReferenceAxis(0));
         ncFile.PutVarArray("reference_values", startReferenceValues, countReferenceValues, &m_ReferenceValues(0,0));
     }
@@ -345,6 +349,12 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Get global attributes
     float version = ncFile.GetAttFloat("version");
+    if (version>1.2f)
+    {
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
+        return false;
+    }
+
     if (asTools::IsNaN(version) || version<1.1)
     {
         asLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
@@ -357,7 +367,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         m_LeadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
         m_HasReferenceValues = true;
     }
-    else if (version==1.1f)
+    else
     {
         m_PredictandParameter = (DataParameter)ncFile.GetAttInt("predictand_parameter");
         m_PredictandTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("predictand_temporal_resolution");
@@ -372,11 +382,6 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             m_HasReferenceValues = true;
         }
     }
-    else
-    {
-        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
-        return false;
-    }
 
     // Get the elements size
     int Nleadtime;
@@ -388,16 +393,11 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         Nanalogstot = ncFile.GetDimLength("analogstot");
         Nstations = ncFile.GetDimLength("stations");
     }
-    else if (version==1.1f)
+    else
     {
         Nleadtime = ncFile.GetDimLength("lead_time");
         Nanalogstot = ncFile.GetDimLength("analogs_tot");
         Nstations = ncFile.GetDimLength("stations");
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
-        return false;
     }
 
     // Get lead time data
@@ -421,7 +421,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVar("loccoordu", &m_StationsLocCoordU[0]);
         ncFile.GetVar("loccoordv", &m_StationsLocCoordV[0]);
     }
-    else if (version==1.1f)
+    else
     {
         ncFile.GetVar("target_dates", &m_TargetDates[0]);
         ncFile.GetVar("analogs_nb", &m_AnalogsNb[0]);
@@ -430,11 +430,6 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVar("stations_heights", &m_StationsHeights[0]);
         ncFile.GetVar("loc_coord_u", &m_StationsLocCoordU[0]);
         ncFile.GetVar("loc_coord_v", &m_StationsLocCoordV[0]);
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
-        return false;
     }
     
     ncFile.GetVar("lon", &m_StationsLon[0]);
@@ -453,20 +448,25 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             m_ReferenceValues.resize( Nstations, referenceAxisLength );
             ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReferenceValues, countReferenceValues, &m_ReferenceValues(0,0));
         }
-        else if (version==1.1f)
+        else
         {
             int referenceAxisLength = ncFile.GetDimLength("reference_axis");
             m_ReferenceAxis.resize( referenceAxisLength );
             ncFile.GetVar("reference_axis", &m_ReferenceAxis[0]);
             size_t startReferenceValues[2] = {0, 0};
-            size_t countReferenceValues[2] = {size_t(referenceAxisLength), size_t(Nstations)};
+            size_t countReferenceValues[2] = {0, 0};
+            if (version==1.1f)
+            {
+                countReferenceValues[0] = size_t(referenceAxisLength);
+                countReferenceValues[1] = size_t(Nstations);
+            }
+            else
+            {
+                countReferenceValues[0] = size_t(Nstations);
+                countReferenceValues[1] = size_t(referenceAxisLength);
+            }
             m_ReferenceValues.resize( Nstations, referenceAxisLength );
             ncFile.GetVarArray("reference_values", startReferenceValues, countReferenceValues, &m_ReferenceValues(0,0));
-        }
-        else
-        {
-            asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
-            return false;
         }
     }
 
@@ -486,16 +486,11 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVarArray("analogsdates", IndexStart1D, IndexCount1D, &analogsDates[0]);
         ncFile.GetVarArray("analogsvaluesgross", IndexStart2D, IndexCount2D, &analogsValuesGross[0]);
     }
-    else if (version==1.1f)
+    else
     {
         ncFile.GetVarArray("analogs_criteria", IndexStart1D, IndexCount1D, &analogsCriteria[0]);
         ncFile.GetVarArray("analogs_dates", IndexStart1D, IndexCount1D, &analogsDates[0]);
         ncFile.GetVarArray("analogs_values_gross", IndexStart2D, IndexCount2D, &analogsValuesGross[0]);
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
-        return false;
     }
 
     ncFile.Close();
@@ -509,16 +504,34 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         Array1DFloat analogsCriteriaLeadTime(m_AnalogsNb[i_time]);
         Array1DFloat analogsDatesLeadTime(m_AnalogsNb[i_time]);
         Array2DFloat analogsValuesGrossLeadTime(Nstations, m_AnalogsNb[i_time]);
+
         for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
         {
             analogsCriteriaLeadTime(i_analog) = analogsCriteria[ind];
             analogsDatesLeadTime(i_analog) = analogsDates[ind];
             ind++;
+        }
 
+        if (asTools::IsNaN(version) || version<1.1)
+        {
+            for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
+            {
+                for (int i_station=0; i_station<Nstations; i_station++)
+                {
+                    analogsValuesGrossLeadTime(i_station, i_analog) = analogsValuesGross[indVal];
+                    indVal++;
+                }
+            }
+        }
+        else
+        {
             for (int i_station=0; i_station<Nstations; i_station++)
             {
-                analogsValuesGrossLeadTime(i_station, i_analog) = analogsValuesGross[indVal];
-                indVal++;
+                for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
+                {
+                    analogsValuesGrossLeadTime(i_station, i_analog) = analogsValuesGross[indVal];
+                    indVal++;
+                }
             }
         }
 
