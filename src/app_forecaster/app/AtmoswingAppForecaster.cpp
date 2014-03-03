@@ -106,6 +106,13 @@ bool AtmoswingAppForecaster::OnInit()
             if ( m_SingleInstanceChecker->IsAnotherRunning() )
             {
                 wxMessageBox(_("Program already running, aborting."));
+                
+                // Cleanup
+                delete wxFileConfig::Set((wxFileConfig *) NULL);
+                DeleteThreadsManager();
+                DeleteLog();
+                delete m_SingleInstanceChecker;
+
                 return false;
             }
         }
