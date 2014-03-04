@@ -278,7 +278,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     VectorFloat analogsDates(Nanalogstot);
     VectorFloat analogsValuesGross(Nanalogstot*Nstations);
     
-    int ind = 0, indVal = 0;
+    int ind = 0;
     for (unsigned int i_time=0; i_time<Nleadtime; i_time++)
     {
         for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
@@ -287,8 +287,12 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
             analogsDates[ind] = m_AnalogsDates[i_time][i_analog];
             ind++;
         }
+    }
 
-        for (unsigned int i_station=0; i_station<Nstations; i_station++)
+    int indVal = 0;
+    for (unsigned int i_station=0; i_station<Nstations; i_station++)
+    {
+        for (unsigned int i_time=0; i_time<Nleadtime; i_time++)
         {
             for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
             {
@@ -498,12 +502,11 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     ThreadsManager().CritSectionNetCDF().Leave();
 
     // Set data into the matrices
-    int ind = 0, indVal = 0;
+    int ind = 0;
     for (int i_time=0; i_time<Nleadtime; i_time++)
     {
         Array1DFloat analogsCriteriaLeadTime(m_AnalogsNb[i_time]);
         Array1DFloat analogsDatesLeadTime(m_AnalogsNb[i_time]);
-        Array2DFloat analogsValuesGrossLeadTime(Nstations, m_AnalogsNb[i_time]);
 
         for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
         {
@@ -512,8 +515,17 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             ind++;
         }
 
-        if (asTools::IsNaN(version) || version<1.1)
+        m_AnalogsCriteria.push_back( analogsCriteriaLeadTime );
+        m_AnalogsDates.push_back( analogsDatesLeadTime );
+    }
+    
+    int indVal = 0;
+    if (asTools::IsNaN(version) || version<1.1)
+    {
+        for (int i_time=0; i_time<Nleadtime; i_time++)
         {
+            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_AnalogsNb[i_time]);
+
             for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
             {
                 for (int i_station=0; i_station<Nstations; i_station++)
@@ -522,22 +534,31 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
                     indVal++;
                 }
             }
+
+            m_AnalogsValuesGross.push_back( analogsValuesGrossLeadTime );
         }
-        else
+    }
+    else
+    {
+        // Create containers
+        for (int i_time=0; i_time<Nleadtime; i_time++)
         {
-            for (int i_station=0; i_station<Nstations; i_station++)
+            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_AnalogsNb[i_time]);
+            analogsValuesGrossLeadTime.fill(NaNFloat);
+            m_AnalogsValuesGross.push_back( analogsValuesGrossLeadTime );
+        }
+
+        for (int i_station=0; i_station<Nstations; i_station++)
+        {
+            for (int i_time=0; i_time<Nleadtime; i_time++)
             {
                 for (int i_analog=0; i_analog<m_AnalogsNb[i_time]; i_analog++)
                 {
-                    analogsValuesGrossLeadTime(i_station, i_analog) = analogsValuesGross[indVal];
+                    m_AnalogsValuesGross[i_time](i_station, i_analog) = analogsValuesGross[indVal];
                     indVal++;
                 }
             }
         }
-
-        m_AnalogsCriteria.push_back( analogsCriteriaLeadTime );
-        m_AnalogsValuesGross.push_back( analogsValuesGrossLeadTime );
-        m_AnalogsDates.push_back( analogsDatesLeadTime );
     }
 
     wxASSERT(!m_ModelName.IsEmpty());
