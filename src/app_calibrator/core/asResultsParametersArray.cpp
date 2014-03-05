@@ -79,6 +79,13 @@ void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib,
     m_ScoresValid.push_back(scoreValid);
 }
 
+void asResultsParametersArray::Add(asParametersScoring params, Array1DFloat scoreCalib, Array1DFloat scoreValid)
+{
+    m_ParametersForScoreOnArray.push_back(params);
+    m_ScoresCalibForScoreOnArray.push_back(scoreCalib);
+    m_ScoresValidForScoreOnArray.push_back(scoreValid);
+}
+
 void asResultsParametersArray::Clear()
 {
     // Resize to 0 to avoid keeping old results
@@ -105,6 +112,23 @@ bool asResultsParametersArray::Print()
         content.Append(m_Parameters[i_param].Print());
         content.Append(wxString::Format("Calib\t%e\t", m_ScoresCalib[i_param]));
         content.Append(wxString::Format("Valid\t%e", m_ScoresValid[i_param]));
+        content.Append("\n");
+    }
+    
+    // Write every parameter for scores on array one after the other
+    for (unsigned int i_param=0; i_param<m_ParametersForScoreOnArray.size(); i_param++)
+    {
+        content.Append(m_ParametersForScoreOnArray[i_param].Print());
+        content.Append("Calib\t");
+        for (unsigned int i_row=0; i_row<m_ScoresCalibForScoreOnArray[i_param].size(); i_row++)
+        {
+            content.Append(wxString::Format("%e\t", m_ScoresCalibForScoreOnArray[i_param][i_row]));
+        }
+        content.Append("Valid\t");
+        for (unsigned int i_row=0; i_row<m_ScoresValidForScoreOnArray[i_param].size(); i_row++)
+        {
+            content.Append(wxString::Format("%e\t", m_ScoresValidForScoreOnArray[i_param][i_row]));
+        }
         content.Append("\n");
     }
 
