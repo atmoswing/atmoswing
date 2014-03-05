@@ -40,8 +40,8 @@
  * Provide tests names as arguments in order to test specific tests. Otherwise process all tests.
  * Examples:
  * ./AtmoSwingTests IsRoundFloatTrue LoadCatalogProp -> test specific tests
- * ./AtmoSwingTests quick -> test only the fast ones (not the method calibration)  
- * ./AtmoSwingTests -> test everything  
+ * ./AtmoSwingTests quick -> test only the fast ones (not the method calibration)
+ * ./AtmoSwingTests -> test everything
  */
 
 int main( int argc, char** argv )
@@ -50,7 +50,7 @@ int main( int argc, char** argv )
     /*
     // In order to debug just one test
     argc=2;
-    char* chars = "GenerateSimpleParametersFileCalibration";
+    char* chars = "ProcessS1preprocessed";
     argv[1] = chars;
     */
 
