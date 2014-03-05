@@ -144,35 +144,49 @@ public:
 
     wxString Print();
 
-    int GetCalibrationYearStart()
-    {
-        return m_CalibrationYearStart;
-    }
-
     bool SetCalibrationYearStart(int val)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the calibration year start is null"));
-            return false;
-        }
-        m_CalibrationYearStart = val;
+        m_CalibrationStart = asTime::GetMJD(val, 1, 1);
         return true;
-    }
-
-    int GetCalibrationYearEnd()
-    {
-        return m_CalibrationYearEnd;
     }
 
     bool SetCalibrationYearEnd(int val)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the calibration year end is null"));
-            return false;
-        }
-        m_CalibrationYearEnd = val;
+        m_CalibrationEnd = asTime::GetMJD(val, 12, 31);
+        return true;
+    }
+
+    double GetCalibrationStart()
+    {
+        return m_CalibrationStart;
+    }
+
+    bool SetCalibrationStart(double val)
+    {
+        m_CalibrationStart = val;
+        return true;
+    }
+
+    bool SetCalibrationStart(wxString val)
+    {
+        m_CalibrationStart = asTime::GetTimeFromString(val);
+        return true;
+    }
+    
+    double GetCalibrationEnd()
+    {
+        return m_CalibrationEnd;
+    }
+    
+    bool SetCalibrationEnd(double val)
+    {
+        m_CalibrationEnd = val;
+        return true;
+    }
+    
+    bool SetCalibrationEnd(wxString val)
+    {
+        m_CalibrationEnd = asTime::GetTimeFromString(val);
         return true;
     }
 
@@ -364,8 +378,8 @@ public:
     }
 
 protected:
-    int m_CalibrationYearStart;
-    int m_CalibrationYearEnd;
+    double m_CalibrationStart;
+    double m_CalibrationEnd;
     VectorInt m_ValidationYears;
 
 private:

@@ -963,8 +963,8 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
 
     // Get start and end dates
     double timeStart, timeEnd;
-    timeStart = wxMax(predictandTime[0],asTime::GetMJD(params.GetArchiveYearStart(),1,1));
-    timeEnd = wxMin(predictandTime[predictandTimeLength-1],asTime::GetMJD(params.GetArchiveYearEnd(),12,31));
+    timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
+    timeEnd = wxMin(predictandTime[predictandTimeLength-1],params.GetArchiveEnd());
 
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTimeLength-1],timeStart);

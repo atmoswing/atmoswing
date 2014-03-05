@@ -34,8 +34,8 @@ asParametersScoring::asParametersScoring()
 :
 asParameters()
 {
-    m_CalibrationYearStart = 0;
-    m_CalibrationYearEnd = 0;
+    m_CalibrationStart = 0;
+    m_CalibrationEnd = 0;
     m_ForecastScore.Name = wxEmptyString;
     m_ForecastScore.AnalogsNumber = 0;
     m_ForecastScore.TimeArrayMode = wxEmptyString;
@@ -97,23 +97,19 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Archive Period")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
-    wxString archiveYearStart;
-    archiveYearStart << GetArchiveYearStart();
-    if(!fileParams.InsertElementAndAttribute("", "YearStart", "value", archiveYearStart)) return false;
-    wxString archiveYearEnd;
-    archiveYearEnd << GetArchiveYearEnd();
-    if(!fileParams.InsertElementAndAttribute("", "YearEnd", "value", archiveYearEnd)) return false;
+    wxString archiveStart = asTime::GetStringTime(GetArchiveStart(), "dd.mm.yyyy");
+    if(!fileParams.InsertElementAndAttribute("", "Start", "value", archiveStart)) return false;
+    wxString archiveYearEnd = asTime::GetStringTime(GetArchiveEnd(), "dd.mm.yyyy");
+    if(!fileParams.InsertElementAndAttribute("", "End", "value", archiveYearEnd)) return false;
     if(!fileParams.GoANodeBack()) return false;
     
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Calibration Period")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Calibration Period")) return false;
-    wxString calibrationYearStart;
-    calibrationYearStart << GetCalibrationYearStart();
-    if(!fileParams.InsertElementAndAttribute("", "YearStart", "value", calibrationYearStart)) return false;
-    wxString calibrationYearEnd;
-    calibrationYearEnd << GetCalibrationYearEnd();
-    if(!fileParams.InsertElementAndAttribute("", "YearEnd", "value", calibrationYearEnd)) return false;
+    wxString calibStart = asTime::GetStringTime(GetCalibrationStart(), "dd.mm.yyyy");
+    if(!fileParams.InsertElementAndAttribute("", "Start", "value", calibStart)) return false;
+    wxString calibEnd = asTime::GetStringTime(GetCalibrationEnd(), "dd.mm.yyyy");
+    if(!fileParams.InsertElementAndAttribute("", "End", "value", calibEnd)) return false;
     if(!fileParams.GoANodeBack()) return false;
     
 
