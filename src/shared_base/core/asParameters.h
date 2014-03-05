@@ -131,35 +131,49 @@ public:
         m_DateProcessed = val;
     }
 
-    int GetArchiveYearStart()
-    {
-        return m_ArchiveYearStart;
-    }
-
     bool SetArchiveYearStart(int val)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the archive start is null"));
-            return false;
-        }
-        m_ArchiveYearStart = val;
+        m_ArchiveStart = asTime::GetMJD(val, 1, 1);
         return true;
-    }
-
-    int GetArchiveYearEnd()
-    {
-        return m_ArchiveYearEnd;
     }
 
     bool SetArchiveYearEnd(int val)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the archive end is null"));
-            return false;
-        }
-        m_ArchiveYearEnd = val;
+        m_ArchiveEnd = asTime::GetMJD(val, 12, 31);
+        return true;
+    }
+
+    double GetArchiveStart()
+    {
+        return m_ArchiveStart;
+    }
+
+    bool SetArchiveStart(double val)
+    {
+        m_ArchiveStart = val;
+        return true;
+    }
+
+    bool SetArchiveStart(wxString val)
+    {
+        m_ArchiveStart = asTime::GetTimeFromString(val);
+        return true;
+    }
+    
+    double GetArchiveEnd()
+    {
+        return m_ArchiveEnd;
+    }
+    
+    bool SetArchiveEnd(double val)
+    {
+        m_ArchiveEnd = val;
+        return true;
+    }
+    
+    bool SetArchiveEnd(wxString val)
+    {
+        m_ArchiveEnd = asTime::GetTimeFromString(val);
         return true;
     }
 
@@ -1019,8 +1033,8 @@ public:
 
 
 protected:
-    int m_ArchiveYearStart;
-    int m_ArchiveYearEnd;
+    double m_ArchiveStart;
+    double m_ArchiveEnd;
     int m_TimeArrayAnalogsIntervalDays;
     int m_PredictandStationId;
     double m_TimeMinHours;

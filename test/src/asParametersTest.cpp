@@ -46,8 +46,8 @@ TEST(ParametersLoadFromFile)
     asParameters params;
     params.LoadFromFile(filepath);
 
-    CHECK_EQUAL(1962, params.GetArchiveYearStart());
-    CHECK_EQUAL(2008, params.GetArchiveYearEnd());
+    CHECK_EQUAL(asTime::GetMJD(1962,1,1), params.GetArchiveStart());
+    CHECK_EQUAL(asTime::GetMJD(2008,12,31), params.GetArchiveEnd());
     CHECK_EQUAL(24, params.GetTimeArrayAnalogsTimeStepHours());
     CHECK_EQUAL(24, params.GetTimeArrayTargetTimeStepHours());
     CHECK_EQUAL(60, params.GetTimeArrayAnalogsIntervalDays());

@@ -125,8 +125,18 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     
     if(!fileParams.CheckDeprecatedChildNode("ArchivePeriod")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
-    if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
-    if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    wxString archiveStart = fileParams.GetFirstElementAttributeValueText("Start", "value");
+    wxString archiveEnd = fileParams.GetFirstElementAttributeValueText("End", "value");
+    if (!archiveStart.IsEmpty() && !archiveEnd.IsEmpty())
+    {
+        SetArchiveStart(archiveStart);
+        SetArchiveEnd(archiveEnd);
+    }
+    else
+    {
+        if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+        if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    }
     if(!fileParams.GoANodeBack()) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties", asHIDE_WARNINGS))

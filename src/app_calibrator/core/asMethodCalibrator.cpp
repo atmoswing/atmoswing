@@ -365,14 +365,14 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         m_Preloaded = true;
 
         // Archive date array
-        double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
-        double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+        double timeStartArchive = params.GetArchiveStart();
+        double timeEndArchive = params.GetArchiveEnd();
         timeStartArchive += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
         timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
 
         // Target date array
-        double timeStartCalibration = asTime::GetMJD(params.GetCalibrationYearStart(),1,1); // Always Jan 1st
-        double timeEndCalibration = asTime::GetMJD(params.GetCalibrationYearEnd(),12,31);
+        double timeStartCalibration = params.GetCalibrationStart();
+        double timeEndCalibration = params.GetCalibrationEnd();
         timeStartCalibration += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
         timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
 
@@ -1196,8 +1196,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
 
     // Archive date array
-    double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
-    double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+    double timeStartArchive = params.GetArchiveStart();
+    double timeEndArchive = params.GetArchiveEnd();
     timeStartArchive += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
     timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive,
@@ -1210,8 +1210,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     timeArrayArchive.Init();
 
     // Target date array
-    double timeStartCalibration = asTime::GetMJD(params.GetCalibrationYearStart(),1,1); // Always Jan 1st
-    double timeEndCalibration = asTime::GetMJD(params.GetCalibrationYearEnd(),12,31);
+    double timeStartCalibration = params.GetCalibrationStart();
+    double timeEndCalibration = params.GetCalibrationEnd();
     timeStartCalibration += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
     timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayTarget(timeStartCalibration, timeEndCalibration,
@@ -1380,8 +1380,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
 
     // Date array object instantiation for the processor
     asLogMessage(_("Creating a date arrays for the processor."));
-    double timeStart = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
-    double timeEnd = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+    double timeStart = params.GetArchiveStart();
+    double timeEnd = params.GetArchiveEnd();
     timeEnd = wxMin(timeEnd, timeEnd-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStart, timeEnd, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
@@ -1489,9 +1489,9 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
             // Get start and end dates
             float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
             double timeStart, timeEnd;
-            timeStart = wxMax(predictandTime[0],asTime::GetMJD(params.GetArchiveYearStart(),1,1));
+            timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
             timeStart = floor(timeStart)+predictandTimeDays;
-            timeEnd = wxMin(predictandTime[predictandTime.size()-1],asTime::GetMJD(params.GetArchiveYearEnd(),12,31));
+            timeEnd = wxMin(predictandTime[predictandTime.size()-1],params.GetArchiveEnd());
             timeEnd = floor(timeEnd)+predictandTimeDays;
 
             // Check if data are effectively available for this period
@@ -1574,9 +1574,9 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
 
     // Date array object instantiation for the final score
     asLogMessage(_("Creating a date array for the final score."));
-    double timeStart = asTime::GetMJD(params.GetCalibrationYearStart(),1,1);
-    double timeEnd = asTime::GetMJD(params.GetCalibrationYearEnd()+1,1,1);
-    while (timeEnd>asTime::GetMJD(params.GetCalibrationYearEnd(),12,31,23,59))
+    double timeStart = params.GetCalibrationStart();
+    double timeEnd = params.GetCalibrationEnd()+1;
+    while (timeEnd>params.GetCalibrationEnd()+0.999)
     {
         timeEnd -= params.GetTimeArrayTargetTimeStepHours()/24.0;
     }

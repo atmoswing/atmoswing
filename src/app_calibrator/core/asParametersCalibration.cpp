@@ -76,13 +76,33 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.CheckDeprecatedChildNode("Period")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
-    if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
-    if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    wxString archiveStart = fileParams.GetFirstElementAttributeValueText("Start", "value");
+    wxString archiveEnd = fileParams.GetFirstElementAttributeValueText("End", "value");
+    if (!archiveStart.IsEmpty() && !archiveEnd.IsEmpty())
+    {
+        SetArchiveStart(archiveStart);
+        SetArchiveEnd(archiveEnd);
+    }
+    else
+    {
+        if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+        if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    }
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Calibration Period")) return false;
-    if(!SetCalibrationYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
-    if(!SetCalibrationYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    wxString calibStart = fileParams.GetFirstElementAttributeValueText("Start", "value");
+    wxString calibEnd = fileParams.GetFirstElementAttributeValueText("End", "value");
+    if (!calibStart.IsEmpty() && !calibEnd.IsEmpty())
+    {
+        SetCalibrationStart(calibStart);
+        SetCalibrationEnd(calibEnd);
+    }
+    else
+    {
+        if(!SetCalibrationYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+        if(!SetCalibrationYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    }
     if(!fileParams.GoANodeBack()) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Validation Period", asHIDE_WARNINGS))

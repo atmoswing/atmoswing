@@ -35,8 +35,8 @@
 asParameters::asParameters()
 {
     m_DateProcessed = asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL));
-    m_ArchiveYearStart = 0;
-    m_ArchiveYearEnd = 0;
+    m_ArchiveStart = 0;
+    m_ArchiveEnd = 0;
     m_TimeMinHours = 0;
     m_TimeMaxHours = 0;
     m_TimeArrayTargetMode = "Simple";
@@ -348,8 +348,18 @@ bool asParameters::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.CheckDeprecatedChildNode("Period")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
-    if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
-    if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    wxString archiveStart = fileParams.GetFirstElementAttributeValueText("Start", "value");
+    wxString archiveEnd = fileParams.GetFirstElementAttributeValueText("End", "value");
+    if (!archiveStart.IsEmpty() && !archiveEnd.IsEmpty())
+    {
+        SetArchiveStart(archiveStart);
+        SetArchiveEnd(archiveEnd);
+    }
+    else
+    {
+        if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
+        if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
+    }
     if(!fileParams.GoANodeBack()) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties", asHIDE_WARNINGS))

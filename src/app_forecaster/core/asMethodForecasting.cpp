@@ -577,8 +577,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     results.Init(params, m_ForecastDate);
 
     // Archive time array
-    double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
-    double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+    double timeStartArchive = params.GetArchiveStart(); 
+    double timeEndArchive = params.GetArchiveEnd();
     timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
@@ -1023,8 +1023,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     asLogMessage(_("Creating a date arrays for the processor."));
 
     // Archive time array
-    double timeStartArchive = asTime::GetMJD(params.GetArchiveYearStart(),1,1); // Always Jan 1st
-    double timeEndArchive = asTime::GetMJD(params.GetArchiveYearEnd(),12,31);
+    double timeStartArchive = params.GetArchiveStart();
+    double timeEndArchive = params.GetArchiveEnd();
     timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
