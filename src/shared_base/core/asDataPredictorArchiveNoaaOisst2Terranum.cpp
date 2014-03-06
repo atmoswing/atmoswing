@@ -271,6 +271,21 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::Load(asGeoAreaCompositeGrid *desi
         double valFirstTime = ncFile.GetVarOneDouble("time", 0);
         valFirstTime = (valFirstTime/24.0); // hours to days
         valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+        double valLastTime = ncFile.GetVarOneDouble("time", axisDataTimeLength-1);
+        valLastTime = (valLastTime/24.0); // hours to days
+        valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+        // Check requested time array
+        if(timeArray.GetFirst()<valFirstTime)
+        {
+            asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()).c_str(), asTime::GetStringTime(valFirstTime).c_str()));
+            return false;
+        }
+        if(timeArray.GetLast()>valLastTime)
+        {
+            asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()).c_str(), asTime::GetStringTime(valLastTime).c_str()));
+            return false;
+        }
+
 
         if (desiredArea==NULL)
         {
