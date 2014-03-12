@@ -626,6 +626,13 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastdate)
                 }
             }
             thistimestep += m_TimeStepDays;
+
+            #ifdef _DEBUG
+                if(rowid>1)
+                {
+                    wxASSERT(m_TimeArray[rowid]>m_TimeArray[rowid-1]);
+                }
+            #endif
         }
     }
 
