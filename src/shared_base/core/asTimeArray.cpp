@@ -488,7 +488,7 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
     wxASSERT(totLength>0);
     wxASSERT(totLength<289600); // 4 times daily during 200 years...
     m_TimeArray.resize(totLength);
-    
+
     // Loop over the years
     int counter = 0;
     for (int i_year=firstYear; i_year<=lastYear; i_year++)
@@ -524,8 +524,8 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
                     #ifdef _DEBUG
                         if(counter>1)
                         {
-                            wxASSERT_MSG(m_TimeArray[counter-1]>m_TimeArray[counter-2], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"), 
-                                                                                                   counter-1, asTime::GetStringTime(m_TimeArray[counter-1]).c_str(), 
+                            wxASSERT_MSG(m_TimeArray[counter-1]>m_TimeArray[counter-2], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"),
+                                                                                                   counter-1, asTime::GetStringTime(m_TimeArray[counter-1]).c_str(),
                                                                                                    counter-2, asTime::GetStringTime(m_TimeArray[counter-2])).c_str());
                         }
                     #endif
@@ -914,20 +914,24 @@ int asTimeArray::GetIndexFirstBefore(double date)
 
 bool asTimeArray::RemoveYears(const VectorInt &years)
 {
+    wxASSERT(m_TimeArray.size()>0);
+    wxASSERT(years.size()>0);
+
     VectorInt yearsRemove = years;
 
     asTools::SortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size()-1], Asc);
 
-    Array1DInt flags = Array1DInt::Zero(m_TimeArray.size());
+    int arraySize = m_TimeArray.size();
+    Array1DInt flags = Array1DInt::Zero(arraySize);
 
-    for (int i=0; (unsigned)i<yearsRemove.size(); i++)
+    for (unsigned int i=0; i<yearsRemove.size(); i++)
     {
         int year = yearsRemove[i];
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[GetSize()-1], mjdStart);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[GetSize()-1], mjdEnd);
+        int indexStart = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart!=asOUT_OF_RANGE && indexStart!=asNOT_FOUND)
         {
@@ -937,14 +941,14 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
             }
             else
             {
-                flags.segment(indexStart,GetSize()-1).setOnes();
+                flags.segment(indexStart,arraySize-indexStart).setOnes();
             }
         }
         else
         {
             if (indexEnd!=asOUT_OF_RANGE && indexEnd!=asNOT_FOUND)
             {
-                flags.segment(0,indexEnd-indexStart+1).setOnes();
+                flags.segment(0,indexEnd+1).setOnes();
             }
             else
             {
@@ -953,10 +957,10 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
         }
     }
 
-    Array1DDouble newTimeArray(m_TimeArray.size());
+    Array1DDouble newTimeArray(arraySize);
     int counter = 0;
 
-    for (int i=0; i<m_TimeArray.size(); i++)
+    for (int i=0; i<arraySize; i++)
     {
         if (flags[i]==0)
         {
@@ -973,20 +977,24 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
 
 bool asTimeArray::KeepOnlyYears(const VectorInt &years)
 {
+    wxASSERT(m_TimeArray.size()>0);
+    wxASSERT(years.size()>0);
+
     VectorInt yearsKeep = years;
 
     asTools::SortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size()-1], Asc);
 
-    Array1DInt flags = Array1DInt::Zero(m_TimeArray.size());
+    int arraySize = m_TimeArray.size();
+    Array1DInt flags = Array1DInt::Zero(arraySize);
 
-    for (int i=0; (unsigned)i<yearsKeep.size(); i++)
+    for (unsigned int i=0; i<yearsKeep.size(); i++)
     {
         int year = yearsKeep[i];
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[GetSize()-1], mjdStart);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[GetSize()-1], mjdEnd);
+        int indexStart = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart!=asOUT_OF_RANGE && indexStart!=asNOT_FOUND)
         {
@@ -996,14 +1004,14 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
             }
             else
             {
-                flags.segment(indexStart,GetSize()-1).setOnes();
+                flags.segment(indexStart,arraySize-indexStart).setOnes();
             }
         }
         else
         {
             if (indexEnd!=asOUT_OF_RANGE && indexEnd!=asNOT_FOUND)
             {
-                flags.segment(0,indexEnd-indexStart+1).setOnes();
+                flags.segment(0,indexEnd+1).setOnes();
             }
             else
             {
@@ -1012,10 +1020,10 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
         }
     }
 
-    Array1DDouble newTimeArray(m_TimeArray.size());
+    Array1DDouble newTimeArray(arraySize);
     int counter = 0;
 
-    for (int i=0; i<m_TimeArray.size(); i++)
+    for (int i=0; i<arraySize; i++)
     {
         if (flags[i]==1)
         {
