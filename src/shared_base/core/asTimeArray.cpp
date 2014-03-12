@@ -630,14 +630,16 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastdate)
             #ifdef _DEBUG
                 if(rowid>1)
                 {
-                    wxASSERT(m_TimeArray[rowid]>m_TimeArray[rowid-1]);
+                    wxASSERT_MSG(m_TimeArray[rowid]>m_TimeArray[rowid-1], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"), 
+                                                                                           rowid, asTime::GetStringTime(m_TimeArray[rowid]).c_str(), 
+                                                                                           rowid-1, asTime::GetStringTime(m_TimeArray[rowid-1])).c_str());
                 }
             #endif
         }
     }
 
     // Check the vector length
-    wxASSERT_MSG(m_TimeArray.rows()>=rowid, _("The index is higher than the array size."));
+    wxASSERT_MSG(m_TimeArray.rows()>=rowid, _("The index is smaller than the array size."));
     if (m_TimeArray.rows()!=rowid)
     {
         m_TimeArray.conservativeResize(rowid);
