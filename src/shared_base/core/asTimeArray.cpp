@@ -484,7 +484,7 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
     // Array resizing (larger than required)
     int firstYear = GetTimeStruct(m_Start).year;
     int lastYear = GetTimeStruct(m_End).year;
-    int totLength = (lastYear-firstYear+1)*2*m_IntervalDays;
+    int totLength = (lastYear-firstYear+1)*2*(m_IntervalDays+1)*(1.0/m_TimeStepDays)+50;
     wxASSERT(totLength>0);
     wxASSERT(totLength<289600); // 4 times daily during 200 years...
     m_TimeArray.resize(totLength);
