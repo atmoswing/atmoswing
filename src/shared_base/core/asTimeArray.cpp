@@ -463,7 +463,7 @@ bool asTimeArray::BuildArraySimple()
     return true;
 }
 
-bool asTimeArray::BuildArrayDaysInterval(double forecastdate)
+bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 {
     // Check the timestep integrity
     wxASSERT(m_TimeStepDays>0);
@@ -475,174 +475,69 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastdate)
     wxASSERT(m_End>0);
 
     // The period to exclude
-    double excludestart = forecastdate-m_ExclusionDays;
-    double excludeend = forecastdate+m_ExclusionDays;
+    double excludestart = forecastDate-m_ExclusionDays;
+    double excludeend = forecastDate+m_ExclusionDays;
 
-    // Get the beginning of the time array
-    TimeStruct forecastdatestruct = GetTimeStruct(forecastdate);
-    TimeStruct startstruct = GetTimeStruct(m_Start);
-    TimeStruct endstruct = GetTimeStruct(m_End);
+    // Get the structure of the forecast date
+    TimeStruct forecastDateStruct = GetTimeStruct(forecastDate);
 
-    TimeStruct startfirstyearstruct, endfirstyearstruct;
-    TimeStructInit(startfirstyearstruct);
-    TimeStructInit(endfirstyearstruct);
-
-    startfirstyearstruct.year = startstruct.year;
-    startfirstyearstruct.month = forecastdatestruct.month;
-    startfirstyearstruct.day = forecastdatestruct.day;
-    startfirstyearstruct.hour = forecastdatestruct.hour;
-    startfirstyearstruct.min = forecastdatestruct.min;
-
-    endfirstyearstruct.year = startstruct.year;
-    endfirstyearstruct.month = forecastdatestruct.month;
-    endfirstyearstruct.day = forecastdatestruct.day;
-    endfirstyearstruct.hour = forecastdatestruct.hour;
-    endfirstyearstruct.min = forecastdatestruct.min;
-
-    double startfirstyear = GetMJD(startfirstyearstruct);
-    double endfirstyear = GetMJD(endfirstyearstruct);
-    endfirstyear += m_IntervalDays;
-
-    if (endfirstyear<m_Start)
+    // Array resizing (larger than required)
+    int firstYear = GetTimeStruct(m_Start).year;
+    int lastYear = GetTimeStruct(m_End).year;
+    int totLength = (lastYear-firstYear+1)*2*m_IntervalDays;
+    wxASSERT(totLength>0);
+    wxASSERT(totLength<289600); // 4 times daily during 200 years...
+    m_TimeArray.resize(totLength);
+    
+    // Loop over the years
+    int counter = 0;
+    for (int i_year=firstYear; i_year<=lastYear; i_year++)
     {
-        endfirstyear = AddYear(endfirstyear);
-        startfirstyear = AddYear(startfirstyear);
-    }
+        // Get the interval boundaries
+        TimeStruct adaptedForecastDateStruct = forecastDateStruct;
+        adaptedForecastDateStruct.year = i_year;
+        double currentStart = GetMJD(adaptedForecastDateStruct)-m_IntervalDays;
+        double currentEnd = GetMJD(adaptedForecastDateStruct)+m_IntervalDays;
 
-    startfirstyear -= m_IntervalDays;
-
-    if (startfirstyear<m_Start)
-    {
-        startfirstyear = m_Start;
-    }
-
-    startfirstyearstruct = GetTimeStruct(startfirstyear);
-    endfirstyearstruct = GetTimeStruct(endfirstyear);
-
-    // Get the end of the time array
-    TimeStruct startlastyearstruct, endlastyearstruct;
-    TimeStructInit(startlastyearstruct);
-    TimeStructInit(endlastyearstruct);
-
-    startlastyearstruct.year = endstruct.year;
-    startlastyearstruct.month = forecastdatestruct.month;
-    startlastyearstruct.day = forecastdatestruct.day;
-    startlastyearstruct.hour = forecastdatestruct.hour;
-    startlastyearstruct.min = forecastdatestruct.min;
-
-    endlastyearstruct.year = endstruct.year;
-    endlastyearstruct.month = forecastdatestruct.month;
-    endlastyearstruct.day = forecastdatestruct.day;
-    endlastyearstruct.hour = forecastdatestruct.hour;
-    endlastyearstruct.min = forecastdatestruct.min;
-
-    double startlastyear = GetMJD(startlastyearstruct);
-    double endlastyear = GetMJD(endlastyearstruct);
-    startlastyear -= m_IntervalDays;
-
-    if (startlastyear>m_End)
-    {
-        endlastyear = SubtractYear(endlastyear);
-        startlastyear = SubtractYear(startlastyear);
-    }
-
-    endlastyear += m_IntervalDays;
-
-    if (endlastyear>m_End)
-    {
-        endlastyear = m_End;
-    }
-
-    startlastyearstruct = GetTimeStruct(startlastyear);
-    endlastyearstruct = GetTimeStruct(endlastyear);
-
-    // Get the time serie length for allocation.
-        // First year
-    double difffirstyear = endfirstyear-startfirstyear;
-    int rowsnbfirstyear = asTools::Round((difffirstyear)/m_TimeStepDays+1);
-    wxASSERT(rowsnbfirstyear>0);
-    wxASSERT(rowsnbfirstyear<1500); // 4 times daily during 1 year
-        // Last year
-    double difflastyear = endlastyear-startlastyear;
-    int rowsnblastyear = asTools::Round((difflastyear)/m_TimeStepDays+1);
-    wxASSERT(rowsnblastyear>0);
-    wxASSERT(rowsnblastyear<1500); // 4 times daily during 1 year
-        // Center
-    int yearsnb = endlastyearstruct.year-startfirstyearstruct.year-1;
-    int rowsnbcenter = asTools::Round((2*m_IntervalDays)/m_TimeStepDays+1);
-    int rowsnbcentertot = yearsnb*rowsnbcenter;
-    int totlength = rowsnbfirstyear+rowsnbcentertot+rowsnblastyear;
-    wxASSERT_MSG(yearsnb>0, wxString::Format(_("endlastyearstruct.year(%d) - startfirstyearstruct.year(%d) -1 <= 0"), endlastyearstruct.year, startfirstyearstruct.year ));
-    wxASSERT(rowsnbcenter>0);
-    wxASSERT(rowsnbcentertot>0);
-    wxASSERT(totlength>0);
-    wxASSERT(totlength<102200); // 4 times daily during 70 years
-
-        // Array resizing
-    m_TimeArray.resize(totlength);
-
-    // Build the array
-    double thistimestep = 0;
-    int rowsnb = 0, rowid = 0;
-
-    for (int i_year=startfirstyearstruct.year; i_year<=endlastyearstruct.year; i_year++)
-    {
-        if (i_year==startfirstyearstruct.year)
+        for (double thisTimeStep=currentStart; thisTimeStep<=currentEnd; thisTimeStep+=m_TimeStepDays)
         {
-            thistimestep = GetMJD(startfirstyearstruct.year, startfirstyearstruct.month, startfirstyearstruct.day, startfirstyearstruct.hour, startfirstyearstruct.min);
-            rowsnb = rowsnbfirstyear;
-        }
-        else if (i_year==endlastyearstruct.year)
-        {
-            thistimestep = GetMJD(startlastyearstruct.year, startlastyearstruct.month, startlastyearstruct.day, startlastyearstruct.hour, startlastyearstruct.min);
-            rowsnb = rowsnblastyear;
-        }
-        else
-        {
-            thistimestep = GetMJD(i_year, forecastdatestruct.month, forecastdatestruct.day, forecastdatestruct.hour, forecastdatestruct.min);
-            thistimestep -= m_IntervalDays;
-            rowsnb = rowsnbcenter;
-        }
-
-        // Loop on every timestep
-        for (int i_step=0; i_step<rowsnb; i_step++)
-        {
-            if ( thistimestep<excludestart || thistimestep>excludeend )
+            if (thisTimeStep>=m_Start && thisTimeStep<=m_End)
             {
-                wxASSERT_MSG(rowid<totlength, _("The index is higher than the array size."));
+                if (thisTimeStep<excludestart || thisTimeStep>excludeend)
+                {
+                    wxASSERT(counter<totLength);
 
-                if (HasForbiddenYears())
-                {
-                    if (!IsYearForbidden(GetYear(thistimestep)))
+                    if (HasForbiddenYears())
                     {
-                        m_TimeArray[rowid] = thistimestep;
-                        rowid++;
+                        if (!IsYearForbidden(GetYear(thisTimeStep)))
+                        {
+                            m_TimeArray[counter] = thisTimeStep;
+                            counter++;
+                        }
                     }
-                }
-                else
-                {
-                    m_TimeArray[rowid] = thistimestep;
-                    rowid++;
+                    else
+                    {
+                        m_TimeArray[counter] = thisTimeStep;
+                        counter++;
+                    }
+
+                    #ifdef _DEBUG
+                        if(counter>1)
+                        {
+                            wxASSERT_MSG(m_TimeArray[counter-1]>m_TimeArray[counter-2], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"), 
+                                                                                                   counter-1, asTime::GetStringTime(m_TimeArray[counter-1]).c_str(), 
+                                                                                                   counter-2, asTime::GetStringTime(m_TimeArray[counter-2])).c_str());
+                        }
+                    #endif
                 }
             }
-            thistimestep += m_TimeStepDays;
-
-            #ifdef _DEBUG
-                if(rowid>1)
-                {
-                    wxASSERT_MSG(m_TimeArray[rowid]>m_TimeArray[rowid-1], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"), 
-                                                                                           rowid, asTime::GetStringTime(m_TimeArray[rowid]).c_str(), 
-                                                                                           rowid-1, asTime::GetStringTime(m_TimeArray[rowid-1])).c_str());
-                }
-            #endif
         }
     }
 
     // Check the vector length
-    wxASSERT_MSG(m_TimeArray.rows()>=rowid, _("The index is smaller than the array size."));
-    if (m_TimeArray.rows()!=rowid)
+    if (m_TimeArray.size()!=counter)
     {
-        m_TimeArray.conservativeResize(rowid);
+        m_TimeArray.conservativeResize(counter);
     }
 
     return true;
