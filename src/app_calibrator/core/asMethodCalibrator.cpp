@@ -1596,12 +1596,6 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
     }
     asLogMessage(_("Processing over."));
 
-    if(asTools::IsNaN(results.GetForecastScore()))
-    {
-        asLogError(_("The forecast score is NaN."));
-        return false;
-    }
-
     // Saving intermediate results
     results.Save();
 
