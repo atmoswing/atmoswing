@@ -535,21 +535,25 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
             }
             case 0: // Single
             {
+                asLogMessage(_("Proceeding to single assessment."));
                 m_MethodCalibrator = new asMethodCalibratorSingle();
                 break;
             }
             case 1: // Classic
             {
+                asLogMessage(_("Proceeding to classic calibration."));
                 m_MethodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 2: // Classic+
             {
+                asLogMessage(_("Proceeding to classic+ calibration."));
                 m_MethodCalibrator = new asMethodCalibratorClassicPlus();
                 break;
             }
             case 3: // Variables exploration with classic+
             {
+                asLogMessage(_("Proceeding to variables exploration."));
                 m_MethodCalibrator = new asMethodCalibratorClassicPlusVarExplo();
                 break;
             }
@@ -570,11 +574,13 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
             }
             case 7: // Scores evaluation
             {
+                asLogMessage(_("Proceeding to all scores evaluation."));
                 m_MethodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
             case 8: // Only predictand values
             {
+                asLogMessage(_("Proceeding to predictand values saving."));
                 m_MethodCalibrator = new asMethodCalibratorSingleOnlyValues();
                 break;
             }

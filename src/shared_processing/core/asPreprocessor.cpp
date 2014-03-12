@@ -197,7 +197,7 @@ bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predi
 bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
 {
     // More than one predictor
-    if(predictors.size()<2) asThrowException(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMultiplication"));
+    if(predictors.size()<2) asThrowException(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
 
     // Get sizes
     wxASSERT(predictors[0]);

@@ -50,6 +50,8 @@ public:
 
     void Add(asParametersScoring params, float scoreCalib, float scoreValid);
 
+    void Add(asParametersScoring params, Array1DFloat scoreCalib, Array1DFloat scoreValid);
+
     void Clear();
 
     bool Print();
@@ -69,6 +71,9 @@ private:
     std::vector <asParametersScoring> m_Parameters;
     VectorFloat m_ScoresCalib;
     VectorFloat m_ScoresValid;
+    std::vector <asParametersScoring> m_ParametersForScoreOnArray;
+    std::vector <Array1DFloat> m_ScoresCalibForScoreOnArray;
+    std::vector <Array1DFloat> m_ScoresValidForScoreOnArray;
 };
 
 #endif // ASRESULTSPARAMETERSARRAY_H

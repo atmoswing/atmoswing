@@ -378,7 +378,11 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                         }
                         else
                         {
-                            asLogError(_("The date was not found in the array (Analogs subdates fct, insert option). That should not happen."));
+                            asLogError(wxString::Format(_("The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."), 
+                                                        asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]).c_str(),
+                                                        asTime::GetStringTime(timeArchiveData[i_timeArchStart]).c_str(), 
+                                                        asTime::GetStringTime(timeArchiveData[timeArchiveDataSize-1]).c_str(),
+                                                        asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str()));
                         }
                     }
 

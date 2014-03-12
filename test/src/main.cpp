@@ -40,8 +40,8 @@
  * Provide tests names as arguments in order to test specific tests. Otherwise process all tests.
  * Examples:
  * ./AtmoSwingTests IsRoundFloatTrue LoadCatalogProp -> test specific tests
- * ./AtmoSwingTests quick -> test only the fast ones (not the method calibration)
- * ./AtmoSwingTests -> test everything
+ * ./AtmoSwingTests quick/short/fast -> test only the fast ones (not the method calibration)  
+ * ./AtmoSwingTests -> test everything  
  */
 
 int main( int argc, char** argv )
@@ -75,7 +75,7 @@ int main( int argc, char** argv )
     Log().DisableMessageBoxOnError();
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetTempDir()+"Atmoswing.ini",asConfig::GetTempDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetTempDir()+"AtmoSwing.ini",asConfig::GetTempDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
 	// Check path
@@ -114,8 +114,11 @@ int main( int argc, char** argv )
     int result;
     if( argc > 1 )
     {
-        // If first arg is "quick", we only process the fast ones
-        const bool shortOnly = strcmp( "quick", argv[ 1 ] ) == 0;
+        // If first arg is quick/short/fast, we only process the fast ones
+        bool shortOnly = false;
+        if(strcmp( "quick", argv[ 1 ] ) == 0) shortOnly = true;
+        if(strcmp( "short", argv[ 1 ] ) == 0) shortOnly = true;
+        if(strcmp( "fast", argv[ 1 ] ) == 0) shortOnly = true;
         if (shortOnly)
         {
             // Option to process time demanding processing
