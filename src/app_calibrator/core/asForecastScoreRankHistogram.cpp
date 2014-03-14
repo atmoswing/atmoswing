@@ -69,22 +69,26 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
         return nbElements+1;
     }
     else {
-        // Indices for the left and right part
-        int indLeft = asTools::SortedArraySearchFloor(&x[0], &x[nbElements-1], ObservedVal);
-        wxASSERT(indLeft>=0);
+        // Check if exact value can be found
+        int indExact = asTools::SortedArraySearch(&x[0], &x[nbElements-1], ObservedVal, 0.0, asHIDE_WARNINGS);
 
-        int rankVal = indLeft+1; // as the indices are 0-based
+        if(indExact!=asOUT_OF_RANGE && indExact!=asNOT_FOUND)
+        {
+            // If the exact value was found in the analogs
+            // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Eta–RSM short-range ensemble
+            // forecasts. Monthly Weather Review, 125, 1312-1327.
+            // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Eta–RSM ensemble probabilistic
+            // precipitation forecasts. Monthly Weather Review, 126, 711-724.
 
-        // If the exact value was found in the analogs
-        // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Eta–RSM short-range ensemble
-        // forecasts. Monthly Weather Review, 125, 1312-1327.
-        // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Eta–RSM ensemble probabilistic
-        // precipitation forecasts. Monthly Weather Review, 126, 711-724.
-        if (x[indLeft]==ObservedVal) {
+            // Find first occurrence
+            int indFirst = 0;
+            while (indFirst<nbElements && x[indFirst]<ObservedVal) {
+                indFirst++;
+            }
 
             // Count the number of same values
             int m=1;
-            while (indLeft+m<nbElements && x[indLeft+m]==ObservedVal) {
+            while (indFirst+m<nbElements && x[indFirst+m]==ObservedVal) {
                 m++;
             }
 
@@ -99,11 +103,11 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
             if (m==1) {
                 if (verif<rand[0])
                 {
-                    return rankVal;
+                    return indFirst+1;
                 }
                 else
                 {
-                    return rankVal+1;
+                    return indFirst+2;
                 }
             }
             else {
@@ -120,13 +124,19 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
                     subIndex = asTools::SortedArraySearchFloor(&rand[0], &rand[m-1], verif);
                 }
 
-                return rankVal+subIndex;
+                return indFirst+1+subIndex;
             }
+
         }
+        else
+        {
+            // Indices for the left
+            int indLeft = asTools::SortedArraySearchFloor(&x[0], &x[nbElements-1], ObservedVal);
+            wxASSERT(indLeft>=0);
 
-        return rankVal+1;
+            return indLeft+2; // as the indices are 0-based + element on the left side
+        }
     }
-
 }
 
 bool asForecastScoreRankHistogram::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
