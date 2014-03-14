@@ -121,7 +121,7 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
                     subIndex = m;
                 }
                 else {
-                    subIndex = asTools::SortedArraySearchFloor(&rand[0], &rand[m-1], verif);
+                    subIndex = 1+asTools::SortedArraySearchFloor(&rand[0], &rand[m-1], verif);
                 }
 
                 return indFirst+1+subIndex;
