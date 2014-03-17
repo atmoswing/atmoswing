@@ -415,18 +415,13 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         {
                             share = true;
 
-                            if(!params.GetPredictorDatasetId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDatasetId(tmp_step, prev), false)) share = false;
-                            if(!params.GetPredictorDataId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDataId(tmp_step, prev), false)) share = false;
-                            if(!params.GetPredictorGridType(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorGridType(tmp_step, prev), false)) share = false;
-                            if(params.GetPreloadUmin(tmp_step, tmp_ptor)!=params.GetPreloadUmin(tmp_step, prev)) share = false;
-                            if(params.GetPreloadUptsnb(tmp_step, tmp_ptor)!=params.GetPreloadUptsnb(tmp_step, prev)) share = false;
-                            if(params.GetPredictorUstep(tmp_step, tmp_ptor)!=params.GetPredictorUstep(tmp_step, prev)) share = false;
-                            if(params.GetPreloadVmin(tmp_step, tmp_ptor)!=params.GetPreloadVmin(tmp_step, prev)) share = false;
-                            if(params.GetPreloadVptsnb(tmp_step, tmp_ptor)!=params.GetPreloadVptsnb(tmp_step, prev)) share = false;
-                            if(params.GetPredictorVstep(tmp_step, tmp_ptor)!=params.GetPredictorVstep(tmp_step, prev)) share = false;
-                            if(params.GetPredictorFlatAllowed(tmp_step, tmp_ptor)!=params.GetPredictorFlatAllowed(tmp_step, prev)) share = false;
-
-                            if(params.NeedsPreprocessing(tmp_step, tmp_ptor))
+                            if(!params.NeedsPreprocessing(tmp_step, tmp_ptor))
+                            {
+                                if(!params.GetPredictorDatasetId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDatasetId(tmp_step, prev), false)) share = false;
+                                if(!params.GetPredictorDataId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDataId(tmp_step, prev), false)) share = false;
+                                if(!params.GetPredictorGridType(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorGridType(tmp_step, prev), false)) share = false;
+                            }
+                            else
                             {
                                 if(!params.GetPreprocessMethod(tmp_step, tmp_ptor).IsSameAs(params.GetPreprocessMethod(tmp_step, prev), false)) share = false;
                                 if(params.GetPreprocessSize(tmp_step, tmp_ptor)!=params.GetPreprocessSize(tmp_step, prev))
@@ -439,12 +434,18 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 
                                 for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
                                 {
-                                    if(params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro)!=params.GetPreprocessLevel(tmp_step, prev, tmp_prepro)) share = false;
-                                    if(params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)!=params.GetPreprocessTimeHours(tmp_step, prev, tmp_prepro)) share = false;
                                     if(!params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDatasetId(tmp_step, prev, tmp_prepro), false)) share = false;
                                     if(!params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDataId(tmp_step, prev, tmp_prepro), false)) share = false;
                                 }
                             }
+
+                            if(params.GetPreloadUmin(tmp_step, tmp_ptor)!=params.GetPreloadUmin(tmp_step, prev)) share = false;
+                            if(params.GetPreloadUptsnb(tmp_step, tmp_ptor)!=params.GetPreloadUptsnb(tmp_step, prev)) share = false;
+                            if(params.GetPredictorUstep(tmp_step, tmp_ptor)!=params.GetPredictorUstep(tmp_step, prev)) share = false;
+                            if(params.GetPreloadVmin(tmp_step, tmp_ptor)!=params.GetPreloadVmin(tmp_step, prev)) share = false;
+                            if(params.GetPreloadVptsnb(tmp_step, tmp_ptor)!=params.GetPreloadVptsnb(tmp_step, prev)) share = false;
+                            if(params.GetPredictorVstep(tmp_step, tmp_ptor)!=params.GetPredictorVstep(tmp_step, prev)) share = false;
+                            if(params.GetPredictorFlatAllowed(tmp_step, tmp_ptor)!=params.GetPredictorFlatAllowed(tmp_step, prev)) share = false;
 
                             VectorFloat levels1 = params.GetPreloadLevels(tmp_step, tmp_ptor);
                             VectorFloat levels2 = params.GetPreloadLevels(tmp_step, prev);
