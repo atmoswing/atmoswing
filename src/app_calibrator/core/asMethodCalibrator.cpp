@@ -427,15 +427,16 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 if(params.GetPreprocessSize(tmp_step, tmp_ptor)!=params.GetPreprocessSize(tmp_step, prev))
                                 {
                                     share = false;
-                                    continue;
                                 }
-
-                                int preprocessSize = params.GetPreprocessSize(tmp_step, tmp_ptor);
-
-                                for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
+                                else
                                 {
-                                    if(!params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDatasetId(tmp_step, prev, tmp_prepro), false)) share = false;
-                                    if(!params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDataId(tmp_step, prev, tmp_prepro), false)) share = false;
+                                    int preprocessSize = params.GetPreprocessSize(tmp_step, tmp_ptor);
+
+                                    for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
+                                    {
+                                        if(!params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDatasetId(tmp_step, prev, tmp_prepro), false)) share = false;
+                                        if(!params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDataId(tmp_step, prev, tmp_prepro), false)) share = false;
+                                    }
                                 }
                             }
 
