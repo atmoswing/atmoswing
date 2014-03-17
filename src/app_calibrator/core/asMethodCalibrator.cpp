@@ -405,95 +405,115 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
             {
                 if(params.NeedsPreloading(tmp_step, tmp_ptor))
                 {
+                    // Try to share pointers
+                    if(tmp_ptor>0)
+                    {
+                        int prev = 0;
+                        bool share = false;
+
+                        for (prev=0;prev<tmp_ptor;prev++)
+                        {
+                            share = true;
+
+                            if(!params.GetPredictorDatasetId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDatasetId(tmp_step, prev), false)) share = false;
+                            if(!params.GetPredictorDataId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDataId(tmp_step, prev), false)) share = false;
+                            if(!params.GetPredictorGridType(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorGridType(tmp_step, prev), false)) share = false;
+                            if(params.GetPreloadUmin(tmp_step, tmp_ptor)!=params.GetPreloadUmin(tmp_step, prev)) share = false;
+                            if(params.GetPreloadUptsnb(tmp_step, tmp_ptor)!=params.GetPreloadUptsnb(tmp_step, prev)) share = false;
+                            if(params.GetPredictorUstep(tmp_step, tmp_ptor)!=params.GetPredictorUstep(tmp_step, prev)) share = false;
+                            if(params.GetPreloadVmin(tmp_step, tmp_ptor)!=params.GetPreloadVmin(tmp_step, prev)) share = false;
+                            if(params.GetPreloadVptsnb(tmp_step, tmp_ptor)!=params.GetPreloadVptsnb(tmp_step, prev)) share = false;
+                            if(params.GetPredictorVstep(tmp_step, tmp_ptor)!=params.GetPredictorVstep(tmp_step, prev)) share = false;
+                            if(params.GetPredictorFlatAllowed(tmp_step, tmp_ptor)!=params.GetPredictorFlatAllowed(tmp_step, prev)) share = false;
+
+                            if(params.NeedsPreprocessing(tmp_step, tmp_ptor))
+                            {
+                                if(!params.GetPreprocessMethod(tmp_step, tmp_ptor).IsSameAs(params.GetPreprocessMethod(tmp_step, prev), false)) share = false;
+                                if(params.GetPreprocessSize(tmp_step, tmp_ptor)!=params.GetPreprocessSize(tmp_step, prev))
+                                {
+                                    share = false;
+                                    continue;
+                                }
+
+                                int preprocessSize = params.GetPreprocessSize(tmp_step, tmp_ptor);
+
+                                for (int tmp_prepro=0; tmp_prepro<preprocessSize; tmp_prepro++)
+                                {
+                                    if(params.GetPreprocessLevel(tmp_step, tmp_ptor, tmp_prepro)!=params.GetPreprocessLevel(tmp_step, prev, tmp_prepro)) share = false;
+                                    if(params.GetPreprocessTimeHours(tmp_step, tmp_ptor, tmp_prepro)!=params.GetPreprocessTimeHours(tmp_step, prev, tmp_prepro)) share = false;
+                                    if(!params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDatasetId(tmp_step, prev, tmp_prepro), false)) share = false;
+                                    if(!params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).IsSameAs(params.GetPreprocessDataId(tmp_step, prev, tmp_prepro), false)) share = false;
+                                }
+                            }
+
+                            VectorFloat levels1 = params.GetPreloadLevels(tmp_step, tmp_ptor);
+                            VectorFloat levels2 = params.GetPreloadLevels(tmp_step, prev);
+                            if(levels1.size()!=levels2.size())
+                            {
+                                share = false;
+                            }
+                            else
+                            {
+                                for (unsigned int i=0;i<levels1.size();i++)
+                                {
+                                    if(levels1[i]!=levels2[i]) share = false;
+                                }
+                            }
+
+                            VectorDouble hours1 = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
+                            VectorDouble hours2 = params.GetPreloadTimeHours(tmp_step, prev);
+                            if(hours1.size()!=hours2.size())
+                            {
+                                share = false;
+                            }
+                            else
+                            {
+                                for (unsigned int i=0;i<hours1.size();i++)
+                                {
+                                    if(hours1[i]!=hours2[i]) share = false;
+                                }
+                            }
+
+                            if (share) break;
+                        }
+
+                        if (share)
+                        {
+                            asLogMessage(_("Share data pointer"));
+
+                            VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
+                            VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
+                            wxASSERT(preloadLevels.size()>0);
+                            wxASSERT(preloadTimeHours.size()>0);
+
+                            m_PreloadedArchivePointerCopy[tmp_step][tmp_ptor] = true;
+                            m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevels.size());
+
+                            wxASSERT(m_PreloadedArchive[tmp_step].size()>(unsigned)prev);
+                            wxASSERT(m_PreloadedArchive[tmp_step][prev].size()==preloadLevels.size());
+
+                            // Load data for every level and every hour
+                            for (unsigned int tmp_level=0; tmp_level<preloadLevels.size(); tmp_level++)
+                            {
+                                m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHours.size());
+                                wxASSERT(m_PreloadedArchive[tmp_step][prev][tmp_level].size()==preloadTimeHours.size());
+
+                                for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
+                                {
+                                    // Copy pointer
+                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=m_PreloadedArchive[tmp_step][prev][tmp_level][tmp_hour];
+                                }
+                            }
+
+                            params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, prev));
+
+                            continue;
+                        }
+                    }
+
                     if(!params.NeedsPreprocessing(tmp_step, tmp_ptor))
                     {
                         asLogMessage(wxString::Format(_("Preloading data for predictor %d of step %d."), tmp_ptor, tmp_step));
-
-                        // Try to share pointers
-                        if(tmp_ptor>0)
-                        {
-                            int prev = 0;
-                            bool share = false;
-
-                            for (prev=0;prev<tmp_ptor;prev++)
-                            {
-                                share = true;
-
-                                if(!params.GetPredictorDatasetId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDatasetId(tmp_step, prev), false)) share = false;
-                                if(!params.GetPredictorDataId(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorDataId(tmp_step, prev))) share = false;
-                                if(!params.GetPredictorGridType(tmp_step, tmp_ptor).IsSameAs(params.GetPredictorGridType(tmp_step, prev))) share = false;
-                                if(params.GetPreloadUmin(tmp_step, tmp_ptor)!=params.GetPreloadUmin(tmp_step, prev)) share = false;
-                                if(params.GetPreloadUptsnb(tmp_step, tmp_ptor)!=params.GetPreloadUptsnb(tmp_step, prev)) share = false;
-                                if(params.GetPredictorUstep(tmp_step, tmp_ptor)!=params.GetPredictorUstep(tmp_step, prev)) share = false;
-                                if(params.GetPreloadVmin(tmp_step, tmp_ptor)!=params.GetPreloadVmin(tmp_step, prev)) share = false;
-                                if(params.GetPreloadVptsnb(tmp_step, tmp_ptor)!=params.GetPreloadVptsnb(tmp_step, prev)) share = false;
-                                if(params.GetPredictorVstep(tmp_step, tmp_ptor)!=params.GetPredictorVstep(tmp_step, prev)) share = false;
-                                if(params.GetPredictorFlatAllowed(tmp_step, tmp_ptor)!=params.GetPredictorFlatAllowed(tmp_step, prev)) share = false;
-
-                                VectorFloat levels1 = params.GetPreloadLevels(tmp_step, tmp_ptor);
-                                VectorFloat levels2 = params.GetPreloadLevels(tmp_step, prev);
-                                if(levels1.size()!=levels2.size())
-                                {
-                                    share = false;
-                                }
-                                else
-                                {
-                                    for (unsigned int i=0;i<levels1.size();i++)
-                                    {
-                                        if(levels1[i]!=levels2[i]) share = false;
-                                    }
-                                }
-
-                                VectorDouble hours1 = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
-                                VectorDouble hours2 = params.GetPreloadTimeHours(tmp_step, prev);
-                                if(hours1.size()!=hours2.size())
-                                {
-                                    share = false;
-                                }
-                                else
-                                {
-                                    for (unsigned int i=0;i<hours1.size();i++)
-                                    {
-                                        if(hours1[i]!=hours2[i]) share = false;
-                                    }
-                                }
-
-                                if (share) break;
-                            }
-
-                            if (share)
-                            {
-                                asLogMessage(_("Share data pointer"));
-
-                                VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
-                                VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
-                                wxASSERT(preloadLevels.size()>0);
-                                wxASSERT(preloadTimeHours.size()>0);
-
-                                m_PreloadedArchivePointerCopy[tmp_step][tmp_ptor] = true;
-                                m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevels.size());
-
-                                wxASSERT(m_PreloadedArchive[tmp_step].size()>(unsigned)prev);
-                                wxASSERT(m_PreloadedArchive[tmp_step][prev].size()==preloadLevels.size());
-
-                                // Load data for every level and every hour
-                                for (unsigned int tmp_level=0; tmp_level<preloadLevels.size(); tmp_level++)
-                                {
-                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHours.size());
-                                    wxASSERT(m_PreloadedArchive[tmp_step][prev][tmp_level].size()==preloadTimeHours.size());
-
-                                    for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
-                                    {
-                                        // Copy pointer
-                                        m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=m_PreloadedArchive[tmp_step][prev][tmp_level][tmp_hour];
-                                    }
-                                }
-
-                                params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, prev));
-
-                                continue;
-                            }
-                        }
 
                         // Loading the datasets information
                         asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);

@@ -428,8 +428,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     results_generations.Add(m_Parameters[i],m_ScoresCalib[i]);
                 }
 
-                // Print results every 100 generation
-                if (counterPrint>100)
+                // Print results every 20 generation
+                if (counterPrint>20)
                 {
                     results_generations.Print();
                     counterPrint = 0;
