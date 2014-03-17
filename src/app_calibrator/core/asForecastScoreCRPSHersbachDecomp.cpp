@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2014 Pascal Horton, Terr@num.
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
- 
+
 #include "asForecastScoreCRPSHersbachDecomp.h"
 
 asForecastScoreCRPSHersbachDecomp::asForecastScoreCRPSHersbachDecomp()
@@ -38,6 +38,7 @@ asForecastScore()
     m_Order = Asc;
     m_ScaleBest = 0;
     m_ScaleWorst = NaNFloat;
+    m_SingleValue = false;
 }
 
 asForecastScoreCRPSHersbachDecomp::~asForecastScoreCRPSHersbachDecomp()
@@ -62,10 +63,10 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
         asLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
         return Array2DFloat();
     }
- 
+
     // Create the container to sort the data
     Array1DFloat x = ForcastVals;
-    
+
     // NaNs are not allowed as it messes up the ranks
     if (asTools::HasNaN(&x[0], &x[nbElements-1]) || asTools::IsNaN(ObservedVal)) {
         asLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
@@ -91,16 +92,16 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
     if (ObservedVal < z[0]) {
         z[0] = ObservedVal;
     }
-        
+
     if (ObservedVal > z[binsNbsExtra-1]) {
         z[binsNbsExtra-1] = ObservedVal;
     }
-    
+
     // Loop on bins (Hersbach, Eq 26)
     for (int k=0; k<binsNbs; k++)
     {
-        g[k] = z[k+1]-z[k];    
-        if ( ObservedVal > z(k+1) ) 
+        g[k] = z[k+1]-z[k];
+        if ( ObservedVal > z(k+1) )
         {
             alpha[k] = g[k];
             beta[k] = 0;
