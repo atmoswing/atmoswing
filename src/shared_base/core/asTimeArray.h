@@ -144,12 +144,12 @@ public:
     /** Build up the date array
      * \param forecastdate The forecasting date
      */
-    bool BuildArrayDaysInterval(double forecastdate);
+    bool BuildArrayDaysInterval(double forecastDate);
 
     /** Build up the date array
      * \param forecastdate The forecasting date
      */
-    bool BuildArraySeasons(double forecastdate);
+    bool BuildArraySeasons(double forecastDate);
 
     /** Build up the date array
      * \param predictand The predictand database

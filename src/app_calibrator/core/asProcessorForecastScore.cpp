@@ -114,7 +114,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
                 finalForecastScores.row(i_targtime) = Array1DFloat::Ones(3*(params.GetForecastScoreAnalogsNumber()+1))*NaNFloat;
             }
         }
-        
+
         // Put values in final containers
         results.SetForecastScores2DArray(finalForecastScores);
     }
@@ -226,6 +226,9 @@ bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsFore
 // TODO (phorton#1#): Specify the period in the parameter
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance(params.GetForecastScoreName(), "Total");
 
+    // Ranks number set for all, but only used for the rank histogram
+    finalScore->SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
+
     if (finalScore->Has2DArrayArgument())
     {
         float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetForecastScores2DArray(), timeArray);
@@ -240,7 +243,6 @@ bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsFore
         }
         else
         {
-            finalScore->SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
             Array1DFloat result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetForecastScores(), timeArray);
             results.SetForecastScore(result);
         }

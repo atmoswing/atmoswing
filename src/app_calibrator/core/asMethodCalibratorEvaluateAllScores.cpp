@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asMethodCalibratorEvaluateAllScores.h"
 
 asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores()
@@ -186,6 +186,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         return false;
     }
 
+    // TODO: set this as an option
+    bool onlyContinuousScores = true;
+
     // Extract the stations IDs
     VectorInt stationsId = params.GetPredictandStationsIdVector();
 
@@ -197,6 +200,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         ClearAll();
 
         int stationId = stationsId[i_stat];
+        asLogMessageImportant(wxString::Format(_("Processing station %d"), stationId));
 
         // Reset the score of the climatology
         m_ScoreClimatology = 0;
@@ -241,37 +245,80 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
 
         if(!GetAnalogsValues(anaValues, params, anaDates, stepsNb-1)) return false;
 
-        VectorString scoresContingency;
-        scoresContingency.push_back("PC"); // PC - Proportion correct
-        scoresContingency.push_back("TS"); // TS - Threat score
-        scoresContingency.push_back("BIAS"); // BIAS - Bias
-        scoresContingency.push_back("FARA"); // FARA - False alarm ratio
-        scoresContingency.push_back("H"); // H - Hit rate
-        scoresContingency.push_back("F"); // F - False alarm rate
-        scoresContingency.push_back("HSS"); // HSS - Heidke skill score
-        scoresContingency.push_back("PSS"); // PSS - Pierce skill score
-        scoresContingency.push_back("GSS"); // GSS - Gilbert skill score
-
-        VectorFloat thresholds;
-        thresholds.push_back(0.0001f);
-        thresholds.push_back(0.333333333f); // 1/3 of P10 (if data are normalized)
-        thresholds.push_back(0.666666667f); // 2/3 of P10 (if data are normalized)
-        thresholds.push_back(1);  // P10 (if data are normalized)
-
-        VectorFloat percentiles;
-        percentiles.push_back(0.2f);
-        percentiles.push_back(0.6f);
-        percentiles.push_back(0.9f);
-
-		for (unsigned int i_score=0;i_score<scoresContingency.size();i_score++)
+        if (!onlyContinuousScores)
         {
-            asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContingency[i_score]));
-            for (unsigned int i_thres=0;i_thres<thresholds.size();i_thres++)
+            VectorString scoresContingency;
+            scoresContingency.push_back("PC"); // PC - Proportion correct
+            scoresContingency.push_back("TS"); // TS - Threat score
+            scoresContingency.push_back("BIAS"); // BIAS - Bias
+            scoresContingency.push_back("FARA"); // FARA - False alarm ratio
+            scoresContingency.push_back("H"); // H - Hit rate
+            scoresContingency.push_back("F"); // F - False alarm rate
+            scoresContingency.push_back("HSS"); // HSS - Heidke skill score
+            scoresContingency.push_back("PSS"); // PSS - Pierce skill score
+            scoresContingency.push_back("GSS"); // GSS - Gilbert skill score
+
+            VectorFloat thresholds;
+            thresholds.push_back(0.0001f);
+            thresholds.push_back(0.5f); // 1/2 of P10 (if data are normalized)
+            thresholds.push_back(1);  // P10 (if data are normalized)
+
+            VectorFloat percentiles;
+            percentiles.push_back(0.2f);
+            percentiles.push_back(0.6f);
+            percentiles.push_back(0.9f);
+
+            for (unsigned int i_score=0;i_score<scoresContingency.size();i_score++)
             {
+                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContingency[i_score]));
+                for (unsigned int i_thres=0;i_thres<thresholds.size();i_thres++)
+                {
+                    for (unsigned int i_pc=0;i_pc<percentiles.size();i_pc++)
+                    {
+                        params.SetForecastScoreName(scoresContingency[i_score]);
+                        params.SetForecastScorePercentile(percentiles[i_pc]);
+                        params.SetForecastScoreThreshold(thresholds[i_thres]);
+                        if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+                        if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+                        m_Parameters[0]=params;
+                        Validate();
+                        results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+                        m_ScoreClimatology=0;
+                    }
+                }
+            }
+
+            VectorString scoresPercentile;
+            scoresPercentile.push_back("MAE"); // MAE - Mean absolute error
+            scoresPercentile.push_back("RMSE"); // RMSE - Root mean squared error
+            scoresPercentile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
+
+            for (unsigned int i_score=0;i_score<scoresPercentile.size();i_score++)
+            {
+                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresPercentile[i_score]));
                 for (unsigned int i_pc=0;i_pc<percentiles.size();i_pc++)
                 {
-                    params.SetForecastScoreName(scoresContingency[i_score]);
+                    params.SetForecastScoreName(scoresPercentile[i_score]);
                     params.SetForecastScorePercentile(percentiles[i_pc]);
+                    if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+                    if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+                    m_Parameters[0]=params;
+                    Validate();
+                    results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+                    m_ScoreClimatology=0;
+                }
+            }
+
+            VectorString scoresThreshold;
+            scoresThreshold.push_back("BS"); // BS - Brier score
+            scoresThreshold.push_back("BSS"); // BSS - Brier skill score
+
+            for (unsigned int i_score=0;i_score<scoresThreshold.size();i_score++)
+            {
+                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresThreshold[i_score]));
+                for (unsigned int i_thres=0;i_thres<thresholds.size();i_thres++)
+                {
+                    params.SetForecastScoreName(scoresThreshold[i_score]);
                     params.SetForecastScoreThreshold(thresholds[i_thres]);
                     if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
                     if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
@@ -283,51 +330,15 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             }
         }
 
-        VectorString scoresPercentile;
-        scoresPercentile.push_back("MAE"); // MAE - Mean absolute error
-        scoresPercentile.push_back("RMSE"); // RMSE - Root mean squared error
-        scoresPercentile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
-
-        for (unsigned int i_score=0;i_score<scoresPercentile.size();i_score++)
-        {
-            asLogMessageImportant(wxString::Format(_("Processing %s"), scoresPercentile[i_score]));
-            for (unsigned int i_pc=0;i_pc<percentiles.size();i_pc++)
-            {
-                params.SetForecastScoreName(scoresPercentile[i_score]);
-                params.SetForecastScorePercentile(percentiles[i_pc]);
-                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
-                m_Parameters[0]=params;
-                Validate();
-                results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
-                m_ScoreClimatology=0;
-            }
-        }
-
-        VectorString scoresThreshold;
-        scoresThreshold.push_back("BS"); // BS - Brier score
-        scoresThreshold.push_back("BSS"); // BSS - Brier skill score
-
-        for (unsigned int i_score=0;i_score<scoresThreshold.size();i_score++)
-        {
-            asLogMessageImportant(wxString::Format(_("Processing %s"), scoresThreshold[i_score]));
-            for (unsigned int i_thres=0;i_thres<thresholds.size();i_thres++)
-            {
-                params.SetForecastScoreName(scoresThreshold[i_score]);
-                params.SetForecastScoreThreshold(thresholds[i_thres]);
-                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
-                m_Parameters[0]=params;
-                Validate();
-                results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
-                m_ScoreClimatology=0;
-            }
-        }
-
         VectorString scoresContinuous;
+        scoresContinuous.push_back("DF0"); // DF0 - absolute difference of the frequency of null precipitations
         scoresContinuous.push_back("CRPS"); // CRPSAR - approximation with the rectangle method
         scoresContinuous.push_back("CRPSS"); // CRPSS - CRPS skill score using the approximation with the rectangle method
-        scoresContinuous.push_back("DF0"); // DF0 - absolute difference of the frequency of null precipitations
+        scoresContinuous.push_back("CRPSaccuracyAR"); // CRPS accuracy, approximation with the rectangle method (Bontron, 2004)
+        scoresContinuous.push_back("CRPSsharpnessAR"); // CRPS sharpness, approximation with the rectangle method (Bontron, 2004)
+        scoresContinuous.push_back("CRPSreliability"); // reliability of the CRPS (Hersbach, 2000)
+        scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
+        scoresContinuous.push_back("RankHistogramReliability"); // Reliability of the Verification Rank Histogram (Talagrand Diagram)
 
         for (unsigned int i_score=0;i_score<scoresContinuous.size();i_score++)
         {
@@ -340,6 +351,57 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
             m_ScoreClimatology=0;
         }
+
+        // The Verification Rank Histogram (Talagrand Diagram)
+        asLogMessageImportant(_("Processing RankHistogram"));
+        params.SetForecastScoreName("RankHistogram");
+        if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+        if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+        m_Parameters[0]=params;
+
+        // Validation of the Verification Rank Histogram (Talagrand Diagram)
+        asResultsAnalogsForecastScoreFinal anaScoreFinalValid;
+        if (params.HasValidationPeriod()) // Validate
+        {
+            m_ValidationMode = true;
+
+            asResultsAnalogsDates anaDatesPreviousValid;
+            asResultsAnalogsDates anaDatesValid;
+            asResultsAnalogsValues anaValuesValid;
+            asResultsAnalogsForecastScores anaScoresValid;
+
+            // Process every step one after the other
+            for (int i_step=0; i_step<stepsNb; i_step++)
+            {
+                bool containsNaNs = false;
+                if (i_step==0)
+                {
+                    if(!GetAnalogsDates(anaDatesValid, params, i_step, containsNaNs)) return false;
+                }
+                else
+                {
+                    anaDatesPreviousValid = anaDatesValid;
+                    if(!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, i_step, containsNaNs)) return false;
+                }
+                if (containsNaNs)
+                {
+                    asLogError(_("The dates selection contains NaNs"));
+                    return false;
+                }
+            }
+            if(!GetAnalogsValues(anaValuesValid, params, anaDatesValid, stepsNb-1)) return false;
+            if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;
+            if(!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb-1)) return false;
+
+            m_ScoreValid = anaScoreFinalValid.GetForecastScore();
+
+            m_ValidationMode = false;
+        }
+
+        results.Add(params,anaScoreFinal.GetForecastScoreArray(), anaScoreFinalValid.GetForecastScoreArray());
+        m_ScoreClimatology=0;
+
+
         if(!results.Print()) return false;
 
     }
