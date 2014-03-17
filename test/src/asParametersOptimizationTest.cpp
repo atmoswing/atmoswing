@@ -17,10 +17,10 @@ TEST(ParametersOptimizationLoadFromFile)
     asParametersOptimization params;
     params.LoadFromFile(filepath);
 
-    CHECK_EQUAL(1962, params.GetArchiveYearStart());
-    CHECK_EQUAL(2008, params.GetArchiveYearEnd());
-    CHECK_EQUAL(1970, params.GetCalibrationYearStart());
-    CHECK_EQUAL(2000, params.GetCalibrationYearEnd());
+    CHECK_EQUAL(asTime::GetMJD(1962,1,1), params.GetArchiveStart());
+    CHECK_EQUAL(asTime::GetMJD(2008,12,31), params.GetArchiveEnd());
+    CHECK_EQUAL(asTime::GetMJD(1970,1,1), params.GetCalibrationStart());
+    CHECK_EQUAL(asTime::GetMJD(2000,12,31), params.GetCalibrationEnd());
     CHECK_EQUAL(24, params.GetTimeArrayAnalogsTimeStepHours());
     CHECK_EQUAL(24, params.GetTimeArrayTargetTimeStepHours());
     CHECK_EQUAL(1, params.GetTimeArrayAnalogsIntervalDaysIteration());
@@ -130,10 +130,10 @@ TEST(ParametersOptimizationLoadFromFileAndInitRandomValues)
 
     params.InitRandomValues();
 
-    CHECK_EQUAL(1962, params.GetArchiveYearStart());
-    CHECK_EQUAL(2008, params.GetArchiveYearEnd());
-    CHECK_EQUAL(1970, params.GetCalibrationYearStart());
-    CHECK_EQUAL(2000, params.GetCalibrationYearEnd());
+    CHECK_EQUAL(asTime::GetMJD(1962,1,1), params.GetArchiveStart());
+    CHECK_EQUAL(asTime::GetMJD(2008,12,31), params.GetArchiveEnd());
+    CHECK_EQUAL(asTime::GetMJD(1970,1,1), params.GetCalibrationStart());
+    CHECK_EQUAL(asTime::GetMJD(2000,12,31), params.GetCalibrationEnd());
     CHECK_EQUAL(24, params.GetTimeArrayAnalogsTimeStepHours());
     CHECK_EQUAL(24, params.GetTimeArrayTargetTimeStepHours());
     CHECK_EQUAL(1, params.GetTimeArrayAnalogsIntervalDaysIteration());
