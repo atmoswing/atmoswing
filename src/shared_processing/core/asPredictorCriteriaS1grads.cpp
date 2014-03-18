@@ -63,9 +63,11 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
 
     float dividend = 0, divisor = 0;
 
+    // Note here that the actual gradient data do not fill the entire data blocks,
+    // but the rest being 0-filled, we can simplify the sum calculation !
+
     switch (m_LinAlgebraMethod)
     {
-        // Only linear algebra implemented
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):
         {
@@ -100,6 +102,10 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
     {
         // Message disabled here as it is already processed in the processor (and not well handled here in multithreading mode).
         // asLogWarning(_("NaNs were found in the data."));
+        // std::cout << refData << std::endl;
+        // std::cout << "\n" << std::endl;
+        // std::cout << evalData << std::endl;
+
         return NaNFloat;
     }
 
