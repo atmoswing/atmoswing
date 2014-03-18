@@ -156,9 +156,9 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 
         if(asTools::HasNaN(tmpgrad))
         {
-            std::cout << tmpgrad << std::endl;
-            std::cout << "\n" << std::endl;
-            std::cout << predictors[0]->GetData()[i_time] << std::endl;
+            // std::cout << tmpgrad << std::endl;
+            // std::cout << "\n" << std::endl;
+            // std::cout << predictors[0]->GetData()[i_time] << std::endl;
 
             asLogError(_("NaN found during gradients preprocessing !"));
             return false;
