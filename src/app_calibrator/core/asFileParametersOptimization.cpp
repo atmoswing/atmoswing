@@ -14,7 +14,7 @@ asFileParametersOptimization::~asFileParametersOptimization()
 
 bool asFileParametersOptimization::InsertRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile")) return false;
+    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
     if(!InsertElement(wxEmptyString, "OptimizationSet")) return false;
     if(!GoToFirstNodeWithPath("OptimizationSet")) return false;
     return true;
@@ -22,9 +22,9 @@ bool asFileParametersOptimization::InsertRootElement()
 
 bool asFileParametersOptimization::GoToRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoswingFile.OptimizationSet"))
+    if(!GoToFirstNodeWithPath("AtmoSwingFile.OptimizationSet"))
     {
-        asLogError(wxString::Format(_("The file %s is not an Atmoswing optimization parameters file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing optimization parameters file."), m_FileName.GetFullName()));
         return false;
     }
     return true;
