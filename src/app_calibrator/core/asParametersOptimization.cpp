@@ -101,15 +101,15 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step)
 {
     ParamsPredictorBool predictor;
 
-    predictor.DataId = false;
-    predictor.Level = false;
-    predictor.Umin = false;
-    predictor.Uptsnb = false;
-    predictor.Vmin = false;
-    predictor.Vptsnb = false;
+    predictor.DataId = true;
+    predictor.Level = true;
+    predictor.Umin = true;
+    predictor.Uptsnb = true;
+    predictor.Vmin = true;
+    predictor.Vptsnb = true;
     predictor.TimeHours = true;
-    predictor.Weight = false;
-    predictor.Criteria = false;
+    predictor.Weight = true;
+    predictor.Criteria = true;
 
     step.Predictors.push_back(predictor);
 }
