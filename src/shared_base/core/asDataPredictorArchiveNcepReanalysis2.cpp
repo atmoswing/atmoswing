@@ -52,7 +52,7 @@ asDataPredictorArchive(dataId)
     m_TimeStepHours = 6;
     m_FirstTimeStepHours = 0;
     m_NanValues.push_back(32767);
-    m_NanValues.push_back(936*10^34);
+    m_NanValues.push_back(std::pow(936,34));
     m_CoordinateSystem = WGS84;
     m_UaxisShift = 0;
     m_VaxisShift = 0;
