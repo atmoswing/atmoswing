@@ -129,7 +129,22 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
     VArray2DFloat gradients(timeSize);
     gradients.reserve(timeSize*2*rowsNb*colsNb);
 
-    Array2DFloat tmpgrad = Array2DFloat::Zero(2*rowsNb,colsNb);
+    Array2DFloat tmpgrad = Array2DFloat::Zero(2*rowsNb,colsNb); // Needs to be 0-filled for further simplification.
+
+    /*
+    Illustration of the data arrangement
+        x = data
+        o = 0
+
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        ooooooooooo____
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+    */
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
@@ -138,6 +153,16 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 
         // Horizontal gradients
         tmpgrad.block(rowsNb,0,rowsNb,colsNb-1) = predictors[0]->GetData()[i_time].block(0,1,rowsNb,colsNb-1)-predictors[0]->GetData()[i_time].block(0,0,rowsNb,colsNb-1);
+
+        if(asTools::HasNaN(tmpgrad))
+        {
+            std::cout << tmpgrad << std::endl;
+            std::cout << "\n" << std::endl;
+            std::cout << predictors[0]->GetData()[i_time] << std::endl;
+
+            asLogError(_("NaN found during gradients preprocessing !"));
+            return false;
+        }
 
         gradients[i_time] = tmpgrad;
     }
