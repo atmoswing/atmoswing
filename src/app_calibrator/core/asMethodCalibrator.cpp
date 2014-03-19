@@ -517,12 +517,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                     {
                         asLogMessage(wxString::Format(_("Preloading data for predictor %d of step %d."), tmp_ptor, tmp_step));
 
-                        // Loading the datasets information
-                        asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);
-                        if(!predictor) {
-                            return false;
-                        }
-
                         VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
                         VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
                         wxASSERT(preloadLevels.size()>0);
@@ -544,6 +538,11 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         {
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
                             {
+                                // Loading the datasets information
+                                asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);
+                                if(!predictor) {
+                                    return false;
+                                }
 
                                 // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
                                 double ptorStart = timeStartData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
