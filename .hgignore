@@ -37,3 +37,7 @@ CMakeCache.txt
 cmake.check_cache
 *.psess
 *.vsp
+CPackConfig.cmake
+CPackSourceConfig.cmake
+_CPack_Packages\*
+install_manifest.txt
