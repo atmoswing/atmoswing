@@ -271,12 +271,18 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("fn"))
     {
         InitForCmdLineOnly(logLevel);
+        
+        wxMessageOutput* msgOut = wxMessageOutput::Get();
 
         double forecastDate = asTime::NowMJD();
 
         // Log message
         wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
-        asLogMessageImportant(wxString::Format(_("Running the forecast for the date %s UTC"), forecastDateStr.c_str()));
+        asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
+        if ( msgOut )
+        {
+            msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
+        }
 
         // Force use of default models list
         wxString defFilePath = asConfig::GetDefaultUserConfigDir() + "DefaultForecastingModelsList.xml";
@@ -301,6 +307,10 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         // Log message
         wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
         asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
+        if ( msgOut )
+        {
+            msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr.c_str() );
+        }
 
         // Write the resulting files path into a temp file.
         wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
@@ -327,7 +337,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         wxMessageOutput* msgOut = wxMessageOutput::Get();
         if ( msgOut )
         {
-            msgOut->Printf( "Forecast started for the %s past days", numberOfDaysStr.c_str() );
+            msgOut->Printf( "Forecast started for the last %s days", numberOfDaysStr.c_str() );
         }
 
         long numberOfDays;
@@ -345,7 +355,11 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
 
             // Log message
             wxString forecastDateStr = asTime::GetStringTime(date, "DD.MM.YYYY hh:mm");
-            asLogMessageImportant(wxString::Format(_("Running the forecast for the date %s UTC"), forecastDateStr.c_str()));
+            asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
+            if ( msgOut )
+            {
+                msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
+            }
 
             // Launch forecasting
             asMethodForecasting forecaster = asMethodForecasting();
@@ -360,6 +374,10 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             // Log message
             wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
             asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
+            if ( msgOut )
+            {
+                msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr.c_str() );
+            }
 
             // Apply real forecast date to increment
             date = realForecastDate;
@@ -373,19 +391,19 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("fd", & dateForecastStr))
     {
         InitForCmdLineOnly(logLevel);
+        
+        wxMessageOutput* msgOut = wxMessageOutput::Get();
 
         double forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYYMMDDhh);
 
         wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
 
-        wxMessageOutput* msgOut = wxMessageOutput::Get();
+        // Log message
+        asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
         if ( msgOut )
         {
-            msgOut->Printf( "Forecast started for the %s.", forecastDateStr.c_str() );
+            msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
         }
-
-        // Log message
-        asLogMessageImportant(wxString::Format(_("Running the forecast for the date %s UTC"), forecastDateStr.c_str()));
 
         // Launch forecasting
         asMethodForecasting forecaster = asMethodForecasting();
@@ -400,6 +418,10 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         // Log message
         wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
         asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
+        if ( msgOut )
+        {
+            msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr.c_str() );
+        }
 
 
         return false;

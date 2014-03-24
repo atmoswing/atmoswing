@@ -75,8 +75,6 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER,  errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
-        // Verbose mode in case of error
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
         // Fail if the HTTP code returned is equal to or larger than 400
         curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
         // Maximum time in seconds that we allow the connection to the server to take. This only limits the connection phase.
