@@ -3,7 +3,20 @@ cmake_minimum_required(VERSION 2.8)
 
 #### PROJECT
 
-project(AtmoSwingViewer)
+if (WIN32)
+    project(AtmoSwingViewer)
+elseif (UNIX AND NOT APPLE)
+    project(atmoswing-viewer)
+elseif (APPLE)
+    project(AtmoSwingViewer)
+else (WIN32)
+    project(AtmoSwingViewer)
+endif (WIN32)
+
+set(VERSION_MAJOR "1")
+set(VERSION_MINOR "3")
+set(VERSION_PATCH "0")
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 if (WIN32)
     set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
@@ -202,3 +215,121 @@ if (WIN32)
         target_link_libraries(${CMAKE_PROJECT_NAME} ${VLD_LIBRARIES})
     endif (USE_VLD)
 endif (WIN32)
+
+
+#### INSTALLER
+  
+install (
+  TARGETS ${CMAKE_PROJECT_NAME} 
+  DESTINATION .
+  )
+  
+if (WIN32)
+	if (USE_PROVIDED_LIBRARIES)
+		install (
+		  PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal110.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
+		  DESTINATION .
+		  )
+	else (USE_PROVIDED_LIBRARIES)
+		install (
+		  PROGRAMS ../../bin/gdal110.dll ../../bin/libcurl.dll ../../bin/netcdf.dll ../../bin/zlib1.dll ../../bin/msvcr110.dll
+		  DESTINATION .
+		  )
+	endif (USE_PROVIDED_LIBRARIES)
+endif (WIN32)
+  
+install (
+  FILES ../../license.txt ../../notice.txt
+  DESTINATION .
+  )
+ 
+# COMMON PROPERTIES
+
+set(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
+set(CPACK_PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day.")
+set(CPACK_PACKAGE_VENDOR "Terr@num")
+set(CPACK_STRIP_FILES ON) # tell cpack to strip all debug symbols from all files
+
+# IDENTIFY ARCHITECTURE
+
+set(CPACK_PACKAGE_ARCH "unkown-architecture")
+
+if(${CMAKE_SYSTEM_NAME} MATCHES Windows)
+  if(CMAKE_CL_64)
+    set(CPACK_PACKAGE_ARCH "win64")
+  elseif(MINGW)
+    set(CPACK_PACKAGE_ARCH "mingw32")
+  elseif(WIN32)
+    set(CPACK_PACKAGE_ARCH "win32")
+  endif()
+endif(${CMAKE_SYSTEM_NAME} MATCHES Windows)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
+  if(${CMAKE_SYSTEM_PROCESSOR} MATCHES i686)
+    set(CPACK_PACKAGE_ARCH "linux32")
+  elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES x86_64)
+    if(${CMAKE_CXX_FLAGS} MATCHES " -m32 ")
+      set(CPACK_PACKAGE_ARCH "linux32")
+    else()
+      set(CPACK_PACKAGE_ARCH "linux64")
+    endif(${CMAKE_CXX_FLAGS} MATCHES " -m32 ")
+  else()
+    set(CPACK_PACKAGE_ARCH "linux")
+  endif()
+endif(${CMAKE_SYSTEM_NAME} MATCHES Linux)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+  set(CPACK_PACKAGE_ARCH "mac64")
+endif(${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+
+# OS SPECIFIC PROPERTIES
+
+if (APPLE)
+  set(CPACK_GENERATOR "DragNDrop")
+  set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${CPACK_PACKAGE_VERSION}")
+  set(CPACK_DMG_VOLUME_NAME "${CMAKE_PROJECT_NAME}")
+  set(CPACK_DMG_FORMAT "UDBZ")
+endif (APPLE)
+
+if (WIN32)
+  set(CPACK_GENERATOR "NSIS")
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY "AtmoSwing")
+  set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_ARCH}-Setup")
+  set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/../_cpack/license.txt")
+  set(CPACK_NSIS_DISPLAY_NAME "AtmoSwing Viewer")
+  set(CPACK_NSIS_CONTACT "Pascal Horton pascal.horton@terranum.ch")
+  set(CPACK_NSIS_HELP_LINK "www.bitbucket.org/atmoswing/atmoswing")
+  set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
+  set(CPACK_NSIS_MUI_FINISHPAGE_RUN "AtmoSwingViewer.exe")
+  set(CPACK_NSIS_URL_INFO_ABOUT "www.bitbucket.org/atmoswing/atmoswing")
+  set(CPACK_NSIS_MENU_LINKS 
+    "${CMAKE_PROJECT_NAME}" "${CMAKE_PROJECT_NAME}" 
+    "https://www.bitbucket.org/atmoswing/atmoswing" "www.bitbucket.org")
+  set(CPACK_NSIS_COMPRESSOR "lzma")
+  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "OFF")
+  set(CPACK_NSIS_MODIFY_PATH "ON")
+  if (CMAKE_CL_64) 
+    set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64") 
+  else()
+    set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES") 
+  endif()
+endif(WIN32)
+
+if (UNIX AND NOT APPLE)
+  install(FILES "_cpack/atmoswing.png" DESTINATION share/pixmaps)
+  install(FILES "_cpack/atmoswing-viewer.desktop" DESTINATION share/applications)
+  set(CPACK_GENERATOR "DEB")
+  set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
+  set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pascal Horton <pascal.horton@terranum.ch>")
+  set(CPACK_PACKAGE_VENDOR "Terr@num")
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS " ...  MRC ... ")
+  set(CPACK_PACKAGE_DESCRIPTION "AtmoSwing - Analog Technique Model for Statistical weather forecastING.")
+  set(CPACK_DEBIAN_PACKAGE_SECTION "science")
+  set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+endif(UNIX AND NOT APPLE)
+  
+ INCLUDE(CPack)
