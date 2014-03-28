@@ -153,7 +153,7 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     wxString maxPrevStepsNbStr = wxString::Format("%d", maxPrevStepsNb);
     wxString InternetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
     pConfig->Write("/Internet/MaxPreviousStepsNb", InternetMaxPrevStepsNb);
-    int maxParallelRequests = 1;
+    int maxParallelRequests = 5;
     wxString maxParallelRequestsStr = wxString::Format("%d", maxParallelRequests);
     wxString InternetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
     pConfig->Write("/Internet/ParallelRequestsNb", InternetParallelRequestsNb);
