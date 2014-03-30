@@ -37,6 +37,8 @@ CMakeCache.txt
 cmake.check_cache
 *.psess
 *.vsp
+bin/data/
+bin/
 CPackConfig.cmake
 CPackSourceConfig.cmake
 _CPack_Packages\*
