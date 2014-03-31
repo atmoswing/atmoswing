@@ -743,8 +743,8 @@ TEST(PreloadingSimple)
         asParametersCalibration paramsPreload;
         wxString paramsFilePathStd = wxFileName::GetCwd();
         wxString paramsFilePathPreload = wxFileName::GetCwd();
-        paramsFilePathStd.Append("/files/parameters_calibration_05.xml");
-        paramsFilePathPreload.Append("/files/parameters_calibration_06.xml");
+        paramsFilePathStd.Append("/files/parameters_calibration_compare_no_preload.xml");
+        paramsFilePathPreload.Append("/files/parameters_calibration_compare_preload.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
         CHECK_EQUAL(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
@@ -821,8 +821,8 @@ TEST(PreloadingWithPreprocessing)
         asParametersCalibration paramsPreload;
         wxString paramsFilePathStd = wxFileName::GetCwd();
         wxString paramsFilePathPreload = wxFileName::GetCwd();
-        paramsFilePathStd.Append("/files/parameters_calibration_07.xml");
-        paramsFilePathPreload.Append("/files/parameters_calibration_08.xml");
+        paramsFilePathStd.Append("/files/parameters_calibration_compare_preproc_no_preload.xml");
+        paramsFilePathPreload.Append("/files/parameters_calibration_compare_preproc_preload.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
         CHECK_EQUAL(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
@@ -915,7 +915,7 @@ void GrenobleComparison1Preloading()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_03.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R1_preload.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -1094,7 +1094,7 @@ void GrenobleComparison1PreloadingSubset()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_03.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R1_preload.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -1195,7 +1195,7 @@ void GrenobleComparison2Preloading()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_04.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R2_preload.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
@@ -1600,7 +1600,7 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_09.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R2_calib_period_merge_by_half.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
