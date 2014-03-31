@@ -89,7 +89,7 @@ bool asDataPredictor::CheckTimeLength(int counter)
 {
     if (m_Data.size()!=(unsigned)counter)
     {
-        asLogError(_("The data time dimension does not match the check counter."));
+        asLogError(wxString::Format(_("The data time dimension (%d) does not match the check counter (%d)."), (int)m_Data.size(), counter));
         return false;
     }
 

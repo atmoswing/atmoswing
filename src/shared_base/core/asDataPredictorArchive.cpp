@@ -248,13 +248,28 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     return false;
                 }
 
+                /*
+                Illustration of the data arrangement
+                    x = data
+                    o = 0
+
+                    xxxxxxxxxxx
+                    xxxxxxxxxxx
+                    xxxxxxxxxxx
+                    ooooooooooo____
+                    xxxxxxxxxxo
+                    xxxxxxxxxxo
+                    xxxxxxxxxxo
+                    xxxxxxxxxxo
+                */
+
                 for (unsigned int i=0; i<originalData.size(); i++)
                 {
-                    Array2DFloat dat1 = originalData[i].block(VstartIndexReal,UstartIndex,Vlength,Ulength);
-                    Array2DFloat dat2 = originalData[i].block(VstartIndexReal+m_AxisLat.size(),UstartIndex,Vlength,Ulength);
-                    Array2DFloat datMerged(2*Vlength, Ulength);
-                    datMerged.block(0,0,Vlength,Ulength) = dat1;
-                    datMerged.block(Vlength,0,Vlength,Ulength) = dat2;
+                    Array2DFloat dat1 = originalData[i].block(VstartIndexReal,UstartIndex,Vlength-1,Ulength);
+                    Array2DFloat dat2 = originalData[i].block(VstartIndexReal+m_AxisLat.size(),UstartIndex,Vlength,Ulength-1);
+                    Array2DFloat datMerged = Array2DFloat::Zero(2*Vlength, Ulength); // Needs to be 0-filled for further simplification.
+                    datMerged.block(0,0,Vlength-1,Ulength) = dat1;
+                    datMerged.block(Vlength,0,Vlength,Ulength-1) = dat2;
                     m_Data[i] = datMerged;
                 }
 
