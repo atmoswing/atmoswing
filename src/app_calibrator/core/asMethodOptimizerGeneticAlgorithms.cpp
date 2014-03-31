@@ -186,6 +186,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
     ThreadsManager().CritSectionConfig().Leave();
 
+    // Parameter to print the results every x generation
+    int printResultsEveryNbGenerations = 2;
+    
     // Reset some data members
     m_Iterator = 0;
     m_AssessmentCounter = 0;
@@ -428,8 +431,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     results_generations.Add(m_Parameters[i],m_ScoresCalib[i]);
                 }
 
-                // Print results every 20 generation
-                if (counterPrint>20)
+                // Print results every x generation
+                if (counterPrint>printResultsEveryNbGenerations-1)
                 {
                     results_generations.Print();
                     counterPrint = 0;
