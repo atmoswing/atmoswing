@@ -743,8 +743,8 @@ TEST(PreloadingSimple)
         asParametersCalibration paramsPreload;
         wxString paramsFilePathStd = wxFileName::GetCwd();
         wxString paramsFilePathPreload = wxFileName::GetCwd();
-        paramsFilePathStd.Append("/files/parameters_calibration_05.xml");
-        paramsFilePathPreload.Append("/files/parameters_calibration_06.xml");
+        paramsFilePathStd.Append("/files/parameters_calibration_compare_no_preload.xml");
+        paramsFilePathPreload.Append("/files/parameters_calibration_compare_preload.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
         CHECK_EQUAL(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
@@ -821,8 +821,8 @@ TEST(PreloadingWithPreprocessing)
         asParametersCalibration paramsPreload;
         wxString paramsFilePathStd = wxFileName::GetCwd();
         wxString paramsFilePathPreload = wxFileName::GetCwd();
-        paramsFilePathStd.Append("/files/parameters_calibration_07.xml");
-        paramsFilePathPreload.Append("/files/parameters_calibration_08.xml");
+        paramsFilePathStd.Append("/files/parameters_calibration_compare_preproc_no_preload.xml");
+        paramsFilePathPreload.Append("/files/parameters_calibration_compare_preproc_preload.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
         CHECK_EQUAL(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
@@ -915,7 +915,7 @@ void GrenobleComparison1Preloading()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_03.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R1_preload.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -1094,7 +1094,7 @@ void GrenobleComparison1PreloadingSubset()
 
         // Get parameters
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_03.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R1_preload.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
@@ -1168,6 +1168,156 @@ TEST(GrenobleComparison1PreloadingSubsetMultithreaded)
     GrenobleComparison1PreloadingSubset();
 }
 
+TEST(SmallerSpatialArea)
+{
+    if (g_UnitTestLongProcessing)
+    {
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
+        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+
+        wxString str("Processing SmallerSpatialArea\n");
+        printf("%s", str.mb_str(wxConvUTF8).data());
+
+        bool result;
+
+        wxString dataFileDir = wxFileName::GetCwd();
+        dataFileDir.Append("/files/");
+        wxString patternFileDir = wxFileName::GetCwd();
+        patternFileDir.Append("/files/");
+
+        // Get parameters
+        asParametersCalibration paramsNoPreprocNoPreload;
+        asParametersCalibration paramsNoPreprocPreload;
+        asParametersCalibration paramsPreprocNoPreload;
+        asParametersCalibration paramsPreprocPreload;
+        wxString paramsFilePathNoPreprocNoPreload = wxFileName::GetCwd();
+        wxString paramsFilePathNoPreprocPreload = wxFileName::GetCwd();
+        wxString paramsFilePathPreprocNoPreload = wxFileName::GetCwd();
+        wxString paramsFilePathPreprocPreload = wxFileName::GetCwd();
+        paramsFilePathNoPreprocNoPreload.Append("/files/parameters_calibration_compare_smaller_no_preproc_no_preload.xml");
+        paramsFilePathNoPreprocPreload.Append("/files/parameters_calibration_compare_smaller_no_preproc_preload.xml");
+        paramsFilePathPreprocNoPreload.Append("/files/parameters_calibration_compare_smaller_preproc_no_preload.xml");
+        paramsFilePathPreprocPreload.Append("/files/parameters_calibration_compare_smaller_preproc_preload.xml");
+        result = paramsNoPreprocNoPreload.LoadFromFile(paramsFilePathNoPreprocNoPreload);
+        CHECK_EQUAL(true, result);
+        result = paramsNoPreprocPreload.LoadFromFile(paramsFilePathNoPreprocPreload);
+        CHECK_EQUAL(true, result);
+        result = paramsPreprocNoPreload.LoadFromFile(paramsFilePathPreprocNoPreload);
+        CHECK_EQUAL(true, result);
+        result = paramsPreprocPreload.LoadFromFile(paramsFilePathPreprocPreload);
+        CHECK_EQUAL(true, result);
+
+        // Change spatial windows
+        paramsNoPreprocNoPreload.SetPredictorUmin(0,0,5);
+        paramsNoPreprocNoPreload.SetPredictorUmin(0,1,5);
+        paramsNoPreprocNoPreload.SetPredictorUptsnb(0,0,3);
+        paramsNoPreprocNoPreload.SetPredictorUptsnb(0,1,3);
+        paramsNoPreprocNoPreload.SetPredictorVmin(0,0,42.5);
+        paramsNoPreprocNoPreload.SetPredictorVmin(0,1,42.5);
+        paramsNoPreprocNoPreload.SetPredictorVptsnb(0,0,3);
+        paramsNoPreprocNoPreload.SetPredictorVptsnb(0,1,3);
+        
+        paramsNoPreprocPreload.SetPredictorUmin(0,0,5);
+        paramsNoPreprocPreload.SetPredictorUmin(0,1,5);
+        paramsNoPreprocPreload.SetPredictorUptsnb(0,0,3);
+        paramsNoPreprocPreload.SetPredictorUptsnb(0,1,3);
+        paramsNoPreprocPreload.SetPredictorVmin(0,0,42.5);
+        paramsNoPreprocPreload.SetPredictorVmin(0,1,42.5);
+        paramsNoPreprocPreload.SetPredictorVptsnb(0,0,3);
+        paramsNoPreprocPreload.SetPredictorVptsnb(0,1,3);
+        
+        paramsPreprocNoPreload.SetPredictorUmin(0,0,5);
+        paramsPreprocNoPreload.SetPredictorUmin(0,1,5);
+        paramsPreprocNoPreload.SetPredictorUptsnb(0,0,3);
+        paramsPreprocNoPreload.SetPredictorUptsnb(0,1,3);
+        paramsPreprocNoPreload.SetPredictorVmin(0,0,42.5);
+        paramsPreprocNoPreload.SetPredictorVmin(0,1,42.5);
+        paramsPreprocNoPreload.SetPredictorVptsnb(0,0,3);
+        paramsPreprocNoPreload.SetPredictorVptsnb(0,1,3);
+        
+        paramsPreprocPreload.SetPredictorUmin(0,0,5);
+        paramsPreprocPreload.SetPredictorUmin(0,1,5);
+        paramsPreprocPreload.SetPredictorUptsnb(0,0,3);
+        paramsPreprocPreload.SetPredictorUptsnb(0,1,3);
+        paramsPreprocPreload.SetPredictorVmin(0,0,42.5);
+        paramsPreprocPreload.SetPredictorVmin(0,1,42.5);
+        paramsPreprocPreload.SetPredictorVptsnb(0,0,3);
+        paramsPreprocPreload.SetPredictorVptsnb(0,1,3);
+
+        // Proceed to the calculations
+        int step = 0;
+        asMethodCalibratorSingle calibrator1;
+        wxString dataPredictorFilePath = wxFileName::GetCwd();
+        dataPredictorFilePath.Append("/files/");
+        calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+        calibrator1.SetPredictandDB(NULL);
+        asMethodCalibratorSingle calibrator2 = calibrator1;
+        asMethodCalibratorSingle calibrator3 = calibrator1;
+        asMethodCalibratorSingle calibrator4 = calibrator1;
+        asResultsAnalogsDates anaDatesNoPreprocNoPreload;
+        asResultsAnalogsDates anaDatesNoPreprocPreload;
+        asResultsAnalogsDates anaDatesPreprocNoPreload;
+        asResultsAnalogsDates anaDatesPreprocPreload;
+
+		bool containsNaNs = false;
+
+        try
+        {
+            result = calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, paramsNoPreprocNoPreload, step, containsNaNs);
+            CHECK_EQUAL(true, result);
+            result = calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, paramsNoPreprocPreload, step, containsNaNs);
+            CHECK_EQUAL(true, result);
+            result = calibrator3.GetAnalogsDates(anaDatesPreprocNoPreload, paramsPreprocNoPreload, step, containsNaNs);
+            CHECK_EQUAL(true, result);
+            result = calibrator4.GetAnalogsDates(anaDatesPreprocPreload, paramsPreprocPreload, step, containsNaNs);
+            CHECK_EQUAL(true, result);
+        }
+        catch(asException& e)
+        {
+            wxString eMessage = e.GetFullMessage();
+            printf("%s", eMessage.mb_str(wxConvUTF8).data());
+            return;
+        }
+
+        Array2DFloat datesNoPreprocNoPreload = anaDatesNoPreprocNoPreload.GetAnalogsDates();
+        Array2DFloat datesNoPreprocPreload = anaDatesNoPreprocPreload.GetAnalogsDates();
+        Array2DFloat datesPreprocNoPreload = anaDatesPreprocNoPreload.GetAnalogsDates();
+        Array2DFloat datesPreprocPreload = anaDatesPreprocPreload.GetAnalogsDates();
+        Array2DFloat criteriaNoPreprocNoPreload = anaDatesNoPreprocNoPreload.GetAnalogsCriteria();
+        Array2DFloat criteriaNoPreprocPreload = anaDatesNoPreprocPreload.GetAnalogsCriteria();
+        Array2DFloat criteriaPreprocNoPreload = anaDatesPreprocNoPreload.GetAnalogsCriteria();
+        Array2DFloat criteriaPreprocPreload = anaDatesPreprocPreload.GetAnalogsCriteria();
+
+        CHECK_EQUAL(datesNoPreprocNoPreload.cols(),datesNoPreprocPreload.cols());
+        CHECK_EQUAL(datesNoPreprocNoPreload.rows(),datesNoPreprocPreload.rows());
+        CHECK_EQUAL(datesNoPreprocNoPreload.cols(),datesPreprocNoPreload.cols());
+        CHECK_EQUAL(datesNoPreprocNoPreload.rows(),datesPreprocNoPreload.rows());
+        CHECK_EQUAL(datesNoPreprocNoPreload.cols(),datesPreprocPreload.cols());
+        CHECK_EQUAL(datesNoPreprocNoPreload.rows(),datesPreprocPreload.rows());
+
+        CHECK_EQUAL(criteriaNoPreprocNoPreload.cols(),criteriaNoPreprocPreload.cols());
+        CHECK_EQUAL(criteriaNoPreprocNoPreload.rows(),criteriaNoPreprocPreload.rows());
+        CHECK_EQUAL(criteriaNoPreprocNoPreload.cols(),criteriaPreprocNoPreload.cols());
+        CHECK_EQUAL(criteriaNoPreprocNoPreload.rows(),criteriaPreprocNoPreload.rows());
+        CHECK_EQUAL(criteriaNoPreprocNoPreload.cols(),criteriaPreprocPreload.cols());
+        CHECK_EQUAL(criteriaNoPreprocNoPreload.rows(),criteriaPreprocPreload.rows());
+
+        for (int i=0; i<datesNoPreprocNoPreload.rows(); i++)
+        {
+            for (int j=0; j<datesNoPreprocNoPreload.cols(); j++)
+            {
+                CHECK_EQUAL(datesNoPreprocNoPreload.coeff(i,j), datesNoPreprocPreload.coeff(i,j));
+                CHECK_EQUAL(criteriaNoPreprocNoPreload.coeff(i,j), criteriaNoPreprocPreload.coeff(i,j));
+                CHECK_EQUAL(datesNoPreprocNoPreload.coeff(i,j), datesPreprocNoPreload.coeff(i,j));
+                CHECK_EQUAL(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocNoPreload.coeff(i,j));
+                CHECK_EQUAL(datesNoPreprocNoPreload.coeff(i,j), datesPreprocPreload.coeff(i,j));
+                CHECK_EQUAL(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocPreload.coeff(i,j));
+            }
+        }
+    }
+}
+
 void GrenobleComparison2Preloading()
 {
     if (g_UnitTestLongProcessing)
@@ -1195,7 +1345,7 @@ void GrenobleComparison2Preloading()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_04.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R2_preload.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
@@ -1600,7 +1750,7 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         // Get parameters
         asParametersCalibration params;
         wxString paramsFilePath = wxFileName::GetCwd();
-        paramsFilePath.Append("/files/parameters_calibration_09.xml");
+        paramsFilePath.Append("/files/parameters_calibration_R2_calib_period_merge_by_half.xml");
         result = params.LoadFromFile(paramsFilePath);
         CHECK_EQUAL(true, result);
 
