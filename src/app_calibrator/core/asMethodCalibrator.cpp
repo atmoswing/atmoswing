@@ -517,12 +517,6 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                     {
                         asLogMessage(wxString::Format(_("Preloading data for predictor %d of step %d."), tmp_ptor, tmp_step));
 
-                        // Loading the datasets information
-                        asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);
-                        if(!predictor) {
-                            return false;
-                        }
-
                         VectorFloat preloadLevels = params.GetPreloadLevels(tmp_step, tmp_ptor);
                         VectorDouble preloadTimeHours = params.GetPreloadTimeHours(tmp_step, tmp_ptor);
                         wxASSERT(preloadLevels.size()>0);
@@ -544,6 +538,11 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         {
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
                             {
+                                // Loading the datasets information
+                                asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);
+                                if(!predictor) {
+                                    return false;
+                                }
 
                                 // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
                                 double ptorStart = timeStartData-double(params.GetTimeShiftDays())+preloadTimeHours[tmp_hour]/24.0;
@@ -884,6 +883,8 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
         {
             asLogMessage(_("Using preloaded data."));
 
+            bool doPreprocessGradients = false;
+
             // Get preload arrays
             VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
             VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
@@ -902,6 +903,13 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                 // Get level and hour indices
                 i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size()-1], level);
                 i_hour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size()-1], time);
+
+                // Force gradients proprocessing anyway.
+                if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1"))
+                {
+                    doPreprocessGradients = true;
+                    params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
+                }
             }
             else
             {
@@ -984,6 +992,26 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                 return false;
             }
             wxDELETE(desiredArea);
+
+            if (doPreprocessGradients)
+            {
+                std::vector < asDataPredictorArchive* > predictorsPreprocess;
+                predictorsPreprocess.push_back(desiredPredictor);
+
+                asDataPredictorArchive* newPredictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
+                if(!asPreprocessor::Preprocess(predictorsPreprocess, "Gradients", newPredictor))
+                {
+                   asLogError(_("Data preprocessing failed."));
+                   Cleanup(predictorsPreprocess);
+                   return false;
+                }
+
+                Cleanup(predictorsPreprocess);
+
+                wxASSERT(newPredictor->GetSizeTime()>0);
+                predictors.push_back(newPredictor);
+                continue;
+            }
 
             wxASSERT(desiredPredictor->GetSizeTime()>0);
             predictors.push_back(desiredPredictor);
