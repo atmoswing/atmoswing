@@ -714,41 +714,17 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                         return false;
                     }
 
-                    
+                    for(int i_count=0; i_count<counter; i_count++)
+                    {
+                        if (asTools::IsNaN(criteriaValues[i_count]))
+                        {
+                            containsNaNs = true;
+                            asLogWarning(_("NaNs were found in the criteria values."));
+						    asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(DateArrayOneDay[i_count]).c_str()));
+                        }
 
-
-                    /*
-
-                    // Process the criteria
-                            thisscore = 0;
-                            for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
-                            {
-                                // Get data
-                                vArchData[i_ptor] = &predictorsArchive[i_ptor]->GetData()[i_timeArch];
-
-                                // Assess the criteria
-                                wxASSERT(criteria.size()>(unsigned)i_ptor);
-                                tmpscore = criteria[i_ptor]->Assess(*vTargData[i_ptor], *vArchData[i_ptor], vRowsNb[i_ptor], vColsNb[i_ptor]);
-
-                                // Weight and add the score
-                                thisscore += tmpscore * params.GetPredictorWeight(step, i_ptor);
-                            }
-
-                            
-                            if (asTools::IsNaN(thisscore))
-                            {
-                                containsNaNs = true;
-                                asLogWarning(_("NaNs were found in the criteria values."));
-								asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]).c_str()));
-                            }
-
-                            ScoreArrayOneDay[counter] = thisscore;
-
-                    */
-
-
-
-
+                        ScoreArrayOneDay[i_count] = criteriaValues[i_count];
+                    }
 
                     // Check that the number of occurences are larger than the desired analogs number. If not, set a warning
                     if (counter>=analogsNb)
