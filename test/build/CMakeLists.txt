@@ -9,6 +9,7 @@ if (WIN32)
     set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
 endif (WIN32)
 set(TEST_FORECASTER 0 CACHE BOOL "Sould we test grib2 files (only needed for the forecaster) ?" )
+set(USE_CUDA 0 CACHE BOOL "Sould we compile with CUDA GPU support ?" )
 
 
 #### ADDITION OF CUSTOM MODULES
@@ -39,6 +40,11 @@ if (TEST_FORECASTER)
 	list(APPEND src_all ${src_forec_core_h} ${src_forec_core_cpp})
 endif (TEST_FORECASTER)
 
+if (USE_CUDA)
+	file(GLOB_RECURSE src_proc_core_cu ../../src/shared_processing/core/*.cu)
+	list(APPEND src_cuda ${src_proc_core_cu})
+endif (USE_CUDA)
+
 
 # Remove some files
 list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/app_viewer/core/asGlobVars.h")
@@ -58,6 +64,10 @@ else (TEST_FORECASTER)
     list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtimeGfsForecast.h")
     list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtimeGfsForecast.cpp")
 endif (TEST_FORECASTER)
+if (NOT USE_CUDA)
+	list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/asProcessorCudaThrust.h")
+endif (NOT USE_CUDA)
+
     
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_all)
@@ -123,6 +133,15 @@ mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
 find_package(Eigen3 3.0.0 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
+# CUDA
+if (USE_CUDA)
+	find_package(CUDA 5.5 REQUIRED)
+	include_directories(${CUDA_INCLUDE_DIRS})
+	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode arch=compute_20,code=sm_20)
+	cuda_compile(cuda_code_o ${src_cuda})
+	cuda_add_library(CudaFctsLib ${cuda_code_o})
+endif (USE_CUDA)
+
 # GDAL
 if (TEST_FORECASTER)
     find_package(GDAL REQUIRED)
@@ -161,6 +180,10 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")
 
 add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DwxUSE_GUI=0 -DUNIT_TESTING)
 
+if (USE_CUDA)
+	add_definitions(-DUSE_CUDA)
+endif (USE_CUDA)
+
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_definitions(-D_CRTDBG_MAP_ALLOC)
@@ -172,6 +195,9 @@ endif (WIN32)
 message("CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
 message("CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
 message("CMAKE_CXX_FLAGS_DEBUG = ${CMAKE_CXX_FLAGS_DEBUG}")
+if (USE_CUDA)
+	message("CUDA_NVCC_FLAGS = ${CUDA_NVCC_FLAGS}")
+endif (USE_CUDA)
 
 
 #### LIBRARIES LINKING
@@ -181,6 +207,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${NetCDF_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${CURL_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${PROJ4_LIBRARIES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${UNITTEST++_LIBRARIES})
+if (USE_CUDA)
+    target_link_libraries(CudaFctsLib ${CUDA_CUDA_LIBRARY})
+	add_dependencies(${CMAKE_PROJECT_NAME} CudaFctsLib)
+	target_link_libraries(${CMAKE_PROJECT_NAME} CudaFctsLib)
+endif (USE_CUDA)
 if (TEST_FORECASTER)
     target_link_libraries(${CMAKE_PROJECT_NAME} ${GDAL_LIBRARIES})
 endif (TEST_FORECASTER)
