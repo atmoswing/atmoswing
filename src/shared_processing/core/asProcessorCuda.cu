@@ -250,10 +250,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
 
 	// cudaDeviceReset must be called before exiting in order for profiling and
     // tracing tools such as Nsight and Visual Profiler to show complete traces.
-    cudaStatus = cudaDeviceReset();
+    /*cudaStatus = cudaDeviceReset();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceReset failed!");
-    }
+    }*/
 	
 	return true;
 }
