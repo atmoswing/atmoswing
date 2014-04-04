@@ -25,16 +25,14 @@
  * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
 
-// Disable some MSVC warnings
-/*
-#ifdef _MSC_VER
-    #pragma warning( disable : 4267 ) // C4267: 'var' : conversion from 'size_t' to 'type'
-    #pragma warning( disable : 4244 ) // C4244: 'initializing' : conversion from 'unsigned __int64' to 'unsigned int'
-#endif
-*/
-#include "asProcessorCuda.h"
 
-#define THREADS_PER_BLOCK 512
+#include "asProcessorCuda.cuh"
+
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+#include <stdio.h>
+
 
 __global__ void gpuPredictorCriteriaS1grads(float *criteria,
                                             const float *targData,
@@ -50,10 +48,6 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
         for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
         {
             float dividend = 0, divisor = 0;
-
-            // update the pointer to point to the beginning of the next row
-            // See http://stackoverflow.com/questions/5029920/how-to-use-2d-arrays-in-cuda/9974989#9974989
-    // float* rowData = (float*)(((char*)d_array) + (row * pitch)); 
 
             for (int i=0; i<metaData.rowsNb[i_ptor]; i++)
             {
@@ -79,6 +73,16 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
                                       std::vector < int > &rowsNb, 
                                       std::vector < float > &weights)
 {
+	// Error var
+	cudaError_t cudaStatus;
+
+	// Choose which GPU to run on, change this on a multi-GPU system.
+    cudaStatus = cudaSetDevice(0);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
+        return false;
+    }
+
     // Get the meta data
     cudaPredictorsMetaDataStruct metaData;
     metaData.ptorsNb = (int)weights.size();
@@ -100,60 +104,149 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         metaData.totPtsNb += colsNb[i_ptor]*rowsNb[i_ptor];
     }
 
-
-
-
-    /*
-
-    !!!!!!!!!!
-    Use structure: http://choorucode.com/2011/03/04/cuda-structures-as-kernel-parameters/
-    http://stackoverflow.com/questions/12211241/cuda-how-to-implement-dynamic-array-of-struct-in-cuda-kernel
-
-    !!!!!!!!!!!!!
-
-    */
-
     // Device copies of data
     float *devTargData, *devArchData, *devCriteriaValues;
     
     // Get data as arrays
     float* arrCriteriaValues = &criteriaValues[0];
-    float* arrTargData = vpTargData[0];
-    float* arrArchData = new float[size*metaData.totPtsNb];
-    for (int i=0; i<size; i++)
+    float* arrTargData;
+	arrTargData = new float[metaData.totPtsNb];
+	for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
     {
-        std::copy(vvpArchData[i][0], vvpArchData[i][0] + metaData.totPtsNb, arrArchData + i*metaData.totPtsNb);
+		for (int i_pt=0; i_pt<metaData.ptsNb[i_ptor]; i_pt++)
+		{
+			arrTargData[metaData.indexStart[i_ptor] + i_pt] = vpTargData[i_ptor][i_pt];
+		}
+		//std::copy(vpTargData[i_ptor], vpTargData[i_ptor] + metaData.indexEnd[i_ptor], arrTargData + metaData.indexStart[i_ptor]); -> fails
+	}
+    float* arrArchData;
+	arrArchData = new float[size*metaData.totPtsNb];
+    for (int i_day=0; i_day<size; i_day++)
+    {
+		for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
+		{
+			for (int i_pt=0; i_pt<metaData.ptsNb[i_ptor]; i_pt++)
+			{
+				arrArchData[i_day*metaData.totPtsNb + metaData.indexStart[i_ptor] + i_pt] = vvpArchData[i_day][i_ptor][i_pt];
+			}
+			//std::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor] + metaData.indexEnd[i_ptor], arrArchData + i_day*metaData.totPtsNb + metaData.indexStart[i_ptor]); -> fails
+		}
     }
-
-    // The pitch value assigned by cudaMallocPitch  
-    // (which ensures correct data structure alignment) 
-    // See http://stackoverflow.com/questions/5029920/how-to-use-2d-arrays-in-cuda/9974989#9974989
-//    size_t pitch;
 
     // Alloc space for device copies of data
     int sizeTargData = metaData.totPtsNb*sizeof(float);
-    cudaMalloc(&devTargData, sizeTargData);
+    cudaStatus = cudaMalloc(&devTargData, sizeTargData);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMalloc failed for the target data!");
+        delete[] arrTargData;
+		cudaFree(devTargData);
+		return false;
+    }
+
     int sizeArchData = size*metaData.totPtsNb*sizeof(float);
-//    cudaMallocPitch(&devArchData, &pitch, metaData.totPtsNb * sizeof(float), size);
-    cudaMalloc(&devArchData, sizeArchData);
+    cudaStatus = cudaMalloc(&devArchData, sizeArchData);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMalloc failed for the archive data!");
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		return false;
+    }
+
     int sizeCriteriaValues = size*sizeof(float);
-    cudaMalloc(&devCriteriaValues, sizeCriteriaValues);
+    cudaStatus = cudaMalloc(&devCriteriaValues, sizeCriteriaValues);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMalloc failed for the criteria!");
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
 
     // Copy inputs to device
-    cudaMemcpy(devCriteriaValues, arrCriteriaValues, sizeCriteriaValues, cudaMemcpyHostToDevice);
-    cudaMemcpy(devTargData, arrTargData, sizeTargData, cudaMemcpyHostToDevice);
+    cudaStatus = cudaMemcpy(devCriteriaValues, arrCriteriaValues, sizeCriteriaValues, cudaMemcpyHostToDevice);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed for the criteria!");
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
+
+    cudaStatus = cudaMemcpy(devTargData, arrTargData, sizeTargData, cudaMemcpyHostToDevice);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed for the target data!");
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
+
+    cudaStatus = cudaMemcpy(devArchData, arrArchData, sizeArchData, cudaMemcpyHostToDevice);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed for the archive data!");
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
 
     // Launch kernel on GPU
-    gpuPredictorCriteriaS1grads<<<size/THREADS_PER_BLOCK,THREADS_PER_BLOCK>>>(devCriteriaValues, devTargData, devArchData, metaData, size);
+	int threadsPerBlock = 512;
+	int blocksNb = 1+size/threadsPerBlock;
+    gpuPredictorCriteriaS1grads<<<blocksNb,threadsPerBlock>>>(devCriteriaValues, devTargData, devArchData, metaData, size);
+
+	// Check for any errors launching the kernel
+    cudaStatus = cudaGetLastError();
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
+
+	// cudaDeviceSynchronize waits for the kernel to finish
+	cudaStatus = cudaDeviceSynchronize(); 
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
 
     // Copy result back to host
-    cudaMemcpy(arrCriteriaValues, devCriteriaValues, sizeCriteriaValues, cudaMemcpyDeviceToHost);
+    cudaStatus = cudaMemcpy(arrCriteriaValues, devCriteriaValues, sizeCriteriaValues, cudaMemcpyDeviceToHost);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed for the results!");
+        delete[] arrTargData;
+		delete[] arrArchData;
+		cudaFree(devTargData);
+		cudaFree(devArchData);
+		cudaFree(devCriteriaValues);
+		return false;
+    }
 
     // Cleanup
     cudaFree(devCriteriaValues);
     cudaFree(devTargData);
     cudaFree(devArchData);
-    delete[](arrArchData);
-
+	delete[] arrTargData;
+    delete[] arrArchData;
+	
 	return true;
 }

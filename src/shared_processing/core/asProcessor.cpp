@@ -46,7 +46,7 @@
     #include <AtmoswingAppCalibrator.h>
 #endif
 #ifdef USE_CUDA
-    #include <asProcessorCuda.h>
+    #include <asProcessorCuda.cuh>
 #endif
 
 bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
