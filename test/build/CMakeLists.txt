@@ -42,7 +42,10 @@ endif (TEST_FORECASTER)
 
 if (USE_CUDA)
 	file(GLOB_RECURSE src_proc_core_cu ../../src/shared_processing/core/*.cu)
+	file(GLOB_RECURSE src_proc_core_cuh ../../src/shared_processing/core/*.cuh)
 	list(APPEND src_cuda ${src_proc_core_cu})
+	list(APPEND src_cuda ${src_proc_core_cuh})
+	list(APPEND src_all ${src_proc_core_cuh})
 endif (USE_CUDA)
 
 
@@ -64,9 +67,6 @@ else (TEST_FORECASTER)
     list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtimeGfsForecast.h")
     list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_base/core/asDataPredictorRealtimeGfsForecast.cpp")
 endif (TEST_FORECASTER)
-if (NOT USE_CUDA)
-	list(REMOVE_ITEM src_all "${PROJECT_SOURCE_DIR}/../../src/shared_processing/core/asProcessorCudaThrust.h")
-endif (NOT USE_CUDA)
 
     
 # Remove eventual duplicates
@@ -137,9 +137,8 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 if (USE_CUDA)
 	find_package(CUDA 5.5 REQUIRED)
 	include_directories(${CUDA_INCLUDE_DIRS})
-	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode arch=compute_20,code=sm_20)
-	cuda_compile(cuda_code_o ${src_cuda})
-	cuda_add_library(CudaFctsLib ${cuda_code_o})
+	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};--gpu-architecture sm_20)
+	cuda_add_library(CudaFctsLib STATIC ${src_cuda})
 endif (USE_CUDA)
 
 # GDAL
