@@ -241,6 +241,25 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
     }
 }
 
+#ifdef USE_CUDA
+TEST(GrenobleComparison1ProcessingMethodCuda)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Standard/AllowMultithreading", true);
+    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asCUDA);
+
+    wxString str("Processing GrenobleComparison1 with CUDA\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+
+    wxStopWatch sw;
+
+    GrenobleComparison1("parameters_calibration_R1_full.xml", false);
+
+    wxString msg = wxString::Format(" -> took %ld ms to execute\n", sw.Time());
+    printf("%s", msg.mb_str(wxConvUTF8).data());
+}
+#endif
+
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
