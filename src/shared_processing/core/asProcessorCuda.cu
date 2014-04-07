@@ -28,20 +28,35 @@
 
 #include "asProcessorCuda.cuh"
 
-#include <cuda.h>
-#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
-#include <stdio.h>
+#define USE_THRUST 1
+
+#if USE_THRUST
+    #include <thrust/host_vector.h>
+    #include <thrust/device_vector.h>
+#else // USE_THRUST
+    #include <cuda.h>
+    #include <cuda_runtime.h>
+    #include <device_launch_parameters.h>
+    #include <stdio.h>
+#endif // USE_THRUST
 
 
+
+#include <iostream>
+
+
+
+#if USE_THRUST
+
+#else // USE_THRUST
 __global__ void gpuPredictorCriteriaS1grads(float *criteria,
                                             const float *targData,
                                             const float *archData,
                                             const cudaPredictorsMetaDataStruct metaData,
-                                            int n) 
+                                            int n)
 {
-    int index = threadIdx.x + blockIdx.x * blockDim.x; 
-    if (index < n) 
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index < n)
     {
         criteria[index] = 0;
 
@@ -64,15 +79,52 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
         }
     }
 }
+#endif // USE_THRUST
 
-bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData, 
-                                      std::vector < std::vector < float* > > &vvpArchData, 
-                                      std::vector < float > &criteriaValues, 
-                                      int size, 
-                                      std::vector < int > &colsNb, 
-                                      std::vector < int > &rowsNb, 
+bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
+                                      std::vector < std::vector < float* > > &vvpArchData,
+                                      std::vector < float > &criteriaValues,
+                                      int size,
+                                      std::vector < int > &colsNb,
+                                      std::vector < int > &rowsNb,
                                       std::vector < float > &weights)
 {
+    #if USE_THRUST
+
+    // H has storage for 4 integers
+    thrust::host_vector<int> H(4);
+
+    // initialize individual elements
+    H[0] = 14;
+    H[1] = 20;
+    H[2] = 38;
+    H[3] = 46;
+
+    // H.size() returns the size of vector H
+    std::cout << "H has size " << H.size() << std::endl;
+
+    // print contents of H
+    for(int i = 0; i < H.size(); i++)
+        std::cout << "H[" << i << "] = " << H[i] << std::endl;
+
+    // resize H
+    H.resize(2);
+
+    std::cout << "H now has size " << H.size() << std::endl;
+
+    // Copy host_vector H to device_vector D
+    thrust::device_vector<int> D = H;
+
+    // elements of D can be modified
+    D[0] = 99;
+    D[1] = 88;
+
+    // print contents of D
+    for(int i = 0; i < D.size(); i++)
+        std::cout << "D[" << i << "] = " << D[i] << std::endl;
+
+    #else // USE_THRUST
+
 	// Error var
 	cudaError_t cudaStatus;
 
@@ -106,7 +158,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
 
     // Device copies of data
     float *devTargData, *devArchData, *devCriteriaValues;
-    
+
     // Get data as arrays
     float* arrCriteriaValues = &criteriaValues[0];
     float* arrTargData;
@@ -218,7 +270,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     }
 
 	// cudaDeviceSynchronize waits for the kernel to finish
-	cudaStatus = cudaDeviceSynchronize(); 
+	cudaStatus = cudaDeviceSynchronize();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         delete[] arrTargData;
@@ -254,6 +306,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceReset failed!");
     }*/
-	
+
+    #endif // USE_THRUST
+
 	return true;
 }

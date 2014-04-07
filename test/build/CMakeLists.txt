@@ -135,9 +135,9 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 
 # CUDA
 if (USE_CUDA)
-	find_package(CUDA 5.5 REQUIRED)
+	find_package(CUDA REQUIRED)
 	include_directories(${CUDA_INCLUDE_DIRS})
-	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};--gpu-architecture sm_20)
+	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_10)
 	cuda_add_library(CudaFctsLib STATIC ${src_cuda})
 endif (USE_CUDA)
 
