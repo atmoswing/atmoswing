@@ -28,6 +28,8 @@
 
 #include "asProcessorCuda.cuh"
 
+#include <stdio.h>
+
 #define USE_THRUST 1
 
 #if USE_THRUST
@@ -40,41 +42,28 @@
     #include <cuda.h>
     #include <cuda_runtime.h>
     #include <device_launch_parameters.h>
-    #include <stdio.h>
 #endif // USE_THRUST
 
 
 
 #include <iostream>
+#include <limits>
 
 
 
 #if USE_THRUST
-/*
+
 struct gpuPredictorCriteriaS1grads
-{
-    const float a;
-
-    gpuPredictorCriteriaS1grads(float _a) : a(_a) {}
-
-    template <typename Tuple>
-
-    __host__ __device__
-        float operator()(Tuple t) 
-        { 
-            // D[i] = A[i] + B[i] * C[i];
-            thrust::get<3>(t) = thrust::get<0>(t) + thrust::get<1>(t) * thrust::get<2>(t);
-        }
-};
-*/
-struct arbitrary_functor
 {
     template <typename Tuple>
     __host__ __device__
     void operator()(Tuple t)
     {
-        // D[i] = A[i] + B[i] * C[i];
-        thrust::get<3>(t) = thrust::get<0>(t) + thrust::get<1>(t) * thrust::get<2>(t);
+        // 0: targData, 1: archData, 2: dividend, 3: divisor
+        // Dividend
+        thrust::get<2>(t) = abs(thrust::get<0>(t)-thrust::get<1>(t));
+        // Divisor
+        thrust::get<3>(t) = max(abs(thrust::get<0>(t)), abs(thrust::get<1>(t)));
     }
 };
 
@@ -121,45 +110,82 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
                                       std::vector < int > &rowsNb,
                                       std::vector < float > &weights)
 {
+
     #if USE_THRUST
 
-    // allocate storage
-    thrust::device_vector<float> A(5);
-    thrust::device_vector<float> B(5);
-    thrust::device_vector<float> C(5);
-    thrust::device_vector<float> D(5);
+    // Allocate storage
+    thrust::device_vector<float> resultingCriteria(size);
 
-    // initialize input vectors
-    A[0] = 3;  B[0] = 6;  C[0] = 2; 
-    A[1] = 4;  B[1] = 7;  C[1] = 5; 
-    A[2] = 0;  B[2] = 2;  C[2] = 7; 
-    A[3] = 8;  B[3] = 1;  C[3] = 4; 
-    A[4] = 2;  B[4] = 8;  C[4] = 3; 
+    // Number of predictors
+    int ptorsNb = (int)weights.size();
 
-    // apply the transformation
-    thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(A.begin(), B.begin(), C.begin(), D.begin())),
-                     thrust::make_zip_iterator(thrust::make_tuple(A.end(),   B.end(),   C.end(),   D.end())),
-                     arbitrary_functor());
+    // Loop over every predictor
+    for (int i_ptor=0; i_ptor<ptorsNb; i_ptor++)
+    {
+        // Number of points
+        int ptsNb = colsNb[i_ptor]*rowsNb[i_ptor];
 
-    // print the output
-    for(int i = 0; i < 5; i++)
-        std::cout << A[i] << " + " << B[i] << " * " << C[i] << " = " << D[i] << std::endl;
+        // Allocate storage
+        thrust::host_vector<float> hostTargData(size*ptsNb);
+        thrust::host_vector<float> hostArchData(size*ptsNb);
+        thrust::device_vector<float> devTargData(size*ptsNb);
+        thrust::device_vector<float> devArchData(size*ptsNb);
+        thrust::device_vector<float> devDividend(size*ptsNb);
+        thrust::device_vector<float> devDivisor(size*ptsNb);
+
+        // Populate host vectors (to do only 1 copy to the device)
+        for (int i_day=0; i_day<size; i_day++)
+        {
+            int destinationIndex = i_day*ptsNb;
+            thrust::copy(vpTargData[i_ptor], vpTargData[i_ptor]+ptsNb, hostTargData.begin()+destinationIndex);
+            thrust::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor]+ptsNb, hostArchData.begin()+destinationIndex);
+
+        }
+
+        // Copy data to device
+        devTargData = hostTargData;
+        devArchData = hostArchData;
+
+        // Process dividend and divisor
+        thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(devTargData.begin(), devArchData.begin(), devDividend.begin(), devDivisor.begin())),
+                         thrust::make_zip_iterator(thrust::make_tuple(devTargData.end(), devArchData.end(), devDividend.end(), devDivisor.end())),
+                         gpuPredictorCriteriaS1grads());
 
 
 
-    // H has storage for 4 integers
-    //thrust::host_vector<int> H(4);
+
+
+        for(int i = 0; i < devDividend.size(); ++i)
+        {
+          printf("%f, %f\n", (float) devDividend[i], (float) devDivisor[i]);
+        }
+
+        std::cout << "Press ENTER to continue... " << std::flush;
+        std::cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' );
+
+
+        // Proceed to reduction
 
 
 
-    //thrust::transform(X.begin(), X.end(), Y.begin(), Y.begin(), gpuPredictorCriteriaS1grads(A));
+        https://github.com/thrust/thrust/wiki/Quick-Start-Guide
+        https://github.com/thrust/thrust/blob/master/examples/sum_rows.cu
+
+
+    }
+
+
+
+
+
+
 
     #else // USE_THRUST
 
-	// Error var
-	cudaError_t cudaStatus;
+    // Error var
+    cudaError_t cudaStatus;
 
-	// Choose which GPU to run on, change this on a multi-GPU system.
+    // Choose which GPU to run on, change this on a multi-GPU system.
     cudaStatus = cudaSetDevice(0);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
@@ -176,15 +202,18 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     }
 
     metaData.totPtsNb = 0;
+
     for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
     {
         metaData.rowsNb[i_ptor] = rowsNb[i_ptor];
         metaData.colsNb[i_ptor] = colsNb[i_ptor];
+
         metaData.weights[i_ptor] = weights[i_ptor];
         metaData.ptsNb[i_ptor] = colsNb[i_ptor]*rowsNb[i_ptor];
         metaData.indexStart[i_ptor] = metaData.totPtsNb;
         metaData.indexEnd[i_ptor] = metaData.totPtsNb+metaData.ptsNb[i_ptor]-1;
         metaData.totPtsNb += colsNb[i_ptor]*rowsNb[i_ptor];
+
     }
 
     // Device copies of data
@@ -193,27 +222,27 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     // Get data as arrays
     float* arrCriteriaValues = &criteriaValues[0];
     float* arrTargData;
-	arrTargData = new float[metaData.totPtsNb];
-	for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
+    arrTargData = new float[metaData.totPtsNb];
+    for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
     {
-		for (int i_pt=0; i_pt<metaData.ptsNb[i_ptor]; i_pt++)
-		{
-			arrTargData[metaData.indexStart[i_ptor] + i_pt] = vpTargData[i_ptor][i_pt];
-		}
-		//std::copy(vpTargData[i_ptor], vpTargData[i_ptor] + metaData.indexEnd[i_ptor], arrTargData + metaData.indexStart[i_ptor]); -> fails
-	}
+        for (int i_pt=0; i_pt<metaData.ptsNb[i_ptor]; i_pt++)
+        {
+            arrTargData[metaData.indexStart[i_ptor] + i_pt] = vpTargData[i_ptor][i_pt];
+        }
+        //std::copy(vpTargData[i_ptor], vpTargData[i_ptor] + metaData.indexEnd[i_ptor], arrTargData + metaData.indexStart[i_ptor]); -> fails
+    }
     float* arrArchData;
-	arrArchData = new float[size*metaData.totPtsNb];
+    arrArchData = new float[size*metaData.totPtsNb];
     for (int i_day=0; i_day<size; i_day++)
     {
-		for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
-		{
-			for (int i_pt=0; i_pt<metaData.ptsNb[i_ptor]; i_pt++)
-			{
-				arrArchData[i_day*metaData.totPtsNb + metaData.indexStart[i_ptor] + i_pt] = vvpArchData[i_day][i_ptor][i_pt];
-			}
-			//std::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor] + metaData.indexEnd[i_ptor], arrArchData + i_day*metaData.totPtsNb + metaData.indexStart[i_ptor]); -> fails
-		}
+        for (int i_ptor=0; i_ptor<metaData.ptorsNb; i_ptor++)
+        {
+            for (int i_pt=0; i_pt<metaData.ptsNb[i_ptor]; i_pt++)
+            {
+                arrArchData[i_day*metaData.totPtsNb + metaData.indexStart[i_ptor] + i_pt] = vvpArchData[i_day][i_ptor][i_pt];
+            }
+            //std::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor] + metaData.indexEnd[i_ptor], arrArchData + i_day*metaData.totPtsNb + metaData.indexStart[i_ptor]); -> fails
+        }
     }
 
     // Alloc space for device copies of data
@@ -222,8 +251,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMalloc failed for the target data!");
         delete[] arrTargData;
-		cudaFree(devTargData);
-		return false;
+        cudaFree(devTargData);
+        return false;
     }
 
     int sizeArchData = size*metaData.totPtsNb*sizeof(float);
@@ -231,10 +260,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMalloc failed for the archive data!");
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        return false;
     }
 
     int sizeCriteriaValues = size*sizeof(float);
@@ -242,11 +271,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMalloc failed for the criteria!");
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
     // Copy inputs to device
@@ -254,62 +283,62 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the criteria!");
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
     cudaStatus = cudaMemcpy(devTargData, arrTargData, sizeTargData, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the target data!");
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
     cudaStatus = cudaMemcpy(devArchData, arrArchData, sizeArchData, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the archive data!");
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
     // Launch kernel on GPU
-	int threadsPerBlock = 512;
-	int blocksNb = 1+size/threadsPerBlock;
+    int threadsPerBlock = 512;
+    int blocksNb = 1+size/threadsPerBlock;
     gpuPredictorCriteriaS1grads<<<blocksNb,threadsPerBlock>>>(devCriteriaValues, devTargData, devArchData, metaData, size);
 
-	// Check for any errors launching the kernel
+    // Check for any errors launching the kernel
     cudaStatus = cudaGetLastError();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
-	// cudaDeviceSynchronize waits for the kernel to finish
-	cudaStatus = cudaDeviceSynchronize();
+    // cudaDeviceSynchronize waits for the kernel to finish
+    cudaStatus = cudaDeviceSynchronize();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
     // Copy result back to host
@@ -317,21 +346,21 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the results!");
         delete[] arrTargData;
-		delete[] arrArchData;
-		cudaFree(devTargData);
-		cudaFree(devArchData);
-		cudaFree(devCriteriaValues);
-		return false;
+        delete[] arrArchData;
+        cudaFree(devTargData);
+        cudaFree(devArchData);
+        cudaFree(devCriteriaValues);
+        return false;
     }
 
     // Cleanup
     cudaFree(devCriteriaValues);
     cudaFree(devTargData);
     cudaFree(devArchData);
-	delete[] arrTargData;
+    delete[] arrTargData;
     delete[] arrArchData;
 
-	// cudaDeviceReset must be called before exiting in order for profiling and
+    // cudaDeviceReset must be called before exiting in order for profiling and
     // tracing tools such as Nsight and Visual Profiler to show complete traces.
     /*cudaStatus = cudaDeviceReset();
     if (cudaStatus != cudaSuccess) {
@@ -340,5 +369,5 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
 
     #endif // USE_THRUST
 
-	return true;
+    return true;
 }
