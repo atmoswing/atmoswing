@@ -33,6 +33,9 @@
 #if USE_THRUST
     #include <thrust/host_vector.h>
     #include <thrust/device_vector.h>
+    #include <thrust/transform.h>
+    #include <thrust/for_each.h>
+    #include <thrust/iterator/zip_iterator.h>
 #else // USE_THRUST
     #include <cuda.h>
     #include <cuda_runtime.h>
@@ -47,8 +50,36 @@
 
 
 #if USE_THRUST
+/*
+struct gpuPredictorCriteriaS1grads
+{
+    const float a;
+
+    gpuPredictorCriteriaS1grads(float _a) : a(_a) {}
+
+    template <typename Tuple>
+
+    __host__ __device__
+        float operator()(Tuple t) 
+        { 
+            // D[i] = A[i] + B[i] * C[i];
+            thrust::get<3>(t) = thrust::get<0>(t) + thrust::get<1>(t) * thrust::get<2>(t);
+        }
+};
+*/
+struct arbitrary_functor
+{
+    template <typename Tuple>
+    __host__ __device__
+    void operator()(Tuple t)
+    {
+        // D[i] = A[i] + B[i] * C[i];
+        thrust::get<3>(t) = thrust::get<0>(t) + thrust::get<1>(t) * thrust::get<2>(t);
+    }
+};
 
 #else // USE_THRUST
+
 __global__ void gpuPredictorCriteriaS1grads(float *criteria,
                                             const float *targData,
                                             const float *archData,
@@ -79,6 +110,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
         }
     }
 }
+
 #endif // USE_THRUST
 
 bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
@@ -91,37 +123,36 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
 {
     #if USE_THRUST
 
+    // allocate storage
+    thrust::device_vector<float> A(5);
+    thrust::device_vector<float> B(5);
+    thrust::device_vector<float> C(5);
+    thrust::device_vector<float> D(5);
+
+    // initialize input vectors
+    A[0] = 3;  B[0] = 6;  C[0] = 2; 
+    A[1] = 4;  B[1] = 7;  C[1] = 5; 
+    A[2] = 0;  B[2] = 2;  C[2] = 7; 
+    A[3] = 8;  B[3] = 1;  C[3] = 4; 
+    A[4] = 2;  B[4] = 8;  C[4] = 3; 
+
+    // apply the transformation
+    thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(A.begin(), B.begin(), C.begin(), D.begin())),
+                     thrust::make_zip_iterator(thrust::make_tuple(A.end(),   B.end(),   C.end(),   D.end())),
+                     arbitrary_functor());
+
+    // print the output
+    for(int i = 0; i < 5; i++)
+        std::cout << A[i] << " + " << B[i] << " * " << C[i] << " = " << D[i] << std::endl;
+
+
+
     // H has storage for 4 integers
-    thrust::host_vector<int> H(4);
+    //thrust::host_vector<int> H(4);
 
-    // initialize individual elements
-    H[0] = 14;
-    H[1] = 20;
-    H[2] = 38;
-    H[3] = 46;
 
-    // H.size() returns the size of vector H
-    std::cout << "H has size " << H.size() << std::endl;
 
-    // print contents of H
-    for(int i = 0; i < H.size(); i++)
-        std::cout << "H[" << i << "] = " << H[i] << std::endl;
-
-    // resize H
-    H.resize(2);
-
-    std::cout << "H now has size " << H.size() << std::endl;
-
-    // Copy host_vector H to device_vector D
-    thrust::device_vector<int> D = H;
-
-    // elements of D can be modified
-    D[0] = 99;
-    D[1] = 88;
-
-    // print contents of D
-    for(int i = 0; i < D.size(); i++)
-        std::cout << "D[" << i << "] = " << D[i] << std::endl;
+    //thrust::transform(X.begin(), X.end(), Y.begin(), Y.begin(), gpuPredictorCriteriaS1grads(A));
 
     #else // USE_THRUST
 
