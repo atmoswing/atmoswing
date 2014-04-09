@@ -45,6 +45,7 @@
     #include <thrust/device_vector.h>
     #include <thrust/transform.h>
     #include <thrust/for_each.h>
+    #include <thrust/fill.h>
     #include <thrust/iterator/zip_iterator.h>
 #else // USE_THRUST
     #include <cuda.h>
