@@ -184,7 +184,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
             int destinationIndex = i_day*ptsNb;
             thrust::copy(vpTargData[i_ptor], vpTargData[i_ptor]+ptsNb, hostTargData.begin()+destinationIndex);
             thrust::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor]+ptsNb, hostArchData.begin()+destinationIndex);
-            thrust::fill(keys.begin()+destinationIndex, keys.end()+destinationIndex+ptsNb, i_day);
+            thrust::fill(keys.begin()+destinationIndex, keys.begin()+destinationIndex+ptsNb, i_day);
         }
 
         // Copy data to device
