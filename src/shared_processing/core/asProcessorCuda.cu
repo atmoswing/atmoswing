@@ -25,6 +25,12 @@
  * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
 
+// Disable some MSVC warnings
+#ifdef _MSC_VER
+    #pragma warning( disable : 4244 ) // C4244: conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+    #pragma warning( disable : 4267 ) // C4267: conversion from 'size_t' to 'int', possible loss of data
+#endif
+
 
 #include "asProcessorCuda.cuh"
 
@@ -45,12 +51,6 @@
 #endif // USE_THRUST
 
 
-
-#include <iostream>
-#include <limits>
-
-
-
 #if USE_THRUST
 
 struct gpuPredictorCriteriaS1grads
@@ -63,7 +63,21 @@ struct gpuPredictorCriteriaS1grads
         // Dividend
         thrust::get<2>(t) = abs(thrust::get<0>(t)-thrust::get<1>(t));
         // Divisor
-        thrust::get<3>(t) = max(abs(thrust::get<0>(t)), abs(thrust::get<1>(t)));
+        thrust::get<3>(t) = thrust::max(abs(thrust::get<0>(t)), abs(thrust::get<1>(t)));
+    }
+};
+
+struct gpuAddToCriteriaS1grads
+{
+    const float weight;
+    gpuAddToCriteriaS1grads(float _weight) : weight(_weight) {}
+
+    template <typename Tuple>
+    __host__ __device__
+    void operator()(Tuple t)
+    {
+        // 0: reducedDividend, 1: reducedDivisor, 2: resultingCriteria
+        thrust::get<2>(t) += weight*100.0f*(thrust::get<0>(t)/thrust::get<1>(t));
     }
 };
 
@@ -114,7 +128,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     #if USE_THRUST
 
     // Allocate storage
-    thrust::device_vector<float> resultingCriteria(size);
+    thrust::device_vector<float> resultingCriteria(size, 0);
+    thrust::device_vector<float> reducedDivisor(size);
+    thrust::device_vector<float> reducedDividend(size);
 
     // Number of predictors
     int ptorsNb = (int)weights.size();
@@ -139,7 +155,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
             int destinationIndex = i_day*ptsNb;
             thrust::copy(vpTargData[i_ptor], vpTargData[i_ptor]+ptsNb, hostTargData.begin()+destinationIndex);
             thrust::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor]+ptsNb, hostArchData.begin()+destinationIndex);
-
         }
 
         // Copy data to device
@@ -151,33 +166,23 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
                          thrust::make_zip_iterator(thrust::make_tuple(devTargData.end(), devArchData.end(), devDividend.end(), devDivisor.end())),
                          gpuPredictorCriteriaS1grads());
 
-
-
-
-
-        for(int i = 0; i < devDividend.size(); ++i)
+        // Proceed to reduction
+        for (int i_day=0; i_day<size; i_day++)
         {
-          printf("%f, %f\n", (float) devDividend[i], (float) devDivisor[i]);
+            int indexStart = i_day*ptsNb;
+            int indexEnd = indexStart+ptsNb;
+            reducedDivisor[i_day] = thrust::reduce(devDivisor.begin()+indexStart, devDivisor.begin()+indexEnd);
+            reducedDividend[i_day] = thrust::reduce(devDividend.begin()+indexStart, devDividend.begin()+indexEnd);
         }
 
-        std::cout << "Press ENTER to continue... " << std::flush;
-        std::cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' );
-
-
-        // Proceed to reduction
-
-
-
-        https://github.com/thrust/thrust/wiki/Quick-Start-Guide
-        https://github.com/thrust/thrust/blob/master/examples/sum_rows.cu
-
-
+        // Add to the resulting criteria
+        thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(reducedDividend.begin(), reducedDivisor.begin(), resultingCriteria.begin())),
+                         thrust::make_zip_iterator(thrust::make_tuple(reducedDividend.end(), reducedDivisor.end(), resultingCriteria.end())),
+                         gpuAddToCriteriaS1grads(weights[i_ptor]));
     }
 
-
-
-
-
+    // Copy to the final container
+    thrust::copy(resultingCriteria.begin(), resultingCriteria.end(), criteriaValues.begin());
 
 
     #else // USE_THRUST
