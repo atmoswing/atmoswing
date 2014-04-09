@@ -139,11 +139,12 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
     thrust::device_vector<float> resultingCriteria(size, 0);
     thrust::device_vector<float> reducedDivisor(size);
     thrust::device_vector<float> reducedDividend(size);
+    thrust::device_vector<int> reducedKeys(size);
 
     #if DO_PROFILE
         stop = clock();   
         time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
-        fprintf(stderr, "First storage allocation: %f ms", time);
+        fprintf(stderr, "First storage allocation: %f ms\n", time);
     #endif //DO_PROFILE
 
     // Number of predictors
@@ -166,11 +167,12 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         thrust::device_vector<float> devArchData(size*ptsNb);
         thrust::device_vector<float> devDividend(size*ptsNb);
         thrust::device_vector<float> devDivisor(size*ptsNb);
+        thrust::device_vector<int> keys(size*ptsNb);
 
         #if DO_PROFILE
             stop = clock();   
             time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
-            fprintf(stderr, "Predictor storage allocation: %f ms", time);
+            fprintf(stderr, "Predictor storage allocation: %f ms\n", time);
 
             start = clock();
         #endif //DO_PROFILE
@@ -181,6 +183,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
             int destinationIndex = i_day*ptsNb;
             thrust::copy(vpTargData[i_ptor], vpTargData[i_ptor]+ptsNb, hostTargData.begin()+destinationIndex);
             thrust::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor]+ptsNb, hostArchData.begin()+destinationIndex);
+            thrust::fill(keys.begin()+destinationIndex, keys.end()+destinationIndex+ptsNb, i_day);
         }
 
         // Copy data to device
@@ -190,7 +193,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         #if DO_PROFILE
             stop = clock();   
             time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
-            fprintf(stderr, "Data copy: %f ms", time);
+            fprintf(stderr, "Data copy: %f ms\n", time);
 
             start = clock();
         #endif //DO_PROFILE
@@ -203,24 +206,27 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         #if DO_PROFILE
             stop = clock();   
             time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
-            fprintf(stderr, "Dividend and divisor calculation: %f ms", time);
+            fprintf(stderr, "Dividend and divisor calculation: %f ms\n", time);
 
             start = clock();
         #endif //DO_PROFILE
 
         // Proceed to reduction
+        /*
         for (int i_day=0; i_day<size; i_day++)
         {
             int indexStart = i_day*ptsNb;
             int indexEnd = indexStart+ptsNb;
             reducedDivisor[i_day] = thrust::reduce(devDivisor.begin()+indexStart, devDivisor.begin()+indexEnd);
             reducedDividend[i_day] = thrust::reduce(devDividend.begin()+indexStart, devDividend.begin()+indexEnd);
-        }
+        }*/
+        thrust::reduce_by_key(keys.begin(), keys.end(), devDivisor.begin(), reducedKeys.begin(), reducedDivisor.begin());
+        thrust::reduce_by_key(keys.begin(), keys.end(), devDividend.begin(), reducedKeys.begin(), reducedDividend.begin());
 
         #if DO_PROFILE
             stop = clock();   
             time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
-            fprintf(stderr, "Reduction: %f ms", time);
+            fprintf(stderr, "Reduction: %f ms\n", time);
 
             start = clock();
         #endif //DO_PROFILE
@@ -233,7 +239,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         #if DO_PROFILE
             stop = clock();   
             time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
-            fprintf(stderr, "Final merging: %f ms", time);
+            fprintf(stderr, "Final merging: %f ms\n", time);
 
             std::cout << "Press ENTER to continue... " << std::flush;
             std::cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' );
