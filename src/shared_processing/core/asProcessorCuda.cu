@@ -38,7 +38,7 @@
 #include <time.h>
 
 #define USE_THRUST 1
-#define DO_PROFILE 1
+#define DO_PROFILE 0
 
 #if USE_THRUST
     #include <thrust/host_vector.h>
@@ -213,14 +213,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         #endif //DO_PROFILE
 
         // Proceed to reduction
-        /*
-        for (int i_day=0; i_day<size; i_day++)
-        {
-            int indexStart = i_day*ptsNb;
-            int indexEnd = indexStart+ptsNb;
-            reducedDivisor[i_day] = thrust::reduce(devDivisor.begin()+indexStart, devDivisor.begin()+indexEnd);
-            reducedDividend[i_day] = thrust::reduce(devDividend.begin()+indexStart, devDividend.begin()+indexEnd);
-        }*/
         thrust::reduce_by_key(keys.begin(), keys.end(), devDivisor.begin(), reducedKeys.begin(), reducedDivisor.begin());
         thrust::reduce_by_key(keys.begin(), keys.end(), devDividend.begin(), reducedKeys.begin(), reducedDividend.begin());
 
