@@ -35,8 +35,10 @@
 #include "asProcessorCuda.cuh"
 
 #include <stdio.h>
+#include <time.h>
 
 #define USE_THRUST 1
+#define DO_PROFILE 1
 
 #if USE_THRUST
     #include <thrust/host_vector.h>
@@ -126,11 +128,23 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
 {
 
     #if USE_THRUST
+    
+    #if DO_PROFILE
+        clock_t start, stop;
+        float time;
+        start = clock();
+    #endif //DO_PROFILE
 
     // Allocate storage
     thrust::device_vector<float> resultingCriteria(size, 0);
     thrust::device_vector<float> reducedDivisor(size);
     thrust::device_vector<float> reducedDividend(size);
+
+    #if DO_PROFILE
+        stop = clock();   
+        time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
+        fprintf(stderr, "First storage allocation: %f ms", time);
+    #endif //DO_PROFILE
 
     // Number of predictors
     int ptorsNb = (int)weights.size();
@@ -141,6 +155,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         // Number of points
         int ptsNb = colsNb[i_ptor]*rowsNb[i_ptor];
 
+        #if DO_PROFILE
+            start = clock();
+        #endif //DO_PROFILE
+
         // Allocate storage
         thrust::host_vector<float> hostTargData(size*ptsNb);
         thrust::host_vector<float> hostArchData(size*ptsNb);
@@ -148,6 +166,14 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         thrust::device_vector<float> devArchData(size*ptsNb);
         thrust::device_vector<float> devDividend(size*ptsNb);
         thrust::device_vector<float> devDivisor(size*ptsNb);
+
+        #if DO_PROFILE
+            stop = clock();   
+            time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
+            fprintf(stderr, "Predictor storage allocation: %f ms", time);
+
+            start = clock();
+        #endif //DO_PROFILE
 
         // Populate host vectors (to do only 1 copy to the device)
         for (int i_day=0; i_day<size; i_day++)
@@ -161,10 +187,26 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
         devTargData = hostTargData;
         devArchData = hostArchData;
 
+        #if DO_PROFILE
+            stop = clock();   
+            time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
+            fprintf(stderr, "Data copy: %f ms", time);
+
+            start = clock();
+        #endif //DO_PROFILE
+
         // Process dividend and divisor
         thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(devTargData.begin(), devArchData.begin(), devDividend.begin(), devDivisor.begin())),
                          thrust::make_zip_iterator(thrust::make_tuple(devTargData.end(), devArchData.end(), devDividend.end(), devDivisor.end())),
                          gpuPredictorCriteriaS1grads());
+
+        #if DO_PROFILE
+            stop = clock();   
+            time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
+            fprintf(stderr, "Dividend and divisor calculation: %f ms", time);
+
+            start = clock();
+        #endif //DO_PROFILE
 
         // Proceed to reduction
         for (int i_day=0; i_day<size; i_day++)
@@ -175,10 +217,27 @@ bool asProcessorCuda::ProcessCriteria(std::vector < float* > &vpTargData,
             reducedDividend[i_day] = thrust::reduce(devDividend.begin()+indexStart, devDividend.begin()+indexEnd);
         }
 
+        #if DO_PROFILE
+            stop = clock();   
+            time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
+            fprintf(stderr, "Reduction: %f ms", time);
+
+            start = clock();
+        #endif //DO_PROFILE
+
         // Add to the resulting criteria
         thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(reducedDividend.begin(), reducedDivisor.begin(), resultingCriteria.begin())),
                          thrust::make_zip_iterator(thrust::make_tuple(reducedDividend.end(), reducedDivisor.end(), resultingCriteria.end())),
                          gpuAddToCriteriaS1grads(weights[i_ptor]));
+
+        #if DO_PROFILE
+            stop = clock();   
+            time = (float)(stop-start)/CLOCKS_PER_SEC*1000;
+            fprintf(stderr, "Final merging: %f ms", time);
+
+            std::cout << "Press ENTER to continue... " << std::flush;
+            std::cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' );
+        #endif //DO_PROFILE
     }
 
     // Copy to the final container
