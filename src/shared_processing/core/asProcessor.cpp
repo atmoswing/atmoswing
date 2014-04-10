@@ -47,6 +47,8 @@
 #endif
 #ifdef USE_CUDA
     #include <asProcessorCuda.cuh>
+    #include <cuda_runtime_api.h>
+    #include <cuda.h>
 #endif
 
 bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
@@ -381,9 +383,9 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                         }
                         else
                         {
-                            asLogError(wxString::Format(_("The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."), 
+                            asLogError(wxString::Format(_("The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."),
                                                         asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]).c_str(),
-                                                        asTime::GetStringTime(timeArchiveData[i_timeArchStart]).c_str(), 
+                                                        asTime::GetStringTime(timeArchiveData[i_timeArchStart]).c_str(),
                                                         asTime::GetStringTime(timeArchiveData[timeArchiveDataSize-1]).c_str(),
                                                         asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str()));
                         }
@@ -555,7 +557,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
             break;
         }
-        
+
         #ifdef USE_CUDA
         case (asCUDA): // Based on the asFULL_ARRAY method
         {
@@ -580,7 +582,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
 
             // First we find the dates (to get the pointers to the data) and then we process on GPU
-                
+
             // Extract some data
             Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
             int timeArchiveDataSize = timeArchiveData.size();
@@ -748,6 +750,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                     }
                 }
             }
+
+            // cudaDeviceReset must be called before exiting in order for profiling and
+            // tracing tools such as Nsight and Visual Profiler to show complete traces.
+            cudaDeviceReset();
 
             break;
         }
