@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AtmoSwingFile version="0.3">
+    <CalibrationSet>
+        <General name="General">
+            <Options />
+            <Params name="Archive Period">
+                <YearStart value="1962" />
+                <YearEnd value="2001" />
+            </Params>
+            <Params name="Calibration Period">
+                <YearStart value="1962" />
+                <YearEnd value="2001" />
+            </Params>
+            <Params name="Time Properties">
+                <TimeStepHours value="24" />
+            </Params>
+            <Params name="Time Array Target">
+                <TimeArrayMode value="Simple" />
+            </Params>
+            <Params name="Time Array Analogs">
+                <TimeArrayMode value="DaysInterval" />
+                <IntervalDays value="60" min="10" max="100" step="10" method="fixed" />
+                <ExcludeDays value="60" />
+            </Params>
+        </General>
+        <Process name="Analogs Dates">
+            <Options />
+            <Params name="Method Name">
+                <MethodName value="Analogs" />
+            </Params>
+            <Params name="Analogs Number">
+                <AnalogsNumber value="50" min="" max="" step="" method="fixed" />
+            </Params>
+            <Data name="Predictor">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="0" />
+                </Params>
+                <Params name="Data">
+                    <DatasetId value="NCEP_Reanalysis_v1_lthe" />
+                    <DataId value="hgt_1000hPa" method="fixed" />
+                </Params>
+                <Params name="Level">
+                    <Level value="1000" min="" max="" step="" method="fixed" />
+                </Params>
+                <Params name="Time frame">
+                    <TimeHours value="12" min="" max="" step="" method="fixed" />
+                </Params>
+                <Params name="Area Moving">
+                    <GridType value="Regular" />
+                    <Umin value="-5" min="" max="" step="" method="fixed" />
+                    <Uptsnb value="9" min="" max="" step="" method="fixed" />
+                    <Ustep value="2.5" />
+                    <Vmin value="40" min="" max="" step="" method="fixed" />
+                    <Vptsnb value="5" min="" max="" step="" method="fixed" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" method="fixed" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.5" min="" max="" step="" method="fixed" />
+                </Params>
+            </Data>
+            <Data name="Predictor">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="0" />
+                </Params>
+                <Params name="Preload">
+                    <Preload value="1" />
+                </Params>
+                <Params name="Data">
+                    <DatasetId value="NCEP_Reanalysis_v1_lthe" />
+                    <DataId value="hgt_500hPa" method="fixed" />
+                </Params>
+                <Params name="Level">
+                    <Level value="500" min="" max="" step="" method="fixed" />
+                </Params>
+                <Params name="Time frame">
+                    <TimeHours value="24" min="" max="" step="" method="fixed" />
+                </Params>
+                <Params name="Area Moving">
+                    <GridType value="Regular" />
+                    <Umin value="-5" min="" max="" step="" method="fixed" />
+                    <Uptsnb value="9" min="" max="" step="" method="fixed" />
+                    <Ustep value="2.5" />
+                    <Vmin value="40" min="" max="" step="" method="fixed" />
+                    <Vptsnb value="5" min="" max="" step="" method="fixed" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" method="fixed" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.5" min="" max="" step="" method="fixed" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Values">
+            <Options />
+            <Data name="Predictand">
+                <Params name="Database">
+                    <PredictandStationId value="1" min="" max="" step="" method="fixed" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Forecast Scores">
+            <Options />
+            <Params name="Method">
+                <Name value="CRPSAR" method="fixed" />
+            </Params>
+            <Params name="Analogs Number">
+                <AnalogsNumber value="50" min="" max="" step="" method="fixed" />
+            </Params>
+        </Process>
+        <Process name="Analogs Forecast Score Final">
+            <Options />
+            <Params name="Time Array">
+                <Mode value="Simple" method="fixed" />
+            </Params>
+        </Process>
+    </CalibrationSet>
+</AtmoSwingFile>
