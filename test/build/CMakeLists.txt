@@ -36,7 +36,7 @@ list(APPEND src_all ${src_test_cpp} ${src_base_core_cpp} ${src_lib_ticpp_cpp} ${
 if (TEST_FORECASTER)
     file(GLOB_RECURSE src_forec_core_h ../../src/app_forecaster/core/*.h)
     file(GLOB_RECURSE src_forec_core_cpp ../../src/app_forecaster/core/*.cpp)
-	list(APPEND src_all ${src_forec_core_h} ${src_forec_core_cpp})
+    list(APPEND src_all ${src_forec_core_h} ${src_forec_core_cpp})
 endif (TEST_FORECASTER)
 
 
@@ -152,12 +152,14 @@ add_executable (${CMAKE_PROJECT_NAME} ${src_all})
 
 if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer ")
 elseif (WIN32)
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
 endif (UNIX AND NOT APPLE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -D__WXDEBUG__")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DwxDEBUG_LEVEL=0 -DNDEBUG ")
 
 add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL -DwxUSE_GUI=0 -DUNIT_TESTING)
 
@@ -172,6 +174,7 @@ endif (WIN32)
 message("CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
 message("CMAKE_CXX_FLAGS_RELEASE = ${CMAKE_CXX_FLAGS_RELEASE}")
 message("CMAKE_CXX_FLAGS_DEBUG = ${CMAKE_CXX_FLAGS_DEBUG}")
+message("CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 
 
 #### LIBRARIES LINKING
