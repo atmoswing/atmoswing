@@ -52,14 +52,10 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
     wxASSERT_MSG(refData.rows()>0, wxString::Format("refData.rows()=%d", (int)refData.rows()));
     wxASSERT_MSG(refData.cols()>0, wxString::Format("refData.cols()=%d", (int)refData.cols()));
 
-    if (refData.rows()<1) asThrowException(_("The number of rows of the data is null in the S1grads criteria processing."));
-    if (refData.cols()<1) asThrowException(_("The number of cols of the data is null in the S1grads criteria processing."));
-
-    if (rowsNb==0 || colsNb==0)
-    {
-        rowsNb = refData.rows();
-        colsNb = refData.cols();
-    }
+    #ifdef _DEBUG
+        if (refData.rows()<1) asThrowException(_("The number of rows of the data is null in the S1grads criteria processing."));
+        if (refData.cols()<1) asThrowException(_("The number of cols of the data is null in the S1grads criteria processing."));
+    #endif
 
     float dividend = 0, divisor = 0;
 
@@ -98,28 +94,9 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         }
     }
 
-	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
-    {
-        // Message disabled here as it is already processed in the processor (and not well handled here in multithreading mode).
-        // asLogWarning(_("NaNs were found in the data."));
-        // std::cout << refData << std::endl;
-        // std::cout << "\n" << std::endl;
-        // std::cout << evalData << std::endl;
-
-        return NaNFloat;
-    }
-
     if (divisor>0)
     {
-        wxASSERT(dividend>=0);
-        wxASSERT(divisor>0);
-
-        float val = 100.0f*(dividend/divisor);
-
-        wxASSERT(val<=m_ScaleWorst);
-        wxASSERT(val>=m_ScaleBest);
-
-        return val;
+        return 100.0f*(dividend/divisor); // Can be NaN
     }else {
         if (dividend==0)
         {
@@ -128,7 +105,6 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         }
         else
         {
-            asLogWarning(_("Division by zero in the predictor criteria."));
             return NaNFloat;
         }
     }

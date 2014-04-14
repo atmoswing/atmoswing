@@ -50,12 +50,6 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
     wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
     wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
 
-    if (rowsNb==0 || colsNb==0)
-    {
-        rowsNb = refData.rows();
-        colsNb = refData.cols();
-    }
-
     float se = 0;
 
     switch (m_LinAlgebraMethod)
@@ -88,14 +82,6 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
         }
     }
 
-    if (asTools::IsNaN(se))
-    {
-        return NaNFloat;
-    }
-
-    wxASSERT(se>=0);
-    wxASSERT_MSG(sqrt(se)>=m_ScaleBest, wxString::Format(_("The criteria (%g) is below the lower limit (%g)..."), sqrt(se), m_ScaleBest));
-
-    return sqrt(se);
+    return sqrt(se); // Can be NaN
 
 }
