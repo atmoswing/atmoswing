@@ -491,44 +491,41 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 
     // Loop over the years
     int counter = 0;
-    for (int i_year=firstYear; i_year<=lastYear; i_year++)
+    for (int year=firstYear; year<=lastYear; year++)
     {
-        // Get the interval boundaries
-        TimeStruct adaptedForecastDateStruct = forecastDateStruct;
-        adaptedForecastDateStruct.year = i_year;
-        double currentStart = GetMJD(adaptedForecastDateStruct)-m_IntervalDays;
-        double currentEnd = GetMJD(adaptedForecastDateStruct)+m_IntervalDays;
-
-        for (double thisTimeStep=currentStart; thisTimeStep<=currentEnd; thisTimeStep+=m_TimeStepDays)
+        // Check for reserved years 
+        if (HasForbiddenYears() && IsYearForbidden(year))
         {
-            if (thisTimeStep>=m_Start && thisTimeStep<=m_End)
-            {
-                if (thisTimeStep<excludestart || thisTimeStep>excludeend)
-                {
-                    wxASSERT(counter<totLength);
+            continue;
+        }
+        else
+        {
+            // Get the interval boundaries
+            TimeStruct adaptedForecastDateStruct = forecastDateStruct;
+            adaptedForecastDateStruct.year = year;
+            double currentStart = GetMJD(adaptedForecastDateStruct)-m_IntervalDays;
+            double currentEnd = GetMJD(adaptedForecastDateStruct)+m_IntervalDays;
 
-                    if (HasForbiddenYears())
+            for (double thisTimeStep=currentStart; thisTimeStep<=currentEnd; thisTimeStep+=m_TimeStepDays)
+            {
+                if (thisTimeStep>=m_Start && thisTimeStep<=m_End)
+                {
+                    if (thisTimeStep<excludestart || thisTimeStep>excludeend)
                     {
-                        if (!IsYearForbidden(GetYear(thisTimeStep)))
-                        {
-                            m_TimeArray[counter] = thisTimeStep;
-                            counter++;
-                        }
-                    }
-                    else
-                    {
+                        wxASSERT(counter<totLength);
+
                         m_TimeArray[counter] = thisTimeStep;
                         counter++;
-                    }
 
-                    #ifdef _DEBUG
-                        if(counter>1)
-                        {
-                            wxASSERT_MSG(m_TimeArray[counter-1]>m_TimeArray[counter-2], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"),
-                                                                                                   counter-1, asTime::GetStringTime(m_TimeArray[counter-1]).c_str(),
-                                                                                                   counter-2, asTime::GetStringTime(m_TimeArray[counter-2])).c_str());
-                        }
-                    #endif
+                        #ifdef _DEBUG
+                            if(counter>1)
+                            {
+                                wxASSERT_MSG(m_TimeArray[counter-1]>m_TimeArray[counter-2], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"),
+                                                                                                       counter-1, asTime::GetStringTime(m_TimeArray[counter-1]).c_str(),
+                                                                                                       counter-2, asTime::GetStringTime(m_TimeArray[counter-2])).c_str());
+                            }
+                        #endif
+                    }
                 }
             }
         }
