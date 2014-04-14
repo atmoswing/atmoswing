@@ -50,12 +50,6 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
     wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
     wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
 
-    if (rowsNb==0 || colsNb==0)
-    {
-        rowsNb = refData.rows();
-        colsNb = refData.cols();
-    }
-
     float rd = 0;
 
     switch (m_LinAlgebraMethod)
