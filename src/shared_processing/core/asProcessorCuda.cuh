@@ -29,14 +29,14 @@
 #define ASPROCESSORCUDA_H
 
 #define USE_THRUST 0
-#define USE_PINNED_MEM 1
+#define USE_PINNED_MEM 0
 
 #define STRUCT_MAX_SIZE 2
 
 #include <vector>
 
 #if USE_THRUST==0
-    struct cudaPredictorsMetaDataStruct {
+    struct cudaPredictorsDataPropStruct {
         int ptorsNb;
         int rowsNb[STRUCT_MAX_SIZE];
         int colsNb[STRUCT_MAX_SIZE];
@@ -52,10 +52,11 @@ class asProcessorCuda
 {
 public:
 
-    static bool ProcessCriteria(std::vector < float* > &vpTargData,
-                                std::vector < std::vector < float* > > &vvpArchData,
-                                std::vector < float > &criteriaValues,
-                                int size,
+    static bool ProcessCriteria(std::vector < std::vector < float* > > &data,
+                                std::vector < int > &indicesTarg,
+                                std::vector < std::vector < int > > &indicesArch,
+                                std::vector < std::vector < float > > &resultingCriteria,
+                                std::vector < int > &lengths,
                                 std::vector < int > &colsNb,
                                 std::vector < int > &rowsNb,
                                 std::vector < float > &weights);
