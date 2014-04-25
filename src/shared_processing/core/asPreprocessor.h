@@ -39,12 +39,6 @@ class asPreprocessor: public wxObject
 {
 public:
 
-    enum Preprocesses //!< Enumaration of integrated preprocesses
-    {
-        Gradients, // for S1 (Teweles-Wobus)
-        Multiplication // Multiplication
-    };
-
     static bool Preprocess(std::vector < asDataPredictorArchive* > predictors, const wxString& method, asDataPredictor *result);
     static bool Preprocess(std::vector < asDataPredictorRealtime* > predictors, const wxString& method, asDataPredictor *result);
     static bool Preprocess(std::vector < asDataPredictor* > predictors, const wxString& method, asDataPredictor *result);
