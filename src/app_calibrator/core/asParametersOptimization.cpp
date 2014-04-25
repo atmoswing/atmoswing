@@ -450,7 +450,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                             preprocTimeHours.push_back(h);
                         }
                     }
-                    else if (method.IsSameAs("Multiply"))
+                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
                     {
                         if (preprocSize!=2)
                         {
