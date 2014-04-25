@@ -450,6 +450,22 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                             preprocTimeHours.push_back(h);
                         }
                     }
+                    else if (method.IsSameAs("Multiply"))
+                    {
+                        if (preprocSize!=2)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+
+                        for (double h=GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
+                             h<=GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0);
+                             h+=GetPreprocessTimeHoursIteration(i_step, i_ptor, 0))
+                        {
+                            preprocTimeHours.push_back(h);
+                        }
+                    }
                     else
                     {
                         asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
