@@ -557,7 +557,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
             break;
         }
-#define USE_CUDA
+
         #ifdef USE_CUDA
         case (asCUDA): // Based on the asFULL_ARRAY method
         {
