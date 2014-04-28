@@ -29,7 +29,7 @@
 #define ASPROCESSORCUDA_H
 
 #define USE_THRUST 0
-#define USE_PINNED_MEM 0
+#define USE_PINNED_MEM 1
 
 #define STRUCT_MAX_SIZE 2
 

@@ -106,16 +106,22 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
             for (int i_ptor=0; i_ptor<dataProp.ptorsNb; i_ptor++)
             {
                 float dividend = 0, divisor = 0;
-
+				
                 for (int i=0; i<dataProp.rowsNb[i_ptor]; i++)
                 {
+					/*
                     for (int j=0; j<dataProp.colsNb[i_ptor]; j++)
                     {
                         int subindex = dataProp.indexStart[i_ptor] + i * dataProp.colsNb[i_ptor] + j;
 
                         dividend += abs(data[targIndexBase + subindex] - data[archIndexBase + subindex]);
                         divisor += max(abs(data[targIndexBase + subindex]), abs(data[archIndexBase + subindex]));
-                    }
+                    }*/
+
+					int subindex = dataProp.indexStart[i_ptor] + i;
+
+					dividend += abs(data[targIndexBase + subindex] - data[archIndexBase + subindex]);
+                    divisor += max(abs(data[targIndexBase + subindex]), abs(data[archIndexBase + subindex]));
                 }
 
                 criteria[baseIndex + i_cand] += dataProp.weights[i_ptor] * 100.0f * (dividend / divisor);
@@ -199,6 +205,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // Error var
     cudaError_t cudaStatus;
     bool hasError = false;
+
+	// Set flags
+	//cudaSetDeviceFlags( cudaDeviceMapHost );
 
     // Count the devices
     int devicesCount = 0;
@@ -287,19 +296,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     int sizeIndicesArch = lengthsSum * sizeof(int);
     int sizeIndexStart = lengths.size() * sizeof(int);
 
-
-
-    printf("sizeData=%d Mb\n", sizeData/1048576);
-    printf("sizeCriteria=%d Mb\n", sizeCriteria/1048576);
-    printf("sizeIndicesTarg=%d Mb\n", sizeIndicesTarg/1048576);
-    printf("sizeIndicesArch=%d Mb\n", sizeIndicesArch/1048576);
-
-
-
     // Create streams
-    const int nStreams = 4;
-    const int threadsPerBlock = 256;
-    int streamSizeData = ceil((float)data.size()/(float)nStreams);
+    const int nStreams = 20; // 20
+    const int threadsPerBlock = 8; // 8
     int streamSizeIndices = ceil((float)lengths.size()/(float)nStreams);
     cudaStream_t stream[nStreams];
     for (int i=0; i<nStreams; i++)
@@ -307,35 +306,47 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         cudaStreamCreate(&stream[i]);
     }
 
-    // Alloc space for host copies of data
+    // Host and device pointers
     float *arrCriteria, *arrData;
     int *arrIndicesTarg = &indicesTarg[0];
     int *arrIndicesArch;
     int *arrIndexStart = &indexStart[0];
+    float *devData, *devCriteria;
+    int *devIndicesTarg, *devIndicesArch, *devIndexStart;
+
+	// Alloc space for host copies of data
 
     #if USE_PINNED_MEM
 
         // See http://devblogs.nvidia.com/parallelforall/how-optimize-data-transfers-cuda-cc/
 
-        cudaStatus = cudaMallocHost((void**)&arrTargData, sizeTargData);
+        cudaStatus = cudaHostAlloc((void**)&arrData, data.size() * dataProp.totPtsNb * sizeof(float),  cudaHostAllocDefault);
         if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "cudaMallocHost failed for the target data!\n");
+            fprintf(stderr, "cudaMallocHost failed for the data!\n");
             hasError = true;
             goto cleanup;
         }
 
-        cudaStatus = cudaMallocHost((void**)&arrArchData, sizeArchData);
+        cudaStatus = cudaHostAlloc((void**)&arrIndicesArch, lengthsSum * sizeof(int), cudaHostAllocDefault);
         if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "cudaMallocHost failed for the archive data!\n");
+            fprintf(stderr, "cudaMallocHost failed for arrIndicesArch!\n");
             hasError = true;
             goto cleanup;
         }
+		/*
+        cudaStatus = cudaHostAlloc((void**)&arrCriteria, lengthsSum * sizeof(float), cudaHostAllocDefault);
+        if (cudaStatus != cudaSuccess) {
+            fprintf(stderr, "cudaMallocHost failed for arrCriteria!\n");
+            hasError = true;
+            goto cleanup;
+        }*/
+		arrCriteria = new float[lengthsSum];
 
     #else // USE_PINNED_MEM
 
         arrData = new float[data.size() * dataProp.totPtsNb];
         arrIndicesArch = new int[lengthsSum];
-        arrCriteria = new float[lengthsSum];
+		arrCriteria = new float[lengthsSum];
 
     #endif // USE_PINNED_MEM
 
@@ -362,9 +373,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     }
 
     // Alloc space for device copies of data
-    float *devData, *devCriteria;
-    int *devIndicesTarg, *devIndicesArch, *devIndexStart;
-
     cudaStatus = cudaMalloc(&devData, sizeData);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMalloc failed for the data!\n");
@@ -410,39 +418,27 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // For target indices and lengths, no need of async due to its small size
     cudaStatus = cudaMemcpy(devIndicesTarg, arrIndicesTarg, sizeIndicesTarg, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed for the data!\n");
+        fprintf(stderr, "cudaMemcpy failed for the target indices!\n");
         hasError = true;
         goto cleanup;
     }
 
     cudaStatus = cudaMemcpy(devIndexStart, arrIndexStart, sizeIndexStart, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed for the start indices!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
+	// Do not use async for the predictor data, as the first request can access any data
+    cudaStatus = cudaMemcpy(devData, arrData, sizeData, cudaMemcpyHostToDevice);
+    if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the data!\n");
         hasError = true;
         goto cleanup;
     }
 
-    // Copy predictor data to device
-    for (int i=0; i<nStreams; i++)
-    {
-        int offset = i*streamSizeData*dataProp.totPtsNb;
-        int streamBytes = streamSizeData*dataProp.totPtsNb*sizeof(float);
-
-        // Correct the size of the last segment
-        if (i==nStreams-1)
-        {
-            streamBytes = (data.size()-i*streamSizeData)*dataProp.totPtsNb*sizeof(float);
-        }
-
-        cudaStatus = cudaMemcpyAsync(&devData[offset], &arrData[offset], streamBytes, cudaMemcpyHostToDevice, stream[i]);
-        if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "cudaMemcpyAsync failed for the data (stream %d/%d)!\n", i, nStreams);
-            hasError = true;
-            goto cleanup;
-        }
-    }
-
-    // Copy other data to device
+    // Copy archive indices to device
     for (int i=0; i<nStreams; i++)
     {
         int offset = indexStart[i*streamSizeIndices];
@@ -464,7 +460,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
             goto cleanup;
         }
     }
-
+	
     // Launch kernel on GPU
     for (int i=0; i<nStreams; i++)
     {
@@ -473,8 +469,12 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         int totSize = lengths.size();
         gpuPredictorCriteriaS1grads<<<blocksNb,threadsPerBlock, 0, stream[i]>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, totSize, offset);
     }
+/*	int totSize = lengths.size();
+	gpuPredictorCriteriaS1grads<<<totSize/threadsPerBlock,threadsPerBlock>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, totSize, 0);
+	cudaDeviceSynchronize();*/
 
     // Check for any errors launching the kernel
+	//cudaDeviceSynchronize();
     cudaStatus = cudaGetLastError();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
@@ -500,6 +500,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         cudaStatus = cudaMemcpyAsync(&arrCriteria[offset], &devCriteria[offset], streamBytes, cudaMemcpyDeviceToHost, stream[i]);
         if (cudaStatus != cudaSuccess) {
             fprintf(stderr, "cudaMemcpyAsync failed for the results (stream %d/%d)!\n", i, nStreams);
+			fprintf(stderr, "CUDA error: %s\n", cudaGetErrorString(cudaStatus));
             hasError = true;
             goto cleanup;
         }
@@ -515,15 +516,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
             tmpCrit[j_len] = arrCriteria[indexStart[i_len] + j_len];
         }
         resultingCriteria[i_len] = tmpCrit;
-
-
-
-        for (int ii=0; ii<tmpCrit.size(); ii++)
-        {
-            printf("tmpCrit[%d] = %f\n", ii, tmpCrit[ii]);
-        }
-
-
     }
 
     // Cleanup
@@ -535,16 +527,14 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     cudaFree(devIndexStart);
 
     #if USE_PINNED_MEM
-
-        cudaFreeHost(arrTargData);
-        cudaFreeHost(arrArchData);
-
+        cudaFreeHost(arrData);
+        cudaFreeHost(arrIndicesArch);
+        //cudaFreeHost(arrCriteria);
+		delete[] arrCriteria;
     #else
-
         delete[] arrData;
         delete[] arrIndicesArch;
-        delete[] arrCriteria;
-
+		delete[] arrCriteria;
     #endif // USE_PINNED_MEM
 
     for (int i=0; i<nStreams; i++)
