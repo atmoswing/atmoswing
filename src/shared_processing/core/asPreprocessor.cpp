@@ -75,7 +75,7 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictor* > predictors, con
     {
         return PreprocessDifference(predictors, result);
     }
-    else if (method.IsSameAs("Multiplication"))
+    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
     {
         return PreprocessMultiplication(predictors, result);
     }
