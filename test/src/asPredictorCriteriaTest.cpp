@@ -177,26 +177,26 @@ TEST(ProcessS1)
         wxConfigBase *pConfig = wxFileConfig::Get();
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000);
-        resZ500 = criteria->Assess(RefZ500, CandZ500);
+        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
+        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
         res = (resZ500+resZ1000)/2;
         CHECK_CLOSE(critS1[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000);
-        resZ500 = criteria->Assess(RefZ500, CandZ500);
+        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
+        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
         res = (resZ500+resZ1000)/2;
         CHECK_CLOSE(critS1[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000);
-        resZ500 = criteria->Assess(RefZ500, CandZ500);
+        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
+        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
         res = (resZ500+resZ1000)/2;
         CHECK_CLOSE(critS1[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000);
-        resZ500 = criteria->Assess(RefZ500, CandZ500);
+        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
+        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
         res = (resZ500+resZ1000)/2;
         CHECK_CLOSE(critS1[i_cand], res, 0.05);
     }
@@ -277,22 +277,22 @@ TEST(ProcessS1preprocessed)
         wxConfigBase *pConfig = wxFileConfig::Get();
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal);
+        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         CHECK_CLOSE(S1Original, S1Preproc, 0.0001);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal);
+        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         CHECK_CLOSE(S1Original, S1Preproc, 0.0001);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal);
+        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         CHECK_CLOSE(S1Original, S1Preproc, 0.0001);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal);
+        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         CHECK_CLOSE(S1Original, S1Preproc, 0.0001);
     }
@@ -505,19 +505,19 @@ TEST(ProcessRSE)
         wxConfigBase *pConfig = wxFileConfig::Get();
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteria->Assess(RefMulti, CandMulti);
+        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteria->Assess(RefMulti, CandMulti);
+        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteria->Assess(RefMulti, CandMulti);
+        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteria->Assess(RefMulti, CandMulti);
+        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
     }
 
@@ -734,26 +734,26 @@ TEST(ProcessRMSE)
         wxConfigBase *pConfig = wxFileConfig::Get();
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h);
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h);
+        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
+        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
         res = (res12h+res24h)/2;
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h);
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h);
+        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
+        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
         res = (res12h+res24h)/2;
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h);
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h);
+        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
+        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
         res = (res12h+res24h)/2;
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h);
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h);
+        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
+        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
         res = (res12h+res24h)/2;
         CHECK_CLOSE(critRMSE[i_cand], res, 0.05);
     }
@@ -905,16 +905,16 @@ TEST(ProcessDifferences)
     for (int i=0;i<11;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaSAD->Assess(RefData[i], CandData[i]);
+        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaSAD->Assess(RefData[i], CandData[i]);
+        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaSAD->Assess(RefData[i], CandData[i]);
+        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaSAD->Assess(RefData[i], CandData[i]);
+        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
     }
 
@@ -939,16 +939,16 @@ TEST(ProcessDifferences)
     for (int i=0;i<11;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaMD->Assess(RefData[i], CandData[i]);
+        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaMD->Assess(RefData[i], CandData[i]);
+        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaMD->Assess(RefData[i], CandData[i]);
+        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaMD->Assess(RefData[i], CandData[i]);
+        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.00001);
     }
 
@@ -973,32 +973,32 @@ TEST(ProcessDifferences)
     for (int i=0;i<4;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
     }
 
     for (int i=5;i<11;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.0001);
     }
 
@@ -1023,48 +1023,48 @@ TEST(ProcessDifferences)
     for (int i=0;i<4;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
     }
 
     for (int i=5;i<9;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
     }
 
     for (int i=10;i<11;i++)
     {
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i]);
+        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         CHECK_CLOSE(Results[i], res, 0.001);
     }
 
