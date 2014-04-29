@@ -48,7 +48,7 @@ public:
      * \param evalData The day to assess
      * \return The Criteria
      */
-    float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb=0, int colsNb=0);
+    float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb);
 
 
 protected:

@@ -66,12 +66,6 @@ float asPredictorCriteriaS1weights::Assess(const Array2DFloat &refData, const Ar
     wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
     wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
 
-    if (rowsNb==0 || colsNb==0)
-    {
-        rowsNb = refData.rows();
-        colsNb = refData.cols();
-    }
-
     float dividend = 0, divisor = 0;
 
     switch (m_LinAlgebraMethod)
@@ -133,24 +127,9 @@ float asPredictorCriteriaS1weights::Assess(const Array2DFloat &refData, const Ar
         }
     }
 
-	if (asTools::IsNaN(dividend) || asTools::IsNaN(divisor))
-    {
-        // Message disabled here as it is already processed in the processor (and not well handled here in multithreading mode).
-        // asLogWarning(_("NaNs were found in the data."));
-        return NaNFloat;
-    }
-
     if (divisor>0)
     {
-        wxASSERT(dividend>=0);
-        wxASSERT(divisor>0);
-
-        float val = (float)100*(dividend/divisor);
-
-        wxASSERT(val<=m_ScaleWorst);
-        wxASSERT(val>=m_ScaleBest);
-
-        return val;
+        return (float)100*(dividend/divisor); // Can be NaN
     }else {
         if (dividend==0)
         {
@@ -159,7 +138,6 @@ float asPredictorCriteriaS1weights::Assess(const Array2DFloat &refData, const Ar
         }
         else
         {
-            asLogWarning(_("Division by zero in the predictor criteria."));
             return NaNFloat;
         }
     }

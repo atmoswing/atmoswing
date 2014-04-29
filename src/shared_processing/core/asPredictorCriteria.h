@@ -67,7 +67,7 @@ public:
      * \param evalData The day to assess
      * \return The Criteria
      */
-    virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb=0, int colsNb=0) = 0;
+    virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) = 0;
 
     /** Access m_Name
      * \return The current value of m_Name
