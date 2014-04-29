@@ -491,13 +491,38 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 
     // Loop over the years
     int counter = 0;
-    for (int i_year=firstYear; i_year<=lastYear; i_year++)
+    for (int year=firstYear; year<=lastYear; year++)
     {
         // Get the interval boundaries
         TimeStruct adaptedForecastDateStruct = forecastDateStruct;
-        adaptedForecastDateStruct.year = i_year;
+        adaptedForecastDateStruct.year = year;
         double currentStart = GetMJD(adaptedForecastDateStruct)-m_IntervalDays;
         double currentEnd = GetMJD(adaptedForecastDateStruct)+m_IntervalDays;
+        
+        // Check for forbiden years (validation)
+        if (HasForbiddenYears())
+        {
+            int firstYear = GetYear(currentStart);
+            int secondYear = GetYear(currentEnd);
+            
+            if (IsYearForbidden(firstYear))
+            {
+                double firstYearEnd = GetMJD(firstYear, 12, 31, 23, 59);
+                while (currentStart<=firstYearEnd)
+                {
+                    currentStart += m_TimeStepDays;
+                }
+            }
+            if (IsYearForbidden(secondYear))
+            {
+                double secondYearStart = GetMJD(secondYear, 1, 1, 0, 0);
+                while (currentEnd>=secondYearStart)
+                {
+                    currentEnd -= m_TimeStepDays;
+                }
+                
+            }
+        }
 
         for (double thisTimeStep=currentStart; thisTimeStep<=currentEnd; thisTimeStep+=m_TimeStepDays)
         {
@@ -507,19 +532,8 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
                 {
                     wxASSERT(counter<totLength);
 
-                    if (HasForbiddenYears())
-                    {
-                        if (!IsYearForbidden(GetYear(thisTimeStep)))
-                        {
-                            m_TimeArray[counter] = thisTimeStep;
-                            counter++;
-                        }
-                    }
-                    else
-                    {
-                        m_TimeArray[counter] = thisTimeStep;
-                        counter++;
-                    }
+                    m_TimeArray[counter] = thisTimeStep;
+                    counter++;
 
                     #ifdef _DEBUG
                         if(counter>1)
