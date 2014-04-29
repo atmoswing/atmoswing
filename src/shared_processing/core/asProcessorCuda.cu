@@ -36,52 +36,10 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
-#if USE_THRUST
-    #include <thrust/host_vector.h>
-    #include <thrust/device_vector.h>
-    #include <thrust/transform.h>
-    #include <thrust/for_each.h>
-    #include <thrust/fill.h>
-    #include <thrust/iterator/zip_iterator.h>
-#else // USE_THRUST
-    #include <cuda.h>
-    #include <cuda_runtime.h>
-    #include <device_launch_parameters.h>
-#endif // USE_THRUST
-
-
-#if USE_THRUST
-
-struct gpuPredictorCriteriaS1grads
-{
-    template <typename Tuple>
-    __host__ __device__
-    void operator()(Tuple t)
-    {
-        // 0: targData, 1: archData, 2: dividend, 3: divisor
-        // Dividend
-        thrust::get<2>(t) = abs(thrust::get<0>(t)-thrust::get<1>(t));
-        // Divisor
-        thrust::get<3>(t) = thrust::max(abs(thrust::get<0>(t)), abs(thrust::get<1>(t)));
-    }
-};
-
-struct gpuAddToCriteriaS1grads
-{
-    const float weight;
-    gpuAddToCriteriaS1grads(float _weight) : weight(_weight) {}
-
-    template <typename Tuple>
-    __host__ __device__
-    void operator()(Tuple t)
-    {
-        // 0: reducedDividend, 1: reducedDivisor, 2: resultingCriteria
-        thrust::get<2>(t) += weight*100.0f*(thrust::get<0>(t)/thrust::get<1>(t));
-    }
-};
-
-#else // USE_THRUST
 
 __global__ void gpuPredictorCriteriaS1grads(float *criteria,
                                             const float *data,
@@ -130,7 +88,6 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
     }
 }
 
-#endif // USE_THRUST
 
 bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &data,
                                       std::vector < int > &indicesTarg,
@@ -141,67 +98,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
                                       std::vector < int > &rowsNb,
                                       std::vector < float > &weights)
 {
-
-    #if USE_THRUST
-
-    // Allocate storage
-    thrust::device_vector<float> resultingCriteria(size, 0);
-    thrust::device_vector<float> reducedDivisor(size);
-    thrust::device_vector<float> reducedDividend(size);
-    thrust::device_vector<int> reducedKeys(size);
-
-    // Number of predictors
-    int ptorsNb = (int)weights.size();
-
-    // Loop over every predictor
-    for (int i_ptor=0; i_ptor<ptorsNb; i_ptor++)
-    {
-        // Number of points
-        int ptsNb = colsNb[i_ptor]*rowsNb[i_ptor];
-
-        // Allocate storage
-        thrust::host_vector<float> hostTargData(size*ptsNb);
-        thrust::host_vector<float> hostArchData(size*ptsNb);
-        thrust::device_vector<float> devTargData(size*ptsNb);
-        thrust::device_vector<float> devArchData(size*ptsNb);
-        thrust::device_vector<float> devDividend(size*ptsNb);
-        thrust::device_vector<float> devDivisor(size*ptsNb);
-        thrust::device_vector<int> keys(size*ptsNb);
-
-        // Populate host vectors (to do only 1 copy to the device)
-        for (int i_day=0; i_day<size; i_day++)
-        {
-            int destinationIndex = i_day*ptsNb;
-            thrust::copy(vpTargData[i_ptor], vpTargData[i_ptor]+ptsNb, hostTargData.begin()+destinationIndex);
-            thrust::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor]+ptsNb, hostArchData.begin()+destinationIndex);
-            thrust::fill(keys.begin()+destinationIndex, keys.begin()+destinationIndex+ptsNb, i_day);
-        }
-
-        // Copy data to device
-        devTargData = hostTargData;
-        devArchData = hostArchData;
-
-        // Process dividend and divisor
-        thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(devTargData.begin(), devArchData.begin(), devDividend.begin(), devDivisor.begin())),
-                         thrust::make_zip_iterator(thrust::make_tuple(devTargData.end(), devArchData.end(), devDividend.end(), devDivisor.end())),
-                         gpuPredictorCriteriaS1grads());
-
-        // Proceed to reduction
-        thrust::reduce_by_key(keys.begin(), keys.end(), devDivisor.begin(), reducedKeys.begin(), reducedDivisor.begin());
-        thrust::reduce_by_key(keys.begin(), keys.end(), devDividend.begin(), reducedKeys.begin(), reducedDividend.begin());
-
-        // Add to the resulting criteria
-        thrust::for_each(thrust::make_zip_iterator(thrust::make_tuple(reducedDividend.begin(), reducedDivisor.begin(), resultingCriteria.begin())),
-                         thrust::make_zip_iterator(thrust::make_tuple(reducedDividend.end(), reducedDivisor.end(), resultingCriteria.end())),
-                         gpuAddToCriteriaS1grads(weights[i_ptor]));
-    }
-
-    // Copy to the final container
-    thrust::copy(resultingCriteria.begin(), resultingCriteria.end(), criteriaValues.begin());
-
-
-    #else // USE_THRUST
-
     // Error var
     cudaError_t cudaStatus;
     bool hasError = false;
@@ -543,8 +439,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     }
 
     if (hasError) return false;
-
-    #endif // USE_THRUST
 
     return true;
 }
