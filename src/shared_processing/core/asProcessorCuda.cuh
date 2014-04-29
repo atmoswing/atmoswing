@@ -28,10 +28,9 @@
 #ifndef ASPROCESSORCUDA_H
 #define ASPROCESSORCUDA_H
 
-#define USE_THRUST 0
 #define USE_PINNED_MEM 1
 
-#define STRUCT_MAX_SIZE 2
+#define STRUCT_MAX_SIZE 4
 
 #include <vector>
 
