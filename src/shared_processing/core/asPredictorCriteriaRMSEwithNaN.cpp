@@ -50,12 +50,6 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
     wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
     wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
 
-    if (rowsNb==0 || colsNb==0)
-    {
-        rowsNb = refData.rows();
-        colsNb = refData.cols();
-    }
-
     wxASSERT(refData.rows()==rowsNb);
     wxASSERT(refData.cols()==colsNb);
     wxASSERT(evalData.rows()==rowsNb);
@@ -105,15 +99,7 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
         return NaNFloat;
     }
 
-    if (asTools::IsNaN(mse))
-    {
-        return NaNFloat;
-    }
-
     mse /= finalsize;
 
-    wxASSERT(mse>=0);
-    wxASSERT_MSG(sqrt(mse)>=m_ScaleBest, _("The criteria is below the lower limit..."));
-
-    return sqrt(mse);
+    return sqrt(mse); // Can be NaN
 }
