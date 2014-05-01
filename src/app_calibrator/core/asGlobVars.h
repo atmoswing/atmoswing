@@ -42,6 +42,7 @@ extern bool g_AppViewer;
 extern bool g_AppForecaster;
 extern bool g_DistributionVersion;
 extern bool g_Local;
+extern bool g_ReloadPrevResults;
 extern int g_RunNb;
 #if wxUSE_GUI
 extern wxColour g_LinuxBgColour;

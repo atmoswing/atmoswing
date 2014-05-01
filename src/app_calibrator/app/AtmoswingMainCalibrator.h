@@ -26,8 +26,8 @@
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
 
-#ifndef AtmoswingMAINFORECATSER_H
-#define AtmoswingMAINFORECATSER_H
+#ifndef ATMOSWINGMAINFORECATSER_H
+#define ATMOSWINGMAINFORECATSER_H
 
 //#include "version.h"
 #include "asIncludes.h"
@@ -47,4 +47,4 @@ private:
     void SetDefaultOptions();
 };
 
-#endif // AtmoswingMAINFORECATSER_H
+#endif // ATMOSWINGMAINFORECATSER_H

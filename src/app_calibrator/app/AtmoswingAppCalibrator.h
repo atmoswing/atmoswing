@@ -61,6 +61,7 @@ private:
     int m_PredictandStationId;
     wxString m_PredictorsDir;
     wxString m_CalibMethod;
+    bool m_ForceQuit;
     #if wxUSE_GUI
         wxSingleInstanceChecker* m_SingleInstanceChecker;
     #endif

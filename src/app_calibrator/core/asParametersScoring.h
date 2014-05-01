@@ -144,6 +144,8 @@ public:
 
     wxString Print();
 
+    bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
+
     bool SetCalibrationYearStart(int val)
     {
         m_CalibrationStart = asTime::GetMJD(val, 1, 1);
