@@ -18,7 +18,7 @@ set(VERSION_MINOR "3")
 set(VERSION_PATCH "0")
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
-set(USE_GUI 1 CACHE BOOL "Sould we build AtmoswingCalibrator with a GUI ?" )
+set(USE_GUI 1 CACHE BOOL "Sould we build AtmoSwingCalibrator with a GUI ?" )
 if (WIN32)
     set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
 endif (WIN32)

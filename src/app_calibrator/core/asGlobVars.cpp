@@ -36,6 +36,7 @@ bool g_GuiMode = true;
 bool g_AppViewer = false;
 bool g_AppForecaster = false;
 bool g_Local = false;
+bool g_ReloadPrevResults = false;
 int g_RunNb = 0;
 #ifdef DISTRIBUTION_VERSION
     bool g_DistributionVersion = true;

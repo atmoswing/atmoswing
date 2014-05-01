@@ -598,3 +598,35 @@ wxString asParametersScoring::Print()
 
     return content;
 }
+
+bool asParametersScoring::GetValuesFromString(wxString stringVals)
+{
+    // Get the parameters values
+    asParameters::GetValuesFromString(stringVals);
+
+    int iLeft, iRight;
+    wxString strVal;
+    double dVal;
+    long lVal;
+
+    // Check that the score is similar
+    iLeft = stringVals.Find("Score");
+    stringVals = stringVals.SubString(iLeft+7, stringVals.Length());
+    iLeft = 0;
+    iRight = stringVals.Find("\t");
+    strVal = stringVals.SubString(iLeft, iRight-1);
+    if (!strVal.IsSameAs(GetForecastScoreName()))
+    {
+        asLogError(_("The current score doesn't correspond to the previous one."));
+        return false;
+    }
+
+    // Analogs number
+    iLeft = stringVals.Find("Anb");
+    iRight = stringVals.Find("Calib");
+    strVal = stringVals.SubString(iLeft+4, iRight-2);
+    strVal.ToLong(&lVal);
+    SetForecastScoreAnalogsNumber(int(lVal));
+
+    return true;
+}

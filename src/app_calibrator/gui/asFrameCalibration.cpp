@@ -194,7 +194,7 @@ void asFrameCalibration::LoadOptions()
     m_FilePickerPredictand->SetPath(PredictandDBFilePath);
     wxString PredictorDir = pConfig->Read("/StandardPaths/PredictorDir", wxEmptyString);
     m_DirPickerPredictor->SetPath(PredictorDir);
-    wxString CalibrationResultsDir = pConfig->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDocumentsDir() + "Atmoswing" + DS + "Calibration");
+    wxString CalibrationResultsDir = pConfig->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
     m_DirPickerCalibrationResults->SetPath(CalibrationResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, false);
