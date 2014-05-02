@@ -58,32 +58,28 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
 
         for (int i_cand=0; i_cand<nbCandidates; i_cand++)
         {
-            criteria[baseIndex + i_cand] = 0;
+            float criterion = 0;
             int archIndexBase = indicesArch[baseIndex + i_cand] * dataProp.totPtsNb;
 
             for (int i_ptor=0; i_ptor<dataProp.ptorsNb; i_ptor++)
             {
                 float dividend = 0, divisor = 0;
+				int targIndex = targIndexBase + dataProp.indexStart[i_ptor];
+				int archIndex = archIndexBase + dataProp.indexStart[i_ptor];
 				
-                for (int i=0; i<dataProp.rowsNb[i_ptor]; i++)
+                for (int i=0; i<dataProp.ptsNb[i_ptor]; i++)
                 {
-					/*
-                    for (int j=0; j<dataProp.colsNb[i_ptor]; j++)
-                    {
-                        int subindex = dataProp.indexStart[i_ptor] + i * dataProp.colsNb[i_ptor] + j;
+					dividend += abs(data[targIndex] - data[archIndex]);
+                    divisor += max(abs(data[targIndex]), abs(data[archIndex]));
 
-                        dividend += abs(data[targIndexBase + subindex] - data[archIndexBase + subindex]);
-                        divisor += max(abs(data[targIndexBase + subindex]), abs(data[archIndexBase + subindex]));
-                    }*/
-
-					int subindex = dataProp.indexStart[i_ptor] + i;
-
-					dividend += abs(data[targIndexBase + subindex] - data[archIndexBase + subindex]);
-                    divisor += max(abs(data[targIndexBase + subindex]), abs(data[archIndexBase + subindex]));
+					targIndex++;
+					archIndex++;
                 }
 
-                criteria[baseIndex + i_cand] += dataProp.weights[i_ptor] * 100.0f * (dividend / divisor);
+                criterion += dataProp.weights[i_ptor] * 100.0f * (dividend / divisor);
             }
+
+			criteria[baseIndex + i_cand] = criterion;
         }
     }
 }
