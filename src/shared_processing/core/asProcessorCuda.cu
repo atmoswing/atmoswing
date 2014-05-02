@@ -181,8 +181,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     int sizeIndexStart = (lengths.size() + 1) * sizeof(int); // + 1 relative to lengths
 
     // Create streams
-    const int nStreams = 20; // 20
-    const int threadsPerBlock = 8; // 8
+    const int nStreams = 10;
+    const int threadsPerBlock = 8; // 8 optimal
 	// rowsNbPerStream must be dividable by nStreams and threadsPerBlock
     int rowsNbPerStream = ceil(float(lengths.size()) / float(nStreams*threadsPerBlock)) * threadsPerBlock;
 	// Streams
@@ -298,6 +298,16 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
      * http://devblogs.nvidia.com/parallelforall/how-overlap-data-transfers-cuda-cc/
      */
 
+	// For the data, create its own stream
+	cudaStream_t streamData;
+    cudaStreamCreate(&streamData);
+    cudaStatus = cudaMemcpyAsync(devData, arrData, sizeData, cudaMemcpyHostToDevice, streamData);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMemcpy failed for the data!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
 	// No async for the indices as they don't use pinned memory
     cudaStatus = cudaMemcpy(devIndicesTarg, arrIndicesTarg, sizeIndicesTarg, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
@@ -309,16 +319,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     cudaStatus = cudaMemcpy(devIndexStart, arrIndexStart, sizeIndexStart, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the start indices!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-	// For the data, create its own stream
-	cudaStream_t streamData;
-    cudaStreamCreate(&streamData);
-    cudaStatus = cudaMemcpyAsync(devData, arrData, sizeData, cudaMemcpyHostToDevice, streamData);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed for the data!\n");
         hasError = true;
         goto cleanup;
     }
