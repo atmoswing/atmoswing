@@ -42,7 +42,6 @@
         int ptsNb[STRUCT_MAX_SIZE];
         int totPtsNb;
         int indexStart[STRUCT_MAX_SIZE];
-        int indexEnd[STRUCT_MAX_SIZE];
         float weights[STRUCT_MAX_SIZE];
     };
 #endif
