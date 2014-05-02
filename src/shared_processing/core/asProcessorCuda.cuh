@@ -30,7 +30,7 @@
 
 #define USE_PINNED_MEM 1
 
-#define STRUCT_MAX_SIZE 4
+#define STRUCT_MAX_SIZE 12
 
 #include <vector>
 

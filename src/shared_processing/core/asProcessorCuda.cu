@@ -54,21 +54,35 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
     {
 		// Find the target index
 		int i_targ = i_cand/(n_cand/n_targ) -1;
-		i_targ = min(i_targ, n_targ); // safe
+		i_targ = min(i_targ, n_targ);
 
-		// Check
+		// Check and correct
 		if (i_cand<indexStart[i_targ])
 		{
 			while (i_cand<indexStart[i_targ])
 			{
 				i_targ--;
+
+                if (i_targ<0)
+                {
+                    printf("Device error: The target index is < 0.");
+                    criteria[i_cand] = -9999;
+                    return;
+                }
 			}
 		}
-		if (i_cand>indexStart[i_targ+1])
+		if (i_cand>indexStart[i_targ+1]) // safe
 		{
 			while (i_cand>indexStart[i_targ+1])
 			{
 				i_targ++;
+
+                if (i_targ>=n_targ)
+                {
+                    printf("Device error: The target index is > n_targ.");
+                    criteria[i_cand] = -9999;
+                    return;
+                }
 			}
 		}
 		
@@ -96,39 +110,6 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
         }
 
 		criteria[i_cand] = criterion;
-
-
-
-		/*
-        int baseIndex = indexStart[i_targ];
-        int nbCandidates = indexStart[i_targ+1] - indexStart[i_targ]; // Safe: indexStart has size of n+1
-        int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
-
-        for (int i_cand=0; i_cand<nbCandidates; i_cand++)
-        {
-            float criterion = 0;
-            int archIndexBase = indicesArch[baseIndex + i_cand] * dataProp.totPtsNb;
-
-            for (int i_ptor=0; i_ptor<dataProp.ptorsNb; i_ptor++)
-            {
-                float dividend = 0, divisor = 0;
-				int targIndex = targIndexBase + dataProp.indexStart[i_ptor];
-				int archIndex = archIndexBase + dataProp.indexStart[i_ptor];
-				
-                for (int i=0; i<dataProp.ptsNb[i_ptor]; i++)
-                {
-					dividend += abs(data[targIndex] - data[archIndex]);
-                    divisor += max(abs(data[targIndex]), abs(data[archIndex]));
-
-					targIndex++;
-					archIndex++;
-                }
-
-                criterion += dataProp.weights[i_ptor] * 100.0f * (dividend / divisor);
-            }
-
-			criteria[baseIndex + i_cand] = criterion;
-        }*/
     }
 }
 
@@ -230,7 +211,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
 
     // Create streams
     const int nStreams = 10;
-    const int threadsPerBlock = 8; // 8 optimal
+    const int threadsPerBlock = 8;
 	// rowsNbPerStream must be dividable by nStreams and threadsPerBlock
     int rowsNbPerStream = ceil(float(lengthsSum) / float(nStreams*threadsPerBlock)) * threadsPerBlock;
 	// Streams
@@ -382,7 +363,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         }
         else
         {
-            length = lengthsSum - rowsNbPerStream; // Last slice
+            length = lengthsSum - offset; // Last slice
         }
         int streamBytes = length*sizeof(int);
 
@@ -431,7 +412,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         }
         else
         {
-            length = lengthsSum - rowsNbPerStream; // Last slice
+            length = lengthsSum - offset; // Last slice
         }
         int streamBytes = length*sizeof(float);
 
