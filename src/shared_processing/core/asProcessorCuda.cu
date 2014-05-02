@@ -102,9 +102,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     cudaError_t cudaStatus;
     bool hasError = false;
 
-	// Set flags
-	//cudaSetDeviceFlags( cudaDeviceMapHost );
-
     // Count the devices
     int devicesCount = 0;
     cudaStatus = cudaGetDeviceCount(&devicesCount);
@@ -136,8 +133,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
             return false;
         }
 
-        //printf("device %d: %d Mb memory\n", i_dev, int(deviceProp.totalGlobalMem/1048576));
-
         // Compare memory
         if (deviceProp.totalGlobalMem>memSize)
         {
@@ -153,7 +148,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         return false;
     }
 
-    // Get the meta data
+    // Get the data structure
     cudaPredictorsDataPropStruct dataProp;
     dataProp.ptorsNb = (int)weights.size();
     if (dataProp.ptorsNb>STRUCT_MAX_SIZE)
@@ -168,13 +163,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     {
         dataProp.rowsNb[i_ptor] = rowsNb[i_ptor];
         dataProp.colsNb[i_ptor] = colsNb[i_ptor];
-
         dataProp.weights[i_ptor] = weights[i_ptor];
         dataProp.ptsNb[i_ptor] = colsNb[i_ptor] * rowsNb[i_ptor];
         dataProp.indexStart[i_ptor] = dataProp.totPtsNb;
-        dataProp.indexEnd[i_ptor] = dataProp.totPtsNb + dataProp.ptsNb[i_ptor] - 1;
         dataProp.totPtsNb += colsNb[i_ptor] * rowsNb[i_ptor];
-
     }
 
     // Sizes
@@ -190,12 +182,15 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     int sizeCriteria = lengthsSum * sizeof(float);
     int sizeIndicesTarg = lengths.size() * sizeof(int);
     int sizeIndicesArch = lengthsSum * sizeof(int);
-    int sizeIndexStart = lengths.size() * sizeof(int);
+    int sizeIndexStart = (lengths.size() + 1) * sizeof(int); // + 1 relative to lengths
 
     // Create streams
-    const int nStreams = 20; // 20
+    const int nStreams = 4; // 20
     const int threadsPerBlock = 8; // 8
-    int streamSizeIndices = ceil((float)lengths.size()/(float)nStreams);
+	// rowsNbPerStream must be dividable by nStreams and threadsPerBlock
+    int rowsNbPerStream = ceil((float)lengths.size()/(float)nStreams);
+	rowsNbPerStream = ceil((float)rowsNbPerStream/(float)threadsPerBlock) * threadsPerBlock;
+	// Streams
     cudaStream_t stream[nStreams];
     for (int i=0; i<nStreams; i++)
     {
@@ -245,7 +240,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
 		arrCriteria = new float[lengthsSum];
 
     #endif // USE_PINNED_MEM
-
 
     // Copy data in the new arrays
     for (int i_day=0; i_day<data.size(); i_day++)
@@ -310,8 +304,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
      * http://devblogs.nvidia.com/parallelforall/how-overlap-data-transfers-cuda-cc/
      */
 
-
-    // For target indices and lengths, no need of async due to its small size
+	// No async for the indices as they don't use pinned memory
     cudaStatus = cudaMemcpy(devIndicesTarg, arrIndicesTarg, sizeIndicesTarg, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the target indices!\n");
@@ -326,8 +319,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         goto cleanup;
     }
 
-	// Do not use async for the predictor data, as the first request can access any data
-    cudaStatus = cudaMemcpy(devData, arrData, sizeData, cudaMemcpyHostToDevice);
+	// For the data, create its own stream
+	cudaStream_t streamData;
+    cudaStreamCreate(&streamData);
+    cudaStatus = cudaMemcpyAsync(devData, arrData, sizeData, cudaMemcpyHostToDevice, streamData);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the data!\n");
         hasError = true;
@@ -337,15 +332,15 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // Copy archive indices to device
     for (int i=0; i<nStreams; i++)
     {
-        int offset = indexStart[i*streamSizeIndices];
+        int offset = indexStart[i*rowsNbPerStream];
         int length = 0;
         if (i<nStreams-1)
         {
-            length = indexStart[(i+1)*streamSizeIndices] - indexStart[i*streamSizeIndices];
+            length = indexStart[(i+1)*rowsNbPerStream] - offset;
         }
         else
         {
-            length = lengthsSum - indexStart[i*streamSizeIndices];
+            length = lengthsSum - offset; // Last slice
         }
         int streamBytes = length*sizeof(int);
 
@@ -356,21 +351,25 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
             goto cleanup;
         }
     }
-	
+
+	// Make sure the indices and the data are copied
+	cudaStatus = cudaStreamSynchronize(streamData);
+	if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaStreamSynchronize failed on streamData !\n");
+        hasError = true;
+        goto cleanup;
+    }
+
     // Launch kernel on GPU
     for (int i=0; i<nStreams; i++)
     {
-        int offset = i*streamSizeIndices;
-        int blocksNb = 1+streamSizeIndices/threadsPerBlock;
+        int offset = i*rowsNbPerStream;
+        int blocksNb = rowsNbPerStream/threadsPerBlock;
         int totSize = lengths.size();
         gpuPredictorCriteriaS1grads<<<blocksNb,threadsPerBlock, 0, stream[i]>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, totSize, offset);
     }
-/*	int totSize = lengths.size();
-	gpuPredictorCriteriaS1grads<<<totSize/threadsPerBlock,threadsPerBlock>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, totSize, 0);
-	cudaDeviceSynchronize();*/
 
     // Check for any errors launching the kernel
-	//cudaDeviceSynchronize();
     cudaStatus = cudaGetLastError();
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
@@ -379,17 +378,18 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     }
 
     // Copy results back to host
+//  !!!!!!! the asynchronous transfer version requires pinned host memory  !!!!!!!!!!
     for (int i=0; i<nStreams; i++)
     {
-        int offset = indexStart[i*streamSizeIndices];
+        int offset = indexStart[i*rowsNbPerStream];
         int length = 0;
         if (i<nStreams-1)
         {
-            length = indexStart[(i+1)*streamSizeIndices] - indexStart[i*streamSizeIndices];
+            length = indexStart[(i+1)*rowsNbPerStream] - offset;
         }
         else
         {
-            length = lengthsSum - indexStart[i*streamSizeIndices];
+            length = lengthsSum - offset; // Last slice
         }
         int streamBytes = length*sizeof(float);
 
@@ -401,6 +401,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
             goto cleanup;
         }
     }
+
+	cudaDeviceSynchronize();
 
     // Set the criteria values in the vector container
     for (int i_len=0; i_len<lengths.size(); i_len++)
@@ -437,6 +439,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     {
         cudaStreamDestroy(stream[i]);
     }
+	cudaStreamDestroy(streamData);
 
     if (hasError) return false;
 
