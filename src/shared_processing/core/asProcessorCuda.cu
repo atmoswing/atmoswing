@@ -185,11 +185,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     int sizeIndexStart = (lengths.size() + 1) * sizeof(int); // + 1 relative to lengths
 
     // Create streams
-    const int nStreams = 4; // 20
+    const int nStreams = 20; // 20
     const int threadsPerBlock = 8; // 8
 	// rowsNbPerStream must be dividable by nStreams and threadsPerBlock
-    int rowsNbPerStream = ceil((float)lengths.size()/(float)nStreams);
-	rowsNbPerStream = ceil((float)rowsNbPerStream/(float)threadsPerBlock) * threadsPerBlock;
+    int rowsNbPerStream = ceil(float(lengths.size()) / float(nStreams*threadsPerBlock)) * threadsPerBlock;
 	// Streams
     cudaStream_t stream[nStreams];
     for (int i=0; i<nStreams; i++)
