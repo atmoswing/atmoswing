@@ -223,14 +223,13 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
             hasError = true;
             goto cleanup;
         }
-		/*
+		
         cudaStatus = cudaHostAlloc((void**)&arrCriteria, lengthsSum * sizeof(float), cudaHostAllocDefault);
         if (cudaStatus != cudaSuccess) {
             fprintf(stderr, "cudaMallocHost failed for arrCriteria!\n");
             hasError = true;
             goto cleanup;
-        }*/
-		arrCriteria = new float[lengthsSum];
+        }
 
     #else // USE_PINNED_MEM
 
@@ -377,7 +376,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     }
 
     // Copy results back to host
-//  !!!!!!! the asynchronous transfer version requires pinned host memory  !!!!!!!!!!
     for (int i=0; i<nStreams; i++)
     {
         int offset = indexStart[i*rowsNbPerStream];
@@ -426,8 +424,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     #if USE_PINNED_MEM
         cudaFreeHost(arrData);
         cudaFreeHost(arrIndicesArch);
-        //cudaFreeHost(arrCriteria);
-		delete[] arrCriteria;
+        cudaFreeHost(arrCriteria);
     #else
         delete[] arrData;
         delete[] arrIndicesArch;
