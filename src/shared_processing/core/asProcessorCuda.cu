@@ -47,11 +47,59 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
                                             const int *indicesArch,
                                             const int *indexStart,
                                             const cudaPredictorsDataPropStruct dataProp,
-                                            int n, int offset)
+                                            const int n_targ, const int n_cand, const int offset)
 {
-    int i_targ = offset + threadIdx.x + blockIdx.x * blockDim.x;
-    if (i_targ < n)
+    int i_cand = offset + threadIdx.x + blockIdx.x * blockDim.x;
+    if (i_cand < n_cand)
     {
+		// Find the target index
+		int i_targ = i_cand/(n_cand/n_targ) -1;
+		i_targ = min(i_targ, n_targ); // safe
+
+		// Check
+		if (i_cand<indexStart[i_targ])
+		{
+			while (i_cand<indexStart[i_targ])
+			{
+				i_targ--;
+			}
+		}
+		if (i_cand>indexStart[i_targ+1])
+		{
+			while (i_cand>indexStart[i_targ+1])
+			{
+				i_targ++;
+			}
+		}
+		
+        float criterion = 0;
+
+        int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
+        int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
+
+        for (int i_ptor=0; i_ptor<dataProp.ptorsNb; i_ptor++)
+        {
+            float dividend = 0, divisor = 0;
+			int targIndex = targIndexBase + dataProp.indexStart[i_ptor];
+			int archIndex = archIndexBase + dataProp.indexStart[i_ptor];
+				
+            for (int i=0; i<dataProp.ptsNb[i_ptor]; i++)
+            {
+				dividend += abs(data[targIndex] - data[archIndex]);
+                divisor += max(abs(data[targIndex]), abs(data[archIndex]));
+
+				targIndex++;
+				archIndex++;
+            }
+
+            criterion += dataProp.weights[i_ptor] * 100.0f * (dividend / divisor);
+        }
+
+		criteria[i_cand] = criterion;
+
+
+
+		/*
         int baseIndex = indexStart[i_targ];
         int nbCandidates = indexStart[i_targ+1] - indexStart[i_targ]; // Safe: indexStart has size of n+1
         int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
@@ -80,7 +128,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
             }
 
 			criteria[baseIndex + i_cand] = criterion;
-        }
+        }*/
     }
 }
 
@@ -184,7 +232,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     const int nStreams = 10;
     const int threadsPerBlock = 8; // 8 optimal
 	// rowsNbPerStream must be dividable by nStreams and threadsPerBlock
-    int rowsNbPerStream = ceil(float(lengths.size()) / float(nStreams*threadsPerBlock)) * threadsPerBlock;
+    int rowsNbPerStream = ceil(float(lengthsSum) / float(nStreams*threadsPerBlock)) * threadsPerBlock;
 	// Streams
     cudaStream_t stream[nStreams];
     for (int i=0; i<nStreams; i++)
@@ -326,15 +374,15 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // Copy archive indices to device
     for (int i=0; i<nStreams; i++)
     {
-        int offset = indexStart[i*rowsNbPerStream];
+        int offset = i*rowsNbPerStream;
         int length = 0;
         if (i<nStreams-1)
         {
-            length = indexStart[(i+1)*rowsNbPerStream] - offset;
+            length = rowsNbPerStream;
         }
         else
         {
-            length = lengthsSum - offset; // Last slice
+            length = lengthsSum - rowsNbPerStream; // Last slice
         }
         int streamBytes = length*sizeof(int);
 
@@ -357,10 +405,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // Launch kernel on GPU
     for (int i=0; i<nStreams; i++)
     {
-        int offset = i*rowsNbPerStream;
+		int offset = i*rowsNbPerStream;
         int blocksNb = rowsNbPerStream/threadsPerBlock;
-        int totSize = lengths.size();
-        gpuPredictorCriteriaS1grads<<<blocksNb,threadsPerBlock, 0, stream[i]>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, totSize, offset);
+		int n_targ = lengths.size();
+		int n_cand = lengthsSum;
+        gpuPredictorCriteriaS1grads<<<blocksNb,threadsPerBlock, 0, stream[i]>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, n_targ, n_cand, offset);
     }
 
     // Check for any errors launching the kernel
@@ -374,15 +423,15 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // Copy results back to host
     for (int i=0; i<nStreams; i++)
     {
-        int offset = indexStart[i*rowsNbPerStream];
+        int offset = i*rowsNbPerStream;
         int length = 0;
         if (i<nStreams-1)
         {
-            length = indexStart[(i+1)*rowsNbPerStream] - offset;
+            length = rowsNbPerStream;
         }
         else
         {
-            length = lengthsSum - offset; // Last slice
+            length = lengthsSum - rowsNbPerStream; // Last slice
         }
         int streamBytes = length*sizeof(float);
 
