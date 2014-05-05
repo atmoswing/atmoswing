@@ -31,7 +31,6 @@
 #include "wx/fileconf.h"
 
 #include <asFileAscii.h>
-#include <asParametersScoring.h>
 
 
 asResultsParametersArray::asResultsParametersArray()
