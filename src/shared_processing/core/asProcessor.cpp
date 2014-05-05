@@ -619,6 +619,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             // Containers for the results
             std::vector < VectorFloat > resultingCriteria(timeTargetSelectionSize);
             std::vector < VectorFloat > resultingDates(timeTargetSelectionSize);
+			resultingCriteria.reserve(timeTargetSelectionSize * timeArrayArchiveSelection.GetSize());
+			resultingDates.reserve(timeTargetSelectionSize * timeArrayArchiveSelection.GetSize());
             //std::fill(resultingDates.begin(), resultingDates.end(), NaNFloat);
 
             // Containers for daily results
@@ -628,8 +630,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             // Containers for the indices
             VectorInt lengths(timeTargetSelectionSize);
             VectorInt indicesTarg(timeTargetSelectionSize);
-            std::fill(indicesTarg.begin(), indicesTarg.end(), -1);
             std::vector < VectorInt > indicesArch(timeTargetSelectionSize);
+			indicesArch.reserve(timeTargetSelectionSize * timeArrayArchiveSelection.GetSize());
 
             // Constant data
             VectorFloat weights(predictorsNb);
@@ -742,12 +744,14 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
                 for(int i_dateArch=0; i_dateArch<vectCriteriaSize; i_dateArch++)
                 {
-                    if (asTools::IsNaN(vectCriteria[i_dateArch]))
-                    {
-                        containsNaNs = true;
-                        asLogWarning(_("NaNs were found in the criteria values."));
-                        asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(DateArrayOneDay[i_dateArch]).c_str()));
-                    }
+					#ifdef _DEBUG
+						if (asTools::IsNaN(vectCriteria[i_dateArch]))
+						{
+							containsNaNs = true;
+							asLogWarning(_("NaNs were found in the criteria values."));
+							asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(DateArrayOneDay[i_dateArch]).c_str()));
+						}
+					#endif
 					
 					// Check if the array is already full
                     if (resCounter>analogsNb-1)
