@@ -41,3 +41,5 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 _CPack_Packages\*
 install_manifest.txt
+*/_CPack_Packages/*
+*.deb
