@@ -429,6 +429,20 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         }
     }
 
+	cudaDeviceSynchronize();
+
+    // Set the criteria values in the vector container
+	for (int i_len=0; i_len<lengths.size(); i_len++)
+	{
+		std::vector < float > tmpCrit(lengths[i_len]);
+
+		for (int j_len=0; j_len<lengths[i_len]; j_len++)
+		{
+			tmpCrit[j_len] = arrCriteria[indexStart[i_len] + j_len];
+		}
+		resultingCriteria[i_len] = tmpCrit;
+	}
+
     // Cleanup
     cleanup:
 
@@ -437,28 +451,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         cudaStreamDestroy(stream[i]);
     }
 
-	cudaDeviceSynchronize();
-
     cudaFree(devData);
     cudaFree(devCriteria);
     cudaFree(devIndicesTarg);
     cudaFree(devIndicesArch);
     cudaFree(devIndexStart);
-
-    // Set the criteria values in the vector container
-	if (!hasError)
-	{
-		for (int i_len=0; i_len<lengths.size(); i_len++)
-		{
-			std::vector < float > tmpCrit(lengths[i_len]);
-
-			for (int j_len=0; j_len<lengths[i_len]; j_len++)
-			{
-				tmpCrit[j_len] = arrCriteria[indexStart[i_len] + j_len];
-			}
-			resultingCriteria[i_len] = tmpCrit;
-		}
-	}
 
     #if USE_PINNED_MEM
         cudaFreeHost(arrData);
