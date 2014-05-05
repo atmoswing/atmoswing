@@ -46,6 +46,10 @@ if (USE_CUDA)
 	list(APPEND src_cuda ${src_proc_core_cu})
 	list(APPEND src_cuda ${src_proc_core_cuh})
 	list(APPEND src_all ${src_proc_core_cuh})
+	if (WIN32)
+		# Bug with VS 2012 and CUDA in previous versions
+		cmake_minimum_required(VERSION 2.8.12.2)
+	endif (WIN32)
 endif (USE_CUDA)
 
 
