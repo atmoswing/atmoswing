@@ -621,6 +621,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             std::vector < VectorFloat > resultingDates(timeTargetSelectionSize);
             //std::fill(resultingDates.begin(), resultingDates.end(), NaNFloat);
 
+            // Containers for daily results
+            Array1DFloat ScoreArrayOneDay(analogsNb);
+            Array1DFloat DateArrayOneDay(analogsNb);
+
             // Containers for the indices
             VectorInt lengths(timeTargetSelectionSize);
             VectorInt indicesTarg(timeTargetSelectionSize);
@@ -734,9 +738,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                 std::vector < float > vectDates = resultingDates[i_dateTarg];
 
                 int vectCriteriaSize = vectCriteria.size();
-
-                Array1DFloat ScoreArrayOneDay(vectCriteriaSize);
-                Array1DFloat DateArrayOneDay(vectCriteriaSize);
+				int resCounter = 0;
 
                 for(int i_dateArch=0; i_dateArch<vectCriteriaSize; i_dateArch++)
                 {
@@ -746,22 +748,50 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                         asLogWarning(_("NaNs were found in the criteria values."));
                         asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(DateArrayOneDay[i_dateArch]).c_str()));
                     }
+					
+					// Check if the array is already full
+                    if (resCounter>analogsNb-1)
+                    {
+                        if (isasc)
+                        {
+                            if (vectCriteria[i_dateArch]<ScoreArrayOneDay[analogsNb-1])
+                            {
+                                asTools::SortedArraysInsert(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Asc, vectCriteria[i_dateArch], vectDates[i_dateArch]);
+                            }
+                        } else {
+                            if (vectCriteria[i_dateArch]>ScoreArrayOneDay[analogsNb-1])
+                            {
+                                asTools::SortedArraysInsert(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Desc, vectCriteria[i_dateArch], vectDates[i_dateArch]);
+                            }
+                        }
+                    }
+                    else if (resCounter<analogsNb-1)
+                    {
+                        // Add score and date to the vectors
+                        ScoreArrayOneDay[resCounter] = vectCriteria[i_dateArch];
+                        DateArrayOneDay[resCounter] = vectDates[i_dateArch];
+                    }
+                    else if (resCounter==analogsNb-1)
+                    {
+                        // Add score and date to the vectors
+                        ScoreArrayOneDay[resCounter] = vectCriteria[i_dateArch];
+                        DateArrayOneDay[resCounter] = vectDates[i_dateArch];
 
-                    ScoreArrayOneDay[i_dateArch] = vectCriteria[i_dateArch];
-                    DateArrayOneDay[i_dateArch] = vectDates[i_dateArch];
+                        // Sort both scores and dates arrays
+                        if (isasc)
+                        {
+                            asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Asc);
+                        } else {
+                            asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Desc);
+                        }
+                    }
+
+                    resCounter++;
                 }
 
                 // Check that the number of occurences are larger than the desired analogs number. If not, set a warning
-                if (vectCriteriaSize>=analogsNb)
+                if (resCounter>=analogsNb)
                 {
-                    // Sort both scores and dates arrays
-                    if (isasc)
-                    {
-                        asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[vectCriteriaSize-1], &DateArrayOneDay[0], &DateArrayOneDay[vectCriteriaSize-1], Asc);
-                    } else {
-                        asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[vectCriteriaSize-1], &DateArrayOneDay[0], &DateArrayOneDay[vectCriteriaSize-1], Desc);
-                    }
-
                     // Copy results
                     finalAnalogsCriteria.row(i_dateTarg) = ScoreArrayOneDay.head(analogsNb).transpose();
                     finalAnalogsDates.row(i_dateTarg) = DateArrayOneDay.head(analogsNb).transpose();
