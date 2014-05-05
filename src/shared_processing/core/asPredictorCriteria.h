@@ -68,6 +68,14 @@ public:
      * \return The Criteria
      */
     virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) = 0;
+    
+    /** Access m_Criteria
+     * \return The current value of m_Criteria
+     */
+    Criteria GetType()
+    {
+        return m_Criteria;
+    }
 
     /** Access m_Name
      * \return The current value of m_Name

@@ -104,7 +104,8 @@ enum
 {
     asMULTITHREADS = 0,
     asINSERT = 1,
-    asFULL_ARRAY = 2
+    asFULL_ARRAY = 2,
+    asCUDA = 3,
 };
 
 // Windows ID
