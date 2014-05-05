@@ -54,7 +54,8 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
     {
 		// Find the target index
 		int i_targ = i_cand/(n_cand/n_targ) -1;
-		i_targ = min(i_targ, n_targ);
+		i_targ = min(i_targ, n_targ-1);
+		i_targ = max(i_targ, 0);
 
 		// Check and correct
 		if (i_cand<indexStart[i_targ])
@@ -65,7 +66,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
 
                 if (i_targ<0)
                 {
-                    printf("Device error: The target index is < 0.");
+                    printf("Device error: The target index is < 0 (i_cand(=%d)<indexStart[%d](=%d)).\n", i_cand, i_targ, indexStart[i_targ]);
                     criteria[i_cand] = -9999;
                     return;
                 }
@@ -79,7 +80,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
 
                 if (i_targ>=n_targ)
                 {
-                    printf("Device error: The target index is > n_targ.");
+                    printf("Device error: The target index is > n_targ.\n");
                     criteria[i_cand] = -9999;
                     return;
                 }
@@ -210,8 +211,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     int sizeIndexStart = (lengths.size() + 1) * sizeof(int); // + 1 relative to lengths
 
     // Create streams
-    const int nStreams = 10;
-    const int threadsPerBlock = 8;
+    const int nStreams = 4; // no need to change
+    //The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
+	const int threadsPerBlock = 1024; // no need to change
 	// rowsNbPerStream must be dividable by nStreams and threadsPerBlock
     int rowsNbPerStream = ceil(float(lengthsSum) / float(nStreams*threadsPerBlock)) * threadsPerBlock;
 	// Streams
@@ -328,9 +330,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
      */
 
 	// For the data, create its own stream
-	cudaStream_t streamData;
-    cudaStreamCreate(&streamData);
-    cudaStatus = cudaMemcpyAsync(devData, arrData, sizeData, cudaMemcpyHostToDevice, streamData);
+    cudaStatus = cudaMemcpy(devData, arrData, sizeData, cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaMemcpy failed for the data!\n");
         hasError = true;
@@ -351,6 +351,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         hasError = true;
         goto cleanup;
     }
+	
+	// Make sure the data are copied
+//	cudaDeviceSynchronize();
 
     // Copy archive indices to device
     for (int i=0; i<nStreams; i++)
@@ -375,14 +378,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         }
     }
 
-	// Make sure the indices and the data are copied
-	cudaStatus = cudaStreamSynchronize(streamData);
-	if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaStreamSynchronize failed on streamData !\n");
-        hasError = true;
-        goto cleanup;
-    }
-
     // Launch kernel on GPU
     for (int i=0; i<nStreams; i++)
     {
@@ -396,7 +391,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
     // Check for any errors launching the kernel
     cudaStatus = cudaGetLastError();
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+        fprintf(stderr, "Kernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
         hasError = true;
         goto cleanup;
     }
@@ -425,27 +420,36 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         }
     }
 
-	cudaDeviceSynchronize();
-
-    // Set the criteria values in the vector container
-    for (int i_len=0; i_len<lengths.size(); i_len++)
-    {
-        std::vector < float > tmpCrit(lengths[i_len]);
-
-        for (int j_len=0; j_len<lengths[i_len]; j_len++)
-        {
-            tmpCrit[j_len] = arrCriteria[indexStart[i_len] + j_len];
-        }
-        resultingCriteria[i_len] = tmpCrit;
-    }
-
     // Cleanup
     cleanup:
+
+    for (int i=0; i<nStreams; i++)
+    {
+        cudaStreamDestroy(stream[i]);
+    }
+
+	cudaDeviceSynchronize();
+
     cudaFree(devData);
     cudaFree(devCriteria);
     cudaFree(devIndicesTarg);
     cudaFree(devIndicesArch);
     cudaFree(devIndexStart);
+
+    // Set the criteria values in the vector container
+	if (!hasError)
+	{
+		for (int i_len=0; i_len<lengths.size(); i_len++)
+		{
+			std::vector < float > tmpCrit(lengths[i_len]);
+
+			for (int j_len=0; j_len<lengths[i_len]; j_len++)
+			{
+				tmpCrit[j_len] = arrCriteria[indexStart[i_len] + j_len];
+			}
+			resultingCriteria[i_len] = tmpCrit;
+		}
+	}
 
     #if USE_PINNED_MEM
         cudaFreeHost(arrData);
@@ -456,12 +460,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector < std::vector < float* > > &da
         delete[] arrIndicesArch;
 		delete[] arrCriteria;
     #endif // USE_PINNED_MEM
-
-    for (int i=0; i<nStreams; i++)
-    {
-        cudaStreamDestroy(stream[i]);
-    }
-	cudaStreamDestroy(streamData);
 
     if (hasError) return false;
 
