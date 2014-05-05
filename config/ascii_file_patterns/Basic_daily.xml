@@ -1,0 +1,13 @@
+<pattern id="Basic_daily" name="Basic daily file structure with tabs">
+    <structtype>tabsdelimited</structtype>
+    <headerlines>2</headerlines>
+    <parsetime>1</parsetime>
+    <time>
+        <block column="1">year</block>
+        <block column="2">month</block>
+        <block column="3">day</block>
+    </time>
+    <data>
+        <block column="4">Precipitation</block>
+    </data>
+</pattern>
