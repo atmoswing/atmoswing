@@ -36,6 +36,7 @@
 #ifdef _MSC_VER
     #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
     #pragma warning( disable : 4100 ) // C4100: unreferenced formal parameter
+    #pragma warning( disable : 4515 ) // C4515: namespace uses itself
 #endif
 
 
