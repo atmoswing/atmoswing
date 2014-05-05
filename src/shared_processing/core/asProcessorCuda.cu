@@ -53,9 +53,18 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
     if (i_cand < n_cand)
     {
 		// Find the target index
-		int i_targ = i_cand/(n_cand/n_targ) -1;
-		i_targ = min(i_targ, n_targ-1);
-		i_targ = max(i_targ, 0);
+		float meanNbCand = float(n_cand)/float(n_targ);
+		int i_targ = floor(float(i_cand)/meanNbCand);
+		
+		if (i_targ<0)
+        {
+			i_targ = 0;
+		}
+
+        if (i_targ>=n_targ)
+        {
+			i_targ = n_targ-1;
+        }
 
 		// Check and correct
 		if (i_cand<indexStart[i_targ])
@@ -66,7 +75,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
 
                 if (i_targ<0)
                 {
-                    printf("Device error: The target index is < 0 (i_cand(=%d)<indexStart[%d](=%d)).\n", i_cand, i_targ, indexStart[i_targ]);
+                    printf("Device error: The target index is < 0 : i_targ = %d.\n", i_targ);
                     criteria[i_cand] = -9999;
                     return;
                 }
@@ -80,7 +89,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria,
 
                 if (i_targ>=n_targ)
                 {
-                    printf("Device error: The target index is > n_targ.\n");
+                    printf("Device error: The target index is >= n_targ : i_targ = %d (n_targ = %d)\n", i_targ, n_targ);
                     criteria[i_cand] = -9999;
                     return;
                 }
