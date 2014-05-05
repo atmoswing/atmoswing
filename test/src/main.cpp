@@ -50,7 +50,7 @@ int main( int argc, char** argv )
     /*
     // In order to debug just one test
     argc=2;
-    char* chars = "ProcessS1preprocessed";
+    char* chars = "GrenobleComparison1ProcessingMethodCuda";
     argv[1] = chars;
     */
 
