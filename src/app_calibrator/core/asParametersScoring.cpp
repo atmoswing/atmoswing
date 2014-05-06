@@ -606,7 +606,6 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
 
     int iLeft, iRight;
     wxString strVal;
-    double dVal;
     long lVal;
 
     // Check that the score is similar
