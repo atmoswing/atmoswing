@@ -416,7 +416,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 prevResults.Close();
 
                 asLogMessageImportant(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
-                printf(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
+                printf(wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
 
                 // Check that it is consistent with the population size
                 if (vectParams.size() % m_PopSize != 0)
