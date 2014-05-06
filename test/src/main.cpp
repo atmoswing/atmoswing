@@ -58,6 +58,7 @@ int main( int argc, char** argv )
     g_UnitTesting = true;
     g_SilentMode = true;
     g_GuiMode = false;
+    g_ReloadPrevResults = false;
 
     // Option to test or not the exception throwing
     g_UnitTestExceptions = false;
