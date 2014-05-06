@@ -40,8 +40,8 @@
  * Provide tests names as arguments in order to test specific tests. Otherwise process all tests.
  * Examples:
  * ./AtmoSwingTests IsRoundFloatTrue LoadCatalogProp -> test specific tests
- * ./AtmoSwingTests quick/short/fast -> test only the fast ones (not the method calibration)  
- * ./AtmoSwingTests -> test everything  
+ * ./AtmoSwingTests quick/short/fast -> test only the fast ones (not the method calibration)
+ * ./AtmoSwingTests -> test everything
  */
 
 int main( int argc, char** argv )
@@ -58,7 +58,6 @@ int main( int argc, char** argv )
     g_UnitTesting = true;
     g_SilentMode = true;
     g_GuiMode = false;
-    g_ReloadPrevResults = false;
 
     // Option to test or not the exception throwing
     g_UnitTestExceptions = false;
