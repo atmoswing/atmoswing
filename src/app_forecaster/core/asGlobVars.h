@@ -39,7 +39,7 @@ extern bool g_UnitTesting;
 extern bool g_GuiMode;
 extern bool g_AppViewer;
 extern bool g_AppForecaster;
-extern bool g_ReloadPrevResults;
+extern bool g_ResumePreviousRun;
 #if wxUSE_GUI
     extern wxColour g_LinuxBgColour;
 #endif

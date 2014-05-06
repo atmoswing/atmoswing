@@ -34,7 +34,7 @@ bool g_UnitTesting = false;
 bool g_GuiMode = true;
 bool g_AppViewer = false;
 bool g_AppForecaster = true;
-bool g_ReloadPrevResults = false;
+bool g_ResumePreviousRun = false;
 #if wxUSE_GUI
     wxColour g_LinuxBgColour = wxColour(242,241,240);
 #endif

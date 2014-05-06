@@ -189,7 +189,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Parameter to print the results every x generation
     int printResultsEveryNbGenerations = 5;
-    
+
     // Reset some data members
     m_Iterator = 0;
     m_AssessmentCounter = 0;
@@ -225,7 +225,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     int counterPrint = 0;
 
     // Reload previous results
-    if (g_ReloadPrevResults)
+    if (g_ResumePreviousRun)
     {
         wxString resultsDir = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
         resultsDir.Append("/Calibration");
@@ -254,6 +254,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 while (dir.GetNext(&generationsFileName)) {} // Select the last available.
 
                 asLogWarning(_("Previous intermediate results were found and will be loaded."));
+                printf(_("Previous intermediate results were found and will be loaded.\n"));
                 wxString filePath = resultsDir;
                 filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
                 asFileAscii prevResults(filePath, asFile::ReadOnly);
@@ -326,7 +327,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     firstLineCopy.Replace("Level", wxEmptyString, false);
                     currentParamsPrint.Replace("Level", wxEmptyString, false);
                 }
-                
+
                 // Compare number of S1 criteria on gradients
                 while(true)
                 {
@@ -345,7 +346,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     firstLineCopy.Replace("S1grads", wxEmptyString, false);
                     currentParamsPrint.Replace("S1grads", wxEmptyString, false);
                 }
-                
+
                 // Compare number of tabs
                 while(true)
                 {
@@ -387,9 +388,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 std::vector < float > vectScores;
                 do
                 {
+                    if (fileLine.IsEmpty()) break;
+
                     asParametersOptimizationGAs prevParams = m_OriginalParams;
-                    prevParams.GetValuesFromString(fileLine);
-                    
+                    if (!prevParams.GetValuesFromString(fileLine))
+                    {
+                        return false;
+                    }
+
                     // Get the score
                     int indexScoreCalib = fileLine.Find("Calib");
                     int indexScoreValid = fileLine.Find("Valid");
@@ -402,7 +408,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     results_generations.Add(prevParams,prevScoresCalib);
                     vectParams.push_back(prevParams);
                     vectScores.push_back(prevScoresCalib);
-                    
+
                     // Get next line
                     fileLine = prevResults.GetLineContent();
                 }
@@ -410,6 +416,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 prevResults.Close();
 
                 asLogMessageImportant(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
+                printf(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
 
                 // Check that it is consistent with the population size
                 if (vectParams.size() % m_PopSize != 0)
@@ -419,7 +426,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 }
 
                 // Restore the last generation
-                int genNb = vectParams.size() % m_PopSize;
+                int genNb = vectParams.size() / m_PopSize;
                 for (int i_var=0; i_var<m_PopSize; i_var++)
                 {
                     int i_last_gen = (genNb-1) * m_PopSize;
