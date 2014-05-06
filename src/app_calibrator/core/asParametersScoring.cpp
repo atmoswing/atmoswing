@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
- 
+
 #include "asParametersScoring.h"
 
 #include <asFileParametersCalibration.h>
@@ -87,7 +87,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
     // Create root nodes
     if(!fileParams.InsertRootElement()) return false;
-    
+
 
     // Set general parameters
     if(!fileParams.InsertElementAndAttribute("", "General", "name", "General")) return false;
@@ -102,7 +102,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxString archiveYearEnd = asTime::GetStringTime(GetArchiveEnd(), "DD.MM.YYYY");
     if(!fileParams.InsertElementAndAttribute("", "End", "value", archiveYearEnd)) return false;
     if(!fileParams.GoANodeBack()) return false;
-    
+
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Calibration Period")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Calibration Period")) return false;
@@ -111,7 +111,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxString calibEnd = asTime::GetStringTime(GetCalibrationEnd(), "DD.MM.YYYY");
     if(!fileParams.InsertElementAndAttribute("", "End", "value", calibEnd)) return false;
     if(!fileParams.GoANodeBack()) return false;
-    
+
 
     if(HasValidationPeriod())
     {
@@ -131,7 +131,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         if(!fileParams.SetElementAttribute("Years", "method", "array")) return false;
         if(!fileParams.GoANodeBack()) return false;
     }
-    
+
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Time Array Target")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
@@ -150,7 +150,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         if(!fileParams.InsertElementAndAttribute("", "PredictandMaxThreshold", "value", timeArrayTargetPredictandMaxThreshold)) return false;
     }
     if(!fileParams.GoANodeBack()) return false;
-    
+
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Time Array Analogs")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
@@ -176,12 +176,12 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Analogs Dates")) return false;
         if(!fileParams.InsertElement("", "Options")) return false;
 
-    
+
         if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Method Name")) return false;
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method Name")) return false;
         if(!fileParams.InsertElementAndAttribute("", "MethodName", "value", GetMethodName(i_step))) return false;
         if(!fileParams.GoANodeBack()) return false;
-    
+
 
         if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Analogs Number")) return false;
         if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
@@ -200,7 +200,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Predictor")) return false;
                 if(!fileParams.InsertElement("", "Options")) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Preload")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preload")) return false;
                 if (NeedsPreloading(i_step, i_ptor))
@@ -213,20 +213,20 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 }
                 if(!fileParams.GoANodeBack()) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Preprocessing")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
                 if(!fileParams.InsertElementAndAttribute("", "Preprocess", "value", "0")) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Data")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Data")) return false;
                 if(!fileParams.InsertElementAndAttribute("", "DatasetId", "value", GetPredictorDatasetId(i_step, i_ptor))) return false;
                 if(!fileParams.InsertElementAndAttribute("", "DataId", "value", GetPredictorDataId(i_step, i_ptor))) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Level")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Level")) return false;
                 wxString level;
@@ -234,7 +234,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 if(!fileParams.InsertElementAndAttribute("", "Level", "value", level)) return false;
                 if(!fileParams.GoANodeBack()) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Time frame")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time frame")) return false;
                 wxString timeHours;
@@ -248,7 +248,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Predictor Preprocessed")) return false;
                 if(!fileParams.InsertElement("", "Options")) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Preload")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preload")) return false;
                 if (NeedsPreloading(i_step, i_ptor))
@@ -261,7 +261,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 }
                 if(!fileParams.GoANodeBack()) return false;
 
-                
+
                 if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Preprocessing")) return false;
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
                 if(!fileParams.InsertElementAndAttribute("", "Preprocess", "value", "1")) return false;
@@ -279,10 +279,10 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                     wxString preprocessTimeHours;
                     preprocessTimeHours << GetPreprocessTimeHours(i_step, i_ptor, i_preproc);
                     if(!fileParams.InsertElementAndAttribute("", "PreprocessTimeHours", "value", preprocessTimeHours)) return false;
-                    
+
                     if(!fileParams.GoANodeBack()) return false;
                 }
-                
+
                 if(!fileParams.GoANodeBack()) return false;
             }
 
@@ -310,13 +310,13 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
             if(!fileParams.InsertElementAndAttribute("", "Vstep", "value", vstep)) return false;
             if(!fileParams.GoANodeBack()) return false;
 
-            
+
             if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Criteria")) return false;
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Criteria")) return false;
             if(!fileParams.InsertElementAndAttribute("", "Criteria", "value", GetPredictorCriteria(i_step, i_ptor))) return false;
             if(!fileParams.GoANodeBack()) return false;
 
-            
+
             if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Weight")) return false;
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Weight")) return false;
             wxString weight;
@@ -329,13 +329,13 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
         if(!fileParams.GoANodeBack()) return false;
     }
-    
+
     // Set Analogs Values process
     if(!fileParams.InsertElementAndAttribute("", "Process", "name", "Analogs Values")) return false;
     if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Analogs Values")) return false;
     if(!fileParams.InsertElement("", "Options")) return false;
 
-    
+
     if(!fileParams.InsertElementAndAttribute("", "Data", "name", "Predictand")) return false;
     if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Predictand")) return false;
 
@@ -356,7 +356,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoANodeBack()) return false;
-    
+
     if(!fileParams.GoANodeBack()) return false;
 
 
@@ -364,8 +364,8 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if(!fileParams.InsertElementAndAttribute("", "Process", "name", "Analogs Forecast Scores")) return false;
     if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Analogs Forecast Scores")) return false;
     if(!fileParams.InsertElement("", "Options")) return false;
-    
-            
+
+
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Method")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method")) return false;
     if(!fileParams.InsertElementAndAttribute("", "Name", "value", GetForecastScoreName())) return false;
@@ -385,8 +385,8 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         if(!fileParams.InsertElementAndAttribute("", "Percentile", "value", fsPercentileStr)) return false;
     }
     if(!fileParams.GoANodeBack()) return false;
-    
-            
+
+
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Analogs Number")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
     wxString fsAnalogsNb;
@@ -401,7 +401,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if(!fileParams.InsertElementAndAttribute("", "Process", "name", "Analogs Forecast Score Final")) return false;
     if(!fileParams.GoToLastChildNodeWithAttributeValue("name", "Analogs Forecast Score Final")) return false;
     if(!fileParams.InsertElement("", "Options")) return false;
-    
+
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Time Array")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array")) return false;
@@ -602,7 +602,10 @@ wxString asParametersScoring::Print()
 bool asParametersScoring::GetValuesFromString(wxString stringVals)
 {
     // Get the parameters values
-    asParameters::GetValuesFromString(stringVals);
+    if(!asParameters::GetValuesFromString(stringVals))
+    {
+        return false;
+    }
 
     int iLeft, iRight;
     wxString strVal;
@@ -616,7 +619,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     strVal = stringVals.SubString(iLeft, iRight-1);
     if (!strVal.IsSameAs(GetForecastScoreName()))
     {
-        asLogError(_("The current score doesn't correspond to the previous one."));
+        asLogError(wxString::Format(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName().c_str(), strVal.c_str()));
+        printf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetForecastScoreName().c_str(), strVal.c_str()));
         return false;
     }
 
