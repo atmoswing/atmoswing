@@ -456,7 +456,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     m_MeanScores[i_gen] = mean/float(m_PopSize);
                 }
 
-                m_OptimizerStage=asCHECK_CONVERGENCE;
+                m_OptimizerStage = asREASSESSMENT;
+                m_Iterator = m_ParamsNb;
                 m_GenerationNb = genNb;
             }
         }
