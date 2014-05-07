@@ -390,7 +390,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 {
                     if (fileLine.IsEmpty()) break;
 
-                    asParametersOptimizationGAs prevParams = m_OriginalParams;
+                    asParametersOptimizationGAs prevParams = m_Parameters[0]; // And not m_OriginalParams due to initialization.
                     if (!prevParams.GetValuesFromString(fileLine))
                     {
                         return false;
