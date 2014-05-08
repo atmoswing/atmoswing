@@ -39,9 +39,9 @@
 /*
  * Provide tests names as arguments in order to test specific tests. Otherwise process all tests.
  * Examples:
- * ./AtmoSwingTests IsRoundFloatTrue LoadCatalogProp -> test specific tests
- * ./AtmoSwingTests quick/short/fast -> test only the fast ones (not the method calibration)
- * ./AtmoSwingTests -> test everything
+ * ./atmoswing-tests IsRoundFloatTrue LoadCatalogProp -> test specific tests
+ * ./atmoswing-tests quick/short/fast -> test only the fast ones (not the method calibration)
+ * ./atmoswing-tests -> test everything
  */
 
 int main( int argc, char** argv )

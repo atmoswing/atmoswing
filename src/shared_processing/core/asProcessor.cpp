@@ -36,7 +36,6 @@
 #include <asDataPredictand.h>
 #include <asResultsAnalogsDates.h>
 #include <asResultsAnalogsValues.h>
-//#include <asDialogProgressBar.h>
 #include <asThreadProcessorGetAnalogsDates.h>
 #include <asThreadProcessorGetAnalogsSubDates.h>
 #ifdef APP_FORECASTER
@@ -63,10 +62,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                                   asResultsAnalogsDates &results,
                                   bool &containsNaNs)
 {
-    #if wxUSE_GUI
-        if (g_Responsive) wxGetApp().Yield();
-    #endif
-
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -163,10 +158,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
 
-            #if wxUSE_GUI
-                if (g_Responsive) wxGetApp().Yield();
-            #endif
-
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
 
@@ -258,18 +249,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             // Loop through every timestep as target data
             for (int i_dateTarg=0; i_dateTarg<timeTargetSelectionSize; i_dateTarg++)
             {
-                #if wxUSE_GUI
-                    if (g_Responsive) wxGetApp().Yield();
-
-                    // Update the progress bar
-                    wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), i_dateTarg+1, timeTargetSelectionSize);
-                    if(!ProgressBar.Update(i_dateTarg, updatedialogmessage))
-                    {
-                        asLogMessage(_("The process has been canceled by the user."));
-                        return false;
-                    }
-                #endif
-
                 // Check if the next data is the following. If not, search for it in the array.
                 if(timeTargetDataSize>i_timeTargStart+1 && abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
                 {
@@ -440,18 +419,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             // Loop through every timestep as target data
             for (int i_dateTarg=0; i_dateTarg<timeTargetSelectionSize; i_dateTarg++)
             {
-                #if wxUSE_GUI
-                    if (g_Responsive) wxGetApp().Yield();
-
-                    // Update the progress bar
-                    wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), (int)i_dateTarg, timeTargetSelectionSize-1);
-                    if(!ProgressBar.Update(i_dateTarg, updatedialogmessage))
-                    {
-                        asLogMessage(_("The process has been canceled by the user."));
-                        return false;
-                    }
-                #endif
-
                 // Check if the next data is the following. If not, search for it in the array.
                 if(timeTargetDataSize>i_timeTargStart+1 && abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
                 {
@@ -819,11 +786,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             asThrowException(_("The processing method is not correctly defined."));
     }
 
-    #if wxUSE_GUI
-        ProgressBar.Destroy();
-        if (g_Responsive) wxGetApp().Yield();
-    #endif
-
     // Copy results to the resulting object
     results.SetTargetDates(timeTargetSelection);
     results.SetAnalogsCriteria(finalAnalogsCriteria);
@@ -846,10 +808,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
                                      asResultsAnalogsDates &results,
                                      bool &containsNaNs)
 {
-    #if wxUSE_GUI
-        if (g_Responsive) wxGetApp().Yield();
-    #endif
-
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -954,10 +912,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
 
-            #if wxUSE_GUI
-                if (g_Responsive) wxGetApp().Yield();
-            #endif
-
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
 
@@ -1028,18 +982,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
             // Loop through every timestep as target data
             for (int i_anadates=0; i_anadates<timeTargetSelectionSize; i_anadates++)
             {
-                #if wxUSE_GUI
-                    if (g_Responsive) wxGetApp().Yield();
-
-                    // Update the progress bar
-                    wxString updatedialogmessage = dialogmessage + wxString::Format(_("Processing: %d / %d time steps"), i_anadates+1, timeTargetSelectionSize);
-                    if(!ProgressBar.Update(i_anadates, updatedialogmessage))
-                    {
-                        asLogMessage(_("The process has been canceled by the user."));
-                        return false;
-                    }
-                #endif
-
                 i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], timeTargetSelection[i_anadates], 0.01);
                 wxASSERT_MSG(i_timeTarg>=0, wxString::Format(_("Looking for %s in betwwen %s and %s."), asTime::GetStringTime(timeTargetSelection[i_anadates], "DD.MM.YYYY hh:mm").c_str(),
                                                              asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm").c_str(),
@@ -1286,10 +1228,6 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     Array1DFloat finalTargetDates(targTimeLength);
     Array1DFloat finalTargetValuesNorm(targTimeLength);
     Array1DFloat finalTargetValuesGross(targTimeLength);
-
-    #if wxUSE_GUI
-        if (g_Responsive) wxGetApp().Yield();
-    #endif
 
     // Get predictand values
     for (int i_targdate=indexTargDatesStart; i_targdate<=indexTargDatesEnd; i_targdate++)
