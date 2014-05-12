@@ -42,3 +42,8 @@ CPackSourceConfig.cmake
 _CPack_Packages\*
 install_manifest.txt
 *.o
+CTestTestfile.cmake
+CTestCostData.txt
+LastTest.log
+LastTest.log.tmp
+DartConfiguration.tcl
