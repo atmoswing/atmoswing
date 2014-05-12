@@ -644,10 +644,6 @@ endif (BUILD_VIEWER)
 if (BUILD_CALIBRATOR)
 install ( TARGETS atmoswing-calibrator DESTINATION bin)
 endif (BUILD_CALIBRATOR)
-  
-#if (BUILD_TESTS)
-#install ( TARGETS atmoswing-tests DESTINATION bin)
-#endif (BUILD_TESTS)
 
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
@@ -665,12 +661,12 @@ endif (WIN32)
   
 install (
   FILES ../license.txt ../notice.txt
-  DESTINATION .
+  DESTINATION share/atmoswing
   )
   
 install (
   DIRECTORY ../config
-  DESTINATION .
+  DESTINATION share/atmoswing
   )
  
 # COMMON PROPERTIES
