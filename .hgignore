@@ -1,5 +1,6 @@
 syntax: glob
 */CMakeFiles/*
+*/_CPack_Packages/*
 */ipch/*
 */Debug/*
 */Release/*
@@ -32,14 +33,18 @@ syntax: glob
 *.pdb
 *.tlog
 *.ilk
+*.deb
+*.o
+*.psess
+*.vsp
+*.log
+*.tmp
 desktop.ini
 CMakeCache.txt
 cmake.check_cache
-*.psess
-*.vsp
 CPackConfig.cmake
 CPackSourceConfig.cmake
-_CPack_Packages\*
+CTestTestfile.cmake
 install_manifest.txt
-*/_CPack_Packages/*
-*.deb
+CTestCostData.txt
+DartConfiguration.tcl
