@@ -29,6 +29,8 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
+Copyright (C) 2013-2014, Terr@num, Switzerland.
+
 Developed by Pascal Horton.
 
 Financed by the cantons of Valais and Vaud, Switzerland.
@@ -39,4 +41,4 @@ See both license.txt and notice.txt files for details about the license and its 
 
 ## Contact ##
 
-You can contact the main developer by email: pascal.horton@unil.ch.
+You can contact the main developer by email: pascal.horton@terranum.ch.
