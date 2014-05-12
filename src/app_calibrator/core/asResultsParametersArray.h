@@ -23,7 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
 
 #ifndef ASRESULTSPARAMETERSARRAY_H
@@ -31,8 +31,8 @@
 
 #include <asIncludes.h>
 #include <asResults.h>
+#include <asParametersScoring.h>
 
-class asParametersScoring;
 
 class asResultsParametersArray: public asResults
 {
@@ -59,6 +59,29 @@ public:
     void CreateFile();
 
     bool AppendContent();
+
+    int GetCount()
+    {
+        return int(m_Parameters.size());
+    }
+
+    asParametersScoring GetParameter(int i)
+    {
+        wxASSERT(i<m_Parameters.size());
+        return m_Parameters[i];
+    }
+
+    float GetScoreCalib(int i)
+    {
+        wxASSERT(i<m_ScoresCalib.size());
+        return m_ScoresCalib[i];
+    }
+
+    float GetScoreValid(int i)
+    {
+        wxASSERT(i<m_ScoresValid.size());
+        return m_ScoresValid[i];
+    }
 
 protected:
 
