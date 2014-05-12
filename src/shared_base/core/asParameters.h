@@ -120,6 +120,8 @@ public:
 
     bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString);
 
+    bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
+
 
     wxString GetDateProcessed()
     {
