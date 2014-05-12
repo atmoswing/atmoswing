@@ -47,15 +47,15 @@
     Jose Luis Blanco, Val Greene.<br>
 */
 
-//this definition uses windows dll to export function. 
-//WXDLLIMPEXP_MATHPLOT definition definition changed to WXDLLIMPEXP_MATHPLOT  
-//mathplot_EXPORTS will be defined by cmake 
-#ifdef mathplot_EXPORTS 
- #define WXDLLIMPEXP_MATHPLOT WXEXPORT 
- #define WXDLLIMPEXP_DATA_MATHPLOT(type) WXEXPORT type 
-#else // not making DLL 
- #define WXDLLIMPEXP_MATHPLOT 
- #define WXDLLIMPEXP_DATA_MATHPLOT(type) type 
+//this definition uses windows dll to export function.
+//WXDLLIMPEXP_MATHPLOT definition definition changed to WXDLLIMPEXP_MATHPLOT
+//mathplot_EXPORTS will be defined by cmake
+#ifdef mathplot_EXPORTS
+ #define WXDLLIMPEXP_MATHPLOT WXEXPORT
+ #define WXDLLIMPEXP_DATA_MATHPLOT(type) WXEXPORT type
+#else // not making DLL
+ #define WXDLLIMPEXP_MATHPLOT
+ #define WXDLLIMPEXP_DATA_MATHPLOT(type) type
 #endif
 
 #if defined(__GNUG__) && !defined(__APPLE__)
@@ -81,12 +81,12 @@
 
 // For memory leak debug
 #ifdef _WINDOWS
-#ifdef _DEBUG
-#include <crtdbg.h>
-#define DEBUG_NEW new(_NORMAL_BLOCK ,__FILE__, __LINE__)
-#else
-#define DEBUG_NEW new
-#endif // _DEBUG
+    #ifdef _DEBUG
+        #include <crtdbg.h>
+        #define DEBUG_NEW new(_NORMAL_BLOCK ,__FILE__, __LINE__)
+    #else
+        #define DEBUG_NEW new
+    #endif // _DEBUG
 #endif // _WINDOWS
 
 // Separation for axes when set close to border
@@ -188,13 +188,13 @@ public:
     /** Plot given view of layer to the given device context.
         An implementation of this function has to transform layer coordinates to
         wxDC coordinates based on the view parameters retrievable from the mpWindow
-        passed in \a w. 
-    Note that the public methods of mpWindow: x2p,y2p and p2x,p2y are already provided 
-    which transform layer coordinates to DC pixel coordinates, and <b>user code should rely 
+        passed in \a w.
+    Note that the public methods of mpWindow: x2p,y2p and p2x,p2y are already provided
+    which transform layer coordinates to DC pixel coordinates, and <b>user code should rely
     on them</b> for portability and future changes to be applied transparently, instead of
     implementing the following formulas manually.
-    
-    The passed device context \a dc has its coordinate origin set to the top-left corner 
+
+    The passed device context \a dc has its coordinate origin set to the top-left corner
     of the visible area (the default). The coordinate orientation is as shown in the
         following picture:
         <pre>
@@ -210,7 +210,7 @@ public:
         </pre>
         Note that Y ascends in downward direction, whereas the usual vertical orientation
         for mathematical plots is vice versa. Thus Y-orientation will be swapped usually,
-        when transforming between wxDC and mpLayer coordinates. This change of coordinates 
+        when transforming between wxDC and mpLayer coordinates. This change of coordinates
     is taken into account in the methods p2x,p2y,x2p,y2p.
 
         <b> Rules for transformation between mpLayer and wxDC coordinates </b>
@@ -288,7 +288,7 @@ public:
     /** Get layer type: a Layer can be of different types: plot lines, axis, info boxes, etc, this method returns the right value.
         @return An integer indicating layer type */
     mpLayerType GetLayerType() { return m_type; };
-    
+
     /** Checks whether the layer is visible or not.
         @return \a true if visible */
     bool IsVisible() {return m_visible; };
@@ -296,11 +296,11 @@ public:
     /** Sets layer visibility.
         @param show visibility bool. */
     void SetVisible(bool show) { m_visible = show; };
-    
+
     /** Get brush set for this layer.
         @return brush. */
     const wxBrush&   GetBrush() const { return m_brush; };
-    
+
     /** Set layer brush
         @param brush brush, will be copied to internal class member    */
     void SetBrush(wxBrush brush) { m_brush = brush; };
@@ -381,7 +381,7 @@ public:
     /** Returns the size of the box (in pixels)
         @return The rectangle size */
     wxSize GetSize();
-    
+
     /** Returns the current rectangle coordinates.
         @return The info layer rectangle */
     const wxRect& GetRectangle() { return m_dim; };
@@ -391,7 +391,7 @@ protected:
     wxPoint m_reference;    //!< Holds the reference point for movements
     wxBrush m_brush;        //!< The brush to be used for the background
     int m_winX, m_winY;     //!< Holds the mpWindow size. Used to rescale position when window is resized.
-    
+
     DECLARE_DYNAMIC_CLASS(mpInfoLayer)
 };
 
@@ -456,7 +456,7 @@ public:
     virtual void   Plot(wxDC & dc, mpWindow & w);
 
 protected:
-    
+
 };
 
 
@@ -709,7 +709,7 @@ public:
     /** Set X axis label view mode.
         @param mode mpX_NORMAL for normal labels, mpX_TIME for time axis in hours, minutes, seconds. */
     void SetLabelMode(unsigned int mode) { m_labelType = mode; };
-    
+
     /** Set X axis Label format (used for mpX_NORMAL draw mode).
         @param format The format string */
     void SetLabelFormat(const wxString& format) { m_labelFormat = format; };
@@ -717,7 +717,7 @@ public:
     /** Get X axis Label format (used for mpX_NORMAL draw mode).
     @return The format string */
     const wxString& SetLabelFormat() { return m_labelFormat; };
-    
+
 protected:
     int m_flags; //!< Flag for axis alignment
     bool m_ticks; //!< Flag to toggle between ticks or grid
@@ -762,11 +762,11 @@ public:
     /** Get Y axis ticks or grid
         @return TRUE if plot is drawing axis ticks, FALSE if the grid is active. */
     bool GetTicks() { return m_ticks; };
-    
+
     /** Set Y axis Label format.
     @param format The format string */
     void SetLabelFormat(const wxString& format) { m_labelFormat = format; };
-    
+
     /** Get Y axis Label format.
     @return The format string */
     const wxString& SetLabelFormat() { return m_labelFormat; };
@@ -857,8 +857,8 @@ public:
         @param refreshDisplay States whether to refresh the display (UpdateAll) after removing the layers.
     */
     void DelAllLayers( bool alsoDeleteObject, bool refreshDisplay = true);
-    
-    
+
+
     /*! Get the layer in list position indicated.
         N.B. You <i>must</i> know the index of the layer inside the list!
         @param position position of the layer in the layers list
@@ -950,7 +950,7 @@ public:
         @param scrY New position that corresponds to the center point of the view.
     */
     void SetScr( int scrX, int scrY) { m_scrX=scrX; m_scrY=scrY; }
-    
+
     /** Converts mpWindow (screen) pixel coordinates into graph (floating point) coordinates, using current mpWindow position and scale.
       * @sa p2y,x2p,y2p */
 //     double p2x(wxCoord pixelCoordX, bool drawOutside = true ); // { return m_posX + pixelCoordX/m_scaleX; }
@@ -1001,13 +1001,13 @@ public:
 
     /** Set view to fit a given bounding box and refresh display.
         The X/Y scale aspect lock is taken into account.
-    If provided, the parameters printSizeX and printSizeY are taken as the DC size, and the 
-        pixel scales are computed accordingly. Also, in this case the passed borders are not saved 
+    If provided, the parameters printSizeX and printSizeY are taken as the DC size, and the
+        pixel scales are computed accordingly. Also, in this case the passed borders are not saved
         as the "desired borders", since this use will be invoked only when printing.
     */
     void Fit(double xMin, double xMax, double yMin, double yMax,wxCoord *printSizeX=NULL,wxCoord *printSizeY=NULL);
 
-    /** Zoom into current view and refresh display 
+    /** Zoom into current view and refresh display
       * @param centerPoint The point (pixel coordinates) that will stay in the same position on the screen after the zoom (by default, the center of the mpWindow).
       */
     void ZoomIn( const wxPoint& centerPoint = wxDefaultPosition );
@@ -1038,7 +1038,7 @@ public:
         \return The number of profiles plotted.
     */
     unsigned int CountLayers();
-    
+
     /** Counts the number of plot layers, whether or not they have a bounding box.
         \return The number of layers in the mpWindow. */
     unsigned int CountAllLayers() { return m_layers.size(); };
@@ -1071,7 +1071,7 @@ public:
     /** Returns the bounding box coordinates
         @param bbox Pointer to a 6-element double array where to store bounding box coordinates. */
     void GetBoundingBox(double* bbox);
-    
+
     /** Enable/disable scrollbars
       @param status Set to true to show scrollbars */
     void SetMPScrollbars(bool status);
@@ -1122,25 +1122,25 @@ public:
     // bool GetCoordTooltip() { return m_coordTooltip; };
 
     /** Check if a given point is inside the area of a mpInfoLayer and eventually returns its pointer.
-        @param point The position to be checked 
+        @param point The position to be checked
         @return If an info layer is found, returns its pointer, NULL otherwise */
     mpInfoLayer* IsInsideInfoLayer(wxPoint& point);
-    
+
     /** Sets the visibility of a layer by its name.
         @param name The layer name to set visibility
         @param viewable the view status to be set */
     void SetLayerVisible(const wxString &name, bool viewable);
-    
+
     /** Check whether a layer with given name is visible
         @param name The layer name
         @return layer visibility status */
     bool IsLayerVisible(const wxString &name );
-    
+
     /** Sets the visibility of a layer by its position in layer list.
         @param position The layer position in layer list
         @param viewable the view status to be set */
     void SetLayerVisible(const unsigned int position, bool viewable);
-    
+
     /** Check whether the layer at given position is visible
         @param position The layer position in layer list
         @return layer visibility status */
@@ -1151,7 +1151,7 @@ public:
         @param drawColour The colour used to draw all elements in foreground, axes excluded
         @param axesColour The colour used to draw axes (but not their labels) */
     void SetColourTheme(const wxColour& bgColour, const wxColour& drawColour, const wxColour& axesColour);
-    
+
     /** Get axes draw colour
         @return reference to axis colour used in theme */
     const wxColour& GetAxesColour() { return m_axColour; };
@@ -1173,11 +1173,11 @@ protected:
     void OnMouseLeftDown (wxMouseEvent     &event); //!< Mouse left click (for rect zoom)
     void OnMouseLeftRelease (wxMouseEvent  &event); //!< Mouse left click (for rect zoom)
     void OnScrollThumbTrack (wxScrollWinEvent &event); //!< Scroll thumb on scroll bar moving
-    void OnScrollPageUp     (wxScrollWinEvent &event); //!< Scroll page up 
-    void OnScrollPageDown   (wxScrollWinEvent &event); //!< Scroll page down 
-    void OnScrollLineUp     (wxScrollWinEvent &event); //!< Scroll line up 
+    void OnScrollPageUp     (wxScrollWinEvent &event); //!< Scroll page up
+    void OnScrollPageDown   (wxScrollWinEvent &event); //!< Scroll page down
+    void OnScrollLineUp     (wxScrollWinEvent &event); //!< Scroll line up
     void OnScrollLineDown   (wxScrollWinEvent &event); //!< Scroll line down
-    void OnScrollTop        (wxScrollWinEvent &event); //!< Scroll to top 
+    void OnScrollTop        (wxScrollWinEvent &event); //!< Scroll to top
     void OnScrollBottom     (wxScrollWinEvent &event); //!< Scroll to bottom
 
     void DoScrollCalc    (const int position, const int orientation);
