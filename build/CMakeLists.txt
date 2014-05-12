@@ -19,15 +19,15 @@ set(BUILD_FORECASTER 0 CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" 
 set(BUILD_VIEWER 0 CACHE BOOL "Do you want to build AtmoSwing Viewer ?" )
 set(BUILD_CALIBRATOR 0 CACHE BOOL "Do you want to build AtmoSwing Calibrator ?" )
 if (BUILD_FORECASTER OR BUILD_CALIBRATOR)
-	set(BUILD_TESTS 1 CACHE BOOL "Do you want to build the tests (recommended) ?" )
-	mark_as_advanced(CLEAR BUILD_TESTS)
+    set(BUILD_TESTS 1 CACHE BOOL "Do you want to build the tests (recommended) ?" )
+    mark_as_advanced(CLEAR BUILD_TESTS)
 else (BUILD_FORECASTER OR BUILD_CALIBRATOR)
-	set(BUILD_TESTS 0)
-	mark_as_advanced(BUILD_TESTS)
+    set(BUILD_TESTS 0)
+    mark_as_advanced(BUILD_TESTS)
 endif (BUILD_FORECASTER OR BUILD_CALIBRATOR)
 
 if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_CALIBRATOR)
-	message(FATAL_ERROR "Please select one or multiple target(s) to build.")
+    message(FATAL_ERROR "Please select one or multiple target(s) to build.")
 endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_CALIBRATOR)
 
 # Output path
@@ -37,23 +37,23 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 if (WIN32)
     set(USE_VLD 0 CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
 else (WIN32)
-	set(USE_VLD 0)
+    set(USE_VLD 0)
 endif (WIN32)
 
 # Enable GUIs
 if (BUILD_FORECASTER OR BUILD_CALIBRATOR AND NOT BUILD_VIEWER)
-	set(USE_GUI 0 CACHE BOOL "Sould we build the Forecaster / Calibrator with a GUI ?" )
+    set(USE_GUI 0 CACHE BOOL "Sould we build the Forecaster / Calibrator with a GUI ?" )
 else (BUILD_FORECASTER OR BUILD_CALIBRATOR AND NOT BUILD_VIEWER)
-	set(USE_GUI 1)
+    set(USE_GUI 1)
 endif (BUILD_FORECASTER OR BUILD_CALIBRATOR AND NOT BUILD_VIEWER)
 
 # Enable CUDA
 if (BUILD_CALIBRATOR)
-	set(USE_CUDA 0 CACHE BOOL "Sould we compile with CUDA GPU support (not stable yet) ?" )
-	mark_as_advanced(CLEAR USE_CUDA)
+    set(USE_CUDA 0 CACHE BOOL "Sould we compile with CUDA GPU support (not stable yet) ?" )
+    mark_as_advanced(CLEAR USE_CUDA)
 else (BUILD_CALIBRATOR)
-	set(USE_CUDA 0)
-	mark_as_advanced(USE_CUDA)
+    set(USE_CUDA 0)
+    mark_as_advanced(USE_CUDA)
 endif (BUILD_CALIBRATOR)
 
 # Addition of custom modules
@@ -151,10 +151,10 @@ file(GLOB_RECURSE src_tests_cpp ../test/src/*.cpp)
 list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h} ${src_calib_core_h}) # Include calibration files anyway (to test the analogue method)
 list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp} ${src_calib_core_cpp})
 if (BUILD_FORECASTER)
-	list(APPEND src_tests ${src_forec_core_h})
-	list(APPEND src_tests ${src_forec_core_cpp})
-	list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVars.h")
-	list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVars.cpp")
+    list(APPEND src_tests ${src_forec_core_h})
+    list(APPEND src_tests ${src_forec_core_cpp})
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVars.h")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVars.cpp")
 else (BUILD_FORECASTER)
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeGeneralGridTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeRegularGridTest.cpp")
@@ -164,15 +164,15 @@ list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobV
 
 # CUDA library
 if (USE_CUDA)
-	file(GLOB_RECURSE src_proc_core_cu ../../src/shared_processing/core/*.cu)
-	file(GLOB_RECURSE src_proc_core_cuh ../../src/shared_processing/core/*.cuh)
-	list(APPEND src_cuda ${src_proc_core_cu})
-	list(APPEND src_cuda ${src_proc_core_cuh})
-	list(APPEND src_app_calibrator ${src_proc_core_cuh})
-	if (WIN32)
-		# Bug with VS 2012 and CUDA in previous versions
-		cmake_minimum_required(VERSION 2.8.12.2)
-	endif (WIN32)
+    file(GLOB_RECURSE src_proc_core_cu ../../src/shared_processing/core/*.cu)
+    file(GLOB_RECURSE src_proc_core_cuh ../../src/shared_processing/core/*.cuh)
+    list(APPEND src_cuda ${src_proc_core_cu})
+    list(APPEND src_cuda ${src_proc_core_cuh})
+    list(APPEND src_app_calibrator ${src_proc_core_cuh})
+    if (WIN32)
+        # Bug with VS 2012 and CUDA in previous versions
+        cmake_minimum_required(VERSION 2.8.12.2)
+    endif (WIN32)
 endif (USE_CUDA)
 
 # Remove eventual duplicates
@@ -192,60 +192,60 @@ list(APPEND inc_dirs
     )
 
 if (BUILD_FORECASTER)
-	list(APPEND inc_dirs 
-		"${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-		"${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/"
-		"${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
-		)
-	if (USE_GUI)
-		list(APPEND inc_dirs 
-			"${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
-			"${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
-			"${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-			"${PROJECT_SOURCE_DIR}/../src/app_forecaster/gui/"
-			)
-	endif (USE_GUI)
+    list(APPEND inc_dirs 
+        "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/"
+        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
+        )
+    if (USE_GUI)
+        list(APPEND inc_dirs 
+            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
+            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
+            "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
+            "${PROJECT_SOURCE_DIR}/../src/app_forecaster/gui/"
+            )
+    endif (USE_GUI)
 endif (BUILD_FORECASTER)
 
 if (BUILD_VIEWER)
-	list(APPEND inc_dirs 
-		"${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
-		"${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
-		"${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/app/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/gui/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxmathplot/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxplotctrl/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxplotctrl/include/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxthings/include/"
-		)
+    list(APPEND inc_dirs 
+        "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
+        "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
+        "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/app/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/gui/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxmathplot/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxplotctrl/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxplotctrl/include/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxthings/include/"
+        )
 endif (BUILD_VIEWER)
 
 if (BUILD_CALIBRATOR)
-	list(APPEND inc_dirs 
-		"${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-		"${PROJECT_SOURCE_DIR}/../src/app_calibrator/app/"
-		"${PROJECT_SOURCE_DIR}/../src/app_calibrator/core/"
-		)
-	if (USE_GUI)
-		list(APPEND inc_dirs 
-			"${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
-			"${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
-			"${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-			"${PROJECT_SOURCE_DIR}/../src/app_calibrator/gui/"
-			)
-	endif (USE_GUI)
+    list(APPEND inc_dirs 
+        "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/../src/app_calibrator/app/"
+        "${PROJECT_SOURCE_DIR}/../src/app_calibrator/core/"
+        )
+    if (USE_GUI)
+        list(APPEND inc_dirs 
+            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
+            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
+            "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
+            "${PROJECT_SOURCE_DIR}/../src/app_calibrator/gui/"
+            )
+    endif (USE_GUI)
 endif (BUILD_CALIBRATOR)
 
 if (BUILD_TESTS)
-	list(APPEND inc_dirs 
-		"${PROJECT_SOURCE_DIR}/../test/src/"
-		"${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-		"${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
-		"${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
-		"${PROJECT_SOURCE_DIR}/../src/app_calibrator/core/"
-		)
+    list(APPEND inc_dirs 
+        "${PROJECT_SOURCE_DIR}/../test/src/"
+        "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
+        "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
+        "${PROJECT_SOURCE_DIR}/../src/app_calibrator/core/"
+        )
 endif (BUILD_TESTS)
 
 include_directories(${inc_dirs})
@@ -256,7 +256,7 @@ include_directories(${inc_dirs})
 # Own libraries
 add_library(lib_shared_base STATIC ${src_shared_base})
 if (BUILD_FORECASTER OR BUILD_CALIBRATOR)
-	add_library(lib_shared_processing STATIC ${src_shared_processing})
+    add_library(lib_shared_processing STATIC ${src_shared_processing})
 endif (BUILD_FORECASTER OR BUILD_CALIBRATOR)
 
 # Provided libraries
@@ -296,10 +296,10 @@ include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 
 # libcURL
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-	mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
-	mark_as_advanced(CLEAR CURL_LIBRARY)
-	find_package(CURL REQUIRED)
-	include_directories(${CURL_INCLUDE_DIRS})
+    mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
+    mark_as_advanced(CLEAR CURL_LIBRARY)
+    find_package(CURL REQUIRED)
+    include_directories(${CURL_INCLUDE_DIRS})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # Proj.4
@@ -308,8 +308,8 @@ include_directories(${PROJ4_INCLUDE_DIR})
 
 # GDAL
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-	find_package(GDAL REQUIRED)
-	include_directories(${GDAL_INCLUDE_DIRS})
+    find_package(GDAL REQUIRED)
+    include_directories(${GDAL_INCLUDE_DIRS})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # Eigen
@@ -319,16 +319,16 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 
 # vroomgis
 if (BUILD_VIEWER)
-	mark_as_advanced(SEARCH_GDAL)
-	mark_as_advanced(SEARCH_GEOS)
-	mark_as_advanced(SEARCH_GIS_LIB_PATH)
-	mark_as_advanced(SEARCH_VROOMGIS_LIBS)
-	mark_as_advanced(SEARCH_VROOMGIS_WXWIDGETS)
-	mark_as_advanced(SQLITE_INCLUDE_DIR)
-	mark_as_advanced(SQLITE_PATH)
-	mark_as_advanced(wxWIDGETS_USING_SVN)
-	include("../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")
-	link_libraries(${wxWidgets_LIBRARIES})
+    mark_as_advanced(SEARCH_GDAL)
+    mark_as_advanced(SEARCH_GEOS)
+    mark_as_advanced(SEARCH_GIS_LIB_PATH)
+    mark_as_advanced(SEARCH_VROOMGIS_LIBS)
+    mark_as_advanced(SEARCH_VROOMGIS_WXWIDGETS)
+    mark_as_advanced(SQLITE_INCLUDE_DIR)
+    mark_as_advanced(SQLITE_PATH)
+    mark_as_advanced(wxWIDGETS_USING_SVN)
+    include("../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")
+    link_libraries(${wxWidgets_LIBRARIES})
 endif (BUILD_VIEWER)
 
 # wxhgversion
@@ -337,32 +337,32 @@ if (USE_GUI)
     mark_as_advanced(USE_WXHGVERSION)
     include("../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
 else (USE_GUI)
-	set(USE_WXHGVERSION 0)
+    set(USE_WXHGVERSION 0)
     mark_as_advanced(USE_WXHGVERSION)
 endif (USE_GUI)
 
 # CUDA
 if (USE_CUDA)
-	find_package(CUDA 5.0 REQUIRED)
-	include_directories(${CUDA_INCLUDE_DIRS})
-	set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_20;-use_fast_math)
-	set(CUDA_NVCC_FLAGS_RELEASE ${CUDA_NVCC_FLAGS_RELEASE};-O3)
-	set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG};-G)
-	set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
-	cuda_add_library(lib_cuda_functions STATIC ${src_cuda})
+    find_package(CUDA 5.0 REQUIRED)
+    include_directories(${CUDA_INCLUDE_DIRS})
+    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_20;-use_fast_math)
+    set(CUDA_NVCC_FLAGS_RELEASE ${CUDA_NVCC_FLAGS_RELEASE};-O3)
+    set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG};-G)
+    set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
+    cuda_add_library(lib_cuda_functions STATIC ${src_cuda})
 endif (USE_CUDA)
 
 # UnitTest++
 if (BUILD_TESTS)
-	find_package(UnitTest++ REQUIRED)
-	include_directories(${UNITTEST++_INCLUDE_DIR})
-	mark_as_advanced(UnitTest++_DIR)
+    include(cmake/FindUnitTest++.cmake)
+    include_directories(${UNITTEST++_INCLUDE_DIR})
+    mark_as_advanced(UnitTest++_DIR)
 endif (BUILD_TESTS)
 
 # Visual Leak Detector
 if (USE_VLD)
-	find_package(VLD)
-	include_directories(${VLD_INCLUDE_DIRS})
+    find_package(VLD)
+    include_directories(${VLD_INCLUDE_DIRS})
 endif (USE_VLD)
 
 
@@ -371,72 +371,72 @@ endif (USE_VLD)
 if (WIN32)
 
     if (USE_GUI)
-		if (BUILD_FORECASTER)
-			add_executable (atmoswing-forecaster WIN32 ${src_app_forecaster} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
-		endif (BUILD_FORECASTER)
-		if (BUILD_CALIBRATOR)
-			add_executable (atmoswing-calibrator WIN32 ${src_app_calibrator} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
-		endif (BUILD_CALIBRATOR)
+        if (BUILD_FORECASTER)
+            add_executable (atmoswing-forecaster WIN32 ${src_app_forecaster} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
+        endif (BUILD_FORECASTER)
+        if (BUILD_CALIBRATOR)
+            add_executable (atmoswing-calibrator WIN32 ${src_app_calibrator} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
+        endif (BUILD_CALIBRATOR)
     else (USE_GUI)
-		if (BUILD_FORECASTER)
-			add_executable (atmoswing-forecaster ${src_app_forecaster})
-		endif (BUILD_FORECASTER)
-		if (BUILD_CALIBRATOR)
-			add_executable (atmoswing-calibrator ${src_app_calibrator})
-		endif (BUILD_CALIBRATOR)
+        if (BUILD_FORECASTER)
+            add_executable (atmoswing-forecaster ${src_app_forecaster})
+        endif (BUILD_FORECASTER)
+        if (BUILD_CALIBRATOR)
+            add_executable (atmoswing-calibrator ${src_app_calibrator})
+        endif (BUILD_CALIBRATOR)
     endif (USE_GUI)
-	if (BUILD_VIEWER)
-		add_executable (atmoswing-viewer WIN32 ${src_app_viewer} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
-	endif (BUILD_VIEWER)
-	if (BUILD_TESTS)
-		add_executable (atmoswing-tests WIN32 ${src_tests})
-	endif (BUILD_TESTS)
-	
+    if (BUILD_VIEWER)
+        add_executable (atmoswing-viewer WIN32 ${src_app_viewer} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
+    endif (BUILD_VIEWER)
+    if (BUILD_TESTS)
+        add_executable (atmoswing-tests WIN32 ${src_tests})
+    endif (BUILD_TESTS)
+    
 elseif (UNIX AND NOT APPLE)
 
-	if (BUILD_FORECASTER)
-		add_executable (atmoswing-forecaster ${src_app_forecaster})
-	endif (BUILD_FORECASTER)
-	if (BUILD_VIEWER)
-		add_executable (atmoswing-viewer ${src_app_viewer})
-	endif (BUILD_VIEWER)
-	if (BUILD_CALIBRATOR)
-		add_executable (atmoswing-calibrator ${src_app_calibrator})
-	endif (BUILD_CALIBRATOR)
-	if (BUILD_TESTS)
-		add_executable (atmoswing-tests ${src_tests})
-	endif (BUILD_TESTS)
-	
+    if (BUILD_FORECASTER)
+        add_executable (atmoswing-forecaster ${src_app_forecaster})
+    endif (BUILD_FORECASTER)
+    if (BUILD_VIEWER)
+        add_executable (atmoswing-viewer ${src_app_viewer})
+    endif (BUILD_VIEWER)
+    if (BUILD_CALIBRATOR)
+        add_executable (atmoswing-calibrator ${src_app_calibrator})
+    endif (BUILD_CALIBRATOR)
+    if (BUILD_TESTS)
+        add_executable (atmoswing-tests ${src_tests})
+    endif (BUILD_TESTS)
+    
 elseif (APPLE)
 
-	if (BUILD_FORECASTER)
-		add_executable (atmoswing-forecaster MACOSX_BUNDLE ${src_app_forecaster})
-	endif (BUILD_FORECASTER)
-	if (BUILD_VIEWER)
-		add_executable (atmoswing-viewer MACOSX_BUNDLE ${src_app_viewer})
-	endif (BUILD_VIEWER)
-	if (BUILD_CALIBRATOR)
-		add_executable (atmoswing-calibrator MACOSX_BUNDLE ${src_app_calibrator})
-	endif (BUILD_CALIBRATOR)
-	if (BUILD_TESTS)
-		add_executable (atmoswing-tests MACOSX_BUNDLE ${src_tests})
-	endif (BUILD_TESTS)
-	
+    if (BUILD_FORECASTER)
+        add_executable (atmoswing-forecaster MACOSX_BUNDLE ${src_app_forecaster})
+    endif (BUILD_FORECASTER)
+    if (BUILD_VIEWER)
+        add_executable (atmoswing-viewer MACOSX_BUNDLE ${src_app_viewer})
+    endif (BUILD_VIEWER)
+    if (BUILD_CALIBRATOR)
+        add_executable (atmoswing-calibrator MACOSX_BUNDLE ${src_app_calibrator})
+    endif (BUILD_CALIBRATOR)
+    if (BUILD_TESTS)
+        add_executable (atmoswing-tests MACOSX_BUNDLE ${src_tests})
+    endif (BUILD_TESTS)
+    
 else (WIN32)
 
-	if (BUILD_FORECASTER)
-		add_executable (atmoswing-forecaster ${src_app_forecaster})
-	endif (BUILD_FORECASTER)
-	if (BUILD_VIEWER)
-		add_executable (atmoswing-viewer ${src_app_viewer})
-	endif (BUILD_VIEWER)
-	if (BUILD_CALIBRATOR)
-		add_executable (atmoswing-calibrator ${src_app_calibrator})
-	endif (BUILD_CALIBRATOR)
-	if (BUILD_TESTS)
-		add_executable (atmoswing-tests ${src_tests})
-	endif (BUILD_TESTS)
-	
+    if (BUILD_FORECASTER)
+        add_executable (atmoswing-forecaster ${src_app_forecaster})
+    endif (BUILD_FORECASTER)
+    if (BUILD_VIEWER)
+        add_executable (atmoswing-viewer ${src_app_viewer})
+    endif (BUILD_VIEWER)
+    if (BUILD_CALIBRATOR)
+        add_executable (atmoswing-calibrator ${src_app_calibrator})
+    endif (BUILD_CALIBRATOR)
+    if (BUILD_TESTS)
+        add_executable (atmoswing-tests ${src_tests})
+    endif (BUILD_TESTS)
+    
 endif (WIN32)
 
 
@@ -452,25 +452,25 @@ if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer ")
 elseif (WIN32)
-	set_target_properties(lib_shared_base PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-	if (BUILD_FORECASTER)
-		set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-		set_target_properties(lib_shared_processing PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-	endif (BUILD_FORECASTER)
-	if (BUILD_VIEWER)
-		set_target_properties(atmoswing-viewer PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-		set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
-	endif (BUILD_VIEWER)
-	if (BUILD_CALIBRATOR)
-		set_target_properties(atmoswing-calibrator PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-		set_target_properties(lib_shared_processing PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-	endif (BUILD_CALIBRATOR)
-	if (BUILD_TESTS)
-		set_target_properties(atmoswing-tests PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-	endif (BUILD_TESTS)
-	if (USE_WXHGVERSION)
-		set_target_properties(wxhgversion PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
-	endif (USE_WXHGVERSION)
+    set_target_properties(lib_shared_base PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+    if (BUILD_FORECASTER)
+        set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+        set_target_properties(lib_shared_processing PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+    endif (BUILD_FORECASTER)
+    if (BUILD_VIEWER)
+        set_target_properties(atmoswing-viewer PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+        set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
+    endif (BUILD_VIEWER)
+    if (BUILD_CALIBRATOR)
+        set_target_properties(atmoswing-calibrator PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+        set_target_properties(lib_shared_processing PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+    endif (BUILD_CALIBRATOR)
+    if (BUILD_TESTS)
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
+    endif (BUILD_TESTS)
+    if (USE_WXHGVERSION)
+        set_target_properties(wxhgversion PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
+    endif (USE_WXHGVERSION)
 endif (UNIX AND NOT APPLE)
 
 # Global definitions
@@ -482,51 +482,51 @@ if (WIN32)
 endif (WIN32)
 
 if (USE_VLD)
-	add_definitions(-DUSE_VLD)
+    add_definitions(-DUSE_VLD)
 endif (USE_VLD)
 
 if (USE_CUDA)
-	add_definitions(-DUSE_CUDA)
+    add_definitions(-DUSE_CUDA)
 endif (USE_CUDA)
 
 # Specific definitions
 if (USE_GUI)
-	set_target_properties(lib_shared_base PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
+    set_target_properties(lib_shared_base PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
 else (USE_GUI)
-	set_target_properties(lib_shared_base PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
+    set_target_properties(lib_shared_base PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
 endif (USE_GUI)
-	
+    
 if (BUILD_FORECASTER)
-	if (USE_GUI)
-		set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; wxUSE_GUI=1")
-		set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
-	else (USE_GUI)
-		set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; wxUSE_GUI=0")
-		set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
-	endif (USE_GUI)
+    if (USE_GUI)
+        set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; wxUSE_GUI=1")
+        set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
+    else (USE_GUI)
+        set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; wxUSE_GUI=0")
+        set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
+    endif (USE_GUI)
 endif (BUILD_FORECASTER)
 
 if (BUILD_VIEWER)
-	set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWER")
+    set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWER")
 endif (BUILD_VIEWER)
 
 if (BUILD_CALIBRATOR)
-	if (USE_GUI)
-		set_target_properties(atmoswing-calibrator PROPERTIES COMPILE_DEFINITIONS "APP_CALIBRATOR; MINIMAL_LINKS; wxUSE_GUI=1")
-		set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
-	else (USE_GUI)
-		set_target_properties(atmoswing-calibrator PROPERTIES COMPILE_DEFINITIONS "APP_CALIBRATOR; MINIMAL_LINKS; wxUSE_GUI=0")
-		set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
-	endif (USE_GUI)
+    if (USE_GUI)
+        set_target_properties(atmoswing-calibrator PROPERTIES COMPILE_DEFINITIONS "APP_CALIBRATOR; MINIMAL_LINKS; wxUSE_GUI=1")
+        set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
+    else (USE_GUI)
+        set_target_properties(atmoswing-calibrator PROPERTIES COMPILE_DEFINITIONS "APP_CALIBRATOR; MINIMAL_LINKS; wxUSE_GUI=0")
+        set_target_properties(lib_shared_processing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
+    endif (USE_GUI)
 endif (BUILD_CALIBRATOR)
 
 if (BUILD_TESTS)
-	if(WIN32)
-		set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
-		set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0; _CONSOLE")
-	else(WIN32)
-		set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0")
-	endif(WIN32)
+    if(WIN32)
+        set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0; _CONSOLE")
+    else(WIN32)
+        set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0")
+    endif(WIN32)
 endif (BUILD_TESTS)
 
 message("CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
@@ -538,78 +538,78 @@ message("CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 #### LINKING
 
 if (BUILD_FORECASTER)
-	target_link_libraries(atmoswing-forecaster lib_shared_base)
-	target_link_libraries(atmoswing-forecaster lib_shared_processing)
-	target_link_libraries(atmoswing-forecaster ${wxWidgets_LIBRARIES})
-	target_link_libraries(atmoswing-forecaster ${NetCDF_LIBRARIES})
-	target_link_libraries(atmoswing-forecaster ${CURL_LIBRARIES})
-	target_link_libraries(atmoswing-forecaster ${PROJ4_LIBRARIES})
-	target_link_libraries(atmoswing-forecaster ${GDAL_LIBRARIES})
-	if (USE_WXHGVERSION)
-		target_link_libraries(atmoswing-forecaster ${WXHGVERSION_NAME})
-	endif (USE_WXHGVERSION)
-	if (USE_VLD)
-		target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
-	endif (USE_VLD)
+    target_link_libraries(atmoswing-forecaster lib_shared_base)
+    target_link_libraries(atmoswing-forecaster lib_shared_processing)
+    target_link_libraries(atmoswing-forecaster ${wxWidgets_LIBRARIES})
+    target_link_libraries(atmoswing-forecaster ${NetCDF_LIBRARIES})
+    target_link_libraries(atmoswing-forecaster ${CURL_LIBRARIES})
+    target_link_libraries(atmoswing-forecaster ${PROJ4_LIBRARIES})
+    target_link_libraries(atmoswing-forecaster ${GDAL_LIBRARIES})
+    if (USE_WXHGVERSION)
+        target_link_libraries(atmoswing-forecaster ${WXHGVERSION_NAME})
+    endif (USE_WXHGVERSION)
+    if (USE_VLD)
+        target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
+    endif (USE_VLD)
 endif (BUILD_FORECASTER)
 
 if (BUILD_VIEWER)
-	target_link_libraries(atmoswing-viewer lib_shared_base)
-	target_link_libraries(atmoswing-viewer ${wxWidgets_LIBRARIES})
-	target_link_libraries(atmoswing-viewer ${NetCDF_LIBRARIES})
-	target_link_libraries(atmoswing-viewer ${CURL_LIBRARIES})
-	target_link_libraries(atmoswing-viewer ${PROJ4_LIBRARIES})
-	target_link_libraries(atmoswing-viewer ${GDAL_LIBRARIES})
-	target_link_libraries(atmoswing-viewer ${VROOMGIS_LIBRARY})
-	if (USE_WXHGVERSION)
-	  target_link_libraries(atmoswing-viewer ${WXHGVERSION_NAME})
-	endif (USE_WXHGVERSION)
-	if (USE_VLD)
-		target_link_libraries(atmoswing-viewer ${VLD_LIBRARIES})
-	endif (USE_VLD)
-	if (WIN32)
-		target_link_libraries(atmoswing-viewer Psapi.lib)
-	endif (WIN32)
+    target_link_libraries(atmoswing-viewer lib_shared_base)
+    target_link_libraries(atmoswing-viewer ${wxWidgets_LIBRARIES})
+    target_link_libraries(atmoswing-viewer ${NetCDF_LIBRARIES})
+    target_link_libraries(atmoswing-viewer ${CURL_LIBRARIES})
+    target_link_libraries(atmoswing-viewer ${PROJ4_LIBRARIES})
+    target_link_libraries(atmoswing-viewer ${GDAL_LIBRARIES})
+    target_link_libraries(atmoswing-viewer ${VROOMGIS_LIBRARY})
+    if (USE_WXHGVERSION)
+      target_link_libraries(atmoswing-viewer ${WXHGVERSION_NAME})
+    endif (USE_WXHGVERSION)
+    if (USE_VLD)
+        target_link_libraries(atmoswing-viewer ${VLD_LIBRARIES})
+    endif (USE_VLD)
+    if (WIN32)
+        target_link_libraries(atmoswing-viewer Psapi.lib)
+    endif (WIN32)
 endif (BUILD_VIEWER)
 
 if (BUILD_CALIBRATOR)
-	target_link_libraries(atmoswing-calibrator lib_shared_base)
-	target_link_libraries(atmoswing-calibrator lib_shared_processing)
-	target_link_libraries(atmoswing-calibrator ${wxWidgets_LIBRARIES})
-	target_link_libraries(atmoswing-calibrator ${NetCDF_LIBRARIES})
-	target_link_libraries(atmoswing-calibrator ${PROJ4_LIBRARIES})
-	if (USE_WXHGVERSION)
-		target_link_libraries(atmoswing-calibrator ${WXHGVERSION_NAME})
-	endif (USE_WXHGVERSION)
-	if (USE_VLD)
-		target_link_libraries(atmoswing-calibrator ${VLD_LIBRARIES})
-	endif (USE_VLD)
-	if (USE_CUDA)
-		target_link_libraries(lib_cuda_functions ${CUDA_CUDA_LIBRARY})
-		add_dependencies(atmoswing-calibrator lib_cuda_functions)
-		target_link_libraries(atmoswing-calibrator lib_cuda_functions)
-	endif (USE_CUDA)
+    target_link_libraries(atmoswing-calibrator lib_shared_base)
+    target_link_libraries(atmoswing-calibrator lib_shared_processing)
+    target_link_libraries(atmoswing-calibrator ${wxWidgets_LIBRARIES})
+    target_link_libraries(atmoswing-calibrator ${NetCDF_LIBRARIES})
+    target_link_libraries(atmoswing-calibrator ${PROJ4_LIBRARIES})
+    if (USE_WXHGVERSION)
+        target_link_libraries(atmoswing-calibrator ${WXHGVERSION_NAME})
+    endif (USE_WXHGVERSION)
+    if (USE_VLD)
+        target_link_libraries(atmoswing-calibrator ${VLD_LIBRARIES})
+    endif (USE_VLD)
+    if (USE_CUDA)
+        target_link_libraries(lib_cuda_functions ${CUDA_CUDA_LIBRARY})
+        add_dependencies(atmoswing-calibrator lib_cuda_functions)
+        target_link_libraries(atmoswing-calibrator lib_cuda_functions)
+    endif (USE_CUDA)
 endif (BUILD_CALIBRATOR)
 
 if (BUILD_TESTS)
-	target_link_libraries(atmoswing-tests lib_shared_base)
-	target_link_libraries(atmoswing-tests lib_shared_processing)
-	target_link_libraries(atmoswing-tests ${wxWidgets_LIBRARIES})
-	target_link_libraries(atmoswing-tests ${NetCDF_LIBRARIES})
-	target_link_libraries(atmoswing-tests ${CURL_LIBRARIES})
-	target_link_libraries(atmoswing-tests ${PROJ4_LIBRARIES})
-	target_link_libraries(atmoswing-tests ${UNITTEST++_LIBRARIES})
-	if (BUILD_FORECASTER)
-		target_link_libraries(atmoswing-tests ${GDAL_LIBRARIES})
-	endif (BUILD_FORECASTER)
-	if (USE_VLD)
-		target_link_libraries(atmoswing-tests ${VLD_LIBRARIES})
-	endif (USE_VLD)
-	if (USE_CUDA)
-		target_link_libraries(lib_cuda_functions ${CUDA_CUDA_LIBRARY})
-		add_dependencies(atmoswing-tests lib_cuda_functions)
-		target_link_libraries(atmoswing-tests lib_cuda_functions)
-	endif (USE_CUDA)
+    target_link_libraries(atmoswing-tests lib_shared_base)
+    target_link_libraries(atmoswing-tests lib_shared_processing)
+    target_link_libraries(atmoswing-tests ${wxWidgets_LIBRARIES})
+    target_link_libraries(atmoswing-tests ${NetCDF_LIBRARIES})
+    target_link_libraries(atmoswing-tests ${CURL_LIBRARIES})
+    target_link_libraries(atmoswing-tests ${PROJ4_LIBRARIES})
+    target_link_libraries(atmoswing-tests ${UNITTEST++_LIBRARIES})
+    if (BUILD_FORECASTER)
+        target_link_libraries(atmoswing-tests ${GDAL_LIBRARIES})
+    endif (BUILD_FORECASTER)
+    if (USE_VLD)
+        target_link_libraries(atmoswing-tests ${VLD_LIBRARIES})
+    endif (USE_VLD)
+    if (USE_CUDA)
+        target_link_libraries(lib_cuda_functions ${CUDA_CUDA_LIBRARY})
+        add_dependencies(atmoswing-tests lib_cuda_functions)
+        target_link_libraries(atmoswing-tests lib_cuda_functions)
+    endif (USE_CUDA)
 endif (BUILD_TESTS)
 
 
@@ -731,15 +731,15 @@ endif(WIN32)
 
 if (UNIX AND NOT APPLE)
     install(FILES ../art/icon/atmoswing.png DESTINATION share/pixmaps)
-	if (BUILD_FORECASTER)
-		install(FILES cpack/atmoswing-forecaster.desktop DESTINATION share/applications)
-	endif (BUILD_FORECASTER)
-	if (BUILD_VIEWER)
-		install(FILES cpack/atmoswing-viewer.desktop DESTINATION share/applications)
-	endif (BUILD_VIEWER)
-	if (BUILD_CALIBRATOR)
-		install(FILES cpack/atmoswing-calibrator.desktop DESTINATION share/applications)
-	endif (BUILD_CALIBRATOR)
+    if (BUILD_FORECASTER)
+        install(FILES cpack/atmoswing-forecaster.desktop DESTINATION share/applications)
+    endif (BUILD_FORECASTER)
+    if (BUILD_VIEWER)
+        install(FILES cpack/atmoswing-viewer.desktop DESTINATION share/applications)
+    endif (BUILD_VIEWER)
+    if (BUILD_CALIBRATOR)
+        install(FILES cpack/atmoswing-calibrator.desktop DESTINATION share/applications)
+    endif (BUILD_CALIBRATOR)
     set(CPACK_GENERATOR "DEB")
     set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
