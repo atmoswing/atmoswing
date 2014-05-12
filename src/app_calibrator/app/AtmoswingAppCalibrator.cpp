@@ -157,8 +157,6 @@ bool AtmoswingAppCalibrator::OnInit()
     wxString appName = "AtmoSwing Calibrator";
     wxApp::SetAppName(appName);
 
-    g_AppViewer = false;
-    g_AppForecaster = false; // None of them. This is correct and handles the ini file correctly.
     g_GuiMode = true;
     g_Local = false;
     g_ResumePreviousRun = false;

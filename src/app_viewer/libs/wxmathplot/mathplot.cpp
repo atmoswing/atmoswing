@@ -54,7 +54,9 @@
 
 // Memory leak debugging
 #ifdef _DEBUG
-#define new DEBUG_NEW
+    #ifdef __WXMSW__
+        #define new DEBUG_NEW
+    #endif
 #endif
 
 // Legend margins
