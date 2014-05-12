@@ -32,10 +32,6 @@ bool g_VerboseMode = true;
 bool g_Responsive = true;
 bool g_UnitTesting = false;
 bool g_GuiMode = true;
-bool g_AppViewer = true;
-bool g_AppForecaster = false;
-wxColour g_LinuxBgColour = wxColour(242,241,240);
-wxString g_CmdFilename = wxEmptyString;
 
 // Constants
 const double g_Cst_Euler = 0.57721566490153286060651209008240243104215933593992; // http://fr.wikipedia.org/wiki/Constante_d%27Euler-Mascheroni

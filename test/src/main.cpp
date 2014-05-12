@@ -81,23 +81,23 @@ int main( int argc, char** argv )
 	// Check path
 	wxString filepath = wxFileName::GetCwd();
 	wxString filepath1 = filepath;
-    filepath1.Append("/files");
+    filepath1.Append("/test/files");
 	if (!wxFileName::DirExists(filepath1))
 	{
 		wxString filepath2 = filepath;
-		filepath2.Append("/../files");
+		filepath2.Append("/../test/files");
 		if (wxFileName::DirExists(filepath2))
 		{
-			filepath.Append("/..");
+			filepath.Append("/../test");
 			wxSetWorkingDirectory(filepath);
 		}
 		else
 		{
 			wxString filepath3 = filepath;
-			filepath3.Append("/../../files");
+			filepath3.Append("/../../test/files");
 			if (wxFileName::DirExists(filepath3))
 			{
-				filepath.Append("/../..");
+				filepath.Append("/../../test");
 				wxSetWorkingDirectory(filepath);
 			}
 			else

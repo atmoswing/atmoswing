@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -109,7 +109,7 @@ using namespace std;
 
     #ifdef __WXMSW__
         #include <crtdbg.h>
-        #include <wx/msw/msvcrt.h> // redefines the new() operator 
+        #include <wx/msw/msvcrt.h> // redefines the new() operator
 
         #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
             #error Debug CRT functions have not been included!
@@ -120,13 +120,15 @@ using namespace std;
         #include <vld.h> // Visual Leak Detector (https://vld.codeplex.com/)
     #endif
 
-    
+
 #endif
 
 
 //---------------------------------
 // Some AtmoSwing stuff - frequently used classes
 //---------------------------------
+
+
 
 #include "asVersion.h"
 #include "asConfig.h"
@@ -145,7 +147,15 @@ using namespace std;
     #include "asDialogFileSaver.h"
     #include "asDialogProgressBar.h"
 #endif
-
+#ifdef APP_FORECASTER
+    #include "asGlobVarsForecaster.h"
+#endif
+#ifdef APP_VIEWER
+    #include "asGlobVarsViewer.h"
+#endif
+#ifdef APP_CALIBRATOR
+    #include "asGlobVarsCalibrator.h"
+#endif
 
 #endif // ATMOSWINGINC_H_INCLUDED
 

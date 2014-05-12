@@ -91,8 +91,10 @@ endif (NOT BUILD_FORECASTER)
 # Folder shared_processing
 file(GLOB_RECURSE src_proc_core_h ../src/shared_processing/core/*.h)
 file(GLOB_RECURSE src_proc_core_cpp ../src/shared_processing/core/*.cpp)
-list(APPEND src_shared_processing ${src_proc_core_h})
-list(APPEND src_shared_processing ${src_proc_core_cpp})
+file(GLOB src_proc_thread_h ../src/shared_base/core/asThread.h)
+file(GLOB src_proc_thread_cpp ../src/shared_base/core/asThread.cpp)
+list(APPEND src_shared_processing ${src_proc_core_h} ${src_proc_thread_h})
+list(APPEND src_shared_processing ${src_proc_core_cpp} ${src_proc_thread_cpp})
 
 # Folder app_forecaster
 file(GLOB_RECURSE src_forec_app_h ../src/app_forecaster/app/*.h)

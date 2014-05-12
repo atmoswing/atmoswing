@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -58,30 +58,25 @@ void asFramePreferences::LoadPreferences()
     wxConfigBase *pConfigForecaster;
     wxConfigBase *pConfigViewer;
 
-    if (g_AppViewer)
-    {
+    #if defined(APP_VIEWER)
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing forecaster"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing forecaster") + "AtmoSwing.ini",asConfig::GetUserDataDir() + "AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
         pConfigViewer = wxFileConfig::Get();
-    }
-    else if (g_AppForecaster)
-    {
+    #elif defined(APP_FORECASTER)
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
         pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer") + "AtmoSwing.ini",asConfig::GetUserDataDir() + "AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
-    }
-    else
-    {
+    #else
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
         pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer") + "AtmoSwing.ini",asConfig::GetUserDataDir() + "AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
-    }
+    #endif // APP_VIEWER
 
     // Fix the color of the file/dir pickers
     wxColour col = m_NotebookBase->GetThemeBackgroundColour();
@@ -335,18 +330,13 @@ void asFramePreferences::LoadPreferences()
     m_StaticTextPrefFileForecaster->SetLabel(asConfig::GetUserDataDir("AtmoSwing forecaster")+"AtmoSwing.ini");
     m_StaticTextPrefFileViewer->SetLabel(asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini");
 
-    if (g_AppViewer)
-    {
+    #if defined(APP_VIEWER)
         wxDELETE(pConfigForecaster);
-    }
-    else if (g_AppForecaster)
-    {
+    #elif defined(APP_FORECASTER)
         wxDELETE(pConfigViewer);
-    }
-    else
-    {
+    #else
         wxDELETE(pConfigViewer);
-    }
+    #endif // defined
 }
 
 void asFramePreferences::SavePreferences( )
@@ -354,30 +344,25 @@ void asFramePreferences::SavePreferences( )
     wxConfigBase *pConfigForecaster;
     wxConfigBase *pConfigViewer;
 
-    if (g_AppViewer)
-    {
+    #if defined(APP_VIEWER)
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing forecaster"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing forecaster")+"AtmoSwing.ini",asConfig::GetUserDataDir()+DS+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
         pConfigViewer = wxFileConfig::Get();
-    }
-    else if (g_AppForecaster)
-    {
+    #elif defined(APP_FORECASTER)
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
         pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini",asConfig::GetUserDataDir()+DS+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
-    }
-    else
-    {
+    #else
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir("AtmoSwing viewer"));
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         pConfigForecaster = wxFileConfig::Get();
         pConfigViewer = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini",asConfig::GetUserDataDir()+DS+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
-    }
+    #endif // defined
 
     // General
     long guiOptions = (long)m_RadioBoxGui->GetSelection();
@@ -583,21 +568,16 @@ void asFramePreferences::SavePreferences( )
 
     GetParent()->Update();
 
-    if (g_AppViewer)
-    {
+    #if defined(APP_VIEWER)
         wxDELETE(pConfigForecaster);
         pConfigViewer->Flush();
-    }
-    else if (g_AppForecaster)
-    {
+    #elif defined(APP_FORECASTER)
         pConfigForecaster->Flush();
         wxDELETE(pConfigViewer);
-    }
-    else
-    {
+    #else
         pConfigForecaster->Flush();
         wxDELETE(pConfigViewer);
-    }
+    #endif // defined
 }
 
 void asFramePreferences::OnChangeMultithreadingCheckBox( wxCommandEvent& event )
