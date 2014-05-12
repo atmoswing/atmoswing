@@ -155,14 +155,14 @@ list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp} ${src_calib_core_c
 if (BUILD_FORECASTER)
     list(APPEND src_tests ${src_forec_core_h})
     list(APPEND src_tests ${src_forec_core_cpp})
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVars.h")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVars.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVarsForecaster.h")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVarsForecaster.cpp")
 else (BUILD_FORECASTER)
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeGeneralGridTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeRegularGridTest.cpp")
 endif (BUILD_FORECASTER)
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVars.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVars.cpp")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVarsViewer.h")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVarsViewer.cpp")
 
 # CUDA library
 if (USE_CUDA)
