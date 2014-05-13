@@ -30,6 +30,7 @@
 
 bool g_Local = false;
 int g_RunNb = 0;
+bool g_ResumePreviousRun = false;
 #ifdef DISTRIBUTION_VERSION
     bool g_DistributionVersion = true;
 #else
