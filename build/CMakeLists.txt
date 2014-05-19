@@ -312,7 +312,11 @@ if (BUILD_FORECASTER OR BUILD_VIEWER)
     mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
     mark_as_advanced(CLEAR CURL_LIBRARY)
     find_package(CURL REQUIRED)
-    include_directories(${CURL_INCLUDE_DIRS})
+    include_directories(${CURL_INCLUDE_DIRS})	
+else (BUILD_FORECASTER OR BUILD_VIEWER)
+	# unset for wxhgversion
+	unset(CURL_INCLUDE_DIR CACHE)
+	unset(CURL_LIBRARY CACHE)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # Proj.4
@@ -323,6 +327,10 @@ include_directories(${PROJ4_INCLUDE_DIR})
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     find_package(GDAL REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
+else (BUILD_FORECASTER OR BUILD_VIEWER)
+	# unset for wxhgversion
+	unset(GDAL_INCLUDE_DIR CACHE)
+	unset(GDAL_LIBRARY CACHE)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # Eigen
@@ -363,6 +371,10 @@ if (USE_CUDA)
     set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG};-G)
     set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
     cuda_add_library(lib_cuda_functions STATIC ${src_cuda})
+else (USE_CUDA)
+	# unset for wxhgversion
+	unset(CUDA_INCLUDE_DIRS CACHE)
+	unset(CUDA_CUDA_LIBRARY CACHE)
 endif (USE_CUDA)
 
 # UnitTest++
@@ -370,12 +382,24 @@ if (BUILD_TESTS)
     include(cmake/FindUnitTest++.cmake)
     include_directories(${UNITTEST++_INCLUDE_DIR})
     mark_as_advanced(UnitTest++_DIR)
+else (BUILD_TESTS)
+	# unset for wxhgversion
+	unset(UNITTEST++_INCLUDE_DIR CACHE)
+	unset(UNITTEST++_LIBRARY_DEBUG CACHE)
+	unset(UNITTEST++_LIBRARY_RELEASE CACHE)
 endif (BUILD_TESTS)
 
 # Visual Leak Detector
 if (USE_VLD)
     find_package(VLD)
     include_directories(${VLD_INCLUDE_DIRS})
+else (USE_VLD)
+	# unset for wxhgversion
+	unset(VLD_INCLUDE_DIR CACHE)
+	unset(VLD_LIBRARY CACHE)
+	unset(VLD_LIBRARY_DEBUG CACHE)
+	unset(VLD_LIBRARY_DIR CACHE)
+	unset(VLD_ROOT_DIR CACHE)
 endif (USE_VLD)
 
 
