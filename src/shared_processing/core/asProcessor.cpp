@@ -586,8 +586,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             // Containers for the results
             std::vector < VectorFloat > resultingCriteria(timeTargetSelectionSize);
             std::vector < VectorFloat > resultingDates(timeTargetSelectionSize);
-			resultingCriteria.reserve(timeTargetSelectionSize * timeArrayArchiveSelection.GetSize());
-			resultingDates.reserve(timeTargetSelectionSize * timeArrayArchiveSelection.GetSize());
             //std::fill(resultingDates.begin(), resultingDates.end(), NaNFloat);
 
             // Containers for daily results
@@ -598,7 +596,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             VectorInt lengths(timeTargetSelectionSize);
             VectorInt indicesTarg(timeTargetSelectionSize);
             std::vector < VectorInt > indicesArch(timeTargetSelectionSize);
-			indicesArch.reserve(timeTargetSelectionSize * timeArrayArchiveSelection.GetSize());
 
             // Constant data
             VectorFloat weights(predictorsNb);
