@@ -170,8 +170,8 @@ list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobV
 
 # CUDA library
 if (USE_CUDA)
-    file(GLOB_RECURSE src_proc_core_cu ../../src/shared_processing/core/*.cu)
-    file(GLOB_RECURSE src_proc_core_cuh ../../src/shared_processing/core/*.cuh)
+    file(GLOB_RECURSE src_proc_core_cu ../src/shared_processing/core/*.cu)
+    file(GLOB_RECURSE src_proc_core_cuh ../src/shared_processing/core/*.cuh)
     list(APPEND src_cuda ${src_proc_core_cu})
     list(APPEND src_cuda ${src_proc_core_cuh})
     list(APPEND src_app_calibrator ${src_proc_core_cuh})
