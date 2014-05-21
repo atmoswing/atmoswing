@@ -10,18 +10,19 @@ The software is written in C++, is cross-platform and open source (under the Com
 
 This repository contains 2 separate tools:
 
-* The Forecaster: automatically processes the forecast (build files in "build/forecaster")
-* The Viewer: displays the resulting files in a GIS environment (build files in "build/viewer")
+* The Forecaster: automatically processes the forecast
+* The Viewer: displays the resulting files in a GIS environment
+* The Calibrator: calibrates the method for a given precipitation timeseries
 
-Additionally, multiple unit tests are available in the "test" directory. It is highly recommended to run these tests before using AtmoSwing operationally.
+Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
 ## How to build AtmoSwing ##
 
-The wiki (https://bitbucket.org/atmoswing/atmoswing/wiki/Home) explains how to compile the required libraries and the source code of AtmoSwing. It is highly recommended to run the unit tests before using AtmoSwing operationally.
+The wiki (https://bitbucket.org/atmoswing/atmoswing/wiki/Home) explains how to compile the required libraries and the source code of AtmoSwing.
 
 ## How to contribute ##
 
-If you want to contribute to the software development, you can fork this repository and then suggest your improvements by sending pull requests. We would be glad to see a community growing around this project.
+If you want to contribute to the software development, you can fork this repository (keep it public !) and then suggest your improvements by sending pull requests. We would be glad to see a community growing around this project.
 
 Additionally, you can report issues or suggestions in the issues tracker (https://bitbucket.org/atmoswing/atmoswing/issues).
 
@@ -31,11 +32,13 @@ Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
 Copyright (C) 2013-2014, Terr@num, Switzerland.
 
-Developed by Pascal Horton.
+Developed by Pascal Horton. 
 
-Financed by the cantons of Valais and Vaud, Switzerland.
+Financial contributions:
 
-Resulting from the MINERVE project (2011).
+* 2008-2011 Cantons of Valais and Vaud (Switzerland): basis of the software from the MINERVE project.
+* 2011-2013 University of Lausanne (Switzerland): reorganization of the source code, improvement of the build system, documentation.
+* 2014 Direction régionale de l’environnement, de l’aménagement et du logement (France): addition of new forecast skill scores (reliability of the CRPS and rank histogram).
 
 See both license.txt and notice.txt files for details about the license and its enforcement.
 
