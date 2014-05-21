@@ -48,6 +48,8 @@ asForecastScoreFinalRankHistogramReliability::~asForecastScoreFinalRankHistogram
 
 float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
 {
+    asLogWarning(_("Calling asForecastScoreFinalRankHistogramReliability::Assess means it doesn't do bootstraping."));
+
     wxASSERT(targetDates.rows()>1);
     wxASSERT(forecastScores.rows()>1);
     wxASSERT(m_RanksNb>1);
@@ -83,6 +85,29 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
     for (int i=0; i<m_RanksNb; i++)
     {
         delta += pow(float(histogram[i]) - float(forecastScores.size())/float(m_RanksNb), 2.0f);
+    }
+
+    float reliability = delta/delta_rel;
+
+    return reliability;
+}
+
+float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize)
+{
+    wxASSERT(targetDates.rows()>1);
+    wxASSERT(forecastScores.rows()>1);
+    wxASSERT(m_RanksNb>1);
+
+    Array1DFloat histogramReal;
+    histogramReal = forecastScoresSize*histogramPercent/100.0f;
+
+    // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
+    // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
+    float delta = 0;
+    float delta_rel = float(forecastScoresSize*(m_RanksNb-1))/float(m_RanksNb);
+    for (int i=0; i<m_RanksNb; i++)
+    {
+        delta += pow(float(histogramReal[i]) - float(forecastScoresSize)/float(m_RanksNb), 2.0f);
     }
 
     float reliability = delta/delta_rel;

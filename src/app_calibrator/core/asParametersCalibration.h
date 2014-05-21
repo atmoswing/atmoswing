@@ -534,6 +534,12 @@ public:
                     asLogError(_("There are NaN values in the provided forecast scores vector."));
                     return false;
                 }
+
+                if (val[i].IsSameAs("RankHistogram", false) || val[i].IsSameAs("RankHistogramReliability", false))
+                {
+                    asLogError(_("The rank histogram can only be processed in the 'all scores' evalution method."));
+                    return false;
+                }
             }
         }
         m_ForecastScoreVect.Name = val;
