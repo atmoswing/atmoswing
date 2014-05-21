@@ -27,6 +27,8 @@
  */
 
 #include "asMethodCalibratorEvaluateAllScores.h"
+#include "asForecastScoreFinal.h"
+#include "asForecastScoreFinalRankHistogramReliability.h"
 
 asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores()
 :
@@ -187,7 +189,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     }
 
     // TODO: set this as an option
-    bool onlyContinuousScores = true;
+    bool processContingencyScores = false;
+    bool processContinuousScores = false;
+    bool processRankHistogramScores = true;
 
     // Extract the stations IDs
     VectorInt stationsId = params.GetPredictandStationsIdVector();
@@ -245,7 +249,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
 
         if(!GetAnalogsValues(anaValues, params, anaDates, stepsNb-1)) return false;
 
-        if (!onlyContinuousScores)
+        /* 
+         * Scores based on the contingency table 
+         */
+
+        if (processContingencyScores)
         {
             VectorString scoresContingency;
             scoresContingency.push_back("PC"); // PC - Proportion correct
@@ -330,77 +338,130 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             }
         }
 
-        VectorString scoresContinuous;
-        scoresContinuous.push_back("DF0"); // DF0 - absolute difference of the frequency of null precipitations
-        scoresContinuous.push_back("CRPS"); // CRPSAR - approximation with the rectangle method
-        scoresContinuous.push_back("CRPSS"); // CRPSS - CRPS skill score using the approximation with the rectangle method
-        scoresContinuous.push_back("CRPSaccuracyAR"); // CRPS accuracy, approximation with the rectangle method (Bontron, 2004)
-        scoresContinuous.push_back("CRPSsharpnessAR"); // CRPS sharpness, approximation with the rectangle method (Bontron, 2004)
-        scoresContinuous.push_back("CRPSreliability"); // reliability of the CRPS (Hersbach, 2000)
-        scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
-        scoresContinuous.push_back("RankHistogramReliability"); // Reliability of the Verification Rank Histogram (Talagrand Diagram)
-
-        for (unsigned int i_score=0;i_score<scoresContinuous.size();i_score++)
+        /* 
+         * Continuous scores 
+         */
+        
+        if (processContinuousScores)
         {
-            asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContinuous[i_score]));
-            params.SetForecastScoreName(scoresContinuous[i_score]);
-            if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-            if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
-            m_Parameters[0]=params;
-            Validate();
-            results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
-            m_ScoreClimatology=0;
+            VectorString scoresContinuous;
+            scoresContinuous.push_back("DF0"); // DF0 - absolute difference of the frequency of null precipitations
+            scoresContinuous.push_back("CRPS"); // CRPSAR - approximation with the rectangle method
+            scoresContinuous.push_back("CRPSS"); // CRPSS - CRPS skill score using the approximation with the rectangle method
+            scoresContinuous.push_back("CRPSaccuracyAR"); // CRPS accuracy, approximation with the rectangle method (Bontron, 2004)
+            scoresContinuous.push_back("CRPSsharpnessAR"); // CRPS sharpness, approximation with the rectangle method (Bontron, 2004)
+            scoresContinuous.push_back("CRPSreliability"); // reliability of the CRPS (Hersbach, 2000)
+            scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
+
+            for (unsigned int i_score=0;i_score<scoresContinuous.size();i_score++)
+            {
+                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContinuous[i_score]));
+                params.SetForecastScoreName(scoresContinuous[i_score]);
+                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+                m_Parameters[0]=params;
+                Validate();
+                results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+                m_ScoreClimatology=0;
+            }
         }
+        
+        /* 
+         * The Verification Rank Histogram (Talagrand Diagram) 
+         */
 
-        // The Verification Rank Histogram (Talagrand Diagram)
-        asLogMessageImportant(_("Processing RankHistogram"));
-        params.SetForecastScoreName("RankHistogram");
-        if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-        if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
-        m_Parameters[0]=params;
-
-        // Validation of the Verification Rank Histogram (Talagrand Diagram)
-        asResultsAnalogsForecastScoreFinal anaScoreFinalValid;
-        if (params.HasValidationPeriod()) // Validate
+        if (processRankHistogramScores)
         {
-            m_ValidationMode = true;
+            asLogMessageImportant(_("Processing the Verification Rank Histogram"));
+
+            int boostrapNb = 1000;
+            asLogMessageImportant(_("Processing RankHistogram"));
+            params.SetForecastScoreName("RankHistogram");
+            m_Parameters[0]=params;
 
             asResultsAnalogsDates anaDatesPreviousValid;
             asResultsAnalogsDates anaDatesValid;
             asResultsAnalogsValues anaValuesValid;
             asResultsAnalogsForecastScores anaScoresValid;
+            asResultsAnalogsForecastScoreFinal anaScoreFinalValid;
 
-            // Process every step one after the other
-            for (int i_step=0; i_step<stepsNb; i_step++)
+            // Get validation data
+            if (params.HasValidationPeriod()) // Validate
             {
-                bool containsNaNs = false;
-                if (i_step==0)
+                m_ValidationMode = true;
+
+                // Process every step one after the other
+                for (int i_step=0; i_step<stepsNb; i_step++)
                 {
-                    if(!GetAnalogsDates(anaDatesValid, params, i_step, containsNaNs)) return false;
+                    bool containsNaNs = false;
+                    if (i_step==0)
+                    {
+                        if(!GetAnalogsDates(anaDatesValid, params, i_step, containsNaNs)) return false;
+                    }
+                    else
+                    {
+                        anaDatesPreviousValid = anaDatesValid;
+                        if(!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, i_step, containsNaNs)) return false;
+                    }
+                    if (containsNaNs)
+                    {
+                        asLogError(_("The dates selection contains NaNs"));
+                        return false;
+                    }
                 }
-                else
-                {
-                    anaDatesPreviousValid = anaDatesValid;
-                    if(!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, i_step, containsNaNs)) return false;
-                }
-                if (containsNaNs)
-                {
-                    asLogError(_("The dates selection contains NaNs"));
-                    return false;
-                }
+                if(!GetAnalogsValues(anaValuesValid, params, anaDatesValid, stepsNb-1)) return false;
+
+                m_ValidationMode = false;
             }
-            if(!GetAnalogsValues(anaValuesValid, params, anaDatesValid, stepsNb-1)) return false;
-            if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;
-            if(!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb-1)) return false;
 
-            m_ScoreValid = anaScoreFinalValid.GetForecastScore();
+            std::vector < Array1DFloat > histoCalib;
+            std::vector < Array1DFloat > histoValid;
 
-            m_ValidationMode = false;
+            for (int i_boot=0; i_boot<boostrapNb; i_boot++)
+            {
+                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+
+                if (params.HasValidationPeriod()) // Validate
+                {
+                    m_ValidationMode = true;
+                    if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;
+                    if(!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb-1)) return false;
+                    m_ValidationMode = false;
+                }
+
+                // Store every assessment
+                histoCalib.push_back(anaScoreFinal.GetForecastScoreArray());
+                histoValid.push_back(anaScoreFinalValid.GetForecastScoreArray());
+            }
+        
+            // Average all histograms assessments
+            Array1DFloat averageHistoCalib = Array1DFloat::Zero(histoCalib[0].size());
+            Array1DFloat averageHistoValid = Array1DFloat::Zero(histoValid[0].size());
+            for (int i_boot=0; i_boot<boostrapNb; i_boot++)
+            {
+                averageHistoCalib += histoCalib[i_boot];
+                averageHistoValid += histoValid[i_boot];
+            }
+            averageHistoCalib = averageHistoCalib/boostrapNb;
+            averageHistoValid = averageHistoValid/boostrapNb;
+
+            results.Add(params, averageHistoCalib, averageHistoValid);
+            m_ScoreClimatology=0;
+
+            // Reliability of the Verification Rank Histogram (Talagrand Diagram)
+            int forecastScoresSize = anaScores.GetForecastScores().size();
+
+            asForecastScoreFinalRankHistogramReliability rankHistogramReliability(asForecastScoreFinal::Total);
+            rankHistogramReliability.SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
+            float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, forecastScoresSize);
+            float resultValid = rankHistogramReliability.AssessOnBootstrap(averageHistoValid, forecastScoresSize);
+
+            m_Parameters[0]=params;
+
+            results.Add(params, resultCalib, resultValid);
+            m_ScoreClimatology=0;
         }
-
-        results.Add(params,anaScoreFinal.GetForecastScoreArray(), anaScoreFinalValid.GetForecastScoreArray());
-        m_ScoreClimatology=0;
-
 
         if(!results.Print()) return false;
 
