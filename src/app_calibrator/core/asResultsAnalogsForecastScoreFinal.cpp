@@ -37,6 +37,7 @@ asResultsAnalogsForecastScoreFinal::asResultsAnalogsForecastScoreFinal()
 asResults()
 {
     m_HasSingleValue = true;
+    m_ForecastScore = NaNFloat;
 
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveFinalForecastScore", &m_SaveIntermediateResults, false);
