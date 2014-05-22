@@ -910,6 +910,10 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                     doPreprocessGradients = true;
                     params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
                 }
+                else if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1grads"))
+                {
+                    doPreprocessGradients = true;
+                }
             }
             else
             {
