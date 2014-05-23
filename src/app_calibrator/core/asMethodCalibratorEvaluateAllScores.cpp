@@ -416,7 +416,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         {
             asLogMessageImportant(_("Processing the Verification Rank Histogram"));
 
-            int boostrapNb = 1000;
+            int boostrapNb = 10000;
             params.SetForecastScoreName("RankHistogram");
             m_Parameters[0]=params;
 
