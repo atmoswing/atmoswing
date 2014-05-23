@@ -682,7 +682,13 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     if(!fileParams.GoANodeBack()) return false;
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method")) return false;
-    if(!SetForecastScoreName(fileParams.GetFirstElementAttributeValueText("Name", "value"))) return false;
+    wxString forecastScore = fileParams.GetFirstElementAttributeValueText("Name", "value");
+    if (forecastScore.IsSameAs("RankHistogram", false) || forecastScore.IsSameAs("RankHistogramReliability", false))
+    {
+        asLogError(_("The rank histogram can only be processed in the 'all scores' evalution method."));
+        return false;
+    }
+    if(!SetForecastScoreName(forecastScore)) return false;
     SetForecastScoreThreshold(fileParams.GetFirstElementAttributeValueFloat("Threshold", "value", NaNFloat));
     SetForecastScorePercentile(fileParams.GetFirstElementAttributeValueFloat("Percentile", "value", NaNFloat));
     if(!fileParams.GoANodeBack()) return false;
