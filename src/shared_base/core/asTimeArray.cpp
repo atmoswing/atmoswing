@@ -502,20 +502,20 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
         // Check for forbiden years (validation)
         if (HasForbiddenYears())
         {
-            int firstYear = GetYear(currentStart);
-            int secondYear = GetYear(currentEnd);
+            int currentFirstYear = GetYear(currentStart);
+            int currentSecondYear = GetYear(currentEnd);
             
-            if (IsYearForbidden(firstYear))
+            if (IsYearForbidden(currentFirstYear))
             {
-                double firstYearEnd = GetMJD(firstYear, 12, 31, 23, 59);
+                double firstYearEnd = GetMJD(currentFirstYear, 12, 31, 23, 59);
                 while (currentStart<=firstYearEnd)
                 {
                     currentStart += m_TimeStepDays;
                 }
             }
-            if (IsYearForbidden(secondYear))
+            if (IsYearForbidden(currentSecondYear))
             {
-                double secondYearStart = GetMJD(secondYear, 1, 1, 0, 0);
+                double secondYearStart = GetMJD(currentSecondYear, 1, 1, 0, 0);
                 while (currentEnd>=secondYearStart)
                 {
                     currentEnd -= m_TimeStepDays;
