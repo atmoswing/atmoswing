@@ -18,7 +18,14 @@ Additionally, multiple unit tests are available and are built along with the sof
 
 ## How to build AtmoSwing ##
 
-The wiki (https://bitbucket.org/atmoswing/atmoswing/wiki/Home) explains how to compile the required libraries and the source code of AtmoSwing.
+The wiki (https://bitbucket.org/atmoswing/atmoswing/wiki/Home) explains how to compile the required libraries and the source code of AtmoSwing. In order to get Atmoswing compiled, follow these steps:
+
+1. [Get the required **libraries**](https://bitbucket.org/atmoswing/atmoswing/wiki/Libraries)
+2. [Get the **source code**](https://bitbucket.org/atmoswing/atmoswing/wiki/Source%20code)
+3. [**Configure / build** with CMake](https://bitbucket.org/atmoswing/atmoswing/wiki/Build)
+4. [**Compile**](https://bitbucket.org/atmoswing/atmoswing/wiki/Compile)
+5. [**Test**](https://bitbucket.org/atmoswing/atmoswing/wiki/Test)
+6. [**Install**](https://bitbucket.org/atmoswing/atmoswing/wiki/Install)
 
 ## How to contribute ##
 
