@@ -741,37 +741,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     return true;
 }
 
-bool asParametersOptimization::FixTimeLimits()
-{
-    SetSizes();
-
-    double minHour = 200.0, maxHour = -50.0;
-    for(int i=0;i<GetStepsNb();i++)
-    {
-        for(int j=0;j<GetPredictorsNb(i);j++)
-        {
-            if (NeedsPreprocessing(i,j))
-            {
-                for(int k=0; k<GetPreprocessSize(i,j); k++)
-                {
-                    minHour = wxMin(GetPreprocessTimeHoursLowerLimit(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessTimeHoursUpperLimit(i, j, k), maxHour);
-                }
-            }
-            else
-            {
-                minHour = wxMin(GetPredictorTimeHoursLowerLimit(i, j), minHour);
-                maxHour = wxMax(GetPredictorTimeHoursUpperLimit(i, j), maxHour);
-            }
-        }
-    }
-
-    m_TimeMinHours = minHour;
-    m_TimeMaxHours = maxHour;
-
-    return true;
-}
-
 void asParametersOptimization::InitRandomValues()
 {
     if(!m_TimeArrayAnalogsIntervalDaysLocks)
@@ -1084,6 +1053,37 @@ bool asParametersOptimization::IsInRange()
     return true;
 }
 
+bool asParametersOptimization::FixTimeLimits()
+{
+    SetSizes();
+
+    double minHour = 200.0, maxHour = -50.0;
+    for(int i=0;i<GetStepsNb();i++)
+    {
+        for(int j=0;j<GetPredictorsNb(i);j++)
+        {
+            if (NeedsPreprocessing(i,j))
+            {
+                for(int k=0; k<GetPreprocessSize(i,j); k++)
+                {
+                    minHour = wxMin(GetPreprocessTimeHoursLowerLimit(i, j, k), minHour);
+                    maxHour = wxMax(GetPreprocessTimeHoursUpperLimit(i, j, k), maxHour);
+                }
+            }
+            else
+            {
+                minHour = wxMin(GetPredictorTimeHoursLowerLimit(i, j), minHour);
+                maxHour = wxMax(GetPredictorTimeHoursUpperLimit(i, j), maxHour);
+            }
+        }
+    }
+
+    m_TimeMinHours = minHour;
+    m_TimeMaxHours = maxHour;
+
+    return true;
+}
+
 void asParametersOptimization::FixTimeHours()
 {
     for (int i=0; i<GetStepsNb(); i++)
@@ -1113,6 +1113,37 @@ void asParametersOptimization::FixTimeHours()
             }
         }
     }
+}
+
+bool asParametersOptimization::FixWeights()
+{
+    for (int i=0; i<GetStepsNb(); i++)
+    {
+        // Sum the weights
+        float totWeight = 0;
+        for (int j=0; j<GetPredictorsNb(i); j++)
+        {
+            totWeight += GetPredictorWeight(i, j);
+        }
+        
+        // For every weights but the last
+        float newSum = 0;
+        for (int j=0; j<GetPredictorsNb(i)-1; j++)
+        {
+            float precision = GetPredictorWeightIteration(i, j);
+            float newWeight = GetPredictorWeight(i, j)/totWeight;
+            newWeight = precision*asTools::Round(newWeight*(1.0/precision));
+            newSum += newWeight;
+
+            SetPredictorWeight(i, j, newWeight);
+        }
+
+        // Last weight: difference to 0
+        float lastWeight = 1.0f - newSum;
+        SetPredictorWeight(i, GetPredictorsNb(i)-1, lastWeight);
+    }
+
+    return true;
 }
 
 void asParametersOptimization::LockAll()

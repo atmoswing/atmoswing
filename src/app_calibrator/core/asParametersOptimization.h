@@ -32,6 +32,8 @@ public:
 
     void FixTimeHours();
 
+    bool FixWeights();
+
     void LockAll();
 
     void Unlock(VectorInt &indices);
