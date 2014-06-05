@@ -450,6 +450,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             m_ScoreClimatology=0;
 
             // Reliability of the Verification Rank Histogram (Talagrand Diagram)
+            params.SetForecastScoreName("RankHistogramReliability");
             int forecastScoresSize = anaScores.GetForecastScores().size();
             int forecastScoresSizeValid = anaScoresValid.GetForecastScores().size();
 
