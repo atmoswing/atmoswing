@@ -94,8 +94,6 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
 
 float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize)
 {
-    wxASSERT(targetDates.rows()>1);
-    wxASSERT(forecastScores.rows()>1);
     wxASSERT(m_RanksNb>1);
 
     Array1DFloat histogramReal;
