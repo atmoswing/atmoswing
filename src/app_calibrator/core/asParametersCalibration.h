@@ -50,13 +50,12 @@ public:
 
     void InitValues();
 
-
-    VectorInt GetPredictandStationsIdVector()
+    VVectorInt GetPredictandStationsIdsVector()
     {
-        return m_PredictandStationsIdVect;
+        return m_PredictandStationsIdsVect;
     }
 
-    bool SetPredictandStationsIdVector(VectorInt val)
+    bool SetPredictandStationsIdsVector(VVectorInt val)
     {
         if (val.size()<1)
         {
@@ -65,16 +64,27 @@ public:
         }
         else
         {
+            if (val[0].size()<1)
+            {
+                asLogError(_("The provided predictand ID vector is empty."));
+                return false;
+            }
+
             for (int i=0; i<val.size(); i++)
             {
-                if (asTools::IsNaN(val[i]))
+                for (int j=0; j<val[i].size(); j++)
                 {
-                    asLogError(_("There are NaN values in the provided predictand ID vector."));
-                    return false;
+                    if (asTools::IsNaN(val[i][j]))
+                    {
+                        asLogError(_("There are NaN values in the provided predictand ID vector."));
+                        return false;
+                    }
                 }
             }
         }
-        m_PredictandStationsIdVect = val;
+
+        m_PredictandStationsIdsVect = val;
+
         return true;
     }
 
@@ -649,14 +659,6 @@ public:
         return true;
     }
 
-    int GetPredictandStationIdLowerLimit()
-    {
-        int lastrow = m_PredictandStationsIdVect.size()-1;
-        wxASSERT(lastrow>=0);
-        int val = asTools::MinArray(&m_PredictandStationsIdVect[0],&m_PredictandStationsIdVect[lastrow]);
-        return val;
-    }
-
     int GetTimeArrayAnalogsIntervalDaysLowerLimit()
     {
         int lastrow = m_TimeArrayAnalogsIntervalDaysVect.size()-1;
@@ -799,14 +801,6 @@ public:
         int lastrow = m_ForecastScoreVect.PostprocessDupliExp.size()-1;
         wxASSERT(lastrow>=0);
         float val = asTools::MinArray(&m_ForecastScoreVect.PostprocessDupliExp[0],&m_ForecastScoreVect.PostprocessDupliExp[lastrow]);
-        return val;
-    }
-
-    int GetPredictandStationsIdUpperLimit()
-    {
-        int lastrow = m_PredictandStationsIdVect.size()-1;
-        wxASSERT(lastrow>=0);
-        int val = asTools::MaxArray(&m_PredictandStationsIdVect[0],&m_PredictandStationsIdVect[lastrow]);
         return val;
     }
 
@@ -955,13 +949,6 @@ public:
         return val;
     }
 
-    int GetPredictandStationsIdIteration()
-    {
-        if (m_PredictandStationsIdVect.size()<2) return 0;
-        int val = m_PredictandStationsIdVect[1] - m_PredictandStationsIdVect[0];
-        return val;
-    }
-
     int GetTimeArrayAnalogsIntervalDaysIteration()
     {
         if (m_TimeArrayAnalogsIntervalDaysVect.size()<2) return 0;
@@ -1066,7 +1053,7 @@ public:
 protected:
 
 private:
-    VectorInt m_PredictandStationsIdVect;
+    VVectorInt m_PredictandStationsIdsVect;
     VectorInt m_TimeArrayAnalogsIntervalDaysVect;
     VectorParamsStepVect m_StepsVect;
     ParamsForecastScoreVect m_ForecastScoreVect;
