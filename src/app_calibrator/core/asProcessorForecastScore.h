@@ -51,8 +51,6 @@ public:
     */
     static bool GetAnalogsForecastScores(asResultsAnalogsValues &anaValues, asForecastScore *forecastScore, asParametersScoring &params, asResultsAnalogsForecastScores &results);
 
-    static bool GetAnalogsForecastScoresLoadF0(asResultsAnalogsValues &anaValues, asForecastScore *forecastScore, asParametersScoring &params, asResultsAnalogsForecastScores &results);
-
     /** Analogs final score
     * \param AnalogsScores The ResAnalogsForecastScores structure
     * \param TimeArray The dates that should be considered to sum the score
