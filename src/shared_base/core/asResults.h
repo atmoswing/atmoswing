@@ -112,7 +112,7 @@ public:
 protected:
     float m_FileVersion;
     int m_CurrentStep;
-    int m_PredictandStationId;
+    VectorInt m_PredictandStationIds;
     double m_DateProcessed; //!< Member variable "m_DateProcessed"
     wxString m_FilePath; //!< Member variable "m_FilePath"
     bool m_SaveIntermediateResults;

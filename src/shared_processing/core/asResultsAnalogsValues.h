@@ -79,7 +79,7 @@ public:
     /** Access m_TargetValuesNorm
      * \return The whole array m_TargetValuesNorm
      */
-    Array1DFloat &GetTargetValues()
+    VArray1DFloat &GetTargetValues()
     {
         return m_TargetValuesNorm;
     }
@@ -87,16 +87,15 @@ public:
     /** Set m_TargetValuesNorm
      * \param targetValues The new array to set
      */
-    void SetTargetValues(Array1DFloat &targetValues)
+    void SetTargetValues(VArray1DFloat &targetValues)
     {
-        m_TargetValuesNorm.resize(targetValues.rows());
         m_TargetValuesNorm = targetValues;
     }
 
     /** Access m_TargetValuesNorm
      * \return The whole array m_TargetValuesNorm
      */
-    Array1DFloat &GetTargetValuesNorm()
+    VArray1DFloat &GetTargetValuesNorm()
     {
         return m_TargetValuesNorm;
     }
@@ -104,16 +103,15 @@ public:
     /** Set m_TargetValuesNorm
      * \param targetValuesNorm The new array to set
      */
-    void SetTargetValuesNorm(Array1DFloat &targetValuesNorm)
+    void SetTargetValuesNorm(VArray1DFloat &targetValuesNorm)
     {
-        m_TargetValuesNorm.resize(targetValuesNorm.rows());
         m_TargetValuesNorm = targetValuesNorm;
     }
 
     /** Access m_TargetValuesGross
      * \return The whole array m_TargetValuesGross
      */
-    Array1DFloat &GetTargetValuesGross()
+    VArray1DFloat &GetTargetValuesGross()
     {
         return m_TargetValuesGross;
     }
@@ -121,9 +119,8 @@ public:
     /** Set m_TargetValuesGross
      * \param targetValuesGross The new array to set
      */
-    void SetTargetValuesGross(Array1DFloat &targetValuesGross)
+    void SetTargetValuesGross(VArray1DFloat &targetValuesGross)
     {
-        m_TargetValuesGross.resize(targetValuesGross.rows());
         m_TargetValuesGross = targetValuesGross;
     }
 
@@ -147,7 +144,7 @@ public:
     /** Access m_AnalogValues
      * \return The whole array m_AnalogValues
      */
-    Array2DFloat &GetAnalogsValues()
+    VArray2DFloat &GetAnalogsValues()
     {
         return m_AnalogsValuesNorm;
     }
@@ -155,16 +152,15 @@ public:
     /** Set m_AnalogValues
      * \param analogValues The new array to set
      */
-    void SetAnalogsValues(Array2DFloat &analogsValues)
+    void SetAnalogsValues(VArray2DFloat &analogsValues)
     {
-        m_AnalogsValuesNorm.resize(analogsValues.rows(), analogsValues.cols());
         m_AnalogsValuesNorm = analogsValues;
     }
 
     /** Access m_AnalogValuesNorm
      * \return The whole array m_AnalogValuesNorm
      */
-    Array2DFloat GetAnalogsValuesNorm()
+    VArray2DFloat GetAnalogsValuesNorm()
     {
         return m_AnalogsValuesNorm;
     }
@@ -172,16 +168,15 @@ public:
     /** Set m_AnalogValuesNorm
      * \param analogValuesNorm The new array to set
      */
-    void SetAnalogsValuesNorm(Array2DFloat &analogsValuesNorm)
+    void SetAnalogsValuesNorm(VArray2DFloat &analogsValuesNorm)
     {
-        m_AnalogsValuesNorm.resize(analogsValuesNorm.rows(), analogsValuesNorm.cols());
         m_AnalogsValuesNorm = analogsValuesNorm;
     }
 
     /** Access m_AnalogValuesGross
      * \return The whole array m_AnalogValuesGross
      */
-    Array2DFloat GetAnalogsValuesGross()
+    VArray2DFloat GetAnalogsValuesGross()
     {
         return m_AnalogsValuesGross;
     }
@@ -189,9 +184,8 @@ public:
     /** Set m_AnalogValuesGross
      * \param analogValuesGross The new array to set
      */
-    void SetAnalogsValuesGross(Array2DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(VArray2DFloat &analogsValuesGross)
     {
-        m_AnalogsValuesGross.resize(analogsValuesGross.rows(), analogsValuesGross.cols());
         m_AnalogsValuesGross = analogsValuesGross;
     }
 
@@ -222,12 +216,12 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
-    Array1DFloat m_TargetValuesNorm; //!< Member variable "m_TargetValuesNorm"
-    Array1DFloat m_TargetValuesGross; //!< Member variable "m_TargetValuesGross"
-    Array2DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogsCriteria"
-    Array2DFloat m_AnalogsValuesNorm; //!< Member variable "m_AnalogsValuesNorm"
-    Array2DFloat m_AnalogsValuesGross; //!< Member variable "m_AnalogsValuesGross"
+    Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates". Dimensions: time
+    VArray1DFloat m_TargetValuesNorm; //!< Member variable "m_TargetValuesNorm". Dimensions: stations x time
+    VArray1DFloat m_TargetValuesGross; //!< Member variable "m_TargetValuesGross". Dimensions: stations x time
+    Array2DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogsCriteria". Dimensions: time x analogs
+    VArray2DFloat m_AnalogsValuesNorm; //!< Member variable "m_AnalogsValuesNorm". Dimensions: stations x time x analogs
+    VArray2DFloat m_AnalogsValuesGross; //!< Member variable "m_AnalogsValuesGross". Dimensions: stations x time x analogs
 };
 
 #endif // ASRESULTSANALOGSVALUES_H

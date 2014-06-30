@@ -38,8 +38,8 @@ asResults::asResults()
     m_SaveIntermediateResults = false;
     m_LoadIntermediateResults = false;
     m_CurrentStep = 0;
-    m_PredictandStationId = 0;
-    m_FileVersion = 1.2f;
+    m_PredictandStationIds = VectorInt(0);
+    m_FileVersion = 1.3f;
 }
 
 asResults::~asResults()
