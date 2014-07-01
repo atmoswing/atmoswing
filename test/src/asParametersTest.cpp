@@ -90,7 +90,7 @@ TEST(ParametersLoadFromFile)
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
     CHECK_CLOSE(0.4, params.GetPredictorWeight(0,1), 0.0001);
 
-    CHECK_EQUAL(40, params.GetPredictandStationId());
+    CHECK_EQUAL(40, params.GetPredictandStationIds()[0]);
 }
 
 TEST(GenerateSimpleParametersFileCalibration)

@@ -62,6 +62,30 @@ bool asResults::Exists()
     return asFile::Exists(m_FilePath);
 }
 
+wxString asResults::GetPredictandStationIdsList()
+{
+    wxString id;
+
+    if (m_PredictandStationIds.size()==1)
+    {
+        id << m_PredictandStationIds[0];
+    }
+    else
+    {
+        for (int i=0; i<m_PredictandStationIds.size(); i++)
+        {
+            id << m_PredictandStationIds[i];
+
+            if (i<m_PredictandStationIds.size()-1)
+            {
+                id << ",";
+            }
+        }
+    }
+
+    return id;
+}
+
 bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile)
 {
     ncFile.PutAtt("long_name", "Target dates", "target_dates");

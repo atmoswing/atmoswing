@@ -121,10 +121,10 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 
         // Extract data
         Array1DFloat resultsTargetDates(anaDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -518,10 +518,10 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -989,10 +989,10 @@ void GrenobleComparison1Preloading()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -1417,10 +1417,10 @@ void GrenobleComparison2Preloading()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -1616,10 +1616,10 @@ void GrenobleComparison2SavingIntermediateResults()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates2.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues2.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues2.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates2.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates2.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues2.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues2.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS2.GetForecastScores());
 
         // Open a result file from Grenoble
@@ -1822,10 +1822,10 @@ void GrenobleComparison2MergeByHalfAndMultiply()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());

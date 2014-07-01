@@ -110,7 +110,7 @@ public:
 
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 
-    static VectorInt GetFileStationIds(wxString &stationIdsString);
+    static VectorInt GetFileStationIds(wxString stationIdsString);
 
     wxString GetPredictandStationIdsString();
 
@@ -354,7 +354,7 @@ public:
         return m_PredictandStationIds;
     }
 
-    VVectorInt GetPredictandStationIdsVector()
+    VVectorInt GetPredictandStationsIdsVector()
     {
         VVectorInt vec;
         vec.push_back(m_PredictandStationIds);

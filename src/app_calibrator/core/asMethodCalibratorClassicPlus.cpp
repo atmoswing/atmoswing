@@ -62,7 +62,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
     ThreadsManager().CritSectionConfig().Leave();
 
     // Extract the stations IDs
-    VectorInt stationsId = params.GetPredictandStationsIdVector();
+    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
 
     // Preload data
     try
@@ -98,10 +98,10 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
 
     for (unsigned int i_stat=0; i_stat<stationsId.size(); i_stat++)
     {
-        int stationId = stationsId[i_stat];
+        VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology = 0;
+        m_ScoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;
@@ -128,7 +128,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
         params = m_OriginalParams;
 
         // Set the next station ID
-        params.SetPredictandStationId(stationId);
+        params.SetPredictandStationIds(stationId);
 
         // Process every step one after the other
         int stepsNb = params.GetStepsNb();
