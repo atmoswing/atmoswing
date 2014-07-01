@@ -114,12 +114,12 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
         asResultsParametersArray results_best;
-        results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
+        results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
         wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-        resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
+        resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
 
         // Create a complete relevance map
         asLogState(_("Calibration: creating the complete relevance map for a given predictor."));
@@ -250,7 +250,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 }
 
                 // Process the relevance map
-                asLogState(wxString::Format(_("Calibration: processing the relevance map for all the predictors of step %d (station %d)."), i_step, stationId));
+                asLogState(wxString::Format(_("Calibration: processing the relevance map for all the predictors of step %d (station %s)."), i_step, GetPredictandStationIdsList(stationId).c_str()));
                 for (unsigned int i_param=0; i_param<m_ParametersTemp.size(); i_param++)
                 {
                     if (proceedSequentially)
@@ -322,7 +322,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 asLogMessageImportant(wxString::Format(_("Best point on relevance map: %.2f lat, %.2f lon"), m_Parameters[m_Parameters.size()-1].GetPredictorVmin(i_step, 0), m_Parameters[m_Parameters.size()-1].GetPredictorUmin(i_step, 0)));
 
                 // Resize domain
-                asLogState(wxString::Format(_("Calibration: resize the spatial domain for every predictor (station %d)."), stationId));
+                asLogState(wxString::Format(_("Calibration: resize the spatial domain for every predictor (station %s)."), GetPredictandStationIdsList(stationId).c_str()));
 
                 wxStopWatch swEnlarge;
 
@@ -455,7 +455,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 asLogMessageImportant(wxString::Format(_("Time to process the first resizing procedure: %ldms"), swEnlarge.Time()));
 
                 // Resize domain
-                asLogState(wxString::Format(_("Calibration: reshape again the spatial domain for every predictor (station %d)."), stationId));
+                asLogState(wxString::Format(_("Calibration: reshape again the spatial domain for every predictor (station %s)."), GetPredictandStationIdsList(stationId).c_str()));
 
                 // Try other moves. No while loop but reinitialize the for loops
                 double utmp, vtmp;

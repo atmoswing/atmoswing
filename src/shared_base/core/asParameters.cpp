@@ -45,7 +45,6 @@ asParameters::asParameters()
     m_TimeArrayAnalogsTimeStepHours = 0;
     m_TimeArrayAnalogsExcludeDays = 0;
     m_TimeArrayAnalogsIntervalDays = 0;
-    m_PredictandStationIds = VectorInt(NaNInt);
     m_PredictandTimeHours = 0;
     m_PredictandParameter = (DataParameter)0;
     m_PredictandTemporalResolution = (DataTemporalResolution)0;
@@ -597,9 +596,9 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     }
 
     // Multivariate
-    if (stationIdsString.SubString(0, 1).IsSameAs("("))
+    if (stationIdsString.SubString(0, 0).IsSameAs("("))
     {
-        wxString subStr = stationIdsString.SubString(0, 1);
+        wxString subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
 
         // Check that it contains only 1 opening bracket
         if (subStr.Find("(") != wxNOT_FOUND)
@@ -636,7 +635,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND || stationIdsString.Find(",") != wxNOT_FOUND)
         {
             asLogError(_("The format of the station ID is not correct (should be only digits)."));
-            return VectorInt(NaNInt);
+            return VectorInt(0);
         }
         int id = wxAtoi(stationIdsString);
         ids.push_back(id);

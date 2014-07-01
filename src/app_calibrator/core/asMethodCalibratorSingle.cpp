@@ -213,7 +213,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
