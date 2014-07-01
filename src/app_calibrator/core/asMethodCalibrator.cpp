@@ -38,7 +38,6 @@ asMethodCalibrator::asMethodCalibrator()
 {
     m_PredictorDataDir = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
-    m_ScoreClimatology = 0;
     m_Preloaded = false;
     m_ValidationMode = false;
     m_ScoreValid = NaNFloat;
@@ -58,7 +57,7 @@ bool asMethodCalibrator::Manager()
     g_Responsive = false;
 
     // Reset the score of the climatology
-    m_ScoreClimatology = 0;
+    m_ScoreClimatology.clear();
 
     // Seeds the random generator
     asTools::InitRandom();
@@ -354,6 +353,30 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     results.Add(m_Parameters[bestscorerow],m_ScoresCalib[bestscorerow],m_ScoreValid);
 
     return true;
+}
+
+wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
+{
+    wxString id;
+
+    if (stationIds.size()==1)
+    {
+        id << stationIds[0];
+    }
+    else
+    {
+        for (int i=0; i<stationIds.size(); i++)
+        {
+            id << stationIds[i];
+
+            if (i<stationIds.size()-1)
+            {
+                id << ",";
+            }
+        }
+    }
+
+    return id;
 }
 
 bool asMethodCalibrator::PreloadData(asParametersScoring &params)
@@ -1282,7 +1305,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
     if(params.GetTimeArrayTargetMode().IsSameAs("PredictandThresholds"))
     {
-        if(!timeArrayTarget.Init(*m_PredictandDB, params.GetTimeArrayTargetPredictandSerieName(), params.GetPredictandStationId(), params.GetTimeArrayTargetPredictandMinThreshold(), params.GetTimeArrayTargetPredictandMaxThreshold()))
+        VectorInt stations = params.GetPredictandStationIds();
+        if (stations.size()>1)
+        {
+            asLogError(_("You cannot use predictand thresholds with the multivariate approach."));
+            return false;
+        }
+
+        if(!timeArrayTarget.Init(*m_PredictandDB, params.GetTimeArrayTargetPredictandSerieName(), stations[0], params.GetTimeArrayTargetPredictandMinThreshold(), params.GetTimeArrayTargetPredictandMaxThreshold()))
         {
             asLogError(_("The time array mode for the target dates is not correctly defined."));
             return false;
@@ -1530,27 +1560,29 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     forecastScore->SetPercentile(params.GetForecastScorePercentile());
     forecastScore->SetThreshold(params.GetForecastScoreThreshold());
 
-    if (forecastScore->UsesClimatology())
+    if (forecastScore->UsesClimatology() && m_ScoreClimatology.size()==0)
     {
-        if (m_ScoreClimatology==0)
+        asLogMessage(_("Processing the score of the climatology."));
+
+        VectorInt stationIds = params.GetPredictandStationIds();
+
+        // Get start and end dates
+        Array1DDouble predictandTime = m_PredictandDB->GetTime();
+        float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
+        double timeStart, timeEnd;
+        timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
+        timeStart = floor(timeStart)+predictandTimeDays;
+        timeEnd = wxMin(predictandTime[predictandTime.size()-1],params.GetArchiveEnd());
+        timeEnd = floor(timeEnd)+predictandTimeDays;
+
+        // Check if data are effectively available for this period
+        int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
+        int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
+
+        for (int i_st=0; i_st<stationIds.size(); i_st++)
         {
-            asLogMessage(_("Processing the score of the climatology."));
+            Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
 
-            // Get the whole values for the station of interest
-            Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(params.GetPredictandStationId());
-            Array1DDouble predictandTime = m_PredictandDB->GetTime();
-
-            // Get start and end dates
-            float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
-            double timeStart, timeEnd;
-            timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
-            timeStart = floor(timeStart)+predictandTimeDays;
-            timeEnd = wxMin(predictandTime[predictandTime.size()-1],params.GetArchiveEnd());
-            timeEnd = floor(timeEnd)+predictandTimeDays;
-
-            // Check if data are effectively available for this period
-            int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
-            int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
             while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart)))
             {
                 indexPredictandTimeStart++;
@@ -1559,20 +1591,28 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
             {
                 indexPredictandTimeEnd--;
             }
-            timeStart = predictandTime[indexPredictandTimeStart];
-            timeStart = floor(timeStart)+predictandTimeDays;
-            timeEnd = predictandTime[indexPredictandTimeEnd];
-            timeEnd = floor(timeEnd)+predictandTimeDays;
-            indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
-            indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
+        }
 
-            // Get index step
-            double predictandTimeStep = predictandTime[1]-predictandTime[0];
-            double targetTimeStep = params.GetTimeArrayTargetTimeStepHours()/24.0;
-            int indexStep = targetTimeStep/predictandTimeStep;
+        timeStart = predictandTime[indexPredictandTimeStart];
+        timeStart = floor(timeStart)+predictandTimeDays;
+        timeEnd = predictandTime[indexPredictandTimeEnd];
+        timeEnd = floor(timeEnd)+predictandTimeDays;
+        indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
+        indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
 
-            // Get vector length
-            int dataLength = (indexPredictandTimeEnd-indexPredictandTimeStart)/indexStep+1;
+        // Get index step
+        double predictandTimeStep = predictandTime[1]-predictandTime[0];
+        double targetTimeStep = params.GetTimeArrayTargetTimeStepHours()/24.0;
+        int indexStep = targetTimeStep/predictandTimeStep;
+
+        // Get vector length
+        int dataLength = (indexPredictandTimeEnd-indexPredictandTimeStart)/indexStep+1;
+
+        // Process the climatology score
+        m_ScoreClimatology.resize(stationIds.size());
+        for (int i_st=0; i_st<stationIds.size(); i_st++)
+        {
+            Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
 
             // Set data
             Array1DFloat climatologyData(dataLength);
@@ -1584,30 +1624,26 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
             }
             wxASSERT(dataLength==counter);
 
-            forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues(), climatologyData);
-            m_ScoreClimatology = forecastScore->GetScoreClimatology();
-        }
-        else
-        {
-            asLogMessage(_("Reloading the score of the climatology."));
-            forecastScore->SetScoreClimatology(m_ScoreClimatology);
+            forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues()[i_st], climatologyData);
+            m_ScoreClimatology[i_st] = forecastScore->GetScoreClimatology();
         }
     }
-    asLogMessage(_("Forecast score object instantiated."));
 
     // Pass data and score to processor
-    asLogMessage(_("Start processing the forecast scoring."));
+    asLogMessage(_("Start processing the forecast score."));
 
-    // Code for testing another F(0)
-    //if(!asProcessorForecastScore::GetAnalogsForecastScoresLoadF0(anaValues, forecastScore, params, results))
-
-    if(!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results))
+    VectorFloat scoresClimatology;
+    if (forecastScore->UsesClimatology())
     {
-        asLogError(_("Failed processing the forecast scoring."));
+        scoresClimatology = m_ScoreClimatology;
+    }
+
+    if(!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results, scoresClimatology))
+    {
+        asLogError(_("Failed processing the forecast score."));
         wxDELETE(forecastScore);
         return false;
     }
-    asLogMessage(_("Processing over."));
 
     // Saving intermediate results
     results.Save();

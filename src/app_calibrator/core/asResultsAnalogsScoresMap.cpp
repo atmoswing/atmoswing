@@ -71,7 +71,7 @@ void asResultsAnalogsScoresMap::BuildFileName(asParametersScoring &params)
     m_FilePath.Append(DS);
     m_FilePath.Append("RelevanceMap");
     m_FilePath.Append(DS);
-    m_FilePath.Append(wxString::Format("%d", params.GetPredictandStationId()));
+    m_FilePath.Append(wxString::Format("%s", GetPredictandStationIdsList().c_str()));
     m_FilePath.Append(".nc");
 }
 
