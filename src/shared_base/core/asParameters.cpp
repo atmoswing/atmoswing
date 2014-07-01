@@ -582,7 +582,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     return true;
 }
 
-VectorInt asParameters::GetFileStationIds(wxString &stationIdsString)
+VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
 {
     // Trim
     stationIdsString.Trim(true);

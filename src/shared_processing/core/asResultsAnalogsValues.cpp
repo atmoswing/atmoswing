@@ -65,26 +65,7 @@ void asResultsAnalogsValues::BuildFileName()
     m_FilePath = wxFileConfig::Get()->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_FilePath.Append(DS);
-
-    wxString id;
-    if (m_PredictandStationIds.size()==1)
-    {
-        id << m_PredictandStationIds[0];
-    }
-    else
-    {
-        for (int i=0; i<m_PredictandStationIds.size(); i++)
-        {
-            id << m_PredictandStationIds[i];
-
-            if (i<m_PredictandStationIds.size()-1)
-            {
-                id << ",";
-            }
-        }
-    }
-
-    m_FilePath.Append(wxString::Format("AnalogsValues_id_%s_step_%d", id.c_str(), m_CurrentStep));
+    m_FilePath.Append(wxString::Format("AnalogsValues_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_CurrentStep));
     m_FilePath.Append(".nc");
 }
 
@@ -298,7 +279,7 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
         }
     }
     
-    for (unsigned int i_st=0; i_st<Nstations; i_st++)
+    for (int i_st=0; i_st<Nstations; i_st++)
     {
         Array2DFloat analogsValuesNormStation( Ntime, Nanalogs );
         Array2DFloat analogsValuesGrossStation( Ntime, Nanalogs );

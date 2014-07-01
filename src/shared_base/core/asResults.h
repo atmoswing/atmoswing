@@ -44,6 +44,8 @@ public:
     /** Default destructor */
     virtual ~asResults();
 
+    wxString GetPredictandStationIdsList();
+
     /** Access m_CurrentStep
      * \return The current value of m_CurrentStep
      */

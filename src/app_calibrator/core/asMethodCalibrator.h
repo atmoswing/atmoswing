@@ -97,12 +97,12 @@ public:
         m_ScoreOrder = val;
     }
 
-    float GetScoreClimatology()
+    VectorFloat GetScoreClimatology()
     {
         return m_ScoreClimatology;
     }
 
-    void SetScoreClimatology(float val)
+    void SetScoreClimatology(VectorFloat val)
     {
         m_ScoreClimatology = val;
     }
@@ -113,7 +113,7 @@ protected:
     VectorFloat m_ScoresCalibTemp;
     Order m_ScoreOrder;
     float m_ScoreValid;
-    float m_ScoreClimatology;
+    VectorFloat m_ScoreClimatology;
     std::vector <asParametersCalibration> m_Parameters;
     std::vector <asParametersCalibration> m_ParametersTemp;
     asParametersCalibration m_OriginalParams;
