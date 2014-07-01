@@ -2,7 +2,7 @@
 
 #include "asMethodCalibratorSingle.h"
 
-asThreadMethodOptimizerRandomSet::asThreadMethodOptimizerRandomSet(const asMethodOptimizerRandomSet* optimizer, const asParametersOptimization &params, float *finalScoreCalib, float *scoreClimatology)
+asThreadMethodOptimizerRandomSet::asThreadMethodOptimizerRandomSet(const asMethodOptimizerRandomSet* optimizer, const asParametersOptimization &params, float *finalScoreCalib, VectorFloat *scoreClimatology)
 :
 asThread()
 {
@@ -34,7 +34,7 @@ wxThread::ExitCode asThreadMethodOptimizerRandomSet::Entry()
     asResultsAnalogsForecastScores anaScores;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
     // Set the climatology score value
-    if ((*m_ScoreClimatology)!=0)
+    if (m_ScoreClimatology->size()!=0)
     {
         asLogMessage(_("Process score of the climatology"));
         m_Optimizer.SetScoreClimatology(*m_ScoreClimatology);
@@ -86,7 +86,7 @@ wxThread::ExitCode asThreadMethodOptimizerRandomSet::Entry()
     }
     *m_FinalScoreCalib = anaScoreFinal.GetForecastScore();
 
-    if ((*m_ScoreClimatology)==0)
+    if (m_ScoreClimatology->size()==0)
     {
         *m_ScoreClimatology = m_Optimizer.GetScoreClimatology();
     }

@@ -10,7 +10,7 @@ class asThreadMethodOptimizerGeneticAlgorithms: public asThread
 {
 public:
     /** Default constructor */
-    asThreadMethodOptimizerGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms* optimizer, const asParametersOptimization &params, float *finalScoreCalib, float *scoreClimatology = 0);
+    asThreadMethodOptimizerGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms* optimizer, const asParametersOptimization &params, float *finalScoreCalib, VectorFloat *scoreClimatology);
     /** Default destructor */
     virtual ~asThreadMethodOptimizerGeneticAlgorithms();
 
@@ -21,7 +21,7 @@ private:
     asMethodOptimizerGeneticAlgorithms* m_Optimizer;
     asParametersOptimization m_Params;
     float* m_FinalScoreCalib;
-    float* m_ScoreClimatology;
+    VectorFloat* m_ScoreClimatology;
 };
 
 #endif // ASTHREADMETHODOPTIMIZERGENETICALGORITHMS_H

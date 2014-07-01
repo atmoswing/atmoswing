@@ -103,7 +103,7 @@ TEST(ParametersOptimizationLoadFromFile)
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,1), 0.0001);
     CHECK_EQUAL(false, params.IsPredictorWeightLocked(0,1));
 
-    CHECK_EQUAL(40, params.GetPredictandStationId());
+    CHECK_EQUAL(40, params.GetPredictandStationIds()[0]);
 
     CHECK_EQUAL(true, params.GetForecastScoreName().IsSameAs("CRPSAR"));
     CHECK_EQUAL(1, params.GetForecastScoreAnalogsNumberIteration());
@@ -216,7 +216,7 @@ TEST(ParametersOptimizationLoadFromFileAndInitRandomValues)
     CHECK_CLOSE(1, params.GetPredictorWeightUpperLimit(0,1), 0.0001);
     CHECK_EQUAL(false, params.IsPredictorWeightLocked(0,1));
 
-    CHECK_EQUAL(40, params.GetPredictandStationId());
+    CHECK_EQUAL(40, params.GetPredictandStationIds()[0]);
 
     CHECK_EQUAL(true, params.GetForecastScoreName().IsSameAs("CRPSAR"));
     CHECK_EQUAL(1, params.GetForecastScoreAnalogsNumberIteration());

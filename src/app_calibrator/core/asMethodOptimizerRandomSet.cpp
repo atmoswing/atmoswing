@@ -33,25 +33,25 @@ bool asMethodOptimizerRandomSet::Manager()
     // Load parameters
     asParametersOptimization params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    if (m_PredictandStationId>0)
+    if (m_PredictandStationIds.size()>0)
     {
-        params.SetPredictandStationId(m_PredictandStationId);
+        params.SetPredictandStationIds(m_PredictandStationIds);
     }
     InitParameters(params);
     m_OriginalParams = params;
 
     // Reset the score of the climatology
-    m_ScoreClimatology = 0;
+    m_ScoreClimatology.clear();
 
     // Create a result object to save the parameters sets
-    int stationId = m_OriginalParams.GetPredictandStationId();
+    VectorInt stationId = m_OriginalParams.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
-    results_all.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+    results_all.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best;
-    results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
+    results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
 
     // Preload data
     if (!PreloadData(params))
@@ -94,7 +94,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 Log().DisableMessageBoxOnError();
 
                 int threadType = -1;
-                float scoreClim = m_ScoreClimatology;
+                VectorFloat scoreClim = m_ScoreClimatology;
 
                 // Push the first parameters set
                 asThreadMethodOptimizerRandomSet* firstthread = new asThreadMethodOptimizerRandomSet(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
@@ -102,7 +102,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 ThreadsManager().AddThread(firstthread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim==0)
+                if (scoreClim.size()==0)
                 {
                     ThreadsManager().Wait(threadType);
 

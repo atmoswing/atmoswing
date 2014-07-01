@@ -142,7 +142,7 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology
-    m_ScoreClimatology = 0;
+    m_ScoreClimatology.clear();
 
     for (int i=0; i<nbRuns; i++)
     {
@@ -204,24 +204,24 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Load parameters
     asParametersOptimizationGAs params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    if (m_PredictandStationId>0)
+    if (m_PredictandStationIds.size()>0)
     {
-        params.SetPredictandStationId(m_PredictandStationId);
+        params.SetPredictandStationIds(m_PredictandStationIds);
     }
     InitParameters(params);
     m_OriginalParams = params;
 
     // Create a result object to save the parameters sets
-    int stationId = params.GetPredictandStationId();
+    VectorInt stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_final_population;
-    results_final_population.Init(wxString::Format(_("station_%d_final_population"), stationId));
+    results_final_population.Init(wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best_individual;
-    results_best_individual.Init(wxString::Format(_("station_%d_best_individual"), stationId));
+    results_best_individual.Init(wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_generations;
-    results_generations.Init(wxString::Format(_("station_%d_generations"), stationId));
+    results_generations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
 
     // Reload previous results
@@ -238,7 +238,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
         else
         {
             // Check if the resulting file is already present
-            wxString finalFilePattern = wxString::Format("*_station_%d_best_individual.txt", stationId);
+            wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetPredictandStationIdsList(stationId).c_str());
             if (dir.HasFiles(finalFilePattern))
             {
                 asLogMessageImportant(wxString::Format(_("The directory %s already contains the resulting file."), resultsDir.c_str()));
@@ -246,7 +246,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             }
 
             // Look for intermediate results to load
-            wxString generationsFilePattern = wxString::Format("*_station_%d_generations.txt", stationId);
+            wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt", GetPredictandStationIdsList(stationId).c_str());
             if (dir.HasFiles(generationsFilePattern))
             {
                 wxString generationsFileName;
@@ -521,7 +521,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 Log().DisableMessageBoxOnError();
 
                 int threadType = -1;
-                float scoreClim = m_ScoreClimatology;
+                VectorFloat scoreClim = m_ScoreClimatology;
 
                 // Push the first parameters set
                 asThreadMethodOptimizerGeneticAlgorithms* firstthread = new asThreadMethodOptimizerGeneticAlgorithms(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
@@ -529,7 +529,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 ThreadsManager().AddThread(firstthread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim==0)
+                if (scoreClim.size()==0)
                 {
                     ThreadsManager().Wait(threadType);
 
