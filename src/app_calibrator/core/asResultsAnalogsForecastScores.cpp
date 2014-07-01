@@ -49,6 +49,7 @@ asResultsAnalogsForecastScores::~asResultsAnalogsForecastScores()
 
 void asResultsAnalogsForecastScores::Init(asParametersScoring &params)
 {
+    m_PredictandStationIds = params.GetPredictandStationIds();
     if(m_SaveIntermediateResults || m_LoadIntermediateResults) BuildFileName(params);
 
     // Resize to 0 to avoid keeping old results
