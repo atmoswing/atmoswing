@@ -74,7 +74,7 @@ asResultsAnalogsDates::~asResultsAnalogsDates()
 
 void asResultsAnalogsDates::Init(asParameters &params)
 {
-    m_PredictandStationId = params.GetPredictandStationId();
+    m_PredictandStationIds = params.GetPredictandStationIds();
     if(m_SaveIntermediateResults || m_LoadIntermediateResults) BuildFileName();
 
     // Resize to 0 to avoid keeping old results
@@ -89,7 +89,7 @@ void asResultsAnalogsDates::BuildFileName()
     m_FilePath = wxFileConfig::Get()->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_FilePath.Append(DS);
-    m_FilePath.Append(wxString::Format("AnalogsDates_id%d_step%d", m_PredictandStationId, m_CurrentStep));
+    m_FilePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_CurrentStep));
     m_FilePath.Append(".nc");
 }
 

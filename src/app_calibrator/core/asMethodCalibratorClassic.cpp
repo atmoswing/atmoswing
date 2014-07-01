@@ -46,7 +46,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     m_OriginalParams = params;
 
     // Extract the stations IDs
-    VectorInt stationsId = params.GetPredictandStationsIdVector();
+    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
 
     // Create result object to save the final parameters sets
     asResultsParametersArray results_all;
@@ -57,10 +57,10 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
 
     for (unsigned int i_stat=0; i_stat<stationsId.size(); i_stat++)
     {
-        int stationId = stationsId[i_stat];
+        VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology = 0;
+        m_ScoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;
@@ -73,12 +73,12 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
         asResultsParametersArray results_best;
-        results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
+        results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
         wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-        resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
+        resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
 
         // Create a complete relevance map
         asLogState(_("Calibration: creating the complete relevance map for a given predictor."));
@@ -87,7 +87,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         params = m_OriginalParams;
 
         // Set the next station ID
-        params.SetPredictandStationId(stationId);
+        params.SetPredictandStationIds(stationId);
 
         // Process every step one after the other
         int stepsNb = params.GetStepsNb();
@@ -202,7 +202,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             }
 
             // Process the relevance map
-            asLogState(wxString::Format(_("Calibration: processing the relevance map for all the predictors of step %d (station %d)."), i_step, stationId));
+            asLogState(wxString::Format(_("Calibration: processing the relevance map for all the predictors of step %d (station %s)."), i_step, GetPredictandStationIdsList(stationId).c_str()));
             for (unsigned int i_param=0; i_param<m_ParametersTemp.size(); i_param++)
             {
                 bool containsNaNs = false;
@@ -234,7 +234,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             ClearTemp();
 
             // Resize domain
-            asLogState(wxString::Format(_("Calibration: resize the spatial domain for every predictor (station %d)."), stationId));
+            asLogState(wxString::Format(_("Calibration: resize the spatial domain for every predictor (station %s)."), GetPredictandStationIdsList(stationId).c_str()));
 
             bool isover = false;
             while (!isover)

@@ -92,42 +92,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, "nmchi", "nmchi", "options NelderMeadChi" },
     { wxCMD_LINE_OPTION, "nmgamma", "nmgamma", "options NelderMeadGamma" },
     { wxCMD_LINE_OPTION, "nmsigma", "nmsigma", "options NelderMeadSigma" },
-    { wxCMD_LINE_OPTION, "gaopenatsel", "gaopenatsel", "options NaturalSelectionOperator" },
-    { wxCMD_LINE_OPTION, "gaopecoupsel", "gaopecoupsel", "options CouplesSelectionOperator" },
-    { wxCMD_LINE_OPTION, "gaopecross", "gaopecross", "options CrossoverOperator" },
-    { wxCMD_LINE_OPTION, "gaopemut", "gaopemut", "options MutationOperator" },
-    { wxCMD_LINE_OPTION, "garunsnb", "garunsnb", "options GAsRunNumbers" },
-    { wxCMD_LINE_OPTION, "gapopsize", "gapopsize", "options GAsPopulationSize" },
-    { wxCMD_LINE_OPTION, "gaconvsteps", "gaconvsteps", "options GAsConvergenceStepsNb" },
-    { wxCMD_LINE_OPTION, "gaintermgen", "gaintermgen", "options GAsRatioIntermediateGeneration" },
-    { wxCMD_LINE_OPTION, "ganatseltourp", "ganatseltourp", "options GAsNaturalSelectionTournamentProbability" },
-    { wxCMD_LINE_OPTION, "gacoupseltournb", "gacoupseltournb", "options GAsCouplesSelectionTournamentNb" },
-    { wxCMD_LINE_OPTION, "gacrossmultptnb", "gacrossmultptnb", "options GAsCrossoverMultiplePointsNb" },
-    { wxCMD_LINE_OPTION, "gacrossblenptnb", "gacrossblenptnb", "options GAsCrossoverBlendingPointsNb" },
-    { wxCMD_LINE_OPTION, "gacrossblenshareb", "gacrossblenshareb", "options GAsCrossoverBlendingShareBeta" },
-    { wxCMD_LINE_OPTION, "gacrosslinptnb", "gacrosslinptnb", "options GAsCrossoverLinearPointsNb" },
-    { wxCMD_LINE_OPTION, "gacrossheurptnb", "gacrossheurptnb", "options GAsCrossoverHeuristicPointsNb" },
-    { wxCMD_LINE_OPTION, "gacrossheurshareb", "gacrossheurshareb", "options GAsCrossoverHeuristicShareBeta" },
-    { wxCMD_LINE_OPTION, "gacrossbinptnb", "gacrossbinptnb", "options GAsCrossoverBinaryLikePointsNb" },
-    { wxCMD_LINE_OPTION, "gacrossbinshareb", "gacrossbinshareb", "options GAsCrossoverBinaryLikeShareBeta" },
-    { wxCMD_LINE_OPTION, "gamutunifcstp", "gamutunifcstp", "options GAsMutationsUniformConstantProbability" },
-    { wxCMD_LINE_OPTION, "gamutnormcstp", "gamutnormcstp", "options GAsMutationsNormalConstantProbability" },
-    { wxCMD_LINE_OPTION, "gamutnormcstdev", "gamutnormcstdev", "options GAsMutationsNormalConstantStdDevRatioRange" },
-    { wxCMD_LINE_OPTION, "gamutunifvargens", "gamutunifvargens", "options GAsMutationsUniformVariableMaxGensNbVar" },
-    { wxCMD_LINE_OPTION, "gamutunivarpstrt", "gamutunivarpstrt", "options GAsMutationsUniformVariableProbabilityStart" },
-    { wxCMD_LINE_OPTION, "gamutunivarpend", "gamutunivarpend", "options GAsMutationsUniformVariableProbabilityEnd" },
-    { wxCMD_LINE_OPTION, "gamutnormvargensp", "gamutnormvargensp", "options GAsMutationsNormalVariableMaxGensNbVarProb" },
-    { wxCMD_LINE_OPTION, "gamutnormvargensd", "gamutnormvargensd", "options GAsMutationsNormalVariableMaxGensNbVarStdDev" },
-    { wxCMD_LINE_OPTION, "gamutnormvarpstrt", "gamutnormvarpstrt", "options GAsMutationsNormalVariableProbabilityStart" },
-    { wxCMD_LINE_OPTION, "gamutnormvarpend", "gamutnormvarpend", "options GAsMutationsNormalVariableProbabilityEnd" },
-    { wxCMD_LINE_OPTION, "gamutnormvardstrt", "gamutnormvardstrt", "options GAsMutationsNormalVariableStdDevStart" },
-    { wxCMD_LINE_OPTION, "gamutnormvardend", "gamutnormvardend", "options GAsMutationsNormalVariableStdDevEnd" },
-    { wxCMD_LINE_OPTION, "gamutnonunip", "gamutnonunip", "options GAsMutationsNonUniformProb" },
-    { wxCMD_LINE_OPTION, "gamutnonunigens", "gamutnonunigens", "options GAsMutationsNonUniformMaxGensNbVar" },
-    { wxCMD_LINE_OPTION, "gamutnonuniminr", "gamutnonuniminr", "options GAsMutationsNonUniformMinRate" },
-    { wxCMD_LINE_OPTION, "gamutmultiscalep", "gamutmultiscalep", "options GAsMutationsMultiScaleProb" },
-    { wxCMD_LINE_OPTION, "s1wu", "s1wu", "options S1weights/wU" },
-    { wxCMD_LINE_OPTION, "s1wv", "s1wv", "options S1weights/wV" },
     { wxCMD_LINE_OPTION, "savedatesstep", "savedatesstep", "options SaveAnalogDatesStep (with given number)" },
     { wxCMD_LINE_OPTION, "loaddatesstep", "loaddatesstep", "options LoadAnalogDatesStep (with given number)" },
     { wxCMD_LINE_OPTION, "savedatesallsteps", "savedatesallsteps", "options SaveAnalogDatesStep (all the steps)" },
@@ -505,17 +469,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("varexpstep", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/VariablesExplo/Step", option);
-    }
-
-    // S1 weighted
-    if (parser.Found("s1wu", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/S1weights/wU", option);
-    }
-
-    if (parser.Found("s1wv", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/S1weights/wV", option);
     }
 
     // Skip validation option

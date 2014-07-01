@@ -37,78 +37,78 @@ asTime::~asTime()
     //dtor
 }
 
-void asTime::TimeStructInit(TimeStruct &Date)
+void asTime::TimeStructInit(TimeStruct &date)
 {
-    Date.year = 0;
-    Date.month = 0;
-    Date.day = 0;
-    Date.hour = 0;
-    Date.min = 0;
-    Date.sec = 0;
+    date.year = 0;
+    date.month = 0;
+    date.day = 0;
+    date.hour = 0;
+    date.min = 0;
+    date.sec = 0;
 }
 
-TimeStruct asTime::TimeTmToTimeStruct(const struct tm &Date)
+TimeStruct asTime::TimeTmToTimeStruct(const struct tm &date)
 {
-    TimeStruct TimeSt;
-    TimeStructInit(TimeSt);
+    TimeStruct timeSt;
+    TimeStructInit(timeSt);
 
-    TimeSt.year = Date.tm_year + 1900;
-    TimeSt.month = Date.tm_mon + 1;
-    TimeSt.day = Date.tm_mday;
-    TimeSt.hour = Date.tm_hour;
-    TimeSt.min = Date.tm_min;
-    TimeSt.sec = Date.tm_sec;
+    timeSt.year = date.tm_year + 1900;
+    timeSt.month = date.tm_mon + 1;
+    timeSt.day = date.tm_mday;
+    timeSt.hour = date.tm_hour;
+    timeSt.min = date.tm_min;
+    timeSt.sec = date.tm_sec;
 
-    return TimeSt;
+    return timeSt;
 }
 
-double asTime::TimeTmToMJD(const struct tm &Date)
+double asTime::TimeTmToMJD(const struct tm &date)
 {
-    return GetMJD(Date.tm_year + 1900, Date.tm_mon + 1, Date.tm_mday, Date.tm_hour, Date.tm_min, Date.tm_sec);
+    return GetMJD(date.tm_year + 1900, date.tm_mon + 1, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec);
 }
 
 double asTime::NowMJD(int timezone)
 {
-    struct tm Todaytm;
-    time_t Todayepoch;
+    struct tm todaytm;
+    time_t todayepoch;
 
-    time(&Todayepoch);
+    time(&todayepoch);
 
     switch (timezone)
     {
         case asUTM:
-            Todaytm = *gmtime(&Todayepoch);
+            todaytm = *gmtime(&todayepoch);
             break;
         case asLOCAL:
-            Todaytm = *localtime(&Todayepoch);
+            todaytm = *localtime(&todayepoch);
             break;
         default:
             asThrowException(_("The timezone is not correctly set"));
     }
 
-    return TimeTmToMJD(Todaytm);
+    return TimeTmToMJD(todaytm);
 }
 
 TimeStruct asTime::NowTimeStruct(int timezone)
 {
-    struct tm Todaytm;
-    time_t Todayepoch;
+    struct tm todaytm;
+    time_t todayepoch;
 
-    time(&Todayepoch);
+    time(&todayepoch);
 
     switch (timezone)
     {
         case asUTM:
-            Todaytm = *gmtime(&Todayepoch);
+            todaytm = *gmtime(&todayepoch);
             break;
         case asLOCAL:
-            Todaytm = *localtime(&Todayepoch);
+            todaytm = *localtime(&todayepoch);
             break;
         default:
             asThrowException(_("The timezone is not correctly set"));
     }
 
-    return TimeTmToTimeStruct(Todaytm);
+    return TimeTmToTimeStruct(todaytm);
 }
 
 wxDateTime asTime::NowWxDateTime(int timezone)
@@ -165,9 +165,9 @@ wxDateTime asTime::NowWxDateTime(int timezone)
     return nowWx;
 }
 
-wxString asTime::GetStringTime(double MJD, const wxString &format)
+wxString asTime::GetStringTime(double mjd, const wxString &format)
 {
-    TimeStruct date = GetTimeStruct(MJD);
+    TimeStruct date = GetTimeStruct(mjd);
     wxString datestr = GetStringTime(date, format);
 
     return datestr;
@@ -199,9 +199,9 @@ wxString asTime::GetStringTime(const TimeStruct &date, const wxString &format)
     return datestr;
 }
 
-wxString asTime::GetStringTime(double MJD, TimeFormat format)
+wxString asTime::GetStringTime(double mjd, TimeFormat format)
 {
-    TimeStruct date = GetTimeStruct(MJD);
+    TimeStruct date = GetTimeStruct(mjd);
     wxString datestr = GetStringTime(date, format);
 
     return datestr;
@@ -591,10 +591,10 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
     return NaNFloat;
 }
 
-bool asTime::IsLeapYear(int Year)
+bool asTime::IsLeapYear(int year)
 {
     // Leap year if divisable by 4 and not by 100 or divisable by 400
-    if((Year % 4 == 0 && Year % 100 != 0) || Year % 400 == 0)
+    if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
     {
         return true; // leap
     } else {
@@ -602,58 +602,58 @@ bool asTime::IsLeapYear(int Year)
     }
 }
 
-double asTime::GetMJD(int Year, int Month, int Day, int Hour, int Minute, int Second, int Method)
+double asTime::GetMJD(int year, int month, int day, int hour, int minute, int second, int method)
 {
-    wxASSERT(Year>0);
-    wxASSERT(Month>0);
-    wxASSERT(Day>0);
-    wxASSERT(Hour>=0);
-    wxASSERT(Minute>=0);
-    wxASSERT(Second>=0);
+    wxASSERT(year>0);
+    wxASSERT(month>0);
+    wxASSERT(day>0);
+    wxASSERT(hour>=0);
+    wxASSERT(minute>=0);
+    wxASSERT(second>=0);
 
     double mjd = 0;;
 
-    switch(Method)
+    switch(method)
     {
         case (asUSE_NORMAL_METHOD):
 
             int a,b;
             float year_corr;
 
-            if ( Year < 0 )
-                Year++;
-            year_corr = ( Year > 0 ? 0.0 : 0.75 );
-            if ( Month <= 2 )
+            if ( year < 0 )
+                year++;
+            year_corr = ( year > 0 ? 0.0 : 0.75 );
+            if ( month <= 2 )
             {
-                Year--;
-                Month += 12;
+                year--;
+                month += 12;
             }
             b = 0;
-            if ( Year * 10000.0 + Month * 100.0 + Day >= 15821015.0 )
+            if ( year * 10000.0 + month * 100.0 + day >= 15821015.0 )
             {
-                a = Year / 100;
+                a = year / 100;
                 b = 2 - a + a / 4;
             }
-            mjd = (long) ( 365.25 * Year - year_corr ) + (long) ( 30.6001 * ( Month + 1 ) ) + Day + 1720995L + b;
+            mjd = (long) ( 365.25 * year - year_corr ) + (long) ( 30.6001 * ( month + 1 ) ) + day + 1720995L + b;
 
             break;
 
         case (asUSE_ALTERNATE_METHOD):
 
             // Adjust BC years
-            if ( Year < 0 )
-                Year++;
+            if ( year < 0 )
+                year++;
 
-            mjd = Day - 32075L +
-                1461L * ( Year + 4800L + ( Month - 14L ) / 12L ) / 4L +
-                367L * ( Month - 2L - ( Month - 14L ) / 12L * 12L ) / 12L -
-                3L * ( ( Year + 4900L + ( Month - 14L ) / 12L ) / 100L ) / 4L;
+            mjd = day - 32075L +
+                1461L * ( year + 4800L + ( month - 14L ) / 12L ) / 4L +
+                367L * ( month - 2L - ( month - 14L ) / 12L * 12L ) / 12L -
+                3L * ( ( year + 4900L + ( month - 14L ) / 12L ) / 100L ) / 4L;
 
             break;
     }
 
     // The hour part
-    mjd += (double) Hour/24 + (double) Minute/1440 + (double) Second/86400;
+    mjd += (double) hour/24 + (double) minute/1440 + (double) second/86400;
 
     // Set to Modified Julian Day
     mjd -= 2400001; // And not 2400000.5 (don't know why)
@@ -661,12 +661,12 @@ double asTime::GetMJD(int Year, int Month, int Day, int Hour, int Minute, int Se
     return mjd;
 }
 
-double asTime::GetMJD(const TimeStruct &Date, int Method)
+double asTime::GetMJD(const TimeStruct &date, int method)
 {
-    return GetMJD(Date.year, Date.month, Date.day, Date.hour, Date.min, Date.sec, Method);
+    return GetMJD(date.year, date.month, date.day, date.hour, date.min, date.sec, method);
 }
 
-double asTime::GetMJD(wxDateTime &date, int Method)
+double asTime::GetMJD(wxDateTime &date, int method)
 {
     int year = date.GetYear();
     int month = date.GetMonth()+1;
@@ -675,12 +675,12 @@ double asTime::GetMJD(wxDateTime &date, int Method)
     int min = date.GetMinute();
     int sec = date.GetSecond();
 
-    return GetMJD(year, month, day, hour, min, sec, Method);
+    return GetMJD(year, month, day, hour, min, sec, method);
 }
 
-wxDateTime asTime::GetWxDateTime(double Mjd, int Method)
+wxDateTime asTime::GetWxDateTime(double mjd, int method)
 {
-    TimeStruct datestruct = GetTimeStruct(Mjd, Method);
+    TimeStruct datestruct = GetTimeStruct(mjd, method);
 
     wxDateTime::Month month = (wxDateTime::Month)(datestruct.month-1);
     wxDateTime datewx(datestruct.day, month, datestruct.year, datestruct.hour, datestruct.min, datestruct.sec );
@@ -688,39 +688,39 @@ wxDateTime asTime::GetWxDateTime(double Mjd, int Method)
     return datewx;
 }
 
-TimeStruct asTime::GetTimeStruct(int Year, int Month, int Day, int Hour, int Minute, int Second)
+TimeStruct asTime::GetTimeStruct(int year, int month, int day, int hour, int minute, int second)
 {
-    wxASSERT(Year>=0);
-    wxASSERT(Month>=0);
-    wxASSERT(Day>=0);
-    wxASSERT(Hour>=0);
-    wxASSERT(Minute>=0);
-    wxASSERT(Second>=0);
+    wxASSERT(year>=0);
+    wxASSERT(month>=0);
+    wxASSERT(day>=0);
+    wxASSERT(hour>=0);
+    wxASSERT(minute>=0);
+    wxASSERT(second>=0);
 
     TimeStruct time;
 
-    time.year = Year;
-    time.month = Month;
-    time.day = Day;
-    time.hour = Hour;
-    time.min = Minute;
-    time.sec = Second;
+    time.year = year;
+    time.month = month;
+    time.day = day;
+    time.hour = hour;
+    time.min = minute;
+    time.sec = second;
 
     return time;
 }
 
-TimeStruct asTime::GetTimeStruct(double Mjd, int Method)
+TimeStruct asTime::GetTimeStruct(double mjd, int method)
 {
-    wxASSERT(Mjd>0);
+    wxASSERT(mjd>0);
 
     // To Julian day
-    Mjd += 2400001; // And not 2400000.5 (don't know why)
+    mjd += 2400001; // And not 2400000.5 (don't know why)
 
     TimeStruct date;
     TimeStructInit(date);
 
     // Remaining seconds
-    double rest = Mjd-floor(Mjd);
+    double rest = mjd-floor(mjd);
     int sec = asTools::Round(rest*86400);
     date.hour = floor((float)(sec/3600));
     sec -= date.hour*3600;
@@ -728,13 +728,13 @@ TimeStruct asTime::GetTimeStruct(double Mjd, int Method)
     sec -= date.min*60;
     date.sec = sec;
 
-    switch(Method)
+    switch(method)
     {
         case (asUSE_NORMAL_METHOD):
 
             long a, b, c, d, e, z, alpha;
 
-            z = Mjd;
+            z = mjd;
             if ( z < 2299161L )
                 a = z;
             else
@@ -758,7 +758,7 @@ TimeStruct asTime::GetTimeStruct(double Mjd, int Method)
 
             long t1, t2, yr, mo;
 
-            t1 = Mjd + 68569L;
+            t1 = mjd + 68569L;
             t2 = 4L * t1 / 146097L;
             t1 = t1 - ( 146097L * t2 + 3L ) / 4L;
             yr = 4000L * ( t1 + 1L ) / 1461001L;
@@ -779,45 +779,45 @@ TimeStruct asTime::GetTimeStruct(double Mjd, int Method)
     return date;
 }
 
-int asTime::GetYear( double Mjd, int Method )
+int asTime::GetYear( double mjd, int method )
 {
-    TimeStruct date = asTime::GetTimeStruct(Mjd, Method);
+    TimeStruct date = asTime::GetTimeStruct(mjd, method);
     return date.year;
 }
 
-int asTime::GetMonth( double Mjd, int Method )
+int asTime::GetMonth( double mjd, int method )
 {
-    TimeStruct date = asTime::GetTimeStruct(Mjd, Method);
+    TimeStruct date = asTime::GetTimeStruct(mjd, method);
     return date.month;
 }
 
-int asTime::GetDay( double Mjd, int Method )
+int asTime::GetDay( double mjd, int method )
 {
-    TimeStruct date = asTime::GetTimeStruct(Mjd, Method);
+    TimeStruct date = asTime::GetTimeStruct(mjd, method);
     return date.day;
 }
 
-int asTime::GetHour( double Mjd, int Method )
+int asTime::GetHour( double mjd, int method )
 {
-    TimeStruct date = asTime::GetTimeStruct(Mjd, Method);
+    TimeStruct date = asTime::GetTimeStruct(mjd, method);
     return date.hour;
 }
 
-int asTime::GetMinute( double Mjd, int Method )
+int asTime::GetMinute( double mjd, int method )
 {
-    TimeStruct date = asTime::GetTimeStruct(Mjd, Method);
+    TimeStruct date = asTime::GetTimeStruct(mjd, method);
     return date.min;
 }
 
-int asTime::GetSecond( double Mjd, int Method )
+int asTime::GetSecond( double mjd, int method )
 {
-    TimeStruct date = asTime::GetTimeStruct(Mjd, Method);
+    TimeStruct date = asTime::GetTimeStruct(mjd, method);
     return date.sec;
 }
 
-double asTime::AddYear( double Mjd )
+double asTime::AddYear( double mjd )
 {
-    TimeStruct timest = GetTimeStruct(Mjd);
+    TimeStruct timest = GetTimeStruct(mjd);
     int year = timest.year;
 
     // Check which year to assess as leap or not
@@ -829,19 +829,19 @@ double asTime::AddYear( double Mjd )
     // Check if the year is a leap year
     if (IsLeapYear(year))
     {
-        Mjd += 366;
+        mjd += 366;
     }
     else
     {
-        Mjd += 365;
+        mjd += 365;
     }
 
-    return Mjd;
+    return mjd;
 }
 
-double asTime::SubtractYear( double Mjd )
+double asTime::SubtractYear( double mjd )
 {
-    TimeStruct timest = GetTimeStruct(Mjd);
+    TimeStruct timest = GetTimeStruct(mjd);
     int year = timest.year;
 
     // Check which year to assess as leap or not
@@ -860,14 +860,14 @@ double asTime::SubtractYear( double Mjd )
     // Check if the year is a leap year
     if (IsLeapYear(year))
     {
-        Mjd -= 366;
+        mjd -= 366;
     }
     else
     {
-        Mjd -= 365;
+        mjd -= 365;
     }
 
-    return Mjd;
+    return mjd;
 }
 
 TimeStruct asTime::GetSeasonStart(Season season)
@@ -933,11 +933,11 @@ TimeStruct asTime::GetSeasonEnd(Season season, int year)
     return ret;
 }
 
-Season asTime::GetSeason(int Month)
+Season asTime::GetSeason(int month)
 {
     Season season;
 
-    switch (Month)
+    switch (month)
     {
         case 1 :
             season = DJF;

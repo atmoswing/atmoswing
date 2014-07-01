@@ -110,6 +110,10 @@ public:
 
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 
+    static VectorInt GetFileStationIds(wxString stationIdsString);
+
+    wxString GetPredictandStationIdsString();
+
     bool FixTimeLimits();
 
     bool FixWeights();
@@ -345,26 +349,29 @@ public:
         return true;
     }
 
-    int GetPredictandStationId()
+    VectorInt GetPredictandStationIds()
     {
-        return m_PredictandStationId;
+        return m_PredictandStationIds;
     }
 
-    VectorInt GetPredictandStationsIdVector()
+    VVectorInt GetPredictandStationsIdsVector()
     {
-        VectorInt vec;
-        vec.push_back(m_PredictandStationId);
+        VVectorInt vec;
+        vec.push_back(m_PredictandStationIds);
         return vec;
     }
 
-    bool SetPredictandStationId(int val)
+    bool SetPredictandStationIds(VectorInt val)
     {
-        if (asTools::IsNaN(val))
+        for (int i=0; i<val.size(); i++)
         {
-            asLogError(_("The provided value for the predictand ID is null"));
-            return false;
+            if (asTools::IsNaN(val[i]))
+            {
+                asLogError(_("The provided value for the predictand ID is null"));
+                return false;
+            }
         }
-        m_PredictandStationId = val;
+        m_PredictandStationIds = val;
         return true;
     }
 
@@ -1036,7 +1043,7 @@ protected:
     double m_ArchiveStart;
     double m_ArchiveEnd;
     int m_TimeArrayAnalogsIntervalDays;
-    int m_PredictandStationId;
+    VectorInt m_PredictandStationIds;
     double m_TimeMinHours;
     double m_TimeMaxHours;
 

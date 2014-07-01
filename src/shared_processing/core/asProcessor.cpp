@@ -1149,9 +1149,17 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
     Array2DFloat analogsDates = anaDates.GetAnalogsDates();
     Array2DFloat analogsCriteria = anaDates.GetAnalogsCriteria();
-    Array1DFloat predictandDataNorm = predictand.GetDataNormalizedStation(params.GetPredictandStationId());
-    Array1DFloat predictandDataGross = predictand.GetDataGrossStation(params.GetPredictandStationId());
     Array1DDouble predictandTime = predictand.GetTime();
+    VArray1DFloat predictandDataNorm;
+    VArray1DFloat predictandDataGross;
+    VectorInt stations = params.GetPredictandStationIds();
+    int stationsNb = stations.size();
+    for (int i_st=0; i_st<stationsNb; i_st++)
+    {
+        predictandDataNorm.push_back(predictand.GetDataNormalizedStation(stations[i_st]));
+        predictandDataGross.push_back(predictand.GetDataGrossStation(stations[i_st]));
+    }
+
     int predictandTimeLength = predictand.GetTimeLength();
     int timeTargetSelectionLength = timeTargetSelection.size();
     int analogsNb = analogsDates.cols();
@@ -1177,13 +1185,16 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTimeLength-1],timeStart);
     int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTimeLength-1],timeEnd);
-    while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart)))
+    for (int i_st=0; i_st<stations.size(); i_st++)
     {
-        indexPredictandTimeStart++;
-    }
-    while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeEnd)))
-    {
-        indexPredictandTimeEnd--;
+        while (asTools::IsNaN(predictandDataNorm[i_st](indexPredictandTimeStart)))
+        {
+            indexPredictandTimeStart++;
+        }
+        while (asTools::IsNaN(predictandDataNorm[i_st](indexPredictandTimeEnd)))
+        {
+            indexPredictandTimeEnd--;
+        }
     }
     timeStart = predictandTime[indexPredictandTimeStart];
     timeEnd = predictandTime[indexPredictandTimeEnd];
@@ -1215,19 +1226,18 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
 
     // Some variables
     float currentAnalogDate, currentTargetDate;
-    float predictandValueNorm, predictandValueGross;
     int predictandIndex;
     float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
 
     // Resize containers
     wxASSERT(targTimeLength>0);
     wxASSERT(analogsNb>0);
-    Array2DFloat finalAnalogValuesNorm(targTimeLength, analogsNb);
-    Array2DFloat finalAnalogValuesGross(targTimeLength, analogsNb);
+    VArray2DFloat finalAnalogValuesNorm(stationsNb, Array2DFloat(targTimeLength, analogsNb));
+    VArray2DFloat finalAnalogValuesGross(stationsNb, Array2DFloat(targTimeLength, analogsNb));
     Array2DFloat finalAnalogCriteria(targTimeLength, analogsNb);
     Array1DFloat finalTargetDates(targTimeLength);
-    Array1DFloat finalTargetValuesNorm(targTimeLength);
-    Array1DFloat finalTargetValuesGross(targTimeLength);
+    VArray1DFloat finalTargetValuesNorm(stationsNb, Array1DFloat(targTimeLength));
+    VArray1DFloat finalTargetValuesGross(stationsNb, Array1DFloat(targTimeLength));
 
     // Get predictand values
     for (int i_targdate=indexTargDatesStart; i_targdate<=indexTargDatesEnd; i_targdate++)
@@ -1239,15 +1249,19 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
         predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandTimeDays,asHIDE_WARNINGS);
         if( ignoreTargetValues | (predictandIndex==asOUT_OF_RANGE) | (predictandIndex==asNOT_FOUND) )
         {
-            finalTargetValuesNorm(i_targdatenew) = NaNFloat;
-            finalTargetValuesGross(i_targdatenew) = NaNFloat;
+            for (int i_st=0; i_st<stations.size(); i_st++)
+            {
+                finalTargetValuesNorm[i_st](i_targdatenew) = NaNFloat;
+                finalTargetValuesGross[i_st](i_targdatenew) = NaNFloat;
+            }
         }
         else
         {
-            predictandValueNorm = predictandDataNorm(predictandIndex);
-            predictandValueGross = predictandDataGross(predictandIndex);
-            finalTargetValuesNorm(i_targdatenew) = predictandValueNorm;
-            finalTargetValuesGross(i_targdatenew) = predictandValueGross;
+            for (int i_st=0; i_st<stations.size(); i_st++)
+            {
+                finalTargetValuesNorm[i_st](i_targdatenew) = predictandDataNorm[i_st](predictandIndex);
+                finalTargetValuesGross[i_st](i_targdatenew) = predictandDataGross[i_st](predictandIndex);
+            }
         }
 
         for (int i_anadate=0; i_anadate<analogsNb; i_anadate++)
@@ -1266,23 +1280,30 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
                         wxString startDate = asTime::GetStringTime(predictandTime[0]);
                         wxString endDate = asTime::GetStringTime(predictandTime[predictandTime.size()-1]);
                         asLogWarning(wxString::Format(_("The current analog date (%s) was not found in the predictand time array (%s-%s)."), currDate.c_str(), startDate.c_str(), endDate.c_str()));
-                        finalAnalogValuesNorm(i_targdatenew,i_anadate) = NaNFloat;
-                        finalAnalogValuesGross(i_targdatenew,i_anadate) = NaNFloat;
+                        for (int i_st=0; i_st<stations.size(); i_st++)
+                        {
+                            finalAnalogValuesNorm[i_st](i_targdatenew,i_anadate) = NaNFloat;
+                            finalAnalogValuesGross[i_st](i_targdatenew,i_anadate) = NaNFloat;
+                        }
                     }
                     else
                     {
-                        predictandValueNorm = predictandDataNorm(predictandIndex);
-                        predictandValueGross = predictandDataGross(predictandIndex);
-                        wxASSERT(!asTools::IsNaN(predictandValueNorm));
-                        wxASSERT(!asTools::IsNaN(predictandValueGross));
-                        wxASSERT(predictandValueNorm<10000);
-                        finalAnalogValuesNorm(i_targdatenew,i_anadate) = predictandValueNorm;
-                        finalAnalogValuesGross(i_targdatenew,i_anadate) = predictandValueGross;
+                        for (int i_st=0; i_st<stations.size(); i_st++)
+                        {
+                            wxASSERT(!asTools::IsNaN(predictandDataNorm[i_st](predictandIndex)));
+                            wxASSERT(!asTools::IsNaN(predictandDataGross[i_st](predictandIndex)));
+                            wxASSERT(predictandDataNorm[i_st](predictandIndex)<10000);
+                            finalAnalogValuesNorm[i_st](i_targdatenew,i_anadate) = predictandDataNorm[i_st](predictandIndex);
+                            finalAnalogValuesGross[i_st](i_targdatenew,i_anadate) = predictandDataGross[i_st](predictandIndex);
+                        }
                     }
                 } else {
                     asLogError(wxString::Format(_("The current analog date (%s) is outside of the allowed period (%s-%s))."), asTime::GetStringTime(currentAnalogDate, "DD.MM.YYYY").c_str(), asTime::GetStringTime(timeStart, "DD.MM.YYYY").c_str(), asTime::GetStringTime(timeEnd, "DD.MM.YYYY").c_str()));
-                    finalAnalogValuesNorm(i_targdatenew,i_anadate) = NaNFloat;
-                    finalAnalogValuesGross(i_targdatenew,i_anadate) = NaNFloat;
+                    for (int i_st=0; i_st<stations.size(); i_st++)
+                    {
+                        finalAnalogValuesNorm[i_st](i_targdatenew,i_anadate) = NaNFloat;
+                        finalAnalogValuesGross[i_st](i_targdatenew,i_anadate) = NaNFloat;
+                    }
                 }
                 finalAnalogCriteria(i_targdatenew,i_anadate) = analogsCriteria(i_targdate,i_anadate);
 
@@ -1293,14 +1314,16 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
         }
 
         #ifndef UNIT_TESTING
-            wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm(i_targdatenew,0), &finalAnalogValuesNorm(i_targdatenew,analogsNb-1)));
-            wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross(i_targdatenew,0), &finalAnalogValuesGross(i_targdatenew,analogsNb-1)));
-            wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(i_targdatenew,0), &finalAnalogCriteria(i_targdatenew,analogsNb-1)));
+            #ifdef _DEBUG
+                for (int i_st=0; i_st<stations.size(); i_st++)
+                {
+                    wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm[i_st](i_targdatenew,0), &finalAnalogValuesNorm[i_st](i_targdatenew,analogsNb-1)));
+                    wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross[i_st](i_targdatenew,0), &finalAnalogValuesGross[i_st](i_targdatenew,analogsNb-1)));
+                }
+                wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(i_targdatenew,0), &finalAnalogCriteria(i_targdatenew,analogsNb-1)));
+            #endif
         #endif
     }
-
-    //wxASSERT(!asTools::HasNaN(&finalTargetValuesNorm(0), &finalTargetValuesNorm(finalTargetValuesNorm.size()-1)));
-    //wxASSERT(!asTools::HasNaN(&finalTargetValuesGross(0), &finalTargetValuesGross(finalTargetValuesGross.size()-1)));
 
     // Copy results to the resulting object
     results.SetAnalogsValuesNorm(finalAnalogValuesNorm);
