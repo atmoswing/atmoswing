@@ -8,37 +8,37 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
- 
+
 #include "asForecastScoreFinalRankHistogramReliability.h"
 
 asForecastScoreFinalRankHistogramReliability::asForecastScoreFinalRankHistogramReliability(Period period)
 :
 asForecastScoreFinal(period)
 {
-    
+
 }
 
 asForecastScoreFinalRankHistogramReliability::asForecastScoreFinalRankHistogramReliability(const wxString& periodString)
 :
 asForecastScoreFinal(periodString)
 {
-    
+
 }
 
 asForecastScoreFinalRankHistogramReliability::~asForecastScoreFinalRankHistogramReliability()
@@ -94,8 +94,6 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
 
 float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize)
 {
-    wxASSERT(targetDates.rows()>1);
-    wxASSERT(forecastScores.rows()>1);
     wxASSERT(m_RanksNb>1);
 
     Array1DFloat histogramReal;

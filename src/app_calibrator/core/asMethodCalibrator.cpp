@@ -355,6 +355,30 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     return true;
 }
 
+wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
+{
+    wxString id;
+
+    if (stationIds.size()==1)
+    {
+        id << stationIds[0];
+    }
+    else
+    {
+        for (int i=0; i<stationIds.size(); i++)
+        {
+            id << stationIds[i];
+
+            if (i<stationIds.size()-1)
+            {
+                id << ",";
+            }
+        }
+    }
+
+    return id;
+}
+
 bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
     // Load data once.

@@ -234,9 +234,9 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     }
 
     // Get the elements size
-    int Nstations = ncFile.GetDimLength("stations");
-    int Ntime = ncFile.GetDimLength("time");
-    int Nanalogs = ncFile.GetDimLength("analogs");
+    size_t Nstations = ncFile.GetDimLength("stations");
+    size_t Ntime = ncFile.GetDimLength("time");
+    size_t Nanalogs = ncFile.GetDimLength("analogs");
 
     // Get time
     m_TargetDates.resize( Ntime );
