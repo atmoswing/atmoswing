@@ -10,7 +10,7 @@ class asThreadMethodOptimizerRandomSet: public asThread
 {
 public:
     /** Default constructor */
-    asThreadMethodOptimizerRandomSet(const asMethodOptimizerRandomSet* optimizer, const asParametersOptimization &params, float *finalScoreCalib, float *scoreClimatology = 0);
+    asThreadMethodOptimizerRandomSet(const asMethodOptimizerRandomSet* optimizer, const asParametersOptimization &params, float *finalScoreCalib, VectorFloat *scoreClimatology);
     /** Default destructor */
     virtual ~asThreadMethodOptimizerRandomSet();
 
@@ -21,7 +21,7 @@ private:
     asMethodOptimizerRandomSet m_Optimizer;
     asParametersOptimization m_Params;
     float* m_FinalScoreCalib;
-    float* m_ScoreClimatology;
+    VectorFloat* m_ScoreClimatology;
 };
 
 #endif // ASTHREADMETHODOPTIMIZERRANDOMSET_H

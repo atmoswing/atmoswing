@@ -137,7 +137,7 @@ bool asMethodOptimizerNelderMead::Manager()
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology
-    m_ScoreClimatology = 0;
+    m_ScoreClimatology.clear();
 
     for (int i=0; i<nbRuns; i++)
     {
@@ -159,27 +159,27 @@ bool asMethodOptimizerNelderMead::ManageOneRun()
     // Load parameters
     asParametersOptimizationNelderMead params;
     if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    if (m_PredictandStationId>0)
+    if (m_PredictandStationIds.size()>0)
     {
-        params.SetPredictandStationId(m_PredictandStationId);
+        params.SetPredictandStationIds(m_PredictandStationIds);
     }
     InitParameters(params);
     m_OriginalParams = params;
 
     // Create a result object to save the parameters sets
-    int stationId = m_OriginalParams.GetPredictandStationId();
+    VectorInt stationId = m_OriginalParams.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
-    results_all.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+    results_all.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_slct;
-    results_slct.Init(wxString::Format(_("station_%d_selected_parameters"), stationId));
+    results_slct.Init(wxString::Format(_("station_%s_selected_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best;
-    results_best.Init(wxString::Format(_("station_%d_best_parameters"), stationId));
+    results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_simplex;
-    results_simplex.Init(wxString::Format(_("station_%d_simplex"), stationId));
+    results_simplex.Init(wxString::Format(_("station_%s_simplex"), GetPredictandStationIdsList(stationId).c_str()));
     results_simplex.CreateFile();
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%d_best_parameters.xml", time.c_str(), stationId));
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
 
     // Reset some data members
     m_Iterator = 0;
