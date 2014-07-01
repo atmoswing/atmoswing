@@ -90,7 +90,28 @@ TEST(ParametersLoadFromFile)
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
     CHECK_CLOSE(0.4, params.GetPredictorWeight(0,1), 0.0001);
 
-    CHECK_EQUAL(40, params.GetPredictandStationId());
+    CHECK_EQUAL(40, params.GetPredictandStationIds()[0]);
+}
+
+TEST(ParametersLoadFromFileMultipleIds)
+{
+	wxString str("Testing parameters with multiple station ids...\n");
+    printf("%s", str.mb_str(wxConvUTF8).data());
+
+    wxString filepath = wxFileName::GetCwd();
+    filepath.Append("/files/parameters_standard_multiple_station_ids.xml");
+
+    asParameters params;
+    params.LoadFromFile(filepath);
+
+    VectorInt stations = params.GetPredictandStationIds();
+
+    CHECK_EQUAL(5, stations.size());
+    CHECK_EQUAL(40, stations[0]);
+    CHECK_EQUAL(41, stations[1]);
+    CHECK_EQUAL(42, stations[2]);
+    CHECK_EQUAL(43, stations[3]);
+    CHECK_EQUAL(44, stations[4]);
 }
 
 TEST(GenerateSimpleParametersFileCalibration)

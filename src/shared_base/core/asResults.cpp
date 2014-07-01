@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asResults.h"
 
 #include "wx/fileconf.h"
@@ -38,8 +38,7 @@ asResults::asResults()
     m_SaveIntermediateResults = false;
     m_LoadIntermediateResults = false;
     m_CurrentStep = 0;
-    m_PredictandStationId = 0;
-    m_FileVersion = 1.2f;
+    m_FileVersion = 1.3f;
 }
 
 asResults::~asResults()
@@ -60,6 +59,30 @@ bool asResults::Save(const wxString &AlternateFilePath)
 bool asResults::Exists()
 {
     return asFile::Exists(m_FilePath);
+}
+
+wxString asResults::GetPredictandStationIdsList()
+{
+    wxString id;
+
+    if (m_PredictandStationIds.size()==1)
+    {
+        id << m_PredictandStationIds[0];
+    }
+    else
+    {
+        for (int i=0; i<m_PredictandStationIds.size(); i++)
+        {
+            id << m_PredictandStationIds[i];
+
+            if (i<m_PredictandStationIds.size()-1)
+            {
+                id << ",";
+            }
+        }
+    }
+
+    return id;
 }
 
 bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile)

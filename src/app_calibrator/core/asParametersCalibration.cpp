@@ -341,7 +341,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    if(!SetPredictandStationsIdVector(GetFileParamIntVector(fileParams, "PredictandStationId"))) return false;
+    if(!SetPredictandStationsIdsVector(GetFileStationIdsVector(fileParams))) return false;
     if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0))) return false;
     if(!fileParams.GoANodeBack()) return false;
     if(!fileParams.GoANodeBack()) return false;
@@ -439,7 +439,7 @@ bool asParametersCalibration::FixTimeLimits()
 
 void asParametersCalibration::InitValues()
 {
-    wxASSERT(m_PredictandStationsIdVect.size()>0);
+    wxASSERT(m_PredictandStationsIdsVect.size()>0);
     wxASSERT(m_TimeArrayAnalogsIntervalDaysVect.size()>0);
     wxASSERT(m_ForecastScoreVect.Name.size()>0);
     wxASSERT(m_ForecastScoreVect.AnalogsNumber.size()>0);
@@ -449,7 +449,7 @@ void asParametersCalibration::InitValues()
     wxASSERT(m_ForecastScoreVect.PostprocessDupliExp.size()>0);
 
     // Initialize the parameters values with the first values of the vectors
-    m_PredictandStationId = m_PredictandStationsIdVect[0];
+    m_PredictandStationIds = m_PredictandStationsIdsVect[0];
     m_TimeArrayAnalogsIntervalDays = m_TimeArrayAnalogsIntervalDaysVect[0];
     SetForecastScoreName(m_ForecastScoreVect.Name[0]);
     SetForecastScoreAnalogsNumber(m_ForecastScoreVect.AnalogsNumber[0]);

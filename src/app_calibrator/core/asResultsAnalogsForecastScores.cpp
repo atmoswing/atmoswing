@@ -49,6 +49,7 @@ asResultsAnalogsForecastScores::~asResultsAnalogsForecastScores()
 
 void asResultsAnalogsForecastScores::Init(asParametersScoring &params)
 {
+    m_PredictandStationIds = params.GetPredictandStationIds();
     if(m_SaveIntermediateResults || m_LoadIntermediateResults) BuildFileName(params);
 
     // Resize to 0 to avoid keeping old results
@@ -63,7 +64,7 @@ void asResultsAnalogsForecastScores::BuildFileName(asParametersScoring &params)
     m_FilePath = wxFileConfig::Get()->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_FilePath.Append(DS);
-    m_FilePath.Append(wxString::Format("AnalogsForecastScores_id%d_step%d", params.GetPredictandStationId(), m_CurrentStep));
+    m_FilePath.Append(wxString::Format("AnalogsForecastScores_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_CurrentStep));
     m_FilePath.Append(".nc");
 }
 

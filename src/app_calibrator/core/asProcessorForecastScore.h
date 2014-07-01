@@ -49,9 +49,7 @@ public:
     * \param AnalogsNb The number of analogs to consider
     * \return The ResAnalogsForecastScore structure
     */
-    static bool GetAnalogsForecastScores(asResultsAnalogsValues &anaValues, asForecastScore *forecastScore, asParametersScoring &params, asResultsAnalogsForecastScores &results);
-
-    static bool GetAnalogsForecastScoresLoadF0(asResultsAnalogsValues &anaValues, asForecastScore *forecastScore, asParametersScoring &params, asResultsAnalogsForecastScores &results);
+    static bool GetAnalogsForecastScores(asResultsAnalogsValues &anaValues, asForecastScore *forecastScore, asParametersScoring &params, asResultsAnalogsForecastScores &results, VectorFloat &scoresClimatology);
 
     /** Analogs final score
     * \param AnalogsScores The ResAnalogsForecastScores structure
