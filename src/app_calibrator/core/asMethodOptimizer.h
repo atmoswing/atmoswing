@@ -14,14 +14,14 @@ public:
 
     bool Manager() = 0;
 
-    void SetPredictandStationId(int val)
+    void SetPredictandStationIds(VectorInt val)
     {
-        m_PredictandStationId = val;
+        m_PredictandStationIds = val;
     }
 
 
 protected:
-    int m_PredictandStationId;
+    VectorInt m_PredictandStationIds;
     bool m_IsOver;
     bool m_SkipNext;
     int m_OptimizerStage;

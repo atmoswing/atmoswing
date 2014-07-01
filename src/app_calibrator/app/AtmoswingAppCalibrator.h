@@ -58,7 +58,7 @@ public:
 private:
     wxString m_CalibParamsFile;
     wxString m_PredictandDB;
-    int m_PredictandStationId;
+    VectorInt m_PredictandStationIds;
     wxString m_PredictorsDir;
     wxString m_CalibMethod;
     bool m_ForceQuit;
