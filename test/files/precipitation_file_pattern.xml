@@ -1,0 +1,13 @@
+<pattern id="precipitation_file_pattern" name="Data pattern for unit testing">
+    <structtype>constantwidth</structtype>
+    <headerlines>3</headerlines>
+    <parsetime>1</parsetime>
+    <time>
+        <block charstart="1" charend="4">year</block>
+        <block charstart="5" charend="6">month</block>
+        <block charstart="7" charend="8">day</block>
+    </time>
+    <data>
+        <block charstart="11" charend="14">Precipitation</block>
+    </data>
+</pattern>
