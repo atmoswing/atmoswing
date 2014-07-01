@@ -45,7 +45,6 @@ asParameters::asParameters()
     m_TimeArrayAnalogsTimeStepHours = 0;
     m_TimeArrayAnalogsExcludeDays = 0;
     m_TimeArrayAnalogsIntervalDays = 0;
-    m_PredictandStationId = 0;
     m_PredictandTimeHours = 0;
     m_PredictandParameter = (DataParameter)0;
     m_PredictandTemporalResolution = (DataTemporalResolution)0;
@@ -561,7 +560,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
 
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    if(!SetPredictandStationId(fileParams.GetFirstElementAttributeValueInt("PredictandStationId", "value"))) return false;
+    if(!SetPredictandStationIds(GetFileStationIds(fileParams.GetFirstElementAttributeValueText("PredictandStationId", "value")))) return false;
     if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0.0))) return false;
     if(!fileParams.GoANodeBack()) return false;
     if(!fileParams.GoANodeBack()) return false;
@@ -580,6 +579,97 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     if (!IsOk()) return false;
 
     return true;
+}
+
+VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
+{
+    // Trim
+    stationIdsString.Trim(true);
+    stationIdsString.Trim(false);
+
+    VectorInt ids;
+
+    if (stationIdsString.IsEmpty())
+    {
+        asLogError(_("The station ID was not provided."));
+        return VectorInt(0);
+    }
+
+    // Multivariate
+    if (stationIdsString.SubString(0, 0).IsSameAs("("))
+    {
+        wxString subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
+
+        // Check that it contains only 1 opening bracket
+        if (subStr.Find("(") != wxNOT_FOUND)
+        {
+            asLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
+            return VectorInt(0);
+        }
+
+        // Check that it contains 1 closing bracket at the end
+        if (subStr.Find(")") != subStr.size()-1)
+        {
+            asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
+            return VectorInt(0);
+        }
+
+        // Extract content
+        wxChar separator = ',';
+        while(subStr.Find(separator)!=wxNOT_FOUND)
+        {
+            wxString txtBefore = subStr.BeforeFirst(separator);
+            subStr = subStr.AfterFirst(separator);
+            int id = wxAtoi(txtBefore);
+            ids.push_back(id);
+        }
+        if(!subStr.IsEmpty())
+        {
+            int id = wxAtoi(subStr);
+            ids.push_back(id);
+        }
+    }
+    else
+    {
+        // Check for single value
+        if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND || stationIdsString.Find(",") != wxNOT_FOUND)
+        {
+            asLogError(_("The format of the station ID is not correct (should be only digits)."));
+            return VectorInt(0);
+        }
+        int id = wxAtoi(stationIdsString);
+        ids.push_back(id);
+    }
+
+    return ids;
+}
+
+wxString asParameters::GetPredictandStationIdsString()
+{
+    wxString Ids;
+
+    if (m_PredictandStationIds.size()==1)
+    {
+        Ids << m_PredictandStationIds[0];
+    }
+    else
+    {
+        Ids = "(";
+
+        for (int i=0; i<m_PredictandStationIds.size(); i++)
+        {
+            Ids << m_PredictandStationIds[i];
+
+            if (i<m_PredictandStationIds.size()-1)
+            {
+                Ids.Append(",");
+            }
+        }
+
+        Ids.Append(")");
+    }
+
+    return Ids;
 }
 
 bool asParameters::FixTimeLimits()
@@ -701,7 +791,7 @@ wxString asParameters::Print()
     // Create content string
     wxString content = wxEmptyString;
 
-    content.Append(wxString::Format("Station(%d)\t", GetPredictandStationId()));
+    content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString().c_str()));
     content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
 
     for (int i_step=0; i_step<GetStepsNb(); i_step++)
@@ -772,7 +862,6 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath)
 
     return true;
 }
-
 bool asParameters::GetValuesFromString(wxString stringVals)
 {
     int iLeft, iRight;

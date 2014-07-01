@@ -187,7 +187,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     }
 
     // Extract the stations IDs
-    VectorInt stationsId = params.GetPredictandStationsIdVector();
+    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
 
     // Create result object to save the final parameters sets
     asResultsParametersArray results_all;
@@ -200,10 +200,10 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     {
         ClearAll();
 
-        int stationId = stationsId[i_stat];
+        VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology = 0;
+        m_ScoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;
@@ -213,10 +213,10 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%d_tested_parameters"), stationId));
+        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
 
         // Set the next station ID
-        params.SetPredictandStationId(stationId);
+        params.SetPredictandStationIds(stationId);
 
         // Process every step one after the other
         int stepsNb = params.GetStepsNb();

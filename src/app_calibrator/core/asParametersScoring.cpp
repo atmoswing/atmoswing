@@ -341,17 +341,9 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
     if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Database")) return false;
     if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    wxString predictandStationId;
-    VectorInt predictandStationIdsVect = GetPredictandStationsIdVector();
-    for (int i=0; i<predictandStationIdsVect.size(); i++)
-    {
-        predictandStationId << predictandStationIdsVect[i];
-        if (i!=predictandStationIdsVect.size()-1)
-        {
-            predictandStationId << ", ";
-        }
-    }
-    if(!fileParams.InsertElementAndAttribute("", "PredictandStationId", "value", predictandStationId)) return false;
+    VVectorInt predictandStationIdsVect = GetPredictandStationsIdsVector();
+    wxString predictandStationIds = GetPredictandStationIdsVectorString(predictandStationIdsVect);
+    if(!fileParams.InsertElementAndAttribute("", "PredictandStationId", "value", predictandStationIds)) return false;
     if(!fileParams.SetElementAttribute("PredictandStationId", "method", "array")) return false;
     if(!fileParams.GoANodeBack()) return false;
 
@@ -419,6 +411,44 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     asLogMessage(_("Parameters file generated."));
 
     return true;
+}
+
+wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect)
+{
+    wxString Ids;
+
+    for (int i=0; i<predictandStationIdsVect.size(); i++)
+    {
+        VectorInt predictandStationIds = predictandStationIdsVect[i];
+
+        if (predictandStationIds.size()==1)
+        {
+            Ids << predictandStationIds[0];
+        }
+        else
+        {
+            Ids.Append("(");
+
+            for (int j=0; j<predictandStationIds.size(); j++)
+            {
+                Ids << predictandStationIds[j];
+
+                if (j<predictandStationIds.size()-1)
+                {
+                    Ids.Append(",");
+                }
+            }
+
+            Ids.Append(")");
+        }
+
+        if (i<predictandStationIdsVect.size()-1)
+        {
+            Ids.Append(",");
+        }
+    }
+
+    return Ids;
 }
 
 VectorInt asParametersScoring::GetFileParamIntVector(asFileParameters &fileParams, const wxString &tag)
@@ -549,6 +579,82 @@ VectorString asParametersScoring::GetFileParamStringVector(asFileParameters &fil
     {
         asLogMessage(wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."), tag));
         vect.push_back(fileParams.GetFirstElementAttributeValueText(tag, "value"));
+    }
+
+    return vect;
+}
+
+VVectorInt asParametersScoring::GetFileStationIdsVector(asFileParameters &fileParams)
+{
+    VVectorInt vect;
+    wxString tag = "PredictandStationId";
+
+    wxString method = fileParams.GetFirstElementAttributeValueText(tag, "method");
+    if(method.IsSameAs("fixed"))
+    {
+        wxString value = fileParams.GetFirstElementAttributeValueText(tag, "value");
+        VectorInt ids = GetFileStationIds(value);
+        vect.push_back(ids);
+    }
+    else if(method.IsSameAs("array") || method.IsEmpty())
+    {
+        if(method.IsEmpty())
+        {
+            asLogMessage(wxString::Format(_("The method is not defined for %s in the calibration parameters file."), tag));
+        }
+
+        wxString value = fileParams.GetFirstElementAttributeValueText(tag, "value");
+
+        // Explode the array
+        wxChar separator = ',';
+        while(value.Find(separator)!=wxNOT_FOUND)
+        {
+            // If presence of a group next
+            int startBracket = value.Find('(');
+            if (startBracket!=wxNOT_FOUND && startBracket<value.Find(separator))
+            {
+                int endBracket = value.Find(')');
+                wxString bracketContent = value.SubString(startBracket, endBracket);
+                VectorInt ids = GetFileStationIds(bracketContent);
+                vect.push_back(ids);
+
+                value = value.AfterFirst(')');
+                if (value.Find(separator))
+                {
+                    value = value.AfterFirst(separator);
+                }
+            }
+            else
+            {
+                wxString txtbefore = value.BeforeFirst(separator);
+                value = value.AfterFirst(separator);
+                VectorInt ids = GetFileStationIds(txtbefore);
+                vect.push_back(ids);
+            }
+        }
+        if(!value.IsEmpty())
+        {
+            VectorInt ids = GetFileStationIds(value);
+            vect.push_back(ids);
+        }
+    }
+    else if(method.IsSameAs("minmax"))
+    {
+        int min = fileParams.GetFirstElementAttributeValueInt(tag, "min");
+        int max = fileParams.GetFirstElementAttributeValueInt(tag, "max");
+        int step = fileParams.GetFirstElementAttributeValueInt(tag, "step");
+        VectorInt ids = BuildVectorInt(min, max, step);
+        for (int i=0; i<ids.size(); i++)
+        {
+            VectorInt id;
+            id.push_back(ids[i]);
+            vect.push_back(id);
+        }
+    }
+    else
+    {
+        asLogMessage(wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."), tag));
+        return VVectorInt(0);
     }
 
     return vect;

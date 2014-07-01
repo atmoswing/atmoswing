@@ -83,6 +83,7 @@ public:
     bool KeepIfBetter(asParametersCalibration &params, asResultsAnalogsForecastScoreFinal &scoreFinal);
     bool SetSelectedParameters(asResultsParametersArray &results);
     bool SetBestParameters(asResultsParametersArray &results);
+    wxString GetPredictandStationIdsList(VectorInt &stationIds);
 
     bool Manager();
 
@@ -98,12 +99,12 @@ public:
         m_ScoreOrder = val;
     }
 
-    float GetScoreClimatology()
+    VectorFloat GetScoreClimatology()
     {
         return m_ScoreClimatology;
     }
 
-    void SetScoreClimatology(float val)
+    void SetScoreClimatology(VectorFloat val)
     {
         m_ScoreClimatology = val;
     }
@@ -114,7 +115,7 @@ protected:
     VectorFloat m_ScoresCalibTemp;
     Order m_ScoreOrder;
     float m_ScoreValid;
-    float m_ScoreClimatology;
+    VectorFloat m_ScoreClimatology;
     std::vector <asParametersCalibration> m_Parameters;
     std::vector <asParametersCalibration> m_ParametersTemp;
     asParametersCalibration m_OriginalParams;
@@ -123,9 +124,9 @@ protected:
     std::vector < std::vector < std::vector < std::vector < asDataPredictorArchive* > > > > m_PreloadedArchive;
     VVectorBool m_PreloadedArchivePointerCopy;
 
-	virtual bool Calibrate(asParametersCalibration &params) = 0;
-	bool PreloadData(asParametersScoring &params);
-	bool LoadData(std::vector < asDataPredictor* > &predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
+    virtual bool Calibrate(asParametersCalibration &params) = 0;
+    bool PreloadData(asParametersScoring &params);
+    bool LoadData(std::vector < asDataPredictor* > &predictors, asParametersScoring &params, int i_step, double timeStartData, double timeEndData);
 
 private:
 

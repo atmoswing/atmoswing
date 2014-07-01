@@ -121,10 +121,10 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 
         // Extract data
         Array1DFloat resultsTargetDates(anaDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -248,6 +248,21 @@ TEST(GrenobleComparison1ProcessingMethodCuda)
     pConfig->Write("/Standard/AllowMultithreading", true);
     pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asCUDA);
 
+    // Reset intermediate results option
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
+
     wxString str("Processing GrenobleComparison1 with CUDA\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 
@@ -266,6 +281,21 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
     pConfig->Write("/Standard/AllowMultithreading", true);
     pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
+
+    // Reset intermediate results option
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
+    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
+    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
 
     wxString str("Processing GrenobleComparison1 with the multithreaded option (lin algebra)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -518,10 +548,10 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -989,10 +1019,10 @@ void GrenobleComparison1Preloading()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -1236,7 +1266,7 @@ TEST(SmallerSpatialArea)
         paramsNoPreprocNoPreload.SetPredictorVmin(0,1,42.5);
         paramsNoPreprocNoPreload.SetPredictorVptsnb(0,0,3);
         paramsNoPreprocNoPreload.SetPredictorVptsnb(0,1,3);
-        
+
         paramsNoPreprocPreload.SetPredictorUmin(0,0,5);
         paramsNoPreprocPreload.SetPredictorUmin(0,1,5);
         paramsNoPreprocPreload.SetPredictorUptsnb(0,0,3);
@@ -1245,7 +1275,7 @@ TEST(SmallerSpatialArea)
         paramsNoPreprocPreload.SetPredictorVmin(0,1,42.5);
         paramsNoPreprocPreload.SetPredictorVptsnb(0,0,3);
         paramsNoPreprocPreload.SetPredictorVptsnb(0,1,3);
-        
+
         paramsPreprocNoPreload.SetPredictorUmin(0,0,5);
         paramsPreprocNoPreload.SetPredictorUmin(0,1,5);
         paramsPreprocNoPreload.SetPredictorUptsnb(0,0,3);
@@ -1254,7 +1284,7 @@ TEST(SmallerSpatialArea)
         paramsPreprocNoPreload.SetPredictorVmin(0,1,42.5);
         paramsPreprocNoPreload.SetPredictorVptsnb(0,0,3);
         paramsPreprocNoPreload.SetPredictorVptsnb(0,1,3);
-        
+
         paramsPreprocPreload.SetPredictorUmin(0,0,5);
         paramsPreprocPreload.SetPredictorUmin(0,1,5);
         paramsPreprocPreload.SetPredictorUptsnb(0,0,3);
@@ -1417,10 +1447,10 @@ void GrenobleComparison2Preloading()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
@@ -1616,10 +1646,10 @@ void GrenobleComparison2SavingIntermediateResults()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates2.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues2.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues2.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates2.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates2.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues2.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues2.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS2.GetForecastScores());
 
         // Open a result file from Grenoble
@@ -1822,10 +1852,10 @@ void GrenobleComparison2MergeByHalfAndMultiply()
 
         // Extract data
         Array1DFloat resultsTargetDates(anaSubDates.GetTargetDates());
-        Array1DFloat resultsTargetValues(anaValues.GetTargetValues());
+        Array1DFloat resultsTargetValues(anaValues.GetTargetValues()[0]);
         Array2DFloat resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
         Array2DFloat resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues());
+        Array2DFloat resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
         Array1DFloat resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
         Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
