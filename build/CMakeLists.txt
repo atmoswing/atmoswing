@@ -40,6 +40,13 @@ else (WIN32)
     set(USE_VLD OFF)
 endif (WIN32)
 
+# Enable Cppcheck
+if (WIN32)
+    set(USE_CPPCHECK OFF CACHE BOOL "Sould we use Cppcheck (http://cppcheck.sourceforge.net/) ?" )
+else (WIN32)
+    set(USE_CPPCHECK OFF)
+endif (WIN32)
+
 # Enable GUIs
 if (BUILD_FORECASTER OR BUILD_CALIBRATOR AND NOT BUILD_VIEWER)
     set(USE_GUI OFF CACHE BOOL "Sould we build the Forecaster / Calibrator with a GUI ?" )
@@ -402,6 +409,12 @@ else (USE_VLD)
 	unset(VLD_ROOT_DIR CACHE)
 endif (USE_VLD)
 
+# Cppcheck
+if (USE_CPPCHECK)
+	include(cmake/Findcppcheck.cmake)
+	include(cmake/CppcheckTargets.cmake)
+endif (USE_CPPCHECK)
+
 
 #### DECLARE EXECUTABLE
 
@@ -475,6 +488,26 @@ else (WIN32)
     endif (BUILD_TESTS)
     
 endif (WIN32)
+
+
+#### Cppcheck
+
+if (USE_CPPCHECK)
+
+    if (BUILD_FORECASTER)
+        add_cppcheck (atmoswing-forecaster STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+    endif (BUILD_FORECASTER)
+    if (BUILD_VIEWER)
+        add_cppcheck (atmoswing-viewer STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+    endif (BUILD_VIEWER)
+    if (BUILD_CALIBRATOR)
+        add_cppcheck (atmoswing-calibrator STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+    endif (BUILD_CALIBRATOR)
+    if (BUILD_TESTS)
+        add_cppcheck (atmoswing-tests STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+    endif (BUILD_TESTS)
+    
+endif (USE_CPPCHECK)
 
 
 #### FLAGS & DEFINES
