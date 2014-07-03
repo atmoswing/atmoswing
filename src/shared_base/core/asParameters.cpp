@@ -865,3 +865,117 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath)
 
     return true;
 }
+bool asParameters::GetValuesFromString(wxString stringVals)
+{
+    int iLeft, iRight;
+    wxString strVal;
+    double dVal;
+    long lVal;
+
+    iLeft = stringVals.Find("DaysInt");
+    iRight = stringVals.Find("||||");
+    strVal = stringVals.SubString(iLeft+8, iRight-2);
+    strVal.ToLong(&lVal);
+    SetTimeArrayAnalogsIntervalDays(int(lVal));
+    stringVals = stringVals.SubString(iRight+5, stringVals.Length());
+
+    for (int i_step=0; i_step<GetStepsNb(); i_step++)
+    {
+        iLeft = stringVals.Find("Anb");
+        iRight = stringVals.Find("||");
+        strVal = stringVals.SubString(iLeft+4, iRight-2);
+        strVal.ToLong(&lVal);
+        SetAnalogsNumber(i_step, int(lVal));
+        stringVals = stringVals.SubString(iRight, stringVals.Length());
+
+        for (int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
+        {
+            if (NeedsPreprocessing(i_step, i_ptor))
+            {
+                for (int i_dataset=0; i_dataset<GetPreprocessSize(i_step,i_ptor); i_dataset++)
+                {
+                    iLeft = stringVals.Find("Level");
+                    iRight = stringVals.Find("Time");
+                    strVal = stringVals.SubString(iLeft+6, iRight-2);
+                    strVal.ToDouble(&dVal);
+                    SetPreprocessLevel(i_step, i_ptor, i_dataset, float(dVal));
+                    stringVals = stringVals.SubString(iRight+5, stringVals.Length());
+                    
+                    iLeft = 0;
+                    iRight = stringVals.Find("\t");
+                    strVal = stringVals.SubString(iLeft, iRight-1);
+                    strVal.ToDouble(&dVal);
+                    SetPreprocessTimeHours(i_step, i_ptor, i_dataset, float(dVal));
+                    stringVals = stringVals.SubString(iRight, stringVals.Length());
+                }
+            }
+            else
+            {
+                iLeft = stringVals.Find("Level");
+                iRight = stringVals.Find("Time");
+                strVal = stringVals.SubString(iLeft+6, iRight-2);
+                strVal.ToDouble(&dVal);
+                SetPredictorLevel(i_step, i_ptor, float(dVal));
+                stringVals = stringVals.SubString(iRight+5, stringVals.Length());
+                    
+                iLeft = 0;
+                iRight = stringVals.Find("\t");
+                strVal = stringVals.SubString(iLeft, iRight-1);
+                strVal.ToDouble(&dVal);
+                SetPredictorTimeHours(i_step, i_ptor, float(dVal));
+                stringVals = stringVals.SubString(iRight, stringVals.Length());
+            }
+            
+            iLeft = stringVals.Find("Umin");
+            iRight = stringVals.Find("Uptsnb");
+            strVal = stringVals.SubString(iLeft+5, iRight-2);
+            strVal.ToDouble(&dVal);
+            SetPredictorUmin(i_step, i_ptor, dVal);
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+            
+            iLeft = stringVals.Find("Uptsnb");
+            iRight = stringVals.Find("Ustep");
+            strVal = stringVals.SubString(iLeft+7, iRight-2);
+            strVal.ToLong(&lVal);
+            SetPredictorUptsnb(i_step, i_ptor, int(lVal));
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+            
+            iLeft = stringVals.Find("Ustep");
+            iRight = stringVals.Find("Vmin");
+            strVal = stringVals.SubString(iLeft+6, iRight-2);
+            strVal.ToDouble(&dVal);
+            SetPredictorUstep(i_step, i_ptor, dVal);
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+            
+            iLeft = stringVals.Find("Vmin");
+            iRight = stringVals.Find("Vptsnb");
+            strVal = stringVals.SubString(iLeft+5, iRight-2);
+            strVal.ToDouble(&dVal);
+            SetPredictorVmin(i_step, i_ptor, dVal);
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+            
+            iLeft = stringVals.Find("Vptsnb");
+            iRight = stringVals.Find("Vstep");
+            strVal = stringVals.SubString(iLeft+7, iRight-2);
+            strVal.ToLong(&lVal);
+            SetPredictorVptsnb(i_step, i_ptor, int(lVal));
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+            
+            iLeft = stringVals.Find("Vstep");
+            iRight = stringVals.Find("Weight");
+            strVal = stringVals.SubString(iLeft+6, iRight-2);
+            strVal.ToDouble(&dVal);
+            SetPredictorVstep(i_step, i_ptor, dVal);
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+            
+            iLeft = stringVals.Find("Weight");
+            iRight = stringVals.Find("Criteria");
+            strVal = stringVals.SubString(iLeft+7, iRight-2);
+            strVal.ToDouble(&dVal);
+            SetPredictorWeight(i_step, i_ptor, dVal);
+            stringVals = stringVals.SubString(iRight, stringVals.Length());
+        }
+    }
+
+    return true;
+}
