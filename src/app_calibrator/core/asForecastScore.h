@@ -37,6 +37,7 @@ public:
 
     enum Score //!< Enumaration of forecast scores
     {
+        Undefined,
         CRPSS, // CRPS skill score using the approximation with the rectangle method
         CRPSAR, // approximation with the rectangle method
         CRPSEP, // exact by means of primitive

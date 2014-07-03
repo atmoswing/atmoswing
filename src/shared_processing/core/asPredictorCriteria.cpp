@@ -43,6 +43,9 @@ asPredictorCriteria::asPredictorCriteria(int linAlgebraMethod)
 {
     m_LinAlgebraMethod = linAlgebraMethod;
     m_CanUseInline = false;
+    m_Criteria = Undefined;
+    m_ScaleBest = NaNFloat;
+    m_ScaleWorst = NaNFloat;
 }
 
 asPredictorCriteria::~asPredictorCriteria()

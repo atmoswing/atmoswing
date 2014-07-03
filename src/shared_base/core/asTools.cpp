@@ -801,11 +801,10 @@ double asTools::MinArrayStep(double* pArrStart, double* pArrEnd, double toleranc
     }
 
     double minstep = copyData[i]-copyData[i-1];
-    double currentval;
 
     for (i=i; i<copyData.size(); i++)
     {
-        currentval = abs(copyData[i]-copyData[i-1]);
+        double currentval = abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;

@@ -1206,11 +1206,10 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
 
                 // Allow only one selection
                 wxArrayLong station;
-                int stationRow = -1;
                 if (stationsClose.Count()>0)
                 {
                     station.Add(stationsClose.Item(0));
-                    stationRow = stationsClose.Item(0);
+                    int stationRow = stationsClose.Item(0);
 
                     if (stationRow>=0)
                     {

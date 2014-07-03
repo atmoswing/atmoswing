@@ -41,6 +41,7 @@ asFile(FileName, FileMode)
     m_Struct.NAtts = 0;
     m_Struct.UDimId = 0;
     m_Struct.Format = Classic;
+    m_DefineMode = false;
 }
 
 asFileNetcdf::~asFileNetcdf()
@@ -1216,13 +1217,13 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1251,13 +1252,13 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1286,13 +1287,13 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1321,13 +1322,13 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1356,14 +1357,14 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
-            dat.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1392,14 +1393,14 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
-            dat.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1428,14 +1429,14 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
-            dat.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }
@@ -1464,14 +1465,14 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     if(m_Status)
     {
         int arrSize = m_Struct.Vars[varid].NDims;
-        wxString dat = wxEmptyString;
+        wxString data = wxEmptyString;
         for (int i=0; i<arrSize; i++)
         {
-            dat.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
-            dat.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
-            dat.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
+            data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int)IndexStart[i]));
+            data.Append(wxString::Format("IndexCount[%d]=%d ", i, (int)IndexCount[i]));
+            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int)IndexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + dat;
+        wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
         HandleErrorNetcdf();
     }

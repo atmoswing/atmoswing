@@ -45,6 +45,7 @@ asFrameCalibration::asFrameCalibration( wxWindow* parent )
 :
 asFrameCalibrationVirtual( parent )
 {
+    m_LogWindow = NULL;
     m_MethodCalibrator = NULL;
 
     // Toolbar

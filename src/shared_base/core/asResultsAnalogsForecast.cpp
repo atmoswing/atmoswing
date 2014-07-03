@@ -37,6 +37,7 @@ asResults()
     m_ModelName = modelName;
     m_FilePath = wxEmptyString;
     m_HasReferenceValues = false;
+    m_LeadTimeOrigin = 0.0;
 
     // Default values for former versions
     m_PredictandParameter = Precipitation;
