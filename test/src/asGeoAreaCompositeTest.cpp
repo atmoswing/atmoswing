@@ -106,13 +106,12 @@ TEST(CheckConsistency)
 
 TEST(CheckConsistencyException)
 {
-    double Umin = 10;
-    double Uwidth = 10;
-    double Vmin = 40;
-    double Vwidth = 30;
-
     if(g_UnitTestExceptions)
     {
+        double Umin = 10;
+        double Uwidth = 10;
+        double Vmin = 40;
+        double Vwidth = 30;
         CHECK_THROW(asGeoAreaComposite geoarea(WGS84, Umin, Uwidth, Vmin, Vwidth), asException);
     }
 }

@@ -76,7 +76,6 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         asResultsAnalogsDates anaDates;
         asResultsAnalogsValues anaValues;
@@ -85,10 +84,10 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             wxString dataPredictorFilePath = wxFileName::GetCwd();
             dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
@@ -96,7 +95,7 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
-			//CHECK_EQUAL(true, containsNaNs);
+			CHECK_EQUAL(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -502,7 +501,6 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -516,14 +514,19 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
         asResultsAnalogsForecastScores anaScoresCRPSsharpness;
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
-		bool containsNaNs = false;
+		
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
+
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             step++;
             result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -800,7 +803,6 @@ TEST(PreloadingSimple)
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator1;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -810,14 +812,16 @@ TEST(PreloadingSimple)
         asResultsAnalogsDates anaDatesStd;
         asResultsAnalogsDates anaDatesPreload;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
         }
         catch(asException& e)
         {
@@ -878,7 +882,6 @@ TEST(PreloadingWithPreprocessing)
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator1;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -888,14 +891,16 @@ TEST(PreloadingWithPreprocessing)
         asResultsAnalogsDates anaDatesStd;
         asResultsAnalogsDates anaDatesPreload;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
         }
         catch(asException& e)
         {
@@ -974,7 +979,6 @@ void GrenobleComparison1Preloading()
         params.SetPredictorVmin(0, 1, 40);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         asResultsAnalogsDates anaDates;
         asResultsAnalogsValues anaValues;
@@ -983,10 +987,10 @@ void GrenobleComparison1Preloading()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-		bool containsNaNs = false;
-
         try
         {
+            bool containsNaNs = false;
+            int step = 0;
             wxString dataPredictorFilePath = wxFileName::GetCwd();
             dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
@@ -994,6 +998,7 @@ void GrenobleComparison1Preloading()
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -1154,7 +1159,6 @@ void GrenobleComparison1PreloadingSubset()
         params.SetPredictorVptsnb(0, 1, 4);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         asResultsAnalogsDates anaDates;
         asResultsAnalogsValues anaValues;
@@ -1163,10 +1167,10 @@ void GrenobleComparison1PreloadingSubset()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             wxString dataPredictorFilePath = wxFileName::GetCwd();
             dataPredictorFilePath.Append("/files/");
             calibrator.SetPredictorDataDir(dataPredictorFilePath);
@@ -1174,6 +1178,7 @@ void GrenobleComparison1PreloadingSubset()
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -1295,7 +1300,6 @@ TEST(SmallerSpatialArea)
         paramsPreprocPreload.SetPredictorVptsnb(0,1,3);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator1;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -1309,18 +1313,22 @@ TEST(SmallerSpatialArea)
         asResultsAnalogsDates anaDatesPreprocNoPreload;
         asResultsAnalogsDates anaDatesPreprocPreload;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             result = calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, paramsNoPreprocNoPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, paramsNoPreprocPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator3.GetAnalogsDates(anaDatesPreprocNoPreload, paramsPreprocNoPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator4.GetAnalogsDates(anaDatesPreprocPreload, paramsPreprocPreload, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
         }
         catch(asException& e)
         {
@@ -1399,7 +1407,6 @@ void GrenobleComparison2Preloading()
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -1414,15 +1421,17 @@ void GrenobleComparison2Preloading()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             step++;
             result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
@@ -1591,7 +1600,6 @@ void GrenobleComparison2SavingIntermediateResults()
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -1604,23 +1612,28 @@ void GrenobleComparison2SavingIntermediateResults()
         asResultsAnalogsForecastScores anaScoresCRPS1, anaScoresCRPS2;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
+
             // Create
             result = calibrator.GetAnalogsDates(anaDates1, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             // Reload
             result = calibrator.GetAnalogsDates(anaDates2, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             step++;
             // Create
             result = calibrator.GetAnalogsSubDates(anaSubDates1, params, anaDates2, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             // Reload
             result = calibrator.GetAnalogsSubDates(anaSubDates2, params, anaDates2, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             // Create
             result = calibrator.GetAnalogsValues(anaValues1, params, anaSubDates2, step);
             CHECK_EQUAL(true, result);
@@ -1804,7 +1817,6 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         CHECK_EQUAL(true, result);
 
         // Proceed to the calculations
-        int step = 0;
         asMethodCalibratorSingle calibrator;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
         dataPredictorFilePath.Append("/files/");
@@ -1819,15 +1831,17 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-		bool containsNaNs = false;
-
         try
         {
+            int step = 0;
+            bool containsNaNs = false;
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             step++;
             result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
             CHECK_EQUAL(true, result);
+            CHECK_EQUAL(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
             CHECK_EQUAL(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);

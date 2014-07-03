@@ -61,10 +61,6 @@ public:
     bool Save();
 
 
-
-
-
-
     bool GoToFirstNodeWithPath(const wxString node, const int &showWarnings = asSHOW_WARNINGS);
 
     bool GoToLastNodeWithPath(const wxString node, const int &showWarnings = asSHOW_WARNINGS);
@@ -94,7 +90,6 @@ public:
     {
         return m_BaseNodePointer->Row ();
     }
-
 
 
 

@@ -707,11 +707,10 @@ int asTools::MinArrayStep(int* pArrStart, int* pArrEnd, int tolerance)
     }
 
     int minstep = copyData[i]-copyData[i-1];
-    int currentval;
 
     for (i=i; i<copyData.size(); i++)
     {
-        currentval = abs(copyData[i]-copyData[i-1]);
+        int currentval = abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -755,11 +754,10 @@ float asTools::MinArrayStep(float* pArrStart, float* pArrEnd, float tolerance)
     }
 
     float minstep = copyData[i]-copyData[i-1];
-    float currentval;
 
     for (i=i; i<copyData.size(); i++)
     {
-        currentval = abs(copyData[i]-copyData[i-1]);
+        float currentval = abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -803,11 +801,10 @@ double asTools::MinArrayStep(double* pArrStart, double* pArrEnd, double toleranc
     }
 
     double minstep = copyData[i]-copyData[i-1];
-    double currentval;
 
     for (i=i; i<copyData.size(); i++)
     {
-        currentval = abs(copyData[i]-copyData[i-1]);
+        double currentval = abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;

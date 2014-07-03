@@ -50,6 +50,9 @@ asParameters::asParameters()
     m_PredictandTemporalResolution = (DataTemporalResolution)0;
     m_PredictandSpatialAggregation = (DataSpatialAggregation)0;
     m_PredictandDatasetId = wxEmptyString;
+    m_StepsNb = 0;
+    m_TimeArrayTargetPredictandMinThreshold = 0;
+    m_TimeArrayTargetPredictandMaxThreshold = 0;
 }
 
 asParameters::~asParameters()
@@ -214,23 +217,23 @@ VectorInt asParameters::BuildVectorInt(int min, int max, int step)
     return vect;
 }
 
-VectorInt asParameters::BuildVectorInt(wxString txt)
+VectorInt asParameters::BuildVectorInt(wxString str)
 {
     VectorInt vect;
     wxChar separator = ',';
-    while(txt.Find(separator)!=wxNOT_FOUND)
+    while(str.Find(separator)!=wxNOT_FOUND)
     {
-        wxString txtbefore = txt.BeforeFirst(separator);
-        txt = txt.AfterFirst(separator);
+        wxString strbefore = str.BeforeFirst(separator);
+        str = str.AfterFirst(separator);
         double val;
-        txtbefore.ToDouble(&val);
+        strbefore.ToDouble(&val);
         int valint = (int) val;
         vect.push_back(valint);
     }
-    if(!txt.IsEmpty())
+    if(!str.IsEmpty())
     {
         double val;
-        txt.ToDouble(&val);
+        str.ToDouble(&val);
         int valint = (int) val;
         vect.push_back(valint);
     }
@@ -251,23 +254,23 @@ VectorFloat asParameters::BuildVectorFloat(float min, float max, float step)
     return vect;
 }
 
-VectorFloat asParameters::BuildVectorFloat(wxString txt)
+VectorFloat asParameters::BuildVectorFloat(wxString str)
 {
     VectorFloat vect;
     wxChar separator = ',';
-    while(txt.Find(separator)!=wxNOT_FOUND)
+    while(str.Find(separator)!=wxNOT_FOUND)
     {
-        wxString txtbefore = txt.BeforeFirst(separator);
-        txt = txt.AfterFirst(separator);
+        wxString strbefore = str.BeforeFirst(separator);
+        str = str.AfterFirst(separator);
         double val;
-        txtbefore.ToDouble(&val);
+        strbefore.ToDouble(&val);
         float valfloat = (float) val;
         vect.push_back(valfloat);
     }
-    if(!txt.IsEmpty())
+    if(!str.IsEmpty())
     {
         double val;
-        txt.ToDouble(&val);
+        str.ToDouble(&val);
         float valfloat = (float) val;
         vect.push_back(valfloat);
     }
@@ -288,41 +291,41 @@ VectorDouble asParameters::BuildVectorDouble(double min, double max, double step
     return vect;
 }
 
-VectorDouble asParameters::BuildVectorDouble(wxString txt)
+VectorDouble asParameters::BuildVectorDouble(wxString str)
 {
     VectorDouble vect;
     wxChar separator = ',';
-    while(txt.Find(separator)!=wxNOT_FOUND)
+    while(str.Find(separator)!=wxNOT_FOUND)
     {
-        wxString txtbefore = txt.BeforeFirst(separator);
-        txt = txt.AfterFirst(separator);
+        wxString strbefore = str.BeforeFirst(separator);
+        str = str.AfterFirst(separator);
         double val;
-        txtbefore.ToDouble(&val);
+        strbefore.ToDouble(&val);
         vect.push_back(val);
     }
-    if(!txt.IsEmpty())
+    if(!str.IsEmpty())
     {
         double val;
-        txt.ToDouble(&val);
+        str.ToDouble(&val);
         vect.push_back(val);
     }
 
     return vect;
 }
 
-VectorString asParameters::BuildVectorString(wxString txt)
+VectorString asParameters::BuildVectorString(wxString str)
 {
     VectorString vect;
     wxChar separator = ',';
-    while(txt.Find(separator)!=wxNOT_FOUND)
+    while(str.Find(separator)!=wxNOT_FOUND)
     {
-        wxString txtbefore = txt.BeforeFirst(separator);
-        txt = txt.AfterFirst(separator);
-        vect.push_back(txtbefore);
+        wxString strbefore = str.BeforeFirst(separator);
+        str = str.AfterFirst(separator);
+        vect.push_back(strbefore);
     }
-    if(!txt.IsEmpty())
+    if(!str.IsEmpty())
     {
-        vect.push_back(txt);
+        vect.push_back(str);
     }
 
     return vect;
@@ -618,9 +621,9 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         wxChar separator = ',';
         while(subStr.Find(separator)!=wxNOT_FOUND)
         {
-            wxString txtBefore = subStr.BeforeFirst(separator);
+            wxString strBefore = subStr.BeforeFirst(separator);
             subStr = subStr.AfterFirst(separator);
-            int id = wxAtoi(txtBefore);
+            int id = wxAtoi(strBefore);
             ids.push_back(id);
         }
         if(!subStr.IsEmpty())

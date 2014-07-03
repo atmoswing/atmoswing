@@ -65,21 +65,21 @@ asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, const Coo &Corne
 :
 asGeoAreaComposite(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
-
+    m_GridType = Regular;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, double Umin, double Uwidth, double Vmin, double Vwidth, float Level, float Height, int flatAllowed)
 :
 asGeoAreaComposite(coosys, Umin, Uwidth, Vmin, Vwidth, Level, Height, flatAllowed)
 {
-
+    m_GridType = Regular;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, float Level, float Height)
 :
 asGeoAreaComposite(coosys, Level, Height)
 {
-
+    m_GridType = Regular;
 }
 
 int asGeoAreaCompositeGrid::GetUaxisPtsnb()

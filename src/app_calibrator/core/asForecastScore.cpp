@@ -46,11 +46,14 @@
 
 asForecastScore::asForecastScore()
 {
+    m_Score = Undefined;
     m_ScoreClimatology = 0;
     m_Threshold = NaNFloat;
     m_Percentile = NaNFloat;
     m_UsesClimatology = false;
     m_SingleValue = true;
+    m_ScaleBest = NaNFloat;
+    m_ScaleWorst = NaNFloat;
 }
 
 asForecastScore* asForecastScore::GetInstance(Score scoreEnum)

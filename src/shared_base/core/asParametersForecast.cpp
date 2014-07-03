@@ -65,8 +65,8 @@ void asParametersForecast::AddPredictorForecast(ParamsStepForecast &step)
 VectorInt asParametersForecast::GetFileParamInt(asFileParametersForecast &fileParams, const wxString &tag)
 {
     VectorInt vect;
-    wxString txt = fileParams.GetFirstElementAttributeValueText(tag, "value");
-    vect = BuildVectorInt(txt);
+    wxString str = fileParams.GetFirstElementAttributeValueText(tag, "value");
+    vect = BuildVectorInt(str);
 
     return vect;
 }
@@ -74,8 +74,8 @@ VectorInt asParametersForecast::GetFileParamInt(asFileParametersForecast &filePa
 VectorFloat asParametersForecast::GetFileParamFloat(asFileParametersForecast &fileParams, const wxString &tag)
 {
     VectorFloat vect;
-    wxString txt = fileParams.GetFirstElementAttributeValueText(tag, "value");
-    vect = BuildVectorFloat(txt);
+    wxString str = fileParams.GetFirstElementAttributeValueText(tag, "value");
+    vect = BuildVectorFloat(str);
 
     return vect;
 }
@@ -83,8 +83,8 @@ VectorFloat asParametersForecast::GetFileParamFloat(asFileParametersForecast &fi
 VectorDouble asParametersForecast::GetFileParamDouble(asFileParametersForecast &fileParams, const wxString &tag)
 {
     VectorDouble vect;
-    wxString txt = fileParams.GetFirstElementAttributeValueText(tag, "value");
-    vect = BuildVectorDouble(txt);
+    wxString str = fileParams.GetFirstElementAttributeValueText(tag, "value");
+    vect = BuildVectorDouble(str);
 
     return vect;
 }
@@ -92,8 +92,8 @@ VectorDouble asParametersForecast::GetFileParamDouble(asFileParametersForecast &
 VectorString asParametersForecast::GetFileParamString(asFileParametersForecast &fileParams, const wxString &tag)
 {
     VectorString vect;
-    wxString txt = fileParams.GetFirstElementAttributeValueText(tag, "value");
-    vect = BuildVectorString(txt);
+    wxString str = fileParams.GetFirstElementAttributeValueText(tag, "value");
+    vect = BuildVectorString(str);
 
     return vect;
 }

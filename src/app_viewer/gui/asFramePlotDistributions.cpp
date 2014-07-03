@@ -42,6 +42,7 @@ asFramePlotDistributionsVirutal( parent, id )
     m_SelectedForecast = selectedForecast;
     m_SelectedStation = 0;
     m_SelectedDate = 0;
+    m_XmaxPredictands = 0;
 
     m_PanelPlotPredictands = new asPanelPlot( m_PanelPredictandsRight );
     m_PanelPlotPredictands->Layout();

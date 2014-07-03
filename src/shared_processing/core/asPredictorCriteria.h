@@ -37,6 +37,7 @@ public:
 
     enum Criteria //!< Enumaration of managed criteria
     {
+        Undefined,
         S1, // Teweles-Wobus
         S1grads, // Teweles-Wobus on gradients
         S1weights, // Teweles-Wobus with axis weighting

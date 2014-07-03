@@ -105,13 +105,11 @@ bool asResultsAnalogsScoresMap::MakeMap()
         m_MapScores.push_back(tmpLatLon);
     }
 
-    int indexLon, indexLat, indexLevel;
-
     for (unsigned int i=0; i<m_Scores.size(); i++)
     {
-        indexLon = asTools::SortedArraySearch(&m_MapLon[0], &m_MapLon[m_MapLon.size()-1], m_Lon[i], 0.0001f);
-        indexLat = asTools::SortedArraySearch(&m_MapLat[0], &m_MapLat[m_MapLat.size()-1], m_Lat[i], 0.0001f);
-        indexLevel = asTools::SortedArraySearch(&m_MapLevel[0], &m_MapLevel[m_MapLevel.size()-1], m_Level[i], 0.0001f);
+        int indexLon = asTools::SortedArraySearch(&m_MapLon[0], &m_MapLon[m_MapLon.size()-1], m_Lon[i], 0.0001f);
+        int indexLat = asTools::SortedArraySearch(&m_MapLat[0], &m_MapLat[m_MapLat.size()-1], m_Lat[i], 0.0001f);
+        int indexLevel = asTools::SortedArraySearch(&m_MapLevel[0], &m_MapLevel[m_MapLevel.size()-1], m_Level[i], 0.0001f);
 
         m_MapScores[indexLevel](indexLat, indexLon) = m_Scores[i];
     }

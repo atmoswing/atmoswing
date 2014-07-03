@@ -56,13 +56,12 @@ TEST(ConstructorLimitsException)
 
 TEST(ConstructorAlternativeLimitsException)
 {
-    double Umin = -10;
-    double Uwidth = 30;
-    double Vmin = 30;
-    double Vwidth = 10;
-
     if(g_UnitTestExceptions)
     {
+        double Umin = -10;
+        double Uwidth = 30;
+        double Vmin = 30;
+        double Vwidth = 10;
         CHECK_THROW(asGeoArea geoarea(WGS84, Umin, Uwidth, Vmin, Vwidth), asException);
     }
 }

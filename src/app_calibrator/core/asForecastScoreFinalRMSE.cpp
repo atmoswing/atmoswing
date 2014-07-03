@@ -72,7 +72,6 @@ float asForecastScoreFinalRMSE::Assess(Array1DFloat &targetDates, Array1DFloat &
 
             score = sqrt(score/divisor);
             return score;
-            break;
         }
 
         case (asForecastScoreFinal::SpecificPeriod):
@@ -88,17 +87,16 @@ float asForecastScoreFinalRMSE::Assess(Array1DFloat &targetDates, Array1DFloat &
             int IndexEnd = asTools::SortedArraySearchClosest(&DateTime(0), &DateTime(timeArrayLength-1), LastDay);
 
             // Loop through the timeArray
-            int IndexCurrent;
             float score = 0, divisor = 0;
 
             for (int i_time=IndexStart; i_time<=IndexEnd; i_time++)
             {
-                IndexCurrent = asTools::SortedArraySearchClosest(&targetDates(0), &targetDates(targetDatesLength-1), DateTime(i_time));
-                if((IndexCurrent!=asNOT_FOUND) & (IndexCurrent!=asOUT_OF_RANGE))
+                int indexCurrent = asTools::SortedArraySearchClosest(&targetDates(0), &targetDates(targetDatesLength-1), DateTime(i_time));
+                if((indexCurrent!=asNOT_FOUND) & (indexCurrent!=asOUT_OF_RANGE))
                 {
-                    if(!asTools::IsNaN(forecastScores(IndexCurrent)))
+                    if(!asTools::IsNaN(forecastScores(indexCurrent)))
                     {
-                        score += forecastScores(IndexCurrent);
+                        score += forecastScores(indexCurrent);
                         divisor++;
                     }
                 }
@@ -106,7 +104,6 @@ float asForecastScoreFinalRMSE::Assess(Array1DFloat &targetDates, Array1DFloat &
 
             score = sqrt(score/divisor);
             return score;
-            break;
         }
 
         default:

@@ -96,17 +96,17 @@ public:
 
     VectorInt BuildVectorInt(int min, int max, int step);
 
-    VectorInt BuildVectorInt(wxString txt);
+    VectorInt BuildVectorInt(wxString str);
 
     VectorFloat BuildVectorFloat(float min, float max, float step);
 
-    VectorFloat BuildVectorFloat(wxString txt);
+    VectorFloat BuildVectorFloat(wxString str);
 
     VectorDouble BuildVectorDouble(double min, double max, double step);
 
-    VectorDouble BuildVectorDouble(wxString txt);
+    VectorDouble BuildVectorDouble(wxString str);
 
-    VectorString BuildVectorString(wxString txt);
+    VectorString BuildVectorString(wxString str);
 
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 

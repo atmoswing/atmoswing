@@ -55,7 +55,6 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
     wxASSERT(m_RanksNb>1);
 
     Array1DInt histogram = Array1DInt::Zero(m_RanksNb);
-    int countTot = 0;
 
     switch (m_Period)
     {
@@ -63,8 +62,6 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
         {
             for (int i=0; i<forecastScores.size(); i++)
             {
-                countTot++;
-
                 int rank = (int)asTools::Round(forecastScores[i]);
                 wxASSERT(rank<=m_RanksNb);
                 histogram[rank-1]++;

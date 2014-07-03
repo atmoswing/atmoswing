@@ -1827,7 +1827,6 @@ TEST(RandomUniformDistributionToFile)
     if(g_UnitTestRandomDistributions)
     {
         asTools::InitRandom();
-        double result1, result2, result3, result4, result5, result6, result7, result8;
 
         // Create a file
         wxString tmpFile = wxFileName::CreateTempFileName("test_unidist");
@@ -1844,14 +1843,14 @@ TEST(RandomUniformDistributionToFile)
 
         for(int i=0; i<10000; i++)
         {
-            result1 = asTools::Random(0.0, 0.2);
-            result2 = asTools::Random(0.0, 1.0);
-            result3 = asTools::Random(0.0, 5.0);
-            result4 = asTools::Random(-2.0, 2.0);
-            result5 = asTools::Random(0.0, 10.0);
-            result6 = asTools::Random((float)0.0, (float)10.0, (float)2.5);
-            result7 = asTools::Random((int)0, (int)10);
-            result8 = asTools::Random((int)0, (int)10, (int)2);
+            double result1 = asTools::Random(0.0, 0.2);
+            double result2 = asTools::Random(0.0, 1.0);
+            double result3 = asTools::Random(0.0, 5.0);
+            double result4 = asTools::Random(-2.0, 2.0);
+            double result5 = asTools::Random(0.0, 10.0);
+            double result6 = asTools::Random((float)0.0, (float)10.0, (float)2.5);
+            double result7 = asTools::Random((int)0, (int)10);
+            double result8 = asTools::Random((int)0, (int)10, (int)2);
             content.Append(wxString::Format("%g\t%g\t%g\t%g", result1, result2, result3, result4));
             content.Append(wxString::Format("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
         }
@@ -1871,7 +1870,6 @@ TEST(RandomNormalDistributionToFile)
     if(g_UnitTestRandomDistributions)
     {
         asTools::InitRandom();
-        double result1, result2, result3, result4, result5, result6, result7, result8;
 
         // Create a file
         wxString tmpFile = wxFileName::CreateTempFileName("test_normdist");
@@ -1888,14 +1886,14 @@ TEST(RandomNormalDistributionToFile)
 
         for(int i=0; i<10000; i++)
         {
-            result1 = asTools::RandomNormalDistribution(0.0, 0.2);
-            result2 = asTools::RandomNormalDistribution(0.0, 1.0);
-            result3 = asTools::RandomNormalDistribution(0.0, 5.0);
-            result4 = asTools::RandomNormalDistribution(-2.0, 0.5);
-            result5 = asTools::RandomNormalDistribution(10.0, 5.0);
-            result6 = asTools::RandomNormalDistribution((float)10.0, (float)5.0, (float)2.5);
-            result7 = asTools::RandomNormalDistribution((int)10, (int)5);
-            result8 = asTools::RandomNormalDistribution((int)10, (int)5, (int)2);
+            double result1 = asTools::RandomNormalDistribution(0.0, 0.2);
+            double result2 = asTools::RandomNormalDistribution(0.0, 1.0);
+            double result3 = asTools::RandomNormalDistribution(0.0, 5.0);
+            double result4 = asTools::RandomNormalDistribution(-2.0, 0.5);
+            double result5 = asTools::RandomNormalDistribution(10.0, 5.0);
+            double result6 = asTools::RandomNormalDistribution((float)10.0, (float)5.0, (float)2.5);
+            double result7 = asTools::RandomNormalDistribution((int)10, (int)5);
+            double result8 = asTools::RandomNormalDistribution((int)10, (int)5, (int)2);
             content.Append(wxString::Format("%g\t%g\t%g\t%g", result1, result2, result3, result4));
             content.Append(wxString::Format("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
         }
