@@ -1,0 +1,6 @@
+// Suppress variableScope errors
+variableScope:*/asDataPredictorArchiveNcepReanalysis1.cpp
+variableScope:*/asDataPredictorArchiveNcepReanalysis1Terranum.cpp
+variableScope:*/asDataPredictorArchiveNcepReanalysis2.cpp
+variableScope:*/asDataPredictorArchiveNoaaOisst2.cpp
+variableScope:*/asDataPredictorArchiveNoaaOisst2Terranum.cpp

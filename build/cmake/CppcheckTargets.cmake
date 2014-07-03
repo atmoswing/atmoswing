@@ -152,6 +152,9 @@ function(add_cppcheck _name)
 		if("${_poss_err}" GREATER "-1")
 			list(APPEND _cppcheck_args ${CPPCHECK_POSSIBLEERROR_ARG})
 		endif()
+		
+		# Add a suppression file (PH, 2014)
+		list(APPEND _cppcheck_args "--suppressions-list=${PROJECT_SOURCE_DIR}/cmake/CppCheckSuppressions.txt")
 
 		list(FIND _input FAIL_ON_WARNINGS _fail_on_warn)
 		if("${_fail_on_warn}" GREATER "-1")
