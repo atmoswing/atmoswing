@@ -616,7 +616,7 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
     switch(method)
     {
         case (asUSE_NORMAL_METHOD):
-
+        {
             if ( year < 0 )
                 year++;
             float year_corr = ( year > 0 ? 0.0 : 0.75 );
@@ -634,9 +634,10 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
             mjd = (long) ( 365.25 * year - year_corr ) + (long) ( 30.6001 * ( month + 1 ) ) + day + 1720995L + b;
 
             break;
+        }
 
         case (asUSE_ALTERNATE_METHOD):
-
+        {
             // Adjust BC years
             if ( year < 0 )
                 year++;
@@ -647,6 +648,7 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
                 3L * ( ( year + 4900L + ( month - 14L ) / 12L ) / 100L ) / 4L;
 
             break;
+        }
     }
 
     // The hour part
