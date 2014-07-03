@@ -83,15 +83,14 @@ TEST(CheckConsistency)
 
 TEST(CheckConsistencyException)
 {
-    double Umin = 10;
-    int Uptsnb = 1;
-    double Vmin = 40;
-    int Vptsnb = -5;
-    double step = 2.5;
-    wxString gridType = "Regular";
-
     if(g_UnitTestExceptions)
     {
+        double Umin = 10;
+        int Uptsnb = 1;
+        double Vmin = 40;
+        int Vptsnb = -5;
+        double step = 2.5;
+        wxString gridType = "Regular";
         asGeoAreaCompositeGrid* geoarea = NULL;
         CHECK_THROW(geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step), asException);
         wxDELETE(geoarea);

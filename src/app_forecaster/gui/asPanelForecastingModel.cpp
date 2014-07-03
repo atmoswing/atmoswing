@@ -34,6 +34,9 @@ asPanelForecastingModel::asPanelForecastingModel( wxWindow* parent )
 :
 asPanelForecastingModelVirtual( parent )
 {
+    m_ParentFrame = NULL;
+    m_PanelsManager = NULL;
+
     // Set the buttons bitmaps
     m_BpButtonClose->SetBitmapLabel(img_close);
     m_BpButtonReduce->SetBitmapLabel(img_shown);

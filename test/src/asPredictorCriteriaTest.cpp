@@ -264,11 +264,11 @@ TEST(ProcessS1preprocessed)
     asPredictorCriteria* criteria = asPredictorCriteria::GetInstance(_("S1"));
     asPredictorCriteria* criteriaGrads = asPredictorCriteria::GetInstance(_("S1grads"));
 
-    float S1Original, S1Preproc;
-
     // Loop on every candidate
     for (int i_cand=1; i_cand<candidatesNb; i_cand++)
     {
+        float S1Original, S1Preproc;
+
         // Get candidate data
         CandOriginal = hgtOriginal[i_cand];
         CandPreproc = hgtPreproc[i_cand];

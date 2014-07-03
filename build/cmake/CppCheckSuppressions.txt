@@ -1,6 +1,20 @@
-// Suppress variableScope errors
+// style: The scope of the variable 'variablename' can be reduced
 variableScope:*/asDataPredictorArchiveNcepReanalysis1.cpp
 variableScope:*/asDataPredictorArchiveNcepReanalysis1Terranum.cpp
 variableScope:*/asDataPredictorArchiveNcepReanalysis2.cpp
 variableScope:*/asDataPredictorArchiveNoaaOisst2.cpp
 variableScope:*/asDataPredictorArchiveNoaaOisst2Terranum.cpp
+
+// style: The class 'classname' does not have a constructor
+noConstructor:*/AtmoswingAppViewer.h
+noConstructor:*/AtmoswingAppCalibrator.h
+noConstructor:*/AtmoswingAppForecaster.h
+
+// style: The function 'functionname' is never used.
+unusedFunction
+
+// information: Unmatched suppression: ...
+unmatchedSuppression
+
+// information: Cppcheck cannot find all the include files
+missingInclude

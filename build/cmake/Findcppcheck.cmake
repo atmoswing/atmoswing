@@ -108,7 +108,7 @@ if(CPPCHECK_EXECUTABLE)
 
 		_cppcheck_set_arg_var(CPPCHECK_UNUSEDFUNC_ARG
 			"--enable=unusedFunction")
-		_cppcheck_set_arg_var(CPPCHECK_INFORMATION_ARG "--enable=information")
+		#_cppcheck_set_arg_var(CPPCHECK_INFORMATION_ARG "--enable=information")
 		_cppcheck_set_arg_var(CPPCHECK_MISSINGINCLUDE_ARG
 			"--enable=missingInclude")
 		_cppcheck_set_arg_var(CPPCHECK_POSIX_ARG "--enable=posix")

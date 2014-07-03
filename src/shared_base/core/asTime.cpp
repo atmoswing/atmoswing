@@ -617,21 +617,18 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
     {
         case (asUSE_NORMAL_METHOD):
 
-            int a,b;
-            float year_corr;
-
             if ( year < 0 )
                 year++;
-            year_corr = ( year > 0 ? 0.0 : 0.75 );
+            float year_corr = ( year > 0 ? 0.0 : 0.75 );
             if ( month <= 2 )
             {
                 year--;
                 month += 12;
             }
-            b = 0;
+            int b = 0;
             if ( year * 10000.0 + month * 100.0 + day >= 15821015.0 )
             {
-                a = year / 100;
+                int a = year / 100;
                 b = 2 - a + a / 4;
             }
             mjd = (long) ( 365.25 * year - year_corr ) + (long) ( 30.6001 * ( month + 1 ) ) + day + 1720995L + b;

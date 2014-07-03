@@ -38,6 +38,7 @@ asFile(FileName, FileMode)
     m_BaseNodePointer = 0;
     m_BaseNodeName = wxEmptyString;
     m_Document = NULL;
+    m_ElementPointer = NULL;
 }
 
 asFileXml::~asFileXml()
