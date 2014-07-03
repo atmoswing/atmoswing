@@ -16,6 +16,7 @@ asMethodCalibrator()
     m_OptimizerStage = asINITIALIZATION;
     m_SkipNext = false;
     m_IsOver = false;
+    m_ParamsNb = 0;
 
     // Seeds the random generator
     asTools::InitRandom();

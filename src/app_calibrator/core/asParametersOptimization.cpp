@@ -15,6 +15,7 @@ asParametersScoring()
     m_TimeArrayAnalogsIntervalDaysUpperLimit = 182;
     m_TimeArrayAnalogsIntervalDaysLowerLimit = 10;
     m_TimeArrayAnalogsIntervalDaysLocks = false;
+    m_VariableParamsNb = 0;
 }
 
 asParametersOptimization::~asParametersOptimization()
@@ -1033,9 +1034,9 @@ bool asParametersOptimization::IsInRange()
                 if (GetPredictorWeight(i,j)<m_StepsLowerLimit[i].Predictors[j].Weight) return false;
                 if (GetPredictorWeight(i,j)<m_StepsLowerLimit[i].Predictors[j].Weight) return false;
             }
-            if (!m_StepsLocks[i].Predictors[j].Umin |
-                !m_StepsLocks[i].Predictors[j].Uptsnb |
-                !m_StepsLocks[i].Predictors[j].Vmin |
+            if (!m_StepsLocks[i].Predictors[j].Umin ||
+                !m_StepsLocks[i].Predictors[j].Uptsnb ||
+                !m_StepsLocks[i].Predictors[j].Vmin ||
                 !m_StepsLocks[i].Predictors[j].Vptsnb)
             {
                 if(GetPredictorUmin(i,j)+GetPredictorUptsnb(i,j)*GetPredictorUstep(i,j) > m_StepsUpperLimit[i].Predictors[j].Umin+m_StepsLowerLimit[i].Predictors[j].Uptsnb*GetPredictorUstep(i,j)) return false;

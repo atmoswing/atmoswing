@@ -93,12 +93,11 @@ bool asMethodOptimizerRandomSet::Manager()
                 if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
                 Log().DisableMessageBoxOnError();
 
-                int threadType = -1;
                 VectorFloat scoreClim = m_ScoreClimatology;
 
                 // Push the first parameters set
                 asThreadMethodOptimizerRandomSet* firstthread = new asThreadMethodOptimizerRandomSet(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
-                threadType = firstthread->GetType();
+                int threadType = firstthread->GetType();
                 ThreadsManager().AddThread(firstthread);
 
                 // Wait until done to get the score of the climatology

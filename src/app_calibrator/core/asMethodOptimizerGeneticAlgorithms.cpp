@@ -12,6 +12,13 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
 asMethodOptimizer()
 {
     m_GenerationNb = 0;
+    m_AssessmentCounter = 0;
+    m_PopSize = 0;
+    m_NaturalSelectionType = 0;
+    m_CouplesSelectionType = 0;
+    m_CrossoverType = 0;
+    m_MutationsModeType = 0;
+    m_AllowElitismForTheBest = true;
 }
 
 asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms()
@@ -520,12 +527,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
                 Log().DisableMessageBoxOnError();
 
-                int threadType = -1;
                 VectorFloat scoreClim = m_ScoreClimatology;
 
                 // Push the first parameters set
                 asThreadMethodOptimizerGeneticAlgorithms* firstthread = new asThreadMethodOptimizerGeneticAlgorithms(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
-                threadType = firstthread->GetType();
+                int threadType = firstthread->GetType();
                 ThreadsManager().AddThread(firstthread);
 
                 // Wait until done to get the score of the climatology
