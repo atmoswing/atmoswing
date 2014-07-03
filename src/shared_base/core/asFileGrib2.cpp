@@ -186,11 +186,10 @@ double asFileGrib2::GetBandEstimatedMax()
 {
     wxASSERT(m_Opened);
 
-    int bGotMax;
-    double adfMinMax[2];
-
     if (m_PtorBand)
     {
+        int bGotMax;
+        double adfMinMax[2];
         adfMinMax[1] = m_PtorBand->GetMaximum( &bGotMax );
         if( !bGotMax )
             GDALComputeRasterMinMax((GDALRasterBandH)m_PtorBand, TRUE, adfMinMax);
@@ -205,11 +204,10 @@ double asFileGrib2::GetBandEstimatedMin()
 {
     wxASSERT(m_Opened);
 
-    int bGotMin;
-    double adfMinMax[2];
-
     if (m_PtorBand)
     {
+        int bGotMin;
+        double adfMinMax[2];
         adfMinMax[1] = m_PtorBand->GetMinimum( &bGotMin );
         if( !bGotMin )
             GDALComputeRasterMinMax((GDALRasterBandH)m_PtorBand, TRUE, adfMinMax);

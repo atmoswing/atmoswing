@@ -331,7 +331,6 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
                             load360 = false;
                         }
                     }
-                    lonMax -= dataArea->GetUstep();
                     indexLengthLon--;
                 }
 

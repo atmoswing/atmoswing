@@ -89,7 +89,7 @@ asGeo(coosys)
     m_CoordSys = coosys;
     m_Level = Level;
     m_Height = Height;
-
+    m_NbComposites = 0;
     m_CornerUL.u = 0;
     m_CornerUL.v = 0;
     m_CornerUR.u = 0;

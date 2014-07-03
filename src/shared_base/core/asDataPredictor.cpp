@@ -41,6 +41,14 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_LonPtsnb = 0;
     m_SizeTime = 0;
     m_PreprocessMethod = wxEmptyString;
+    m_Initialized = false;
+    m_TimeZoneHours = 0.0;
+    m_TimeStepHours = 0.0;
+    m_FirstTimeStepHours = 0.0;
+    m_UaxisStep = 0.0f;
+    m_VaxisStep = 0.0f;
+    m_UaxisShift = 0.0f;
+    m_VaxisShift = 0.0f;
 }
 
 asDataPredictor::~asDataPredictor()

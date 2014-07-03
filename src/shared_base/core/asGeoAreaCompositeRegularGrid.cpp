@@ -57,7 +57,7 @@ asGeoAreaCompositeRegularGrid::~asGeoAreaCompositeRegularGrid()
 bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherarea)
 {
     if (otherarea->GetGridType()!=Regular) return false;
-    asGeoAreaCompositeRegularGrid *otherareaRegular = (asGeoAreaCompositeRegularGrid*) otherarea;
+    asGeoAreaCompositeRegularGrid* otherareaRegular(dynamic_cast<asGeoAreaCompositeRegularGrid*>(otherarea));
     if (GetUstep()!=otherareaRegular->GetUstep()) return false;
     if (GetVstep()!=otherareaRegular->GetVstep()) return false;
     return true;

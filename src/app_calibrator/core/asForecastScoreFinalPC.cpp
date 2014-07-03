@@ -52,7 +52,7 @@ float asForecastScoreFinalPC::Assess(Array1DFloat &targetDates, Array1DFloat &fo
     wxASSERT(targetDates.rows()>1);
     wxASSERT(forecastScores.rows()>1);
 
-    int countA=0, countB=0, countC=0, countD=0, countTot=0;
+    int countA=0, countD=0, countTot=0;
 
     switch (m_Period)
     {
@@ -67,11 +67,11 @@ float asForecastScoreFinalPC::Assess(Array1DFloat &targetDates, Array1DFloat &fo
                 }
                 else if (forecastScores[i]==2)
                 {
-                    countB++;
+                    //
                 }
                 else if (forecastScores[i]==3)
                 {
-                    countC++;
+                    //
                 }
                 else if (forecastScores[i]==4)
                 {
@@ -93,17 +93,10 @@ float asForecastScoreFinalPC::Assess(Array1DFloat &targetDates, Array1DFloat &fo
     }
 
     float score;
-/*
-    wxLogMessage("A=%d",countA);
-    wxLogMessage("B=%d",countB);
-    wxLogMessage("C=%d",countC);
-    wxLogMessage("D=%d",countD);
-    wxLogMessage("A+C=%d",countA+countC);
-    wxLogMessage("Tot=%d",countTot);
-*/
+
     if (countTot>0)
     {
-        score = ((float)countA+(float)countD)/(float)countTot;
+        score = static_cast<float>(countA+countD)/static_cast<float>(countTot);
     }
     else
     {

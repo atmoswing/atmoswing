@@ -35,6 +35,7 @@ asLog::asLog()
     m_LogFile = NULL;
     m_LogChain = NULL;
     m_Level = 2;
+    m_Target = asLog::File;
     m_Active = true;
     m_RemoveDuplicates = false;
     m_SignalDuplicates = false;
@@ -60,6 +61,7 @@ asLog::~asLog()
 bool asLog::CreateFile(const wxString &fileName)
 {
     // Create the log file
+    wxDELETE(m_LogFile);
     wxString logpath = asConfig::GetLogDir();
     logpath.Append(DS);
     logpath.Append(fileName);
@@ -73,6 +75,7 @@ bool asLog::CreateFile(const wxString &fileName)
 bool asLog::CreateFileOnly(const wxString &fileName)
 {
     // Create the log file
+    wxDELETE(m_LogFile);
     wxString logpath = asConfig::GetLogDir();
     logpath.Append(DS);
     logpath.Append(fileName);
@@ -86,6 +89,7 @@ bool asLog::CreateFileOnly(const wxString &fileName)
 bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
 {
     // Create the log file
+    wxDELETE(m_LogFile);
     m_LogFile = new wxFFile(fullPath, "w");
     wxLogStderr* pLogFile = new wxLogStderr(m_LogFile->fp());
     wxLog::SetActiveTarget(pLogFile);

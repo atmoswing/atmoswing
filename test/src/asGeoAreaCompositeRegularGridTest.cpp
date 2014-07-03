@@ -38,19 +38,18 @@ TEST(ConstructorStepException)
 	wxString str("Testing composite regular grids...\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 	
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.u = -10;
-    CornerUL.v = 40;
-    CornerUR.u = 20;
-    CornerUR.v = 40;
-    CornerLL.u = -10;
-    CornerLL.v = 30;
-    CornerLR.u = 20;
-    CornerLR.v = 30;
-    double step = 2.6;
-
     if(g_UnitTestExceptions)
     {
+        Coo CornerUL, CornerUR, CornerLL, CornerLR;
+        CornerUL.u = -10;
+        CornerUL.v = 40;
+        CornerUR.u = 20;
+        CornerUR.v = 40;
+        CornerLL.u = -10;
+        CornerLL.v = 30;
+        CornerLR.u = 20;
+        CornerLR.v = 30;
+        double step = 2.6;
         CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
     }
 }
@@ -130,14 +129,13 @@ TEST(CheckConsistency)
 
 TEST(CheckConsistencyException)
 {
-    double Umin = 10;
-    double Uwidth = 0;
-    double Vmin = 40;
-    double Vwidth = -10;
-    double step = 2.5;
-
     if(g_UnitTestExceptions)
     {
+        double Umin = 10;
+        double Uwidth = 0;
+        double Vmin = 40;
+        double Vwidth = -10;
+        double step = 2.5;
         CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step), asException);
     }
 }
@@ -161,19 +159,18 @@ TEST(IsRectangleTrue)
 
 TEST(IsRectangleFalse)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.u = 10;
-    CornerUL.v = 40;
-    CornerUR.u = 20;
-    CornerUR.v = 40;
-    CornerLL.u = 15;
-    CornerLL.v = 30;
-    CornerLR.u = 20;
-    CornerLR.v = 30;
-    double step = 2.5;
-
     if(g_UnitTestExceptions)
     {
+        Coo CornerUL, CornerUR, CornerLL, CornerLR;
+        CornerUL.u = 10;
+        CornerUL.v = 40;
+        CornerUR.u = 20;
+        CornerUR.v = 40;
+        CornerLL.u = 15;
+        CornerLL.v = 30;
+        CornerLR.u = 20;
+        CornerLR.v = 30;
+        double step = 2.5;
         CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
     }
 

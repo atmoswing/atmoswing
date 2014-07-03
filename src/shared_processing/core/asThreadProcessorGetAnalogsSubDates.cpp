@@ -33,44 +33,42 @@
 
 
 asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
-                                                                                   std::vector < asDataPredictor* > predictorsTarget,
-                                                                                   asTimeArray* timeArrayArchiveData,
-                                                                                   asTimeArray* timeArrayTargetData,
-                                                                                   Array1DFloat* timeTargetSelection,
-                                                                                   std::vector < asPredictorCriteria* > criteria,
-                                                                                   asParameters &params, int step,
-                                                                                   VpArray2DFloat &vTargData,
-                                                                                   VpArray2DFloat &vArchData,
-                                                                                   Array1DInt &vRowsNb, Array1DInt &vColsNb,
-                                                                                   int start, int end,
-                                                                                   Array2DFloat* finalAnalogsCriteria,
-                                                                                   Array2DFloat* finalAnalogsDates,
-                                                                                   Array2DFloat* previousAnalogsDates,
-                                                                                   bool* containsNaNs)
+                                                                         std::vector < asDataPredictor* > predictorsTarget,
+                                                                         asTimeArray* timeArrayArchiveData,
+                                                                         asTimeArray* timeArrayTargetData,
+                                                                         Array1DFloat* timeTargetSelection,
+                                                                         std::vector < asPredictorCriteria* > criteria,
+                                                                         asParameters &params, int step,
+                                                                         VpArray2DFloat &vTargData,
+                                                                         VpArray2DFloat &vArchData,
+                                                                         Array1DInt &vRowsNb, Array1DInt &vColsNb,
+                                                                         int start, int end,
+                                                                         Array2DFloat* finalAnalogsCriteria,
+                                                                         Array2DFloat* finalAnalogsDates,
+                                                                         Array2DFloat* previousAnalogsDates,
+                                                                         bool* containsNaNs)
 :
-asThread()
+asThread(),
+m_pPredictorsArchive(predictorsArchive), 
+m_pPredictorsTarget(predictorsTarget), 
+m_Criteria(criteria),
+m_pTimeArrayArchiveData(timeArrayArchiveData),
+m_pTimeArrayTargetData(timeArrayTargetData),
+m_pTimeTargetSelection(timeTargetSelection),
+m_vTargData(vTargData),
+m_vArchData(vArchData),
+m_vRowsNb(vRowsNb),
+m_vColsNb(vColsNb),
+m_Params(params),
+m_pFinalAnalogsCriteria(finalAnalogsCriteria),
+m_pFinalAnalogsDates(finalAnalogsDates),
+m_pPreviousAnalogsDates(previousAnalogsDates)
 {
     m_Status = Initializing;
-
     m_Type = asThread::ProcessorGetAnalogsDates;
-
-    m_pPredictorsArchive = predictorsArchive;
-    m_pPredictorsTarget = predictorsTarget;
-    m_pTimeArrayArchiveData = timeArrayArchiveData;
-    m_pTimeArrayTargetData = timeArrayTargetData;
-    m_pTimeTargetSelection = timeTargetSelection;
-    m_Criteria = criteria;
-    m_vTargData = vTargData;
-    m_vArchData = vArchData;
-    m_vRowsNb = vRowsNb;
-    m_vColsNb = vColsNb;
-    m_Params = params;
     m_Step = step;
     m_Start = start;
     m_End = end;
-    m_pFinalAnalogsCriteria = finalAnalogsCriteria;
-    m_pFinalAnalogsDates = finalAnalogsDates;
-    m_pPreviousAnalogsDates = previousAnalogsDates;
     m_pContainsNaNs = containsNaNs;
 
     wxASSERT_MSG(m_End<m_pTimeTargetSelection->size(), _("The given time array end is superior to the time array size."));
@@ -94,8 +92,6 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 
     // Some other variables
     float tmpscore, thisscore;
-    int counter = 0;
-    int i_timeTarg, i_timeArch;
     int timeArchiveDataSize = timeArchiveData.size();
     int timeTargetDataSize = timeTargetData.size();
     int predictorsNb = m_Params.GetPredictorsNb(m_Step);
@@ -116,7 +112,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     // Former, but disabled: for (int i_dateTarg=m_Start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
     for (int i_dateTarg=m_Start; i_dateTarg<=m_End; i_dateTarg++)
     {
-        i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], (double)m_pTimeTargetSelection->coeff(i_dateTarg), 0.01);
+        int i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], (double)m_pTimeTargetSelection->coeff(i_dateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(i_dateTarg)>0);
         wxASSERT(i_timeTarg>=0);
 
@@ -131,13 +127,13 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
         currentAnalogsDates = m_pPreviousAnalogsDates->row(i_dateTarg);
 
         // Counter representing the current index
-        counter = 0;
+        int counter = 0;
 
         // Loop through the previous analogs for candidate data
         for (int i_prevAnalogs=0; i_prevAnalogs<analogsNbPrevious; i_prevAnalogs++)
         {
             // Find row in the predictor time array
-            i_timeArch = asTools::SortedArraySearch(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize-1], currentAnalogsDates[i_prevAnalogs], 0.01);
+            int i_timeArch = asTools::SortedArraySearch(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize-1], currentAnalogsDates[i_prevAnalogs], 0.01);
             wxASSERT(i_timeArch>=0);
 
             // Check if a row was found

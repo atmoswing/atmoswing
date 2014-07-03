@@ -117,7 +117,7 @@ public:
 
 protected:
     bool m_Reduced;
-    wxWindow* parentFrame;
+    wxWindow* m_ParentFrame;
 
     void ReducePanel( wxCommandEvent& event );
     void ClosePanel( wxCommandEvent& event );

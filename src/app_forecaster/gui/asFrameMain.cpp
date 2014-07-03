@@ -59,6 +59,7 @@ asFrameMain::asFrameMain( wxWindow* parent )
 asFrameMainVirtual( parent )
 {
     m_Forecaster = NULL;
+    m_LogWindow = NULL;
 
     // Toolbar
     m_ToolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL );

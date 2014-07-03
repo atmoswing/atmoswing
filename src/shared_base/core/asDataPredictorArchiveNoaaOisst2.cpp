@@ -174,8 +174,6 @@ bool asDataPredictorArchiveNoaaOisst2::Load(asGeoAreaCompositeGrid *desiredArea,
             {
                 dataUmin = desiredArea->GetAbsoluteUmin();
                 dataVmin = desiredArea->GetAbsoluteVmin();
-                dataUmax = desiredArea->GetAbsoluteUmax();
-                dataVmax = desiredArea->GetAbsoluteVmax();
                 dataUstep = desiredArea->GetUstep();
                 dataVstep = desiredArea->GetVstep();
                 dataUptsnb = desiredArea->GetUaxisPtsnb();
@@ -497,7 +495,6 @@ bool asDataPredictorArchiveNoaaOisst2::Load(asGeoAreaCompositeGrid *desiredArea,
                                 load360 = false;
                             }
                         }
-                        lonMax -= dataArea->GetUstep();
                         indexLengthLon--;
                     }
 

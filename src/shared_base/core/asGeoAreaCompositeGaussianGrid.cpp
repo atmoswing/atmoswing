@@ -109,7 +109,7 @@ asGeoAreaCompositeGaussianGrid::~asGeoAreaCompositeGaussianGrid()
 bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *otherarea)
 {
     if (otherarea->GetGridType()!=GetGridType()) return false;
-    asGeoAreaCompositeGaussianGrid* otherareaGaussian = (asGeoAreaCompositeGaussianGrid*) otherarea;
+    asGeoAreaCompositeGaussianGrid* otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid*>(otherarea));
     if (otherareaGaussian->GetGaussianGridType()!=GetGaussianGridType()) return false;
 
     return true;

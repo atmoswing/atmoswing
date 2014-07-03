@@ -32,14 +32,14 @@
 
 asThreadPreprocessorGradients::asThreadPreprocessorGradients(VArray2DFloat* gradients, std::vector < asDataPredictor* > predictors, int start, int end)
 :
-asThread()
+asThread(), 
+m_pGradients(gradients), 
+m_pPredictors(predictors)
 {
     m_Status = Initializing;
 
     m_Type = asThread::PreprocessorGradients;
-
-    m_pPredictors = predictors;
-    m_pGradients = gradients;
+    
     m_Start = start;
     m_End = end;
 

@@ -38,10 +38,15 @@ asDataPredictorRealtime::asDataPredictorRealtime(const wxString &dataId)
 :
 asDataPredictor(dataId)
 {
-    m_RunDateInUse = 0;
+    m_RunDateInUse = 0.0;
     m_RestrictDownloads = false;
-    m_RestrictTimeHours = 0;
-    m_RestrictTimeStepHours = 0;
+    m_RestrictTimeHours = 0.0;
+    m_RestrictTimeStepHours = 0.0;
+    m_ForecastLeadTimeStart = 0.0;
+    m_ForecastLeadTimeEnd = 0.0;
+    m_ForecastLeadTimeStep = 0.0;
+    m_RunHourStart = 0.0;
+    m_RunUpdate = 0.0;
 }
 
 asDataPredictorRealtime::~asDataPredictorRealtime()

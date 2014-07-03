@@ -55,11 +55,11 @@ void asInternet::Cleanup()
 size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stream)
 {
     struct HttpFile *out = (struct HttpFile *)stream;
-    if(out && !out->stream) {
+    if(!out->stream) {
         // Open file for writing
         out->stream = fopen(out->filename, "wb");
         if(!out->stream)
-            return 0; // failure, can't open file to write
+            return -1; // failure, can't open file to write
     }
     return fwrite(buffer, size, nmemb, out->stream);
 }
@@ -84,12 +84,12 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
     if(parallelRequests>1)
     {
         // Create and give data
-        int start = 0, end = -1;
+        int end = -1;
         parallelRequests = wxMin(parallelRequests, (int)fileNames.size());
         int threadType = -1;
         for (int i_threads=0; i_threads<parallelRequests; i_threads++)
         {
-            start = end+1;
+            int start = end+1;
             end = ceil(((float)(i_threads+1)*(float)(fileNames.size()-1)/(float)parallelRequests));
             wxASSERT(fileNames.size()>0);
             wxASSERT(end>=start);
