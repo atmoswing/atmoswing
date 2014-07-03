@@ -12,6 +12,11 @@ asParametersOptimization()
     m_HasChromosomeSelfAdaptationMutationRate = false;
     m_HasChromosomeSelfAdaptationMutationRadius = false;
     m_AllParametersCount = 0;
+    m_TimeArrayAnalogsIntervalDaysIteration = 0;
+    m_TimeArrayAnalogsIntervalDaysUpperLimit = 0;
+    m_TimeArrayAnalogsIntervalDaysLowerLimit = 0;
+    m_TimeArrayAnalogsIntervalDaysLocks = true;
+    m_ParametersListOver = false;
 }
 
 asParametersOptimizationGAs::~asParametersOptimizationGAs()
