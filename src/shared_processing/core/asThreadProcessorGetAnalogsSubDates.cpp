@@ -33,44 +33,42 @@
 
 
 asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
-                                                                                   std::vector < asDataPredictor* > predictorsTarget,
-                                                                                   asTimeArray* timeArrayArchiveData,
-                                                                                   asTimeArray* timeArrayTargetData,
-                                                                                   Array1DFloat* timeTargetSelection,
-                                                                                   std::vector < asPredictorCriteria* > criteria,
-                                                                                   asParameters &params, int step,
-                                                                                   VpArray2DFloat &vTargData,
-                                                                                   VpArray2DFloat &vArchData,
-                                                                                   Array1DInt &vRowsNb, Array1DInt &vColsNb,
-                                                                                   int start, int end,
-                                                                                   Array2DFloat* finalAnalogsCriteria,
-                                                                                   Array2DFloat* finalAnalogsDates,
-                                                                                   Array2DFloat* previousAnalogsDates,
-                                                                                   bool* containsNaNs)
+                                                                         std::vector < asDataPredictor* > predictorsTarget,
+                                                                         asTimeArray* timeArrayArchiveData,
+                                                                         asTimeArray* timeArrayTargetData,
+                                                                         Array1DFloat* timeTargetSelection,
+                                                                         std::vector < asPredictorCriteria* > criteria,
+                                                                         asParameters &params, int step,
+                                                                         VpArray2DFloat &vTargData,
+                                                                         VpArray2DFloat &vArchData,
+                                                                         Array1DInt &vRowsNb, Array1DInt &vColsNb,
+                                                                         int start, int end,
+                                                                         Array2DFloat* finalAnalogsCriteria,
+                                                                         Array2DFloat* finalAnalogsDates,
+                                                                         Array2DFloat* previousAnalogsDates,
+                                                                         bool* containsNaNs)
 :
-asThread()
+asThread(),
+m_pPredictorsArchive(predictorsArchive), 
+m_pPredictorsTarget(predictorsTarget), 
+m_Criteria(criteria),
+m_pTimeArrayArchiveData(timeArrayArchiveData),
+m_pTimeArrayTargetData(timeArrayTargetData),
+m_pTimeTargetSelection(timeTargetSelection),
+m_vTargData(vTargData),
+m_vArchData(vArchData),
+m_vRowsNb(vRowsNb),
+m_vColsNb(vColsNb),
+m_Params(params),
+m_pFinalAnalogsCriteria(finalAnalogsCriteria),
+m_pFinalAnalogsDates(finalAnalogsDates),
+m_pPreviousAnalogsDates(previousAnalogsDates)
 {
     m_Status = Initializing;
-
     m_Type = asThread::ProcessorGetAnalogsDates;
-
-    m_pPredictorsArchive = predictorsArchive;
-    m_pPredictorsTarget = predictorsTarget;
-    m_pTimeArrayArchiveData = timeArrayArchiveData;
-    m_pTimeArrayTargetData = timeArrayTargetData;
-    m_pTimeTargetSelection = timeTargetSelection;
-    m_Criteria = criteria;
-    m_vTargData = vTargData;
-    m_vArchData = vArchData;
-    m_vRowsNb = vRowsNb;
-    m_vColsNb = vColsNb;
-    m_Params = params;
     m_Step = step;
     m_Start = start;
     m_End = end;
-    m_pFinalAnalogsCriteria = finalAnalogsCriteria;
-    m_pFinalAnalogsDates = finalAnalogsDates;
-    m_pPreviousAnalogsDates = previousAnalogsDates;
     m_pContainsNaNs = containsNaNs;
 
     wxASSERT_MSG(m_End<m_pTimeTargetSelection->size(), _("The given time array end is superior to the time array size."));
