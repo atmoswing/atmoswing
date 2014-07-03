@@ -168,7 +168,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             }
 
             // Create and give data
-            int start = 0, end = -1;
+            int end = -1;
             int threadType = -1;
             std::vector < bool* > vContainsNaNs;
             for (int i_threads=0; i_threads<threadsNb; i_threads++)
@@ -176,7 +176,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                 bool* flag = new bool;
                 *flag = false;
                 vContainsNaNs.push_back(flag);
-                start = end+1;
+                int start = end+1;
                 end = ceil(((float)(i_threads+1)*(float)(timeTargetSelectionSize-1)/(float)threadsNb));
                 wxASSERT_MSG(end>=start, wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end, timeTargetSelectionSize));
 
@@ -1225,8 +1225,6 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     }
 
     // Some variables
-    float currentAnalogDate, currentTargetDate;
-    int predictandIndex;
     float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
 
     // Resize containers
@@ -1244,9 +1242,9 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     {
         wxASSERT(i_targdate>=0);
         int i_targdatenew = i_targdate-indexTargDatesStart;
-        currentTargetDate = timeTargetSelection(i_targdate);
+        float currentTargetDate = timeTargetSelection(i_targdate);
         finalTargetDates[i_targdatenew] = currentTargetDate;
-        predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandTimeDays,asHIDE_WARNINGS);
+        int predictandIndex = asTools::SortedArraySearchClosest(&predictandTime[0],&predictandTime[predictandTimeLength-1],currentTargetDate+predictandTimeDays,asHIDE_WARNINGS);
         if( ignoreTargetValues | (predictandIndex==asOUT_OF_RANGE) | (predictandIndex==asNOT_FOUND) )
         {
             for (int i_st=0; i_st<stations.size(); i_st++)
@@ -1266,7 +1264,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
 
         for (int i_anadate=0; i_anadate<analogsNb; i_anadate++)
         {
-            currentAnalogDate = analogsDates(i_targdate,i_anadate);
+            float currentAnalogDate = analogsDates(i_targdate,i_anadate);
 
             if (!asTools::IsNaN(currentAnalogDate))
             {

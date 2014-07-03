@@ -54,6 +54,7 @@ public:
     //!< Possible thread types
     enum Type
     {
+        Undefined,
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
         PreprocessorGradients

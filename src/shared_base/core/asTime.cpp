@@ -732,14 +732,14 @@ TimeStruct asTime::GetTimeStruct(double mjd, int method)
     {
         case (asUSE_NORMAL_METHOD):
 
-            long a, b, c, d, e, z, alpha;
+            long a, b, c, d, e, z;
 
             z = mjd;
             if ( z < 2299161L )
                 a = z;
             else
             {
-                alpha = (long) ( ( z - 1867216.25 ) / 36524.25 );
+                long alpha = (long) ( ( z - 1867216.25 ) / 36524.25 );
                 a = z + 1 + alpha - alpha / 4;
             }
             b = a + 1524;

@@ -37,7 +37,7 @@ asCatalog::asCatalog(const wxString &alternateFilePath)
 {
     m_CatalogFilePath = alternateFilePath;
 
-    // Initiate some data
+    // Initialize some data
     m_SetId = wxEmptyString;
     m_Name = wxEmptyString;
     m_Description = wxEmptyString;
@@ -45,6 +45,8 @@ asCatalog::asCatalog(const wxString &alternateFilePath)
     m_TimeStepHours = 0;
     m_FirstTimeStepHour = 0;
     m_DataPath = wxEmptyString;
+    m_Start = 0;
+    m_End = 0;
 
 }
 

@@ -385,8 +385,6 @@ bool asDataPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods(
 
 bool asDataPredictandPrecipitation::BuildDataNormalized()
 {
-    m_ReturnPeriodNormalization = m_ReturnPeriodNormalization;
-
     for (int i_st=0; i_st<m_StationsNb; i_st++)
     {
         float Prt = 1.0;
