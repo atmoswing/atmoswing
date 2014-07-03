@@ -225,8 +225,6 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::Load(asGeoAreaCompositeGrid 
             {
                 dataUmin = desiredArea->GetAbsoluteUmin();
                 dataVmin = desiredArea->GetAbsoluteVmin();
-                dataUmax = desiredArea->GetAbsoluteUmax();
-                dataVmax = desiredArea->GetAbsoluteVmax();
                 dataUstep = desiredArea->GetUstep();
                 dataVstep = desiredArea->GetVstep();
                 dataUptsnb = desiredArea->GetUaxisPtsnb();
@@ -609,47 +607,46 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::Load(asGeoAreaCompositeGrid 
             }
 
             // Get the indices for data
-            size_t indexStartData4[4] = {0,0,0,0};
-            size_t indexCountData4[4] = {0,0,0,0};
-            ptrdiff_t indexStrideData4[4] = {0,0,0,0};
-            size_t indexStartData3[3] = {0,0,0};
-            size_t indexCountData3[3] = {0,0,0};
-            ptrdiff_t indexStrideData3[3] = {0,0,0};
-
             if (nDims==4)
             {
                 // Set the indices for data
-                indexStartData4[0] = indexStartTime;
-                indexStartData4[1] = indexLevel;
-                indexStartData4[2] = indexStartLat;
-                indexStartData4[3] = indexStartLon;
-                indexCountData4[0] = indexLengthTime;
-                indexCountData4[1] = 1;
-                indexCountData4[2] = indexLengthLat;
-                indexCountData4[3] = indexLengthLon;
-                indexStrideData4[0] = indexStepTime;
-                indexStrideData4[1] = 1;
-                indexStrideData4[2] = indexStepLat;
-                indexStrideData4[3] = indexStepLon;
+                size_t indexStartData[4] = {0,0,0,0};
+                indexStartData[0] = indexStartTime;
+                indexStartData[1] = indexLevel;
+                indexStartData[2] = indexStartLat;
+                indexStartData[3] = indexStartLon;
+                size_t indexCountData[4] = {0,0,0,0};
+                indexCountData[0] = indexLengthTime;
+                indexCountData[1] = 1;
+                indexCountData[2] = indexLengthLat;
+                indexCountData[3] = indexLengthLon;
+                ptrdiff_t indexStrideData[4] = {0,0,0,0};
+                indexStrideData[0] = indexStepTime;
+                indexStrideData[1] = 1;
+                indexStrideData[2] = indexStepLat;
+                indexStrideData[3] = indexStepLon;
 
                 // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_FileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data[indexBegining]);
+                ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
             }
             else
             {
                 // Set the indices for data
-                indexStartData3[0] = indexStartTime;
-                indexStartData3[1] = indexStartLat;
-                indexStartData3[2] = indexStartLon;
-                indexCountData3[0] = indexLengthTime;
-                indexCountData3[1] = indexLengthLat;
-                indexCountData3[2] = indexLengthLon;
-                indexStrideData3[0] = indexStepTime;
-                indexStrideData3[1] = indexStepLat;
-                indexStrideData3[2] = indexStepLon;
+                size_t indexStartData[3] = {0,0,0};
+                indexStartData[0] = indexStartTime;
+                indexStartData[1] = indexStartLat;
+                indexStartData[2] = indexStartLon;
+                size_t indexCountData[3] = {0,0,0};
+                indexCountData[0] = indexLengthTime;
+                indexCountData[1] = indexLengthLat;
+                indexCountData[2] = indexLengthLon;
+                ptrdiff_t indexStrideData[3] = {0,0,0};
+                indexStrideData[0] = indexStepTime;
+                indexStrideData[1] = indexStepLat;
+                indexStrideData[2] = indexStepLon;
 
                 // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_FileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data[indexBegining]);
+                ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
             }
 
             // Keep data for later treatment

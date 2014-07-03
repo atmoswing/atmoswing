@@ -42,7 +42,8 @@ asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
 :
 asDataPredictor(dataId)
 {
-
+    m_OriginalProviderStart = 0.0;
+    m_OriginalProviderEnd = 0.0;
 }
 
 asDataPredictorArchive::~asDataPredictorArchive()

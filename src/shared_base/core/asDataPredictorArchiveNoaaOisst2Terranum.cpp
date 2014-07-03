@@ -170,8 +170,6 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::Load(asGeoAreaCompositeGrid *desi
             {
                 dataUmin = desiredArea->GetAbsoluteUmin();
                 dataVmin = desiredArea->GetAbsoluteVmin();
-                dataUmax = desiredArea->GetAbsoluteUmax();
-                dataVmax = desiredArea->GetAbsoluteVmax();
                 dataUstep = desiredArea->GetUstep();
                 dataVstep = desiredArea->GetVstep();
                 dataUptsnb = desiredArea->GetUaxisPtsnb();
