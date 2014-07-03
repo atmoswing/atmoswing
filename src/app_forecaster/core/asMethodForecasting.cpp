@@ -1511,10 +1511,11 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
         // Process for every station
         for (int i_stat=0; i_stat<stationsId.size(); i_stat++)
         {
-            int stationId = stationsId[i_stat];
+            VectorInt stationId(1);
+            stationId[0] = stationsId[i_stat];
 
             // Set the next station ID
-            params.SetPredictandStationId(stationId);
+            params.SetPredictandStationIds(stationId);
 
             // Create a standard analogs values result object
             asResultsAnalogsValues anaValues = asResultsAnalogsValues();
@@ -1527,9 +1528,9 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
                 return false;
             }
 
-            Array2DFloat valuesGross = anaValues.GetAnalogsValuesGross();
-            wxASSERT(valuesGross.rows()==1);
-            Array1DFloat rowValuesGross = valuesGross.row(0);
+            VArray2DFloat valuesGross = anaValues.GetAnalogsValuesGross();
+            wxASSERT(valuesGross[0].rows()==1);
+            Array1DFloat rowValuesGross = valuesGross[0].row(0);
             results.SetAnalogsValuesGross(i_leadtime, i_stat, rowValuesGross);
         }
     }
