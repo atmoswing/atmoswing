@@ -1001,7 +1001,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
                     if (i_timeArch!=asNOT_FOUND && i_timeArch!=asOUT_OF_RANGE)
                     {
                         // Process the criteria
-                        thisscore = 0;
+                        float thisscore = 0;
                         for (int i_ptor=0; i_ptor<predictorsNb; i_ptor++)
                         {
                             // Get data
@@ -1034,7 +1034,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
                             */
 
                             // Weight and add the score
-                            float thisscore += tmpscore * params.GetPredictorWeight(step, i_ptor);
+                            thisscore += tmpscore * params.GetPredictorWeight(step, i_ptor);
                         }
                         if (asTools::IsNaN(thisscore))
                         {

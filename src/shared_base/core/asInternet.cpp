@@ -59,7 +59,7 @@ size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stre
         // Open file for writing
         out->stream = fopen(out->filename, "wb");
         if(!out->stream)
-            return -1; // failure, can't open file to write
+            return 1; // failure, can't open file to write
     }
     return fwrite(buffer, size, nmemb, out->stream);
 }
