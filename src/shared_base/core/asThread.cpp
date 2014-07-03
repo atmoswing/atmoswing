@@ -33,6 +33,8 @@ asThread::asThread()
 wxThread(wxTHREAD_DETACHED)
 {
     m_Status = Creating;
+    m_Type = Undefined;
+    m_Id = 0;
 }
 
 asThread::~asThread()

@@ -94,8 +94,6 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 
     // Some other variables
     float tmpscore, thisscore;
-    int counter = 0;
-    int i_timeTarg, i_timeArch;
     int timeArchiveDataSize = timeArchiveData.size();
     int timeTargetDataSize = timeTargetData.size();
     int predictorsNb = m_Params.GetPredictorsNb(m_Step);
@@ -116,7 +114,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     // Former, but disabled: for (int i_dateTarg=m_Start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
     for (int i_dateTarg=m_Start; i_dateTarg<=m_End; i_dateTarg++)
     {
-        i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], (double)m_pTimeTargetSelection->coeff(i_dateTarg), 0.01);
+        int i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], (double)m_pTimeTargetSelection->coeff(i_dateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(i_dateTarg)>0);
         wxASSERT(i_timeTarg>=0);
 
@@ -131,13 +129,13 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
         currentAnalogsDates = m_pPreviousAnalogsDates->row(i_dateTarg);
 
         // Counter representing the current index
-        counter = 0;
+        int counter = 0;
 
         // Loop through the previous analogs for candidate data
         for (int i_prevAnalogs=0; i_prevAnalogs<analogsNbPrevious; i_prevAnalogs++)
         {
             // Find row in the predictor time array
-            i_timeArch = asTools::SortedArraySearch(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize-1], currentAnalogsDates[i_prevAnalogs], 0.01);
+            int i_timeArch = asTools::SortedArraySearch(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize-1], currentAnalogsDates[i_prevAnalogs], 0.01);
             wxASSERT(i_timeArch>=0);
 
             // Check if a row was found

@@ -45,6 +45,12 @@ asDataPredictand::asDataPredictand(DataParameter dataParameter, DataTemporalReso
     m_HasNormalizedData = false;
     m_HasReferenceValues = false;
     m_DatasetId = wxEmptyString;
+    m_TimeStepDays = 0.0;
+    m_TimeLength = 0;
+    m_StationsNb = 0;
+    m_DateProcessed = 0.0;
+    m_DateStart = 0.0;
+    m_DateEnd = 0.0;
 }
 
 asDataPredictand::~asDataPredictand()
