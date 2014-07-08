@@ -46,7 +46,9 @@ public:
         CRPSsharpnessAR, // approximation with the rectangle method (Bontron, 2004)
         CRPSsharpnessEP, // exact by means of primitive (Bontron, 2004)
         CRPSHersbachDecomp, // Hersbach (2000) decomposition of the CRPS
-        CRPSreliability, // reliability of the CRPS (Hersbach, 2000)
+        CRPSHersbachDecompS, // Skill score of Hersbach (2000) decomposition of the CRPS
+        CRPSreliability, // CRPS reliability (Hersbach, 2000)
+        CRPSreliabilityS, // Skill score of CRPS reliability (Hersbach, 2000)
         CRPSpotential, // CRPS potential (Hersbach, 2000)
 		DF0, // absolute difference of the frequency of null precipitations
 		ContingencyTable, // Contingency table
@@ -284,7 +286,6 @@ protected:
     Order m_Order; //!< Member variable "m_Order"
     float m_ScaleBest; //!< Member variable "m_ScaleBest"
     float m_ScaleWorst; //!< Member variable "m_ScaleWorst"
-    Array1DFloat m_ArrayScoresClimatology; //!< Member variable "m_ArrayScoresClimatology"
     float m_ScoreClimatology; //!< Member variable "m_ScoreClimatology"
     bool m_UsesClimatology;
     bool m_SingleValue;

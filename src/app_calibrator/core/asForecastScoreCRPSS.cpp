@@ -70,7 +70,7 @@ bool asForecastScoreCRPSS::ProcessScoreClimatology(const Array1DFloat &refVals, 
     wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size()-1]));
 
     // Containers for final results
-    m_ArrayScoresClimatology.resize(refVals.size());
+    Array1DFloat scoresClimatology(refVals.size());
 
     // Set the original score and process
     asForecastScore* forecastScore = asForecastScore::GetInstance(asForecastScore::CRPSAR);
@@ -81,17 +81,17 @@ bool asForecastScoreCRPSS::ProcessScoreClimatology(const Array1DFloat &refVals, 
     {
         if (!asTools::IsNaN(refVals(i_reftime)))
         {
-            m_ArrayScoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData, climatologyData.size());
+            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData, climatologyData.size());
         }
         else
         {
-            m_ArrayScoresClimatology(i_reftime) = NaNFloat;
+            scoresClimatology(i_reftime) = NaNFloat;
         }
     }
 
     wxDELETE(forecastScore);
 
-    m_ScoreClimatology = asTools::Mean(&m_ArrayScoresClimatology[0],&m_ArrayScoresClimatology[m_ArrayScoresClimatology.size()-1]);
+    m_ScoreClimatology = asTools::Mean(&scoresClimatology[0],&scoresClimatology[scoresClimatology.size()-1]);
 
     asLogMessage(wxString::Format(_("Score of the climatology: %g."), m_ScoreClimatology));
 
