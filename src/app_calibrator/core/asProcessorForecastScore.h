@@ -56,7 +56,7 @@ public:
     * \param TimeArray The dates that should be considered to sum the score
     * \return The ResAnalogsFinalScore structure
     */
-    static bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScores &anaScores, asTimeArray &timeArray, asParametersScoring &params, asResultsAnalogsForecastScoreFinal &results);
+    static bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScores &anaScores, asTimeArray &timeArray, asParametersScoring &params, asResultsAnalogsForecastScoreFinal &results, VectorFloat &scoresClimatology);
 
     /** Analogs final score. Returns the final score value
     * \param AnalogsScores The ResAnalogsForecastScores structure

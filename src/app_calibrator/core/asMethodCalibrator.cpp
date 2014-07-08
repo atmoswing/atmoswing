@@ -1632,13 +1632,7 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     // Pass data and score to processor
     asLogMessage(_("Start processing the forecast score."));
 
-    VectorFloat scoresClimatology;
-    if (forecastScore->UsesClimatology())
-    {
-        scoresClimatology = m_ScoreClimatology;
-    }
-
-    if(!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results, scoresClimatology))
+    if(!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results, m_ScoreClimatology))
     {
         asLogError(_("Failed processing the forecast score."));
         wxDELETE(forecastScore);
@@ -1679,7 +1673,7 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
 
     // Pass data and score to processor
     asLogMessage(_("Start processing the final score."));
-    if(!asProcessorForecastScore::GetAnalogsForecastScoreFinal(anaScores, timeArray, params, results))
+    if(!asProcessorForecastScore::GetAnalogsForecastScoreFinal(anaScores, timeArray, params, results, m_ScoreClimatology))
     {
         asLogError(_("Failed to process the final score."));
         return false;

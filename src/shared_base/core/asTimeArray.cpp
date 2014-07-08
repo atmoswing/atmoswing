@@ -103,6 +103,20 @@ asTime()
 
 }
 
+asTimeArray::asTimeArray()
+:
+asTime()
+{
+    // Should not be used for processing, only to get en empty object !
+    m_Initialized = false;
+    m_Mode = Custom;
+    m_TimeStepDays = 0;
+    m_Start = 0;
+    m_End = 0;
+    m_IntervalDays = 0;
+    m_ExclusionDays = 0;
+}
+
 asTimeArray::asTimeArray(double date, Mode slctmode)
 :
 asTime()

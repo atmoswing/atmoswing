@@ -67,6 +67,11 @@ public:
      * \param slctModeString The selection mode
      */
     asTimeArray(double start, double end, double timestephours, const wxString &slctModeString);
+    
+    /** Constructor for an empty object.
+     * \note Should not be used for processing, only to get en empty object !
+     */
+    asTimeArray();
 
     /** Constructor for a single day.
      * \param date The date

@@ -31,7 +31,6 @@
 #include <asParametersCalibration.h>
 #include <asPostprocessor.h>
 #include <asForecastScore.h>
-#include <asForecastScoreCRPSSloadF0.h>
 #include <asForecastScoreFinal.h>
 #include <asResultsAnalogsValues.h>
 #include <asResultsAnalogsForecastScores.h>
@@ -123,9 +122,14 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
             asLogError(_("The processing of multivariate complex scores is not implemented yet."));
             return false;
         }
+        
+        if (forecastScore->UsesClimatology())
+        {
+            forecastScore->SetScoreClimatology(scoresClimatology[0]);
+        }
 
         // Containers for final results
-        Array2DFloat finalForecastScores(timeTargetSelectionLength, 3*(params.GetForecastScoreAnalogsNumber()+1));
+        Array2DFloat forecastScores(timeTargetSelectionLength, 3*(params.GetForecastScoreAnalogsNumber()+1));
 
         for (int i_targtime=0; i_targtime<timeTargetSelectionLength; i_targtime++)
         {
@@ -138,17 +142,17 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
                 }
                 else
                 {
-                    finalForecastScores.row(i_targtime) = forecastScore->AssessOnArray(targetValues[0](i_targtime), analogsValues[0].row(i_targtime), params.GetForecastScoreAnalogsNumber());
+                    forecastScores.row(i_targtime) = forecastScore->AssessOnArray(targetValues[0](i_targtime), analogsValues[0].row(i_targtime), params.GetForecastScoreAnalogsNumber());
                 }
             }
             else
             {
-                finalForecastScores.row(i_targtime) = Array1DFloat::Ones(3*(params.GetForecastScoreAnalogsNumber()+1))*NaNFloat;
+                forecastScores.row(i_targtime) = Array1DFloat::Ones(3*(params.GetForecastScoreAnalogsNumber()+1))*NaNFloat;
             }
         }
 
         // Put values in final containers
-        results.SetForecastScores2DArray(finalForecastScores);
+        results.SetForecastScores2DArray(forecastScores);
     }
 
     return true;
@@ -157,13 +161,20 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
 bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScores &anaScores,
                                                asTimeArray &timeArray,
                                                asParametersScoring &params,
-                                               asResultsAnalogsForecastScoreFinal &results)
+                                               asResultsAnalogsForecastScoreFinal &results,
+                                               VectorFloat &scoresClimatology)
 {
 // TODO (phorton#1#): Specify the period in the parameter
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance(params.GetForecastScoreName(), "Total");
 
     // Ranks number set for all, but only used for the rank histogram
     finalScore->SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
+
+    // Score for the climatology
+    if (finalScore->UsesClimatology())
+    {
+        finalScore->SetScoreClimatology(scoresClimatology[0]);
+    }
 
     if (finalScore->Has2DArrayArgument())
     {

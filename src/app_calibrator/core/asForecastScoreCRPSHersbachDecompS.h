@@ -22,29 +22,26 @@
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#ifndef ASFORECASTSCORECRPSARLOADF0_H
-#define ASFORECASTSCORECRPSARLOADF0_H
+#ifndef ASFORECASTSCORECRPSHDS_H
+#define ASFORECASTSCORECRPSHDS_H
 
 #include <asIncludes.h>
 #include "asForecastScore.h"
 
-class asForecastScoreCRPSARloadF0: public asForecastScore
+class asForecastScoreCRPSHersbachDecompS: public asForecastScore
 {
 public:
 
     /** Default constructor
      * \param score The chosen score
      */
-    asForecastScoreCRPSARloadF0();
+    asForecastScoreCRPSHersbachDecompS();
 
     /** Default destructor */
-    ~asForecastScoreCRPSARloadF0();
-
-    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements);
+    ~asForecastScoreCRPSHersbachDecompS();
 
     /** Process the score
      * \param ObservedVal The observed value
@@ -52,7 +49,15 @@ public:
      * \param NbElements The number of analogs to consider
      * \return The score
      */
-    float Assess(float ObservedVal, float F0, const Array1DFloat &ForcastVals, int nbElements);
+    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements);
+
+    /** Process the score
+     * \param ObservedVal The observed value
+     * \param ForcastVals The array of analogs values
+     * \param NbElements The number of analogs to consider
+     * \return The score
+     */
+    Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements);
 
     /** Process the score of the climatology
      * \param score The chosen score
