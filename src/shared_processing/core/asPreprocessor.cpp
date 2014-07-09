@@ -444,87 +444,22 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=8 && inputSize!=6) asThrowException(_("The number of predictors must be equal to 6 or 8 in asPreprocessor::PreprocessHumidityFlux"));
-
-    // Merge
+    if(inputSize!=4) asThrowException(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
     wxASSERT(predictors[0]);
-    VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
-    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
-    int counter = 0;
+
     #ifdef _DEBUG
-        int prevTimeSize = 0;
+        for(unsigned int i_dat=0; i_dat<predictors.size()-1; i_dat++)
+        {
+            wxASSERT(predictors[i_dat]->GetData()[0].rows()==predictors[i_dat+1]->GetData()[0].rows());
+            wxASSERT(predictors[i_dat]->GetData()[0].cols()==predictors[i_dat+1]->GetData()[0].cols());
+            wxASSERT(predictors[i_dat]->GetData().size()==predictors[i_dat+1]->GetData().size());
+        }
     #endif
 
-    for(unsigned int i_dat=0; i_dat<predictors.size(); i_dat+=2)
-    {
-        wxASSERT(predictors[i_dat]);
-        wxASSERT(predictors[i_dat+1]);
-
-        // Get sizes
-        int rowsNb1 = predictors[i_dat]->GetLatPtsnb();
-        int colsNb1 = predictors[i_dat]->GetLonPtsnb();
-        int rowsNb2 = predictors[i_dat+1]->GetLatPtsnb();
-        int colsNb2 = predictors[i_dat+1]->GetLonPtsnb();
-        int timeSize = predictors[i_dat]->GetSizeTime();
-
-        #ifdef _DEBUG
-            if (i_dat>0)
-            {
-                wxASSERT(prevTimeSize==timeSize);
-            }
-            prevTimeSize = timeSize;
-        #endif
-
-        wxASSERT(rowsNb1>0);
-        wxASSERT(colsNb1>0);
-        wxASSERT(rowsNb2>0);
-        wxASSERT(colsNb2>0);
-        wxASSERT(timeSize>0);
-
-        bool putBelow;
-        int rowsNew, colsNew;
-        if(colsNb1==colsNb2)
-        {
-            colsNew = colsNb1;
-            rowsNew = rowsNb1+rowsNb2;
-            putBelow = true;
-        }
-        else if(rowsNb1==rowsNb2)
-        {
-            rowsNew = rowsNb1;
-            colsNew = colsNb1+colsNb2;
-            putBelow = false;
-        }
-        else
-        {
-            asThrowException(_("The predictors sizes make them impossible to merge."));
-        }
-
-        Array2DFloat tmp(rowsNew,colsNew);
-
-        for(int i_time=0; i_time<timeSize; i_time++)
-        {
-            tmp.topLeftCorner(rowsNb1,colsNb1) = predictors[i_dat]->GetData()[i_time];
-
-            if(putBelow)
-            {
-                tmp.block(rowsNb1,0,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
-            }
-            else
-            {
-                tmp.block(0,colsNb1,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
-            }
-
-            copyData[counter].push_back(tmp);
-        }
-
-        counter++;
-    }
-
     // Get sizes
-    int rowsNb = copyData[0][0].rows();
-    int colsNb = copyData[0][0].cols();
-    int timeSize = copyData[0].size();
+    int rowsNb = predictors[0]->GetData()[0].rows();
+    int colsNb = predictors[0]->GetData()[0].cols();
+    int timeSize = predictors[0]->GetData().size();
 
     wxASSERT(rowsNb>0);
     wxASSERT(colsNb>0);
@@ -543,14 +478,9 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
         {
             for (int i_col=0; i_col<colsNb; i_col++)
             {
-                // Get wind value
-                wind = sqrt(copyData[0][i_time](i_row,i_col)*copyData[0][i_time](i_row,i_col) + copyData[1][i_time](i_row,i_col)*copyData[1][i_time](i_row,i_col));
-                multi[i_time](i_row, i_col) = wind;
-
-                for (unsigned int i_dat=2; i_dat<copyData.size(); i_dat++)
-                {
-                    multi[i_time](i_row, i_col) *= copyData[i_dat][i_time](i_row,i_col);
-                }
+                wind = sqrt(predictors[0]->GetData()[i_time](i_row,i_col)*predictors[0]->GetData()[i_time](i_row,i_col) 
+                            + predictors[1]->GetData()[i_time](i_row,i_col)*predictors[1]->GetData()[i_time](i_row,i_col));
+                multi[i_time](i_row, i_col) = wind * predictors[2]->GetData()[i_time](i_row,i_col) * predictors[3]->GetData()[i_time](i_row,i_col);
             }
         }
     }
