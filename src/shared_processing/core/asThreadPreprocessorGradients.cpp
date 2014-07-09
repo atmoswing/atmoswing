@@ -37,12 +37,9 @@ m_pGradients(gradients),
 m_pPredictors(predictors)
 {
     m_Status = Initializing;
-
     m_Type = asThread::PreprocessorGradients;
-    
     m_Start = start;
     m_End = end;
-
     m_Status = Waiting;
 }
 
@@ -86,7 +83,6 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
             }
         }
 
-        //gradients.push_back(tmpgrad.transpose());
         (*m_pGradients)[i_time] = tmpgrad.transpose();
     }
 

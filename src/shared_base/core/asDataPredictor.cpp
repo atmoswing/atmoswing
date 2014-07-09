@@ -66,12 +66,7 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     m_LatPtsnb = val[0].rows();
     m_LonPtsnb = val[0].cols();
     m_Data.clear();
-    m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
-
-    for (int i=0; i<m_SizeTime; i++)
-    {
-        m_Data.push_back(val[i]);
-    }
+    m_Data = val;
 
     return true;
 }
@@ -155,7 +150,8 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
     if (area)
     {
         // Get a container with the final size
-        Array2DFloat finalLatLonData(m_LatPtsnb,m_LonPtsnb);
+        int sizeTime = compositeData[0].size();
+        m_Data = VArray2DFloat(sizeTime, Array2DFloat(m_LatPtsnb,m_LonPtsnb));
 
         Array2DFloat blockUL, blockLL, blockUR, blockLR;
         int isblockUL = asNONE, isblockLL = asNONE, isblockUR = asNONE, isblockLR = asNONE;
@@ -191,9 +187,7 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
         }
 
         // Merge the composite data together
-        int sizeTimeYear = compositeData[0].size();
-
-        for (int i_time=0; i_time<sizeTimeYear; i_time++)
+        for (int i_time=0; i_time<sizeTime; i_time++)
         {
             // Append the composite areas
             for (int i_area = 0; i_area<area->GetNbComposites(); i_area++)
@@ -201,12 +195,12 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
                 if(i_area == isblockUL)
                 {
                     blockUL = compositeData[i_area][i_time];
-                    finalLatLonData.topLeftCorner(blockUL.rows(), blockUL.cols()) = blockUL;
+                    m_Data[i_time].topLeftCorner(blockUL.rows(), blockUL.cols()) = blockUL;
                 }
                 else if(i_area == isblockUR)
                 {
                     blockUR = compositeData[i_area][i_time];
-                    finalLatLonData.block(0, finalLatLonData.cols()-blockUR.cols(), blockUR.rows(), blockUR.cols()) = blockUR;
+                    m_Data[i_time].block(0, m_LonPtsnb-blockUR.cols(), blockUR.rows(), blockUR.cols()) = blockUR;
                 }
                 else if(i_area == isblockLL)
                 {
@@ -228,18 +222,11 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
                     return false;
                 }
             }
-            m_Data.push_back(finalLatLonData);
-            finalLatLonData.setZero(m_LatPtsnb,m_LonPtsnb);
         }
     }
     else
     {
-        int sizeTimeYear = compositeData[0].size();
-
-        for (int i_time=0; i_time<sizeTimeYear; i_time++)
-        {
-            m_Data.push_back(compositeData[0][i_time]);
-        }
+        m_Data = compositeData[0];
     }
 
     return true;
@@ -276,9 +263,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
         // Containers for results
         int finalLengthLon = desiredArea->GetUaxisPtsnb();
         int finalLengthLat = desiredArea->GetVaxisPtsnb();
-        Array2DFloat latlonData(finalLengthLat,finalLengthLon);
-        VArray2DFloat latlonTimeData;
-        latlonTimeData.reserve(finalLengthLat*finalLengthLon*m_Data.size());
+        VArray2DFloat latlonTimeData(m_Data.size(), Array2DFloat(finalLengthLat,finalLengthLon));
 
         // Creation of the axes
         Array1DFloat axisDataLon;
@@ -427,14 +412,14 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
 
                     if (dU==0 && dV==0)
                     {
-                        latlonData(i_lat, i_lon) = m_Data[i_time](indexVfloor, indexUfloor);
+                        latlonTimeData[i_time](i_lat, i_lon) = m_Data[i_time](indexVfloor, indexUfloor);
                     }
                     else if (dU==0)
                     {
                         valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
                         valULcorner = m_Data[i_time](indexVceil, indexUfloor);
 
-                        latlonData(i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
                                                   + (1-dU)*(dV)*valULcorner;
                     }
                     else if (dV==0)
@@ -442,7 +427,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                         valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
                         valLRcorner = m_Data[i_time](indexVfloor, indexUceil);
 
-                        latlonData(i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
                                                   + (dU)*(1-dV)*valLRcorner;
                     }
                     else
@@ -452,7 +437,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                         valLRcorner = m_Data[i_time](indexVfloor, indexUceil);
                         valURcorner = m_Data[i_time](indexVceil, indexUceil);
 
-                        latlonData(i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
                                                   + (1-dU)*(dV)*valULcorner
                                                   + (dU)*(1-dV)*valLRcorner
                                                   + (dU)*(dV)*valURcorner;
@@ -463,10 +448,8 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
             }
 
             indexLastLat = 0;
-            latlonTimeData.push_back(latlonData);
         }
 
-        m_Data.resize(0);
         m_Data = latlonTimeData;
         m_LatPtsnb = finalLengthLat;
         m_LonPtsnb = finalLengthLon;

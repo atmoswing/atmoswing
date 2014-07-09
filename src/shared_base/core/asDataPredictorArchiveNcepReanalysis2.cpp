@@ -534,7 +534,6 @@ bool asDataPredictorArchiveNcepReanalysis2::Load(asGeoAreaCompositeGrid *desired
             VectorInt vectIndexLengthLat;
             VectorInt vectIndexLengthLon;
             VectorBool vectLoad360;
-            VectorInt vectTotLength;
             VVectorShort vectData;
             VVectorShort vectData360;
 
@@ -764,7 +763,6 @@ bool asDataPredictorArchiveNcepReanalysis2::Load(asGeoAreaCompositeGrid *desired
                 vectIndexLengthLat.push_back(indexLengthLat);
                 vectIndexLengthLon.push_back(indexLengthLon);
                 vectLoad360.push_back(load360);
-                vectTotLength.push_back(totLength);
                 vectData.push_back(data);
                 vectData360.push_back(data360);
             }
@@ -784,19 +782,20 @@ bool asDataPredictorArchiveNcepReanalysis2::Load(asGeoAreaCompositeGrid *desired
                 int indexLengthLat = vectIndexLengthLat[i_area];
                 int indexLengthLon = vectIndexLengthLon[i_area];
                 bool load360 = vectLoad360[i_area];
-                int totLength = vectTotLength[i_area];
                 VectorShort data = vectData[i_area];
                 VectorShort data360 = vectData360[i_area];
 
                 // Containers for results
-                Array2DFloat latlonData(indexLengthLat,indexLengthLon);
+                VArray2DFloat latlonTimeData;
                 if(load360)
                 {
-                    latlonData.resize(indexLengthLat,indexLengthLon+1);
+                    latlonTimeData = VArray2DFloat(indexLengthTimeArray, Array2DFloat(indexLengthLat,indexLengthLon+1));
+                }
+                else
+                {
+                    latlonTimeData = VArray2DFloat(indexLengthTimeArray, Array2DFloat(indexLengthLat,indexLengthLon));
                 }
 
-                VArray2DFloat latlonTimeData;
-                latlonTimeData.reserve(totLength);
                 int ind = 0;
 
                 // Loop to extract the data from the array
@@ -813,25 +812,25 @@ bool asDataPredictorArchiveNcepReanalysis2::Load(asGeoAreaCompositeGrid *desired
                             if (scalingNeeded)
                             {
                                 // Add the Offset and multiply by the Scale Factor
-                                latlonData(i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
+                                latlonTimeData[i_time](i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
                             }
                             else
                             {
-                                latlonData(i_lat,i_lon) = (float)data[ind];
+                                latlonTimeData[i_time](i_lat,i_lon) = (float)data[ind];
                             }
 
                             // Check if not NaN
                             bool notNan = true;
                             for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
                             {
-                                if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
+                                if ((float)data[ind]==m_NanValues[i_nan] || latlonTimeData[i_time](i_lat,i_lon)==m_NanValues[i_nan])
                                 {
                                     notNan = false;
                                 }
                             }
                             if (!notNan)
                             {
-                                latlonData(i_lat,i_lon) = NaNFloat;
+                                latlonTimeData[i_time](i_lat,i_lon) = NaNFloat;
                             }
                         }
 
@@ -843,39 +842,29 @@ bool asDataPredictorArchiveNcepReanalysis2::Load(asGeoAreaCompositeGrid *desired
                             if (scalingNeeded)
                             {
                                 // Add the Offset and multiply by the Scale Factor
-                                latlonData(i_lat,indexLengthLon) = (float)data360[ind] * dataScaleFactor + dataAddOffset;
+                                latlonTimeData[i_time](i_lat,indexLengthLon) = (float)data360[ind] * dataScaleFactor + dataAddOffset;
                             }
                             else
                             {
-                                latlonData(i_lat,indexLengthLon) = (float)data360[ind];
+                                latlonTimeData[i_time](i_lat,indexLengthLon) = (float)data360[ind];
                             }
 
                             // Check if not NaN
                             bool notNan = true;
                             for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
                             {
-                                if ((float)data360[ind]==m_NanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_NanValues[i_nan])
+                                if ((float)data360[ind]==m_NanValues[i_nan] || latlonTimeData[i_time](i_lat,indexLengthLon)==m_NanValues[i_nan])
                                 {
                                     notNan = false;
                                 }
                             }
                             if (!notNan)
                             {
-                                latlonData(i_lat,indexLengthLon) = NaNFloat;
+                                latlonTimeData[i_time](i_lat,indexLengthLon) = NaNFloat;
                             }
                         }
                     }
 
-                    latlonTimeData.push_back(latlonData);
-
-                    if(load360)
-                    {
-                        latlonData.setZero(indexLengthLat,indexLengthLon+1);
-                    }
-                    else
-                    {
-                        latlonData.setZero(indexLengthLat,indexLengthLon);
-                    }
                     counterTime++;
                 }
 
