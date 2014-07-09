@@ -448,9 +448,9 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
 
     // Merge
     wxASSERT(predictors[0]);
-    int counter = 0;
-    VVArray2DFloat copyData = VVArray2DFloat(inputSize/2, VArray2DFloat(predictors[0]->GetSizeTime(), ));
+    VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
     copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
+    int counter = 0;
     #ifdef _DEBUG
         int prevTimeSize = 0;
     #endif
@@ -500,18 +500,22 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
             asThrowException(_("The predictors sizes make them impossible to merge."));
         }
 
+        Array2DFloat tmp(rowsNew,colsNew);
+
         for(int i_time=0; i_time<timeSize; i_time++)
         {
-            copyData[counter][i_time].topLeftCorner(rowsNb1,colsNb1) = predictors[i_dat]->GetData()[i_time];
+            tmp.topLeftCorner(rowsNb1,colsNb1) = predictors[i_dat]->GetData()[i_time];
 
             if(putBelow)
             {
-                copyData[counter][i_time].block(rowsNb1,0,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
+                tmp.block(rowsNb1,0,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
             }
             else
             {
-                copyData[counter][i_time].block(0,colsNb1,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
+                tmp.block(0,colsNb1,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
             }
+
+            copyData[counter].push_back(tmp);
         }
 
         counter++;
