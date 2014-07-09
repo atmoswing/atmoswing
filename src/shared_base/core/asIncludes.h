@@ -156,6 +156,9 @@ using namespace std;
 #ifdef APP_CALIBRATOR
     #include "asGlobVarsCalibrator.h"
 #endif
+#ifdef UNIT_TESTING
+    #include "asGlobVarsCalibrator.h"
+#endif
 
 #endif // ATMOSWINGINC_H_INCLUDED
 
