@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
+
 #include "asForecastScore.h"
 #include "asForecastScoreCRPSS.h"
 #include "asForecastScoreCRPSAR.h"
@@ -35,6 +35,7 @@
 #include "asForecastScoreCRPSsharpnessAR.h"
 #include "asForecastScoreCRPSsharpnessEP.h"
 #include "asForecastScoreCRPSHersbachDecomp.h"
+#include "asForecastScoreCRPSHersbachDecompS.h"
 #include "asForecastScoreDF0.h"
 #include "asForecastScoreContingencyTable.h"
 #include "asForecastScoreMAE.h"
@@ -98,6 +99,11 @@ asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
         case (CRPSreliability):
         {
             asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+            return score;
+        }
+        case (CRPSreliabilityS):
+        {
+            asForecastScore* score = new asForecastScoreCRPSHersbachDecompS();
             return score;
         }
         case (CRPSpotential):
@@ -200,9 +206,12 @@ asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
             asForecastScore* score = new asForecastScoreRankHistogram();
             return score;
         }
+        default:
+        {
+            asLogError(_("The forecast score was not correctly set (undefined)."));
+            return NULL;
+        }
     }
-
-    return NULL;
 }
 
 asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
