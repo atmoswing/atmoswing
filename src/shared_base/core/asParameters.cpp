@@ -595,7 +595,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     if (stationIdsString.IsEmpty())
     {
         asLogError(_("The station ID was not provided."));
-        return VectorInt(0);
+        return ids;
     }
 
     // Multivariate
@@ -607,14 +607,14 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         if (subStr.Find("(") != wxNOT_FOUND)
         {
             asLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
-            return VectorInt(0);
+            return ids;
         }
 
         // Check that it contains 1 closing bracket at the end
         if (subStr.Find(")") != subStr.size()-1)
         {
             asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
-            return VectorInt(0);
+            return ids;
         }
 
         // Extract content
@@ -638,7 +638,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND || stationIdsString.Find(",") != wxNOT_FOUND)
         {
             asLogError(_("The format of the station ID is not correct (should be only digits)."));
-            return VectorInt(0);
+            return ids;
         }
         int id = wxAtoi(stationIdsString);
         ids.push_back(id);
