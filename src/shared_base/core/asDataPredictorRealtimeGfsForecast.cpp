@@ -404,15 +404,16 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
             }
 
             // Containers for results
-            Array2DFloat latlonData(indexLengthLat,indexLengthLon);
-
+            VArray2DFloat latlonTimeData;
             if(load360)
             {
-                latlonData.resize(indexLengthLat,indexLengthLon+1);
+                latlonTimeData = VArray2DFloat(1, Array2DFloat(indexLengthLat,indexLengthLon+1));
+            }
+            else
+            {
+                latlonTimeData = VArray2DFloat(1, Array2DFloat(indexLengthLat,indexLengthLon));
             }
 
-            VArray2DFloat latlonTimeData;
-            latlonTimeData.reserve(totLength);
             int ind = 0;
 
             // Loop to extract the data from the array
@@ -423,26 +424,24 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
                     ind = i_lon;
                     ind += i_lat * indexLengthLon;
                     // Add the Offset and multiply by the Scale Factor
-                    latlonData(i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    latlonTimeData[0](i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
                 }
 
                 if(load360)
                 {
                     ind = i_lat;
                     // Add the Offset and multiply by the Scale Factor
-                    latlonData(i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    latlonTimeData[0](i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
                 }
             }
 
-            latlonTimeData.push_back(latlonData);
-
             if(load360)
             {
-                latlonData.setZero(indexLengthLat,indexLengthLon+1);
+                latlonTimeData[0].setZero(indexLengthLat,indexLengthLon+1);
             }
             else
             {
-                latlonData.setZero(indexLengthLat,indexLengthLon);
+                latlonTimeData[0].setZero(indexLengthLat,indexLengthLon);
             }
 
             compositeData.push_back(latlonTimeData);

@@ -41,11 +41,7 @@ else (WIN32)
 endif (WIN32)
 
 # Enable Cppcheck
-if (WIN32)
-    set(USE_CPPCHECK OFF CACHE BOOL "Sould we use Cppcheck (http://cppcheck.sourceforge.net/) ?" )
-else (WIN32)
-    set(USE_CPPCHECK OFF)
-endif (WIN32)
+set(USE_CPPCHECK OFF CACHE BOOL "Sould we use Cppcheck (http://cppcheck.sourceforge.net/) ?" )
 
 # Enable GUIs
 if (BUILD_FORECASTER OR BUILD_CALIBRATOR AND NOT BUILD_VIEWER)

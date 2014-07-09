@@ -1141,14 +1141,14 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     Array2DFloat analogsDates = anaDates.GetAnalogsDates();
     Array2DFloat analogsCriteria = anaDates.GetAnalogsCriteria();
     Array1DDouble predictandTime = predictand.GetTime();
-    VArray1DFloat predictandDataNorm;
-    VArray1DFloat predictandDataGross;
     VectorInt stations = params.GetPredictandStationIds();
     int stationsNb = stations.size();
+    VArray1DFloat predictandDataNorm(stationsNb);
+    VArray1DFloat predictandDataGross(stationsNb);
     for (int i_st=0; i_st<stationsNb; i_st++)
     {
-        predictandDataNorm.push_back(predictand.GetDataNormalizedStation(stations[i_st]));
-        predictandDataGross.push_back(predictand.GetDataGrossStation(stations[i_st]));
+        predictandDataNorm[i_st] = predictand.GetDataNormalizedStation(stations[i_st]);
+        predictandDataGross[i_st] = predictand.GetDataGrossStation(stations[i_st]);
     }
 
     int predictandTimeLength = predictand.GetTimeLength();

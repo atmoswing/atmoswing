@@ -46,8 +46,8 @@ public:
 
 protected:
 private:
-    std::vector < asDataPredictor* > m_pPredictors;
     VArray2DFloat* m_pGradients;
+    std::vector < asDataPredictor* > m_pPredictors;
     int m_Start;
     int m_End;
 

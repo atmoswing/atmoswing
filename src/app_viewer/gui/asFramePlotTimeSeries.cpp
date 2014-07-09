@@ -1064,13 +1064,3 @@ void asFramePlotTimeSeries::PlotInterpretation()
 
 }
 
-
-
-
-
-
-/*
-vector < wxPenStyle > styles;
-    styles.push_back(wxPENSTYLE_LONG_DASH);
-    styles.push_back(wxPENSTYLE_SHORT_DASH);
-    styles.push_back(wxPENSTYLE_DOT_DASH);*/

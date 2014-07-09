@@ -628,8 +628,11 @@ VVectorInt asParametersScoring::GetFileStationIdsVector(asFileParameters &filePa
             {
                 wxString txtbefore = value.BeforeFirst(separator);
                 value = value.AfterFirst(separator);
-                VectorInt ids = GetFileStationIds(txtbefore);
-                vect.push_back(ids);
+                if (!txtbefore.IsEmpty())
+                {
+                    VectorInt ids = GetFileStationIds(txtbefore);
+                    vect.push_back(ids);
+                }
             }
         }
         if(!value.IsEmpty())

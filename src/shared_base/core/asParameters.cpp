@@ -206,12 +206,11 @@ bool asParameters::FixAnalogsNb()
 
 VectorInt asParameters::BuildVectorInt(int min, int max, int step)
 {
-    VectorInt vect;
     int stepsnb = 1+(max-min)/step;
+    VectorInt vect(stepsnb);
     for(int i=0; i<stepsnb; i++)
     {
-        int val = min+i*step;
-        vect.push_back(val);
+        vect[i] = min+i*step;
     }
 
     return vect;
@@ -243,12 +242,11 @@ VectorInt asParameters::BuildVectorInt(wxString str)
 
 VectorFloat asParameters::BuildVectorFloat(float min, float max, float step)
 {
-    VectorFloat vect;
     int stepsnb = 1+(max-min)/step;
+    VectorFloat vect(stepsnb);
     for(int i=0; i<stepsnb; i++)
     {
-        float val = min+(float)i*step;
-        vect.push_back(val);
+        vect[i] = min+(float)i*step;
     }
 
     return vect;
@@ -280,12 +278,11 @@ VectorFloat asParameters::BuildVectorFloat(wxString str)
 
 VectorDouble asParameters::BuildVectorDouble(double min, double max, double step)
 {
-    VectorDouble vect;
     int stepsnb = 1+(max-min)/step;
+    VectorDouble vect(stepsnb);
     for(int i=0; i<stepsnb; i++)
     {
-        double val = min+(double)i*step;
-        vect.push_back(val);
+        vect[i] = min+(double)i*step;
     }
 
     return vect;
@@ -595,7 +592,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     if (stationIdsString.IsEmpty())
     {
         asLogError(_("The station ID was not provided."));
-        return VectorInt(0);
+        return ids;
     }
 
     // Multivariate
@@ -607,14 +604,14 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         if (subStr.Find("(") != wxNOT_FOUND)
         {
             asLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
-            return VectorInt(0);
+            return ids;
         }
 
         // Check that it contains 1 closing bracket at the end
         if (subStr.Find(")") != subStr.size()-1)
         {
             asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
-            return VectorInt(0);
+            return ids;
         }
 
         // Extract content
@@ -638,7 +635,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND || stationIdsString.Find(",") != wxNOT_FOUND)
         {
             asLogError(_("The format of the station ID is not correct (should be only digits)."));
-            return VectorInt(0);
+            return ids;
         }
         int id = wxAtoi(stationIdsString);
         ids.push_back(id);

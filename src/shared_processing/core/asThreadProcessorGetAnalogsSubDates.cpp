@@ -49,17 +49,17 @@ asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(std::ve
                                                                          bool* containsNaNs)
 :
 asThread(),
-m_pPredictorsArchive(predictorsArchive), 
-m_pPredictorsTarget(predictorsTarget), 
-m_Criteria(criteria),
+m_pPredictorsArchive(predictorsArchive),
+m_pPredictorsTarget(predictorsTarget),
 m_pTimeArrayArchiveData(timeArrayArchiveData),
 m_pTimeArrayTargetData(timeArrayTargetData),
 m_pTimeTargetSelection(timeTargetSelection),
+m_Criteria(criteria),
+m_Params(params),
 m_vTargData(vTargData),
 m_vArchData(vArchData),
 m_vRowsNb(vRowsNb),
 m_vColsNb(vColsNb),
-m_Params(params),
 m_pFinalAnalogsCriteria(finalAnalogsCriteria),
 m_pFinalAnalogsDates(finalAnalogsDates),
 m_pPreviousAnalogsDates(previousAnalogsDates)
