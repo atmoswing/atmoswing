@@ -35,7 +35,6 @@
 #include "asPredictorCriteriaRSE.h"
 #include "asPredictorCriteriaS1.h"
 #include "asPredictorCriteriaS1grads.h"
-#include "asPredictorCriteriaS1weights.h"
 #include "asPredictorCriteriaSAD.h"
 
 
@@ -65,11 +64,6 @@ asPredictorCriteria* asPredictorCriteria::GetInstance(Criteria criteriaEnum, int
         case (S1grads):
         {
             asPredictorCriteria* criteria = new asPredictorCriteriaS1grads(linAlgebraMethod);
-            return criteria;
-        }
-        case (S1weights):
-        {
-            asPredictorCriteria* criteria = new asPredictorCriteriaS1weights(linAlgebraMethod);
             return criteria;
         }
         case (SAD):
@@ -131,11 +125,6 @@ asPredictorCriteria* asPredictorCriteria::GetInstance(const wxString &criteriaSt
     else if (criteriaString.CmpNoCase("S1grads")==0)
     {
         asPredictorCriteria* criteria = new asPredictorCriteriaS1grads(linAlgebraMethod);
-        return criteria;
-    }
-    else if (criteriaString.CmpNoCase("S1weights")==0)
-    {
-        asPredictorCriteria* criteria = new asPredictorCriteriaS1weights(linAlgebraMethod);
         return criteria;
     }
     else if (criteriaString.CmpNoCase("SAD")==0)

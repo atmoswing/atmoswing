@@ -40,7 +40,6 @@ public:
         Undefined,
         S1, // Teweles-Wobus
         S1grads, // Teweles-Wobus on gradients
-        S1weights, // Teweles-Wobus with axis weighting
         SAD, // Sum of absolute differences
         MD, // Mean difference
         MRDtoMax, // Mean Relative difference to the max value
