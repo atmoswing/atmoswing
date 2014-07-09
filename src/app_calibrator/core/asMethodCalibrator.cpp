@@ -1195,6 +1195,71 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
     return true;
 }
 
+VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
+{
+	VectorInt stationIds = params.GetPredictandStationIds();
+
+	// Get start and end dates
+	Array1DDouble predictandTime = m_PredictandDB->GetTime();
+	float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
+	double timeStart, timeEnd;
+	timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
+	timeStart = floor(timeStart)+predictandTimeDays;
+	timeEnd = wxMin(predictandTime[predictandTime.size()-1],params.GetArchiveEnd());
+	timeEnd = floor(timeEnd)+predictandTimeDays;
+
+	// Check if data are effectively available for this period
+	int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
+	int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
+
+	for (int i_st=0; i_st<stationIds.size(); i_st++)
+	{
+		Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
+
+		while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart)))
+		{
+			indexPredictandTimeStart++;
+		}
+		while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeEnd)))
+		{
+			indexPredictandTimeEnd--;
+		}
+	}
+
+	timeStart = predictandTime[indexPredictandTimeStart];
+	timeStart = floor(timeStart)+predictandTimeDays;
+	timeEnd = predictandTime[indexPredictandTimeEnd];
+	timeEnd = floor(timeEnd)+predictandTimeDays;
+	indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
+	indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
+
+	// Get index step
+	double predictandTimeStep = predictandTime[1]-predictandTime[0];
+	double targetTimeStep = params.GetTimeArrayTargetTimeStepHours()/24.0;
+	int indexStep = targetTimeStep/predictandTimeStep;
+
+	// Get vector length
+	int dataLength = (indexPredictandTimeEnd-indexPredictandTimeStart)/indexStep+1;
+
+	// Process the climatology score
+	VArray1DFloat climatologyData(stationIds.size(), Array1DFloat(dataLength));
+	for (int i_st=0; i_st<stationIds.size(); i_st++)
+	{
+		Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
+
+		// Set data
+		int counter = 0;
+		for (int i=indexPredictandTimeStart; i<=indexPredictandTimeEnd; i+=indexStep)
+		{
+			climatologyData[i_st][counter] = predictandDataNorm[i];
+			counter++;
+		}
+		wxASSERT(dataLength==counter);
+	}
+
+	return climatologyData;
+}
+
 void asMethodCalibrator::Cleanup(std::vector < asDataPredictorArchive* > predictorsPreprocess)
 {
     if (predictorsPreprocess.size()>0)
@@ -1564,67 +1629,13 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     {
         asLogMessage(_("Processing the score of the climatology."));
 
+        VArray1DFloat climatologyData = GetClimatologyData(params);
         VectorInt stationIds = params.GetPredictandStationIds();
-
-        // Get start and end dates
-        Array1DDouble predictandTime = m_PredictandDB->GetTime();
-        float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
-        double timeStart, timeEnd;
-        timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
-        timeStart = floor(timeStart)+predictandTimeDays;
-        timeEnd = wxMin(predictandTime[predictandTime.size()-1],params.GetArchiveEnd());
-        timeEnd = floor(timeEnd)+predictandTimeDays;
-
-        // Check if data are effectively available for this period
-        int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
-        int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
-
-        for (int i_st=0; i_st<stationIds.size(); i_st++)
-        {
-            Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
-
-            while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart)))
-            {
-                indexPredictandTimeStart++;
-            }
-            while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeEnd)))
-            {
-                indexPredictandTimeEnd--;
-            }
-        }
-
-        timeStart = predictandTime[indexPredictandTimeStart];
-        timeStart = floor(timeStart)+predictandTimeDays;
-        timeEnd = predictandTime[indexPredictandTimeEnd];
-        timeEnd = floor(timeEnd)+predictandTimeDays;
-        indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
-        indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
-
-        // Get index step
-        double predictandTimeStep = predictandTime[1]-predictandTime[0];
-        double targetTimeStep = params.GetTimeArrayTargetTimeStepHours()/24.0;
-        int indexStep = targetTimeStep/predictandTimeStep;
-
-        // Get vector length
-        int dataLength = (indexPredictandTimeEnd-indexPredictandTimeStart)/indexStep+1;
-
-        // Process the climatology score
         m_ScoreClimatology.resize(stationIds.size());
+
         for (int i_st=0; i_st<stationIds.size(); i_st++)
         {
-            Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
-
-            // Set data
-            Array1DFloat climatologyData(dataLength);
-            int counter = 0;
-            for (int i=indexPredictandTimeStart; i<=indexPredictandTimeEnd; i+=indexStep)
-            {
-                climatologyData[counter] = predictandDataNorm[i];
-                counter++;
-            }
-            wxASSERT(dataLength==counter);
-
-            forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues()[i_st], climatologyData);
+            forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues()[i_st], climatologyData[i_st]);
             m_ScoreClimatology[i_st] = forecastScore->GetScoreClimatology();
         }
     }

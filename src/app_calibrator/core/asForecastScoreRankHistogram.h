@@ -57,6 +57,8 @@ public:
      */
     bool ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData);
 
+    Array1DFloat ProcessHistogramClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData);
+
 
 protected:
 
