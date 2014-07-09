@@ -111,7 +111,7 @@ bool AtmoswingAppCalibrator::OnInit()
 	#endif
 
     // Set application name
-    wxString appName = "Atmoswing calibrator";
+    wxString appName = "AtmoSwing calibrator";
     wxApp::SetAppName(appName);
 
     g_GuiMode = true;
@@ -136,7 +136,7 @@ bool AtmoswingAppCalibrator::OnInit()
 
         if (!multipleInstances)
         {
-            const wxString instanceName = wxString::Format(wxT("AtmoswingCalibrator-%s"),wxGetUserId().c_str());
+            const wxString instanceName = wxString::Format(wxT("AtmoSwingCalibrator-%s"),wxGetUserId().c_str());
             m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
             if ( m_SingleInstanceChecker->IsAnotherRunning() )
             {
@@ -187,12 +187,12 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
     if (g_Local)
     {
         wxString fullPath = localPath;
-        fullPath.Append("AtmoswingCalibrator.log");
+        fullPath.Append("AtmoSwingCalibrator.log");
         Log().CreateFileOnlyAtPath(fullPath);
     }
     else
     {
-        Log().CreateFileOnly("AtmoswingCalibrator.log");
+        Log().CreateFileOnly("AtmoSwingCalibrator.log");
     }
 
     Log().DisableMessageBoxOnError();
@@ -268,7 +268,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
             wxFAIL_MSG( _("No wxMessageOutput object?") );
         }
 
-        return false; // We don0t want to continue
+        return false; // We don't want to continue
     }
 
     // Check for a run number
@@ -299,10 +299,10 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
         // Create local ini file
         wxString iniPath = localPath;
-        iniPath.Append("Atmoswing.ini");
+        iniPath.Append("AtmoSwing.ini");
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,iniPath,iniPath,wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,iniPath,iniPath,wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
     else
@@ -312,7 +312,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("Atmoswing",wxEmptyString,asConfig::GetUserDataDir()+"Atmoswing.ini",asConfig::GetUserDataDir()+"Atmoswing.ini",wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
