@@ -134,20 +134,20 @@ void asMethodCalibrator::RemoveNaNsInTemp()
 {
     wxASSERT(m_ParametersTemp.size()==m_ScoresCalibTemp.size());
 
-    std::vector <asParametersCalibration> CopyParametersTemp;
-    VectorFloat CopyScoresCalibTemp;
+    std::vector <asParametersCalibration> copyParametersTemp;
+    VectorFloat copyScoresCalibTemp;
 
     for (unsigned int i=0; i<m_ScoresCalibTemp.size(); i++)
     {
         if (!asTools::IsNaN(m_ScoresCalibTemp[i]))
         {
-            CopyScoresCalibTemp.push_back(m_ScoresCalibTemp[i]);
-            CopyParametersTemp.push_back(m_ParametersTemp[i]);
+            copyScoresCalibTemp.push_back(m_ScoresCalibTemp[i]);
+            copyParametersTemp.push_back(m_ParametersTemp[i]);
         }
     }
 
-    m_ScoresCalibTemp = CopyScoresCalibTemp;
-    m_ParametersTemp = CopyParametersTemp;
+    m_ScoresCalibTemp = copyScoresCalibTemp;
+    m_ParametersTemp = copyParametersTemp;
 
     wxASSERT(m_ParametersTemp.size()==m_ScoresCalibTemp.size());
     wxASSERT(m_ParametersTemp.size()>0);

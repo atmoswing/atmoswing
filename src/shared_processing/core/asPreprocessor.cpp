@@ -37,11 +37,11 @@
 
 bool asPreprocessor::Preprocess(std::vector < asDataPredictorArchive* > predictors, const wxString& method, asDataPredictor *result)
 {
-    std::vector < asDataPredictor* > ptorsPredictors;
+    std::vector < asDataPredictor* > ptorsPredictors(predictors.size());
 
     for (unsigned int i=0; i<predictors.size(); i++)
     {
-        ptorsPredictors.push_back(predictors[i]);
+        ptorsPredictors[i] = predictors[i];
     }
 
     return Preprocess(ptorsPredictors, method, result);
@@ -50,11 +50,11 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictorArchive* > predicto
 #ifndef MINIMAL_LINKS
 bool asPreprocessor::Preprocess(std::vector < asDataPredictorRealtime* > predictors, const wxString& method, asDataPredictor *result)
 {
-    std::vector < asDataPredictor* > ptorsPredictors;
+    std::vector < asDataPredictor* > ptorsPredictors(predictors.size());
 
     for (unsigned int i=0; i<predictors.size(); i++)
     {
-        ptorsPredictors.push_back(predictors[i]);
+        ptorsPredictors[i] = predictors[i];
     }
 
     return Preprocess(ptorsPredictors, method, result);
@@ -192,23 +192,19 @@ bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predi
     wxASSERT(timeSize>0);
 
     // Create container
-    Array2DFloat tmpdiff = Array2DFloat::Constant(rowsNb, colsNb, 1);
-    VArray2DFloat resdiff;
-    resdiff.reserve(timeSize*rowsNb*colsNb);
+    VArray2DFloat resdiff(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
-        tmpdiff.fill(1);
+        resdiff[i_time].fill(1);
 
         for (int i_row=0; i_row<rowsNb; i_row++)
         {
             for (int i_col=0; i_col<colsNb; i_col++)
             {
-                tmpdiff(i_row, i_col) = predictors[0]->GetData()[i_time](i_row,i_col)-predictors[1]->GetData()[i_time](i_row,i_col);
+                resdiff[i_time](i_row, i_col) = predictors[0]->GetData()[i_time](i_row,i_col)-predictors[1]->GetData()[i_time](i_row,i_col);
             }
         }
-
-        resdiff.push_back(tmpdiff);
     }
 
     // Overwrite the data in the predictor object
@@ -235,13 +231,11 @@ bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > p
     wxASSERT(timeSize>0);
 
     // Create container
-    Array2DFloat tmpmulti = Array2DFloat::Constant(rowsNb, colsNb, 1);
-    VArray2DFloat multi;
-    multi.reserve(timeSize*rowsNb*colsNb);
+    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
-        tmpmulti.fill(1);
+        multi[i_time].fill(1);
 
         for (int i_row=0; i_row<rowsNb; i_row++)
         {
@@ -250,12 +244,10 @@ bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > p
                 for (unsigned int i_dat=0; i_dat<predictors.size(); i_dat++)
                 {
                     wxASSERT(predictors[i_dat]);
-                    tmpmulti(i_row, i_col) *= predictors[i_dat]->GetData()[i_time](i_row,i_col);
+                    multi[i_time](i_row, i_col) *= predictors[i_dat]->GetData()[i_time](i_row,i_col);
                 }
             }
         }
-
-        multi.push_back(tmpmulti);
     }
 
     // Overwrite the data in the predictor object
@@ -358,13 +350,11 @@ bool asPreprocessor::PreprocessMergeCouplesAndMultiply(std::vector < asDataPredi
     wxASSERT(timeSize>0);
 
     // Create container
-    Array2DFloat tmpmulti = Array2DFloat::Constant(rowsNb, colsNb, 1);
-    VArray2DFloat multi;
-    multi.reserve(timeSize*rowsNb*colsNb);
+    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
-        tmpmulti.fill(1);
+        multi[i_time].fill(1);
 
         for (int i_row=0; i_row<rowsNb; i_row++)
         {
@@ -372,12 +362,10 @@ bool asPreprocessor::PreprocessMergeCouplesAndMultiply(std::vector < asDataPredi
             {
                 for (unsigned int i_dat=0; i_dat<copyData.size(); i_dat++)
                 {
-                    tmpmulti(i_row, i_col) *= copyData[i_dat][i_time](i_row,i_col);
+                    multi[i_time](i_row, i_col) *= copyData[i_dat][i_time](i_row,i_col);
                 }
             }
         }
-
-        multi.push_back(tmpmulti);
     }
 
     // Overwrite the data in the predictor object
@@ -410,14 +398,11 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
 
     // Initialize
     wxASSERT(predictors[0]);
-    VVArray2DFloat copyData = VVArray2DFloat(2);
-    copyData.reserve(newRowsNb*newColsNb*timeSize*2);
+    VVArray2DFloat copyData = VVArray2DFloat(2, VArray2DFloat(timeSize, Array2DFloat(newRowsNb,newColsNb)));
 
     // Merge
     for(unsigned int i_half=0; i_half<2; i_half++)
     {
-        Array2DFloat tmp(newRowsNb,newColsNb);
-
         for(int i_time=0; i_time<timeSize; i_time++)
         {
             for(int i_dat=0; i_dat<inputSize/2; i_dat++)
@@ -428,18 +413,13 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
                 wxASSERT(predictors[i_curr]->GetLonPtsnb()==originalColsNb);
                 wxASSERT(predictors[i_curr]->GetSizeTime()==timeSize);
 
-                tmp.block(i_dat*originalRowsNb,0,originalRowsNb,originalColsNb) = predictors[i_curr]->GetData()[i_time];
+                copyData[i_half][i_time].block(i_dat*originalRowsNb,0,originalRowsNb,originalColsNb) = predictors[i_curr]->GetData()[i_time];
             }
-            copyData[i_half].push_back(tmp);
         }
     }
 
-    wxASSERT(copyData.size()==2);
-
     // Create container
-    Array2DFloat tmpmulti = Array2DFloat::Zero(newRowsNb, newColsNb);
-    VArray2DFloat multi;
-    multi.reserve(timeSize*newRowsNb*newColsNb);
+    VArray2DFloat multi(timeSize, Array2DFloat::Zero(newRowsNb, newColsNb));
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
@@ -447,14 +427,10 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
         {
             for (int i_col=0; i_col<newColsNb; i_col++)
             {
-                tmpmulti(i_row, i_col) = copyData[0][i_time](i_row,i_col)*copyData[1][i_time](i_row,i_col);
+                multi[i_time](i_row, i_col) = copyData[0][i_time](i_row,i_col)*copyData[1][i_time](i_row,i_col);
             }
         }
-
-        multi.push_back(tmpmulti);
     }
-
-    wxASSERT(multi.size()==timeSize);
 
     // Overwrite the data in the predictor object
     result->SetData(multi);
@@ -472,9 +448,9 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
 
     // Merge
     wxASSERT(predictors[0]);
-    VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
-    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
     int counter = 0;
+    VVArray2DFloat copyData = VVArray2DFloat(inputSize/2, VArray2DFloat(predictors[0]->GetSizeTime(), ));
+    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
     #ifdef _DEBUG
         int prevTimeSize = 0;
     #endif
@@ -524,22 +500,18 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
             asThrowException(_("The predictors sizes make them impossible to merge."));
         }
 
-        Array2DFloat tmp(rowsNew,colsNew);
-
         for(int i_time=0; i_time<timeSize; i_time++)
         {
-            tmp.topLeftCorner(rowsNb1,colsNb1) = predictors[i_dat]->GetData()[i_time];
+            copyData[counter][i_time].topLeftCorner(rowsNb1,colsNb1) = predictors[i_dat]->GetData()[i_time];
 
             if(putBelow)
             {
-                tmp.block(rowsNb1,0,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
+                copyData[counter][i_time].block(rowsNb1,0,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
             }
             else
             {
-                tmp.block(0,colsNb1,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
+                copyData[counter][i_time].block(0,colsNb1,rowsNb2,colsNb2) = predictors[i_dat+1]->GetData()[i_time];
             }
-
-            copyData[counter].push_back(tmp);
         }
 
         counter++;
@@ -555,15 +527,13 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
     wxASSERT(timeSize>0);
 
     // Create container
-    Array2DFloat tmpmulti = Array2DFloat::Constant(rowsNb, colsNb, 1);
-    VArray2DFloat multi;
-    multi.reserve(timeSize*rowsNb*colsNb);
+    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
     float wind = NaNFloat;
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
-        tmpmulti.fill(1);
+        multi[i_time].fill(1);
 
         for (int i_row=0; i_row<rowsNb; i_row++)
         {
@@ -571,16 +541,14 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
             {
                 // Get wind value
                 wind = sqrt(copyData[0][i_time](i_row,i_col)*copyData[0][i_time](i_row,i_col) + copyData[1][i_time](i_row,i_col)*copyData[1][i_time](i_row,i_col));
-                tmpmulti(i_row, i_col) = wind;
+                multi[i_time](i_row, i_col) = wind;
 
                 for (unsigned int i_dat=2; i_dat<copyData.size(); i_dat++)
                 {
-                    tmpmulti(i_row, i_col) *= copyData[i_dat][i_time](i_row,i_col);
+                    multi[i_time](i_row, i_col) *= copyData[i_dat][i_time](i_row,i_col);
                 }
             }
         }
-
-        multi.push_back(tmpmulti);
     }
 
     // Overwrite the data in the predictor object
@@ -608,15 +576,13 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector < asDataPredictor* > predic
     wxASSERT(timeSize>0);
 
     // Create container
-    Array2DFloat tmpmulti = Array2DFloat::Constant(rowsNb, colsNb, 1);
-    VArray2DFloat multi;
-    multi.reserve(timeSize*rowsNb*colsNb);
+    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
     float wind = NaNFloat;
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
-        tmpmulti.fill(1);
+        multi[i_time].fill(1);
 
         for (int i_row=0; i_row<rowsNb; i_row++)
         {
@@ -624,10 +590,9 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector < asDataPredictor* > predic
             {
                 // Get wind value
                 wind = sqrt(predictors[0]->GetData()[i_time](i_row,i_col)*predictors[0]->GetData()[i_time](i_row,i_col) + predictors[1]->GetData()[i_time](i_row,i_col)*predictors[1]->GetData()[i_time](i_row,i_col));
-                tmpmulti(i_row, i_col) = wind;
+                multi[i_time](i_row, i_col) = wind;
             }
         }
-        multi.push_back(tmpmulti);
     }
 
     // Overwrite the data in the predictor object

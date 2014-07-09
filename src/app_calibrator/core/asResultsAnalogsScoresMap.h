@@ -81,10 +81,10 @@ private:
     Array1DFloat m_MapLat;
     Array1DFloat m_MapLevel;
     VArray2DFloat m_MapScores; //!< Member variable "m_Scores"
-    VectorFloat m_Scores; //!< Member variable "m_Scores". Is a vector to allow for the use of the push_back function.
-    VectorFloat m_Lon; //!< Member variable "m_Lon". Is a vector to allow for the use of the push_back function.
-    VectorFloat m_Lat; //!< Member variable "m_Lat". Is a vector to allow for the use of the push_back function.
-    VectorFloat m_Level; //!< Member variable "m_Level". Is a vector to allow for the use of the push_back function.
+    VectorFloat m_Scores; //!< Member variable "m_Scores".
+    VectorFloat m_Lon; //!< Member variable "m_Lon".
+    VectorFloat m_Lat; //!< Member variable "m_Lat".
+    VectorFloat m_Level; //!< Member variable "m_Level".
 };
 
 #endif // ASRESULTSANALOGSSCORESMAP_H

@@ -206,12 +206,11 @@ bool asParameters::FixAnalogsNb()
 
 VectorInt asParameters::BuildVectorInt(int min, int max, int step)
 {
-    VectorInt vect;
     int stepsnb = 1+(max-min)/step;
+    VectorInt vect(stepsnb);
     for(int i=0; i<stepsnb; i++)
     {
-        int val = min+i*step;
-        vect.push_back(val);
+        vect[i] = min+i*step;
     }
 
     return vect;
@@ -243,12 +242,11 @@ VectorInt asParameters::BuildVectorInt(wxString str)
 
 VectorFloat asParameters::BuildVectorFloat(float min, float max, float step)
 {
-    VectorFloat vect;
     int stepsnb = 1+(max-min)/step;
+    VectorFloat vect(stepsnb);
     for(int i=0; i<stepsnb; i++)
     {
-        float val = min+(float)i*step;
-        vect.push_back(val);
+        vect[i] = min+(float)i*step;
     }
 
     return vect;
@@ -280,12 +278,11 @@ VectorFloat asParameters::BuildVectorFloat(wxString str)
 
 VectorDouble asParameters::BuildVectorDouble(double min, double max, double step)
 {
-    VectorDouble vect;
     int stepsnb = 1+(max-min)/step;
+    VectorDouble vect(stepsnb);
     for(int i=0; i<stepsnb; i++)
     {
-        double val = min+(double)i*step;
-        vect.push_back(val);
+        vect[i] = min+(double)i*step;
     }
 
     return vect;
