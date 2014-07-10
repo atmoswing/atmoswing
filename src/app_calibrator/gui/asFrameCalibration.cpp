@@ -34,7 +34,6 @@
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
 #include "asMethodCalibratorSingle.h"
-#include "asMethodOptimizerNelderMead.h"
 #include "asMethodOptimizerRandomSet.h"
 #include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
@@ -267,18 +266,6 @@ void asFrameCalibration::LoadOptions()
     wxString MonteCarloRandomNb = pConfig->Read("/Calibration/MonteCarlo/RandomNb", "1000");
     m_TextCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
 
-    // Nelder Mead optimization
-    wxString NelderMeadNbRuns = pConfig->Read("/Calibration/NelderMead/NbRuns", "20");
-    m_TextCtrlNelderMeadNbRuns->SetValue(NelderMeadNbRuns);
-    wxString NelderMeadRho = pConfig->Read("/Calibration/NelderMead/Rho", "1.0"); // reflection
-    m_TextCtrlNelderMeadRho->SetValue(NelderMeadRho);
-    wxString NelderMeadChi = pConfig->Read("/Calibration/NelderMead/Chi", "2.0"); // expansion
-    m_TextCtrlNelderMeadChi->SetValue(NelderMeadChi);
-    wxString NelderMeadGamma = pConfig->Read("/Calibration/NelderMead/Gamma", "0.5"); // contraction
-    m_TextCtrlNelderMeadGamma->SetValue(NelderMeadGamma);
-    wxString NelderMeadSigma = pConfig->Read("/Calibration/NelderMead/Sigma", "0.5"); // reduction
-    m_TextCtrlNelderMeadSigma->SetValue(NelderMeadSigma);
-
     // Genetic algorithms
     long NaturalSelectionOperator = pConfig->Read("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", 1l);
     m_ChoiceGAsNaturalSelectionOperator->SetSelection((int)NaturalSelectionOperator);
@@ -428,18 +415,6 @@ void asFrameCalibration::SaveOptions( )
     wxString MonteCarloRandomNb = m_TextCtrlMonteCarloRandomNb->GetValue();
     pConfig->Write("/Calibration/MonteCarlo/RandomNb", MonteCarloRandomNb);
 
-    // Nelder Mead optimization
-    wxString NelderMeadNbRuns = m_TextCtrlNelderMeadNbRuns->GetValue();
-    pConfig->Write("/Calibration/NelderMead/NbRuns", NelderMeadNbRuns);
-    wxString NelderMeadRho = m_TextCtrlNelderMeadRho->GetValue();
-    pConfig->Write("/Calibration/NelderMead/Rho", NelderMeadRho); // reflection
-    wxString NelderMeadChi = m_TextCtrlNelderMeadChi->GetValue();
-    pConfig->Write("/Calibration/NelderMead/Chi", NelderMeadChi); // expansion
-    wxString NelderMeadGamma = m_TextCtrlNelderMeadGamma->GetValue();
-    pConfig->Write("/Calibration/NelderMead/Gamma", NelderMeadGamma); // contraction
-    wxString NelderMeadSigma = m_TextCtrlNelderMeadSigma->GetValue();
-    pConfig->Write("/Calibration/NelderMead/Sigma", NelderMeadSigma); // reduction
-
     // Genetic algorithms
     long NaturalSelectionOperator = m_ChoiceGAsNaturalSelectionOperator->GetSelection();
     pConfig->Write("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", NaturalSelectionOperator);
@@ -558,28 +533,23 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
                 m_MethodCalibrator = new asMethodCalibratorClassicPlusVarExplo();
                 break;
             }
-            case 4: // Optimization Nelder-Mead
-            {
-                m_MethodCalibrator = new asMethodOptimizerNelderMead();
-                break;
-            }
-            case 5: // Random sets
+            case 4: // Random sets
             {
                 m_MethodCalibrator = new asMethodOptimizerRandomSet();
                 break;
             }
-            case 6: // Genetic algorithms
+            case 5: // Genetic algorithms
             {
                 m_MethodCalibrator = new asMethodOptimizerGeneticAlgorithms();
                 break;
             }
-            case 7: // Scores evaluation
+            case 6: // Scores evaluation
             {
                 asLogMessage(_("Proceeding to all scores evaluation."));
                 m_MethodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
-            case 8: // Only predictand values
+            case 7: // Only predictand values
             {
                 asLogMessage(_("Proceeding to predictand values saving."));
                 m_MethodCalibrator = new asMethodCalibratorSingleOnlyValues();

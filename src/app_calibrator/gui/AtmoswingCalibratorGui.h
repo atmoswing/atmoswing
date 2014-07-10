@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Nov  6 2013)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -94,22 +94,10 @@ class asFrameCalibrationVirtual : public wxFrame
 		wxCheckBox* m_CheckBoxClassicPlusResize;
 		wxStaticText* m_staticText66;
 		wxStaticText* m_staticText67;
-		wxStaticText* m_staticText68;
 		wxStaticText* m_StaticTextMonteCarloRandomNb;
 		wxTextCtrl* m_TextCtrlMonteCarloRandomNb;
 		wxStaticText* m_StaticTextVarExploStepToExplore;
 		wxTextCtrl* m_TextCtrlVarExploStepToExplore;
-		wxPanel* m_PanelNelderMead;
-		wxStaticText* m_StaticTextNelderMeadNbRuns;
-		wxTextCtrl* m_TextCtrlNelderMeadNbRuns;
-		wxStaticText* m_StaticTextNelderMeadRho;
-		wxTextCtrl* m_TextCtrlNelderMeadRho;
-		wxStaticText* m_StaticTextNelderMeadChi;
-		wxTextCtrl* m_TextCtrlNelderMeadChi;
-		wxStaticText* m_StaticTextNelderMeadGamma;
-		wxTextCtrl* m_TextCtrlNelderMeadGamma;
-		wxStaticText* m_StaticTextNelderMeadSigma;
-		wxTextCtrl* m_TextCtrlNelderMeadSigma;
 		wxPanel* m_PanelGeneticAlgoritms;
 		wxStaticText* m_StaticTextGAsNaturalSelectionOperator;
 		wxChoice* m_ChoiceGAsNaturalSelectionOperator;
