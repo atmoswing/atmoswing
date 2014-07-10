@@ -205,6 +205,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     if(IsTimeArrayAnalogsIntervalDaysLocked())
     {
         if(!SetTimeArrayAnalogsIntervalDays(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "value"))) return false;
+        if(!SetTimeArrayAnalogsIntervalDaysLowerLimit(GetTimeArrayAnalogsIntervalDays())) return false;
+        if(!SetTimeArrayAnalogsIntervalDaysUpperLimit(GetTimeArrayAnalogsIntervalDays())) return false;
+        if(!SetTimeArrayAnalogsIntervalDaysIteration(0)) return false;
     }
     else
     {
@@ -236,6 +239,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
         if(IsAnalogsNumberLocked(i_step))
         {
             if(!SetAnalogsNumber(i_step, fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "value"))) return false;
+            if(!SetAnalogsNumberLowerLimit(i_step, GetAnalogsNumber(i_step))) return false;
+            if(!SetAnalogsNumberUpperLimit(i_step, GetAnalogsNumber(i_step))) return false;
+            if(!SetAnalogsNumberIteration(i_step, 1)) return false;
         }
         else
         {
@@ -310,6 +316,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                     VectorDouble vTimeHours;
                     vTimeHours.push_back(fileParams.GetFirstElementAttributeValueDouble("TimeHours", "value"));
                     if(!SetPreloadTimeHours(i_step, i_ptor, vTimeHours)) return false;
+                    if(!SetPredictorTimeHoursLowerLimit(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor))) return false;
+                    if(!SetPredictorTimeHoursUpperLimit(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor))) return false;
+                    if(!SetPredictorTimeHoursIteration(i_step, i_ptor, 0)) return false;
                 }
                 else
                 {
@@ -386,6 +395,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                     if(IsPreprocessTimeHoursLocked(i_step, i_ptor, i_dataset))
                     {
                         if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "value"))) return false;
+                        if(!SetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset, GetPreprocessTimeHours(i_step, i_ptor, i_dataset))) return false;
+                        if(!SetPreprocessTimeHoursUpperLimit(i_step, i_ptor, i_dataset, GetPreprocessTimeHours(i_step, i_ptor, i_dataset))) return false;
+                        if(!SetPreprocessTimeHoursIteration(i_step, i_ptor, i_dataset, 0)) return false;
                     }
                     else
                     {
@@ -518,6 +530,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
                 if(!SetPredictorUminLowerLimit(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor))) return false;
                 if(!SetPredictorUminUpperLimit(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor))) return false;
+                if(!SetPredictorUminIteration(i_step, i_ptor, 0)) return false;
             }
             else
             {
@@ -532,6 +545,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "value"))) return false;
                 if(!SetPredictorUptsnbLowerLimit(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor))) return false;
                 if(!SetPredictorUptsnbUpperLimit(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor))) return false;
+                if(!SetPredictorUptsnbIteration(i_step, i_ptor, 0)) return false;
             }
             else
             {
@@ -555,6 +569,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
                 if(!SetPredictorVminLowerLimit(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor))) return false;
                 if(!SetPredictorVminUpperLimit(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor))) return false;
+                if(!SetPredictorVminIteration(i_step, i_ptor, 0)) return false;
             }
             else
             {
@@ -569,6 +584,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "value"))) return false;
                 if(!SetPredictorVptsnbLowerLimit(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor))) return false;
                 if(!SetPredictorVptsnbUpperLimit(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor))) return false;
+                if(!SetPredictorVptsnbIteration(i_step, i_ptor, 0)) return false;
             }
             else
             {
@@ -652,6 +668,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if(IsPredictorWeightLocked(i_step, i_ptor))
             {
                 if(!SetPredictorWeight(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "value"))) return false;
+                if(!SetPredictorWeightLowerLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor))) return false;
+                if(!SetPredictorWeightUpperLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor))) return false;
+                if(!SetPredictorWeightIteration(i_step, i_ptor, 0)) return false;
             }
             else
             {
@@ -721,6 +740,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     if(IsForecastScoreAnalogsNumberLocked())
     {
         if(!SetForecastScoreAnalogsNumber(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "value"))) return false;
+        if(!SetForecastScoreAnalogsNumberLowerLimit(GetForecastScoreAnalogsNumber())) return false;
+        if(!SetForecastScoreAnalogsNumberUpperLimit(GetForecastScoreAnalogsNumber())) return false;
+        if(!SetForecastScoreAnalogsNumberIteration(1)) return false;
     }
     else
     {
@@ -1120,21 +1142,27 @@ void asParametersOptimization::FixTimeHours()
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if (m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k]!=0)
+                    if (!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
-                        float ratio = (float)GetPreprocessTimeHours(i,j,k)/(float)m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k];
-                        ratio = asTools::Round(ratio);
-                        SetPreprocessTimeHours(i, j, k, ratio*m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k]);
+                        if (m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k]!=0)
+                        {
+                            float ratio = (float)GetPreprocessTimeHours(i,j,k)/(float)m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k];
+                            ratio = asTools::Round(ratio);
+                            SetPreprocessTimeHours(i, j, k, ratio*m_StepsIteration[i].Predictors[j].PreprocessTimeHours[k]);
+                        }
                     }
                 }
             }
             else
             {
-                if (m_StepsIteration[i].Predictors[j].TimeHours!=0)
+                if (!m_StepsLocks[i].Predictors[j].TimeHours)
                 {
-                    float ratio = (float)GetPredictorTimeHours(i,j)/(float)m_StepsIteration[i].Predictors[j].TimeHours;
-                    ratio = asTools::Round(ratio);
-                    SetPredictorTimeHours(i, j, ratio*m_StepsIteration[i].Predictors[j].TimeHours);
+                    if (m_StepsIteration[i].Predictors[j].TimeHours!=0)
+                    {
+                        float ratio = (float)GetPredictorTimeHours(i,j)/(float)m_StepsIteration[i].Predictors[j].TimeHours;
+                        ratio = asTools::Round(ratio);
+                        SetPredictorTimeHours(i, j, ratio*m_StepsIteration[i].Predictors[j].TimeHours);
+                    }
                 }
             }
         }
@@ -1146,26 +1174,42 @@ bool asParametersOptimization::FixWeights()
     for (int i=0; i<GetStepsNb(); i++)
     {
         // Sum the weights
-        float totWeight = 0;
+        float totWeight = 0, totWeightLocked = 0;
         for (int j=0; j<GetPredictorsNb(i); j++)
         {
             totWeight += GetPredictorWeight(i, j);
+
+            if(IsPredictorWeightLocked(i, j))
+            {
+                totWeightLocked += GetPredictorWeight(i, j);
+            }
         }
+
+        // Check total of the locked weights
+        if (totWeightLocked>1)
+        {
+            asLogError(wxString::Format(_("The sum of the locked weights of the analogy level number %d is higher than 1 (%f)."), i+1, totWeightLocked));
+            return false;
+        }
+        float totWeightManageable = totWeight - totWeightLocked;
         
         // For every weights but the last
         float newSum = 0;
         for (int j=0; j<GetPredictorsNb(i)-1; j++)
         {
-            float precision = GetPredictorWeightIteration(i, j);
-            float newWeight = GetPredictorWeight(i, j)/totWeight;
-            newWeight = precision*asTools::Round(newWeight*(1.0/precision));
-            newSum += newWeight;
+            if(!IsPredictorWeightLocked(i, j))
+            {
+                float precision = GetPredictorWeightIteration(i, j);
+                float newWeight = GetPredictorWeight(i, j)/totWeightManageable;
+                newWeight = precision*asTools::Round(newWeight*(1.0/precision));
+                newSum += newWeight;
 
-            SetPredictorWeight(i, j, newWeight);
+                SetPredictorWeight(i, j, newWeight);
+            }
         }
 
         // Last weight: difference to 0
-        float lastWeight = 1.0f - newSum;
+        float lastWeight = 1.0f - newSum - totWeightLocked;
         SetPredictorWeight(i, GetPredictorsNb(i)-1, lastWeight);
     }
 
@@ -1354,40 +1398,4 @@ int asParametersOptimization::GetVariablesNb()
     if(!m_ForecastScoreLocks.AnalogsNumber) counter++;
 
     return counter;
-}
-
-bool asParametersOptimization::IsCloseTo(asParametersOptimization &otherParam)
-{
-    bool isclose = true;
-
-    if(abs(m_TimeArrayAnalogsIntervalDays-otherParam.GetTimeArrayAnalogsIntervalDays())>=m_TimeArrayAnalogsIntervalDaysIteration) isclose = false;
-
-    // Loop over every parameter to find one that is not close
-    for (int i_step=0; i_step<GetStepsNb(); i_step++)
-    {
-        if(abs(GetAnalogsNumber(i_step)-otherParam.GetAnalogsNumber(i_step))>=m_StepsIteration[i_step].AnalogsNumber) isclose = false;
-
-        for (int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
-        {
-            if (NeedsPreprocessing(i_step, i_ptor))
-            {
-                for (int i_pre=0; i_pre<GetPreprocessSize(i_step, i_ptor); i_pre++)
-                {
-                    if(abs(GetPreprocessTimeHours(i_step, i_ptor, i_pre)-otherParam.GetPreprocessTimeHours(i_step, i_ptor, i_pre))>=m_StepsIteration[i_step].Predictors[i_ptor].PreprocessTimeHours[i_pre]) isclose = false;
-                }
-            }
-            else
-            {
-                if(abs(GetPredictorTimeHours(i_step, i_ptor)-otherParam.GetPredictorTimeHours(i_step, i_ptor))>=m_StepsIteration[i_step].Predictors[i_ptor].TimeHours) isclose = false;
-            }
-            if(abs(GetPredictorUmin(i_step, i_ptor)-otherParam.GetPredictorUmin(i_step, i_ptor))>=m_StepsIteration[i_step].Predictors[i_ptor].Umin) isclose = false;
-            if(abs(GetPredictorUptsnb(i_step, i_ptor)-otherParam.GetPredictorUptsnb(i_step, i_ptor))>=m_StepsIteration[i_step].Predictors[i_ptor].Uptsnb) isclose = false;
-            if(abs(GetPredictorVmin(i_step, i_ptor)-otherParam.GetPredictorVmin(i_step, i_ptor))>=m_StepsIteration[i_step].Predictors[i_ptor].Vmin) isclose = false;
-            if(abs(GetPredictorVptsnb(i_step, i_ptor)-otherParam.GetPredictorVptsnb(i_step, i_ptor))>=m_StepsIteration[i_step].Predictors[i_ptor].Vptsnb) isclose = false;
-            if(abs(GetPredictorWeight(i_step, i_ptor)-otherParam.GetPredictorWeight(i_step, i_ptor))>=m_StepsIteration[i_step].Predictors[i_ptor].Weight) isclose = false;
-        }
-    }
-    if(abs(GetForecastScoreAnalogsNumber()-otherParam.GetForecastScoreAnalogsNumber())>=m_ForecastScoreIteration.AnalogsNumber) isclose = false;
-
-    return isclose;
 }

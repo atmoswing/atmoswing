@@ -47,8 +47,6 @@ public:
         return m_VariableParamsNb;
     }
 
-    bool IsCloseTo(asParametersOptimization &otherParam);
-
     int GetTimeArrayAnalogsIntervalDaysIteration()
     {
         return m_TimeArrayAnalogsIntervalDaysIteration;

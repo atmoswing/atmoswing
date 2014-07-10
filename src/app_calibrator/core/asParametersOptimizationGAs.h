@@ -39,8 +39,6 @@ public:
         return m_ChromosomeIndices.size();
     }
 
-    bool IsCloseTo(asParametersOptimizationGAs &otherParam);
-
 
 protected:
 
