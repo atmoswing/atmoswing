@@ -29,7 +29,7 @@
                 <MethodName value="Analogs" />
             </Params>
             <Params name="Analogs Number">
-                <AnalogsNumber value="100" lowerlimit="5" upperlimit="200" iteration="1" lock="1" />
+                <AnalogsNumber value="100" lowerlimit="5" upperlimit="200" iteration="1" lock="0" />
             </Params>
             <Data name="Predictor">
                 <Options />
@@ -53,7 +53,7 @@
                     <Vstep value="2.5" />
                 </Params>
                 <Params name="Time frame">
-                    <TimeHours value="24" lowerlimit="-48" upperlimit="48" iteration="6" lock="1" />
+                    <TimeHours value="24" lowerlimit="-48" upperlimit="48" iteration="6" lock="0" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" />
@@ -71,7 +71,7 @@
                         <PreprocessDatasetId value="NCEP_R-1" lock="1" />
                         <PreprocessDataId value="hgt" lock="1" />
                         <PreprocessLevel value="1000" lock="1" />
-                        <PreprocessTimeHours value="12" lowerlimit="12" upperlimit="12" iteration="6" lock="1" />
+                        <PreprocessTimeHours value="12" lowerlimit="0" upperlimit="24" iteration="6" lock="1" />
                     </SubData>
                 </Params>
                 <Params name="Area">
@@ -99,7 +99,7 @@
                         <PreprocessDatasetId value="NCEP_R-1" lock="1" />
                         <PreprocessDataId value="hgt" lock="1" />
                         <PreprocessLevel value="850" lock="1" />
-                        <PreprocessTimeHours value="12" lowerlimit="12" upperlimit="12" iteration="6" lock="1" />
+                        <PreprocessTimeHours value="12" lowerlimit="6" upperlimit="18" iteration="6" lock="1" />
                     </SubData>
                 </Params>
                 <Params name="Area">
