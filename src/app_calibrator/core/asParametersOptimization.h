@@ -91,7 +91,7 @@ public:
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preprocess time frame is null"));
+            asLogError(_("The provided iteration value for the preprocess time frame is null"));
             return false;
         }
 
@@ -261,7 +261,7 @@ public:
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preprocess time frame is null"));
+            asLogError(_("The provided upper value value for the preprocess time frame is null"));
             return false;
         }
 
@@ -431,7 +431,7 @@ public:
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preprocess time frame is null"));
+            asLogError(_("The provided lower value value for the preprocess time frame is null"));
             return false;
         }
 
