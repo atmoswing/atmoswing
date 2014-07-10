@@ -143,21 +143,19 @@ TEST(ParametersOptimizationLoadFromFileAndInitRandomValues)
     CHECK_EQUAL(true, params.GetTimeArrayTargetMode().IsSameAs("Simple"));
 
     CHECK_EQUAL(true, params.GetMethodName(0).IsSameAs("Analogs"));
-    CHECK_EQUAL(100, params.GetAnalogsNumber(0));
     CHECK_EQUAL(1, params.GetAnalogsNumberIteration(0));
     CHECK_EQUAL(5, params.GetAnalogsNumberLowerLimit(0));
     CHECK_EQUAL(200, params.GetAnalogsNumberUpperLimit(0));
-    CHECK_EQUAL(true, params.IsAnalogsNumberLocked(0));
+    CHECK_EQUAL(false, params.IsAnalogsNumberLocked(0));
 
     CHECK_EQUAL(false, params.NeedsPreprocessing(0,0));
     CHECK_EQUAL(true, params.GetPredictorDatasetId(0,0).IsSameAs("NCEP_R-1"));
     CHECK_EQUAL(true, params.GetPredictorDataId(0,0).IsSameAs("hgt"));
     CHECK_EQUAL(500, params.GetPredictorLevel(0,0));
-    CHECK_EQUAL(24, params.GetPredictorTimeHours(0,0));
     CHECK_EQUAL(6, params.GetPredictorTimeHoursIteration(0,0));
     CHECK_EQUAL(-48, params.GetPredictorTimeHoursLowerLimit(0,0));
     CHECK_EQUAL(48, params.GetPredictorTimeHoursUpperLimit(0,0));
-    CHECK_EQUAL(true, params.IsPredictorTimeHoursLocked(0,0));
+    CHECK_EQUAL(false, params.IsPredictorTimeHoursLocked(0,0));
     CHECK_EQUAL(true, params.GetPredictorGridType(0,0).IsSameAs("Regular"));
     CHECK_EQUAL(2.5, params.GetPredictorUminIteration(0,0));
     CHECK_EQUAL(300, params.GetPredictorUminLowerLimit(0,0));
