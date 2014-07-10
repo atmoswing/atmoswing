@@ -40,7 +40,6 @@
 #endif
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
-#include "asMethodOptimizerNelderMead.h"
 #include "asMethodOptimizerRandomSet.h"
 #include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
@@ -83,7 +82,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                                 "\n \t\t\t\t classic: classic calibration"
                                 "\n \t\t\t\t classicp: classic+ calibration"
                                 "\n \t\t\t\t varexplocp: variables exploration classic+"
-                                "\n \t\t\t\t neldermead: Nelder-Mead optimization"
                                 "\n \t\t\t\t montecarlo: Monte Carlo exploration"
                                 "\n \t\t\t\t ga: Genetic algorithms"
                                 "\n \t\t\t\t evalscores: Evaluate all scores" },
@@ -93,11 +91,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, "cpprosseq", "cpprosseq", "options ClassicPlusProceedSequentially" },
     { wxCMD_LINE_OPTION, "varexpstep", "varexpstep", "options VariablesExploStep" },
     { wxCMD_LINE_OPTION, "mcrunsnb", "mcrunsnb", "options MonteCarloRandomNb" },
-    { wxCMD_LINE_OPTION, "nmrunsnb", "nmrunsnb", "options NelderMeadNbRuns" },
-    { wxCMD_LINE_OPTION, "nmrho", "nmrho", "options NelderMeadRho" },
-    { wxCMD_LINE_OPTION, "nmchi", "nmchi", "options NelderMeadChi" },
-    { wxCMD_LINE_OPTION, "nmgamma", "nmgamma", "options NelderMeadGamma" },
-    { wxCMD_LINE_OPTION, "nmsigma", "nmsigma", "options NelderMeadSigma" },
     { wxCMD_LINE_OPTION, "gaopenatsel", "gaopenatsel", "options NaturalSelectionOperator" },
     { wxCMD_LINE_OPTION, "gaopecoupsel", "gaopecoupsel", "options CouplesSelectionOperator" },
     { wxCMD_LINE_OPTION, "gaopecross", "gaopecross", "options CrossoverOperator" },
@@ -617,32 +610,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         wxFileConfig::Get()->Write("/Calibration/MonteCarlo/RandomNb", option);
     }
 
-    // Nelder Mead optimization
-    if (parser.Found("nmrunsnb", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/NelderMead/NbRuns", option);
-    }
-
-    if (parser.Found("nmrho", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/NelderMead/Rho", option); // reflection
-    }
-
-    if (parser.Found("nmchi", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/NelderMead/Chi", option); // expansion
-    }
-
-    if (parser.Found("nmgamma", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/NelderMead/Gamma", option); // contraction
-    }
-
-    if (parser.Found("nmsigma", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/NelderMead/Sigma", option); // reduction
-    }
-
     // Genetic algorithms
     if (parser.Found("gaopenatsel", & option))
     {
@@ -1035,15 +1002,6 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictandDBFilePath(m_PredictandDB);
                 calibrator.SetPredictorDataDir(m_PredictorsDir);
                 calibrator.Manager();
-            }
-            else if (m_CalibMethod.IsSameAs("neldermead", false))
-            {
-                asMethodOptimizerNelderMead optimizer;
-                optimizer.SetParamsFilePath(m_CalibParamsFile);
-                optimizer.SetPredictandDBFilePath(m_PredictandDB);
-                optimizer.SetPredictandStationIds(m_PredictandStationIds);
-                optimizer.SetPredictorDataDir(m_PredictorsDir);
-                optimizer.Manager();
             }
             else if (m_CalibMethod.IsSameAs("montecarlo", false))
             {
