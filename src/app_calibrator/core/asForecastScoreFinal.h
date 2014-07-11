@@ -81,23 +81,11 @@ public:
         m_RanksNb = val;
     }
 
-    void SetScoreClimatology(float val)
-    {
-        m_ScoreClimatology = val;
-    }
-
-    bool UsesClimatology()
-    {
-        return m_UsesClimatology;
-    }
-
 protected:
     Period m_Period;
     bool m_SingleValue;
     bool m_Has2DArrayArgument;
     int m_RanksNb;
-    bool m_UsesClimatology;
-    float m_ScoreClimatology;
 
 private:
 
