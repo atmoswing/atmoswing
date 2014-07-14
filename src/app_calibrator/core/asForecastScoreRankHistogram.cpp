@@ -143,33 +143,3 @@ bool asForecastScoreRankHistogram::ProcessScoreClimatology(const Array1DFloat &r
 {
     return true;
 }
-
-Array1DFloat asForecastScoreRankHistogram::ProcessHistogramClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
-{
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size()-1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size()-1]));
-
-    // Containers for final results
-    Array1DFloat scoresClimatology(refVals.size());
-
-    // Set the original score and process
-    asForecastScore* forecastScore = asForecastScore::GetInstance(asForecastScore::RankHistogram);
-    forecastScore->SetThreshold(GetThreshold());
-    forecastScore->SetPercentile(GetPercentile());
-
-    for (int i_reftime=0; i_reftime<refVals.size(); i_reftime++)
-    {
-        if (!asTools::IsNaN(refVals(i_reftime)))
-        {
-            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData, climatologyData.size());
-        }
-        else
-        {
-            scoresClimatology(i_reftime) = NaNFloat;
-        }
-    }
-
-    wxDELETE(forecastScore);
-
-    return scoresClimatology;
-}

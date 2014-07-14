@@ -161,20 +161,13 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
 bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScores &anaScores,
                                                asTimeArray &timeArray,
                                                asParametersScoring &params,
-                                               asResultsAnalogsForecastScoreFinal &results,
-                                               VectorFloat &scoresClimatology)
+                                               asResultsAnalogsForecastScoreFinal &results)
 {
 // TODO (phorton#1#): Specify the period in the parameter
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance(params.GetForecastScoreName(), "Total");
 
     // Ranks number set for all, but only used for the rank histogram
     finalScore->SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
-
-    // Score for the climatology
-    if (finalScore->UsesClimatology())
-    {
-        finalScore->SetScoreClimatology(scoresClimatology[0]);
-    }
 
     if (finalScore->Has2DArrayArgument())
     {
