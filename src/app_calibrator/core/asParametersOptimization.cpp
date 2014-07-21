@@ -524,7 +524,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 asThrowException(_("Preprocessing option not correctly defined in the parameters file."));
             }
 
-            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area"))
+            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area", asHIDE_WARNINGS))
             {
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area Moving")) return false;
             }
