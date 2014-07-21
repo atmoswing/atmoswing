@@ -100,29 +100,29 @@
                 <Options />
                 <Params name="Preprocessing">
                     <Preprocess value="1" />
-                    <PreprocessMethod value="MergeCouplesAndMultiply" />
+                    <PreprocessMethod value="FormerHumidityIndex" />
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="prwtr" />
-                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
+                        <PreprocessDataId value="rhum" />
+                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
                         <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="prwtr" />
-                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
+                        <PreprocessDataId value="rhum" />
+                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
                         <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="rhum" />
-                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
+                        <PreprocessDataId value="prwtr" />
+                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
                         <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
                     </SubData>
                     <SubData>
                         <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="rhum" />
-                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
+                        <PreprocessDataId value="prwtr" />
+                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
                         <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
                     </SubData>
                 </Params>
