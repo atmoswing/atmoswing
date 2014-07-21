@@ -1181,7 +1181,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
         if (counter==index)
         {
             int val = asTools::Round(newVal);
-            SetTimeArrayAnalogsExcludeDays(val);
+            SetTimeArrayAnalogsIntervalDays(val);
             return;
         }
     }
