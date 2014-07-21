@@ -1,0 +1,459 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
+ *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
+ * All Rights Reserved.
+ *
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
+ */
+
+#include "asDataPredictor.h"
+
+#include <asTimeArray.h>
+#include <asGeoAreaCompositeGrid.h>
+
+
+asDataPredictor::asDataPredictor(const wxString &dataId)
+{
+    m_DataId = dataId;
+    m_Level = 0;
+    m_IsPreprocessed = false;
+    m_CanBeClipped = true;
+    m_LatPtsnb = 0;
+    m_LonPtsnb = 0;
+    m_SizeTime = 0;
+    m_PreprocessMethod = wxEmptyString;
+    m_Initialized = false;
+    m_TimeZoneHours = 0.0;
+    m_TimeStepHours = 0.0;
+    m_FirstTimeStepHours = 0.0;
+    m_UaxisStep = 0.0f;
+    m_VaxisStep = 0.0f;
+    m_UaxisShift = 0.0f;
+    m_VaxisShift = 0.0f;
+}
+
+asDataPredictor::~asDataPredictor()
+{
+
+}
+
+bool asDataPredictor::SetData(VArray2DFloat &val)
+{
+    wxASSERT(m_Time.size()>0);
+    wxASSERT(m_SizeTime>0);
+    wxASSERT(m_SizeTime==m_Time.size());
+    wxASSERT(m_SizeTime==val.size());
+
+    m_LatPtsnb = val[0].rows();
+    m_LonPtsnb = val[0].cols();
+    m_Data.clear();
+    m_Data = val;
+
+    return true;
+}
+
+bool asDataPredictor::GetSizes(asGeoAreaCompositeGrid &area, asTimeArray &timeArray)
+{
+    m_LonPtsnb = area.GetUaxisPtsnb();
+    m_LatPtsnb = area.GetVaxisPtsnb();
+    m_SizeTime = timeArray.GetSize();
+
+    return true;
+}
+
+bool asDataPredictor::InitContainers()
+{
+    m_Time.resize(m_SizeTime);
+    m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
+
+    return true;
+}
+
+bool asDataPredictor::CheckTimeLength(int counter)
+{
+    if (m_Data.size()!=(unsigned)counter)
+    {
+        asLogError(wxString::Format(_("The data time dimension (%d) does not match the check counter (%d)."), (int)m_Data.size(), counter));
+        return false;
+    }
+
+    if ((unsigned)m_Time.size()!=m_Data.size())
+    {
+        asLogError(_("The date and the data array lengths do not match."));
+        return false;
+    }
+    return true;
+}
+
+bool asDataPredictor::Inline()
+{
+    //Already inlined
+    if (m_LonPtsnb==1 || m_LatPtsnb==1)
+    {
+        return true;
+    }
+
+    wxASSERT(m_Data.size()>0);
+
+    int timeSize = m_Data.size();
+    int cols = m_Data[0].cols();
+    int rows = m_Data[0].rows();
+
+    Array2DFloat inlineData = Array2DFloat::Zero(1,cols*rows);
+
+    VArray2DFloat newData;
+    newData.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
+    newData.resize(timeSize);
+
+    for (int i_time=0; i_time<timeSize; i_time++)
+    {
+        for (int i_row=0; i_row<rows; i_row++)
+        {
+            inlineData.block(0,i_row*cols,1,cols) = m_Data[i_time].row(i_row);
+        }
+        newData[i_time] = inlineData;
+    }
+
+    m_Data = newData;
+
+    m_LatPtsnb = m_Data[0].rows();
+    m_LonPtsnb = m_Data[0].cols();
+    Array1DFloat emptyAxis(1);
+    emptyAxis[0] = NaNFloat;
+    m_AxisLat = emptyAxis;
+    m_AxisLon = emptyAxis;
+
+    return true;
+}
+
+bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area)
+{
+    if (area)
+    {
+        // Get a container with the final size
+        int sizeTime = compositeData[0].size();
+        m_Data = VArray2DFloat(sizeTime, Array2DFloat(m_LatPtsnb,m_LonPtsnb));
+
+        Array2DFloat blockUL, blockLL, blockUR, blockLR;
+        int isblockUL = asNONE, isblockLL = asNONE, isblockUR = asNONE, isblockLR = asNONE;
+
+        // Resize containers for composite areas
+        for (int i_area = 0; i_area<area->GetNbComposites(); i_area++)
+        {
+            if((area->GetComposite(i_area).GetUmax()==area->GetUmax()) & (area->GetComposite(i_area).GetVmin()==area->GetVmin()))
+            {
+                blockUL.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
+                isblockUL = i_area;
+            }
+            else if((area->GetComposite(i_area).GetUmin()==area->GetUmin()) & (area->GetComposite(i_area).GetVmin()==area->GetVmin()))
+            {
+                blockUR.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
+                isblockUR = i_area;
+            }
+            else if((area->GetComposite(i_area).GetUmax()==area->GetUmax()) & (area->GetComposite(i_area).GetVmax()==area->GetVmax()))
+            {
+                blockLL.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
+                isblockLL = i_area;
+            }
+            else if((area->GetComposite(i_area).GetUmin()==area->GetUmin()) & (area->GetComposite(i_area).GetVmax()==area->GetVmax()))
+            {
+                blockLR.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
+                isblockLR = i_area;
+            }
+            else
+            {
+                asLogError(_("The data composite was not identified."));
+                return false;
+            }
+        }
+
+        // Merge the composite data together
+        for (int i_time=0; i_time<sizeTime; i_time++)
+        {
+            // Append the composite areas
+            for (int i_area = 0; i_area<area->GetNbComposites(); i_area++)
+            {
+                if(i_area == isblockUL)
+                {
+                    blockUL = compositeData[i_area][i_time];
+                    m_Data[i_time].topLeftCorner(blockUL.rows(), blockUL.cols()) = blockUL;
+                }
+                else if(i_area == isblockUR)
+                {
+                    blockUR = compositeData[i_area][i_time];
+                    m_Data[i_time].block(0, m_LonPtsnb-blockUR.cols(), blockUR.rows(), blockUR.cols()) = blockUR;
+                }
+                else if(i_area == isblockLL)
+                {
+                    blockLL = compositeData[i_area][i_time];
+    // TODO (phorton#1#): Implement me!
+                    asLogError(_("Not yet implemented."));
+                    return false;
+                }
+                else if(i_area == isblockLR)
+                {
+                    blockLR = compositeData[i_area][i_time];
+    // TODO (phorton#1#): Implement me!
+                    asLogError(_("Not yet implemented."));
+                    return false;
+                }
+                else
+                {
+                    asLogError(_("The data composite cannot be build."));
+                    return false;
+                }
+            }
+        }
+    }
+    else
+    {
+        m_Data = compositeData[0];
+    }
+
+    return true;
+}
+
+bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea)
+{
+    wxASSERT(dataArea);
+    wxASSERT(desiredArea);
+    bool changeUstart=false, changeUsteps=false, changeVstart=false, changeVsteps=false;
+
+    // Check beginning on longitudes
+    if (dataArea->GetAbsoluteUmin()!=desiredArea->GetAbsoluteUmin())
+    {
+        changeUstart = true;
+    }
+
+    // Check beginning on latitudes
+    if (dataArea->GetAbsoluteVmin()!=desiredArea->GetAbsoluteVmin())
+    {
+        changeVstart = true;
+    }
+
+    // Check the cells size on longitudes
+    if (!dataArea->GridsOverlay(desiredArea))
+    {
+        changeUsteps = true;
+        changeVsteps = true;
+    }
+
+    // Proceed to the interpolation
+    if (changeUstart || changeVstart || changeUsteps || changeVsteps)
+    {
+        // Containers for results
+        int finalLengthLon = desiredArea->GetUaxisPtsnb();
+        int finalLengthLat = desiredArea->GetVaxisPtsnb();
+        VArray2DFloat latlonTimeData(m_Data.size(), Array2DFloat(finalLengthLat,finalLengthLon));
+
+        // Creation of the axes
+        Array1DFloat axisDataLon;
+        if(dataArea->GetUaxisPtsnb()>1)
+        {
+            axisDataLon = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetUaxisPtsnb(), dataArea->GetAbsoluteUmin(), dataArea->GetAbsoluteUmax());
+        }
+        else
+        {
+            axisDataLon.resize(1);
+            axisDataLon << dataArea->GetAbsoluteUmin();
+        }
+
+        Array1DFloat axisDataLat;
+        if(dataArea->GetVaxisPtsnb()>1)
+        {
+            axisDataLat = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetVaxisPtsnb(), dataArea->GetAbsoluteVmax(), dataArea->GetAbsoluteVmin()); // From top to bottom
+        }
+        else
+        {
+            axisDataLat.resize(1);
+            axisDataLat << dataArea->GetAbsoluteVmax();
+        }
+
+        Array1DFloat axisFinalLon;
+        if(desiredArea->GetUaxisPtsnb()>1)
+        {
+            axisFinalLon = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetUaxisPtsnb(), desiredArea->GetAbsoluteUmin(), desiredArea->GetAbsoluteUmax());
+        }
+        else
+        {
+            axisFinalLon.resize(1);
+            axisFinalLon << desiredArea->GetAbsoluteUmin();
+        }
+
+        Array1DFloat axisFinalLat;
+        if(desiredArea->GetVaxisPtsnb()>1)
+        {
+            axisFinalLat = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetVaxisPtsnb(), desiredArea->GetAbsoluteVmax(), desiredArea->GetAbsoluteVmin()); // From top to bottom
+        }
+        else
+        {
+            axisFinalLat.resize(1);
+            axisFinalLat << desiredArea->GetAbsoluteVmax();
+        }
+
+        // Indices
+        int indexUfloor, indexUceil;
+        int indexVfloor, indexVceil;
+        int axisDataLonEnd = axisDataLon.size()-1;
+        int axisDataLatEnd = axisDataLat.size()-1;
+
+        // Pointer to last used element
+        int indexLastLon=0, indexLastLat=0;
+
+        // Variables
+        double dU, dV;
+        float valLLcorner, valULcorner, valLRcorner, valURcorner;
+
+        // The interpolation loop
+        for (unsigned int i_time=0; i_time<m_Data.size(); i_time++)
+        {
+            // Loop to extract the data from the array
+            for (int i_lat=0; i_lat<finalLengthLat; i_lat++)
+            {
+                // Try the 2 next latitudes (from the top)
+                if (axisDataLat.size()>indexLastLat+1 && axisDataLat[indexLastLat+1]==axisFinalLat[i_lat])
+                {
+                    indexVfloor = indexLastLat+1;
+                    indexVceil = indexLastLat+1;
+                }
+                else if (axisDataLat.size()>indexLastLat+2 && axisDataLat[indexLastLat+2]==axisFinalLat[i_lat])
+                {
+                    indexVfloor = indexLastLat+2;
+                    indexVceil = indexLastLat+2;
+                }
+                else
+                {
+                    // Search for floor and ceil
+                    indexVfloor = indexLastLat + asTools::SortedArraySearchFloor(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[i_lat]);
+                    indexVceil = indexLastLat + asTools::SortedArraySearchCeil(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[i_lat]);
+                }
+
+                if( indexVfloor==asOUT_OF_RANGE || indexVfloor==asNOT_FOUND || indexVceil==asOUT_OF_RANGE || indexVceil==asNOT_FOUND)
+                {
+                    asLogError(wxString::Format(_("The desired point is not available in the data for interpolation. Latitude %f was not found inbetween %f (index %d) to %f (index %d) (size = %d)."),
+                                                axisFinalLat[i_lat], axisDataLat[indexLastLat], indexLastLat, axisDataLat[axisDataLatEnd], axisDataLatEnd, (int)axisDataLat.size()));
+                    return false;
+                }
+                wxASSERT_MSG(indexVfloor>=0, wxString::Format("%f in %f to %f",axisFinalLat[i_lat], axisDataLat[indexLastLat], axisDataLat[axisDataLatEnd]));
+                wxASSERT(indexVceil>=0);
+
+                // Save last index
+                indexLastLat = indexVfloor;
+
+                for (int i_lon=0; i_lon<finalLengthLon; i_lon++)
+                {
+                    // Try the 2 next longitudes
+                    if (axisDataLon.size()>indexLastLon+1 && axisDataLon[indexLastLon+1]==axisFinalLon[i_lon])
+                    {
+                        indexUfloor = indexLastLon+1;
+                        indexUceil = indexLastLon+1;
+                    }
+                    else if (axisDataLon.size()>indexLastLon+2 && axisDataLon[indexLastLon+2]==axisFinalLon[i_lon])
+                    {
+                        indexUfloor = indexLastLon+2;
+                        indexUceil = indexLastLon+2;
+                    }
+                    else
+                    {
+                        // Search for floor and ceil
+                        indexUfloor = indexLastLon + asTools::SortedArraySearchFloor(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd], axisFinalLon[i_lon]);
+                        indexUceil = indexLastLon + asTools::SortedArraySearchCeil(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd], axisFinalLon[i_lon]);
+                    }
+
+                    if( indexUfloor==asOUT_OF_RANGE || indexUfloor==asNOT_FOUND || indexUceil==asOUT_OF_RANGE || indexUceil==asNOT_FOUND)
+                    {
+                        asLogError(wxString::Format(_("The desired point is not available in the data for interpolation. Longitude %f was not found inbetween %f to %f."), axisFinalLon[i_lon], axisDataLon[indexLastLon], axisDataLon[axisDataLonEnd]));
+                        return false;
+                    }
+
+                    wxASSERT(indexUfloor>=0);
+                    wxASSERT(indexUceil>=0);
+
+                    // Save last index
+                    indexLastLon = indexUfloor;
+
+                    // Proceed to the interpolation
+                    if (indexUceil==indexUfloor)
+                    {
+                        dU = 0;
+                    }
+                    else
+                    {
+                        dU = (axisFinalLon[i_lon]-axisDataLon[indexUfloor])/(axisDataLon[indexUceil]-axisDataLon[indexUfloor]);
+                    }
+                    if (indexVceil==indexVfloor)
+                    {
+                        dV = 0;
+                    }
+                    else
+                    {
+                        dV = (axisFinalLat[i_lat]-axisDataLat[indexVfloor])/(axisDataLat[indexVceil]-axisDataLat[indexVfloor]);
+                    }
+
+
+                    if (dU==0 && dV==0)
+                    {
+                        latlonTimeData[i_time](i_lat, i_lon) = m_Data[i_time](indexVfloor, indexUfloor);
+                    }
+                    else if (dU==0)
+                    {
+                        valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
+                        valULcorner = m_Data[i_time](indexVceil, indexUfloor);
+
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
+                                                  + (1-dU)*(dV)*valULcorner;
+                    }
+                    else if (dV==0)
+                    {
+                        valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
+                        valLRcorner = m_Data[i_time](indexVfloor, indexUceil);
+
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
+                                                  + (dU)*(1-dV)*valLRcorner;
+                    }
+                    else
+                    {
+                        valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
+                        valULcorner = m_Data[i_time](indexVceil, indexUfloor);
+                        valLRcorner = m_Data[i_time](indexVfloor, indexUceil);
+                        valURcorner = m_Data[i_time](indexVceil, indexUceil);
+
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
+                                                  + (1-dU)*(dV)*valULcorner
+                                                  + (dU)*(1-dV)*valLRcorner
+                                                  + (dU)*(dV)*valURcorner;
+                    }
+                }
+
+                indexLastLon = 0;
+            }
+
+            indexLastLat = 0;
+        }
+
+        m_Data = latlonTimeData;
+        m_LatPtsnb = finalLengthLat;
+        m_LonPtsnb = finalLengthLon;
+    }
+
+    return true;
+}
