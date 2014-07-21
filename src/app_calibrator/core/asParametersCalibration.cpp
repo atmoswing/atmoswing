@@ -8,24 +8,24 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013-2014 Pascal Horton, Terr@num.
  */
- 
+
 #include "asParametersCalibration.h"
 
 #include <asFileParametersCalibration.h>
@@ -246,8 +246,11 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                 {
                     if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"))) return false;
                     if(!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, GetFileParamStringVector(fileParams, "PreprocessDataId"))) return false;
+                    if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, GetFileParamStringVector(fileParams, "PreprocessDataId")[0])) return false;
                     if(!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, GetFileParamFloatVector(fileParams, "PreprocessLevel"))) return false;
+                    if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, GetFileParamFloatVector(fileParams, "PreprocessLevel")[0])) return false;
                     if(!SetPreprocessTimeHoursVector(i_step, i_ptor, i_dataset, GetFileParamDoubleVector(fileParams, "PreprocessTimeHours"))) return false;
+                    if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, GetFileParamDoubleVector(fileParams, "PreprocessTimeHours")[0])) return false;
 
                     if(fileParams.GoToNextSameNode())
                     {
@@ -257,6 +260,78 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     {
                         preprocessDataOver = true;
                     }
+                }
+
+                if(NeedsPreloading(i_step, i_ptor))
+                {
+                    // Check the preprocessing method
+                    wxString method = GetPreprocessMethod(i_step, i_ptor);
+                    VectorFloat preprocLevels;
+                    VectorDouble preprocTimeHours;
+                    int preprocSize = GetPreprocessSize(i_step, i_ptor);
+
+                    // Check that the data ID is unique
+                    for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
+                    {
+                        if(GetPreprocessDataIdVector(i_step, i_ptor, i_preproc).size()!=1)
+                        {
+                            asLogError(_("The preprocess DataId must be unique with the preload option."));
+                            return false;
+                        }
+                    }
+
+                    // Different actions depending on the preprocessing method.
+                    if (method.IsSameAs("Gradients"))
+                    {
+                        if (preprocSize!=1)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                    }
+                    else if (method.IsSameAs("HumidityFlux"))
+                    {
+                        if (preprocSize!=4)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                    }
+                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+                    {
+                        if (preprocSize!=2)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                    }
+                    else
+                    {
+                        asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+
+                        for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
+                        {
+                            if(GetPreprocessLevelVector(i_step, i_ptor, i_preproc).size()!=1)
+                            {
+                                asLogError(_("The preprocess Level option must be unique with with the preload option for unhandled preprocessing method."));
+                                return false;
+                            }
+                            if(GetPreprocessTimeHoursVector(i_step, i_ptor, i_preproc).size()!=1)
+                            {
+                                asLogError(_("The preprocess TimeHours option must be unique with with the preload option for unhandled preprocessing method."));
+                                return false;
+                            }
+                        }
+                    }
+
+                    if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;
+                    if(!SetPreloadTimeHours(i_step, i_ptor, preprocTimeHours)) return false;
                 }
 
                 // Set data for predictor
