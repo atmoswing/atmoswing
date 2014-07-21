@@ -34,6 +34,8 @@
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
 #include "asMethodCalibratorSingle.h"
+#include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
 #include "img_toolbar.h"
@@ -259,6 +261,86 @@ void asFrameCalibration::LoadOptions()
     // Variables exploration
     wxString VarExploStep = pConfig->Read("/Calibration/VariablesExplo/Step");
     m_TextCtrlVarExploStepToExplore->SetValue(VarExploStep);
+
+    // Monte Carlo
+    wxString MonteCarloRandomNb = pConfig->Read("/Calibration/MonteCarlo/RandomNb", "1000");
+    m_TextCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
+
+    // Genetic algorithms
+    long NaturalSelectionOperator = pConfig->Read("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", 1l);
+    m_ChoiceGAsNaturalSelectionOperator->SetSelection((int)NaturalSelectionOperator);
+    long CouplesSelectionOperator = pConfig->Read("/Calibration/GeneticAlgorithms/CouplesSelectionOperator", 3l);
+    m_ChoiceGAsCouplesSelectionOperator->SetSelection((int)CouplesSelectionOperator);
+    long CrossoverOperator = pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverOperator", 1l);
+    m_ChoiceGAsCrossoverOperator->SetSelection((int)CrossoverOperator);
+    long MutationOperator = pConfig->Read("/Calibration/GeneticAlgorithms/MutationOperator", 0l);
+    m_ChoiceGAsMutationOperator->SetSelection((int)MutationOperator);
+    wxString GAsRunNumbers = pConfig->Read("/Calibration/GeneticAlgorithms/NbRuns", "20");
+    m_TextCtrlGAsRunNumbers->SetValue(GAsRunNumbers);
+    wxString GAsPopulationSize = pConfig->Read("/Calibration/GeneticAlgorithms/PopulationSize", "50");
+    m_TextCtrlGAsPopulationSize->SetValue(GAsPopulationSize);
+    wxString GAsConvergenceStepsNb = pConfig->Read("/Calibration/GeneticAlgorithms/ConvergenceStepsNb", "20");
+    m_TextCtrlGAsConvergenceNb->SetValue(GAsConvergenceStepsNb);
+    wxString GAsRatioIntermediateGeneration = pConfig->Read("/Calibration/GeneticAlgorithms/RatioIntermediateGeneration", "0.5");
+    m_TextCtrlGAsRatioIntermGen->SetValue(GAsRatioIntermediateGeneration);
+    bool GAsAllowElitismForTheBest;
+    pConfig->Read("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", &GAsAllowElitismForTheBest, true);
+    m_CheckBoxGAsAllowElitism->SetValue(GAsAllowElitismForTheBest);
+    wxString GAsNaturalSelectionTournamentProbability = pConfig->Read("/Calibration/GeneticAlgorithms/NaturalSelectionTournamentProbability", "0.9");
+    m_TextCtrlGAsNaturalSlctTournamentProb->SetValue(GAsNaturalSelectionTournamentProbability);
+    wxString GAsCouplesSelectionTournamentNb = pConfig->Read("/Calibration/GeneticAlgorithms/CouplesSelectionTournamentNb", "3");
+    m_TextCtrlGAsCouplesSlctTournamentNb->SetValue(GAsCouplesSelectionTournamentNb);
+    wxString GAsCrossoverMultiplePointsNb = pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverMultiplePointsNb", "3");
+    m_TextCtrlGAsCrossoverMultipleNbPts->SetValue(GAsCrossoverMultiplePointsNb);
+    wxString GAsCrossoverBlendingPointsNb = pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverBlendingPointsNb", "2");
+    m_TextCtrlGAsCrossoverBlendingNbPts->SetValue(GAsCrossoverBlendingPointsNb);
+    bool GAsCrossoverBlendingShareBeta;
+    pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverBlendingShareBeta", &GAsCrossoverBlendingShareBeta, true);
+    m_CheckBoxGAsCrossoverBlendingShareBeta->SetValue(GAsCrossoverBlendingShareBeta);
+    wxString GAsCrossoverLinearPointsNb = pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverLinearPointsNb", "2");
+    m_TextCtrlGAsCrossoverLinearNbPts->SetValue(GAsCrossoverLinearPointsNb);
+    wxString GAsCrossoverHeuristicPointsNb = pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverHeuristicPointsNb", "2");
+    m_TextCtrlGAsCrossoverHeuristicNbPts->SetValue(GAsCrossoverHeuristicPointsNb);
+    bool GAsCrossoverHeuristicShareBeta;
+    pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverHeuristicShareBeta", &GAsCrossoverHeuristicShareBeta, true);
+    m_CheckBoxGAsCrossoverHeuristicShareBeta->SetValue(GAsCrossoverHeuristicShareBeta);
+    wxString GAsCrossoverBinaryLikePointsNb = pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverBinaryLikePointsNb", "2");
+    m_TextCtrlGAsCrossoverBinLikeNbPts->SetValue(GAsCrossoverBinaryLikePointsNb);
+    bool GAsCrossoverBinaryLikeShareBeta;
+    pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", &GAsCrossoverBinaryLikeShareBeta, true);
+    m_CheckBoxGAsCrossoverBinLikeShareBeta->SetValue(GAsCrossoverBinaryLikeShareBeta);
+    wxString GAsMutationsUniformConstantProbability = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsUniformConstantProbability", "0.2");
+    m_TextCtrlGAsMutationsUniformCstProb->SetValue(GAsMutationsUniformConstantProbability);
+    wxString GAsMutationsNormalConstantProbability = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalConstantProbability", "0.2");
+    m_TextCtrlGAsMutationsNormalCstProb->SetValue(GAsMutationsNormalConstantProbability);
+    wxString GAsMutationsNormalConstantStdDevRatioRange = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", "0.10");
+    m_TextCtrlGAsMutationsNormalCstStdDev->SetValue(GAsMutationsNormalConstantStdDevRatioRange);
+    wxString GAsMutationsUniformVariableMaxGensNbVar = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", "50");
+    m_TextCtrlGAsMutationsUniformVarMaxGensNb->SetValue(GAsMutationsUniformVariableMaxGensNbVar);
+    wxString GAsMutationsUniformVariableProbabilityStart = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", "0.5");
+    m_TextCtrlGAsMutationsUniformVarProbStart->SetValue(GAsMutationsUniformVariableProbabilityStart);
+    wxString GAsMutationsUniformVariableProbabilityEnd = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", "0.01");
+    m_TextCtrlGAsMutationsUniformVarProbEnd->SetValue(GAsMutationsUniformVariableProbabilityEnd);
+    wxString GAsMutationsNormalVariableMaxGensNbVarProb = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", "50");
+    m_TextCtrlGAsMutationsNormalVarMaxGensNbProb->SetValue(GAsMutationsNormalVariableMaxGensNbVarProb);
+    wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", "50");
+    m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetValue(GAsMutationsNormalVariableMaxGensNbVarStdDev);
+    wxString GAsMutationsNormalVariableProbabilityStart = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", "0.5");
+    m_TextCtrlGAsMutationsNormalVarProbStart->SetValue(GAsMutationsNormalVariableProbabilityStart);
+    wxString GAsMutationsNormalVariableProbabilityEnd = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", "0.05");
+    m_TextCtrlGAsMutationsNormalVarProbEnd->SetValue(GAsMutationsNormalVariableProbabilityEnd);
+    wxString GAsMutationsNormalVariableStdDevStart = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevStart", "0.5");
+    m_TextCtrlGAsMutationsNormalVarStdDevStart->SetValue(GAsMutationsNormalVariableStdDevStart);
+    wxString GAsMutationsNormalVariableStdDevEnd = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", "0.01");
+    m_TextCtrlGAsMutationsNormalVarStdDevEnd->SetValue(GAsMutationsNormalVariableStdDevEnd);
+    wxString GAsMutationsNonUniformProb = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNonUniformProbability", "0.2");
+    m_TextCtrlGAsMutationsNonUniformProb->SetValue(GAsMutationsNonUniformProb);
+    wxString GAsMutationsNonUniformMaxGensNbVar = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", "50");
+    m_TextCtrlGAsMutationsNonUniformGensNb->SetValue(GAsMutationsNonUniformMaxGensNbVar);
+    wxString GAsMutationsNonUniformMinRate = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsNonUniformMinRate", "0.20");
+    m_TextCtrlGAsMutationsNonUniformMinRate->SetValue(GAsMutationsNonUniformMinRate);
+    wxString GAsMutationsMultiScaleProb = pConfig->Read("/Calibration/GeneticAlgorithms/MutationsMultiScaleProbability", "0.20");
+    m_TextCtrlGAsMutationsMultiScaleProb->SetValue(GAsMutationsMultiScaleProb);
 }
 
 void asFrameCalibration::OnSaveDefault( wxCommandEvent& event )
@@ -329,6 +411,82 @@ void asFrameCalibration::SaveOptions( )
     wxString VarExploStep = m_TextCtrlVarExploStepToExplore->GetValue();
     pConfig->Write("/Calibration/VariablesExplo/Step", VarExploStep);
 
+    // Monte Carlo
+    wxString MonteCarloRandomNb = m_TextCtrlMonteCarloRandomNb->GetValue();
+    pConfig->Write("/Calibration/MonteCarlo/RandomNb", MonteCarloRandomNb);
+
+    // Genetic algorithms
+    long NaturalSelectionOperator = m_ChoiceGAsNaturalSelectionOperator->GetSelection();
+    pConfig->Write("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", NaturalSelectionOperator);
+    long CouplesSelectionOperator = m_ChoiceGAsCouplesSelectionOperator->GetSelection();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CouplesSelectionOperator", CouplesSelectionOperator);
+    long CrossoverOperator = m_ChoiceGAsCrossoverOperator->GetSelection();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverOperator", CrossoverOperator);
+    long MutationOperator = m_ChoiceGAsMutationOperator->GetSelection();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationOperator", MutationOperator);
+    wxString GAsRunNumbers = m_TextCtrlGAsRunNumbers->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/NbRuns", GAsRunNumbers);
+    wxString GAsPopulationSize = m_TextCtrlGAsPopulationSize->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/PopulationSize", GAsPopulationSize);
+    wxString GAsConvergenceStepsNb = m_TextCtrlGAsConvergenceNb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/ConvergenceStepsNb", GAsConvergenceStepsNb);
+    wxString GAsRatioIntermediateGeneration = m_TextCtrlGAsRatioIntermGen->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/RatioIntermediateGeneration", GAsRatioIntermediateGeneration);
+    bool GAsAllowElitismForTheBest = m_CheckBoxGAsAllowElitism->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", GAsAllowElitismForTheBest);
+    wxString GAsNaturalSelectionTournamentProbability = m_TextCtrlGAsNaturalSlctTournamentProb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/NaturalSelectionTournamentProbability", GAsNaturalSelectionTournamentProbability);
+    wxString GAsCouplesSelectionTournamentNb = m_TextCtrlGAsCouplesSlctTournamentNb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CouplesSelectionTournamentNb", GAsCouplesSelectionTournamentNb);
+    wxString GAsCrossoverMultiplePointsNb = m_TextCtrlGAsCrossoverMultipleNbPts->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverMultiplePointsNb", GAsCrossoverMultiplePointsNb);
+    wxString GAsCrossoverBlendingPointsNb = m_TextCtrlGAsCrossoverBlendingNbPts->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverBlendingPointsNb", GAsCrossoverBlendingPointsNb);
+    bool GAsCrossoverBlendingShareBeta = m_CheckBoxGAsCrossoverBlendingShareBeta->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverBlendingShareBeta", GAsCrossoverBlendingShareBeta);
+    wxString GAsCrossoverLinearPointsNb = m_TextCtrlGAsCrossoverLinearNbPts->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverLinearPointsNb", GAsCrossoverLinearPointsNb);
+    wxString GAsCrossoverHeuristicPointsNb = m_TextCtrlGAsCrossoverHeuristicNbPts->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverHeuristicPointsNb", GAsCrossoverHeuristicPointsNb);
+    bool GAsCrossoverHeuristicShareBeta = m_CheckBoxGAsCrossoverHeuristicShareBeta->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverHeuristicShareBeta", GAsCrossoverHeuristicShareBeta);
+    wxString GAsCrossoverBinaryLikePointsNb = m_TextCtrlGAsCrossoverBinLikeNbPts->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverBinaryLikePointsNb", GAsCrossoverBinaryLikePointsNb);
+    bool GAsCrossoverBinaryLikeShareBeta = m_CheckBoxGAsCrossoverBinLikeShareBeta->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", GAsCrossoverBinaryLikeShareBeta);
+    wxString GAsMutationsUniformConstantProbability = m_TextCtrlGAsMutationsUniformCstProb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsUniformConstantProbability", GAsMutationsUniformConstantProbability);
+    wxString GAsMutationsNormalConstantProbability = m_TextCtrlGAsMutationsNormalCstProb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalConstantProbability", GAsMutationsNormalConstantProbability);
+    wxString GAsMutationsNormalConstantStdDevRatioRange = m_TextCtrlGAsMutationsNormalCstStdDev->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", GAsMutationsNormalConstantStdDevRatioRange);
+    wxString GAsMutationsUniformVariableMaxGensNbVar = m_TextCtrlGAsMutationsUniformVarMaxGensNb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", GAsMutationsUniformVariableMaxGensNbVar);
+    wxString GAsMutationsUniformVariableProbabilityStart = m_TextCtrlGAsMutationsUniformVarProbStart->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", GAsMutationsUniformVariableProbabilityStart);
+    wxString GAsMutationsUniformVariableProbabilityEnd = m_TextCtrlGAsMutationsUniformVarProbEnd->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", GAsMutationsUniformVariableProbabilityEnd);
+    wxString GAsMutationsNormalVariableMaxGensNbVarProb = m_TextCtrlGAsMutationsNormalVarMaxGensNbProb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", GAsMutationsNormalVariableMaxGensNbVarProb);
+    wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", GAsMutationsNormalVariableMaxGensNbVarStdDev);
+    wxString GAsMutationsNormalVariableProbabilityStart = m_TextCtrlGAsMutationsNormalVarProbStart->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", GAsMutationsNormalVariableProbabilityStart);
+    wxString GAsMutationsNormalVariableProbabilityEnd = m_TextCtrlGAsMutationsNormalVarProbEnd->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", GAsMutationsNormalVariableProbabilityEnd);
+    wxString GAsMutationsNormalVariableStdDevStart = m_TextCtrlGAsMutationsNormalVarStdDevStart->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevStart", GAsMutationsNormalVariableStdDevStart);
+    wxString GAsMutationsNormalVariableStdDevEnd = m_TextCtrlGAsMutationsNormalVarStdDevEnd->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", GAsMutationsNormalVariableStdDevEnd);
+    wxString GAsMutationsNonUniformProb = m_TextCtrlGAsMutationsNonUniformProb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformProbability", GAsMutationsNonUniformProb);
+    wxString GAsMutationsNonUniformMaxGensNbVar = m_TextCtrlGAsMutationsNonUniformGensNb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", GAsMutationsNonUniformMaxGensNbVar);
+    wxString GAsMutationsNonUniformMinRate = m_TextCtrlGAsMutationsNonUniformMinRate->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformMinRate", GAsMutationsNonUniformMinRate);
+    wxString GAsMutationsMultiScaleProb = m_TextCtrlGAsMutationsMultiScaleProb->GetValue();
+    pConfig->Write("/Calibration/GeneticAlgorithms/MutationsMultiScaleProbability", GAsMutationsMultiScaleProb);
+
     pConfig->Flush();
 }
 /*
@@ -375,13 +533,23 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
                 m_MethodCalibrator = new asMethodCalibratorClassicPlusVarExplo();
                 break;
             }
-            case 4: // Scores evaluation
+            case 4: // Random sets
+            {
+                m_MethodCalibrator = new asMethodOptimizerRandomSet();
+                break;
+            }
+            case 5: // Genetic algorithms
+            {
+                m_MethodCalibrator = new asMethodOptimizerGeneticAlgorithms();
+                break;
+            }
+            case 6: // Scores evaluation
             {
                 asLogMessage(_("Proceeding to all scores evaluation."));
                 m_MethodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
-            case 5: // Only predictand values
+            case 7: // Only predictand values
             {
                 asLogMessage(_("Proceeding to predictand values saving."));
                 m_MethodCalibrator = new asMethodCalibratorSingleOnlyValues();
