@@ -524,7 +524,10 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 asThrowException(_("Preprocessing option not correctly defined in the parameters file."));
             }
 
-            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area")) return false;
+            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area"))
+            {
+                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area Moving")) return false;
+            }
             if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
             SetPredictorUminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Umin", "lock", true));
             if(IsPredictorUminLocked(i_step, i_ptor))
