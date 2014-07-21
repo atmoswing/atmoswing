@@ -35,7 +35,6 @@
 #include "asForecastScoreCRPSsharpnessAR.h"
 #include "asForecastScoreCRPSsharpnessEP.h"
 #include "asForecastScoreCRPSHersbachDecomp.h"
-#include "asForecastScoreCRPSHersbachDecompS.h"
 #include "asForecastScoreDF0.h"
 #include "asForecastScoreContingencyTable.h"
 #include "asForecastScoreMAE.h"
@@ -99,11 +98,6 @@ asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
         case (CRPSreliability):
         {
             asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
-            return score;
-        }
-        case (CRPSreliabilityS):
-        {
-            asForecastScore* score = new asForecastScoreCRPSHersbachDecompS();
             return score;
         }
         case (CRPSpotential):

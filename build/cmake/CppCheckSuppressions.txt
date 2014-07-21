@@ -18,3 +18,6 @@ unmatchedSuppression
 
 // information: Cppcheck cannot find all the include files
 missingInclude
+
+// information: Too many #ifdef configurations
+toomanyconfigs
