@@ -749,6 +749,15 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     {
                                         if(tmp_prepro==2) level = 0; // pr_wtr
                                     }
+                                    else if (method.IsSameAs("FormerHumidityIndex"))
+                                    {
+                                        if(tmp_prepro==2) level = 0; // pr_wtr
+                                        if(tmp_prepro==3) level = 0; // pr_wtr
+                                        if(tmp_prepro==0) timeHours = preloadTimeHours[0];
+                                        if(tmp_prepro==1) timeHours = preloadTimeHours[1];
+                                        if(tmp_prepro==2) timeHours = preloadTimeHours[0];
+                                        if(tmp_prepro==3) timeHours = preloadTimeHours[1];
+                                    }
 
                                     // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
                                     double ptorStart = timeStartData-double(params.GetTimeShiftDays())+timeHours/24.0;
@@ -947,6 +956,11 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                     time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
                 }
                 else if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("HumidityFlux"))
+                {
+                    level = params.GetPreprocessLevel(i_step, i_ptor, 0);
+                    time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
+                }
+                else if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("FormerHumidityIndex"))
                 {
                     level = params.GetPreprocessLevel(i_step, i_ptor, 0);
                     time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);

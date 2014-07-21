@@ -311,6 +311,18 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                         preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                         preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                     }
+                    else if (method.IsSameAs("FormerHumidityIndex"))
+                    {
+                        if (preprocSize!=4)
+                        {
+                            asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."), preprocSize));
+                            return false;
+                        }
+                        preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                        preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                        VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(i_step, i_ptor, 1);
+                        preprocTimeHours.insert( preprocTimeHours.end(), preprocTimeHours2.begin(), preprocTimeHours2.end() );
+                    }
                     else
                     {
                         asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
