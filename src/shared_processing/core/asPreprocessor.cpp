@@ -79,9 +79,9 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictor* > predictors, con
     {
         return PreprocessMultiplication(predictors, result);
     }
-    else if (method.IsSameAs("MergeCouplesAndMultiply"))
+    else if (method.IsSameAs("FormerHumidityIndex"))
     {
-        return PreprocessMergeCouplesAndMultiply(predictors, result);
+        return PreprocessFormerHumidityIndex(predictors, result);
     }
     else if (method.IsSameAs("MergeByHalfAndMultiply"))
     {
@@ -258,12 +258,11 @@ bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > p
     return true;
 }
 
-bool asPreprocessor::PreprocessMergeCouplesAndMultiply(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize<2) asThrowException(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeCouplesAndMultiply"));
-    if(!(fmod((float)inputSize,(float)2)==0)) asThrowException(_("The number of predictors must be a pair in asPreprocessor::PreprocessMergeCouplesAndMultiply"));
+    if(inputSize!=4) asThrowException(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
 
     // Merge
     wxASSERT(predictors[0]);
@@ -382,7 +381,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
     int inputSize = predictors.size();
     int factorSize = inputSize/2;
     if(inputSize<2) asThrowException(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
-    if(!(fmod((float)inputSize,(float)2)==0)) asThrowException(_("The number of predictors must be a pair in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+    if(!inputSize%2!=0) asThrowException(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
 
     // Handle sizes
     wxASSERT(predictors[0]);
@@ -478,7 +477,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
         {
             for (int i_col=0; i_col<colsNb; i_col++)
             {
-                wind = sqrt(predictors[0]->GetData()[i_time](i_row,i_col)*predictors[0]->GetData()[i_time](i_row,i_col) 
+                wind = sqrt(predictors[0]->GetData()[i_time](i_row,i_col)*predictors[0]->GetData()[i_time](i_row,i_col)
                             + predictors[1]->GetData()[i_time](i_row,i_col)*predictors[1]->GetData()[i_time](i_row,i_col));
                 multi[i_time](i_row, i_col) = wind * predictors[2]->GetData()[i_time](i_row,i_col) * predictors[3]->GetData()[i_time](i_row,i_col);
             }
