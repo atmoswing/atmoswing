@@ -1,0 +1,13 @@
+<pattern id="MeteoSwiss_IDAweb_bulletin" name="MeteoSwiss data pattern from IDAweb">
+    <structtype>constantwidth</structtype>
+    <headerlines>3</headerlines>
+    <parsetime>1</parsetime>
+    <time>
+        <block charstart="8" charend="11">year</block>
+        <block charstart="12" charend="13">month</block>
+        <block charstart="14" charend="15">day</block>
+    </time>
+    <data>
+        <block charstart="25" charend="30">Lightnings</block>
+    </data>
+</pattern>
