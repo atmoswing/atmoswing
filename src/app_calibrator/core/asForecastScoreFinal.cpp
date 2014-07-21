@@ -42,7 +42,6 @@
 #include "asForecastScoreFinalRankHistogram.h"
 #include "asForecastScoreFinalRankHistogramReliability.h"
 #include "asForecastScoreFinalCRPSreliability.h"
-#include "asForecastScoreFinalCRPSreliabilityS.h"
 #include "asForecastScoreFinalCRPSpotential.h"
 
 asForecastScoreFinal::asForecastScoreFinal(Period period)
@@ -51,8 +50,6 @@ asForecastScoreFinal::asForecastScoreFinal(Period period)
     m_SingleValue = true;
     m_Has2DArrayArgument = false;
     m_RanksNb = 0;
-    m_UsesClimatology = false;
-    m_ScoreClimatology = NaNFloat;
 }
 
 asForecastScoreFinal::asForecastScoreFinal(const wxString& periodString)
@@ -60,8 +57,6 @@ asForecastScoreFinal::asForecastScoreFinal(const wxString& periodString)
     m_SingleValue = true;
     m_Has2DArrayArgument = false;
     m_RanksNb = 0;
-    m_UsesClimatology = false;
-    m_ScoreClimatology = NaNFloat;
 
     if (periodString.CmpNoCase("Total")==0)
     {
@@ -154,11 +149,6 @@ asForecastScoreFinal* asForecastScoreFinal::GetInstance(const wxString& scoreStr
     else if (scoreString.CmpNoCase("CRPSreliability")==0)
     {
         asForecastScoreFinal* score = new asForecastScoreFinalCRPSreliability(periodString);
-        return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSreliabilityS")==0)
-    {
-        asForecastScoreFinal* score = new asForecastScoreFinalCRPSreliabilityS(periodString);
         return score;
     }
     else if (scoreString.CmpNoCase("CRPSpotential")==0)

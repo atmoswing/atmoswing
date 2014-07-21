@@ -29,8 +29,6 @@
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asForecastScoreFinal.h"
 #include "asForecastScoreFinalRankHistogramReliability.h"
-#include "asForecastScoreRankHistogram.h"
-
 
 asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores()
 :
@@ -194,7 +192,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     bool processContingencyScores = false;
     bool processContinuousScores = true;
     bool processRankHistogramScores = true;
-    bool processRankHistogramScoresSkillScore = true;
 
     // Extract the stations IDs
     VVectorInt stationsId = params.GetPredictandStationsIdsVector();
@@ -464,65 +461,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
 
             results.Add(params, resultCalib, resultValid);
             m_ScoreClimatology.clear();
-
-            if (processRankHistogramScoresSkillScore)
-            {
-                asLogMessageImportant(_("Processing the Verification Rank Histogram skill score"));
-
-                VectorInt stationIds = params.GetPredictandStationIds();
-
-                if (stationIds.size()==1)
-                {
-                    params.SetForecastScoreName("RankHistogram");
-                    m_Parameters[0]=params;
-
-                    VArray1DFloat climatologyData = GetClimatologyData(params);
-
-                    std::vector < Array1DFloat > histoClim;
-
-                    asForecastScoreRankHistogram forecastScore;
-                    forecastScore.SetPercentile(params.GetForecastScorePercentile());
-                    forecastScore.SetThreshold(params.GetForecastScoreThreshold());
-
-                    for (int i_boot=0; i_boot<boostrapNb; i_boot++)
-                    {
-                        Array1DFloat currentHistoClim = forecastScore.ProcessHistogramClimatology(anaValues.GetTargetValues()[0], climatologyData[0]);
-
-                        // Store every assessment
-                        histoClim.push_back(currentHistoClim);
-                    }
-        
-                    // Average all histograms assessments
-                    Array1DFloat averageHistoClim = Array1DFloat::Zero(histoClim[0].size());
-                    for (int i_boot=0; i_boot<boostrapNb; i_boot++)
-                    {
-                        averageHistoClim += histoClim[i_boot];
-                    }
-                    averageHistoClim = averageHistoClim/boostrapNb;
-                    
-                    // Reliability of the Verification Rank Histogram (Talagrand Diagram)
-                    params.SetForecastScoreName("RankHistogramReliability");
-                    int forecastScoresSizeClim = anaValues.GetTargetValues().size();
-
-                    asForecastScoreFinalRankHistogramReliability rankHistogramReliabilityClim(asForecastScoreFinal::Total);
-                    rankHistogramReliabilityClim.SetRanksNb(averageHistoClim.size()+1);
-                    float resultClim = rankHistogramReliability.AssessOnBootstrap(averageHistoClim, forecastScoresSizeClim);
-
-                    params.SetForecastScoreName("RankHistogramReliabilityClimatology");
-                    results.Add(params, resultClim, resultClim);
-                    
-                    float skillScoreCalib = (resultCalib-resultClim) / ((float)0-resultClim);
-                    float skillScoreValid = (resultValid-resultClim) / ((float)0-resultClim);
-                    params.SetForecastScoreName("RankHistogramReliabilitySkillScore");
-                    results.Add(params, skillScoreCalib, skillScoreValid);
-
-                    m_ScoreClimatology.clear();
-                }
-                else
-                {
-                    asLogError(_("The Verification Rank Histogram skill score cannot yet be processed on a multivariate basis."));
-                }
-            }
         }
 
         if(!results.Print()) return false;

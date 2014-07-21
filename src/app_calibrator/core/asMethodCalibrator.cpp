@@ -1684,7 +1684,7 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
 
     // Pass data and score to processor
     asLogMessage(_("Start processing the final score."));
-    if(!asProcessorForecastScore::GetAnalogsForecastScoreFinal(anaScores, timeArray, params, results, m_ScoreClimatology))
+    if(!asProcessorForecastScore::GetAnalogsForecastScoreFinal(anaScores, timeArray, params, results))
     {
         asLogError(_("Failed to process the final score."));
         return false;
