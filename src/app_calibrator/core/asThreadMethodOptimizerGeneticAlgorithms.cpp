@@ -33,6 +33,8 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
     asResultsAnalogsValues anaValues;
     asResultsAnalogsForecastScores anaScores;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
+
+    *m_FinalScoreCalib = NaNFloat;
     // Set the climatology score value
     if (m_ScoreClimatology->size()!=0)
     {
@@ -42,6 +44,13 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
 
     // Process every step one after the other
     int stepsNb = m_Params.GetStepsNb();
+
+    if (stepsNb==0)
+    {
+        asLogError(_("The number of processing steps is null in asThreadMethodOptimizerGeneticAlgorithms."));
+        return NULL;
+    }
+
     for (int i_step=0; i_step<stepsNb; i_step++)
     {
         bool containsNaNs = false;
@@ -66,6 +75,11 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
         if (containsNaNs)
         {
             asLogError(_("The dates selection contains NaNs"));
+            return NULL;
+        }
+        if(anaDates.GetTargetDates().size()==0 || anaDates.GetAnalogsDates().size()==0 || anaDates.GetAnalogsCriteria().size()==0)
+        {
+            asLogError(_("The asResultsAnalogsDates object is empty in asThreadMethodOptimizerGeneticAlgorithms."));
             return NULL;
         }
     }
