@@ -978,11 +978,11 @@ void asParametersOptimization::CheckRange()
 
             if(!m_StepsLocks[i].Predictors[j].Umin || !m_StepsLocks[i].Predictors[j].Uptsnb)
             {
-                if(GetPredictorUmin(i,j)+GetPredictorUptsnb(i,j)*GetPredictorUstep(i,j) > m_StepsUpperLimit[i].Predictors[j].Umin+m_StepsUpperLimit[i].Predictors[j].Uptsnb*GetPredictorUstep(i,j))
+                if(GetPredictorUmin(i,j)+(GetPredictorUptsnb(i,j)-1)*GetPredictorUstep(i,j) > m_StepsUpperLimit[i].Predictors[j].Umin+(m_StepsUpperLimit[i].Predictors[j].Uptsnb-1)*GetPredictorUstep(i,j))
                 {
                     if(!m_StepsLocks[i].Predictors[j].Uptsnb)
                     {
-                        SetPredictorUptsnb(i, j, (m_StepsUpperLimit[i].Predictors[j].Umin-GetPredictorUmin(i,j))/GetPredictorUstep(i,j)+m_StepsUpperLimit[i].Predictors[j].Uptsnb);
+                        SetPredictorUptsnb(i, j, (m_StepsUpperLimit[i].Predictors[j].Umin-GetPredictorUmin(i,j))/GetPredictorUstep(i,j)+m_StepsUpperLimit[i].Predictors[j].Uptsnb); // Correct, no need of +1
                     }
                     else
                     {
@@ -993,11 +993,11 @@ void asParametersOptimization::CheckRange()
 
             if(!m_StepsLocks[i].Predictors[j].Vmin || !m_StepsLocks[i].Predictors[j].Vptsnb)
             {
-                if(GetPredictorVmin(i,j)+GetPredictorVptsnb(i,j)*GetPredictorVstep(i,j) > m_StepsUpperLimit[i].Predictors[j].Vmin+m_StepsUpperLimit[i].Predictors[j].Vptsnb*GetPredictorVstep(i,j))
+                if(GetPredictorVmin(i,j)+(GetPredictorVptsnb(i,j)-1)*GetPredictorVstep(i,j) > m_StepsUpperLimit[i].Predictors[j].Vmin+(m_StepsUpperLimit[i].Predictors[j].Vptsnb-1)*GetPredictorVstep(i,j))
                 {
                     if(!m_StepsLocks[i].Predictors[j].Vptsnb)
                     {
-                        SetPredictorVptsnb(i, j, (m_StepsUpperLimit[i].Predictors[j].Vmin-GetPredictorVmin(i,j))/GetPredictorVstep(i,j)+m_StepsUpperLimit[i].Predictors[j].Vptsnb);
+                        SetPredictorVptsnb(i, j, (m_StepsUpperLimit[i].Predictors[j].Vmin-GetPredictorVmin(i,j))/GetPredictorVstep(i,j)+m_StepsUpperLimit[i].Predictors[j].Vptsnb); // Correct, no need of +1
                     }
                     else
                     {
