@@ -148,6 +148,13 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
     m_MutationsModeType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/MutationOperator", 0l);
     ThreadsManager().CritSectionConfig().Leave();
 
+    // There are issues when the number of threads is superior or equal to the population size.
+    if (asThreadsManager().GetAvailableThreadsNb()>=m_PopSize)
+    {
+        asLogError(_("The number of threads to use is superior to the population size, which is unstable."));
+        return false;
+    }
+
     // Reset the score of the climatology
     m_ScoreClimatology.clear();
 
