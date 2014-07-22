@@ -591,8 +591,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     double diff = Vmax-geo.GetAxisVmax();
                                     int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
                                     params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                    asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
-                                    asLogMessage(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
+                                    asLogWarning(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
+                                    asLogWarning(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
                                 }
 
                                 wxASSERT(params.GetPreloadUptsnb(tmp_step, tmp_ptor)>0);
@@ -784,7 +784,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         double diff = Vmax-geo.GetAxisVmax();
                                         int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
                                         params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                        asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.2f to %.2f)."), Vmax, Vmax-diff));
+                                        asLogWarning(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
+                                        asLogWarning(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
                                     }
 
                                     // Area object instantiation
