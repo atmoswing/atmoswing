@@ -513,14 +513,16 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     {
         // Get a parameters set
         asParametersOptimizationGAs newParams = GetNextParameters();
-        if (newParams.GetStepsNb()==0)
-        {
-            asLogError(_("The new parameters set is not correcty initialized."));
-            return false;
-        }
 
         if(!SkipNext() && !IsOver())
         {
+            // Check on the parameters set
+            if (newParams.GetStepsNb()==0)
+            {
+                asLogError(_("The new parameters set is not correcty initialized."));
+                return false;
+            }
+
             if(parallelEvaluations)
             {
                 #ifndef UNIT_TESTING
