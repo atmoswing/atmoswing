@@ -512,7 +512,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     while(!IsOver())
     {
         // Get a parameters set
-        params = GetNextParameters();
+        asParametersOptimizationGAs newParams = GetNextParameters();
+        if (newParams.GetStepsNb()==0)
+        {
+            asLogError(_("The new parameters set is not correcty initialized."));
+            return false;
+        }
 
         if(!SkipNext() && !IsOver())
         {
@@ -530,7 +535,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 VectorFloat scoreClim = m_ScoreClimatology;
 
                 // Push the first parameters set
-                asThreadMethodOptimizerGeneticAlgorithms* firstthread = new asThreadMethodOptimizerGeneticAlgorithms(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
+                asThreadMethodOptimizerGeneticAlgorithms* firstthread = new asThreadMethodOptimizerGeneticAlgorithms(this, newParams, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
                 int threadType = firstthread->GetType();
                 ThreadsManager().AddThread(firstthread);
 
@@ -557,10 +562,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 for (int i_thread=0; i_thread<threadsNb; i_thread++)
                 {
                     // Get a parameters set
-                    params = GetNextParameters();
+                    asParametersOptimizationGAs nextParams = GetNextParameters();
+                    if (nextParams.GetStepsNb()==0)
+                    {
+                        asLogError(wxString::Format(_("The new parameters set is not correcty initialized in the thread array filling (iterator %d/%d)."), m_Iterator, m_ParamsNb));
+                        return false;
+                    }
 
                     // Add it to the threads
-                    asThreadMethodOptimizerGeneticAlgorithms* thread = new asThreadMethodOptimizerGeneticAlgorithms(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
+                    asThreadMethodOptimizerGeneticAlgorithms* thread = new asThreadMethodOptimizerGeneticAlgorithms(this, nextParams, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_ScoresCalib.size()<=(unsigned)m_ParamsNb);
@@ -580,10 +590,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     ThreadsManager().WaitForFreeThread(threadType);
 
                     // Get a parameters set
-                    params = GetNextParameters();
+                    asParametersOptimizationGAs nextParams = GetNextParameters();
+                    if (nextParams.GetStepsNb()==0)
+                    {
+                        asLogError(wxString::Format(_("The new parameters set is not correcty initialized in the continuous adding (iterator %d/%d)."), m_Iterator, m_ParamsNb));
+                        return false;
+                    }
 
                     // Add it to the threads
-                    asThreadMethodOptimizerGeneticAlgorithms* thread = new asThreadMethodOptimizerGeneticAlgorithms(this, params, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
+                    asThreadMethodOptimizerGeneticAlgorithms* thread = new asThreadMethodOptimizerGeneticAlgorithms(this, nextParams, &m_ScoresCalib[m_Iterator], &m_ScoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_ScoresCalib.size()<=(unsigned)m_ParamsNb);
@@ -627,18 +642,18 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
                 // Process every step one after the other
-                int stepsNb = params.GetStepsNb();
+                int stepsNb = newParams.GetStepsNb();
                 for (int i_step=0; i_step<stepsNb; i_step++)
                 {
                     bool containsNaNs = false;
                     if (i_step==0)
                     {
-                        if(!GetAnalogsDates(anaDates, params, i_step, containsNaNs)) return false;
+                        if(!GetAnalogsDates(anaDates, newParams, i_step, containsNaNs)) return false;
                         anaDatesPrevious = anaDates;
                     }
                     else
                     {
-                        if(!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs)) return false;
+                        if(!GetAnalogsSubDates(anaDates, newParams, anaDatesPrevious, i_step, containsNaNs)) return false;
                         anaDatesPrevious = anaDates;
                     }
                     if (containsNaNs)
@@ -647,9 +662,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                         return false;
                     }
                 }
-                if(!GetAnalogsValues(anaValues, params, anaDates, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+                if(!GetAnalogsValues(anaValues, newParams, anaDates, stepsNb-1)) return false;
+                if(!GetAnalogsForecastScores(anaScores, newParams, anaValues, stepsNb-1)) return false;
+                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, newParams, anaScores, stepsNb-1)) return false;
 
                 // Store the result
                 if(((m_OptimizerStage==asINITIALIZATION) | (m_OptimizerStage==asREASSESSMENT)) && m_Iterator<m_ParamsNb)
