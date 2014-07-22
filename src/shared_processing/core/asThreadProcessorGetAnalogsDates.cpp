@@ -142,7 +142,6 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
 
             // DateArray object initialization.
             dateArrayArchiveSelection.Init(timeTargetSelection[i_dateTarg], m_Params.GetTimeArrayAnalogsIntervalDays(), m_Params.GetTimeArrayAnalogsExcludeDays());
-            dateArrayArchiveSelection.Init(timeTargetSelection[i_dateTarg], m_Params.GetTimeArrayAnalogsIntervalDays(), m_Params.GetTimeArrayAnalogsExcludeDays());
 
             // Counter representing the current index
             counter = 0;
