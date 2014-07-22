@@ -631,7 +631,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if (!IsPredictorUptsnbLocked(i_step, i_ptor))
                 {
                     int Ubaseptsnb = abs(GetPredictorUminUpperLimit(i_step, i_ptor)-GetPredictorUminLowerLimit(i_step, i_ptor))/GetPredictorUstep(i_step, i_ptor);
-                    SetPreloadUptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorUptsnbUpperLimit(i_step, i_ptor));
+                    SetPreloadUptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorUptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
                 }
                 else
                 {
@@ -641,7 +641,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if (!IsPredictorVptsnbLocked(i_step, i_ptor))
                 {
                     int Vbaseptsnb = abs(GetPredictorVminUpperLimit(i_step, i_ptor)-GetPredictorVminLowerLimit(i_step, i_ptor))/GetPredictorVstep(i_step, i_ptor);
-                    SetPreloadVptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorVptsnbUpperLimit(i_step, i_ptor));
+                    SetPreloadVptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorVptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
                 }
                 else
                 {
