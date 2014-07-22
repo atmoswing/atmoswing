@@ -793,6 +793,7 @@ wxString asParameters::Print()
 
     content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString().c_str()));
     content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
+    content.Append(wxString::Format("ExcludeDays\t%d\t", GetTimeArrayAnalogsExcludeDays()));
 
     for (int i_step=0; i_step<GetStepsNb(); i_step++)
     {
@@ -870,10 +871,17 @@ bool asParameters::GetValuesFromString(wxString stringVals)
     long lVal;
 
     iLeft = stringVals.Find("DaysInt");
-    iRight = stringVals.Find("||||");
+    iRight = stringVals.Find("ExcludeDays");
     strVal = stringVals.SubString(iLeft+8, iRight-2);
     strVal.ToLong(&lVal);
     SetTimeArrayAnalogsIntervalDays(int(lVal));
+    stringVals = stringVals.SubString(iRight, stringVals.Length());
+
+    iLeft = stringVals.Find("ExcludeDays");
+    iRight = stringVals.Find("||||");
+    strVal = stringVals.SubString(iLeft+12, iRight-2);
+    strVal.ToLong(&lVal);
+    SetTimeArrayAnalogsExcludeDays(int(lVal));
     stringVals = stringVals.SubString(iRight+5, stringVals.Length());
 
     for (int i_step=0; i_step<GetStepsNb(); i_step++)
@@ -897,7 +905,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     strVal.ToDouble(&dVal);
                     SetPreprocessLevel(i_step, i_ptor, i_dataset, float(dVal));
                     stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                     iLeft = 0;
                     iRight = stringVals.Find("\t");
                     strVal = stringVals.SubString(iLeft, iRight-1);
@@ -914,7 +922,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 strVal.ToDouble(&dVal);
                 SetPredictorLevel(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                 iLeft = 0;
                 iRight = stringVals.Find("\t");
                 strVal = stringVals.SubString(iLeft, iRight-1);
@@ -922,49 +930,49 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 SetPredictorTimeHours(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight, stringVals.Length());
             }
-            
+
             iLeft = stringVals.Find("Umin");
             iRight = stringVals.Find("Uptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorUmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Uptsnb");
             iRight = stringVals.Find("Ustep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
             SetPredictorUptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Ustep");
             iRight = stringVals.Find("Vmin");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorUstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Vmin");
             iRight = stringVals.Find("Vptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorVmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Vptsnb");
             iRight = stringVals.Find("Vstep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
             SetPredictorVptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Vstep");
             iRight = stringVals.Find("Weight");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorVstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Weight");
             iRight = stringVals.Find("Criteria");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
