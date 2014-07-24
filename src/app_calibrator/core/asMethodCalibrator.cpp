@@ -745,6 +745,10 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     {
                                         // Nothing to change
                                     }
+                                    else if (method.IsSameAs("HumidityIndex"))
+                                    {
+                                        if(tmp_prepro==1) level = 0; // pr_wtr
+                                    }
                                     else if (method.IsSameAs("HumidityFlux"))
                                     {
                                         if(tmp_prepro==2) level = 0; // pr_wtr
@@ -952,6 +956,11 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
             {
                 // Correct according to the method
                 if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients"))
+                {
+                    level = params.GetPreprocessLevel(i_step, i_ptor, 0);
+                    time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
+                }
+                else if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("HumidityIndex"))
                 {
                     level = params.GetPreprocessLevel(i_step, i_ptor, 0);
                     time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
