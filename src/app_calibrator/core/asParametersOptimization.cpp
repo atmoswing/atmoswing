@@ -471,7 +471,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                             preprocTimeHours.push_back(h);
                         }
                     }
-                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
                     {
                         if (preprocSize!=2)
                         {
