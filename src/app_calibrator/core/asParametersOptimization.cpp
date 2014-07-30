@@ -675,7 +675,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!SetPredictorWeight(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "value"))) return false;
                 if(!SetPredictorWeightLowerLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor))) return false;
                 if(!SetPredictorWeightUpperLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor))) return false;
-                if(!SetPredictorWeightIteration(i_step, i_ptor, 0.1)) return false; // must be >0
+                if(!SetPredictorWeightIteration(i_step, i_ptor, 0.1f)) return false; // must be >0
             }
             else
             {
