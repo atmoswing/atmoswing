@@ -596,9 +596,17 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     }
 
     // Multivariate
-    if (stationIdsString.SubString(0, 0).IsSameAs("("))
+    if (stationIdsString.SubString(0, 0).IsSameAs("(") || stationIdsString.SubString(0, 1).IsSameAs("'("))
     {
-        wxString subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
+        wxString subStr = wxEmptyString;
+        if (stationIdsString.SubString(0, 0).IsSameAs("("))
+        {
+            subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
+        }
+        else
+        {
+            subStr = stationIdsString.SubString(2, stationIdsString.Len()-1);
+        }
 
         // Check that it contains only 1 opening bracket
         if (subStr.Find("(") != wxNOT_FOUND)
@@ -608,7 +616,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         }
 
         // Check that it contains 1 closing bracket at the end
-        if (subStr.Find(")") != subStr.size()-1)
+        if (subStr.Find(")") != subStr.size()-1 && subStr.Find(")'") != subStr.size()-2)
         {
             asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
             return ids;
