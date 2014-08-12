@@ -204,6 +204,82 @@ bool asParameters::FixAnalogsNb()
     return true;
 }
 
+void asParameters::SortLevelsAndTime()
+{
+    // Sort levels on every analogy level
+    for (int i_step=0; i_step<GetStepsNb(); i_step++)
+    {
+        // Get the predictors vector
+        VectorParamsPredictors oldPtors = GetVectorParamsPredictors(i_step);
+        VectorParamsPredictors newPtors;
+        
+        // Sort
+        while(true)
+        {
+            if(oldPtors.size()==0)
+            {
+                break;
+            }
+
+            // Find the smallest level and hour combination
+            int lowestIndex = 0;
+            float level;
+            double hour;
+            if (oldPtors[0].Preprocess)
+            {
+                level = oldPtors[0].PreprocessLevels[0];
+                hour = oldPtors[0].PreprocessTimeHours[0];
+            }
+            else
+            {
+                level = oldPtors[0].Level;
+                hour = oldPtors[0].TimeHours;
+            }
+
+            for (int i=1; i<oldPtors.size(); i++)
+            {
+                // Get next level and hour
+                float nextLevel;
+                double nextHour;
+                if (oldPtors[i].Preprocess)
+                {
+                    nextLevel = oldPtors[i].PreprocessLevels[0];
+                    nextHour = oldPtors[i].PreprocessTimeHours[0];
+                }
+                else
+                {
+                    nextLevel = oldPtors[i].Level;
+                    nextHour = oldPtors[i].TimeHours;
+                }
+
+                // Compare to previous one
+                if (nextLevel<level)
+                {
+                    lowestIndex = i;
+                    level = nextLevel;
+                    hour = nextHour;
+                }
+                else if (nextLevel==level)
+                {
+                    if (nextHour<hour)
+                    {
+                        lowestIndex = i;
+                        level = nextLevel;
+                        hour = nextHour;
+                    }
+                }
+            }
+
+            // Store in the new container and remove from the old one
+            newPtors.push_back(oldPtors[lowestIndex]);
+            oldPtors.erase (oldPtors.begin()+lowestIndex);
+               
+            // Store the sorted vector
+            SetVectorParamsPredictors(i_step, newPtors);
+        }
+    }
+}
+
 VectorInt asParameters::BuildVectorInt(int min, int max, int step)
 {
     int stepsnb = 1+(max-min)/step;

@@ -93,6 +93,8 @@ public:
     void SetSizes();
 
     bool FixAnalogsNb();
+    
+    void SortLevelsAndTime();
 
     VectorInt BuildVectorInt(int min, int max, int step);
 
@@ -126,6 +128,17 @@ public:
 
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
 
+    VectorParamsPredictors GetVectorParamsPredictors(int i_step)
+    {
+        wxASSERT(i_step<GetStepsNb());
+        return m_Steps[i_step].Predictors;
+    }
+    
+    void SetVectorParamsPredictors(int i_step, VectorParamsPredictors ptors)
+    {
+        wxASSERT(i_step<GetStepsNb());
+        m_Steps[i_step].Predictors = ptors;
+    }
 
     wxString GetDateProcessed()
     {

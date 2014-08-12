@@ -128,7 +128,11 @@ bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersAr
         Validate(&m_Parameters[bestscorerow]);
     }
 
-    results.Add(m_Parameters[bestscorerow],m_ScoresCalib[bestscorerow], m_ScoreValid);
+    // Sort according to the level and the observation time
+    asParametersScoring sortedParams = m_Parameters[bestscorerow];
+    sortedParams.SortLevelsAndTime();
+
+    results.Add(sortedParams, m_ScoresCalib[bestscorerow], m_ScoreValid);
 
     return true;
 }
