@@ -666,8 +666,8 @@ VVectorInt asParametersScoring::GetFileStationIdsVector(asFileParameters &filePa
 bool asParametersScoring::FixAnalogsNb()
 {
     // Check analogs number coherence
-    int analogsNb = GetAnalogsNumber(0);
-    for (int i_step=1; i_step<GetStepsNb(); i_step++)
+    int analogsNb = GetAnalogsNumber(0); // First step
+    for (int i_step=1; i_step<GetStepsNb(); i_step++) // Following steps
     {
         if(GetAnalogsNumber(i_step)>analogsNb)
         {
