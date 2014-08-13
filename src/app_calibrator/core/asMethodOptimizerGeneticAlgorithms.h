@@ -75,6 +75,8 @@ private:
     void ClearTemp();
     void SortScoresAndParameters();
     void SortScoresAndParametersTemp();
+    void SortParamsLevelsAndTime();
+    bool ResumePreviousRun(asResultsParametersArray &results_generations);
     bool SetBestParameters(asResultsParametersArray &results);
     void InitParameters(asParametersOptimizationGAs &params);
 	asParametersOptimizationGAs GetNextParameters();

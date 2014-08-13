@@ -93,151 +93,20 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
     }
 }
 
-bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray &results)
+void asMethodOptimizerGeneticAlgorithms::SortParamsLevelsAndTime()
 {
-    wxASSERT(m_Parameters.size()>0);
-    wxASSERT(m_ScoresCalib.size()>0);
-
-    // Extract selected parameters & best parameters
-    float bestscore = m_ScoresCalib[0];
-    int bestscorerow = 0;
-
-    for (unsigned int i=0; i<m_Parameters.size(); i++)
+    for (int i=0; i<m_Parameters.size(); i++)
     {
-        if(m_ScoreOrder==Asc)
-        {
-            if(m_ScoresCalib[i]<bestscore)
-            {
-                bestscore = m_ScoresCalib[i];
-                bestscorerow = i;
-            }
-        }
-        else
-        {
-            if(m_ScoresCalib[i]>bestscore)
-            {
-                bestscore = m_ScoresCalib[i];
-                bestscorerow = i;
-            }
-        }
+        m_Parameters[i].SortLevelsAndTime();
     }
-
-    if (bestscorerow!=0)
-    {
-        // Re-validate
-        Validate(&m_Parameters[bestscorerow]);
-    }
-
-    // Sort according to the level and the observation time
-    asParametersScoring sortedParams = m_Parameters[bestscorerow];
-    sortedParams.SortLevelsAndTime();
-
-    results.Add(sortedParams, m_ScoresCalib[bestscorerow], m_ScoreValid);
-
-    return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::Manager()
+bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asResultsParametersArray &results_generations)
 {
-    ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    int nbRuns = 0;
-    pConfig->Read("/Calibration/GeneticAlgorithms/NbRuns", &nbRuns, 20);
-    pConfig->Read("/Calibration/GeneticAlgorithms/PopulationSize", &m_PopSize, 50);
-    m_ParamsNb = m_PopSize;
-    pConfig->Read("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", &m_AllowElitismForTheBest, true);
-    m_NaturalSelectionType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", 0l);
-    m_CouplesSelectionType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/CouplesSelectionOperator", 0l);
-    m_CrossoverType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverOperator", 0l);
-    m_MutationsModeType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/MutationOperator", 0l);
-    ThreadsManager().CritSectionConfig().Leave();
-
-    // Reset the score of the climatology
-    m_ScoreClimatology.clear();
-
-    for (int i=0; i<nbRuns; i++)
-    {
-        try
-        {
-            m_IsOver = false;
-            ClearAll();
-            if (!ManageOneRun())
-            {
-                DeletePreloadedData();
-                return false;
-            }
-        }
-        catch(bad_alloc& ba)
-        {
-            wxString msg(ba.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Bad allocation caught in GAs: %s"), msg.c_str()));
-            DeletePreloadedData();
-            return false;
-        }
-        catch (exception& e)
-        {
-            wxString msg(e.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Exception in the GAs: %s"), msg.c_str()));
-            DeletePreloadedData();
-            return false;
-        }
-    }
-
-    // Delete preloaded data
-    DeletePreloadedData();
-
-    return true;
-}
-
-bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
-{
-    // Get the processing method
-    ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    bool parallelEvaluations;
-    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
-    ThreadsManager().CritSectionConfig().Leave();
-
-    // Parameter to print the results every x generation
-    int printResultsEveryNbGenerations = 5;
-
-    // Reset some data members
-    m_Iterator = 0;
-    m_AssessmentCounter = 0;
-    m_OptimizerStage = asINITIALIZATION;
-    m_SkipNext = false;
-    m_IsOver = false;
-    m_GenerationNb = 1;
-
-    // Seeds the random generator
-    asTools::InitRandom();
-
-    // Load parameters
-    asParametersOptimizationGAs params;
-    if (!params.LoadFromFile(m_ParamsFilePath)) return false;
-    if (m_PredictandStationIds.size()>0)
-    {
-        params.SetPredictandStationIds(m_PredictandStationIds);
-    }
-    InitParameters(params);
-    m_OriginalParams = params;
-
-    // Create a result object to save the parameters sets
-    VectorInt stationId = params.GetPredictandStationIds();
-    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-    asResultsParametersArray results_final_population;
-    results_final_population.Init(wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
-    asResultsParametersArray results_best_individual;
-    results_best_individual.Init(wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
-    asResultsParametersArray results_generations;
-    results_generations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
-    int counterPrint = 0;
-
     // Reload previous results
     if (g_ResumePreviousRun)
     {
+        VectorInt stationId = m_OriginalParams.GetPredictandStationIds();
         wxString resultsDir = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
         resultsDir.Append("/Calibration");
 
@@ -473,6 +342,154 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             }
         }
     }
+
+    return true;
+}
+
+bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray &results)
+{
+    wxASSERT(m_Parameters.size()>0);
+    wxASSERT(m_ScoresCalib.size()>0);
+
+    // Extract selected parameters & best parameters
+    float bestscore = m_ScoresCalib[0];
+    int bestscorerow = 0;
+
+    for (unsigned int i=0; i<m_Parameters.size(); i++)
+    {
+        if(m_ScoreOrder==Asc)
+        {
+            if(m_ScoresCalib[i]<bestscore)
+            {
+                bestscore = m_ScoresCalib[i];
+                bestscorerow = i;
+            }
+        }
+        else
+        {
+            if(m_ScoresCalib[i]>bestscore)
+            {
+                bestscore = m_ScoresCalib[i];
+                bestscorerow = i;
+            }
+        }
+    }
+
+    if (bestscorerow!=0)
+    {
+        // Re-validate
+        Validate(&m_Parameters[bestscorerow]);
+    }
+
+    // Sort according to the level and the observation time
+    asParametersScoring sortedParams = m_Parameters[bestscorerow];
+    sortedParams.SortLevelsAndTime();
+
+    results.Add(sortedParams, m_ScoresCalib[bestscorerow], m_ScoreValid);
+
+    return true;
+}
+
+bool asMethodOptimizerGeneticAlgorithms::Manager()
+{
+    ThreadsManager().CritSectionConfig().Enter();
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    int nbRuns = 0;
+    pConfig->Read("/Calibration/GeneticAlgorithms/NbRuns", &nbRuns, 20);
+    pConfig->Read("/Calibration/GeneticAlgorithms/PopulationSize", &m_PopSize, 50);
+    m_ParamsNb = m_PopSize;
+    pConfig->Read("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", &m_AllowElitismForTheBest, true);
+    m_NaturalSelectionType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", 0l);
+    m_CouplesSelectionType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/CouplesSelectionOperator", 0l);
+    m_CrossoverType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/CrossoverOperator", 0l);
+    m_MutationsModeType = (int)pConfig->Read("/Calibration/GeneticAlgorithms/MutationOperator", 0l);
+    ThreadsManager().CritSectionConfig().Leave();
+
+    // Reset the score of the climatology
+    m_ScoreClimatology.clear();
+
+    for (int i=0; i<nbRuns; i++)
+    {
+        try
+        {
+            m_IsOver = false;
+            ClearAll();
+            if (!ManageOneRun())
+            {
+                DeletePreloadedData();
+                return false;
+            }
+        }
+        catch(bad_alloc& ba)
+        {
+            wxString msg(ba.what(), wxConvUTF8);
+            asLogError(wxString::Format(_("Bad allocation caught in GAs: %s"), msg.c_str()));
+            DeletePreloadedData();
+            return false;
+        }
+        catch (exception& e)
+        {
+            wxString msg(e.what(), wxConvUTF8);
+            asLogError(wxString::Format(_("Exception in the GAs: %s"), msg.c_str()));
+            DeletePreloadedData();
+            return false;
+        }
+    }
+
+    // Delete preloaded data
+    DeletePreloadedData();
+
+    return true;
+}
+
+bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
+{
+    // Get the processing method
+    ThreadsManager().CritSectionConfig().Enter();
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    bool parallelEvaluations;
+    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
+    ThreadsManager().CritSectionConfig().Leave();
+
+    // Parameter to print the results every x generation
+    int printResultsEveryNbGenerations = 5;
+
+    // Reset some data members
+    m_Iterator = 0;
+    m_AssessmentCounter = 0;
+    m_OptimizerStage = asINITIALIZATION;
+    m_SkipNext = false;
+    m_IsOver = false;
+    m_GenerationNb = 1;
+
+    // Seeds the random generator
+    asTools::InitRandom();
+
+    // Load parameters
+    asParametersOptimizationGAs params;
+    if (!params.LoadFromFile(m_ParamsFilePath)) return false;
+    if (m_PredictandStationIds.size()>0)
+    {
+        params.SetPredictandStationIds(m_PredictandStationIds);
+    }
+    InitParameters(params);
+    SortParamsLevelsAndTime();
+    m_OriginalParams = params;
+    
+    // Create a result object to save the parameters sets
+    VectorInt stationId = params.GetPredictandStationIds();
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+    asResultsParametersArray results_final_population;
+    results_final_population.Init(wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
+    asResultsParametersArray results_best_individual;
+    results_best_individual.Init(wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
+    asResultsParametersArray results_generations;
+    results_generations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
+    int counterPrint = 0;
+
+    ResumePreviousRun(results_generations);
 
     // Preload data
     try
@@ -894,6 +911,8 @@ bool asMethodOptimizerGeneticAlgorithms::Optimize(asParametersOptimizationGAs &p
         if (!NaturalSelection()) return false;
         if (!Mating()) return false;
         if (!Mutatation()) return false;
+
+        SortParamsLevelsAndTime();
 
         m_Iterator = 0;
         m_OptimizerStage = asREASSESSMENT;

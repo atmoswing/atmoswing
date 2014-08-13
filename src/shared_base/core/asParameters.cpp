@@ -947,6 +947,7 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath)
 
     return true;
 }
+
 bool asParameters::GetValuesFromString(wxString stringVals)
 {
     int iLeft, iRight;

@@ -28,6 +28,8 @@ void asParametersOptimizationGAs::BuildChromosomes()
 {
     int counter = 0;
     VectorInt indices;
+    m_ChromosomeRowPredictorsStart.resize(GetStepsNb());
+    m_ChromosomeRowPredictorsEnd.resize(GetStepsNb());
 
     if(!m_TimeArrayAnalogsIntervalDaysLocks)
     {
@@ -43,8 +45,13 @@ void asParametersOptimizationGAs::BuildChromosomes()
         }
         counter++;
 
+        m_ChromosomeRowPredictorsStart[i].resize(GetPredictorsNb(i));
+        m_ChromosomeRowPredictorsEnd[i].resize(GetPredictorsNb(i));
+
         for (int j=0; j<GetPredictorsNb(i); j++)
         {
+            m_ChromosomeRowPredictorsStart[i][j] = indices.size(); // Corresponds to the index (before incrementing)
+
             if (NeedsPreprocessing(i,j))
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
@@ -124,6 +131,8 @@ void asParametersOptimizationGAs::BuildChromosomes()
                 indices.push_back(counter);
             }
             counter++;
+            
+            m_ChromosomeRowPredictorsEnd[i][j] = indices.size()-1;
         }
     }
 
@@ -171,6 +180,118 @@ void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius()
     }
 
     m_HasChromosomeSelfAdaptationMutationRadius = true;
+}
+
+void asParametersOptimizationGAs::SortLevelsAndTime()
+{
+    VectorFloat oldChromosomeSelfAdaptationMutationRate = m_ChromosomeSelfAdaptationMutationRate;
+    VectorFloat newChromosomeSelfAdaptationMutationRate = oldChromosomeSelfAdaptationMutationRate;
+    VectorFloat oldChromosomeSelfAdaptationMutationRadius = m_ChromosomeSelfAdaptationMutationRadius;
+    VectorFloat newChromosomeSelfAdaptationMutationRadius = oldChromosomeSelfAdaptationMutationRadius;
+
+    // Sort levels on every analogy level
+    for (int i_step=0; i_step<GetStepsNb(); i_step++)
+    {
+        // Get the predictors vector
+        VectorParamsPredictors oldPtors = GetVectorParamsPredictors(i_step);
+        VectorParamsPredictors newPtors;
+
+        // Chromosome start
+        int chromosomeStartStep = m_ChromosomeRowPredictorsStart[i_step][0];
+        
+        // Sort
+        while(true)
+        {
+            if(oldPtors.size()==0)
+            {
+                break;
+            }
+
+            // Find the smallest level and hour combination
+            int lowestIndex = 0;
+            float level;
+            double hour;
+            if (oldPtors[0].Preprocess)
+            {
+                level = oldPtors[0].PreprocessLevels[0];
+                hour = oldPtors[0].PreprocessTimeHours[0];
+            }
+            else
+            {
+                level = oldPtors[0].Level;
+                hour = oldPtors[0].TimeHours;
+            }
+
+            for (int i=1; i<oldPtors.size(); i++)
+            {
+                // Get next level and hour
+                float nextLevel;
+                double nextHour;
+                if (oldPtors[i].Preprocess)
+                {
+                    nextLevel = oldPtors[i].PreprocessLevels[0];
+                    nextHour = oldPtors[i].PreprocessTimeHours[0];
+                }
+                else
+                {
+                    nextLevel = oldPtors[i].Level;
+                    nextHour = oldPtors[i].TimeHours;
+                }
+
+                // Compare to previous one
+                if (nextLevel<level)
+                {
+                    lowestIndex = i;
+                    level = nextLevel;
+                    hour = nextHour;
+                }
+                else if (nextLevel==level)
+                {
+                    if (nextHour<hour)
+                    {
+                        lowestIndex = i;
+                        level = nextLevel;
+                        hour = nextHour;
+                    }
+                }
+            }
+
+            // Store in the new container and remove from the old one
+            newPtors.push_back(oldPtors[lowestIndex]);
+            oldPtors.erase (oldPtors.begin()+lowestIndex);
+
+            // Change chromosomes
+            int rowStart = m_ChromosomeRowPredictorsStart[i_step][lowestIndex];
+            int rowEnd = m_ChromosomeRowPredictorsEnd[i_step][lowestIndex];
+
+            for (int i=rowStart; i<=rowEnd; i++)
+            {
+                if (newChromosomeSelfAdaptationMutationRate.size()>0)
+                {
+                    newChromosomeSelfAdaptationMutationRate[chromosomeStartStep] = oldChromosomeSelfAdaptationMutationRate[i];
+                }
+                if (newChromosomeSelfAdaptationMutationRadius.size()>0)
+                {
+                    newChromosomeSelfAdaptationMutationRadius[chromosomeStartStep] = oldChromosomeSelfAdaptationMutationRadius[i];
+                }
+                chromosomeStartStep++;
+            }
+
+            /*
+            TODO: if method is working, also handle the following containers.
+            m_StepsIteration;
+            m_StepsUpperLimit;
+            m_StepsLowerLimit;
+            m_StepsLocks;
+            */
+
+            // Store the sorted vector
+            SetVectorParamsPredictors(i_step, newPtors);
+        }
+    }
+
+    m_ChromosomeSelfAdaptationMutationRate = newChromosomeSelfAdaptationMutationRate;
+    m_ChromosomeSelfAdaptationMutationRadius = newChromosomeSelfAdaptationMutationRadius;
 }
 
 bool asParametersOptimizationGAs::IsParamLocked(int index)

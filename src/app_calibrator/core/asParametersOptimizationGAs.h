@@ -19,6 +19,7 @@ public:
     void InitIndividualSelfAdaptationMutationRadius();
     void InitChromosomeSelfAdaptationMutationRate();
     void InitChromosomeSelfAdaptationMutationRadius();
+    void SortLevelsAndTime();
     void SimpleCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints);
     void BlendingCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta, double betaMin=0.0, double betaMax=1.0);
     void HeuristicCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta, double betaMin=0.0, double betaMax=1.0);
@@ -46,6 +47,8 @@ private:
     float m_IndividualSelfAdaptationMutationRate;
     float m_IndividualSelfAdaptationMutationRadius;
     VectorInt m_ChromosomeIndices;
+    VVectorInt m_ChromosomeRowPredictorsStart;
+    VVectorInt m_ChromosomeRowPredictorsEnd;
     VectorFloat m_ChromosomeSelfAdaptationMutationRate;
     VectorFloat m_ChromosomeSelfAdaptationMutationRadius;
     bool m_HasChromosomeSelfAdaptationMutationRate;
