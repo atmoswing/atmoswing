@@ -351,14 +351,21 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
     return true;
 }
 
-bool asParametersOptimizationGAs::IsParamList(int index)
+int asParametersOptimizationGAs::GetParamType(int index)
 {
+    /*
+     * return: 
+     * - 1 for value 
+     * - 2 for advanced list (notion of proximity) 
+     * - 3 for simple list (no proximity between elements)
+     */
+
     int counter = 0;
 
     // AnalogsIntervalDays
     if (counter==index)
     {
-        return false;
+        return 1;
     }
     counter++;
 
@@ -368,7 +375,7 @@ bool asParametersOptimizationGAs::IsParamList(int index)
         // AnalogsNumber
         if (counter==index)
         {
-            return false;
+            return 1;
         }
         counter++;
 
@@ -381,21 +388,21 @@ bool asParametersOptimizationGAs::IsParamList(int index)
                     // PreprocessDataId
                     if (counter==index)
                     {
-                        return true;
+                        return 3;
                     }
                     counter++;
 
                     // PreprocessLevel
                     if (counter==index)
                     {
-                        return true;
+                        return 2;
                     }
                     counter++;
 
                     // PreprocessTimeHours
                     if (counter==index)
                     {
-                        return false;
+                        return 1;
                     }
                     counter++;
                 }
@@ -405,21 +412,21 @@ bool asParametersOptimizationGAs::IsParamList(int index)
                 // DataId
                 if (counter==index)
                 {
-                    return true;
+                    return 3;
                 }
                 counter++;
 
                 // Level
                 if (counter==index)
                 {
-                    return true;
+                    return 2;
                 }
                 counter++;
 
                 // TimeHours
                 if (counter==index)
                 {
-                    return false;
+                    return 1;
                 }
                 counter++;
             }
@@ -427,42 +434,42 @@ bool asParametersOptimizationGAs::IsParamList(int index)
             // Umin
             if (counter==index)
             {
-                return false;
+                return 1;
             }
             counter++;
 
             // Uptsnb
             if (counter==index)
             {
-                return false;
+                return 1;
             }
             counter++;
 
             // Vmin
             if (counter==index)
             {
-                return false;
+                return 1;
             }
             counter++;
 
             // Vptsnb
             if (counter==index)
             {
-                return false;
+                return 1;
             }
             counter++;
 
             // Weight
             if (counter==index)
             {
-                return false;
+                return 1;
             }
             counter++;
 
             // Criteria
             if (counter==index)
             {
-                return true;
+                return 3;
             }
             counter++;
         }
@@ -471,7 +478,7 @@ bool asParametersOptimizationGAs::IsParamList(int index)
     //AnalogsNumber
     if (counter==index)
     {
-        return false;
+        return 1;
     }
     counter++;
 
@@ -1849,7 +1856,7 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
         {
             if (asTools::Random(0.0, 1.0)<probability)
             {
-                if (!IsParamList(counter))
+                if (GetParamType(counter)<3)
                 {
                     double mean = GetParameterValue(counter);
                     double stdDev = stdDevRatioRange*(GetParameterUpperLimit(counter)-GetParameterLowerLimit(counter));
@@ -1887,7 +1894,7 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
         {
             if (asTools::Random(0.0, 1.0)<probability)
             {
-                if (!IsParamList(counter))
+                if (GetParamType(counter)<3)
                 {
                     double r1 = asTools::Random(0.0, 1.0);
                     double r2 = asTools::Random(0.0, 1.0);
@@ -1959,7 +1966,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
         {
             if (asTools::Random(0.0, 1.0)<m_IndividualSelfAdaptationMutationRate)
             {
-                if (!IsParamList(counter))
+                if (GetParamType(counter)<3)
                 {
                     double r1 = asTools::Random(0.0, 1.0);
                     double r2 = asTools::Random(0.0, 1.0);
@@ -2075,7 +2082,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
 
             if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[counterSelfAdapt])
             {
-                if (!IsParamList(counter))
+                if (GetParamType(counter)<3)
                 {
                     double r1 = asTools::Random(0.0, 1.0);
                     double r2 = asTools::Random(0.0, 1.0);
@@ -2144,7 +2151,7 @@ void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &has
         {
             if (asTools::Random(0.0, 1.0)<probability)
             {
-                if (!IsParamList(counter))
+                if (GetParamType(counter)<3)
                 {
                     double r1 = asTools::Random(0.0, 1.0);
                     double r2 = asTools::Random(0.0, 1.0);

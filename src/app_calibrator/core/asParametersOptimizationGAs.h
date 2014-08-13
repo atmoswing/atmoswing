@@ -58,7 +58,12 @@ private:
     bool m_ParametersListOver;
 
     bool IsParamLocked(int index);
-    bool IsParamList(int index);
+
+    /** Get the parameter type (list of value vs value)
+     * \param index The index in the chromosome
+     * \return A code: 1 for value - 2 for advanced list (notion of proximity) - 3 for simple list (no proximity between elements)
+     */
+    int GetParamType(int index);
     double GetParameterValue(int index);
     void SetParameterValue(int index, double newVal);
     double GetParameterLowerLimit(int index);
