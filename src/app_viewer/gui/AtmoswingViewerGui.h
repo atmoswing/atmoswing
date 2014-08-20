@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -34,10 +34,6 @@
 #include <wx/notebook.h>
 #include <wx/grid.h>
 #include <wx/bmpbuttn.h>
-#include <wx/plotctrl/plotctrl.h>
-#ifdef __VISUALC__
-#include <wx/link_additions.h>
-#endif //__VISUALC__
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -75,6 +71,7 @@ class asFrameForecastVirtual : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOpenWorkspace( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCloseLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenForecast( wxCommandEvent& event ) { event.Skip(); }
@@ -278,23 +275,6 @@ class asFramePredictorsVirtual : public wxFrame
 			m_SplitterToc->SetSashPosition( 170 );
 			m_SplitterToc->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::m_SplitterTocOnIdle ), NULL, this );
 		}
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class asPanelPlotVirtual
-///////////////////////////////////////////////////////////////////////////////
-class asPanelPlotVirtual : public wxPanel 
-{
-	private:
-	
-	protected:
-		wxPlotCtrl* m_PlotCtrl;
-	
-	public:
-		
-		asPanelPlotVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~asPanelPlotVirtual();
 	
 };
 

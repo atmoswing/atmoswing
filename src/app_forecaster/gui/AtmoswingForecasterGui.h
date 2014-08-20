@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2013)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -26,10 +26,6 @@
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/statbox.h>
-#include <wx/awx/led.h>
-#ifdef __VISUALC__
-#include <wx/link_additions.h>
-#endif //__VISUALC__
 #include <wx/scrolwin.h>
 #include <wx/panel.h>
 #include <wx/menu.h>
@@ -56,14 +52,7 @@ class asFrameMainVirtual : public wxFrame
 		wxStaticText* m_StaticTextForecastHour;
 		wxTextCtrl* m_TextCtrlForecastHour;
 		wxBitmapButton* m_BpButtonNow;
-		awxLed* m_LedDownloading;
-		wxStaticText* m_StaticTextDownloading;
-		awxLed* m_LedLoading;
-		wxStaticText* m_StaticTextLoading;
-		awxLed* m_LedProcessing;
-		wxStaticText* m_StaticTextProcessing;
-		awxLed* m_LedSaving;
-		wxStaticText* m_StaticTextSaving;
+		wxFlexGridSizer* m_SizerLeds;
 		wxScrolledWindow* m_ScrolledWindowModels;
 		wxBoxSizer* m_SizerModels;
 		wxBitmapButton* m_BpButtonAdd;
@@ -159,7 +148,6 @@ class asPanelForecastingModelVirtual : public wxPanel
 	protected:
 		wxBoxSizer* m_SizerPanel;
 		wxBoxSizer* m_SizerHeader;
-		awxLed* m_Led;
 		wxStaticText* m_StaticTextModelName;
 		wxBitmapButton* m_BpButtonReduce;
 		wxBitmapButton* m_BpButtonClose;

@@ -88,11 +88,6 @@ void asFramePreferences::LoadPreferences()
         m_DirPickerParameters->SetBackgroundColour(col);
         m_DirPickerArchivePredictors->SetBackgroundColour(col);
         m_DirPickerRealtimePredictorSaving->SetBackgroundColour(col);
-        m_FilePickerGISLayerHillshade->SetBackgroundColour(col);
-        m_FilePickerGISLayerCatchments->SetBackgroundColour(col);
-        m_FilePickerGISLayerHydro->SetBackgroundColour(col);
-        m_FilePickerGISLayerLakes->SetBackgroundColour(col);
-        m_FilePickerGISLayerBasemap->SetBackgroundColour(col);
         m_FilePickerForecaster->SetBackgroundColour(col);
         m_FilePickerViewer->SetBackgroundColour(col);
     }
@@ -222,67 +217,6 @@ void asFramePreferences::LoadPreferences()
     long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
     long ProcessingLinAlgebra = pConfigForecaster->Read("/ProcessingOptions/ProcessingLinAlgebra", defaultLinAlgebra);
     m_RadioBoxLinearAlgebra->SetSelection((int)ProcessingLinAlgebra);
-
-    // GIS
-        // Hillshade
-    wxString LayerHillshadeFilePath = pConfigViewer->Read("/GIS/LayerHillshadeFilePath", dirData+"gis"+DS+"Local"+DS+"hillshade"+DS+"hdr.adf");
-    m_FilePickerGISLayerHillshade->SetPath(LayerHillshadeFilePath);
-    wxString LayerHillshadeTransp = pConfigViewer->Read("/GIS/LayerHillshadeTransp", "0");
-    m_TextCtrlGISLayerHillshadeTransp->SetValue(LayerHillshadeTransp);
-    bool LayerHillshadeVisibility;
-    pConfigViewer->Read("/GIS/LayerHillshadeVisibility", &LayerHillshadeVisibility, true);
-    m_CheckBoxGISLayerHillshadeVisibility->SetValue(LayerHillshadeVisibility);
-        // Catchments
-    wxString LayerCatchmentsFilePath = pConfigViewer->Read("/GIS/LayerCatchmentsFilePath", dirData+"gis"+DS+"Local"+DS+"catchments.shp");
-    m_FilePickerGISLayerCatchments->SetPath(LayerCatchmentsFilePath);
-    wxString LayerCatchmentsTransp = pConfigViewer->Read("/GIS/LayerCatchmentsTransp", "50");
-    m_TextCtrlGISLayerCatchmentsTransp->SetValue(LayerCatchmentsTransp);
-    long LayerCatchmentsColor = (long)0x0000fffc;
-    LayerCatchmentsColor = pConfigViewer->Read("/GIS/LayerCatchmentsColor", LayerCatchmentsColor);
-    wxColour colorCatchments;
-    colorCatchments.SetRGB((wxUint32)LayerCatchmentsColor);
-    m_ColourPickerGISLayerCatchmentsColor->SetColour(colorCatchments);
-    wxString LayerCatchmentsSize = pConfigViewer->Read("/GIS/LayerCatchmentsSize", "1");
-    m_TextCtrlGISLayerCatchmentsSize->SetValue(LayerCatchmentsSize);
-    bool LayerCatchmentsVisibility;
-    pConfigViewer->Read("/GIS/LayerCatchmentsVisibility", &LayerCatchmentsVisibility, false);
-    m_CheckBoxGISLayerCatchmentsVisibility->SetValue(LayerCatchmentsVisibility);
-        // Hydro
-    wxString LayerHydroFilePath = pConfigViewer->Read("/GIS/LayerHydroFilePath", dirData+"gis"+DS+"Local"+DS+"hydrography.shp");
-    m_FilePickerGISLayerHydro->SetPath(LayerHydroFilePath);
-    wxString LayerHydroTransp = pConfigViewer->Read("/GIS/LayerHydroTransp", "40");
-    m_TextCtrlGISLayerHydroTransp->SetValue(LayerHydroTransp);
-    long LayerHydroColor = (long)0x00c81616;
-    LayerHydroColor = pConfigViewer->Read("/GIS/LayerHydroColor", LayerHydroColor);
-    wxColour colorHydro;
-    colorHydro.SetRGB((wxUint32)LayerHydroColor);
-    m_ColourPickerGISLayerHydroColor->SetColour(colorHydro);
-    wxString LayerHydroSize = pConfigViewer->Read("/GIS/LayerHydroSize", "1");
-    m_TextCtrlGISLayerHydroSize->SetValue(LayerHydroSize);
-    bool LayerHydroVisibility;
-    pConfigViewer->Read("/GIS/LayerHydroVisibility", &LayerHydroVisibility, true);
-    m_CheckBoxGISLayerHydroVisibility->SetValue(LayerHydroVisibility);
-        // Lakes
-    wxString LayerLakesFilePath = pConfigViewer->Read("/GIS/LayerLakesFilePath", dirData+"gis"+DS+"Local"+DS+"lakes.shp");
-    m_FilePickerGISLayerLakes->SetPath(LayerLakesFilePath);
-    wxString LayerLakesTransp = pConfigViewer->Read("/GIS/LayerLakesTransp", "40");
-    m_TextCtrlGISLayerLakesTransp->SetValue(LayerLakesTransp);
-    long LayerLakesColor = (long)0x00d4c92a;
-    LayerLakesColor = pConfigViewer->Read("/GIS/LayerLakesColor", LayerLakesColor);
-    wxColour colorLakes;
-    colorLakes.SetRGB((wxUint32)LayerLakesColor);
-    m_ColourPickerGISLayerLakesColor->SetColour(colorLakes);
-    bool LayerLakesVisibility;
-    pConfigViewer->Read("/GIS/LayerLakesVisibility", &LayerLakesVisibility, true);
-    m_CheckBoxGISLayerLakesVisibility->SetValue(LayerLakesVisibility);
-        // Basemap
-    wxString LayerBasemapFilePath = pConfigViewer->Read("/GIS/LayerBasemapFilePath", dirData+"gis"+DS+"Local"+DS+"basemap.shp");
-    m_FilePickerGISLayerBasemap->SetPath(LayerBasemapFilePath);
-    wxString LayerBasemapTransp = pConfigViewer->Read("/GIS/LayerBasemapTransp", "50");
-    m_TextCtrlGISLayerBasemapTransp->SetValue(LayerBasemapTransp);
-    bool LayerBasemapVisibility;
-    pConfigViewer->Read("/GIS/LayerBasemapVisibility", &LayerBasemapVisibility, false);
-    m_CheckBoxGISLayerBasemapVisibility->SetValue(LayerBasemapVisibility);
 
     // Forecast display
     wxString ColorbarMaxValue = pConfigViewer->Read("/GIS/ColorbarMaxValue", "50");
@@ -476,53 +410,6 @@ void asFramePreferences::SavePreferences( )
     pConfigForecaster->Write("/ProcessingOptions/ProcessingMethod", ProcessingMethod);
     long ProcessingLinAlgebra = (long)m_RadioBoxLinearAlgebra->GetSelection();
     pConfigForecaster->Write("/ProcessingOptions/ProcessingLinAlgebra", ProcessingLinAlgebra);
-
-    // GIS
-        // Hillshade
-    wxString LayerHillshadeFilePath = m_FilePickerGISLayerHillshade->GetPath();
-    pConfigViewer->Write("/GIS/LayerHillshadeFilePath", LayerHillshadeFilePath);
-    wxString LayerHillshadeTransp = m_TextCtrlGISLayerHillshadeTransp->GetValue();
-    pConfigViewer->Write("/GIS/LayerHillshadeTransp", LayerHillshadeTransp);
-    bool LayerHillshadeVisibility = m_CheckBoxGISLayerHillshadeVisibility->GetValue();
-    pConfigViewer->Write("/GIS/LayerHillshadeVisibility", LayerHillshadeVisibility);
-        // Catchments
-    wxString LayerCatchmentsFilePath = m_FilePickerGISLayerCatchments->GetPath();
-    pConfigViewer->Write("/GIS/LayerCatchmentsFilePath", LayerCatchmentsFilePath);
-    wxString LayerCatchmentsTransp = m_TextCtrlGISLayerCatchmentsTransp->GetValue();
-    pConfigViewer->Write("/GIS/LayerCatchmentsTransp", LayerCatchmentsTransp);
-    wxColour colorCatchments = m_ColourPickerGISLayerCatchmentsColor->GetColour();
-    pConfigViewer->Write("/GIS/LayerCatchmentsColor", (long)colorCatchments.GetRGB());
-    wxString LayerCatchmentsSize = m_TextCtrlGISLayerCatchmentsSize->GetValue();
-    pConfigViewer->Write("/GIS/LayerCatchmentsSize", LayerCatchmentsSize);
-    bool LayerCatchmentsVisibility = m_CheckBoxGISLayerCatchmentsVisibility->GetValue();
-    pConfigViewer->Write("/GIS/LayerCatchmentsVisibility", LayerCatchmentsVisibility);
-        // Hydro
-    wxString LayerHydroFilePath = m_FilePickerGISLayerHydro->GetPath();
-    pConfigViewer->Write("/GIS/LayerHydroFilePath", LayerHydroFilePath);
-    wxString LayerHydroTransp = m_TextCtrlGISLayerHydroTransp->GetValue();
-    pConfigViewer->Write("/GIS/LayerHydroTransp", LayerHydroTransp);
-    wxColour colorHydro = m_ColourPickerGISLayerHydroColor->GetColour();
-    pConfigViewer->Write("/GIS/LayerHydroColor", (long)colorHydro.GetRGB());
-    wxString LayerHydroSize = m_TextCtrlGISLayerHydroSize->GetValue();
-    pConfigViewer->Write("/GIS/LayerHydroSize", LayerHydroSize);
-    bool LayerHydroVisibility = m_CheckBoxGISLayerHydroVisibility->GetValue();
-    pConfigViewer->Write("/GIS/LayerHydroVisibility", LayerHydroVisibility);
-        // Lakes
-    wxString LayerLakesFilePath = m_FilePickerGISLayerLakes->GetPath();
-    pConfigViewer->Write("/GIS/LayerLakesFilePath", LayerLakesFilePath);
-    wxString LayerLakesTransp = m_TextCtrlGISLayerLakesTransp->GetValue();
-    pConfigViewer->Write("/GIS/LayerLakesTransp", LayerLakesTransp);
-    wxColour colorLakes = m_ColourPickerGISLayerLakesColor->GetColour();
-    pConfigViewer->Write("/GIS/LayerLakesColor", (long)colorLakes.GetRGB());
-    bool LayerLakesVisibility = m_CheckBoxGISLayerLakesVisibility->GetValue();
-    pConfigViewer->Write("/GIS/LayerLakesVisibility", LayerLakesVisibility);
-        // Basemap
-    wxString LayerBasemapFilePath = m_FilePickerGISLayerBasemap->GetPath();
-    pConfigViewer->Write("/GIS/LayerBasemapFilePath", LayerBasemapFilePath);
-    wxString LayerBasemapTransp = m_TextCtrlGISLayerBasemapTransp->GetValue();
-    pConfigViewer->Write("/GIS/LayerBasemapTransp", LayerBasemapTransp);
-    bool LayerBasemapVisibility = m_CheckBoxGISLayerBasemapVisibility->GetValue();
-    pConfigViewer->Write("/GIS/LayerBasemapVisibility", LayerBasemapVisibility);
 
     // Forecast display
     wxString ColorbarMaxValue = m_TextCtrlColorbarMaxValue->GetValue();

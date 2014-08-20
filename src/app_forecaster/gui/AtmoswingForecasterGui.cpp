@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2013)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -64,45 +64,12 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	wxStaticBoxSizer* sbSizer5;
 	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_PanelMain, wxID_ANY, _("Current model state") ), wxVERTICAL );
 	
-	wxFlexGridSizer* fgSizer1;
-	fgSizer1 = new wxFlexGridSizer( 4, 2, 0, 0 );
-	fgSizer1->SetFlexibleDirection( wxBOTH );
-	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_LedDownloading = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedDownloading->SetState( awxLED_OFF );
-	fgSizer1->Add( m_LedDownloading, 0, wxALL, 5 );
-	
-	m_StaticTextDownloading = new wxStaticText( m_PanelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextDownloading->Wrap( -1 );
-	fgSizer1->Add( m_StaticTextDownloading, 0, wxALL, 5 );
-	
-	m_LedLoading = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedLoading->SetState( awxLED_OFF );
-	fgSizer1->Add( m_LedLoading, 0, wxALL, 5 );
-	
-	m_StaticTextLoading = new wxStaticText( m_PanelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextLoading->Wrap( -1 );
-	fgSizer1->Add( m_StaticTextLoading, 0, wxALL, 5 );
-	
-	m_LedProcessing = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedProcessing->SetState( awxLED_OFF );
-	fgSizer1->Add( m_LedProcessing, 0, wxALL, 5 );
-	
-	m_StaticTextProcessing = new wxStaticText( m_PanelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextProcessing->Wrap( -1 );
-	fgSizer1->Add( m_StaticTextProcessing, 0, wxALL, 5 );
-	
-	m_LedSaving = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedSaving->SetState( awxLED_OFF );
-	fgSizer1->Add( m_LedSaving, 0, wxALL, 5 );
-	
-	m_StaticTextSaving = new wxStaticText( m_PanelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextSaving->Wrap( -1 );
-	fgSizer1->Add( m_StaticTextSaving, 0, wxALL, 5 );
+	m_SizerLeds = new wxFlexGridSizer( 4, 2, 0, 0 );
+	m_SizerLeds->SetFlexibleDirection( wxBOTH );
+	m_SizerLeds->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	
-	sbSizer5->Add( fgSizer1, 0, wxEXPAND, 5 );
+	sbSizer5->Add( m_SizerLeds, 0, wxEXPAND, 5 );
 	
 	
 	bSizer19->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
@@ -204,6 +171,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_MenuLog->Append( m_MenuItemShowLog );
 	
 	m_MenuLogLevel = new wxMenu();
+	wxMenuItem* m_MenuLogLevelItem = new wxMenuItem( m_MenuLog, wxID_ANY, _("Log level"), wxEmptyString, wxITEM_NORMAL, m_MenuLogLevel );
 	wxMenuItem* m_MenuItemLogLevel1;
 	m_MenuItemLogLevel1 = new wxMenuItem( m_MenuLogLevel, wxID_ANY, wxString( _("Only errors") ) , wxEmptyString, wxITEM_CHECK );
 	m_MenuLogLevel->Append( m_MenuItemLogLevel1 );
@@ -216,7 +184,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_MenuItemLogLevel3 = new wxMenuItem( m_MenuLogLevel, wxID_ANY, wxString( _("Verbose") ) , wxEmptyString, wxITEM_CHECK );
 	m_MenuLogLevel->Append( m_MenuItemLogLevel3 );
 	
-	m_MenuLog->Append( -1, _("Log level"), m_MenuLogLevel );
+	m_MenuLog->Append( m_MenuLogLevelItem );
 	
 	m_MenuBar->Append( m_MenuLog, _("Log") ); 
 	
@@ -446,10 +414,6 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_SizerPanel = new wxBoxSizer( wxVERTICAL );
 	
 	m_SizerHeader = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_Led = new awxLed( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0 );
-	m_Led->SetState( awxLED_OFF );
-	m_SizerHeader->Add( m_Led, 0, wxALL, 5 );
 	
 	m_StaticTextModelName = new wxStaticText( this, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextModelName->Wrap( -1 );

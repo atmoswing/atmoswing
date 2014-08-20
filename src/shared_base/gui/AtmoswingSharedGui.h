@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2013)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -34,7 +34,6 @@
 #include <wx/checkbox.h>
 #include <wx/statbox.h>
 #include <wx/choice.h>
-#include <wx/clrpicker.h>
 #include <wx/slider.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -91,6 +90,7 @@ class asFrameXmlEditorVirtual : public wxFrame
 	
 	protected:
 		wxToolBar* m_ToolBar;
+		wxToolBarToolBase* m_ToolSave; 
 	
 	public:
 		
@@ -179,8 +179,6 @@ class asFramePreferencesVirtual : public wxFrame
 		wxStaticText* m_StaticTextPredictandDBDir;
 		wxDirPickerCtrl* m_DirPickerPredictandDB;
 		wxPanel* m_PanelViewer;
-		wxNotebook* m_NotebookViewer;
-		wxPanel* m_PanelForecastDisplay;
 		wxStaticText* m_StaticTextColorbarMaxValue;
 		wxTextCtrl* m_TextCtrlColorbarMaxValue;
 		wxStaticText* m_StaticTextColorbarMaxUnit;
@@ -192,53 +190,6 @@ class asFramePreferencesVirtual : public wxFrame
 		wxStaticText* m_StaticTextAlarmsPercentile;
 		wxTextCtrl* m_TextCtrlAlarmsPercentile;
 		wxStaticText* m_StaticTextAlarmsPercentileRange;
-		wxPanel* m_PanelGISForecast;
-		wxNotebook* m_notebook5;
-		wxPanel* m_PanelLayerHillshade;
-		wxStaticText* m_StaticTextGISLayerHillshadeVisibility;
-		wxCheckBox* m_CheckBoxGISLayerHillshadeVisibility;
-		wxStaticText* m_StaticTextGISLayerHillshadeFile;
-		wxFilePickerCtrl* m_FilePickerGISLayerHillshade;
-		wxStaticText* m_StaticTextGISLayerHillshadeTransp;
-		wxTextCtrl* m_TextCtrlGISLayerHillshadeTransp;
-		wxPanel* m_PanelLayerCatchments;
-		wxStaticText* m_StaticTextGISLayerCatchmentsVisibility;
-		wxCheckBox* m_CheckBoxGISLayerCatchmentsVisibility;
-		wxStaticText* m_StaticTextGISLayerCatchmentsFile;
-		wxFilePickerCtrl* m_FilePickerGISLayerCatchments;
-		wxStaticText* m_StaticTextGISLayerCatchmentsTransp;
-		wxTextCtrl* m_TextCtrlGISLayerCatchmentsTransp;
-		wxStaticText* m_StaticTextGISLayerCatchmentsColor;
-		wxColourPickerCtrl* m_ColourPickerGISLayerCatchmentsColor;
-		wxStaticText* m_StaticTextGISLayerCatchmentsSize;
-		wxTextCtrl* m_TextCtrlGISLayerCatchmentsSize;
-		wxPanel* m_PanelLayerHydrography;
-		wxStaticText* m_StaticTextGISLayerHydroVisibility;
-		wxCheckBox* m_CheckBoxGISLayerHydroVisibility;
-		wxStaticText* m_StaticTextGISLayerHydroFile;
-		wxFilePickerCtrl* m_FilePickerGISLayerHydro;
-		wxStaticText* m_StaticTextGISLayerHydroTransp;
-		wxTextCtrl* m_TextCtrlGISLayerHydroTransp;
-		wxStaticText* m_StaticTextGISLayerHydroColor;
-		wxColourPickerCtrl* m_ColourPickerGISLayerHydroColor;
-		wxStaticText* m_StaticTextGISLayerHydroSize;
-		wxTextCtrl* m_TextCtrlGISLayerHydroSize;
-		wxPanel* m_PanelLayerLakes;
-		wxStaticText* m_StaticTextGISLayerLakesVisibility;
-		wxCheckBox* m_CheckBoxGISLayerLakesVisibility;
-		wxStaticText* m_StaticTextGISLayerLakesFile;
-		wxFilePickerCtrl* m_FilePickerGISLayerLakes;
-		wxStaticText* m_StaticTextGISLayerLakesTransp;
-		wxTextCtrl* m_TextCtrlGISLayerLakesTransp;
-		wxStaticText* m_StaticTextGISLayerLakesColor;
-		wxColourPickerCtrl* m_ColourPickerGISLayerLakesColor;
-		wxPanel* m_PanelLayerBasemap;
-		wxStaticText* m_StaticTextGISLayerBasemapVisibility;
-		wxCheckBox* m_CheckBoxGISLayerBasemapVisibility;
-		wxStaticText* m_StaticTextGISLayerBasemapFile;
-		wxFilePickerCtrl* m_FilePickerGISLayerBasemap;
-		wxStaticText* m_StaticTextGISLayerBasemapTransp;
-		wxTextCtrl* m_TextCtrlGISLayerBasemapTransp;
 		wxPanel* m_PanelAdvanced;
 		wxNotebook* m_NotebookAdvanced;
 		wxPanel* m_PanelGeneral;

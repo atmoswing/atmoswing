@@ -26,7 +26,6 @@
  */
  
 #include "asPanelPlot.h"
-
 #include "asIncludes.h"
 #include "wx/plotctrl/plotctrl.h"
 #include "wx/plotctrl/plotprnt.h"
@@ -74,10 +73,33 @@ BEGIN_EVENT_TABLE(asPanelPlot, wxPanel)
 END_EVENT_TABLE()
 
 
-asPanelPlot::asPanelPlot( wxWindow* parent )
-:
-asPanelPlotVirtual( parent )
+asPanelPlot::asPanelPlot( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) 
+: 
+wxPanel( parent, id, pos, size, style )
 {
+    wxBoxSizer* bSizer;
+	bSizer = new wxBoxSizer( wxVERTICAL );
+	
+	m_PlotCtrl = new wxPlotCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
+	m_PlotCtrl->SetScrollOnThumbRelease( false );
+	m_PlotCtrl->SetDrawSymbols( false );
+	m_PlotCtrl->SetDrawLines( true );
+	m_PlotCtrl->SetDrawSpline( false );
+	m_PlotCtrl->SetDrawGrid( true );
+	m_PlotCtrl->SetAreaMouseFunction( wxPLOTCTRL_MOUSE_PAN );
+	m_PlotCtrl->SetAreaMouseMarker( wxPLOTCTRL_MARKER_RECT );
+	m_PlotCtrl->SetCrossHairCursor( false );
+	m_PlotCtrl->SetShowXAxis( true );
+	m_PlotCtrl->SetShowXAxisLabel( true );
+	m_PlotCtrl->SetXAxisLabel( _("X Axis") );
+	m_PlotCtrl->SetShowYAxis( true );
+	m_PlotCtrl->SetShowYAxisLabel( true );
+	m_PlotCtrl->SetYAxisLabel( _("Y Axis") );
+	m_PlotCtrl->SetShowPlotTitle( false );
+	m_PlotCtrl->SetPlotTitle( _("Title") );
+	m_PlotCtrl->SetShowKey( true );
+	m_PlotCtrl->SetKeyPosition( wxPoint( 100,100 ) );
+    
     m_PlotCtrl->SetScrollOnThumbRelease(false);
     m_PlotCtrl->SetCrossHairCursor(false);
     m_PlotCtrl->SetDrawSymbols(false);
@@ -90,12 +112,12 @@ asPanelPlotVirtual( parent )
     m_PlotCtrl->SetShowYAxisLabel(true);
     m_PlotCtrl->SetShowPlotTitle(false);
     m_PlotCtrl->SetShowKey(true);
-}
-
-wxPlotCtrl* asPanelPlot::GetPlotCtrl()
-{
-    wxASSERT(m_PlotCtrl);
-    return m_PlotCtrl;
+	
+	bSizer->Add( m_PlotCtrl, 1, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer );
+	this->Layout();
+	bSizer->Fit( this );
 }
 
 void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event)
