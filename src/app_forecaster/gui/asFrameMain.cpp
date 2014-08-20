@@ -70,6 +70,39 @@ asFrameMainVirtual( parent )
     m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
     m_ToolBar->Realize();
 
+    // Leds
+    m_LedDownloading = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_LedDownloading->SetState( awxLED_OFF );
+	m_SizerLeds->Add( m_LedDownloading, 0, wxALL, 5 );
+	
+	wxStaticText *textDownloading = new wxStaticText( m_PanelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0 );
+	textDownloading->Wrap( -1 );
+	m_SizerLeds->Add( textDownloading, 0, wxALL, 5 );
+	
+	m_LedLoading = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_LedLoading->SetState( awxLED_OFF );
+	m_SizerLeds->Add( m_LedLoading, 0, wxALL, 5 );
+	
+	wxStaticText *textLoading = new wxStaticText( m_PanelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0 );
+	textLoading->Wrap( -1 );
+	m_SizerLeds->Add( textLoading, 0, wxALL, 5 );
+	
+	m_LedProcessing = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_LedProcessing->SetState( awxLED_OFF );
+	m_SizerLeds->Add( m_LedProcessing, 0, wxALL, 5 );
+	
+	wxStaticText *textProcessing = new wxStaticText( m_PanelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0 );
+	textProcessing->Wrap( -1 );
+	m_SizerLeds->Add( textProcessing, 0, wxALL, 5 );
+	
+	m_LedSaving = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_LedSaving->SetState( awxLED_OFF );
+	m_SizerLeds->Add( m_LedSaving, 0, wxALL, 5 );
+	
+	wxStaticText *textSaving = new wxStaticText( m_PanelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0 );
+	textSaving->Wrap( -1 );
+	m_SizerLeds->Add( textSaving, 0, wxALL, 5 );
+
     // Buttons
     m_BpButtonNow->SetBitmapLabel(img_clock_now);
     m_BpButtonAdd->SetBitmapLabel(img_plus);

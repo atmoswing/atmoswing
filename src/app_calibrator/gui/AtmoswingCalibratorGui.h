@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -94,7 +94,6 @@ class asFrameCalibrationVirtual : public wxFrame
 		wxCheckBox* m_CheckBoxClassicPlusResize;
 		wxStaticText* m_staticText66;
 		wxStaticText* m_staticText67;
-		wxStaticText* m_staticText68;
 		wxStaticText* m_StaticTextMonteCarloRandomNb;
 		wxTextCtrl* m_TextCtrlMonteCarloRandomNb;
 		wxStaticText* m_StaticTextVarExploStepToExplore;

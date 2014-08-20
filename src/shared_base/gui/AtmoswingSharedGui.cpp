@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2013)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -91,7 +91,7 @@ asFrameXmlEditorVirtual::asFrameXmlEditorVirtual( wxWindow* parent, wxWindowID i
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 	
 	m_ToolBar = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL ); 
-	m_ToolBar->AddTool( wxID_ANY, _("save"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
+	m_ToolSave = m_ToolBar->AddTool( wxID_ANY, _("save"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
 	
 	m_ToolBar->Realize(); 
 	
@@ -383,7 +383,7 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	m_PanelGeneralCommon->SetSizer( bSizer16 );
 	m_PanelGeneralCommon->Layout();
 	bSizer16->Fit( m_PanelGeneralCommon );
-	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), true );
+	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), false );
 	m_PanelPathsCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_SizerPanelPaths = new wxBoxSizer( wxVERTICAL );
 	
@@ -457,36 +457,34 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	wxBoxSizer* bSizer39;
 	bSizer39 = new wxBoxSizer( wxVERTICAL );
 	
-	m_NotebookViewer = new wxNotebook( m_PanelViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_PanelForecastDisplay = new wxPanel( m_NotebookViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer261;
 	bSizer261 = new wxBoxSizer( wxVERTICAL );
 	
 	wxStaticBoxSizer* sbSizer141;
-	sbSizer141 = new wxStaticBoxSizer( new wxStaticBox( m_PanelForecastDisplay, wxID_ANY, _("Forecast display options") ), wxVERTICAL );
+	sbSizer141 = new wxStaticBoxSizer( new wxStaticBox( m_PanelViewer, wxID_ANY, _("Forecast display options") ), wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer81;
 	fgSizer81 = new wxFlexGridSizer( 2, 3, 0, 0 );
 	fgSizer81->SetFlexibleDirection( wxBOTH );
 	fgSizer81->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_StaticTextColorbarMaxValue = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("Set the maximum rainfall value for the colorbar"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextColorbarMaxValue = new wxStaticText( m_PanelViewer, wxID_ANY, _("Set the maximum rainfall value for the colorbar"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextColorbarMaxValue->Wrap( -1 );
 	fgSizer81->Add( m_StaticTextColorbarMaxValue, 0, wxALL, 5 );
 	
-	m_TextCtrlColorbarMaxValue = new wxTextCtrl( m_PanelForecastDisplay, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlColorbarMaxValue = new wxTextCtrl( m_PanelViewer, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
 	m_TextCtrlColorbarMaxValue->SetMaxLength( 0 ); 
 	fgSizer81->Add( m_TextCtrlColorbarMaxValue, 0, wxALL, 5 );
 	
-	m_StaticTextColorbarMaxUnit = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("mm/d"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextColorbarMaxUnit = new wxStaticText( m_PanelViewer, wxID_ANY, _("mm/d"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextColorbarMaxUnit->Wrap( -1 );
 	fgSizer81->Add( m_StaticTextColorbarMaxUnit, 0, wxALL, 5 );
 	
-	m_StaticTextPastDaysNb = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("Number of past days to display on the timeseries"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPastDaysNb = new wxStaticText( m_PanelViewer, wxID_ANY, _("Number of past days to display on the timeseries"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextPastDaysNb->Wrap( -1 );
 	fgSizer81->Add( m_StaticTextPastDaysNb, 0, wxALL, 5 );
 	
-	m_TextCtrlPastDaysNb = new wxTextCtrl( m_PanelForecastDisplay, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlPastDaysNb = new wxTextCtrl( m_PanelViewer, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
 	m_TextCtrlPastDaysNb->SetMaxLength( 0 ); 
 	fgSizer81->Add( m_TextCtrlPastDaysNb, 0, wxALL, 5 );
 	
@@ -497,36 +495,36 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer261->Add( sbSizer141, 0, wxEXPAND|wxALL, 5 );
 	
 	wxStaticBoxSizer* sbSizer191;
-	sbSizer191 = new wxStaticBoxSizer( new wxStaticBox( m_PanelForecastDisplay, wxID_ANY, _("Alarms panel") ), wxVERTICAL );
+	sbSizer191 = new wxStaticBoxSizer( new wxStaticBox( m_PanelViewer, wxID_ANY, _("Alarms panel") ), wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer13;
 	fgSizer13 = new wxFlexGridSizer( 2, 3, 0, 0 );
 	fgSizer13->SetFlexibleDirection( wxBOTH );
 	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_StaticTextAlarmsReturnPeriod = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("Return period to display"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsReturnPeriod = new wxStaticText( m_PanelViewer, wxID_ANY, _("Return period to display"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextAlarmsReturnPeriod->Wrap( -1 );
 	fgSizer13->Add( m_StaticTextAlarmsReturnPeriod, 0, wxALL, 5 );
 	
 	wxString m_ChoiceAlarmsReturnPeriodChoices[] = { _("2"), _("5"), _("10"), _("20"), _("50"), _("100") };
 	int m_ChoiceAlarmsReturnPeriodNChoices = sizeof( m_ChoiceAlarmsReturnPeriodChoices ) / sizeof( wxString );
-	m_ChoiceAlarmsReturnPeriod = new wxChoice( m_PanelForecastDisplay, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceAlarmsReturnPeriodNChoices, m_ChoiceAlarmsReturnPeriodChoices, 0 );
+	m_ChoiceAlarmsReturnPeriod = new wxChoice( m_PanelViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceAlarmsReturnPeriodNChoices, m_ChoiceAlarmsReturnPeriodChoices, 0 );
 	m_ChoiceAlarmsReturnPeriod->SetSelection( 0 );
 	fgSizer13->Add( m_ChoiceAlarmsReturnPeriod, 0, wxALL, 5 );
 	
-	m_StaticTextAlarmsReturnPeriodYears = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsReturnPeriodYears = new wxStaticText( m_PanelViewer, wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextAlarmsReturnPeriodYears->Wrap( -1 );
 	fgSizer13->Add( m_StaticTextAlarmsReturnPeriodYears, 0, wxALL, 5 );
 	
-	m_StaticTextAlarmsPercentile = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("Percentile to display"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsPercentile = new wxStaticText( m_PanelViewer, wxID_ANY, _("Percentile to display"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextAlarmsPercentile->Wrap( -1 );
 	fgSizer13->Add( m_StaticTextAlarmsPercentile, 0, wxALL, 5 );
 	
-	m_TextCtrlAlarmsPercentile = new wxTextCtrl( m_PanelForecastDisplay, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlAlarmsPercentile = new wxTextCtrl( m_PanelViewer, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
 	m_TextCtrlAlarmsPercentile->SetMaxLength( 0 ); 
 	fgSizer13->Add( m_TextCtrlAlarmsPercentile, 0, wxALL, 5 );
 	
-	m_StaticTextAlarmsPercentileRange = new wxStaticText( m_PanelForecastDisplay, wxID_ANY, _("(in between 0 - 1)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsPercentileRange = new wxStaticText( m_PanelViewer, wxID_ANY, _("(in between 0 - 1)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextAlarmsPercentileRange->Wrap( -1 );
 	fgSizer13->Add( m_StaticTextAlarmsPercentileRange, 0, wxALL, 5 );
 	
@@ -537,244 +535,13 @@ asFramePreferencesVirtual::asFramePreferencesVirtual( wxWindow* parent, wxWindow
 	bSizer261->Add( sbSizer191, 0, wxEXPAND|wxALL, 5 );
 	
 	
-	m_PanelForecastDisplay->SetSizer( bSizer261 );
-	m_PanelForecastDisplay->Layout();
-	bSizer261->Fit( m_PanelForecastDisplay );
-	m_NotebookViewer->AddPage( m_PanelForecastDisplay, _("Forecast display"), true );
-	m_PanelGISForecast = new wxPanel( m_NotebookViewer, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer23;
-	bSizer23 = new wxBoxSizer( wxVERTICAL );
-	
-	wxStaticBoxSizer* sbSizer13;
-	sbSizer13 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGISForecast, wxID_ANY, _("Default map layers") ), wxVERTICAL );
-	
-	m_notebook5 = new wxNotebook( m_PanelGISForecast, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_PanelLayerHillshade = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer4;
-	fgSizer4 = new wxFlexGridSizer( 3, 2, 0, 0 );
-	fgSizer4->AddGrowableCol( 1 );
-	fgSizer4->SetFlexibleDirection( wxBOTH );
-	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_StaticTextGISLayerHillshadeVisibility = new wxStaticText( m_PanelLayerHillshade, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHillshadeVisibility->Wrap( -1 );
-	fgSizer4->Add( m_StaticTextGISLayerHillshadeVisibility, 0, wxALL, 5 );
-	
-	m_CheckBoxGISLayerHillshadeVisibility = new wxCheckBox( m_PanelLayerHillshade, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer4->Add( m_CheckBoxGISLayerHillshadeVisibility, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerHillshadeFile = new wxStaticText( m_PanelLayerHillshade, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHillshadeFile->Wrap( -1 );
-	fgSizer4->Add( m_StaticTextGISLayerHillshadeFile, 0, wxALL, 5 );
-	
-	m_FilePickerGISLayerHillshade = new wxFilePickerCtrl( m_PanelLayerHillshade, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
-	fgSizer4->Add( m_FilePickerGISLayerHillshade, 0, wxALL|wxEXPAND, 5 );
-	
-	m_StaticTextGISLayerHillshadeTransp = new wxStaticText( m_PanelLayerHillshade, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHillshadeTransp->Wrap( -1 );
-	fgSizer4->Add( m_StaticTextGISLayerHillshadeTransp, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerHillshadeTransp = new wxTextCtrl( m_PanelLayerHillshade, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerHillshadeTransp->SetMaxLength( 3 ); 
-	fgSizer4->Add( m_TextCtrlGISLayerHillshadeTransp, 0, wxALL, 5 );
-	
-	
-	m_PanelLayerHillshade->SetSizer( fgSizer4 );
-	m_PanelLayerHillshade->Layout();
-	fgSizer4->Fit( m_PanelLayerHillshade );
-	m_notebook5->AddPage( m_PanelLayerHillshade, _("Hillshade"), true );
-	m_PanelLayerCatchments = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer5;
-	fgSizer5 = new wxFlexGridSizer( 5, 2, 0, 0 );
-	fgSizer5->AddGrowableCol( 1 );
-	fgSizer5->SetFlexibleDirection( wxBOTH );
-	fgSizer5->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_StaticTextGISLayerCatchmentsVisibility = new wxStaticText( m_PanelLayerCatchments, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerCatchmentsVisibility->Wrap( -1 );
-	fgSizer5->Add( m_StaticTextGISLayerCatchmentsVisibility, 0, wxALL, 5 );
-	
-	m_CheckBoxGISLayerCatchmentsVisibility = new wxCheckBox( m_PanelLayerCatchments, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer5->Add( m_CheckBoxGISLayerCatchmentsVisibility, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerCatchmentsFile = new wxStaticText( m_PanelLayerCatchments, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerCatchmentsFile->Wrap( -1 );
-	fgSizer5->Add( m_StaticTextGISLayerCatchmentsFile, 0, wxALL, 5 );
-	
-	m_FilePickerGISLayerCatchments = new wxFilePickerCtrl( m_PanelLayerCatchments, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
-	fgSizer5->Add( m_FilePickerGISLayerCatchments, 0, wxALL|wxEXPAND, 5 );
-	
-	m_StaticTextGISLayerCatchmentsTransp = new wxStaticText( m_PanelLayerCatchments, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerCatchmentsTransp->Wrap( -1 );
-	fgSizer5->Add( m_StaticTextGISLayerCatchmentsTransp, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerCatchmentsTransp = new wxTextCtrl( m_PanelLayerCatchments, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerCatchmentsTransp->SetMaxLength( 3 ); 
-	fgSizer5->Add( m_TextCtrlGISLayerCatchmentsTransp, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerCatchmentsColor = new wxStaticText( m_PanelLayerCatchments, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerCatchmentsColor->Wrap( -1 );
-	fgSizer5->Add( m_StaticTextGISLayerCatchmentsColor, 0, wxALL, 5 );
-	
-	m_ColourPickerGISLayerCatchmentsColor = new wxColourPickerCtrl( m_PanelLayerCatchments, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
-	fgSizer5->Add( m_ColourPickerGISLayerCatchmentsColor, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerCatchmentsSize = new wxStaticText( m_PanelLayerCatchments, wxID_ANY, _("Line width"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerCatchmentsSize->Wrap( -1 );
-	fgSizer5->Add( m_StaticTextGISLayerCatchmentsSize, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerCatchmentsSize = new wxTextCtrl( m_PanelLayerCatchments, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerCatchmentsSize->SetMaxLength( 2 ); 
-	fgSizer5->Add( m_TextCtrlGISLayerCatchmentsSize, 0, wxALL, 5 );
-	
-	
-	m_PanelLayerCatchments->SetSizer( fgSizer5 );
-	m_PanelLayerCatchments->Layout();
-	fgSizer5->Fit( m_PanelLayerCatchments );
-	m_notebook5->AddPage( m_PanelLayerCatchments, _("Catchments"), false );
-	m_PanelLayerHydrography = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer6;
-	fgSizer6 = new wxFlexGridSizer( 5, 2, 0, 0 );
-	fgSizer6->AddGrowableCol( 1 );
-	fgSizer6->SetFlexibleDirection( wxBOTH );
-	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_StaticTextGISLayerHydroVisibility = new wxStaticText( m_PanelLayerHydrography, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHydroVisibility->Wrap( -1 );
-	fgSizer6->Add( m_StaticTextGISLayerHydroVisibility, 0, wxALL, 5 );
-	
-	m_CheckBoxGISLayerHydroVisibility = new wxCheckBox( m_PanelLayerHydrography, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer6->Add( m_CheckBoxGISLayerHydroVisibility, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerHydroFile = new wxStaticText( m_PanelLayerHydrography, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHydroFile->Wrap( -1 );
-	fgSizer6->Add( m_StaticTextGISLayerHydroFile, 0, wxALL, 5 );
-	
-	m_FilePickerGISLayerHydro = new wxFilePickerCtrl( m_PanelLayerHydrography, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
-	fgSizer6->Add( m_FilePickerGISLayerHydro, 0, wxALL|wxEXPAND, 5 );
-	
-	m_StaticTextGISLayerHydroTransp = new wxStaticText( m_PanelLayerHydrography, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHydroTransp->Wrap( -1 );
-	fgSizer6->Add( m_StaticTextGISLayerHydroTransp, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerHydroTransp = new wxTextCtrl( m_PanelLayerHydrography, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerHydroTransp->SetMaxLength( 3 ); 
-	fgSizer6->Add( m_TextCtrlGISLayerHydroTransp, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerHydroColor = new wxStaticText( m_PanelLayerHydrography, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHydroColor->Wrap( -1 );
-	fgSizer6->Add( m_StaticTextGISLayerHydroColor, 0, wxALL, 5 );
-	
-	m_ColourPickerGISLayerHydroColor = new wxColourPickerCtrl( m_PanelLayerHydrography, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
-	fgSizer6->Add( m_ColourPickerGISLayerHydroColor, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerHydroSize = new wxStaticText( m_PanelLayerHydrography, wxID_ANY, _("Line width"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerHydroSize->Wrap( -1 );
-	fgSizer6->Add( m_StaticTextGISLayerHydroSize, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerHydroSize = new wxTextCtrl( m_PanelLayerHydrography, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerHydroSize->SetMaxLength( 2 ); 
-	fgSizer6->Add( m_TextCtrlGISLayerHydroSize, 0, wxALL, 5 );
-	
-	
-	m_PanelLayerHydrography->SetSizer( fgSizer6 );
-	m_PanelLayerHydrography->Layout();
-	fgSizer6->Fit( m_PanelLayerHydrography );
-	m_notebook5->AddPage( m_PanelLayerHydrography, _("Hydrography"), false );
-	m_PanelLayerLakes = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer7;
-	fgSizer7 = new wxFlexGridSizer( 4, 2, 0, 0 );
-	fgSizer7->AddGrowableCol( 1 );
-	fgSizer7->SetFlexibleDirection( wxBOTH );
-	fgSizer7->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_StaticTextGISLayerLakesVisibility = new wxStaticText( m_PanelLayerLakes, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerLakesVisibility->Wrap( -1 );
-	fgSizer7->Add( m_StaticTextGISLayerLakesVisibility, 0, wxALL, 5 );
-	
-	m_CheckBoxGISLayerLakesVisibility = new wxCheckBox( m_PanelLayerLakes, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_CheckBoxGISLayerLakesVisibility, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerLakesFile = new wxStaticText( m_PanelLayerLakes, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerLakesFile->Wrap( -1 );
-	fgSizer7->Add( m_StaticTextGISLayerLakesFile, 0, wxALL, 5 );
-	
-	m_FilePickerGISLayerLakes = new wxFilePickerCtrl( m_PanelLayerLakes, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
-	fgSizer7->Add( m_FilePickerGISLayerLakes, 0, wxALL|wxEXPAND, 5 );
-	
-	m_StaticTextGISLayerLakesTransp = new wxStaticText( m_PanelLayerLakes, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerLakesTransp->Wrap( -1 );
-	fgSizer7->Add( m_StaticTextGISLayerLakesTransp, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerLakesTransp = new wxTextCtrl( m_PanelLayerLakes, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerLakesTransp->SetMaxLength( 3 ); 
-	fgSizer7->Add( m_TextCtrlGISLayerLakesTransp, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerLakesColor = new wxStaticText( m_PanelLayerLakes, wxID_ANY, _("Color"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerLakesColor->Wrap( -1 );
-	fgSizer7->Add( m_StaticTextGISLayerLakesColor, 0, wxALL, 5 );
-	
-	m_ColourPickerGISLayerLakesColor = new wxColourPickerCtrl( m_PanelLayerLakes, wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE );
-	fgSizer7->Add( m_ColourPickerGISLayerLakesColor, 0, wxALL, 5 );
-	
-	
-	m_PanelLayerLakes->SetSizer( fgSizer7 );
-	m_PanelLayerLakes->Layout();
-	fgSizer7->Fit( m_PanelLayerLakes );
-	m_notebook5->AddPage( m_PanelLayerLakes, _("Lakes"), false );
-	m_PanelLayerBasemap = new wxPanel( m_notebook5, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer8;
-	fgSizer8 = new wxFlexGridSizer( 3, 2, 0, 0 );
-	fgSizer8->AddGrowableCol( 1 );
-	fgSizer8->SetFlexibleDirection( wxBOTH );
-	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_StaticTextGISLayerBasemapVisibility = new wxStaticText( m_PanelLayerBasemap, wxID_ANY, _("Visibility"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerBasemapVisibility->Wrap( -1 );
-	fgSizer8->Add( m_StaticTextGISLayerBasemapVisibility, 0, wxALL, 5 );
-	
-	m_CheckBoxGISLayerBasemapVisibility = new wxCheckBox( m_PanelLayerBasemap, wxID_ANY, _("display layer"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer8->Add( m_CheckBoxGISLayerBasemapVisibility, 0, wxALL, 5 );
-	
-	m_StaticTextGISLayerBasemapFile = new wxStaticText( m_PanelLayerBasemap, wxID_ANY, _("File"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerBasemapFile->Wrap( -1 );
-	fgSizer8->Add( m_StaticTextGISLayerBasemapFile, 0, wxALL, 5 );
-	
-	m_FilePickerGISLayerBasemap = new wxFilePickerCtrl( m_PanelLayerBasemap, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_OPEN|wxFLP_USE_TEXTCTRL );
-	fgSizer8->Add( m_FilePickerGISLayerBasemap, 0, wxALL|wxEXPAND, 5 );
-	
-	m_StaticTextGISLayerBasemapTransp = new wxStaticText( m_PanelLayerBasemap, wxID_ANY, _("Transparency (%)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextGISLayerBasemapTransp->Wrap( -1 );
-	fgSizer8->Add( m_StaticTextGISLayerBasemapTransp, 0, wxALL, 5 );
-	
-	m_TextCtrlGISLayerBasemapTransp = new wxTextCtrl( m_PanelLayerBasemap, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlGISLayerBasemapTransp->SetMaxLength( 3 ); 
-	fgSizer8->Add( m_TextCtrlGISLayerBasemapTransp, 0, wxALL, 5 );
-	
-	
-	m_PanelLayerBasemap->SetSizer( fgSizer8 );
-	m_PanelLayerBasemap->Layout();
-	fgSizer8->Fit( m_PanelLayerBasemap );
-	m_notebook5->AddPage( m_PanelLayerBasemap, _("Basemap"), false );
-	
-	sbSizer13->Add( m_notebook5, 1, wxEXPAND | wxALL, 5 );
-	
-	
-	bSizer23->Add( sbSizer13, 0, wxEXPAND|wxALL, 5 );
-	
-	
-	m_PanelGISForecast->SetSizer( bSizer23 );
-	m_PanelGISForecast->Layout();
-	bSizer23->Fit( m_PanelGISForecast );
-	m_NotebookViewer->AddPage( m_PanelGISForecast, _("Forecast GIS options"), false );
-	
-	bSizer39->Add( m_NotebookViewer, 1, wxEXPAND | wxALL, 5 );
+	bSizer39->Add( bSizer261, 1, wxEXPAND, 5 );
 	
 	
 	m_PanelViewer->SetSizer( bSizer39 );
 	m_PanelViewer->Layout();
 	bSizer39->Fit( m_PanelViewer );
-	m_NotebookBase->AddPage( m_PanelViewer, _("Viewer"), false );
+	m_NotebookBase->AddPage( m_PanelViewer, _("Viewer"), true );
 	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
