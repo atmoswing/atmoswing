@@ -44,6 +44,8 @@ public:
 
     void ClearArrays();
 
+    void ClearForecasts();
+
     bool Open(const wxString &filePath, bool doRefresh = true);
 
     bool OpenPastForecast(const wxString &filePath, int forecastSelection);
