@@ -80,6 +80,7 @@ bool AtmoswingAppViewer::OnInit()
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
+    m_SingleInstanceChecker = NULL;
     bool multipleInstances;
     pConfig->Read("/Standard/MultiInstances", &multipleInstances, false);
 
@@ -226,7 +227,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
 int AtmoswingAppViewer::OnExit()
 {
     // Instance checker
-    delete m_SingleInstanceChecker;
+    wxDELETE(m_SingleInstanceChecker);
 
     // Config file (from wxWidgets samples)
     delete wxFileConfig::Set((wxFileConfig *) NULL);
