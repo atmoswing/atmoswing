@@ -71,6 +71,19 @@ void asForecastManager::ClearArrays()
     m_PastForecasts.resize(0);
 }
 
+void asForecastManager::ClearForecasts()
+{
+    ClearArrays();
+    m_DirectoriesPastForecasts.Clear();
+
+    #if wxUSE_GUI
+        wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
+        if (m_Parent != NULL) {
+            m_Parent->ProcessWindowEvent(eventClear);
+        }
+    #endif
+}
+
 bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
 {
     // Check existance
@@ -102,16 +115,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     if( (m_LeadTimeOrigin!=0) && (forecast->GetLeadTimeOrigin()!=m_LeadTimeOrigin) )
     {
         asLogMessage("The forecast file has another lead time origin. Previous files were removed.");
-        ClearArrays();
-        m_DirectoriesPastForecasts.Clear();
-
-        #if wxUSE_GUI
-            wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
-            if (m_Parent != NULL) {
-                m_Parent->ProcessWindowEvent(eventClear);
-            }
-        #endif
-
+        ClearForecasts();
     }
     m_LeadTimeOrigin = forecast->GetLeadTimeOrigin();
 

@@ -85,8 +85,8 @@ public:
 
     void OnInit();
     bool OpenLayers (const wxArrayString & names);
-    void OpenDefaultLayers ();
     void OpenForecastsFromTmpList();
+    bool OpenRecentForecasts();
     bool OpenForecast (const wxArrayString & names);
     // The next ones need to be public as they are refered in the children events table.
     void OnForecastProcessTerminate( wxProcessEvent &event );
@@ -98,6 +98,7 @@ public:
     void OnKeyUp(wxKeyEvent & event);
     void OnToolAction (wxCommandEvent & event);
     void OnToolZoomToFit (wxCommandEvent & event);
+    void FitExtentToForecasts ();
     void OnStationSelection( wxCommandEvent& event );
     void OnForecastClear( wxCommandEvent &event );
     void OnQuit( wxCommandEvent& event );
@@ -156,6 +157,8 @@ public:
 
 protected:
     wxProcess* m_ProcessForecast;
+    wxString m_WorkspaceFilePath;
+    wxString m_ForecastsDirectory;
     // vroomgis
     vrLayerManager *m_LayerManager;
     vrViewerLayerManager *m_ViewerLayerManager;
@@ -168,6 +171,8 @@ protected:
     asPanelSidebarStationsList *m_PanelSidebarStationsList;
     bool m_LaunchedPresentForecast;
     //    void Update();
+    void OnOpenWorkspace( wxCommandEvent & event );
+    bool OpenWorkspace();
     void LaunchForecastingNow( wxCommandEvent& event );
     void LaunchForecastingPast( wxCommandEvent& event );
     void OpenFrameForecaster( wxCommandEvent& event );
