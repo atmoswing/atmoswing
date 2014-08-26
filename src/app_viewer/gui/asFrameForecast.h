@@ -45,8 +45,7 @@
 #include "asPanelSidebarAlarms.h"
 
 const int asID_MOVE_LAYER = wxID_HIGHEST + 1;
-const int mm_POPUP_OFFSET = 50;
-const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + mm_POPUP_OFFSET;
+const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + 50;
 
 
 /** Implementing vroomDropFiles */
@@ -180,6 +179,7 @@ protected:
     void OpenFrameGrid( wxCommandEvent& event );
     void OpenFramePreferences( wxCommandEvent& event );
     void OpenFrameAbout( wxCommandEvent& event );
+    void OpenFrameMeteorologicalSituation( wxCommandEvent& event );
     void OnLogLevel1( wxCommandEvent& event );
     void OnLogLevel2( wxCommandEvent& event );
     void OnLogLevel3( wxCommandEvent& event );

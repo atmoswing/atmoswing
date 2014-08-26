@@ -22,29 +22,36 @@
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#ifndef ASVERSION_H
-#define ASVERSION_H
+#ifndef __asPanelSidebarMeteoSituation__
+#define __asPanelSidebarMeteoSituation__
 
-#include "wx/string.h"
+#include "asPanelSidebar.h"
 
-const int ATMOSWING_MAJOR_VERSION = 1;
-const int ATMOSWING_MINOR_VERSION = 5;
-const int ATMOSWING_PATCH_VERSION = 0;
-const extern wxString g_Version;
+#include "asIncludes.h"
 
-class asVersion
+/** Implementing asPanelSidebarMeteoSituation */
+class asPanelSidebarMeteoSituation : public asPanelSidebar
 {
 public:
-    asVersion();
-    virtual ~asVersion();
-    static wxString GetFullString();
+    /** Constructor */
+    asPanelSidebarMeteoSituation( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    ~asPanelSidebarMeteoSituation();
 
+    void SetChoices(wxArrayString &val);
 
-protected:
+    wxChoice* GetChoiceCtrl()
+    {
+        return m_ChoicePreset;
+    }
+
 private:
+    wxChoice* m_ChoicePreset;
+
+    void OnPresetSelection( wxCommandEvent& event );
+
 };
 
-#endif // ASVERSION_H
+#endif // __asPanelSidebarMeteoSituation__

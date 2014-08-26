@@ -40,6 +40,7 @@
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
+#include "asFrameMeteorologicalSituation.h"
 #include "asPanelPlot.h"
 #include "asFileAscii.h"
 #include "asFileWorkspace.h"
@@ -110,6 +111,7 @@ asFrameForecastVirtual( parent, id )
     m_ToolBar->AddTool( asID_FRAME_PLOTS, wxT("Open distributions plots"), img_frame_plots, img_frame_plots, wxITEM_NORMAL, _("Open distributions plots"), _("Open distributions plots"), NULL );
     m_ToolBar->AddTool( asID_FRAME_GRID, wxT("Open analogs list"), img_frame_grid, img_frame_grid, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), NULL );
     m_ToolBar->AddTool( asID_FRAME_FORECASTER, wxT("Open forecaster"), img_frame_forecaster, img_frame_forecaster, wxITEM_NORMAL, _("Open forecaster"), _("Open forecaster"), NULL );
+    m_ToolBar->AddTool( asID_FRAME_SITUATION, wxT("Display meteorological situation"), img_frame_forecaster, img_frame_forecaster, wxITEM_NORMAL, _("Display meteorological situation"), _("Display meteorological situation"), NULL );
     m_ToolBar->AddSeparator();
     m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
     m_ToolBar->Realize();
@@ -146,6 +148,7 @@ asFrameForecastVirtual( parent, id )
     m_DisplayCtrl->Connect( wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), NULL, this);
     this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePreferences ) );
     this->Connect( asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameForecaster ) );
+    this->Connect( asID_FRAME_SITUATION, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameMeteorologicalSituation ) );
     this->Connect( asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePlots ) );
     this->Connect( asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameGrid ) );
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingNow ) );
@@ -234,6 +237,7 @@ asFrameForecast::~asFrameForecast()
     m_DisplayCtrl->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), NULL, this);
     this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePreferences ) );
     this->Disconnect( asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameForecaster ) );
+    this->Disconnect( asID_FRAME_SITUATION, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameMeteorologicalSituation ) );
     this->Disconnect( asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFramePlots ) );
     this->Disconnect( asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OpenFrameGrid ) );
     this->Disconnect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingNow ) );
@@ -459,9 +463,9 @@ bool asFrameForecast::OpenWorkspace()
         if (!fileWorkspace.GoToNextSameNode()) break;
     }
 
-    OpenRecentForecasts();
-
     m_ViewerLayerManager->FreezeEnd();
+
+    OpenRecentForecasts();
 
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
@@ -626,6 +630,13 @@ void asFrameForecast::OpenFrameForecaster( wxCommandEvent& event )
     {
         asLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
     }
+}
+
+void asFrameForecast::OpenFrameMeteorologicalSituation( wxCommandEvent& event )
+{
+    asFrameMeteorologicalSituation* frameSituation = new asFrameMeteorologicalSituation(this);
+    frameSituation->Fit();
+    frameSituation->Show();
 }
 
 void asFrameForecast::OpenFramePlots( wxCommandEvent& event )
