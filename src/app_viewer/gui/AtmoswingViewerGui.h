@@ -304,13 +304,13 @@ class asFrameMeteorologicalSituationVirtual : public wxFrame
 	
 	public:
 		
-		asFrameMeteorologicalSituationVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Meteorological situation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameMeteorologicalSituationVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Meteorological situation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameMeteorologicalSituationVirtual();
 		
 		void m_SplitterOnIdle( wxIdleEvent& )
 		{
-			m_Splitter->SetSashPosition( 0 );
+			m_Splitter->SetSashPosition( 270 );
 			m_Splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameMeteorologicalSituationVirtual::m_SplitterOnIdle ), NULL, this );
 		}
 	

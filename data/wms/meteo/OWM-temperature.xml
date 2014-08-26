@@ -1,0 +1,23 @@
+<GDAL_WMS>
+    <Service name="WMS">
+        <Version>1.1.1</Version>
+        <ServerUrl>http://wms.openweathermap.org/service</ServerUrl>
+        <SRS>EPSG:4326</SRS>
+        <ImageFormat>image/png</ImageFormat>
+        <Transparent>FALSE</Transparent>
+        <Layers>temp</Layers>
+        <Styles></Styles>
+    </Service>
+    <DataWindow>
+        <UpperLeftX>-180.0</UpperLeftX>
+        <UpperLeftY>85.0511287797999955</UpperLeftY>
+        <LowerRightX>180.0</LowerRightX>
+        <LowerRightY>-85.0511287797999955</LowerRightY>
+        <SizeX>46800</SizeX>
+        <SizeY>22113</SizeY>
+    </DataWindow>
+    <Projection>EPSG:4326</Projection>
+    <BandsCount>3</BandsCount>
+	<UserAgent>GDAL WMS driver (http://www.gdal.org/frmt_wms.html)</UserAgent>
+</GDAL_WMS>
+
