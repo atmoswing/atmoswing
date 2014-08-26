@@ -145,6 +145,7 @@ enum
         asID_FRAME_DOTS = wxID_HIGHEST+18,
         asID_FRAME_PLOTS = wxID_HIGHEST+19,
         asID_FRAME_GRID = wxID_HIGHEST+20,
+        asID_FRAME_SITUATION = wxID_HIGHEST+21,
     };
 #endif
 

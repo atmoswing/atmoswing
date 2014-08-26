@@ -279,6 +279,44 @@ class asFramePredictorsVirtual : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class asFrameMeteorologicalSituationVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asFrameMeteorologicalSituationVirtual : public wxFrame 
+{
+	private:
+	
+	protected:
+		wxPanel* m_PanelMain;
+		wxSplitterWindow* m_Splitter;
+		wxScrolledWindow* m_ScrolledWindow;
+		wxBoxSizer* m_SizerScrolledWindow;
+		wxPanel* m_PanelContent;
+		wxBoxSizer* m_SizerContent;
+		wxPanel* m_PanelGIS;
+		wxBoxSizer* m_SizerGIS;
+		wxMenuBar* m_Menubar;
+		wxMenu* m_MenuFile;
+		wxToolBar* m_ToolBar;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asFrameMeteorologicalSituationVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Meteorological situation"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFrameMeteorologicalSituationVirtual();
+		
+		void m_SplitterOnIdle( wxIdleEvent& )
+		{
+			m_Splitter->SetSashPosition( 0 );
+			m_Splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameMeteorologicalSituationVirtual::m_SplitterOnIdle ), NULL, this );
+		}
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class asPanelSidebarVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asPanelSidebarVirtual : public wxPanel 

@@ -746,6 +746,83 @@ asFramePredictorsVirtual::~asFramePredictorsVirtual()
 	
 }
 
+asFrameMeteorologicalSituationVirtual::asFrameMeteorologicalSituationVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer37;
+	bSizer37 = new wxBoxSizer( wxVERTICAL );
+	
+	m_PanelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer38;
+	bSizer38 = new wxBoxSizer( wxVERTICAL );
+	
+	m_Splitter = new wxSplitterWindow( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
+	m_Splitter->Connect( wxEVT_IDLE, wxIdleEventHandler( asFrameMeteorologicalSituationVirtual::m_SplitterOnIdle ), NULL, this );
+	
+	m_ScrolledWindow = new wxScrolledWindow( m_Splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	m_ScrolledWindow->SetScrollRate( 5, 5 );
+	m_SizerScrolledWindow = new wxBoxSizer( wxVERTICAL );
+	
+	
+	m_ScrolledWindow->SetSizer( m_SizerScrolledWindow );
+	m_ScrolledWindow->Layout();
+	m_SizerScrolledWindow->Fit( m_ScrolledWindow );
+	m_PanelContent = new wxPanel( m_Splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_SizerContent = new wxBoxSizer( wxVERTICAL );
+	
+	m_PanelGIS = new wxPanel( m_PanelContent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_SizerGIS = new wxBoxSizer( wxVERTICAL );
+	
+	
+	m_PanelGIS->SetSizer( m_SizerGIS );
+	m_PanelGIS->Layout();
+	m_SizerGIS->Fit( m_PanelGIS );
+	m_SizerContent->Add( m_PanelGIS, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	m_PanelContent->SetSizer( m_SizerContent );
+	m_PanelContent->Layout();
+	m_SizerContent->Fit( m_PanelContent );
+	m_Splitter->SplitVertically( m_ScrolledWindow, m_PanelContent, 0 );
+	bSizer38->Add( m_Splitter, 1, wxEXPAND, 5 );
+	
+	
+	m_PanelMain->SetSizer( bSizer38 );
+	m_PanelMain->Layout();
+	bSizer38->Fit( m_PanelMain );
+	bSizer37->Add( m_PanelMain, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer37 );
+	this->Layout();
+	m_Menubar = new wxMenuBar( 0 );
+	m_MenuFile = new wxMenu();
+	wxMenuItem* m_MenuItemOpenGisLayer;
+	m_MenuItemOpenGisLayer = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Open GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemOpenGisLayer );
+	
+	m_Menubar->Append( m_MenuFile, _("File") ); 
+	
+	this->SetMenuBar( m_Menubar );
+	
+	m_ToolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY ); 
+	m_ToolBar->Realize(); 
+	
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	this->Connect( m_MenuItemOpenGisLayer->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMeteorologicalSituationVirtual::OnOpenLayer ) );
+}
+
+asFrameMeteorologicalSituationVirtual::~asFrameMeteorologicalSituationVirtual()
+{
+	// Disconnect Events
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMeteorologicalSituationVirtual::OnOpenLayer ) );
+	
+}
+
 asPanelSidebarVirtual::asPanelSidebarVirtual( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	m_SizerMain = new wxBoxSizer( wxVERTICAL );
