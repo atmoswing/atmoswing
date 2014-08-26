@@ -18,6 +18,7 @@
     </DataWindow>
     <Projection>EPSG:4326</Projection>
     <BandsCount>3</BandsCount>
+    <Timeout>20</Timeout>
 	<UserAgent>GDAL WMS driver (http://www.gdal.org/frmt_wms.html)</UserAgent>
 </GDAL_WMS>
 
