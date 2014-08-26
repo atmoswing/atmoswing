@@ -118,9 +118,6 @@ asFrameMeteorologicalSituationVirtual( parent, id )
     m_ScrolledWindow->Layout();
     m_SizerScrolledWindow->Fit( m_ScrolledWindow );
 
-    // Status bar
-    SetStatusText(_("Meteorological situation"));
-
     // Connect Events
     m_DisplayCtrl->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( asFrameMeteorologicalSituation::OnRightClick ), NULL, this );
     m_DisplayCtrl->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameMeteorologicalSituation::OnKeyDown), NULL, this);

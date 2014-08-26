@@ -1,0 +1,30 @@
+<GDAL_WMS>
+    <Service name="WMS">
+        <Version>1.1.1</Version>
+        <ServerUrl>http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/analyses?service=wms</ServerUrl>
+        <SRS>EPSG:4326</SRS>
+        <ImageFormat>image/png</ImageFormat>
+        <Transparent>TRUE</Transparent>
+        <Layers>NCEP_RAS_ANAL_RTG_SST</Layers>
+        <Styles>visual</Styles>
+    </Service>
+    <DataWindow>
+        <UpperLeftX>-180.0</UpperLeftX>
+        <UpperLeftY>90.0</UpperLeftY>
+        <LowerRightX>180.0</LowerRightX>
+        <LowerRightY>-90.0</LowerRightY>
+        <SizeX>46800</SizeX>
+        <SizeY>22113</SizeY>
+    </DataWindow>
+    <Projection>EPSG:4326</Projection>
+    <BlockSizeX>512</BlockSizeX>
+    <BlockSizeY>512</BlockSizeY>
+    <BandsCount>4</BandsCount>
+	<Cache>
+		<Path>./gdalwmscache</Path>
+		<Depth>2</Depth>
+	</Cache>
+    <MaxConnections>5</MaxConnections>
+	<UserAgent>GDAL WMS driver (http://www.gdal.org/frmt_wms.html)</UserAgent>
+</GDAL_WMS>
+

@@ -748,7 +748,7 @@ asFramePredictorsVirtual::~asFramePredictorsVirtual()
 
 asFrameMeteorologicalSituationVirtual::asFrameMeteorologicalSituationVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 800,600 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer37;
 	bSizer37 = new wxBoxSizer( wxVERTICAL );
@@ -759,6 +759,7 @@ asFrameMeteorologicalSituationVirtual::asFrameMeteorologicalSituationVirtual( wx
 	
 	m_Splitter = new wxSplitterWindow( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
 	m_Splitter->Connect( wxEVT_IDLE, wxIdleEventHandler( asFrameMeteorologicalSituationVirtual::m_SplitterOnIdle ), NULL, this );
+	m_Splitter->SetMinimumPaneSize( 270 );
 	
 	m_ScrolledWindow = new wxScrolledWindow( m_Splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_ScrolledWindow->SetScrollRate( 5, 5 );
@@ -778,14 +779,14 @@ asFrameMeteorologicalSituationVirtual::asFrameMeteorologicalSituationVirtual( wx
 	m_PanelGIS->SetSizer( m_SizerGIS );
 	m_PanelGIS->Layout();
 	m_SizerGIS->Fit( m_PanelGIS );
-	m_SizerContent->Add( m_PanelGIS, 1, wxEXPAND | wxALL, 5 );
+	m_SizerContent->Add( m_PanelGIS, 1, wxEXPAND, 5 );
 	
 	
 	m_PanelContent->SetSizer( m_SizerContent );
 	m_PanelContent->Layout();
 	m_SizerContent->Fit( m_PanelContent );
-	m_Splitter->SplitVertically( m_ScrolledWindow, m_PanelContent, 0 );
-	bSizer38->Add( m_Splitter, 1, wxEXPAND, 5 );
+	m_Splitter->SplitVertically( m_ScrolledWindow, m_PanelContent, 270 );
+	bSizer38->Add( m_Splitter, 1, wxEXPAND|wxALL, 5 );
 	
 	
 	m_PanelMain->SetSizer( bSizer38 );
