@@ -423,6 +423,20 @@ int asForecastManager::GetLeadTimeLength(int i_fcst)
     return length;
 }
 
+int asForecastManager::GetLeadTimeLengthMax()
+{
+    if (m_CurrentForecasts.size()==0) return 0;
+    
+    int length = 0;
+
+    for (int i=0; i<m_CurrentForecasts.size(); i++)
+    {
+        length = wxMax(length, m_CurrentForecasts[i]->GetTargetDatesLength());
+    }
+
+    return length;
+}
+
 wxArrayString asForecastManager::GetLeadTimes(int i_fcst)
 {
     wxArrayString leadTimes;

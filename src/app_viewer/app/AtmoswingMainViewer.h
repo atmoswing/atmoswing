@@ -25,16 +25,16 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
 
-#ifndef AtmoswingMAINVIEWER_H
-#define AtmoswingMAINVIEWER_H
+#ifndef ATMOSWINGMAINVIEWER_H
+#define ATMOSWINGMAINVIEWER_H
 
 //#include "version.h"
 #include "asIncludes.h"
 #include "AtmoswingAppViewer.h"
-#include "asFrameForecastRings.h"
+#include "asFrameForecast.h"
 
 
-class AtmoswingFrameViewer: public asFrameForecastRings
+class AtmoswingFrameViewer: public asFrameForecast
 {
 public:
     AtmoswingFrameViewer(wxFrame *frame);
@@ -48,4 +48,4 @@ private:
     void SetDefaultOptions();
 };
 
-#endif // AtmoswingMAINVIEWER_H
+#endif // ATMOSWINGMAINVIEWER_H

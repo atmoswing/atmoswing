@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
 #include "asFrameForecast.h"
@@ -35,12 +36,12 @@
     #include "asThreadViewerLayerManagerZoomOut.h"
 #endif
 #include "asFrameAbout.h"
-#include "asFrameForecastDots.h"
 #include "asFramePreferences.h"
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
 #include "asPanelPlot.h"
+#include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
 #include "asFileWorkspace.h"
 #include "img_bullets.h"
@@ -53,6 +54,39 @@
 #include <wx/dir.h>
 #include "vrrender.h"
 #include "vrlayervector.h"
+
+
+BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
+    EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
+    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
+/*    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
+    EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
+    EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
+    EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
+    EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
+    EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
+    EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
+    EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
+    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)/*
+    EVT_MENU (vlID_MOVE_LAYER, asFrameForecast::OnMoveLayer)
+*/
+    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
+    EVT_KEY_UP(asFrameForecast::OnKeyUp)
+
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
+
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, asFrameForecast::OnChangeLeadTime)
+//    EVT_COMMAND(wxID_ANY, asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, asFrameForecast::OnForecastModelSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecast::OnForecastPercentileSelectionChange)
+END_EVENT_TABLE()
 
 
 /* vroomDropFiles */
@@ -124,6 +158,11 @@ asFrameForecastVirtual( parent, id )
     m_PanelSidebarForecasts->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarForecasts, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
+    // Alarms
+    m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarAlarms->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarAlarms, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
     // Stations list
     m_PanelSidebarStationsList = new asPanelSidebarStationsList( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarStationsList->Layout();
@@ -133,9 +172,28 @@ asFrameForecastVirtual( parent, id )
     m_PanelSidebarGisLayers = new asPanelSidebarGisLayers( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarGisLayers->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarGisLayers, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    
+    // Analog dates sidebar
+    m_PanelSidebarAnalogDates = new asPanelSidebarAnalogDates( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarAnalogDates->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarAnalogDates, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
+    // Caption panel
+    m_PanelSidebarCaptionForecastDots = new asPanelSidebarCaptionForecastDots( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarCaptionForecastDots->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastDots, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
+    // Caption panel
+    m_PanelSidebarCaptionForecastRing = new asPanelSidebarCaptionForecastRing( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarCaptionForecastRing->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastRing, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
     m_ScrolledWindowOptions->Layout();
     m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
+
+    // Lead time switcher
+    m_LeadTimeSwitcher = NULL;
 
     // Status bar
     SetStatusText(_("Welcome to AtmoSwing"));
@@ -159,6 +217,7 @@ asFrameForecastVirtual( parent, id )
     // VroomGIS
     m_LayerManager = new vrLayerManager();
     m_ViewerLayerManager = new vrViewerLayerManager(m_LayerManager, this, m_DisplayCtrl , m_PanelSidebarGisLayers->GetTocCtrl());
+    m_LayerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
     m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl());
@@ -213,6 +272,10 @@ asFrameForecast::~asFrameForecast()
     pConfig->Write("/SidebarPanelsDisplay/Forecasts", !m_PanelSidebarForecasts->IsReduced());
     pConfig->Write("/SidebarPanelsDisplay/StationsList", !m_PanelSidebarStationsList->IsReduced());
     pConfig->Write("/SidebarPanelsDisplay/GisLayers", !m_PanelSidebarGisLayers->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/AnalogDates", !m_PanelSidebarAnalogDates->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/CaptionForecastDots", !m_PanelSidebarCaptionForecastDots->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/Alarms", !m_PanelSidebarAlarms->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/CaptionForecastRing", !m_PanelSidebarCaptionForecastRing->IsReduced());
 
     // Save the frame position
     bool doMaximize = IsMaximized();
@@ -271,7 +334,7 @@ asFrameForecast::~asFrameForecast()
     }
 }
 
-void asFrameForecast::OnInit()
+void asFrameForecast::Init()
 {
     // Update gui elements
     DisplayLogLevelMenu();
@@ -303,11 +366,35 @@ void asFrameForecast::OnInit()
         m_PanelSidebarStationsList->ReducePanel();
         m_PanelSidebarStationsList->Layout();
     }
+    pConfig->Read("/SidebarPanelsDisplay/Alarms", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarAlarms->ReducePanel();
+        m_PanelSidebarAlarms->Layout();
+    }
     pConfig->Read("/SidebarPanelsDisplay/GisLayers", &display, false);
     if (!display)
     {
         m_PanelSidebarGisLayers->ReducePanel();
         m_PanelSidebarGisLayers->Layout();
+    }
+    pConfig->Read("/SidebarPanelsDisplay/AnalogDates", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarAnalogDates->ReducePanel();
+        m_PanelSidebarAnalogDates->Layout();
+    }
+    pConfig->Read("/SidebarPanelsDisplay/CaptionForecastDots", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarCaptionForecastDots->ReducePanel();
+        m_PanelSidebarCaptionForecastDots->Layout();
+    }
+    pConfig->Read("/SidebarPanelsDisplay/CaptionForecastRing", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarCaptionForecastRing->ReducePanel();
+        m_PanelSidebarCaptionForecastRing->Layout();
     }
 
     // Set the select tool
@@ -459,9 +546,13 @@ bool asFrameForecast::OpenWorkspace()
         if (!fileWorkspace.GoToNextSameNode()) break;
     }
 
+    m_ViewerLayerManager->FreezeEnd();
+
     OpenRecentForecasts();
 
-    m_ViewerLayerManager->FreezeEnd();
+    m_ScrolledWindowOptions->Layout();
+    m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
 
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
@@ -470,17 +561,34 @@ bool asFrameForecast::OpenWorkspace()
     return true;
 }
 
-/*
-void asFrameForecast::Update()
-{
-    DisplayLogLevelMenu();
-}
-*/
-
-
 void asFrameForecast::OnQuit( wxCommandEvent& event )
 {
     event.Skip();
+}
+
+void asFrameForecast::UpdateLeadTimeSwitch()
+{
+    // Required size
+    int squareSize = 40;
+    int width = (m_ForecastManager->GetFullTargetDatesVector().size()+1)*squareSize;
+    int height = squareSize + 5;
+
+    // Delete and recreate the panel. Cannot get it work with a resize...
+    wxDELETE(m_LeadTimeSwitcher);
+    m_LeadTimeSwitcher = new asLeadTimeSwitcher( m_PanelTop, wxID_ANY, wxDefaultPosition, wxSize(width,height), wxTAB_TRAVERSAL );
+    m_LeadTimeSwitcher->SetBackgroundColour( wxColour( 77, 77, 77 ) );
+    m_LeadTimeSwitcher->SetMinSize( wxSize( width, height ) );
+    m_LeadTimeSwitcher->Layout();
+    Array1DFloat dates = m_ForecastManager->GetFullTargetDatesVector();
+    m_LeadTimeSwitcher->Draw(dates, m_ForecastManager->GetModelsNames(), m_ForecastManager->GetCurrentForecasts());
+    
+    m_SizerLeadTimeSwitch->Add( m_LeadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5 );
+    m_SizerLeadTimeSwitch->Layout();
+    
+    m_PanelTop->Layout();
+	m_SizerTop->Fit( m_PanelTop );
+    m_SizerContent->Layout();
+
 }
 
 void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
@@ -1058,6 +1166,8 @@ bool asFrameForecast::OpenForecast (const wxArrayString & names)
         m_CritSectionViewerLayerManager.Leave();
     #endif
 
+    UpdateLeadTimeSwitch();
+
     Thaw();
 
     return true;
@@ -1403,6 +1513,20 @@ void asFrameForecast::OnStationSelection( wxCommandEvent& event )
 
 }
 
+void asFrameForecast::OnChangeLeadTime( wxCommandEvent& event )
+{
+    int realLeadTime = m_ForecastViewer->ChangeLeadTime(event.GetInt());
+    
+    m_LeadTimeSwitcher->SetLeadTimeMarker(realLeadTime);
+
+    UpdatePanelAnalogDates();
+    UpdatePanelCaptionAll();
+
+    m_ScrolledWindowOptions->Layout();
+    m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
+}
+
 void asFrameForecast::OnForecastClear( wxCommandEvent& event )
 {
     if(m_PanelSidebarForecasts!=NULL)
@@ -1414,11 +1538,18 @@ void asFrameForecast::OnForecastClear( wxCommandEvent& event )
 void asFrameForecast::OnForecastRatioSelectionChange( wxCommandEvent& event )
 {
     m_ForecastViewer->SetForecastDisplay(event.GetInt());
+
+    UpdatePanelCaptionColorbar();
 }
 
 void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
 {
     m_ForecastViewer->SetModel(event.GetInt());
+
+    UpdateHeaderTexts();
+    UpdatePanelCaptionAll();
+    UpdatePanelAnalogDates();
+    UpdatePanelStationsList();
 }
 
 void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )
@@ -1437,6 +1568,23 @@ void asFrameForecast::DrawPlotStation( int station )
     framePlotStation->Show();
 }
 
+void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
+{
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
+    m_PanelSidebarForecasts->AddForecast(forecast->GetModelName(), forecast->GetLeadTimeOriginString(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
+
+    if (event.GetString().IsSameAs("last"))
+    {
+        m_ForecastViewer->SetModel(event.GetInt());
+
+        UpdatePanelAlarms();
+        UpdateHeaderTexts();
+        UpdatePanelCaptionAll();
+        UpdatePanelAnalogDates();
+        UpdatePanelStationsList();
+    }
+}
+
 void asFrameForecast::ReloadViewerLayerManager( )
 {
     m_ViewerLayerManager->Reload();
@@ -1448,4 +1596,76 @@ void asFrameForecast::ReloadViewerLayerManager( )
     #else
         m_ViewerLayerManager->Reload();
     #endif*/
+}
+
+void asFrameForecast::UpdateHeaderTexts()
+{
+    // Set header text
+    wxString dateForecast = asTime::GetStringTime(m_ForecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY HH");
+    wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast.c_str());
+    m_StaticTextForecastDate->SetLabel(dateStr);
+
+    wxString model = m_ForecastManager->GetModelName(m_ForecastViewer->GetModelSelection());
+    wxString modelStr = wxString::Format(_("Model selected : %s"), model.c_str());
+    m_StaticTextForecastModel->SetLabel(modelStr);
+
+    m_PanelTop->Layout();
+    m_PanelTop->Refresh();
+}
+
+void asFrameForecast::UpdatePanelCaptionAll()
+{
+    if (m_ForecastViewer->GetLeadTimeIndex()<m_ForecastManager->GetLeadTimeLengthMax())
+    {
+        m_PanelSidebarCaptionForecastDots->Show();
+        m_PanelSidebarCaptionForecastRing->Hide();
+
+        m_PanelSidebarCaptionForecastDots->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+    }
+    else
+    {
+        m_PanelSidebarCaptionForecastDots->Hide();
+        m_PanelSidebarCaptionForecastRing->Show();
+
+        m_PanelSidebarCaptionForecastRing->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+        asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
+        Array1DFloat dates = forecast->GetTargetDates();
+        m_PanelSidebarCaptionForecastRing->SetDates(dates);
+    }
+}
+
+void asFrameForecast::UpdatePanelCaptionColorbar()
+{
+    m_PanelSidebarCaptionForecastDots->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+    
+    m_PanelSidebarCaptionForecastRing->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+}
+
+void asFrameForecast::UpdatePanelAnalogDates()
+{
+    if (m_ForecastViewer->GetLeadTimeIndex()>=m_ForecastManager->GetLeadTimeLengthMax())
+    {
+        m_PanelSidebarAnalogDates->Hide();
+        return;
+    }
+
+    m_PanelSidebarAnalogDates->Show();
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
+    Array1DFloat arrayDate = forecast->GetAnalogsDates(m_ForecastViewer->GetLeadTimeIndex());
+    Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria(m_ForecastViewer->GetLeadTimeIndex());
+    m_PanelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
+}
+
+void asFrameForecast::UpdatePanelStationsList()
+{
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_ForecastViewer->GetModelSelection());
+    m_PanelSidebarStationsList->SetChoices(arrayStation);
+}
+
+void asFrameForecast::UpdatePanelAlarms()
+{
+    Array1DFloat datesFull = m_ForecastManager->GetFullTargetDatesVector();
+    VectorString models = m_ForecastManager->GetModelsNames();
+    std::vector <asResultsAnalogsForecast*> forecasts = m_ForecastManager->GetCurrentForecasts();
+    m_PanelSidebarAlarms->UpdateAlarms(datesFull, models, forecasts);
 }

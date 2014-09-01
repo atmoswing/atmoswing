@@ -113,7 +113,7 @@ bool AtmoswingAppViewer::OnInit()
 
     // Create frame
     AtmoswingFrameViewer* frame = new AtmoswingFrameViewer(0L);
-    frame->OnInit();
+    frame->Init();
 
 #ifdef __WXMSW__
     frame->SetIcon(wxICON(myicon)); // To Set App Icon

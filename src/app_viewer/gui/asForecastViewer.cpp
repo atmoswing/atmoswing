@@ -37,7 +37,6 @@
 
 asForecastViewer::asForecastViewer( wxWindow* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager)
 {
-    m_DisplayType = asForecastViewer::ForecastRings;
     m_Parent = parent;
     m_ForecastManager = forecastManager;
     m_LayerManager = layerManager;
@@ -194,7 +193,7 @@ void asForecastViewer::Redraw()
             m_LayerManager->Close(layer);
         }
     }
-
+    
     // Get data
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ModelSelection);
 
@@ -221,196 +220,77 @@ void asForecastViewer::Redraw()
     wxConfigBase *pConfig = wxFileConfig::Get();
     double colorbarMaxValue = pConfig->ReadDouble("/GIS/ColorbarMaxValue", 50.0);
 
+    wxASSERT(m_LeadTimeIndex>=0);
+
     // Display according to the chosen display type
-    switch (m_DisplayType)
+    if (m_LeadTimeIndex==m_ForecastManager->GetLeadTimeLengthMax())
     {
-    case ForecastRings:
+        // Create the layer
+        vrLayerVectorFcstRing * layer = new vrLayerVectorFcstRing();
+        if(layer->Create(memoryLayerName, wkbPoint)==false)
         {
-            // Create the layer
-            vrLayerVectorFcstRing * layer = new vrLayerVectorFcstRing();
-            if(layer->Create(memoryLayerName, wkbPoint)==false)
-            {
-                wxFAIL;
-                m_ViewerLayerManager->FreezeEnd();
-                wxDELETE(layer);
-                return;
-            }
-
-            // Set the maximum value
-            if (m_ForecastDisplaySelection==0) // Only if the value option is selected, and not the ratio
-            {
-                layer->SetMaxValue(colorbarMaxValue);
-                m_LayerMaxValue = colorbarMaxValue;
-            }
-            else
-            {
-                layer->SetMaxValue(1.0);
-                m_LayerMaxValue = 1.0;
-            }
-
-            // Length of the lead time
-            int leadTimeSize = forecast->GetTargetDatesLength();
-
-            // Adding size field
-            OGRFieldDefn fieldLeadTimeSize ("leadtimesize", OFTReal);
-            layer->AddField(fieldLeadTimeSize);
-
-            // Adding a field for every lead time
-            for (int i=0; i<leadTimeSize; i++)
-            {
-                OGRFieldDefn fieldLeadTime (wxString::Format("leadtime%d", i), OFTReal);
-                layer->AddField(fieldLeadTime);
-            }
-
-            // Adding features to the layer
-            for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
-            {
-                OGRPoint station;
-                station.setX( forecast->GetStationLocCoordU(i_stat) );
-                station.setY( forecast->GetStationLocCoordV(i_stat) );
-
-                // Field container
-                wxArrayDouble data;
-                data.Add((double)leadTimeSize);
-
-                // For normalization by the return period
-                double factor = 1;
-                if (forecast->HasReferenceValues() && returnPeriod!=0)
-                {
-                    float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
-                    wxASSERT(precip>0);
-                    wxASSERT(precip<500);
-                    factor = 1.0/precip;
-                    wxASSERT(factor>0);
-                }
-
-                // Loop over the lead times
-                for (int i_leadtime=0; i_leadtime<leadTimeSize; i_leadtime++)
-                {
-                    Array1DFloat values = forecast->GetAnalogsValuesGross(i_leadtime, i_stat);
-
-                    if(asTools::HasNaN(&values[0], &values[values.size()-1]))
-                    {
-                        data.Add(NaNDouble);
-                    }
-                    else
-                    {
-                        if (percentile>=0)
-                        {
-                            double forecastVal = asTools::Percentile(&values[0], &values[values.size()-1], percentile);
-                            wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                            forecastVal *= factor;
-                            data.Add(forecastVal);
-                        }
-                        else
-                        {
-                            // Interpretatio
-                            double forecastVal = 0;
-                            double forecastVal30 = asTools::Percentile(&values[0], &values[values.size()-1], 0.3f);
-                            double forecastVal60 = asTools::Percentile(&values[0], &values[values.size()-1], 0.6f);
-                            double forecastVal90 = asTools::Percentile(&values[0], &values[values.size()-1], 0.9f);
-
-                            if(forecastVal60==0)
-                            {
-                                forecastVal = 0;
-                            }
-                            else if(forecastVal30>0)
-                            {
-                                forecastVal = forecastVal90;
-                            }
-                            else
-                            {
-                                forecastVal = forecastVal60;
-                            }
-
-                            wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                            forecastVal *= factor;
-                            data.Add(forecastVal);
-                        }
-                    }
-                }
-
-                layer->AddFeature(&station, &data);
-            }
-
-            wxASSERT(layer);
-            m_LayerManager->Add(layer);
-
-            // Change default render
-            vrRenderVector * render = new vrRenderVector();
-            render->SetSize(1);
-            render->SetColorPen(*wxBLACK);
-
-            m_ViewerLayerManager->Add(-1, layer, render);
+            wxFAIL;
             m_ViewerLayerManager->FreezeEnd();
-
-            break;
+            wxDELETE(layer);
+            return;
         }
-    case ForecastDots:
+
+        // Set the maximum value
+        if (m_ForecastDisplaySelection==0) // Only if the value option is selected, and not the ratio
         {
-            wxASSERT(m_LeadTimeIndex>=0);
+            layer->SetMaxValue(colorbarMaxValue);
+            m_LayerMaxValue = colorbarMaxValue;
+        }
+        else
+        {
+            layer->SetMaxValue(1.0);
+            m_LayerMaxValue = 1.0;
+        }
 
-            // Create the layer
-            vrLayerVectorFcstDots * layer = new vrLayerVectorFcstDots();
-            if(layer->Create(memoryLayerName, wkbPoint)==false)
+        // Length of the lead time
+        int leadTimeSize = forecast->GetTargetDatesLength();
+
+        // Adding size field
+        OGRFieldDefn fieldLeadTimeSize ("leadtimesize", OFTReal);
+        layer->AddField(fieldLeadTimeSize);
+
+        // Adding a field for every lead time
+        for (int i=0; i<leadTimeSize; i++)
+        {
+            OGRFieldDefn fieldLeadTime (wxString::Format("leadtime%d", i), OFTReal);
+            layer->AddField(fieldLeadTime);
+        }
+
+        // Adding features to the layer
+        for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
+        {
+            OGRPoint station;
+            station.setX( forecast->GetStationLocCoordU(i_stat) );
+            station.setY( forecast->GetStationLocCoordV(i_stat) );
+
+            // Field container
+            wxArrayDouble data;
+            data.Add((double)leadTimeSize);
+
+            // For normalization by the return period
+            double factor = 1;
+            if (forecast->HasReferenceValues() && returnPeriod!=0)
             {
-                wxFAIL;
-                m_ViewerLayerManager->FreezeEnd();
-                wxDELETE(layer);
-                return;
+                float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                wxASSERT(precip>0);
+                wxASSERT(precip<500);
+                factor = 1.0/precip;
+                wxASSERT(factor>0);
             }
 
-            // Set the maximum value
-            if (m_ForecastDisplaySelection==0) // Only if the value option is selected, and not the ratio
+            // Loop over the lead times
+            for (int i_leadtime=0; i_leadtime<leadTimeSize; i_leadtime++)
             {
-                layer->SetMaxValue(colorbarMaxValue);
-                m_LayerMaxValue = colorbarMaxValue;
-            }
-            else
-            {
-                layer->SetMaxValue(1.0);
-                m_LayerMaxValue = 1.0;
-            }
-
-            // Adding size field
-            OGRFieldDefn fieldValueReal ("valueReal", OFTReal);
-            layer->AddField(fieldValueReal);
-            OGRFieldDefn fieldValueNorm ("valueNorm", OFTReal);
-            layer->AddField(fieldValueNorm);
-
-            // Adding features to the layer
-            for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
-            {
-                OGRPoint station;
-                station.setX( forecast->GetStationLocCoordU(i_stat) );
-                station.setY( forecast->GetStationLocCoordV(i_stat) );
-
-                // Field container
-                wxArrayDouble data;
-
-                // For normalization by the return period
-                double factor = 1;
-                if (forecast->HasReferenceValues() && returnPeriod!=0)
-                {
-                    float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
-                    wxASSERT(precip>0);
-                    wxASSERT(precip<500);
-                    factor = 1.0/precip;
-                    wxASSERT(factor>0);
-                }
-
-                // Check available lead times
-                if(forecast->GetTargetDatesLength()<=m_LeadTimeIndex)
-                {
-                    m_LeadTimeIndex = forecast->GetTargetDatesLength()-1;
-                }
-
-                Array1DFloat values = forecast->GetAnalogsValuesGross(m_LeadTimeIndex, i_stat);
+                Array1DFloat values = forecast->GetAnalogsValuesGross(i_leadtime, i_stat);
 
                 if(asTools::HasNaN(&values[0], &values[values.size()-1]))
                 {
-                    data.Add(NaNDouble); // 1st real value
-                    data.Add(NaNDouble); // 2nd normalized
+                    data.Add(NaNDouble);
                 }
                 else
                 {
@@ -418,9 +298,8 @@ void asForecastViewer::Redraw()
                     {
                         double forecastVal = asTools::Percentile(&values[0], &values[values.size()-1], percentile);
                         wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                        data.Add(forecastVal); // 1st real value
                         forecastVal *= factor;
-                        data.Add(forecastVal); // 2nd normalized
+                        data.Add(forecastVal);
                     }
                     else
                     {
@@ -444,38 +323,154 @@ void asForecastViewer::Redraw()
                         }
 
                         wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                        data.Add(forecastVal); // 1st real value
                         forecastVal *= factor;
-                        data.Add(forecastVal); // 2nd normalized
+                        data.Add(forecastVal);
                     }
                 }
-
-                layer->AddFeature(&station, &data);
             }
 
-            wxASSERT(layer);
-            m_LayerManager->Add(layer);
-
-            // Change default render
-            vrRenderVector * render = new vrRenderVector();
-            render->SetSize(1);
-            render->SetColorPen(*wxBLACK);
-
-            m_ViewerLayerManager->Add(-1, layer, render);
-            m_ViewerLayerManager->FreezeEnd();
-
-            break;
+            layer->AddFeature(&station, &data);
         }
+
+        wxASSERT(layer);
+        m_LayerManager->Add(layer);
+
+        // Change default render
+        vrRenderVector * render = new vrRenderVector();
+        render->SetSize(1);
+        render->SetColorPen(*wxBLACK);
+
+        m_ViewerLayerManager->Add(-1, layer, render);
+        m_ViewerLayerManager->FreezeEnd();
+    }
+    else
+    {
+        // Create the layer
+        vrLayerVectorFcstDots * layer = new vrLayerVectorFcstDots();
+        if(layer->Create(memoryLayerName, wkbPoint)==false)
+        {
+            wxFAIL;
+            m_ViewerLayerManager->FreezeEnd();
+            wxDELETE(layer);
+            return;
+        }
+
+        // Set the maximum value
+        if (m_ForecastDisplaySelection==0) // Only if the value option is selected, and not the ratio
+        {
+            layer->SetMaxValue(colorbarMaxValue);
+            m_LayerMaxValue = colorbarMaxValue;
+        }
+        else
+        {
+            layer->SetMaxValue(1.0);
+            m_LayerMaxValue = 1.0;
+        }
+
+        // Adding size field
+        OGRFieldDefn fieldValueReal ("valueReal", OFTReal);
+        layer->AddField(fieldValueReal);
+        OGRFieldDefn fieldValueNorm ("valueNorm", OFTReal);
+        layer->AddField(fieldValueNorm);
+
+        // Adding features to the layer
+        for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
+        {
+            OGRPoint station;
+            station.setX( forecast->GetStationLocCoordU(i_stat) );
+            station.setY( forecast->GetStationLocCoordV(i_stat) );
+
+            // Field container
+            wxArrayDouble data;
+
+            // For normalization by the return period
+            double factor = 1;
+            if (forecast->HasReferenceValues() && returnPeriod!=0)
+            {
+                float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                wxASSERT(precip>0);
+                wxASSERT(precip<500);
+                factor = 1.0/precip;
+                wxASSERT(factor>0);
+            }
+
+            // Check available lead times
+            if(forecast->GetTargetDatesLength()<=m_LeadTimeIndex)
+            {
+                asLogError(_("Lead time not available for this model."));
+                m_LeadTimeIndex = forecast->GetTargetDatesLength()-1;
+            }
+
+            Array1DFloat values = forecast->GetAnalogsValuesGross(m_LeadTimeIndex, i_stat);
+
+            if(asTools::HasNaN(&values[0], &values[values.size()-1]))
+            {
+                data.Add(NaNDouble); // 1st real value
+                data.Add(NaNDouble); // 2nd normalized
+            }
+            else
+            {
+                if (percentile>=0)
+                {
+                    double forecastVal = asTools::Percentile(&values[0], &values[values.size()-1], percentile);
+                    wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
+                    data.Add(forecastVal); // 1st real value
+                    forecastVal *= factor;
+                    data.Add(forecastVal); // 2nd normalized
+                }
+                else
+                {
+                    // Interpretatio
+                    double forecastVal = 0;
+                    double forecastVal30 = asTools::Percentile(&values[0], &values[values.size()-1], 0.3f);
+                    double forecastVal60 = asTools::Percentile(&values[0], &values[values.size()-1], 0.6f);
+                    double forecastVal90 = asTools::Percentile(&values[0], &values[values.size()-1], 0.9f);
+
+                    if(forecastVal60==0)
+                    {
+                        forecastVal = 0;
+                    }
+                    else if(forecastVal30>0)
+                    {
+                        forecastVal = forecastVal90;
+                    }
+                    else
+                    {
+                        forecastVal = forecastVal60;
+                    }
+
+                    wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
+                    data.Add(forecastVal); // 1st real value
+                    forecastVal *= factor;
+                    data.Add(forecastVal); // 2nd normalized
+                }
+            }
+
+            layer->AddFeature(&station, &data);
+        }
+
+        wxASSERT(layer);
+        m_LayerManager->Add(layer);
+
+        // Change default render
+        vrRenderVector * render = new vrRenderVector();
+        render->SetSize(1);
+        render->SetColorPen(*wxBLACK);
+
+        m_ViewerLayerManager->Add(-1, layer, render);
+        m_ViewerLayerManager->FreezeEnd();
     }
 }
 
-void asForecastViewer::ChangeLeadTime( int val )
+int asForecastViewer::ChangeLeadTime( int val )
 {
     if (m_LeadTimeIndex==val) // Already selected
-        return;
+        return m_LeadTimeIndex;
 
     m_LeadTimeIndex = val;
     wxASSERT(m_LeadTimeIndex>=0);
 
     Redraw();
+
+    return m_LeadTimeIndex;
 }

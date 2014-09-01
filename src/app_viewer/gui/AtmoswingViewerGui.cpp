@@ -21,7 +21,7 @@
 
 asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 800,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 1000,600 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
@@ -67,9 +67,20 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_SizerTopLeft->Add( m_StaticTextForecastModel, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
-	m_SizerTop->Add( m_SizerTopLeft, 1, wxALIGN_LEFT|wxEXPAND, 5 );
+	m_SizerTop->Add( m_SizerTopLeft, 0, wxALIGN_LEFT|wxEXPAND, 5 );
 	
 	m_SizerTopRight = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer39;
+	bSizer39 = new wxBoxSizer( wxVERTICAL );
+	
+	m_SizerLeadTimeSwitch = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer39->Add( m_SizerLeadTimeSwitch, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	m_SizerTopRight->Add( bSizer39, 1, wxALIGN_RIGHT, 5 );
 	
 	
 	m_SizerTop->Add( m_SizerTopRight, 1, wxALIGN_RIGHT|wxEXPAND, 5 );
