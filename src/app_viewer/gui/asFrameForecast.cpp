@@ -1168,6 +1168,8 @@ bool asFrameForecast::OpenForecast (const wxArrayString & names)
 
     UpdateLeadTimeSwitch();
 
+    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
+
     Thaw();
 
     return true;
@@ -1515,9 +1517,11 @@ void asFrameForecast::OnStationSelection( wxCommandEvent& event )
 
 void asFrameForecast::OnChangeLeadTime( wxCommandEvent& event )
 {
-    int realLeadTime = m_ForecastViewer->ChangeLeadTime(event.GetInt());
+    Freeze();
+
+    m_ForecastViewer->ChangeLeadTime(event.GetInt());
     
-    m_LeadTimeSwitcher->SetLeadTimeMarker(realLeadTime);
+    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
 
     UpdatePanelAnalogDates();
     UpdatePanelCaptionAll();
@@ -1525,6 +1529,8 @@ void asFrameForecast::OnChangeLeadTime( wxCommandEvent& event )
     m_ScrolledWindowOptions->Layout();
     m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
     Layout();
+
+    Thaw();
 }
 
 void asFrameForecast::OnForecastClear( wxCommandEvent& event )
@@ -1544,12 +1550,17 @@ void asFrameForecast::OnForecastRatioSelectionChange( wxCommandEvent& event )
 
 void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
 {
+    Freeze();
+
     m_ForecastViewer->SetModel(event.GetInt());
+    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
 
     UpdateHeaderTexts();
     UpdatePanelCaptionAll();
     UpdatePanelAnalogDates();
     UpdatePanelStationsList();
+
+    Thaw();
 }
 
 void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )

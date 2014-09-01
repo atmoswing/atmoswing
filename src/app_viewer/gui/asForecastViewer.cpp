@@ -462,15 +462,13 @@ void asForecastViewer::Redraw()
     }
 }
 
-int asForecastViewer::ChangeLeadTime( int val )
+void asForecastViewer::ChangeLeadTime( int val )
 {
     if (m_LeadTimeIndex==val) // Already selected
-        return m_LeadTimeIndex;
+        return;
 
     m_LeadTimeIndex = val;
     wxASSERT(m_LeadTimeIndex>=0);
 
     Redraw();
-
-    return m_LeadTimeIndex;
 }

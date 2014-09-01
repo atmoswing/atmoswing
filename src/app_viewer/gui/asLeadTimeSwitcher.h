@@ -44,11 +44,12 @@ public:
     ~asLeadTimeSwitcher();
     
     void Draw( Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts );
-    void SetLeadTimeMarker(int leadTime);
+    void SetLeadTime(int leadTime);
     void SetParent( wxWindow* parent );
 
 private:
     int m_CellWidth;
+    int m_LeadTime;
     wxBitmap *m_Bmp;
     wxOverlay m_Overlay;
     wxGraphicsContext* m_Gdc;
@@ -56,8 +57,10 @@ private:
     void OnLeadTimeSlctChange( wxMouseEvent& event );
     Array1DFloat GetValues(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts);
     void SetBitmap(wxBitmap *bmp);
+    void SetLeadTimeMarker(int leadTime);
     wxBitmap* GetBitmap();
     void CreatePath(wxGraphicsPath &path, int i_col);
+    void CreatePathRing(wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb);
     void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
     void CreateDatesText( wxGraphicsContext *gc, const wxPoint& start, int i_col, const wxString &label);
     void CreatePathMarker(wxGraphicsPath & path, int i_col);
