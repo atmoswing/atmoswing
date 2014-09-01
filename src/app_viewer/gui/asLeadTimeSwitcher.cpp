@@ -122,9 +122,19 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, s
         }
 
         // For the global view option
-        wxString dateStr = _("All");
-        gc->SetFont( datesFont, *wxBLACK );
-        CreateDatesText(gc, startText, dates.size(), dateStr);
+        gc->SetPen( wxPen(*wxWHITE, 1, wxSOLID ) );
+        wxGraphicsPath path = gc->CreatePath();
+
+        int segmentsTot = 7;
+        const double scale = 0.16;
+        wxPoint center(width-m_CellWidth/2, m_CellWidth/2);
+
+        for (int i=0; i<segmentsTot; i++)
+        {
+            CreatePathRing( path, center, scale, segmentsTot, i );
+        }
+
+        gc->StrokePath(path);
 
         wxDELETE(gc);
     }
@@ -137,6 +147,11 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, s
 
     Refresh();
 
+}
+
+void asLeadTimeSwitcher::SetLeadTime(int leadTime)
+{
+    m_LeadTime = leadTime;
 }
 
 void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
@@ -310,6 +325,8 @@ void asLeadTimeSwitcher::OnPaint(wxPaintEvent & event)
 
     Layout();
 
+    SetLeadTimeMarker(m_LeadTime);
+
     event.Skip();
 }
 
@@ -327,6 +344,38 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath & path, int i_col)
     path.AddLineToPoint( startPointX+m_CellWidth, startPointY+m_CellWidth-1 );
     path.AddLineToPoint( startPointX, startPointY+m_CellWidth-1 );
     path.AddLineToPoint( startPointX, startPointY );
+
+    path.CloseSubpath();
+}
+
+void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb)
+{
+    const wxDouble radiusOut = 100*scale;
+    const wxDouble radiusIn = 40*scale;
+
+    wxDouble segmentStart = -0.5*M_PI + ((double)segmentNb/(double)segmentsTotNb)*(1.5*M_PI);
+    wxDouble segmentEnd = -0.5*M_PI + ((double)(segmentNb+1)/(double)segmentsTotNb)*(1.5*M_PI);
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
+
+    // Get starting point
+    double dX = cos(segmentStart)*radiusOut;
+    double dY = sin(segmentStart)*radiusOut;
+    wxDouble startPointX = centerX+dX;
+    wxDouble startPointY = centerY+dY;
+
+    path.MoveToPoint(startPointX, startPointY);
+
+    path.AddArc( centerX, centerY, radiusOut, segmentStart, segmentEnd, true );
+
+    const wxDouble radiusRatio = ((radiusOut-radiusIn)/radiusOut);
+    wxPoint2DDouble currentPoint = path.GetCurrentPoint();
+    wxDouble newPointX = currentPoint.m_x-(currentPoint.m_x-centerX)*radiusRatio;
+    wxDouble newPointY = currentPoint.m_y-(currentPoint.m_y-centerY)*radiusRatio;
+
+    path.AddLineToPoint( newPointX, newPointY );
+
+    path.AddArc( centerX, centerY, radiusIn, segmentEnd, segmentStart, false );
 
     path.CloseSubpath();
 }

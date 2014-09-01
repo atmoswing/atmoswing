@@ -52,7 +52,7 @@ public:
     void SetPercentile(int i);
     void LoadPastForecast();
     void Redraw();
-    int ChangeLeadTime( int val );
+    void ChangeLeadTime( int val );
 
     int GetModelSelection()
     {
