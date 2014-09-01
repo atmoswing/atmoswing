@@ -58,6 +58,7 @@ class asFrameForecastVirtual : public wxFrame
 		wxStaticText* m_StaticTextForecastDate;
 		wxStaticText* m_StaticTextForecastModel;
 		wxBoxSizer* m_SizerTopRight;
+		wxBoxSizer* m_SizerLeadTimeSwitch;
 		wxPanel* m_PanelGIS;
 		wxBoxSizer* m_SizerGIS;
 		wxMenuBar* m_MenuBar;

@@ -37,13 +37,6 @@ class asForecastManager;
 class asForecastViewer
 {
 public:
-    //!< The file structure type
-    enum DisplayType
-    {
-        ForecastRings,
-        ForecastDots
-    };
-
     /** Default constructor */
     asForecastViewer(wxWindow* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager);
     /** Default destructor */
@@ -59,7 +52,7 @@ public:
     void SetPercentile(int i);
     void LoadPastForecast();
     void Redraw();
-    void ChangeLeadTime( int val );
+    int ChangeLeadTime( int val );
 
     int GetModelSelection()
     {
@@ -74,22 +67,6 @@ public:
     int GetPercentileSelection()
     {
         return m_PercentileSelection;
-    }
-
-    /** Access m_DisplayType
-     * \return The current value of m_DisplayType
-     */
-    DisplayType GetDisplayType()
-    {
-        return m_DisplayType;
-    }
-
-    /** Set m_DisplayType
-     * \param val New value to set
-     */
-    void SetDisplayType(DisplayType val)
-    {
-        m_DisplayType = val;
     }
 
     /** Access the maximum value of the current layer
@@ -113,7 +90,6 @@ protected:
 private:
     int m_LeadTimeIndex;
     float m_LayerMaxValue;
-    DisplayType m_DisplayType;
     bool m_Opened;
     wxWindow* m_Parent;
     asForecastManager* m_ForecastManager;

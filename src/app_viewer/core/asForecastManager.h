@@ -76,6 +76,8 @@ public:
 
     int GetLeadTimeLength(int i_fcst);
 
+    int GetLeadTimeLengthMax();
+
     wxArrayString GetLeadTimes(int i_fcst);
 
     void AddDirectoryPastForecasts(const wxString &dir);
