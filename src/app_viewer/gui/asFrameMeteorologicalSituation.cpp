@@ -191,7 +191,7 @@ asFrameMeteorologicalSituation::~asFrameMeteorologicalSituation()
     wxDELETE(m_LayerManager);
 }
 
-void asFrameMeteorologicalSituation::OnInit()
+void asFrameMeteorologicalSituation::Init()
 {
     // Reduce some panels
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -205,8 +205,14 @@ void asFrameMeteorologicalSituation::OnInit()
 
     // Add the presets list
     wxArrayString presets;
+    presets.Add(_("Select a preset..."));
     presets.Add(_("Sea surface temperature"));
-    presets.Add(_("Weather satellite"));
+    presets.Add(_("Air temperature"));
+    presets.Add(_("Sea level pressure"));
+    presets.Add(_("Cloud cover"));
+    presets.Add(_("Precipitation"));
+    presets.Add(_("Snow"));
+    presets.Add(_("Wind"));
     m_PanelSidebarMeteoSituation->SetChoices(presets);
 
     // Set the default tool
@@ -554,6 +560,345 @@ void asFrameMeteorologicalSituation::ReloadViewerLayerManager( )
 
 void asFrameMeteorologicalSituation::OnPresetSelection (wxCommandEvent & event)
 {
+    
+
+    wxString basePath = "D:\\\_DEV\\AtmoSwing 1.6\\data\\";
+    wxFileName fullPath(basePath);
 
 
+
+    int selection = event.GetInt();
+
+    wxArrayString paths;
+    wxArrayString types; 
+    VectorInt transparencies;
+    VectorInt widths;
+    std::vector < wxColour > lineColors;
+    std::vector < wxColour > fillColors;
+
+    // Set attributes
+    switch (selection)
+    {
+        case 0: // Select a preset...
+            break;
+
+        case 1: // Sea surface temperature
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("NOAA-sst.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(100,100,100,1));
+            break;
+
+        case 2: // Air temperature
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-temperature.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(0,0,0,0));
+            break;
+
+        case 3: // Sea level pressure
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-pressure.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // WMS contours
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-pressurecntr.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(0,0,0,0));
+            break;
+
+        case 4: // Cloud cover
+            // Continents
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("continents.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(100,100,100,1));
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-cloud.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(0,0,0,0));
+            break;
+
+        case 5: // Precipitation
+            // Continents
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("continents.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(100,100,100,1));
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-precipitation.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(0,0,0,0));
+            break;
+
+        case 6: // Snow
+            // Continents
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("continents.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(100,100,100,1));
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-snow.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(0,0,0,0));
+            break;
+
+        case 7: // Wind
+            // WMS
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("wms");
+            fullPath.AppendDir("meteo");
+            fullPath.SetFullName("OWM-wind.xml");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("wms");
+            transparencies.push_back(0);
+            widths.push_back(0);
+            lineColors.push_back(wxColour(0,0,0,0));
+            fillColors.push_back(wxColour(0,0,0,0));
+            // Countries
+            fullPath = wxFileName(basePath);
+            fullPath.AppendDir("layers");
+            fullPath.SetFullName("countries.shp");
+            paths.Add(fullPath.GetFullPath());
+            types.Add("vector");
+            transparencies.push_back(0);
+            widths.push_back(1);
+            lineColors.push_back(wxColour(0,0,0,1));
+            fillColors.push_back(wxColour(0,0,0,0));
+            break;
+
+        default:
+            asLogError(_("Undefined preset."));
+    }
+
+    wxASSERT(paths.GetCount() == types.GetCount());
+    wxASSERT(paths.GetCount() == transparencies.size());
+    wxASSERT(paths.GetCount() == widths.size());
+    wxASSERT(paths.GetCount() == lineColors.size());
+    wxASSERT(paths.GetCount() == fillColors.size());
+
+    #if defined (__WIN32__)
+        m_CritSectionViewerLayerManager.Enter();
+    #endif
+
+    m_ViewerLayerManager->FreezeBegin();
+
+    // Save extent
+    vrRealRect extent;
+    if (m_ViewerLayerManager->GetCount()>0)
+    {
+        vrCoordinate * myCoord = m_ViewerLayerManager->GetDisplay()->GetCoordinate(); 
+        wxASSERT(myCoord);
+        extent = myCoord->GetExtent();
+    }
+
+    // Remove all layers
+    for (int i = (signed) m_ViewerLayerManager->GetCount()-1; i >= 0 ; i--) 
+    {
+        // Remove from viewer manager (TOC and Display)
+        vrRenderer * renderer = m_ViewerLayerManager->GetRenderer(i);
+        vrLayer * layer = renderer->GetLayer();
+        wxASSERT(renderer);
+        m_ViewerLayerManager->Remove(renderer);
+
+        // Close layer (not used anymore);
+        m_LayerManager->Close(layer);
+    }
+
+    // Open the layers
+    for (int i=0; i<paths.GetCount(); i++)
+    {
+        if (wxFileName::FileExists(paths.Item(i)))
+        {
+            if (m_LayerManager->Open(wxFileName(paths.Item(i))))
+            {
+                if (types.Item(i).IsSameAs("raster"))
+                {
+                    vrRenderRaster* render = new vrRenderRaster();
+                    render->SetTransparency(transparencies[i]);
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(paths.Item(i)));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL);
+                }
+                else if (types.Item(i).IsSameAs("vector"))
+                {
+                    vrRenderVector* render = new vrRenderVector();
+                    render->SetTransparency(transparencies[i]);
+                    render->SetSize(widths[i]);
+                    render->SetColorPen(lineColors[i]);
+                    if (fillColors[i].Alpha()==0)
+                    {
+                        render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+                    }
+                    else
+                    {
+                        render->SetColorBrush(fillColors[i]);
+                    }
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(paths.Item(i)));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL);
+                }
+                else if (types.Item(i).IsSameAs("wms"))
+                {
+                    vrRenderRaster* render = new vrRenderRaster();
+                    render->SetTransparency(transparencies[i]);
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(paths.Item(i)));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL);
+                }
+                else
+                {
+                    asLogError(wxString::Format(_("The GIS layer type %s does not correspond to allowed values."), types.Item(i).c_str()));
+                }
+            }
+            else
+            {
+                asLogWarning(wxString::Format(_("The file %s cound not be opened."), paths.Item(i).c_str()));
+            }
+        }
+        else
+        {
+            asLogWarning(wxString::Format(_("The file %s cound not be found."), paths.Item(i).c_str()));
+        }
+    }
+    
+    if (extent.IsOk())
+    {
+        m_ViewerLayerManager->InitializeExtent(extent);
+    }
+
+    ReloadViewerLayerManager();
+
+    m_ViewerLayerManager->FreezeEnd();
+
+    #if defined (__WIN32__)
+        m_CritSectionViewerLayerManager.Leave();
+    #endif
 }

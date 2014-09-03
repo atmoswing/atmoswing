@@ -60,7 +60,7 @@ public:
     asFrameMeteorologicalSituation(wxWindow* parent, wxWindowID id=asWINDOW_MAIN);
     virtual ~asFrameMeteorologicalSituation();
 
-    void OnInit();
+    void Init();
     bool OpenLayers (const wxArrayString & names);
 
     void OnToolZoomIn (wxCommandEvent & event);
