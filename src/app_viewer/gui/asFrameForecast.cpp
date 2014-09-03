@@ -635,6 +635,7 @@ void asFrameForecast::OpenFrameForecaster( wxCommandEvent& event )
 void asFrameForecast::OpenFrameMeteorologicalSituation( wxCommandEvent& event )
 {
     asFrameMeteorologicalSituation* frameSituation = new asFrameMeteorologicalSituation(this);
+    frameSituation->Init();
     frameSituation->Fit();
     frameSituation->Show();
 }
