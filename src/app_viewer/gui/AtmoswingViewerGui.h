@@ -34,6 +34,11 @@
 #include <wx/notebook.h>
 #include <wx/grid.h>
 #include <wx/bmpbuttn.h>
+#include <wx/filepicker.h>
+#include <wx/statbox.h>
+#include <wx/textctrl.h>
+#include <wx/radiobox.h>
+#include <wx/checkbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -301,6 +306,70 @@ class asPanelSidebarVirtual : public wxPanel
 		
 		asPanelSidebarVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxSIMPLE_BORDER|wxTAB_TRAVERSAL ); 
 		~asPanelSidebarVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asFramePreferencesViewerVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asFramePreferencesViewerVirtual : public wxFrame 
+{
+	private:
+	
+	protected:
+		wxPanel* m_PanelBase;
+		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelWorkspace;
+		wxStaticText* m_StaticTextForecastResultsDir;
+		wxDirPickerCtrl* m_DirPickerForecastResults;
+		wxStaticText* m_StaticTextColorbarMaxValue;
+		wxTextCtrl* m_TextCtrlColorbarMaxValue;
+		wxStaticText* m_StaticTextColorbarMaxUnit;
+		wxStaticText* m_StaticTextPastDaysNb;
+		wxTextCtrl* m_TextCtrlPastDaysNb;
+		wxStaticText* m_StaticTextAlarmsReturnPeriod;
+		wxChoice* m_ChoiceAlarmsReturnPeriod;
+		wxStaticText* m_StaticTextAlarmsReturnPeriodYears;
+		wxStaticText* m_StaticTextAlarmsPercentile;
+		wxTextCtrl* m_TextCtrlAlarmsPercentile;
+		wxStaticText* m_StaticTextAlarmsPercentileRange;
+		wxPanel* m_PanelGeneralCommon;
+		wxRadioBox* m_RadioBoxLogLevel;
+		wxCheckBox* m_CheckBoxDisplayLogWindow;
+		wxCheckBox* m_CheckBoxSaveLogFile;
+		wxCheckBox* m_CheckBoxProxy;
+		wxStaticText* m_StaticTextProxyAddress;
+		wxTextCtrl* m_TextCtrlProxyAddress;
+		wxStaticText* m_StaticTextProxyPort;
+		wxTextCtrl* m_TextCtrlProxyPort;
+		wxStaticText* m_StaticTextProxyUser;
+		wxTextCtrl* m_TextCtrlProxyUser;
+		wxStaticText* m_StaticTextProxyPasswd;
+		wxTextCtrl* m_TextCtrlProxyPasswd;
+		wxPanel* m_PanelAdvanced;
+		wxCheckBox* m_CheckBoxMultiInstancesViewer;
+		wxStaticText* m_StaticTextUserDirLabel;
+		wxStaticText* m_StaticTextUserDir;
+		wxStaticText* m_StaticTextLogFileLabel;
+		wxStaticText* m_StaticTextLogFile;
+		wxStaticText* m_StaticTextPrefFileLabel;
+		wxStaticText* m_StaticTextPrefFile;
+		wxStdDialogButtonSizer* m_ButtonsConfirmation;
+		wxButton* m_ButtonsConfirmationOK;
+		wxButton* m_ButtonsConfirmationApply;
+		wxButton* m_ButtonsConfirmationCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
+		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asFramePreferencesViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFramePreferencesViewerVirtual();
 	
 };
 
