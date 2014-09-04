@@ -28,7 +28,7 @@
 #include "asFrameMain.h"
 
 #include "asFramePredictandDB.h"
-#include "asFramePreferences.h"
+#include "asFramePreferencesForecaster.h"
 #include "asFrameXmlEditor.h"
 #include "asFrameAbout.h"
 #include <asPanelForecastingModel.h>
@@ -183,7 +183,7 @@ void asFrameMain::OpenFramePredictandDB( wxCommandEvent& event )
 
 void asFrameMain::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferences* frame = new asFramePreferences(this);
+    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this);
     frame->Fit();
     frame->Show();
 }

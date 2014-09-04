@@ -35,6 +35,9 @@
 #include <wx/choice.h>
 #include <wx/checkbox.h>
 #include <wx/filepicker.h>
+#include <wx/radiobox.h>
+#include <wx/slider.h>
+#include <wx/notebook.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -173,6 +176,89 @@ class asPanelForecastingModelVirtual : public wxPanel
 		
 		asPanelForecastingModelVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~asPanelForecastingModelVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asFramePreferencesForecasterVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asFramePreferencesForecasterVirtual : public wxFrame 
+{
+	private:
+	
+	protected:
+		wxPanel* m_PanelBase;
+		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelGeneralCommon;
+		wxRadioBox* m_RadioBoxLogLevel;
+		wxCheckBox* m_CheckBoxDisplayLogWindow;
+		wxCheckBox* m_CheckBoxSaveLogFile;
+		wxCheckBox* m_CheckBoxProxy;
+		wxStaticText* m_StaticTextProxyAddress;
+		wxTextCtrl* m_TextCtrlProxyAddress;
+		wxStaticText* m_StaticTextProxyPort;
+		wxTextCtrl* m_TextCtrlProxyPort;
+		wxStaticText* m_StaticTextProxyUser;
+		wxTextCtrl* m_TextCtrlProxyUser;
+		wxStaticText* m_StaticTextProxyPasswd;
+		wxTextCtrl* m_TextCtrlProxyPasswd;
+		wxPanel* m_PanelPathsCommon;
+		wxBoxSizer* m_SizerPanelPaths;
+		wxStaticText* m_StaticTextParametersDir;
+		wxDirPickerCtrl* m_DirPickerParameters;
+		wxStaticText* m_StaticTextArchivePredictorsDir;
+		wxDirPickerCtrl* m_DirPickerArchivePredictors;
+		wxStaticText* m_StaticTextRealtimePredictorSavingDir;
+		wxDirPickerCtrl* m_DirPickerRealtimePredictorSaving;
+		wxStaticText* m_StaticTextForecastResultsDir;
+		wxDirPickerCtrl* m_DirPickerForecastResults;
+		wxStaticText* m_StaticTextPredictandDBDir;
+		wxDirPickerCtrl* m_DirPickerPredictandDB;
+		wxPanel* m_PanelAdvanced;
+		wxNotebook* m_NotebookAdvanced;
+		wxPanel* m_PanelGeneral;
+		wxRadioBox* m_RadioBoxGui;
+		wxStaticText* m_StaticTextNumberFails;
+		wxTextCtrl* m_TextCtrlMaxPrevStepsNb;
+		wxStaticText* m_StaticTextMaxRequestsNb;
+		wxTextCtrl* m_TextCtrlMaxRequestsNb;
+		wxCheckBox* m_CheckBoxRestrictDownloads;
+		wxCheckBox* m_CheckBoxResponsiveness;
+		wxCheckBox* m_CheckBoxMultiInstancesForecaster;
+		wxPanel* m_PanelProcessing;
+		wxCheckBox* m_CheckBoxAllowMultithreading;
+		wxStaticText* m_StaticTextThreadsNb;
+		wxTextCtrl* m_TextCtrlThreadsNb;
+		wxStaticText* m_StaticTextThreadsPriority;
+		wxSlider* m_SliderThreadsPriority;
+		wxRadioBox* m_RadioBoxProcessingMethods;
+		wxRadioBox* m_RadioBoxLinearAlgebra;
+		wxPanel* m_PanelUserDirectories;
+		wxStaticText* m_StaticTextIntermediateResultsDir;
+		wxDirPickerCtrl* m_DirPickerIntermediateResults;
+		wxStaticText* m_StaticTextUserDirLabel;
+		wxStaticText* m_StaticTextUserDir;
+		wxStaticText* m_StaticTextLogFileLabel;
+		wxStaticText* m_StaticTextLogFile;
+		wxStaticText* m_StaticTextPrefFileLabel;
+		wxStaticText* m_StaticTextPrefFile;
+		wxStdDialogButtonSizer* m_ButtonsConfirmation;
+		wxButton* m_ButtonsConfirmationOK;
+		wxButton* m_ButtonsConfirmationApply;
+		wxButton* m_ButtonsConfirmationCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
+		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asFramePreferencesForecasterVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFramePreferencesForecasterVirtual();
 	
 };
 

@@ -36,7 +36,7 @@
     #include "asThreadViewerLayerManagerZoomOut.h"
 #endif
 #include "asFrameAbout.h"
-#include "asFramePreferences.h"
+#include "asFramePreferencesViewer.h"
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
@@ -755,7 +755,7 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 
 void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferences* frame = new asFramePreferences(this, asWINDOW_PREFERENCES);
+    asFramePreferencesViewer* frame = new asFramePreferencesViewer(this, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }
