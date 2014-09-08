@@ -37,7 +37,7 @@
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
 #include "img_toolbar.h"
-#include "asFramePreferences.h"
+#include "asFramePreferencesCalibrator.h"
 #include "asFrameAbout.h"
 
 
@@ -86,7 +86,7 @@ void asFrameCalibration::Update()
 
 void asFrameCalibration::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferences* frame = new asFramePreferences(this);
+    asFramePreferencesCalibrator* frame = new asFramePreferencesCalibrator(this);
     frame->Fit();
     frame->Show();
 }

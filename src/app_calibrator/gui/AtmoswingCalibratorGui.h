@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -33,6 +33,8 @@
 #include <wx/statusbr.h>
 #include <wx/menu.h>
 #include <wx/frame.h>
+#include <wx/radiobox.h>
+#include <wx/slider.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -94,7 +96,6 @@ class asFrameCalibrationVirtual : public wxFrame
 		wxCheckBox* m_CheckBoxClassicPlusResize;
 		wxStaticText* m_staticText66;
 		wxStaticText* m_staticText67;
-		wxStaticText* m_staticText68;
 		wxStaticText* m_StaticTextMonteCarloRandomNb;
 		wxTextCtrl* m_TextCtrlMonteCarloRandomNb;
 		wxStaticText* m_StaticTextVarExploStepToExplore;
@@ -125,6 +126,68 @@ class asFrameCalibrationVirtual : public wxFrame
 		asFrameCalibrationVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Calibrator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameCalibrationVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asFramePreferencesCalibratorVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asFramePreferencesCalibratorVirtual : public wxFrame 
+{
+	private:
+	
+	protected:
+		wxPanel* m_PanelBase;
+		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelGeneralCommon;
+		wxRadioBox* m_RadioBoxLogLevel;
+		wxCheckBox* m_CheckBoxDisplayLogWindow;
+		wxCheckBox* m_CheckBoxSaveLogFile;
+		wxStaticText* m_StaticTextParametersDir;
+		wxDirPickerCtrl* m_DirPickerParameters;
+		wxStaticText* m_StaticTextArchivePredictorsDir;
+		wxDirPickerCtrl* m_DirPickerArchivePredictors;
+		wxStaticText* m_StaticTextPredictandDBDir;
+		wxDirPickerCtrl* m_DirPickerPredictandDB;
+		wxPanel* m_PanelAdvanced;
+		wxNotebook* m_NotebookAdvanced;
+		wxPanel* m_PanelGeneral;
+		wxRadioBox* m_RadioBoxGui;
+		wxCheckBox* m_CheckBoxResponsiveness;
+		wxPanel* m_PanelProcessing;
+		wxCheckBox* m_CheckBoxAllowMultithreading;
+		wxStaticText* m_StaticTextThreadsNb;
+		wxTextCtrl* m_TextCtrlThreadsNb;
+		wxStaticText* m_StaticTextThreadsPriority;
+		wxSlider* m_SliderThreadsPriority;
+		wxRadioBox* m_RadioBoxProcessingMethods;
+		wxRadioBox* m_RadioBoxLinearAlgebra;
+		wxPanel* m_PanelUserDirectories;
+		wxStaticText* m_StaticTextIntermediateResultsDir;
+		wxDirPickerCtrl* m_DirPickerIntermediateResults;
+		wxStaticText* m_StaticTextUserDirLabel;
+		wxStaticText* m_StaticTextUserDir;
+		wxStaticText* m_StaticTextLogFileLabel;
+		wxStaticText* m_StaticTextLogFile;
+		wxStaticText* m_StaticTextPrefFileLabel;
+		wxStaticText* m_StaticTextPrefFile;
+		wxStdDialogButtonSizer* m_ButtonsConfirmation;
+		wxButton* m_ButtonsConfirmationOK;
+		wxButton* m_ButtonsConfirmationApply;
+		wxButton* m_ButtonsConfirmationCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
+		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asFramePreferencesCalibratorVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFramePreferencesCalibratorVirtual();
 	
 };
 
