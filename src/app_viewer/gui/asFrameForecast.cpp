@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
 #include "asFrameForecast.h"
@@ -35,13 +36,14 @@
     #include "asThreadViewerLayerManagerZoomOut.h"
 #endif
 #include "asFrameAbout.h"
-#include "asFrameForecastDots.h"
-#include "asFramePreferences.h"
+#include "asFramePreferencesViewer.h"
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
 #include "asPanelPlot.h"
+#include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
+#include "asFileWorkspace.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
 #include "img_logo.h"
@@ -49,8 +51,42 @@
 #include <wx/statline.h>
 #include <wx/app.h>
 #include <wx/event.h>
+#include <wx/dir.h>
 #include "vrrender.h"
 #include "vrlayervector.h"
+
+
+BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
+    EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
+    EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
+/*    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
+    EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
+    EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
+    EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
+    EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
+    EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
+    EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
+    EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
+    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)/*
+    EVT_MENU (vlID_MOVE_LAYER, asFrameForecast::OnMoveLayer)
+*/
+    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
+    EVT_KEY_UP(asFrameForecast::OnKeyUp)
+
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
+
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, asFrameForecast::OnChangeLeadTime)
+//    EVT_COMMAND(wxID_ANY, asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, asFrameForecast::OnForecastModelSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecast::OnForecastPercentileSelectionChange)
+END_EVENT_TABLE()
 
 
 /* vroomDropFiles */
@@ -121,6 +157,11 @@ asFrameForecastVirtual( parent, id )
     m_PanelSidebarForecasts->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarForecasts, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
+    // Alarms
+    m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, &m_Workspace, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarAlarms->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarAlarms, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
     // Stations list
     m_PanelSidebarStationsList = new asPanelSidebarStationsList( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarStationsList->Layout();
@@ -130,9 +171,28 @@ asFrameForecastVirtual( parent, id )
     m_PanelSidebarGisLayers = new asPanelSidebarGisLayers( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarGisLayers->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarGisLayers, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    
+    // Analog dates sidebar
+    m_PanelSidebarAnalogDates = new asPanelSidebarAnalogDates( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarAnalogDates->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarAnalogDates, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
+    // Caption panel
+    m_PanelSidebarCaptionForecastDots = new asPanelSidebarCaptionForecastDots( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarCaptionForecastDots->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastDots, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+
+    // Caption panel
+    m_PanelSidebarCaptionForecastRing = new asPanelSidebarCaptionForecastRing( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarCaptionForecastRing->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarCaptionForecastRing, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
     m_ScrolledWindowOptions->Layout();
     m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
+
+    // Lead time switcher
+    m_LeadTimeSwitcher = NULL;
 
     // Status bar
     SetStatusText(_("Welcome to AtmoSwing"));
@@ -156,9 +216,10 @@ asFrameForecastVirtual( parent, id )
     // VroomGIS
     m_LayerManager = new vrLayerManager();
     m_ViewerLayerManager = new vrViewerLayerManager(m_LayerManager, this, m_DisplayCtrl , m_PanelSidebarGisLayers->GetTocCtrl());
+    m_LayerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
-    m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl());
+    m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl(), &m_Workspace);
 
     // Forecast viewer
     m_ForecastViewer = new asForecastViewer( this, m_ForecastManager, m_LayerManager, m_ViewerLayerManager);
@@ -201,11 +262,15 @@ asFrameForecastVirtual( parent, id )
 
 asFrameForecast::~asFrameForecast()
 {
-     // Save preferences
+    // Save preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/SidebarPanelsDisplay/Forecasts", !m_PanelSidebarForecasts->IsReduced());
     pConfig->Write("/SidebarPanelsDisplay/StationsList", !m_PanelSidebarStationsList->IsReduced());
     pConfig->Write("/SidebarPanelsDisplay/GisLayers", !m_PanelSidebarGisLayers->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/AnalogDates", !m_PanelSidebarAnalogDates->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/CaptionForecastDots", !m_PanelSidebarCaptionForecastDots->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/Alarms", !m_PanelSidebarAlarms->IsReduced());
+    pConfig->Write("/SidebarPanelsDisplay/CaptionForecastRing", !m_PanelSidebarCaptionForecastRing->IsReduced());
 
     // Save the frame position
     bool doMaximize = IsMaximized();
@@ -264,11 +329,34 @@ asFrameForecast::~asFrameForecast()
     }
 }
 
-void asFrameForecast::OnInit()
+void asFrameForecast::Init()
 {
     // Update gui elements
     DisplayLogLevelMenu();
-    OpenDefaultLayers();
+    
+    // Open last workspace
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxString workspaceFilePath = wxEmptyString;
+    pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
+
+
+    if(!workspaceFilePath.IsEmpty())
+    {
+        if (!m_Workspace.Load(workspaceFilePath))
+        {
+            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+        }
+
+        if (!OpenWorkspace())
+        {
+            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+        }
+    }
+    else
+    {
+        asWizardWorkspace* wizard = new asWizardWorkspace(this);
+        wizard->Destroy();
+    }
 
     // Set the display options
     m_PanelSidebarForecasts->GetForecastDisplayCtrl()->SetStringArray(m_ForecastViewer->GetForecastDisplayStringArray());
@@ -277,7 +365,6 @@ void asFrameForecast::OnInit()
     m_PanelSidebarForecasts->GetPercentilesCtrl()->Select(m_ForecastViewer->GetPercentileSelection());
 
     // Reduce some panels
-    wxConfigBase *pConfig = wxFileConfig::Get();
     bool display = true;
     pConfig->Read("/SidebarPanelsDisplay/Forecasts", &display, true);
     if (!display)
@@ -291,11 +378,35 @@ void asFrameForecast::OnInit()
         m_PanelSidebarStationsList->ReducePanel();
         m_PanelSidebarStationsList->Layout();
     }
+    pConfig->Read("/SidebarPanelsDisplay/Alarms", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarAlarms->ReducePanel();
+        m_PanelSidebarAlarms->Layout();
+    }
     pConfig->Read("/SidebarPanelsDisplay/GisLayers", &display, false);
     if (!display)
     {
         m_PanelSidebarGisLayers->ReducePanel();
         m_PanelSidebarGisLayers->Layout();
+    }
+    pConfig->Read("/SidebarPanelsDisplay/AnalogDates", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarAnalogDates->ReducePanel();
+        m_PanelSidebarAnalogDates->Layout();
+    }
+    pConfig->Read("/SidebarPanelsDisplay/CaptionForecastDots", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarCaptionForecastDots->ReducePanel();
+        m_PanelSidebarCaptionForecastDots->Layout();
+    }
+    pConfig->Read("/SidebarPanelsDisplay/CaptionForecastRing", &display, true);
+    if (!display)
+    {
+        m_PanelSidebarCaptionForecastRing->ReducePanel();
+        m_PanelSidebarCaptionForecastRing->Layout();
     }
 
     // Set the select tool
@@ -314,17 +425,168 @@ void asFrameForecast::OnInit()
     Refresh();
 }
 
-/*
-void asFrameForecast::Update()
+void asFrameForecast::OnOpenWorkspace(wxCommandEvent & event)
 {
-    DisplayLogLevelMenu();
-}
-*/
+    // Ask for a workspace file
+    wxFileDialog openFileDialog (this, _("Select a workspace"),
+                            wxEmptyString,
+                            wxEmptyString,
+                            "xml files (*.xml)|*.xml",
+                            wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
 
+    // If canceled
+    if(openFileDialog.ShowModal()==wxID_CANCEL)
+        return;
+
+    wxString workspaceFilePath = openFileDialog.GetPath();
+
+    // Save preferences
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
+
+    // Do open the workspace
+    if (!m_Workspace.Load(workspaceFilePath))
+    {
+        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+
+    if (!OpenWorkspace())
+    {
+        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+
+}
+
+bool asFrameForecast::OpenWorkspace()
+{
+    // GIS layers
+    #if defined (__WIN32__)
+        m_CritSectionViewerLayerManager.Enter();
+    #endif
+
+    m_ViewerLayerManager->FreezeBegin();
+
+    // Remove all layers
+    for (int i = (signed) m_ViewerLayerManager->GetCount()-1; i >= 0 ; i--) 
+    {
+        // Remove from viewer manager (TOC and Display)
+        vrRenderer * renderer = m_ViewerLayerManager->GetRenderer(i);
+        vrLayer * layer = renderer->GetLayer();
+        wxASSERT(renderer);
+        m_ViewerLayerManager->Remove(renderer);
+
+        // Close layer (not used anymore);
+        m_LayerManager->Close(layer);
+    }
+
+    // Open new layers
+    for (int i_layer=0; i_layer<m_Workspace.GetLayersNb(); i_layer++)
+    {
+        // Get attributes
+        wxString path = m_Workspace.GetLayerPath(i_layer);
+        wxString type = m_Workspace.GetLayerType(i_layer);
+        int transparency = m_Workspace.GetLayerTransparency(i_layer);
+        bool visibility = m_Workspace.GetLayerVisibility(i_layer);
+        int width = m_Workspace.GetLayerLineWidth(i_layer);
+        wxColour lineColor = m_Workspace.GetLayerLineColor(i_layer);
+        wxColour fillColor = m_Workspace.GetLayerFillColor(i_layer);
+        
+        // Open the layers
+        if (wxFileName::FileExists(path))
+        {
+            if (m_LayerManager->Open(wxFileName(path)))
+            {
+                if (type.IsSameAs("raster"))
+                {
+                    vrRenderRaster* render = new vrRenderRaster();
+                    render->SetTransparency(transparency);
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL, visibility);
+                }
+                else if (type.IsSameAs("vector"))
+                {
+                    vrRenderVector* render = new vrRenderVector();
+                    render->SetTransparency(transparency);
+                    render->SetSize(width);
+                    render->SetColorPen(lineColor);
+                   /* if (fillColorLong==0)
+                    {
+                        render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
+                    }
+                    else
+                    {*/
+                        render->SetColorBrush(fillColor);
+                    //}
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL, visibility);
+                }
+                else if (type.IsSameAs("wms"))
+                {
+                    asLogWarning(_("WMS layers are not yet implemented."));
+                }
+                else
+                {
+                    asLogError(wxString::Format(_("The GIS layer type %s does not correspond to allowed values."), type.c_str()));
+                }
+            }
+            else
+            {
+                asLogWarning(wxString::Format(_("The file %s cound not be opened."), path.c_str()));
+            }
+        }
+        else
+        {
+            asLogWarning(wxString::Format(_("The file %s cound not be found."), path.c_str()));
+        }
+    }
+
+    m_ViewerLayerManager->FreezeEnd();
+
+    OpenRecentForecasts();
+
+    m_ScrolledWindowOptions->Layout();
+    m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
+
+    #if defined (__WIN32__)
+        m_CritSectionViewerLayerManager.Leave();
+    #endif
+
+    return true;
+}
 
 void asFrameForecast::OnQuit( wxCommandEvent& event )
 {
     event.Skip();
+}
+
+void asFrameForecast::UpdateLeadTimeSwitch()
+{
+    // Required size
+    int squareSize = 40;
+    int width = (m_ForecastManager->GetFullTargetDatesVector().size()+1)*squareSize;
+    int height = squareSize + 5;
+
+    // Delete and recreate the panel. Cannot get it work with a resize...
+    wxDELETE(m_LeadTimeSwitcher);
+    m_LeadTimeSwitcher = new asLeadTimeSwitcher( m_PanelTop, &m_Workspace, wxID_ANY, wxDefaultPosition, wxSize(width,height), wxTAB_TRAVERSAL );
+    m_LeadTimeSwitcher->SetBackgroundColour( wxColour( 77, 77, 77 ) );
+    m_LeadTimeSwitcher->SetMinSize( wxSize( width, height ) );
+    m_LeadTimeSwitcher->Layout();
+    Array1DFloat dates = m_ForecastManager->GetFullTargetDatesVector();
+    m_LeadTimeSwitcher->Draw(dates, m_ForecastManager->GetModelsNames(), m_ForecastManager->GetCurrentForecasts());
+    
+    m_SizerLeadTimeSwitch->Add( m_LeadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5 );
+    m_SizerLeadTimeSwitch->Layout();
+    
+    m_PanelTop->Layout();
+	m_SizerTop->Fit( m_PanelTop );
+    m_SizerContent->Layout();
+
 }
 
 void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
@@ -387,8 +649,7 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     }
 
     // Set option
-    int nbPrevDays;
-    pConfig->Read("/Plot/PastDaysNb", &nbPrevDays, 3);
+    int nbPrevDays = m_Workspace.GetTimeSeriesPlotPastDaysNb();
     wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
     ForecasterPath.Append(options);
     asLogMessage(wxString::Format(_("Sending command: %s"), ForecasterPath.c_str()));
@@ -491,7 +752,7 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 
 void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferences* frame = new asFramePreferences(this, asWINDOW_PREFERENCES);
+    asFramePreferencesViewer* frame = new asFramePreferencesViewer(this, &m_Workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }
@@ -561,182 +822,6 @@ void asFrameForecast::DisplayLogLevelMenu()
         m_MenuLogLevel->FindItemByPosition(1)->Check(true);
         Log().SetLevel(2);
     }
-}
-
-void asFrameForecast::OpenDefaultLayers()
-{
-    // Default paths
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString dirData = asConfig::GetDataDir()+"data"+DS;
-    wxString LayerHillshadeFilePath = pConfig->Read("/GIS/LayerHillshadeFilePath", dirData+"gis"+DS+"Local"+DS+"hillshade"+DS+"hdr.adf");
-    wxString LayerCatchmentsFilePath = pConfig->Read("/GIS/LayerCatchmentsFilePath", dirData+"gis"+DS+"Local"+DS+"catchments.shp");
-    wxString LayerHydroFilePath = pConfig->Read("/GIS/LayerHydroFilePath", dirData+"gis"+DS+"Local"+DS+"hydrography.shp");
-    wxString LayerLakesFilePath = pConfig->Read("/GIS/LayerLakesFilePath", dirData+"gis"+DS+"Local"+DS+"lakes.shp");
-    wxString LayerBasemapFilePath = pConfig->Read("/GIS/LayerBasemapFilePath", dirData+"gis"+DS+"Local"+DS+"basemap.shp");
-
-    // Try to open layers
-    m_ViewerLayerManager->FreezeBegin();
-
-    // Hillshade
-    if (wxFileName::FileExists(LayerHillshadeFilePath))
-    {
-        if (m_LayerManager->Open(wxFileName(LayerHillshadeFilePath)))
-        {
-            long LayerHillshadeTransp = 0;
-            LayerHillshadeTransp = pConfig->Read("/GIS/LayerHillshadeTransp", LayerHillshadeTransp);
-            bool LayerHillshadeVisibility;
-            pConfig->Read("/GIS/LayerHillshadeVisibility", &LayerHillshadeVisibility, true);
-
-            vrRenderRaster* renderHillshade = new vrRenderRaster();
-            renderHillshade->SetTransparency(LayerHillshadeTransp);
-
-            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerHillshadeFilePath));
-            wxASSERT(layer);
-            m_ViewerLayerManager->Add(-1, layer, renderHillshade, NULL, LayerHillshadeVisibility);
-        }
-        else
-        {
-            asLogWarning(wxString::Format(_("The hillshade layer file %s cound not be opened."), LayerHillshadeFilePath.c_str()));
-        }
-    }
-    else
-    {
-        asLogWarning(wxString::Format(_("The hillshade layer file %s cound not be found."), LayerHillshadeFilePath.c_str()));
-    }
-
-    // Catchments
-    if (wxFileName::FileExists(LayerCatchmentsFilePath))
-    {
-        if (m_LayerManager->Open(wxFileName(LayerCatchmentsFilePath)))
-        {
-            long LayerCatchmentsTransp = 50;
-            LayerCatchmentsTransp = pConfig->Read("/GIS/LayerCatchmentsTransp", LayerCatchmentsTransp);
-            long LayerCatchmentsColor = (long)0x0000fffc;
-            LayerCatchmentsColor = pConfig->Read("/GIS/LayerCatchmentsColor", LayerCatchmentsColor);
-            wxColour colorCatchments;
-            colorCatchments.SetRGB((wxUint32)LayerCatchmentsColor);
-            long LayerCatchmentsSize = 1;
-            LayerCatchmentsSize = pConfig->Read("/GIS/LayerCatchmentsSize", LayerCatchmentsSize);
-            bool LayerCatchmentsVisibility;
-            pConfig->Read("/GIS/LayerCatchmentsVisibility", &LayerCatchmentsVisibility, false);
-
-            vrRenderVector* renderCatchments = new vrRenderVector();
-            renderCatchments->SetTransparency(LayerCatchmentsTransp);
-            renderCatchments->SetColorPen(colorCatchments);
-            renderCatchments->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
-            renderCatchments->SetSize(LayerCatchmentsSize);
-
-            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerCatchmentsFilePath));
-            wxASSERT(layer);
-            m_ViewerLayerManager->Add(-1, layer, renderCatchments, NULL, LayerCatchmentsVisibility);
-        }
-        else
-        {
-            asLogWarning(wxString::Format(_("The catchments layer file %s cound not be opened."), LayerCatchmentsFilePath.c_str()));
-        }
-    }
-    else
-    {
-        asLogWarning(wxString::Format(_("The catchments layer file %s cound not be found."), LayerCatchmentsFilePath.c_str()));
-    }
-
-    // Hydrography
-    if (wxFileName::FileExists(LayerHydroFilePath))
-    {
-        if (m_LayerManager->Open(wxFileName(LayerHydroFilePath)))
-        {
-            long LayerHydroTransp = 40;
-            LayerHydroTransp = pConfig->Read("/GIS/LayerHydroTransp", LayerHydroTransp);
-            long LayerHydroColor = (long)0x00c81616;
-            LayerHydroColor = pConfig->Read("/GIS/LayerHydroColor", LayerHydroColor);
-            wxColour colorHydro;
-            colorHydro.SetRGB((wxUint32)LayerHydroColor);
-            long LayerHydroSize = 1;
-            LayerHydroSize = pConfig->Read("/GIS/LayerHydroSize", LayerHydroSize);
-            bool LayerHydroVisibility;
-            pConfig->Read("/GIS/LayerHydroVisibility", &LayerHydroVisibility, true);
-
-            vrRenderVector* renderHydro = new vrRenderVector();
-            renderHydro->SetTransparency(LayerHydroTransp);
-            renderHydro->SetColorPen(colorHydro);
-            renderHydro->SetSize(LayerHydroSize);
-
-            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerHydroFilePath));
-            wxASSERT(layer);
-            m_ViewerLayerManager->Add(-1, layer, renderHydro, NULL, LayerHydroVisibility);
-        }
-        else
-        {
-            asLogWarning(wxString::Format(_("The hydological layer file %s cound not be opened."), LayerHydroFilePath.c_str()));
-        }
-    }
-    else
-    {
-        asLogWarning(wxString::Format(_("The hydological layer file %s cound not be found."), LayerHydroFilePath.c_str()));
-    }
-
-    // Lakes
-    if (wxFileName::FileExists(LayerLakesFilePath))
-    {
-        if (m_LayerManager->Open(wxFileName(LayerLakesFilePath)))
-        {
-            long LayerLakesTransp = 40;
-            LayerLakesTransp = pConfig->Read("/GIS/LayerLakesTransp", LayerLakesTransp);
-            long LayerLakesColor = (long)0x00d4c92a;
-            LayerLakesColor = pConfig->Read("/GIS/LayerLakesColor", LayerLakesColor);
-            wxColour colorLakes;
-            colorLakes.SetRGB((wxUint32)LayerLakesColor);
-            bool LayerLakesVisibility;
-            pConfig->Read("/GIS/LayerLakesVisibility", &LayerLakesVisibility, true);
-
-            vrRenderVector* renderLakes = new vrRenderVector();
-            renderLakes->SetTransparency(LayerLakesTransp);
-            renderLakes->SetColorPen(colorLakes);
-            renderLakes->SetColorBrush(colorLakes);
-            renderLakes->SetSize(0);
-
-            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerLakesFilePath));
-            wxASSERT(layer);
-            m_ViewerLayerManager->Add(-1, layer, renderLakes, NULL, LayerLakesVisibility);
-        }
-        else
-        {
-            asLogWarning(wxString::Format(_("The lakes layer file %s cound not be opened."), LayerLakesFilePath.c_str()));
-        }
-    }
-    else
-    {
-        asLogWarning(wxString::Format(_("The lakes layer file %s cound not be found."), LayerLakesFilePath.c_str()));
-    }
-
-    // Basemap
-    if (wxFileName::FileExists(LayerBasemapFilePath))
-    {
-        if (m_LayerManager->Open(wxFileName(LayerBasemapFilePath)))
-        {
-            long LayerBasemapTransp = 50;
-            LayerBasemapTransp = pConfig->Read("/GIS/LayerBasemapTransp", LayerBasemapTransp);
-            bool LayerBasemapVisibility;
-            pConfig->Read("/GIS/LayerBasemapVisibility", &LayerBasemapVisibility, false);
-
-            vrRenderRaster* renderBasemap = new vrRenderRaster();
-            renderBasemap->SetTransparency(LayerBasemapTransp);
-
-            vrLayer* layer = m_LayerManager->GetLayer( wxFileName(LayerBasemapFilePath));
-            wxASSERT(layer);
-            m_ViewerLayerManager->Add(-1, layer, renderBasemap, NULL, LayerBasemapVisibility);
-        }
-        else
-        {
-            asLogWarning(wxString::Format(_("The basemap layer file %s cound not be opened."), LayerBasemapFilePath.c_str()));
-        }
-    }
-    else
-    {
-        asLogWarning(wxString::Format(_("The basemap layer file %s cound not be found."), LayerBasemapFilePath.c_str()));
-    }
-
-    m_ViewerLayerManager->FreezeEnd();
 }
 
 bool asFrameForecast::OpenLayers (const wxArrayString & names)
@@ -902,6 +987,103 @@ void asFrameForecast::OpenForecastsFromTmpList()
     OpenForecast(filePathsVect);
 }
 
+bool asFrameForecast::OpenRecentForecasts()
+{
+    m_ForecastManager->ClearForecasts();
+
+    wxString forecastsDirectory = m_Workspace.GetForecastsDirectory();
+
+    if (forecastsDirectory.IsEmpty())
+    {
+        asLogError("The directory containing the forecasts was not provided.");
+        return false;
+    }
+
+    if (!wxFileName::DirExists(forecastsDirectory))
+    {
+        asLogError("The directory that is supposed to contain the forecasts does not exist.");
+        return false;
+    }
+
+    // Get present date
+    double now = asTime::NowMJD();
+
+    // Check if today directory exists
+    wxString basePath = forecastsDirectory + wxFileName::GetPathSeparator();
+    wxFileName fullPath(basePath);
+    fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(now)));
+    fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(now)));
+    fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(now)));
+
+    // If does not exist, try the day before
+    if (!fullPath.Exists())
+    {
+        now--;
+        fullPath = wxFileName(basePath);
+        fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(now)));
+        fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(now)));
+        fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(now)));
+    }
+
+    // If does not exist, warn the user and return
+    if (!fullPath.Exists())
+    {
+        fullPath = wxFileName(basePath);
+        asLogError(wxString::Format(_("No recent forecast was found under %s"), fullPath.GetFullPath().c_str()));
+        return false;
+    }
+    
+    // List the files in the directory
+    wxArrayString files;
+    wxDir::GetAllFiles (fullPath.GetFullPath(), &files);
+
+    // Identify the most recent forecasts
+    long mostRecentDate = 0;
+    VectorInt mostRecentRows;
+    for (int i=0; i<files.GetCount(); i++)
+    {
+        wxFileName fileName(files[i]);
+        wxString fileDate = fileName.GetFullName().SubString(0,9);
+        if (!fileDate.IsNumber())
+        {
+            asLogWarning(_("A file with an unconventional name was found in the forecasts directory."));
+            continue;
+        }
+
+        long date;
+        fileDate.ToLong(&date);
+
+        if (date>mostRecentDate)
+        {
+            mostRecentDate = date;
+            mostRecentRows.clear();
+            mostRecentRows.push_back(i);
+        }
+        else if (date==mostRecentDate)
+        {
+            mostRecentRows.push_back(i);
+        }
+    }
+
+    // Store the most recent file names
+    wxArrayString recentFiles;
+    for (int i=0; i<mostRecentRows.size(); i++)
+    {
+        recentFiles.Add(files[mostRecentRows[i]]);
+    }
+
+    // Open the forecasts
+    if (!OpenForecast(recentFiles))
+    {
+        asLogError(_("Failed to open the forecasts."));
+        return false;
+    }
+
+    FitExtentToForecasts();
+
+    return true;
+}
+
 bool asFrameForecast::OpenForecast (const wxArrayString & names)
 {
     Freeze();
@@ -983,6 +1165,10 @@ bool asFrameForecast::OpenForecast (const wxArrayString & names)
         m_CritSectionViewerLayerManager.Leave();
     #endif
 
+    UpdateLeadTimeSwitch();
+
+    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
+
     Thaw();
 
     return true;
@@ -1058,7 +1244,43 @@ void asFrameForecast::OnToolPan (wxCommandEvent & event)
 
 void asFrameForecast::OnToolZoomToFit (wxCommandEvent & event)
 {
-    m_ViewerLayerManager->ZoomToFit(true);
+    // Fit to all layers
+    // m_ViewerLayerManager->ZoomToFit(true);
+    // ReloadViewerLayerManager();
+
+    // Fit to the forecasts layer
+    FitExtentToForecasts();
+}
+
+void asFrameForecast::FitExtentToForecasts ()
+{
+    vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast.memory"));
+
+    if(layer!=NULL)
+    {
+        wxASSERT(layer);
+
+        // Get the forecast layer extent
+        vrRealRect extent;
+        layer->GetExtent(extent);
+
+        // Add a margin
+        wxDouble width = extent.GetRight()-extent.GetLeft();
+        wxDouble height = extent.GetTop()-extent.GetBottom();
+        wxDouble marginFactor = 0.05;
+        extent.SetLeft(extent.GetLeft()-marginFactor*width);
+        extent.SetRight(extent.GetRight()+marginFactor*width);
+        extent.SetBottom(extent.GetBottom()-marginFactor*height);
+        extent.SetTop(extent.GetTop()+marginFactor*height);
+
+        // Force new extent
+        m_ViewerLayerManager->InitializeExtent(extent);
+    }
+    else
+    {
+        asLogError(_("The forecasts layer was not found."));
+    }
+
     ReloadViewerLayerManager();
 }
 
@@ -1292,6 +1514,24 @@ void asFrameForecast::OnStationSelection( wxCommandEvent& event )
 
 }
 
+void asFrameForecast::OnChangeLeadTime( wxCommandEvent& event )
+{
+    Freeze();
+
+    m_ForecastViewer->ChangeLeadTime(event.GetInt());
+    
+    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
+
+    UpdatePanelAnalogDates();
+    UpdatePanelCaptionAll();
+
+    m_ScrolledWindowOptions->Layout();
+    m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
+
+    Thaw();
+}
+
 void asFrameForecast::OnForecastClear( wxCommandEvent& event )
 {
     if(m_PanelSidebarForecasts!=NULL)
@@ -1303,11 +1543,23 @@ void asFrameForecast::OnForecastClear( wxCommandEvent& event )
 void asFrameForecast::OnForecastRatioSelectionChange( wxCommandEvent& event )
 {
     m_ForecastViewer->SetForecastDisplay(event.GetInt());
+
+    UpdatePanelCaptionColorbar();
 }
 
 void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
 {
+    Freeze();
+
     m_ForecastViewer->SetModel(event.GetInt());
+    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
+
+    UpdateHeaderTexts();
+    UpdatePanelCaptionAll();
+    UpdatePanelAnalogDates();
+    UpdatePanelStationsList();
+
+    Thaw();
 }
 
 void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )
@@ -1326,6 +1578,23 @@ void asFrameForecast::DrawPlotStation( int station )
     framePlotStation->Show();
 }
 
+void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
+{
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
+    m_PanelSidebarForecasts->AddForecast(forecast->GetModelName(), forecast->GetLeadTimeOriginString(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
+
+    if (event.GetString().IsSameAs("last"))
+    {
+        m_ForecastViewer->SetModel(event.GetInt());
+
+        UpdatePanelAlarms();
+        UpdateHeaderTexts();
+        UpdatePanelCaptionAll();
+        UpdatePanelAnalogDates();
+        UpdatePanelStationsList();
+    }
+}
+
 void asFrameForecast::ReloadViewerLayerManager( )
 {
     m_ViewerLayerManager->Reload();
@@ -1337,4 +1606,76 @@ void asFrameForecast::ReloadViewerLayerManager( )
     #else
         m_ViewerLayerManager->Reload();
     #endif*/
+}
+
+void asFrameForecast::UpdateHeaderTexts()
+{
+    // Set header text
+    wxString dateForecast = asTime::GetStringTime(m_ForecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY HH");
+    wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast.c_str());
+    m_StaticTextForecastDate->SetLabel(dateStr);
+
+    wxString model = m_ForecastManager->GetModelName(m_ForecastViewer->GetModelSelection());
+    wxString modelStr = wxString::Format(_("Model selected : %s"), model.c_str());
+    m_StaticTextForecastModel->SetLabel(modelStr);
+
+    m_PanelTop->Layout();
+    m_PanelTop->Refresh();
+}
+
+void asFrameForecast::UpdatePanelCaptionAll()
+{
+    if (m_ForecastViewer->GetLeadTimeIndex()<m_ForecastManager->GetLeadTimeLengthMax())
+    {
+        m_PanelSidebarCaptionForecastDots->Show();
+        m_PanelSidebarCaptionForecastRing->Hide();
+
+        m_PanelSidebarCaptionForecastDots->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+    }
+    else
+    {
+        m_PanelSidebarCaptionForecastDots->Hide();
+        m_PanelSidebarCaptionForecastRing->Show();
+
+        m_PanelSidebarCaptionForecastRing->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+        asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
+        Array1DFloat dates = forecast->GetTargetDates();
+        m_PanelSidebarCaptionForecastRing->SetDates(dates);
+    }
+}
+
+void asFrameForecast::UpdatePanelCaptionColorbar()
+{
+    m_PanelSidebarCaptionForecastDots->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+    
+    m_PanelSidebarCaptionForecastRing->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
+}
+
+void asFrameForecast::UpdatePanelAnalogDates()
+{
+    if (m_ForecastViewer->GetLeadTimeIndex()>=m_ForecastManager->GetLeadTimeLengthMax())
+    {
+        m_PanelSidebarAnalogDates->Hide();
+        return;
+    }
+
+    m_PanelSidebarAnalogDates->Show();
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
+    Array1DFloat arrayDate = forecast->GetAnalogsDates(m_ForecastViewer->GetLeadTimeIndex());
+    Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria(m_ForecastViewer->GetLeadTimeIndex());
+    m_PanelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
+}
+
+void asFrameForecast::UpdatePanelStationsList()
+{
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_ForecastViewer->GetModelSelection());
+    m_PanelSidebarStationsList->SetChoices(arrayStation);
+}
+
+void asFrameForecast::UpdatePanelAlarms()
+{
+    Array1DFloat datesFull = m_ForecastManager->GetFullTargetDatesVector();
+    VectorString models = m_ForecastManager->GetModelsNames();
+    std::vector <asResultsAnalogsForecast*> forecasts = m_ForecastManager->GetCurrentForecasts();
+    m_PanelSidebarAlarms->UpdateAlarms(datesFull, models, forecasts);
 }

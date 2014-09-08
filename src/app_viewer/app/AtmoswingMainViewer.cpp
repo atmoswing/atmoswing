@@ -51,7 +51,7 @@
 
 
 AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
-    : asFrameForecastRings(frame)
+    : asFrameForecast(frame)
 {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString().c_str());
@@ -86,16 +86,6 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     bool displayLogWindow;
     pConfig->Read("/Standard/DisplayLogWindowViewer", &displayLogWindow, false);
     pConfig->Write("/Standard/DisplayLogWindowViewer", displayLogWindow);
-    // Multithreading
-    bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
-    pConfig->Write("/Standard/AllowMultithreading", allowMultithreading);
-    // Set the number of threads
-    int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads==-1) maxThreads = 2;
-    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Standard/ProcessingMaxThreadNb", maxThreadsStr);
-    pConfig->Write("/Standard/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
 
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
@@ -116,65 +106,6 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     pConfig->Write("/StandardPaths/ViewerPath", ViewerPath);
 
     // GIS
-        // Hillshade
-    wxString LayerHillshadeFilePath = pConfig->Read("/GIS/LayerHillshadeFilePath", dirData+"gis"+DS+"Local"+DS+"hillshade"+DS+"hdr.adf");
-    pConfig->Write("/GIS/LayerHillshadeFilePath", LayerHillshadeFilePath);
-    wxString LayerHillshadeTransp = pConfig->Read("/GIS/LayerHillshadeTransp", "0");
-    pConfig->Write("/GIS/LayerHillshadeTransp", LayerHillshadeTransp);
-    bool LayerHillshadeVisibility;
-    pConfig->Read("/GIS/LayerHillshadeVisibility", &LayerHillshadeVisibility, true);
-    pConfig->Write("/GIS/LayerHillshadeVisibility", LayerHillshadeVisibility);
-        // Catchments
-    wxString LayerCatchmentsFilePath = pConfig->Read("/GIS/LayerCatchmentsFilePath", dirData+"gis"+DS+"Local"+DS+"catchments.shp");
-    pConfig->Write("/GIS/LayerCatchmentsFilePath", LayerCatchmentsFilePath);
-    wxString LayerCatchmentsTransp = pConfig->Read("/GIS/LayerCatchmentsTransp", "50");
-    pConfig->Write("/GIS/LayerCatchmentsTransp", LayerCatchmentsTransp);
-    long LayerCatchmentsColor = (long)0x0000fffc;
-    LayerCatchmentsColor = pConfig->Read("/GIS/LayerCatchmentsColor", LayerCatchmentsColor);
-    pConfig->Write("/GIS/LayerCatchmentsColor", LayerCatchmentsColor);
-    wxColour colorCatchments;
-    colorCatchments.SetRGB((wxUint32)LayerCatchmentsColor);
-    wxString LayerCatchmentsSize = pConfig->Read("/GIS/LayerCatchmentsSize", "1");
-    pConfig->Write("/GIS/LayerCatchmentsSize",LayerCatchmentsSize);
-    bool LayerCatchmentsVisibility;
-    pConfig->Read("/GIS/LayerCatchmentsVisibility", &LayerCatchmentsVisibility, false);
-    pConfig->Write("/GIS/LayerCatchmentsVisibility",LayerCatchmentsVisibility);
-        // Hydro
-    wxString LayerHydroFilePath = pConfig->Read("/GIS/LayerHydroFilePath", dirData+"gis"+DS+"Local"+DS+"hydrography.shp");
-    pConfig->Write("/GIS/LayerHydroFilePath", LayerHydroFilePath);
-    wxString LayerHydroTransp = pConfig->Read("/GIS/LayerHydroTransp", "40");
-    pConfig->Write("/GIS/LayerHydroTransp", LayerHydroTransp);
-    long LayerHydroColor = (long)0x00c81616;
-    LayerHydroColor = pConfig->Read("/GIS/LayerHydroColor", LayerHydroColor);
-    pConfig->Write("/GIS/LayerHydroColor", LayerHydroColor);
-    wxColour colorHydro;
-    colorHydro.SetRGB((wxUint32)LayerHydroColor);
-    wxString LayerHydroSize = pConfig->Read("/GIS/LayerHydroSize", "1");
-    pConfig->Write("/GIS/LayerHydroSize", LayerHydroSize);
-    bool LayerHydroVisibility;
-    pConfig->Read("/GIS/LayerHydroVisibility", &LayerHydroVisibility, true);
-    pConfig->Write("/GIS/LayerHydroVisibility", LayerHydroVisibility);
-        // Lakes
-    wxString LayerLakesFilePath = pConfig->Read("/GIS/LayerLakesFilePath", dirData+"gis"+DS+"Local"+DS+"lakes.shp");
-    pConfig->Write("/GIS/LayerLakesFilePath", LayerLakesFilePath);
-    wxString LayerLakesTransp = pConfig->Read("/GIS/LayerLakesTransp", "40");
-    pConfig->Write("/GIS/LayerLakesTransp",LayerLakesTransp );
-    long LayerLakesColor = (long)0x00d4c92a;
-    LayerLakesColor = pConfig->Read("/GIS/LayerLakesColor", LayerLakesColor);
-    pConfig->Write("/GIS/LayerLakesColor", LayerLakesColor);
-    wxColour colorLakes;
-    colorLakes.SetRGB((wxUint32)LayerLakesColor);
-    bool LayerLakesVisibility;
-    pConfig->Read("/GIS/LayerLakesVisibility", &LayerLakesVisibility, true);
-    pConfig->Write("/GIS/LayerLakesVisibility", LayerLakesVisibility);
-        // Basemap
-    wxString LayerBasemapFilePath = pConfig->Read("/GIS/LayerBasemapFilePath", dirData+"gis"+DS+"Local"+DS+"basemap.shp");
-    pConfig->Write("/GIS/LayerBasemapFilePath", LayerBasemapFilePath);
-    wxString LayerBasemapTransp = pConfig->Read("/GIS/LayerBasemapTransp", "50");
-    pConfig->Write("/GIS/LayerBasemapTransp", LayerBasemapTransp);
-    bool LayerBasemapVisibility;
-    pConfig->Read("/GIS/LayerBasemapVisibility", &LayerBasemapVisibility, false);
-    pConfig->Write("/GIS/LayerBasemapVisibility", LayerBasemapVisibility);
         // Continents
     wxString LayerContinentsFilePath = pConfig->Read("/GIS/LayerContinentsFilePath", dirData+"gis"+DS+"World"+DS+"continents.shp");
     pConfig->Write("/GIS/LayerContinentsFilePath", LayerContinentsFilePath);
@@ -235,12 +166,6 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     bool LayerLatLongVisibility;
     pConfig->Read("/GIS/LayerLatLongVisibility", &LayerLatLongVisibility, true);
     pConfig->Write("/GIS/LayerLatLongVisibility", LayerLatLongVisibility);
-
-    // Forecast display
-    wxString ColorbarMaxValue = pConfig->Read("/GIS/ColorbarMaxValue", "50");
-    pConfig->Write("/GIS/ColorbarMaxValue", ColorbarMaxValue);
-    wxString PastDaysNb = pConfig->Read("/Plot/PastDaysNb", "3");
-    pConfig->Write("/GIS/PastDaysNb", PastDaysNb);
 
     pConfig->Flush();
 }
