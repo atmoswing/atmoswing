@@ -46,6 +46,7 @@
 #include "asPanelSidebarAlarms.h"
 #include "asPanelSidebarAnalogDates.h"
 #include "asLeadTimeSwitcher.h"
+#include "asWorkspace.h"
 
 const int asID_MOVE_LAYER = wxID_HIGHEST + 1;
 const int mm_POPUP_OFFSET = 50;
@@ -145,8 +146,6 @@ protected:
 
 private:
     wxProcess* m_ProcessForecast;
-    wxString m_WorkspaceFilePath;
-    wxString m_ForecastsDirectory;
     vrLayerManager *m_LayerManager;
     vrViewerLayerManager *m_ViewerLayerManager;
     vrViewerDisplay *m_DisplayCtrl;
@@ -161,6 +160,7 @@ private:
     asPanelSidebarCaptionForecastRing *m_PanelSidebarCaptionForecastRing;
     asPanelSidebarAlarms *m_PanelSidebarAlarms;
     asLeadTimeSwitcher *m_LeadTimeSwitcher;
+    asWorkspace m_Workspace;
     bool m_LaunchedPresentForecast;
 
     void OpenForecastsFromTmpList();
