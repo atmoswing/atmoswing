@@ -39,6 +39,7 @@ syntax: glob
 *.vsp
 *.log
 *.tmp
+*.aux.xml
 desktop.ini
 CMakeCache.txt
 cmake.check_cache
