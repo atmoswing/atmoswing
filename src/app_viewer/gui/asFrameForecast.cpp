@@ -128,7 +128,6 @@ asFrameForecast::asFrameForecast( wxWindow* parent, wxWindowID id )
 asFrameForecastVirtual( parent, id )
 {
     g_SilentMode = false;
-    m_ForecastsDirectory = wxEmptyString;
 
     // Toolbar
     m_ToolBar->AddTool( asID_OPEN, wxT("Open"), img_open, img_open, wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), NULL );
@@ -255,10 +254,6 @@ asFrameForecastVirtual( parent, id )
     pConfig->Read("/MainFrameViewer/Maximize", &doMaximize);
     Maximize(doMaximize);
 
-    // Get last workspace file
-    m_WorkspaceFilePath = wxEmptyString;
-    pConfig->Read("/Workspace/LastOpened", &m_WorkspaceFilePath);
-
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -340,9 +335,28 @@ void asFrameForecast::Init()
     DisplayLogLevelMenu();
     
     // Open last workspace
-    if(!m_WorkspaceFilePath.IsEmpty() && !OpenWorkspace())
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxString workspaceFilePath = wxEmptyString;
+    pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
+
+
+    if(!workspaceFilePath.IsEmpty())
     {
-        asLogWarning(_("Failed to open the workspace file ") + m_WorkspaceFilePath);
+        if (!m_Workspace.Load(workspaceFilePath))
+        {
+            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+        }
+
+        if (!OpenWorkspace())
+        {
+            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+        }
+        
+
+    }
+    else
+    {
+        asLogError("WIIIIZZZZZZZZZARRRRRRRRRRRRRRRDDDDD");
     }
 
     // Set the display options
@@ -352,7 +366,6 @@ void asFrameForecast::Init()
     m_PanelSidebarForecasts->GetPercentilesCtrl()->Select(m_ForecastViewer->GetPercentileSelection());
 
     // Reduce some panels
-    wxConfigBase *pConfig = wxFileConfig::Get();
     bool display = true;
     pConfig->Read("/SidebarPanelsDisplay/Forecasts", &display, true);
     if (!display)
@@ -426,35 +439,28 @@ void asFrameForecast::OnOpenWorkspace(wxCommandEvent & event)
     if(openFileDialog.ShowModal()==wxID_CANCEL)
         return;
 
-    m_WorkspaceFilePath = openFileDialog.GetPath();
+    wxString workspaceFilePath = openFileDialog.GetPath();
 
     // Save preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Workspace/LastOpened", m_WorkspaceFilePath);
+    pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
 
     // Do open the workspace
+    if (!m_Workspace.Load(workspaceFilePath))
+    {
+        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+
     if (!OpenWorkspace())
     {
-        asLogError(_("Failed to open the workspace file ") + m_WorkspaceFilePath);
+        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
     }
 
 }
 
 bool asFrameForecast::OpenWorkspace()
 {
-    // Open the file
-    asFileWorkspace fileWorkspace(m_WorkspaceFilePath, asFile::ReadOnly);
-    if(!fileWorkspace.Open()) return false;
-
-    if(!fileWorkspace.GoToRootElement()) return false;
-
-    // Get general data
-    wxString coordinateSys = fileWorkspace.GetFirstElementAttributeValueText("CoordinateSys", "value");
-    m_ForecastsDirectory = fileWorkspace.GetFirstElementAttributeValueText("ForecastsDirectory", "value");
-
     // GIS layers
-    if(!fileWorkspace.GoToFirstNodeWithPath("Layer")) return false;
-
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Enter();
     #endif
@@ -475,20 +481,16 @@ bool asFrameForecast::OpenWorkspace()
     }
 
     // Open new layers
-    while(true)
+    for (int i_layer=0; i_layer<m_Workspace.GetLayersNb(); i_layer++)
     {
         // Get attributes
-        wxString path = fileWorkspace.GetFirstElementAttributeValueText("Path", "value");
-        wxString type = fileWorkspace.GetFirstElementAttributeValueText("Type", "value");
-        int transparency = fileWorkspace.GetFirstElementAttributeValueInt("Transparency", "value", 0);
-        bool visibility = fileWorkspace.GetFirstElementAttributeValueBool("Visibility", "value", true);
-        int width = fileWorkspace.GetFirstElementAttributeValueInt("Width", "value", 1);
-        long lineColorLong = long(fileWorkspace.GetFirstElementAttributeValueInt("LineColor", "value", 0));
-        wxColour lineColor;
-        lineColor.SetRGB((wxUint32)lineColorLong);
-        long fillColorLong = long(fileWorkspace.GetFirstElementAttributeValueInt("FillColor", "value", 0));
-        wxColour fillColor;
-        fillColor.SetRGB((wxUint32)fillColorLong);
+        wxString path = m_Workspace.GetLayerPath(i_layer);
+        wxString type = m_Workspace.GetLayerType(i_layer);
+        int transparency = m_Workspace.GetLayerTransparency(i_layer);
+        bool visibility = m_Workspace.GetLayerVisibility(i_layer);
+        int width = m_Workspace.GetLayerLineWidth(i_layer);
+        wxColour lineColor = m_Workspace.GetLayerLineColor(i_layer);
+        wxColour fillColor = m_Workspace.GetLayerFillColor(i_layer);
         
         // Open the layers
         if (wxFileName::FileExists(path))
@@ -510,14 +512,14 @@ bool asFrameForecast::OpenWorkspace()
                     render->SetTransparency(transparency);
                     render->SetSize(width);
                     render->SetColorPen(lineColor);
-                    if (fillColorLong==0)
+                   /* if (fillColorLong==0)
                     {
                         render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
                     }
                     else
-                    {
+                    {*/
                         render->SetColorBrush(fillColor);
-                    }
+                    //}
 
                     vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
                     wxASSERT(layer);
@@ -541,9 +543,6 @@ bool asFrameForecast::OpenWorkspace()
         {
             asLogWarning(wxString::Format(_("The file %s cound not be found."), path.c_str()));
         }
-        
-        // Find the next layer
-        if (!fileWorkspace.GoToNextSameNode()) break;
     }
 
     m_ViewerLayerManager->FreezeEnd();
@@ -994,13 +993,15 @@ bool asFrameForecast::OpenRecentForecasts()
 {
     m_ForecastManager->ClearForecasts();
 
-    if (m_ForecastsDirectory.IsEmpty())
+    wxString forecastsDirectory = m_Workspace.GetForecastsDirectory();
+
+    if (forecastsDirectory.IsEmpty())
     {
         asLogError("The directory containing the forecasts was not provided.");
         return false;
     }
 
-    if (!wxFileName::DirExists(m_ForecastsDirectory))
+    if (!wxFileName::DirExists(forecastsDirectory))
     {
         asLogError("The directory that is supposed to contain the forecasts does not exist.");
         return false;
@@ -1010,7 +1011,7 @@ bool asFrameForecast::OpenRecentForecasts()
     double now = asTime::NowMJD();
 
     // Check if today directory exists
-    wxString basePath = m_ForecastsDirectory + wxFileName::GetPathSeparator();
+    wxString basePath = forecastsDirectory + wxFileName::GetPathSeparator();
     wxFileName fullPath(basePath);
     fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(now)));
     fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(now)));
