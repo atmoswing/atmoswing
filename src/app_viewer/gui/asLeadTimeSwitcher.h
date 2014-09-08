@@ -30,6 +30,7 @@
 
 #include "asIncludes.h"
 #include "asResultsAnalogsForecast.h"
+#include "asWorkspace.h"
 #include <wx/graphics.h>
 #include <wx/panel.h>
 #include <wx/overlay.h>
@@ -40,7 +41,7 @@ class asLeadTimeSwitcher : public wxPanel
 {
 public:
     /** Constructor */
-    asLeadTimeSwitcher( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asLeadTimeSwitcher();
     
     void Draw( Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts );
@@ -50,6 +51,7 @@ public:
 private:
     int m_CellWidth;
     int m_LeadTime;
+    asWorkspace* m_Workspace;
     wxBitmap *m_Bmp;
     wxOverlay m_Overlay;
     wxGraphicsContext* m_Gdc;

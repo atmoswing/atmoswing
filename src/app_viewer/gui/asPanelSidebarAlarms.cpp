@@ -33,10 +33,12 @@
  * asPanelSidebarAlarms
  */
 
-asPanelSidebarAlarms::asPanelSidebarAlarms( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
+asPanelSidebarAlarms::asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
+    m_Workspace = workspace;
+
     m_Header->SetLabelText(_("Alarms"));
 
     m_Mode = 1; // 1: values
@@ -86,16 +88,10 @@ void asPanelSidebarAlarms::SetData(Array1DFloat &dates, const VectorString &mode
 
 void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
 {
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    int returnPeriodRef;
-    pConfig->Read("/SidebarAlarms/ReturnPeriod", &returnPeriodRef, 10);
-    float percentileThreshold;
-    pConfig->Read("/SidebarAlarms/Percentile", &percentileThreshold, (float)0.9);
+    int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
+    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
 
-    wxString returnPeriodStr = pConfig->Read("/SidebarAlarms/ReturnPeriod", "??");
-    wxString percentileThresholdStr = pConfig->Read("/SidebarAlarms/Percentile", "??");
-    wxString spec = wxString::Format("T=%s, q=%s", returnPeriodStr.c_str(), percentileThresholdStr.c_str());
-    m_Header->SetLabelText(wxString::Format(_("Alarms (%s)"), spec.c_str()));
+    m_Header->SetLabelText(wxString::Format(_("Alarms (T=%d, q=%g)"), returnPeriodRef, percentileThreshold));
 
     switch (m_Mode)
     {

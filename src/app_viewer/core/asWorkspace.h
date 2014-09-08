@@ -30,6 +30,7 @@
 
 #include <asIncludes.h>
 #include <asFileWorkspace.h>
+#include <wx/colour.h>
 
 class asWorkspace : public wxObject
 {

@@ -32,6 +32,7 @@
 
 #include "asIncludes.h"
 #include "asResultsAnalogsForecast.h"
+#include "asWorkspace.h"
 #include <wx/graphics.h>
 
 class asPanelSidebarAlarms; // predefinition
@@ -64,7 +65,7 @@ class asPanelSidebarAlarms : public asPanelSidebar
 {
 public:
     /** Constructor */
-    asPanelSidebarAlarms( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarAlarms();
 
     void SetData( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
@@ -75,6 +76,7 @@ public:
     }
 
 private:
+    asWorkspace* m_Workspace;
     asPanelSidebarAlarmsDrawing *m_PanelDrawing;
     int m_Mode;
     void OnPaint( wxPaintEvent &event );

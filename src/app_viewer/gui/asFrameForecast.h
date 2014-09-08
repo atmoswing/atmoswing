@@ -141,6 +141,11 @@ public:
         m_ForecastViewer = forecastViewer;
     }
 
+    asWorkspace* GetWorkspace()
+    {
+        return &m_Workspace;
+    }
+
 
 protected:
 
