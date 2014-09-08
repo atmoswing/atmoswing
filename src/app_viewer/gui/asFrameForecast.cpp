@@ -351,12 +351,11 @@ void asFrameForecast::Init()
         {
             asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
-        
-
     }
     else
     {
-        asLogError("WIIIIZZZZZZZZZARRRRRRRRRRRRRRRDDDDD");
+        asWizardWorkspace* wizard = new asWizardWorkspace(this);
+        wizard->Destroy();
     }
 
     // Set the display options
@@ -754,7 +753,7 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 
 void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferencesViewer* frame = new asFramePreferencesViewer(this, asWINDOW_PREFERENCES);
+    asFramePreferencesViewer* frame = new asFramePreferencesViewer(this, &m_Workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }

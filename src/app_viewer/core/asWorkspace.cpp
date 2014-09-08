@@ -31,7 +31,13 @@ asWorkspace::asWorkspace()
 :
 wxObject()
 {
-    
+    m_FilePath = asConfig::GetUserDataDir("AtmoSwing") + DS + "Workspace.xml";
+    m_CoordinateSys = "EPSG:3857";
+    m_ForecastsDirectory = asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts";
+    m_ColorbarMaxValue = 50.0;
+    m_TimeSeriesPlotPastDaysNb = 3;
+    m_AlarmsPanelReturnPeriod = 10;
+    m_AlarmsPanelPercentile = 0.9f;
 }
 
 asWorkspace::~asWorkspace()
@@ -81,6 +87,14 @@ bool asWorkspace::Load(const wxString &filePath)
         // Find the next layer
         if (!fileWorkspace.GoToNextSameNode()) break;
     }
+
+    return true;
+}
+
+bool asWorkspace::Save()
+{
+
+
 
     return true;
 }

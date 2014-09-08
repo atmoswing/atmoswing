@@ -41,6 +41,7 @@ public:
     virtual ~asWorkspace();
 
     bool Load(const wxString &filePath);
+    bool Save();
     int GetLayersNb();
 
     wxString GetFilePath()
@@ -56,6 +57,11 @@ public:
     wxString GetForecastsDirectory()
     {
         return m_ForecastsDirectory;
+    }
+    
+    void SetForecastsDirectory(wxString val)
+    {
+        m_ForecastsDirectory = val;
     }
 
     wxString GetLayerPath(int i)
@@ -99,6 +105,47 @@ public:
         wxASSERT(m_LayerFillColors.size()>i);
         return m_LayerFillColors[i];
     }
+    
+    double GetColorbarMaxValue()
+    {
+        return m_ColorbarMaxValue;
+    }
+    
+    void SetColorbarMaxValue(double val)
+    {
+        m_ColorbarMaxValue = val;
+    }
+
+    int GetTimeSeriesPlotPastDaysNb()
+    {
+        return m_TimeSeriesPlotPastDaysNb;
+    }
+
+    void SetTimeSeriesPlotPastDaysNb(int val)
+    {
+        m_TimeSeriesPlotPastDaysNb = val;
+    }
+
+    int GetAlarmsPanelReturnPeriod()
+    {
+        return m_AlarmsPanelReturnPeriod;
+    }
+    
+    void SetAlarmsPanelReturnPeriod(int val)
+    {
+        m_AlarmsPanelReturnPeriod = val;
+    }
+
+    float GetAlarmsPanelPercentile()
+    {
+        return m_AlarmsPanelPercentile;
+    }
+    
+    void SetAlarmsPanelPercentile(float val)
+    {
+        m_AlarmsPanelPercentile = val;
+    }
+
 
 protected:
 private:
@@ -112,6 +159,10 @@ private:
     VectorInt m_LayerLineWidths;
     vector < wxColour > m_LayerLineColors;
     vector < wxColour > m_LayerFillColors;
+    double m_ColorbarMaxValue;
+    int m_TimeSeriesPlotPastDaysNb;
+    int m_AlarmsPanelReturnPeriod;
+    float m_AlarmsPanelPercentile;
 
 };
 
