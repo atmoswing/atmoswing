@@ -22,30 +22,29 @@
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
+ 
+#ifndef ASFILEWORKSPACE_H
+#define ASFILEWORKSPACE_H
 
-#ifndef ATMOSWINGMAINVIEWER_H
-#define ATMOSWINGMAINVIEWER_H
+#include <asIncludes.h>
+#include <asFileXml.h>
 
-//#include "version.h"
-#include "asIncludes.h"
-#include "AtmoswingAppViewer.h"
-#include "asFrameForecast.h"
-
-
-class AtmoswingFrameViewer: public asFrameForecast
+class asFileWorkspace : public asFileXml
 {
 public:
-    AtmoswingFrameViewer(wxFrame *frame);
-    ~AtmoswingFrameViewer();
+    /** Default constructor */
+    asFileWorkspace(const wxString &FileName, const ListFileMode &FileMode = asFile::Replace);
+
+    /** Default destructor */
+    virtual ~asFileWorkspace();
+
+    bool InsertRootElement();
+    bool GoToRootElement();
+
+protected:
 private:
-    asLogWindow *m_LogWindow;
-    virtual void OnClose(wxCloseEvent& event);
-    virtual void OnQuit(wxCommandEvent& event);
-    void OnShowLog( wxCommandEvent& event );
-    void ProcessTest();
-    void SetDefaultOptions();
 };
 
-#endif // ATMOSWINGMAINVIEWER_H
+#endif // ASFILEWORKSPACE_H

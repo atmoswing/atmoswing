@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
 
 #ifndef ASFRAMEFORECAST_H
@@ -43,6 +44,9 @@
 #include "asPanelSidebarForecasts.h"
 #include "asPanelSidebarStationsList.h"
 #include "asPanelSidebarAlarms.h"
+#include "asPanelSidebarAnalogDates.h"
+#include "asLeadTimeSwitcher.h"
+#include "asWorkspace.h"
 
 const int asID_MOVE_LAYER = wxID_HIGHEST + 1;
 const int mm_POPUP_OFFSET = 50;
@@ -83,25 +87,9 @@ public:
     asFrameForecast(wxWindow* parent, wxWindowID id=asWINDOW_MAIN);
     virtual ~asFrameForecast();
 
-    void OnInit();
+    void Init();
     bool OpenLayers (const wxArrayString & names);
-    void OpenDefaultLayers ();
-    void OpenForecastsFromTmpList();
     bool OpenForecast (const wxArrayString & names);
-    // The next ones need to be public as they are refered in the children events table.
-    void OnForecastProcessTerminate( wxProcessEvent &event );
-    void OnToolSelect (wxCommandEvent & event);
-    void OnToolZoomIn (wxCommandEvent & event);
-    void OnToolZoomOut (wxCommandEvent & event);
-    void OnToolPan (wxCommandEvent & event);
-    void OnKeyDown(wxKeyEvent & event);
-    void OnKeyUp(wxKeyEvent & event);
-    void OnToolAction (wxCommandEvent & event);
-    void OnToolZoomToFit (wxCommandEvent & event);
-    void OnStationSelection( wxCommandEvent& event );
-    void OnForecastClear( wxCommandEvent &event );
-    void OnQuit( wxCommandEvent& event );
-
 
     vrLayerManager *GetLayerManager()
     {
@@ -153,10 +141,16 @@ public:
         m_ForecastViewer = forecastViewer;
     }
 
+    asWorkspace* GetWorkspace()
+    {
+        return &m_Workspace;
+    }
+
 
 protected:
+
+private:
     wxProcess* m_ProcessForecast;
-    // vroomgis
     vrLayerManager *m_LayerManager;
     vrViewerLayerManager *m_ViewerLayerManager;
     vrViewerDisplay *m_DisplayCtrl;
@@ -166,8 +160,19 @@ protected:
     asPanelSidebarGisLayers *m_PanelSidebarGisLayers;
     asPanelSidebarForecasts *m_PanelSidebarForecasts;
     asPanelSidebarStationsList *m_PanelSidebarStationsList;
+    asPanelSidebarCaptionForecastDots *m_PanelSidebarCaptionForecastDots;
+    asPanelSidebarAnalogDates *m_PanelSidebarAnalogDates;
+    asPanelSidebarCaptionForecastRing *m_PanelSidebarCaptionForecastRing;
+    asPanelSidebarAlarms *m_PanelSidebarAlarms;
+    asLeadTimeSwitcher *m_LeadTimeSwitcher;
+    asWorkspace m_Workspace;
     bool m_LaunchedPresentForecast;
-    //    void Update();
+
+    void OpenForecastsFromTmpList();
+    bool OpenRecentForecasts();
+    void OnOpenWorkspace( wxCommandEvent & event );
+    bool OpenWorkspace();
+    void UpdateLeadTimeSwitch();
     void LaunchForecastingNow( wxCommandEvent& event );
     void LaunchForecastingPast( wxCommandEvent& event );
     void OpenFrameForecaster( wxCommandEvent& event );
@@ -188,7 +193,28 @@ protected:
     void OnOpenForecast( wxCommandEvent & event );
     void OnMoveLayer( wxCommandEvent & event );
     void OnToolDisplayValue( wxCommandEvent & event );
+    void OnChangeLeadTime( wxCommandEvent& event );
+    void OnForecastProcessTerminate( wxProcessEvent &event );
+    void OnToolSelect (wxCommandEvent & event);
+    void OnToolZoomIn (wxCommandEvent & event);
+    void OnToolZoomOut (wxCommandEvent & event);
+    void OnToolPan (wxCommandEvent & event);
+    void OnKeyDown(wxKeyEvent & event);
+    void OnKeyUp(wxKeyEvent & event);
+    void OnToolAction (wxCommandEvent & event);
+    void OnToolZoomToFit (wxCommandEvent & event);
+    void FitExtentToForecasts ();
+    void OnStationSelection( wxCommandEvent& event );
+    void OnForecastClear( wxCommandEvent &event );
+    void OnQuit( wxCommandEvent& event );
+    void OnForecastNewAdded( wxCommandEvent& event );
     void ReloadViewerLayerManager( );
+    void UpdateHeaderTexts();
+    void UpdatePanelCaptionAll();
+    void UpdatePanelCaptionColorbar();
+    void UpdatePanelAnalogDates();
+    void UpdatePanelStationsList();
+    void UpdatePanelAlarms();
     #if defined (__WIN32__)
         wxCriticalSection m_CritSectionViewerLayerManager;
     #endif
@@ -198,8 +224,9 @@ protected:
     {
         event.Skip();
     }
+    
 
-private:
+    DECLARE_EVENT_TABLE()
 
 };
 

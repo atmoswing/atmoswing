@@ -37,6 +37,11 @@ asPanelForecastingModelVirtual( parent )
     m_ParentFrame = NULL;
     m_PanelsManager = NULL;
 
+    // Led
+    m_Led = new awxLed( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0 );
+	m_Led->SetState( awxLED_OFF );
+	m_SizerHeader->Insert( 0, m_Led, 0, wxALL, 5 );
+
     // Set the buttons bitmaps
     m_BpButtonClose->SetBitmapLabel(img_close);
     m_BpButtonReduce->SetBitmapLabel(img_shown);

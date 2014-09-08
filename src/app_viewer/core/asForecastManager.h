@@ -32,17 +32,20 @@
 
 
 class asResultsAnalogsForecast;
+#include "asWorkspace.h"
 
 class asForecastManager
 {
 public:
     /** Default constructor */
-    asForecastManager(wxWindow* parent);
+    asForecastManager(wxWindow* parent, asWorkspace* workspace);
 
     /** Default destructor */
     virtual ~asForecastManager();
 
     void ClearArrays();
+
+    void ClearForecasts();
 
     bool Open(const wxString &filePath, bool doRefresh = true);
 
@@ -73,6 +76,8 @@ public:
     wxString GetStationNameWithHeight(int i_fcst, int i_stat);
 
     int GetLeadTimeLength(int i_fcst);
+
+    int GetLeadTimeLengthMax();
 
     wxArrayString GetLeadTimes(int i_fcst);
 
@@ -161,6 +166,7 @@ public:
 protected:
 private:
     wxWindow* m_Parent;
+    asWorkspace* m_Workspace;
     std::vector <asResultsAnalogsForecast*> m_CurrentForecasts; //!< Member variable "m_CurrentForecasts"
     std::vector <std::vector <asResultsAnalogsForecast*> > m_PastForecasts; //!< Member variable "m_PastForecasts"
     double m_LeadTimeOrigin; //!< Member variable "m_LeadTimeOrigin"
