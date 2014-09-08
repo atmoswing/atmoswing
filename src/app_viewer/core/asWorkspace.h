@@ -31,6 +31,7 @@
 #include <asIncludes.h>
 #include <asFileWorkspace.h>
 #include <wx/colour.h>
+#include <wx/brush.h>
 
 class asWorkspace : public wxObject
 {
@@ -44,10 +45,17 @@ public:
     bool Load(const wxString &filePath);
     bool Save();
     int GetLayersNb();
+    void ClearLayers();
+    void AddLayer();
 
     wxString GetFilePath()
     {
         return m_FilePath;
+    }
+    
+    void SetFilePath(wxString &path)
+    {
+        m_FilePath = path;
     }
 
     wxString GetCoordinateSys()
@@ -70,11 +78,23 @@ public:
         wxASSERT(m_LayerPaths.size()>i);
         return m_LayerPaths[i];
     }
+    
+    void SetLayerPath(int i, wxString &val)
+    {
+        wxASSERT(m_LayerPaths.size()>i);
+        m_LayerPaths[i] = val;
+    }
 
     wxString GetLayerType(int i)
     {
         wxASSERT(m_LayerTypes.size()>i);
         return m_LayerTypes[i];
+    }
+    
+    void SetLayerType(int i, wxString &val)
+    {
+        wxASSERT(m_LayerTypes.size()>i);
+        m_LayerTypes[i] = val;
     }
 
     int GetLayerTransparency(int i)
@@ -83,10 +103,22 @@ public:
         return m_LayerTransparencies[i];
     }
 
+    void SetLayerTransparency(int i, int val)
+    {
+        wxASSERT(m_LayerTransparencies.size()>i);
+        m_LayerTransparencies[i] = val;
+    }
+
     bool GetLayerVisibility(int i)
     {
         wxASSERT(m_LayerVisibilities.size()>i);
         return m_LayerVisibilities[i];
+    }
+
+    void SetLayerVisibility(int i, bool val)
+    {
+        wxASSERT(m_LayerVisibilities.size()>i);
+        m_LayerVisibilities[i] = val;
     }
 
     int GetLayerLineWidth(int i)
@@ -95,10 +127,22 @@ public:
         return m_LayerLineWidths[i];
     }
 
+    void SetLayerLineWidth(int i, int val)
+    {
+        wxASSERT(m_LayerLineWidths.size()>i);
+        m_LayerLineWidths[i] = val;
+    }
+
     wxColour GetLayerLineColor(int i)
     {
         wxASSERT(m_LayerLineColors.size()>i);
         return m_LayerLineColors[i];
+    }
+
+    void SetLayerLineColor(int i, wxColour &val)
+    {
+        wxASSERT(m_LayerLineColors.size()>i);
+        m_LayerLineColors[i] = val;
     }
 
     wxColour GetLayerFillColor(int i)
@@ -106,7 +150,25 @@ public:
         wxASSERT(m_LayerFillColors.size()>i);
         return m_LayerFillColors[i];
     }
+
+    void SetLayerFillColor(int i, wxColour &val)
+    {
+        wxASSERT(m_LayerFillColors.size()>i);
+        m_LayerFillColors[i] = val;
+    }
     
+    wxBrushStyle GetLayerBrushStyle(int i)
+    {
+        wxASSERT(m_LayerBrushStyles.size()>i);
+        return m_LayerBrushStyles[i];
+    }
+    
+    void SetLayerBrushStyle(int i, wxBrushStyle &val)
+    {
+        wxASSERT(m_LayerBrushStyles.size()>i);
+        m_LayerBrushStyles[i] = val;
+    }
+
     double GetColorbarMaxValue()
     {
         return m_ColorbarMaxValue;
@@ -160,6 +222,7 @@ private:
     VectorInt m_LayerLineWidths;
     vector < wxColour > m_LayerLineColors;
     vector < wxColour > m_LayerFillColors;
+    vector < wxBrushStyle > m_LayerBrushStyles;
     double m_ColorbarMaxValue;
     int m_TimeSeriesPlotPastDaysNb;
     int m_AlarmsPanelReturnPeriod;

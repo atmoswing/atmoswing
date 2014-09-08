@@ -171,6 +171,10 @@ private:
     void OpenForecastsFromTmpList();
     bool OpenRecentForecasts();
     void OnOpenWorkspace( wxCommandEvent & event );
+    void OnSaveWorkspace(wxCommandEvent & event);
+    void OnSaveWorkspaceAs(wxCommandEvent & event);
+    bool SaveWorkspace();
+    void OnNewWorkspace(wxCommandEvent & event);
     bool OpenWorkspace();
     void UpdateLeadTimeSwitch();
     void LaunchForecastingNow( wxCommandEvent& event );
