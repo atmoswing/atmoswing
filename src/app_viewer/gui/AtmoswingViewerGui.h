@@ -79,11 +79,14 @@ class asFrameForecastVirtual : public wxFrame
 		wxStatusBar* m_StatusBar;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveWorkspaceAs( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOpenForecast( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCloseLayer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnOpenForecast( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel1( wxCommandEvent& event ) { event.Skip(); }

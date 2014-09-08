@@ -457,6 +457,158 @@ void asFrameForecast::OnOpenWorkspace(wxCommandEvent & event)
 
 }
 
+void asFrameForecast::OnSaveWorkspace(wxCommandEvent & event)
+{
+    SaveWorkspace();
+}
+
+void asFrameForecast::OnSaveWorkspaceAs(wxCommandEvent & event)
+{
+    // Ask for a workspace file
+    wxFileDialog openFileDialog (this, _("Select a path to save the workspace"),
+                            wxEmptyString,
+                            wxEmptyString,
+                            "xml files (*.xml)|*.xml",
+                            wxFD_SAVE | wxFD_CHANGE_DIR);
+
+    // If canceled
+    if(openFileDialog.ShowModal()==wxID_CANCEL)
+        return;
+
+    wxString workspaceFilePath = openFileDialog.GetPath();
+    m_Workspace.SetFilePath(workspaceFilePath);
+
+    if(SaveWorkspace())
+    {
+        // Save preferences
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
+    }
+}
+
+bool asFrameForecast::SaveWorkspace()
+{
+    // Update the GIS layers
+    m_Workspace.ClearLayers();
+    int counter = -1;
+    for (int i=0; i<m_ViewerLayerManager->GetCount(); i++)
+    {
+        wxFileName fileName = m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName();
+        wxString path = fileName.GetFullPath();
+
+        if(!path.IsSameAs("Forecast.memory"))
+        {
+            counter++;
+            m_Workspace.AddLayer();
+            m_Workspace.SetLayerPath(counter, path);
+
+            vrDRIVERS_TYPE type = m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetType();
+            wxString strType;
+            switch (type)
+            {
+                case vrDRIVER_UNKNOWN:
+                    strType = "undefined";
+                    break;
+                case vrDRIVER_VECTOR_SHP:
+                    strType = "vector";
+                    break;
+                case vrDRIVER_VECTOR_C2P:
+                    strType = "vector";
+                    break;
+                case vrDRIVER_VECTOR_MEMORY:
+                    strType = "undefined";
+                    break;
+                case vrDRIVER_RASTER_TIFF:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_JPEG:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_ESRIGRID:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_C2D:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_EASC:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_SGRD7:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_WMS:
+                    strType = "wms";
+                    break;
+                case vrDRIVER_USER_DEFINED:
+                    strType = "undefined";
+                    break;
+                default:
+                    strType = "undefined";
+            }
+            m_Workspace.SetLayerType(counter, strType);
+
+            int transparency = m_ViewerLayerManager->GetRenderer(i)->GetRender()->GetTransparency();
+            m_Workspace.SetLayerTransparency(counter, transparency);
+            bool visible = m_ViewerLayerManager->GetRenderer(i)->GetVisible();
+            m_Workspace.SetLayerVisibility(counter, visible);
+
+            if (strType.IsSameAs("vector"))
+            {
+                vrRenderVector * vectRender = (vrRenderVector*) m_ViewerLayerManager->GetRenderer(i)->GetRender();
+                int lineWidth = vectRender->GetSize();
+                m_Workspace.SetLayerLineWidth(counter, lineWidth);
+                wxColour lineColour = vectRender->GetColorPen();
+                m_Workspace.SetLayerLineColor(counter, lineColour);
+                wxColour fillColour = vectRender->GetColorBrush();
+                m_Workspace.SetLayerFillColor(counter, fillColour);
+                wxBrushStyle brushStyle = vectRender->GetBrushStyle();
+                m_Workspace.SetLayerBrushStyle(counter, brushStyle);
+            }
+        }
+    }
+
+    if(!m_Workspace.Save())
+    {
+        asLogError(_("Could not save the worspace."));
+        return false;
+    }
+
+    return true;
+}
+
+void asFrameForecast::OnNewWorkspace(wxCommandEvent & event)
+{
+    /*
+    // Ask for a workspace file
+    wxFileDialog openFileDialog (this, _("Select a workspace"),
+                            wxEmptyString,
+                            wxEmptyString,
+                            "xml files (*.xml)|*.xml",
+                            wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
+
+    // If canceled
+    if(openFileDialog.ShowModal()==wxID_CANCEL)
+        return;
+
+    wxString workspaceFilePath = openFileDialog.GetPath();
+
+    // Save preferences
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
+
+    // Do open the workspace
+    if (!m_Workspace.Load(workspaceFilePath))
+    {
+        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+
+    if (!OpenWorkspace())
+    {
+        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+    }
+    */
+}
+
 bool asFrameForecast::OpenWorkspace()
 {
     // GIS layers
@@ -480,16 +632,13 @@ bool asFrameForecast::OpenWorkspace()
     }
 
     // Open new layers
-    for (int i_layer=0; i_layer<m_Workspace.GetLayersNb(); i_layer++)
+    for (int i_layer=m_Workspace.GetLayersNb()-1; i_layer>=0; i_layer--)
     {
         // Get attributes
         wxString path = m_Workspace.GetLayerPath(i_layer);
         wxString type = m_Workspace.GetLayerType(i_layer);
         int transparency = m_Workspace.GetLayerTransparency(i_layer);
         bool visibility = m_Workspace.GetLayerVisibility(i_layer);
-        int width = m_Workspace.GetLayerLineWidth(i_layer);
-        wxColour lineColor = m_Workspace.GetLayerLineColor(i_layer);
-        wxColour fillColor = m_Workspace.GetLayerFillColor(i_layer);
         
         // Open the layers
         if (wxFileName::FileExists(path))
@@ -507,18 +656,17 @@ bool asFrameForecast::OpenWorkspace()
                 }
                 else if (type.IsSameAs("vector"))
                 {
+                    int width = m_Workspace.GetLayerLineWidth(i_layer);
+                    wxColour lineColor = m_Workspace.GetLayerLineColor(i_layer);
+                    wxColour fillColor = m_Workspace.GetLayerFillColor(i_layer);
+                    wxBrushStyle brushStyle = m_Workspace.GetLayerBrushStyle(i_layer);
+
                     vrRenderVector* render = new vrRenderVector();
                     render->SetTransparency(transparency);
                     render->SetSize(width);
                     render->SetColorPen(lineColor);
-                   /* if (fillColorLong==0)
-                    {
-                        render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
-                    }
-                    else
-                    {*/
-                        render->SetColorBrush(fillColor);
-                    //}
+                    render->SetBrushStyle(brushStyle);
+                    render->SetColorBrush(fillColor);
 
                     vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
                     wxASSERT(layer);
@@ -526,7 +674,12 @@ bool asFrameForecast::OpenWorkspace()
                 }
                 else if (type.IsSameAs("wms"))
                 {
-                    asLogWarning(_("WMS layers are not yet implemented."));
+                    vrRenderRaster* render = new vrRenderRaster();
+                    render->SetTransparency(transparency);
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL, visibility);
                 }
                 else
                 {
