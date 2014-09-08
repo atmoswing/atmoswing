@@ -39,6 +39,9 @@
 #include <wx/textctrl.h>
 #include <wx/radiobox.h>
 #include <wx/checkbox.h>
+#include <wx/wizard.h>
+#include <wx/dynarray.h>
+WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -370,6 +373,23 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		asFramePreferencesViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFramePreferencesViewerVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asWizardWorkspace
+///////////////////////////////////////////////////////////////////////////////
+class asWizardWorkspace : public wxWizard 
+{
+	private:
+	
+	protected:
+	
+	public:
+		
+		asWizardWorkspace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
+		WizardPages m_pages;
+		~asWizardWorkspace();
 	
 };
 

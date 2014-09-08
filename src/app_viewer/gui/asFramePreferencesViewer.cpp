@@ -30,10 +30,11 @@
 #include "wx/fileconf.h"
 #include "wx/thread.h"
 
-asFramePreferencesViewer::asFramePreferencesViewer( wxWindow* parent, wxWindowID id )
+asFramePreferencesViewer::asFramePreferencesViewer( wxWindow* parent, asWorkspace* workspace, wxWindowID id )
 :
 asFramePreferencesViewerVirtual( parent, id )
 {
+    m_Workspace = workspace;
     LoadPreferences();
     Fit();
 
@@ -70,18 +71,16 @@ void asFramePreferencesViewer::LoadPreferences()
      */
 
     // Directories
-    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
-    m_DirPickerForecastResults->SetPath(ForecastResultsDir);
+    m_DirPickerForecastResults->SetPath(m_Workspace->GetForecastsDirectory());
 
     // Forecast display
-    wxString ColorbarMaxValue = pConfig->Read("/GIS/ColorbarMaxValue", "50");
-    m_TextCtrlColorbarMaxValue->SetValue(ColorbarMaxValue);
-    wxString PastDaysNb = pConfig->Read("/Plot/PastDaysNb", "3");
-    m_TextCtrlPastDaysNb->SetValue(PastDaysNb);
+    wxString colorbarMaxValue = wxString::Format("%g", m_Workspace->GetColorbarMaxValue());
+    m_TextCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
+    wxString pastDaysNb = wxString::Format("%d", m_Workspace->GetTimeSeriesPlotPastDaysNb());
+    m_TextCtrlPastDaysNb->SetValue(pastDaysNb);
 
     // Alarms panel
-    int alarmsReturnPeriod;
-    pConfig->Read("/SidebarAlarms/ReturnPeriod", &alarmsReturnPeriod, 10);
+    int alarmsReturnPeriod = m_Workspace->GetAlarmsPanelReturnPeriod();
     switch (alarmsReturnPeriod)
     {
         case 2:
@@ -104,9 +103,8 @@ void asFramePreferencesViewer::LoadPreferences()
             break;
         default:
             m_ChoiceAlarmsReturnPeriod->SetSelection(2);
-            pConfig->Write("/SidebarAlarms/ReturnPeriod", 10);
     }
-    wxString alarmsPercentile = pConfig->Read("/SidebarAlarms/Percentile", "0.9");
+    wxString alarmsPercentile = wxString::Format("%g", m_Workspace->GetAlarmsPanelPercentile());
     m_TextCtrlAlarmsPercentile->SetValue(alarmsPercentile);
 
     /*
@@ -162,15 +160,19 @@ void asFramePreferencesViewer::SavePreferences( )
      */
     
     // Directories
-    wxString ForecastResultsDir = m_DirPickerForecastResults->GetPath();
-    pConfig->Write("/StandardPaths/ForecastResultsDir", ForecastResultsDir);
+    wxString forecastResultsDir = m_DirPickerForecastResults->GetPath();
+    m_Workspace->SetForecastsDirectory(forecastResultsDir);
 
     // Forecast display
-    wxString ColorbarMaxValue = m_TextCtrlColorbarMaxValue->GetValue();
-    pConfig->Write("/GIS/ColorbarMaxValue", ColorbarMaxValue);
-    wxString PastDaysNb = m_TextCtrlPastDaysNb->GetValue();
-    pConfig->Write("/Plot/PastDaysNb", PastDaysNb);
-
+    wxString colorbarMaxValue = m_TextCtrlColorbarMaxValue->GetValue();
+    double colorbarMaxValueDouble;
+    colorbarMaxValue.ToDouble(&colorbarMaxValueDouble);
+    m_Workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
+    wxString pastDaysNb = m_TextCtrlPastDaysNb->GetValue();
+    long pastDaysNbLong;
+    pastDaysNb.ToLong(&pastDaysNbLong);
+    m_Workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+    
     // Alarms panel
     int alarmsReturnPeriod;
     int alarmsReturnPeriodSlct = m_ChoiceAlarmsReturnPeriod->GetSelection();
@@ -197,7 +199,7 @@ void asFramePreferencesViewer::SavePreferences( )
         default:
             alarmsReturnPeriod = 10;
     }
-    pConfig->Write("/SidebarAlarms/ReturnPeriod", alarmsReturnPeriod);
+    m_Workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
     wxString alarmsPercentile = m_TextCtrlAlarmsPercentile->GetValue();
     double alarmsPercentileVal;
     alarmsPercentile.ToDouble(&alarmsPercentileVal);
@@ -205,7 +207,7 @@ void asFramePreferencesViewer::SavePreferences( )
         alarmsPercentileVal = 0.9;
     if (alarmsPercentileVal<0)
         alarmsPercentileVal = 0.9;
-    pConfig->Write("/SidebarAlarms/Percentile", alarmsPercentileVal);
+    m_Workspace->SetAlarmsPanelPercentile(alarmsPercentileVal);
 
     /*
      * General
@@ -240,6 +242,7 @@ void asFramePreferencesViewer::SavePreferences( )
 
     GetParent()->Update();
     pConfig->Flush();
+    m_Workspace->Save();
 }
 
 void asFramePreferencesViewer::SaveAndClose( wxCommandEvent& event )
