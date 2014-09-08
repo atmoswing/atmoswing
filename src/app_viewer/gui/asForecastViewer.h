@@ -33,12 +33,13 @@
 
 
 class asForecastManager;
+class asFrameForecast;
 
 class asForecastViewer
 {
 public:
     /** Default constructor */
-    asForecastViewer(wxWindow* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager);
+    asForecastViewer(asFrameForecast* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager);
     /** Default destructor */
     virtual ~asForecastViewer();
 
@@ -91,7 +92,7 @@ private:
     int m_LeadTimeIndex;
     float m_LayerMaxValue;
     bool m_Opened;
-    wxWindow* m_Parent;
+    asFrameForecast* m_Parent;
     asForecastManager* m_ForecastManager;
     vrLayerManager *m_LayerManager;
     vrViewerLayerManager *m_ViewerLayerManager;

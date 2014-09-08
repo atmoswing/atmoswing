@@ -26,13 +26,15 @@
  */
  
 #include "asLeadTimeSwitcher.h"
+#include "asFrameForecast.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
-asLeadTimeSwitcher::asLeadTimeSwitcher( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
+asLeadTimeSwitcher::asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 :
 wxPanel( parent, id, pos, size, style )
 {
+    m_Workspace = workspace;
     m_Bmp = NULL;
     m_Gdc = NULL;
     m_CellWidth = 10;
@@ -187,11 +189,8 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
 
 Array1DFloat asLeadTimeSwitcher::GetValues(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
 {
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    int returnPeriodRef;
-    pConfig->Read("/SidebarAlarms/ReturnPeriod", &returnPeriodRef, 10);
-    float percentileThreshold;
-    pConfig->Read("/SidebarAlarms/Percentile", &percentileThreshold, (float)0.9);
+    int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
+    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
 
     wxASSERT(returnPeriodRef>=2);
     wxASSERT(percentileThreshold>0);

@@ -29,13 +29,14 @@
 
 #include "asForecastManager.h"
 #include "asResultsAnalogsForecast.h"
+#include "asFrameForecast.h"
 #include "vrLayerVectorFcstRing.h"
 #include "vrLayerVectorFcstDots.h"
 #include "vrlayervector.h"
 #include "vrrender.h"
 
 
-asForecastViewer::asForecastViewer( wxWindow* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager)
+asForecastViewer::asForecastViewer( asFrameForecast* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager)
 {
     m_Parent = parent;
     m_ForecastManager = forecastManager;
@@ -217,8 +218,7 @@ void asForecastViewer::Redraw()
     }
 
     // Get the maximum value
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    double colorbarMaxValue = pConfig->ReadDouble("/GIS/ColorbarMaxValue", 50.0);
+    double colorbarMaxValue = m_Parent->GetWorkspace()->GetColorbarMaxValue();
 
     wxASSERT(m_LeadTimeIndex>=0);
 

@@ -158,7 +158,7 @@ asFrameForecastVirtual( parent, id )
     m_SizerScrolledWindow->Add( m_PanelSidebarForecasts, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
     // Alarms
-    m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, &m_Workspace, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarAlarms->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarAlarms, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
@@ -219,7 +219,7 @@ asFrameForecastVirtual( parent, id )
     m_LayerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
-    m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl());
+    m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl(), &m_Workspace);
 
     // Forecast viewer
     m_ForecastViewer = new asForecastViewer( this, m_ForecastManager, m_LayerManager, m_ViewerLayerManager);
@@ -573,7 +573,7 @@ void asFrameForecast::UpdateLeadTimeSwitch()
 
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_LeadTimeSwitcher);
-    m_LeadTimeSwitcher = new asLeadTimeSwitcher( m_PanelTop, wxID_ANY, wxDefaultPosition, wxSize(width,height), wxTAB_TRAVERSAL );
+    m_LeadTimeSwitcher = new asLeadTimeSwitcher( m_PanelTop, &m_Workspace, wxID_ANY, wxDefaultPosition, wxSize(width,height), wxTAB_TRAVERSAL );
     m_LeadTimeSwitcher->SetBackgroundColour( wxColour( 77, 77, 77 ) );
     m_LeadTimeSwitcher->SetMinSize( wxSize( width, height ) );
     m_LeadTimeSwitcher->Layout();
@@ -649,8 +649,7 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     }
 
     // Set option
-    int nbPrevDays;
-    pConfig->Read("/Plot/PastDaysNb", &nbPrevDays, 3);
+    int nbPrevDays = m_Workspace.GetTimeSeriesPlotPastDaysNb();
     wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
     ForecasterPath.Append(options);
     asLogMessage(wxString::Format(_("Sending command: %s"), ForecasterPath.c_str()));

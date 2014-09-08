@@ -86,16 +86,6 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     bool displayLogWindow;
     pConfig->Read("/Standard/DisplayLogWindowViewer", &displayLogWindow, false);
     pConfig->Write("/Standard/DisplayLogWindowViewer", displayLogWindow);
-    // Multithreading
-    bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
-    pConfig->Write("/Standard/AllowMultithreading", allowMultithreading);
-    // Set the number of threads
-    int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads==-1) maxThreads = 2;
-    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Standard/ProcessingMaxThreadNb", maxThreadsStr);
-    pConfig->Write("/Standard/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
 
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
@@ -176,12 +166,6 @@ void AtmoswingFrameViewer::SetDefaultOptions()
     bool LayerLatLongVisibility;
     pConfig->Read("/GIS/LayerLatLongVisibility", &LayerLatLongVisibility, true);
     pConfig->Write("/GIS/LayerLatLongVisibility", LayerLatLongVisibility);
-
-    // Forecast display
-    wxString ColorbarMaxValue = pConfig->Read("/GIS/ColorbarMaxValue", "50");
-    pConfig->Write("/GIS/ColorbarMaxValue", ColorbarMaxValue);
-    wxString PastDaysNb = pConfig->Read("/Plot/PastDaysNb", "3");
-    pConfig->Write("/GIS/PastDaysNb", PastDaysNb);
 
     pConfig->Flush();
 }
