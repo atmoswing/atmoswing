@@ -380,19 +380,39 @@ class asFramePreferencesViewerVirtual : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asWizardWorkspace
+/// Class asWizardWorkspaceVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asWizardWorkspace : public wxWizard 
+class asWizardWorkspaceVirtual : public wxWizard 
 {
 	private:
 	
 	protected:
+		wxStaticText* m_staticText37;
+		wxStaticText* m_staticText35;
+		wxButton* m_button4;
+		wxStaticText* m_staticText46;
+		wxStaticText* m_staticText36;
+		wxStaticText* m_staticText43;
+		wxFilePickerCtrl* m_FilePickerWorkspaceFile;
+		wxStaticText* m_staticText44;
+		wxStaticText* m_StaticTextForecastResultsDir;
+		wxDirPickerCtrl* m_DirPickerForecastResults;
+		wxStaticText* m_staticText42;
+		wxStaticText* m_staticText45;
+		wxStaticText* m_staticText40;
+		wxChoice* m_ChoiceBaseMap;
+		wxStaticText* m_staticText41;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
+		virtual void OnLoadExistingWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		
-		asWizardWorkspace( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
+		asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Workspace creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
 		WizardPages m_pages;
-		~asWizardWorkspace();
+		~asWizardWorkspaceVirtual();
 	
 };
 

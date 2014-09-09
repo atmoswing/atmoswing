@@ -79,7 +79,7 @@ public:
         return m_LayerPaths[i];
     }
     
-    void SetLayerPath(int i, wxString &val)
+    void SetLayerPath(int i, const wxString &val)
     {
         wxASSERT(m_LayerPaths.size()>i);
         m_LayerPaths[i] = val;
@@ -91,7 +91,7 @@ public:
         return m_LayerTypes[i];
     }
     
-    void SetLayerType(int i, wxString &val)
+    void SetLayerType(int i, const wxString &val)
     {
         wxASSERT(m_LayerTypes.size()>i);
         m_LayerTypes[i] = val;
