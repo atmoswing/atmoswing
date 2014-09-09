@@ -47,6 +47,8 @@ asWorkspace::~asWorkspace()
 
 bool asWorkspace::Load(const wxString &filePath)
 {
+    ClearLayers();
+
     // Open the file
     m_FilePath = filePath;
     asFileWorkspace fileWorkspace(filePath, asFile::ReadOnly);

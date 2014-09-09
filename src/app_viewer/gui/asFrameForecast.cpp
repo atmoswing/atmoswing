@@ -44,6 +44,7 @@
 #include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
 #include "asFileWorkspace.h"
+#include "asWizardWorkspace.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
 #include "img_logo.h"
@@ -77,7 +78,8 @@ BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
-
+    
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_WORKSPACE, asFrameForecast::OnOpenWorkspace)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, asFrameForecast::OnChangeLeadTime)
 //    EVT_COMMAND(wxID_ANY, asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
@@ -254,6 +256,8 @@ asFrameForecastVirtual( parent, id )
     pConfig->Read("/MainFrameViewer/Maximize", &doMaximize);
     Maximize(doMaximize);
 
+    Layout();
+
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -354,8 +358,10 @@ void asFrameForecast::Init()
     }
     else
     {
-        asWizardWorkspace* wizard = new asWizardWorkspace(this);
-        wizard->Destroy();
+        asWizardWorkspace wizard(this, &m_Workspace);
+        wizard.RunWizard(wizard.GetFirstPage());
+
+        OpenWorkspace();
     }
 
     // Set the display options
@@ -578,6 +584,9 @@ bool asFrameForecast::SaveWorkspace()
 
 void asFrameForecast::OnNewWorkspace(wxCommandEvent & event)
 {
+    asWizardWorkspace wizard(this, &m_Workspace);
+    wizard.RunWizard(wizard.GetSecondPage());
+
     /*
     // Ask for a workspace file
     wxFileDialog openFileDialog (this, _("Select a workspace"),

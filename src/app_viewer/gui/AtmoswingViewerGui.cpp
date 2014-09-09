@@ -1136,14 +1136,118 @@ asFramePreferencesViewerVirtual::~asFramePreferencesViewerVirtual()
 	
 }
 
-asWizardWorkspace::asWizardWorkspace( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style ) 
+asWizardWorkspaceVirtual::asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style ) 
 {
 	this->Create( parent, id, title, bitmap, pos, style );
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
 	
 	wxWizardPageSimple* m_wizPage1 = new wxWizardPageSimple( this );
 	m_pages.Add( m_wizPage1 );
 	
+	wxBoxSizer* bSizer48;
+	bSizer48 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText37 = new wxStaticText( m_wizPage1, wxID_ANY, _("Load / create a workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText37->Wrap( -1 );
+	m_staticText37->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer48->Add( m_staticText37, 0, wxALL, 5 );
+	
+	m_staticText35 = new wxStaticText( m_wizPage1, wxID_ANY, _("Press the button below to load an existing file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35->Wrap( -1 );
+	bSizer48->Add( m_staticText35, 0, wxALL|wxEXPAND, 5 );
+	
+	m_button4 = new wxButton( m_wizPage1, wxID_ANY, _("Load existing workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer48->Add( m_button4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	m_staticText46 = new wxStaticText( m_wizPage1, wxID_ANY, _("or continue to create a new workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText46->Wrap( -1 );
+	bSizer48->Add( m_staticText46, 0, wxALL, 5 );
+	
+	
+	m_wizPage1->SetSizer( bSizer48 );
+	m_wizPage1->Layout();
+	bSizer48->Fit( m_wizPage1 );
+	wxWizardPageSimple* m_wizPage2 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage2 );
+	
+	wxBoxSizer* bSizer49;
+	bSizer49 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText36 = new wxStaticText( m_wizPage2, wxID_ANY, _("Create a new workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36->Wrap( -1 );
+	m_staticText36->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer49->Add( m_staticText36, 0, wxALL, 5 );
+	
+	m_staticText43 = new wxStaticText( m_wizPage2, wxID_ANY, _("Path to save the new workspace file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText43->Wrap( -1 );
+	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
+	
+	m_FilePickerWorkspaceFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
+	bSizer49->Add( m_FilePickerWorkspaceFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	m_wizPage2->SetSizer( bSizer49 );
+	m_wizPage2->Layout();
+	bSizer49->Fit( m_wizPage2 );
+	wxWizardPageSimple* m_wizPage3 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage3 );
+	
+	wxBoxSizer* bSizer50;
+	bSizer50 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText44 = new wxStaticText( m_wizPage3, wxID_ANY, _("Workspace options"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText44->Wrap( -1 );
+	m_staticText44->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer50->Add( m_staticText44, 0, wxALL, 5 );
+	
+	m_StaticTextForecastResultsDir = new wxStaticText( m_wizPage3, wxID_ANY, _("Provide the path to the forecasts directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextForecastResultsDir->Wrap( -1 );
+	bSizer50->Add( m_StaticTextForecastResultsDir, 0, wxALL, 5 );
+	
+	m_DirPickerForecastResults = new wxDirPickerCtrl( m_wizPage3, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	bSizer50->Add( m_DirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_staticText42 = new wxStaticText( m_wizPage3, wxID_ANY, _("Other workspace parameters can be defined in the preferences frame."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText42->Wrap( -1 );
+	bSizer50->Add( m_staticText42, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_wizPage3->SetSizer( bSizer50 );
+	m_wizPage3->Layout();
+	bSizer50->Fit( m_wizPage3 );
+	wxWizardPageSimple* m_wizPage4 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage4 );
+	
+	wxBoxSizer* bSizer51;
+	bSizer51 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText45 = new wxStaticText( m_wizPage4, wxID_ANY, _("Base map"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText45->Wrap( -1 );
+	m_staticText45->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer51->Add( m_staticText45, 0, wxALL, 5 );
+	
+	m_staticText40 = new wxStaticText( m_wizPage4, wxID_ANY, _("Choose the base map for your project"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText40->Wrap( -1 );
+	bSizer51->Add( m_staticText40, 0, wxALL, 5 );
+	
+	wxString m_ChoiceBaseMapChoices[] = { _("Custom layers"), _("Terrain from Google maps (recommended)"), _("Map from Google maps"), _("Map from Openstreetmap"), _("Map from ArcGIS Mapserver"), _("Satellite imagery from Google maps"), _("Satellite imagery from VirtualEarth") };
+	int m_ChoiceBaseMapNChoices = sizeof( m_ChoiceBaseMapChoices ) / sizeof( wxString );
+	m_ChoiceBaseMap = new wxChoice( m_wizPage4, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceBaseMapNChoices, m_ChoiceBaseMapChoices, 0 );
+	m_ChoiceBaseMap->SetSelection( 0 );
+	bSizer51->Add( m_ChoiceBaseMap, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	
+	m_staticText41 = new wxStaticText( m_wizPage4, wxID_ANY, _("Other GIS layers can be added in the viewer frame directly, and be saved to the workspace."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText41->Wrap( -1 );
+	bSizer51->Add( m_staticText41, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_wizPage4->SetSizer( bSizer51 );
+	m_wizPage4->Layout();
+	bSizer51->Fit( m_wizPage4 );
 	
 	this->Centre( wxBOTH );
 	
@@ -1152,9 +1256,17 @@ asWizardWorkspace::asWizardWorkspace( wxWindow* parent, wxWindowID id, const wxS
 		m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );
 		m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );
 	}
+	
+	// Connect Events
+	this->Connect( wxID_ANY, wxEVT_WIZARD_FINISHED, wxWizardEventHandler( asWizardWorkspaceVirtual::OnWizardFinished ) );
+	m_button4->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardWorkspaceVirtual::OnLoadExistingWorkspace ), NULL, this );
 }
 
-asWizardWorkspace::~asWizardWorkspace()
+asWizardWorkspaceVirtual::~asWizardWorkspaceVirtual()
 {
+	// Disconnect Events
+	this->Disconnect( wxID_ANY, wxEVT_WIZARD_FINISHED, wxWizardEventHandler( asWizardWorkspaceVirtual::OnWizardFinished ) );
+	m_button4->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardWorkspaceVirtual::OnLoadExistingWorkspace ), NULL, this );
+	
 	m_pages.Clear();
 }
