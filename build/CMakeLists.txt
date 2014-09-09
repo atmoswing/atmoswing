@@ -12,7 +12,7 @@ endif (UNIX)
 # Version number
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "3")
-set(VERSION_PATCH "1")
+set(VERSION_PATCH "2")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
@@ -708,28 +708,36 @@ endif (BUILD_TESTS)
 
 
 #### INSTALLER
+
+set(INSTALL_DIR_BIN bin)
+set(INSTALL_DIR_SHARE share/atmoswing)
+if (WIN32)
+    set(INSTALL_DIR_BIN .)
+    set(INSTALL_DIR_SHARE .)
+endif (WIN32)
  
 if (BUILD_FORECASTER)
-install ( TARGETS atmoswing-forecaster DESTINATION bin)
+install ( TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})
 endif (BUILD_FORECASTER)
 
 if (BUILD_VIEWER)
-install ( TARGETS atmoswing-viewer DESTINATION bin)
+install ( TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 endif (BUILD_VIEWER)
 
 if (BUILD_CALIBRATOR)
-install ( TARGETS atmoswing-calibrator DESTINATION bin)
+# Do not include the calibrator yet.
+# install ( TARGETS atmoswing-calibrator DESTINATION ${INSTALL_DIR_BIN})
 endif (BUILD_CALIBRATOR)
 
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal110.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
+          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
           DESTINATION .
           )
     else (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ../bin/gdal110.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib1.dll ../bin/msvcr110.dll
+          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib1.dll ../bin/msvcr110.dll
           DESTINATION .
           )
     endif (USE_PROVIDED_LIBRARIES)
@@ -737,14 +745,19 @@ endif (WIN32)
   
 install (
   FILES ../license.txt ../notice.txt
-  DESTINATION share/atmoswing
+  DESTINATION ${INSTALL_DIR_SHARE}
   )
   
 install (
   DIRECTORY ../config
-  DESTINATION share/atmoswing
+  DESTINATION ${INSTALL_DIR_SHARE}
   )
- 
+
+install (
+  DIRECTORY ../data
+  DESTINATION ${INSTALL_DIR_SHARE}
+  )
+  
 # COMMON PROPERTIES
 
 set(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
@@ -800,18 +813,22 @@ if (WIN32)
     set(CPACK_GENERATOR "NSIS")
     set(CPACK_PACKAGE_INSTALL_DIRECTORY "AtmoSwing")
     set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_ARCH}-Setup")
+    set(CPACK_PACKAGE_EXECUTABLES "atmoswing-viewer;AtmoSwing viewer;atmoswing-forecaster;AtmoSwing forecaster")
+    set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}")
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/cpack/license.txt")
     set(CPACK_NSIS_DISPLAY_NAME "AtmoSwing")
     set(CPACK_NSIS_CONTACT "Pascal Horton pascal.horton@terranum.ch")
-    set(CPACK_NSIS_HELP_LINK "www.bitbucket.org/atmoswing/atmoswing")
+    set(CPACK_NSIS_HELP_LINK "www.atmoswing.org")
     set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
-    set(CPACK_NSIS_URL_INFO_ABOUT "www.bitbucket.org/atmoswing/atmoswing")
-    set(CPACK_NSIS_MENU_LINKS 
-        "${CMAKE_PROJECT_NAME}" "${CMAKE_PROJECT_NAME}" 
-        "https://www.bitbucket.org/atmoswing/atmoswing" "www.bitbucket.org")
+    set(CPACK_NSIS_URL_INFO_ABOUT "www.atmoswing.org")
+    set(CPACK_NSIS_MENU_LINKS
+        "http://www.atmoswing.org" "www.atmoswing.org")
+    set(CPACK_CREATE_DESKTOP_LINKS "atmoswing-viewer;atmoswing-forecaster")
     set(CPACK_NSIS_COMPRESSOR "lzma")
-    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "OFF")
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
     set(CPACK_NSIS_MODIFY_PATH "ON")
+    # Icon in the add/remove control panel. Must be an .exe file 
+    set(CPACK_NSIS_INSTALLED_ICON_NAME atmoswing-viewer.exe)
     if (CMAKE_CL_64) 
         set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64") 
     else()
