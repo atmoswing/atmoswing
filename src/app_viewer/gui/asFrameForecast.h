@@ -48,9 +48,8 @@
 #include "asLeadTimeSwitcher.h"
 #include "asWorkspace.h"
 
-const int asID_MOVE_LAYER = wxID_HIGHEST + 1;
-const int mm_POPUP_OFFSET = 50;
-const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + mm_POPUP_OFFSET;
+const int as_POPUP_OFFSET = 50;
+const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
 
 
 /** Implementing vroomDropFiles */
@@ -210,6 +209,7 @@ private:
     void FitExtentToForecasts ();
     void OnStationSelection( wxCommandEvent& event );
     void OnForecastClear( wxCommandEvent &event );
+    void OnClose(wxCloseEvent& event);
     void OnQuit( wxCommandEvent& event );
     void OnForecastNewAdded( wxCommandEvent& event );
     void ReloadViewerLayerManager( );
