@@ -59,30 +59,22 @@
 
 BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
+	EVT_CLOSE(asFrameForecast::OnClose)
+    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
+    EVT_KEY_UP(asFrameForecast::OnKeyUp)
     EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
-/*    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
-    EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
-    EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
-    EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
     EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
     EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
     EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
     EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
-    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)/*
-    EVT_MENU (vlID_MOVE_LAYER, asFrameForecast::OnMoveLayer)
-*/
-    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
-    EVT_KEY_UP(asFrameForecast::OnKeyUp)
-
+    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
-    
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_WORKSPACE, asFrameForecast::OnOpenWorkspace)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, asFrameForecast::OnChangeLeadTime)
-//    EVT_COMMAND(wxID_ANY, asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
@@ -579,6 +571,8 @@ bool asFrameForecast::SaveWorkspace()
         return false;
     }
 
+    m_Workspace.SetHasChanged(false);
+
     return true;
 }
 
@@ -683,12 +677,30 @@ bool asFrameForecast::OpenWorkspace()
     m_ScrolledWindowOptions->Layout();
     m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
     Layout();
+    
+    m_Workspace.SetHasChanged(false);
 
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
 
     return true;
+}
+
+void asFrameForecast::OnClose(wxCloseEvent& event)
+{
+    if ( event.CanVeto() && m_Workspace.HasChanged() )
+    {
+        if ( wxMessageBox("The workspace has not been saved... continue closing?",
+                          "Please confirm",
+                          wxICON_QUESTION | wxYES_NO) != wxYES )
+        {
+            event.Veto();
+            return;
+        }
+    }
+    
+    event.Skip();
 }
 
 void asFrameForecast::OnQuit( wxCommandEvent& event )
@@ -985,6 +997,8 @@ bool asFrameForecast::OpenLayers (const wxArrayString & names)
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
+        
+    m_Workspace.SetHasChanged(true);
 
     return true;
 
@@ -1076,6 +1090,8 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent & event)
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
+
+    m_Workspace.SetHasChanged(true);
 }
 
 void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
@@ -1457,6 +1473,8 @@ void asFrameForecast::OnMoveLayer (wxCommandEvent & event)
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
+
+    m_Workspace.SetHasChanged(true);
 }
 
 void asFrameForecast::OnToolAction (wxCommandEvent & event)

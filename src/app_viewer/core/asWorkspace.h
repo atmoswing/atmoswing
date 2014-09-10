@@ -209,9 +209,20 @@ public:
         m_AlarmsPanelPercentile = val;
     }
 
+    bool HasChanged()
+    {
+        return m_HasChanged;
+    }
+
+    void SetHasChanged(bool val)
+    {
+        m_HasChanged = val;
+    }
+
 
 protected:
 private:
+    bool m_HasChanged;
     wxString m_FilePath;
     wxString m_CoordinateSys;
     wxString m_ForecastsDirectory;

@@ -86,6 +86,7 @@ class asFrameForecastVirtual : public wxFrame
 		virtual void OnOpenForecast( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCloseLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMoveLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
