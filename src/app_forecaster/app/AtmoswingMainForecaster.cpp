@@ -77,16 +77,16 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
 
     // Create log window and file
     bool displayLogWindow;
-    pConfig->Read("/Standard/DisplayLogWindow", &displayLogWindow, true);
+    pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
     m_LogWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
     Log().CreateFile("AtmoSwingForecaster.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->Read("/MainFrameForecaster/x", 50),
-        y = pConfig->Read("/MainFrameForecaster/y", 50),
-        w = pConfig->Read("/MainFrameForecaster/w", minWidth),
-        h = pConfig->Read("/MainFrameForecaster/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50),
+        y = pConfig->Read("/MainFrame/y", 50),
+        w = pConfig->Read("/MainFrame/w", minWidth),
+        h = pConfig->Read("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x<screen.x-10) x = screen.x;
     if (x>screen.width) x = screen.x;
@@ -103,7 +103,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     Fit();
 
     // Get the GUI mode -> silent or not
-    long guiOptions = pConfig->Read("/Standard/GuiOptions", 0l);
+    long guiOptions = pConfig->Read("/General/GuiOptions", 0l);
     if (guiOptions==0l)
     {
         g_SilentMode = true;
@@ -126,27 +126,27 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     wxString pathSep = wxFileName::GetPathSeparator();
 
     // General
-    long guiOptions = pConfig->Read("/Standard/GuiOptions", 1l);
-    pConfig->Write("/Standard/GuiOptions", guiOptions);
+    long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
+    pConfig->Write("/General/GuiOptions", guiOptions);
     bool responsive;
-    pConfig->Read("/Standard/Responsive", &responsive, true);
-    pConfig->Write("/Standard/Responsive", responsive);
+    pConfig->Read("/General/Responsive", &responsive, true);
+    pConfig->Write("/General/Responsive", responsive);
     long defaultLogLevel = 1; // = selection +1
-    long logLevel = pConfig->Read("/Standard/LogLevel", defaultLogLevel);
-    pConfig->Write("/Standard/LogLevel", logLevel);
+    long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
+    pConfig->Write("/General/LogLevel", logLevel);
     bool displayLogWindow;
-    pConfig->Read("/Standard/DisplayLogWindow", &displayLogWindow, false);
-    pConfig->Write("/Standard/DisplayLogWindow", displayLogWindow);
+    pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
+    pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
     // Multithreading
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
-    pConfig->Write("/Standard/AllowMultithreading", allowMultithreading);
+    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Write("/General/AllowMultithreading", allowMultithreading);
     // Set the number of threads
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads==-1) maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Standard/ProcessingMaxThreadNb", maxThreadsStr);
-    pConfig->Write("/Standard/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
+    wxString ProcessingMaxThreadNb = pConfig->Read("/General/ProcessingMaxThreadNb", maxThreadsStr);
+    pConfig->Write("/General/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
 
     // Internet
     int maxPrevStepsNb = 5;
@@ -167,22 +167,22 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
     wxString dirData = asConfig::GetDataDir()+"data"+DS;
-    wxString PredictandDBDir = pConfig->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
-    pConfig->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
-    pConfig->Write("/StandardPaths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
-    pConfig->Write("/StandardPaths/ForecastResultsDir", ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
-    pConfig->Write("/StandardPaths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", asConfig::GetDataDir()+"AtmoSwingForecaster.exe");
-    pConfig->Write("/StandardPaths/ForecasterPath", ForecasterPath);
-    wxString ViewerPath = pConfig->Read("/StandardPaths/ViewerPath", asConfig::GetDataDir()+"AtmoSwingViewer.exe");
-    pConfig->Write("/StandardPaths/ViewerPath", ViewerPath);
-    wxString ArchivePredictorsDir = pConfig->Read("/StandardPaths/ArchivePredictorsDir", dirData+"predictors");
-    pConfig->Write("/StandardPaths/ArchivePredictorsDir", ArchivePredictorsDir);
-    wxString ForecastParametersDir = pConfig->Read("/StandardPaths/ForecastParametersDir", dirConfig);
-    pConfig->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
+    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
+    pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
+    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
+    pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
+    wxString ForecastResultsDir = pConfig->Read("/Paths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
+    pConfig->Write("/Paths/ForecastResultsDir", ForecastResultsDir);
+    wxString RealtimePredictorSavingDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
+    pConfig->Write("/Paths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
+    wxString ForecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetDataDir()+"AtmoSwingForecaster.exe");
+    pConfig->Write("/Paths/ForecasterPath", ForecasterPath);
+    wxString ViewerPath = pConfig->Read("/Paths/ViewerPath", asConfig::GetDataDir()+"AtmoSwingViewer.exe");
+    pConfig->Write("/Paths/ViewerPath", ViewerPath);
+    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
+    pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
+    wxString ForecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
+    pConfig->Write("/Paths/ForecastParametersDir", ForecastParametersDir);
 
     // Processing
     long defaultMethod = (long)asMULTITHREADS;
@@ -210,10 +210,10 @@ AtmoswingFrameForecaster::~AtmoswingFrameForecaster()
     int x, y, w, h;
     GetClientSize(&w, &h);
     GetPosition(&x, &y);
-    pConfig->Write("/MainFrameForecaster/x", (long) x);
-    pConfig->Write("/MainFrameForecaster/y", (long) y);
-    pConfig->Write("/MainFrameForecaster/w", (long) w);
-    pConfig->Write("/MainFrameForecaster/h", (long) h);
+    pConfig->Write("/MainFrame/x", (long) x);
+    pConfig->Write("/MainFrame/y", (long) y);
+    pConfig->Write("/MainFrame/w", (long) w);
+    pConfig->Write("/MainFrame/h", (long) h);
 
     //wxDELETE(m_LogWindow);
 }

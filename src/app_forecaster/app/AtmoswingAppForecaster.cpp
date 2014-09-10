@@ -97,7 +97,7 @@ bool AtmoswingAppForecaster::OnInit()
     #if wxUSE_GUI
         // Check that it is the unique instance
         bool multipleInstances;
-        pConfig->Read("/Standard/MultiInstances", &multipleInstances, false);
+        pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
         if (!multipleInstances)
         {
@@ -157,7 +157,7 @@ bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
     // Set log level
     if (logLevel<0)
     {
-        logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
+        logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     }
     Log().CreateFileOnly("AtmoSwingForecaster.log");
     Log().SetLevel((int)logLevel);

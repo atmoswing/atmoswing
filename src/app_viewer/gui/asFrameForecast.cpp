@@ -233,10 +233,10 @@ asFrameForecastVirtual( parent, id )
     // Restore frame position and size
     wxConfigBase *pConfig = wxFileConfig::Get();
     int minHeight = 450, minWidth = 800;
-    int x = pConfig->Read("/MainFrameViewer/x", 50),
-        y = pConfig->Read("/MainFrameViewer/y", 50),
-        w = pConfig->Read("/MainFrameViewer/w", minWidth),
-        h = pConfig->Read("/MainFrameViewer/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50),
+        y = pConfig->Read("/MainFrame/y", 50),
+        w = pConfig->Read("/MainFrame/w", minWidth),
+        h = pConfig->Read("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x<screen.x-10) x = screen.x;
     if (x>screen.width) x = screen.x;
@@ -253,7 +253,7 @@ asFrameForecastVirtual( parent, id )
     SetClientSize(w, h);
 
     bool doMaximize;
-    pConfig->Read("/MainFrameViewer/Maximize", &doMaximize);
+    pConfig->Read("/MainFrame/Maximize", &doMaximize);
     Maximize(doMaximize);
 
     Layout();
@@ -278,16 +278,16 @@ asFrameForecast::~asFrameForecast()
 
     // Save the frame position
     bool doMaximize = IsMaximized();
-    pConfig->Write("/MainFrameViewer/Maximize", doMaximize);
+    pConfig->Write("/MainFrame/Maximize", doMaximize);
     if (!doMaximize)
     {
         int x, y, w, h;
         GetClientSize(&w, &h);
         GetPosition(&x, &y);
-        pConfig->Write("/MainFrameViewer/x", (long) x);
-        pConfig->Write("/MainFrameViewer/y", (long) y);
-        pConfig->Write("/MainFrameViewer/w", (long) w);
-        pConfig->Write("/MainFrameViewer/h", (long) h);
+        pConfig->Write("/MainFrame/x", (long) x);
+        pConfig->Write("/MainFrame/y", (long) y);
+        pConfig->Write("/MainFrame/w", (long) w);
+        pConfig->Write("/MainFrame/h", (long) h);
     }
 
     // Disconnect Events
@@ -586,36 +586,6 @@ void asFrameForecast::OnNewWorkspace(wxCommandEvent & event)
 {
     asWizardWorkspace wizard(this, &m_Workspace);
     wizard.RunWizard(wizard.GetSecondPage());
-
-    /*
-    // Ask for a workspace file
-    wxFileDialog openFileDialog (this, _("Select a workspace"),
-                            wxEmptyString,
-                            wxEmptyString,
-                            "xml files (*.xml)|*.xml",
-                            wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
-
-    // If canceled
-    if(openFileDialog.ShowModal()==wxID_CANCEL)
-        return;
-
-    wxString workspaceFilePath = openFileDialog.GetPath();
-
-    // Save preferences
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
-
-    // Do open the workspace
-    if (!m_Workspace.Load(workspaceFilePath))
-    {
-        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
-    }
-
-    if (!OpenWorkspace())
-    {
-        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
-    }
-    */
 }
 
 bool asFrameForecast::OpenWorkspace()
@@ -758,9 +728,9 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
 
     // Get forecaster path
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", wxEmptyString);
+    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir()+"atmoswing-forecaster");
 
-    if(ForecasterPath.IsEmpty())
+    if(forecasterPath.IsEmpty())
     {
         asLogError(_("Please set the path to the forecaster in the preferences."));
         return;
@@ -768,8 +738,8 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
 
     // Set option
     wxString options = wxString::Format(" -fn -ll 2 -lt file");
-    ForecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), ForecasterPath.c_str()));
+    forecasterPath.Append(options);
+    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath.c_str()));
 
     // Create a process
     if (m_ProcessForecast!=NULL)
@@ -783,7 +753,7 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
     //m_ProcessForecast->Redirect(); // CAUTION redirect causes the downloads to hang after a few ones!
 
     // Execute
-    long processId = wxExecute(ForecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
+    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
 
     if (processId==0) // if wxEXEC_ASYNC
     {
@@ -802,9 +772,9 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
 
     // Get forecaster path
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", wxEmptyString);
+    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir()+"atmoswing-forecaster");
 
-    if(ForecasterPath.IsEmpty())
+    if(forecasterPath.IsEmpty())
     {
         asLogError(_("Please set the path to the forecaster in the preferences."));
         return;
@@ -813,8 +783,8 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     // Set option
     int nbPrevDays = m_Workspace.GetTimeSeriesPlotPastDaysNb();
     wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
-    ForecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), ForecasterPath.c_str()));
+    forecasterPath.Append(options);
+    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath.c_str()));
 
     // Create a process
     if (m_ProcessForecast!=NULL)
@@ -828,7 +798,7 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     //m_ProcessForecast->Redirect(); // CAUTION redirect causes the downloads to hang after a few ones!
 
     // Execute
-    long processId = wxExecute(ForecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
+    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
 
     if (processId==0) // if wxEXEC_ASYNC
     {
@@ -878,16 +848,16 @@ void asFrameForecast::OnForecastProcessTerminate( wxProcessEvent &event )
 void asFrameForecast::OpenFrameForecaster( wxCommandEvent& event )
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", wxEmptyString);
+    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir()+"atmoswing-forecaster");
 
-    if(ForecasterPath.IsEmpty())
+    if(forecasterPath.IsEmpty())
     {
         asLogError(_("Please set the path to the forecaster in the preferences."));
         return;
     }
 
     // Execute
-    long processId = wxExecute(ForecasterPath, wxEXEC_ASYNC);
+    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC);
 
     if (processId==0) // if wxEXEC_ASYNC
     {
@@ -932,7 +902,7 @@ void asFrameForecast::OnLogLevel1( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(true);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
-    wxFileConfig::Get()->Write("/Standard/LogLevelViewer", 1l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -943,7 +913,7 @@ void asFrameForecast::OnLogLevel2( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(true);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
-    wxFileConfig::Get()->Write("/Standard/LogLevelViewer", 2l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -954,7 +924,7 @@ void asFrameForecast::OnLogLevel3( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(true);
-    wxFileConfig::Get()->Write("/Standard/LogLevelViewer", 3l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -962,7 +932,7 @@ void asFrameForecast::OnLogLevel3( wxCommandEvent& event )
 void asFrameForecast::DisplayLogLevelMenu()
 {
     // Set log level in the menu
-    int logLevel = (int)wxFileConfig::Get()->Read("/Standard/LogLevelViewer", 2l);
+    int logLevel = (int)wxFileConfig::Get()->Read("/General/LogLevel", 1l);
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);

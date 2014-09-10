@@ -43,8 +43,7 @@ asConfig::~asConfig()
 wxString asConfig::GetLogDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString TempDir = stdPth.GetTempDir();
+    wxString TempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
     TempDir.Append(DS);
     return TempDir;
@@ -53,8 +52,7 @@ wxString asConfig::GetLogDir()
 wxString asConfig::GetTempDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString TempDir = stdPth.GetTempDir();
+    wxString TempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
     TempDir.Append(DS);
     return TempDir;
@@ -84,18 +82,27 @@ wxString asConfig::CreateTempFileName(const wxString& prefix)
 wxString asConfig::GetDataDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString DirData = stdPth.GetDataDir();
+    wxString DirData = wxStandardPaths::Get().GetDataDir();
     ThreadsManager().CritSectionConfig().Leave();
     DirData.Append(DS);
     return DirData;
 }
 
+wxString asConfig::GetSoftDir()
+{
+    ThreadsManager().CritSectionConfig().Enter();
+    wxString appPath = wxStandardPaths::Get().GetExecutablePath();
+    ThreadsManager().CritSectionConfig().Leave();
+    wxFileName fileName(appPath);
+    wxString appDir = fileName.GetPath();
+    appDir.Append(DS);
+    return appDir;
+}
+
 wxString asConfig::GetUserDataDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString DirUserData = stdPth.GetUserDataDir();
+    wxString DirUserData = wxStandardPaths::Get().GetUserDataDir();
     ThreadsManager().CritSectionConfig().Leave();
     DirUserData.Append(DS);
     return DirUserData;
@@ -125,8 +132,7 @@ wxString asConfig::GetUserDataDir(const wxString &appName)
 wxString asConfig::GetDocumentsDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString DirDocs = stdPth.GetDocumentsDir ();
+    wxString DirDocs = wxStandardPaths::Get().GetDocumentsDir ();
     ThreadsManager().CritSectionConfig().Leave();
     DirDocs.Append(DS);
     return DirDocs;

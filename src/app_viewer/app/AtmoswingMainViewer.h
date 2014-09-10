@@ -45,7 +45,6 @@ private:
     virtual void OnQuit(wxCommandEvent& event);
     void OnShowLog( wxCommandEvent& event );
     void ProcessTest();
-    void SetDefaultOptions();
 };
 
 #endif // ATMOSWINGMAINVIEWER_H

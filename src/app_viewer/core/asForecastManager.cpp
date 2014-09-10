@@ -46,7 +46,7 @@ asForecastManager::~asForecastManager()
 
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
 {
-    wxString defPath = wxFileConfig::Get()->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
+    wxString defPath = m_Workspace->GetForecastsDirectory();
 
     if (!dir.IsSameAs(defPath,false) && !dir.IsSameAs(defPath+DS,false))
     {
@@ -195,7 +195,7 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
     int nbPastDays = m_Workspace->GetTimeSeriesPlotPastDaysNb();
 
     // Get path
-    wxString defPath = wxFileConfig::Get()->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
+    wxString defPath = m_Workspace->GetForecastsDirectory();
     defPath.Append(DS);
 
     // Directory
