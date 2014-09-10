@@ -85,7 +85,7 @@ int asDataPredictorRealtime::Download()
 {
     // Directory
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString realtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", wxEmptyString);
+    wxString realtimePredictorSavingDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", wxEmptyString);
 
     // Internet (cURL)
     asInternet internet;

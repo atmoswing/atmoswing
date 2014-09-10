@@ -82,7 +82,7 @@ bool AtmoswingAppViewer::OnInit()
     // Check that it is the unique instance
     m_SingleInstanceChecker = NULL;
     bool multipleInstances;
-    pConfig->Read("/Standard/MultiInstances", &multipleInstances, false);
+    pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
     if (!multipleInstances)
     {
@@ -132,7 +132,7 @@ bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
     // Set log level
     if (logLevel<0)
     {
-        logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
+        logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     }
     Log().CreateFile("AtmoSwingViewer.log");
     Log().SetLevel((int)logLevel);

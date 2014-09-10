@@ -159,7 +159,7 @@ wxString asDataPredictand::GetDBFilePathSaving(const wxString &AlternateDestinat
     if (AlternateDestinationDir.IsEmpty())
     {
         ThreadsManager().CritSectionConfig().Enter();
-        PredictandDBFilePath = wxFileConfig::Get()->Read("/StandardPaths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir()) + DS + FileName + ".nc";
+        PredictandDBFilePath = wxFileConfig::Get()->Read("/Paths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir()) + DS + FileName + ".nc";
         ThreadsManager().CritSectionConfig().Leave();
     }
     else

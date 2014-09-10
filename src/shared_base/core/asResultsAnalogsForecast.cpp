@@ -87,7 +87,7 @@ void asResultsAnalogsForecast::BuildFileName()
     wxASSERT(!m_ModelName.IsEmpty());
 
     // Base directory
-    m_FilePath = wxFileConfig::Get()->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
+    m_FilePath = wxFileConfig::Get()->Read("/Paths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
     m_FilePath.Append(DS);
 
     // Directory

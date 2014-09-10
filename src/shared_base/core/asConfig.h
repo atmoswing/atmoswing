@@ -61,6 +61,11 @@ class asConfig : public wxObject
         */
         static wxString GetDataDir();
 
+        /** Get the install directory
+        * \return The full path
+        */
+        static wxString GetSoftDir();
+
         /** Get root data directory of user
         * \return The full path
         */

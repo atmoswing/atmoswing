@@ -62,7 +62,7 @@ void asResultsAnalogsForecastScoreFinal::Init(asParametersScoring &params)
 void asResultsAnalogsForecastScoreFinal::BuildFileName(asParametersScoring &params)
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_FilePath = wxFileConfig::Get()->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_FilePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_FilePath.Append(DS);
     m_FilePath.Append(wxString::Format("AnalogsForecastScoreFinal_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_CurrentStep));

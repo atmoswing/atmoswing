@@ -68,7 +68,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
     long defaultMethod = (long)asMULTITHREADS;
     int method = (int)(pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod));
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
@@ -809,7 +809,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
     long defaultMethod = (long)asMULTITHREADS;
     int method = (int)(pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod));
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)

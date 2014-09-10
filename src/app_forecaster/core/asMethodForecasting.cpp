@@ -123,9 +123,9 @@ bool asMethodForecasting::Manager()
             // Set the content to data members
             wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
             wxString dirData = asConfig::GetDataDir()+"data"+DS;
-            wxString archivePredictorsDir = pConfig->Read("/StandardPaths/ArchivePredictorsDir", dirData+"predictors");
-            wxString forecastParametersDir = pConfig->Read("/StandardPaths/ForecastParametersDir", dirConfig);
-            wxString predictandDBDir = pConfig->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
+            wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
+            wxString forecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
+            wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
 
             m_ModelName = file.GetThisElementAttributeValueText("name");
             m_ParamsFilePath = forecastParametersDir + DS + file.GetFirstElementAttributeValueText("ParametersFileName", "value");

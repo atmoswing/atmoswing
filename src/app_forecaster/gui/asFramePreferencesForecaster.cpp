@@ -76,10 +76,10 @@ void asFramePreferencesForecaster::LoadPreferences()
     
     // Log
     long defaultLogLevelForecaster = 1; // = selection +1
-    long logLevelForecaster = pConfig->Read("/Standard/LogLevel", defaultLogLevelForecaster);
+    long logLevelForecaster = pConfig->Read("/General/LogLevel", defaultLogLevelForecaster);
     m_RadioBoxLogLevel->SetSelection((int)logLevelForecaster-1);
     bool displayLogWindowForecaster;
-    pConfig->Read("/Standard/DisplayLogWindow", &displayLogWindowForecaster, false);
+    pConfig->Read("/General/DisplayLogWindow", &displayLogWindowForecaster, false);
     m_CheckBoxDisplayLogWindow->SetValue(displayLogWindowForecaster);
 
     // Proxy
@@ -102,17 +102,17 @@ void asFramePreferencesForecaster::LoadPreferences()
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
     wxString dirData = asConfig::GetDataDir()+"data"+DS;
-    wxString PredictandDBDir = pConfig->Read("/StandardPaths/DataPredictandDBDir", dirData+"predictands");
+    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
     m_DirPickerPredictandDB->SetPath(PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/StandardPaths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
+    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
     m_DirPickerIntermediateResults->SetPath(IntermediateResultsDir);
-    wxString ForecastResultsDir = pConfig->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
+    wxString ForecastResultsDir = pConfig->Read("/Paths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
     m_DirPickerForecastResults->SetPath(ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
+    wxString RealtimePredictorSavingDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
     m_DirPickerRealtimePredictorSaving->SetPath(RealtimePredictorSavingDir);
-    wxString ArchivePredictorsDir = pConfig->Read("/StandardPaths/ArchivePredictorsDir", dirData+"predictors");
+    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
     m_DirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
-    wxString ForecastParametersDir = pConfig->Read("/StandardPaths/ForecastParametersDir", dirConfig);
+    wxString ForecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
     m_DirPickerParameters->SetPath(ForecastParametersDir);
 
     /*
@@ -120,7 +120,7 @@ void asFramePreferencesForecaster::LoadPreferences()
      */
 
     // GUI options
-    long guiOptions = pConfig->Read("/Standard/GuiOptions", 1l);
+    long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
     m_RadioBoxGui->SetSelection((int)guiOptions);
     if (guiOptions==0)
     {
@@ -151,7 +151,7 @@ void asFramePreferencesForecaster::LoadPreferences()
 
     // Advanced options
     bool responsive;
-    pConfig->Read("/Standard/Responsive", &responsive, true);
+    pConfig->Read("/General/Responsive", &responsive, true);
     m_CheckBoxResponsiveness->SetValue(responsive);
     if (responsive)
     {
@@ -162,19 +162,19 @@ void asFramePreferencesForecaster::LoadPreferences()
         g_Responsive = false;
     }
     bool multiForecaster;
-    pConfig->Read("/Standard/MultiInstances", &multiForecaster, false);
+    pConfig->Read("/General/MultiInstances", &multiForecaster, false);
     m_CheckBoxMultiInstancesForecaster->SetValue(multiForecaster);
 
     // Multithreading
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
     m_CheckBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads==-1) maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Standard/ProcessingMaxThreadNb", maxThreadsStr);
+    wxString ProcessingMaxThreadNb = pConfig->Read("/General/ProcessingMaxThreadNb", maxThreadsStr);
     m_TextCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = pConfig->Read("/Standard/ProcessingThreadsPriority", 95l);
+    long ProcessingThreadsPriority = pConfig->Read("/General/ProcessingThreadsPriority", 95l);
     m_SliderThreadsPriority->SetValue((int)ProcessingThreadsPriority);
 
     // Processing
@@ -218,9 +218,9 @@ void asFramePreferencesForecaster::SavePreferences( )
 
     // Log
     long logLevelForecaster = (long)m_RadioBoxLogLevel->GetSelection();
-    pConfig->Write("/Standard/LogLevel", logLevelForecaster+1); // = selection +1
+    pConfig->Write("/General/LogLevel", logLevelForecaster+1); // = selection +1
     bool displayLogWindowForecaster = m_CheckBoxDisplayLogWindow->GetValue();
-    pConfig->Write("/Standard/DisplayLogWindow", displayLogWindowForecaster);
+    pConfig->Write("/General/DisplayLogWindow", displayLogWindowForecaster);
 
     // Proxy
     bool checkBoxProxy = m_CheckBoxProxy->GetValue();
@@ -240,17 +240,17 @@ void asFramePreferencesForecaster::SavePreferences( )
 
     // Paths
     wxString PredictandDBDir = m_DirPickerPredictandDB->GetPath();
-    pConfig->Write("/StandardPaths/DataPredictandDBDir", PredictandDBDir);
+    pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
     wxString IntermediateResultsDir = m_DirPickerIntermediateResults->GetPath();
-    pConfig->Write("/StandardPaths/IntermediateResultsDir", IntermediateResultsDir);
+    pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
     wxString ForecastResultsDir = m_DirPickerForecastResults->GetPath();
-    pConfig->Write("/StandardPaths/ForecastResultsDir", ForecastResultsDir);
+    pConfig->Write("/Paths/ForecastResultsDir", ForecastResultsDir);
     wxString RealtimePredictorSavingDir = m_DirPickerRealtimePredictorSaving->GetPath();
-    pConfig->Write("/StandardPaths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
+    pConfig->Write("/Paths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
     wxString ArchivePredictorsDir = m_DirPickerArchivePredictors->GetPath();
-    pConfig->Write("/StandardPaths/ArchivePredictorsDir", ArchivePredictorsDir);
+    pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
     wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
-    pConfig->Write("/StandardPaths/ForecastParametersDir", ForecastParametersDir);
+    pConfig->Write("/Paths/ForecastParametersDir", ForecastParametersDir);
 
     /*
      * Advanced
@@ -258,7 +258,7 @@ void asFramePreferencesForecaster::SavePreferences( )
 
     // GUI options
     long guiOptions = (long)m_RadioBoxGui->GetSelection();
-    pConfig->Write("/Standard/GuiOptions", guiOptions);
+    pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions==0)
     {
         g_SilentMode = true;
@@ -285,7 +285,7 @@ void asFramePreferencesForecaster::SavePreferences( )
 
     // Advanced options
     bool responsive = m_CheckBoxResponsiveness->GetValue();
-    pConfig->Write("/Standard/Responsive", responsive);
+    pConfig->Write("/General/Responsive", responsive);
     if (responsive)
     {
         g_Responsive = true;
@@ -296,16 +296,16 @@ void asFramePreferencesForecaster::SavePreferences( )
     }
 
     bool multiForecaster = m_CheckBoxMultiInstancesForecaster->GetValue();
-    pConfig->Write("/Standard/MultiInstances", multiForecaster);
+    pConfig->Write("/General/MultiInstances", multiForecaster);
 
     // Multithreading
     bool allowMultithreading = m_CheckBoxAllowMultithreading->GetValue();
-    pConfig->Write("/Standard/AllowMultithreading", allowMultithreading);
+    pConfig->Write("/General/AllowMultithreading", allowMultithreading);
     wxString ProcessingMaxThreadNb = m_TextCtrlThreadsNb->GetValue();
     if (!ProcessingMaxThreadNb.IsNumber()) ProcessingMaxThreadNb = "2";
-    pConfig->Write("/Standard/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
+    pConfig->Write("/General/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
     long ProcessingThreadsPriority = (long)m_SliderThreadsPriority->GetValue();
-    pConfig->Write("/Standard/ProcessingThreadsPriority", ProcessingThreadsPriority);
+    pConfig->Write("/General/ProcessingThreadsPriority", ProcessingThreadsPriority);
 
     // Processing
     long ProcessingMethod = (long)m_RadioBoxProcessingMethods->GetSelection();

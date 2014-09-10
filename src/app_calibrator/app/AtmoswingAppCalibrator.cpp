@@ -132,7 +132,7 @@ bool AtmoswingAppCalibrator::OnInit()
         // Check that it is the unique instance
         bool multipleInstances = false;
 
-        wxFileConfig::Get()->Read("/Standard/MultiInstances", &multipleInstances, false);
+        wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
 
         if (!multipleInstances)
         {
@@ -204,19 +204,19 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         wxConfigBase *pConfig = wxFileConfig::Get();
 
         // Define the default preferences
-        pConfig->Write("/Standard/MultiInstances", true);
-        pConfig->Write("/Standard/GuiOptions", 0l);
-        pConfig->Write("/Standard/Responsive", false);
-        pConfig->Write("/Standard/DisplayLogWindow", false);
-        pConfig->Write("/Standard/ProcessingThreadsPriority", 100);
-        pConfig->Write("/StandardPaths/DataPredictandDBDir", dirData);
-        pConfig->Write("/StandardPaths/IntermediateResultsDir", localPath+"temp");
-        pConfig->Write("/StandardPaths/CalibrationResultsDir", localPath+"results");
-        pConfig->Write("/StandardPaths/ArchivePredictorsDir", dirData);
+        pConfig->Write("/General/MultiInstances", true);
+        pConfig->Write("/General/GuiOptions", 0l);
+        pConfig->Write("/General/Responsive", false);
+        pConfig->Write("/General/DisplayLogWindow", false);
+        pConfig->Write("/General/ProcessingThreadsPriority", 100);
+        pConfig->Write("/Paths/DataPredictandDBDir", dirData);
+        pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
+        pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
+        pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Calibration/ParallelEvaluations", true);
         pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
-        pConfig->Write("/Standard/AllowMultithreading", true);
+        pConfig->Write("/General/AllowMultithreading", true);
         pConfig->Write("/ProcessingOptions/ProcessingMethod", (long)asMULTITHREADS);
 
         pConfig->Flush();
@@ -347,7 +347,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     }
     else
     {
-        long logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
+        long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
         Log().SetLevel((int)logLevel);
     }
 
@@ -390,7 +390,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     wxString threadsNb = wxEmptyString;
     if (parser.Found("tn", & threadsNb))
     {
-        wxFileConfig::Get()->Write("/Standard/ProcessingMaxThreadNb", threadsNb);
+        wxFileConfig::Get()->Write("/General/ProcessingMaxThreadNb", threadsNb);
     }
 
     // Check for a calibration params file

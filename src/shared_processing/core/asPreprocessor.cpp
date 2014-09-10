@@ -108,7 +108,7 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Only one predictor

@@ -31,6 +31,7 @@ asWorkspace::asWorkspace()
 :
 wxObject()
 {
+    m_HasChanged = false;
     m_FilePath = asConfig::GetUserDataDir("AtmoSwing") + DS + "Workspace.xml";
     m_CoordinateSys = "EPSG:3857";
     m_ForecastsDirectory = asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts";
