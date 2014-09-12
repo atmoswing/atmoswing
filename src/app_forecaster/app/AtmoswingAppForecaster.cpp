@@ -57,6 +57,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster);
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
     { wxCMD_LINE_SWITCH, "h", "help", "displays help on the command line parameters" },
+    { wxCMD_LINE_SWITCH, "c", "config", "configure the forecaster" },
     { wxCMD_LINE_SWITCH, "v", "version", "print version" },
     { wxCMD_LINE_SWITCH, "s", "silent", "silent mode" },
     { wxCMD_LINE_OPTION, "ll", "loglevel", "set a log level"
@@ -205,6 +206,65 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         return false;
     }
 
+    // Check if the user asked to configure
+    if (parser.Found("c"))
+    {
+        wxMessageOutput* msgOut = wxMessageOutput::Get();
+        if ( !msgOut )
+        {
+            wxFAIL_MSG( _("No wxMessageOutput object?") );
+            return false;
+        }
+
+        asBatchForecasts batchForecasts;
+
+        // Load batch file if exists
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+        if(!batchFilePath.IsEmpty())
+        {
+            if (!batchForecasts.Load(batchFilePath))
+            {
+                batchFilePath = wxEmptyString;
+            }
+        }
+
+
+        msgOut->Printf( _("There.") );
+
+        
+
+        // Batch file path
+        std::string stdinFilePath;
+        cout << _("Please provide a path to save the batch file (or press enter to keep the current value).");
+        cout << _("Current value: ") << batchForecasts.GetFilePath();
+        getline (cin, stdinFilePath);
+        wxString inFilePath(stdinFilePath);
+        if (inFilePath.IsEmpty())
+        {
+            inFilePath = batchForecasts.GetFilePath();
+        }
+        batchForecasts.SetFilePath(inFilePath);
+
+
+        /*
+        // Batch file path
+        wxString msg;
+        msg.Printf("AtmoSwing version ");
+
+
+        
+
+
+        
+
+        msgOut->Printf( wxT("%s"), msg.c_str() );*/
+
+        return false;
+    }
+
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
     long logLevel = -1;
@@ -284,22 +344,45 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
         }
 
-        // Force use of default models list
-        wxString defFilePath = asConfig::GetDefaultUserConfigDir() + "DefaultForecastingModelsList.xml";
-        wxString curFilePath = asConfig::GetDefaultUserConfigDir() + "CurrentForecastingModelsList.xml";
-        if (!wxFileName::FileExists(defFilePath))
+        // Open last batch file
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+        asBatchForecasts batchForecasts;
+
+        if(!batchFilePath.IsEmpty())
         {
-            asLogError(_("The default forecasting models list could not be found."));
+            if (!batchForecasts.Load(batchFilePath))
+            {
+                asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+                if ( msgOut )
+                {
+                    msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath.c_str() );
+                }
+                return false;
+            }
+        }
+        else
+        {
+            asLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            if ( msgOut )
+            {
+                msgOut->Printf( _("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            }
             return false;
         }
-        wxCopyFile(defFilePath,curFilePath);
 
         // Launch forecasting
-        asMethodForecasting forecaster = asMethodForecasting();
+        asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
         forecaster.SetForecastDate(forecastDate);
         if (!forecaster.Manager())
         {
             asLogError(_("Failed processing the forecast."));
+            if ( msgOut )
+            {
+                msgOut->Printf(_("Failed processing the forecast."));
+            }
             return false;
         }
         double realForecastDate = forecaster.GetForecastDate();
@@ -340,6 +423,35 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             msgOut->Printf( "Forecast started for the last %s days", numberOfDaysStr.c_str() );
         }
 
+        // Open last batch file
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+        asBatchForecasts batchForecasts;
+
+        if(!batchFilePath.IsEmpty())
+        {
+            if (!batchForecasts.Load(batchFilePath))
+            {
+                asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+                if ( msgOut )
+                {
+                    msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath.c_str() );
+                }
+                return false;
+            }
+        }
+        else
+        {
+            asLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            if ( msgOut )
+            {
+                msgOut->Printf( _("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            }
+            return false;
+        }
+
         long numberOfDays;
         numberOfDaysStr.ToLong(&numberOfDays);
 
@@ -362,11 +474,15 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             }
 
             // Launch forecasting
-            asMethodForecasting forecaster = asMethodForecasting();
+            asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
             forecaster.SetForecastDate(date);
             if (!forecaster.Manager())
             {
                 asLogError(_("Failed processing the forecast."));
+                if ( msgOut )
+                {
+                    msgOut->Printf( _("Failed processing the forecast."));
+                }
                 return false;
             }
             double realForecastDate = forecaster.GetForecastDate();
@@ -405,12 +521,45 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
         }
 
+        // Open last batch file
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+        asBatchForecasts batchForecasts;
+
+        if(!batchFilePath.IsEmpty())
+        {
+            if (!batchForecasts.Load(batchFilePath))
+            {
+                asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+                if ( msgOut )
+                {
+                    msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath.c_str() );
+                }
+                return false;
+            }
+        }
+        else
+        {
+            asLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            if ( msgOut )
+            {
+                msgOut->Printf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            }
+            return false;
+        }
+
         // Launch forecasting
-        asMethodForecasting forecaster = asMethodForecasting();
+        asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
         forecaster.SetForecastDate(forecastDate);
         if (!forecaster.Manager())
         {
             asLogError(_("Failed processing the forecast."));
+            if ( msgOut )
+            {
+                msgOut->Printf(_("Failed processing the forecast."));
+            }
             return false;
         }
         double realForecastDate = forecaster.GetForecastDate();

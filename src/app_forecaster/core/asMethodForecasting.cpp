@@ -28,7 +28,6 @@
 #include "asMethodForecasting.h"
 
 #include "asDataPredictand.h"
-#include "asFileForecastingModels.h"
 #include "asResultsAnalogsDates.h"
 #include "asResultsAnalogsValues.h"
 #include "asResultsAnalogsForecast.h"
@@ -41,10 +40,11 @@
     #include "AtmoswingAppForecaster.h"
 #endif
 
-asMethodForecasting::asMethodForecasting(wxWindow* parent)
+asMethodForecasting::asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent)
 :
 asMethodStandard()
 {
+    m_BatchForecasts = batchForecasts;
     m_ForecastDate = NaNDouble;
     m_ModelName = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
@@ -65,8 +65,6 @@ bool asMethodForecasting::Manager()
     #endif
     m_Cancel = false;
 
-    wxConfigBase *pConfig = wxFileConfig::Get();
-
     if(asTools::IsNaN(m_ForecastDate))
     {
         asLogError(_("The date of the forecast has not been defined."));
@@ -83,28 +81,13 @@ bool asMethodForecasting::Manager()
             }
         #endif
 
-        // Get models list file
-        wxString filePath = asConfig::GetDefaultUserConfigDir() + "CurrentForecastingModelsList.xml";
-        if (!wxFileName::FileExists(filePath))
-        {
-            asLogError(_("The current forecasting models list could not be found."));
-            return false;
-        }
+        // Get paths
+        wxString m_PredictorsArchiveDir = m_BatchForecasts->GetPredictorsArchiveDirectory();
+        wxString forecastParametersDir = m_BatchForecasts->GetParametersFileDirectory();
+        wxString predictandDBDir = m_BatchForecasts->GetPredictandDBDirectory();
 
-        asFileForecastingModels file(filePath, asFile::ReadOnly);
-        if(!file.Open())
-        {
-            asLogError(_("Cannot open the models list file."));
-            return false;
-        }
-
-        // Parse the file
-        if(!file.GoToRootElement()) return false;
-        if(!file.GoToFirstNodeWithPath("ModelsList")) return false;
-        if(!file.GoToFirstNodeWithPath("Model")) return false;
-
-        int counter = 0;
-        while(true)
+        // Execute the models
+        for (int i=0; i<m_BatchForecasts->GetModelsNb(); i++)
         {
             #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
@@ -112,7 +95,7 @@ bool asMethodForecasting::Manager()
 
                 // Send event
                 wxCommandEvent eventRunning (asEVT_STATUS_RUNNING);
-                eventRunning.SetInt(counter);
+                eventRunning.SetInt(i);
                 if (m_Parent != NULL) {
                     m_Parent->ProcessWindowEvent(eventRunning);
                 }
@@ -121,20 +104,9 @@ bool asMethodForecasting::Manager()
             #endif
 
             // Set the content to data members
-            wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
-            wxString dirData = asConfig::GetDataDir()+"data"+DS;
-            wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
-            wxString forecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
-            wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
-
-            m_ModelName = file.GetThisElementAttributeValueText("name");
-            m_ParamsFilePath = forecastParametersDir + DS + file.GetFirstElementAttributeValueText("ParametersFileName", "value");
-            m_PredictandDBFilePath = predictandDBDir + DS + file.GetFirstElementAttributeValueText("PredictandDB", "value");
-            m_PredictorsArchiveDir = file.GetFirstElementAttributeValueText("PredictorsArchiveDir", "value");
-            if (m_PredictorsArchiveDir.IsEmpty())
-            {
-                m_PredictorsArchiveDir = archivePredictorsDir;
-            }
+            m_ModelName = m_BatchForecasts->GetModelName(i);
+            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
+            m_PredictandDBFilePath = predictandDBDir + DS + m_BatchForecasts->GetModelPredictandDB(i);
 
             // Load parameters
             asParametersForecast params;
@@ -156,7 +128,7 @@ bool asMethodForecasting::Manager()
                 #if wxUSE_GUI
                     // Send event
                     wxCommandEvent eventFailed (asEVT_STATUS_FAILED);
-                    eventFailed.SetInt(counter);
+                    eventFailed.SetInt(i);
                     if (m_Parent != NULL) {
                         m_Parent->ProcessWindowEvent(eventFailed);
                     }
@@ -170,18 +142,12 @@ bool asMethodForecasting::Manager()
                 #if wxUSE_GUI
                     // Send event
                     wxCommandEvent eventSuccess (asEVT_STATUS_SUCCESS);
-                    eventSuccess.SetInt(counter);
+                    eventSuccess.SetInt(i);
                     if (m_Parent != NULL) {
                         m_Parent->ProcessWindowEvent(eventSuccess);
                     }
                 #endif
             }
-
-            // Find the next model
-            bool result = file.GoToNextSameNode();
-            if (!result) break;
-
-            counter++;
         }
     }
     catch(asException& e)
@@ -212,6 +178,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
     // Download real-time predictors
     asResultsAnalogsForecast resultsCheck(m_ModelName);
+    resultsCheck.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
     bool forecastDateChanged = true;
     while(forecastDateChanged)
     {
@@ -292,6 +259,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     // Resulting object
     asResultsAnalogsForecast resultsPrevious(m_ModelName);
     asResultsAnalogsForecast results(m_ModelName);
+    results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
 
     for (int i_step=0; i_step<stepsNb; i_step++)
     {
@@ -393,12 +361,14 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                 wxDELETE(predictorRealtime);
                 return false;
             }
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
             // Set the desired forecasting date
             m_ForecastDate = predictorRealtime->SetRunDateInUse(m_ForecastDate);
 
             // Check if result already exists
             asResultsAnalogsForecast resultsCheck(m_ModelName);
+            resultsCheck.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
             resultsCheck.SetCurrentStep(params.GetStepsNb()-1);
             resultsCheck.Init(params, m_ForecastDate);
             if (resultsCheck.Exists())
@@ -498,6 +468,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
                 }
+                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
                 // Set the desired forecasting date
                 m_ForecastDate = predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
@@ -573,6 +544,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
 
     // Initialize the result object
+    results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
     results.SetCurrentStep(i_step);
     results.Init(params, m_ForecastDate);
 
@@ -595,6 +567,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 return false;
             }
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
             lastLeadTime = wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
@@ -611,6 +584,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     return false;
                 }
+                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
                 lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
@@ -721,6 +695,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorArchive);
                 return false;
             }
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
 
             // Restriction needed
@@ -834,6 +809,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                     wxDELETE(predictorArchivePreprocess);
                     return false;
                 }
+                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
 
                 // Restriction needed
@@ -928,6 +904,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorArchive);
                 return false;
             }
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
             if(!asPreprocessor::Preprocess(m_StoragePredictorsRealtimePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime))
             {
@@ -1016,6 +993,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
 
     // Initialize the result object
+    results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
     results.SetCurrentStep(i_step);
     results.Init(params, m_ForecastDate);
 
@@ -1041,7 +1019,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             {
                 return false;
             }
-
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
             lastLeadTime = wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
 
@@ -1057,7 +1035,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 {
                     return false;
                 }
-
+                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
                 lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
 
@@ -1163,6 +1141,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 wxDELETE(predictorArchive);
                 return false;
             }
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
 
             // Restriction needed
@@ -1260,6 +1239,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                     wxDELETE(predictorArchivePreprocess);
                     return false;
                 }
+                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
 
                 // Restriction needed
@@ -1355,6 +1335,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 wxDELETE(predictorArchive);
                 return false;
             }
+            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
             if(!asPreprocessor::Preprocess(m_StoragePredictorsRealtimePreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime))
             {
@@ -1455,6 +1436,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step)
 {
     // Initialize the result object
+    results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
     results.SetCurrentStep(i_step);
     results.SetPredictandDatasetId(m_PredictandDB->GetDatasetId());
     results.SetPredictandParameter(m_PredictandDB->GetDataParameter());

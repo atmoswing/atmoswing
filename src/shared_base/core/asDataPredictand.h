@@ -311,8 +311,7 @@ class asDataPredictand: public wxObject
         Array1DDouble m_StationsEnd;
 
 
-
-        wxString GetDBFilePathSaving(const wxString &AlternateDestinationDir);
+        wxString GetDBFilePathSaving(const wxString &destinationDir);
 
 
         /** Initialize the members

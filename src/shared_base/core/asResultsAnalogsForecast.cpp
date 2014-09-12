@@ -85,9 +85,10 @@ void asResultsAnalogsForecast::Init(asParametersForecast &params, double leadTim
 void asResultsAnalogsForecast::BuildFileName()
 {
     wxASSERT(!m_ModelName.IsEmpty());
+    wxASSERT(!m_ForecastsDirectory.IsEmpty());
 
     // Base directory
-    m_FilePath = wxFileConfig::Get()->Read("/Paths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
+    m_FilePath = m_ForecastsDirectory;
     m_FilePath.Append(DS);
 
     // Directory
