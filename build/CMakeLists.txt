@@ -102,48 +102,36 @@ list(APPEND src_shared_processing ${src_proc_core_h} ${src_proc_thread_h})
 list(APPEND src_shared_processing ${src_proc_core_cpp} ${src_proc_thread_cpp})
 
 # Folder app_forecaster
-file(GLOB_RECURSE src_forec_app_h ../src/app_forecaster/app/*.h)
-file(GLOB_RECURSE src_forec_app_cpp ../src/app_forecaster/app/*.cpp)
 file(GLOB_RECURSE src_forec_core_h ../src/app_forecaster/core/*.h)
 file(GLOB_RECURSE src_forec_core_cpp ../src/app_forecaster/core/*.cpp)
 file(GLOB_RECURSE src_forec_gui_h ../src/app_forecaster/gui/*.h)
 file(GLOB_RECURSE src_forec_gui_cpp ../src/app_forecaster/gui/*.cpp)
-list(APPEND src_app_forecaster ${src_forec_app_h} ${src_forec_core_h})
-list(APPEND src_app_forecaster ${src_forec_app_cpp} ${src_forec_core_cpp})
+list(APPEND src_app_forecaster ${src_forec_core_h})
+list(APPEND src_app_forecaster ${src_forec_core_cpp})
 if (USE_GUI)
     list(APPEND src_app_forecaster ${src_forec_gui_h})
     list(APPEND src_app_forecaster ${src_forec_gui_cpp})
-else (USE_GUI)
-    list(REMOVE_ITEM src_app_forecaster "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/AtmoswingMainForecaster.h")
-    list(REMOVE_ITEM src_app_forecaster "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/AtmoswingMainForecaster.cpp")
 endif (USE_GUI)
 
 # Folder app_calibrator
-file(GLOB_RECURSE src_calib_app_h ../src/app_calibrator/app/*.h)
-file(GLOB_RECURSE src_calib_app_cpp ../src/app_calibrator/app/*.cpp)
 file(GLOB_RECURSE src_calib_core_h ../src/app_calibrator/core/*.h)
 file(GLOB_RECURSE src_calib_core_cpp ../src/app_calibrator/core/*.cpp)
 file(GLOB_RECURSE src_calib_gui_h ../src/app_calibrator/gui/*.h)
 file(GLOB_RECURSE src_calib_gui_cpp ../src/app_calibrator/gui/*.cpp)
-list(APPEND src_app_calibrator ${src_calib_app_h} ${src_calib_core_h})
-list(APPEND src_app_calibrator ${src_calib_app_cpp} ${src_calib_core_cpp})
+list(APPEND src_app_calibrator ${src_calib_core_h})
+list(APPEND src_app_calibrator ${src_calib_core_cpp})
 if (USE_GUI)
     list(APPEND src_app_calibrator ${src_calib_gui_h})
     list(APPEND src_app_calibrator ${src_calib_gui_cpp})
-else (USE_GUI)
-    list(REMOVE_ITEM src_app_calibrator "${PROJECT_SOURCE_DIR}/../src/app_calibrator/app/AtmoswingMainCalibrator.h")
-    list(REMOVE_ITEM src_app_calibrator "${PROJECT_SOURCE_DIR}/../src/app_calibrator/app/AtmoswingMainCalibrator.cpp")
 endif (USE_GUI)
 
 # Folder app_viewer
-file(GLOB_RECURSE src_viewer_app_h ../src/app_viewer/app/*.h)
-file(GLOB_RECURSE src_viewer_app_cpp ../src/app_viewer/app/*.cpp)
 file(GLOB_RECURSE src_viewer_core_h ../src/app_viewer/core/*.h)
 file(GLOB_RECURSE src_viewer_core_cpp ../src/app_viewer/core/*.cpp)
 file(GLOB_RECURSE src_viewer_gui_h ../src/app_viewer/gui/*.h)
 file(GLOB_RECURSE src_viewer_gui_cpp ../src/app_viewer/gui/*.cpp)
-list(APPEND src_app_viewer ${src_viewer_app_h} ${src_viewer_core_h} ${src_viewer_gui_h})
-list(APPEND src_app_viewer ${src_viewer_app_cpp} ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
+list(APPEND src_app_viewer ${src_viewer_core_h} ${src_viewer_gui_h})
+list(APPEND src_app_viewer ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
 
 # wxPlotCtrl library (and dependences)
 file(GLOB_RECURSE src_lib_wxmathplot_h ../src/app_viewer/libs/wxmathplot/*.h)
@@ -212,7 +200,6 @@ list(APPEND inc_dirs
 if (BUILD_FORECASTER)
     list(APPEND inc_dirs 
         "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/"
         "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
         )
     if (USE_GUI)
@@ -230,7 +217,6 @@ if (BUILD_VIEWER)
         "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
         "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
         "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/app/"
         "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
         "${PROJECT_SOURCE_DIR}/../src/app_viewer/gui/"
         "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxmathplot/"
