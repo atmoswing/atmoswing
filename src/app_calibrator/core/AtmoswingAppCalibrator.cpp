@@ -123,44 +123,44 @@ bool AtmoswingAppCalibrator::OnInit()
 
     // Call default behaviour (mandatory for command-line mode)
     if (!wxApp::OnInit()) // When false, we are in CL mode
-        return false;
+        return true;
 
     #if wxUSE_GUI
-	m_SingleInstanceChecker = NULL;
-    if (g_GuiMode)
-    {
-        // Check that it is the unique instance
-        bool multipleInstances = false;
-
-        wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
-
-        if (!multipleInstances)
+	    m_SingleInstanceChecker = NULL;
+        if (g_GuiMode)
         {
-            const wxString instanceName = wxString::Format(wxT("AtmoSwingCalibrator-%s"),wxGetUserId().c_str());
-            m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-            if ( m_SingleInstanceChecker->IsAnotherRunning() )
+            // Check that it is the unique instance
+            bool multipleInstances = false;
+
+            wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
+
+            if (!multipleInstances)
             {
-                wxMessageBox(_("Program already running, aborting."));
-                return false;
+                const wxString instanceName = wxString::Format(wxT("AtmoSwingCalibrator-%s"),wxGetUserId().c_str());
+                m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+                if ( m_SingleInstanceChecker->IsAnotherRunning() )
+                {
+                    wxMessageBox(_("Program already running, aborting."));
+                    return false;
+                }
             }
+
+            // Following for GUI only
+            wxInitAllImageHandlers();
+
+            // Initialize images
+            initialize_images_toolbar();
+
+            // Create frame
+            AtmoswingFrameCalibrator* frame = new AtmoswingFrameCalibrator(0L);
+            frame->OnInit();
+
+            #ifdef __WXMSW__
+                frame->SetIcon(wxICON(myicon)); // To Set App Icon
+            #endif
+            frame->Show();
+            SetTopWindow(frame);
         }
-
-        // Following for GUI only
-        wxInitAllImageHandlers();
-
-        // Initialize images
-        initialize_images_toolbar();
-
-        // Create frame
-        AtmoswingFrameCalibrator* frame = new AtmoswingFrameCalibrator(0L);
-        frame->OnInit();
-
-        #ifdef __WXMSW__
-            frame->SetIcon(wxICON(myicon)); // To Set App Icon
-        #endif
-        frame->Show();
-        SetTopWindow(frame);
-    }
     #endif
 
     return true;
@@ -602,26 +602,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     return wxAppConsole::OnCmdLineParsed(parser);
 }
 
-int AtmoswingAppCalibrator::OnExit()
-{
-	#if wxUSE_GUI
-		// Instance checker
-		wxDELETE(m_SingleInstanceChecker);
-	#endif
-
-    // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
-
-    // Delete threads manager and log
-    DeleteThreadsManager();
-    DeleteLog();
-
-    // CleanUp
-    wxApp::CleanUp();
-
-    return 0;
-}
-
 int AtmoswingAppCalibrator::OnRun()
 {
     if (!g_GuiMode)
@@ -719,6 +699,26 @@ int AtmoswingAppCalibrator::OnRun()
     }
 
     return wxApp::OnRun();
+}
+
+int AtmoswingAppCalibrator::OnExit()
+{
+	#if wxUSE_GUI
+		// Instance checker
+		wxDELETE(m_SingleInstanceChecker);
+	#endif
+
+    // Config file (from wxWidgets samples)
+    delete wxFileConfig::Set((wxFileConfig *) NULL);
+
+    // Delete threads manager and log
+    DeleteThreadsManager();
+    DeleteLog();
+
+    // CleanUp
+    wxApp::CleanUp();
+
+    return 0;
 }
 
 bool AtmoswingAppCalibrator::OnExceptionInMainLoop()

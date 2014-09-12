@@ -31,15 +31,13 @@ asBatchForecasts::asBatchForecasts()
 :
 wxObject()
 {
-    wxString dirConfig = asConfig::GetDataDir() + "config" + DS;
-    wxString dirData = asConfig::GetDataDir() + "data" + DS;
     m_HasChanged = false;
-    m_FilePath = asConfig::GetUserDataDir("AtmoSwing") + DS + "BatchForecasts.xml";
+    m_FilePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.xml";
     m_ForecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
-    m_ParametersFileDirectory = dirConfig;
-    m_PredictorsArchiveDirectory = dirData + "Archive predictors";
-    m_PredictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasted predictors";
-    m_PredictandDBDirectory = dirData + "Predictands";
+    m_ParametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
+    m_PredictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
+    m_PredictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
+    m_PredictandDBDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Predictands";
 }
 
 asBatchForecasts::~asBatchForecasts()

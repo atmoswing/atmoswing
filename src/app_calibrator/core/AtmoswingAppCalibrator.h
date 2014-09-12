@@ -45,8 +45,8 @@ public:
     //AtmoswingAppCalibrator();
     virtual ~AtmoswingAppCalibrator(){};
     virtual bool OnInit();
-    virtual int OnExit();
     virtual int OnRun();
+    virtual int OnExit();
     virtual void OnInitCmdLine(wxCmdLineParser& parser);
     bool InitForCmdLineOnly();
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
