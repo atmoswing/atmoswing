@@ -30,10 +30,11 @@
 #include "wx/fileconf.h"
 #include "wx/thread.h"
 
-asFramePreferencesForecaster::asFramePreferencesForecaster( wxWindow* parent, wxWindowID id )
+asFramePreferencesForecaster::asFramePreferencesForecaster( wxWindow* parent, asBatchForecasts* batchForecasts, wxWindowID id )
 :
 asFramePreferencesForecasterVirtual( parent, id )
 {
+    m_BatchForecasts = batchForecasts;
     LoadPreferences();
     Fit();
 
@@ -63,12 +64,22 @@ void asFramePreferencesForecaster::LoadPreferences()
     if (col.IsOk())
     {
         m_DirPickerPredictandDB->SetBackgroundColour(col);
-        m_DirPickerIntermediateResults->SetBackgroundColour(col);
         m_DirPickerForecastResults->SetBackgroundColour(col);
         m_DirPickerParameters->SetBackgroundColour(col);
         m_DirPickerArchivePredictors->SetBackgroundColour(col);
         m_DirPickerRealtimePredictorSaving->SetBackgroundColour(col);
     }
+    
+    /*
+     * Batch file properties
+     */
+
+    // Paths
+    m_DirPickerPredictandDB->SetPath(m_BatchForecasts->GetPredictandDBDirectory());
+    m_DirPickerForecastResults->SetPath(m_BatchForecasts->GetForecastsOutputDirectory());
+    m_DirPickerRealtimePredictorSaving->SetPath(m_BatchForecasts->GetPredictorsRealtimeDirectory());
+    m_DirPickerArchivePredictors->SetPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
+    m_DirPickerParameters->SetPath(m_BatchForecasts->GetParametersFileDirectory());
 
     /*
      * General
@@ -94,26 +105,6 @@ void asFramePreferencesForecaster::LoadPreferences()
     m_TextCtrlProxyUser->SetValue(ProxyUser);
     wxString ProxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
     m_TextCtrlProxyPasswd->SetValue(ProxyPasswd);
-
-    /*
-     * Paths
-     */
-
-    // Paths
-    wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
-    wxString dirData = asConfig::GetDataDir()+"data"+DS;
-    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
-    m_DirPickerPredictandDB->SetPath(PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
-    m_DirPickerIntermediateResults->SetPath(IntermediateResultsDir);
-    wxString ForecastResultsDir = pConfig->Read("/Paths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
-    m_DirPickerForecastResults->SetPath(ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
-    m_DirPickerRealtimePredictorSaving->SetPath(RealtimePredictorSavingDir);
-    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
-    m_DirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
-    wxString ForecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
-    m_DirPickerParameters->SetPath(ForecastParametersDir);
 
     /*
      * Advanced
@@ -211,6 +202,17 @@ void asFramePreferencesForecaster::SavePreferences( )
 {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
+    
+    /*
+     * Batch file properties
+     */
+
+    // Paths
+    m_BatchForecasts->SetPredictandDBDirectory(m_DirPickerPredictandDB->GetPath());
+    m_BatchForecasts->SetForecastsOutputDirectory(m_DirPickerForecastResults->GetPath());
+    m_BatchForecasts->SetPredictorsRealtimeDirectory(m_DirPickerRealtimePredictorSaving->GetPath());
+    m_BatchForecasts->SetPredictorsArchiveDirectory(m_DirPickerArchivePredictors->GetPath());
+    m_BatchForecasts->SetParametersFileDirectory(m_DirPickerParameters->GetPath());
 
     /*
      * General
@@ -233,24 +235,6 @@ void asFramePreferencesForecaster::SavePreferences( )
     pConfig->Write("/Internet/ProxyUser", ProxyUser);
     wxString ProxyPasswd = m_TextCtrlProxyPasswd->GetValue();
     pConfig->Write("/Internet/ProxyPasswd", ProxyPasswd);
-
-    /*
-     * Paths
-     */
-
-    // Paths
-    wxString PredictandDBDir = m_DirPickerPredictandDB->GetPath();
-    pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = m_DirPickerIntermediateResults->GetPath();
-    pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString ForecastResultsDir = m_DirPickerForecastResults->GetPath();
-    pConfig->Write("/Paths/ForecastResultsDir", ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = m_DirPickerRealtimePredictorSaving->GetPath();
-    pConfig->Write("/Paths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
-    wxString ArchivePredictorsDir = m_DirPickerArchivePredictors->GetPath();
-    pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
-    wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
-    pConfig->Write("/Paths/ForecastParametersDir", ForecastParametersDir);
 
     /*
      * Advanced
@@ -316,14 +300,14 @@ void asFramePreferencesForecaster::SavePreferences( )
     pConfig->Write("/ProcessingOptions/ProcessingMethod", ProcessingMethod);
     long ProcessingLinAlgebra = (long)m_RadioBoxLinearAlgebra->GetSelection();
     pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", ProcessingLinAlgebra);
-
-    // User directories
-
-
-
-    GetParent()->Update();
+    
+    if(GetParent()!=NULL)
+    {
+        GetParent()->Update();
+    }
 
     pConfig->Flush();
+    m_BatchForecasts->Save();
 }
 
 void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox( wxCommandEvent& event )

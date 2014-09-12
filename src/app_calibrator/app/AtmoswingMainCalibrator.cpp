@@ -154,18 +154,8 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
     wxString CalibrationResultsDir = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Calibration");
     pConfig->Write("/Paths/CalibrationResultsDir", CalibrationResultsDir);
-    wxString ForecastResultsDir = pConfig->Read("/Paths/ForecastResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Forecasts");
-    pConfig->Write("/Paths/ForecastResultsDir", ForecastResultsDir);
-    wxString RealtimePredictorSavingDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Predictors");
-    pConfig->Write("/Paths/RealtimePredictorSavingDir", RealtimePredictorSavingDir);
-    wxString ForecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetDataDir()+"AtmoSwingForecaster.exe");
-    pConfig->Write("/Paths/ForecasterPath", ForecasterPath);
-    wxString ViewerPath = pConfig->Read("/Paths/ViewerPath", asConfig::GetDataDir()+"AtmoSwingViewer.exe");
-    pConfig->Write("/Paths/ViewerPath", ViewerPath);
     wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
-    wxString ForecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
-    pConfig->Write("/Paths/ForecastParametersDir", ForecastParametersDir);
 
     // Processing
     long defaultMethod = (long)asMULTITHREADS;

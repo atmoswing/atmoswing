@@ -147,27 +147,16 @@ asDataPredictand* asDataPredictand::GetInstance(const wxString& filePath)
     return db;
 }
 
-wxString asDataPredictand::GetDBFilePathSaving(const wxString &AlternateDestinationDir)
+wxString asDataPredictand::GetDBFilePathSaving(const wxString &destinationDir)
 {
-    wxString PredictandDBFilePath;
-
     wxString dataParameterStr = asGlobEnums::DataParameterEnumToString(m_DataParameter);
     wxString dataTemporalResolutionStr = asGlobEnums::DataTemporalResolutionEnumToString(m_DataTemporalResolution);
     wxString dataSpatialAggregationStr = asGlobEnums::DataSpatialAggregationEnumToString(m_DataSpatialAggregation);
-    wxString FileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_DatasetId;
+    wxString fileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_DatasetId;
 
-    if (AlternateDestinationDir.IsEmpty())
-    {
-        ThreadsManager().CritSectionConfig().Enter();
-        PredictandDBFilePath = wxFileConfig::Get()->Read("/Paths/DataPredictandDBDir", asConfig::GetDefaultUserWorkingDir()) + DS + FileName + ".nc";
-        ThreadsManager().CritSectionConfig().Leave();
-    }
-    else
-    {
-        PredictandDBFilePath = AlternateDestinationDir + DS + FileName + ".nc";
-    }
+    wxString predictandDBFilePath = destinationDir + DS + fileName + ".nc";
 
-    return PredictandDBFilePath;
+    return predictandDBFilePath;
 }
 
 bool asDataPredictand::InitMembers(const wxString &catalogFilePath)

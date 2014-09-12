@@ -87,8 +87,6 @@ void asFramePreferencesCalibrator::LoadPreferences()
     m_DirPickerPredictandDB->SetPath(PredictandDBDir);
     wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
     m_DirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
-    wxString ForecastParametersDir = pConfig->Read("/Paths/ForecastParametersDir", dirConfig);
-    m_DirPickerParameters->SetPath(ForecastParametersDir);
 
     /*
      * Advanced
