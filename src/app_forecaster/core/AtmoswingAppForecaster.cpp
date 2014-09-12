@@ -334,132 +334,136 @@ int AtmoswingAppForecaster::OnRun()
             }
 
             #if wxUSE_GUI
+
                 msgOut->Printf(_("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead."));
                 return 0;
-            #endif
 
-            asBatchForecasts batchForecasts;
+            #else
 
-            // Load batch file if exists
-            wxConfigBase *pConfig = wxFileConfig::Get();
-            wxString batchFilePath = wxEmptyString;
-            pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+                asBatchForecasts batchForecasts;
 
-            if(!batchFilePath.IsEmpty())
-            {
-                if (batchForecasts.Load(batchFilePath))
+                // Load batch file if exists
+                wxConfigBase *pConfig = wxFileConfig::Get();
+                wxString batchFilePath = wxEmptyString;
+                pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+                if(!batchFilePath.IsEmpty())
                 {
-                    cout << _("An existing batch file was found and has been loaded.\n");
+                    if (batchForecasts.Load(batchFilePath))
+                    {
+                        cout << _("An existing batch file was found and has been loaded.\n");
+                    }
+                    else
+                    {
+                        batchFilePath = wxEmptyString;
+                    }
                 }
-                else
+
+                // User inputs
+                std::string stdinVal;
+                wxString wxinVal;
+
+                // Batch file path
+                cout << _("Please provide a path to save the batch file.\n");
+                cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath().c_str() << "\n";
+                cout << _("New value: ");
+                getline (cin, stdinVal);
+                wxinVal = wxString(stdinVal);
+                if (wxinVal.IsEmpty())
                 {
-                    batchFilePath = wxEmptyString;
+                    wxinVal = batchForecasts.GetFilePath();
                 }
-            }
+                batchForecasts.SetFilePath(wxinVal);
+                cout << "\n";
 
-            // User inputs
-            std::string stdinVal;
-            wxString wxinVal;
-
-            // Batch file path
-            cout << _("Please provide a path to save the batch file.\n");
-            cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath().c_str() << "\n";
-            cout << _("New value: ");
-            getline (cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (wxinVal.IsEmpty())
-            {
-                wxinVal = batchForecasts.GetFilePath();
-            }
-            batchForecasts.SetFilePath(wxinVal);
-            cout << "\n";
-
-            // Check if exists and load
-            if (wxFile::Exists(batchForecasts.GetFilePath()));
-            {
-                cout << _("The batch file exists and will be loaded.\n");
-
-                if (batchForecasts.Load(batchForecasts.GetFilePath()))
+                // Check if exists and load
+                if (wxFile::Exists(batchForecasts.GetFilePath()))
                 {
-                    cout << _("Failed opening the batch file.\n");
+                    cout << _("The batch file exists and will be loaded.\n");
+
+                    if (batchForecasts.Load(batchForecasts.GetFilePath()))
+                    {
+                        cout << _("Failed opening the batch file.\n");
+                    }
                 }
-            }
 
-            // Directory to save the forecasts
-            cout << _("Please provide a directory to save the forecasts.\n");
-            cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory().c_str() << "\n";
-            cout << _("New value: ");
-            getline (cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (wxinVal.IsEmpty())
-            {
-                wxinVal = batchForecasts.GetForecastsOutputDirectory();
-            }
-            batchForecasts.SetForecastsOutputDirectory(wxinVal);
-            cout << "\n";
+                // Directory to save the forecasts
+                cout << _("Please provide a directory to save the forecasts.\n");
+                cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory().c_str() << "\n";
+                cout << _("New value: ");
+                getline (cin, stdinVal);
+                wxinVal = wxString(stdinVal);
+                if (wxinVal.IsEmpty())
+                {
+                    wxinVal = batchForecasts.GetForecastsOutputDirectory();
+                }
+                batchForecasts.SetForecastsOutputDirectory(wxinVal);
+                cout << "\n";
 
-            // Directory containing the parameters files
-            cout << _("Please provide the directory containing the parameters files.\n");
-            cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory().c_str() << "\n";
-            cout << _("New value: ");
-            getline (cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (wxinVal.IsEmpty())
-            {
-                wxinVal = batchForecasts.GetParametersFileDirectory();
-            }
-            batchForecasts.SetParametersFileDirectory(wxinVal);
-            cout << "\n";
+                // Directory containing the parameters files
+                cout << _("Please provide the directory containing the parameters files.\n");
+                cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory().c_str() << "\n";
+                cout << _("New value: ");
+                getline (cin, stdinVal);
+                wxinVal = wxString(stdinVal);
+                if (wxinVal.IsEmpty())
+                {
+                    wxinVal = batchForecasts.GetParametersFileDirectory();
+                }
+                batchForecasts.SetParametersFileDirectory(wxinVal);
+                cout << "\n";
 
-            // Directory containing the archive predictors
-            cout << _("Please provide the directory containing the archive predictors.\n");
-            cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory().c_str() << "\n";
-            cout << _("New value: ");
-            getline (cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (wxinVal.IsEmpty())
-            {
-                wxinVal = batchForecasts.GetPredictorsArchiveDirectory();
-            }
-            batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
-            cout << "\n";
+                // Directory containing the archive predictors
+                cout << _("Please provide the directory containing the archive predictors.\n");
+                cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory().c_str() << "\n";
+                cout << _("New value: ");
+                getline (cin, stdinVal);
+                wxinVal = wxString(stdinVal);
+                if (wxinVal.IsEmpty())
+                {
+                    wxinVal = batchForecasts.GetPredictorsArchiveDirectory();
+                }
+                batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
+                cout << "\n";
 
-            // Directory to save the downloaded predictors
-            cout << _("Please provide a directory to save the downloaded predictors.\n");
-            cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory().c_str() << "\n";
-            cout << _("New value: ");
-            getline (cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (wxinVal.IsEmpty())
-            {
-                wxinVal = batchForecasts.GetPredictorsRealtimeDirectory();
-            }
-            batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
-            cout << "\n";
+                // Directory to save the downloaded predictors
+                cout << _("Please provide a directory to save the downloaded predictors.\n");
+                cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory().c_str() << "\n";
+                cout << _("New value: ");
+                getline (cin, stdinVal);
+                wxinVal = wxString(stdinVal);
+                if (wxinVal.IsEmpty())
+                {
+                    wxinVal = batchForecasts.GetPredictorsRealtimeDirectory();
+                }
+                batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
+                cout << "\n";
 
-            // Directory containing the predictand database
-            cout << _("Please provide the directory containing the predictand database.\n");
-            cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory().c_str() << "\n";
-            cout << _("New value: ");
-            getline (cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (wxinVal.IsEmpty())
-            {
-                wxinVal = batchForecasts.GetPredictandDBDirectory();
-            }
-            batchForecasts.SetPredictandDBDirectory(wxinVal);
-            cout << "\n";
+                // Directory containing the predictand database
+                cout << _("Please provide the directory containing the predictand database.\n");
+                cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory().c_str() << "\n";
+                cout << _("New value: ");
+                getline (cin, stdinVal);
+                wxinVal = wxString(stdinVal);
+                if (wxinVal.IsEmpty())
+                {
+                    wxinVal = batchForecasts.GetPredictandDBDirectory();
+                }
+                batchForecasts.SetPredictandDBDirectory(wxinVal);
+                cout << "\n";
 
-            batchForecasts.Save();
-            cout << _("Batch file created successfully.\n");
+                batchForecasts.Save();
+                cout << _("Batch file created successfully.\n");
             
-            pConfig->Write("/BatchForecasts/LastOpened", batchForecasts.GetFilePath());
+                pConfig->Write("/BatchForecasts/LastOpened", batchForecasts.GetFilePath());
 
-            // Check if any model exist
-            if(batchForecasts.GetModelsNb()==0)
-            {
-                cout << _("Warning: there is no model listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
-            }
+                // Check if any model exist
+                if(batchForecasts.GetModelsNb()==0)
+                {
+                    cout << _("Warning: there is no model listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
+                }
+
+            #endif
         }
 
         if (m_DoForecast)

@@ -86,16 +86,18 @@ bool asWorkspace::Load(const wxString &filePath)
             m_LayerVisibilities.push_back(visibility);
             int width = fileWorkspace.GetFirstElementAttributeValueInt("LineWidth", "value", 1);
             m_LayerLineWidths.push_back(width);
-            wxString lineColorStr = fileWorkspace.GetFirstElementAttributeValueText("LineColor", "value", "black");
-            wxColour lineColor;
-            wxFromString(lineColorStr, &lineColor);
-            m_LayerLineColors.push_back(lineColor);
-            wxString fillColorStr = fileWorkspace.GetFirstElementAttributeValueText("FillColor", "value", "black");
-            wxColour fillColor;
-            wxFromString(fillColorStr, &fillColor);
-            m_LayerFillColors.push_back(lineColor);
-            wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetFirstElementAttributeValueInt("BrushStyle", "value", wxBRUSHSTYLE_TRANSPARENT);
-            m_LayerBrushStyles.push_back(brushStyle);
+            #if wxUSE_GUI
+                wxString lineColorStr = fileWorkspace.GetFirstElementAttributeValueText("LineColor", "value", "black");
+                wxColour lineColor;
+                wxFromString(lineColorStr, &lineColor);
+                m_LayerLineColors.push_back(lineColor);
+                wxString fillColorStr = fileWorkspace.GetFirstElementAttributeValueText("FillColor", "value", "black");
+                wxColour fillColor;
+                wxFromString(fillColorStr, &fillColor);
+                m_LayerFillColors.push_back(lineColor);
+                wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetFirstElementAttributeValueInt("BrushStyle", "value", wxBRUSHSTYLE_TRANSPARENT);
+                m_LayerBrushStyles.push_back(brushStyle);
+            #endif
         
             // Find the next layer
             if (!fileWorkspace.GoToNextSameNode()) break;
@@ -151,11 +153,13 @@ bool asWorkspace::Save()
         wxString strWidth;
         strWidth << m_LayerLineWidths[i_layer];
         if(!fileWorkspace.InsertElementAndAttribute("", "LineWidth", "value", strWidth)) return false;
-        if(!fileWorkspace.InsertElementAndAttribute("", "LineColor", "value", wxToString(m_LayerLineColors[i_layer]))) return false;
-        if(!fileWorkspace.InsertElementAndAttribute("", "FillColor", "value", wxToString(m_LayerFillColors[i_layer]))) return false;
-        wxString strBrush;
-        strBrush << m_LayerBrushStyles[i_layer];
-        if(!fileWorkspace.InsertElementAndAttribute("", "BrushStyle", "value", strBrush)) return false;
+        #if wxUSE_GUI
+            if(!fileWorkspace.InsertElementAndAttribute("", "LineColor", "value", wxToString(m_LayerLineColors[i_layer]))) return false;
+            if(!fileWorkspace.InsertElementAndAttribute("", "FillColor", "value", wxToString(m_LayerFillColors[i_layer]))) return false;
+            wxString strBrush;
+            strBrush << m_LayerBrushStyles[i_layer];
+            if(!fileWorkspace.InsertElementAndAttribute("", "BrushStyle", "value", strBrush)) return false;
+        #endif
         
         if(!fileWorkspace.GoANodeBack()) return false;
     }
@@ -178,9 +182,11 @@ void asWorkspace::ClearLayers()
     m_LayerTransparencies.clear();
     m_LayerVisibilities.clear();
     m_LayerLineWidths.clear();
-    m_LayerLineColors.clear();
-    m_LayerFillColors.clear();
-    m_LayerBrushStyles.clear();
+    #if wxUSE_GUI
+        m_LayerLineColors.clear();
+        m_LayerFillColors.clear();
+        m_LayerBrushStyles.clear();
+    #endif
 }
 
 void asWorkspace::AddLayer()
@@ -191,7 +197,9 @@ void asWorkspace::AddLayer()
     m_LayerTransparencies.resize(nb);
     m_LayerVisibilities.resize(nb);
     m_LayerLineWidths.resize(nb);
-    m_LayerLineColors.resize(nb);
-    m_LayerFillColors.resize(nb);
-    m_LayerBrushStyles.resize(nb);
+    #if wxUSE_GUI
+        m_LayerLineColors.resize(nb);
+        m_LayerFillColors.resize(nb);
+        m_LayerBrushStyles.resize(nb);
+    #endif
 }

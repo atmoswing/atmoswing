@@ -30,8 +30,10 @@
 
 #include <asIncludes.h>
 #include <asFileWorkspace.h>
-#include <wx/colour.h>
-#include <wx/brush.h>
+#if wxUSE_GUI
+    #include <wx/colour.h>
+    #include <wx/brush.h>
+#endif
 
 class asWorkspace : public wxObject
 {
@@ -133,6 +135,8 @@ public:
         m_LayerLineWidths[i] = val;
     }
 
+    #if wxUSE_GUI
+
     wxColour GetLayerLineColor(int i)
     {
         wxASSERT(m_LayerLineColors.size()>i);
@@ -168,6 +172,8 @@ public:
         wxASSERT(m_LayerBrushStyles.size()>i);
         m_LayerBrushStyles[i] = val;
     }
+
+    #endif
 
     double GetColorbarMaxValue()
     {
@@ -231,9 +237,11 @@ private:
     VectorInt m_LayerTransparencies;
     VectorBool m_LayerVisibilities;
     VectorInt m_LayerLineWidths;
-    vector < wxColour > m_LayerLineColors;
-    vector < wxColour > m_LayerFillColors;
-    vector < wxBrushStyle > m_LayerBrushStyles;
+    #if wxUSE_GUI
+        vector < wxColour > m_LayerLineColors;
+        vector < wxColour > m_LayerFillColors;
+        vector < wxBrushStyle > m_LayerBrushStyles;
+    #endif
     double m_ColorbarMaxValue;
     int m_TimeSeriesPlotPastDaysNb;
     int m_AlarmsPanelReturnPeriod;
