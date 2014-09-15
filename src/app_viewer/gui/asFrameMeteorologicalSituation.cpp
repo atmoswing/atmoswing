@@ -43,6 +43,7 @@
 #include <wx/app.h>
 #include <wx/event.h>
 #include <wx/dir.h>
+#include <wx/stdpaths.h>
 #include "vrrender.h"
 #include "vrlayervector.h"
 
@@ -560,12 +561,9 @@ void asFrameMeteorologicalSituation::ReloadViewerLayerManager( )
 
 void asFrameMeteorologicalSituation::OnPresetSelection (wxCommandEvent & event)
 {
-    
-
-    wxString basePath = "D:\\\_DEV\\AtmoSwing 1.6\\data\\";
+    wxString basePath = wxStandardPaths::Get().GetDataDir();
+    basePath = basePath + DS + "data" + DS;
     wxFileName fullPath(basePath);
-
-
 
     int selection = event.GetInt();
 
