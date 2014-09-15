@@ -194,7 +194,7 @@ void asFramePreferencesForecaster::LoadPreferences()
     wxString logpathForecaster = asConfig::GetLogDir();
     logpathForecaster.Append("AtmoSwingForecaster.log");
     m_StaticTextLogFile->SetLabel(logpathForecaster);
-    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir("AtmoSwing forecaster")+"AtmoSwing.ini");
+    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingForecaster.ini");
 
 }
 

@@ -52,6 +52,7 @@ asFrameCalibrationVirtual( parent )
     m_ToolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run calibration"), _("Run calibration now"), NULL );
     m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel calibration"), _("Cancel current calibration"), NULL );
 	m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+    m_ToolBar->Realize();
 
     // Connect events
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameCalibration::Launch ) );

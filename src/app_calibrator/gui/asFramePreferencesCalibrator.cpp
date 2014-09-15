@@ -64,7 +64,6 @@ void asFramePreferencesCalibrator::LoadPreferences()
     {
         m_DirPickerPredictandDB->SetBackgroundColour(col);
         m_DirPickerIntermediateResults->SetBackgroundColour(col);
-        m_DirPickerParameters->SetBackgroundColour(col);
         m_DirPickerArchivePredictors->SetBackgroundColour(col);
     }
 
@@ -162,7 +161,7 @@ void asFramePreferencesCalibrator::LoadPreferences()
     wxString logpath = asConfig::GetLogDir();
     logpath.Append("AtmoSwingCalibrator.log");
     m_StaticTextLogFile->SetLabel(logpath);
-    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir("AtmoSwing calibrator")+"AtmoSwing.ini");
+    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini");
 }
 
 void asFramePreferencesCalibrator::SavePreferences( )
@@ -187,8 +186,6 @@ void asFramePreferencesCalibrator::SavePreferences( )
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
     wxString ArchivePredictorsDir = m_DirPickerArchivePredictors->GetPath();
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
-    wxString ForecastParametersDir = m_DirPickerParameters->GetPath();
-    pConfig->Write("/Paths/ForecastParametersDir", ForecastParametersDir);
 
     /*
      * Advanced

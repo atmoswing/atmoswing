@@ -29,9 +29,9 @@
 #include <wx/textctrl.h>
 #include <wx/notebook.h>
 #include <wx/button.h>
+#include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
-#include <wx/menu.h>
 #include <wx/frame.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
@@ -101,14 +101,13 @@ class asFrameCalibrationVirtual : public wxFrame
 		wxStaticText* m_StaticTextVarExploStepToExplore;
 		wxTextCtrl* m_TextCtrlVarExploStepToExplore;
 		wxButton* m_ButtonSaveDefault;
-		wxToolBar* m_ToolBar;
-		wxStatusBar* m_statusBar1;
 		wxMenuBar* m_MenuBar;
 		wxMenu* m_MenuOptions;
 		wxMenu* m_MenuLog;
 		wxMenu* m_MenuLogLevel;
 		wxMenu* m_MenuHelp;
-		wxMenu* m_MenuControls;
+		wxToolBar* m_ToolBar;
+		wxStatusBar* m_statusBar1;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSaveDefault( wxCommandEvent& event ) { event.Skip(); }
@@ -118,7 +117,6 @@ class asFrameCalibrationVirtual : public wxFrame
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel3( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFrameAbout( wxCommandEvent& event ) { event.Skip(); }
-		virtual void Launch( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -143,8 +141,6 @@ class asFramePreferencesCalibratorVirtual : public wxFrame
 		wxRadioBox* m_RadioBoxLogLevel;
 		wxCheckBox* m_CheckBoxDisplayLogWindow;
 		wxCheckBox* m_CheckBoxSaveLogFile;
-		wxStaticText* m_StaticTextParametersDir;
-		wxDirPickerCtrl* m_DirPickerParameters;
 		wxStaticText* m_StaticTextArchivePredictorsDir;
 		wxDirPickerCtrl* m_DirPickerArchivePredictors;
 		wxStaticText* m_StaticTextPredictandDBDir;
