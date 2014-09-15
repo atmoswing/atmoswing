@@ -213,11 +213,11 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
         pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Calibration/ParallelEvaluations", true);
         pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
-        pConfig->Write("/General/AllowMultithreading", true);
-        pConfig->Write("/ProcessingOptions/ProcessingMethod", (long)asMULTITHREADS);
+        pConfig->Write("/Processing/AllowMultithreading", true);
+        pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
 
         pConfig->Flush();
 
@@ -390,7 +390,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     wxString threadsNb = wxEmptyString;
     if (parser.Found("tn", & threadsNb))
     {
-        wxFileConfig::Get()->Write("/General/ProcessingMaxThreadNb", threadsNb);
+        wxFileConfig::Get()->Write("/Processing/MaxThreadNb", threadsNb);
     }
 
     // Check for a calibration params file

@@ -158,19 +158,19 @@ void asFramePreferencesForecaster::LoadPreferences()
 
     // Multithreading
     bool allowMultithreading;
-    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
     m_CheckBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads==-1) maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/General/ProcessingMaxThreadNb", maxThreadsStr);
+    wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
     m_TextCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
     long ProcessingThreadsPriority = pConfig->Read("/General/ProcessingThreadsPriority", 95l);
     m_SliderThreadsPriority->SetValue((int)ProcessingThreadsPriority);
 
     // Processing
     long defaultMethod = (long)asMULTITHREADS;
-    long ProcessingMethod = pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod);
+    long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading)
     {
         m_RadioBoxProcessingMethods->Enable(0, false);
@@ -185,7 +185,7 @@ void asFramePreferencesForecaster::LoadPreferences()
     }
     m_RadioBoxProcessingMethods->SetSelection((int)ProcessingMethod);
     long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
-    long ProcessingLinAlgebra = pConfig->Read("/ProcessingOptions/ProcessingLinAlgebra", defaultLinAlgebra);
+    long ProcessingLinAlgebra = pConfig->Read("/Processing/LinAlgebra", defaultLinAlgebra);
     m_RadioBoxLinearAlgebra->SetSelection((int)ProcessingLinAlgebra);
 
     // User directories
@@ -284,10 +284,10 @@ void asFramePreferencesForecaster::SavePreferences( )
 
     // Multithreading
     bool allowMultithreading = m_CheckBoxAllowMultithreading->GetValue();
-    pConfig->Write("/General/AllowMultithreading", allowMultithreading);
+    pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     wxString ProcessingMaxThreadNb = m_TextCtrlThreadsNb->GetValue();
     if (!ProcessingMaxThreadNb.IsNumber()) ProcessingMaxThreadNb = "2";
-    pConfig->Write("/General/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
+    pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
     long ProcessingThreadsPriority = (long)m_SliderThreadsPriority->GetValue();
     pConfig->Write("/General/ProcessingThreadsPriority", ProcessingThreadsPriority);
 
@@ -297,9 +297,9 @@ void asFramePreferencesForecaster::SavePreferences( )
     {
         ProcessingMethod = (long)asINSERT;
     }
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", ProcessingMethod);
+    pConfig->Write("/Processing/Method", ProcessingMethod);
     long ProcessingLinAlgebra = (long)m_RadioBoxLinearAlgebra->GetSelection();
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", ProcessingLinAlgebra);
+    pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
     
     if(GetParent()!=NULL)
     {

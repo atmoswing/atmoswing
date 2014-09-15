@@ -541,7 +541,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step)
 {
     // Get preferences
-    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
+    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
 
     // Initialize the result object
     results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
@@ -990,7 +990,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params, asResultsAnalogsForecast &resultsPrev, int i_step)
 {
     // Get the linear algebra method
-    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
+    int linAlgebraMethod = (int)(wxFileConfig::Get()->Read("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR));
 
     // Initialize the result object
     results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());

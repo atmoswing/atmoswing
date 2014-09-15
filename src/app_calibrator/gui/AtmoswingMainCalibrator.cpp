@@ -134,16 +134,6 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
-    // Multithreading
-    bool allowMultithreading;
-    pConfig->Read("/General/AllowMultithreading", &allowMultithreading, true);
-    pConfig->Write("/General/AllowMultithreading", allowMultithreading);
-    // Set the number of threads
-    int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads==-1) maxThreads = 2;
-    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/General/ProcessingMaxThreadNb", maxThreadsStr);
-    pConfig->Write("/General/ProcessingMaxThreadNb", ProcessingMaxThreadNb);
 
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+DS+"config";
@@ -158,16 +148,24 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
 
     // Processing
+    bool allowMultithreading;
+    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
+    int maxThreads = wxThread::GetCPUCount();
+    if (maxThreads==-1) maxThreads = 2;
+    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
+    wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
+    pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
     long defaultMethod = (long)asMULTITHREADS;
-    long ProcessingMethod = pConfig->Read("/ProcessingOptions/ProcessingMethod", defaultMethod);
+    long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading)
     {
         ProcessingMethod = (long)asINSERT;
     }
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", ProcessingMethod);
+    pConfig->Write("/Processing/Method", ProcessingMethod);
     long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
-    long ProcessingLinAlgebra = pConfig->Read("/ProcessingOptions/ProcessingLinAlgebra", defaultLinAlgebra);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", ProcessingLinAlgebra);
+    long ProcessingLinAlgebra = pConfig->Read("/Processing/LinAlgebra", defaultLinAlgebra);
+    pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
     pConfig->Flush();
 }
