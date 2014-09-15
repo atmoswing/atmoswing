@@ -71,11 +71,6 @@ class asConfig : public wxObject
         */
         static wxString GetUserDataDir();
 
-        /** Get root data directory of user with the given application name
-        * \return The full path
-        */
-        static wxString GetUserDataDir(const wxString &appName);
-
         /** Get documents directory of user
         * \return The full path
         */

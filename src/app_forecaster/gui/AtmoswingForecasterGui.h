@@ -80,6 +80,7 @@ class asFrameMainVirtual : public wxFrame
 		virtual void OnOpenBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveBatchForecastsAs( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePredictandDB( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }

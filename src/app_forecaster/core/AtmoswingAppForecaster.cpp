@@ -72,6 +72,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_SWITCH, "fn", "forecastnow", "run forecast for the latest available data" },
     { wxCMD_LINE_OPTION, "fp", "forecastpast", "run forecast for the given number of past days" },
     { wxCMD_LINE_OPTION, "fd", "forecastdate", "run forecast for a specified date (YYYYMMDDHH)" },
+    { wxCMD_LINE_OPTION, "f", "batchfile", "batch file to use for the forecast (full path)" },
     { wxCMD_LINE_NONE }
 };
 
@@ -97,7 +98,7 @@ bool AtmoswingAppForecaster::OnInit()
     m_ForecastPastDays = 0;
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingForecaster.ini",asConfig::GetUserDataDir()+"AtmoSwingForecaster.ini",wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     #if wxUSE_GUI
@@ -280,6 +281,14 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("s"))
     {
         Log().SetTarget(asLog::File);
+    }
+
+    // Batch file to use for the forecast
+    wxString batchFile;
+    if (parser.Found("f", &batchFile))
+    {
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        pConfig->Write("/BatchForecasts/LastOpened", batchFile);
     }
 
     // Check for a present forecast

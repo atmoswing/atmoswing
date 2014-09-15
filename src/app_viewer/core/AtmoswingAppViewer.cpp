@@ -76,7 +76,7 @@ bool AtmoswingAppViewer::OnInit()
     userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingViewer.ini",asConfig::GetUserDataDir()+"AtmoSwingViewer.ini",wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance

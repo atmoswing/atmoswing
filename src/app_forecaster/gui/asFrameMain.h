@@ -74,7 +74,6 @@ protected:
     void OnNewBatchForecasts(wxCommandEvent & event);
     bool OpenBatchForecasts();
     void Update();
-    void GoToViewer( wxCommandEvent& event );
     void OpenFrameXmlEditor( wxCommandEvent& event );
     void OpenFramePredictandDB( wxCommandEvent& event );
     void OnConfigureDirectories( wxCommandEvent& event );

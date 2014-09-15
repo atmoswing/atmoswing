@@ -67,8 +67,6 @@ asFrameMainVirtual( parent )
     m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
     m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
     m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
-    m_ToolBar->AddSeparator();
-    m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
     m_ToolBar->Realize();
 
     // Leds
@@ -116,7 +114,6 @@ asFrameMainVirtual( parent )
     this->Connect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
     this->Connect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
     this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-    this->Connect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 
     // Icon
 #ifdef __WXMSW__
@@ -133,7 +130,6 @@ asFrameMain::~asFrameMain()
     this->Disconnect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
     this->Disconnect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
     this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-    this->Disconnect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 }
 
 void asFrameMain::OnInit()
@@ -237,6 +233,8 @@ bool asFrameMain::SaveBatchForecasts()
     {
         asPanelForecastingModel* panel = m_PanelsManager->GetPanel(i);
 
+        m_BatchForecasts.AddModel();
+
         m_BatchForecasts.SetModelName(i, panel->GetModelName());
         m_BatchForecasts.SetModelDescription(i, panel->GetModelDescription());
         m_BatchForecasts.SetModelFileName(i, panel->GetParametersFileName());
@@ -298,26 +296,6 @@ void asFrameMain::OpenFrameXmlEditor( wxCommandEvent& event )
     //asFrameXmlEditor* frame = new asFrameXmlEditor(this, asWINDOW_XML_EDITOR);
     //frame->Fit();
     //frame->Show();
-}
-
-void asFrameMain::GoToViewer( wxCommandEvent& event )
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ViewerPath = pConfig->Read("/Paths/ViewerPath", wxEmptyString);
-
-    if(ViewerPath.IsEmpty())
-    {
-        asLogError(_("Please set the path to the viewer in the preferences."));
-        return;
-    }
-
-    // Execute
-    long processId = wxExecute(ViewerPath, wxEXEC_ASYNC);
-
-    if (processId==0) // if wxEXEC_ASYNC
-    {
-        asLogError(_("The viewer could not be executed. Please check the path in the preferences."));
-    }
 }
 
 void asFrameMain::OpenFramePredictandDB( wxCommandEvent& event )

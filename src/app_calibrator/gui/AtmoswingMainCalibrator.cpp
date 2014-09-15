@@ -136,15 +136,15 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
 
     // Paths
-    wxString dirConfig = asConfig::GetDataDir()+DS+"config";
-    wxString dirData = asConfig::GetDataDir()+DS+"data";
-    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
+    wxString dirConfig = asConfig::GetDataDir() + "config" + DS;
+    wxString dirData = asConfig::GetDataDir() + "data" + DS;
+    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
+    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir() + "AtmoSwing");
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString CalibrationResultsDir = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDocumentsDir()+"AtmoSwing"+DS+"Calibration");
+    wxString CalibrationResultsDir = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
     pConfig->Write("/Paths/CalibrationResultsDir", CalibrationResultsDir);
-    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
+    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
 
     // Processing

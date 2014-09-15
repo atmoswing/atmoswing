@@ -215,6 +215,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	this->Connect( m_MenuItemOpenBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ) );
 	this->Connect( m_MenuItemSaveBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ) );
 	this->Connect( m_MenuItemSaveBatchFileAs->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ) );
+	this->Connect( m_MenuItemNewBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnNewBatchForecasts ) );
 	this->Connect( m_MenuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePreferences ) );
 	this->Connect( m_MenuItemBuildPredictandDB->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePredictandDB ) );
 	this->Connect( m_MenuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnShowLog ) );
@@ -233,6 +234,7 @@ asFrameMainVirtual::~asFrameMainVirtual()
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnNewBatchForecasts ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePreferences ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePredictandDB ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnShowLog ) );
@@ -719,7 +721,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_PanelGeneral->SetSizer( bSizer271 );
 	m_PanelGeneral->Layout();
 	bSizer271->Fit( m_PanelGeneral );
-	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), false );
+	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), true );
 	m_PanelProcessing = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1611;
 	bSizer1611 = new wxBoxSizer( wxVERTICAL );
@@ -828,7 +830,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_PanelUserDirectories->SetSizer( bSizer24 );
 	m_PanelUserDirectories->Layout();
 	bSizer24->Fit( m_PanelUserDirectories );
-	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), true );
+	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), false );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
 	
