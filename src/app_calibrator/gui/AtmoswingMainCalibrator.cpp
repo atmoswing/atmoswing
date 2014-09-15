@@ -80,10 +80,10 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->Read("/MainFrameCalibrator/x", 50),
-        y = pConfig->Read("/MainFrameCalibrator/y", 50),
-        w = pConfig->Read("/MainFrameCalibrator/w", minWidth),
-        h = pConfig->Read("/MainFrameCalibrator/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50),
+        y = pConfig->Read("/MainFrame/y", 50),
+        w = pConfig->Read("/MainFrame/w", minWidth),
+        h = pConfig->Read("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x<screen.x-10) x = screen.x;
     if (x>screen.width) x = screen.x;
@@ -181,10 +181,10 @@ AtmoswingFrameCalibrator::~AtmoswingFrameCalibrator()
     int x, y, w, h;
     GetClientSize(&w, &h);
     GetPosition(&x, &y);
-    pConfig->Write("/MainFrameCalibrator/x", (long) x);
-    pConfig->Write("/MainFrameCalibrator/y", (long) y);
-    pConfig->Write("/MainFrameCalibrator/w", (long) w);
-    pConfig->Write("/MainFrameCalibrator/h", (long) h);
+    pConfig->Write("/MainFrame/x", (long) x);
+    pConfig->Write("/MainFrame/y", (long) y);
+    pConfig->Write("/MainFrame/w", (long) w);
+    pConfig->Write("/MainFrame/h", (long) h);
 
     Destroy();
 }
