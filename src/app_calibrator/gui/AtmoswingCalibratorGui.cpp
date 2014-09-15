@@ -328,11 +328,6 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	this->SetSizer( bSizer4 );
 	this->Layout();
 	bSizer4->Fit( this );
-	m_ToolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY );
-	m_ToolBar->SetToolBitmapSize( wxSize( 32,32 ) );
-	m_ToolBar->Realize(); 
-	
-	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
 	m_MenuBar = new wxMenuBar( 0 );
 	m_MenuOptions = new wxMenu();
 	wxMenuItem* m_MenuItemPreferences;
@@ -371,15 +366,13 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	
 	m_MenuBar->Append( m_MenuHelp, _("Help") ); 
 	
-	m_MenuControls = new wxMenu();
-	wxMenuItem* m_MenuItemLaunch;
-	m_MenuItemLaunch = new wxMenuItem( m_MenuControls, wxID_ANY, wxString( _("Launch") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuControls->Append( m_MenuItemLaunch );
-	
-	m_MenuBar->Append( m_MenuControls, _("Controls") ); 
-	
 	this->SetMenuBar( m_MenuBar );
 	
+	m_ToolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY );
+	m_ToolBar->SetToolBitmapSize( wxSize( 32,32 ) );
+	m_ToolBar->Realize(); 
+	
+	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
 	
 	this->Centre( wxBOTH );
 	
@@ -391,7 +384,6 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	this->Connect( m_MenuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel2 ) );
 	this->Connect( m_MenuItemLogLevel3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel3 ) );
 	this->Connect( m_MenuItemAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OpenFrameAbout ) );
-	this->Connect( m_MenuItemLaunch->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::Launch ) );
 }
 
 asFrameCalibrationVirtual::~asFrameCalibrationVirtual()
@@ -404,6 +396,289 @@ asFrameCalibrationVirtual::~asFrameCalibrationVirtual()
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel2 ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel3 ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OpenFrameAbout ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::Launch ) );
+	
+}
+
+asFramePreferencesCalibratorVirtual::asFramePreferencesCalibratorVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxSize( 400,400 ), wxDefaultSize );
+	
+	wxBoxSizer* bSizer14;
+	bSizer14 = new wxBoxSizer( wxVERTICAL );
+	
+	m_PanelBase = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxVERTICAL );
+	
+	m_NotebookBase = new wxNotebook( m_PanelBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelGeneralCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer7;
+	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Logs") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxString m_RadioBoxLogLevelChoices[] = { _("Errors only (recommanded)"), _("Errors and warnings"), _("Verbose") };
+	int m_RadioBoxLogLevelNChoices = sizeof( m_RadioBoxLogLevelChoices ) / sizeof( wxString );
+	m_RadioBoxLogLevel = new wxRadioBox( m_PanelGeneralCommon, wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_RadioBoxLogLevelNChoices, m_RadioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
+	m_RadioBoxLogLevel->SetSelection( 0 );
+	bSizer20->Add( m_RadioBoxLogLevel, 1, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer8;
+	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Outputs") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer21;
+	bSizer21 = new wxBoxSizer( wxVERTICAL );
+	
+	m_CheckBoxDisplayLogWindow = new wxCheckBox( m_PanelGeneralCommon, wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxDisplayLogWindow->SetValue(true); 
+	bSizer21->Add( m_CheckBoxDisplayLogWindow, 0, wxALL, 5 );
+	
+	m_CheckBoxSaveLogFile = new wxCheckBox( m_PanelGeneralCommon, wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxSaveLogFile->SetValue(true); 
+	m_CheckBoxSaveLogFile->Enable( false );
+	
+	bSizer21->Add( m_CheckBoxSaveLogFile, 0, wxALL, 5 );
+	
+	
+	sbSizer8->Add( bSizer21, 1, wxEXPAND, 5 );
+	
+	
+	bSizer20->Add( sbSizer8, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	sbSizer7->Add( bSizer20, 1, wxEXPAND, 5 );
+	
+	
+	bSizer16->Add( sbSizer7, 0, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer18;
+	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Directories") ), wxVERTICAL );
+	
+	m_StaticTextArchivePredictorsDir = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextArchivePredictorsDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerArchivePredictors = new wxDirPickerCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	
+	m_StaticTextPredictandDBDir = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Default predictand DB directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPredictandDBDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextPredictandDBDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerPredictandDB = new wxDirPickerCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer16->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelGeneralCommon->SetSizer( bSizer16 );
+	m_PanelGeneralCommon->Layout();
+	bSizer16->Fit( m_PanelGeneralCommon );
+	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), true );
+	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+	
+	m_NotebookAdvanced = new wxNotebook( m_PanelAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelGeneral = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer271;
+	bSizer271 = new wxBoxSizer( wxVERTICAL );
+	
+	wxString m_RadioBoxGuiChoices[] = { _("Silent (no progressbar, much faster)"), _("Standard (recommanded)"), _("Verbose (not much used)") };
+	int m_RadioBoxGuiNChoices = sizeof( m_RadioBoxGuiChoices ) / sizeof( wxString );
+	m_RadioBoxGui = new wxRadioBox( m_PanelGeneral, wxID_ANY, _("GUI options"), wxDefaultPosition, wxDefaultSize, m_RadioBoxGuiNChoices, m_RadioBoxGuiChoices, 1, wxRA_SPECIFY_COLS );
+	m_RadioBoxGui->SetSelection( 1 );
+	bSizer271->Add( m_RadioBoxGui, 0, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer151;
+	sbSizer151 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneral, wxID_ANY, _("Advanced options") ), wxVERTICAL );
+	
+	m_CheckBoxResponsiveness = new wxCheckBox( m_PanelGeneral, wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxResponsiveness->SetValue(true); 
+	sbSizer151->Add( m_CheckBoxResponsiveness, 0, wxALL, 5 );
+	
+	
+	bSizer271->Add( sbSizer151, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelGeneral->SetSizer( bSizer271 );
+	m_PanelGeneral->Layout();
+	bSizer271->Fit( m_PanelGeneral );
+	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), true );
+	m_PanelProcessing = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer1611;
+	bSizer1611 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer15;
+	sbSizer15 = new wxStaticBoxSizer( new wxStaticBox( m_PanelProcessing, wxID_ANY, _("Multithreading") ), wxVERTICAL );
+	
+	m_CheckBoxAllowMultithreading = new wxCheckBox( m_PanelProcessing, wxID_ANY, _("Allow multithreading"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxAllowMultithreading->SetValue(true); 
+	sbSizer15->Add( m_CheckBoxAllowMultithreading, 0, wxALL, 5 );
+	
+	wxBoxSizer* bSizer221;
+	bSizer221 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_StaticTextThreadsNb = new wxStaticText( m_PanelProcessing, wxID_ANY, _("Max nb of threads"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextThreadsNb->Wrap( -1 );
+	bSizer221->Add( m_StaticTextThreadsNb, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_TextCtrlThreadsNb = new wxTextCtrl( m_PanelProcessing, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,-1 ), 0 );
+	m_TextCtrlThreadsNb->SetMaxLength( 0 ); 
+	bSizer221->Add( m_TextCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	sbSizer15->Add( bSizer221, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxBoxSizer* bSizer241;
+	bSizer241 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_StaticTextThreadsPriority = new wxStaticText( m_PanelProcessing, wxID_ANY, _("Threads priority"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextThreadsPriority->Wrap( -1 );
+	bSizer241->Add( m_StaticTextThreadsPriority, 0, wxALL, 5 );
+	
+	m_SliderThreadsPriority = new wxSlider( m_PanelProcessing, wxID_ANY, 95, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_LABELS );
+	bSizer241->Add( m_SliderThreadsPriority, 1, wxRIGHT|wxLEFT, 5 );
+	
+	
+	sbSizer15->Add( bSizer241, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	
+	bSizer1611->Add( sbSizer15, 0, wxALL|wxEXPAND, 5 );
+	
+	wxString m_RadioBoxProcessingMethodsChoices[] = { _("Multithreaded (only if allowed hereabove)"), _("Date array insertions (slower)"), _("Date array splitting (slower)") };
+	int m_RadioBoxProcessingMethodsNChoices = sizeof( m_RadioBoxProcessingMethodsChoices ) / sizeof( wxString );
+	m_RadioBoxProcessingMethods = new wxRadioBox( m_PanelProcessing, wxID_ANY, _("Processing options"), wxDefaultPosition, wxDefaultSize, m_RadioBoxProcessingMethodsNChoices, m_RadioBoxProcessingMethodsChoices, 1, wxRA_SPECIFY_COLS );
+	m_RadioBoxProcessingMethods->SetSelection( 0 );
+	m_RadioBoxProcessingMethods->SetToolTip( _("These options don't affect the results, only the processor efficiency.") );
+	
+	bSizer1611->Add( m_RadioBoxProcessingMethods, 0, wxALL|wxEXPAND, 5 );
+	
+	wxString m_RadioBoxLinearAlgebraChoices[] = { _("Direct access to the coefficients"), _("Direct access to the coefficients and minimizing variable declarations"), _("Linear algebra using Eigen"), _("Linear algebra using Eigen and minimizing variable declarations (recommended)") };
+	int m_RadioBoxLinearAlgebraNChoices = sizeof( m_RadioBoxLinearAlgebraChoices ) / sizeof( wxString );
+	m_RadioBoxLinearAlgebra = new wxRadioBox( m_PanelProcessing, wxID_ANY, _("Linear algebra options"), wxDefaultPosition, wxDefaultSize, m_RadioBoxLinearAlgebraNChoices, m_RadioBoxLinearAlgebraChoices, 1, wxRA_SPECIFY_COLS );
+	m_RadioBoxLinearAlgebra->SetSelection( 3 );
+	m_RadioBoxLinearAlgebra->Enable( false );
+	
+	bSizer1611->Add( m_RadioBoxLinearAlgebra, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	m_PanelProcessing->SetSizer( bSizer1611 );
+	m_PanelProcessing->Layout();
+	bSizer1611->Fit( m_PanelProcessing );
+	m_NotebookAdvanced->AddPage( m_PanelProcessing, _("Processing"), false );
+	m_PanelUserDirectories = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer24;
+	bSizer24 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer411;
+	sbSizer411 = new wxStaticBoxSizer( new wxStaticBox( m_PanelUserDirectories, wxID_ANY, _("Working directories") ), wxVERTICAL );
+	
+	m_StaticTextIntermediateResultsDir = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("Directory to save intermediate temporary results"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextIntermediateResultsDir->Wrap( -1 );
+	sbSizer411->Add( m_StaticTextIntermediateResultsDir, 0, wxALL, 5 );
+	
+	m_DirPickerIntermediateResults = new wxDirPickerCtrl( m_PanelUserDirectories, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer411->Add( m_DirPickerIntermediateResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer24->Add( sbSizer411, 0, wxEXPAND|wxALL, 5 );
+	
+	wxStaticBoxSizer* sbSizer17;
+	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( m_PanelUserDirectories, wxID_ANY, _("User specific paths") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer9;
+	fgSizer9 = new wxFlexGridSizer( 5, 2, 0, 0 );
+	fgSizer9->SetFlexibleDirection( wxBOTH );
+	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextUserDirLabel = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("User working directory:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextUserDirLabel->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextUserDirLabel, 0, wxALL, 5 );
+	
+	m_StaticTextUserDir = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextUserDir->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextUserDir, 0, wxALL, 5 );
+	
+	m_StaticTextLogFileLabel = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("Log file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextLogFileLabel->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextLogFileLabel, 0, wxALL, 5 );
+	
+	m_StaticTextLogFile = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextLogFile->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextLogFile, 0, wxALL, 5 );
+	
+	m_StaticTextPrefFileLabel = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("Preferences file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPrefFileLabel->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextPrefFileLabel, 0, wxALL, 5 );
+	
+	m_StaticTextPrefFile = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPrefFile->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextPrefFile, 0, wxALL, 5 );
+	
+	
+	sbSizer17->Add( fgSizer9, 1, wxEXPAND, 5 );
+	
+	
+	bSizer24->Add( sbSizer17, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	m_PanelUserDirectories->SetSizer( bSizer24 );
+	m_PanelUserDirectories->Layout();
+	bSizer24->Fit( m_PanelUserDirectories );
+	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), false );
+	
+	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	m_PanelAdvanced->SetSizer( bSizer26 );
+	m_PanelAdvanced->Layout();
+	bSizer26->Fit( m_PanelAdvanced );
+	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), false );
+	
+	bSizer15->Add( m_NotebookBase, 1, wxEXPAND | wxALL, 5 );
+	
+	m_ButtonsConfirmation = new wxStdDialogButtonSizer();
+	m_ButtonsConfirmationOK = new wxButton( m_PanelBase, wxID_OK );
+	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationOK );
+	m_ButtonsConfirmationApply = new wxButton( m_PanelBase, wxID_APPLY );
+	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationApply );
+	m_ButtonsConfirmationCancel = new wxButton( m_PanelBase, wxID_CANCEL );
+	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationCancel );
+	m_ButtonsConfirmation->Realize();
+	
+	bSizer15->Add( m_ButtonsConfirmation, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelBase->SetSizer( bSizer15 );
+	m_PanelBase->Layout();
+	bSizer15->Fit( m_PanelBase );
+	bSizer14->Add( m_PanelBase, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer14 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_CheckBoxAllowMultithreading->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::OnChangeMultithreadingCheckBox ), NULL, this );
+	m_ButtonsConfirmationApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::ApplyChanges ), NULL, this );
+	m_ButtonsConfirmationCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::CloseFrame ), NULL, this );
+	m_ButtonsConfirmationOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::SaveAndClose ), NULL, this );
+}
+
+asFramePreferencesCalibratorVirtual::~asFramePreferencesCalibratorVirtual()
+{
+	// Disconnect Events
+	m_CheckBoxAllowMultithreading->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::OnChangeMultithreadingCheckBox ), NULL, this );
+	m_ButtonsConfirmationApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::ApplyChanges ), NULL, this );
+	m_ButtonsConfirmationCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::CloseFrame ), NULL, this );
+	m_ButtonsConfirmationOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesCalibratorVirtual::SaveAndClose ), NULL, this );
 	
 }

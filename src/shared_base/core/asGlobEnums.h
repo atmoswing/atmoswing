@@ -113,39 +113,37 @@ enum
     enum
     {
         asWINDOW_MAIN = 101,
-        asWINDOW_PREFERENCES = 102,
-        asWINDOW_PREDICTANDDB = 104,
-        asWINDOW_VIEWER_RINGS = 106,
-        asWINDOW_VIEWER_DOTS = 107,
-        asWINDOW_PLOTS_TIMESERIES = 108,
-        asWINDOW_PLOTS_DISTRIBUTIONS = 109,
-        asWINDOW_GRID_ANALOGS = 110,
-        asWINDOW_PREDICTORS = 111
+        asWINDOW_PREFERENCES,
+        asWINDOW_PREDICTANDDB,
+        asWINDOW_PLOTS_TIMESERIES,
+        asWINDOW_PLOTS_DISTRIBUTIONS,
+        asWINDOW_GRID_ANALOGS,
+        asWINDOW_PREDICTORS
     };
 
     // Menus & Controls ID
     enum
     {
         asID_PREFERENCES = wxID_HIGHEST+1,
-        asID_OPEN = wxID_HIGHEST+2,
-        asID_RUN = wxID_HIGHEST+3,
-        asID_RUN_PREVIOUS = wxID_HIGHEST+4,
-        asID_CANCEL = wxID_HIGHEST+5,
-        asID_DB_OPTIONS = wxID_HIGHEST+6,
-        asID_DB_CREATE = wxID_HIGHEST+7,
-        asID_PRINT = wxID_HIGHEST+9,
-        asID_SELECT = wxID_HIGHEST+10,
-        asID_ZOOM_IN = wxID_HIGHEST+11,
-        asID_ZOOM_OUT = wxID_HIGHEST+12,
-        asID_ZOOM_FIT = wxID_HIGHEST+13,
-        asID_PAN = wxID_HIGHEST+14,
-        asID_CROSS_MARKER = wxID_HIGHEST+15,
-        asID_FRAME_VIEWER = wxID_HIGHEST+16,
-        asID_FRAME_FORECASTER = wxID_HIGHEST+17,
-        asID_FRAME_DOTS = wxID_HIGHEST+18,
-        asID_FRAME_PLOTS = wxID_HIGHEST+19,
-        asID_FRAME_GRID = wxID_HIGHEST+20,
-        asID_FRAME_SITUATION = wxID_HIGHEST+21,
+        asID_OPEN,
+        asID_RUN,
+        asID_RUN_PREVIOUS,
+        asID_CANCEL,
+        asID_DB_OPTIONS,
+        asID_DB_CREATE,
+        asID_PRINT,
+        asID_SELECT,
+        asID_ZOOM_IN,
+        asID_ZOOM_OUT,
+        asID_ZOOM_FIT,
+        asID_PAN,
+        asID_CROSS_MARKER,
+        asID_FRAME_VIEWER,
+        asID_FRAME_FORECASTER,
+        asID_FRAME_DOTS,
+        asID_FRAME_PLOTS,
+        asID_FRAME_GRID,
+        asID_FRAME_SITUATION,
     };
 #endif
 

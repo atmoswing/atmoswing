@@ -32,10 +32,11 @@
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
-asForecastManager::asForecastManager(wxWindow* parent)
+asForecastManager::asForecastManager(wxWindow* parent, asWorkspace* workspace)
 {
     m_LeadTimeOrigin = 0;
     m_Parent = parent;
+    m_Workspace = workspace;
 }
 
 asForecastManager::~asForecastManager()
@@ -45,7 +46,7 @@ asForecastManager::~asForecastManager()
 
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
 {
-    wxString defPath = wxFileConfig::Get()->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
+    wxString defPath = m_Workspace->GetForecastsDirectory();
 
     if (!dir.IsSameAs(defPath,false) && !dir.IsSameAs(defPath+DS,false))
     {
@@ -191,12 +192,10 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
     if (m_PastForecasts[forecastSelection].size()>0) return;
 
     // Get the number of days to load
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    int nbPastDays = 3;
-    pConfig->Read("/Plot/PastDaysNb", &nbPastDays, 3);
+    int nbPastDays = m_Workspace->GetTimeSeriesPlotPastDaysNb();
 
     // Get path
-    wxString defPath = wxFileConfig::Get()->Read("/StandardPaths/ForecastResultsDir", asConfig::GetDefaultUserWorkingDir() + "ForecastResults" + DS);
+    wxString defPath = m_Workspace->GetForecastsDirectory();
     defPath.Append(DS);
 
     // Directory
@@ -419,6 +418,20 @@ int asForecastManager::GetLeadTimeLength(int i_fcst)
     }
 
     wxASSERT(length>0);
+
+    return length;
+}
+
+int asForecastManager::GetLeadTimeLengthMax()
+{
+    if (m_CurrentForecasts.size()==0) return 0;
+    
+    int length = 0;
+
+    for (int i=0; i<m_CurrentForecasts.size(); i++)
+    {
+        length = wxMax(length, m_CurrentForecasts[i]->GetTargetDatesLength());
+    }
 
     return length;
 }

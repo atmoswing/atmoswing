@@ -83,14 +83,12 @@ bool asDataPredictorRealtime::Init()
 
 int asDataPredictorRealtime::Download()
 {
-    // Directory
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString realtimePredictorSavingDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", wxEmptyString);
+    wxASSERT(!m_PredictorsRealtimeDirectory.IsEmpty());
 
     // Internet (cURL)
     asInternet internet;
 
-    return internet.Download(GetUrls(), GetFileNames(), realtimePredictorSavingDir);
+    return internet.Download(GetUrls(), GetFileNames(), m_PredictorsRealtimeDirectory);
 }
 
 bool asDataPredictorRealtime::LoadFullArea(double date, float level)

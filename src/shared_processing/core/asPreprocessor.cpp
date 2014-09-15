@@ -108,7 +108,7 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool allowMultithreading;
-    pConfig->Read("/Standard/AllowMultithreading", &allowMultithreading, true);
+    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Only one predictor
@@ -381,7 +381,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
     int inputSize = predictors.size();
     int factorSize = inputSize/2;
     if(inputSize<2) asThrowException(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
-    if(!inputSize%2!=0) asThrowException(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+    if(inputSize%2!=0) asThrowException(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
 
     // Handle sizes
     wxASSERT(predictors[0]);

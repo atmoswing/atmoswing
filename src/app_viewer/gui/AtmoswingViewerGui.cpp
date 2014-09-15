@@ -21,7 +21,7 @@
 
 asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 800,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 1000,600 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
@@ -67,9 +67,20 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_SizerTopLeft->Add( m_StaticTextForecastModel, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
-	m_SizerTop->Add( m_SizerTopLeft, 1, wxALIGN_LEFT|wxEXPAND, 5 );
+	m_SizerTop->Add( m_SizerTopLeft, 0, wxALIGN_LEFT|wxEXPAND, 5 );
 	
 	m_SizerTopRight = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer39;
+	bSizer39 = new wxBoxSizer( wxVERTICAL );
+	
+	m_SizerLeadTimeSwitch = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer39->Add( m_SizerLeadTimeSwitch, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	m_SizerTopRight->Add( bSizer39, 1, wxALIGN_RIGHT, 5 );
 	
 	
 	m_SizerTop->Add( m_SizerTopRight, 1, wxALIGN_RIGHT|wxEXPAND, 5 );
@@ -108,13 +119,29 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	bSizer3->Fit( this );
 	m_MenuBar = new wxMenuBar( 0 );
 	m_MenuFile = new wxMenu();
-	wxMenuItem* m_MenuItemQuit;
-	m_MenuItemQuit = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Quit") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuFile->Append( m_MenuItemQuit );
-	
 	wxMenuItem* m_MenuItemOpenWorkspace;
 	m_MenuItemOpenWorkspace = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Open a workspace") ) , wxEmptyString, wxITEM_NORMAL );
 	m_MenuFile->Append( m_MenuItemOpenWorkspace );
+	
+	wxMenuItem* m_MenuItemSaveWorkspace;
+	m_MenuItemSaveWorkspace = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Save the workspace") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemSaveWorkspace );
+	
+	wxMenuItem* m_MenuItemSaveWorkspaceAs;
+	m_MenuItemSaveWorkspaceAs = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Save the workspace as") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemSaveWorkspaceAs );
+	
+	wxMenuItem* m_MenuItemNewWorkspace;
+	m_MenuItemNewWorkspace = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Create a new workspace") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemNewWorkspace );
+	
+	m_MenuFile->AppendSeparator();
+	
+	wxMenuItem* m_MenuItemOpenForecast;
+	m_MenuItemOpenForecast = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Open a forecast file") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemOpenForecast );
+	
+	m_MenuFile->AppendSeparator();
 	
 	wxMenuItem* m_MenuItemOpenGISLayer;
 	m_MenuItemOpenGISLayer = new wxMenuItem( m_MenuFile, wxID_OPEN, wxString( _("Open a GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
@@ -124,9 +151,15 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_MenuItemCloseGISLayer = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Close a GIS layer") ) , wxEmptyString, wxITEM_NORMAL );
 	m_MenuFile->Append( m_MenuItemCloseGISLayer );
 	
-	wxMenuItem* m_MenuItemOpenForecast;
-	m_MenuItemOpenForecast = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Open a forecast file") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuFile->Append( m_MenuItemOpenForecast );
+	wxMenuItem* m_MenuItemMoveGISLayer;
+	m_MenuItemMoveGISLayer = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Move the selected layer") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemMoveGISLayer );
+	
+	m_MenuFile->AppendSeparator();
+	
+	wxMenuItem* m_MenuItemQuit;
+	m_MenuItemQuit = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Quit") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemQuit );
 	
 	m_MenuBar->Append( m_MenuFile, _("File") ); 
 	
@@ -177,11 +210,15 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	this->Connect( m_MenuItemQuit->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnQuit ) );
 	this->Connect( m_MenuItemOpenWorkspace->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenWorkspace ) );
+	this->Connect( m_MenuItemSaveWorkspace->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspace ) );
+	this->Connect( m_MenuItemSaveWorkspaceAs->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspaceAs ) );
+	this->Connect( m_MenuItemNewWorkspace->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnNewWorkspace ) );
+	this->Connect( m_MenuItemOpenForecast->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenForecast ) );
 	this->Connect( m_MenuItemOpenGISLayer->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenLayer ) );
 	this->Connect( m_MenuItemCloseGISLayer->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnCloseLayer ) );
-	this->Connect( m_MenuItemOpenForecast->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenForecast ) );
+	this->Connect( m_MenuItemMoveGISLayer->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnMoveLayer ) );
+	this->Connect( m_MenuItemQuit->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnQuit ) );
 	this->Connect( m_MenuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFramePreferences ) );
 	this->Connect( m_MenuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnShowLog ) );
 	this->Connect( m_MenuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel1 ) );
@@ -193,11 +230,15 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 asFrameForecastVirtual::~asFrameForecastVirtual()
 {
 	// Disconnect Events
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnQuit ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenWorkspace ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspace ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspaceAs ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnNewWorkspace ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenForecast ) );
 	this->Disconnect( wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenLayer ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnCloseLayer ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenForecast ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnMoveLayer ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnQuit ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OpenFramePreferences ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnShowLog ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnLogLevel1 ) );
@@ -870,4 +911,446 @@ asPanelSidebarVirtual::~asPanelSidebarVirtual()
 	// Disconnect Events
 	m_BpButtonReduce->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelSidebarVirtual::OnReducePanel ), NULL, this );
 	
+}
+
+asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxSize( 400,400 ), wxDefaultSize );
+	
+	wxBoxSizer* bSizer14;
+	bSizer14 = new wxBoxSizer( wxVERTICAL );
+	
+	m_PanelBase = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxVERTICAL );
+	
+	m_NotebookBase = new wxNotebook( m_PanelBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelWorkspace = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer55;
+	bSizer55 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer18;
+	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_PanelWorkspace, wxID_ANY, _("Directories for real-time forecasting") ), wxVERTICAL );
+	
+	m_StaticTextForecastResultsDir = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Directory to save forecast outputs"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextForecastResultsDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextForecastResultsDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerForecastResults = new wxDirPickerCtrl( m_PanelWorkspace, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer55->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );
+	
+	wxStaticBoxSizer* sbSizer141;
+	sbSizer141 = new wxStaticBoxSizer( new wxStaticBox( m_PanelWorkspace, wxID_ANY, _("Forecast display options") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer81;
+	fgSizer81 = new wxFlexGridSizer( 2, 3, 0, 0 );
+	fgSizer81->SetFlexibleDirection( wxBOTH );
+	fgSizer81->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextColorbarMaxValue = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Set the maximum rainfall value for the colorbar"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextColorbarMaxValue->Wrap( -1 );
+	fgSizer81->Add( m_StaticTextColorbarMaxValue, 0, wxALL, 5 );
+	
+	m_TextCtrlColorbarMaxValue = new wxTextCtrl( m_PanelWorkspace, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlColorbarMaxValue->SetMaxLength( 0 ); 
+	fgSizer81->Add( m_TextCtrlColorbarMaxValue, 0, wxALL, 5 );
+	
+	m_StaticTextColorbarMaxUnit = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("mm/d"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextColorbarMaxUnit->Wrap( -1 );
+	fgSizer81->Add( m_StaticTextColorbarMaxUnit, 0, wxALL, 5 );
+	
+	m_StaticTextPastDaysNb = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Number of past days to display on the timeseries"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPastDaysNb->Wrap( -1 );
+	fgSizer81->Add( m_StaticTextPastDaysNb, 0, wxALL, 5 );
+	
+	m_TextCtrlPastDaysNb = new wxTextCtrl( m_PanelWorkspace, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlPastDaysNb->SetMaxLength( 0 ); 
+	fgSizer81->Add( m_TextCtrlPastDaysNb, 0, wxALL, 5 );
+	
+	
+	sbSizer141->Add( fgSizer81, 1, wxEXPAND, 5 );
+	
+	
+	bSizer55->Add( sbSizer141, 0, wxEXPAND|wxALL, 5 );
+	
+	wxStaticBoxSizer* sbSizer191;
+	sbSizer191 = new wxStaticBoxSizer( new wxStaticBox( m_PanelWorkspace, wxID_ANY, _("Alarms panel") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer13;
+	fgSizer13 = new wxFlexGridSizer( 2, 3, 0, 0 );
+	fgSizer13->SetFlexibleDirection( wxBOTH );
+	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextAlarmsReturnPeriod = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Return period to display"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsReturnPeriod->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextAlarmsReturnPeriod, 0, wxALL, 5 );
+	
+	wxString m_ChoiceAlarmsReturnPeriodChoices[] = { _("2"), _("5"), _("10"), _("20"), _("50"), _("100") };
+	int m_ChoiceAlarmsReturnPeriodNChoices = sizeof( m_ChoiceAlarmsReturnPeriodChoices ) / sizeof( wxString );
+	m_ChoiceAlarmsReturnPeriod = new wxChoice( m_PanelWorkspace, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceAlarmsReturnPeriodNChoices, m_ChoiceAlarmsReturnPeriodChoices, 0 );
+	m_ChoiceAlarmsReturnPeriod->SetSelection( 0 );
+	fgSizer13->Add( m_ChoiceAlarmsReturnPeriod, 0, wxALL, 5 );
+	
+	m_StaticTextAlarmsReturnPeriodYears = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsReturnPeriodYears->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextAlarmsReturnPeriodYears, 0, wxALL, 5 );
+	
+	m_StaticTextAlarmsPercentile = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Percentile to display"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsPercentile->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextAlarmsPercentile, 0, wxALL, 5 );
+	
+	m_TextCtrlAlarmsPercentile = new wxTextCtrl( m_PanelWorkspace, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlAlarmsPercentile->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlAlarmsPercentile, 0, wxALL, 5 );
+	
+	m_StaticTextAlarmsPercentileRange = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("(in between 0 - 1)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsPercentileRange->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextAlarmsPercentileRange, 0, wxALL, 5 );
+	
+	
+	sbSizer191->Add( fgSizer13, 1, wxEXPAND, 5 );
+	
+	
+	bSizer55->Add( sbSizer191, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelWorkspace->SetSizer( bSizer55 );
+	m_PanelWorkspace->Layout();
+	bSizer55->Fit( m_PanelWorkspace );
+	m_NotebookBase->AddPage( m_PanelWorkspace, _("Workspace"), true );
+	m_PanelGeneralCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer7;
+	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Logs") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxString m_RadioBoxLogLevelChoices[] = { _("Errors only (recommanded)"), _("Errors and warnings"), _("Verbose") };
+	int m_RadioBoxLogLevelNChoices = sizeof( m_RadioBoxLogLevelChoices ) / sizeof( wxString );
+	m_RadioBoxLogLevel = new wxRadioBox( m_PanelGeneralCommon, wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_RadioBoxLogLevelNChoices, m_RadioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
+	m_RadioBoxLogLevel->SetSelection( 0 );
+	bSizer20->Add( m_RadioBoxLogLevel, 1, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer8;
+	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Outputs") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer21;
+	bSizer21 = new wxBoxSizer( wxVERTICAL );
+	
+	m_CheckBoxDisplayLogWindow = new wxCheckBox( m_PanelGeneralCommon, wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxDisplayLogWindow->SetValue(true); 
+	bSizer21->Add( m_CheckBoxDisplayLogWindow, 0, wxALL, 5 );
+	
+	m_CheckBoxSaveLogFile = new wxCheckBox( m_PanelGeneralCommon, wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CheckBoxSaveLogFile->SetValue(true); 
+	m_CheckBoxSaveLogFile->Enable( false );
+	
+	bSizer21->Add( m_CheckBoxSaveLogFile, 0, wxALL, 5 );
+	
+	
+	sbSizer8->Add( bSizer21, 1, wxEXPAND, 5 );
+	
+	
+	bSizer20->Add( sbSizer8, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	sbSizer7->Add( bSizer20, 1, wxEXPAND, 5 );
+	
+	
+	bSizer16->Add( sbSizer7, 0, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer14;
+	sbSizer14 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Proxy configuration") ), wxVERTICAL );
+	
+	m_CheckBoxProxy = new wxCheckBox( m_PanelGeneralCommon, wxID_ANY, _("Internet connection uses a proxy"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer14->Add( m_CheckBoxProxy, 0, wxALL, 5 );
+	
+	wxBoxSizer* bSizer34;
+	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_StaticTextProxyAddress = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Proxy address"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextProxyAddress->Wrap( -1 );
+	bSizer34->Add( m_StaticTextProxyAddress, 0, wxALL, 5 );
+	
+	m_TextCtrlProxyAddress = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 180,-1 ), 0 );
+	m_TextCtrlProxyAddress->SetMaxLength( 0 ); 
+	bSizer34->Add( m_TextCtrlProxyAddress, 1, wxALL, 5 );
+	
+	m_StaticTextProxyPort = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Port"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextProxyPort->Wrap( -1 );
+	bSizer34->Add( m_StaticTextProxyPort, 0, wxALL, 5 );
+	
+	m_TextCtrlProxyPort = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_TextCtrlProxyPort->SetMaxLength( 0 ); 
+	bSizer34->Add( m_TextCtrlProxyPort, 0, wxALL, 5 );
+	
+	
+	sbSizer14->Add( bSizer34, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer35;
+	bSizer35 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_StaticTextProxyUser = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Username"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextProxyUser->Wrap( -1 );
+	bSizer35->Add( m_StaticTextProxyUser, 0, wxALL, 5 );
+	
+	m_TextCtrlProxyUser = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	m_TextCtrlProxyUser->SetMaxLength( 0 ); 
+	bSizer35->Add( m_TextCtrlProxyUser, 1, wxALL, 5 );
+	
+	m_StaticTextProxyPasswd = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextProxyPasswd->Wrap( -1 );
+	bSizer35->Add( m_StaticTextProxyPasswd, 0, wxALL, 5 );
+	
+	m_TextCtrlProxyPasswd = new wxTextCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	m_TextCtrlProxyPasswd->SetMaxLength( 0 ); 
+	bSizer35->Add( m_TextCtrlProxyPasswd, 1, wxALL, 5 );
+	
+	
+	sbSizer14->Add( bSizer35, 1, wxEXPAND, 5 );
+	
+	
+	bSizer16->Add( sbSizer14, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelGeneralCommon->SetSizer( bSizer16 );
+	m_PanelGeneralCommon->Layout();
+	bSizer16->Fit( m_PanelGeneralCommon );
+	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), false );
+	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer151;
+	sbSizer151 = new wxStaticBoxSizer( new wxStaticBox( m_PanelAdvanced, wxID_ANY, _("Advanced options") ), wxVERTICAL );
+	
+	m_CheckBoxMultiInstancesViewer = new wxCheckBox( m_PanelAdvanced, wxID_ANY, _("Allow multiple instances of the viewer"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer151->Add( m_CheckBoxMultiInstancesViewer, 0, wxALL, 5 );
+	
+	
+	bSizer26->Add( sbSizer151, 0, wxEXPAND|wxALL, 5 );
+	
+	wxStaticBoxSizer* sbSizer17;
+	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( m_PanelAdvanced, wxID_ANY, _("User specific paths") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer9;
+	fgSizer9 = new wxFlexGridSizer( 5, 2, 0, 0 );
+	fgSizer9->SetFlexibleDirection( wxBOTH );
+	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextUserDirLabel = new wxStaticText( m_PanelAdvanced, wxID_ANY, _("User working directory:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextUserDirLabel->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextUserDirLabel, 0, wxALL, 5 );
+	
+	m_StaticTextUserDir = new wxStaticText( m_PanelAdvanced, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextUserDir->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextUserDir, 0, wxALL, 5 );
+	
+	m_StaticTextLogFileLabel = new wxStaticText( m_PanelAdvanced, wxID_ANY, _("Log file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextLogFileLabel->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextLogFileLabel, 0, wxALL, 5 );
+	
+	m_StaticTextLogFile = new wxStaticText( m_PanelAdvanced, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextLogFile->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextLogFile, 0, wxALL, 5 );
+	
+	m_StaticTextPrefFileLabel = new wxStaticText( m_PanelAdvanced, wxID_ANY, _("Preferences file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPrefFileLabel->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextPrefFileLabel, 0, wxALL, 5 );
+	
+	m_StaticTextPrefFile = new wxStaticText( m_PanelAdvanced, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPrefFile->Wrap( -1 );
+	fgSizer9->Add( m_StaticTextPrefFile, 0, wxALL, 5 );
+	
+	
+	sbSizer17->Add( fgSizer9, 1, wxEXPAND, 5 );
+	
+	
+	bSizer26->Add( sbSizer17, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	m_PanelAdvanced->SetSizer( bSizer26 );
+	m_PanelAdvanced->Layout();
+	bSizer26->Fit( m_PanelAdvanced );
+	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), false );
+	
+	bSizer15->Add( m_NotebookBase, 1, wxEXPAND | wxALL, 5 );
+	
+	m_ButtonsConfirmation = new wxStdDialogButtonSizer();
+	m_ButtonsConfirmationOK = new wxButton( m_PanelBase, wxID_OK );
+	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationOK );
+	m_ButtonsConfirmationApply = new wxButton( m_PanelBase, wxID_APPLY );
+	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationApply );
+	m_ButtonsConfirmationCancel = new wxButton( m_PanelBase, wxID_CANCEL );
+	m_ButtonsConfirmation->AddButton( m_ButtonsConfirmationCancel );
+	m_ButtonsConfirmation->Realize();
+	
+	bSizer15->Add( m_ButtonsConfirmation, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelBase->SetSizer( bSizer15 );
+	m_PanelBase->Layout();
+	bSizer15->Fit( m_PanelBase );
+	bSizer14->Add( m_PanelBase, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( bSizer14 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_ButtonsConfirmationApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesViewerVirtual::ApplyChanges ), NULL, this );
+	m_ButtonsConfirmationCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesViewerVirtual::CloseFrame ), NULL, this );
+	m_ButtonsConfirmationOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesViewerVirtual::SaveAndClose ), NULL, this );
+}
+
+asFramePreferencesViewerVirtual::~asFramePreferencesViewerVirtual()
+{
+	// Disconnect Events
+	m_ButtonsConfirmationApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesViewerVirtual::ApplyChanges ), NULL, this );
+	m_ButtonsConfirmationCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesViewerVirtual::CloseFrame ), NULL, this );
+	m_ButtonsConfirmationOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesViewerVirtual::SaveAndClose ), NULL, this );
+	
+}
+
+asWizardWorkspaceVirtual::asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style ) 
+{
+	this->Create( parent, id, title, bitmap, pos, style );
+	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
+	
+	wxWizardPageSimple* m_wizPage1 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage1 );
+	
+	wxBoxSizer* bSizer48;
+	bSizer48 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText37 = new wxStaticText( m_wizPage1, wxID_ANY, _("Load / create a workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText37->Wrap( -1 );
+	m_staticText37->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer48->Add( m_staticText37, 0, wxALL, 5 );
+	
+	m_staticText35 = new wxStaticText( m_wizPage1, wxID_ANY, _("Press the button below to load an existing file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35->Wrap( -1 );
+	bSizer48->Add( m_staticText35, 0, wxALL|wxEXPAND, 5 );
+	
+	m_button4 = new wxButton( m_wizPage1, wxID_ANY, _("Load existing workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer48->Add( m_button4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	m_staticText46 = new wxStaticText( m_wizPage1, wxID_ANY, _("or continue to create a new workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText46->Wrap( -1 );
+	bSizer48->Add( m_staticText46, 0, wxALL, 5 );
+	
+	
+	m_wizPage1->SetSizer( bSizer48 );
+	m_wizPage1->Layout();
+	bSizer48->Fit( m_wizPage1 );
+	wxWizardPageSimple* m_wizPage2 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage2 );
+	
+	wxBoxSizer* bSizer49;
+	bSizer49 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText36 = new wxStaticText( m_wizPage2, wxID_ANY, _("Create a new workspace"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36->Wrap( -1 );
+	m_staticText36->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer49->Add( m_staticText36, 0, wxALL, 5 );
+	
+	m_staticText43 = new wxStaticText( m_wizPage2, wxID_ANY, _("Path to save the new workspace file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText43->Wrap( -1 );
+	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
+	
+	m_FilePickerWorkspaceFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
+	bSizer49->Add( m_FilePickerWorkspaceFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	m_wizPage2->SetSizer( bSizer49 );
+	m_wizPage2->Layout();
+	bSizer49->Fit( m_wizPage2 );
+	wxWizardPageSimple* m_wizPage3 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage3 );
+	
+	wxBoxSizer* bSizer50;
+	bSizer50 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText44 = new wxStaticText( m_wizPage3, wxID_ANY, _("Workspace options"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText44->Wrap( -1 );
+	m_staticText44->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer50->Add( m_staticText44, 0, wxALL, 5 );
+	
+	m_StaticTextForecastResultsDir = new wxStaticText( m_wizPage3, wxID_ANY, _("Provide the path to the forecasts directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextForecastResultsDir->Wrap( -1 );
+	bSizer50->Add( m_StaticTextForecastResultsDir, 0, wxALL, 5 );
+	
+	m_DirPickerForecastResults = new wxDirPickerCtrl( m_wizPage3, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	bSizer50->Add( m_DirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_staticText42 = new wxStaticText( m_wizPage3, wxID_ANY, _("Other workspace parameters can be defined in the preferences frame."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText42->Wrap( -1 );
+	bSizer50->Add( m_staticText42, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_wizPage3->SetSizer( bSizer50 );
+	m_wizPage3->Layout();
+	bSizer50->Fit( m_wizPage3 );
+	wxWizardPageSimple* m_wizPage4 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage4 );
+	
+	wxBoxSizer* bSizer51;
+	bSizer51 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText45 = new wxStaticText( m_wizPage4, wxID_ANY, _("Base map"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText45->Wrap( -1 );
+	m_staticText45->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer51->Add( m_staticText45, 0, wxALL, 5 );
+	
+	m_staticText40 = new wxStaticText( m_wizPage4, wxID_ANY, _("Choose the base map for your project"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText40->Wrap( -1 );
+	bSizer51->Add( m_staticText40, 0, wxALL, 5 );
+	
+	wxString m_ChoiceBaseMapChoices[] = { _("Custom layers"), _("Terrain from Google maps (recommended)"), _("Map from Google maps"), _("Map from Openstreetmap"), _("Map from ArcGIS Mapserver"), _("Satellite imagery from Google maps"), _("Satellite imagery from VirtualEarth") };
+	int m_ChoiceBaseMapNChoices = sizeof( m_ChoiceBaseMapChoices ) / sizeof( wxString );
+	m_ChoiceBaseMap = new wxChoice( m_wizPage4, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceBaseMapNChoices, m_ChoiceBaseMapChoices, 0 );
+	m_ChoiceBaseMap->SetSelection( 0 );
+	bSizer51->Add( m_ChoiceBaseMap, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	
+	m_staticText41 = new wxStaticText( m_wizPage4, wxID_ANY, _("Other GIS layers can be added in the viewer frame directly, and be saved to the workspace."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText41->Wrap( -1 );
+	bSizer51->Add( m_staticText41, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_wizPage4->SetSizer( bSizer51 );
+	m_wizPage4->Layout();
+	bSizer51->Fit( m_wizPage4 );
+	
+	this->Centre( wxBOTH );
+	
+	for ( unsigned int i = 1; i < m_pages.GetCount(); i++ )
+	{
+		m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );
+		m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );
+	}
+	
+	// Connect Events
+	this->Connect( wxID_ANY, wxEVT_WIZARD_FINISHED, wxWizardEventHandler( asWizardWorkspaceVirtual::OnWizardFinished ) );
+	m_button4->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardWorkspaceVirtual::OnLoadExistingWorkspace ), NULL, this );
+}
+
+asWizardWorkspaceVirtual::~asWizardWorkspaceVirtual()
+{
+	// Disconnect Events
+	this->Disconnect( wxID_ANY, wxEVT_WIZARD_FINISHED, wxWizardEventHandler( asWizardWorkspaceVirtual::OnWizardFinished ) );
+	m_button4->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardWorkspaceVirtual::OnLoadExistingWorkspace ), NULL, this );
+	
+	m_pages.Clear();
 }
