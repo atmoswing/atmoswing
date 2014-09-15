@@ -138,7 +138,7 @@ asFrameForecastVirtual( parent, id )
     m_ToolBar->AddTool( asID_FRAME_PLOTS, wxT("Open distributions plots"), img_frame_plots, img_frame_plots, wxITEM_NORMAL, _("Open distributions plots"), _("Open distributions plots"), NULL );
     m_ToolBar->AddTool( asID_FRAME_GRID, wxT("Open analogs list"), img_frame_grid, img_frame_grid, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), NULL );
     m_ToolBar->AddTool( asID_FRAME_FORECASTER, wxT("Open forecaster"), img_frame_forecaster, img_frame_forecaster, wxITEM_NORMAL, _("Open forecaster"), _("Open forecaster"), NULL );
-    m_ToolBar->AddTool( asID_FRAME_SITUATION, wxT("Display meteorological situation"), img_frame_forecaster, img_frame_forecaster, wxITEM_NORMAL, _("Display meteorological situation"), _("Display meteorological situation"), NULL );
+    m_ToolBar->AddTool( asID_FRAME_SITUATION, wxT("Display meteorological situation"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Display meteorological situation"), _("Display meteorological situation"), NULL );
     m_ToolBar->AddSeparator();
     m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
     m_ToolBar->Realize();
