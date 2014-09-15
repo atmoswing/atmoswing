@@ -35,8 +35,8 @@ asResultsAnalogsValues::asResultsAnalogsValues()
 asResults()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/IntermediateResults/SaveAnalogValues", &m_SaveIntermediateResults, false);
-    wxFileConfig::Get()->Read("/IntermediateResults/LoadAnalogValues", &m_LoadIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveAnalogValues", &m_SaveIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/LoadAnalogValues", &m_LoadIntermediateResults, false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 

@@ -54,7 +54,7 @@ void asThreadsManager::Init()
     m_MaxThreadsNb = wxThread::GetCPUCount();
     if (m_MaxThreadsNb==-1) m_MaxThreadsNb = 2;
     pConfig->Read("/Processing/MaxThreadNb", &m_MaxThreadsNb, m_MaxThreadsNb);
-    m_Priority = pConfig->Read("/General/ProcessingThreadsPriority", 95l);
+    m_Priority = pConfig->Read("/Processing/ThreadsPriority", 95l);
 
     m_CritSectionManager.Leave();
 }

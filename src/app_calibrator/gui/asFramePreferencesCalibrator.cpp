@@ -131,7 +131,7 @@ void asFramePreferencesCalibrator::LoadPreferences()
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
     wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
     m_TextCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = pConfig->Read("/General/ProcessingThreadsPriority", 95l);
+    long ProcessingThreadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
     m_SliderThreadsPriority->SetValue((int)ProcessingThreadsPriority);
 
     // Processing
@@ -230,7 +230,7 @@ void asFramePreferencesCalibrator::SavePreferences( )
     if (!ProcessingMaxThreadNb.IsNumber()) ProcessingMaxThreadNb = "2";
     pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
     long ProcessingThreadsPriority = (long)m_SliderThreadsPriority->GetValue();
-    pConfig->Write("/General/ProcessingThreadsPriority", ProcessingThreadsPriority);
+    pConfig->Write("/Processing/ThreadsPriority", ProcessingThreadsPriority);
     
     // Processing
     long ProcessingMethod = (long)m_RadioBoxProcessingMethods->GetSelection();

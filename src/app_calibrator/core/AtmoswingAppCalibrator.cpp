@@ -208,16 +208,16 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/General/GuiOptions", 0l);
         pConfig->Write("/General/Responsive", false);
         pConfig->Write("/General/DisplayLogWindow", false);
-        pConfig->Write("/General/ProcessingThreadsPriority", 100);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
         pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
         pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
-        pConfig->Write("/Calibration/ParallelEvaluations", true);
-        pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
         pConfig->Write("/Processing/AllowMultithreading", true);
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
+        pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/ThreadsPriority", 100);
+        pConfig->Write("/Calibration/ParallelEvaluations", true);
+        pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
 
         pConfig->Flush();
 
