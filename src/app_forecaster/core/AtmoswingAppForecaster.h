@@ -24,31 +24,42 @@
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
-#include "asFileForecastingModels.h"
 
-asFileForecastingModels::asFileForecastingModels(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFileXml(FileName, FileMode)
-{
-    // FindAndOpen() processed by asFileXml
-}
+#ifndef AtmoswingAPPFORECASTER_H
+#define AtmoswingAPPFORECASTER_H
 
-asFileForecastingModels::~asFileForecastingModels()
-{
-    //dtor
-}
+#include <wx/app.h>
+#include <wx/snglinst.h>
+#include <wx/cmdline.h>
+#include <wx/socket.h>
+#include <asIncludes.h>
 
-bool asFileForecastingModels::InsertRootElement()
+#if wxUSE_GUI
+class AtmoswingAppForecaster : public wxApp
+#else
+class AtmoswingAppForecaster : public wxAppConsole
+#endif
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "ForecastingModels")) return false;
-    if(!GoToFirstNodeWithPath("ForecastingModels")) return false;
-    return true;
-}
+public:
+    virtual bool OnInit();
+    virtual int OnRun();
+    virtual int OnExit();
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+    bool InitForCmdLineOnly(long logLevel);
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
+    bool CommonInit();
 
-bool asFileForecastingModels::GoToRootElement()
-{
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.ForecastingModels")) return false;
-    return true;
-}
+private:
+    bool m_DoConfig;
+    bool m_DoForecast;
+    bool m_DoForecastPast;
+    double m_ForecastDate;
+    int m_ForecastPastDays;
+    #if wxUSE_GUI
+        wxSingleInstanceChecker* m_SingleInstanceChecker;
+    #endif
+};
+
+DECLARE_APP(AtmoswingAppForecaster);
+
+#endif

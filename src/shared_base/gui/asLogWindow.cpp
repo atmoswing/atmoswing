@@ -51,7 +51,7 @@ void asLogWindow::DoShow(bool bShow)
 
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/DisplayLogWindow", bShow);
+    pConfig->Write("/General/DisplayLogWindow", bShow);
     ThreadsManager().CritSectionConfig().Leave();
 }
 
@@ -59,7 +59,7 @@ bool asLogWindow::OnFrameClose (wxFrame *frame)
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/DisplayLogWindow", false);
+    pConfig->Write("/General/DisplayLogWindow", false);
     ThreadsManager().CritSectionConfig().Leave();
 
     return true;

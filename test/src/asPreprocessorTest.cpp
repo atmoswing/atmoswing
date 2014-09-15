@@ -44,7 +44,7 @@ TEST(Gradients)
     printf("%s", str.mb_str(wxConvUTF8).data());
 	
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", false);
+    pConfig->Write("/Processing/AllowMultithreading", false);
 
     double Umin = 10;
     double Uwidth = 10;
@@ -176,7 +176,7 @@ TEST(Gradients)
 TEST(GradientsMultithreading)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
+    pConfig->Write("/Processing/AllowMultithreading", true);
 
     double Umin = 10;
     double Uwidth = 10;

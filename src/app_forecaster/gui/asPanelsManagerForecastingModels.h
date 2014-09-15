@@ -33,7 +33,6 @@
 #include <asPanelsManager.h>
 
 class asPanelForecastingModel;
-class asFileForecastingModels;
 
 class asPanelsManagerForecastingModels : public asPanelsManager
 {
@@ -42,17 +41,17 @@ public:
     virtual ~asPanelsManagerForecastingModels();
 
     void AddPanel(asPanelForecastingModel* panel);
-
     void RemovePanel(asPanelForecastingModel* panel);
     void Clear();
+
+    asPanelForecastingModel* GetPanel( int i );
+    int GetPanelsNb();
 
     void SetForecastingModelLedRunning( int num );
     void SetForecastingModelLedError( int num );
     void SetForecastingModelLedDone( int num );
     void SetForecastingModelLedOff( int num );
     void SetForecastingModelsAllLedsOff();
-
-    bool GenerateXML(asFileForecastingModels &file);
 
 protected:
     std::vector <asPanelForecastingModel*> m_ArrayPanels;

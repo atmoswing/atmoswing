@@ -109,11 +109,11 @@ asCatalog::DatasetIdList asCatalog::GetDatasetIdList(DataPurpose Purpose, const 
         }
         else if (Purpose==PredictorArchive)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsArchive.xml");
+            Filename = wxFileConfig::Get()->Read("/Paths/CatalogPredictorsArchiveFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsArchive.xml");
         }
         else if (Purpose==PredictorRealtime)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsRealtime.xml");
+            Filename = wxFileConfig::Get()->Read("/Paths/CatalogPredictorsRealtimeFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsRealtime.xml");
         }
         ThreadsManager().CritSectionConfig().Leave();
     }
@@ -167,11 +167,11 @@ asCatalog::DataIdListStr asCatalog::GetDataIdListStr(DataPurpose Purpose, const 
         }
         else if (Purpose==PredictorArchive)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsArchive.xml");
+            Filename = wxFileConfig::Get()->Read("/Paths/CatalogPredictorsArchiveFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsArchive.xml");
         }
         else if (Purpose==PredictorRealtime)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsRealtime.xml");
+            Filename = wxFileConfig::Get()->Read("/Paths/CatalogPredictorsRealtimeFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsRealtime.xml");
         }
         ThreadsManager().CritSectionConfig().Leave();
     }
@@ -223,11 +223,11 @@ asCatalog::DataIdListInt asCatalog::GetDataIdListInt(DataPurpose Purpose, const 
         }
         else if (Purpose==PredictorArchive)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictorsArchiveFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsArchive.xml");
+            Filename = wxFileConfig::Get()->Read("/Paths/CatalogPredictorsArchiveFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsArchive.xml");
         }
         else if (Purpose==PredictorRealtime)
         {
-            Filename = wxFileConfig::Get()->Read("/StandardPaths/CatalogPredictorsRealtimeFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsRealtime.xml");
+            Filename = wxFileConfig::Get()->Read("/Paths/CatalogPredictorsRealtimeFilePath", asConfig::GetDefaultUserConfigDir() + "CatalogPredictorsRealtime.xml");
         }
         ThreadsManager().CritSectionConfig().Leave();
     }

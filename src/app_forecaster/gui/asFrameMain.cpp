@@ -28,11 +28,11 @@
 #include "asFrameMain.h"
 
 #include "asFramePredictandDB.h"
-#include "asFramePreferences.h"
+#include "asFramePreferencesForecaster.h"
 #include "asFrameXmlEditor.h"
 #include "asFrameAbout.h"
-#include <asPanelForecastingModel.h>
-#include <asFileForecastingModels.h>
+#include "asPanelForecastingModel.h"
+#include "asWizardBatchForecasts.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
 #include "img_logo.h"
@@ -51,6 +51,7 @@ BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
     EVT_COMMAND(wxID_ANY, asEVT_STATUS_SAVED, asFrameMain::OnStatusMethodUpdate)
     EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSING, asFrameMain::OnStatusMethodUpdate)
     EVT_COMMAND(wxID_ANY, asEVT_STATUS_PROCESSED, asFrameMain::OnStatusMethodUpdate)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_BATCHFORECASTS, asFrameMain::OnOpenBatchForecasts)
 END_EVENT_TABLE()
 
 
@@ -66,8 +67,6 @@ asFrameMainVirtual( parent )
     m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
     m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
     m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
-    m_ToolBar->AddSeparator();
-    m_ToolBar->AddTool( asID_FRAME_VIEWER, wxT("Open viewer"), img_frame_viewer, img_frame_viewer, wxITEM_NORMAL, _("Go to viewer"), _("Go to viewer"), NULL );
     m_ToolBar->Realize();
 
     // Leds
@@ -115,7 +114,6 @@ asFrameMainVirtual( parent )
     this->Connect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
     this->Connect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
     this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-    this->Connect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 
     // Icon
 #ifdef __WXMSW__
@@ -132,14 +130,160 @@ asFrameMain::~asFrameMain()
     this->Disconnect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::CancelForecasting ) );
     this->Disconnect( asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePredictandDB ) );
     this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::OpenFramePreferences ) );
-    this->Disconnect( asID_FRAME_VIEWER, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::GoToViewer ) );
 }
 
 void asFrameMain::OnInit()
 {
     DisplayLogLevelMenu();
     SetPresentDate();
-    ModelsListLoadDefault();
+    
+    // Open last batch file
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    wxString batchFilePath = wxEmptyString;
+    pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+    if(!batchFilePath.IsEmpty())
+    {
+        if (!m_BatchForecasts.Load(batchFilePath))
+        {
+            asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+        }
+
+        if (!OpenBatchForecasts())
+        {
+            asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+        }
+    }
+    else
+    {
+        asWizardBatchForecasts wizard(this, &m_BatchForecasts);
+        wizard.RunWizard(wizard.GetFirstPage());
+
+        OpenBatchForecasts();
+    }
+}
+
+void asFrameMain::OnOpenBatchForecasts(wxCommandEvent & event)
+{
+    // Ask for a batch file
+    wxFileDialog openFileDialog (this, _("Select a batch file"),
+                            wxEmptyString,
+                            wxEmptyString,
+                            "xml files (*.xml)|*.xml",
+                            wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
+
+    // If canceled
+    if(openFileDialog.ShowModal()==wxID_CANCEL)
+        return;
+
+    wxString batchFilePath = openFileDialog.GetPath();
+
+    // Save preferences
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
+
+    // Do open the batch file
+    if (!m_BatchForecasts.Load(batchFilePath))
+    {
+        asLogError(_("Failed to open the batch file ") + batchFilePath);
+    }
+
+    if (!OpenBatchForecasts())
+    {
+        asLogError(_("Failed to open the batch file ") + batchFilePath);
+    }
+
+}
+
+void asFrameMain::OnSaveBatchForecasts(wxCommandEvent & event)
+{
+    SaveBatchForecasts();
+}
+
+void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent & event)
+{
+    // Ask for a batch file
+    wxFileDialog openFileDialog (this, _("Select a path to save the batch file"),
+                            wxEmptyString,
+                            wxEmptyString,
+                            "xml files (*.xml)|*.xml",
+                            wxFD_SAVE | wxFD_CHANGE_DIR);
+
+    // If canceled
+    if(openFileDialog.ShowModal()==wxID_CANCEL)
+        return;
+
+    wxString batchFilePath = openFileDialog.GetPath();
+    m_BatchForecasts.SetFilePath(batchFilePath);
+
+    if(SaveBatchForecasts())
+    {
+        // Save preferences
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
+    }
+}
+
+bool asFrameMain::SaveBatchForecasts()
+{
+    // Update the GIS layers
+    m_BatchForecasts.ClearModels();
+
+    for (int i=0; i<m_PanelsManager->GetPanelsNb(); i++)
+    {
+        asPanelForecastingModel* panel = m_PanelsManager->GetPanel(i);
+
+        m_BatchForecasts.AddModel();
+
+        m_BatchForecasts.SetModelName(i, panel->GetModelName());
+        m_BatchForecasts.SetModelDescription(i, panel->GetModelDescription());
+        m_BatchForecasts.SetModelFileName(i, panel->GetParametersFileName());
+        m_BatchForecasts.SetModelPredictandDB(i, panel->GetPredictandDBName());
+    }
+
+    if(!m_BatchForecasts.Save())
+    {
+        asLogError(_("Could not save the batch file."));
+        return false;
+    }
+
+    m_BatchForecasts.SetHasChanged(false);
+
+    return true;
+}
+
+void asFrameMain::OnNewBatchForecasts(wxCommandEvent & event)
+{
+    asWizardBatchForecasts wizard(this, &m_BatchForecasts);
+    wizard.RunWizard(wizard.GetSecondPage());
+}
+
+bool asFrameMain::OpenBatchForecasts()
+{
+    Freeze();
+
+    // Cleanup the actual panels
+    m_PanelsManager->Clear();
+
+    // Create the panels
+    for (int i=0; i<m_BatchForecasts.GetModelsNb(); i++)
+    {
+        asPanelForecastingModel *panel = new asPanelForecastingModel( m_ScrolledWindowModels );
+        panel->SetModelName(m_BatchForecasts.GetModelName(i));
+        panel->SetModelDescription(m_BatchForecasts.GetModelDescription(i));
+        panel->SetParametersFileName(m_BatchForecasts.GetModelFileName(i));
+        panel->SetPredictandDBName(m_BatchForecasts.GetModelPredictandDB(i));
+        panel->ReducePanel();
+        panel->Layout();
+        m_SizerModels->Add( panel, 0, wxALL|wxEXPAND, 5 );
+        // Add to the array
+        m_PanelsManager->AddPanel(panel);
+    }
+    
+    Layout(); // For the scrollbar
+    Thaw();
+
+    return true;
 }
 
 void asFrameMain::Update()
@@ -154,26 +298,6 @@ void asFrameMain::OpenFrameXmlEditor( wxCommandEvent& event )
     //frame->Show();
 }
 
-void asFrameMain::GoToViewer( wxCommandEvent& event )
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ViewerPath = pConfig->Read("/StandardPaths/ViewerPath", wxEmptyString);
-
-    if(ViewerPath.IsEmpty())
-    {
-        asLogError(_("Please set the path to the viewer in the preferences."));
-        return;
-    }
-
-    // Execute
-    long processId = wxExecute(ViewerPath, wxEXEC_ASYNC);
-
-    if (processId==0) // if wxEXEC_ASYNC
-    {
-        asLogError(_("The viewer could not be executed. Please check the path in the preferences."));
-    }
-}
-
 void asFrameMain::OpenFramePredictandDB( wxCommandEvent& event )
 {
     asFramePredictandDB* frame = new asFramePredictandDB(this);
@@ -181,9 +305,16 @@ void asFrameMain::OpenFramePredictandDB( wxCommandEvent& event )
     frame->Show();
 }
 
+void asFrameMain::OnConfigureDirectories( wxCommandEvent& event )
+{
+    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this, &m_BatchForecasts);
+    frame->Fit();
+    frame->Show();
+}
+
 void asFrameMain::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferences* frame = new asFramePreferences(this);
+    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this, &m_BatchForecasts);
     frame->Fit();
     frame->Show();
 }
@@ -207,7 +338,7 @@ void asFrameMain::OnLogLevel1( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(true);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
-    wxFileConfig::Get()->Write("/Standard/LogLevel", 1l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -218,7 +349,7 @@ void asFrameMain::OnLogLevel2( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(true);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
-    wxFileConfig::Get()->Write("/Standard/LogLevel", 2l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -229,7 +360,7 @@ void asFrameMain::OnLogLevel3( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(true);
-    wxFileConfig::Get()->Write("/Standard/LogLevel", 3l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -316,7 +447,7 @@ void asFrameMain::OnStatusMethodUpdate( wxCommandEvent& event )
 void asFrameMain::DisplayLogLevelMenu()
 {
     // Set log level in the menu
-    int logLevel = (int)wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
+    int logLevel = (int)wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
@@ -347,9 +478,6 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
     asLogMessage(wxString::Format(_("Trying to run the forecast for the date %s"), forecastDateStr.c_str()));
 
-    // Save models list to file
-    if(!ModelsListSaveAsCurrent()) return;
-
     if (m_Forecaster)
     {
         asLogError(_("The forecaster is already processing."));
@@ -357,7 +485,7 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     }
 
     // Launch forecasting
-    m_Forecaster = new asMethodForecasting(this);
+    m_Forecaster = new asMethodForecasting(&m_BatchForecasts, this);
     m_Forecaster->SetForecastDate(forecastDate);
     if(!m_Forecaster->Manager())
     {
@@ -458,228 +586,4 @@ void asFrameMain::SetForecastDate( double date )
     TimeStruct forecastDateStruct = asTime::GetTimeStruct(date);
     wxString hourStr = wxString::Format("%d", forecastDateStruct.hour);
     m_TextCtrlForecastHour->SetValue(hourStr);
-}
-
-void asFrameMain::ModelsListSaveAsDefault( wxCommandEvent& event )
-{
-    // Set file path
-    wxString filePath = asConfig::GetDefaultUserConfigDir() + "DefaultForecastingModelsList.xml";
-
-    asFileForecastingModels file(filePath, asFile::Replace);
-    if(!file.Open())
-    {
-        asLogError(_("Cannot create the models list file."));
-        return;
-    }
-    if(!file.InsertRootElement())
-    {
-        asLogError(_("Cannot insert document root element."));
-        return;
-    }
-    if(!m_PanelsManager->GenerateXML(file))
-    {
-        asLogError(_("Forecasting models listing file couldn't be generated."));
-        return;
-    }
-    file.Save();
-}
-
-bool asFrameMain::ModelsListSaveAsCurrent()
-{
-    // Set file path
-    wxString filePath = asConfig::GetDefaultUserConfigDir() + "CurrentForecastingModelsList.xml";
-
-    asFileForecastingModels file(filePath, asFile::Replace);
-    if(!file.Open())
-    {
-        asLogError(_("Cannot create the models list file."));
-        return false;
-    }
-    if(!file.InsertRootElement())
-    {
-        asLogError(_("Cannot insert document root element."));
-        return false;
-    }
-    if(!m_PanelsManager->GenerateXML(file))
-    {
-        asLogError(_("Forecasting models listing file couldn't be generated."));
-        return false;
-    }
-    file.Save();
-
-    return true;
-}
-
-void asFrameMain::ModelsListLoadDefault( wxCommandEvent& event )
-{
-    ModelsListLoadDefault();
-}
-
-void asFrameMain::ModelsListLoadDefault()
-{
-    Freeze();
-
-    // Cleanup the actual panels
-    m_PanelsManager->Clear();
-
-    // Set file path
-    wxString filePath = asConfig::GetDefaultUserConfigDir() + "DefaultForecastingModelsList.xml";
-
-    asFileForecastingModels file(filePath, asFile::ReadOnly);
-    if(!file.Open())
-    {
-        asLogError(_("Cannot open the models list file."));
-        Thaw();
-        Layout();
-        return;
-    }
-
-    try
-    {
-        // Parse the file
-        bool xmlOK = true;
-        if(!file.GoToRootElement()) xmlOK = false;
-        if(!file.GoToFirstNodeWithPath("ModelsList")) xmlOK = false;
-        if(!file.GoToFirstNodeWithPath("Model")) xmlOK = false;
-        if (!xmlOK)
-        {
-            asLogError(_("Error while parsing the models list file."));
-            Thaw();
-            Layout();
-            return;
-        }
-
-        while(true)
-        {
-            wxString modelName = file.GetThisElementAttributeValueText("name");
-            wxString modelDescr = file.GetThisElementAttributeValueText("description");
-            wxString parametersFileName = file.GetFirstElementAttributeValueText("ParametersFileName", "value");
-            wxString predictandDB = file.GetFirstElementAttributeValueText("PredictandDB", "value");
-            wxString predictorsArchiveDir = file.GetFirstElementAttributeValueText("PredictorsArchiveDir", "value");
-
-            // Create the panel
-            asPanelForecastingModel *panel = new asPanelForecastingModel( m_ScrolledWindowModels );
-            panel->SetModelName(modelName);
-            panel->SetModelDescription(modelDescr);
-            panel->SetParametersFileName(parametersFileName);
-            panel->SetPredictandDBName(predictandDB);
-            panel->SetPredictorsArchiveDir(predictorsArchiveDir);
-            panel->ReducePanel();
-            panel->Layout();
-            m_SizerModels->Add( panel, 0, wxALL|wxEXPAND, 5 );
-            // Add to the array
-            m_PanelsManager->AddPanel(panel);
-
-            // Find the next model
-            if (!file.GoToNextSameNode()) break;
-        }
-    }
-    catch (asException &e)
-    {
-        asLogError(e.GetFullMessage());
-        asLogError(_("Cannot get the forecasting models list from the file."));
-        Thaw();
-        Layout();
-        return;
-    }
-
-    Layout(); // For the scrollbar
-    Thaw();
-
-}
-
-void asFrameMain::ModelsListSave( wxCommandEvent& event )
-{
-    asDialogFileSaver filePicker(this, _("Please select the destination file path."));
-    if (filePicker.ShowModal() == wxID_SAVE)
-    {
-        wxString filePath = filePicker.GetPath();
-
-        asFileForecastingModels file(filePath, asFile::Replace);
-        if(!file.Open())
-        {
-            asLogError(_("Cannot create the models list file."));
-            return;
-        }
-        if(!file.InsertRootElement())
-        {
-            asLogError(_("Cannot insert document root element."));
-            return;
-        }
-        if(!m_PanelsManager->GenerateXML(file))
-        {
-            asLogError(_("Forecasting models listing file couldn't be generated."));
-        }
-        file.Save();
-    }
-}
-
-void asFrameMain::ModelsListLoad( wxCommandEvent& event )
-{
-    asDialogFilePicker filePicker(this, _("Please select the file to load."));
-    if (filePicker.ShowModal() == wxID_OK)
-    {
-        Freeze();
-
-        // Cleanup the actual panels
-        m_PanelsManager->Clear();
-
-        wxString filePath = filePicker.GetPath();
-
-        asFileForecastingModels file(filePath, asFile::ReadOnly);
-        if(!file.Open())
-        {
-            asLogError(_("Cannot open the models list file."));
-            return;
-        }
-
-        try
-        {
-            // Parse the file
-            bool xmlOK = true;
-            if(!file.GoToRootElement()) xmlOK = false;
-            if(!file.GoToFirstNodeWithPath("ModelsList")) xmlOK = false;
-            if(!file.GoToFirstNodeWithPath("Model")) xmlOK = false;
-            if (!xmlOK)
-            {
-                asLogError(_("Error while parsing the models list file."));
-                return;
-            }
-
-            while(true)
-            {
-                wxString modelName = file.GetThisElementAttributeValueText("name");
-                wxString modelDescr = file.GetThisElementAttributeValueText("description");
-                wxString parametersFileName = file.GetFirstElementAttributeValueText("ParametersFileName", "value");
-                wxString predictandDB = file.GetFirstElementAttributeValueText("PredictandDB", "value");
-                wxString predictorsArchiveDir = file.GetFirstElementAttributeValueText("PredictorsArchiveDir", "value");
-
-                // Create the panel
-                asPanelForecastingModel *panel = new asPanelForecastingModel( m_ScrolledWindowModels );
-                panel->SetModelName(modelName);
-                panel->SetModelDescription(modelDescr);
-                panel->SetParametersFileName(parametersFileName);
-                panel->SetPredictandDBName(predictandDB);
-                panel->SetPredictorsArchiveDir(predictorsArchiveDir);
-                panel->ReducePanel();
-                m_SizerModels->Add( panel, 0, wxALL|wxEXPAND, 5 );
-                // Add to the array
-                m_PanelsManager->AddPanel(panel);
-
-                // Find the next model
-                if (!file.GoToNextSameNode()) break;
-            }
-        }
-        catch (asException &e)
-        {
-            asLogError(e.GetFullMessage());
-            asLogError(_("Cannot get the forecasting models list from the file."));
-            return;
-        }
-
-        Thaw();
-
-        Layout(); // For the scrollbar
-    }
-
 }

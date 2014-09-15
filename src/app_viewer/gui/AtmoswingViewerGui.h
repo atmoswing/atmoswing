@@ -34,6 +34,14 @@
 #include <wx/notebook.h>
 #include <wx/grid.h>
 #include <wx/bmpbuttn.h>
+#include <wx/filepicker.h>
+#include <wx/statbox.h>
+#include <wx/textctrl.h>
+#include <wx/radiobox.h>
+#include <wx/checkbox.h>
+#include <wx/wizard.h>
+#include <wx/dynarray.h>
+WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -58,6 +66,7 @@ class asFrameForecastVirtual : public wxFrame
 		wxStaticText* m_StaticTextForecastDate;
 		wxStaticText* m_StaticTextForecastModel;
 		wxBoxSizer* m_SizerTopRight;
+		wxBoxSizer* m_SizerLeadTimeSwitch;
 		wxPanel* m_PanelGIS;
 		wxBoxSizer* m_SizerGIS;
 		wxMenuBar* m_MenuBar;
@@ -70,11 +79,15 @@ class asFrameForecastVirtual : public wxFrame
 		wxStatusBar* m_StatusBar;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveWorkspaceAs( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOpenForecast( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCloseLayer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnOpenForecast( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMoveLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel1( wxCommandEvent& event ) { event.Skip(); }
@@ -338,6 +351,107 @@ class asPanelSidebarVirtual : public wxPanel
 		
 		asPanelSidebarVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxSIMPLE_BORDER|wxTAB_TRAVERSAL ); 
 		~asPanelSidebarVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asFramePreferencesViewerVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asFramePreferencesViewerVirtual : public wxFrame 
+{
+	private:
+	
+	protected:
+		wxPanel* m_PanelBase;
+		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelWorkspace;
+		wxStaticText* m_StaticTextForecastResultsDir;
+		wxDirPickerCtrl* m_DirPickerForecastResults;
+		wxStaticText* m_StaticTextColorbarMaxValue;
+		wxTextCtrl* m_TextCtrlColorbarMaxValue;
+		wxStaticText* m_StaticTextColorbarMaxUnit;
+		wxStaticText* m_StaticTextPastDaysNb;
+		wxTextCtrl* m_TextCtrlPastDaysNb;
+		wxStaticText* m_StaticTextAlarmsReturnPeriod;
+		wxChoice* m_ChoiceAlarmsReturnPeriod;
+		wxStaticText* m_StaticTextAlarmsReturnPeriodYears;
+		wxStaticText* m_StaticTextAlarmsPercentile;
+		wxTextCtrl* m_TextCtrlAlarmsPercentile;
+		wxStaticText* m_StaticTextAlarmsPercentileRange;
+		wxPanel* m_PanelGeneralCommon;
+		wxRadioBox* m_RadioBoxLogLevel;
+		wxCheckBox* m_CheckBoxDisplayLogWindow;
+		wxCheckBox* m_CheckBoxSaveLogFile;
+		wxCheckBox* m_CheckBoxProxy;
+		wxStaticText* m_StaticTextProxyAddress;
+		wxTextCtrl* m_TextCtrlProxyAddress;
+		wxStaticText* m_StaticTextProxyPort;
+		wxTextCtrl* m_TextCtrlProxyPort;
+		wxStaticText* m_StaticTextProxyUser;
+		wxTextCtrl* m_TextCtrlProxyUser;
+		wxStaticText* m_StaticTextProxyPasswd;
+		wxTextCtrl* m_TextCtrlProxyPasswd;
+		wxPanel* m_PanelAdvanced;
+		wxCheckBox* m_CheckBoxMultiInstancesViewer;
+		wxStaticText* m_StaticTextUserDirLabel;
+		wxStaticText* m_StaticTextUserDir;
+		wxStaticText* m_StaticTextLogFileLabel;
+		wxStaticText* m_StaticTextLogFile;
+		wxStaticText* m_StaticTextPrefFileLabel;
+		wxStaticText* m_StaticTextPrefFile;
+		wxStdDialogButtonSizer* m_ButtonsConfirmation;
+		wxButton* m_ButtonsConfirmationOK;
+		wxButton* m_ButtonsConfirmationApply;
+		wxButton* m_ButtonsConfirmationCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
+		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asFramePreferencesViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFramePreferencesViewerVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asWizardWorkspaceVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asWizardWorkspaceVirtual : public wxWizard 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText37;
+		wxStaticText* m_staticText35;
+		wxButton* m_button4;
+		wxStaticText* m_staticText46;
+		wxStaticText* m_staticText36;
+		wxStaticText* m_staticText43;
+		wxFilePickerCtrl* m_FilePickerWorkspaceFile;
+		wxStaticText* m_staticText44;
+		wxStaticText* m_StaticTextForecastResultsDir;
+		wxDirPickerCtrl* m_DirPickerForecastResults;
+		wxStaticText* m_staticText42;
+		wxStaticText* m_staticText45;
+		wxStaticText* m_staticText40;
+		wxChoice* m_ChoiceBaseMap;
+		wxStaticText* m_staticText41;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
+		virtual void OnLoadExistingWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Workspace creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
+		WizardPages m_pages;
+		~asWizardWorkspaceVirtual();
 	
 };
 
