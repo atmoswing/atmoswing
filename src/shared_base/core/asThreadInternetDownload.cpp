@@ -89,10 +89,13 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
             // Use of a wxFileName object to create the directory.
             wxFileName currentFilePath = wxFileName(filePath);
-            if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
+            if (!currentFilePath.DirExists())
             {
-                asLogError(_("The directory to save real-time predictors data cannot be created."));
-                return 0;
+                if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
+                {
+                    asLogError(_("The directory to save real-time predictors data cannot be created."));
+                    return 0;
+                }
             }
 
             // Download only if not already done
