@@ -284,8 +284,19 @@ public:
         return m_DataDates[m_DataDates.size()-1];
     }
 
+    wxString GetPredictorsRealtimeDirectory()
+    {
+        return m_PredictorsRealtimeDirectory;
+    }
+    
+    void SetPredictorsRealtimeDirectory(const wxString &dir)
+    {
+        m_PredictorsRealtimeDirectory = dir;
+    }
+
 
 protected:
+    wxString m_PredictorsRealtimeDirectory;
     double m_ForecastLeadTimeStart;
     double m_ForecastLeadTimeEnd;
     double m_ForecastLeadTimeStep;

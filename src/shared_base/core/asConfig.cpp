@@ -43,8 +43,7 @@ asConfig::~asConfig()
 wxString asConfig::GetLogDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString TempDir = stdPth.GetTempDir();
+    wxString TempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
     TempDir.Append(DS);
     return TempDir;
@@ -53,8 +52,7 @@ wxString asConfig::GetLogDir()
 wxString asConfig::GetTempDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString TempDir = stdPth.GetTempDir();
+    wxString TempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
     TempDir.Append(DS);
     return TempDir;
@@ -84,49 +82,48 @@ wxString asConfig::CreateTempFileName(const wxString& prefix)
 wxString asConfig::GetDataDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString DirData = stdPth.GetDataDir();
+    wxString DirData = wxStandardPaths::Get().GetDataDir();
     ThreadsManager().CritSectionConfig().Leave();
     DirData.Append(DS);
     return DirData;
+}
+
+wxString asConfig::GetSoftDir()
+{
+    ThreadsManager().CritSectionConfig().Enter();
+    wxString appPath = wxStandardPaths::Get().GetExecutablePath();
+    ThreadsManager().CritSectionConfig().Leave();
+    wxFileName fileName(appPath);
+    wxString appDir = fileName.GetPath();
+    appDir.Append(DS);
+    return appDir;
 }
 
 wxString asConfig::GetUserDataDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString DirUserData = stdPth.GetUserDataDir();
-    ThreadsManager().CritSectionConfig().Leave();
-    DirUserData.Append(DS);
-    return DirUserData;
-}
-
-wxString asConfig::GetUserDataDir(const wxString &appName)
-{
-    ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
     stdPth.UseAppInfo(0);
-    wxString DirUserData = stdPth.GetUserDataDir();
+    wxString userDataDir = stdPth.GetUserDataDir();
     ThreadsManager().CritSectionConfig().Leave();
 
 #if defined(__WXMSW__)
-    DirUserData.Append(DS+appName);
+    userDataDir.Append(DS+"AtmoSwing");
 #elif defined(__WXMAC__)
-    DirUserData.Append(DS+appName);
+    userDataDir.Append(DS+"atmoswing");
 #elif defined(__UNIX__)
-    DirUserData.Append(appName);
+    userDataDir.Append("atmoswing");
 #endif
 
     stdPth.UseAppInfo(1);
-    DirUserData.Append(DS);
-    return DirUserData;
+    userDataDir.Append(DS);
+    return userDataDir;
 }
 
 wxString asConfig::GetDocumentsDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxStandardPathsBase &stdPth = wxStandardPaths::Get();
-    wxString DirDocs = stdPth.GetDocumentsDir ();
+    wxString DirDocs = wxStandardPaths::Get().GetDocumentsDir ();
     ThreadsManager().CritSectionConfig().Leave();
     DirDocs.Append(DS);
     return DirDocs;
@@ -134,12 +131,12 @@ wxString asConfig::GetDocumentsDir()
 
 wxString asConfig::GetDefaultUserWorkingDir()
 {
-    wxString DirData = GetUserDataDir("AtmoSwing") + DS + "Data" + DS;
+    wxString DirData = GetUserDataDir() + DS + "Data" + DS;
     return DirData;
 }
 
 wxString asConfig::GetDefaultUserConfigDir()
 {
-    wxString DirConfig = GetUserDataDir("AtmoSwing") + DS + "Config" + DS;
+    wxString DirConfig = GetUserDataDir() + DS + "Config" + DS;
     return DirConfig;
 }

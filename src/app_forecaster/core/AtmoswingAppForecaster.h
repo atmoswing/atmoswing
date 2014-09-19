@@ -42,6 +42,7 @@ class AtmoswingAppForecaster : public wxAppConsole
 {
 public:
     virtual bool OnInit();
+    virtual int OnRun();
     virtual int OnExit();
     virtual void OnInitCmdLine(wxCmdLineParser& parser);
     bool InitForCmdLineOnly(long logLevel);
@@ -49,6 +50,11 @@ public:
     bool CommonInit();
 
 private:
+    bool m_DoConfig;
+    bool m_DoForecast;
+    bool m_DoForecastPast;
+    double m_ForecastDate;
+    int m_ForecastPastDays;
     #if wxUSE_GUI
         wxSingleInstanceChecker* m_SingleInstanceChecker;
     #endif

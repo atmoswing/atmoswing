@@ -38,6 +38,9 @@
 #include <wx/radiobox.h>
 #include <wx/slider.h>
 #include <wx/notebook.h>
+#include <wx/wizard.h>
+#include <wx/dynarray.h>
+WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +59,7 @@ class asFrameMainVirtual : public wxFrame
 		wxTextCtrl* m_TextCtrlForecastHour;
 		wxBitmapButton* m_BpButtonNow;
 		wxFlexGridSizer* m_SizerLeds;
+		wxButton* m_button2;
 		wxScrolledWindow* m_ScrolledWindowModels;
 		wxBoxSizer* m_SizerModels;
 		wxBitmapButton* m_BpButtonAdd;
@@ -71,11 +75,12 @@ class asFrameMainVirtual : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSetPresentDate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnConfigureDirectories( wxCommandEvent& event ) { event.Skip(); }
 		virtual void AddForecastingModel( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ModelsListSaveAsDefault( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ModelsListLoadDefault( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ModelsListSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ModelsListLoad( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOpenBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSaveBatchForecastsAs( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePredictandDB( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
@@ -163,8 +168,6 @@ class asPanelForecastingModelVirtual : public wxPanel
 		wxTextCtrl* m_TextCtrlParametersFileName;
 		wxStaticText* m_StaticTextPredictandDB;
 		wxTextCtrl* m_TextCtrlPredictandDB;
-		wxStaticText* m_StaticTextPredictorsArchiveDir;
-		wxDirPickerCtrl* m_DirPickerPredictorsArchive;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void ReducePanel( wxCommandEvent& event ) { event.Skip(); }
@@ -189,6 +192,18 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 	protected:
 		wxPanel* m_PanelBase;
 		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelPathsCommon;
+		wxBoxSizer* m_SizerPanelPaths;
+		wxStaticText* m_StaticTextParametersDir;
+		wxDirPickerCtrl* m_DirPickerParameters;
+		wxStaticText* m_StaticTextPredictandDBDir;
+		wxDirPickerCtrl* m_DirPickerPredictandDB;
+		wxStaticText* m_StaticTextArchivePredictorsDir;
+		wxDirPickerCtrl* m_DirPickerArchivePredictors;
+		wxStaticText* m_StaticTextRealtimePredictorSavingDir;
+		wxDirPickerCtrl* m_DirPickerRealtimePredictorSaving;
+		wxStaticText* m_StaticTextForecastResultsDir;
+		wxDirPickerCtrl* m_DirPickerForecastResults;
 		wxPanel* m_PanelGeneralCommon;
 		wxRadioBox* m_RadioBoxLogLevel;
 		wxCheckBox* m_CheckBoxDisplayLogWindow;
@@ -202,18 +217,6 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxTextCtrl* m_TextCtrlProxyUser;
 		wxStaticText* m_StaticTextProxyPasswd;
 		wxTextCtrl* m_TextCtrlProxyPasswd;
-		wxPanel* m_PanelPathsCommon;
-		wxBoxSizer* m_SizerPanelPaths;
-		wxStaticText* m_StaticTextParametersDir;
-		wxDirPickerCtrl* m_DirPickerParameters;
-		wxStaticText* m_StaticTextArchivePredictorsDir;
-		wxDirPickerCtrl* m_DirPickerArchivePredictors;
-		wxStaticText* m_StaticTextRealtimePredictorSavingDir;
-		wxDirPickerCtrl* m_DirPickerRealtimePredictorSaving;
-		wxStaticText* m_StaticTextForecastResultsDir;
-		wxDirPickerCtrl* m_DirPickerForecastResults;
-		wxStaticText* m_StaticTextPredictandDBDir;
-		wxDirPickerCtrl* m_DirPickerPredictandDB;
 		wxPanel* m_PanelAdvanced;
 		wxNotebook* m_NotebookAdvanced;
 		wxPanel* m_PanelGeneral;
@@ -234,8 +237,6 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxRadioBox* m_RadioBoxProcessingMethods;
 		wxRadioBox* m_RadioBoxLinearAlgebra;
 		wxPanel* m_PanelUserDirectories;
-		wxStaticText* m_StaticTextIntermediateResultsDir;
-		wxDirPickerCtrl* m_DirPickerIntermediateResults;
 		wxStaticText* m_StaticTextUserDirLabel;
 		wxStaticText* m_StaticTextUserDir;
 		wxStaticText* m_StaticTextLogFileLabel;
@@ -259,6 +260,36 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		asFramePreferencesForecasterVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFramePreferencesForecasterVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asWizardBatchForecastsVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asWizardBatchForecastsVirtual : public wxWizard 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText37;
+		wxStaticText* m_staticText35;
+		wxButton* m_button4;
+		wxStaticText* m_staticText46;
+		wxStaticText* m_staticText36;
+		wxStaticText* m_staticText43;
+		wxFilePickerCtrl* m_FilePickerBatchFile;
+		wxStaticText* m_staticText45;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
+		virtual void OnLoadExistingBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asWizardBatchForecastsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Batch file creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
+		WizardPages m_pages;
+		~asWizardBatchForecastsVirtual();
 	
 };
 

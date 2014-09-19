@@ -23,41 +23,37 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#ifndef ASPANELSMANAGERFORECASTINGMODELS_H
-#define ASPANELSMANAGERFORECASTINGMODELS_H
+#include "asFileBatchForecasts.h"
 
-#include "asIncludes.h"
-
-#include <asPanelsManager.h>
-
-class asPanelForecastingModel;
-
-class asPanelsManagerForecastingModels : public asPanelsManager
+asFileBatchForecasts::asFileBatchForecasts(const wxString &FileName, const ListFileMode &FileMode)
+:
+asFileXml(FileName, FileMode)
 {
-public:
-    asPanelsManagerForecastingModels();
-    virtual ~asPanelsManagerForecastingModels();
+    // FindAndOpen() processed by asFileXml
+}
 
-    void AddPanel(asPanelForecastingModel* panel);
-    void RemovePanel(asPanelForecastingModel* panel);
-    void Clear();
+asFileBatchForecasts::~asFileBatchForecasts()
+{
+    //dtor
+}
 
-    asPanelForecastingModel* GetPanel( int i );
-    int GetPanelsNb();
+bool asFileBatchForecasts::InsertRootElement()
+{
+    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
+    if(!InsertElement(wxEmptyString, "BatchForecasts")) return false;
+    if(!GoToFirstNodeWithPath("BatchForecasts")) return false;
+    return true;
+}
 
-    void SetForecastingModelLedRunning( int num );
-    void SetForecastingModelLedError( int num );
-    void SetForecastingModelLedDone( int num );
-    void SetForecastingModelLedOff( int num );
-    void SetForecastingModelsAllLedsOff();
-
-protected:
-    std::vector <asPanelForecastingModel*> m_ArrayPanels;
-
-private:
-
-};
-
-#endif // ASPANELSMANAGERFORECASTINGMODELS_H
+bool asFileBatchForecasts::GoToRootElement()
+{
+    if(!GoToFirstNodeWithPath("AtmoSwingFile.BatchForecasts"))
+    {
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing batch file."), m_FileName.GetFullName()));
+        return false;
+    }
+    return true;
+}

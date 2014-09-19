@@ -22,33 +22,34 @@
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#include "asFileForecastingModels.h"
+#ifndef __asWizardWorkspace__
+#define __asWizardWorkspace__
 
-asFileForecastingModels::asFileForecastingModels(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFileXml(FileName, FileMode)
-{
-    // FindAndOpen() processed by asFileXml
-}
+#include "AtmoswingViewerGui.h"
+#include "asWorkspace.h"
 
-asFileForecastingModels::~asFileForecastingModels()
-{
-    //dtor
-}
+#include "asIncludes.h"
 
-bool asFileForecastingModels::InsertRootElement()
+/** Implementing asWizardWorkspace */
+class asWizardWorkspace : public asWizardWorkspaceVirtual
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "ForecastingModels")) return false;
-    if(!GoToFirstNodeWithPath("ForecastingModels")) return false;
-    return true;
-}
+public:
+    /** Constructor */
+    asWizardWorkspace( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY );
+    ~asWizardWorkspace();
+    
+    wxWizardPage *GetFirstPage() const { return m_pages.Item( 0 ); }
+    wxWizardPage *GetSecondPage() const { return m_pages.Item( 1 ); }
 
-bool asFileForecastingModels::GoToRootElement()
-{
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.ForecastingModels")) return false;
-    return true;
-}
+protected:
+	void OnWizardFinished( wxWizardEvent& event );
+	void OnLoadExistingWorkspace( wxCommandEvent& event );
+
+private:
+    asWorkspace* m_Workspace;
+};
+
+#endif // __asWizardWorkspace__

@@ -244,8 +244,8 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 TEST(GrenobleComparison1ProcessingMethodCuda)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asCUDA);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asCUDA);
 
     // Reset intermediate results option
     pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
@@ -277,9 +277,9 @@ TEST(GrenobleComparison1ProcessingMethodCuda)
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
 
     // Reset intermediate results option
     pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
@@ -310,9 +310,9 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVar)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with the multithreaded option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -328,9 +328,9 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVar)
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeff)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
 
     wxString str("Processing GrenobleComparison1 with the multithreaded option (coeff)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -346,9 +346,9 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeff)
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVar)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with the multithreaded option (coeff no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -364,8 +364,8 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVar)
 TEST(GrenobleComparison1ProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with the array insertion option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -381,8 +381,8 @@ TEST(GrenobleComparison1ProcessingMethodInsert)
 TEST(GrenobleComparison1ProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asFULL_ARRAY);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with the array splitting option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -398,9 +398,9 @@ TEST(GrenobleComparison1ProcessingMethodSplitting)
 TEST(GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 on calibration period with the multithreaded option (lin algebra no var)\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -411,9 +411,9 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVarNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with the multithreaded option (lin algebra no var) no preprocessing\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -429,9 +429,9 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVarNoPreproc
 TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVarNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with the multithreaded option (coeff no var) no preprocessing\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -447,8 +447,8 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVarNoPreprocessin
 TEST(GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 on calibration period with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -459,8 +459,8 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
 TEST(GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asFULL_ARRAY);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 on calibration period with the array splitting option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -686,9 +686,9 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 TEST(GrenobleComparison2ProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 with the multithreaded option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -704,8 +704,8 @@ TEST(GrenobleComparison2ProcessingMethodMultithreads)
 TEST(GrenobleComparison2ProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -721,8 +721,8 @@ TEST(GrenobleComparison2ProcessingMethodInsert)
 TEST(GrenobleComparison2ProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asFULL_ARRAY);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 with the array splitting option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -738,9 +738,9 @@ TEST(GrenobleComparison2ProcessingMethodSplitting)
 TEST(GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 on calibration period with the multithreaded option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -751,8 +751,8 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
 TEST(GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -763,8 +763,8 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
 TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asFULL_ARRAY);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 with the array splitting option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -777,8 +777,8 @@ TEST(PreloadingSimple)
     if (g_UnitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
-        pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/Method", (int)asINSERT);
+        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
         wxString str("Processing PreloadingSimple\n");
         printf("%s", str.mb_str(wxConvUTF8).data());
@@ -856,8 +856,8 @@ TEST(PreloadingWithPreprocessing)
     if (g_UnitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
-        pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/Method", (int)asINSERT);
+        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
         wxString str("Processing PreloadingWithPreprocessing\n");
         printf("%s", str.mb_str(wxConvUTF8).data());
@@ -1114,9 +1114,9 @@ void GrenobleComparison1Preloading()
 TEST(GrenobleComparison1PreloadingMultithreaded)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1 with data preloading\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -1212,9 +1212,9 @@ void GrenobleComparison1PreloadingSubset()
 TEST(GrenobleComparison1PreloadingSubsetMultithreaded)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison1Subset with data preloading\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -1227,8 +1227,8 @@ TEST(SmallerSpatialArea)
     if (g_UnitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
-        pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
         wxString str("Processing SmallerSpatialArea\n");
         printf("%s", str.mb_str(wxConvUTF8).data());
@@ -1546,9 +1546,9 @@ void GrenobleComparison2Preloading()
 TEST(GrenobleComparison2PreloadingProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
 
     wxString str("Processing GrenobleComparison2 preloading with the multithreaded option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -1559,8 +1559,8 @@ TEST(GrenobleComparison2PreloadingProcessingMethodMultithreads)
 TEST(GrenobleComparison2PreloadingProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asINSERT);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/Method", (int)asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
 
     wxString str("Processing GrenobleComparison2 preloading with the array insertion option\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
@@ -1747,9 +1747,9 @@ void GrenobleComparison2SavingIntermediateResults()
 TEST(GrenobleComparison2SavingIntermediateResults)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asCOEFF);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
 
     pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", true);
     pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", true);
@@ -1956,9 +1956,9 @@ void GrenobleComparison2MergeByHalfAndMultiply()
 TEST(GrenobleComparison2MergeByHalfAndMultiply)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Standard/AllowMultithreading", true);
-    pConfig->Write("/ProcessingOptions/ProcessingMethod", (int)asMULTITHREADS);
-    pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     wxString str("Processing GrenobleComparison2 with MergeByHalfAndMultiply preprocessing\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
