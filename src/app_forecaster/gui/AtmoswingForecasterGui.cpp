@@ -84,6 +84,9 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
 	
 	bSizer22->SetMinSize( wxSize( -1,200 ) ); 
+	m_button2 = new wxButton( m_PanelMain, wxID_ANY, _("Configure directories"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer22->Add( m_button2, 0, wxALL, 5 );
+	
 	m_ScrolledWindowModels = new wxScrolledWindow( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
 	m_ScrolledWindowModels->SetScrollRate( 5, 5 );
 	m_ScrolledWindowModels->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
@@ -133,21 +136,21 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer3->Fit( this );
 	m_MenuBar = new wxMenuBar( 0 );
 	m_MenuFile = new wxMenu();
-	wxMenuItem* m_MenuItemSaveDefaultModelsList;
-	m_MenuItemSaveDefaultModelsList = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Save models list as default") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuFile->Append( m_MenuItemSaveDefaultModelsList );
+	wxMenuItem* m_MenuItemOpenBatchFile;
+	m_MenuItemOpenBatchFile = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Open a batch file") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemOpenBatchFile );
 	
-	wxMenuItem* m_MenuItemLoadDefaultModelsList;
-	m_MenuItemLoadDefaultModelsList = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Load default models list") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuFile->Append( m_MenuItemLoadDefaultModelsList );
+	wxMenuItem* m_MenuItemSaveBatchFile;
+	m_MenuItemSaveBatchFile = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Save batch file") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemSaveBatchFile );
 	
-	wxMenuItem* m_MenuItemSaveModelList;
-	m_MenuItemSaveModelList = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Save models list") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuFile->Append( m_MenuItemSaveModelList );
+	wxMenuItem* m_MenuItemSaveBatchFileAs;
+	m_MenuItemSaveBatchFileAs = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Save batch file as") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemSaveBatchFileAs );
 	
-	wxMenuItem* m_MenuItemLoadModelsList;
-	m_MenuItemLoadModelsList = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Load models list") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuFile->Append( m_MenuItemLoadModelsList );
+	wxMenuItem* m_MenuItemNewBatchFile;
+	m_MenuItemNewBatchFile = new wxMenuItem( m_MenuFile, wxID_ANY, wxString( _("Create a new batch file") ) , wxEmptyString, wxITEM_NORMAL );
+	m_MenuFile->Append( m_MenuItemNewBatchFile );
 	
 	m_MenuBar->Append( m_MenuFile, _("File") ); 
 	
@@ -207,11 +210,12 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	// Connect Events
 	m_BpButtonNow->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnSetPresentDate ), NULL, this );
+	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnConfigureDirectories ), NULL, this );
 	m_BpButtonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecastingModel ), NULL, this );
-	this->Connect( m_MenuItemSaveDefaultModelsList->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListSaveAsDefault ) );
-	this->Connect( m_MenuItemLoadDefaultModelsList->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListLoadDefault ) );
-	this->Connect( m_MenuItemSaveModelList->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListSave ) );
-	this->Connect( m_MenuItemLoadModelsList->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListLoad ) );
+	this->Connect( m_MenuItemOpenBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ) );
+	this->Connect( m_MenuItemSaveBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ) );
+	this->Connect( m_MenuItemSaveBatchFileAs->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ) );
+	this->Connect( m_MenuItemNewBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnNewBatchForecasts ) );
 	this->Connect( m_MenuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePreferences ) );
 	this->Connect( m_MenuItemBuildPredictandDB->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePredictandDB ) );
 	this->Connect( m_MenuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnShowLog ) );
@@ -225,11 +229,12 @@ asFrameMainVirtual::~asFrameMainVirtual()
 {
 	// Disconnect Events
 	m_BpButtonNow->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnSetPresentDate ), NULL, this );
+	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnConfigureDirectories ), NULL, this );
 	m_BpButtonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecastingModel ), NULL, this );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListSaveAsDefault ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListLoadDefault ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListSave ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::ModelsListLoad ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnNewBatchForecasts ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePreferences ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePredictandDB ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnShowLog ) );
@@ -460,14 +465,7 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	
 	m_TextCtrlPredictandDB = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_TextCtrlPredictandDB->SetMaxLength( 0 ); 
-	m_SizerFields->Add( m_TextCtrlPredictandDB, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
-	
-	m_StaticTextPredictorsArchiveDir = new wxStaticText( this, wxID_ANY, _("Predictors archive directory (if different from the preferences)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextPredictorsArchiveDir->Wrap( -1 );
-	m_SizerFields->Add( m_StaticTextPredictorsArchiveDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerPredictorsArchive = new wxDirPickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	m_SizerFields->Add( m_DirPickerPredictorsArchive, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
+	m_SizerFields->Add( m_TextCtrlPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
 	m_SizerPanel->Add( m_SizerFields, 1, wxEXPAND, 5 );
@@ -504,6 +502,55 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer15 = new wxBoxSizer( wxVERTICAL );
 	
 	m_NotebookBase = new wxNotebook( m_PanelBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelPathsCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_SizerPanelPaths = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer18;
+	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_PanelPathsCommon, wxID_ANY, _("Directories for real-time forecasting") ), wxVERTICAL );
+	
+	m_StaticTextParametersDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory containing the parameters files"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextParametersDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextParametersDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerParameters = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerParameters, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	
+	m_StaticTextPredictandDBDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory containing the predictand DB"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextPredictandDBDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextPredictandDBDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerPredictandDB = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextArchivePredictorsDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextArchivePredictorsDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerArchivePredictors = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	
+	m_StaticTextRealtimePredictorSavingDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory to save downloaded real-time predictors (GCM forecasts)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextRealtimePredictorSavingDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextRealtimePredictorSavingDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerRealtimePredictorSaving = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerRealtimePredictorSaving, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextForecastResultsDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory to save forecast outputs"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextForecastResultsDir->Wrap( -1 );
+	sbSizer18->Add( m_StaticTextForecastResultsDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_DirPickerForecastResults = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_DirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	
+	m_SizerPanelPaths->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelPathsCommon->SetSizer( m_SizerPanelPaths );
+	m_PanelPathsCommon->Layout();
+	m_SizerPanelPaths->Fit( m_PanelPathsCommon );
+	m_NotebookBase->AddPage( m_PanelPathsCommon, _("Batch file properties"), true );
 	m_PanelGeneralCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
@@ -605,56 +652,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_PanelGeneralCommon->SetSizer( bSizer16 );
 	m_PanelGeneralCommon->Layout();
 	bSizer16->Fit( m_PanelGeneralCommon );
-	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), true );
-	m_PanelPathsCommon = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_SizerPanelPaths = new wxBoxSizer( wxVERTICAL );
-	
-	wxStaticBoxSizer* sbSizer18;
-	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_PanelPathsCommon, wxID_ANY, _("Directories for real-time forecasting") ), wxVERTICAL );
-	
-	m_StaticTextParametersDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory containing the parameters files"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextParametersDir->Wrap( -1 );
-	sbSizer18->Add( m_StaticTextParametersDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerParameters = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_DirPickerParameters, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
-	
-	m_StaticTextArchivePredictorsDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextArchivePredictorsDir->Wrap( -1 );
-	sbSizer18->Add( m_StaticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerArchivePredictors = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_DirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
-	
-	m_StaticTextRealtimePredictorSavingDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory to save downloaded real-time predictors (GCM forecasts)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextRealtimePredictorSavingDir->Wrap( -1 );
-	sbSizer18->Add( m_StaticTextRealtimePredictorSavingDir, 0, wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerRealtimePredictorSaving = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_DirPickerRealtimePredictorSaving, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	m_StaticTextForecastResultsDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Directory to save forecast outputs"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextForecastResultsDir->Wrap( -1 );
-	sbSizer18->Add( m_StaticTextForecastResultsDir, 0, wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerForecastResults = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_DirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	m_StaticTextPredictandDBDir = new wxStaticText( m_PanelPathsCommon, wxID_ANY, _("Default predictand DB directory"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextPredictandDBDir->Wrap( -1 );
-	sbSizer18->Add( m_StaticTextPredictandDBDir, 0, wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerPredictandDB = new wxDirPickerCtrl( m_PanelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_DirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	
-	m_SizerPanelPaths->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );
-	
-	
-	m_PanelPathsCommon->SetSizer( m_SizerPanelPaths );
-	m_PanelPathsCommon->Layout();
-	m_SizerPanelPaths->Fit( m_PanelPathsCommon );
-	m_NotebookBase->AddPage( m_PanelPathsCommon, _("Paths"), false );
+	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General options"), false );
 	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -723,7 +721,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_PanelGeneral->SetSizer( bSizer271 );
 	m_PanelGeneral->Layout();
 	bSizer271->Fit( m_PanelGeneral );
-	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), false );
+	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), true );
 	m_PanelProcessing = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1611;
 	bSizer1611 = new wxBoxSizer( wxVERTICAL );
@@ -785,23 +783,10 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_PanelProcessing->SetSizer( bSizer1611 );
 	m_PanelProcessing->Layout();
 	bSizer1611->Fit( m_PanelProcessing );
-	m_NotebookAdvanced->AddPage( m_PanelProcessing, _("Processing"), true );
+	m_NotebookAdvanced->AddPage( m_PanelProcessing, _("Processing"), false );
 	m_PanelUserDirectories = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer24;
 	bSizer24 = new wxBoxSizer( wxVERTICAL );
-	
-	wxStaticBoxSizer* sbSizer411;
-	sbSizer411 = new wxStaticBoxSizer( new wxStaticBox( m_PanelUserDirectories, wxID_ANY, _("Working directories") ), wxVERTICAL );
-	
-	m_StaticTextIntermediateResultsDir = new wxStaticText( m_PanelUserDirectories, wxID_ANY, _("Directory to save intermediate temporary results"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextIntermediateResultsDir->Wrap( -1 );
-	sbSizer411->Add( m_StaticTextIntermediateResultsDir, 0, wxALL, 5 );
-	
-	m_DirPickerIntermediateResults = new wxDirPickerCtrl( m_PanelUserDirectories, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer411->Add( m_DirPickerIntermediateResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
-	
-	
-	bSizer24->Add( sbSizer411, 0, wxEXPAND|wxALL, 5 );
 	
 	wxStaticBoxSizer* sbSizer17;
 	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( m_PanelUserDirectories, wxID_ANY, _("User specific paths") ), wxVERTICAL );
@@ -853,7 +838,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_PanelAdvanced->SetSizer( bSizer26 );
 	m_PanelAdvanced->Layout();
 	bSizer26->Fit( m_PanelAdvanced );
-	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), false );
+	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced options"), false );
 	
 	bSizer15->Add( m_NotebookBase, 1, wxEXPAND | wxALL, 5 );
 	
@@ -895,4 +880,86 @@ asFramePreferencesForecasterVirtual::~asFramePreferencesForecasterVirtual()
 	m_ButtonsConfirmationCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesForecasterVirtual::CloseFrame ), NULL, this );
 	m_ButtonsConfirmationOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesForecasterVirtual::SaveAndClose ), NULL, this );
 	
+}
+
+asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style ) 
+{
+	this->Create( parent, id, title, bitmap, pos, style );
+	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
+	
+	wxWizardPageSimple* m_wizPage1 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage1 );
+	
+	wxBoxSizer* bSizer48;
+	bSizer48 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText37 = new wxStaticText( m_wizPage1, wxID_ANY, _("Load / create a batch file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText37->Wrap( -1 );
+	m_staticText37->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer48->Add( m_staticText37, 0, wxALL, 5 );
+	
+	m_staticText35 = new wxStaticText( m_wizPage1, wxID_ANY, _("Press the button below to load an existing file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35->Wrap( -1 );
+	bSizer48->Add( m_staticText35, 0, wxALL|wxEXPAND, 5 );
+	
+	m_button4 = new wxButton( m_wizPage1, wxID_ANY, _("Load existing batch file"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer48->Add( m_button4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	m_staticText46 = new wxStaticText( m_wizPage1, wxID_ANY, _("or continue to create a new batch file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText46->Wrap( -1 );
+	bSizer48->Add( m_staticText46, 0, wxALL, 5 );
+	
+	
+	m_wizPage1->SetSizer( bSizer48 );
+	m_wizPage1->Layout();
+	bSizer48->Fit( m_wizPage1 );
+	wxWizardPageSimple* m_wizPage2 = new wxWizardPageSimple( this );
+	m_pages.Add( m_wizPage2 );
+	
+	wxBoxSizer* bSizer49;
+	bSizer49 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText36 = new wxStaticText( m_wizPage2, wxID_ANY, _("Create a new batch file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText36->Wrap( -1 );
+	m_staticText36->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	
+	bSizer49->Add( m_staticText36, 0, wxALL, 5 );
+	
+	m_staticText43 = new wxStaticText( m_wizPage2, wxID_ANY, _("Path to save the new batch file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText43->Wrap( -1 );
+	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
+	
+	m_FilePickerBatchFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
+	bSizer49->Add( m_FilePickerBatchFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_staticText45 = new wxStaticText( m_wizPage2, wxID_ANY, _("The preferences frame will open to configure the required directories."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText45->Wrap( -1 );
+	bSizer49->Add( m_staticText45, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	m_wizPage2->SetSizer( bSizer49 );
+	m_wizPage2->Layout();
+	bSizer49->Fit( m_wizPage2 );
+	
+	this->Centre( wxBOTH );
+	
+	for ( unsigned int i = 1; i < m_pages.GetCount(); i++ )
+	{
+		m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );
+		m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );
+	}
+	
+	// Connect Events
+	this->Connect( wxID_ANY, wxEVT_WIZARD_FINISHED, wxWizardEventHandler( asWizardBatchForecastsVirtual::OnWizardFinished ) );
+	m_button4->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardBatchForecastsVirtual::OnLoadExistingBatchForecasts ), NULL, this );
+}
+
+asWizardBatchForecastsVirtual::~asWizardBatchForecastsVirtual()
+{
+	// Disconnect Events
+	this->Disconnect( wxID_ANY, wxEVT_WIZARD_FINISHED, wxWizardEventHandler( asWizardBatchForecastsVirtual::OnWizardFinished ) );
+	m_button4->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asWizardBatchForecastsVirtual::OnLoadExistingBatchForecasts ), NULL, this );
+	
+	m_pages.Clear();
 }

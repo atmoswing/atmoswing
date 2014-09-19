@@ -52,6 +52,7 @@ asFrameCalibrationVirtual( parent )
     m_ToolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run calibration"), _("Run calibration now"), NULL );
     m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel calibration"), _("Cancel current calibration"), NULL );
 	m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+    m_ToolBar->Realize();
 
     // Connect events
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameCalibration::Launch ) );
@@ -111,7 +112,7 @@ void asFrameCalibration::OnLogLevel1( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Write("/Standard/LogLevel", 1l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
@@ -124,7 +125,7 @@ void asFrameCalibration::OnLogLevel2( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(1)->Check(true);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Write("/Standard/LogLevel", 2l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
@@ -137,7 +138,7 @@ void asFrameCalibration::OnLogLevel3( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(true);
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Write("/Standard/LogLevel", 3l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
@@ -147,7 +148,7 @@ void asFrameCalibration::DisplayLogLevelMenu()
 {
     // Set log level in the menu
     ThreadsManager().CritSectionConfig().Enter();
-    int logLevel = (int)wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
+    int logLevel = (int)wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
@@ -188,11 +189,11 @@ void asFrameCalibration::LoadOptions()
     m_ChoiceMethod->SetSelection((int)MethodSelection);
     wxString ParametersFilePath = pConfig->Read("/Calibration/ParametersFilePath", wxEmptyString);
     m_FilePickerParameters->SetPath(ParametersFilePath);
-    wxString PredictandDBFilePath = pConfig->Read("/StandardPaths/PredictandDBFilePath", wxEmptyString);
+    wxString PredictandDBFilePath = pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString);
     m_FilePickerPredictand->SetPath(PredictandDBFilePath);
-    wxString PredictorDir = pConfig->Read("/StandardPaths/PredictorDir", wxEmptyString);
+    wxString PredictorDir = pConfig->Read("/Paths/PredictorDir", wxEmptyString);
     m_DirPickerPredictor->SetPath(PredictorDir);
-    wxString CalibrationResultsDir = pConfig->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
+    wxString CalibrationResultsDir = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
     m_DirPickerCalibrationResults->SetPath(CalibrationResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, false);
@@ -275,11 +276,11 @@ void asFrameCalibration::SaveOptions( )
     wxString ParametersFilePath = m_FilePickerParameters->GetPath();
     pConfig->Write("/Calibration/ParametersFilePath", ParametersFilePath);
     wxString PredictandDBFilePath = m_FilePickerPredictand->GetPath();
-    pConfig->Write("/StandardPaths/PredictandDBFilePath", PredictandDBFilePath);
+    pConfig->Write("/Paths/PredictandDBFilePath", PredictandDBFilePath);
     wxString PredictorDir = m_DirPickerPredictor->GetPath();
-    pConfig->Write("/StandardPaths/PredictorDir", PredictorDir);
+    pConfig->Write("/Paths/PredictorDir", PredictorDir);
 	wxString CalibrationResultsDir = m_DirPickerCalibrationResults->GetPath();
-    pConfig->Write("/StandardPaths/CalibrationResultsDir", CalibrationResultsDir);
+    pConfig->Write("/Paths/CalibrationResultsDir", CalibrationResultsDir);
     bool parallelEvaluations = m_CheckBoxParallelEvaluations->GetValue();
     pConfig->Write("/Calibration/ParallelEvaluations", parallelEvaluations);
 

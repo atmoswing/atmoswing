@@ -34,6 +34,7 @@
 #include <asDataPredictorRealtime.h>
 #include <asDataPredictorArchive.h>
 #include <asPredictorCriteria.h>
+#include <asBatchForecasts.h>
 
 class asResultsAnalogsDates;
 class asResultsAnalogsForecast;
@@ -41,7 +42,7 @@ class asResultsAnalogsForecast;
 class asMethodForecasting: public asMethodStandard
 {
 public:
-    asMethodForecasting(wxWindow* parent = NULL);
+    asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent = NULL);
     virtual ~asMethodForecasting();
 
     virtual bool Manager();
@@ -83,6 +84,7 @@ protected:
 
 
 private:
+    asBatchForecasts* m_BatchForecasts;
     double m_ForecastDate;
     wxString m_ModelName;
     wxString m_PredictorsArchiveDir;

@@ -23,41 +23,34 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#ifndef ASPANELSMANAGERFORECASTINGMODELS_H
-#define ASPANELSMANAGERFORECASTINGMODELS_H
+#ifndef ASFILEBATCHFORECASTS_H
+#define ASFILEBATCHFORECASTS_H
 
-#include "asIncludes.h"
+#include <asIncludes.h>
+#include <asFileXml.h>
 
-#include <asPanelsManager.h>
 
-class asPanelForecastingModel;
-
-class asPanelsManagerForecastingModels : public asPanelsManager
+class asFileBatchForecasts : public asFileXml
 {
 public:
-    asPanelsManagerForecastingModels();
-    virtual ~asPanelsManagerForecastingModels();
+    /** Default constructor */
+    asFileBatchForecasts(const wxString &FileName, const ListFileMode &FileMode);
 
-    void AddPanel(asPanelForecastingModel* panel);
-    void RemovePanel(asPanelForecastingModel* panel);
-    void Clear();
+    /** Default destructor */
+    virtual ~asFileBatchForecasts();
 
-    asPanelForecastingModel* GetPanel( int i );
-    int GetPanelsNb();
+    virtual bool InsertRootElement();
 
-    void SetForecastingModelLedRunning( int num );
-    void SetForecastingModelLedError( int num );
-    void SetForecastingModelLedDone( int num );
-    void SetForecastingModelLedOff( int num );
-    void SetForecastingModelsAllLedsOff();
+    virtual bool GoToRootElement();
+
 
 protected:
-    std::vector <asPanelForecastingModel*> m_ArrayPanels;
 
 private:
 
 };
 
-#endif // ASPANELSMANAGERFORECASTINGMODELS_H
+#endif // ASFILEBATCHFORECASTS_H

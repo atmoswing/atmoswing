@@ -113,10 +113,10 @@ void asFramePreferencesViewer::LoadPreferences()
 
     // Log
     long defaultLogLevelViewer = 1; // = selection +1
-    long logLevelViewer = pConfig->Read("/Standard/LogLevel", defaultLogLevelViewer);
+    long logLevelViewer = pConfig->Read("/General/LogLevel", defaultLogLevelViewer);
     m_RadioBoxLogLevel->SetSelection((int)logLevelViewer-1);
     bool displayLogWindowViewer;
-    pConfig->Read("/Standard/DisplayLogWindow", &displayLogWindowViewer, false);
+    pConfig->Read("/General/DisplayLogWindow", &displayLogWindowViewer, false);
     m_CheckBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
 
     // Proxy
@@ -138,7 +138,7 @@ void asFramePreferencesViewer::LoadPreferences()
 
     // Advanced options
     bool multiViewer;
-    pConfig->Read("/Standard/MultiInstances", &multiViewer, false);
+    pConfig->Read("/General/MultiInstances", &multiViewer, false);
     m_CheckBoxMultiInstancesViewer->SetValue(multiViewer);
     
     // User directories
@@ -147,7 +147,7 @@ void asFramePreferencesViewer::LoadPreferences()
     wxString logpathViewer = asConfig::GetLogDir();
     logpathViewer.Append("AtmoSwingForecaster.log");
     m_StaticTextLogFile->SetLabel(logpathViewer);
-    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir("AtmoSwing viewer")+"AtmoSwing.ini");
+    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingViewer.ini");
 }
 
 void asFramePreferencesViewer::SavePreferences( )
@@ -215,9 +215,9 @@ void asFramePreferencesViewer::SavePreferences( )
 
     // Log
     long logLevelViewer = (long)m_RadioBoxLogLevel->GetSelection();
-    pConfig->Write("/Standard/LogLevel", logLevelViewer+1); // = selection +1
+    pConfig->Write("/General/LogLevel", logLevelViewer+1); // = selection +1
     bool displayLogWindowViewer = m_CheckBoxDisplayLogWindow->GetValue();
-    pConfig->Write("/Standard/DisplayLogWindow", displayLogWindowViewer);
+    pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 
     // Proxy
     bool checkBoxProxy = m_CheckBoxProxy->GetValue();
@@ -237,7 +237,7 @@ void asFramePreferencesViewer::SavePreferences( )
 
     // Advanced options
     bool multiViewer = m_CheckBoxMultiInstancesViewer->GetValue();
-    pConfig->Write("/Standard/MultiInstances", multiViewer);
+    pConfig->Write("/General/MultiInstances", multiViewer);
 
 
     GetParent()->Update();
