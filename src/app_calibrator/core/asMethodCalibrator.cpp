@@ -591,8 +591,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     double diff = Vmax-geo.GetAxisVmax();
                                     int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
                                     params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                    asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
-                                    asLogMessage(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
+                                    asLogWarning(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
+                                    asLogWarning(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
                                 }
 
                                 wxASSERT(params.GetPreloadUptsnb(tmp_step, tmp_ptor)>0);
@@ -745,6 +745,10 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     {
                                         // Nothing to change
                                     }
+                                    else if (method.IsSameAs("HumidityIndex"))
+                                    {
+                                        if(tmp_prepro==1) level = 0; // pr_wtr
+                                    }
                                     else if (method.IsSameAs("HumidityFlux"))
                                     {
                                         if(tmp_prepro==2) level = 0; // pr_wtr
@@ -784,7 +788,8 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         double diff = Vmax-geo.GetAxisVmax();
                                         int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
                                         params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                        asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.2f to %.2f)."), Vmax, Vmax-diff));
+                                        asLogWarning(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
+                                        asLogWarning(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
                                     }
 
                                     // Area object instantiation
@@ -951,6 +956,11 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
             {
                 // Correct according to the method
                 if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients"))
+                {
+                    level = params.GetPreprocessLevel(i_step, i_ptor, 0);
+                    time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
+                }
+                else if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("HumidityIndex"))
                 {
                     level = params.GetPreprocessLevel(i_step, i_ptor, 0);
                     time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);

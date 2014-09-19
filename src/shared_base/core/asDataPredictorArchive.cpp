@@ -335,7 +335,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             }
-            else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") || method.IsSameAs("HumidityFlux"))
+            else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") || method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux"))
             {
                 VArray2DFloat originalData = m_Data;
 

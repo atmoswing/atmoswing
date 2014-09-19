@@ -79,6 +79,14 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictor* > predictors, con
     {
         return PreprocessMultiplication(predictors, result);
     }
+    else if (method.IsSameAs("HumidityIndex"))
+    {
+        return PreprocessMultiplication(predictors, result);
+    }
+    else if (method.IsSameAs("HumidityFlux"))
+    {
+        return PreprocessHumidityFlux(predictors, result);
+    }
     else if (method.IsSameAs("FormerHumidityIndex"))
     {
         return PreprocessFormerHumidityIndex(predictors, result);
@@ -86,10 +94,6 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictor* > predictors, con
     else if (method.IsSameAs("MergeByHalfAndMultiply"))
     {
         return PreprocessMergeByHalfAndMultiply(predictors, result);
-    }
-    else if (method.IsSameAs("HumidityFlux"))
-    {
-        return PreprocessHumidityFlux(predictors, result);
     }
     else if (method.IsSameAs("WindSpeed"))
     {

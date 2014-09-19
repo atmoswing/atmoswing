@@ -400,7 +400,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 								asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]).c_str() , asTime::GetStringTime(DateArrayOneDay[i_dateArch]).c_str()));
 							}
 						#endif
-					
+
 						// Check if the array is already full
 						if (resCounter>analogsNb-1)
 						{
@@ -1155,7 +1155,11 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     int timeTargetSelectionLength = timeTargetSelection.size();
     int analogsNb = analogsDates.cols();
 
-    wxASSERT(timeTargetSelectionLength>0);
+    if(timeTargetSelectionLength==0 || analogsDates.size()==0 || analogsCriteria.size()==0)
+    {
+        asLogError(_("The asResultsAnalogsDates object is empty in asProcessor::GetAnalogsValues"));
+        return false;
+    }
 
     // Correct the time arrays to account for predictand time and not predictors time
     for (int i_time=0; i_time<timeTargetSelectionLength; i_time++)

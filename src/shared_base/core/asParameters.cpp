@@ -204,6 +204,82 @@ bool asParameters::FixAnalogsNb()
     return true;
 }
 
+void asParameters::SortLevelsAndTime()
+{
+    // Sort levels on every analogy level
+    for (int i_step=0; i_step<GetStepsNb(); i_step++)
+    {
+        // Get the predictors vector
+        VectorParamsPredictors oldPtors = GetVectorParamsPredictors(i_step);
+        VectorParamsPredictors newPtors;
+        
+        // Sort
+        while(true)
+        {
+            if(oldPtors.size()==0)
+            {
+                break;
+            }
+
+            // Find the smallest level and hour combination
+            int lowestIndex = 0;
+            float level;
+            double hour;
+            if (oldPtors[0].Preprocess)
+            {
+                level = oldPtors[0].PreprocessLevels[0];
+                hour = oldPtors[0].PreprocessTimeHours[0];
+            }
+            else
+            {
+                level = oldPtors[0].Level;
+                hour = oldPtors[0].TimeHours;
+            }
+
+            for (int i=1; i<oldPtors.size(); i++)
+            {
+                // Get next level and hour
+                float nextLevel;
+                double nextHour;
+                if (oldPtors[i].Preprocess)
+                {
+                    nextLevel = oldPtors[i].PreprocessLevels[0];
+                    nextHour = oldPtors[i].PreprocessTimeHours[0];
+                }
+                else
+                {
+                    nextLevel = oldPtors[i].Level;
+                    nextHour = oldPtors[i].TimeHours;
+                }
+
+                // Compare to previous one
+                if (nextLevel<level)
+                {
+                    lowestIndex = i;
+                    level = nextLevel;
+                    hour = nextHour;
+                }
+                else if (nextLevel==level)
+                {
+                    if (nextHour<hour)
+                    {
+                        lowestIndex = i;
+                        level = nextLevel;
+                        hour = nextHour;
+                    }
+                }
+            }
+
+            // Store in the new container and remove from the old one
+            newPtors.push_back(oldPtors[lowestIndex]);
+            oldPtors.erase (oldPtors.begin()+lowestIndex);
+               
+            // Store the sorted vector
+            SetVectorParamsPredictors(i_step, newPtors);
+        }
+    }
+}
+
 VectorInt asParameters::BuildVectorInt(int min, int max, int step)
 {
     int stepsnb = 1+(max-min)/step;
@@ -596,9 +672,17 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     }
 
     // Multivariate
-    if (stationIdsString.SubString(0, 0).IsSameAs("("))
+    if (stationIdsString.SubString(0, 0).IsSameAs("(") || stationIdsString.SubString(0, 1).IsSameAs("'("))
     {
-        wxString subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
+        wxString subStr = wxEmptyString;
+        if (stationIdsString.SubString(0, 0).IsSameAs("("))
+        {
+            subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
+        }
+        else
+        {
+            subStr = stationIdsString.SubString(2, stationIdsString.Len()-1);
+        }
 
         // Check that it contains only 1 opening bracket
         if (subStr.Find("(") != wxNOT_FOUND)
@@ -608,7 +692,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         }
 
         // Check that it contains 1 closing bracket at the end
-        if (subStr.Find(")") != subStr.size()-1)
+        if (subStr.Find(")") != subStr.size()-1 && subStr.Find(")'") != subStr.size()-2)
         {
             asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
             return ids;
@@ -793,6 +877,7 @@ wxString asParameters::Print()
 
     content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString().c_str()));
     content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
+    content.Append(wxString::Format("ExcludeDays\t%d\t", GetTimeArrayAnalogsExcludeDays()));
 
     for (int i_step=0; i_step<GetStepsNb(); i_step++)
     {
@@ -870,10 +955,17 @@ bool asParameters::GetValuesFromString(wxString stringVals)
     long lVal;
 
     iLeft = stringVals.Find("DaysInt");
-    iRight = stringVals.Find("||||");
+    iRight = stringVals.Find("ExcludeDays");
     strVal = stringVals.SubString(iLeft+8, iRight-2);
     strVal.ToLong(&lVal);
     SetTimeArrayAnalogsIntervalDays(int(lVal));
+    stringVals = stringVals.SubString(iRight, stringVals.Length());
+
+    iLeft = stringVals.Find("ExcludeDays");
+    iRight = stringVals.Find("||||");
+    strVal = stringVals.SubString(iLeft+12, iRight-2);
+    strVal.ToLong(&lVal);
+    SetTimeArrayAnalogsExcludeDays(int(lVal));
     stringVals = stringVals.SubString(iRight+5, stringVals.Length());
 
     for (int i_step=0; i_step<GetStepsNb(); i_step++)
@@ -897,7 +989,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     strVal.ToDouble(&dVal);
                     SetPreprocessLevel(i_step, i_ptor, i_dataset, float(dVal));
                     stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                     iLeft = 0;
                     iRight = stringVals.Find("\t");
                     strVal = stringVals.SubString(iLeft, iRight-1);
@@ -914,7 +1006,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 strVal.ToDouble(&dVal);
                 SetPredictorLevel(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                 iLeft = 0;
                 iRight = stringVals.Find("\t");
                 strVal = stringVals.SubString(iLeft, iRight-1);
@@ -922,49 +1014,49 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 SetPredictorTimeHours(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight, stringVals.Length());
             }
-            
+
             iLeft = stringVals.Find("Umin");
             iRight = stringVals.Find("Uptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorUmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Uptsnb");
             iRight = stringVals.Find("Ustep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
             SetPredictorUptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Ustep");
             iRight = stringVals.Find("Vmin");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorUstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Vmin");
             iRight = stringVals.Find("Vptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorVmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Vptsnb");
             iRight = stringVals.Find("Vstep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
             SetPredictorVptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Vstep");
             iRight = stringVals.Find("Weight");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorVstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Weight");
             iRight = stringVals.Find("Criteria");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
