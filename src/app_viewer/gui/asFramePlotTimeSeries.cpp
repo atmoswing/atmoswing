@@ -73,23 +73,23 @@ void asFramePlotTimeSeries::OnClose( wxCloseEvent& evt )
     // Save checked layers
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool doPlotAllPercentiles = m_CheckListToc->IsChecked(AllPercentiles);
-    pConfig->Write("/Plots/TimeSeries/DoPlotAllPercentiles", doPlotAllPercentiles);
+    pConfig->Write("/PlotsTimeSeries/DoPlotAllPercentiles", doPlotAllPercentiles);
     bool doPlotAllAnalogs = m_CheckListToc->IsChecked(AllAnalogs);
-    pConfig->Write("/Plots/TimeSeries/DoPlotAllAnalogs", doPlotAllAnalogs);
+    pConfig->Write("/PlotsTimeSeries/DoPlotAllAnalogs", doPlotAllAnalogs);
     bool doPlotBestAnalogs10 = m_CheckListToc->IsChecked(BestAnalogs10);
-    pConfig->Write("/Plots/TimeSeries/DoPlotBestAnalogs10", doPlotBestAnalogs10);
+    pConfig->Write("/PlotsTimeSeries/DoPlotBestAnalogs10", doPlotBestAnalogs10);
     bool doPlotBestAnalogs5 = m_CheckListToc->IsChecked(BestAnalogs5);
-    pConfig->Write("/Plots/TimeSeries/DoPlotBestAnalogs5", doPlotBestAnalogs5);
+    pConfig->Write("/PlotsTimeSeries/DoPlotBestAnalogs5", doPlotBestAnalogs5);
     bool doPlotAllReturnPeriods = m_CheckListToc->IsChecked(AllReturnPeriods);
-    pConfig->Write("/Plots/TimeSeries/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
+    pConfig->Write("/PlotsTimeSeries/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
     bool doPlotClassicReturnPeriod = m_CheckListToc->IsChecked(ClassicReturnPeriod);
-    pConfig->Write("/Plots/TimeSeries/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
+    pConfig->Write("/PlotsTimeSeries/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
     bool doPlotClassicPercentiles = m_CheckListToc->IsChecked(ClassicPercentiles);
-    pConfig->Write("/Plots/TimeSeries/DoPlotClassicPercentiles", doPlotClassicPercentiles);
+    pConfig->Write("/PlotsTimeSeries/DoPlotClassicPercentiles", doPlotClassicPercentiles);
     bool doPlotPreviousForecasts = m_CheckListToc->IsChecked(PreviousForecasts);
-    pConfig->Write("/Plots/TimeSeries/DoPlotPreviousForecasts", doPlotPreviousForecasts);
+    pConfig->Write("/PlotsTimeSeries/DoPlotPreviousForecasts", doPlotPreviousForecasts);
     //bool doPlotInterpretation = m_CheckListToc->IsChecked(Interpretation);
-    //pConfig->Write("/Plots/TimeSeries/DoPlotInterpretation", doPlotInterpretation);
+    //pConfig->Write("/PlotsTimeSeries/DoPlotInterpretation", doPlotInterpretation);
 
     evt.Skip();
 }
@@ -178,31 +178,31 @@ void asFramePlotTimeSeries::InitPlotCtrl()
     // Open layers defined in the preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool doPlotAllPercentiles;
-    pConfig->Read("/Plots/TimeSeries/DoPlotAllPercentiles", &doPlotAllPercentiles, false);
+    pConfig->Read("/PlotsTimeSeries/DoPlotAllPercentiles", &doPlotAllPercentiles, false);
     if (doPlotAllPercentiles) m_CheckListToc->Check(AllPercentiles);
     bool doPlotAllAnalogs;
-    pConfig->Read("/Plots/TimeSeries/DoPlotAllAnalogs", &doPlotAllAnalogs, true);
+    pConfig->Read("/PlotsTimeSeries/DoPlotAllAnalogs", &doPlotAllAnalogs, true);
     if (doPlotAllAnalogs) m_CheckListToc->Check(AllAnalogs);
     bool doPlotBestAnalogs10;
-    pConfig->Read("/Plots/TimeSeries/DoPlotBestAnalogs10", &doPlotBestAnalogs10, true);
+    pConfig->Read("/PlotsTimeSeries/DoPlotBestAnalogs10", &doPlotBestAnalogs10, true);
     if (doPlotBestAnalogs10) m_CheckListToc->Check(BestAnalogs10);
     bool doPlotBestAnalogs5;
-    pConfig->Read("/Plots/TimeSeries/DoPlotBestAnalogs5", &doPlotBestAnalogs5, false);
+    pConfig->Read("/PlotsTimeSeries/DoPlotBestAnalogs5", &doPlotBestAnalogs5, false);
     if (doPlotBestAnalogs5) m_CheckListToc->Check(BestAnalogs5);
     bool doPlotAllReturnPeriods;
-    pConfig->Read("/Plots/TimeSeries/DoPlotAllReturnPeriods", &doPlotAllReturnPeriods, false);
+    pConfig->Read("/PlotsTimeSeries/DoPlotAllReturnPeriods", &doPlotAllReturnPeriods, false);
     if (doPlotAllReturnPeriods) m_CheckListToc->Check(AllReturnPeriods);
     bool doPlotClassicReturnPeriod;
-    pConfig->Read("/Plots/TimeSeries/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
+    pConfig->Read("/PlotsTimeSeries/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
     if (doPlotClassicReturnPeriod) m_CheckListToc->Check(ClassicReturnPeriod);
     bool doPlotClassicPercentiles;
-    pConfig->Read("/Plots/TimeSeries/DoPlotClassicPercentiles", &doPlotClassicPercentiles, true);
+    pConfig->Read("/PlotsTimeSeries/DoPlotClassicPercentiles", &doPlotClassicPercentiles, true);
     if (doPlotClassicPercentiles) m_CheckListToc->Check(ClassicPercentiles);
     bool doPlotPreviousForecasts;
-    pConfig->Read("/Plots/TimeSeries/DoPlotPreviousForecasts", &doPlotPreviousForecasts, true);
+    pConfig->Read("/PlotsTimeSeries/DoPlotPreviousForecasts", &doPlotPreviousForecasts, true);
     if (doPlotPreviousForecasts) m_CheckListToc->Check(PreviousForecasts);
     //bool doPlotInterpretation;
-    //pConfig->Read("/Plots/TimeSeries/DoPlotInterpretation", &doPlotInterpretation, true);
+    //pConfig->Read("/PlotsTimeSeries/DoPlotInterpretation", &doPlotInterpretation, true);
     //if (doPlotInterpretation) m_CheckListToc->Check(Interpretation);
 }
 

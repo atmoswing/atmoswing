@@ -58,7 +58,7 @@ void asResultsParametersArray::Init(const wxString &fileTag)
 void asResultsParametersArray::BuildFileName(const wxString &fileTag)
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_FilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    m_FilePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     m_FilePath.Append(wxString::Format("/Calibration/%s_%s.txt", time.c_str(), fileTag.c_str()));

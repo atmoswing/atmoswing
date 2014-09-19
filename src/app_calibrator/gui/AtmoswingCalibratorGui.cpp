@@ -739,11 +739,6 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	this->SetSizer( bSizer4 );
 	this->Layout();
 	bSizer4->Fit( this );
-	m_ToolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY );
-	m_ToolBar->SetToolBitmapSize( wxSize( 32,32 ) );
-	m_ToolBar->Realize();
-
-	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
 	m_MenuBar = new wxMenuBar( 0 );
 	m_MenuOptions = new wxMenu();
 	wxMenuItem* m_MenuItemPreferences;
@@ -785,18 +780,13 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	
 	m_MenuBar->Append( m_MenuHelp, _("Help") ); 
 	
-	m_MenuControls = new wxMenu();
-	wxMenuItem* m_MenuItemLaunch;
-	m_MenuItemLaunch = new wxMenuItem( m_MenuControls, wxID_ANY, wxString( _("Launch") ) , wxEmptyString, wxITEM_NORMAL );
-	m_MenuControls->Append( m_MenuItemLaunch );
-
-	m_MenuBar->Append( m_MenuControls, _("Controls") );
-
-	this->SetMenuBar( m_MenuBar );
-
-
-	this->Centre( wxBOTH );
 	
+	m_ToolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY );
+	m_ToolBar->SetToolBitmapSize( wxSize( 32,32 ) );
+	m_ToolBar->Realize(); 
+	
+	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
+	this->Centre( wxBOTH );
 	
 	// Connect Events
 	m_ButtonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameCalibrationVirtual::OnSaveDefault ), NULL, this );
@@ -806,7 +796,6 @@ asFrameCalibrationVirtual::asFrameCalibrationVirtual( wxWindow* parent, wxWindow
 	this->Connect( m_MenuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel2 ) );
 	this->Connect( m_MenuItemLogLevel3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel3 ) );
 	this->Connect( m_MenuItemAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OpenFrameAbout ) );
-	this->Connect( m_MenuItemLaunch->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::Launch ) );
 }
 
 asFrameCalibrationVirtual::~asFrameCalibrationVirtual()
@@ -819,7 +808,6 @@ asFrameCalibrationVirtual::~asFrameCalibrationVirtual()
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel2 ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OnLogLevel3 ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::OpenFrameAbout ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameCalibrationVirtual::Launch ) );
 	
 }
 
@@ -882,13 +870,6 @@ asFramePreferencesCalibratorVirtual::asFramePreferencesCalibratorVirtual( wxWind
 	wxStaticBoxSizer* sbSizer18;
 	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneralCommon, wxID_ANY, _("Directories") ), wxVERTICAL );
 	
-	m_StaticTextParametersDir = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Directory containing the parameters files"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextParametersDir->Wrap( -1 );
-	sbSizer18->Add( m_StaticTextParametersDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_DirPickerParameters = new wxDirPickerCtrl( m_PanelGeneralCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_DirPickerParameters, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
-	
 	m_StaticTextArchivePredictorsDir = new wxStaticText( m_PanelGeneralCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextArchivePredictorsDir->Wrap( -1 );
 	sbSizer18->Add( m_StaticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
@@ -910,7 +891,7 @@ asFramePreferencesCalibratorVirtual::asFramePreferencesCalibratorVirtual( wxWind
 	m_PanelGeneralCommon->SetSizer( bSizer16 );
 	m_PanelGeneralCommon->Layout();
 	bSizer16->Fit( m_PanelGeneralCommon );
-	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), false );
+	m_NotebookBase->AddPage( m_PanelGeneralCommon, _("General"), true );
 	m_PanelAdvanced = new wxPanel( m_NotebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -940,7 +921,7 @@ asFramePreferencesCalibratorVirtual::asFramePreferencesCalibratorVirtual( wxWind
 	m_PanelGeneral->SetSizer( bSizer271 );
 	m_PanelGeneral->Layout();
 	bSizer271->Fit( m_PanelGeneral );
-	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), false );
+	m_NotebookAdvanced->AddPage( m_PanelGeneral, _("General"), true );
 	m_PanelProcessing = new wxPanel( m_NotebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1611;
 	bSizer1611 = new wxBoxSizer( wxVERTICAL );
@@ -1062,7 +1043,7 @@ asFramePreferencesCalibratorVirtual::asFramePreferencesCalibratorVirtual( wxWind
 	m_PanelUserDirectories->SetSizer( bSizer24 );
 	m_PanelUserDirectories->Layout();
 	bSizer24->Fit( m_PanelUserDirectories );
-	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), true );
+	m_NotebookAdvanced->AddPage( m_PanelUserDirectories, _("User paths"), false );
 	
 	bSizer26->Add( m_NotebookAdvanced, 1, wxEXPAND | wxALL, 5 );
 	
@@ -1070,7 +1051,7 @@ asFramePreferencesCalibratorVirtual::asFramePreferencesCalibratorVirtual( wxWind
 	m_PanelAdvanced->SetSizer( bSizer26 );
 	m_PanelAdvanced->Layout();
 	bSizer26->Fit( m_PanelAdvanced );
-	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), true );
+	m_NotebookBase->AddPage( m_PanelAdvanced, _("Advanced"), false );
 	
 	bSizer15->Add( m_NotebookBase, 1, wxEXPAND | wxALL, 5 );
 	

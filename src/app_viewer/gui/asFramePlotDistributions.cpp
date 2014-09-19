@@ -72,23 +72,23 @@ void asFramePlotDistributions::OnClose( wxCloseEvent& evt )
     // Save checked layers
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool doPlotAllAnalogsPoints = m_CheckListTocPredictands->IsChecked(AllAnalogsPoints);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotAllAnalogsPoints", doPlotAllAnalogsPoints);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllAnalogsPoints", doPlotAllAnalogsPoints);
     bool doPlotAllAnalogsCurve = m_CheckListTocPredictands->IsChecked(AllAnalogsCurve);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotAllAnalogsCurve", doPlotAllAnalogsCurve);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllAnalogsCurve", doPlotAllAnalogsCurve);
     bool doPlotBestAnalogs10Points = m_CheckListTocPredictands->IsChecked(BestAnalogs10Points);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotBestAnalogs10Points", doPlotBestAnalogs10Points);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Points", doPlotBestAnalogs10Points);
     bool doPlotBestAnalogs10Curve = m_CheckListTocPredictands->IsChecked(BestAnalogs10Curve);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotBestAnalogs10Curve", doPlotBestAnalogs10Curve);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Curve", doPlotBestAnalogs10Curve);
     bool doPlotBestAnalogs5Points = m_CheckListTocPredictands->IsChecked(BestAnalogs5Points);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotBestAnalogs5Points", doPlotBestAnalogs5Points);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Points", doPlotBestAnalogs5Points);
     bool doPlotBestAnalogs5Curve = m_CheckListTocPredictands->IsChecked(BestAnalogs5Curve);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotBestAnalogs5Curve", doPlotBestAnalogs5Curve);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Curve", doPlotBestAnalogs5Curve);
     bool doPlotAllReturnPeriods = m_CheckListTocPredictands->IsChecked(AllReturnPeriods);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
     bool doPlotClassicReturnPeriod = m_CheckListTocPredictands->IsChecked(ClassicReturnPeriod);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
     bool doPlotClassicPercentiles = m_CheckListTocPredictands->IsChecked(ClassicPercentiles);
-    pConfig->Write("/Plots/DistributionsPredictands/DoPlotClassicPercentiles", doPlotClassicPercentiles);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicPercentiles", doPlotClassicPercentiles);
 
     evt.Skip();
 }
@@ -200,31 +200,31 @@ void asFramePlotDistributions::InitPredictandsPlotCtrl()
     // Open layers defined in the preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool doPlotAllAnalogsPoints;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotAllAnalogsPoints", &doPlotAllAnalogsPoints, false);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotAllAnalogsPoints", &doPlotAllAnalogsPoints, false);
     if (doPlotAllAnalogsPoints) m_CheckListTocPredictands->Check(AllAnalogsPoints);
     bool doPlotAllAnalogsCurve;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotAllAnalogsCurve", &doPlotAllAnalogsCurve, true);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotAllAnalogsCurve", &doPlotAllAnalogsCurve, true);
     if (doPlotAllAnalogsCurve) m_CheckListTocPredictands->Check(AllAnalogsCurve);
     bool doPlotBestAnalogs10Points;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotBestAnalogs10Points", &doPlotBestAnalogs10Points, false);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Points", &doPlotBestAnalogs10Points, false);
     if (doPlotBestAnalogs10Points) m_CheckListTocPredictands->Check(BestAnalogs10Points);
     bool doPlotBestAnalogs10Curve;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotBestAnalogs10Curve", &doPlotBestAnalogs10Curve, true);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Curve", &doPlotBestAnalogs10Curve, true);
     if (doPlotBestAnalogs10Curve) m_CheckListTocPredictands->Check(BestAnalogs10Curve);
     bool doPlotBestAnalogs5Points;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotBestAnalogs5Points", &doPlotBestAnalogs5Points, true);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Points", &doPlotBestAnalogs5Points, true);
     if (doPlotBestAnalogs5Points) m_CheckListTocPredictands->Check(BestAnalogs5Points);
     bool doPlotBestAnalogs5Curve;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotBestAnalogs5Curve", &doPlotBestAnalogs5Curve, false);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Curve", &doPlotBestAnalogs5Curve, false);
     if (doPlotBestAnalogs5Curve) m_CheckListTocPredictands->Check(BestAnalogs5Curve);
     bool doPlotAllReturnPeriods;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotAllReturnPeriods", &doPlotAllReturnPeriods, false);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", &doPlotAllReturnPeriods, false);
     if (doPlotAllReturnPeriods) m_CheckListTocPredictands->Check(AllReturnPeriods);
     bool doPlotClassicReturnPeriod;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
     if (doPlotClassicReturnPeriod) m_CheckListTocPredictands->Check(ClassicReturnPeriod);
     bool doPlotClassicPercentiles;
-    pConfig->Read("/Plots/DistributionsPredictands/DoPlotClassicPercentiles", &doPlotClassicPercentiles, true);
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicPercentiles", &doPlotClassicPercentiles, true);
     if (doPlotClassicPercentiles) m_CheckListTocPredictands->Check(ClassicPercentiles);
 }
 

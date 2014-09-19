@@ -178,7 +178,7 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
 {
     // Configuration
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString realtimePredictorDir = pConfig->Read("/StandardPaths/RealtimePredictorSavingDir", wxEmptyString);
+    wxString realtimePredictorDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", wxEmptyString);
 
     // File path
     VectorString filePaths = GetFileNames();

@@ -22,38 +22,34 @@
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
+ 
+#ifndef __asWizardWorkspace__
+#define __asWizardWorkspace__
 
-#ifndef AtmoswingAPPFORECASTER_H
-#define AtmoswingAPPFORECASTER_H
+#include "AtmoswingViewerGui.h"
+#include "asWorkspace.h"
 
-#include <wx/app.h>
-#include <wx/snglinst.h>
-#include <wx/cmdline.h>
-#include <wx/socket.h>
-#include <asIncludes.h>
+#include "asIncludes.h"
 
-#if wxUSE_GUI
-class AtmoswingAppForecaster : public wxApp
-#else
-class AtmoswingAppForecaster : public wxAppConsole
-#endif
+/** Implementing asWizardWorkspace */
+class asWizardWorkspace : public asWizardWorkspaceVirtual
 {
 public:
-    virtual bool OnInit();
-    virtual int OnExit();
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
-    bool InitForCmdLineOnly(long logLevel);
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
-    bool CommonInit();
+    /** Constructor */
+    asWizardWorkspace( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY );
+    ~asWizardWorkspace();
+    
+    wxWizardPage *GetFirstPage() const { return m_pages.Item( 0 ); }
+    wxWizardPage *GetSecondPage() const { return m_pages.Item( 1 ); }
+
+protected:
+	void OnWizardFinished( wxWizardEvent& event );
+	void OnLoadExistingWorkspace( wxCommandEvent& event );
 
 private:
-    #if wxUSE_GUI
-        wxSingleInstanceChecker* m_SingleInstanceChecker;
-    #endif
+    asWorkspace* m_Workspace;
 };
 
-DECLARE_APP(AtmoswingAppForecaster);
-
-#endif
+#endif // __asWizardWorkspace__

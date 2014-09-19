@@ -22,34 +22,34 @@
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#ifndef ASFILEFORECASTINGMODELS_H
-#define ASFILEFORECASTINGMODELS_H
+#ifndef __asWizardBatchForecasts__
+#define __asWizardBatchForecasts__
 
-#include <asIncludes.h>
-#include <asFileXml.h>
+#include "AtmoswingForecasterGui.h"
+#include "asBatchForecasts.h"
 
+#include "asIncludes.h"
 
-class asFileForecastingModels : public asFileXml
+/** Implementing asWizardBatchForecasts */
+class asWizardBatchForecasts : public asWizardBatchForecastsVirtual
 {
 public:
-    /** Default constructor */
-    asFileForecastingModels(const wxString &FileName, const ListFileMode &FileMode);
-
-    /** Default destructor */
-    virtual ~asFileForecastingModels();
-
-    virtual bool InsertRootElement();
-
-    virtual bool GoToRootElement();
-
+    /** Constructor */
+    asWizardBatchForecasts( wxWindow* parent, asBatchForecasts* batchForecasts, wxWindowID id = wxID_ANY );
+    ~asWizardBatchForecasts();
+    
+    wxWizardPage *GetFirstPage() const { return m_pages.Item( 0 ); }
+    wxWizardPage *GetSecondPage() const { return m_pages.Item( 1 ); }
 
 protected:
+	void OnWizardFinished( wxWizardEvent& event );
+	void OnLoadExistingBatchForecasts( wxCommandEvent& event );
 
 private:
-
+    asBatchForecasts* m_BatchForecasts;
 };
 
-#endif // ASFILEFORECASTINGMODELS_H
+#endif // __asWizardBatchForecasts__

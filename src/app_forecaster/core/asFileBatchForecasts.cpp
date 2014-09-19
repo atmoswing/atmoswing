@@ -23,32 +23,37 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2014 Pascal Horton, Terr@num.
  */
  
-#include "asFileForecastingModels.h"
+#include "asFileBatchForecasts.h"
 
-asFileForecastingModels::asFileForecastingModels(const wxString &FileName, const ListFileMode &FileMode)
+asFileBatchForecasts::asFileBatchForecasts(const wxString &FileName, const ListFileMode &FileMode)
 :
 asFileXml(FileName, FileMode)
 {
     // FindAndOpen() processed by asFileXml
 }
 
-asFileForecastingModels::~asFileForecastingModels()
+asFileBatchForecasts::~asFileBatchForecasts()
 {
     //dtor
 }
 
-bool asFileForecastingModels::InsertRootElement()
+bool asFileBatchForecasts::InsertRootElement()
 {
     if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "ForecastingModels")) return false;
-    if(!GoToFirstNodeWithPath("ForecastingModels")) return false;
+    if(!InsertElement(wxEmptyString, "BatchForecasts")) return false;
+    if(!GoToFirstNodeWithPath("BatchForecasts")) return false;
     return true;
 }
 
-bool asFileForecastingModels::GoToRootElement()
+bool asFileBatchForecasts::GoToRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.ForecastingModels")) return false;
+    if(!GoToFirstNodeWithPath("AtmoSwingFile.BatchForecasts"))
+    {
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing batch file."), m_FileName.GetFullName()));
+        return false;
+    }
     return true;
 }

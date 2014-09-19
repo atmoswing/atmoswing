@@ -12,7 +12,7 @@ endif (UNIX)
 # Version number
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "3")
-set(VERSION_PATCH "1")
+set(VERSION_PATCH "2")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
@@ -102,48 +102,36 @@ list(APPEND src_shared_processing ${src_proc_core_h} ${src_proc_thread_h})
 list(APPEND src_shared_processing ${src_proc_core_cpp} ${src_proc_thread_cpp})
 
 # Folder app_forecaster
-file(GLOB_RECURSE src_forec_app_h ../src/app_forecaster/app/*.h)
-file(GLOB_RECURSE src_forec_app_cpp ../src/app_forecaster/app/*.cpp)
 file(GLOB_RECURSE src_forec_core_h ../src/app_forecaster/core/*.h)
 file(GLOB_RECURSE src_forec_core_cpp ../src/app_forecaster/core/*.cpp)
 file(GLOB_RECURSE src_forec_gui_h ../src/app_forecaster/gui/*.h)
 file(GLOB_RECURSE src_forec_gui_cpp ../src/app_forecaster/gui/*.cpp)
-list(APPEND src_app_forecaster ${src_forec_app_h} ${src_forec_core_h})
-list(APPEND src_app_forecaster ${src_forec_app_cpp} ${src_forec_core_cpp})
+list(APPEND src_app_forecaster ${src_forec_core_h})
+list(APPEND src_app_forecaster ${src_forec_core_cpp})
 if (USE_GUI)
     list(APPEND src_app_forecaster ${src_forec_gui_h})
     list(APPEND src_app_forecaster ${src_forec_gui_cpp})
-else (USE_GUI)
-    list(REMOVE_ITEM src_app_forecaster "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/AtmoswingMainForecaster.h")
-    list(REMOVE_ITEM src_app_forecaster "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/AtmoswingMainForecaster.cpp")
 endif (USE_GUI)
 
 # Folder app_calibrator
-file(GLOB_RECURSE src_calib_app_h ../src/app_calibrator/app/*.h)
-file(GLOB_RECURSE src_calib_app_cpp ../src/app_calibrator/app/*.cpp)
 file(GLOB_RECURSE src_calib_core_h ../src/app_calibrator/core/*.h)
 file(GLOB_RECURSE src_calib_core_cpp ../src/app_calibrator/core/*.cpp)
 file(GLOB_RECURSE src_calib_gui_h ../src/app_calibrator/gui/*.h)
 file(GLOB_RECURSE src_calib_gui_cpp ../src/app_calibrator/gui/*.cpp)
-list(APPEND src_app_calibrator ${src_calib_app_h} ${src_calib_core_h})
-list(APPEND src_app_calibrator ${src_calib_app_cpp} ${src_calib_core_cpp})
+list(APPEND src_app_calibrator ${src_calib_core_h})
+list(APPEND src_app_calibrator ${src_calib_core_cpp})
 if (USE_GUI)
     list(APPEND src_app_calibrator ${src_calib_gui_h})
     list(APPEND src_app_calibrator ${src_calib_gui_cpp})
-else (USE_GUI)
-    list(REMOVE_ITEM src_app_calibrator "${PROJECT_SOURCE_DIR}/../src/app_calibrator/app/AtmoswingMainCalibrator.h")
-    list(REMOVE_ITEM src_app_calibrator "${PROJECT_SOURCE_DIR}/../src/app_calibrator/app/AtmoswingMainCalibrator.cpp")
 endif (USE_GUI)
 
 # Folder app_viewer
-file(GLOB_RECURSE src_viewer_app_h ../src/app_viewer/app/*.h)
-file(GLOB_RECURSE src_viewer_app_cpp ../src/app_viewer/app/*.cpp)
 file(GLOB_RECURSE src_viewer_core_h ../src/app_viewer/core/*.h)
 file(GLOB_RECURSE src_viewer_core_cpp ../src/app_viewer/core/*.cpp)
 file(GLOB_RECURSE src_viewer_gui_h ../src/app_viewer/gui/*.h)
 file(GLOB_RECURSE src_viewer_gui_cpp ../src/app_viewer/gui/*.cpp)
-list(APPEND src_app_viewer ${src_viewer_app_h} ${src_viewer_core_h} ${src_viewer_gui_h})
-list(APPEND src_app_viewer ${src_viewer_app_cpp} ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
+list(APPEND src_app_viewer ${src_viewer_core_h} ${src_viewer_gui_h})
+list(APPEND src_app_viewer ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
 
 # wxPlotCtrl library (and dependences)
 file(GLOB_RECURSE src_lib_wxmathplot_h ../src/app_viewer/libs/wxmathplot/*.h)
@@ -172,12 +160,18 @@ if (BUILD_FORECASTER)
     list(APPEND src_tests ${src_forec_core_cpp})
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVarsForecaster.h")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVarsForecaster.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/AtmoswingAppForecaster.h")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/AtmoswingAppForecaster.cpp")
 else (BUILD_FORECASTER)
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeGeneralGridTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeRegularGridTest.cpp")
 endif (BUILD_FORECASTER)
 list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVarsViewer.h")
 list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVarsViewer.cpp")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/AtmoswingAppViewer.h")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/AtmoswingAppViewer.cpp")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_calibrator/core/AtmoswingAppCalibrator.h")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_calibrator/core/AtmoswingAppCalibrator.cpp")
 
 # CUDA library
 if (USE_CUDA)
@@ -212,7 +206,6 @@ list(APPEND inc_dirs
 if (BUILD_FORECASTER)
     list(APPEND inc_dirs 
         "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/app/"
         "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
         )
     if (USE_GUI)
@@ -230,7 +223,6 @@ if (BUILD_VIEWER)
         "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
         "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
         "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/app/"
         "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
         "${PROJECT_SOURCE_DIR}/../src/app_viewer/gui/"
         "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxmathplot/"
@@ -708,28 +700,36 @@ endif (BUILD_TESTS)
 
 
 #### INSTALLER
+
+set(INSTALL_DIR_BIN bin)
+set(INSTALL_DIR_SHARE share/atmoswing)
+if (WIN32)
+    set(INSTALL_DIR_BIN .)
+    set(INSTALL_DIR_SHARE .)
+endif (WIN32)
  
 if (BUILD_FORECASTER)
-install ( TARGETS atmoswing-forecaster DESTINATION bin)
+install ( TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})
 endif (BUILD_FORECASTER)
 
 if (BUILD_VIEWER)
-install ( TARGETS atmoswing-viewer DESTINATION bin)
+install ( TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 endif (BUILD_VIEWER)
 
 if (BUILD_CALIBRATOR)
-install ( TARGETS atmoswing-calibrator DESTINATION bin)
+# Do not include the calibrator yet.
+# install ( TARGETS atmoswing-calibrator DESTINATION ${INSTALL_DIR_BIN})
 endif (BUILD_CALIBRATOR)
 
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal110.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
+          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
           DESTINATION .
           )
     else (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ../bin/gdal110.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib1.dll ../bin/msvcr110.dll
+          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib1.dll ../bin/msvcr110.dll
           DESTINATION .
           )
     endif (USE_PROVIDED_LIBRARIES)
@@ -737,14 +737,19 @@ endif (WIN32)
   
 install (
   FILES ../license.txt ../notice.txt
-  DESTINATION share/atmoswing
+  DESTINATION ${INSTALL_DIR_SHARE}
   )
   
 install (
   DIRECTORY ../config
-  DESTINATION share/atmoswing
+  DESTINATION ${INSTALL_DIR_SHARE}
   )
- 
+
+install (
+  DIRECTORY ../data
+  DESTINATION ${INSTALL_DIR_SHARE}
+  )
+  
 # COMMON PROPERTIES
 
 set(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
@@ -800,18 +805,22 @@ if (WIN32)
     set(CPACK_GENERATOR "NSIS")
     set(CPACK_PACKAGE_INSTALL_DIRECTORY "AtmoSwing")
     set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_ARCH}-Setup")
+    set(CPACK_PACKAGE_EXECUTABLES "atmoswing-viewer;AtmoSwing viewer;atmoswing-forecaster;AtmoSwing forecaster")
+    set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}")
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/cpack/license.txt")
     set(CPACK_NSIS_DISPLAY_NAME "AtmoSwing")
     set(CPACK_NSIS_CONTACT "Pascal Horton pascal.horton@terranum.ch")
-    set(CPACK_NSIS_HELP_LINK "www.bitbucket.org/atmoswing/atmoswing")
+    set(CPACK_NSIS_HELP_LINK "www.atmoswing.org")
     set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
-    set(CPACK_NSIS_URL_INFO_ABOUT "www.bitbucket.org/atmoswing/atmoswing")
-    set(CPACK_NSIS_MENU_LINKS 
-        "${CMAKE_PROJECT_NAME}" "${CMAKE_PROJECT_NAME}" 
-        "https://www.bitbucket.org/atmoswing/atmoswing" "www.bitbucket.org")
+    set(CPACK_NSIS_URL_INFO_ABOUT "www.atmoswing.org")
+    set(CPACK_NSIS_MENU_LINKS
+        "http://www.atmoswing.org" "www.atmoswing.org")
+    set(CPACK_CREATE_DESKTOP_LINKS "atmoswing-viewer;atmoswing-forecaster")
     set(CPACK_NSIS_COMPRESSOR "lzma")
-    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "OFF")
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
     set(CPACK_NSIS_MODIFY_PATH "ON")
+    # Icon in the add/remove control panel. Must be an .exe file 
+    set(CPACK_NSIS_INSTALLED_ICON_NAME atmoswing-viewer.exe)
     if (CMAKE_CL_64) 
         set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64") 
     else()

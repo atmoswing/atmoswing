@@ -23,11 +23,10 @@
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
- 
-#ifndef AtmoswingAPPCalibrator_H
-#define AtmoswingAPPCalibrator_H
+
+#ifndef AtmoswingAPPFORECASTER_H
+#define AtmoswingAPPFORECASTER_H
 
 #include <wx/app.h>
 #include <wx/snglinst.h>
@@ -36,37 +35,31 @@
 #include <asIncludes.h>
 
 #if wxUSE_GUI
-class AtmoswingAppCalibrator : public wxApp
+class AtmoswingAppForecaster : public wxApp
 #else
-class AtmoswingAppCalibrator : public wxAppConsole
+class AtmoswingAppForecaster : public wxAppConsole
 #endif
 {
 public:
-    //AtmoswingAppCalibrator();
-    virtual ~AtmoswingAppCalibrator(){};
     virtual bool OnInit();
-    virtual int OnExit();
     virtual int OnRun();
+    virtual int OnExit();
     virtual void OnInitCmdLine(wxCmdLineParser& parser);
-    bool InitForCmdLineOnly();
+    bool InitForCmdLineOnly(long logLevel);
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
     bool CommonInit();
-    virtual bool OnExceptionInMainLoop();
-    virtual void OnFatalException();
-    virtual void OnUnhandledException();
 
 private:
-    wxString m_CalibParamsFile;
-    wxString m_PredictandDB;
-    VectorInt m_PredictandStationIds;
-    wxString m_PredictorsDir;
-    wxString m_CalibMethod;
-    bool m_ForceQuit;
+    bool m_DoConfig;
+    bool m_DoForecast;
+    bool m_DoForecastPast;
+    double m_ForecastDate;
+    int m_ForecastPastDays;
     #if wxUSE_GUI
         wxSingleInstanceChecker* m_SingleInstanceChecker;
     #endif
 };
 
-DECLARE_APP(AtmoswingAppCalibrator);
+DECLARE_APP(AtmoswingAppForecaster);
 
 #endif

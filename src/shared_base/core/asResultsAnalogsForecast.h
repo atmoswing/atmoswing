@@ -47,6 +47,15 @@ public:
      */
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
+    wxString GetForecastsDirectory()
+    {
+        return m_ForecastsDirectory;
+    }
+
+    void SetForecastsDirectory(const wxString &val)
+    {
+        m_ForecastsDirectory = val;
+    }
 
     wxString GetPredictandDatasetId()
     {
@@ -552,13 +561,10 @@ private:
     DataParameter m_PredictandParameter;
     DataTemporalResolution m_PredictandTemporalResolution;
     DataSpatialAggregation m_PredictandSpatialAggregation;
+    wxString m_ForecastsDirectory;
     wxString m_PredictandDatasetId;
-
-
     wxString m_ModelName;
     wxString m_ModelLongName;
-
-
     bool m_HasReferenceValues;
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"

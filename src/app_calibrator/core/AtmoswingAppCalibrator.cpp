@@ -160,44 +160,44 @@ bool AtmoswingAppCalibrator::OnInit()
 
     // Call default behaviour (mandatory for command-line mode)
     if (!wxApp::OnInit()) // When false, we are in CL mode
-        return false;
+        return true;
 
     #if wxUSE_GUI
-    m_SingleInstanceChecker = NULL;
-    if (g_GuiMode)
-    {
-        // Check that it is the unique instance
-        bool multipleInstances = false;
-
-        wxFileConfig::Get()->Read("/Standard/MultiInstances", &multipleInstances, false);
-
-        if (!multipleInstances)
+	    m_SingleInstanceChecker = NULL;
+        if (g_GuiMode)
         {
-            const wxString instanceName = wxString::Format(wxT("AtmoSwingCalibrator-%s"),wxGetUserId().c_str());
-            m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-            if ( m_SingleInstanceChecker->IsAnotherRunning() )
+            // Check that it is the unique instance
+            bool multipleInstances = false;
+
+            wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
+
+            if (!multipleInstances)
             {
-                wxMessageBox(_("Program already running, aborting."));
-                return false;
+                const wxString instanceName = wxString::Format(wxT("AtmoSwingCalibrator-%s"),wxGetUserId().c_str());
+                m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+                if ( m_SingleInstanceChecker->IsAnotherRunning() )
+                {
+                    wxMessageBox(_("Program already running, aborting."));
+                    return false;
+                }
             }
+
+            // Following for GUI only
+            wxInitAllImageHandlers();
+
+            // Initialize images
+            initialize_images_toolbar();
+
+            // Create frame
+            AtmoswingFrameCalibrator* frame = new AtmoswingFrameCalibrator(0L);
+            frame->OnInit();
+
+            #ifdef __WXMSW__
+                frame->SetIcon(wxICON(myicon)); // To Set App Icon
+            #endif
+            frame->Show();
+            SetTopWindow(frame);
         }
-
-        // Following for GUI only
-        wxInitAllImageHandlers();
-
-        // Initialize images
-        initialize_images_toolbar();
-
-        // Create frame
-        AtmoswingFrameCalibrator* frame = new AtmoswingFrameCalibrator(0L);
-        frame->OnInit();
-
-        #ifdef __WXMSW__
-            frame->SetIcon(wxICON(myicon)); // To Set App Icon
-        #endif
-        frame->Show();
-        SetTopWindow(frame);
-    }
     #endif
 
     return true;
@@ -259,20 +259,20 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         wxConfigBase *pConfig = wxFileConfig::Get();
 
         // Define the default preferences
-        pConfig->Write("/Standard/MultiInstances", true);
-        pConfig->Write("/Standard/GuiOptions", 0l);
-        pConfig->Write("/Standard/Responsive", false);
-        pConfig->Write("/Standard/DisplayLogWindow", false);
-        pConfig->Write("/Standard/ProcessingThreadsPriority", 100);
-        pConfig->Write("/StandardPaths/DataPredictandDBDir", dirData);
-        pConfig->Write("/StandardPaths/IntermediateResultsDir", localPath+"temp");
-        pConfig->Write("/StandardPaths/CalibrationResultsDir", localPath+"results");
-        pConfig->Write("/StandardPaths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/ProcessingOptions/ProcessingLinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/General/MultiInstances", true);
+        pConfig->Write("/General/GuiOptions", 0l);
+        pConfig->Write("/General/Responsive", false);
+        pConfig->Write("/General/DisplayLogWindow", false);
+        pConfig->Write("/Paths/DataPredictandDBDir", dirData);
+        pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
+        pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
+        pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
+        pConfig->Write("/Processing/AllowMultithreading", true);
+        pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
+        pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Calibration/ParallelEvaluations", true);
         pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
-        pConfig->Write("/Standard/AllowMultithreading", true);
-        pConfig->Write("/ProcessingOptions/ProcessingMethod", (long)asINSERT);
 
         pConfig->Flush();
 
@@ -445,7 +445,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwing.ini",asConfig::GetUserDataDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini",asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini",wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
@@ -480,7 +480,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     }
     else
     {
-        long logLevel = wxFileConfig::Get()->Read("/Standard/LogLevel", 2l);
+        long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
         Log().SetLevel((int)logLevel);
     }
 
@@ -523,7 +523,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     wxString threadsNb = wxEmptyString;
     if (parser.Found("tn", & threadsNb))
     {
-        wxFileConfig::Get()->Write("/Standard/ProcessingMaxThreadNb", threadsNb);
+        wxFileConfig::Get()->Write("/Processing/MaxThreadNb", threadsNb);
     }
 
     // Check for a calibration params file
@@ -919,26 +919,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     return wxAppConsole::OnCmdLineParsed(parser);
 }
 
-int AtmoswingAppCalibrator::OnExit()
-{
-	#if wxUSE_GUI
-		// Instance checker
-		wxDELETE(m_SingleInstanceChecker);
-	#endif
-
-    // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
-
-    // Delete threads manager and log
-    DeleteThreadsManager();
-    DeleteLog();
-
-    // CleanUp
-    wxApp::CleanUp();
-
-    return 0;
-}
-
 int AtmoswingAppCalibrator::OnRun()
 {
     if (m_ForceQuit)
@@ -1060,6 +1040,26 @@ int AtmoswingAppCalibrator::OnRun()
     }
 
     return wxApp::OnRun();
+}
+
+int AtmoswingAppCalibrator::OnExit()
+{
+	#if wxUSE_GUI
+		// Instance checker
+		wxDELETE(m_SingleInstanceChecker);
+	#endif
+
+    // Config file (from wxWidgets samples)
+    delete wxFileConfig::Set((wxFileConfig *) NULL);
+
+    // Delete threads manager and log
+    DeleteThreadsManager();
+    DeleteLog();
+
+    // CleanUp
+    wxApp::CleanUp();
+
+    return 0;
 }
 
 bool AtmoswingAppCalibrator::OnExceptionInMainLoop()

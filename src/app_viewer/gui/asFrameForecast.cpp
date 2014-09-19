@@ -44,6 +44,7 @@
 #include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
 #include "asFileWorkspace.h"
+#include "asWizardWorkspace.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
 #include "img_logo.h"
@@ -58,29 +59,22 @@
 
 BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
+	EVT_CLOSE(asFrameForecast::OnClose)
+    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
+    EVT_KEY_UP(asFrameForecast::OnKeyUp)
     EVT_MENU(wxID_EXIT,  asFrameForecast::OnQuit)
-/*    EVT_MENU(wxID_ABOUT, asFrameForecast::OnAbout)
-    EVT_MENU(wxID_OPEN, asFrameForecast::OnOpenLayer)
-    EVT_MENU(wxID_REMOVE, asFrameForecast::OnCloseLayer)
-    EVT_MENU (wxID_INFO, asFrameForecast::OnShowLog)*/
     EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
     EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
     EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
     EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
-    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)/*
-    EVT_MENU (vlID_MOVE_LAYER, asFrameForecast::OnMoveLayer)
-*/
-    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
-    EVT_KEY_UP(asFrameForecast::OnKeyUp)
-
+    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
     EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
-
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_WORKSPACE, asFrameForecast::OnOpenWorkspace)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, asFrameForecast::OnChangeLeadTime)
-//    EVT_COMMAND(wxID_ANY, asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
@@ -231,10 +225,10 @@ asFrameForecastVirtual( parent, id )
     // Restore frame position and size
     wxConfigBase *pConfig = wxFileConfig::Get();
     int minHeight = 450, minWidth = 800;
-    int x = pConfig->Read("/MainFrameViewer/x", 50),
-        y = pConfig->Read("/MainFrameViewer/y", 50),
-        w = pConfig->Read("/MainFrameViewer/w", minWidth),
-        h = pConfig->Read("/MainFrameViewer/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50),
+        y = pConfig->Read("/MainFrame/y", 50),
+        w = pConfig->Read("/MainFrame/w", minWidth),
+        h = pConfig->Read("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x<screen.x-10) x = screen.x;
     if (x>screen.width) x = screen.x;
@@ -251,8 +245,10 @@ asFrameForecastVirtual( parent, id )
     SetClientSize(w, h);
 
     bool doMaximize;
-    pConfig->Read("/MainFrameViewer/Maximize", &doMaximize);
+    pConfig->Read("/MainFrame/Maximize", &doMaximize);
     Maximize(doMaximize);
+
+    Layout();
 
     // Icon
 #ifdef __WXMSW__
@@ -274,16 +270,16 @@ asFrameForecast::~asFrameForecast()
 
     // Save the frame position
     bool doMaximize = IsMaximized();
-    pConfig->Write("/MainFrameViewer/Maximize", doMaximize);
+    pConfig->Write("/MainFrame/Maximize", doMaximize);
     if (!doMaximize)
     {
         int x, y, w, h;
         GetClientSize(&w, &h);
         GetPosition(&x, &y);
-        pConfig->Write("/MainFrameViewer/x", (long) x);
-        pConfig->Write("/MainFrameViewer/y", (long) y);
-        pConfig->Write("/MainFrameViewer/w", (long) w);
-        pConfig->Write("/MainFrameViewer/h", (long) h);
+        pConfig->Write("/MainFrame/x", (long) x);
+        pConfig->Write("/MainFrame/y", (long) y);
+        pConfig->Write("/MainFrame/w", (long) w);
+        pConfig->Write("/MainFrame/h", (long) h);
     }
 
     // Disconnect Events
@@ -354,8 +350,10 @@ void asFrameForecast::Init()
     }
     else
     {
-        asWizardWorkspace* wizard = new asWizardWorkspace(this);
-        wizard->Destroy();
+        asWizardWorkspace wizard(this, &m_Workspace);
+        wizard.RunWizard(wizard.GetFirstPage());
+
+        OpenWorkspace();
     }
 
     // Set the display options
@@ -457,6 +455,133 @@ void asFrameForecast::OnOpenWorkspace(wxCommandEvent & event)
 
 }
 
+void asFrameForecast::OnSaveWorkspace(wxCommandEvent & event)
+{
+    SaveWorkspace();
+}
+
+void asFrameForecast::OnSaveWorkspaceAs(wxCommandEvent & event)
+{
+    // Ask for a workspace file
+    wxFileDialog openFileDialog (this, _("Select a path to save the workspace"),
+                            wxEmptyString,
+                            wxEmptyString,
+                            "xml files (*.xml)|*.xml",
+                            wxFD_SAVE | wxFD_CHANGE_DIR);
+
+    // If canceled
+    if(openFileDialog.ShowModal()==wxID_CANCEL)
+        return;
+
+    wxString workspaceFilePath = openFileDialog.GetPath();
+    m_Workspace.SetFilePath(workspaceFilePath);
+
+    if(SaveWorkspace())
+    {
+        // Save preferences
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        pConfig->Write("/Workspace/LastOpened", workspaceFilePath);
+    }
+}
+
+bool asFrameForecast::SaveWorkspace()
+{
+    // Update the GIS layers
+    m_Workspace.ClearLayers();
+    int counter = -1;
+    for (int i=0; i<m_ViewerLayerManager->GetCount(); i++)
+    {
+        wxFileName fileName = m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName();
+        wxString path = fileName.GetFullPath();
+
+        if(!path.IsSameAs("Forecast.memory"))
+        {
+            counter++;
+            m_Workspace.AddLayer();
+            m_Workspace.SetLayerPath(counter, path);
+
+            vrDRIVERS_TYPE type = m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetType();
+            wxString strType;
+            switch (type)
+            {
+                case vrDRIVER_UNKNOWN:
+                    strType = "undefined";
+                    break;
+                case vrDRIVER_VECTOR_SHP:
+                    strType = "vector";
+                    break;
+                case vrDRIVER_VECTOR_C2P:
+                    strType = "vector";
+                    break;
+                case vrDRIVER_VECTOR_MEMORY:
+                    strType = "undefined";
+                    break;
+                case vrDRIVER_RASTER_TIFF:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_JPEG:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_ESRIGRID:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_C2D:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_EASC:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_SGRD7:
+                    strType = "raster";
+                    break;
+                case vrDRIVER_RASTER_WMS:
+                    strType = "wms";
+                    break;
+                case vrDRIVER_USER_DEFINED:
+                    strType = "undefined";
+                    break;
+                default:
+                    strType = "undefined";
+            }
+            m_Workspace.SetLayerType(counter, strType);
+
+            int transparency = m_ViewerLayerManager->GetRenderer(i)->GetRender()->GetTransparency();
+            m_Workspace.SetLayerTransparency(counter, transparency);
+            bool visible = m_ViewerLayerManager->GetRenderer(i)->GetVisible();
+            m_Workspace.SetLayerVisibility(counter, visible);
+
+            if (strType.IsSameAs("vector"))
+            {
+                vrRenderVector * vectRender = (vrRenderVector*) m_ViewerLayerManager->GetRenderer(i)->GetRender();
+                int lineWidth = vectRender->GetSize();
+                m_Workspace.SetLayerLineWidth(counter, lineWidth);
+                wxColour lineColour = vectRender->GetColorPen();
+                m_Workspace.SetLayerLineColor(counter, lineColour);
+                wxColour fillColour = vectRender->GetColorBrush();
+                m_Workspace.SetLayerFillColor(counter, fillColour);
+                wxBrushStyle brushStyle = vectRender->GetBrushStyle();
+                m_Workspace.SetLayerBrushStyle(counter, brushStyle);
+            }
+        }
+    }
+
+    if(!m_Workspace.Save())
+    {
+        asLogError(_("Could not save the worspace."));
+        return false;
+    }
+
+    m_Workspace.SetHasChanged(false);
+
+    return true;
+}
+
+void asFrameForecast::OnNewWorkspace(wxCommandEvent & event)
+{
+    asWizardWorkspace wizard(this, &m_Workspace);
+    wizard.RunWizard(wizard.GetSecondPage());
+}
+
 bool asFrameForecast::OpenWorkspace()
 {
     // GIS layers
@@ -480,16 +605,13 @@ bool asFrameForecast::OpenWorkspace()
     }
 
     // Open new layers
-    for (int i_layer=0; i_layer<m_Workspace.GetLayersNb(); i_layer++)
+    for (int i_layer=m_Workspace.GetLayersNb()-1; i_layer>=0; i_layer--)
     {
         // Get attributes
         wxString path = m_Workspace.GetLayerPath(i_layer);
         wxString type = m_Workspace.GetLayerType(i_layer);
         int transparency = m_Workspace.GetLayerTransparency(i_layer);
         bool visibility = m_Workspace.GetLayerVisibility(i_layer);
-        int width = m_Workspace.GetLayerLineWidth(i_layer);
-        wxColour lineColor = m_Workspace.GetLayerLineColor(i_layer);
-        wxColour fillColor = m_Workspace.GetLayerFillColor(i_layer);
         
         // Open the layers
         if (wxFileName::FileExists(path))
@@ -507,18 +629,17 @@ bool asFrameForecast::OpenWorkspace()
                 }
                 else if (type.IsSameAs("vector"))
                 {
+                    int width = m_Workspace.GetLayerLineWidth(i_layer);
+                    wxColour lineColor = m_Workspace.GetLayerLineColor(i_layer);
+                    wxColour fillColor = m_Workspace.GetLayerFillColor(i_layer);
+                    wxBrushStyle brushStyle = m_Workspace.GetLayerBrushStyle(i_layer);
+
                     vrRenderVector* render = new vrRenderVector();
                     render->SetTransparency(transparency);
                     render->SetSize(width);
                     render->SetColorPen(lineColor);
-                   /* if (fillColorLong==0)
-                    {
-                        render->SetBrushStyle(wxBRUSHSTYLE_TRANSPARENT);
-                    }
-                    else
-                    {*/
-                        render->SetColorBrush(fillColor);
-                    //}
+                    render->SetBrushStyle(brushStyle);
+                    render->SetColorBrush(fillColor);
 
                     vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
                     wxASSERT(layer);
@@ -526,7 +647,12 @@ bool asFrameForecast::OpenWorkspace()
                 }
                 else if (type.IsSameAs("wms"))
                 {
-                    asLogWarning(_("WMS layers are not yet implemented."));
+                    vrRenderRaster* render = new vrRenderRaster();
+                    render->SetTransparency(transparency);
+
+                    vrLayer* layer = m_LayerManager->GetLayer( wxFileName(path));
+                    wxASSERT(layer);
+                    m_ViewerLayerManager->Add(-1, layer, render, NULL, visibility);
                 }
                 else
                 {
@@ -551,12 +677,30 @@ bool asFrameForecast::OpenWorkspace()
     m_ScrolledWindowOptions->Layout();
     m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
     Layout();
+    
+    m_Workspace.SetHasChanged(false);
 
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
 
     return true;
+}
+
+void asFrameForecast::OnClose(wxCloseEvent& event)
+{
+    if ( event.CanVeto() && m_Workspace.HasChanged() )
+    {
+        if ( wxMessageBox("The workspace has not been saved... continue closing?",
+                          "Please confirm",
+                          wxICON_QUESTION | wxYES_NO) != wxYES )
+        {
+            event.Veto();
+            return;
+        }
+    }
+    
+    event.Skip();
 }
 
 void asFrameForecast::OnQuit( wxCommandEvent& event )
@@ -596,9 +740,9 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
 
     // Get forecaster path
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", wxEmptyString);
+    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir()+"atmoswing-forecaster");
 
-    if(ForecasterPath.IsEmpty())
+    if(forecasterPath.IsEmpty())
     {
         asLogError(_("Please set the path to the forecaster in the preferences."));
         return;
@@ -606,8 +750,8 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
 
     // Set option
     wxString options = wxString::Format(" -fn -ll 2 -lt file");
-    ForecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), ForecasterPath.c_str()));
+    forecasterPath.Append(options);
+    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath.c_str()));
 
     // Create a process
     if (m_ProcessForecast!=NULL)
@@ -621,7 +765,7 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
     //m_ProcessForecast->Redirect(); // CAUTION redirect causes the downloads to hang after a few ones!
 
     // Execute
-    long processId = wxExecute(ForecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
+    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
 
     if (processId==0) // if wxEXEC_ASYNC
     {
@@ -640,9 +784,9 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
 
     // Get forecaster path
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", wxEmptyString);
+    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir()+"atmoswing-forecaster");
 
-    if(ForecasterPath.IsEmpty())
+    if(forecasterPath.IsEmpty())
     {
         asLogError(_("Please set the path to the forecaster in the preferences."));
         return;
@@ -651,8 +795,8 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     // Set option
     int nbPrevDays = m_Workspace.GetTimeSeriesPlotPastDaysNb();
     wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
-    ForecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), ForecasterPath.c_str()));
+    forecasterPath.Append(options);
+    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath.c_str()));
 
     // Create a process
     if (m_ProcessForecast!=NULL)
@@ -666,7 +810,7 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     //m_ProcessForecast->Redirect(); // CAUTION redirect causes the downloads to hang after a few ones!
 
     // Execute
-    long processId = wxExecute(ForecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
+    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC, m_ProcessForecast);
 
     if (processId==0) // if wxEXEC_ASYNC
     {
@@ -716,16 +860,16 @@ void asFrameForecast::OnForecastProcessTerminate( wxProcessEvent &event )
 void asFrameForecast::OpenFrameForecaster( wxCommandEvent& event )
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString ForecasterPath = pConfig->Read("/StandardPaths/ForecasterPath", wxEmptyString);
+    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir()+"atmoswing-forecaster");
 
-    if(ForecasterPath.IsEmpty())
+    if(forecasterPath.IsEmpty())
     {
         asLogError(_("Please set the path to the forecaster in the preferences."));
         return;
     }
 
     // Execute
-    long processId = wxExecute(ForecasterPath, wxEXEC_ASYNC);
+    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC);
 
     if (processId==0) // if wxEXEC_ASYNC
     {
@@ -770,7 +914,7 @@ void asFrameForecast::OnLogLevel1( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(true);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
-    wxFileConfig::Get()->Write("/Standard/LogLevelViewer", 1l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -781,7 +925,7 @@ void asFrameForecast::OnLogLevel2( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(true);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
-    wxFileConfig::Get()->Write("/Standard/LogLevelViewer", 2l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -792,7 +936,7 @@ void asFrameForecast::OnLogLevel3( wxCommandEvent& event )
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(true);
-    wxFileConfig::Get()->Write("/Standard/LogLevelViewer", 3l);
+    wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
 }
@@ -800,7 +944,7 @@ void asFrameForecast::OnLogLevel3( wxCommandEvent& event )
 void asFrameForecast::DisplayLogLevelMenu()
 {
     // Set log level in the menu
-    int logLevel = (int)wxFileConfig::Get()->Read("/Standard/LogLevelViewer", 2l);
+    int logLevel = (int)wxFileConfig::Get()->Read("/General/LogLevel", 1l);
     m_MenuLogLevel->FindItemByPosition(0)->Check(false);
     m_MenuLogLevel->FindItemByPosition(1)->Check(false);
     m_MenuLogLevel->FindItemByPosition(2)->Check(false);
@@ -853,6 +997,8 @@ bool asFrameForecast::OpenLayers (const wxArrayString & names)
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
+        
+    m_Workspace.SetHasChanged(true);
 
     return true;
 
@@ -944,6 +1090,8 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent & event)
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
+
+    m_Workspace.SetHasChanged(true);
 }
 
 void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
@@ -1325,6 +1473,8 @@ void asFrameForecast::OnMoveLayer (wxCommandEvent & event)
     #if defined (__WIN32__)
         m_CritSectionViewerLayerManager.Leave();
     #endif
+
+    m_Workspace.SetHasChanged(true);
 }
 
 void asFrameForecast::OnToolAction (wxCommandEvent & event)

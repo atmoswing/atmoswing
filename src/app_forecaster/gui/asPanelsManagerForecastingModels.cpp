@@ -28,7 +28,6 @@
 #include "asPanelsManagerForecastingModels.h"
 
 #include <asPanelForecastingModel.h>
-#include <asFileForecastingModels.h>
 
 asPanelsManagerForecastingModels::asPanelsManagerForecastingModels()
 :
@@ -91,6 +90,18 @@ void asPanelsManagerForecastingModels::Clear()
         m_ArrayPanels[i]->Destroy();
     }
     m_ArrayPanels.clear();
+}
+
+asPanelForecastingModel* asPanelsManagerForecastingModels::GetPanel( int i )
+{
+    wxASSERT(i<m_ArrayPanels.size());
+    return m_ArrayPanels[i];
+}
+
+int asPanelsManagerForecastingModels::GetPanelsNb()
+{
+    int nb = (int)m_ArrayPanels.size();
+    return nb;
 }
 
 void asPanelsManagerForecastingModels::SetForecastingModelLedRunning( int num )
@@ -159,22 +170,4 @@ void asPanelsManagerForecastingModels::SetForecastingModelsAllLedsOff( )
         led->Update();
         led->Refresh();
     }
-}
-
-bool asPanelsManagerForecastingModels::GenerateXML(asFileForecastingModels &file)
-{
-    asLogMessage(_("Setting the root tag in the xml file."));
-
-    // Create the node in the XML doc
-    if(!file.InsertElement(wxEmptyString, "ModelsList")) return false;
-    if(!file.GoToLastNodeWithPath("ModelsList")) return false;
-
-    asLogMessage(_("Generating xml file content."));
-
-    for (unsigned int i=0; i<m_ArrayPanels.size(); i++)
-    {
-        if (!m_ArrayPanels[i]->GenerateXML(file)) return false;
-    }
-
-    return true;
 }
