@@ -49,7 +49,6 @@ asMethodStandard()
     m_ModelName = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
     m_PredictandDBFilePath = wxEmptyString;
-    m_PredictorsArchiveDir = wxEmptyString;
     m_Parent = parent;
 }
 
@@ -82,7 +81,6 @@ bool asMethodForecasting::Manager()
         #endif
 
         // Get paths
-        wxString m_PredictorsArchiveDir = m_BatchForecasts->GetPredictorsArchiveDirectory();
         wxString forecastParametersDir = m_BatchForecasts->GetParametersFileDirectory();
         wxString predictandDBDir = m_BatchForecasts->GetPredictandDBDirectory();
 
@@ -682,12 +680,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_BatchForecasts->GetPredictorsArchiveDirectory());
             if (!predictorArchive)
             {
                 return false;
             }
-            predictorArchive->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
             // Instanciate an realtime predictor object
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
@@ -797,12 +794,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
+                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_BatchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess)
                 {
                     return false;
                 }
-                predictorArchivePreprocess->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
                 // Instanciate an realtime predictor object
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
@@ -1130,12 +1126,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_BatchForecasts->GetPredictorsArchiveDirectory());
             if (!predictorArchive)
             {
                 return false;
             }
-            predictorArchive->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
             // Instanciate an realtime predictor object
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
@@ -1229,12 +1224,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
+                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_BatchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess)
                 {
                     return false;
                 }
-                predictorArchivePreprocess->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
                 // Instanciate an realtime predictor object
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
