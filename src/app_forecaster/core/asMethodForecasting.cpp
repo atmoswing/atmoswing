@@ -687,6 +687,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 return false;
             }
+            predictorArchive->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
             // Instanciate an realtime predictor object
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
@@ -801,6 +802,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     return false;
                 }
+                predictorArchivePreprocess->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
                 // Instanciate an realtime predictor object
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
@@ -1133,6 +1135,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             {
                 return false;
             }
+            predictorArchive->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
             // Instanciate an realtime predictor object
             asDataPredictorRealtime* predictorRealtime = asDataPredictorRealtime::GetInstance(params.GetPredictorRealtimeDatasetId(i_step, i_ptor), params.GetPredictorRealtimeDataId(i_step, i_ptor));
@@ -1231,6 +1234,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 {
                     return false;
                 }
+                predictorArchivePreprocess->SetDirectoryPath(m_BatchForecasts->GetPredictorsArchiveDirectory());
 
                 // Instanciate an realtime predictor object
                 asDataPredictorRealtime* predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessRealtimeDataId(i_step, i_ptor, i_prepro));
