@@ -176,9 +176,6 @@ VectorString asDataPredictorRealtimeGfsForecast::GetDataIdDescriptionList()
 
 bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
 {
-    // Configuration
-    wxConfigBase *pConfig = wxFileConfig::Get();
-
     // File path
     VectorString filePaths = GetFileNames();
     wxASSERT(filePaths.size()>=(unsigned)timeArray.GetSize());
