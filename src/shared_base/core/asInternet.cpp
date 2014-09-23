@@ -78,8 +78,8 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
     // Get the number of connections
     //int threadsNb = wxMin(ThreadsManager().GetAvailableThreadsNb(), (int)fileNames.size());
-    long parallelRequests = 5;
-    pConfig->Read("/Internet/ParallelRequestsNb", &parallelRequests, 5l);
+    long parallelRequests = 1;
+    pConfig->Read("/Internet/ParallelRequestsNb", &parallelRequests, 1l);
 
     if(parallelRequests>1)
     {
