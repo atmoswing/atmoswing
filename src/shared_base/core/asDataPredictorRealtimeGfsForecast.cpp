@@ -178,7 +178,6 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
 {
     // Configuration
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString realtimePredictorDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", wxEmptyString);
 
     // File path
     VectorString filePaths = GetFileNames();
@@ -229,9 +228,9 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
 
         // Check if the volume is present
         wxFileName fileName(filePaths[i_file]);
-        if (!fileName.HasVolume() && !realtimePredictorDir.IsEmpty())
+        if (!fileName.HasVolume() && !m_PredictorsRealtimeDirectory.IsEmpty())
         {
-            filePath = realtimePredictorDir;
+            filePath = m_PredictorsRealtimeDirectory;
             filePath.Append(DS);
         }
 
