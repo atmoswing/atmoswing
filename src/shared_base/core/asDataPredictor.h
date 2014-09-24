@@ -341,7 +341,7 @@ protected:
      */
     bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
 
-    bool CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea, asGeoAreaCompositeGrid *dataArea);
+    asGeoAreaCompositeGrid* CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
 
     bool AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
 

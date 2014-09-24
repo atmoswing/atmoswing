@@ -91,13 +91,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         }
 
         // Create a new area matching the dataset
-        asGeoAreaCompositeGrid* dataArea = NULL;
-        if(!CreateMatchingArea(desiredArea, dataArea))
-        {
-            asLogError(_("The time array is not valid to load data."));
-            wxDELETE(dataArea);
-            return false;
-        }
+        asGeoAreaCompositeGrid* dataArea = CreateMatchingArea(desiredArea);
 
         // Store time array
         m_Time = timeArray.GetTimeArray();
@@ -203,7 +197,7 @@ bool asDataPredictor::LoadFullArea(double date, float level)
     return Load(NULL, timeArray);
 }
 
-bool asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea, asGeoAreaCompositeGrid *dataArea)
+asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea)
 {
     if (desiredArea)
     {
@@ -231,7 +225,7 @@ bool asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea, as
             dataVptsnb = desiredArea->GetVaxisPtsnb();
         }
 
-        dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+        asGeoAreaCompositeGrid* dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false))
@@ -248,9 +242,11 @@ bool asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea, as
         // Get axes length for preallocation
         m_LonPtsnb = dataArea->GetUaxisPtsnb();
         m_LatPtsnb = dataArea->GetVaxisPtsnb();
+
+        return dataArea;
     }
 
-    return true;
+    return NULL;
 }
 
 bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
