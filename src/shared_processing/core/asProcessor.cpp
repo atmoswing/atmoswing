@@ -167,6 +167,9 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                 threadsNb = 1;
             }
 
+            // Disable message box
+            g_pLog->DisableMessageBoxOnError();
+
             // Create and give data
             int end = -1;
             int threadType = -1;
@@ -194,6 +197,10 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
             // Wait until all done
             ThreadsManager().Wait(threadType);
+
+            // Enable message box and flush logs
+            g_pLog->EnableMessageBoxOnError();
+            g_pLog->Flush();
 
             for (unsigned int i_threads=0; i_threads<vContainsNaNs.size(); i_threads++)
             {
@@ -912,6 +919,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
                 threadsNb = 1;
             }
 
+            // Disable message box
+            g_pLog->DisableMessageBoxOnError();
+
             // Create and give data
             int end = -1;
             int threadType = -1;
@@ -941,6 +951,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
 
             // Wait until all done
             ThreadsManager().Wait(threadType);
+
+            // Enable message box and flush logs
+            g_pLog->EnableMessageBoxOnError();
+            g_pLog->Flush();
 
             for (unsigned int i_threads=0; i_threads<vContainsNaNs.size()-1; i_threads++)
             {
