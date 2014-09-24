@@ -11,8 +11,8 @@ endif (UNIX)
 
 # Version number
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "3")
-set(VERSION_PATCH "2")
+set(VERSION_MINOR "5")
+set(VERSION_PATCH "0")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
@@ -327,7 +327,7 @@ include_directories(${PROJ4_INCLUDE_DIR})
 
 # GDAL
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-    find_package(GDAL REQUIRED)
+    find_package(GDAL 2.0 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
 else (BUILD_FORECASTER OR BUILD_VIEWER)
 	# unset for wxhgversion
