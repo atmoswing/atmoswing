@@ -48,10 +48,10 @@ public:
     virtual bool Init() = 0;
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
-    bool asDataPredictor::Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
-    bool asDataPredictor::Load(asGeoAreaCompositeGrid &desiredArea, double date);
-    bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, double date);
-    bool asDataPredictor::LoadFullArea(double date, float level);
+    bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
+    bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
+    bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
+    bool LoadFullArea(double date, float level);
 
     bool Inline();
     
