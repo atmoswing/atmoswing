@@ -39,9 +39,11 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_CanBeClipped = true;
     m_LatPtsnb = 0;
     m_LonPtsnb = 0;
-    m_SizeTime = 0;
+    m_LatIndexStep = 0;
+    m_LonIndexStep = 0;
     m_PreprocessMethod = wxEmptyString;
     m_Initialized = false;
+    m_AxesChecked = false;
     m_TimeZoneHours = 0.0;
     m_TimeStepHours = 0.0;
     m_FirstTimeStepHours = 0.0;
@@ -59,9 +61,7 @@ asDataPredictor::~asDataPredictor()
 bool asDataPredictor::SetData(VArray2DFloat &val)
 {
     wxASSERT(m_Time.size()>0);
-    wxASSERT(m_SizeTime>0);
-    wxASSERT(m_SizeTime==m_Time.size());
-    wxASSERT(m_SizeTime==val.size());
+    wxASSERT((int)m_Time.size()==(int)val.size());
 
     m_LatPtsnb = val[0].rows();
     m_LonPtsnb = val[0].cols();
@@ -71,36 +71,331 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     return true;
 }
 
-bool asDataPredictor::GetSizes(asGeoAreaCompositeGrid &area, asTimeArray &timeArray)
+bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
 {
-    m_LonPtsnb = area.GetUaxisPtsnb();
-    m_LatPtsnb = area.GetVaxisPtsnb();
-    m_SizeTime = timeArray.GetSize();
+    if (!m_Initialized)
+    {
+        if (!Init()) {
+            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_DatasetName.c_str()));
+            return false;
+        }
+    }
+
+    try
+    {
+        // Check the time array
+        if(!CheckTimeArray(timeArray))
+        {
+            asLogError(_("The time array is not valid to load data."));
+            return false;
+        }
+
+        // Create a new area matching the dataset
+        asGeoAreaCompositeGrid* dataArea = NULL;
+        if(!CreateMatchingArea(desiredArea, dataArea))
+        {
+            asLogError(_("The time array is not valid to load data."));
+            wxDELETE(dataArea);
+            return false;
+        }
+
+        // Store time array
+        m_Time = timeArray.GetTimeArray();
+        m_TimeIndexStep = wxMax(timeArray.GetTimeStepHours()/m_TimeStepHours, 1);
+        
+        // The desired level
+        if (desiredArea)
+        {
+            m_Level = desiredArea->GetComposite(0).GetLevel();
+        }
+
+        // Number of composites
+        int compositesNb = 1;
+        if (dataArea)
+        {
+            compositesNb = dataArea->GetNbComposites();
+        }
+
+        // Extract composite data from files
+        VVArray2DFloat compositeData(compositesNb);
+        if (!ExtractFromFiles(dataArea, timeArray, compositeData))
+        {
+            asLogError(_("Extracting data from files failed."));
+            wxDELETE(dataArea);
+            return false;
+        }
+        
+        // Merge the composites into m_Data
+        if (!MergeComposites(compositeData, dataArea))
+        {
+            asLogError(_("Merging the composites failed."));
+            wxDELETE(dataArea);
+            return false;
+        }
+
+        // Interpolate the loaded data on the desired grid
+        if (desiredArea && !InterpolateOnGrid(dataArea, desiredArea))
+        {
+            asLogError(_("Interpolation failed."));
+            wxDELETE(dataArea);
+            return false;
+        }
+        wxASSERT_MSG(m_Data[0].cols()==desiredArea->GetUaxisPtsnb(), wxString::Format("m_Data[0].cols()=%d, desiredArea->GetUaxisPtsnb()=%d", (int)m_Data[0].cols(), (int)desiredArea->GetUaxisPtsnb()));
+        wxASSERT_MSG(m_Data[0].rows()==desiredArea->GetVaxisPtsnb(), wxString::Format("m_Data[0].rows()=%d, desiredArea->GetVaxisPtsnb()=%d", (int)m_Data[0].rows(), (int)desiredArea->GetVaxisPtsnb()));
+
+        // Check the data container length
+        if ((unsigned)m_Time.size()!=m_Data.size())
+        {
+            asLogError(_("The date and the data array lengths do not match."));
+            wxDELETE(dataArea);
+            return false;
+        }
+
+        wxDELETE(dataArea);
+    }
+    catch(bad_alloc& ba)
+    {
+        wxString msg(ba.what(), wxConvUTF8);
+        asLogError(wxString::Format(_("Bad allocation caught when loading data: %s"), msg.c_str()));
+        return false;
+    }
+    catch(asException& e)
+    {
+        wxString fullMessage = e.GetFullMessage();
+        if (!fullMessage.IsEmpty())
+        {
+            asLogError(fullMessage);
+        }
+        asLogError(_("Failed to load data."));
+        return false;
+    }
 
     return true;
 }
 
-bool asDataPredictor::InitContainers()
+bool asDataPredictor::Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray)
 {
-    m_Time.resize(m_SizeTime);
-    m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
+    return Load(&desiredArea, timeArray);
+}
+
+bool asDataPredictor::Load(asGeoAreaCompositeGrid &desiredArea, double date)
+{
+    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    timeArray.Init();
+
+    return Load(&desiredArea, timeArray);
+}
+
+bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, double date)
+{
+    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    timeArray.Init();
+
+    return Load(desiredArea, timeArray);
+}
+
+bool asDataPredictor::LoadFullArea(double date, float level)
+{
+    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    timeArray.Init();
+    m_Level = level;
+
+    return Load(NULL, timeArray);
+}
+
+bool asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea, asGeoAreaCompositeGrid *dataArea)
+{
+    if (desiredArea)
+    {
+        double dataUmin, dataVmin, dataUmax, dataVmax, dataUstep, dataVstep;
+        int dataUptsnb, dataVptsnb;
+        wxString gridType = desiredArea->GetGridTypeString();
+        if (gridType.IsSameAs("Regular", false))
+        {
+            dataUmin = floor((desiredArea->GetAbsoluteUmin()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
+            dataVmin = floor((desiredArea->GetAbsoluteVmin()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
+            dataUmax = ceil((desiredArea->GetAbsoluteUmax()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
+            dataVmax = ceil((desiredArea->GetAbsoluteVmax()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
+            dataUstep = floor(desiredArea->GetUstep()/m_UaxisStep)*m_UaxisStep; // strides if allowed
+            dataVstep = floor(desiredArea->GetVstep()/m_VaxisStep)*m_VaxisStep; // strides if allowed
+            dataUptsnb = (dataUmax-dataUmin)/dataUstep+1;
+            dataVptsnb = (dataVmax-dataVmin)/dataVstep+1;
+        }
+        else
+        {
+            dataUmin = desiredArea->GetAbsoluteUmin();
+            dataVmin = desiredArea->GetAbsoluteVmin();
+            dataUstep = desiredArea->GetUstep();
+            dataVstep = desiredArea->GetVstep();
+            dataUptsnb = desiredArea->GetUaxisPtsnb();
+            dataVptsnb = desiredArea->GetVaxisPtsnb();
+        }
+
+        dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+
+        // Get indexes steps
+        if (gridType.IsSameAs("Regular", false))
+        {
+            m_LonIndexStep = dataArea->GetUstep()/m_UaxisStep;
+            m_LatIndexStep = dataArea->GetVstep()/m_VaxisStep;
+        }
+        else
+        {
+            m_LonIndexStep = 1;
+            m_LatIndexStep = 1;
+        }
+
+        // Get axes length for preallocation
+        m_LonPtsnb = dataArea->GetUaxisPtsnb();
+        m_LatPtsnb = dataArea->GetVaxisPtsnb();
+    }
 
     return true;
 }
 
-bool asDataPredictor::CheckTimeLength(int counter)
+bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
 {
-    if (m_Data.size()!=(unsigned)counter)
+    if (!m_AxesChecked)
     {
-        asLogError(wxString::Format(_("The data time dimension (%d) does not match the check counter (%d)."), (int)m_Data.size(), counter));
-        return false;
+        if (dataArea==NULL)
+        {
+            // Get axes length for preallocation
+            m_LonPtsnb = axisDataLon.size();
+            m_LatPtsnb = axisDataLat.size();
+            m_AxisLon.resize(axisDataLon.size());
+            m_AxisLon = axisDataLon;
+            m_AxisLat.resize(axisDataLat.size());
+            m_AxisLat = axisDataLat;
+        }
+        else if(dataArea!=NULL)
+        {
+            // Check that requested data do not overtake the file
+            for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
+            {
+                Array1DDouble axisLonComp = dataArea->GetUaxisComposite(i_comp);
+
+                if (axisDataLon[axisDataLon.size()-1]>axisDataLon[0])
+                {
+                    wxASSERT(axisLonComp[axisLonComp.size()-1]>=axisLonComp[0]);
+
+                    // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
+                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[axisDataLon.size()-1] && axisLonComp[0]<axisDataLon[axisDataLon.size()-1] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisUmax())
+                    {
+                        asLogMessage(_("Correcting the longitude extent according to the file limits."));
+                        double Uwidth = axisDataLon[axisDataLon.size()-1]-dataArea->GetAbsoluteUmin();
+                        wxASSERT(Uwidth>=0);
+                        int Uptsnb = 1+Uwidth/dataArea->GetUstep();
+                        asLogMessage(wxString::Format(_("Uptsnb = %d."), Uptsnb));
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                                                                            dataArea->GetAbsoluteUmin(), Uptsnb,
+                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
+                                                                            dataArea->GetVaxisPtsnb(), dataArea->GetVstep(),
+                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+
+                        wxDELETE(dataArea);
+                        dataArea = newdataArea;
+                    }
+                }
+                else
+                {
+                    wxASSERT(axisLonComp[axisLonComp.size()-1]>=axisLonComp[0]);
+
+                    // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
+                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[0] && axisLonComp[0]<axisDataLon[0] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisUmax())
+                    {
+                        asLogMessage(_("Correcting the longitude extent according to the file limits."));
+                        double Uwidth = axisDataLon[0]-dataArea->GetAbsoluteUmin();
+                        wxASSERT(Uwidth>=0);
+                        int Uptsnb = 1+Uwidth/dataArea->GetUstep();
+                        asLogMessage(wxString::Format(_("Uptsnb = %d."), Uptsnb));
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                                                                            dataArea->GetAbsoluteUmin(), Uptsnb,
+                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
+                                                                            dataArea->GetVaxisPtsnb(), dataArea->GetVstep(),
+                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+
+                        wxDELETE(dataArea);
+                        dataArea = newdataArea;
+                    }
+                }
+            }
+
+            Array1DDouble axisLon = dataArea->GetUaxis();
+            m_AxisLon.resize(axisLon.size());
+            for (int i=0; i<axisLon.size(); i++)
+            {
+                m_AxisLon[i] = (float)axisLon[i];
+            }
+            m_LonPtsnb = dataArea->GetUaxisPtsnb();
+            wxASSERT_MSG(m_AxisLon.size()==m_LonPtsnb, wxString::Format("m_AxisLon.size()=%d, m_LonPtsnb=%d",(int)m_AxisLon.size(),m_LonPtsnb));
+
+            // Check that requested data do not overtake the file
+            for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
+            {
+                Array1DDouble axisLatComp = dataArea->GetVaxisComposite(i_comp);
+
+                if (axisDataLat[axisDataLat.size()-1]>axisDataLat[0])
+                {
+                    wxASSERT(axisLatComp[axisLatComp.size()-1]>=axisLatComp[0]);
+
+                    // Condition for change: The composite must not be fully outside (considered as handled).
+                    if (axisLatComp[axisLatComp.size()-1]>axisDataLat[axisDataLat.size()-1] && axisLatComp[0]<axisDataLat[axisDataLat.size()-1])
+                    {
+                        asLogMessage(_("Correcting the latitude extent according to the file limits."));
+                        double Vwidth = axisDataLat[axisDataLat.size()-1]-dataArea->GetAbsoluteVmin();
+                        wxASSERT(Vwidth>=0);
+                        int Vptsnb = 1+Vwidth/dataArea->GetVstep();
+                        asLogMessage(wxString::Format(_("Vptsnb = %d."), Vptsnb));
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                                                                            dataArea->GetAbsoluteUmin(), dataArea->GetUaxisPtsnb(),
+                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
+                                                                            Vptsnb, dataArea->GetVstep(),
+                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+
+                        wxDELETE(dataArea);
+                        dataArea = newdataArea;
+                    }
+
+                }
+                else
+                {
+                    wxASSERT(axisLatComp[axisLatComp.size()-1]>=axisLatComp[0]);
+
+                    // Condition for change: The composite must not be fully outside (considered as handled).
+                    if (axisLatComp[axisLatComp.size()-1]>axisDataLat[0] && axisLatComp[0]<axisDataLat[0])
+                    {
+                        asLogMessage(_("Correcting the latitude extent according to the file limits."));
+                        double Vwidth = axisDataLat[0]-dataArea->GetAbsoluteVmin();
+                        wxASSERT(Vwidth>=0);
+                        int Vptsnb = 1+Vwidth/dataArea->GetVstep();
+                        asLogMessage(wxString::Format(_("Vptsnb = %d."), Vptsnb));
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                                                                            dataArea->GetAbsoluteUmin(), dataArea->GetUaxisPtsnb(),
+                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
+                                                                            Vptsnb, dataArea->GetVstep(),
+                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+
+                        wxDELETE(dataArea);
+                        dataArea = newdataArea;
+                    }
+                }
+            }
+
+            Array1DDouble axisLat = dataArea->GetVaxis();
+            m_AxisLat.resize(axisLat.size());
+            for (int i=0; i<axisLat.size(); i++)
+            {
+                // Latitude axis in reverse order
+                m_AxisLat[i] = (float)axisLat[axisLat.size()-1-i];
+            }
+            m_LatPtsnb = dataArea->GetVaxisPtsnb();
+            wxASSERT_MSG(m_AxisLat.size()==m_LatPtsnb, wxString::Format("m_AxisLat.size()=%d, m_LatPtsnb=%d",(int)m_AxisLat.size(),m_LatPtsnb));
+        }
+
+        compositeData = VVArray2DFloat(dataArea->GetNbComposites());
+        m_AxesChecked = true;
     }
 
-    if ((unsigned)m_Time.size()!=m_Data.size())
-    {
-        asLogError(_("The date and the data array lengths do not match."));
-        return false;
-    }
     return true;
 }
 
@@ -121,7 +416,7 @@ bool asDataPredictor::Inline()
     Array2DFloat inlineData = Array2DFloat::Zero(1,cols*rows);
 
     VArray2DFloat newData;
-    newData.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
+    newData.reserve(m_Time.size()*m_LonPtsnb*m_LatPtsnb);
     newData.resize(timeSize);
 
     for (int i_time=0; i_time<timeSize; i_time++)

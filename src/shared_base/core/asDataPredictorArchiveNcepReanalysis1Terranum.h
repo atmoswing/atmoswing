@@ -46,18 +46,14 @@ public:
 
     virtual bool Init();
 
-    /** Method to load a tensor of data for a given area and a given time array
-     * \param desiredArea The desired area
-     * \param timeArray The desired time array
-     */
-    virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
-
     static VectorString GetDataIdList();
 
     static VectorString GetDataIdDescriptionList();
 
 
 protected:
+
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
 
 private:
 

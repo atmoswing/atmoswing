@@ -119,7 +119,7 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
     wxASSERT(predictors[0]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb>1);
     wxASSERT(colsNb>1);
@@ -185,7 +185,7 @@ bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predi
     wxASSERT(predictors[1]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb>1);
     wxASSERT(colsNb>1);
@@ -224,7 +224,7 @@ bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > p
     wxASSERT(predictors[0]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb>1);
     wxASSERT(colsNb>1);
@@ -267,7 +267,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector < asDataPredictor
     // Merge
     wxASSERT(predictors[0]);
     VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
-    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
+    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetTimeSize()*inputSize);
     int counter = 0;
     #ifdef _DEBUG
         int prevTimeSize = 0;
@@ -283,7 +283,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector < asDataPredictor
         int colsNb1 = predictors[i_dat]->GetLonPtsnb();
         int rowsNb2 = predictors[i_dat+1]->GetLatPtsnb();
         int colsNb2 = predictors[i_dat+1]->GetLonPtsnb();
-        int timeSize = predictors[i_dat]->GetSizeTime();
+        int timeSize = predictors[i_dat]->GetTimeSize();
 
         #ifdef _DEBUG
             if (i_dat>0)
@@ -387,7 +387,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
     wxASSERT(predictors[0]);
     int originalRowsNb = predictors[0]->GetLatPtsnb();
     int originalColsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
     wxASSERT(originalRowsNb>0);
     wxASSERT(originalColsNb>0);
     wxASSERT(timeSize>0);
@@ -410,7 +410,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
                 wxASSERT(predictors[i_curr]);
                 wxASSERT(predictors[i_curr]->GetLatPtsnb()==originalRowsNb);
                 wxASSERT(predictors[i_curr]->GetLonPtsnb()==originalColsNb);
-                wxASSERT(predictors[i_curr]->GetSizeTime()==timeSize);
+                wxASSERT(predictors[i_curr]->GetTimeSize()==timeSize);
 
                 copyData[i_half][i_time].block(i_dat*originalRowsNb,0,originalRowsNb,originalColsNb) = predictors[i_curr]->GetData()[i_time];
             }
@@ -503,7 +503,7 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector < asDataPredictor* > predic
     wxASSERT(predictors[1]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
     wxASSERT(rowsNb>0);
     wxASSERT(colsNb>0);
     wxASSERT(timeSize>0);

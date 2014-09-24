@@ -1049,12 +1049,12 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
 
                 Cleanup(predictorsPreprocess);
 
-                wxASSERT(newPredictor->GetSizeTime()>0);
+                wxASSERT(newPredictor->GetTimeSize()>0);
                 predictors.push_back(newPredictor);
                 continue;
             }
 
-            wxASSERT(desiredPredictor->GetSizeTime()>0);
+            wxASSERT(desiredPredictor->GetTimeSize()>0);
             predictors.push_back(desiredPredictor);
         }
         else
@@ -1489,9 +1489,9 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         {
             if (i>0)
             {
-                wxASSERT(predictors[i]->GetSizeTime()==prevTimeSize);
+                wxASSERT(predictors[i]->GetTimeSize()==prevTimeSize);
             }
-            prevTimeSize = predictors[i]->GetSizeTime();
+            prevTimeSize = predictors[i]->GetTimeSize();
         }
     #endif // _DEBUG
 

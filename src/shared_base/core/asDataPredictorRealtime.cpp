@@ -91,23 +91,9 @@ int asDataPredictorRealtime::Download()
     return internet.Download(GetUrls(), GetFileNames(), m_PredictorsRealtimeDirectory);
 }
 
-bool asDataPredictorRealtime::LoadFullArea(double date, float level)
+bool asDataPredictorRealtime::CheckTimeArray(asTimeArray &timeArray)
 {
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
-    timeArray.Init();
-    m_Level = level;
-
-    return Load(NULL, timeArray);
-}
-
-bool asDataPredictorRealtime::Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray)
-{
-    return Load(&desiredArea, timeArray);
-}
-
-bool asDataPredictorRealtime::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
-{
-    return false;
+    return true;
 }
 
 double asDataPredictorRealtime::UpdateRunDateInUse()
