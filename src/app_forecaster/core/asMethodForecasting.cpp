@@ -565,7 +565,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 return false;
             }
-            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
             lastLeadTime = wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
@@ -582,7 +581,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     return false;
                 }
-                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
                 lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
@@ -756,6 +754,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorRealtime);
                 return false;
             }
+
+            wxASSERT(predictorArchive->GetData().size()>1);
             m_StoragePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
@@ -767,7 +767,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorRealtime);
                 return false;
             }
+            
             wxDELETE(area);
+            wxASSERT(predictorRealtime->GetData().size()>1);
             m_StoragePredictorsRealtime.push_back(predictorRealtime);
         }
         else
@@ -911,6 +913,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorRealtime);
                 return false;
             }
+
+            wxASSERT(predictorArchive->GetData().size()>1);
+            wxASSERT(predictorRealtime->GetData().size()>1);
 
             m_StoragePredictorsArchive.push_back(predictorArchive);
             m_StoragePredictorsRealtime.push_back(predictorRealtime);

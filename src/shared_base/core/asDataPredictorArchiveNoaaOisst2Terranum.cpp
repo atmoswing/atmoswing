@@ -128,591 +128,303 @@ VectorString asDataPredictorArchiveNoaaOisst2Terranum::GetDataIdDescriptionList(
     return list;
 }
 
-bool asDataPredictorArchiveNoaaOisst2Terranum::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
+bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
-    if (!m_Initialized)
+    // Build the file path
+    wxString fileFullPath = m_DirectoryPath + m_FileNamePattern;
+
+    // Open the NetCDF file
+    ThreadsManager().CritSectionNetCDF().Enter();
+    asFileNetcdf ncFile(fileFullPath, asFileNetcdf::ReadOnly);
+    if(!ncFile.Open())
     {
-        if (!Init()) {
-            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_DatasetName.c_str()));
-            return false;
-        }
+        ThreadsManager().CritSectionNetCDF().Leave();
+        return false;
     }
 
-    try
+    // Number of dimensions
+    int nDims = ncFile.GetNDims();
+    wxASSERT(nDims>=3);
+    wxASSERT(nDims<=4);
+
+    // Get some attributes
+    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
+    if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
+    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_FileVariableName);
+    if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
+    bool scalingNeeded = true;
+    if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
+
+    // Get full axes from the netcdf file
+    Array1DFloat axisDataLon(ncFile.GetVarLength("lon"));
+    ncFile.GetVar("lon", &axisDataLon[0]);
+    Array1DFloat axisDataLat(ncFile.GetVarLength("lat"));
+    ncFile.GetVar("lat", &axisDataLat[0]);
+    Array1DFloat axisDataLevel;
+    if (nDims==4)
     {
-        // Check the time array
-        if(!CheckTimeArray(timeArray))
+        axisDataLevel.resize(ncFile.GetVarLength("level"));
+        ncFile.GetVar("level", &axisDataLevel[0]);
+    }
+    
+    // Adjust axes if necessary
+    AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
+        
+    // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
+    size_t axisDataTimeLength = ncFile.GetVarLength("time");
+    double valFirstTime = ncFile.GetVarOneDouble("time", 0);
+    valFirstTime = (valFirstTime/24.0); // hours to days
+    valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+    double valLastTime = ncFile.GetVarOneDouble("time", axisDataTimeLength-1);
+    valLastTime = (valLastTime/24.0); // hours to days
+    valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+
+    // Check requested time array
+    if(timeArray.GetFirst()<valFirstTime)
+    {
+        asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()).c_str(), asTime::GetStringTime(valFirstTime).c_str()));
+        return false;
+    }
+    if(timeArray.GetLast()>valLastTime)
+    {
+        asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()).c_str(), asTime::GetStringTime(valLastTime).c_str()));
+        return false;
+    }
+
+    // Get start and end of the serie
+    double timeStart = timeArray.GetFirst();
+    double timeEnd = timeArray.GetLast();
+
+    // Get the time length
+    double timeArrayIndexStart = timeArray.GetIndexFirstAfter(timeStart);
+    double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(timeEnd);
+    int indexLengthTime = timeArrayIndexEnd-timeArrayIndexStart+1;
+    int indexLengthTimeArray = indexLengthTime;
+
+    // Correct the time start and end
+    size_t indexStartTime = 0;
+    int cutStart = timeArrayIndexStart;
+    int cutEnd = 0;
+    while (valFirstTime<timeArray[timeArrayIndexStart])
+    {
+        valFirstTime += m_TimeStepHours/24.0;
+        indexStartTime++;
+    }
+    if (indexStartTime+indexLengthTime>axisDataTimeLength)
+    {
+        indexLengthTime--;
+        cutEnd++;
+    }
+
+    // Containers for extraction
+    VectorInt vectIndexLengthLat;
+    VectorInt vectIndexLengthLon;
+    VVectorShort vectData;
+
+    for (int i_area = 0; i_area<compositeData.size(); i_area++)
+    {
+        int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
+        if (dataArea)
         {
-            asLogError(_("The time array is not valid to load data."));
-            return false;
-        }
+            // Get the spatial extent
+            float lonMin = dataArea->GetUaxisCompositeStart(i_area);
+            float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
+            float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
 
-        // Create a new area matching the dataset
-        asGeoAreaCompositeGrid* dataArea = NULL;
-        size_t indexStepLon = 1, indexStepLat = 1, indexStepTime = 1;
-        if (desiredArea)
-        {
-            double dataUmin, dataVmin, dataUmax, dataVmax, dataUstep, dataVstep;
-            int dataUptsnb, dataVptsnb;
-            wxString gridType = desiredArea->GetGridTypeString();
-            if (gridType.IsSameAs("Regular", false))
-            {
-                dataUmin = floor((desiredArea->GetAbsoluteUmin()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
-                dataVmin = floor((desiredArea->GetAbsoluteVmin()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
-                dataUmax = ceil((desiredArea->GetAbsoluteUmax()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
-                dataVmax = ceil((desiredArea->GetAbsoluteVmax()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
-                dataUstep = floor(desiredArea->GetUstep()/m_UaxisStep)*m_UaxisStep; // NetCDF allows to use strides
-                dataVstep = floor(desiredArea->GetVstep()/m_VaxisStep)*m_VaxisStep; // NetCDF allows to use strides
-                dataUptsnb = (dataUmax-dataUmin)/dataUstep+1;
-                dataVptsnb = (dataVmax-dataVmin)/dataVstep+1;
-            }
-            else
-            {
-                dataUmin = desiredArea->GetAbsoluteUmin();
-                dataVmin = desiredArea->GetAbsoluteVmin();
-                dataUstep = desiredArea->GetUstep();
-                dataVstep = desiredArea->GetVstep();
-                dataUptsnb = desiredArea->GetUaxisPtsnb();
-                dataVptsnb = desiredArea->GetVaxisPtsnb();
-            }
+            // The dimensions lengths
+            indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
+            indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
 
-            dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-            // Get indexes steps
-            if (gridType.IsSameAs("Regular", false))
+            // Get the spatial indices of the desired data
+            indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin, 0.01f);
+            if(indexStartLon==asOUT_OF_RANGE)
             {
-                indexStepLon = dataArea->GetUstep()/m_UaxisStep;
-                indexStepLat = dataArea->GetVstep()/m_VaxisStep;
+                // If not found, try with negative angles
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin-360, 0.01f);
             }
-            else
+            if(indexStartLon==asOUT_OF_RANGE)
             {
-                indexStepLon = 1;
-                indexStepLat = 1;
+                // If not found, try with angles above 360 degrees
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin+360, 0.01f);
             }
+            if(indexStartLon<0)
+            {
+                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, axisDataLon[0], (int)axisDataLon.size(), axisDataLon[axisDataLon.size()-1]));
+                return false;
+            }
+            wxASSERT_MSG(indexStartLon>=0, wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", axisDataLon[0], (int)axisDataLon.size(), axisDataLon[axisDataLon.size()-1], lonMin));
 
-            // Get axes length for preallocation
-            GetSizes(*dataArea, timeArray);
-            InitContainers();
+            int indexStartLat1 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLat.size()-1], latMinStart, 0.01f);
+            int indexStartLat2 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLat.size()-1], latMinEnd, 0.01f);
+            wxASSERT_MSG(indexStartLat1>=0, wxString::Format("Looking for %g in %g to %g", latMinStart, axisDataLat[0], axisDataLat[axisDataLat.size()-1]));
+            wxASSERT_MSG(indexStartLat2>=0, wxString::Format("Looking for %g in %g to %g", latMinEnd, axisDataLat[0], axisDataLat[axisDataLat.size()-1]));
+            indexStartLat = wxMin(indexStartLat1, indexStartLat2);
         }
         else
         {
-            m_SizeTime = timeArray.GetSize();
-            m_Time.resize(m_SizeTime);
+            indexStartLon = 0;
+            indexStartLat = 0;
+            indexLengthLon = m_LonPtsnb;
+            indexLengthLat = m_LatPtsnb;
         }
-
-        indexStepTime = timeArray.GetTimeStepHours()/m_TimeStepHours;
-        indexStepTime = wxMax(indexStepTime,1);
-
-        // Add dates to m_Time
-        m_Time = timeArray.GetTimeArray();
-
-        // Check of the array length
-        int counterTime = 0;
-
-        // The desired level
-        if (desiredArea)
-        {
-            m_Level = desiredArea->GetComposite(0).GetLevel();
-        }
-
-        // Containers for the axes
-        Array1DFloat axisDataLon, axisDataLat;
-
-        // Build the file path
-        wxString fileFullPath = m_DirectoryPath + m_FileNamePattern;
-
-        ThreadsManager().CritSectionNetCDF().Enter();
-
-        // Open the NetCDF file
-        asFileNetcdf ncFile(fileFullPath, asFileNetcdf::ReadOnly);
-        if(!ncFile.Open())
-        {
-            wxDELETE(dataArea);
-            ThreadsManager().CritSectionNetCDF().Leave();
-            return false;
-        }
-
-        // Number of dimensions
-        int nDims = ncFile.GetNDims();
-        wxASSERT(nDims>=3);
-        wxASSERT(nDims<=4);
-
-        // Get some attributes
-        float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
-        if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
-        float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_FileVariableName);
-        if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
-        bool scalingNeeded = true;
-        if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
-
-        // Get full axes from the netcdf file
-            // Longitudes
-        size_t axisDataLonLength = ncFile.GetVarLength("lon");
-        axisDataLon.resize(axisDataLonLength);
-        ncFile.GetVar("lon", &axisDataLon[0]);
-            // Latitudes
-        size_t axisDataLatLength = ncFile.GetVarLength("lat");
-        axisDataLat.resize(axisDataLatLength);
-        ncFile.GetVar("lat", &axisDataLat[0]);
-            // Levels
-        size_t axisDataLevelLength = 0;
-        Array1DFloat axisDataLevel;
+        int indexLevel = 0;
         if (nDims==4)
         {
-            axisDataLevelLength = ncFile.GetVarLength("level");
-            axisDataLevel.resize(axisDataLevelLength);
-            ncFile.GetVar("level", &axisDataLevel[0]);
-        }
-            // Time
-        size_t axisDataTimeLength = ncFile.GetVarLength("time");
-        // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
-        double valFirstTime = ncFile.GetVarOneDouble("time", 0);
-        valFirstTime = (valFirstTime/24.0); // hours to days
-        valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-        double valLastTime = ncFile.GetVarOneDouble("time", axisDataTimeLength-1);
-        valLastTime = (valLastTime/24.0); // hours to days
-        valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-        // Check requested time array
-        if(timeArray.GetFirst()<valFirstTime)
-        {
-            asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()).c_str(), asTime::GetStringTime(valFirstTime).c_str()));
-            return false;
-        }
-        if(timeArray.GetLast()>valLastTime)
-        {
-            asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()).c_str(), asTime::GetStringTime(valLastTime).c_str()));
-            return false;
+            indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_Level, 0.01f);
         }
 
+        // Create the arrays to receive the data
+        VectorShort data;
 
-        if (desiredArea==NULL)
+        // Resize the arrays to store the new data
+        int totLength = indexLengthTimeArray * indexLengthLat * indexLengthLon;
+        wxASSERT(totLength>0);
+        data.resize(totLength);
+
+        // Fill empty begining with NaNs
+        int indexBegining = 0;
+        if(cutStart>0)
         {
-            // Get axes length for preallocation
-            m_LonPtsnb = axisDataLonLength;
-            m_LatPtsnb = axisDataLatLength;
-            m_AxisLon.resize(axisDataLon.size());
-            m_AxisLon = axisDataLon;
-            m_AxisLat.resize(axisDataLat.size());
-            m_AxisLat = axisDataLat;
-            m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
-        }
-        else if(desiredArea!=NULL)
-        {
-            // Check that requested data do not overtake the file
-            for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
+            int latlonlength = indexLengthLat*indexLengthLon;
+            for (int i_empty=0; i_empty<cutStart; i_empty++)
             {
-                Array1DDouble axisLonComp = dataArea->GetUaxisComposite(i_comp);
-
-                if (axisDataLon[axisDataLonLength-1]>axisDataLon[0])
+                for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
                 {
-                    wxASSERT(axisLonComp[axisLonComp.size()-1]>=axisLonComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[axisDataLonLength-1] && axisLonComp[0]<axisDataLon[axisDataLonLength-1] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisUmax())
-                    {
-                        asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Uwidth = axisDataLon[axisDataLonLength-1]-dataArea->GetAbsoluteUmin();
-                        wxASSERT(Uwidth>=0);
-                        int Uptsnb = 1+Uwidth/dataArea->GetUstep();
-                        asLogMessage(wxString::Format(_("Uptsnb = %d."), Uptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), Uptsnb,
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            dataArea->GetVaxisPtsnb(), dataArea->GetVstep(),
-                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
-                }
-                else
-                {
-                    wxASSERT(axisLonComp[axisLonComp.size()-1]>=axisLonComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[0] && axisLonComp[0]<axisDataLon[0] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisUmax())
-                    {
-                        asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Uwidth = axisDataLon[0]-dataArea->GetAbsoluteUmin();
-                        wxASSERT(Uwidth>=0);
-                        int Uptsnb = 1+Uwidth/dataArea->GetUstep();
-                        asLogMessage(wxString::Format(_("Uptsnb = %d."), Uptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), Uptsnb,
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            dataArea->GetVaxisPtsnb(), dataArea->GetVstep(),
-                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
+                    data[indexBegining] = NaNFloat;
+                    indexBegining++;
                 }
             }
-
-            Array1DDouble axisLon = dataArea->GetUaxis();
-            m_AxisLon.resize(axisLon.size());
-            for (int i=0; i<axisLon.size(); i++)
-            {
-                m_AxisLon[i] = (float)axisLon[i];
-            }
-            m_LonPtsnb = dataArea->GetUaxisPtsnb();
-            wxASSERT_MSG(m_AxisLon.size()==m_LonPtsnb, wxString::Format("m_AxisLon.size()=%d, m_LonPtsnb=%d",(int)m_AxisLon.size(),m_LonPtsnb));
-
-            // Check that requested data do not overtake the file
-            for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
-            {
-                Array1DDouble axisLatComp = dataArea->GetVaxisComposite(i_comp);
-
-                if (axisDataLat[axisDataLatLength-1]>axisDataLat[0])
-                {
-                    wxASSERT(axisLatComp[axisLatComp.size()-1]>=axisLatComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled).
-                    if (axisLatComp[axisLatComp.size()-1]>axisDataLat[axisDataLatLength-1] && axisLatComp[0]<axisDataLat[axisDataLatLength-1])
-                    {
-                        asLogMessage(_("Correcting the latitude extent according to the file limits."));
-                        double Vwidth = axisDataLat[axisDataLatLength-1]-dataArea->GetAbsoluteVmin();
-                        wxASSERT(Vwidth>=0);
-                        int Vptsnb = 1+Vwidth/dataArea->GetVstep();
-                        asLogMessage(wxString::Format(_("Vptsnb = %d."), Vptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), dataArea->GetUaxisPtsnb(),
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            Vptsnb, dataArea->GetVstep(),
-                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
-
-                }
-                else
-                {
-                    wxASSERT(axisLatComp[axisLatComp.size()-1]>=axisLatComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled).
-                    if (axisLatComp[axisLatComp.size()-1]>axisDataLat[0] && axisLatComp[0]<axisDataLat[0])
-                    {
-                        asLogMessage(_("Correcting the latitude extent according to the file limits."));
-                        double Vwidth = axisDataLat[0]-dataArea->GetAbsoluteVmin();
-                        wxASSERT(Vwidth>=0);
-                        int Vptsnb = 1+Vwidth/dataArea->GetVstep();
-                        asLogMessage(wxString::Format(_("Vptsnb = %d."), Vptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), dataArea->GetUaxisPtsnb(),
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            Vptsnb, dataArea->GetVstep(),
-                                                                            dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
-                }
-            }
-
-            Array1DDouble axisLat = dataArea->GetVaxis();
-            m_AxisLat.resize(axisLat.size());
-            for (int i=0; i<axisLat.size(); i++)
-            {
-                // Latitude axis in reverse order
-                m_AxisLat[i] = (float)axisLat[axisLat.size()-1-i];
-            }
-            m_LatPtsnb = dataArea->GetVaxisPtsnb();
-            wxASSERT_MSG(m_AxisLat.size()==m_LatPtsnb, wxString::Format("m_AxisLat.size()=%d, m_LatPtsnb=%d",(int)m_AxisLat.size(),m_LatPtsnb));
-
-            m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
         }
 
-        // Get start and end of the serie
-        double timeStart = timeArray.GetFirst();
-        double timeEnd = timeArray.GetLast();
-
-        // Get the time length
-        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(timeStart);
-        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(timeEnd);
-        int indexLengthTime = timeArrayIndexEnd-timeArrayIndexStart+1;
-        int indexLengthTimeArray = indexLengthTime;
-
-        // Correct the time start and end
-        size_t indexStartTime = 0;
-        int cutStart = timeArrayIndexStart;
-        int cutEnd = 0;
-        while (valFirstTime<timeArray[timeArrayIndexStart])
+        // Fill empty end with NaNs
+        int indexEnd = indexLengthTime * indexLengthLat * indexLengthLon - 1;
+        if(cutEnd>0)
         {
-            valFirstTime += m_TimeStepHours/24.0;
-            indexStartTime++;
-        }
-        if (indexStartTime+indexLengthTime>axisDataTimeLength)
-        {
-            indexLengthTime--;
-            cutEnd++;
+            int latlonlength = indexLengthLat*indexLengthLon;
+            for (int i_empty=0; i_empty<cutEnd; i_empty++)
+            {
+                for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
+                {
+                    indexEnd++;
+                    data[indexEnd] = NaNFloat;
+                }
+            }
         }
 
-        // Get the number of iterations
-        int iterationNb = 1;
-        if (desiredArea)
+        // Get the indices for data
+        if (nDims==4)
         {
-            iterationNb = dataArea->GetNbComposites();
+            // Set the indices for data
+            size_t indexStartData[4] = {0,0,0,0};
+            indexStartData[0] = indexStartTime;
+            indexStartData[1] = indexLevel;
+            indexStartData[2] = indexStartLat;
+            indexStartData[3] = indexStartLon;
+            size_t indexCountData[4] = {0,0,0,0};
+            indexCountData[0] = indexLengthTime;
+            indexCountData[1] = 1;
+            indexCountData[2] = indexLengthLat;
+            indexCountData[3] = indexLengthLon;
+            ptrdiff_t indexStrideData[4] = {0,0,0,0};
+            indexStrideData[0] = m_TimeIndexStep;
+            indexStrideData[1] = 1;
+            indexStrideData[2] = m_LatIndexStep;
+            indexStrideData[3] = m_LonIndexStep;
+
+            // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
+            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
+        }
+        else
+        {
+            // Set the indices for data
+            size_t indexStartData[3] = {0,0,0};
+            indexStartData[0] = indexStartTime;
+            indexStartData[1] = indexStartLat;
+            indexStartData[2] = indexStartLon;
+            size_t indexCountData[3] = {0,0,0};
+            indexCountData[0] = indexLengthTime;
+            indexCountData[1] = indexLengthLat;
+            indexCountData[2] = indexLengthLon;
+            ptrdiff_t indexStrideData[3] = {0,0,0};
+            indexStrideData[0] = m_TimeIndexStep;
+            indexStrideData[1] = m_LatIndexStep;
+            indexStrideData[2] = m_LonIndexStep;
+
+            // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
+            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
         }
 
-        // Containers for extraction
-        VectorInt vectIndexLengthLat;
-        VectorInt vectIndexLengthLon;
-        VVectorShort vectData;
+        // Keep data for later treatment
+        vectIndexLengthLat.push_back(indexLengthLat);
+        vectIndexLengthLon.push_back(indexLengthLon);
+        vectData.push_back(data);
+    }
 
-        for (int i_area = 0; i_area<iterationNb; i_area++)
+    // Close the nc file
+    ncFile.Close();
+    ThreadsManager().CritSectionNetCDF().Leave();
+
+    // Allocate space into compositeData if not already done
+    if (compositeData[0].capacity()==0)
+    {
+        int totSize = 0;
+        for (int i_area = 0; i_area<compositeData.size(); i_area++)
         {
-            int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
-            if (desiredArea)
-            {
-                // Get the spatial extent
-                float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-                //float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
-                float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
-                float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
-
-                // The dimensions lengths
-                indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
-                indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
-
-                // Get the spatial indices of the desired data
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin, 0.01f);
-                if(indexStartLon==asOUT_OF_RANGE)
-                {
-                    // If not found, try with negative angles
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin-360, 0.01f);
-                }
-                if(indexStartLon==asOUT_OF_RANGE)
-                {
-                    // If not found, try with angles above 360 degrees
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin+360, 0.01f);
-                }
-                if(indexStartLon<0)
-                {
-                    asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, axisDataLon[0], (int)axisDataLonLength, axisDataLon[axisDataLonLength-1]));
-                    return false;
-                }
-                wxASSERT_MSG(indexStartLon>=0, wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", axisDataLon[0], (int)axisDataLonLength, axisDataLon[axisDataLonLength-1], lonMin));
-
-                int indexStartLat1 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLatLength-1], latMinStart, 0.01f);
-                int indexStartLat2 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLatLength-1], latMinEnd, 0.01f);
-                wxASSERT_MSG(indexStartLat1>=0, wxString::Format("Looking for %g in %g to %g", latMinStart, axisDataLat[0], axisDataLat[axisDataLatLength-1]));
-                wxASSERT_MSG(indexStartLat2>=0, wxString::Format("Looking for %g in %g to %g", latMinEnd, axisDataLat[0], axisDataLat[axisDataLatLength-1]));
-                indexStartLat = wxMin(indexStartLat1, indexStartLat2);
-            }
-            else
-            {
-                indexStartLon = 0;
-                indexStartLat = 0;
-                indexLengthLon = m_LonPtsnb;
-                indexLengthLat = m_LatPtsnb;
-            }
-            int indexLevel = 0;
-            if (nDims==4)
-            {
-                indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevelLength-1], m_Level, 0.01f);
-            }
-
-            // Create the arrays to receive the data
-            VectorShort data;
-
-            // Resize the arrays to store the new data
-            int totLength = indexLengthTimeArray * indexLengthLat * indexLengthLon;
-            wxASSERT(totLength>0);
-            data.resize(totLength);
-
-            // Fill empty begining with NaNs
-            int indexBegining = 0;
-            if(cutStart>0)
-            {
-                int latlonlength = indexLengthLat*indexLengthLon;
-                for (int i_empty=0; i_empty<cutStart; i_empty++)
-                {
-                    for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                    {
-                        data[indexBegining] = NaNFloat;
-                        indexBegining++;
-                    }
-                }
-            }
-
-            // Fill empty end with NaNs
-            int indexEnd = indexLengthTime * indexLengthLat * indexLengthLon - 1;
-            if(cutEnd>0)
-            {
-                int latlonlength = indexLengthLat*indexLengthLon;
-                for (int i_empty=0; i_empty<cutEnd; i_empty++)
-                {
-                    for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                    {
-                        indexEnd++;
-                        data[indexEnd] = NaNFloat;
-                    }
-                }
-            }
-
-            // Get the indices for data
-            if (nDims==4)
-            {
-                // Set the indices for data
-                size_t indexStartData[4] = {0,0,0,0};
-                indexStartData[0] = indexStartTime;
-                indexStartData[1] = indexLevel;
-                indexStartData[2] = indexStartLat;
-                indexStartData[3] = indexStartLon;
-                size_t indexCountData[4] = {0,0,0,0};
-                indexCountData[0] = indexLengthTime;
-                indexCountData[1] = 1;
-                indexCountData[2] = indexLengthLat;
-                indexCountData[3] = indexLengthLon;
-                ptrdiff_t indexStrideData[4] = {0,0,0,0};
-                indexStrideData[0] = indexStepTime;
-                indexStrideData[1] = 1;
-                indexStrideData[2] = indexStepLat;
-                indexStrideData[3] = indexStepLon;
-
-                // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
-            }
-            else
-            {
-                // Set the indices for data
-                size_t indexStartData[3] = {0,0,0};
-                indexStartData[0] = indexStartTime;
-                indexStartData[1] = indexStartLat;
-                indexStartData[2] = indexStartLon;
-                size_t indexCountData[3] = {0,0,0};
-                indexCountData[0] = indexLengthTime;
-                indexCountData[1] = indexLengthLat;
-                indexCountData[2] = indexLengthLon;
-                ptrdiff_t indexStrideData[3] = {0,0,0};
-                indexStrideData[0] = indexStepTime;
-                indexStrideData[1] = indexStepLat;
-                indexStrideData[2] = indexStepLon;
-
-                // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
-            }
-
-            // Keep data for later treatment
-            vectIndexLengthLat.push_back(indexLengthLat);
-            vectIndexLengthLon.push_back(indexLengthLon);
-            vectData.push_back(data);
-        }
-
-        // Close the nc file
-        ncFile.Close();
-
-        ThreadsManager().CritSectionNetCDF().Leave();
-
-        // The container for extracted data from every composite
-        VVArray2DFloat compositeData;
-
-        // Treat data
-        for (int i_area = 0; i_area<iterationNb; i_area++)
-        {
-            // Extract data
             int indexLengthLat = vectIndexLengthLat[i_area];
             int indexLengthLon = vectIndexLengthLon[i_area];
-            VectorShort data = vectData[i_area];
+            totSize += m_Time.size() * indexLengthLat * indexLengthLon;
+        }
+        compositeData.reserve(totSize);
+    }
 
-            // Containers for results
-            VArray2DFloat latlonTimeData(indexLengthTimeArray, Array2DFloat(indexLengthLat,indexLengthLon));
+    // Transfer data
+    for (int i_area = 0; i_area<compositeData.size(); i_area++)
+    {
+        // Extract data
+        int indexLengthLat = vectIndexLengthLat[i_area];
+        int indexLengthLon = vectIndexLengthLon[i_area];
+        VectorShort data = vectData[i_area];
 
-            int ind = 0;
-
-            // Loop to extract the data from the array
-            for (int i_time=0; i_time<indexLengthTimeArray; i_time++)
+        // Loop to extract the data from the array
+        int ind = 0;
+        for (int i_time=0; i_time<indexLengthTimeArray; i_time++)
+        {
+            Array2DFloat latlonData(indexLengthLat,indexLengthLon);
+            for (int i_lat=0; i_lat<indexLengthLat; i_lat++)
             {
-                for (int i_lat=0; i_lat<indexLengthLat; i_lat++)
+                for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
                 {
-                    for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
+                    ind = i_lon;
+                    ind += i_lat * indexLengthLon;
+                    ind += i_time * indexLengthLon * indexLengthLat;
+
+                    if (scalingNeeded)
                     {
-                        ind = i_lon;
-                        ind += i_lat * indexLengthLon;
-                        ind += i_time * indexLengthLon * indexLengthLat;
+                        latlonData(i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,i_lon) = (float)data[ind];
+                    }
 
-                        if (scalingNeeded)
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
+                    {
+                        if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
                         {
-                            // Add the Offset and multiply by the Scale Factor
-                            latlonTimeData[i_time](i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
-                        }
-                        else
-                        {
-                            latlonTimeData[i_time](i_lat,i_lon) = (float)data[ind];
-                        }
-
-                        // Check if not NaN
-                        bool notNan = true;
-                        for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
-                        {
-                            if ((float)data[ind]==m_NanValues[i_nan] || latlonTimeData[i_time](i_lat,i_lon)==m_NanValues[i_nan])
-                            {
-                                notNan = false;
-                            }
-                        }
-                        if (!notNan)
-                        {
-                            latlonTimeData[i_time](i_lat,i_lon) = NaNFloat;
+                            notNan = false;
                         }
                     }
+                    if (!notNan)
+                    {
+                        latlonData(i_lat,i_lon) = NaNFloat;
+                    }
                 }
-
-                counterTime++;
             }
-
-            compositeData.push_back(latlonTimeData);
-            latlonTimeData.clear();
-            data.clear();
+            compositeData[i_area].push_back(latlonData);
         }
-
-        // Merge the composites into m_Data
-        if (!MergeComposites(compositeData, dataArea))
-        {
-            wxDELETE(dataArea);
-            return false;
-        }
-
-        if (desiredArea)
-        {
-            // Interpolate the loaded data on the desired grid
-            if (!InterpolateOnGrid(dataArea, desiredArea))
-            {
-                wxDELETE(dataArea);
-                return false;
-            }
-        }
-
-        // Check the time dimension
-        int compositesNb = 1;
-        if (desiredArea)
-        {
-            compositesNb = dataArea->GetNbComposites();
-        }
-        counterTime /= compositesNb;
-        if (!CheckTimeLength(counterTime))
-        {
-            wxDELETE(dataArea);
-            return false;
-        }
-
-        wxDELETE(dataArea);
-    }
-    catch(bad_alloc& ba)
-    {
-        wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught when loading archive data: %s"), msg.c_str()));
-        return false;
-    }
-    catch(asException& e)
-    {
-        wxString fullMessage = e.GetFullMessage();
-        if (!fullMessage.IsEmpty())
-        {
-            asLogError(fullMessage);
-        }
-        asLogError(_("Failed to load data."));
-        return false;
+        data.clear();
     }
 
     return true;
