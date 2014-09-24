@@ -62,6 +62,8 @@ public:
 
     static void Resume();
 
+    virtual void Flush();
+
     bool IsVerbose();
 
     void Error(const wxString &msg);
