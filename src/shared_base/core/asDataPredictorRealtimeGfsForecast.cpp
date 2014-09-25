@@ -205,6 +205,8 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         // Get some attributes
         float dataAddOffset = g2File.GetOffset();
         float dataScaleFactor = g2File.GetScale();
+        bool scalingNeeded = true;
+        if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
         // Get full axes from the grib file
         Array1DFloat axisDataLon, axisDataLat;
@@ -338,23 +340,28 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                 for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
                 {
                     ind = i_lon + i_lat * indexLengthLon;
-                    latlonData(i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    if (scalingNeeded)
+                    {
+                        latlonData(i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,i_lon) = data[ind];
+                    }
                 }
 
                 if(load360)
                 {
                     ind = i_lat;
-                    latlonData(i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    if (scalingNeeded)
+                    {
+                        latlonData(i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,indexLengthLon) = data360[ind];
+                    }
                 }
-            }
-
-            if(load360)
-            {
-                latlonData.setZero(indexLengthLat,indexLengthLon+1);
-            }
-            else
-            {
-                latlonData.setZero(indexLengthLat,indexLengthLon);
             }
 
             compositeData[i_area].push_back(latlonData);

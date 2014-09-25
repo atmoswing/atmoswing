@@ -263,7 +263,7 @@ bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat 
             m_AxisLat.resize(axisDataLat.size());
             m_AxisLat = axisDataLat;
         }
-        else if(dataArea!=NULL)
+        else
         {
             // Check that requested data do not overtake the file
             for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
