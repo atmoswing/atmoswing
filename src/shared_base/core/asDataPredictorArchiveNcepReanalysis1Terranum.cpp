@@ -223,7 +223,7 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     }
 
     // Adjust axes if necessary
-    AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
+    AdjustAxes(&dataArea, axisDataLon, axisDataLat, compositeData);
         
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
     size_t axisDataTimeLength = ncFile.GetVarLength("time");

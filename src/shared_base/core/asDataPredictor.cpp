@@ -254,8 +254,14 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
     return NULL;
 }
 
-bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
+bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid **pDataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
 {
+    asGeoAreaCompositeGrid *dataArea = NULL;
+    if (pDataArea!=NULL)
+    {
+        dataArea = *pDataArea;
+    }
+
     if (!m_AxesChecked)
     {
         if (dataArea==NULL)

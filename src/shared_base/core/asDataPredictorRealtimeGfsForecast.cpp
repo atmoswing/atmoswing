@@ -216,7 +216,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         g2File.GetVaxis(axisDataLat);
 
         // Adjust axes if necessary
-        AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
+        AdjustAxes(&dataArea, axisDataLon, axisDataLat, compositeData);
 
         for (int i_area = 0; i_area<compositeData.size(); i_area++)
         {
