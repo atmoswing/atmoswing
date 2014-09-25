@@ -826,8 +826,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 // Check time array for real-time data
                 VectorDouble listTimeArray = predictorRealtimePreprocess->GetDataDates();
-                wxASSERT(listTimeArray.size()==timeArrayDataTarget.GetSize());
-                for (unsigned int i=0; i<listTimeArray.size(); i++)
+                wxASSERT_MSG(listTimeArray.size()>=(unsigned)timeArrayDataTarget.GetSize(), wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d", (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+
+                for (unsigned int i=0; i<timeArrayDataTarget.GetSize(); i++)
                 {
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
