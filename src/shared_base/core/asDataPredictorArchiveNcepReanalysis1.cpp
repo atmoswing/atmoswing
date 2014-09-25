@@ -500,7 +500,7 @@ VectorString asDataPredictorArchiveNcepReanalysis1::GetDataIdDescriptionList()
     return list;
 }
 
-bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // Get requested years
     int yearFirst = timeArray.GetFirstDayYear();
@@ -561,7 +561,8 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
         }
 
         // Adjust axes if necessary
-        AdjustAxes(&dataArea, axisDataLon, axisDataLat, compositeData);
+        dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
+        if(dataArea) wxASSERT(dataArea->GetNbComposites()>0);
             
         // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
         size_t axisDataTimeLength = ncFile.GetVarLength("time");
