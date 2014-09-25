@@ -355,7 +355,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Get global attributes
     float version = ncFile.GetAttFloat("version");
-    if (version>1.2f)
+    if (version>1.3f)
     {
         asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
         return false;

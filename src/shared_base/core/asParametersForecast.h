@@ -151,11 +151,13 @@ public:
 
     int GetAnalogsNumberLeadTime(int i_step, int i_leadtime)
     {
+        wxASSERT(m_StepsForecast[i_step].AnalogsNumberLeadTime.size()>i_leadtime);
         return m_StepsForecast[i_step].AnalogsNumberLeadTime[i_leadtime];
     }
 
     int GetAnalogsNumberLeadTimeLastStep(int i_leadtime)
     {
+        wxASSERT(m_StepsForecast[m_StepsForecast.size()-1].AnalogsNumberLeadTime.size()>i_leadtime);
         return m_StepsForecast[m_StepsForecast.size()-1].AnalogsNumberLeadTime[i_leadtime];
     }
 
