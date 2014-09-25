@@ -128,7 +128,7 @@ VectorString asDataPredictorArchiveNoaaOisst2Terranum::GetDataIdDescriptionList(
     return list;
 }
 
-bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // Build the file path
     wxString fileFullPath = m_DirectoryPath + m_FileNamePattern;
@@ -168,7 +168,7 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     }
     
     // Adjust axes if necessary
-    AdjustAxes(&dataArea, axisDataLon, axisDataLat, compositeData);
+    dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
         
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
     size_t axisDataTimeLength = ncFile.GetVarLength("time");

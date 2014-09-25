@@ -183,7 +183,7 @@ VectorString asDataPredictorArchiveNcepReanalysis1Terranum::GetDataIdDescription
     return list;
 }
 
-bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // Build the file path
     wxString fileFullPath = m_DirectoryPath + m_FileNamePattern;
@@ -223,7 +223,8 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     }
 
     // Adjust axes if necessary
-    AdjustAxes(&dataArea, axisDataLon, axisDataLat, compositeData);
+    dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
+    if(dataArea) wxASSERT(dataArea->GetNbComposites()>0);
         
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
     size_t axisDataTimeLength = ncFile.GetVarLength("time");
@@ -281,6 +282,8 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
         int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
         if (dataArea)
         {
+            wxASSERT(dataArea->GetNbComposites()>0);
+
             // Get the spatial extent
             float lonMin = dataArea->GetUaxisCompositeStart(i_area);
             float latMinStart = dataArea->GetVaxisCompositeStart(i_area);

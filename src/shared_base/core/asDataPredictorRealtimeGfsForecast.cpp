@@ -174,7 +174,7 @@ VectorString asDataPredictorRealtimeGfsForecast::GetDataIdDescriptionList()
     return list;
 }
 
-bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // File path
     VectorString filePaths = GetFileNames();
@@ -216,7 +216,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         g2File.GetVaxis(axisDataLat);
 
         // Adjust axes if necessary
-        AdjustAxes(&dataArea, axisDataLon, axisDataLat, compositeData);
+        dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
 
         for (int i_area = 0; i_area<compositeData.size(); i_area++)
         {

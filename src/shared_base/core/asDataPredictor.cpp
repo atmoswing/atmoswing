@@ -108,6 +108,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         if (dataArea)
         {
             compositesNb = dataArea->GetNbComposites();
+            wxASSERT(compositesNb>0);
         }
 
         // Extract composite data from files
@@ -134,8 +135,6 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
             wxDELETE(dataArea);
             return false;
         }
-        wxASSERT_MSG(m_Data[0].cols()==desiredArea->GetUaxisPtsnb(), wxString::Format("m_Data[0].cols()=%d, desiredArea->GetUaxisPtsnb()=%d", (int)m_Data[0].cols(), (int)desiredArea->GetUaxisPtsnb()));
-        wxASSERT_MSG(m_Data[0].rows()==desiredArea->GetVaxisPtsnb(), wxString::Format("m_Data[0].rows()=%d, desiredArea->GetVaxisPtsnb()=%d", (int)m_Data[0].rows(), (int)desiredArea->GetVaxisPtsnb()));
 
         // Check the data container length
         if ((unsigned)m_Time.size()!=m_Data.size())
@@ -254,14 +253,8 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
     return NULL;
 }
 
-bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid **pDataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
+asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
 {
-    asGeoAreaCompositeGrid *dataArea = NULL;
-    if (pDataArea!=NULL)
-    {
-        dataArea = *pDataArea;
-    }
-
     if (!m_AxesChecked)
     {
         if (dataArea==NULL)
@@ -403,7 +396,7 @@ bool asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid **pDataArea, Array1DFloa
         m_AxesChecked = true;
     }
 
-    return true;
+    return dataArea;
 }
 
 bool asDataPredictor::Inline()
@@ -537,7 +530,9 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
 bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea)
 {
     wxASSERT(dataArea);
+    wxASSERT(dataArea->GetNbComposites()>0);
     wxASSERT(desiredArea);
+    wxASSERT(desiredArea->GetNbComposites()>0);
     bool changeUstart=false, changeUsteps=false, changeVstart=false, changeVsteps=false;
 
     // Check beginning on longitudes

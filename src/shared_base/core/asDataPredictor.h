@@ -322,7 +322,7 @@ protected:
         return false;
     }
 
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
     {
         return false;
     }
@@ -343,7 +343,7 @@ protected:
 
     asGeoAreaCompositeGrid* CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
 
-    bool AdjustAxes(asGeoAreaCompositeGrid **pDataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
+    asGeoAreaCompositeGrid* AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
 
 
 private:
