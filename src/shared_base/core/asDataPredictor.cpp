@@ -223,7 +223,7 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataVstep = desiredArea->GetVstep();
             dataUptsnb = desiredArea->GetUaxisPtsnb();
             dataVptsnb = desiredArea->GetVaxisPtsnb();
-            if (dataUstep!=m_UaxisStep || dataVstep!=m_VaxisStep)
+            if (!asTools::IsNaN(m_UaxisStep) && !asTools::IsNaN(m_VaxisStep) && (dataUstep!=m_UaxisStep || dataVstep!=m_VaxisStep))
             {
                 asLogError(_("Interpolation is not allowed on irregular grids."));
                 return NULL;
