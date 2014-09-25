@@ -210,8 +210,8 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataVmin = floor((desiredArea->GetAbsoluteVmin()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
             dataUmax = ceil((desiredArea->GetAbsoluteUmax()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
             dataVmax = ceil((desiredArea->GetAbsoluteVmax()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
-            dataUstep = floor(desiredArea->GetUstep()/m_UaxisStep)*m_UaxisStep; // strides if allowed
-            dataVstep = floor(desiredArea->GetVstep()/m_VaxisStep)*m_VaxisStep; // strides if allowed
+            dataUstep = m_UaxisStep;
+            dataVstep = m_VaxisStep;
             dataUptsnb = (dataUmax-dataUmin)/dataUstep+1;
             dataVptsnb = (dataVmax-dataVmin)/dataVstep+1;
         }
@@ -223,6 +223,11 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataVstep = desiredArea->GetVstep();
             dataUptsnb = desiredArea->GetUaxisPtsnb();
             dataVptsnb = desiredArea->GetVaxisPtsnb();
+            if (dataUstep!=m_UaxisStep || dataVstep!=m_VaxisStep)
+            {
+                asLogError(_("Interpolation is not allowed on irregular grids."));
+                return NULL;
+            }
         }
 
         asGeoAreaCompositeGrid* dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
