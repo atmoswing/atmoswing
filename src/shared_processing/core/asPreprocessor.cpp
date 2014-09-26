@@ -113,7 +113,12 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 
     // Only one predictor
     wxASSERT(predictors.size()>0);
-    if(predictors.size()>1) asThrowException(_("The number of predictors cannot be superior to 1 in asPreprocessor::PreprocessGradients"));
+    wxASSERT(predictors.size()==1);
+    if(predictors.size()!=1)
+    {
+        asLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
@@ -178,7 +183,11 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
 {
     // More than one predictor
-    if(predictors.size()!=2) asThrowException(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
+    if(predictors.size()!=2)
+    {
+        asLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
@@ -218,7 +227,11 @@ bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predi
 bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
 {
     // More than one predictor
-    if(predictors.size()<2) asThrowException(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
+    if(predictors.size()<2)
+    {
+        asLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
@@ -262,7 +275,11 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector < asDataPredictor
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=4) asThrowException(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
+    if(inputSize!=4) 
+    {
+        asLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
+        return false;
+    }
 
     // Merge
     wxASSERT(predictors[0]);
@@ -380,8 +397,16 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
     // More than one predictor
     int inputSize = predictors.size();
     int factorSize = inputSize/2;
-    if(inputSize<2) asThrowException(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
-    if(inputSize%2!=0) asThrowException(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+    if(inputSize<2)
+    {
+        asLogError(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        return false;
+    }
+    if(inputSize%2!=0)
+    {
+        asLogError(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        return false;
+    }
 
     // Handle sizes
     wxASSERT(predictors[0]);
@@ -443,7 +468,11 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=4) asThrowException(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
+    if(inputSize!=4)
+    {
+        asLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
+        return false;
+    }
     wxASSERT(predictors[0]);
 
     #ifdef _DEBUG
@@ -496,7 +525,11 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector < asDataPredictor* > predic
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=2) asThrowException(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
+    if(inputSize!=2)
+    {
+        asLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
