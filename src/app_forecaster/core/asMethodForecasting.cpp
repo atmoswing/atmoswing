@@ -714,6 +714,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 if(listTimeArray[i]!=timeArrayDataTarget[i])
                 {
                     asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                    asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
                     return false;
@@ -833,6 +834,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
                         asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                        asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
                         return false;
@@ -1168,6 +1170,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 if(listTimeArray[i]!=timeArrayDataTarget[i])
                 {
                     asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                    asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
                     return false;
@@ -1266,6 +1269,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
                         asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                        asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
                         return false;
