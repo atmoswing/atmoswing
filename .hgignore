@@ -50,3 +50,4 @@ install_manifest.txt
 CTestCostData.txt
 DartConfiguration.tcl
 bin/
+*.rej
