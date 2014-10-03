@@ -104,10 +104,6 @@ TEST(ParametersOptimizationLoadFromFile)
     CHECK_EQUAL(40, params.GetPredictandStationIds()[0]);
 
     CHECK_EQUAL(true, params.GetForecastScoreName().IsSameAs("CRPSAR"));
-    CHECK_EQUAL(1, params.GetForecastScoreAnalogsNumberIteration());
-    CHECK_EQUAL(5, params.GetForecastScoreAnalogsNumberLowerLimit());
-    CHECK_EQUAL(150, params.GetForecastScoreAnalogsNumberUpperLimit());
-    CHECK_EQUAL(false, params.IsForecastScoreAnalogsNumberLocked());
 
     CHECK_EQUAL(true, params.ForecastScoreNeedsPostprocessing());
     CHECK_EQUAL(true, params.GetForecastScorePostprocessMethod().IsSameAs("DuplicationOnCriteriaExponent"));
@@ -215,10 +211,6 @@ TEST(ParametersOptimizationLoadFromFileAndInitRandomValues)
     CHECK_EQUAL(40, params.GetPredictandStationIds()[0]);
 
     CHECK_EQUAL(true, params.GetForecastScoreName().IsSameAs("CRPSAR"));
-    CHECK_EQUAL(1, params.GetForecastScoreAnalogsNumberIteration());
-    CHECK_EQUAL(5, params.GetForecastScoreAnalogsNumberLowerLimit());
-    CHECK_EQUAL(150, params.GetForecastScoreAnalogsNumberUpperLimit());
-    CHECK_EQUAL(false, params.IsForecastScoreAnalogsNumberLocked());
 
     CHECK_EQUAL(true, params.ForecastScoreNeedsPostprocessing());
     CHECK_EQUAL(true, params.GetForecastScorePostprocessMethod().IsSameAs("DuplicationOnCriteriaExponent"));

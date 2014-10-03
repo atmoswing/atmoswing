@@ -7,10 +7,6 @@ asParametersOptimization::asParametersOptimization()
 :
 asParametersScoring()
 {
-    m_ForecastScoreIteration.AnalogsNumber = 1;
-    m_ForecastScoreUpperLimit.AnalogsNumber = 100;
-    m_ForecastScoreLowerLimit.AnalogsNumber = 10;
-    m_ForecastScoreLocks.AnalogsNumber = false;
     m_TimeArrayAnalogsIntervalDaysIteration = 1;
     m_TimeArrayAnalogsIntervalDaysUpperLimit = 182;
     m_TimeArrayAnalogsIntervalDaysLowerLimit = 10;
@@ -740,22 +736,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     SetForecastScorePercentile(fileParams.GetFirstElementAttributeValueFloat("Percentile", "value", NaNFloat));
     if(!fileParams.GoANodeBack()) return false;
 
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-    SetForecastScoreAnalogsNumberLock(fileParams.GetFirstElementAttributeValueBool("AnalogsNumber", "lock", true));
-    if(IsForecastScoreAnalogsNumberLocked())
-    {
-        if(!SetForecastScoreAnalogsNumber(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "value"))) return false;
-        if(!SetForecastScoreAnalogsNumberLowerLimit(GetForecastScoreAnalogsNumber())) return false;
-        if(!SetForecastScoreAnalogsNumberUpperLimit(GetForecastScoreAnalogsNumber())) return false;
-        if(!SetForecastScoreAnalogsNumberIteration(1)) return false; // must be >0
-    }
-    else
-    {
-        if(!SetForecastScoreAnalogsNumberLowerLimit(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "lowerlimit"))) return false;
-        if(!SetForecastScoreAnalogsNumberUpperLimit(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "upperlimit"))) return false;
-        if(!SetForecastScoreAnalogsNumberIteration(fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "iteration"))) return false;
-    }
-    if(!fileParams.GoANodeBack()) return false;
+    if(!fileParams.CheckDeprecatedChildNode("Analogs Number")) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Postprocessing", asHIDE_WARNINGS))
     {
@@ -902,11 +883,6 @@ void asParametersOptimization::InitRandomValues()
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        SetForecastScoreAnalogsNumber(asTools::Random(m_ForecastScoreLowerLimit.AnalogsNumber, m_ForecastScoreUpperLimit.AnalogsNumber, m_ForecastScoreIteration.AnalogsNumber));
-    }
-
     FixWeights();
     FixCoordinates();
     CheckRange();
@@ -1008,11 +984,6 @@ void asParametersOptimization::CheckRange()
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        SetForecastScoreAnalogsNumber(wxMax( wxMin(GetForecastScoreAnalogsNumber(), m_ForecastScoreUpperLimit.AnalogsNumber), m_ForecastScoreLowerLimit.AnalogsNumber));
-    }
-
     FixTimeHours();
     FixWeights();
     FixCoordinates();
@@ -1095,12 +1066,6 @@ bool asParametersOptimization::IsInRange()
                 if(GetPredictorVmin(i,j)+GetPredictorVptsnb(i,j)*GetPredictorVstep(i,j) > m_StepsUpperLimit[i].Predictors[j].Vmin+m_StepsLowerLimit[i].Predictors[j].Vptsnb*GetPredictorVstep(i,j)) return false;
             }
         }
-    }
-
-    if (!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (GetForecastScoreAnalogsNumber()>m_ForecastScoreUpperLimit.AnalogsNumber) return false;
-        if (GetForecastScoreAnalogsNumber()<m_ForecastScoreLowerLimit.AnalogsNumber) return false;
     }
 
     return true;
@@ -1256,8 +1221,6 @@ void asParametersOptimization::LockAll()
         }
     }
 
-    m_ForecastScoreLocks.AnalogsNumber = true;
-
     return;
 }
 
@@ -1355,12 +1318,6 @@ void asParametersOptimization::Unlock(VectorInt &indices)
             counter++;
         }
     }
-
-    if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
-    {
-        m_ForecastScoreLocks.AnalogsNumber = false;
-    }
-    counter++;
 }
 
 int asParametersOptimization::GetVariablesNb()
@@ -1399,8 +1356,6 @@ int asParametersOptimization::GetVariablesNb()
             if(!m_StepsLocks[i].Predictors[j].Criteria) counter++;
         }
     }
-
-    if(!m_ForecastScoreLocks.AnalogsNumber) counter++;
 
     return counter;
 }

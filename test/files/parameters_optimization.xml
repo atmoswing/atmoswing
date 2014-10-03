@@ -133,9 +133,6 @@
             <Params name="Method">
                 <Name value="CRPSAR" />
             </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="25" lowerlimit="5" upperlimit="150" iteration="1" lock="0" />
-            </Params>
             <Params name="Postprocessing">
                 <Postprocess value="1" />
                 <Method value="DuplicationOnCriteriaExponent" />

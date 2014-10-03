@@ -201,22 +201,6 @@ public:
         return true;
     }
 
-    int GetForecastScoreAnalogsNumberIteration()
-    {
-        return m_ForecastScoreIteration.AnalogsNumber;
-    }
-
-    bool SetForecastScoreAnalogsNumberIteration(int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the final analogs number is null"));
-            return false;
-        }
-        m_ForecastScoreIteration.AnalogsNumber = val;
-        return true;
-    }
-
     int GetTimeArrayAnalogsIntervalDaysUpperLimit()
     {
         return m_TimeArrayAnalogsIntervalDaysUpperLimit;
@@ -371,22 +355,6 @@ public:
         return true;
     }
 
-    int GetForecastScoreAnalogsNumberUpperLimit()
-    {
-        return m_ForecastScoreUpperLimit.AnalogsNumber;
-    }
-
-    bool SetForecastScoreAnalogsNumberUpperLimit(int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the final analogs number is null"));
-            return false;
-        }
-        m_ForecastScoreUpperLimit.AnalogsNumber = val;
-        return true;
-    }
-
     int GetTimeArrayAnalogsIntervalDaysLowerLimit()
     {
         return m_TimeArrayAnalogsIntervalDaysLowerLimit;
@@ -538,22 +506,6 @@ public:
             return false;
         }
         m_StepsLowerLimit[i_step].Predictors[i_predictor].Weight = val;
-        return true;
-    }
-
-    int GetForecastScoreAnalogsNumberLowerLimit()
-    {
-        return m_ForecastScoreLowerLimit.AnalogsNumber;
-    }
-
-    bool SetForecastScoreAnalogsNumberLowerLimit(int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the final analogs number is null"));
-            return false;
-        }
-        m_ForecastScoreLowerLimit.AnalogsNumber = val;
         return true;
     }
 
@@ -724,16 +676,6 @@ public:
         m_StepsLocks[i_step].Predictors[i_predictor].Criteria = val;
     }
 
-    bool IsForecastScoreAnalogsNumberLocked()
-    {
-        return m_ForecastScoreLocks.AnalogsNumber;
-    }
-
-    void SetForecastScoreAnalogsNumberLock(bool val)
-    {
-        m_ForecastScoreLocks.AnalogsNumber = val;
-    }
-
     bool IncrementAnalogsNumber(int i_step)
     {
         if (GetAnalogsNumber(i_step)+m_StepsIteration[i_step].AnalogsNumber <= m_StepsUpperLimit[i_step].AnalogsNumber)
@@ -838,19 +780,6 @@ public:
         }
     }
 
-    bool IncrementForecastScoreAnalogsNumber()
-    {
-        if (GetForecastScoreAnalogsNumber()+m_ForecastScoreIteration.AnalogsNumber <= m_ForecastScoreUpperLimit.AnalogsNumber)
-        {
-            SetForecastScoreAnalogsNumber(GetForecastScoreAnalogsNumber() + m_ForecastScoreIteration.AnalogsNumber);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     bool DecrementAnalogsNumber(int i_step)
     {
         if (GetAnalogsNumber(i_step)-m_StepsIteration[i_step].AnalogsNumber >= m_StepsLowerLimit[i_step].AnalogsNumber)
@@ -947,19 +876,6 @@ public:
         if (GetPredictorWeight(i_step,i_predictor)-m_StepsIteration[i_step].Predictors[i_predictor].Weight >= m_StepsLowerLimit[i_step].Predictors[i_predictor].Weight)
         {
             SetPredictorWeight(i_step,i_predictor, GetPredictorWeight(i_step,i_predictor) - m_StepsIteration[i_step].Predictors[i_predictor].Weight);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    bool DecrementForecastScoreAnalogsNumber()
-    {
-        if (GetForecastScoreAnalogsNumber()-m_ForecastScoreIteration.AnalogsNumber >= m_ForecastScoreLowerLimit.AnalogsNumber)
-        {
-            SetForecastScoreAnalogsNumber(GetForecastScoreAnalogsNumber() - m_ForecastScoreIteration.AnalogsNumber);
             return true;
         }
         else
@@ -1173,7 +1089,6 @@ protected:
     ParamsForecastScore m_ForecastScoreIteration;
     ParamsForecastScore m_ForecastScoreUpperLimit;
     ParamsForecastScore m_ForecastScoreLowerLimit;
-    ParamsForecastScoreBool m_ForecastScoreLocks;
     VectorParamsStepVect m_StepsVect;
 
 private:

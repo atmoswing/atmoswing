@@ -127,12 +127,6 @@ void asParametersOptimizationGAs::BuildChromosomes()
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        indices.push_back(counter);
-    }
-    counter++;
-
     m_ChromosomeIndices = indices;
     m_AllParametersCount = counter;
 }
@@ -333,16 +327,6 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (counter==index) return false;
-    }
-    else
-    {
-        if (counter==index) return true;
-    }
-    counter++;
-
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
@@ -474,13 +458,6 @@ int asParametersOptimizationGAs::GetParamType(int index)
             counter++;
         }
     }
-
-    //AnalogsNumber
-    if (counter==index)
-    {
-        return 1;
-    }
-    counter++;
 
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
@@ -679,15 +656,6 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (counter==index)
-        {
-            return (double)GetForecastScoreAnalogsNumber();
-        }
-    }
-    counter++;
-
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
@@ -844,15 +812,6 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (counter==index)
-        {
-            return (double)GetForecastScoreAnalogsNumberUpperLimit();
-        }
-    }
-    counter++;
-
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
@@ -1004,15 +963,6 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
         }
     }
 
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (counter==index)
-        {
-            return (double)GetForecastScoreAnalogsNumberLowerLimit();
-        }
-    }
-    counter++;
-
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
@@ -1163,15 +1113,6 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             counter++;
         }
     }
-
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (counter==index)
-        {
-            return (double)GetForecastScoreAnalogsNumberIteration();
-        }
-    }
-    counter++;
 
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
@@ -1378,17 +1319,6 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             counter++;
         }
     }
-
-    if(!m_ForecastScoreLocks.AnalogsNumber)
-    {
-        if (counter==index)
-        {
-            int val = asTools::Round(newVal);
-            SetForecastScoreAnalogsNumber(val);
-            return;
-        }
-    }
-    counter++;
 
     wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
