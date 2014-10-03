@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AtmoSwingFile version="0.2">
+    <OptimizationSet>
+        <General name="General">
+            <Options />
+            <Params name="Archive Period">
+                <YearStart value="1962" />
+                <YearEnd value="2008" />
+            </Params>
+            <Params name="Calibration Period">
+                <YearStart value="1970" />
+                <YearEnd value="2000" />
+            </Params>
+            <Params name="Time Properties">
+                <TimeStepHours value="24" />
+            </Params>
+            <Params name="Time Array Target">
+                <TimeArrayMode value="Simple" />
+            </Params>
+            <Params name="Time Array Analogs">
+                <TimeArrayMode value="DaysInterval" />
+                <IntervalDays value="60" lowerlimit="10" upperlimit="182" iteration="1" lock="0" />
+                <ExcludeDays value="60" />
+            </Params>
+        </General>
+        <Process name="Analogs Dates">
+            <Options />
+            <Params name="Method Name">
+                <MethodName value="Analogs" />
+            </Params>
+            <Params name="Analogs Number">
+                <AnalogsNumber value="100" lowerlimit="5" upperlimit="200" iteration="1" lock="0" />
+            </Params>
+            <Data name="Predictor">
+                <Options />
+                <Params name="Data">
+                    <DatasetId value="NCEP_R-1" />
+                    <DataId value="hgt" />
+                </Params>
+                <Params name="Preprocessing">
+                    <Preprocess value="0" />
+                </Params>
+                <Params name="Level">
+                    <Level value="500" />
+                </Params>
+                <Params name="Area">
+                    <GridType value="Regular" />
+                    <Umin value="310" lowerlimit="300" upperlimit="450" iteration="2.5" lock="0" />
+                    <Uptsnb value="9" lowerlimit="1" upperlimit="21" iteration="1" lock="0" />
+                    <Ustep value="2.5" />
+                    <Vmin value="0" lowerlimit="0" upperlimit="70" iteration="2.5" lock="0" />
+                    <Vptsnb value="7" lowerlimit="1" upperlimit="13" iteration="1" lock="0" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Time frame">
+                    <TimeHours value="24" lowerlimit="-48" upperlimit="48" iteration="6" lock="0" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.3" lowerlimit="0" upperlimit="1" iteration="0.01" lock="0" />
+                </Params>
+            </Data>
+            <Data name="Predictor Preprocessed">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="1" />
+                    <PreprocessMethod value="Gradients" />
+                    <SubData>
+                        <PreprocessDatasetId value="NCEP_R-1" lock="1" />
+                        <PreprocessDataId value="hgt" lock="1" />
+                        <PreprocessLevel value="1000" lock="1" />
+                        <PreprocessTimeHours value="12" lowerlimit="0" upperlimit="24" iteration="6" lock="1" />
+                    </SubData>
+                </Params>
+                <Params name="Area">
+                    <GridType value="Regular" />
+                    <Umin value="315" lowerlimit="300" upperlimit="450" iteration="2.5" lock="0" />
+                    <Uptsnb value="11" lowerlimit="3" upperlimit="19" iteration="1" lock="0" />
+                    <Ustep value="2.5" />
+                    <Vmin value="5" lowerlimit="0" upperlimit="70" iteration="2.5" lock="0" />
+                    <Vptsnb value="6" lowerlimit="0" upperlimit="9" iteration="1" lock="0" />
+                    <Vstep value="2.5" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.1" lowerlimit="0" upperlimit="1" iteration="0.01" lock="0" />
+                </Params>
+            </Data>
+            <Data name="Predictor Preprocessed">
+                <Options />
+                <Params name="Preprocessing">
+                    <Preprocess value="1" />
+                    <PreprocessMethod value="Gradients" />
+                    <SubData>
+                        <PreprocessDatasetId value="NCEP_R-1" lock="1" />
+                        <PreprocessDataId value="hgt" lock="1" />
+                        <PreprocessLevel value="850" lock="1" />
+                        <PreprocessTimeHours value="12" lowerlimit="6" upperlimit="18" iteration="6" lock="1" />
+                    </SubData>
+                </Params>
+                <Params name="Area">
+                    <GridType value="Regular" />
+                    <Umin value="10" lowerlimit="300" upperlimit="450" iteration="2.5" lock="0" />
+                    <Uptsnb value="7" lowerlimit="5" upperlimit="17" iteration="1" lock="0" />
+                    <Ustep value="2.5" lowerlimit="2.5" upperlimit="10" iteration="2.5" lock="1" />
+                    <Vmin value="155" lowerlimit="0" upperlimit="70" iteration="2.5" lock="0" />
+                    <Vptsnb value="9" lowerlimit="1" upperlimit="13" iteration="1" lock="0" />
+                    <Vstep value="2.5" lowerlimit="2.5" upperlimit="10" iteration="2.5" lock="1" />
+                </Params>
+                <Params name="Criteria">
+                    <Criteria value="S1" />
+                </Params>
+                <Params name="Weight">
+                    <Weight value="0.6" lowerlimit="0" upperlimit="1" iteration="0.01" lock="0" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Values">
+            <Options />
+            <Data name="Predictand">
+                <Params name="Database">
+                    <Predictand value="StationsDailyPrecipitation" />
+                    <PredictandStationId value="40" />
+                </Params>
+            </Data>
+        </Process>
+        <Process name="Analogs Forecast Scores">
+            <Options />
+            <Params name="Method">
+                <Name value="CRPSAR" />
+            </Params>
+            <Params name="Analogs Number">
+                <AnalogsNumber value="25" lowerlimit="5" upperlimit="150" iteration="1" lock="0" />
+            </Params>
+            <Params name="Postprocessing">
+                <Postprocess value="1" />
+                <Method value="DuplicationOnCriteriaExponent" />
+                <DuplicationExponent value="2.1" />
+            </Params>
+        </Process>
+        <Process name="Analogs Forecast Score Final">
+            <Options />
+            <Params name="Time Array">
+                <Mode value="Simple" />
+                <Date value="357434" />
+                <IntervalDays value="60" />
+            </Params>
+        </Process>
+    </OptimizationSet>
+</AtmoSwingFile>

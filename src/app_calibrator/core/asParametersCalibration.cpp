@@ -301,7 +301,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                         preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                         preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                     }
-                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
                     {
                         if (preprocSize!=2)
                         {
