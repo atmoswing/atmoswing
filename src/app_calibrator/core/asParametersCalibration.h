@@ -556,33 +556,6 @@ public:
         return true;
     }
 
-    VectorInt GetForecastScoreAnalogsNumberVector()
-    {
-        return m_ForecastScoreVect.AnalogsNumber;
-    }
-
-    bool SetForecastScoreAnalogsNumberVector(VectorInt val)
-    {
-        if (val.size()<1)
-        {
-            asLogError(_("The provided final analogs number vector is empty."));
-            return false;
-        }
-        else
-        {
-            for (int i=0; i<val.size(); i++)
-            {
-                if (asTools::IsNaN(val[i]))
-                {
-                    asLogError(_("There are NaN values in the provided final analogs number vector."));
-                    return false;
-                }
-            }
-        }
-        m_ForecastScoreVect.AnalogsNumber = val;
-        return true;
-    }
-
     VectorString GetForecastScoreTimeArrayModeVector()
     {
         return m_ForecastScoreVect.TimeArrayMode;
@@ -772,14 +745,6 @@ public:
         return val;
     }
 
-    int GetForecastScoreAnalogsNumberLowerLimit()
-    {
-        int lastrow = m_ForecastScoreVect.AnalogsNumber.size()-1;
-        wxASSERT(lastrow>=0);
-        int val = asTools::MinArray(&m_ForecastScoreVect.AnalogsNumber[0],&m_ForecastScoreVect.AnalogsNumber[lastrow]);
-        return val;
-    }
-
     double GetForecastScoreTimeArrayDateLowerLimit()
     {
         int lastrow = m_ForecastScoreVect.TimeArrayDate.size()-1;
@@ -917,14 +882,6 @@ public:
         return val;
     }
 
-    int GetForecastScoreAnalogsNumberUpperLimit()
-    {
-        int lastrow = m_ForecastScoreVect.AnalogsNumber.size()-1;
-        wxASSERT(lastrow>=0);
-        int val = asTools::MaxArray(&m_ForecastScoreVect.AnalogsNumber[0],&m_ForecastScoreVect.AnalogsNumber[lastrow]);
-        return val;
-    }
-
     double GetForecastScoreTimeArrayDateUpperLimit()
     {
         int lastrow = m_ForecastScoreVect.TimeArrayDate.size()-1;
@@ -1019,13 +976,6 @@ public:
     {
         if (m_StepsVect[i_step].Predictors[i_predictor].Weight.size()<2) return 0;
         float val = m_StepsVect[i_step].Predictors[i_predictor].Weight[1] - m_StepsVect[i_step].Predictors[i_predictor].Weight[0];
-        return val;
-    }
-
-    int GetForecastScoreAnalogsNumberIteration()
-    {
-        if (m_ForecastScoreVect.AnalogsNumber.size()<2) return 0;
-        int val = m_ForecastScoreVect.AnalogsNumber[1] - m_ForecastScoreVect.AnalogsNumber[0];
         return val;
     }
 

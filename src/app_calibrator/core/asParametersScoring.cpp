@@ -37,7 +37,6 @@ asParameters()
     m_CalibrationStart = 0;
     m_CalibrationEnd = 0;
     m_ForecastScore.Name = wxEmptyString;
-    m_ForecastScore.AnalogsNumber = 0;
     m_ForecastScore.TimeArrayMode = wxEmptyString;
     m_ForecastScore.TimeArrayDate = 0;
     m_ForecastScore.TimeArrayIntervalDays = 0;
@@ -378,14 +377,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     }
     if(!fileParams.GoANodeBack()) return false;
 
-
-    if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Analogs Number")) return false;
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-    wxString fsAnalogsNb;
-    fsAnalogsNb << GetForecastScoreAnalogsNumber();
-    if(!fileParams.InsertElementAndAttribute("", "AnalogsNumber", "value", fsAnalogsNb)) return false;
-    if(!fileParams.GoANodeBack()) return false;
-
     if(!fileParams.GoANodeBack()) return false;
 
 
@@ -663,31 +654,6 @@ VVectorInt asParametersScoring::GetFileStationIdsVector(asFileParameters &filePa
     return vect;
 }
 
-bool asParametersScoring::FixAnalogsNb()
-{
-    // Check analogs number coherence
-    int analogsNb = GetAnalogsNumber(0);
-    for (int i_step=1; i_step<GetStepsNb(); i_step++)
-    {
-        if(GetAnalogsNumber(i_step)>analogsNb)
-        {
-            SetAnalogsNumber(i_step, analogsNb);
-        }
-        else
-        {
-            analogsNb = GetAnalogsNumber(i_step);
-        }
-    }
-
-    // Check forecast score
-    if(GetForecastScoreAnalogsNumber()>analogsNb)
-    {
-        SetForecastScoreAnalogsNumber(analogsNb);
-    }
-
-    return true;
-}
-
 wxString asParametersScoring::Print()
 {
     // Create content string
@@ -703,7 +669,6 @@ wxString asParametersScoring::Print()
         content.Append(wxString::Format("Threshold \t%f\t", GetForecastScoreThreshold()));
     }
     content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode().c_str()));
-    content.Append(wxString::Format("Anb\t%d\t", GetForecastScoreAnalogsNumber()));
 
     return content;
 }
@@ -718,7 +683,6 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
 
     int iLeft, iRight;
     wxString strVal;
-    long lVal;
 
     // Check that the score is similar
     iLeft = stringVals.Find("Score");
@@ -732,13 +696,6 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
         printf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetForecastScoreName().c_str(), strVal.c_str()));
         return false;
     }
-
-    // Analogs number
-    iLeft = stringVals.Find("Anb");
-    iRight = stringVals.Find("Calib");
-    strVal = stringVals.SubString(iLeft+4, iRight-2);
-    strVal.ToLong(&lVal);
-    SetForecastScoreAnalogsNumber(int(lVal));
 
     return true;
 }
