@@ -41,7 +41,7 @@ asFileParameters::~asFileParameters()
 
 bool asFileParameters::CheckDeprecatedChildNode(const wxString &field)
 {
-    if(GoToChildNodeWithAttributeValue("name", "Period", asHIDE_WARNINGS))
+    if(GoToChildNodeWithAttributeValue("name", field, asHIDE_WARNINGS))
     {
         asLogError(wxString::Format(_("The '%s' element is deprecated. Please update the parameters file."), field.c_str()));
         return false;

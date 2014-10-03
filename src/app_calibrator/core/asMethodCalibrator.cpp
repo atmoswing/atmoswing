@@ -1758,13 +1758,19 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
 
         asResultsAnalogsForecastScores anaScores;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+        asResultsAnalogsDates anaDatesTmp(anaDates);
+        Array2DFloat dates = anaDates.GetAnalogsDates();
 
         for (int i_anb=0; i_anb<=rowEnd; i_anb++)
         {
-            params.SetForecastScoreAnalogsNumber(analogsNbVect[i_anb]);
+            params.SetAnalogsNumber(i_step, analogsNbVect[i_anb]);
 
             // Fixes and checks
             params.FixAnalogsNb();
+            
+            // Extract analogs dates from former results
+            Array2DFloat subDates = dates.leftCols(params.GetAnalogsNumber(i_step));
+            anaDatesTmp.SetAnalogsDates(subDates);
 
             if(!GetAnalogsForecastScores(anaScores, params, anaValues, i_step))
                 return false;

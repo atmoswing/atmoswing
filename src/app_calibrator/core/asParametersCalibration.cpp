@@ -446,9 +446,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     SetForecastScorePercentile(fileParams.GetFirstElementAttributeValueFloat("Percentile", "value")); // optional
     if(!fileParams.GoANodeBack()) return false;
 
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-    if(!SetForecastScoreAnalogsNumberVector(GetFileParamIntVector(fileParams, "AnalogsNumber"))) return false;
-    if(!fileParams.GoANodeBack()) return false;
+    if(!fileParams.CheckDeprecatedChildNode("Analogs Number")) return false;
 
     if(fileParams.GoToChildNodeWithAttributeValue("name", "Postprocessing", asHIDE_WARNINGS))
     {
@@ -539,7 +537,6 @@ void asParametersCalibration::InitValues()
     m_PredictandStationIds = m_PredictandStationsIdsVect[0];
     m_TimeArrayAnalogsIntervalDays = m_TimeArrayAnalogsIntervalDaysVect[0];
     SetForecastScoreName(m_ForecastScoreVect.Name[0]);
-    SetForecastScoreAnalogsNumber(m_ForecastScoreVect.AnalogsNumber[0]);
     SetForecastScoreTimeArrayMode(m_ForecastScoreVect.TimeArrayMode[0]);
     SetForecastScoreTimeArrayDate(m_ForecastScoreVect.TimeArrayDate[0]);
     SetForecastScoreTimeArrayIntervalDays(m_ForecastScoreVect.TimeArrayIntervalDays[0]);
