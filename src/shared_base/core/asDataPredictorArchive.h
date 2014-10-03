@@ -47,18 +47,6 @@ public:
     
     virtual bool Init();
 
-    bool LoadFullArea(double date, float level);
-
-    bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
-    bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
-    bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
-
-    /** Method to load a tensor of data for a given area and a given time array
-     * \param area The desired area
-     * \param timeArray The desired time array
-     */
-    virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
-
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
     
     /** Access m_OriginalProviderStart
@@ -84,7 +72,7 @@ protected:
      * \param timeArray The time array to check
      * \return True if compatible with the data
      */
-    bool CheckTimeArray(asTimeArray &timeArray);
+    virtual bool CheckTimeArray(asTimeArray &timeArray);
 
 private:
 

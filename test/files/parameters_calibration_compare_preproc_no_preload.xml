@@ -97,9 +97,6 @@
             <Params name="Method">
                 <Name value="CRPSAR" method="fixed" />
             </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="30" min="" max="" step="" method="fixed" />
-            </Params>
         </Process>
         <Process name="Analogs Forecast Score Final">
             <Options />

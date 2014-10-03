@@ -68,9 +68,6 @@
             <Params name="Method">
                 <Name value="CRPSAR, CRPSaccuracyAR, CRPSsharpnessAR" method="array" />
             </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="" min="10" max="100" step="10" method="minmax" />
-            </Params>
             <Params name="Postprocessing">
                 <Postprocess value="0" />
                 <Method value="" method="" />

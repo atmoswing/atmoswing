@@ -103,36 +103,6 @@ bool asDataPredictorArchive::Init()
     return false;
 }
 
-bool asDataPredictorArchive::LoadFullArea(double date, float level)
-{
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
-    timeArray.Init();
-    m_Level = level;
-
-    return Load(NULL, timeArray);
-}
-
-bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid &desiredArea, double date)
-{
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
-    timeArray.Init();
-
-    return Load(&desiredArea, timeArray);
-}
-
-bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, double date)
-{
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
-    timeArray.Init();
-
-    return Load(desiredArea, timeArray);
-}
-
-bool asDataPredictorArchive::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
-{
-    return false;
-}
-
 bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 {
     double Umin = desiredArea->GetAbsoluteUmin();

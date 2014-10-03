@@ -124,6 +124,11 @@ void asLog::Resume()
     wxLogMessage(_("Log resumed."));
 }
 
+void asLog::Flush()
+{
+    m_LogChain->Flush();
+}
+
 void asLog::Error(const wxString &msg)
 {
     if(m_Level>=1)
