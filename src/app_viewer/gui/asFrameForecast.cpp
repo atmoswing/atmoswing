@@ -210,7 +210,7 @@ asFrameForecastVirtual( parent, id )
     // VroomGIS
     m_LayerManager = new vrLayerManager();
     m_ViewerLayerManager = new vrViewerLayerManager(m_LayerManager, this, m_DisplayCtrl , m_PanelSidebarGisLayers->GetTocCtrl());
-    m_LayerManager->AllowReprojectOnTheFly(true);
+//    m_LayerManager->AllowReprojectOnTheFly(true);
 
     // Forecast manager
     m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl(), &m_Workspace);

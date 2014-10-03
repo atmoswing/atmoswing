@@ -355,7 +355,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Get global attributes
     float version = ncFile.GetAttFloat("version");
-    if (version>1.2f)
+    if (version>1.3f)
     {
         asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
         return false;
@@ -602,7 +602,15 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
     wxArrayString stationsNames;
     for (unsigned int i=0; i<m_StationsNames.size(); i++)
     {
-        wxString label = wxString::Format("%s (%4.0fm)", m_StationsNames[i].c_str(), m_StationsHeights[i]);
+        wxString label;
+        if(!asTools::IsNaN(m_StationsHeights[i]))
+        {
+            label = wxString::Format("%s (%4.0fm)", m_StationsNames[i].c_str(), m_StationsHeights[i]);
+        }
+        else
+        {
+            label = wxString::Format("%s", m_StationsNames[i].c_str());
+        }
         stationsNames.Add(label);
     }
     return stationsNames;
@@ -610,6 +618,14 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
 
 wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat)
 {
-    wxString stationName = wxString::Format("%s (%4.0fm)", m_StationsNames[i_stat].c_str(), m_StationsHeights[i_stat]);
+    wxString stationName;
+    if(!asTools::IsNaN(m_StationsHeights[i_stat]))
+    {
+        stationName = wxString::Format("%s (%4.0fm)", m_StationsNames[i_stat].c_str(), m_StationsHeights[i_stat]);
+    }
+    else
+    {
+        stationName = wxString::Format("%s", m_StationsNames[i_stat].c_str());
+    }
     return stationName;
 }

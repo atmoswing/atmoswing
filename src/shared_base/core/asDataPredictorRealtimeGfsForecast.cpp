@@ -174,52 +174,11 @@ VectorString asDataPredictorRealtimeGfsForecast::GetDataIdDescriptionList()
     return list;
 }
 
-bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
+bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
-    // Configuration
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString realtimePredictorDir = pConfig->Read("/Paths/RealtimePredictorSavingDir", wxEmptyString);
-
     // File path
     VectorString filePaths = GetFileNames();
     wxASSERT(filePaths.size()>=(unsigned)timeArray.GetSize());
-
-    asGeoAreaCompositeGrid* dataArea = NULL;
-    if (desiredArea)
-    {
-        // Create a new area matching the dataset
-        double dataUmin = floor(desiredArea->GetAbsoluteUmin()/m_UaxisStep)*m_UaxisStep;
-        double dataVmin = floor(desiredArea->GetAbsoluteVmin()/m_VaxisStep)*m_VaxisStep;
-        double dataUmax = ceil(desiredArea->GetAbsoluteUmax()/m_UaxisStep)*m_UaxisStep;
-        double dataVmax = ceil(desiredArea->GetAbsoluteVmax()/m_VaxisStep)*m_VaxisStep;
-        double dataUstep = m_UaxisStep;
-        double dataVstep = m_VaxisStep;
-        int dataUptsnb = (dataUmax-dataUmin)/dataUstep+1;
-        int dataVptsnb = (dataVmax-dataVmin)/dataVstep+1;
-        wxString gridType = desiredArea->GetGridTypeString();
-        dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-        // Get axes length for preallocation
-        GetSizes(*dataArea, timeArray);
-        InitContainers();
-    }
-    else
-    {
-        m_SizeTime = timeArray.GetSize();
-        m_Time.resize(m_SizeTime);
-    }
-
-    // Add dates to m_Time
-    m_Time = timeArray.GetTimeArray();
-
-    // The desired level
-    if (desiredArea)
-    {
-        m_Level = desiredArea->GetComposite(0).GetLevel();
-    }
-
-    // Containers for the axes
-    Array1DFloat axisDataLon, axisDataLat;
 
     // Load files
     for (int i_file=0; i_file<timeArray.GetSize(); i_file++)
@@ -229,86 +188,45 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
 
         // Check if the volume is present
         wxFileName fileName(filePaths[i_file]);
-        if (!fileName.HasVolume() && !realtimePredictorDir.IsEmpty())
+        if (!fileName.HasVolume() && !m_PredictorsRealtimeDirectory.IsEmpty())
         {
-            filePath = realtimePredictorDir;
+            filePath = m_PredictorsRealtimeDirectory;
             filePath.Append(DS);
         }
-
         filePath.Append(filePaths[i_file]);
 
         // Open the Grib2 file
         asFileGrib2 g2File(filePath, asFileGrib2::ReadOnly);
         if(!g2File.Open())
         {
-            wxDELETE(dataArea);
             return false;
         }
 
         // Get some attributes
         float dataAddOffset = g2File.GetOffset();
         float dataScaleFactor = g2File.GetScale();
+        bool scalingNeeded = true;
+        if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
-        // Get full axes from the netcdf file
-            // Longitudes
+        // Get full axes from the grib file
+        Array1DFloat axisDataLon, axisDataLat;
         int axisDataLonLength = g2File.GetUPtsnb();
         g2File.GetUaxis(axisDataLon);
-            // Latitudes
         int axisDataLatLength = g2File.GetVPtsnb();
         g2File.GetVaxis(axisDataLat);
 
-        if (desiredArea==NULL && i_file==0)
-        {
-            // Get axes length for preallocation
-            m_LonPtsnb = axisDataLonLength;
-            m_LatPtsnb = axisDataLatLength;
-            m_AxisLon.resize(axisDataLon.size());
-            m_AxisLon = axisDataLon;
-            m_AxisLat.resize(axisDataLat.size());
-            m_AxisLat = axisDataLat;
-            m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
-        }
-        else if(desiredArea!=NULL && i_file==0)
-        {
-            Array1DDouble axisLon = dataArea->GetUaxis();
-            m_AxisLon.resize(axisLon.size());
-            for (int i=0; i<axisLon.size(); i++)
-            {
-                m_AxisLon[i] = (float)axisLon[i];
-            }
-            m_LonPtsnb = dataArea->GetUaxisPtsnb();
-            wxASSERT_MSG(m_AxisLon.size()==m_LonPtsnb, wxString::Format("m_AxisLon.size()=%d, m_LonPtsnb=%d",(int)m_AxisLon.size(),m_LonPtsnb));
+        // Adjust axes if necessary
+        dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
 
-            Array1DDouble axisLat = dataArea->GetVaxis();
-            m_AxisLat.resize(axisLat.size());
-            for (int i=0; i<axisLat.size(); i++)
-            {
-                m_AxisLat[i] = (float)axisLat[i];
-            }
-            m_LatPtsnb = dataArea->GetVaxisPtsnb();
-            wxASSERT_MSG(m_AxisLat.size()==m_LatPtsnb, wxString::Format("m_AxisLat.size()=%d, m_LatPtsnb=%d",(int)m_AxisLat.size(),m_LatPtsnb));
-
-            m_Data.reserve(m_SizeTime*m_LonPtsnb*m_LatPtsnb);
-        }
-
-        // The container for extracted data from every composite
-        VVArray2DFloat compositeData;
-        int iterationNb = 1;
-        if (desiredArea)
-        {
-            iterationNb = dataArea->GetNbComposites();
-        }
-
-        for (int i_area = 0; i_area<iterationNb; i_area++)
+        for (int i_area = 0; i_area<compositeData.size(); i_area++)
         {
             // Check if necessary to load the data of lon=360 (so lon=0)
             bool load360 = false;
 
             int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
             int indexLengthTimeArray = 1; // For 1 file
-            if (desiredArea)
+            if (dataArea)
             {
-
                 // Get the spatial extent
                 float lonMin = dataArea->GetUaxisCompositeStart(i_area);
                 float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
@@ -404,14 +322,14 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
             }
 
             // Containers for results
-            VArray2DFloat latlonTimeData;
+            Array2DFloat latlonData;
             if(load360)
             {
-                latlonTimeData = VArray2DFloat(1, Array2DFloat(indexLengthLat,indexLengthLon+1));
+                latlonData = Array2DFloat(indexLengthLat,indexLengthLon+1);
             }
             else
             {
-                latlonTimeData = VArray2DFloat(1, Array2DFloat(indexLengthLat,indexLengthLon));
+                latlonData = Array2DFloat(indexLengthLat,indexLengthLon);
             }
 
             int ind = 0;
@@ -421,60 +339,39 @@ bool asDataPredictorRealtimeGfsForecast::Load(asGeoAreaCompositeGrid *desiredAre
             {
                 for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
                 {
-                    ind = i_lon;
-                    ind += i_lat * indexLengthLon;
-                    // Add the Offset and multiply by the Scale Factor
-                    latlonTimeData[0](i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    ind = i_lon + i_lat * indexLengthLon;
+                    if (scalingNeeded)
+                    {
+                        latlonData(i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,i_lon) = data[ind];
+                    }
                 }
 
                 if(load360)
                 {
                     ind = i_lat;
-                    // Add the Offset and multiply by the Scale Factor
-                    latlonTimeData[0](i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    if (scalingNeeded)
+                    {
+                        latlonData(i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,indexLengthLon) = data360[ind];
+                    }
                 }
             }
 
-            if(load360)
-            {
-                latlonTimeData[0].setZero(indexLengthLat,indexLengthLon+1);
-            }
-            else
-            {
-                latlonTimeData[0].setZero(indexLengthLat,indexLengthLon);
-            }
-
-            compositeData.push_back(latlonTimeData);
-            latlonTimeData.clear();
+            compositeData[i_area].push_back(latlonData);
             data.clear();
             data360.clear();
         }
 
-        // Close the nc file
+        // Close the file
         g2File.Close();
-
-        // Merge the composites into m_Data
-        if (!MergeComposites(compositeData, dataArea))
-        {
-            wxDELETE(dataArea);
-            return false;
-        }
-
     }
-
-    // Interpolate the loaded data on the desired grid
-    if (desiredArea)
-    {
-        if (!InterpolateOnGrid(dataArea, desiredArea))
-        {
-            wxDELETE(dataArea);
-            return false;
-        }
-        wxASSERT_MSG(m_Data[0].cols()==desiredArea->GetUaxisPtsnb(), wxString::Format("m_Data[0].cols()=%d, desiredArea->GetUaxisPtsnb()=%d", (int)m_Data[0].cols(), (int)desiredArea->GetUaxisPtsnb()));
-        wxASSERT_MSG(m_Data[0].rows()==desiredArea->GetVaxisPtsnb(), wxString::Format("m_Data[0].rows()=%d, desiredArea->GetVaxisPtsnb()=%d", (int)m_Data[0].rows(), (int)desiredArea->GetVaxisPtsnb()));
-    }
-
-    wxDELETE(dataArea);
 
     return true;
 }

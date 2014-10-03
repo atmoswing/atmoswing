@@ -57,11 +57,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         checkSizes = false;
         errorField.Append("ForecastScoreName, ");
     }
-    if( params.GetForecastScoreAnalogsNumberVector().size()>1 )
-    {
-        checkSizes = false;
-        errorField.Append("ForecastScoreAnalogsNumber, ");
-    }
     if( params.GetForecastScoreTimeArrayModeVector().size()>1 )
     {
         checkSizes = false;

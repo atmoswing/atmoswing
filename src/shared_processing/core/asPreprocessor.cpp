@@ -79,6 +79,14 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictor* > predictors, con
     {
         return PreprocessMultiplication(predictors, result);
     }
+    else if (method.IsSameAs("HumidityIndex"))
+    {
+        return PreprocessMultiplication(predictors, result);
+    }
+    else if (method.IsSameAs("HumidityFlux"))
+    {
+        return PreprocessHumidityFlux(predictors, result);
+    }
     else if (method.IsSameAs("FormerHumidityIndex"))
     {
         return PreprocessFormerHumidityIndex(predictors, result);
@@ -86,10 +94,6 @@ bool asPreprocessor::Preprocess(std::vector < asDataPredictor* > predictors, con
     else if (method.IsSameAs("MergeByHalfAndMultiply"))
     {
         return PreprocessMergeByHalfAndMultiply(predictors, result);
-    }
-    else if (method.IsSameAs("HumidityFlux"))
-    {
-        return PreprocessHumidityFlux(predictors, result);
     }
     else if (method.IsSameAs("WindSpeed"))
     {
@@ -113,13 +117,18 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 
     // Only one predictor
     wxASSERT(predictors.size()>0);
-    if(predictors.size()>1) asThrowException(_("The number of predictors cannot be superior to 1 in asPreprocessor::PreprocessGradients"));
+    wxASSERT(predictors.size()==1);
+    if(predictors.size()!=1)
+    {
+        asLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb>1);
     wxASSERT(colsNb>1);
@@ -178,14 +187,18 @@ bool asPreprocessor::PreprocessGradients(std::vector < asDataPredictor* > predic
 bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
 {
     // More than one predictor
-    if(predictors.size()!=2) asThrowException(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
+    if(predictors.size()!=2)
+    {
+        asLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
     wxASSERT(predictors[1]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb>1);
     wxASSERT(colsNb>1);
@@ -218,13 +231,17 @@ bool asPreprocessor::PreprocessDifference(std::vector < asDataPredictor* > predi
 bool asPreprocessor::PreprocessMultiplication(std::vector < asDataPredictor* > predictors, asDataPredictor *result)
 {
     // More than one predictor
-    if(predictors.size()<2) asThrowException(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
+    if(predictors.size()<2)
+    {
+        asLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb>1);
     wxASSERT(colsNb>1);
@@ -262,12 +279,16 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector < asDataPredictor
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=4) asThrowException(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
+    if(inputSize!=4) 
+    {
+        asLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
+        return false;
+    }
 
     // Merge
     wxASSERT(predictors[0]);
     VVArray2DFloat copyData = VVArray2DFloat(inputSize/2);
-    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetSizeTime()*inputSize);
+    copyData.reserve(2*predictors[0]->GetLatPtsnb()*predictors[0]->GetLonPtsnb()*predictors[0]->GetTimeSize()*inputSize);
     int counter = 0;
     #ifdef _DEBUG
         int prevTimeSize = 0;
@@ -283,7 +304,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector < asDataPredictor
         int colsNb1 = predictors[i_dat]->GetLonPtsnb();
         int rowsNb2 = predictors[i_dat+1]->GetLatPtsnb();
         int colsNb2 = predictors[i_dat+1]->GetLonPtsnb();
-        int timeSize = predictors[i_dat]->GetSizeTime();
+        int timeSize = predictors[i_dat]->GetTimeSize();
 
         #ifdef _DEBUG
             if (i_dat>0)
@@ -380,14 +401,22 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
     // More than one predictor
     int inputSize = predictors.size();
     int factorSize = inputSize/2;
-    if(inputSize<2) asThrowException(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
-    if(inputSize%2!=0) asThrowException(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+    if(inputSize<2)
+    {
+        asLogError(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        return false;
+    }
+    if(inputSize%2!=0)
+    {
+        asLogError(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        return false;
+    }
 
     // Handle sizes
     wxASSERT(predictors[0]);
     int originalRowsNb = predictors[0]->GetLatPtsnb();
     int originalColsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
     wxASSERT(originalRowsNb>0);
     wxASSERT(originalColsNb>0);
     wxASSERT(timeSize>0);
@@ -410,7 +439,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector < asDataPredic
                 wxASSERT(predictors[i_curr]);
                 wxASSERT(predictors[i_curr]->GetLatPtsnb()==originalRowsNb);
                 wxASSERT(predictors[i_curr]->GetLonPtsnb()==originalColsNb);
-                wxASSERT(predictors[i_curr]->GetSizeTime()==timeSize);
+                wxASSERT(predictors[i_curr]->GetTimeSize()==timeSize);
 
                 copyData[i_half][i_time].block(i_dat*originalRowsNb,0,originalRowsNb,originalColsNb) = predictors[i_curr]->GetData()[i_time];
             }
@@ -443,7 +472,11 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector < asDataPredictor* > pre
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=4) asThrowException(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
+    if(inputSize!=4)
+    {
+        asLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
+        return false;
+    }
     wxASSERT(predictors[0]);
 
     #ifdef _DEBUG
@@ -496,14 +529,18 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector < asDataPredictor* > predic
 {
     // More than one predictor
     int inputSize = predictors.size();
-    if(inputSize!=2) asThrowException(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
+    if(inputSize!=2)
+    {
+        asLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
+        return false;
+    }
 
     // Get sizes
     wxASSERT(predictors[0]);
     wxASSERT(predictors[1]);
     int rowsNb = predictors[0]->GetLatPtsnb();
     int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetSizeTime();
+    int timeSize = predictors[0]->GetTimeSize();
     wxASSERT(rowsNb>0);
     wxASSERT(colsNb>0);
     wxASSERT(timeSize>0);

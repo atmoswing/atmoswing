@@ -49,7 +49,6 @@ asMethodStandard()
     m_ModelName = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
     m_PredictandDBFilePath = wxEmptyString;
-    m_PredictorsArchiveDir = wxEmptyString;
     m_Parent = parent;
 }
 
@@ -82,7 +81,6 @@ bool asMethodForecasting::Manager()
         #endif
 
         // Get paths
-        wxString m_PredictorsArchiveDir = m_BatchForecasts->GetPredictorsArchiveDirectory();
         wxString forecastParametersDir = m_BatchForecasts->GetParametersFileDirectory();
         wxString predictandDBDir = m_BatchForecasts->GetPredictandDBDirectory();
 
@@ -567,7 +565,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             {
                 return false;
             }
-            predictorRealtime->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
             predictorRealtime->SetRunDateInUse(m_ForecastDate);
             lastLeadTime = wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
@@ -584,7 +581,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 {
                     return false;
                 }
-                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(m_BatchForecasts->GetPredictorsRealtimeDirectory());
 
                 predictorRealtimePreprocess->SetRunDateInUse(m_ForecastDate);
                 lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd()/24.0 - params.GetTimeSpanDays());
@@ -682,7 +678,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_BatchForecasts->GetPredictorsArchiveDirectory());
             if (!predictorArchive)
             {
                 return false;
@@ -718,6 +714,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 if(listTimeArray[i]!=timeArrayDataTarget[i])
                 {
                     asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                    asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
                     return false;
@@ -758,6 +755,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorRealtime);
                 return false;
             }
+
+            wxASSERT(predictorArchive->GetData().size()>1);
             m_StoragePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
@@ -769,7 +768,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorRealtime);
                 return false;
             }
+            
             wxDELETE(area);
+            wxASSERT(predictorRealtime->GetData().size()>1);
             m_StoragePredictorsRealtime.push_back(predictorRealtime);
         }
         else
@@ -796,7 +797,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
+                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_BatchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess)
                 {
                     return false;
@@ -826,12 +827,14 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 // Check time array for real-time data
                 VectorDouble listTimeArray = predictorRealtimePreprocess->GetDataDates();
-                wxASSERT(listTimeArray.size()==timeArrayDataTarget.GetSize());
-                for (unsigned int i=0; i<listTimeArray.size(); i++)
+                wxASSERT_MSG(listTimeArray.size()>=(unsigned)timeArrayDataTarget.GetSize(), wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d", (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
+
+                for (unsigned int i=0; i<timeArrayDataTarget.GetSize(); i++)
                 {
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
                         asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                        asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
                         return false;
@@ -913,6 +916,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 wxDELETE(predictorRealtime);
                 return false;
             }
+
+            wxASSERT(predictorArchive->GetData().size()>1);
+            wxASSERT(predictorRealtime->GetData().size()>1);
 
             m_StoragePredictorsArchive.push_back(predictorArchive);
             m_StoragePredictorsRealtime.push_back(predictorRealtime);
@@ -1128,7 +1134,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_PredictorsArchiveDir);
+            asDataPredictorArchive* predictorArchive = asDataPredictorArchive::GetInstance(params.GetPredictorArchiveDatasetId(i_step, i_ptor), params.GetPredictorArchiveDataId(i_step, i_ptor), m_BatchForecasts->GetPredictorsArchiveDirectory());
             if (!predictorArchive)
             {
                 return false;
@@ -1164,6 +1170,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 if(listTimeArray[i]!=timeArrayDataTarget[i])
                 {
                     asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                    asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
                     return false;
@@ -1226,7 +1233,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_PredictorsArchiveDir);
+                asDataPredictorArchive* predictorArchivePreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessArchiveDatasetId(i_step, i_ptor, i_prepro), params.GetPreprocessArchiveDataId(i_step, i_ptor, i_prepro), m_BatchForecasts->GetPredictorsArchiveDirectory());
                 if (!predictorArchivePreprocess)
                 {
                     return false;
@@ -1262,6 +1269,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
                         asLogError(wxString::Format(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."), i, listTimeArray[i], i, timeArrayDataTarget[i]));
+                        asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
                         return false;

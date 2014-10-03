@@ -41,7 +41,6 @@ public:
     typedef struct
     {
         wxString Name;
-        int AnalogsNumber;
         wxString TimeArrayMode;
         double TimeArrayDate;
         int TimeArrayIntervalDays;
@@ -82,7 +81,6 @@ public:
     typedef struct
     {
         VectorString Name;
-        VectorInt AnalogsNumber;
         VectorString TimeArrayMode;
         VectorDouble TimeArrayDate;
         VectorInt TimeArrayIntervalDays;
@@ -116,11 +114,6 @@ public:
 
     typedef std::vector < ParamsStepBool > VectorParamsStepBool;
 
-    typedef struct
-    {
-        bool AnalogsNumber;
-    } ParamsForecastScoreBool;
-
 
     /** Default constructor */
     asParametersScoring();
@@ -143,9 +136,7 @@ public:
     VectorString GetFileParamStringVector(asFileParameters &fileParams, const wxString &tag);
 
     VVectorInt GetFileStationIdsVector(asFileParameters &fileParams);
-
-    bool FixAnalogsNb();
-
+    
     wxString Print();
 
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
@@ -297,18 +288,7 @@ public:
 
     int GetForecastScoreAnalogsNumber()
     {
-        return m_ForecastScore.AnalogsNumber;
-    }
-
-    bool SetForecastScoreAnalogsNumber(int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the final analogs number is null"));
-            return false;
-        }
-        m_ForecastScore.AnalogsNumber = val;
-        return true;
+        return GetAnalogsNumber(GetStepsNb()-1);
     }
 
     wxString GetForecastScoreTimeArrayMode()

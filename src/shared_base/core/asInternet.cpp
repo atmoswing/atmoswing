@@ -83,7 +83,13 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
     if(parallelRequests>1)
     {
-        // Create and give data
+        // Disable message box
+        g_pLog->DisableMessageBoxOnError();
+
+        // Must initialize libcurl before any threads are started
+        curl_global_init(CURL_GLOBAL_ALL);
+
+        // Create threads
         int end = -1;
         parallelRequests = wxMin(parallelRequests, (int)fileNames.size());
         int threadType = -1;
@@ -102,6 +108,10 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Wait until all done
         ThreadsManager().Wait(threadType);
+
+        // Enable message box and flush the logs
+        g_pLog->EnableMessageBoxOnError();
+        g_pLog->Flush();
 
         // Check the files
         for (unsigned int i_file=0; i_file<fileNames.size(); i_file++)
@@ -150,11 +160,14 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
-                if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
+                if (!currentFilePath.DirExists())
                 {
-                    asLogError(_("The directory to save real-time predictors data cannot be created."));
-                    wxDELETE(errorbuffer);
-                    return asFAILED;
+                    if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
+                    {
+                        asLogError(_("The directory to save real-time predictors data cannot be created."));
+                        wxDELETE(errorbuffer);
+                        return asFAILED;
+                    }
                 }
 
                 #if wxUSE_GUI
@@ -213,7 +226,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
                     // Log in case of failure
                     if(CURLE_OK != res) {
-                        asLogWarning(wxString::Format(_("Failed downloading file. Curl error code: %d"), res));
+                        asLogWarning(wxString::Format(_("Failed downloading file. Curl error code: %d"), int(res)));
                         asLogWarning(wxString::Format(_("Curl error message: %s"), errorbuffer));
                         wxDELETE(errorbuffer);
                         return asFAILED;

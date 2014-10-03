@@ -54,7 +54,7 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
 
     int rowsNb = m_pPredictors[0]->GetLatPtsnb();
     int colsNb = m_pPredictors[0]->GetLonPtsnb();
-    int timeSize = m_pPredictors[0]->GetSizeTime();
+    int timeSize = m_pPredictors[0]->GetTimeSize();
 
     Array1DFloat tmpgrad = Array1DFloat::Constant((rowsNb-1)*colsNb+rowsNb*(colsNb-1), NaNFloat);
 
