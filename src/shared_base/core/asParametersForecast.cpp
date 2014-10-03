@@ -184,6 +184,13 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
         if(!SetAnalogsNumberLeadTimeVector(i_step, GetFileParamInt(fileParams, "AnalogsNumber"))) return false;
         if(!fileParams.GoANodeBack()) return false;
 
+        // Check lead time sizes
+        if(GetAnalogsNumberLeadTimeVector(i_step).size()!=GetLeadTimeDaysVector().size())
+        {
+            asLogError(_("The length of the analogs numbers do not match the number of lead times."));
+            return false;
+        }
+
         // Get data
         if(!fileParams.GoToFirstNodeWithPath("Data")) return false;
         bool dataOver = false;
@@ -269,8 +276,8 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 }
                 else
                 {
-                    SetPredictorDatasetId(i_step, i_ptor, GetPreprocessDatasetId(i_step, i_ptor, 0));
-                    SetPredictorDataId(i_step, i_ptor, GetPreprocessDataId(i_step, i_ptor, 0));
+                    SetPredictorDatasetId(i_step, i_ptor, "mix");
+                    SetPredictorDataId(i_step, i_ptor, "mix");
                     SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
                     SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
                 }

@@ -49,12 +49,6 @@ public:
 
     int Download();
 
-    bool LoadFullArea(double date, float level);
-
-    bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
-
-    virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
-
     /** Update the RunDateInUse to the most recent hour or to the given date
      * \param now The desired date
      */
@@ -316,7 +310,7 @@ protected:
      * \param timeArray The time array to check
      * \return True if compatible with the data
      */
-    bool CheckTimeArray(asTimeArray &timeArray);
+    virtual bool CheckTimeArray(asTimeArray &timeArray);
 
 private:
 

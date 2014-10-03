@@ -74,6 +74,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
         }
 
         m_PredictandDB = asDataPredictand::GetInstance(m_PredictandDBFilePath);
+        if (!m_PredictandDB) return false;
 
         if(!m_PredictandDB->Load(m_PredictandDBFilePath))
         {
@@ -84,6 +85,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
     else
     {
         m_PredictandDB = asDataPredictand::GetInstance(predictandDBFilePath);
+        if (!m_PredictandDB) return false;
 
         if(!m_PredictandDB->Load(predictandDBFilePath))
         {

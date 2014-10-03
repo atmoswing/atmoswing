@@ -1049,12 +1049,12 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
 
                 Cleanup(predictorsPreprocess);
 
-                wxASSERT(newPredictor->GetSizeTime()>0);
+                wxASSERT(newPredictor->GetTimeSize()>0);
                 predictors.push_back(newPredictor);
                 continue;
             }
 
-            wxASSERT(desiredPredictor->GetSizeTime()>0);
+            wxASSERT(desiredPredictor->GetTimeSize()>0);
             predictors.push_back(desiredPredictor);
         }
         else
@@ -1489,9 +1489,9 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         {
             if (i>0)
             {
-                wxASSERT(predictors[i]->GetSizeTime()==prevTimeSize);
+                wxASSERT(predictors[i]->GetTimeSize()==prevTimeSize);
             }
-            prevTimeSize = predictors[i]->GetSizeTime();
+            prevTimeSize = predictors[i]->GetTimeSize();
         }
     #endif // _DEBUG
 
@@ -1758,13 +1758,19 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
 
         asResultsAnalogsForecastScores anaScores;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
+        asResultsAnalogsDates anaDatesTmp(anaDates);
+        Array2DFloat dates = anaDates.GetAnalogsDates();
 
         for (int i_anb=0; i_anb<=rowEnd; i_anb++)
         {
-            params.SetForecastScoreAnalogsNumber(analogsNbVect[i_anb]);
+            params.SetAnalogsNumber(i_step, analogsNbVect[i_anb]);
 
             // Fixes and checks
             params.FixAnalogsNb();
+            
+            // Extract analogs dates from former results
+            Array2DFloat subDates = dates.leftCols(params.GetAnalogsNumber(i_step));
+            anaDatesTmp.SetAnalogsDates(subDates);
 
             if(!GetAnalogsForecastScores(anaScores, params, anaValues, i_step))
                 return false;

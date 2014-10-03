@@ -203,7 +203,6 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 {
                     params.SetAnalogsNumber(i, initalAnalogsNb);
                 }
-                params.SetForecastScoreAnalogsNumber(initalAnalogsNb);
             }
             params.FixAnalogsNb();
 

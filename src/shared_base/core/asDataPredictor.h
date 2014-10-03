@@ -47,7 +47,11 @@ public:
     
     virtual bool Init() = 0;
 
-    virtual bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray) = 0;
+    bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
+    bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
+    bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
+    bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
+    bool LoadFullArea(double date, float level);
 
     bool Inline();
     
@@ -61,7 +65,8 @@ public:
      */
     VArray2DFloat& GetData()
     {
-        wxASSERT(m_Data.size()>0);
+        wxASSERT((int)m_Data.size()==(int)m_Time.size());
+        wxASSERT(m_Data.size()>1);
         wxASSERT(m_Data[0].cols()>0);
         wxASSERT(m_Data[0].rows()>0);
         wxASSERT(m_Data[1].cols()>0);
@@ -103,12 +108,12 @@ public:
         return m_DirectoryPath;
     }
 
-    /** Access m_SizeTime
+    /** Access the size of the time array
      * \return The current value of m_SizeTime
      */
-    int GetSizeTime()
+    int GetTimeSize()
     {
-        return m_SizeTime;
+        return (int)m_Time.size();
     }
 
     /** Access m_SizeLat
@@ -140,7 +145,7 @@ public:
      */
     double GetTimeEnd()
     {
-        return m_Time[m_SizeTime-1];
+        return m_Time[m_Time.size()-1];
     }
 
     /** Access m_IsPreprocessed
@@ -274,6 +279,7 @@ public:
 protected:
     wxString m_DirectoryPath;
     bool m_Initialized;
+    bool m_AxesChecked;
     wxString m_DataId;
     wxString m_DatasetId;
     wxString m_OriginalProvider;
@@ -294,34 +300,32 @@ protected:
     float m_UaxisShift;
     float m_VaxisShift;
     float m_Level;
-    Array1DDouble m_Time; //!< Member variable "m_Time"
-    VArray2DFloat m_Data; //!< Member variable "m_Data"
-    int m_SizeTime; //!< Member variable "m_SizeTime"
-    int m_LatPtsnb; //!< Member variable "m_SizeLat"
-    int m_LonPtsnb; //!< Member variable "m_SizeLon"
+    Array1DDouble m_Time;
+    VArray2DFloat m_Data;
+    int m_LatPtsnb; 
+    int m_LonPtsnb; 
+    size_t m_LatIndexStep; 
+    size_t m_LonIndexStep;
+    size_t m_TimeIndexStep;
     Array1DFloat m_AxisLat;
     Array1DFloat m_AxisLon;
-    bool m_IsPreprocessed; //!< Member variable "m_IsPreprocessed"
+    bool m_IsPreprocessed;
     bool m_CanBeClipped;
     wxString m_PreprocessMethod;
-
-    /** Method to extract the sizes of the area and the time array
-     * \param area The area
-     * \param timeArray The time array
-     * \return True if succeeded
+        
+    /** Method to check the time array compatibility with the data
+     * \param timeArray The time array to check
+     * \return True if compatible with the data
      */
-    bool GetSizes(asGeoAreaCompositeGrid &area, asTimeArray &timeArray);
+    virtual bool CheckTimeArray(asTimeArray &timeArray)
+    {
+        return false;
+    }
 
-    /** Method to resize (or reserve) the final data and time array containers
-     * \return True if succeeded
-     */
-    bool InitContainers();
-
-    /** Method to check the time array length
-     * \param counter The counter to compare
-     * \return True if correct
-     */
-    bool CheckTimeLength(int counter);
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+    {
+        return false;
+    }
 
     /** Method to merge data composites
      * \param compositeData The composite data to merge
@@ -336,6 +340,10 @@ protected:
      * \return True if succeeded
      */
     bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
+
+    asGeoAreaCompositeGrid* CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
+
+    asGeoAreaCompositeGrid* AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
 
 
 private:
