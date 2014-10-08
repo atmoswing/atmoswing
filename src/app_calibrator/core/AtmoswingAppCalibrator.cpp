@@ -267,7 +267,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
         pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/Processing/AllowMultithreading", true);
+        pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);

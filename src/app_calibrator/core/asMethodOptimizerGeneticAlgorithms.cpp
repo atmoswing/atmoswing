@@ -637,6 +637,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 if (!checkOK) return false;
 
                 if (enableMessageBox) Log().EnableMessageBoxOnError();
+                Log().Flush();
             }
             else
             {
