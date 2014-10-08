@@ -301,7 +301,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                         preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                         preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                     }
-                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
+                    else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
                     {
                         if (preprocSize!=2)
                         {
@@ -527,7 +527,6 @@ void asParametersCalibration::InitValues()
     wxASSERT(m_PredictandStationsIdsVect.size()>0);
     wxASSERT(m_TimeArrayAnalogsIntervalDaysVect.size()>0);
     wxASSERT(m_ForecastScoreVect.Name.size()>0);
-    wxASSERT(m_ForecastScoreVect.AnalogsNumber.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayMode.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayDate.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayIntervalDays.size()>0);
