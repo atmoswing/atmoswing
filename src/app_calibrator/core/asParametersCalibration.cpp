@@ -527,7 +527,6 @@ void asParametersCalibration::InitValues()
     wxASSERT(m_PredictandStationsIdsVect.size()>0);
     wxASSERT(m_TimeArrayAnalogsIntervalDaysVect.size()>0);
     wxASSERT(m_ForecastScoreVect.Name.size()>0);
-    wxASSERT(m_ForecastScoreVect.AnalogsNumber.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayMode.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayDate.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayIntervalDays.size()>0);
