@@ -231,247 +231,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     results_best_individual.Init(wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_generations;
     results_generations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    wxString resultsXmlFilePath = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
 
     // Reload previous results
-    if (g_ResumePreviousRun)
+    if (!ResumePreviousRun(params, results_generations))
     {
-        wxString resultsDir = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-        resultsDir.Append("/Calibration");
-
-        wxDir dir(resultsDir);
-        if ( !dir.IsOpened() )
-        {
-            asLogWarning(wxString::Format(_("The directory %s could not be opened."), resultsDir.c_str()));
-        }
-        else
-        {
-            // Check if the resulting file is already present
-            wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetPredictandStationIdsList(stationId).c_str());
-            if (dir.HasFiles(finalFilePattern))
-            {
-                asLogMessageImportant(wxString::Format(_("The directory %s already contains the resulting file."), resultsDir.c_str()));
-                return true;
-            }
-
-            // Look for intermediate results to load
-            wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt", GetPredictandStationIdsList(stationId).c_str());
-            if (dir.HasFiles(generationsFilePattern))
-            {
-                wxString generationsFileName;
-                dir.GetFirst(&generationsFileName, generationsFilePattern, wxDIR_FILES);
-                while (dir.GetNext(&generationsFileName)) {} // Select the last available.
-
-                asLogWarning(_("Previous intermediate results were found and will be loaded."));
-                printf(_("Previous intermediate results were found and will be loaded.\n"));
-                wxString filePath = resultsDir;
-                filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
-                asFileAscii prevResults(filePath, asFile::ReadOnly);
-                if (!prevResults.Open())
-                {
-                    asLogError(wxString::Format(_("Couldn't open the file %s."), filePath.c_str()));
-                    return false;
-                }
-                prevResults.SkipLines(1);
-
-                // Check that the content match the current parameters
-                wxString fileLine = prevResults.GetLineContent();
-                wxString firstLineCopy = fileLine;
-                wxString currentParamsPrint = m_OriginalParams.Print();
-                int indexInFile, indexInParams;
-
-                // Compare number of steps
-                while(true)
-                {
-                    indexInFile = firstLineCopy.Find("Step");
-                    indexInParams = currentParamsPrint.Find("Step");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
-                    {
-                        break;
-                    }
-                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
-                    {
-                        asLogError(_("The number of steps do not correspond between the current and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("Step", wxEmptyString, false);
-                    currentParamsPrint.Replace("Step", wxEmptyString, false);
-                }
-
-                // Compare number of predictors
-                while(true)
-                {
-                    indexInFile = firstLineCopy.Find("Ptor");
-                    indexInParams = currentParamsPrint.Find("Ptor");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
-                    {
-                        break;
-                    }
-                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
-                    {
-                        asLogError(_("The number of predictors do not correspond between the current and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("Ptor", wxEmptyString, false);
-                    currentParamsPrint.Replace("Ptor", wxEmptyString, false);
-                }
-
-                // Compare number of levels
-                while(true)
-                {
-                    indexInFile = firstLineCopy.Find("Level");
-                    indexInParams = currentParamsPrint.Find("Level");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
-                    {
-                        break;
-                    }
-                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
-                    {
-                        asLogError(_("The number of atmospheric levels do not correspond between the current and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("Level", wxEmptyString, false);
-                    currentParamsPrint.Replace("Level", wxEmptyString, false);
-                }
-
-                // Compare number of S1 criteria on gradients
-                while(true)
-                {
-                    indexInFile = firstLineCopy.Find("S1grads");
-                    indexInParams = currentParamsPrint.Find("S1grads");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
-                    {
-                        break;
-                    }
-                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
-                    {
-                        asLogError(_("The number of S1 criteria on gradients do not correspond between the current and the previous parameters."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("S1grads", wxEmptyString, false);
-                    currentParamsPrint.Replace("S1grads", wxEmptyString, false);
-                }
-
-                // Compare number of tabs
-                while(true)
-                {
-                    indexInFile = firstLineCopy.Find("\t");
-                    indexInParams = currentParamsPrint.Find("\t");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
-                    {
-                        break;
-                    }
-                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
-                    {
-                        // In the file, there should be 3 tabs more (for the scores)
-                        bool isOK = true;
-                        firstLineCopy.Replace("\t", " ", false);
-                        indexInFile = firstLineCopy.Find("\t");
-                        if (indexInFile == wxNOT_FOUND) isOK = false;
-                        firstLineCopy.Replace("\t", " ", false);
-                        indexInFile = firstLineCopy.Find("\t");
-                        if (indexInFile == wxNOT_FOUND) isOK = false;
-                        firstLineCopy.Replace("\t", " ", false);
-                        indexInFile = firstLineCopy.Find("\t");
-                        if (indexInFile != wxNOT_FOUND) isOK = false;
-
-                        if (!isOK)
-                        {
-                            asLogError(_("The number of tabs do not correspond between the current and the previous parameters."));
-                            return false;
-                        }
-
-                        break;
-                    }
-
-                    firstLineCopy.Replace("\t", " ", false);
-                    currentParamsPrint.Replace("\t", " ", false);
-                }
-
-                // Parse the parameters data
-                std::vector < asParametersOptimizationGAs > vectParams;
-                std::vector < float > vectScores;
-                do
-                {
-                    if (fileLine.IsEmpty()) break;
-
-                    asParametersOptimizationGAs prevParams = m_Parameters[0]; // And not m_OriginalParams due to initialization.
-                    if (!prevParams.GetValuesFromString(fileLine))
-                    {
-                        return false;
-                    }
-
-                    // Get the score
-                    int indexScoreCalib = fileLine.Find("Calib");
-                    int indexScoreValid = fileLine.Find("Valid");
-                    wxString strScore = fileLine.SubString(indexScoreCalib+6, indexScoreValid-2);
-                    double scoreVal;
-                    strScore.ToDouble(&scoreVal);
-                    float prevScoresCalib = float(scoreVal);
-
-                    // Add to the new array
-                    results_generations.Add(prevParams,prevScoresCalib);
-                    vectParams.push_back(prevParams);
-                    vectScores.push_back(prevScoresCalib);
-
-                    // Get next line
-                    fileLine = prevResults.GetLineContent();
-                }
-                while (!prevResults.EndOfFile());
-                prevResults.Close();
-
-                asLogMessageImportant(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
-                printf(wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
-
-                // Check that it is consistent with the population size
-                if (vectParams.size() % m_PopSize != 0)
-                {
-                    asLogError(wxString::Format(_("The number of former results is not consistent with the population size (%d)."), m_PopSize));
-                    return false;
-                }
-
-                // Restore the last generation
-                int genNb = vectParams.size() / m_PopSize;
-                for (int i_var=0; i_var<m_PopSize; i_var++)
-                {
-                    int i_last_gen = (genNb-1) * m_PopSize;
-
-                    wxASSERT(vectParams.size()>i_last_gen);
-                    wxASSERT(vectScores.size()>i_last_gen);
-                    m_Parameters[i_var] = vectParams[i_last_gen];
-                    m_ScoresCalib[i_var] = vectScores[i_last_gen];
-
-                    i_last_gen++;
-                }
-
-                // Restore best and mean scores
-                m_BestScores.resize(genNb);
-                m_MeanScores.resize(genNb);
-                for (int i_gen=0; i_gen<genNb; i_gen++)
-                {
-                    int i_best = i_gen * m_PopSize;
-                    m_BestScores[i_gen] = vectScores[i_best];
-
-                    float mean = 0;
-                    for (int i_next=0; i_next<m_PopSize; i_next++)
-                    {
-                        mean += vectScores[i_next];
-                    }
-
-                    m_MeanScores[i_gen] = mean/float(m_PopSize);
-                }
-
-                m_OptimizerStage = asREASSESSMENT;
-                m_Iterator = m_ParamsNb;
-                m_GenerationNb = genNb;
-            }
-        }
+        asLogError(_("Failed to resume previous runs"));
+        return false;
     }
 
     // Preload data
@@ -764,15 +532,261 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     if(!results_generations.Print()) return false;
 
     // Generate xml file with the best parameters set
-    if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
+    if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath))
+    {
+        asLogError(_("The output xml parameters file could not be generated."));
+    }
 
     // Print stats
     ThreadsManager().CritSectionConfig().Enter();
-    wxString statsFilePath = wxFileConfig::Get()->Read("/StandardPaths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    wxString statsFilePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     statsFilePath.Append(wxString::Format("/Calibration/%s_stats.txt", time.c_str()));
     asFileAscii stats(statsFilePath, asFile::New);
 
+    return true;
+}
+
+bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs &params, asResultsParametersArray &results_generations)
+{
+    if (g_ResumePreviousRun)
+    {
+        wxString resultsDir = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+        resultsDir.Append("/Calibration");
+
+        wxDir dir(resultsDir);
+        if ( !dir.IsOpened() )
+        {
+            asLogWarning(wxString::Format(_("The directory %s could not be opened."), resultsDir.c_str()));
+        }
+        else
+        {
+            // Check if the resulting file is already present
+            VectorInt stationId = params.GetPredictandStationIds();
+            wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt", GetPredictandStationIdsList(stationId).c_str());
+            if (dir.HasFiles(finalFilePattern))
+            {
+                asLogMessageImportant(wxString::Format(_("The directory %s already contains the resulting file."), resultsDir.c_str()));
+                return true;
+            }
+
+            // Look for intermediate results to load
+            wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt", GetPredictandStationIdsList(stationId).c_str());
+            if (dir.HasFiles(generationsFilePattern))
+            {
+                wxString generationsFileName;
+                dir.GetFirst(&generationsFileName, generationsFilePattern, wxDIR_FILES);
+                while (dir.GetNext(&generationsFileName)) {} // Select the last available.
+
+                asLogWarning(_("Previous intermediate results were found and will be loaded."));
+                printf(_("Previous intermediate results were found and will be loaded.\n"));
+                wxString filePath = resultsDir;
+                filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
+                asFileAscii prevResults(filePath, asFile::ReadOnly);
+                if (!prevResults.Open())
+                {
+                    asLogError(wxString::Format(_("Couldn't open the file %s."), filePath.c_str()));
+                    return false;
+                }
+                prevResults.SkipLines(1);
+
+                // Check that the content match the current parameters
+                wxString fileLine = prevResults.GetLineContent();
+                wxString firstLineCopy = fileLine;
+                wxString currentParamsPrint = m_OriginalParams.Print();
+                int indexInFile, indexInParams;
+
+                // Compare number of steps
+                while(true)
+                {
+                    indexInFile = firstLineCopy.Find("Step");
+                    indexInParams = currentParamsPrint.Find("Step");
+                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
+                    {
+                        break;
+                    }
+                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
+                    {
+                        asLogError(_("The number of steps do not correspond between the current and the previous parameters."));
+                        return false;
+                    }
+
+                    firstLineCopy.Replace("Step", wxEmptyString, false);
+                    currentParamsPrint.Replace("Step", wxEmptyString, false);
+                }
+
+                // Compare number of predictors
+                while(true)
+                {
+                    indexInFile = firstLineCopy.Find("Ptor");
+                    indexInParams = currentParamsPrint.Find("Ptor");
+                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
+                    {
+                        break;
+                    }
+                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
+                    {
+                        asLogError(_("The number of predictors do not correspond between the current and the previous parameters."));
+                        return false;
+                    }
+
+                    firstLineCopy.Replace("Ptor", wxEmptyString, false);
+                    currentParamsPrint.Replace("Ptor", wxEmptyString, false);
+                }
+
+                // Compare number of levels
+                while(true)
+                {
+                    indexInFile = firstLineCopy.Find("Level");
+                    indexInParams = currentParamsPrint.Find("Level");
+                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
+                    {
+                        break;
+                    }
+                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
+                    {
+                        asLogError(_("The number of atmospheric levels do not correspond between the current and the previous parameters."));
+                        return false;
+                    }
+
+                    firstLineCopy.Replace("Level", wxEmptyString, false);
+                    currentParamsPrint.Replace("Level", wxEmptyString, false);
+                }
+
+                // Compare number of S1 criteria on gradients
+                while(true)
+                {
+                    indexInFile = firstLineCopy.Find("S1grads");
+                    indexInParams = currentParamsPrint.Find("S1grads");
+                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
+                    {
+                        break;
+                    }
+                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
+                    {
+                        asLogError(_("The number of S1 criteria on gradients do not correspond between the current and the previous parameters."));
+                        return false;
+                    }
+
+                    firstLineCopy.Replace("S1grads", wxEmptyString, false);
+                    currentParamsPrint.Replace("S1grads", wxEmptyString, false);
+                }
+
+                // Compare number of tabs
+                while(true)
+                {
+                    indexInFile = firstLineCopy.Find("\t");
+                    indexInParams = currentParamsPrint.Find("\t");
+                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
+                    {
+                        break;
+                    }
+                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
+                    {
+                        // In the file, there should be 3 tabs more (for the scores)
+                        bool isOK = true;
+                        firstLineCopy.Replace("\t", " ", false);
+                        indexInFile = firstLineCopy.Find("\t");
+                        if (indexInFile == wxNOT_FOUND) isOK = false;
+                        firstLineCopy.Replace("\t", " ", false);
+                        indexInFile = firstLineCopy.Find("\t");
+                        if (indexInFile == wxNOT_FOUND) isOK = false;
+                        firstLineCopy.Replace("\t", " ", false);
+                        indexInFile = firstLineCopy.Find("\t");
+                        if (indexInFile != wxNOT_FOUND) isOK = false;
+
+                        if (!isOK)
+                        {
+                            asLogError(_("The number of tabs do not correspond between the current and the previous parameters."));
+                            return false;
+                        }
+
+                        break;
+                    }
+
+                    firstLineCopy.Replace("\t", " ", false);
+                    currentParamsPrint.Replace("\t", " ", false);
+                }
+
+                // Parse the parameters data
+                std::vector < asParametersOptimizationGAs > vectParams;
+                std::vector < float > vectScores;
+                do
+                {
+                    if (fileLine.IsEmpty()) break;
+
+                    asParametersOptimizationGAs prevParams = m_Parameters[0]; // And not m_OriginalParams due to initialization.
+                    if (!prevParams.GetValuesFromString(fileLine))
+                    {
+                        return false;
+                    }
+
+                    // Get the score
+                    int indexScoreCalib = fileLine.Find("Calib");
+                    int indexScoreValid = fileLine.Find("Valid");
+                    wxString strScore = fileLine.SubString(indexScoreCalib+6, indexScoreValid-2);
+                    double scoreVal;
+                    strScore.ToDouble(&scoreVal);
+                    float prevScoresCalib = float(scoreVal);
+
+                    // Add to the new array
+                    results_generations.Add(prevParams,prevScoresCalib);
+                    vectParams.push_back(prevParams);
+                    vectScores.push_back(prevScoresCalib);
+
+                    // Get next line
+                    fileLine = prevResults.GetLineContent();
+                }
+                while (!prevResults.EndOfFile());
+                prevResults.Close();
+
+                asLogMessageImportant(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
+                printf(wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
+
+                // Check that it is consistent with the population size
+                if (vectParams.size() % m_PopSize != 0)
+                {
+                    asLogError(wxString::Format(_("The number of former results is not consistent with the population size (%d)."), m_PopSize));
+                    return false;
+                }
+
+                // Restore the last generation
+                int genNb = vectParams.size() / m_PopSize;
+                for (int i_var=0; i_var<m_PopSize; i_var++)
+                {
+                    int i_last_gen = (genNb-1) * m_PopSize;
+
+                    wxASSERT(vectParams.size()>i_last_gen);
+                    wxASSERT(vectScores.size()>i_last_gen);
+                    m_Parameters[i_var] = vectParams[i_last_gen];
+                    m_ScoresCalib[i_var] = vectScores[i_last_gen];
+
+                    i_last_gen++;
+                }
+
+                // Restore best and mean scores
+                m_BestScores.resize(genNb);
+                m_MeanScores.resize(genNb);
+                for (int i_gen=0; i_gen<genNb; i_gen++)
+                {
+                    int i_best = i_gen * m_PopSize;
+                    m_BestScores[i_gen] = vectScores[i_best];
+
+                    float mean = 0;
+                    for (int i_next=0; i_next<m_PopSize; i_next++)
+                    {
+                        mean += vectScores[i_next];
+                    }
+
+                    m_MeanScores[i_gen] = mean/float(m_PopSize);
+                }
+
+                m_OptimizerStage = asREASSESSMENT;
+                m_Iterator = m_ParamsNb;
+                m_GenerationNb = genNb;
+            }
+        }
+    }
     return true;
 }
 
