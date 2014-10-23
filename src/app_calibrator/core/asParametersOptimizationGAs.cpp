@@ -379,7 +379,7 @@ int asParametersOptimizationGAs::GetParamType(int index)
                     // PreprocessLevel
                     if (counter==index)
                     {
-                        return 2;
+                        return 3;
                     }
                     counter++;
 
@@ -403,7 +403,7 @@ int asParametersOptimizationGAs::GetParamType(int index)
                 // Level
                 if (counter==index)
                 {
-                    return 2;
+                    return 3;
                 }
                 counter++;
 
