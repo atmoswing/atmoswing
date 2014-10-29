@@ -169,6 +169,11 @@ private:
 
     void OpenForecastsFromTmpList();
     bool OpenRecentForecasts();
+    void OnLoadPreviousForecast(wxCommandEvent & event );
+    void OnLoadNextForecast(wxCommandEvent & event );
+    void OnLoadPreviousDay(wxCommandEvent & event );
+    void OnLoadNextDay(wxCommandEvent & event );
+    void SwitchForecast( double increment );
     void OnOpenWorkspace( wxCommandEvent & event );
     void OnSaveWorkspace(wxCommandEvent & event);
     void OnSaveWorkspaceAs(wxCommandEvent & event);
