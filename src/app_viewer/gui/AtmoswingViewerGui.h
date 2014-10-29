@@ -19,6 +19,7 @@
 #include <wx/settings.h>
 #include <wx/string.h>
 #include <wx/stattext.h>
+#include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/splitter.h>
 #include <wx/bitmap.h>
@@ -28,7 +29,6 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
-#include <wx/button.h>
 #include <wx/checklst.h>
 #include <wx/choice.h>
 #include <wx/notebook.h>
@@ -64,6 +64,10 @@ class asFrameForecastVirtual : public wxFrame
 		wxBoxSizer* m_SizerTop;
 		wxBoxSizer* m_SizerTopLeft;
 		wxStaticText* m_StaticTextForecastDate;
+		wxButton* m_button51;
+		wxButton* m_button5;
+		wxButton* m_button6;
+		wxButton* m_button61;
 		wxStaticText* m_StaticTextForecastModel;
 		wxBoxSizer* m_SizerTopRight;
 		wxBoxSizer* m_SizerLeadTimeSwitch;
@@ -79,6 +83,10 @@ class asFrameForecastVirtual : public wxFrame
 		wxStatusBar* m_StatusBar;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnLoadPreviousDay( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLoadPreviousForecast( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLoadNextForecast( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLoadNextDay( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenWorkspace( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveWorkspace( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveWorkspaceAs( wxCommandEvent& event ) { event.Skip(); }

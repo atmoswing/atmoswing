@@ -52,12 +52,42 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	
 	m_SizerTopLeft = new wxBoxSizer( wxVERTICAL );
 	
+	wxBoxSizer* bSizer52;
+	bSizer52 = new wxBoxSizer( wxHORIZONTAL );
+	
 	m_StaticTextForecastDate = new wxStaticText( m_PanelTop, wxID_ANY, _("No forecast opened"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextForecastDate->Wrap( -1 );
 	m_StaticTextForecastDate->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
 	m_StaticTextForecastDate->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	
-	m_SizerTopLeft->Add( m_StaticTextForecastDate, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+	bSizer52->Add( m_StaticTextForecastDate, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_button51 = new wxButton( m_PanelTop, wxID_ANY, _("<<"), wxDefaultPosition, wxSize( 20,20 ), 0|wxNO_BORDER );
+	m_button51->SetForegroundColour( wxColour( 255, 255, 255 ) );
+	m_button51->SetBackgroundColour( wxColour( 77, 77, 77 ) );
+	
+	bSizer52->Add( m_button51, 0, wxALL, 5 );
+	
+	m_button5 = new wxButton( m_PanelTop, wxID_ANY, _("<"), wxDefaultPosition, wxSize( 20,20 ), 0|wxNO_BORDER );
+	m_button5->SetForegroundColour( wxColour( 255, 255, 255 ) );
+	m_button5->SetBackgroundColour( wxColour( 77, 77, 77 ) );
+	
+	bSizer52->Add( m_button5, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 3 );
+	
+	m_button6 = new wxButton( m_PanelTop, wxID_ANY, _(">"), wxDefaultPosition, wxSize( 20,20 ), 0|wxNO_BORDER );
+	m_button6->SetForegroundColour( wxColour( 255, 255, 255 ) );
+	m_button6->SetBackgroundColour( wxColour( 77, 77, 77 ) );
+	
+	bSizer52->Add( m_button6, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 3 );
+	
+	m_button61 = new wxButton( m_PanelTop, wxID_ANY, _(">>"), wxDefaultPosition, wxSize( 20,20 ), 0|wxNO_BORDER );
+	m_button61->SetForegroundColour( wxColour( 255, 255, 255 ) );
+	m_button61->SetBackgroundColour( wxColour( 77, 77, 77 ) );
+	
+	bSizer52->Add( m_button61, 0, wxALL, 5 );
+	
+	
+	m_SizerTopLeft->Add( bSizer52, 1, wxEXPAND, 5 );
 	
 	m_StaticTextForecastModel = new wxStaticText( m_PanelTop, wxID_ANY, _("No model selected"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextForecastModel->Wrap( -1 );
@@ -210,6 +240,10 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_button51->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousDay ), NULL, this );
+	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousForecast ), NULL, this );
+	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextForecast ), NULL, this );
+	m_button61->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextDay ), NULL, this );
 	this->Connect( m_MenuItemOpenWorkspace->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenWorkspace ) );
 	this->Connect( m_MenuItemSaveWorkspace->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspace ) );
 	this->Connect( m_MenuItemSaveWorkspaceAs->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspaceAs ) );
@@ -230,6 +264,10 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 asFrameForecastVirtual::~asFrameForecastVirtual()
 {
 	// Disconnect Events
+	m_button51->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousDay ), NULL, this );
+	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadPreviousForecast ), NULL, this );
+	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextForecast ), NULL, this );
+	m_button61->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameForecastVirtual::OnLoadNextDay ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnOpenWorkspace ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspace ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameForecastVirtual::OnSaveWorkspaceAs ) );

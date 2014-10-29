@@ -1232,8 +1232,112 @@ bool asFrameForecast::OpenRecentForecasts()
     return true;
 }
 
+void asFrameForecast::OnLoadPreviousForecast( wxCommandEvent & event )
+{
+    SwitchForecast( -1.0/24.0 );
+}
+
+void asFrameForecast::OnLoadNextForecast( wxCommandEvent & event )
+{
+    SwitchForecast( 1.0/24.0 );
+}
+
+void asFrameForecast::OnLoadPreviousDay( wxCommandEvent & event )
+{
+    SwitchForecast( -1.0 );
+}
+
+void asFrameForecast::OnLoadNextDay( wxCommandEvent & event )
+{
+    SwitchForecast( 1.0 );
+}
+
+void asFrameForecast::SwitchForecast( double increment )
+{
+    if (m_ForecastManager->GetCurrentForecastsNb()==0)
+    {
+        asLogError("There is no forecast open.");
+        return;
+    }
+
+    // Get path
+    VectorString forecastsPaths = m_ForecastManager->GetFilePaths();
+    int index = m_ForecastViewer->GetModelSelection();
+    wxASSERT(forecastsPaths.size()>index);
+    wxString forecastsPath = forecastsPaths[index];
+    wxFileName forecastFileName(forecastsPath);
+    wxString fileName = forecastFileName.GetName();
+    wxString partialFileName = fileName.SubString(10,fileName.size()-1);
+    wxString patternFileName = "%d%02d%02d%02d";
+    wxString prefixFileName = wxEmptyString;
+
+    forecastFileName.RemoveLastDir();
+    forecastFileName.RemoveLastDir();
+    forecastFileName.RemoveLastDir();
+    wxString forecastsBaseDirectory = forecastFileName.GetPath();
+    
+    if (!wxFileName::DirExists(forecastsBaseDirectory))
+    {
+        asLogError("The directory that is supposed to contain the forecasts does not exist.");
+        return;
+    }
+    
+    // Get date
+    double date = m_ForecastManager->GetLeadTimeOrigin();
+
+    // Look for former files
+    wxString basePath = forecastsBaseDirectory + wxFileName::GetPathSeparator();
+    wxFileName fullPath(basePath);
+    for (int i=0; i<100; i++)
+    {
+        date += increment;
+        fullPath = wxFileName(basePath);
+        fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(date)));
+        fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(date)));
+        fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(date)));
+        prefixFileName = wxString::Format(patternFileName, asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date), asTime::GetHour(date));
+        fullPath.SetName(prefixFileName + partialFileName);
+        fullPath.SetExt("fcst");
+
+        if (fullPath.Exists()) break;
+
+        if (i==99)
+        {
+            asLogError(wxString::Format(_("No previous/next forecast was found under %s"), fullPath.GetFullPath().c_str()));
+            return;
+        }
+    }
+    
+    // List the files in the directory
+    wxArrayString files;
+    wxDir::GetAllFiles (fullPath.GetPath(), &files);
+
+    // Identify the corresponding forecasts
+    wxArrayString accurateFiles;
+    for (int i=0; i<files.GetCount(); i++)
+    {
+        wxFileName fileName(files[i]);
+        wxString fileDate = fileName.GetFullName().SubString(0,9);
+
+        if (fileDate.IsSameAs(prefixFileName))
+        {
+            accurateFiles.Add(files[i]);
+        }
+    }
+
+    // Open the forecasts
+    m_ForecastManager->ClearForecasts();
+    if (!OpenForecast(accurateFiles))
+    {
+        asLogError(_("Failed to open the forecasts."));
+        return;
+    }
+}
+
 bool asFrameForecast::OpenForecast (const wxArrayString & names)
 {
+    if (names.GetCount()==0) return false;
+
     Freeze();
 
     // Close plots
