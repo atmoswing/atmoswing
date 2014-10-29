@@ -77,7 +77,9 @@ bool asWorkspace::Load(const wxString &filePath)
         {
             // Get attributes
             wxString path = fileWorkspace.GetFirstElementAttributeValueText("Path", "value");
-            m_LayerPaths.push_back(path);
+            wxFileName absolutePath(path);
+            absolutePath.Normalize();
+            m_LayerPaths.push_back(absolutePath.GetFullPath());
             wxString type = fileWorkspace.GetFirstElementAttributeValueText("Type", "value");
             m_LayerTypes.push_back(type);
             int transparency = fileWorkspace.GetFirstElementAttributeValueInt("Transparency", "value", 0);
@@ -94,7 +96,7 @@ bool asWorkspace::Load(const wxString &filePath)
                 wxString fillColorStr = fileWorkspace.GetFirstElementAttributeValueText("FillColor", "value", "black");
                 wxColour fillColor;
                 wxFromString(fillColorStr, &fillColor);
-                m_LayerFillColors.push_back(lineColor);
+                m_LayerFillColors.push_back(fillColor);
                 wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetFirstElementAttributeValueInt("BrushStyle", "value", wxBRUSHSTYLE_TRANSPARENT);
                 m_LayerBrushStyles.push_back(brushStyle);
             #endif
