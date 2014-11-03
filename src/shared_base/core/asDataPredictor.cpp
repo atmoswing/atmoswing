@@ -51,6 +51,10 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_VaxisStep = 0.0f;
     m_UaxisShift = 0.0f;
     m_VaxisShift = 0.0f;
+    m_FileAxisLatName = wxEmptyString;
+    m_FileAxisLonName = wxEmptyString;
+    m_FileAxisTimeName = wxEmptyString;
+    m_FileAxisLevelName = wxEmptyString;
 }
 
 asDataPredictor::~asDataPredictor()

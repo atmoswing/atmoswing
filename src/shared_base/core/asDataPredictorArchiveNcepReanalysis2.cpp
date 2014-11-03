@@ -58,6 +58,10 @@ asDataPredictorArchive(dataId)
     m_VaxisShift = 0;
     m_UaxisStep = 2.5;
     m_VaxisStep = 2.5;
+    m_FileAxisLatName = "lat";
+    m_FileAxisLonName = "lon";
+    m_FileAxisTimeName = "time";
+    m_FileAxisLevelName = "level";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("hgt", false))
@@ -240,23 +244,23 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeG
         if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
         // Get full axes from the netcdf file
-        Array1DFloat axisDataLon(ncFile.GetVarLength("lon"));
-        ncFile.GetVar("lon", &axisDataLon[0]);
-        Array1DFloat axisDataLat(ncFile.GetVarLength("lat"));
-        ncFile.GetVar("lat", &axisDataLat[0]);
+        Array1DFloat axisDataLon(ncFile.GetVarLength(m_FileAxisLonName));
+        ncFile.GetVar(m_FileAxisLonName, &axisDataLon[0]);
+        Array1DFloat axisDataLat(ncFile.GetVarLength(m_FileAxisLatName));
+        ncFile.GetVar(m_FileAxisLatName, &axisDataLat[0]);
         Array1DFloat axisDataLevel;
         if (nDims==4)
         {
-            axisDataLevel.resize(ncFile.GetVarLength("level"));
-            ncFile.GetVar("level", &axisDataLevel[0]);
+            axisDataLevel.resize(ncFile.GetVarLength(m_FileAxisLevelName));
+            ncFile.GetVar(m_FileAxisLevelName, &axisDataLevel[0]);
         }
         
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
 
         // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
-        size_t axisDataTimeLength = ncFile.GetVarLength("time");
-        double valFirstTime = ncFile.GetVarOneDouble("time", 0);
+        size_t axisDataTimeLength = ncFile.GetVarLength(m_FileAxisTimeName);
+        double valFirstTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, 0);
         valFirstTime = (valFirstTime/24.0); // hours to days
         valFirstTime += asTime::GetMJD(1800,1,1); // to MJD: add a negative time span
 

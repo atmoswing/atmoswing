@@ -60,6 +60,8 @@ asDataPredictorArchive(dataId)
     m_VaxisStep = 0.25;
     m_SubFolder = wxEmptyString;
     m_FileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
+    m_FileAxisLatName = "lat";
+    m_FileAxisLonName = "lon";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("sst", false))
@@ -164,11 +166,6 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
             return false;
         }
 
-        // Number of dimensions
-        int nDims = ncFile.GetNDims();
-        wxASSERT(nDims>=3);
-        wxASSERT(nDims<=4);
-
         // Get some attributes
         float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
         if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
@@ -178,49 +175,13 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
         // Get full axes from the netcdf file
-        Array1DFloat axisDataLon(ncFile.GetVarLength("lon"));
-        ncFile.GetVar("lon", &axisDataLon[0]);
-        Array1DFloat axisDataLat(ncFile.GetVarLength("lat"));
-        ncFile.GetVar("lat", &axisDataLat[0]);
-        Array1DFloat axisDataLevel;
-        if (nDims==4)
-        {
-            axisDataLevel.resize(ncFile.GetVarLength("level"));
-            ncFile.GetVar("level", &axisDataLevel[0]);
-        }
+        Array1DFloat axisDataLon(ncFile.GetVarLength(m_FileAxisLonName));
+        ncFile.GetVar(m_FileAxisLonName, &axisDataLon[0]);
+        Array1DFloat axisDataLat(ncFile.GetVarLength(m_FileAxisLatName));
+        ncFile.GetVar(m_FileAxisLatName, &axisDataLat[0]);
         
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
-
-        // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
-        size_t axisDataTimeLength = ncFile.GetVarLength("time");
-        double valFirstTime = ncFile.GetVarOneDouble("time", 0);
-        valFirstTime = (valFirstTime/24.0); // hours to days
-        valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-            
-        // Get the time length
-        double timeArrayIndex = timeArray.GetIndexFirstAfter(date);
-        int indexLengthTime = 1;
-        int indexLengthTimeArray = indexLengthTime;
-
-        // Correct the time start and end
-        size_t indexStartTime = 0;
-        int cutStart = 0;
-        if(date==dateFirst)
-        {
-            cutStart = timeArrayIndex;
-        }
-        int cutEnd = 0;
-        while (valFirstTime<timeArray[timeArrayIndex])
-        {
-            valFirstTime += m_TimeStepHours/24.0;
-            indexStartTime++;
-        }
-        if (indexStartTime+indexLengthTime>axisDataTimeLength)
-        {
-            indexLengthTime--;
-            cutEnd++;
-        }
 
         // Containers for extraction
         VectorInt vectIndexLengthLat;
@@ -294,99 +255,36 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
                 indexLengthLon = m_LonPtsnb;
                 indexLengthLat = m_LatPtsnb;
             }
-            int indexLevel = 0;
-            if (nDims==4)
-            {
-                indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_Level, 0.01f);
-            }
 
             // Create the arrays to receive the data
             VectorShort data, data360;
 
             // Resize the arrays to store the new data
-            int totLength = indexLengthTimeArray * indexLengthLat * indexLengthLon;
+            int totLength = indexLengthLat * indexLengthLon;
             wxASSERT(totLength>0);
             data.resize(totLength);
 
-            // Fill empty begining with NaNs
-            int indexBegining = 0;
-            if(cutStart>0)
-            {
-                int latlonlength = indexLengthLat*indexLengthLon;
-                for (int i_empty=0; i_empty<cutStart; i_empty++)
-                {
-                    for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                    {
-                        data[indexBegining] = NaNFloat;
-                        indexBegining++;
-                    }
-                }
-            }
-
-            // Fill empty end with NaNs
-            int indexEnd = indexLengthTime * indexLengthLat * indexLengthLon - 1;
-            if(cutEnd>0)
-            {
-                int latlonlength = indexLengthLat*indexLengthLon;
-                for (int i_empty=0; i_empty<cutEnd; i_empty++)
-                {
-                    for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                    {
-                        indexEnd++;
-                        data[indexEnd] = NaNFloat;
-                    }
-                }
-            }
-
             // Get the indices for data
-            size_t indexStartData4[4] = {0,0,0,0};
-            size_t indexCountData4[4] = {0,0,0,0};
-            ptrdiff_t indexStrideData4[4] = {0,0,0,0};
-            size_t indexStartData3[3] = {0,0,0};
-            size_t indexCountData3[3] = {0,0,0};
-            ptrdiff_t indexStrideData3[3] = {0,0,0};
+            size_t indexStartData[2] = {0,0};
+            size_t indexCountData[2] = {0,0};
+            ptrdiff_t indexStrideData[2] = {0,0};
 
-            if (nDims==4)
-            {
-                // Set the indices for data
-                indexStartData4[0] = indexStartTime;
-                indexStartData4[1] = indexLevel;
-                indexStartData4[2] = indexStartLat;
-                indexStartData4[3] = indexStartLon;
-                indexCountData4[0] = indexLengthTime;
-                indexCountData4[1] = 1;
-                indexCountData4[2] = indexLengthLat;
-                indexCountData4[3] = indexLengthLon;
-                indexStrideData4[0] = m_TimeIndexStep;
-                indexStrideData4[1] = 1;
-                indexStrideData4[2] = m_LatIndexStep;
-                indexStrideData4[3] = m_LonIndexStep;
+            // Set the indices for data
+            indexStartData[0] = indexStartLat;
+            indexStartData[1] = indexStartLon;
+            indexCountData[0] = indexLengthLat;
+            indexCountData[1] = indexLengthLon;
+            indexStrideData[0] = m_LatIndexStep;
+            indexStrideData[1] = m_LonIndexStep;
 
-                // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_FileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data[indexBegining]);
-            }
-            else
-            {
-                // Set the indices for data
-                indexStartData3[0] = indexStartTime;
-                indexStartData3[1] = indexStartLat;
-                indexStartData3[2] = indexStartLon;
-                indexCountData3[0] = indexLengthTime;
-                indexCountData3[1] = indexLengthLat;
-                indexCountData3[2] = indexLengthLon;
-                indexStrideData3[0] = m_TimeIndexStep;
-                indexStrideData3[1] = m_LatIndexStep;
-                indexStrideData3[2] = m_LonIndexStep;
-
-                // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_FileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data[indexBegining]);
-            }
+            // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
+            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[0]);
 
             // Load data at lon = 360 degrees
             if(load360)
             {
                 // Resize the arrays to store the new data
-                int totlength360 = indexLengthTimeArray * indexLengthLat * 1;
+                int totlength360 = indexLengthLat * 1;
                 data360.resize(totlength360);
 
                 // Set the indices
@@ -397,58 +295,12 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
                     indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], 0, 0.01f);
                 }
 
-                if (nDims==4)
-                {
-                    indexStartData4[3] = indexStartLon;
-                    indexCountData4[3] = 1;
-                    indexStrideData4[3] = 1;
-                }
-                else
-                {
-                    indexStartData3[2] = indexStartLon;
-                    indexCountData3[2] = 1;
-                    indexStrideData3[2] = 1;
-                }
-
-                // Fill empty begining with NaNs
-                int indexBegining = 0;
-                if(cutStart>0)
-                {
-                    int latlonlength = indexLengthLat*indexLengthLon;
-                    for (int i_empty=0; i_empty<cutStart; i_empty++)
-                    {
-                        for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                        {
-                            data360[indexBegining] = NaNFloat;
-                            indexBegining++;
-                        }
-                    }
-                }
-
-                // Fill empty end with NaNs
-                int indexEnd = (indexLengthTime-1) * (indexLengthLat-1) * (indexLengthLon-1);
-                if(cutEnd>0)
-                {
-                    int latlonlength = indexLengthLat*indexLengthLon;
-                    for (int i_empty=0; i_empty<cutEnd; i_empty++)
-                    {
-                        for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                        {
-                            indexEnd++;
-                            data360[indexEnd] = NaNFloat;
-                        }
-                    }
-                }
+                indexStartData[1] = indexStartLon;
+                indexCountData[1] = 1;
+                indexStrideData[1] = 1;
 
                 // Load data at 0 degrees (corresponds to 360 degrees)
-                if (nDims==4)
-                {
-                    ncFile.GetVarSample(m_FileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data360[indexBegining]);
-                }
-                else
-                {
-                    ncFile.GetVarSample(m_FileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data360[indexBegining]);
-                }
+                ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data360[0]);
             }
 
             // Keep data for later treatment
@@ -488,78 +340,76 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
 
             // Loop to extract the data from the array
             int ind = 0;
-            for (int i_time=0; i_time<indexLengthTimeArray; i_time++)
+            Array2DFloat latlonData;
+            if(load360)
             {
-                Array2DFloat latlonData;
+                latlonData = Array2DFloat(indexLengthLat,indexLengthLon+1);
+            }
+            else
+            {
+                latlonData = Array2DFloat(indexLengthLat,indexLengthLon);
+            }
+
+            for (int i_lat=0; i_lat<indexLengthLat; i_lat++)
+            {
+                for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
+                {
+                    ind = i_lon + i_lat * indexLengthLon;
+
+                    if (scalingNeeded)
+                    {
+                        latlonData(i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,i_lon) = (float)data[ind];
+                    }
+
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
+                    {
+                        if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
+                        {
+                            notNan = false;
+                        }
+                    }
+                    if (!notNan)
+                    {
+                        latlonData(i_lat,i_lon) = NaNFloat;
+                    }
+                }
+
                 if(load360)
                 {
-                    latlonData = Array2DFloat(indexLengthLat,indexLengthLon+1);
-                }
-                else
-                {
-                    latlonData = Array2DFloat(indexLengthLat,indexLengthLon);
-                }
+                    ind = i_lat;
 
-                for (int i_lat=0; i_lat<indexLengthLat; i_lat++)
-                {
-                    for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
+                    if (scalingNeeded)
                     {
-                        ind = i_lon + i_lat * indexLengthLon + i_time * indexLengthLon * indexLengthLat;
-
-                        if (scalingNeeded)
-                        {
-                            latlonData(i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
-                        }
-                        else
-                        {
-                            latlonData(i_lat,i_lon) = (float)data[ind];
-                        }
-
-                        // Check if not NaN
-                        bool notNan = true;
-                        for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
-                        {
-                            if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
-                            {
-                                notNan = false;
-                            }
-                        }
-                        if (!notNan)
-                        {
-                            latlonData(i_lat,i_lon) = NaNFloat;
-                        }
+                        latlonData(i_lat,indexLengthLon) = (float)data360[ind] * dataScaleFactor + dataAddOffset;
+                    }
+                    else
+                    {
+                        latlonData(i_lat,indexLengthLon) = (float)data360[ind];
                     }
 
-                    if(load360)
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
                     {
-                        ind = i_lat + i_time * indexLengthLat;
-
-                        if (scalingNeeded)
+                        if ((float)data360[ind]==m_NanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_NanValues[i_nan])
                         {
-                            latlonData(i_lat,indexLengthLon) = (float)data360[ind] * dataScaleFactor + dataAddOffset;
-                        }
-                        else
-                        {
-                            latlonData(i_lat,indexLengthLon) = (float)data360[ind];
-                        }
-
-                        // Check if not NaN
-                        bool notNan = true;
-                        for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
-                        {
-                            if ((float)data360[ind]==m_NanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_NanValues[i_nan])
-                            {
-                                notNan = false;
-                            }
-                        }
-                        if (!notNan)
-                        {
-                            latlonData(i_lat,indexLengthLon) = NaNFloat;
+                            notNan = false;
                         }
                     }
+                    if (!notNan)
+                    {
+                        latlonData(i_lat,indexLengthLon) = NaNFloat;
+                    }
                 }
-                compositeData[i_area].push_back(latlonData);
             }
+            compositeData[i_area].push_back(latlonData);
+
             data.clear();
             data360.clear();
         }
