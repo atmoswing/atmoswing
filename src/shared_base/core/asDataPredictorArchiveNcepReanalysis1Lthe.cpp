@@ -59,6 +59,10 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_UaxisStep = 2.5;
     m_VaxisStep = 2.5;
     m_SubFolder = wxEmptyString;
+    m_FileAxisLatName = "lat";
+    m_FileAxisLonName = "lon";
+    m_FileAxisTimeName = "time";
+    m_FileAxisLevelName = "level";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("hgt_500hPa", false))

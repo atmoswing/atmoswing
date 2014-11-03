@@ -312,6 +312,10 @@ protected:
     bool m_IsPreprocessed;
     bool m_CanBeClipped;
     wxString m_PreprocessMethod;
+    wxString m_FileAxisLatName;
+    wxString m_FileAxisLonName;
+    wxString m_FileAxisTimeName;
+    wxString m_FileAxisLevelName;
         
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check
