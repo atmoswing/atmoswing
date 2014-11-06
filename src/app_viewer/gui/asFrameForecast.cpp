@@ -1839,6 +1839,9 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 
     if (event.GetString().IsSameAs("last"))
     {
+        float previousDate = m_ForecastViewer->GetLeadTimeDate();
+        m_ForecastViewer->SetLeadTimeDate(previousDate);
+
         int modelIndex = m_ForecastViewer->GetModelSelection();
         if (modelIndex>event.GetInt() || modelIndex<0) 
         {

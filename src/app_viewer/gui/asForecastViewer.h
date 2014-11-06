@@ -54,6 +54,7 @@ public:
     void LoadPastForecast();
     void Redraw();
     void ChangeLeadTime( int val );
+    void SetLeadTimeDate(float date);
 
     int GetModelSelection()
     {
@@ -86,10 +87,19 @@ public:
         return m_LeadTimeIndex;
     }
 
+    /** Access the value of m_LeadTimeDate
+     * \return The current value of m_LeadTimeDate
+     */
+    float GetLeadTimeDate()
+    {
+        return m_LeadTimeDate;
+    }
+
 protected:
 
 private:
     int m_LeadTimeIndex;
+    float m_LeadTimeDate;
     float m_LayerMaxValue;
     bool m_Opened;
     asFrameForecast* m_Parent;
