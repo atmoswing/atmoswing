@@ -1839,7 +1839,13 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 
     if (event.GetString().IsSameAs("last"))
     {
-        m_ForecastViewer->SetModel(event.GetInt());
+        int modelIndex = m_ForecastViewer->GetModelSelection();
+        if (modelIndex>event.GetInt() || modelIndex<0) 
+        {
+            modelIndex = event.GetInt();
+        }
+        m_ForecastViewer->SetModel(modelIndex);
+        m_PanelSidebarForecasts->GetModelsCtrl()->SetSelection(modelIndex);
 
         UpdatePanelAlarms();
         UpdateHeaderTexts();
