@@ -266,9 +266,7 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             // Get axes length for preallocation
             m_LonPtsnb = axisDataLon.size();
             m_LatPtsnb = axisDataLat.size();
-            m_AxisLon.resize(axisDataLon.size());
             m_AxisLon = axisDataLon;
-            m_AxisLat.resize(axisDataLat.size());
             m_AxisLat = axisDataLat;
         }
         else
