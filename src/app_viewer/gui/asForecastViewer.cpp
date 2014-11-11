@@ -138,7 +138,7 @@ float asForecastViewer::GetSelectedTargetDate()
     wxASSERT(m_LeadTimeIndex>=0);
     if (m_LeadTimeIndex>=targetDates.size())
     {
-        m_LeadTimeIndex = targetDates.size()-1;
+        return 0;
     }
     return targetDates[m_LeadTimeIndex];
 }
