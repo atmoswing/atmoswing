@@ -91,8 +91,8 @@ TEST(LoadDataProp)
     CHECK_EQUAL(0,samestr);
     samestr = catalog.GetStationLocalId().CompareTo(_T("0060"));
     CHECK_EQUAL(0,samestr);
-    CHECK_EQUAL(708200,catalog.GetStationCoord().u);
-    CHECK_EQUAL(173800,catalog.GetStationCoord().v);
+    CHECK_EQUAL(708200,catalog.GetStationCoord().x);
+    CHECK_EQUAL(173800,catalog.GetStationCoord().y);
     CHECK_EQUAL(1190,catalog.GetStationHeight());
     samestr = catalog.GetStationFilename().CompareTo(_T("0060_1948-2007.dat"));
     CHECK_EQUAL(0,samestr);

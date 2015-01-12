@@ -1728,7 +1728,7 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
     }
     else
     {
-        asLogError(_("Operation not supported now"));
+        asLogError(_("Operation not supported now. Please contact the developers."));
     }
 
     wxDELETE(msg);

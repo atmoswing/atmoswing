@@ -283,8 +283,8 @@ void asForecastViewer::Redraw()
         for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
         {
             OGRPoint station;
-            station.setX( forecast->GetStationLocCoordU(i_stat) );
-            station.setY( forecast->GetStationLocCoordV(i_stat) );
+            station.setX( forecast->GetStationLocCoordX(i_stat) );
+            station.setY( forecast->GetStationLocCoordY(i_stat) );
 
             // Field container
             wxArrayDouble data;
@@ -395,8 +395,8 @@ void asForecastViewer::Redraw()
         for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
         {
             OGRPoint station;
-            station.setX( forecast->GetStationLocCoordU(i_stat) );
-            station.setY( forecast->GetStationLocCoordV(i_stat) );
+            station.setX( forecast->GetStationLocCoordX(i_stat) );
+            station.setY( forecast->GetStationLocCoordY(i_stat) );
 
             // Field container
             wxArrayDouble data;

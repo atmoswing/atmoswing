@@ -271,56 +271,56 @@ public:
         m_StationsLon = stationsLon;
     }
 
-    /** Access m_StationsLocCoordU
-     * \return The whole array m_StationsLocCoordU
+    /** Access m_StationsLocCoordX
+     * \return The whole array m_StationsLocCoordX
      */
-    Array1DDouble GetStationsLocCoordU()
+    Array1DDouble GetStationsLocCoordX()
     {
-        return m_StationsLocCoordU;
+        return m_StationsLocCoordX;
     }
 
-    /** Access an element of m_StationsLocCoordU
-     * \return An item of m_StationsLocCoordU
+    /** Access an element of m_StationsLocCoordX
+     * \return An item of m_StationsLocCoordX
      */
-    float GetStationLocCoordU(int i)
+    float GetStationLocCoordX(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationsLocCoordU.size());
-        return m_StationsLocCoordU[i];
+        wxASSERT(i<m_StationsLocCoordX.size());
+        return m_StationsLocCoordX[i];
     }
 
-    /** Set m_StationsLocCoordU
-     * \param stationsLocCoordU The new array to set
+    /** Set m_StationsLocCoordX
+     * \param stationsLocCoordX The new array to set
      */
-    void SetStationsLocCoordU(Array1DDouble &stationsLocCoordU)
+    void SetStationsLocCoordX(Array1DDouble &stationsLocCoordX)
     {
-        m_StationsLocCoordU = stationsLocCoordU;
+        m_StationsLocCoordX = stationsLocCoordX;
     }
 
-    /** Access m_StationsLocCoordV
-     * \return The whole array m_StationsLocCoordV
+    /** Access m_StationsLocCoordY
+     * \return The whole array m_StationsLocCoordY
      */
-    Array1DDouble GetStationsLocCoordV()
+    Array1DDouble GetStationsLocCoordY()
     {
-        return m_StationsLocCoordV;
+        return m_StationsLocCoordY;
     }
 
-    /** Access an element of m_StationsLocCoordV
-     * \return An item of m_StationsLocCoordV
+    /** Access an element of m_StationsLocCoordY
+     * \return An item of m_StationsLocCoordY
      */
-    double GetStationLocCoordV(int i)
+    double GetStationLocCoordY(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationsLocCoordV.size());
-        return m_StationsLocCoordV[i];
+        wxASSERT(i<m_StationsLocCoordY.size());
+        return m_StationsLocCoordY[i];
     }
 
-    /** Set m_StationsLocCoordV
-     * \param stationsLocCoordV The new array to set
+    /** Set m_StationsLocCoordY
+     * \param stationsLocCoordY The new array to set
      */
-    void SetStationsLocCoordV(Array1DDouble &stationsLocCoordV)
+    void SetStationsLocCoordY(Array1DDouble &stationsLocCoordY)
     {
-        m_StationsLocCoordV = stationsLocCoordV;
+        m_StationsLocCoordY = stationsLocCoordY;
     }
 
     /** Access m_ReferenceAxis
@@ -574,8 +574,8 @@ private:
     Array1DFloat m_StationsHeights; //!< Member variable "m_StationsHeight"
     Array1DDouble m_StationsLat; //!< Member variable "m_StationsLat"
     Array1DDouble m_StationsLon; //!< Member variable "m_StationsLon"
-    Array1DDouble m_StationsLocCoordU; //!< Member variable "m_StationsLocCoordU"
-    Array1DDouble m_StationsLocCoordV; //!< Member variable "m_StationsLocCoordV"
+    Array1DDouble m_StationsLocCoordX; //!< Member variable "m_StationsLocCoordX"
+    Array1DDouble m_StationsLocCoordY; //!< Member variable "m_StationsLocCoordY"
     Array1DFloat m_ReferenceAxis;
     Array2DFloat m_ReferenceValues;
     VArray1DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogCriteria"

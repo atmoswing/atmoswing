@@ -47,10 +47,10 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_TimeZoneHours = 0.0;
     m_TimeStepHours = 0.0;
     m_FirstTimeStepHours = 0.0;
-    m_UaxisStep = 0.0f;
-    m_VaxisStep = 0.0f;
-    m_UaxisShift = 0.0f;
-    m_VaxisShift = 0.0f;
+    m_XaxisStep = 0.0f;
+    m_YaxisStep = 0.0f;
+    m_XaxisShift = 0.0f;
+    m_YaxisShift = 0.0f;
     m_FileAxisLatName = wxEmptyString;
     m_FileAxisLonName = wxEmptyString;
     m_FileAxisTimeName = wxEmptyString;
@@ -204,42 +204,42 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
 {
     if (desiredArea)
     {
-        double dataUmin, dataVmin, dataUmax, dataVmax, dataUstep, dataVstep;
-        int dataUptsnb, dataVptsnb;
+        double dataXmin, dataYmin, dataXmax, dataYmax, dataXstep, dataYstep;
+        int dataXptsnb, dataYptsnb;
         wxString gridType = desiredArea->GetGridTypeString();
         if (gridType.IsSameAs("Regular", false))
         {
-            dataUmin = floor((desiredArea->GetAbsoluteUmin()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
-            dataVmin = floor((desiredArea->GetAbsoluteVmin()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
-            dataUmax = ceil((desiredArea->GetAbsoluteUmax()-m_UaxisShift)/m_UaxisStep)*m_UaxisStep+m_UaxisShift;
-            dataVmax = ceil((desiredArea->GetAbsoluteVmax()-m_VaxisShift)/m_VaxisStep)*m_VaxisStep+m_VaxisShift;
-            dataUstep = m_UaxisStep;
-            dataVstep = m_VaxisStep;
-            dataUptsnb = (dataUmax-dataUmin)/dataUstep+1;
-            dataVptsnb = (dataVmax-dataVmin)/dataVstep+1;
+            dataXmin = floor((desiredArea->GetAbsoluteXmin()-m_XaxisShift)/m_XaxisStep)*m_XaxisStep+m_XaxisShift;
+            dataYmin = floor((desiredArea->GetAbsoluteYmin()-m_YaxisShift)/m_YaxisStep)*m_YaxisStep+m_YaxisShift;
+            dataXmax = ceil((desiredArea->GetAbsoluteXmax()-m_XaxisShift)/m_XaxisStep)*m_XaxisStep+m_XaxisShift;
+            dataYmax = ceil((desiredArea->GetAbsoluteYmax()-m_YaxisShift)/m_YaxisStep)*m_YaxisStep+m_YaxisShift;
+            dataXstep = m_XaxisStep;
+            dataYstep = m_YaxisStep;
+            dataXptsnb = (dataXmax-dataXmin)/dataXstep+1;
+            dataYptsnb = (dataYmax-dataYmin)/dataYstep+1;
         }
         else
         {
-            dataUmin = desiredArea->GetAbsoluteUmin();
-            dataVmin = desiredArea->GetAbsoluteVmin();
-            dataUstep = desiredArea->GetUstep();
-            dataVstep = desiredArea->GetVstep();
-            dataUptsnb = desiredArea->GetUaxisPtsnb();
-            dataVptsnb = desiredArea->GetVaxisPtsnb();
-            if (!asTools::IsNaN(m_UaxisStep) && !asTools::IsNaN(m_VaxisStep) && (dataUstep!=m_UaxisStep || dataVstep!=m_VaxisStep))
+            dataXmin = desiredArea->GetAbsoluteXmin();
+            dataYmin = desiredArea->GetAbsoluteYmin();
+            dataXstep = desiredArea->GetXstep();
+            dataYstep = desiredArea->GetYstep();
+            dataXptsnb = desiredArea->GetXaxisPtsnb();
+            dataYptsnb = desiredArea->GetYaxisPtsnb();
+            if (!asTools::IsNaN(m_XaxisStep) && !asTools::IsNaN(m_YaxisStep) && (dataXstep!=m_XaxisStep || dataYstep!=m_YaxisStep))
             {
                 asLogError(_("Interpolation is not allowed on irregular grids."));
                 return NULL;
             }
         }
 
-        asGeoAreaCompositeGrid* dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataUmin, dataUptsnb, dataUstep, dataVmin, dataVptsnb, dataVstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+        asGeoAreaCompositeGrid* dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataXmin, dataXptsnb, dataXstep, dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false))
         {
-            m_LonIndexStep = dataArea->GetUstep()/m_UaxisStep;
-            m_LatIndexStep = dataArea->GetVstep()/m_VaxisStep;
+            m_LonIndexStep = dataArea->GetXstep()/m_XaxisStep;
+            m_LatIndexStep = dataArea->GetYstep()/m_YaxisStep;
         }
         else
         {
@@ -248,8 +248,8 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
         }
 
         // Get axes length for preallocation
-        m_LonPtsnb = dataArea->GetUaxisPtsnb();
-        m_LatPtsnb = dataArea->GetVaxisPtsnb();
+        m_LonPtsnb = dataArea->GetXaxisPtsnb();
+        m_LatPtsnb = dataArea->GetYaxisPtsnb();
 
         return dataArea;
     }
@@ -274,24 +274,24 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             // Check that requested data do not overtake the file
             for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
             {
-                Array1DDouble axisLonComp = dataArea->GetUaxisComposite(i_comp);
+                Array1DDouble axisLonComp = dataArea->GetXaxisComposite(i_comp);
 
                 if (axisDataLon[axisDataLon.size()-1]>axisDataLon[0])
                 {
                     wxASSERT(axisLonComp[axisLonComp.size()-1]>=axisLonComp[0]);
 
                     // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[axisDataLon.size()-1] && axisLonComp[0]<axisDataLon[axisDataLon.size()-1] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisUmax())
+                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[axisDataLon.size()-1] && axisLonComp[0]<axisDataLon[axisDataLon.size()-1] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisXmax())
                     {
                         asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Uwidth = axisDataLon[axisDataLon.size()-1]-dataArea->GetAbsoluteUmin();
-                        wxASSERT(Uwidth>=0);
-                        int Uptsnb = 1+Uwidth/dataArea->GetUstep();
-                        asLogMessage(wxString::Format(_("Uptsnb = %d."), Uptsnb));
+                        double Xwidth = axisDataLon[axisDataLon.size()-1]-dataArea->GetAbsoluteXmin();
+                        wxASSERT(Xwidth>=0);
+                        int Xptsnb = 1+Xwidth/dataArea->GetXstep();
+                        asLogMessage(wxString::Format(_("Xptsnb = %d."), Xptsnb));
                         asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), Uptsnb,
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            dataArea->GetVaxisPtsnb(), dataArea->GetVstep(),
+                                                                            dataArea->GetAbsoluteXmin(), Xptsnb,
+                                                                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
+                                                                            dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
                                                                             dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
@@ -303,17 +303,17 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     wxASSERT(axisLonComp[axisLonComp.size()-1]>=axisLonComp[0]);
 
                     // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[0] && axisLonComp[0]<axisDataLon[0] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisUmax())
+                    if (axisLonComp[axisLonComp.size()-1]>axisDataLon[0] && axisLonComp[0]<axisDataLon[0] && axisLonComp[axisLonComp.size()-1]!=dataArea->GetAxisXmax())
                     {
                         asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Uwidth = axisDataLon[0]-dataArea->GetAbsoluteUmin();
-                        wxASSERT(Uwidth>=0);
-                        int Uptsnb = 1+Uwidth/dataArea->GetUstep();
-                        asLogMessage(wxString::Format(_("Uptsnb = %d."), Uptsnb));
+                        double Xwidth = axisDataLon[0]-dataArea->GetAbsoluteXmin();
+                        wxASSERT(Xwidth>=0);
+                        int Xptsnb = 1+Xwidth/dataArea->GetXstep();
+                        asLogMessage(wxString::Format(_("Xptsnb = %d."), Xptsnb));
                         asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), Uptsnb,
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            dataArea->GetVaxisPtsnb(), dataArea->GetVstep(),
+                                                                            dataArea->GetAbsoluteXmin(), Xptsnb,
+                                                                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
+                                                                            dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
                                                                             dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
@@ -322,19 +322,19 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                 }
             }
 
-            Array1DDouble axisLon = dataArea->GetUaxis();
+            Array1DDouble axisLon = dataArea->GetXaxis();
             m_AxisLon.resize(axisLon.size());
             for (int i=0; i<axisLon.size(); i++)
             {
                 m_AxisLon[i] = (float)axisLon[i];
             }
-            m_LonPtsnb = dataArea->GetUaxisPtsnb();
+            m_LonPtsnb = dataArea->GetXaxisPtsnb();
             wxASSERT_MSG(m_AxisLon.size()==m_LonPtsnb, wxString::Format("m_AxisLon.size()=%d, m_LonPtsnb=%d",(int)m_AxisLon.size(),m_LonPtsnb));
 
             // Check that requested data do not overtake the file
             for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
             {
-                Array1DDouble axisLatComp = dataArea->GetVaxisComposite(i_comp);
+                Array1DDouble axisLatComp = dataArea->GetYaxisComposite(i_comp);
 
                 if (axisDataLat[axisDataLat.size()-1]>axisDataLat[0])
                 {
@@ -344,14 +344,14 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     if (axisLatComp[axisLatComp.size()-1]>axisDataLat[axisDataLat.size()-1] && axisLatComp[0]<axisDataLat[axisDataLat.size()-1])
                     {
                         asLogMessage(_("Correcting the latitude extent according to the file limits."));
-                        double Vwidth = axisDataLat[axisDataLat.size()-1]-dataArea->GetAbsoluteVmin();
-                        wxASSERT(Vwidth>=0);
-                        int Vptsnb = 1+Vwidth/dataArea->GetVstep();
-                        asLogMessage(wxString::Format(_("Vptsnb = %d."), Vptsnb));
+                        double Ywidth = axisDataLat[axisDataLat.size()-1]-dataArea->GetAbsoluteYmin();
+                        wxASSERT(Ywidth>=0);
+                        int Yptsnb = 1+Ywidth/dataArea->GetYstep();
+                        asLogMessage(wxString::Format(_("Yptsnb = %d."), Yptsnb));
                         asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), dataArea->GetUaxisPtsnb(),
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            Vptsnb, dataArea->GetVstep(),
+                                                                            dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
+                                                                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
+                                                                            Yptsnb, dataArea->GetYstep(),
                                                                             dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
@@ -367,14 +367,14 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     if (axisLatComp[axisLatComp.size()-1]>axisDataLat[0] && axisLatComp[0]<axisDataLat[0])
                     {
                         asLogMessage(_("Correcting the latitude extent according to the file limits."));
-                        double Vwidth = axisDataLat[0]-dataArea->GetAbsoluteVmin();
-                        wxASSERT(Vwidth>=0);
-                        int Vptsnb = 1+Vwidth/dataArea->GetVstep();
-                        asLogMessage(wxString::Format(_("Vptsnb = %d."), Vptsnb));
+                        double Ywidth = axisDataLat[0]-dataArea->GetAbsoluteYmin();
+                        wxASSERT(Ywidth>=0);
+                        int Yptsnb = 1+Ywidth/dataArea->GetYstep();
+                        asLogMessage(wxString::Format(_("Yptsnb = %d."), Yptsnb));
                         asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
-                                                                            dataArea->GetAbsoluteUmin(), dataArea->GetUaxisPtsnb(),
-                                                                            dataArea->GetUstep(), dataArea->GetAbsoluteVmin(),
-                                                                            Vptsnb, dataArea->GetVstep(),
+                                                                            dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
+                                                                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
+                                                                            Yptsnb, dataArea->GetYstep(),
                                                                             dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
@@ -383,14 +383,14 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                 }
             }
 
-            Array1DDouble axisLat = dataArea->GetVaxis();
+            Array1DDouble axisLat = dataArea->GetYaxis();
             m_AxisLat.resize(axisLat.size());
             for (int i=0; i<axisLat.size(); i++)
             {
                 // Latitude axis in reverse order
                 m_AxisLat[i] = (float)axisLat[axisLat.size()-1-i];
             }
-            m_LatPtsnb = dataArea->GetVaxisPtsnb();
+            m_LatPtsnb = dataArea->GetYaxisPtsnb();
             wxASSERT_MSG(m_AxisLat.size()==m_LatPtsnb, wxString::Format("m_AxisLat.size()=%d, m_LatPtsnb=%d",(int)m_AxisLat.size(),m_LatPtsnb));
         }
 
@@ -456,22 +456,22 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
         // Resize containers for composite areas
         for (int i_area = 0; i_area<area->GetNbComposites(); i_area++)
         {
-            if((area->GetComposite(i_area).GetUmax()==area->GetUmax()) & (area->GetComposite(i_area).GetVmin()==area->GetVmin()))
+            if((area->GetComposite(i_area).GetXmax()==area->GetXmax()) & (area->GetComposite(i_area).GetYmin()==area->GetYmin()))
             {
                 blockUL.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
                 isblockUL = i_area;
             }
-            else if((area->GetComposite(i_area).GetUmin()==area->GetUmin()) & (area->GetComposite(i_area).GetVmin()==area->GetVmin()))
+            else if((area->GetComposite(i_area).GetXmin()==area->GetXmin()) & (area->GetComposite(i_area).GetYmin()==area->GetYmin()))
             {
                 blockUR.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
                 isblockUR = i_area;
             }
-            else if((area->GetComposite(i_area).GetUmax()==area->GetUmax()) & (area->GetComposite(i_area).GetVmax()==area->GetVmax()))
+            else if((area->GetComposite(i_area).GetXmax()==area->GetXmax()) & (area->GetComposite(i_area).GetYmax()==area->GetYmax()))
             {
                 blockLL.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
                 isblockLL = i_area;
             }
-            else if((area->GetComposite(i_area).GetUmin()==area->GetUmin()) & (area->GetComposite(i_area).GetVmax()==area->GetVmax()))
+            else if((area->GetComposite(i_area).GetXmin()==area->GetXmin()) & (area->GetComposite(i_area).GetYmax()==area->GetYmax()))
             {
                 blockLR.resize(compositeData[i_area][0].rows(),compositeData[i_area][0].cols());
                 isblockLR = i_area;
@@ -535,16 +535,16 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
     wxASSERT(dataArea->GetNbComposites()>0);
     wxASSERT(desiredArea);
     wxASSERT(desiredArea->GetNbComposites()>0);
-    bool changeUstart=false, changeUsteps=false, changeVstart=false, changeVsteps=false;
+    bool changeUstart=false, changeXsteps=false, changeVstart=false, changeYsteps=false;
 
     // Check beginning on longitudes
-    if (dataArea->GetAbsoluteUmin()!=desiredArea->GetAbsoluteUmin())
+    if (dataArea->GetAbsoluteXmin()!=desiredArea->GetAbsoluteXmin())
     {
         changeUstart = true;
     }
 
     // Check beginning on latitudes
-    if (dataArea->GetAbsoluteVmin()!=desiredArea->GetAbsoluteVmin())
+    if (dataArea->GetAbsoluteYmin()!=desiredArea->GetAbsoluteYmin())
     {
         changeVstart = true;
     }
@@ -552,66 +552,66 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
     // Check the cells size on longitudes
     if (!dataArea->GridsOverlay(desiredArea))
     {
-        changeUsteps = true;
-        changeVsteps = true;
+        changeXsteps = true;
+        changeYsteps = true;
     }
 
     // Proceed to the interpolation
-    if (changeUstart || changeVstart || changeUsteps || changeVsteps)
+    if (changeUstart || changeVstart || changeXsteps || changeYsteps)
     {
         // Containers for results
-        int finalLengthLon = desiredArea->GetUaxisPtsnb();
-        int finalLengthLat = desiredArea->GetVaxisPtsnb();
+        int finalLengthLon = desiredArea->GetXaxisPtsnb();
+        int finalLengthLat = desiredArea->GetYaxisPtsnb();
         VArray2DFloat latlonTimeData(m_Data.size(), Array2DFloat(finalLengthLat,finalLengthLon));
 
         // Creation of the axes
         Array1DFloat axisDataLon;
-        if(dataArea->GetUaxisPtsnb()>1)
+        if(dataArea->GetXaxisPtsnb()>1)
         {
-            axisDataLon = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetUaxisPtsnb(), dataArea->GetAbsoluteUmin(), dataArea->GetAbsoluteUmax());
+            axisDataLon = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetXaxisPtsnb(), dataArea->GetAbsoluteXmin(), dataArea->GetAbsoluteXmax());
         }
         else
         {
             axisDataLon.resize(1);
-            axisDataLon << dataArea->GetAbsoluteUmin();
+            axisDataLon << dataArea->GetAbsoluteXmin();
         }
 
         Array1DFloat axisDataLat;
-        if(dataArea->GetVaxisPtsnb()>1)
+        if(dataArea->GetYaxisPtsnb()>1)
         {
-            axisDataLat = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetVaxisPtsnb(), dataArea->GetAbsoluteVmax(), dataArea->GetAbsoluteVmin()); // From top to bottom
+            axisDataLat = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetYaxisPtsnb(), dataArea->GetAbsoluteYmax(), dataArea->GetAbsoluteYmin()); // From top to bottom
         }
         else
         {
             axisDataLat.resize(1);
-            axisDataLat << dataArea->GetAbsoluteVmax();
+            axisDataLat << dataArea->GetAbsoluteYmax();
         }
 
         Array1DFloat axisFinalLon;
-        if(desiredArea->GetUaxisPtsnb()>1)
+        if(desiredArea->GetXaxisPtsnb()>1)
         {
-            axisFinalLon = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetUaxisPtsnb(), desiredArea->GetAbsoluteUmin(), desiredArea->GetAbsoluteUmax());
+            axisFinalLon = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetXaxisPtsnb(), desiredArea->GetAbsoluteXmin(), desiredArea->GetAbsoluteXmax());
         }
         else
         {
             axisFinalLon.resize(1);
-            axisFinalLon << desiredArea->GetAbsoluteUmin();
+            axisFinalLon << desiredArea->GetAbsoluteXmin();
         }
 
         Array1DFloat axisFinalLat;
-        if(desiredArea->GetVaxisPtsnb()>1)
+        if(desiredArea->GetYaxisPtsnb()>1)
         {
-            axisFinalLat = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetVaxisPtsnb(), desiredArea->GetAbsoluteVmax(), desiredArea->GetAbsoluteVmin()); // From top to bottom
+            axisFinalLat = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetYaxisPtsnb(), desiredArea->GetAbsoluteYmax(), desiredArea->GetAbsoluteYmin()); // From top to bottom
         }
         else
         {
             axisFinalLat.resize(1);
-            axisFinalLat << desiredArea->GetAbsoluteVmax();
+            axisFinalLat << desiredArea->GetAbsoluteYmax();
         }
 
         // Indices
-        int indexUfloor, indexUceil;
-        int indexVfloor, indexVceil;
+        int indexXfloor, indexXceil;
+        int indexYfloor, indexYceil;
         int axisDataLonEnd = axisDataLon.size()-1;
         int axisDataLatEnd = axisDataLat.size()-1;
 
@@ -619,7 +619,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
         int indexLastLon=0, indexLastLat=0;
 
         // Variables
-        double dU, dV;
+        double dX, dY;
         float valLLcorner, valULcorner, valLRcorner, valURcorner;
 
         // The interpolation loop
@@ -631,22 +631,22 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                 // Try the 2 next latitudes (from the top)
                 if (axisDataLat.size()>indexLastLat+1 && axisDataLat[indexLastLat+1]==axisFinalLat[i_lat])
                 {
-                    indexVfloor = indexLastLat+1;
-                    indexVceil = indexLastLat+1;
+                    indexYfloor = indexLastLat+1;
+                    indexYceil = indexLastLat+1;
                 }
                 else if (axisDataLat.size()>indexLastLat+2 && axisDataLat[indexLastLat+2]==axisFinalLat[i_lat])
                 {
-                    indexVfloor = indexLastLat+2;
-                    indexVceil = indexLastLat+2;
+                    indexYfloor = indexLastLat+2;
+                    indexYceil = indexLastLat+2;
                 }
                 else
                 {
                     // Search for floor and ceil
-                    indexVfloor = indexLastLat + asTools::SortedArraySearchFloor(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[i_lat]);
-                    indexVceil = indexLastLat + asTools::SortedArraySearchCeil(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[i_lat]);
+                    indexYfloor = indexLastLat + asTools::SortedArraySearchFloor(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[i_lat]);
+                    indexYceil = indexLastLat + asTools::SortedArraySearchCeil(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[i_lat]);
                 }
 
-                if( indexVfloor==asOUT_OF_RANGE || indexVfloor==asNOT_FOUND || indexVceil==asOUT_OF_RANGE || indexVceil==asNOT_FOUND)
+                if( indexYfloor==asOUT_OF_RANGE || indexYfloor==asNOT_FOUND || indexYceil==asOUT_OF_RANGE || indexYceil==asNOT_FOUND)
                 {
                     asLogError(wxString::Format(_("The desired point is not available in the data for interpolation. Latitude %f was not found inbetween %f (index %d) to %f (index %d) (size = %d)."),
                                                 axisFinalLat[i_lat], axisDataLat[indexLastLat], indexLastLat, axisDataLat[axisDataLatEnd], axisDataLatEnd, (int)axisDataLat.size()));
@@ -656,29 +656,29 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                 wxASSERT(indexVceil>=0);
 
                 // Save last index
-                indexLastLat = indexVfloor;
+                indexLastLat = indexYfloor;
 
                 for (int i_lon=0; i_lon<finalLengthLon; i_lon++)
                 {
                     // Try the 2 next longitudes
                     if (axisDataLon.size()>indexLastLon+1 && axisDataLon[indexLastLon+1]==axisFinalLon[i_lon])
                     {
-                        indexUfloor = indexLastLon+1;
-                        indexUceil = indexLastLon+1;
+                        indexXfloor = indexLastLon+1;
+                        indexXceil = indexLastLon+1;
                     }
                     else if (axisDataLon.size()>indexLastLon+2 && axisDataLon[indexLastLon+2]==axisFinalLon[i_lon])
                     {
-                        indexUfloor = indexLastLon+2;
-                        indexUceil = indexLastLon+2;
+                        indexXfloor = indexLastLon+2;
+                        indexXceil = indexLastLon+2;
                     }
                     else
                     {
                         // Search for floor and ceil
-                        indexUfloor = indexLastLon + asTools::SortedArraySearchFloor(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd], axisFinalLon[i_lon]);
-                        indexUceil = indexLastLon + asTools::SortedArraySearchCeil(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd], axisFinalLon[i_lon]);
+                        indexXfloor = indexLastLon + asTools::SortedArraySearchFloor(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd], axisFinalLon[i_lon]);
+                        indexXceil = indexLastLon + asTools::SortedArraySearchCeil(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd], axisFinalLon[i_lon]);
                     }
 
-                    if( indexUfloor==asOUT_OF_RANGE || indexUfloor==asNOT_FOUND || indexUceil==asOUT_OF_RANGE || indexUceil==asNOT_FOUND)
+                    if( indexXfloor==asOUT_OF_RANGE || indexXfloor==asNOT_FOUND || indexXceil==asOUT_OF_RANGE || indexXceil==asNOT_FOUND)
                     {
                         asLogError(wxString::Format(_("The desired point is not available in the data for interpolation. Longitude %f was not found inbetween %f to %f."), axisFinalLon[i_lon], axisDataLon[indexLastLon], axisDataLon[axisDataLonEnd]));
                         return false;
@@ -688,58 +688,58 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                     wxASSERT(indexUceil>=0);
 
                     // Save last index
-                    indexLastLon = indexUfloor;
+                    indexLastLon = indexXfloor;
 
                     // Proceed to the interpolation
-                    if (indexUceil==indexUfloor)
+                    if (indexXceil==indexXfloor)
                     {
-                        dU = 0;
+                        dX = 0;
                     }
                     else
                     {
-                        dU = (axisFinalLon[i_lon]-axisDataLon[indexUfloor])/(axisDataLon[indexUceil]-axisDataLon[indexUfloor]);
+                        dX = (axisFinalLon[i_lon]-axisDataLon[indexXfloor])/(axisDataLon[indexXceil]-axisDataLon[indexXfloor]);
                     }
-                    if (indexVceil==indexVfloor)
+                    if (indexYceil==indexYfloor)
                     {
-                        dV = 0;
-                    }
-                    else
-                    {
-                        dV = (axisFinalLat[i_lat]-axisDataLat[indexVfloor])/(axisDataLat[indexVceil]-axisDataLat[indexVfloor]);
-                    }
-
-
-                    if (dU==0 && dV==0)
-                    {
-                        latlonTimeData[i_time](i_lat, i_lon) = m_Data[i_time](indexVfloor, indexUfloor);
-                    }
-                    else if (dU==0)
-                    {
-                        valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
-                        valULcorner = m_Data[i_time](indexVceil, indexUfloor);
-
-                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
-                                                  + (1-dU)*(dV)*valULcorner;
-                    }
-                    else if (dV==0)
-                    {
-                        valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
-                        valLRcorner = m_Data[i_time](indexVfloor, indexUceil);
-
-                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
-                                                  + (dU)*(1-dV)*valLRcorner;
+                        dY = 0;
                     }
                     else
                     {
-                        valLLcorner = m_Data[i_time](indexVfloor, indexUfloor);
-                        valULcorner = m_Data[i_time](indexVceil, indexUfloor);
-                        valLRcorner = m_Data[i_time](indexVfloor, indexUceil);
-                        valURcorner = m_Data[i_time](indexVceil, indexUceil);
+                        dY = (axisFinalLat[i_lat]-axisDataLat[indexYfloor])/(axisDataLat[indexYceil]-axisDataLat[indexYfloor]);
+                    }
 
-                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dU)*(1-dV)*valLLcorner
-                                                  + (1-dU)*(dV)*valULcorner
-                                                  + (dU)*(1-dV)*valLRcorner
-                                                  + (dU)*(dV)*valURcorner;
+
+                    if (dX==0 && dY==0)
+                    {
+                        latlonTimeData[i_time](i_lat, i_lon) = m_Data[i_time](indexYfloor, indexXfloor);
+                    }
+                    else if (dX==0)
+                    {
+                        valLLcorner = m_Data[i_time](indexYfloor, indexXfloor);
+                        valULcorner = m_Data[i_time](indexYceil, indexXfloor);
+
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dX)*(1-dY)*valLLcorner
+                                                  + (1-dX)*(dY)*valULcorner;
+                    }
+                    else if (dY==0)
+                    {
+                        valLLcorner = m_Data[i_time](indexYfloor, indexXfloor);
+                        valLRcorner = m_Data[i_time](indexYfloor, indexXceil);
+
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dX)*(1-dY)*valLLcorner
+                                                  + (dX)*(1-dY)*valLRcorner;
+                    }
+                    else
+                    {
+                        valLLcorner = m_Data[i_time](indexYfloor, indexXfloor);
+                        valULcorner = m_Data[i_time](indexYceil, indexXfloor);
+                        valLRcorner = m_Data[i_time](indexYfloor, indexXceil);
+                        valURcorner = m_Data[i_time](indexYceil, indexXceil);
+
+                        latlonTimeData[i_time](i_lat, i_lon) =  (1-dX)*(1-dY)*valLLcorner
+                                                  + (1-dX)*(dY)*valULcorner
+                                                  + (dX)*(1-dY)*valLRcorner
+                                                  + (dX)*(dY)*valURcorner;
                     }
                 }
 

@@ -334,16 +334,16 @@ public:
         return true;
     }
 
-    VectorDouble GetPredictorUminVector(int i_step, int i_predictor)
+    VectorDouble GetPredictorXminVector(int i_step, int i_predictor)
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].Umin;
+        return m_StepsVect[i_step].Predictors[i_predictor].Xmin;
     }
 
-    bool SetPredictorUminVector(int i_step, int i_predictor, VectorDouble val)
+    bool SetPredictorXminVector(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided Umin vector is empty."));
+            asLogError(_("The provided Xmin vector is empty."));
             return false;
         }
         else
@@ -352,25 +352,25 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided Umin vector."));
+                    asLogError(_("There are NaN values in the provided Xmin vector."));
                     return false;
                 }
             }
         }
-        m_StepsVect[i_step].Predictors[i_predictor].Umin = val;
+        m_StepsVect[i_step].Predictors[i_predictor].Xmin = val;
         return true;
     }
 
-    VectorInt GetPredictorUptsnbVector(int i_step, int i_predictor)
+    VectorInt GetPredictorXptsnbVector(int i_step, int i_predictor)
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].Uptsnb;
+        return m_StepsVect[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    bool SetPredictorUptsnbVector(int i_step, int i_predictor, VectorInt val)
+    bool SetPredictorXptsnbVector(int i_step, int i_predictor, VectorInt val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided Uptsnb vector is empty."));
+            asLogError(_("The provided Xptsnb vector is empty."));
             return false;
         }
         else
@@ -379,25 +379,25 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided Uptsnb vector."));
+                    asLogError(_("There are NaN values in the provided Xptsnb vector."));
                     return false;
                 }
             }
         }
-        m_StepsVect[i_step].Predictors[i_predictor].Uptsnb = val;
+        m_StepsVect[i_step].Predictors[i_predictor].Xptsnb = val;
         return true;
     }
 
-    VectorDouble GetPredictorVminVector(int i_step, int i_predictor)
+    VectorDouble GetPredictorYminVector(int i_step, int i_predictor)
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].Vmin;
+        return m_StepsVect[i_step].Predictors[i_predictor].Ymin;
     }
 
-    bool SetPredictorVminVector(int i_step, int i_predictor, VectorDouble val)
+    bool SetPredictorYminVector(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided Vmin vector is empty."));
+            asLogError(_("The provided Ymin vector is empty."));
             return false;
         }
         else
@@ -406,25 +406,25 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided Vmin vector."));
+                    asLogError(_("There are NaN values in the provided Ymin vector."));
                     return false;
                 }
             }
         }
-        m_StepsVect[i_step].Predictors[i_predictor].Vmin = val;
+        m_StepsVect[i_step].Predictors[i_predictor].Ymin = val;
         return true;
     }
 
-    VectorInt GetPredictorVptsnbVector(int i_step, int i_predictor)
+    VectorInt GetPredictorYptsnbVector(int i_step, int i_predictor)
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].Vptsnb;
+        return m_StepsVect[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    bool SetPredictorVptsnbVector(int i_step, int i_predictor, VectorInt val)
+    bool SetPredictorYptsnbVector(int i_step, int i_predictor, VectorInt val)
     {
         if (val.size()<1)
         {
-            asLogError(_("The provided Vptsnb vector is empty."));
+            asLogError(_("The provided Yptsnb vector is empty."));
             return false;
         }
         else
@@ -433,12 +433,12 @@ public:
             {
                 if (asTools::IsNaN(val[i]))
                 {
-                    asLogError(_("There are NaN values in the provided Vptsnb vector."));
+                    asLogError(_("There are NaN values in the provided Yptsnb vector."));
                     return false;
                 }
             }
         }
-        m_StepsVect[i_step].Predictors[i_predictor].Vptsnb = val;
+        m_StepsVect[i_step].Predictors[i_predictor].Yptsnb = val;
         return true;
     }
 
@@ -691,39 +691,39 @@ public:
         return val;
     }
 
-    double GetPredictorUminLowerLimit(int i_step, int i_predictor)
+    double GetPredictorXminLowerLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Umin.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()-1;
         wxASSERT(lastrow>=0);
-        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Umin[0],&m_StepsVect[i_step].Predictors[i_predictor].Umin[lastrow]);
+        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Xmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
         return val;
     }
 
-    int GetPredictorUptsnbLowerLimit(int i_step, int i_predictor)
+    int GetPredictorXptsnbLowerLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Uptsnb.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xptsnb.size()-1;
         wxASSERT(lastrow>=0);
-        int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[lastrow]);
+        int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
         return val;
     }
 
-    double GetPredictorVminLowerLimit(int i_step, int i_predictor)
+    double GetPredictorYminLowerLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vmin.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()-1;
         wxASSERT(lastrow>=0);
-        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Vmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Vmin[lastrow]);
+        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Ymin[0],&m_StepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
         return val;
     }
 
-    int GetPredictorVptsnbLowerLimit(int i_step, int i_predictor)
+    int GetPredictorYptsnbLowerLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vptsnb.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Yptsnb.size()-1;
         wxASSERT(lastrow>=0);
-        int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[lastrow]);
+        int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
         return val;
     }
 
@@ -828,39 +828,39 @@ public:
         return val;
     }
 
-    double GetPredictorUminUpperLimit(int i_step, int i_predictor)
+    double GetPredictorXminUpperLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Umin.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()-1;
         wxASSERT(lastrow>=0);
-        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Umin[0],&m_StepsVect[i_step].Predictors[i_predictor].Umin[lastrow]);
+        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Xmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
         return val;
     }
 
-    int GetPredictorUptsnbUpperLimit(int i_step, int i_predictor)
+    int GetPredictorXptsnbUpperLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Uptsnb.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xptsnb.size()-1;
         wxASSERT(lastrow>=0);
-        int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[lastrow]);
+        int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
         return val;
     }
 
-    double GetPredictorVminUpperLimit(int i_step, int i_predictor)
+    double GetPredictorYminUpperLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vmin.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()-1;
         wxASSERT(lastrow>=0);
-        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Vmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Vmin[lastrow]);
+        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Ymin[0],&m_StepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
         return val;
     }
 
-    int GetPredictorVptsnbUpperLimit(int i_step, int i_predictor)
+    int GetPredictorYptsnbUpperLimit(int i_step, int i_predictor)
     {
         wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Vptsnb.size()-1;
+        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Yptsnb.size()-1;
         wxASSERT(lastrow>=0);
-        int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[lastrow]);
+        int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
         return val;
     }
 
@@ -935,33 +935,33 @@ public:
         }
     }
 
-    double GetPredictorUminIteration(int i_step, int i_predictor)
+    double GetPredictorXminIteration(int i_step, int i_predictor)
     {
-        if (m_StepsVect[i_step].Predictors[i_predictor].Umin.size()<2) return 0;
-        int row = floor((float)m_StepsVect[i_step].Predictors[i_predictor].Umin.size()/2.0);
-        double val = m_StepsVect[i_step].Predictors[i_predictor].Umin[row] - m_StepsVect[i_step].Predictors[i_predictor].Umin[row-1];
+        if (m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()<2) return 0;
+        int row = floor((float)m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()/2.0);
+        double val = m_StepsVect[i_step].Predictors[i_predictor].Xmin[row] - m_StepsVect[i_step].Predictors[i_predictor].Xmin[row-1];
         return val;
     }
 
-    int GetPredictorUptsnbIteration(int i_step, int i_predictor)
+    int GetPredictorXptsnbIteration(int i_step, int i_predictor)
     {
-        if (m_StepsVect[i_step].Predictors[i_predictor].Uptsnb.size()<2) return 0;
-        int val = m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[1] - m_StepsVect[i_step].Predictors[i_predictor].Uptsnb[0];
+        if (m_StepsVect[i_step].Predictors[i_predictor].Xptsnb.size()<2) return 0;
+        int val = m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[1] - m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[0];
         return val;
     }
 
-    double GetPredictorVminIteration(int i_step, int i_predictor)
+    double GetPredictorYminIteration(int i_step, int i_predictor)
     {
-        if (m_StepsVect[i_step].Predictors[i_predictor].Vmin.size()<2) return 0;
-        int row = floor((float)m_StepsVect[i_step].Predictors[i_predictor].Vmin.size()/2.0);
-        double val = m_StepsVect[i_step].Predictors[i_predictor].Vmin[row] - m_StepsVect[i_step].Predictors[i_predictor].Vmin[row-1];
+        if (m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()<2) return 0;
+        int row = floor((float)m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()/2.0);
+        double val = m_StepsVect[i_step].Predictors[i_predictor].Ymin[row] - m_StepsVect[i_step].Predictors[i_predictor].Ymin[row-1];
         return val;
     }
 
-    int GetPredictorVptsnbIteration(int i_step, int i_predictor)
+    int GetPredictorYptsnbIteration(int i_step, int i_predictor)
     {
-        if (m_StepsVect[i_step].Predictors[i_predictor].Vptsnb.size()<2) return 0;
-        int val = m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[1] - m_StepsVect[i_step].Predictors[i_predictor].Vptsnb[0];
+        if (m_StepsVect[i_step].Predictors[i_predictor].Yptsnb.size()<2) return 0;
+        int val = m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[1] - m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[0];
         return val;
     }
 

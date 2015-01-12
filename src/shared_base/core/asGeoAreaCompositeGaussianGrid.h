@@ -42,27 +42,27 @@ public:
      * \param CornerUR The coordinates of the upper right corner
      * \param CornerLL The coordinates of the lower left corner
      * \param CornerLR The coordinates of the lower right corner
-     * \param Ustep The step according to the U axis
-     * \param Vstep The step according to the v axis
+     * \param Xstep The step according to the X axis
+     * \param Ystep The step according to the Y axis
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaCompositeGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Ustep, double Vstep, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Alternative constructor
      * \param coosys The coordinate system
-     * \param Umin The left border
-     * \param Uptsnb The size on U axis
-     * \param Ustep The step according to the U axis
-     * \param Vmin The left border
-     * \param Vptsnb The size on V axis
-     * \param Vstep The step according to the v axis
+     * \param Xmin The left border
+     * \param Xptsnb The size on X axis
+     * \param Xstep The step according to the X axis
+     * \param Ymin The left border
+     * \param Yptsnb The size on Y axis
+     * \param Ystep The step according to the Y axis
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaCompositeGaussianGrid(CoordSys coosys, double Umin, int Uptsnb, double Vmin, int Vptsnb, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGaussianGrid(CoordSys coosys, double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Default destructor */
     virtual ~asGeoAreaCompositeGaussianGrid();
@@ -75,92 +75,92 @@ public:
         return m_GaussianGridType;
     }
 
-    /** Access m_Ustep
-     * \return The current value of m_Ustep
+    /** Access m_Xstep
+     * \return The current value of m_Xstep
      */
-    double GetUstep()
+    double GetXstep()
     {
         return 0.0;
     }
 
-    /** Access m_Vstep
-     * \return The current value of m_Vstep
+    /** Access m_Ystep
+     * \return The current value of m_Ystep
      */
-    double GetVstep()
+    double GetYstep()
     {
         return 0.0;
     }
 
-    /** Get the U axis for the given composite
+    /** Get the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The axis built on the boundaries and the step
      */
-    Array1DDouble GetUaxisComposite(int compositeNb);
+    Array1DDouble GetXaxisComposite(int compositeNb);
 
-    /** Get the V axis for the given composite
+    /** Get the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The axis built on the boundaries and the step
      */
-    Array1DDouble GetVaxisComposite(int compositeNb);
+    Array1DDouble GetYaxisComposite(int compositeNb);
 
-    /** Get the size of the U axis for the given composite
+    /** Get the size of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The size of the axis
      */
-    int GetUaxisCompositePtsnb(int compositeNb);
+    int GetXaxisCompositePtsnb(int compositeNb);
 
-    /** Get the size of the V axis for the given composite
+    /** Get the size of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The size of the axis
      */
-    int GetVaxisCompositePtsnb(int compositeNb);
+    int GetYaxisCompositePtsnb(int compositeNb);
 
-    /** Get the width of the U axis for the given composite
+    /** Get the width of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The width of the axis
      */
-    double GetUaxisCompositeWidth(int compositeNb);
+    double GetXaxisCompositeWidth(int compositeNb);
 
-    /** Get the width of the V axis for the given composite
+    /** Get the width of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The width of the axis
      */
-    double GetVaxisCompositeWidth(int compositeNb);
+    double GetYaxisCompositeWidth(int compositeNb);
 
-    /** Get the start value of the U axis for the given composite
+    /** Get the start value of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The start value of the axis
      */
-    double GetUaxisCompositeStart(int compositeNb);
+    double GetXaxisCompositeStart(int compositeNb);
 
-    /** Get the start value of the V axis for the given composite
+    /** Get the start value of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The start value of the axis
      */
-    double GetVaxisCompositeStart(int compositeNb);
+    double GetYaxisCompositeStart(int compositeNb);
 
-    /** Get the last value of the U axis for the given composite
+    /** Get the last value of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The last value of the axis
      */
-    double GetUaxisCompositeEnd(int compositeNb);
+    double GetXaxisCompositeEnd(int compositeNb);
 
-    /** Get the last value of the V axis for the given composite
+    /** Get the last value of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The last value of the axis
      */
-    double GetVaxisCompositeEnd(int compositeNb);
+    double GetYaxisCompositeEnd(int compositeNb);
 
 
 protected:
 
 private:
     asGeoAreaGaussianGrid::GaussianGridType m_GaussianGridType;
-    Array1DDouble m_FullAxisU;
-    Array1DDouble m_FullAxisV;
+    Array1DDouble m_FullAxisX;
+    Array1DDouble m_FullAxisY;
 
     bool IsOnGrid(const Coo &point);
-    bool IsOnGrid(double Ucoord, double Vcoord);
+    bool IsOnGrid(double Xcoord, double Ycoord);
 };
 
 #endif // asGeoAreaCompositeGaussianGrid_H

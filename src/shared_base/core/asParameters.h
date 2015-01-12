@@ -44,10 +44,10 @@ public:
         bool Preload;
         VectorDouble PreloadTimeHours;
         VectorFloat PreloadLevels;
-        double PreloadUmin;
-        int PreloadUptsnb;
-        double PreloadVmin;
-        int PreloadVptsnb;
+        double PreloadXmin;
+        int PreloadXptsnb;
+        double PreloadYmin;
+        int PreloadYptsnb;
         bool Preprocess;
         wxString PreprocessMethod;
         VectorString PreprocessDatasetIds;
@@ -56,14 +56,14 @@ public:
         VectorDouble PreprocessTimeHours;
         float Level;
         wxString GridType;
-        double Umin;
-        int Uptsnb;
-        double Ustep;
-        double Ushift;
-        double Vmin;
-        int Vptsnb;
-        double Vstep;
-        double Vshift;
+        double Xmin;
+        int Xptsnb;
+        double Xstep;
+        double Xshift;
+        double Ymin;
+        int Yptsnb;
+        double Ystep;
+        double Yshift;
         int FlatAllowed;
         double TimeHours;
         wxString Criteria;
@@ -535,67 +535,67 @@ public:
         return true;
     }
 
-    double GetPreloadUmin(int i_step, int i_predictor)
+    double GetPreloadXmin(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadUmin;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadXmin;
     }
 
-    bool SetPreloadUmin(int i_step, int i_predictor, double val)
+    bool SetPreloadXmin(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preload Umin is null"));
+            asLogError(_("The provided value for the preload Xmin is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].PreloadUmin = val;
+        m_Steps[i_step].Predictors[i_predictor].PreloadXmin = val;
         return true;
     }
 
-    int GetPreloadUptsnb(int i_step, int i_predictor)
+    int GetPreloadXptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadUptsnb;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadXptsnb;
     }
 
-    bool SetPreloadUptsnb(int i_step, int i_predictor, int val)
+    bool SetPreloadXptsnb(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preload points number on U is null"));
+            asLogError(_("The provided value for the preload points number on X is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].PreloadUptsnb = val;
+        m_Steps[i_step].Predictors[i_predictor].PreloadXptsnb = val;
         return true;
     }
 
-    double GetPreloadVmin(int i_step, int i_predictor)
+    double GetPreloadYmin(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadVmin;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadYmin;
     }
 
-    bool SetPreloadVmin(int i_step, int i_predictor, double val)
+    bool SetPreloadYmin(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preload Vmin is null"));
+            asLogError(_("The provided value for the preload Ymin is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].PreloadVmin = val;
+        m_Steps[i_step].Predictors[i_predictor].PreloadYmin = val;
         return true;
     }
 
-    int GetPreloadVptsnb(int i_step, int i_predictor)
+    int GetPreloadYptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadVptsnb;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadYptsnb;
     }
 
-    bool SetPreloadVptsnb(int i_step, int i_predictor, int val)
+    bool SetPreloadYptsnb(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the preload points number on V is null"));
+            asLogError(_("The provided value for the preload points number on Y is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].PreloadVptsnb = val;
+        m_Steps[i_step].Predictors[i_predictor].PreloadYptsnb = val;
         return true;
     }
 
@@ -830,131 +830,131 @@ public:
         return true;
     }
 
-    double GetPredictorUmin(int i_step, int i_predictor)
+    double GetPredictorXmin(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Umin;
+        return m_Steps[i_step].Predictors[i_predictor].Xmin;
     }
 
-    bool SetPredictorUmin(int i_step, int i_predictor, double val)
+    bool SetPredictorXmin(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor Umin is null"));
+            asLogError(_("The provided value for the predictor Xmin is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Umin = val;
+        m_Steps[i_step].Predictors[i_predictor].Xmin = val;
         return true;
     }
 
-    int GetPredictorUptsnb(int i_step, int i_predictor)
+    int GetPredictorXptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Uptsnb;
+        return m_Steps[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    bool SetPredictorUptsnb(int i_step, int i_predictor, int val)
+    bool SetPredictorXptsnb(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor points number on U is null"));
+            asLogError(_("The provided value for the predictor points number on X is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Uptsnb = val;
+        m_Steps[i_step].Predictors[i_predictor].Xptsnb = val;
         return true;
     }
 
-    double GetPredictorUstep(int i_step, int i_predictor)
+    double GetPredictorXstep(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Ustep;
+        return m_Steps[i_step].Predictors[i_predictor].Xstep;
     }
 
-    bool SetPredictorUstep(int i_step, int i_predictor, double val)
+    bool SetPredictorXstep(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor U step is null"));
+            asLogError(_("The provided value for the predictor X step is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Ustep = val;
+        m_Steps[i_step].Predictors[i_predictor].Xstep = val;
         return true;
     }
 
-    double GetPredictorUshift(int i_step, int i_predictor)
+    double GetPredictorXshift(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Ushift;
+        return m_Steps[i_step].Predictors[i_predictor].Xshift;
     }
 
-    bool SetPredictorUshift(int i_step, int i_predictor, double val)
+    bool SetPredictorXshift(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor U shift is null"));
+            asLogError(_("The provided value for the predictor X shift is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Ushift = val;
+        m_Steps[i_step].Predictors[i_predictor].Xshift = val;
         return true;
     }
 
-    double GetPredictorVmin(int i_step, int i_predictor)
+    double GetPredictorYmin(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Vmin;
+        return m_Steps[i_step].Predictors[i_predictor].Ymin;
     }
 
-    bool SetPredictorVmin(int i_step, int i_predictor, double val)
+    bool SetPredictorYmin(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor Vmin is null"));
+            asLogError(_("The provided value for the predictor Ymin is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Vmin = val;
+        m_Steps[i_step].Predictors[i_predictor].Ymin = val;
         return true;
     }
 
-    int GetPredictorVptsnb(int i_step, int i_predictor)
+    int GetPredictorYptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Vptsnb;
+        return m_Steps[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    bool SetPredictorVptsnb(int i_step, int i_predictor, int val)
+    bool SetPredictorYptsnb(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor points number on V is null"));
+            asLogError(_("The provided value for the predictor points number on Y is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Vptsnb = val;
+        m_Steps[i_step].Predictors[i_predictor].Yptsnb = val;
         return true;
     }
 
-    double GetPredictorVstep(int i_step, int i_predictor)
+    double GetPredictorYstep(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Vstep;
+        return m_Steps[i_step].Predictors[i_predictor].Ystep;
     }
 
-    bool SetPredictorVstep(int i_step, int i_predictor, double val)
+    bool SetPredictorYstep(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor V step is null"));
+            asLogError(_("The provided value for the predictor Y step is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Vstep = val;
+        m_Steps[i_step].Predictors[i_predictor].Ystep = val;
         return true;
     }
 
-    double GetPredictorVshift(int i_step, int i_predictor)
+    double GetPredictorYshift(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Vshift;
+        return m_Steps[i_step].Predictors[i_predictor].Yshift;
     }
 
-    bool SetPredictorVshift(int i_step, int i_predictor, double val)
+    bool SetPredictorYshift(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for the predictor V shift is null"));
+            asLogError(_("The provided value for the predictor Y shift is null"));
             return false;
         }
-        m_Steps[i_step].Predictors[i_predictor].Vshift = val;
+        m_Steps[i_step].Predictors[i_predictor].Yshift = val;
         return true;
     }
 

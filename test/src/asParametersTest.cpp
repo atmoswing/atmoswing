@@ -64,12 +64,12 @@ TEST(ParametersLoadFromFile)
     CHECK_EQUAL(500, params.GetPredictorLevel(0,0));
     CHECK_EQUAL(24, params.GetPredictorTimeHours(0,0));
     CHECK_EQUAL(true, params.GetPredictorGridType(0,0).IsSameAs("Regular"));
-    CHECK_EQUAL(-10, params.GetPredictorUmin(0,0));
-    CHECK_EQUAL(9, params.GetPredictorUptsnb(0,0));
-    CHECK_EQUAL(2.5, params.GetPredictorUstep(0,0));
-    CHECK_EQUAL(30, params.GetPredictorVmin(0,0));
-    CHECK_EQUAL(5, params.GetPredictorVptsnb(0,0));
-    CHECK_EQUAL(2.5, params.GetPredictorVstep(0,0));
+    CHECK_EQUAL(-10, params.GetPredictorXmin(0,0));
+    CHECK_EQUAL(9, params.GetPredictorXptsnb(0,0));
+    CHECK_EQUAL(2.5, params.GetPredictorXstep(0,0));
+    CHECK_EQUAL(30, params.GetPredictorYmin(0,0));
+    CHECK_EQUAL(5, params.GetPredictorYptsnb(0,0));
+    CHECK_EQUAL(2.5, params.GetPredictorYstep(0,0));
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,0).IsSameAs("S1"));
     CHECK_CLOSE(0.6, params.GetPredictorWeight(0,0), 0.0001);
 
@@ -81,12 +81,12 @@ TEST(ParametersLoadFromFile)
     CHECK_EQUAL(12, params.GetPreprocessTimeHours(0,1,0));
     CHECK_EQUAL(1000, params.GetPredictorLevel(0,1));
     CHECK_EQUAL(12, params.GetPredictorTimeHours(0,1));
-    CHECK_EQUAL(-15, params.GetPredictorUmin(0,1));
-    CHECK_EQUAL(11, params.GetPredictorUptsnb(0,1));
-    CHECK_EQUAL(2.5, params.GetPredictorUstep(0,1));
-    CHECK_EQUAL(35, params.GetPredictorVmin(0,1));
-    CHECK_EQUAL(7, params.GetPredictorVptsnb(0,1));
-    CHECK_EQUAL(2.5, params.GetPredictorVstep(0,1));
+    CHECK_EQUAL(-15, params.GetPredictorXmin(0,1));
+    CHECK_EQUAL(11, params.GetPredictorXptsnb(0,1));
+    CHECK_EQUAL(2.5, params.GetPredictorXstep(0,1));
+    CHECK_EQUAL(35, params.GetPredictorYmin(0,1));
+    CHECK_EQUAL(7, params.GetPredictorYptsnb(0,1));
+    CHECK_EQUAL(2.5, params.GetPredictorYstep(0,1));
     CHECK_EQUAL(true, params.GetPredictorCriteria(0,1).IsSameAs("S1"));
     CHECK_CLOSE(0.4, params.GetPredictorWeight(0,1), 0.0001);
 

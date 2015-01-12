@@ -185,20 +185,20 @@ class asDataPredictand: public wxObject
             return m_StationsIds;
         }
 
-        /** Access m_StationsLocCoordU
-         * \return The current value of m_StationsLocCoordU
+        /** Access m_StationsLocCoordX
+         * \return The current value of m_StationsLocCoordX
          */
-        Array1DDouble& GetStationsLocCoordUArray()
+        Array1DDouble& GetStationsLocCoordXArray()
         {
-            return m_StationsLocCoordU;
+            return m_StationsLocCoordX;
         }
 
-        /** Access m_StationsLocCoordV
-         * \return The current value of m_StationsLocCoordV
+        /** Access m_StationsLocCoordY
+         * \return The current value of m_StationsLocCoordY
          */
-        Array1DDouble& GetStationsLocCoordVArray()
+        Array1DDouble& GetStationsLocCoordYArray()
         {
-            return m_StationsLocCoordV;
+            return m_StationsLocCoordY;
         }
 
         /** Access m_StationsLon
@@ -303,8 +303,8 @@ class asDataPredictand: public wxObject
         VectorString m_StationsName;
         Array1DInt m_StationsIds;
         Array1DFloat m_StationsHeight;
-        Array1DDouble m_StationsLocCoordU;
-        Array1DDouble m_StationsLocCoordV;
+        Array1DDouble m_StationsLocCoordX;
+        Array1DDouble m_StationsLocCoordY;
         Array1DDouble m_StationsLon;
         Array1DDouble m_StationsLat;
         Array1DDouble m_StationsStart;

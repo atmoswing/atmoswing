@@ -291,16 +291,16 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area")) return false;
             if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
-            if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
-            if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "value"))) return false;
-            if (GetPredictorUptsnb(i_step, i_ptor)==0) SetPredictorUptsnb(i_step, i_ptor, 1);
-            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
-            if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
-            if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "value"))) return false;
-            if (GetPredictorVptsnb(i_step, i_ptor)==0) SetPredictorVptsnb(i_step, i_ptor, 1);
-            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value"))) return false;
+            if(!SetPredictorXmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xmin", "value"))) return false;
+            if(!SetPredictorXptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Xptsnb", "value"))) return false;
+            if (GetPredictorXptsnb(i_step, i_ptor)==0) SetPredictorXptsnb(i_step, i_ptor, 1);
+            if(!SetPredictorXstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xstep", "value"))) return false;
+            if(!SetPredictorYmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ymin", "value"))) return false;
+            if(!SetPredictorYptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Yptsnb", "value"))) return false;
+            if (GetPredictorYptsnb(i_step, i_ptor)==0) SetPredictorYptsnb(i_step, i_ptor, 1);
+            if(!SetPredictorYstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ystep", "value"))) return false;
 
-            if (GetPredictorUptsnb(i_step, i_ptor)==1 || GetPredictorVptsnb(i_step, i_ptor)==1)
+            if (GetPredictorXptsnb(i_step, i_ptor)==1 || GetPredictorYptsnb(i_step, i_ptor)==1)
             {
                 SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
             }

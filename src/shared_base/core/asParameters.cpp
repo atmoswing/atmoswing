@@ -66,24 +66,24 @@ bool asParameters::IsOk()
     {
         for (int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
         {
-            if (GetPredictorUptsnb(i_step, i_ptor)<=0)
+            if (GetPredictorXptsnb(i_step, i_ptor)<=0)
             {
-                asLogError("The number of points on the U axis must be >= 1.");
+                asLogError("The number of points on the X axis must be >= 1.");
                 return false;
             }
-            if (GetPredictorVptsnb(i_step, i_ptor)<=0)
+            if (GetPredictorYptsnb(i_step, i_ptor)<=0)
             {
-                asLogError("The number of points on the V axis must be >= 1.");
+                asLogError("The number of points on the Y axis must be >= 1.");
                 return false;
             }
-            if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular") && GetPredictorUstep(i_step, i_ptor)<=0)
+            if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular") && GetPredictorXstep(i_step, i_ptor)<=0)
             {
-                asLogError("The step length on the U axis cannot be null for regular grids.");
+                asLogError("The step length on the X axis cannot be null for regular grids.");
                 return false;
             }
-            if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular") && GetPredictorVstep(i_step, i_ptor)<=0)
+            if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular") && GetPredictorYstep(i_step, i_ptor)<=0)
             {
-                asLogError("The step length on the V axis cannot be null for regular grids.");
+                asLogError("The step length on the Y axis cannot be null for regular grids.");
                 return false;
             }
 
@@ -119,21 +119,21 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.DatasetId = wxEmptyString;
     predictor.DataId = wxEmptyString;
     predictor.Preload = false;
-    predictor.PreloadUmin = 0;
-    predictor.PreloadUptsnb = 0;
-    predictor.PreloadVmin = 0;
-    predictor.PreloadVptsnb = 0;
+    predictor.PreloadXmin = 0;
+    predictor.PreloadXptsnb = 0;
+    predictor.PreloadYmin = 0;
+    predictor.PreloadYptsnb = 0;
     predictor.Preprocess = false;
     predictor.PreprocessMethod = wxEmptyString;
     predictor.Level = 0;
-    predictor.Umin = 0;
-    predictor.Uptsnb = 1;
-    predictor.Ustep = 0;
-    predictor.Ushift = 0;
-    predictor.Vmin = 0;
-    predictor.Vptsnb = 1;
-    predictor.Vstep = 0;
-    predictor.Vshift = 0;
+    predictor.Xmin = 0;
+    predictor.Xptsnb = 1;
+    predictor.Xstep = 0;
+    predictor.Xshift = 0;
+    predictor.Ymin = 0;
+    predictor.Yptsnb = 1;
+    predictor.Ystep = 0;
+    predictor.Yshift = 0;
     predictor.FlatAllowed = asFLAT_FORBIDDEN;
     predictor.TimeHours = 0;
     predictor.Criteria = wxEmptyString;
@@ -150,22 +150,22 @@ void asParameters::AddPredictor(int i_step)
     predictor.DatasetId = wxEmptyString;
     predictor.DataId = wxEmptyString;
     predictor.Preload = false;
-    predictor.PreloadUmin = 0;
-    predictor.PreloadUptsnb = 0;
-    predictor.PreloadVmin = 0;
-    predictor.PreloadVptsnb = 0;
+    predictor.PreloadXmin = 0;
+    predictor.PreloadXptsnb = 0;
+    predictor.PreloadYmin = 0;
+    predictor.PreloadYptsnb = 0;
     predictor.Preprocess = false;
     predictor.PreprocessMethod = wxEmptyString;
     predictor.Level = 0;
     predictor.GridType = wxEmptyString;
-    predictor.Umin = 0;
-    predictor.Uptsnb = 1;
-    predictor.Ustep = 0;
-    predictor.Ushift = 0;
-    predictor.Vmin = 0;
-    predictor.Vptsnb = 1;
-    predictor.Vstep = 0;
-    predictor.Vshift = 0;
+    predictor.Xmin = 0;
+    predictor.Xptsnb = 1;
+    predictor.Xstep = 0;
+    predictor.Xshift = 0;
+    predictor.Ymin = 0;
+    predictor.Yptsnb = 1;
+    predictor.Ystep = 0;
+    predictor.Yshift = 0;
     predictor.FlatAllowed = asFLAT_FORBIDDEN;
     predictor.TimeHours = 0;
     predictor.Criteria = wxEmptyString;
@@ -507,21 +507,21 @@ bool asParameters::LoadFromFile(const wxString &filePath)
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area")) return false;
             if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
-            if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
-            if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Uptsnb", "value"))) return false;
-            if (GetPredictorUptsnb(i_step, i_ptor)==0) SetPredictorUptsnb(i_step, i_ptor, 1);
-            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
-            double Ushift = fmod(GetPredictorUmin(i_step, i_ptor), GetPredictorUstep(i_step, i_ptor));
-            if (Ushift<0) Ushift += GetPredictorUstep(i_step, i_ptor);
-            if(!SetPredictorUshift(i_step, i_ptor, Ushift)) return false;
-            if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
-            if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vptsnb", "value"))) return false;
-            if (GetPredictorVptsnb(i_step, i_ptor)==0) SetPredictorVptsnb(i_step, i_ptor, 1);
-            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value", 0))) return false;
-            double Vshift = fmod(GetPredictorVmin(i_step, i_ptor), GetPredictorVstep(i_step, i_ptor));
-            if (Vshift<0) Vshift += GetPredictorVstep(i_step, i_ptor);
-            if(!SetPredictorVshift(i_step, i_ptor, Vshift)) return false;
-            if (GetPredictorUptsnb(i_step, i_ptor)==1 || GetPredictorVptsnb(i_step, i_ptor)==1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if(!SetPredictorXmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xmin", "value"))) return false;
+            if(!SetPredictorXptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xptsnb", "value"))) return false;
+            if (GetPredictorXptsnb(i_step, i_ptor)==0) SetPredictorXptsnb(i_step, i_ptor, 1);
+            if(!SetPredictorXstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xstep", "value"))) return false;
+            double Xshift = fmod(GetPredictorXmin(i_step, i_ptor), GetPredictorXstep(i_step, i_ptor));
+            if (Xshift<0) Xshift += GetPredictorXstep(i_step, i_ptor);
+            if(!SetPredictorXshift(i_step, i_ptor, Xshift)) return false;
+            if(!SetPredictorYmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ymin", "value"))) return false;
+            if(!SetPredictorYptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Yptsnb", "value"))) return false;
+            if (GetPredictorYptsnb(i_step, i_ptor)==0) SetPredictorYptsnb(i_step, i_ptor, 1);
+            if(!SetPredictorYstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ystep", "value", 0))) return false;
+            double Yshift = fmod(GetPredictorYmin(i_step, i_ptor), GetPredictorYstep(i_step, i_ptor));
+            if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
+            if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
+            if (GetPredictorXptsnb(i_step, i_ptor)==1 || GetPredictorYptsnb(i_step, i_ptor)==1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
             if(!fileParams.GoANodeBack()) return false;
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Criteria")) return false;
@@ -739,45 +739,45 @@ bool asParameters::FixCoordinates()
             {
 
                 // Check that the coordinates are a multiple of the steps
-                if(abs(fmod(m_Steps[i].Predictors[j].Umin-m_Steps[i].Predictors[j].Ushift, m_Steps[i].Predictors[j].Ustep))>0)
+                if(abs(fmod(m_Steps[i].Predictors[j].Xmin-m_Steps[i].Predictors[j].Xshift, m_Steps[i].Predictors[j].Xstep))>0)
                 {
-                    double factor = (m_Steps[i].Predictors[j].Umin-m_Steps[i].Predictors[j].Ushift)/m_Steps[i].Predictors[j].Ustep;
+                    double factor = (m_Steps[i].Predictors[j].Xmin-m_Steps[i].Predictors[j].Xshift)/m_Steps[i].Predictors[j].Xstep;
                     factor = asTools::Round(factor);
-                    m_Steps[i].Predictors[j].Umin = factor*m_Steps[i].Predictors[j].Ustep+m_Steps[i].Predictors[j].Ushift;
+                    m_Steps[i].Predictors[j].Xmin = factor*m_Steps[i].Predictors[j].Xstep+m_Steps[i].Predictors[j].Xshift;
                 }
 
-                if(abs(fmod(m_Steps[i].Predictors[j].Vmin-m_Steps[i].Predictors[j].Vshift, m_Steps[i].Predictors[j].Vstep))>0)
+                if(abs(fmod(m_Steps[i].Predictors[j].Ymin-m_Steps[i].Predictors[j].Yshift, m_Steps[i].Predictors[j].Ystep))>0)
                 {
-                    double factor = (m_Steps[i].Predictors[j].Vmin-m_Steps[i].Predictors[j].Vshift)/m_Steps[i].Predictors[j].Vstep;
+                    double factor = (m_Steps[i].Predictors[j].Ymin-m_Steps[i].Predictors[j].Yshift)/m_Steps[i].Predictors[j].Ystep;
                     factor = asTools::Round(factor);
-                    m_Steps[i].Predictors[j].Vmin = factor*m_Steps[i].Predictors[j].Vstep+m_Steps[i].Predictors[j].Vshift;
+                    m_Steps[i].Predictors[j].Ymin = factor*m_Steps[i].Predictors[j].Ystep+m_Steps[i].Predictors[j].Yshift;
                 }
             }
 
             if (m_Steps[i].Predictors[j].FlatAllowed==asFLAT_FORBIDDEN)
             {
                 // Check that the size is larger than 1 point
-                if(m_Steps[i].Predictors[j].Uptsnb<2)
+                if(m_Steps[i].Predictors[j].Xptsnb<2)
                 {
-                    m_Steps[i].Predictors[j].Uptsnb = 2;
+                    m_Steps[i].Predictors[j].Xptsnb = 2;
                 }
 
-                if(m_Steps[i].Predictors[j].Vptsnb<2)
+                if(m_Steps[i].Predictors[j].Yptsnb<2)
                 {
-                    m_Steps[i].Predictors[j].Vptsnb = 2;
+                    m_Steps[i].Predictors[j].Yptsnb = 2;
                 }
             }
             else
             {
                 // Check that the size is larger than 0
-                if(m_Steps[i].Predictors[j].Uptsnb<1)
+                if(m_Steps[i].Predictors[j].Xptsnb<1)
                 {
-                    m_Steps[i].Predictors[j].Uptsnb = 1;
+                    m_Steps[i].Predictors[j].Xptsnb = 1;
                 }
 
-                if(m_Steps[i].Predictors[j].Vptsnb<1)
+                if(m_Steps[i].Predictors[j].Yptsnb<1)
                 {
-                    m_Steps[i].Predictors[j].Vptsnb = 1;
+                    m_Steps[i].Predictors[j].Yptsnb = 1;
                 }
             }
         }
@@ -822,12 +822,12 @@ wxString asParameters::Print()
             }
 
             content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(i_step, i_ptor).c_str()));
-            content.Append(wxString::Format("Umin\t%g\t", GetPredictorUmin(i_step, i_ptor)));
-            content.Append(wxString::Format("Uptsnb\t%d\t", GetPredictorUptsnb(i_step, i_ptor)));
-            content.Append(wxString::Format("Ustep\t%g\t", GetPredictorUstep(i_step, i_ptor)));
-            content.Append(wxString::Format("Vmin\t%g\t", GetPredictorVmin(i_step, i_ptor)));
-            content.Append(wxString::Format("Vptsnb\t%d\t", GetPredictorVptsnb(i_step, i_ptor)));
-            content.Append(wxString::Format("Vstep\t%g\t", GetPredictorVstep(i_step, i_ptor)));
+            content.Append(wxString::Format("Xmin\t%g\t", GetPredictorXmin(i_step, i_ptor)));
+            content.Append(wxString::Format("Xptsnb\t%d\t", GetPredictorXptsnb(i_step, i_ptor)));
+            content.Append(wxString::Format("Xstep\t%g\t", GetPredictorXstep(i_step, i_ptor)));
+            content.Append(wxString::Format("Ymin\t%g\t", GetPredictorYmin(i_step, i_ptor)));
+            content.Append(wxString::Format("Yptsnb\t%d\t", GetPredictorYptsnb(i_step, i_ptor)));
+            content.Append(wxString::Format("Ystep\t%g\t", GetPredictorYstep(i_step, i_ptor)));
             content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(i_step, i_ptor)));
             content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(i_step, i_ptor).c_str()));
         }
@@ -923,46 +923,46 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 stringVals = stringVals.SubString(iRight, stringVals.Length());
             }
             
-            iLeft = stringVals.Find("Umin");
-            iRight = stringVals.Find("Uptsnb");
+            iLeft = stringVals.Find("Xmin");
+            iRight = stringVals.Find("Xptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorUmin(i_step, i_ptor, dVal);
+            SetPredictorXmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
             
-            iLeft = stringVals.Find("Uptsnb");
-            iRight = stringVals.Find("Ustep");
+            iLeft = stringVals.Find("Xptsnb");
+            iRight = stringVals.Find("Xstep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
-            SetPredictorUptsnb(i_step, i_ptor, int(lVal));
+            SetPredictorXptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
             
-            iLeft = stringVals.Find("Ustep");
-            iRight = stringVals.Find("Vmin");
+            iLeft = stringVals.Find("Xstep");
+            iRight = stringVals.Find("Ymin");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorUstep(i_step, i_ptor, dVal);
+            SetPredictorXstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
             
-            iLeft = stringVals.Find("Vmin");
-            iRight = stringVals.Find("Vptsnb");
+            iLeft = stringVals.Find("Ymin");
+            iRight = stringVals.Find("Yptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorVmin(i_step, i_ptor, dVal);
+            SetPredictorYmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
             
-            iLeft = stringVals.Find("Vptsnb");
-            iRight = stringVals.Find("Vstep");
+            iLeft = stringVals.Find("Yptsnb");
+            iRight = stringVals.Find("Ystep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
-            SetPredictorVptsnb(i_step, i_ptor, int(lVal));
+            SetPredictorYptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
             
-            iLeft = stringVals.Find("Vstep");
+            iLeft = stringVals.Find("Ystep");
             iRight = stringVals.Find("Weight");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorVstep(i_step, i_ptor, dVal);
+            SetPredictorYstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
             
             iLeft = stringVals.Find("Weight");

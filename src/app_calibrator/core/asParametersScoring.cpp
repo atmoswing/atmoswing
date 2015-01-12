@@ -56,10 +56,10 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
 
     predictor.DataId.push_back(wxEmptyString);
     predictor.Level.push_back(0);
-    predictor.Umin.push_back(0);
-    predictor.Uptsnb.push_back(0);
-    predictor.Vmin.push_back(0);
-    predictor.Vptsnb.push_back(0);
+    predictor.Xmin.push_back(0);
+    predictor.Xptsnb.push_back(0);
+    predictor.Ymin.push_back(0);
+    predictor.Yptsnb.push_back(0);
     predictor.TimeHours.push_back(0);
     predictor.Criteria.push_back(wxEmptyString);
     predictor.Weight.push_back(0);
@@ -289,24 +289,24 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
             if(!fileParams.InsertElementAndAttribute("", "Params", "name", "Area Moving")) return false;
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area Moving")) return false;
             if(!fileParams.InsertElementAndAttribute("", "GridType", "value", GetPredictorGridType(i_step, i_ptor))) return false;
-            wxString umin;
-            umin << GetPredictorUmin(i_step, i_ptor);
-            if(!fileParams.InsertElementAndAttribute("", "Umin", "value", umin)) return false;
-            wxString uptsnb;
-            uptsnb << GetPredictorUptsnb(i_step, i_ptor);
-            if(!fileParams.InsertElementAndAttribute("", "Uptsnb", "value", uptsnb)) return false;
-            wxString ustep;
-            ustep << GetPredictorUstep(i_step, i_ptor);
-            if(!fileParams.InsertElementAndAttribute("", "Ustep", "value", ustep)) return false;
-            wxString vmin;
-            vmin << GetPredictorVmin(i_step, i_ptor);
-            if(!fileParams.InsertElementAndAttribute("", "Vmin", "value", vmin)) return false;
-            wxString vptsnb;
-            vptsnb << GetPredictorVptsnb(i_step, i_ptor);
-            if(!fileParams.InsertElementAndAttribute("", "Vptsnb", "value", vptsnb)) return false;
-            wxString vstep;
-            vstep << GetPredictorVstep(i_step, i_ptor);
-            if(!fileParams.InsertElementAndAttribute("", "Vstep", "value", vstep)) return false;
+            wxString Xmin;
+            Xmin << GetPredictorXmin(i_step, i_ptor);
+            if(!fileParams.InsertElementAndAttribute("", "Xmin", "value", Xmin)) return false;
+            wxString Xptsnb;
+            Xptsnb << GetPredictorXptsnb(i_step, i_ptor);
+            if(!fileParams.InsertElementAndAttribute("", "Xptsnb", "value", Xptsnb)) return false;
+            wxString Xstep;
+            Xstep << GetPredictorXstep(i_step, i_ptor);
+            if(!fileParams.InsertElementAndAttribute("", "Xstep", "value", Xstep)) return false;
+            wxString Ymin;
+            Ymin << GetPredictorYmin(i_step, i_ptor);
+            if(!fileParams.InsertElementAndAttribute("", "Ymin", "value", Ymin)) return false;
+            wxString Yptsnb;
+            Yptsnb << GetPredictorYptsnb(i_step, i_ptor);
+            if(!fileParams.InsertElementAndAttribute("", "Yptsnb", "value", Yptsnb)) return false;
+            wxString Ystep;
+            Ystep << GetPredictorYstep(i_step, i_ptor);
+            if(!fileParams.InsertElementAndAttribute("", "Ystep", "value", Ystep)) return false;
             if(!fileParams.GoANodeBack()) return false;
 
 

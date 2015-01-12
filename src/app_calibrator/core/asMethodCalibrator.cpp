@@ -463,12 +463,12 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 }
                             }
 
-                            if(params.GetPreloadUmin(tmp_step, tmp_ptor)!=params.GetPreloadUmin(tmp_step, prev)) share = false;
-                            if(params.GetPreloadUptsnb(tmp_step, tmp_ptor)!=params.GetPreloadUptsnb(tmp_step, prev)) share = false;
-                            if(params.GetPredictorUstep(tmp_step, tmp_ptor)!=params.GetPredictorUstep(tmp_step, prev)) share = false;
-                            if(params.GetPreloadVmin(tmp_step, tmp_ptor)!=params.GetPreloadVmin(tmp_step, prev)) share = false;
-                            if(params.GetPreloadVptsnb(tmp_step, tmp_ptor)!=params.GetPreloadVptsnb(tmp_step, prev)) share = false;
-                            if(params.GetPredictorVstep(tmp_step, tmp_ptor)!=params.GetPredictorVstep(tmp_step, prev)) share = false;
+                            if(params.GetPreloadXmin(tmp_step, tmp_ptor)!=params.GetPreloadXmin(tmp_step, prev)) share = false;
+                            if(params.GetPreloadXptsnb(tmp_step, tmp_ptor)!=params.GetPreloadXptsnb(tmp_step, prev)) share = false;
+                            if(params.GetPredictorXstep(tmp_step, tmp_ptor)!=params.GetPredictorXstep(tmp_step, prev)) share = false;
+                            if(params.GetPreloadYmin(tmp_step, tmp_ptor)!=params.GetPreloadYmin(tmp_step, prev)) share = false;
+                            if(params.GetPreloadYptsnb(tmp_step, tmp_ptor)!=params.GetPreloadYptsnb(tmp_step, prev)) share = false;
+                            if(params.GetPredictorYstep(tmp_step, tmp_ptor)!=params.GetPredictorYstep(tmp_step, prev)) share = false;
                             if(params.GetPredictorFlatAllowed(tmp_step, tmp_ptor)!=params.GetPredictorFlatAllowed(tmp_step, prev)) share = false;
 
                             VectorFloat levels1 = params.GetPreloadLevels(tmp_step, tmp_ptor);
@@ -530,7 +530,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 }
                             }
 
-                            params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, prev));
+                            params.SetPreloadYptsnb(tmp_step, tmp_ptor, params.GetPreloadYptsnb(tmp_step, prev));
 
                             continue;
                         }
@@ -585,28 +585,28 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 timeArray.Init();
 
                                 asGeo geo(predictor->GetCoordSys());
-                                double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
-                                if (Vmax > geo.GetAxisVmax())
+                                double Ymax = params.GetPreloadYmin(tmp_step, tmp_ptor)+params.GetPredictorYstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadYptsnb(tmp_step, tmp_ptor)-1);
+                                if (Ymax > geo.GetAxisYmax())
                                 {
-                                    double diff = Vmax-geo.GetAxisVmax();
-                                    int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
-                                    params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                    asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.3f to %.3f)."), Vmax, Vmax-diff));
-                                    asLogMessage(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Vmax, geo.GetAxisVmax(), params.GetPredictorVstep(tmp_step, tmp_ptor)));
+                                    double diff = Ymax-geo.GetAxisYmax();
+                                    int removePts = asTools::Round(diff/params.GetPredictorYstep(tmp_step, tmp_ptor));
+                                    params.SetPreloadYptsnb(tmp_step, tmp_ptor, params.GetPreloadYptsnb(tmp_step, tmp_ptor)-removePts);
+                                    asLogMessage(wxString::Format(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), Ymax, Ymax-diff));
+                                    asLogMessage(wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Ymax, geo.GetAxisYmax(), params.GetPredictorYstep(tmp_step, tmp_ptor)));
                                 }
 
-                                wxASSERT(params.GetPreloadUptsnb(tmp_step, tmp_ptor)>0);
-                                wxASSERT(params.GetPreloadVptsnb(tmp_step, tmp_ptor)>0);
+                                wxASSERT(params.GetPreloadXptsnb(tmp_step, tmp_ptor)>0);
+                                wxASSERT(params.GetPreloadYptsnb(tmp_step, tmp_ptor)>0);
 
                                 // Area object instantiation
                                 asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(),
                                                                params.GetPredictorGridType(tmp_step, tmp_ptor),
-                                                               params.GetPreloadUmin(tmp_step, tmp_ptor),
-                                                               params.GetPreloadUptsnb(tmp_step, tmp_ptor),
-                                                               params.GetPredictorUstep(tmp_step, tmp_ptor),
-                                                               params.GetPreloadVmin(tmp_step, tmp_ptor),
-                                                               params.GetPreloadVptsnb(tmp_step, tmp_ptor),
-                                                               params.GetPredictorVstep(tmp_step, tmp_ptor),
+                                                               params.GetPreloadXmin(tmp_step, tmp_ptor),
+                                                               params.GetPreloadXptsnb(tmp_step, tmp_ptor),
+                                                               params.GetPredictorXstep(tmp_step, tmp_ptor),
+                                                               params.GetPreloadYmin(tmp_step, tmp_ptor),
+                                                               params.GetPreloadYptsnb(tmp_step, tmp_ptor),
+                                                               params.GetPredictorYstep(tmp_step, tmp_ptor),
                                                                preloadLevels[tmp_level],
                                                                asNONE,
                                                                params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
@@ -778,24 +778,24 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     }
 
                                     asGeo geo(predictorPreprocess->GetCoordSys());
-                                    double Vmax = params.GetPreloadVmin(tmp_step, tmp_ptor)+params.GetPredictorVstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadVptsnb(tmp_step, tmp_ptor)-1);
-                                    if (Vmax > geo.GetAxisVmax())
+                                    double Ymax = params.GetPreloadYmin(tmp_step, tmp_ptor)+params.GetPredictorYstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadYptsnb(tmp_step, tmp_ptor)-1);
+                                    if (Ymax > geo.GetAxisYmax())
                                     {
-                                        double diff = Vmax-geo.GetAxisVmax();
-                                        int removePts = asTools::Round(diff/params.GetPredictorVstep(tmp_step, tmp_ptor));
-                                        params.SetPreloadVptsnb(tmp_step, tmp_ptor, params.GetPreloadVptsnb(tmp_step, tmp_ptor)-removePts);
-                                        asLogMessage(wxString::Format(_("Adapt V axis extent according to the maximum allowed (from %.2f to %.2f)."), Vmax, Vmax-diff));
+                                        double diff = Ymax-geo.GetAxisYmax();
+                                        int removePts = asTools::Round(diff/params.GetPredictorYstep(tmp_step, tmp_ptor));
+                                        params.SetPreloadYptsnb(tmp_step, tmp_ptor, params.GetPreloadYptsnb(tmp_step, tmp_ptor)-removePts);
+                                        asLogMessage(wxString::Format(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), Ymax, Ymax-diff));
                                     }
 
                                     // Area object instantiation
                                     asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
                                                                    params.GetPredictorGridType(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadUmin(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadUptsnb(tmp_step, tmp_ptor),
-                                                                   params.GetPredictorUstep(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadVmin(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadVptsnb(tmp_step, tmp_ptor),
-                                                                   params.GetPredictorVstep(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadXmin(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadXptsnb(tmp_step, tmp_ptor),
+                                                                   params.GetPredictorXstep(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadYmin(tmp_step, tmp_ptor),
+                                                                   params.GetPreloadYptsnb(tmp_step, tmp_ptor),
+                                                                   params.GetPredictorYstep(tmp_step, tmp_ptor),
                                                                    level,
                                                                    asNONE,
                                                                    params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
@@ -1013,12 +1013,12 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
             // Area object instantiation
             asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
                                             params.GetPredictorGridType(i_step, i_ptor),
-                                            params.GetPredictorUmin(i_step, i_ptor),
-                                            params.GetPredictorUptsnb(i_step, i_ptor),
-                                            params.GetPredictorUstep(i_step, i_ptor),
-                                            params.GetPredictorVmin(i_step, i_ptor),
-                                            params.GetPredictorVptsnb(i_step, i_ptor),
-                                            params.GetPredictorVstep(i_step, i_ptor),
+                                            params.GetPredictorXmin(i_step, i_ptor),
+                                            params.GetPredictorXptsnb(i_step, i_ptor),
+                                            params.GetPredictorXstep(i_step, i_ptor),
+                                            params.GetPredictorYmin(i_step, i_ptor),
+                                            params.GetPredictorYptsnb(i_step, i_ptor),
+                                            params.GetPredictorYstep(i_step, i_ptor),
                                             params.GetPredictorLevel(i_step, i_ptor),
                                             asNONE,
                                             params.GetPredictorFlatAllowed(i_step, i_ptor));
@@ -1085,12 +1085,12 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                 // Area object instantiation
                 asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(),
                                                params.GetPredictorGridType(i_step, i_ptor),
-                                               params.GetPredictorUmin(i_step, i_ptor),
-                                               params.GetPredictorUptsnb(i_step, i_ptor),
-                                               params.GetPredictorUstep(i_step, i_ptor),
-                                               params.GetPredictorVmin(i_step, i_ptor),
-                                               params.GetPredictorVptsnb(i_step, i_ptor),
-                                               params.GetPredictorVstep(i_step, i_ptor),
+                                               params.GetPredictorXmin(i_step, i_ptor),
+                                               params.GetPredictorXptsnb(i_step, i_ptor),
+                                               params.GetPredictorXstep(i_step, i_ptor),
+                                               params.GetPredictorYmin(i_step, i_ptor),
+                                               params.GetPredictorYptsnb(i_step, i_ptor),
+                                               params.GetPredictorYstep(i_step, i_ptor),
                                                params.GetPredictorLevel(i_step, i_ptor),
                                                asNONE,
                                                params.GetPredictorFlatAllowed(i_step, i_ptor));
@@ -1149,12 +1149,12 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                     // Area object instantiation
                     asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
                                                                                        params.GetPredictorGridType(i_step, i_ptor),
-                                                                                       params.GetPredictorUmin(i_step, i_ptor),
-                                                                                       params.GetPredictorUptsnb(i_step, i_ptor),
-                                                                                       params.GetPredictorUstep(i_step, i_ptor),
-                                                                                       params.GetPredictorVmin(i_step, i_ptor),
-                                                                                       params.GetPredictorVptsnb(i_step, i_ptor),
-                                                                                       params.GetPredictorVstep(i_step, i_ptor),
+                                                                                       params.GetPredictorXmin(i_step, i_ptor),
+                                                                                       params.GetPredictorXptsnb(i_step, i_ptor),
+                                                                                       params.GetPredictorXstep(i_step, i_ptor),
+                                                                                       params.GetPredictorYmin(i_step, i_ptor),
+                                                                                       params.GetPredictorYptsnb(i_step, i_ptor),
+                                                                                       params.GetPredictorYstep(i_step, i_ptor),
                                                                                        params.GetPreprocessLevel(i_step, i_ptor, i_prepro),
                                                                                        asNONE,
                                                                                        params.GetPredictorFlatAllowed(i_step, i_ptor));
@@ -1432,8 +1432,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     wxLongLong neededMem = 0;
     for(int i_ptor=0; i_ptor<params.GetPredictorsNb(i_step); i_ptor++)
     {
-        neededMem += (params.GetPredictorUptsnb(i_step, i_ptor))
-                     * (params.GetPredictorVptsnb(i_step, i_ptor));
+        neededMem += (params.GetPredictorXptsnb(i_step, i_ptor))
+                     * (params.GetPredictorYptsnb(i_step, i_ptor));
     }
     neededMem *= timeArrayArchive.GetSize(); // time dimension
     neededMem *= 4; // to bytes (for floats)

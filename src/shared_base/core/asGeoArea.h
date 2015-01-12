@@ -49,15 +49,15 @@ public:
 
     /** Alternative constructor
      * \param coosys The coordinate system
-     * \param Umin The left border
-     * \param Uwidth The size on U axis
-     * \param Vmin The left border
-     * \param Vwidth The size on V axis
+     * \param Xmin The left border
+     * \param Xwidth The size on X axis
+     * \param Ymin The left border
+     * \param Ywidth The size on Y axis
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoArea(CoordSys coosys, double Umin, double Uwidth, double Vmin, double Vwidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoArea(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
 
     asGeoArea(CoordSys coosys, float Level = asNONE, float Height = asNONE);
@@ -67,7 +67,7 @@ public:
     virtual ~asGeoArea();
 
 
-    void Generate(double Umin, double Uwidth, double Vmin, double Vwidth, int flatAllowed = asFLAT_FORBIDDEN);
+    void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Access m_CornerUL
      * \return The current value of m_CornerUL
@@ -153,35 +153,35 @@ public:
         m_Level = val;
     }
 
-    /** Gives the area U min coordinate
-     * \return The value of the minimum on the U axis
+    /** Gives the area X min coordinate
+     * \return The value of the minimum on the X axis
      */
-    double GetUmin();
+    double GetXmin();
 
-    /** Gives the area U max coordinate
-     * \return The value of the maximum on the U axis
+    /** Gives the area X max coordinate
+     * \return The value of the maximum on the X axis
      */
-    double GetUmax();
+    double GetXmax();
 
-    /** Gives the area U size
-     * \return The value of the U axis size
+    /** Gives the area X size
+     * \return The value of the X axis size
      */
-    double GetUwidth();
+    double GetXwidth();
 
-    /** Gives the area V min coordinate
-     * \return The value of the minimum on the V axis
+    /** Gives the area Y min coordinate
+     * \return The value of the minimum on the Y axis
      */
-    double GetVmin();
+    double GetYmin();
 
-    /** Gives the area V max coordinate
-     * \return The value of the maximum on the V axis
+    /** Gives the area Y max coordinate
+     * \return The value of the maximum on the Y axis
      */
-    double GetVmax();
+    double GetYmax();
 
-    /** Gives the area V size
-     * \return The value of the V axis size
+    /** Gives the area Y size
+     * \return The value of the Y axis size
      */
-    double GetVwidth();
+    double GetYwidth();
 
     /** Gives the area center coordinates
      * \return The coordinates of the center

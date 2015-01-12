@@ -210,8 +210,8 @@ bool asDataPredictand::InitBaseContainers()
     }
     m_StationsName.resize(m_StationsNb);
     m_StationsIds.resize(m_StationsNb);
-    m_StationsLocCoordU.resize(m_StationsNb);
-    m_StationsLocCoordV.resize(m_StationsNb);
+    m_StationsLocCoordX.resize(m_StationsNb);
+    m_StationsLocCoordY.resize(m_StationsNb);
     m_StationsLon.resize(m_StationsNb);
     m_StationsLat.resize(m_StationsNb);
     m_StationsHeight.resize(m_StationsNb);
@@ -263,10 +263,20 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     ncFile.GetVar("lon", &m_StationsLon[0]);
     m_StationsLat.resize( m_StationsNb );
     ncFile.GetVar("lat", &m_StationsLat[0]);
-    m_StationsLocCoordU.resize( m_StationsNb );
-    ncFile.GetVar("loc_coord_u", &m_StationsLocCoordU[0]);
-    m_StationsLocCoordV.resize( m_StationsNb );
-    ncFile.GetVar("loc_coord_v", &m_StationsLocCoordV[0]);
+    m_StationsLocCoordX.resize( m_StationsNb );
+    if (version<1.4) {
+        ncFile.GetVar("loc_coord_u", &m_StationsLocCoordX[0]);
+    }
+    else {
+        ncFile.GetVar("loc_coord_x", &m_StationsLocCoordX[0]);
+    }
+    m_StationsLocCoordY.resize( m_StationsNb );
+    if (version<1.4) {
+        ncFile.GetVar("loc_coord_v", &m_StationsLocCoordY[0]);
+    }
+    else {
+        ncFile.GetVar("loc_coord_y", &m_StationsLocCoordY[0]);
+    }
     m_StationsStart.resize( m_StationsNb );
     ncFile.GetVar("start", &m_StationsStart[0]);
     m_StationsEnd.resize( m_StationsNb );
@@ -314,8 +324,8 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.DefVar("stations_height", NC_FLOAT, 1, DimNameStations);
     ncFile.DefVar("lon", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("lat", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("loc_coord_u", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("loc_coord_v", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("loc_coord_x", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("loc_coord_y", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("start", NC_DOUBLE, 1, DimNameStations);
     ncFile.DefVar("end", NC_DOUBLE, 1, DimNameStations);
 
@@ -343,14 +353,14 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
     ncFile.PutAtt("units", "degrees", "lat");
 
     // Put attributes for the loccoordu variable
-    ncFile.PutAtt("long_name", "Local coordinate U", "loc_coord_u");
-    ncFile.PutAtt("var_desc", "Local coordinate for the U axis (west-east)", "loc_coord_u");
-    ncFile.PutAtt("units", "m", "loc_coord_u");
+    ncFile.PutAtt("long_name", "Local coordinate X", "loc_coord_x");
+    ncFile.PutAtt("var_desc", "Local coordinate for the X axis (west-east)", "loc_coord_x");
+    ncFile.PutAtt("units", "m", "loc_coord_x");
 
     // Put attributes for the loccoordv variable
-    ncFile.PutAtt("long_name", "Local coordinate V", "loc_coord_v");
-    ncFile.PutAtt("var_desc", "Local coordinate for the V axis (west-east)", "loc_coord_v");
-    ncFile.PutAtt("units", "m", "loc_coord_v");
+    ncFile.PutAtt("long_name", "Local coordinate Y", "loc_coord_y");
+    ncFile.PutAtt("var_desc", "Local coordinate for the Y axis (west-east)", "loc_coord_y");
+    ncFile.PutAtt("units", "m", "loc_coord_y");
 
     // Put attributes for the start variable
     ncFile.PutAtt("long_name", "Start", "start");
@@ -385,8 +395,8 @@ bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
     ncFile.PutVarArray("stations_height", startStations, countStations, &m_StationsHeight(0));
     ncFile.PutVarArray("lon", startStations, countStations, &m_StationsLon(0));
     ncFile.PutVarArray("lat", startStations, countStations, &m_StationsLat(0));
-    ncFile.PutVarArray("loc_coord_u", startStations, countStations, &m_StationsLocCoordU(0));
-    ncFile.PutVarArray("loc_coord_v", startStations, countStations, &m_StationsLocCoordV(0));
+    ncFile.PutVarArray("loc_coord_x", startStations, countStations, &m_StationsLocCoordX(0));
+    ncFile.PutVarArray("loc_coord_y", startStations, countStations, &m_StationsLocCoordY(0));
     ncFile.PutVarArray("start", startStations, countStations, &m_StationsStart(0));
     ncFile.PutVarArray("end", startStations, countStations, &m_StationsEnd(0));
     ncFile.PutVarArray("data_gross", start2, count2, &m_DataGross(0,0));
@@ -398,8 +408,8 @@ bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, s
 {
     m_StationsName[stationIndex] = currentData.GetStationName();
     m_StationsIds(stationIndex) = currentData.GetStationId();
-    m_StationsLocCoordU(stationIndex) = currentData.GetStationCoord().u;
-    m_StationsLocCoordV(stationIndex) = currentData.GetStationCoord().v;
+    m_StationsLocCoordX(stationIndex) = currentData.GetStationCoord().x;
+    m_StationsLocCoordY(stationIndex) = currentData.GetStationCoord().y;
 // FIXME (Pascal#1#): Implement lon/lat
     m_StationsLon(stationIndex) = NaNDouble;
     m_StationsLat(stationIndex) = NaNDouble;

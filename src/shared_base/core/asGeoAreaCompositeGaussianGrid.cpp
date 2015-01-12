@@ -27,7 +27,7 @@
  
 #include "asGeoAreaCompositeGaussianGrid.h"
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Ustep, double Vstep, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
 :
 asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
@@ -37,16 +37,16 @@ asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, He
     {
     case (asGeoAreaGaussianGrid::T62):
         m_GridType = GaussianT62;
-        m_FullAxisV.resize(94);
-        m_FullAxisV << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
-        m_FullAxisU = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
+        m_FullAxisY.resize(94);
+        m_FullAxisY << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
+        m_FullAxisX = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
         break;
     default:
         asLogWarning("The Gaussian grid type was not correctly defined. T62 taken as default.");
         m_GridType = GaussianT62;
-        m_FullAxisV.resize(94);
-        m_FullAxisV << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
-        m_FullAxisU = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
+        m_FullAxisY.resize(94);
+        m_FullAxisY << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
+        m_FullAxisX = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
         break;
     }
 
@@ -56,7 +56,7 @@ asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, He
     if(!IsOnGrid(CornerLR)) asThrowException(_("The given area does not match a gaussian grid."));
 }
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(CoordSys coosys, double Umin, int Uptsnb, double Vmin, int Vptsnb, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(CoordSys coosys, double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
 :
 asGeoAreaCompositeGrid(coosys, Level, Height)
 {
@@ -66,39 +66,39 @@ asGeoAreaCompositeGrid(coosys, Level, Height)
     switch (type)
     {
     case (asGeoAreaGaussianGrid::T62):
-        m_FullAxisV.resize(94);
-        m_FullAxisV << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
-        m_FullAxisU = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
+        m_FullAxisY.resize(94);
+        m_FullAxisY << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
+        m_FullAxisX = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
         break;
     default:
         asLogWarning("The Gaussian grid type was not correctly defined. T62 taken as default.");
-        m_FullAxisV.resize(94);
-        m_FullAxisV << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
-        m_FullAxisU = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
+        m_FullAxisY.resize(94);
+        m_FullAxisY << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762,  06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
+        m_FullAxisX = Array1DDouble::LinSpaced(577, -360, 720); // Normally: LinSpaced(192, 0, 358.125) but extended to accept negative longitudes.
         break;
     }
 
     // Check input
-    if(!IsOnGrid(Umin, Vmin)) asThrowException(wxString::Format(_("The given area does not match a gaussian grid (Umin = %g, Vmin = %g)."), Umin, Vmin));
+    if(!IsOnGrid(Xmin, Ymin)) asThrowException(wxString::Format(_("The given area does not match a gaussian grid (Xmin = %g, Ymin = %g)."), Xmin, Ymin));
 
     // Get real size to generate parent member variables
-    int indexUmin = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], Umin, 0.01);
-    int indexVmin = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], Vmin, 0.01);
-    wxASSERT(indexUmin>=0);
-    wxASSERT(indexVmin>=0);
-    wxASSERT(m_FullAxisU.size()>indexUmin+Uptsnb-1);
-    wxASSERT(m_FullAxisV.size()>indexVmin+Vptsnb-1);
-    wxASSERT(Uptsnb>=0);
-    wxASSERT(Vptsnb>=0);
-    if (m_FullAxisU.size()<=indexUmin+Uptsnb-1) asThrowException(_("The given width exceeds the grid size of the gaussian grid."));
-    if (m_FullAxisV.size()<=indexVmin+Vptsnb-1) asThrowException(_("The given height exceeds the grid size of the gaussian grid."));
-    if (Uptsnb<0) asThrowException(wxString::Format(_("The given width (points number) is not consistent in the gaussian grid: %d"), Uptsnb));
-    if (Vptsnb<0) asThrowException(wxString::Format(_("The given height (points number) is not consistent in the gaussian grid: %d"), Vptsnb));
-    double Uwidth = m_FullAxisU[indexUmin+Uptsnb-1] - m_FullAxisU[indexUmin];
-    double Vwidth = m_FullAxisV[indexVmin+Vptsnb-1] - m_FullAxisV[indexVmin];
+    int indexXmin = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], Xmin, 0.01);
+    int indexYmin = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], Ymin, 0.01);
+    wxASSERT(indexXmin>=0);
+    wxASSERT(indexYmin>=0);
+    wxASSERT(m_FullAxisX.size()>indexXmin+Xptsnb-1);
+    wxASSERT(m_FullAxisY.size()>indexYmin+Yptsnb-1);
+    wxASSERT(Xptsnb>=0);
+    wxASSERT(Yptsnb>=0);
+    if (m_FullAxisX.size()<=indexXmin+Xptsnb-1) asThrowException(_("The given width exceeds the grid size of the gaussian grid."));
+    if (m_FullAxisY.size()<=indexYmin+Yptsnb-1) asThrowException(_("The given height exceeds the grid size of the gaussian grid."));
+    if (Xptsnb<0) asThrowException(wxString::Format(_("The given width (points number) is not consistent in the gaussian grid: %d"), Xptsnb));
+    if (Yptsnb<0) asThrowException(wxString::Format(_("The given height (points number) is not consistent in the gaussian grid: %d"), Yptsnb));
+    double Xwidth = m_FullAxisX[indexXmin+Xptsnb-1] - m_FullAxisX[indexXmin];
+    double Ywidth = m_FullAxisY[indexYmin+Yptsnb-1] - m_FullAxisY[indexYmin];
 
     // Regenerate with correct sizes
-    Generate(Umin, Uwidth, Vmin, Vwidth, flatAllowed);
+    Generate(Xmin, Xwidth, Ymin, Ywidth, flatAllowed);
 }
 
 asGeoAreaCompositeGaussianGrid::~asGeoAreaCompositeGaussianGrid()
@@ -115,48 +115,48 @@ bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *othera
     return true;
 }
 
-Array1DDouble asGeoAreaCompositeGaussianGrid::GetUaxisComposite(int compositeNb)
+Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
 {
-    double umin = GetComposite(compositeNb).GetUmin();
-    double umax = GetComposite(compositeNb).GetUmax();
+    double Xmin = GetComposite(compositeNb).GetXmin();
+    double Xmax = GetComposite(compositeNb).GetXmax();
 
-    int uminIndex = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], umin, 0.01);
-    int umaxIndex = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], umax, 0.01);
+    int XminIndex = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], Xmin, 0.01);
+    int XmaxIndex = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], Xmax, 0.01);
 
-    wxASSERT(uminIndex>=0);
-    wxASSERT(umaxIndex>=0);
-    wxASSERT(umaxIndex>=uminIndex);
+    wxASSERT(XminIndex>=0);
+    wxASSERT(XmaxIndex>=0);
+    wxASSERT(XmaxIndex>=uminIndex);
 
-    return m_FullAxisU.segment(uminIndex,umaxIndex-uminIndex+1);
+    return m_FullAxisX.segment(XminIndex,XmaxIndex-XminIndex+1);
 }
 
-Array1DDouble asGeoAreaCompositeGaussianGrid::GetVaxisComposite(int compositeNb)
+Array1DDouble asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb)
 {
-    double vmin = GetComposite(compositeNb).GetVmin();
-    double vmax = GetComposite(compositeNb).GetVmax();
+    double Ymin = GetComposite(compositeNb).GetYmin();
+    double Ymax = GetComposite(compositeNb).GetYmax();
 
-    int vminIndex = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], vmin, 0.01);
-    int vmaxIndex = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], vmax, 0.01);
+    int YminIndex = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], Ymin, 0.01);
+    int YmaxIndex = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], Ymax, 0.01);
 
-    wxASSERT(vminIndex>=0);
-    wxASSERT(vmaxIndex>=0);
-    wxASSERT(vmaxIndex>=vminIndex);
+    wxASSERT(YminIndex>=0);
+    wxASSERT(YmaxIndex>=0);
+    wxASSERT(YmaxIndex>=YminIndex);
 
-    return m_FullAxisV.segment(vminIndex,vmaxIndex-vminIndex+1);
+    return m_FullAxisY.segment(YminIndex,YmaxIndex-YminIndex+1);
 }
 
-int asGeoAreaCompositeGaussianGrid::GetUaxisCompositePtsnb(int compositeNb)
+int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
-    double umin = GetComposite(compositeNb).GetUmin();
-    double umax = GetComposite(compositeNb).GetUmax();
+    double Xmin = GetComposite(compositeNb).GetXmin();
+    double Xmax = GetComposite(compositeNb).GetXmax();
 
-    int uminIndex = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], umin, 0.01);
-    int umaxIndex = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], umax, 0.01);
+    int XminIndex = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], Xmin, 0.01);
+    int XmaxIndex = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], Xmax, 0.01);
 
-    wxASSERT(uminIndex>=0);
-    wxASSERT(umaxIndex>=0);
+    wxASSERT(XminIndex>=0);
+    wxASSERT(XmaxIndex>=0);
 
-    int ptsnb = umaxIndex-uminIndex;
+    int ptsnb = XmaxIndex-XminIndex;
 
     if(compositeNb==0) // from 0
     {
@@ -174,49 +174,49 @@ int asGeoAreaCompositeGaussianGrid::GetUaxisCompositePtsnb(int compositeNb)
     return ptsnb;
 }
 
-int asGeoAreaCompositeGaussianGrid::GetVaxisCompositePtsnb(int compositeNb)
+int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
-    double vmin = GetComposite(compositeNb).GetVmin();
-    double vmax = GetComposite(compositeNb).GetVmax();
+    double Ymin = GetComposite(compositeNb).GetYmin();
+    double Ymax = GetComposite(compositeNb).GetYmax();
 
-    int vminIndex = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], vmin, 0.01);
-    int vmaxIndex = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], vmax, 0.01);
+    int YminIndex = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], Ymin, 0.01);
+    int YmaxIndex = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], Ymax, 0.01);
 
-    wxASSERT(vminIndex>=0);
-    wxASSERT(vmaxIndex>=0);
+    wxASSERT(YminIndex>=0);
+    wxASSERT(YmaxIndex>=0);
 
-    int ptsnb = vmaxIndex-vminIndex;
+    int ptsnb = YmaxIndex-YminIndex;
     ptsnb += 1;
 
     return ptsnb;
 }
 
-double asGeoAreaCompositeGaussianGrid::GetUaxisCompositeWidth(int compositeNb)
+double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeWidth(int compositeNb)
 {
-    return abs(GetComposite(compositeNb).GetUmax()-GetComposite(compositeNb).GetUmin());
+    return abs(GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin());
 }
 
-double asGeoAreaCompositeGaussianGrid::GetVaxisCompositeWidth(int compositeNb)
+double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeWidth(int compositeNb)
 {
-    return abs(GetComposite(compositeNb).GetVmax()-GetComposite(compositeNb).GetVmin());
+    return abs(GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin());
 }
 
-double asGeoAreaCompositeGaussianGrid::GetUaxisCompositeStart(int compositeNb)
+double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeStart(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetUmin();
+        return GetComposite(compositeNb).GetXmin();
     }
 
     // If multiple composites
     if(compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetUmin();
+        return GetComposite(compositeNb).GetXmin();
     }
     else if (compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetUmin();
+        return GetComposite(compositeNb).GetXmin();
     }
     else
     {
@@ -224,22 +224,22 @@ double asGeoAreaCompositeGaussianGrid::GetUaxisCompositeStart(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeGaussianGrid::GetVaxisCompositeStart(int compositeNb)
+double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeStart(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetVmin();
+        return GetComposite(compositeNb).GetYmin();
     }
 
     // If multiple composites
     if(compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetVmin();
+        return GetComposite(compositeNb).GetYmin();
     }
     else if (compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetVmin();
+        return GetComposite(compositeNb).GetYmin();
     }
     else
     {
@@ -247,22 +247,22 @@ double asGeoAreaCompositeGaussianGrid::GetVaxisCompositeStart(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeGaussianGrid::GetUaxisCompositeEnd(int compositeNb)
+double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeEnd(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetUmax();
+        return GetComposite(compositeNb).GetXmax();
     }
 
     // If multiple composites
     if(compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetUmax();
+        return GetComposite(compositeNb).GetXmax();
     }
     else if (compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetUmax();
+        return GetComposite(compositeNb).GetXmax();
     }
     else
     {
@@ -270,22 +270,22 @@ double asGeoAreaCompositeGaussianGrid::GetUaxisCompositeEnd(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeGaussianGrid::GetVaxisCompositeEnd(int compositeNb)
+double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeEnd(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetVmax();
+        return GetComposite(compositeNb).GetYmax();
     }
 
     // If multiple composites
     if(compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetVmax();
+        return GetComposite(compositeNb).GetYmax();
     }
     else if (compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetVmax();
+        return GetComposite(compositeNb).GetYmax();
     }
     else
     {
@@ -297,22 +297,22 @@ bool asGeoAreaCompositeGaussianGrid::IsOnGrid(const Coo &point)
 {
     if (!IsRectangle()) return false;
 
-    int foundU = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], point.u, 0.01);
-    if ( (foundU==asNOT_FOUND) || (foundU==asOUT_OF_RANGE) ) return false;
+    int foundX = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], point.x, 0.01);
+    if ( (foundX==asNOT_FOUND) || (foundX==asOUT_OF_RANGE) ) return false;
 
-    int foundV = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], point.v, 0.01);
-    if ( (foundV==asNOT_FOUND) || (foundV==asOUT_OF_RANGE) ) return false;
+    int foundY = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], point.y, 0.01);
+    if ( (foundY==asNOT_FOUND) || (foundY==asOUT_OF_RANGE) ) return false;
 
     return true;
 }
 
-bool asGeoAreaCompositeGaussianGrid::IsOnGrid(double Ucoord, double Vcoord)
+bool asGeoAreaCompositeGaussianGrid::IsOnGrid(double Xcoord, double Ycoord)
 {
-    int foundU = asTools::SortedArraySearch(&m_FullAxisU[0], &m_FullAxisU[m_FullAxisU.size()-1], Ucoord, 0.01);
-    if ( (foundU==asNOT_FOUND) || (foundU==asOUT_OF_RANGE) ) return false;
+    int foundX = asTools::SortedArraySearch(&m_FullAxisX[0], &m_FullAxisX[m_FullAxisX.size()-1], Xcoord, 0.01);
+    if ( (foundX==asNOT_FOUND) || (foundX==asOUT_OF_RANGE) ) return false;
 
-    int foundV = asTools::SortedArraySearch(&m_FullAxisV[0], &m_FullAxisV[m_FullAxisV.size()-1], Vcoord, 0.01);
-    if ( (foundV==asNOT_FOUND) || (foundV==asOUT_OF_RANGE) ) return false;
+    int foundY = asTools::SortedArraySearch(&m_FullAxisY[0], &m_FullAxisY[m_FullAxisY.size()-1], Ycoord, 0.01);
+    if ( (foundY==asNOT_FOUND) || (foundY==asOUT_OF_RANGE) ) return false;
 
     return true;
 }
