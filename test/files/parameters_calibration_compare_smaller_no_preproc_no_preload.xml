@@ -54,12 +54,12 @@
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
-                    <Umin value="" min="-5" max="5" step="2.5" method="minmax" />
-                    <Uptsnb value="" min="2" max="9" step="1" method="minmax" />
-                    <Ustep value="2.5" />
-                    <Vmin value="" min="40" max="45" step="2.5" method="minmax" />
-                    <Vptsnb value="" min="2" max="5" step="1" method="minmax" />
-                    <Vstep value="2.5" />
+                    <Xmin value="" min="-5" max="5" step="2.5" method="minmax" />
+                    <Xptsnb value="" min="2" max="9" step="1" method="minmax" />
+                    <Xstep value="2.5" />
+                    <Ymin value="" min="40" max="45" step="2.5" method="minmax" />
+                    <Yptsnb value="" min="2" max="5" step="1" method="minmax" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" method="fixed" />
@@ -88,12 +88,12 @@
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
-                    <Umin value="" min="-5" max="5" step="2.5" method="minmax" />
-                    <Uptsnb value="" min="2" max="9" step="1" method="minmax" />
-                    <Ustep value="2.5" />
-                    <Vmin value="" min="40" max="45" step="2.5" method="minmax" />
-                    <Vptsnb value="" min="2" max="5" step="1" method="minmax" />
-                    <Vstep value="2.5" />
+                    <Xmin value="" min="-5" max="5" step="2.5" method="minmax" />
+                    <Xptsnb value="" min="2" max="9" step="1" method="minmax" />
+                    <Xstep value="2.5" />
+                    <Ymin value="" min="40" max="45" step="2.5" method="minmax" />
+                    <Yptsnb value="" min="2" max="5" step="1" method="minmax" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" method="fixed" />

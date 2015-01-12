@@ -48,12 +48,12 @@
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
-                    <Umin value="-5" min="" max="" step="" method="fixed" />
-                    <Uptsnb value="9" min="" max="" step="" method="fixed" />
-                    <Ustep value="2.5" />
-                    <Vmin value="40" min="" max="" step="" method="fixed" />
-                    <Vptsnb value="5" min="" max="" step="" method="fixed" />
-                    <Vstep value="2.5" />
+                    <Xmin value="-5" min="" max="" step="" method="fixed" />
+                    <Xptsnb value="9" min="" max="" step="" method="fixed" />
+                    <Xstep value="2.5" />
+                    <Ymin value="40" min="" max="" step="" method="fixed" />
+                    <Yptsnb value="5" min="" max="" step="" method="fixed" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" method="fixed" />
@@ -76,12 +76,12 @@
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
-                    <Umin value="-5" min="" max="" step="" method="fixed" />
-                    <Uptsnb value="9" min="" max="" step="" method="fixed" />
-                    <Ustep value="2.5" />
-                    <Vmin value="40" min="" max="" step="" method="fixed" />
-                    <Vptsnb value="5" min="" max="" step="" method="fixed" />
-                    <Vstep value="2.5" />
+                    <Xmin value="-5" min="" max="" step="" method="fixed" />
+                    <Xptsnb value="9" min="" max="" step="" method="fixed" />
+                    <Xstep value="2.5" />
+                    <Ymin value="40" min="" max="" step="" method="fixed" />
+                    <Yptsnb value="5" min="" max="" step="" method="fixed" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" method="fixed" />
@@ -131,12 +131,12 @@
                 </Params>
                 <Params name="Area Moving">
                     <GridType value="Regular" />
-                    <Umin value="5" min="" max="" step="" method="fixed" />
-                    <Uptsnb value="2" min="" max="" step="" method="fixed" />
-                    <Ustep value="2.5" />
-                    <Vmin value="45" min="" max="" step="" method="fixed" />
-                    <Vptsnb value="2" min="" max="" step="" method="fixed" />
-                    <Vstep value="2.5" />
+                    <Xmin value="5" min="" max="" step="" method="fixed" />
+                    <Xptsnb value="2" min="" max="" step="" method="fixed" />
+                    <Xstep value="2.5" />
+                    <Ymin value="45" min="" max="" step="" method="fixed" />
+                    <Yptsnb value="2" min="" max="" step="" method="fixed" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="RSE" method="fixed" />

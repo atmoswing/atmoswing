@@ -194,8 +194,8 @@ bool asCatalogPredictands::LoadDataProp(int StationId)
     m_Station.Id = StationId;
     m_Station.Name = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "name");
     m_Station.LocalId = xmlFile.GetFirstElementValueText("LocalID");
-    m_Station.Coord.u = xmlFile.GetFirstElementValueDouble("XCoordinate", NaNDouble);
-    m_Station.Coord.v = xmlFile.GetFirstElementValueDouble("YCoordinate", NaNDouble);
+    m_Station.Coord.x = xmlFile.GetFirstElementValueDouble("XCoordinate", NaNDouble);
+    m_Station.Coord.y = xmlFile.GetFirstElementValueDouble("YCoordinate", NaNDouble);
     m_Station.Height = xmlFile.GetFirstElementValueFloat("Height", NaNFloat);
     m_Station.Filename = xmlFile.GetFirstElementValueText("FileName");
     m_Station.Filepattern = xmlFile.GetFirstElementValueText("FilePattern");

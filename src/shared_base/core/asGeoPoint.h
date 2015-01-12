@@ -45,12 +45,12 @@ public:
 
     /** Other constructor
      * \param coosys The coordinate system
-     * \param U The coordinate on the U axis
-     * \param V The coordinate on the V axis
+     * \param X The coordinate on the X axis
+     * \param Y The coordinate on the Y axis
      * \param Level The height in hPa
      * \param Level The height in m
      */
-    asGeoPoint(CoordSys coosys, double U, double V, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(CoordSys coosys, double x, double y, float Level = asNONE, float Height = asNONE);
 
     /** Default destructor */
     virtual ~asGeoPoint();
@@ -72,20 +72,20 @@ public:
         Init();
     }
 
-    /** Gives the U coordinate
-     * \return The coordinate on the U axis
+    /** Gives the X coordinate
+     * \return The coordinate on the X axis
      */
-    double GetU()
+    double GetX()
     {
-        return m_Point.u;
+        return m_Point.x;
     }
 
     /** Gives the V coordinate
-     * \return The coordinate on the V axis
+     * \return The coordinate on the Y axis
      */
-    double GetV()
+    double GetY()
     {
-        return m_Point.v;
+        return m_Point.y;
     }
 
     /** Access m_Level

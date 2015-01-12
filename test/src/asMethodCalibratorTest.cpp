@@ -975,8 +975,8 @@ void GrenobleComparison1Preloading()
         CHECK_EQUAL(true, result);
 
         // Force values
-        params.SetPredictorUptsnb(0, 0, 9);
-        params.SetPredictorVmin(0, 1, 40);
+        params.SetPredictorXptsnb(0, 0, 9);
+        params.SetPredictorYmin(0, 1, 40);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -1154,9 +1154,9 @@ void GrenobleComparison1PreloadingSubset()
         CHECK_EQUAL(true, result);
 
         // Force values
-        params.SetPredictorUptsnb(0, 0, 9);
-        params.SetPredictorVmin(0, 1, 42.5);
-        params.SetPredictorVptsnb(0, 1, 4);
+        params.SetPredictorXptsnb(0, 0, 9);
+        params.SetPredictorYmin(0, 1, 42.5);
+        params.SetPredictorYptsnb(0, 1, 4);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -1263,41 +1263,41 @@ TEST(SmallerSpatialArea)
         CHECK_EQUAL(true, result);
 
         // Change spatial windows
-        paramsNoPreprocNoPreload.SetPredictorUmin(0,0,5);
-        paramsNoPreprocNoPreload.SetPredictorUmin(0,1,5);
-        paramsNoPreprocNoPreload.SetPredictorUptsnb(0,0,3);
-        paramsNoPreprocNoPreload.SetPredictorUptsnb(0,1,3);
-        paramsNoPreprocNoPreload.SetPredictorVmin(0,0,42.5);
-        paramsNoPreprocNoPreload.SetPredictorVmin(0,1,42.5);
-        paramsNoPreprocNoPreload.SetPredictorVptsnb(0,0,3);
-        paramsNoPreprocNoPreload.SetPredictorVptsnb(0,1,3);
+        paramsNoPreprocNoPreload.SetPredictorXmin(0,0,5);
+        paramsNoPreprocNoPreload.SetPredictorXmin(0,1,5);
+        paramsNoPreprocNoPreload.SetPredictorXptsnb(0,0,3);
+        paramsNoPreprocNoPreload.SetPredictorXptsnb(0,1,3);
+        paramsNoPreprocNoPreload.SetPredictorYmin(0,0,42.5);
+        paramsNoPreprocNoPreload.SetPredictorYmin(0,1,42.5);
+        paramsNoPreprocNoPreload.SetPredictorYptsnb(0,0,3);
+        paramsNoPreprocNoPreload.SetPredictorYptsnb(0,1,3);
 
-        paramsNoPreprocPreload.SetPredictorUmin(0,0,5);
-        paramsNoPreprocPreload.SetPredictorUmin(0,1,5);
-        paramsNoPreprocPreload.SetPredictorUptsnb(0,0,3);
-        paramsNoPreprocPreload.SetPredictorUptsnb(0,1,3);
-        paramsNoPreprocPreload.SetPredictorVmin(0,0,42.5);
-        paramsNoPreprocPreload.SetPredictorVmin(0,1,42.5);
-        paramsNoPreprocPreload.SetPredictorVptsnb(0,0,3);
-        paramsNoPreprocPreload.SetPredictorVptsnb(0,1,3);
+        paramsNoPreprocPreload.SetPredictorXmin(0,0,5);
+        paramsNoPreprocPreload.SetPredictorXmin(0,1,5);
+        paramsNoPreprocPreload.SetPredictorXptsnb(0,0,3);
+        paramsNoPreprocPreload.SetPredictorXptsnb(0,1,3);
+        paramsNoPreprocPreload.SetPredictorYmin(0,0,42.5);
+        paramsNoPreprocPreload.SetPredictorYmin(0,1,42.5);
+        paramsNoPreprocPreload.SetPredictorYptsnb(0,0,3);
+        paramsNoPreprocPreload.SetPredictorYptsnb(0,1,3);
 
-        paramsPreprocNoPreload.SetPredictorUmin(0,0,5);
-        paramsPreprocNoPreload.SetPredictorUmin(0,1,5);
-        paramsPreprocNoPreload.SetPredictorUptsnb(0,0,3);
-        paramsPreprocNoPreload.SetPredictorUptsnb(0,1,3);
-        paramsPreprocNoPreload.SetPredictorVmin(0,0,42.5);
-        paramsPreprocNoPreload.SetPredictorVmin(0,1,42.5);
-        paramsPreprocNoPreload.SetPredictorVptsnb(0,0,3);
-        paramsPreprocNoPreload.SetPredictorVptsnb(0,1,3);
+        paramsPreprocNoPreload.SetPredictorXmin(0,0,5);
+        paramsPreprocNoPreload.SetPredictorXmin(0,1,5);
+        paramsPreprocNoPreload.SetPredictorXptsnb(0,0,3);
+        paramsPreprocNoPreload.SetPredictorXptsnb(0,1,3);
+        paramsPreprocNoPreload.SetPredictorYmin(0,0,42.5);
+        paramsPreprocNoPreload.SetPredictorYmin(0,1,42.5);
+        paramsPreprocNoPreload.SetPredictorYptsnb(0,0,3);
+        paramsPreprocNoPreload.SetPredictorYptsnb(0,1,3);
 
-        paramsPreprocPreload.SetPredictorUmin(0,0,5);
-        paramsPreprocPreload.SetPredictorUmin(0,1,5);
-        paramsPreprocPreload.SetPredictorUptsnb(0,0,3);
-        paramsPreprocPreload.SetPredictorUptsnb(0,1,3);
-        paramsPreprocPreload.SetPredictorVmin(0,0,42.5);
-        paramsPreprocPreload.SetPredictorVmin(0,1,42.5);
-        paramsPreprocPreload.SetPredictorVptsnb(0,0,3);
-        paramsPreprocPreload.SetPredictorVptsnb(0,1,3);
+        paramsPreprocPreload.SetPredictorXmin(0,0,5);
+        paramsPreprocPreload.SetPredictorXmin(0,1,5);
+        paramsPreprocPreload.SetPredictorXptsnb(0,0,3);
+        paramsPreprocPreload.SetPredictorXptsnb(0,1,3);
+        paramsPreprocPreload.SetPredictorYmin(0,0,42.5);
+        paramsPreprocPreload.SetPredictorYmin(0,1,42.5);
+        paramsPreprocPreload.SetPredictorYptsnb(0,0,3);
+        paramsPreprocPreload.SetPredictorYptsnb(0,1,3);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator1;

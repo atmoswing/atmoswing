@@ -44,12 +44,12 @@
                 </Params>
                 <Params name="Area">
                     <GridType value="Regular" />
-                    <Umin value="-10" />
-                    <Uptsnb value="9" />
-                    <Ustep value="2.5" />
-                    <Vmin value="30" />
-                    <Vptsnb value="5" />
-                    <Vstep value="2.5" />
+                    <Xmin value="-10" />
+                    <Xptsnb value="9" />
+                    <Xstep value="2.5" />
+                    <Ymin value="30" />
+                    <Yptsnb value="5" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" />
@@ -72,12 +72,12 @@
                 </Params>
                 <Params name="Area">
                     <GridType value="Regular" />
-                    <Umin value="-15" />
-                    <Uptsnb value="11" />
-                    <Ustep value="2.5" />
-                    <Vmin value="35" />
-                    <Vptsnb value="7" />
-                    <Vstep value="2.5" />
+                    <Xmin value="-15" />
+                    <Xptsnb value="11" />
+                    <Xstep value="2.5" />
+                    <Ymin value="35" />
+                    <Yptsnb value="7" />
+                    <Ystep value="2.5" />
                 </Params>
                 <Params name="Criteria">
                     <Criteria value="S1" />

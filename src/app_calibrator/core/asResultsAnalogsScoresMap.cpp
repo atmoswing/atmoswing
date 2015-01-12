@@ -80,8 +80,8 @@ bool asResultsAnalogsScoresMap::Add(asParametersScoring &params, float score)
     if(!params.GetPredictorGridType(0,0).IsSameAs("Regular", false)) asThrowException(_("asResultsAnalogsScoresMap::Add is not ready to use on unregular grids"));
 
     m_Scores.push_back(score);
-    m_Lon.push_back((params.GetPredictorUmin(0,0)+(params.GetPredictorUptsnb(0,0)-1)*params.GetPredictorUstep(0,0)/2.0));
-    m_Lat.push_back((params.GetPredictorVmin(0,0)+(params.GetPredictorVptsnb(0,0)-1)*params.GetPredictorVstep(0,0)/2.0));
+    m_Lon.push_back((params.GetPredictorXmin(0,0)+(params.GetPredictorXptsnb(0,0)-1)*params.GetPredictorXstep(0,0)/2.0));
+    m_Lat.push_back((params.GetPredictorYmin(0,0)+(params.GetPredictorYptsnb(0,0)-1)*params.GetPredictorYstep(0,0)/2.0));
     m_Level.push_back(params.GetPredictorLevel(0,0));
 
     return true;

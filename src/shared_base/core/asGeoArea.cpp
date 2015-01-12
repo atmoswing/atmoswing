@@ -47,31 +47,31 @@ asGeo(coosys)
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(CoordSys coosys, double Umin, double Uwidth, double Vmin, double Vwidth, float Level, float Height, int flatAllowed)
+asGeoArea::asGeoArea(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
 :
 asGeo(coosys)
 {
     if (flatAllowed==asFLAT_ALLOWED)
     {
-        Vwidth = wxMax(Vwidth, 0.0);
-        Uwidth = wxMax(Uwidth, 0.0);
+        Ywidth = wxMax(Ywidth, 0.0);
+        Xwidth = wxMax(Xwidth, 0.0);
     }
     else
     {
-        wxASSERT(Vwidth>0);
-        wxASSERT(Uwidth>0);
+        wxASSERT(Ywidth>0);
+        wxASSERT(Xwidth>0);
     }
 
     // Set the members
     m_CoordSys = coosys;
-    m_CornerUL.u = Umin;
-    m_CornerUL.v = Vmin+Vwidth;
-    m_CornerUR.u = Umin+Uwidth;
-    m_CornerUR.v = Vmin+Vwidth;
-    m_CornerLL.u = Umin;
-    m_CornerLL.v = Vmin;
-    m_CornerLR.u = Umin+Uwidth;
-    m_CornerLR.v = Vmin;
+    m_CornerUL.x = Xmin;
+    m_CornerUL.y = Ymin+Ywidth;
+    m_CornerUR.x = Xmin+Xwidth;
+    m_CornerUR.y = Ymin+Ywidth;
+    m_CornerLL.x = Xmin;
+    m_CornerLL.y = Ymin;
+    m_CornerLR.x = Xmin+Xwidth;
+    m_CornerLR.y = Ymin;
     m_Level = Level;
     m_Height = Height;
     m_FlatAllowed = flatAllowed;
@@ -88,14 +88,14 @@ asGeo(coosys)
 {
     // Set the members
     m_CoordSys = coosys;
-    m_CornerUL.u = 0;
-    m_CornerUL.v = 0;
-    m_CornerUR.u = 0;
-    m_CornerUR.v = 0;
-    m_CornerLL.u = 0;
-    m_CornerLL.v = 0;
-    m_CornerLR.u = 0;
-    m_CornerLR.v = 0;
+    m_CornerUL.x = 0;
+    m_CornerUL.y = 0;
+    m_CornerUR.x = 0;
+    m_CornerUR.y = 0;
+    m_CornerLL.x = 0;
+    m_CornerLL.y = 0;
+    m_CornerLR.x = 0;
+    m_CornerLR.y = 0;
     m_Level = Level;
     m_Height = Height;
     m_FlatAllowed = asFLAT_ALLOWED;
@@ -106,28 +106,28 @@ asGeoArea::~asGeoArea()
     //dtor
 }
 
-void asGeoArea::Generate(double Umin, double Uwidth, double Vmin, double Vwidth, int flatAllowed)
+void asGeoArea::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
 {
     if (flatAllowed==asFLAT_ALLOWED)
     {
-        Vwidth = wxMax(Vwidth, 0.0);
-        Uwidth = wxMax(Uwidth, 0.0);
+        Ywidth = wxMax(Ywidth, 0.0);
+        Xwidth = wxMax(Xwidth, 0.0);
     }
     else
     {
-        wxASSERT(Vwidth>0);
-        wxASSERT(Uwidth>0);
+        wxASSERT(Ywidth>0);
+        wxASSERT(Xwidth>0);
     }
 
     // Set the members
-    m_CornerUL.u = Umin;
-    m_CornerUL.v = Vmin+Vwidth;
-    m_CornerUR.u = Umin+Uwidth;
-    m_CornerUR.v = Vmin+Vwidth;
-    m_CornerLL.u = Umin;
-    m_CornerLL.v = Vmin;
-    m_CornerLR.u = Umin+Uwidth;
-    m_CornerLR.v = Vmin;
+    m_CornerUL.x = Xmin;
+    m_CornerUL.y = Ymin+Ywidth;
+    m_CornerUR.x = Xmin+Xwidth;
+    m_CornerUR.y = Ymin+Ywidth;
+    m_CornerLL.x = Xmin;
+    m_CornerLL.y = Ymin;
+    m_CornerLR.x = Xmin+Xwidth;
+    m_CornerLR.y = Ymin;
     m_FlatAllowed = flatAllowed;
 
     // Initialization and check points
@@ -158,34 +158,34 @@ bool asGeoArea::CheckConsistency()
 
     if (m_FlatAllowed == asFLAT_FORBIDDEN)
     {
-        if ((m_CornerUL.u == m_CornerUR.u) || (m_CornerLL.u == m_CornerLR.u) || (m_CornerLL.v == m_CornerUL.v) || (m_CornerLR.v == m_CornerUR.v))
+        if ((m_CornerUL.x == m_CornerUR.x) || (m_CornerLL.x == m_CornerLR.x) || (m_CornerLL.y == m_CornerUL.y) || (m_CornerLR.y == m_CornerUR.y))
         {
             return false;
         }
     }
 
-    if (m_CornerUL.u > m_CornerUR.u)
+    if (m_CornerUL.x > m_CornerUR.x)
     {
         cootmp = m_CornerUR;
         m_CornerUR = m_CornerUL;
         m_CornerUL = cootmp;
     }
 
-    if (m_CornerLL.u > m_CornerLR.u)
+    if (m_CornerLL.x > m_CornerLR.x)
     {
         cootmp = m_CornerLR;
         m_CornerLR = m_CornerLL;
         m_CornerLL = cootmp;
     }
 
-    if (m_CornerLL.v > m_CornerUL.v)
+    if (m_CornerLL.y > m_CornerUL.y)
     {
         cootmp = m_CornerUL;
         m_CornerUL = m_CornerLL;
         m_CornerLL = cootmp;
     }
 
-    if (m_CornerLR.v > m_CornerUR.v)
+    if (m_CornerLR.y > m_CornerUR.y)
     {
         cootmp = m_CornerUR;
         m_CornerUR = m_CornerLR;
@@ -195,48 +195,48 @@ bool asGeoArea::CheckConsistency()
     return true;
 }
 
-double asGeoArea::GetUmin()
+double asGeoArea::GetXmin()
 {
-    return wxMin(wxMin(m_CornerUL.u, m_CornerLL.u), wxMin(m_CornerUR.u, m_CornerLR.u));
+    return wxMin(wxMin(m_CornerUL.x, m_CornerLL.x), wxMin(m_CornerUR.x, m_CornerLR.x));
 }
 
-double asGeoArea::GetUmax()
+double asGeoArea::GetXmax()
 {
-    return wxMax(wxMax(m_CornerUL.u, m_CornerLL.u), wxMax(m_CornerUR.u, m_CornerLR.u));
+    return wxMax(wxMax(m_CornerUL.x, m_CornerLL.x), wxMax(m_CornerUR.x, m_CornerLR.x));
 }
 
-double asGeoArea::GetUwidth()
+double asGeoArea::GetXwidth()
 {
-    return abs(m_CornerUR.u-m_CornerUL.u);
+    return abs(m_CornerUR.x-m_CornerUL.x);
 }
 
-double asGeoArea::GetVmin()
+double asGeoArea::GetYmin()
 {
-    return wxMin(wxMin(m_CornerUL.v, m_CornerLL.v), wxMin(m_CornerUR.v, m_CornerLR.v));
+    return wxMin(wxMin(m_CornerUL.y, m_CornerLL.y), wxMin(m_CornerUR.y, m_CornerLR.y));
 }
 
-double asGeoArea::GetVmax()
+double asGeoArea::GetYmax()
 {
-    return wxMax(wxMax(m_CornerUL.v, m_CornerLL.v), wxMax(m_CornerUR.v, m_CornerLR.v));
+    return wxMax(wxMax(m_CornerUL.y, m_CornerLL.y), wxMax(m_CornerUR.y, m_CornerLR.y));
 }
 
-double asGeoArea::GetVwidth()
+double asGeoArea::GetYwidth()
 {
-    return abs(m_CornerUR.v-m_CornerLR.v);
+    return abs(m_CornerUR.y-m_CornerLR.y);
 }
 
 Coo asGeoArea::GetCenter()
 {
     Coo center;
-    center.u = GetUmin() + (GetUmax()-GetUmin())/2;
-    center.v = GetVmin() + (GetVmax()-GetVmin())/2;
+    center.x = GetXmin() + (GetXmax()-GetXmin())/2;
+    center.y = GetYmin() + (GetYmax()-GetYmin())/2;
     return center;
 }
 
 bool asGeoArea::IsRectangle()
 {
     // Check that the area is a square
-    if ((m_CornerUL.u != m_CornerLL.u) | (m_CornerUL.v != m_CornerUR.v) | (m_CornerUR.u != m_CornerLR.u) | (m_CornerLL.v != m_CornerLR.v))
+    if ((m_CornerUL.x != m_CornerLL.x) | (m_CornerUL.y != m_CornerUR.y) | (m_CornerUR.x != m_CornerLR.x) | (m_CornerLL.y != m_CornerLR.y))
     {
         return false;
     }

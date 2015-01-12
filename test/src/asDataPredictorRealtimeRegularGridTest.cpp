@@ -50,13 +50,13 @@ TEST(LoadEasySmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 10;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 10;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -138,13 +138,13 @@ TEST(LoadEasyLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 10;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 10;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -226,13 +226,13 @@ TEST(LoadCompositeSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -3;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = -3;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -278,13 +278,13 @@ TEST(LoadCompositeLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -3;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = -3;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -330,13 +330,13 @@ TEST(LoadBorderLeftSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 0;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 0;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -382,13 +382,13 @@ TEST(LoadBorderLeftLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 0;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 0;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -434,13 +434,13 @@ TEST(LoadBorderLeftOn720SmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 360;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 360;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -486,13 +486,13 @@ TEST(LoadBorderLeftOn720LargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 360;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 360;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -538,13 +538,13 @@ TEST(LoadBorderRightSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 355;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 355;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -590,13 +590,13 @@ TEST(LoadBorderRightLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = 355;
-    double Uwidth = 5;
-    double Vmin = 35;
-    double Vwidth = 3;
+    double Xmin = 355;
+    double Xwidth = 5;
+    double Ymin = 35;
+    double Ywidth = 3;
     double step = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -642,14 +642,14 @@ TEST(LoadCompositeStepLonSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -3;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 3;
-    double Ustep = 2;
-    double Vstep = 1;
+    double Xmin = -3;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 3;
+    double Xstep = 2;
+    double Ystep = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -695,14 +695,14 @@ TEST(LoadCompositeStepLonLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -3;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 3;
-    double Ustep = 2;
-    double Vstep = 1;
+    double Xmin = -3;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 3;
+    double Xstep = 2;
+    double Ystep = 1;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -748,14 +748,14 @@ TEST(LoadCompositeStepLonLatSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -3;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 6;
-    double Ustep = 2;
-    double Vstep = 3;
+    double Xmin = -3;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 6;
+    double Xstep = 2;
+    double Ystep = 3;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -799,14 +799,14 @@ TEST(LoadCompositeStepLonLatLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -3;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 6;
-    double Ustep = 2;
-    double Vstep = 3;
+    double Xmin = -3;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 6;
+    double Xstep = 2;
+    double Ystep = 3;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -850,14 +850,14 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -5;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 5;
-    double Ustep = 2.5;
-    double Vstep = 2.5;
+    double Xmin = -5;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 5;
+    double Xstep = 2.5;
+    double Ystep = 2.5;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -904,14 +904,14 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -5;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 5;
-    double Ustep = 2.5;
-    double Vstep = 2.5;
+    double Xmin = -5;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 5;
+    double Xstep = 2.5;
+    double Ystep = 2.5;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -958,14 +958,14 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -2.5;
-    double Uwidth = 7.5;
-    double Vmin = 37.5;
-    double Vwidth = 2.5;
-    double Ustep = 2.5;
-    double Vstep = 2.5;
+    double Xmin = -2.5;
+    double Xwidth = 7.5;
+    double Ymin = 37.5;
+    double Ywidth = 2.5;
+    double Xstep = 2.5;
+    double Ystep = 2.5;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1007,14 +1007,14 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -2.5;
-    double Uwidth = 7.5;
-    double Vmin = 37.5;
-    double Vwidth = 2.5;
-    double Ustep = 2.5;
-    double Vstep = 2.5;
+    double Xmin = -2.5;
+    double Xwidth = 7.5;
+    double Ymin = 37.5;
+    double Ywidth = 2.5;
+    double Xstep = 2.5;
+    double Ystep = 2.5;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1056,14 +1056,14 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -2.5;
-    double Uwidth = 5;
-    double Vmin = 37.5;
-    double Vwidth = 2.5;
-    double Ustep = 2.5;
-    double Vstep = 2.5;
+    double Xmin = -2.5;
+    double Xwidth = 5;
+    double Ymin = 37.5;
+    double Ywidth = 2.5;
+    double Xstep = 2.5;
+    double Ystep = 2.5;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1103,14 +1103,14 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
     dates.Init();
 
-    double Umin = -2.5;
-    double Uwidth = 5;
-    double Vmin = 37.5;
-    double Vwidth = 2.5;
-    double Ustep = 2.5;
-    double Vstep = 2.5;
+    double Xmin = -2.5;
+    double Xwidth = 5;
+    double Ymin = 37.5;
+    double Ywidth = 2.5;
+    double Xstep = 2.5;
+    double Ystep = 2.5;
     double level = 300;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, Ustep, Vmin, Vwidth, Vstep, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);

@@ -45,10 +45,10 @@ asParametersCalibration::~asParametersCalibration()
 void asParametersCalibration::AddStep()
 {
     asParameters::AddStep();
-    ParamsStepVect stepVect;
-    stepVect.AnalogsNumber.push_back(0);
-    AddPredictorVect(stepVect);
-    m_StepsVect.push_back(stepVect);
+    ParamsStepVect stepYect;
+    stepYect.AnalogsNumber.push_back(0);
+    AddPredictorVect(stepYect);
+    m_StepsVect.push_back(stepYect);
 }
 
 bool asParametersCalibration::LoadFromFile(const wxString &filePath)
@@ -362,20 +362,20 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 
             if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area Moving")) return false;
             if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
-            if(!SetPredictorUminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Umin"))) return false;
-            if(!SetPredictorUptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Uptsnb"))) return false;
-            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
-            double Ushift = fmod(GetPredictorUminVector(i_step, i_ptor)[0], GetPredictorUstep(i_step, i_ptor));
-            if (Ushift<0) Ushift += GetPredictorUstep(i_step, i_ptor);
-            if(!SetPredictorUshift(i_step, i_ptor, Ushift)) return false;
-            if(!SetPredictorVminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Vmin"))) return false;
-            if(!SetPredictorVptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Vptsnb"))) return false;
-            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value"))) return false;
-            double Vshift = fmod(GetPredictorVminVector(i_step, i_ptor)[0], GetPredictorVstep(i_step, i_ptor));
-            if (Vshift<0) Vshift += GetPredictorVstep(i_step, i_ptor);
-            if(!SetPredictorVshift(i_step, i_ptor, Vshift)) return false;
-            VectorInt uptsnbs = GetPredictorUptsnbVector(i_step, i_ptor);
-            VectorInt vptsnbs = GetPredictorVptsnbVector(i_step, i_ptor);
+            if(!SetPredictorXminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Xmin"))) return false;
+            if(!SetPredictorXptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Xptsnb"))) return false;
+            if(!SetPredictorXstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xstep", "value"))) return false;
+            double Xshift = fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
+            if (Xshift<0) Xshift += GetPredictorXstep(i_step, i_ptor);
+            if(!SetPredictorXshift(i_step, i_ptor, Xshift)) return false;
+            if(!SetPredictorYminVector(i_step, i_ptor, GetFileParamDoubleVector(fileParams, "Ymin"))) return false;
+            if(!SetPredictorYptsnbVector(i_step, i_ptor, GetFileParamIntVector(fileParams, "Yptsnb"))) return false;
+            if(!SetPredictorYstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ystep", "value"))) return false;
+            double Yshift = fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
+            if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
+            if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
+            VectorInt uptsnbs = GetPredictorXptsnbVector(i_step, i_ptor);
+            VectorInt vptsnbs = GetPredictorYptsnbVector(i_step, i_ptor);
             if (asTools::MinArray(&uptsnbs[0], &uptsnbs[uptsnbs.size()-1])<=1 || asTools::MinArray(&vptsnbs[0], &vptsnbs[vptsnbs.size()-1])<=1)
             {
                 SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
@@ -383,12 +383,12 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
             if (NeedsPreloading(i_step, i_ptor))
             {
                 // Set maximum extent
-                if(!SetPreloadUmin(i_step, i_ptor, GetPredictorUminVector(i_step, i_ptor)[0])) return false;
-                if(!SetPreloadVmin(i_step, i_ptor, GetPredictorVminVector(i_step, i_ptor)[0])) return false;
-                int Ubaseptsnb = abs(GetPredictorUminVector(i_step, i_ptor)[0]-GetPredictorUminVector(i_step, i_ptor)[GetPredictorUminVector(i_step, i_ptor).size()-1])/GetPredictorUstep(i_step, i_ptor);
-                if(!SetPreloadUptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorUptsnbVector(i_step, i_ptor)[GetPredictorUptsnbVector(i_step, i_ptor).size()-1])) return false;
-                int Vbaseptsnb = abs(GetPredictorVminVector(i_step, i_ptor)[0]-GetPredictorVminVector(i_step, i_ptor)[GetPredictorVminVector(i_step, i_ptor).size()-1])/GetPredictorVstep(i_step, i_ptor);
-                if(!SetPreloadVptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorVptsnbVector(i_step, i_ptor)[GetPredictorVptsnbVector(i_step, i_ptor).size()-1])) return false;
+                if(!SetPreloadXmin(i_step, i_ptor, GetPredictorXminVector(i_step, i_ptor)[0])) return false;
+                if(!SetPreloadYmin(i_step, i_ptor, GetPredictorYminVector(i_step, i_ptor)[0])) return false;
+                int Xbaseptsnb = abs(GetPredictorXminVector(i_step, i_ptor)[0]-GetPredictorXminVector(i_step, i_ptor)[GetPredictorXminVector(i_step, i_ptor).size()-1])/GetPredictorXstep(i_step, i_ptor);
+                if(!SetPreloadXptsnb(i_step, i_ptor, Xbaseptsnb+GetPredictorXptsnbVector(i_step, i_ptor)[GetPredictorXptsnbVector(i_step, i_ptor).size()-1])) return false;
+                int Ybaseptsnb = abs(GetPredictorYminVector(i_step, i_ptor)[0]-GetPredictorYminVector(i_step, i_ptor)[GetPredictorYminVector(i_step, i_ptor).size()-1])/GetPredictorYstep(i_step, i_ptor);
+                if(!SetPreloadYptsnb(i_step, i_ptor, Ybaseptsnb+GetPredictorYptsnbVector(i_step, i_ptor)[GetPredictorYptsnbVector(i_step, i_ptor).size()-1])) return false;
             }
             if(!fileParams.GoANodeBack()) return false;
 
@@ -571,10 +571,10 @@ void asParametersCalibration::InitValues()
                 SetPredictorTimeHours(i,j, m_StepsVect[i].Predictors[j].TimeHours[0]);
             }
 
-            SetPredictorUmin(i,j, m_StepsVect[i].Predictors[j].Umin[0]);
-            SetPredictorUptsnb(i,j, m_StepsVect[i].Predictors[j].Uptsnb[0]);
-            SetPredictorVmin(i,j, m_StepsVect[i].Predictors[j].Vmin[0]);
-            SetPredictorVptsnb(i,j, m_StepsVect[i].Predictors[j].Vptsnb[0]);
+            SetPredictorXmin(i,j, m_StepsVect[i].Predictors[j].Xmin[0]);
+            SetPredictorXptsnb(i,j, m_StepsVect[i].Predictors[j].Xptsnb[0]);
+            SetPredictorYmin(i,j, m_StepsVect[i].Predictors[j].Ymin[0]);
+            SetPredictorYptsnb(i,j, m_StepsVect[i].Predictors[j].Yptsnb[0]);
             SetPredictorCriteria(i,j, m_StepsVect[i].Predictors[j].Criteria[0]);
             SetPredictorWeight(i,j, m_StepsVect[i].Predictors[j].Weight[0]);
         }

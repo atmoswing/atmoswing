@@ -41,73 +41,73 @@ public:
      * \param CornerUR The coordinates of the upper right corner
      * \param CornerLL The coordinates of the lower left corner
      * \param CornerLR The coordinates of the lower right corner
-     * \param Ustep The step according to the U axis
-     * \param Vstep The step according to the v axis
+     * \param Xstep The step according to the X axis
+     * \param Ystep The step according to the v axis
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Ustep, double Vstep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Alternative constructor
      * \param coosys The coordinate system
-     * \param Umin The left border
-     * \param Uwidth The size on U axis
-     * \param Ustep The step according to the U axis
-     * \param Vmin The left border
-     * \param Vwidth The size on V axis
-     * \param Vstep The step according to the v axis
+     * \param Xmin The left border
+     * \param Xwidth The size on X axis
+     * \param Xstep The step according to the X axis
+     * \param Ymin The left border
+     * \param Ywidth The size on Y axis
+     * \param Ystep The step according to the v axis
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaRegularGrid(CoordSys coosys, double Umin, double Uwidth, double Ustep, double Vmin, double Vwidth, double Vstep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaRegularGrid(CoordSys coosys, double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Default destructor */
     virtual ~asGeoAreaRegularGrid();
 
-    /** Access m_Ustep
-     * \return The current value of m_Ustep
+    /** Access m_Xstep
+     * \return The current value of m_Xstep
      */
-    double GetUstep()
+    double GetXstep()
     {
-        return m_Ustep;
+        return m_Xstep;
     }
 
-    /** Access m_Vstep
-     * \return The current value of m_Vstep
+    /** Access m_Ystep
+     * \return The current value of m_Ystep
      */
-    double GetVstep()
+    double GetYstep()
     {
-        return m_Vstep;
+        return m_Ystep;
     }
 
-    /** Get the size of the U axis
-     * \return The size of the U axis
+    /** Get the size of the X axis
+     * \return The size of the X axis
      */
-    int GetUaxisPtsnb();
+    int GetXaxisPtsnb();
 
-    /** Get the size of the V axis
-     * \return The size of the V axis
+    /** Get the size of the Y axis
+     * \return The size of the Y axis
      */
-    int GetVaxisPtsnb();
+    int GetYaxisPtsnb();
 
-    /** Get the U axis
+    /** Get the X axis
      * \return The axis built on the boundaries and the step
      */
-    Array1DDouble GetUaxis();
+    Array1DDouble GetXaxis();
 
-    /** Get the V axis
+    /** Get the Y axis
      * \param step The step of the desired axis
      * \return The axis built on the boundaries and the step
      */
-    Array1DDouble GetVaxis();
+    Array1DDouble GetYaxis();
 
 protected:
 
 private:
-    double m_Ustep; //!< Member variable "m_Ustep"
-    double m_Vstep; //!< Member variable "m_Vstep"
+    double m_Xstep; //!< Member variable "m_Xstep"
+    double m_Ystep; //!< Member variable "m_Ystep"
 
     /** Tells if the area is a straight square compatible with the given step or not
      * \return True if the area is a straight square compatible with the given step
@@ -117,7 +117,7 @@ private:
     /** Tells if the area is a straight square compatible with the given steps or not
      * \return True if the area is a straight square compatible with the given steps
      */
-    bool IsOnGrid(double stepU, double stepV);
+    bool IsOnGrid(double stepX, double stepY);
 };
 
 #endif // asGeoAreaRegularGrid_H
