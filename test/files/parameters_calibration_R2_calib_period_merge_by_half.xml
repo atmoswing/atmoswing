@@ -13,12 +13,12 @@
         <validation_period>
             <years method="array">1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000</years>
         </validation_period>
-        <time_step_hours>24</time_step_hours>
+        <time_step>24</time_step>
         <time_array_target>
-            <time_array_mode>simple</time_array_mode>
+            <time_array>simple</time_array>
         </time_array_target>
         <time_array_analogs>
-            <time_array_mode>days_interval</time_array_mode>
+            <time_array>days_interval</time_array>
             <interval_days min="10" max="100" step="10" method="fixed">60</interval_days>
             <exclude_days>60</exclude_days>
         </time_array_analogs>
@@ -101,7 +101,7 @@
     </analog_dates>
     <analog_values>
         <predictand>
-            <predictand_station_id>1</predictand_station_id>
+            <station_id>1</station_id>
         </predictand>
     </analog_values>
     <analog_forecast_score>
