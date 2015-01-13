@@ -6,10 +6,10 @@
         <unit>mm</unit>
         <temporal_resolution>Daily</temporal_resolution>
         <spatial_aggregation>Groupment</spatial_aggregation>
-        <time_zone_hours>0</time_zone_hours>
+        <time_zone>0</time_zone>
         <start note="first value of all stations">01/01/1940</start>
         <end note="last value of all stations">31/12/2007</end>
-        <first_time_step_hour>0</first_time_step_hour>
+        <first_time_step>0</first_time_step>
         <nan>32767</nan>
         <coordinate_system>21781</coordinate_system>
         <data_list>
