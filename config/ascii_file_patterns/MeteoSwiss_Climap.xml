@@ -1,15 +1,15 @@
 <pattern id="MeteoSwiss_Climap" name="MeteoSwiss data pattern from Climap.net">
-    <structtype>constantwidth</structtype>
-    <headerlines>9</headerlines>
-    <parsetime>1</parsetime>
+    <structure_type>constant_width</structure_type>
+    <header_lines>9</header_lines>
+    <parse_time>1</parse_time>
     <time>
-        <block charstart="7" charend="10">year</block>
-        <block charstart="12" charend="13">month</block>
-        <block charstart="15" charend="16">day</block>
-        <block charstart="18" charend="19">hours</block>
-        <block charstart="21" charend="22">minutes</block>
+        <block char_start="7" char_end="10">year</block>
+        <block char_start="12" char_end="13">month</block>
+        <block char_start="15" char_end="16">day</block>
+        <block char_start="18" char_end="19">hours</block>
+        <block char_start="21" char_end="22">minutes</block>
     </time>
     <data>
-        <block charstart="24" charend="28">Precipitation</block>
+        <block char_start="24" char_end="28">precipitation</block>
     </data>
 </pattern>

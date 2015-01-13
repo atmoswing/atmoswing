@@ -1,167 +1,110 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AtmoSwingFile version="0.3">
-    <CalibrationSet>
-        <General name="General">
-            <Options />
-            <Params name="Archive Period">
-                <YearStart value="1962" />
-                <YearEnd value="2001" />
-            </Params>
-            <Params name="Calibration Period">
-                <YearStart value="1962" />
-                <YearEnd value="2001" />
-            </Params>
-            <Params name="Time Properties">
-                <TimeStepHours value="24" />
-            </Params>
-            <Params name="Time Array Target">
-                <TimeArrayMode value="Simple" />
-            </Params>
-            <Params name="Time Array Analogs">
-                <TimeArrayMode value="DaysInterval" />
-                <IntervalDays value="60" min="10" max="100" step="10" method="fixed" />
-                <ExcludeDays value="60" />
-            </Params>
-        </General>
-        <Process name="Analogs Dates">
-            <Options />
-            <Params name="Method Name">
-                <MethodName value="Analogs" />
-            </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="70" min="" max="" step="" method="fixed" />
-            </Params>
-            <Data name="Predictor Preprocessed">
-                <Options />
-                <Params name="Preprocessing">
-                    <Preprocess value="1" />
-                    <PreprocessMethod value="Gradients" />
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="hgt_1000hPa" />
-                        <PreprocessLevel value="1000" min="" max="" step="" method="fixed" />
-                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
-                    </SubData>
-                </Params>
-                <Params name="Area Moving">
-                    <GridType value="Regular" />
-                    <Xmin value="-5" min="" max="" step="" method="fixed" />
-                    <Xptsnb value="9" min="" max="" step="" method="fixed" />
-                    <Xstep value="2.5" />
-                    <Ymin value="40" min="" max="" step="" method="fixed" />
-                    <Yptsnb value="5" min="" max="" step="" method="fixed" />
-                    <Ystep value="2.5" />
-                </Params>
-                <Params name="Criteria">
-                    <Criteria value="S1" method="fixed" />
-                </Params>
-                <Params name="Weight">
-                    <Weight value="0.5" min="" max="" step="" method="fixed" />
-                </Params>
-            </Data>
-            <Data name="Predictor Preprocessed">
-                <Options />
-                <Params name="Preprocessing">
-                    <Preprocess value="1" />
-                    <PreprocessMethod value="Gradients" />
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="hgt_500hPa" />
-                        <PreprocessLevel value="500" min="" max="" step="" method="fixed" />
-                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
-                    </SubData>
-                </Params>
-                <Params name="Area Moving">
-                    <GridType value="Regular" />
-                    <Xmin value="-5" min="" max="" step="" method="fixed" />
-                    <Xptsnb value="9" min="" max="" step="" method="fixed" />
-                    <Xstep value="2.5" />
-                    <Ymin value="40" min="" max="" step="" method="fixed" />
-                    <Yptsnb value="5" min="" max="" step="" method="fixed" />
-                    <Ystep value="2.5" />
-                </Params>
-                <Params name="Criteria">
-                    <Criteria value="S1" method="fixed" />
-                </Params>
-                <Params name="Weight">
-                    <Weight value="0.5" min="" max="" step="" method="fixed" />
-                </Params>
-            </Data>
-        </Process>
-        <Process name="Analogs Dates">
-            <Options />
-            <Params name="Method Name">
-                <MethodName value="Analogs" />
-            </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="30" min="" max="" step="" method="fixed" />
-            </Params>
-            <Data name="Predictor Preprocessed">
-                <Options />
-                <Params name="Preprocessing">
-                    <Preprocess value="1" />
-                    <PreprocessMethod value="FormerHumidityIndex" />
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="rhum" />
-                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
-                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
-                    </SubData>
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="rhum" />
-                        <PreprocessLevel value="850" min="" max="" step="" method="fixed" />
-                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
-                    </SubData>
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="prwtr" />
-                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
-                        <PreprocessTimeHours value="12" min="" max="" step="" method="fixed" />
-                    </SubData>
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_Reanalysis_v1_lthe" />
-                        <PreprocessDataId value="prwtr" />
-                        <PreprocessLevel value="0" min="" max="" step="" method="fixed" />
-                        <PreprocessTimeHours value="24" min="" max="" step="" method="fixed" />
-                    </SubData>
-                </Params>
-                <Params name="Area Moving">
-                    <GridType value="Regular" />
-                    <Xmin value="5" min="" max="" step="" method="fixed" />
-                    <Xptsnb value="2" min="" max="" step="" method="fixed" />
-                    <Xstep value="2.5" />
-                    <Ymin value="45" min="" max="" step="" method="fixed" />
-                    <Yptsnb value="2" min="" max="" step="" method="fixed" />
-                    <Ystep value="2.5" />
-                </Params>
-                <Params name="Criteria">
-                    <Criteria value="RSE" method="fixed" />
-                </Params>
-                <Params name="Weight">
-                    <Weight value="1" min="" max="" step="" method="fixed" />
-                </Params>
-            </Data>
-        </Process>
-        <Process name="Analogs Values">
-            <Options />
-            <Data name="Predictand">
-                <Params name="Database">
-                    <PredictandStationId value="1" min="" max="" step="" method="fixed" />
-                </Params>
-            </Data>
-        </Process>
-        <Process name="Analogs Forecast Scores">
-            <Options />
-            <Params name="Method">
-                <Name value="CRPSAR" method="fixed" />
-            </Params>
-        </Process>
-        <Process name="Analogs Forecast Score Final">
-            <Options />
-            <Params name="Time Array">
-                <Mode value="Simple" method="fixed" />
-            </Params>
-        </Process>
-    </CalibrationSet>
-</AtmoSwingFile>
+
+<atmoswing_file version="1.0" target="calibrator">
+    <time_properties>
+        <archive_period>
+            <start_year>1962</start_year>
+            <end_year>2001</end_year>
+        </archive_period>
+        <calibration_period>
+            <start_year>1962</start_year>
+            <end_year>2001</end_year>
+        </calibration_period>
+        <time_step_hours>24</time_step_hours>
+        <time_array_target>
+            <time_array_mode>simple</time_array_mode>
+        </time_array_target>
+        <time_array_analogs>
+            <time_array_mode>days_interval</time_array_mode>
+            <interval_days min="10" max="100" step="10" method="fixed">60</interval_days>
+            <exclude_days>60</exclude_days>
+        </time_array_analogs>
+    </time_properties>
+    <analog_dates>
+        <analogs_number>70</analogs_number>
+        <predictor>
+            <preprocessing>
+                <preprocessing_method>Gradients</preprocessing_method>
+                <preprocessing_data>
+                    <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+                    <data_id>hgt_1000hPa</data_id>
+                    <level>1000</level>
+                    <time>12</time>
+                </preprocessing_data>
+            </preprocessing>
+            <spatial_window>
+                <x_min>-5</x_min>
+                <x_points_nb>9</x_points_nb>
+                <y_min>40</y_min>
+                <y_points_nb>5</y_points_nb>
+            </spatial_window>
+            <criteria>S1</criteria>
+        </predictor>
+        <predictor>
+            <preprocessing>
+                <preprocessing_method>Gradients</preprocessing_method>
+                <preprocessing_data>
+                    <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+                    <data_id>hgt_500hPa</data_id>
+                    <level>500</level>
+                    <time>24</time>
+                </preprocessing_data>
+            </preprocessing>
+            <spatial_window>
+                <x_min>-5</x_min>
+                <x_points_nb>9</x_points_nb>
+                <y_min>40</y_min>
+                <y_points_nb>5</y_points_nb>
+            </spatial_window>
+            <criteria>S1</criteria>
+        </predictor>
+    </analog_dates>
+    <analog_dates>
+        <analogs_number>30</analogs_number>
+        <predictor>
+            <preprocessing>
+                <preprocessing_method>FormerHumidityIndex</preprocessing_method>
+                <preprocessing_data>
+                    <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+                    <data_id>rhum</data_id>
+                    <level>850</level>
+                    <time>12</time>
+                </preprocessing_data>
+                <preprocessing_data>
+                    <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+                    <data_id>rhum</data_id>
+                    <level>850</level>
+                    <time>24</time>
+                </preprocessing_data>
+                <preprocessing_data>
+                    <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+                    <data_id>prwtr</data_id>
+                    <time>12</time>
+                </preprocessing_data>
+                <preprocessing_data>
+                    <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+                    <data_id>prwtr</data_id>
+                    <time>24</time>
+                </preprocessing_data>
+            </preprocessing>
+            <spatial_window>
+                <x_min>5</x_min>
+                <x_points_nb>2</x_points_nb>
+                <y_min>45</y_min>
+                <y_points_nb>2</y_points_nb>
+            </spatial_window>
+            <criteria>RSE</criteria>
+        </predictor>
+    </analog_dates>
+    <analog_values>
+        <predictand>
+            <predictand_station_id>1</predictand_station_id>
+        </predictand>
+    </analog_values>
+    <analog_forecast_score>
+        <score>CRPSAR</score>
+    </analog_forecast_score>
+    <analog_forecast_score_final>
+        <time_array>simple</time_array>
+    </analog_forecast_score_final>
+</atmoswing_file>
