@@ -62,7 +62,7 @@ asDataPredictorRealtime(dataId)
     m_YaxisStep = 1;
     m_RestrictTimeHours = 0;
     m_RestrictTimeStepHours = 24;
-    m_FileFormat = grib2;
+    m_FileExtension = "grib2";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("hgt", false))

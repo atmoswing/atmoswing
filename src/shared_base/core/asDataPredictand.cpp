@@ -179,8 +179,7 @@ bool asDataPredictand::InitMembers(const wxString &catalogFilePath)
     m_DatasetId = catalog.GetSetId();
 
     // Get the number of stations
-    asCatalog::DataIdListInt datListCheck = asCatalog::GetDataIdListInt(Predictand, wxEmptyString, catalogFilePath);
-    m_StationsNb = datListCheck.Id.size();
+    m_StationsNb = catalog.GetStationsNb();
 
     // Get the timestep
     m_TimeStepDays = catalog.GetTimeStepDays();
@@ -406,25 +405,22 @@ bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
 
 bool asDataPredictand::SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex)
 {
-    m_StationsName[stationIndex] = currentData.GetStationName();
-    m_StationsIds(stationIndex) = currentData.GetStationId();
-    m_StationsLocCoordX(stationIndex) = currentData.GetStationCoord().x;
-    m_StationsLocCoordY(stationIndex) = currentData.GetStationCoord().y;
+    m_StationsName[stationIndex] = currentData.GetStationName(stationIndex);
+    m_StationsIds(stationIndex) = currentData.GetStationId(stationIndex);
+    m_StationsLocCoordX(stationIndex) = currentData.GetStationCoord(stationIndex).x;
+    m_StationsLocCoordY(stationIndex) = currentData.GetStationCoord(stationIndex).y;
 // FIXME (Pascal#1#): Implement lon/lat
     m_StationsLon(stationIndex) = NaNDouble;
     m_StationsLat(stationIndex) = NaNDouble;
-    m_StationsHeight(stationIndex) = currentData.GetStationHeight();
-    m_StationsStart(stationIndex) = currentData.GetStationStart();
-    m_StationsEnd(stationIndex) = currentData.GetStationEnd();
+    m_StationsHeight(stationIndex) = currentData.GetStationHeight(stationIndex);
+    m_StationsStart(stationIndex) = currentData.GetStationStart(stationIndex);
+    m_StationsEnd(stationIndex) = currentData.GetStationEnd(stationIndex);
 
     return true;
 }
 
 bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir)
 {
-    // Index for stations
-    int stationIndex = 0;
-
     #if wxUSE_GUI
         // The progress bar
         asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_StationsNb);
@@ -432,22 +428,15 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
 
     // Get catalog
     asCatalogPredictands catalog(catalogFilePath);
+    catalog.Load();
 
     // Get the stations list
-    asCatalog::DataIdListInt stationsList = catalog.GetDataIdListInt(Predictand, m_DatasetId, catalogFilePath);
-
-    for (size_t i_station=0; i_station<stationsList.Id.size(); i_station++)
+    for (size_t i_station=0; i_station<catalog.GetStationsNb(); i_station++)
     {
-        // The station ID
-        int stationId = stationsList.Id[i_station];
-
-        // Load data properties
-        if(!catalog.Load(stationId)) return false;
-
         #if wxUSE_GUI
             // Update the progress bar.
-            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename().c_str());
-            if(!ProgressBar.Update(stationIndex, fileNameMessage))
+            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(i_station).c_str());
+            if(!ProgressBar.Update(i_station, fileNameMessage))
             {
                 asLogError(_("The process has been canceled by the user."));
                 return false;
@@ -455,12 +444,10 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
         #endif
 
         // Get station information
-        if(!SetStationProperties(catalog, stationIndex)) return false;
+        if(!SetStationProperties(catalog, i_station)) return false;
 
         // Get file content
-        if(!GetFileContent(catalog, stationIndex, AlternateDataDir, AlternatePatternDir)) return false;
-
-        stationIndex++;
+        if(!GetFileContent(catalog, i_station, AlternateDataDir, AlternatePatternDir)) return false;
     }
 
     #if wxUSE_GUI
@@ -476,17 +463,17 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     wxString fileFullPath;
     if (!AlternateDataDir.IsEmpty())
     {
-        fileFullPath = AlternateDataDir + DS + currentData.GetStationFilename();
+        fileFullPath = AlternateDataDir + DS + currentData.GetStationFilename(stationIndex);
     }
     else
     {
-        fileFullPath = currentData.GetDataPath() + currentData.GetStationFilename();
+        fileFullPath = currentData.GetDataPath() + currentData.GetStationFilename(stationIndex);
     }
     asFileDat datFile(fileFullPath, asFile::ReadOnly);
     if(!datFile.Open()) return false;
 
     // Get the parsing format
-    wxString stationFilePattern = currentData.GetStationFilepattern();
+    wxString stationFilePattern = currentData.GetStationFilepattern(stationIndex);
     asFileDat::Pattern filePattern = asFileDat::GetPattern(stationFilePattern, AlternatePatternDir);
     size_t maxCharWidth = asFileDat::GetPatternLineMaxCharWidth(filePattern);
 
@@ -494,10 +481,10 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     datFile.SkipLines(filePattern.HeaderLines);
 
     // Get first index on the tima axis
-    int startIndex = asTools::SortedArraySearch(&m_Time[0], &m_Time[m_Time.size()-1], currentData.GetStationStart());
+    int startIndex = asTools::SortedArraySearch(&m_Time[0], &m_Time[m_Time.size()-1], currentData.GetStationStart(stationIndex));
     if (startIndex==asOUT_OF_RANGE || startIndex==asNOT_FOUND)
     {
-        asLogError(wxString::Format(_("The given start date for \"%s\" is out of the catalog range."), currentData.GetStationName().c_str()));
+        asLogError(wxString::Format(_("The given start date for \"%s\" is out of the catalog range."), currentData.GetStationName(stationIndex).c_str()));
         return false;
     }
 
@@ -553,7 +540,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         // Check again date vector
                         if ( abs(dateData - m_Time(timeIndex)) > 0.0001)
                         {
-                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY").c_str(), m_Time(timeIndex), asTime::GetStringTime(m_Time(timeIndex),"DD.MM.YYYY").c_str(), currentData.GetStationFilename().c_str());
+                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY").c_str(), m_Time(timeIndex), asTime::GetStringTime(m_Time(timeIndex),"DD.MM.YYYY").c_str(), currentData.GetStationFilename(stationIndex).c_str());
                             asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage.c_str() ));
                             return false;
                         }
@@ -639,7 +626,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         // Check again date vector
                         if ( abs(dateData - m_Time(timeIndex)) > 0.001)
                         {
-                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY").c_str(), m_Time(timeIndex), asTime::GetStringTime(m_Time(timeIndex),"DD.MM.YYYY").c_str(), currentData.GetStationFilename().c_str());
+                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY").c_str(), m_Time(timeIndex), asTime::GetStringTime(m_Time(timeIndex),"DD.MM.YYYY").c_str(), currentData.GetStationFilename(stationIndex).c_str());
                             asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage.c_str() ));
                             return false;
                         }
@@ -677,17 +664,17 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     datFile.Close();
 
     // Get end index
-    int endIndex = asTools::SortedArraySearch(&m_Time[0], &m_Time[m_Time.size()-1], currentData.GetStationEnd());
+    int endIndex = asTools::SortedArraySearch(&m_Time[0], &m_Time[m_Time.size()-1], currentData.GetStationEnd(stationIndex));
     if (endIndex==asOUT_OF_RANGE || endIndex==asNOT_FOUND)
     {
-        asLogError(wxString::Format(_("The given end date for \"%s\" is out of the catalog range."), currentData.GetStationName().c_str()));
+        asLogError(wxString::Format(_("The given end date for \"%s\" is out of the catalog range."), currentData.GetStationName(stationIndex).c_str()));
         return false;
     }
 
     // Check time width
     if (endIndex-startIndex!=timeIndex-startIndex-1)
     {
-        wxString messageTime = wxString::Format(_("The length of the data in \"%s / %s\" is not coherent"), currentData.GetName().c_str(), currentData.GetStationName().c_str());
+        wxString messageTime = wxString::Format(_("The length of the data in \"%s / %s\" is not coherent"), currentData.GetName().c_str(), currentData.GetStationName(stationIndex).c_str());
         asLogError(messageTime);
         return false;
     }
@@ -708,7 +695,7 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax)
     }
     else if(timeStepDays>m_TimeStepDays)
     {
-        if(fmod(timeStepDays,m_TimeStepDays)>0.0000001)
+        if(fmod(timeStepDays, m_TimeStepDays)>0.0000001)
         {
             asLogError(_("The timestep for the extraction of the predictands maximums has to be a multiple of the data timestep."));
             Array2DFloat emptyMatrix;

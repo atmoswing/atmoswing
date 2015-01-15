@@ -316,6 +316,7 @@ protected:
     wxString m_FileAxisLonName;
     wxString m_FileAxisTimeName;
     wxString m_FileAxisLevelName;
+    wxString m_FileExtension;
         
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check

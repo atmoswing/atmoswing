@@ -126,16 +126,6 @@ public:
     bool GenerateSimpleParametersFile(const wxString &filePath);
 
     wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect);
-
-    VectorInt GetFileParamIntVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorFloat GetFileParamFloatVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorDouble GetFileParamDoubleVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorString GetFileParamStringVector(asFileParameters &fileParams, const wxString &tag);
-
-    VVectorInt GetFileStationIdsVector(asFileParameters &fileParams);
     
     wxString Print();
 

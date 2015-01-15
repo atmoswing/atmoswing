@@ -66,37 +66,6 @@ public:
     /** Default destructor */
     virtual ~asCatalog();
 
-    /** Get the datasets IDs
-     * \param Purpose Predictor or Predictand
-     * \param AlternateFilePath The file path if not the default file
-     * \return The datasets IDs list
-     */
-    static DatasetIdList GetDatasetIdList(DataPurpose Purpose, const wxString &AlternateFilePath = wxEmptyString);
-
-    /** Get the data IDs
-     * \param Purpose Predictor or Predictand
-     * \param DataSetId The dataset ID
-     * \param AlternateFilePath The file path if not the default file
-     * \return The data IDs list
-     */
-    static DataIdListStr GetDataIdListStr(DataPurpose Purpose, const wxString &DataSetId, const wxString &AlternateFilePath = wxEmptyString);
-
-    /** Get the data IDs
-     * \param Purpose Predictor or Predictand
-     * \param DataSetId The dataset ID
-     * \param AlternateFilePath The file path if not the default file
-     * \return The data IDs list
-     */
-    static DataIdListInt GetDataIdListInt(DataPurpose Purpose, const wxString &DataSetId, const wxString &AlternateFilePath = wxEmptyString);
-
-    /** Get the data list as wxArrayString
-     * \param Purpose Predictor or Predictand
-     * \param DataSetId The dataset ID
-     * \param AlternateFilePath The file path if not the default file
-     * \return The data IDs list
-     */
-    static wxArrayString GetDataIdListwxArrayString(DataPurpose Purpose, const wxString &DataSetId, const wxString &AlternateFilePath = wxEmptyString);
-
     /** Access m_CatalogFilePath
      * \return The current value of m_CatalogFilePath
      */
@@ -289,38 +258,6 @@ public:
         m_FirstTimeStepHour = val;
     }
 
-    /** Access m_FormatRaw
-     * \return The current value of m_FormatRaw
-     */
-    FileFormat GetFormatRaw()
-    {
-        return m_FormatRaw;
-    }
-
-    /** Set m_FormatRaw
-     * \param val New value to set
-     */
-    void SetFormatRaw(FileFormat val)
-    {
-        m_FormatRaw = val;
-    }
-
-    /** Access m_FormatStorage
-     * \return The current value of m_FormatStorage
-     */
-    FileFormat GetFormatStorage()
-    {
-        return m_FormatStorage;
-    }
-
-    /** Set m_FormatStorage
-     * \param val New value to set
-     */
-    void SetFormatStorage(FileFormat val)
-    {
-        m_FormatStorage = val;
-    }
-
     /** Access m_DataPath
      * \return The current value of m_DataPath
      */
@@ -381,8 +318,6 @@ protected:
     float m_TimeZoneHours; //!< Member variable "m_Timezone" in hours
     double m_TimeStepHours; //!< Member variable "m_TimeStep" in hours
     double m_FirstTimeStepHour; //!< Member variable "m_FirstTimeStep" in hours
-    FileFormat m_FormatRaw; //!< Member variable "m_FormatRaw"
-    FileFormat m_FormatStorage; //!< Member variable "m_FormatStorage"
     wxString m_DataPath; //!< Member variable "m_FilePath"
     VectorDouble m_Nan; //!< Member variable "m_Nan"
     CoordSys m_CoordSys; //!< Member variable "m_CoordSys"

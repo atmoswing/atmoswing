@@ -175,14 +175,6 @@ enum Season
     NoSeason
 };
 
-enum DataPurpose
-{
-    PredictorArchive,
-    PredictorRealtime,
-    Predictand,
-    NoDataPurpose
-};
-
 enum DataParameter
 {
     Precipitation,
@@ -252,19 +244,6 @@ enum DataSpatialAggregation
     NoDataSpatialAggregation
 };
 
-enum FileFormat
-{
-    dat,
-    asc,
-    txt,
-    netcdf,
-    grib,
-    grib2,
-    xml,
-    kml,
-    NoFileFormat
-};
-
 enum FileTimeLength
 {
     Year,
@@ -305,13 +284,7 @@ enum ParametersList //!< Define available parameters sets (for the GUI)
 class asGlobEnums: public wxObject
 {
 public:
-
-
-    static FileFormat StringToFileFormatEnum(const wxString &FormatStr);
-
-    static wxString FileFormatEnumToExtension(FileFormat format);
-
-
+    
     static FileTimeLength StringToFileLengthEnum(const wxString &LengthStr);
 
 
