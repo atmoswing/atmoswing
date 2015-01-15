@@ -56,35 +56,42 @@ asTime()
     wxASSERT(end>start);
     wxASSERT(timestephours>0);
 
-    if (slctModeString.CmpNoCase("Simple")==0)
+    if (slctModeString.CmpNoCase("simple")==0)
     {
         m_Mode = Simple;
     }
-    else if (slctModeString.CmpNoCase("SameSeason")==0)
+    else if (slctModeString.CmpNoCase("same_season")==0
+        || slctModeString.CmpNoCase("SameSeason")==0)
     {
         m_Mode = SameSeason;
     }
-    else if (slctModeString.CmpNoCase("SeasonDJF")==0)
+    else if (slctModeString.CmpNoCase("season_DJF")==0
+        || slctModeString.CmpNoCase("SeasonDJF")==0)
     {
         m_Mode = SeasonDJF;
     }
-    else if (slctModeString.CmpNoCase("SeasonMAM")==0)
+    else if (slctModeString.CmpNoCase("season_MAM")==0
+        || slctModeString.CmpNoCase("SeasonMAM")==0)
     {
         m_Mode = SeasonMAM;
     }
-    else if (slctModeString.CmpNoCase("SeasonJJA")==0)
+    else if (slctModeString.CmpNoCase("season_JJA")==0
+        || slctModeString.CmpNoCase("SeasonJJA")==0)
     {
         m_Mode = SeasonJJA;
     }
-    else if (slctModeString.CmpNoCase("SeasonSON")==0)
+    else if (slctModeString.CmpNoCase("season_SON")==0
+        || slctModeString.CmpNoCase("SeasonSON")==0)
     {
         m_Mode = SeasonSON;
     }
-    else if (slctModeString.CmpNoCase("DaysInterval")==0)
+    else if (slctModeString.CmpNoCase("days_interval")==0
+        || slctModeString.CmpNoCase("DaysInterval")==0)
     {
         m_Mode = DaysInterval;
     }
-    else if (slctModeString.CmpNoCase("PredictandThresholds")==0)
+    else if(slctModeString.CmpNoCase("predictand_thresholds")==0 
+        || slctModeString.CmpNoCase("PredictandThresholds")==0)
     {
         m_Mode = PredictandThresholds;
     }

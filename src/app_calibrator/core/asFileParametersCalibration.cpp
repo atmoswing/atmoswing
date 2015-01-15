@@ -40,19 +40,22 @@ asFileParametersCalibration::~asFileParametersCalibration()
     //dtor
 }
 
-bool asFileParametersCalibration::InsertRootElement()
+bool asFileParametersCalibration::EditRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "CalibrationSet")) return false;
-    if(!GoToFirstNodeWithPath("CalibrationSet")) return false;
+    if (!GetRoot()) return false;
+    GetRoot()->AddAttribute("target", "calibrator");
     return true;
 }
 
-bool asFileParametersCalibration::GoToRootElement()
+bool asFileParametersCalibration::CheckRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.CalibrationSet"))
+    if (!GetRoot()) return false;
+    if (!IsAnAtmoSwingFile()) return false;
+    if (!FileVersionIsOrAbove(1.0)) return false;
+
+    if (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false))
     {
-        asLogError(wxString::Format(_("The file %s is not an AtmoSwing calibration parameters file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not a parameters file for the Calibrator."), m_FileName.GetFullName()));
         return false;
     }
     return true;

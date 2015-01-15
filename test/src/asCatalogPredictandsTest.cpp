@@ -44,7 +44,7 @@ TEST(LoadCatalogProp)
     filepath.Append("/files/catalog_precipitation_MCH.xml");
 
     asCatalogPredictands catalog(filepath);
-    catalog.Load(0);
+    catalog.Load();
 
     int samestr = catalog.GetSetId().CompareTo(_T("MCHDR"));
     CHECK_EQUAL(0,samestr);
@@ -68,9 +68,6 @@ TEST(LoadCatalogProp)
     CHECK_EQUAL(endreal,catalog.GetEnd());
     CHECK_EQUAL(24,catalog.GetTimeStepHours());
     CHECK_EQUAL(0,catalog.GetFirstTimeStepHours());
-    int formatraw = catalog.GetFormatRaw();
-    int formatrawreal = dat;
-    CHECK_EQUAL(formatrawreal,formatraw);
     VectorDouble nans = catalog.GetNan();
     CHECK_EQUAL(32767,nans[0]);
     int coordinatesys = catalog.GetCoordSys();
@@ -84,24 +81,24 @@ TEST(LoadDataProp)
     filepath.Append("/files/catalog_precipitation_MCH.xml");
 
     asCatalogPredictands catalog(filepath);
-    catalog.Load(1);
+    catalog.Load();
 
-    CHECK_EQUAL(1,catalog.GetStationId());
-    int samestr = catalog.GetStationName().CompareTo(_T("Disentis / Sedrun"));
+    CHECK_EQUAL(1,catalog.GetStationId(0));
+    int samestr = catalog.GetStationName(0).CompareTo(_T("Disentis / Sedrun"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetStationLocalId().CompareTo(_T("0060"));
+    samestr = catalog.GetStationLocalId(0).CompareTo(_T("0060"));
     CHECK_EQUAL(0,samestr);
-    CHECK_EQUAL(708200,catalog.GetStationCoord().x);
-    CHECK_EQUAL(173800,catalog.GetStationCoord().y);
-    CHECK_EQUAL(1190,catalog.GetStationHeight());
-    samestr = catalog.GetStationFilename().CompareTo(_T("0060_1948-2007.dat"));
+    CHECK_EQUAL(708200,catalog.GetStationCoord(0).x);
+    CHECK_EQUAL(173800,catalog.GetStationCoord(0).y);
+    CHECK_EQUAL(1190,catalog.GetStationHeight(0));
+    samestr = catalog.GetStationFilename(0).CompareTo(_T("0060_1948-2007.dat"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetStationFilepattern().CompareTo(_T("MCH_Climap_standard"));
+    samestr = catalog.GetStationFilepattern(0).CompareTo(_T("MCH_Climap_standard"));
     CHECK_EQUAL(0,samestr);
     double startreal = asTime::GetMJD(1948,01,01,00,00);
-    CHECK_EQUAL(startreal,catalog.GetStationStart());
+    CHECK_EQUAL(startreal,catalog.GetStationStart(0));
     double endreal = asTime::GetMJD(2007,12,31,00,00);
-    CHECK_EQUAL(endreal,catalog.GetStationEnd());
+    CHECK_EQUAL(endreal,catalog.GetStationEnd(0));
 }
 
 }

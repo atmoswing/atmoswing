@@ -1381,8 +1381,9 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
             timeArrayTarget.SetForbiddenYears(params.GetValidationYearsVector());
         }
     }
-
-    if(params.GetTimeArrayTargetMode().IsSameAs("PredictandThresholds"))
+    
+    if(params.GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds")==0 
+        || params.GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds")==0)
     {
         VectorInt stations = params.GetPredictandStationIds();
         if (stations.size()>1)

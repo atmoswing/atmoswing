@@ -1595,8 +1595,8 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
 
         // Get real rectangle
         vrRealRect realRect;
-        bool success = coord->ConvertFromPixels(msg->m_Rect, realRect);
-        wxASSERT(success == true);
+        coord->ConvertFromPixels(msg->m_Rect, realRect);
+        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect =coord->GetRectFitted(realRect);
@@ -1618,8 +1618,8 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
 
         // Get real rectangle
         vrRealRect realRect;
-        bool success = coord->ConvertFromPixels(msg->m_Rect, realRect);
-        wxASSERT(success == true);
+        wxASSERT(coord->ConvertFromPixels(msg->m_Rect, realRect));
+        coord->ConvertFromPixels(msg->m_Rect, realRect);
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);

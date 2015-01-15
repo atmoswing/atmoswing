@@ -55,6 +55,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_FileAxisLonName = wxEmptyString;
     m_FileAxisTimeName = wxEmptyString;
     m_FileAxisLevelName = wxEmptyString;
+    m_FileExtension = wxEmptyString;
 }
 
 asDataPredictor::~asDataPredictor()
