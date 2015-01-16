@@ -125,7 +125,7 @@ Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
 
     wxASSERT(XminIndex>=0);
     wxASSERT(XmaxIndex>=0);
-    wxASSERT(XmaxIndex>=uminIndex);
+    wxASSERT(XmaxIndex>=XminIndex);
 
     return m_FullAxisX.segment(XminIndex,XmaxIndex-XminIndex+1);
 }

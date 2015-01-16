@@ -173,7 +173,7 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
 
     // Put global attributes
     ncFile.PutAtt("Conventions","COARDS");
-    wxString title = params.GetForecastScoreName() + " of the " + params.GetMethodName(0) + " method";
+    wxString title = params.GetForecastScoreName() + " of the analog method";
     ncFile.PutAtt("title", title);
 
     // Put attributes

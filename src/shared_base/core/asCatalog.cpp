@@ -54,37 +54,3 @@ asCatalog::~asCatalog()
 {
     //dtor
 }
-
-double asCatalog::ConvertStringToDatasetDate(const wxString &date_s, int InSerie, float TimeZone, double TimeStepHours, double FirstHour)
-{
-    if (date_s.IsEmpty()) return NaNDouble;
-
-    // Convert the string into a date
-    double date = asTime::GetTimeFromString(date_s, guess);
-
-    // Change units to work in MJD
-    double TimeStepDays = TimeStepHours/24;
-    double FirstHourDays = FirstHour/24;
-
-    // Add the timezone
-    date -= TimeZone/24;
-
-    // Get the day
-    int day = floor(date);
-    double hour = date-day;
-
-    // Make the date match the dataset definition
-    int hourratio = 0;
-    if(InSerie == asSERIE_BEGINNING)
-    {
-        hourratio = ceil((hour-FirstHourDays)/TimeStepDays);
-    } else {
-        hourratio = floor((hour-FirstHourDays)/TimeStepDays);
-    }
-
-    // Build up the final date
-    double resdate = day;
-    resdate += FirstHourDays + hourratio*TimeStepDays;
-
-    return resdate;
-}

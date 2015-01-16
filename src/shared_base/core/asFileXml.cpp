@@ -173,7 +173,7 @@ void asFileXml::UnknownNode(wxXmlNode *node)
 
 bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
 {
-    wxString valueStr = node->GetContent();
+    wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsSameAs("true", false)) {
         return true;
     }
@@ -218,7 +218,7 @@ bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
 int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
 {
     long value;
-    wxString valueStr = node->GetContent();
+    wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsEmpty()) {
         return defaultValue;
     }
@@ -231,7 +231,7 @@ int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
 float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
 {
     double value;
-    wxString valueStr = node->GetContent();
+    wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsEmpty()) {
         return defaultValue;
     }
@@ -244,7 +244,7 @@ float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
 double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
 {
     double value;
-    wxString valueStr = node->GetContent();
+    wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsEmpty()) {
         return defaultValue;
     }
@@ -256,7 +256,7 @@ double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
 
 wxString asFileXml::GetString(wxXmlNode *node, const wxString &defaultValue)
 {
-    wxString value = node->GetContent();
+    wxString value = node->GetChildren()->GetContent();
     if (value.IsEmpty()) {
         return defaultValue;
     }

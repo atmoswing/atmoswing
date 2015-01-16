@@ -54,8 +54,10 @@
             <spatial_window>
                 <x_min>5</x_min>
                 <x_points_nb>2</x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min>45</y_min>
                 <y_points_nb>2</y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>RSE</criteria>
         </predictor>

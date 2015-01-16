@@ -322,16 +322,6 @@ protected:
     VectorDouble m_Nan; //!< Member variable "m_Nan"
     CoordSys m_CoordSys; //!< Member variable "m_CoordSys"
 
-    /** Convert a string to a MJD number
-     * \param date_s The date string
-     * \param IsSerieBeginning If the date corresponds to the beginning or to the end of a serie
-     * \param TimeZone The hours difference for time zone in reference to the UTC
-     * \param TimeStepHours The dataset TimeStep in hours
-     * \param FirstTimeStepHour The hours of the first value in a day (UTC)
-     * \return The MJD number
-     */
-    static double ConvertStringToDatasetDate(const wxString &date_s, int IsSerieBeginning, float TimeZone, double TimeStepHours, double FirstHour);
-
 
 private:
 

@@ -80,11 +80,13 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "time_zone") {
                     m_TimeZoneHours = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
-                    m_Start = xmlFile.GetFloat(nodeProp);
+                    m_Start = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "end") {
-                    m_End = xmlFile.GetFloat(nodeProp);
+                    m_End = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "first_time_step") {
                     m_FirstTimeStepHour = xmlFile.GetFloat(nodeProp);
+                } else if (nodeProp->GetName() == "path") {
+                    m_DataPath = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "nan") {
                     m_Nan.push_back(xmlFile.GetDouble(nodeProp));
                 } else if (nodeProp->GetName() == "coordinate_system") {
@@ -94,7 +96,7 @@ bool asCatalogPredictands::Load()
                     while (nodeData) {
                         if (nodeData->GetName() == "data") {
                             DataStruct station;
-
+                            
                             wxString idStr = nodeData->GetAttribute("id");
                             long id;
                             idStr.ToLong(&id);
@@ -125,9 +127,9 @@ bool asCatalogPredictands::Load()
                                 } else if (nodeDetail->GetName() == "file_pattern") {
                                     station.Filepattern = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.Start = ConvertStringToDatasetDate(xmlFile.GetString(nodeDetail), true, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
+                                    station.Start = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.End = ConvertStringToDatasetDate(xmlFile.GetString(nodeDetail), false, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
+                                    station.End = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }

@@ -12,7 +12,7 @@
         <first_time_step>0</first_time_step>
         <path>/files/</path>
         <nan>-9999</nan>
-        <coordinate_system>21781</coordinate_system>
+        <coordinate_system>CH1903</coordinate_system>
         <data_list>
             <data id="1" name="somewhere" enable="1">
                 <local_id>1234</local_id>

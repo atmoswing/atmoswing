@@ -38,8 +38,10 @@
             <spatial_window>
                 <x_min min="-5" max="5" step="2.5" method="minmax"></x_min>
                 <x_points_nb min="2" max="9" step="1" method="minmax"></x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min min="40" max="45" step="2.5" method="minmax"></y_min>
                 <y_points_nb min="2" max="5" step="1" method="minmax"></y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
         </predictor>
@@ -56,8 +58,10 @@
             <spatial_window>
                 <x_min min="-5" max="5" step="2.5" method="minmax"></x_min>
                 <x_points_nb min="2" max="9" step="1" method="minmax"></x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min min="40" max="45" step="2.5" method="minmax"></y_min>
                 <y_points_nb min="2" max="5" step="1" method="minmax"></y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
         </predictor>

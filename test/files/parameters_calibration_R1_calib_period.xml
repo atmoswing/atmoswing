@@ -38,8 +38,10 @@
             <spatial_window>
                 <x_min>-5</x_min>
                 <x_points_nb>9</x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min>40</y_min>
                 <y_points_nb>5</y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
         </predictor>
@@ -56,8 +58,10 @@
             <spatial_window>
                 <x_min>-5</x_min>
                 <x_points_nb>9</x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min>40</y_min>
                 <y_points_nb>5</y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
         </predictor>
