@@ -156,22 +156,22 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                             wxXmlNode *nodePreprocess = nodeParam->GetChildren();
                             while (nodePreprocess) {
                                 if (nodePreprocess->GetName() == "preprocessing_method") {
-                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
+                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodePreprocess))) return false;
                                 } else if (nodePreprocess->GetName() == "preprocessing_data") {
                                     wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
                                     while (nodeParamPreprocess) {
-                                        if (nodeParam->GetName() == "realtime_dataset_id") {
-                                            if(!SetPreprocessRealtimeDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "realtime_data_id") {
-                                            if(!SetPreprocessRealtimeDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "archive_dataset_id") {
-                                            if(!SetPreprocessArchiveDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "archive_data_id") {
-                                            if(!SetPreprocessArchiveDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "level") {
-                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "time") {
-                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParam))) return false;
+                                        if (nodeParamPreprocess->GetName() == "realtime_dataset_id") {
+                                            if(!SetPreprocessRealtimeDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "realtime_data_id") {
+                                            if(!SetPreprocessRealtimeDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "archive_dataset_id") {
+                                            if(!SetPreprocessArchiveDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "archive_data_id") {
+                                            if(!SetPreprocessArchiveDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "level") {
+                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "time") {
+                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess))) return false;
                                         } else {
                                             fileParams.UnknownNode(nodeParamPreprocess);
                                         }

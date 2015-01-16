@@ -35,8 +35,10 @@
             <spatial_window>
                 <x_min min="-10" max="20" step="2.5" method="minmax"></x_min>
                 <x_points_nb>2</x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min min="10" max="70" step="2.5" method="minmax"></y_min>
                 <y_points_nb>2</y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
             <weight>1</weight>

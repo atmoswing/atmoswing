@@ -170,13 +170,13 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
     wxString method = node->GetAttribute("method");
     if(method.IsEmpty())
     {
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
     }
     else if(method.IsSameAs("fixed"))
     {
         long value;
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         if(!valueStr.ToLong(&value)) {
             asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName.c_str()));
         }
@@ -184,7 +184,7 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
     }
     else if(method.IsSameAs("array"))
     {
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
     }
     else if(method.IsSameAs("minmax"))
@@ -214,7 +214,7 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
     else
     {
         asLogMessage(wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName));
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
     }
 
@@ -228,13 +228,13 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
     wxString method = node->GetAttribute("method");
     if(method.IsEmpty())
     {
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);
     }
     else if(method.IsSameAs("fixed"))
     {
         double value;
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         if(!valueStr.ToDouble(&value)) {
             asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName.c_str()));
         }
@@ -242,7 +242,7 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
     }
     else if(method.IsSameAs("array"))
     {
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);
     }
     else if(method.IsSameAs("minmax"))
@@ -272,7 +272,7 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
     else
     {
         asLogMessage(wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName));
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);
     }
 
@@ -286,13 +286,13 @@ VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
     wxString method = node->GetAttribute("method");
     if(method.IsEmpty())
     {
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorDouble(valueStr);
     }
     else if(method.IsSameAs("fixed"))
     {
         double value;
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         if(!valueStr.ToDouble(&value)) {
             asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName.c_str()));
         }
@@ -300,7 +300,7 @@ VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
     }
     else if(method.IsSameAs("array"))
     {
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorDouble(valueStr);
     }
     else if(method.IsSameAs("minmax"))
@@ -327,7 +327,7 @@ VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
     else
     {
         asLogMessage(wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName));
-        wxString valueStr = node->GetContent();
+        wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorDouble(valueStr);
     }
 
@@ -341,23 +341,23 @@ VectorString asFileParameters::GetVectorString(wxXmlNode *node)
     wxString method = node->GetAttribute("method");
     if(method.IsEmpty())
     {
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     }
     else if(method.IsSameAs("fixed"))
     {
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
         vect.push_back(value);
     }
     else if(method.IsSameAs("array"))
     {
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     }
     else
     {
         asLogMessage(wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName));
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     }
 
@@ -371,19 +371,19 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
     wxString method = node->GetAttribute("method");
     if(method.IsEmpty())
     {
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
         VectorInt ids = GetStationIds(value);
         vect.push_back(ids);
     }
     else if(method.IsSameAs("fixed"))
     {
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
         VectorInt ids = GetStationIds(value);
         vect.push_back(ids);
     }
     else if(method.IsSameAs("array"))
     {
-        wxString value = node->GetContent();
+        wxString value = node->GetChildren()->GetContent();
 
         // Explode the array
         wxChar separator = ',';

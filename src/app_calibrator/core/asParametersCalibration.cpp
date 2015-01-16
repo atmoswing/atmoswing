@@ -177,21 +177,21 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                             wxXmlNode *nodePreprocess = nodeParam->GetChildren();
                             while (nodePreprocess) {
                                 if (nodePreprocess->GetName() == "preprocessing_method") {
-                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
+                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodePreprocess))) return false;
                                 } else if (nodePreprocess->GetName() == "preprocessing_data") {
                                     wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
                                     while (nodeParamPreprocess) {
-                                        if (nodeParam->GetName() == "dataset_id") {
-                                            if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "data_id") {
-                                            if(!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, fileParams.GetVectorString(nodeParam))) return false;
-                                            if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetVectorString(nodeParam)[0])) return false;
-                                        } else if (nodeParam->GetName() == "level") {
-                                            if(!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, fileParams.GetVectorFloat(nodeParam))) return false;
-                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetVectorFloat(nodeParam)[0])) return false;
-                                        } else if (nodeParam->GetName() == "time") {
-                                            if(!SetPreprocessTimeHoursVector(i_step, i_ptor, i_dataset, fileParams.GetVectorDouble(nodeParam))) return false;
-                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetVectorDouble(nodeParam)[0])) return false;
+                                        if (nodeParamPreprocess->GetName() == "dataset_id") {
+                                            if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "data_id") {
+                                            if(!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, fileParams.GetVectorString(nodeParamPreprocess))) return false;
+                                            if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetVectorString(nodeParamPreprocess)[0])) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "level") {
+                                            if(!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, fileParams.GetVectorFloat(nodeParamPreprocess))) return false;
+                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetVectorFloat(nodeParamPreprocess)[0])) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "time") {
+                                            if(!SetPreprocessTimeHoursVector(i_step, i_ptor, i_dataset, fileParams.GetVectorDouble(nodeParamPreprocess))) return false;
+                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetVectorDouble(nodeParamPreprocess)[0])) return false;
                                         } else {
                                             fileParams.UnknownNode(nodeParamPreprocess);
                                         }
@@ -255,7 +255,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
             while (nodeParamBlock) {
                 if (nodeParamBlock->GetName() == "predictand") {
-                    wxXmlNode *nodeParam = nodeProcess->GetChildren();
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
                     while (nodeParam) {
                         if (nodeParam->GetName() == "station_id") {
                             if(!SetPredictandStationsIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
@@ -688,18 +688,18 @@ void asParametersCalibration::InitValues()
     wxASSERT(m_TimeArrayAnalogsIntervalDaysVect.size()>0);
     wxASSERT(m_ForecastScoreVect.Name.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayMode.size()>0);
-    wxASSERT(m_ForecastScoreVect.TimeArrayDate.size()>0);
-    wxASSERT(m_ForecastScoreVect.TimeArrayIntervalDays.size()>0);
-    wxASSERT(m_ForecastScoreVect.PostprocessDupliExp.size()>0);
+    //wxASSERT(m_ForecastScoreVect.TimeArrayDate.size()>0);
+    //wxASSERT(m_ForecastScoreVect.TimeArrayIntervalDays.size()>0);
+    //wxASSERT(m_ForecastScoreVect.PostprocessDupliExp.size()>0);
 
     // Initialize the parameters values with the first values of the vectors
     m_PredictandStationIds = m_PredictandStationsIdsVect[0];
     m_TimeArrayAnalogsIntervalDays = m_TimeArrayAnalogsIntervalDaysVect[0];
     SetForecastScoreName(m_ForecastScoreVect.Name[0]);
     SetForecastScoreTimeArrayMode(m_ForecastScoreVect.TimeArrayMode[0]);
-    SetForecastScoreTimeArrayDate(m_ForecastScoreVect.TimeArrayDate[0]);
-    SetForecastScoreTimeArrayIntervalDays(m_ForecastScoreVect.TimeArrayIntervalDays[0]);
-    SetForecastScorePostprocessDupliExp(m_ForecastScoreVect.PostprocessDupliExp[0]);
+    //SetForecastScoreTimeArrayDate(m_ForecastScoreVect.TimeArrayDate[0]);
+    //SetForecastScoreTimeArrayIntervalDays(m_ForecastScoreVect.TimeArrayIntervalDays[0]);
+    //SetForecastScorePostprocessDupliExp(m_ForecastScoreVect.PostprocessDupliExp[0]);
 
     for (int i=0; i<GetStepsNb(); i++)
     {

@@ -11,7 +11,7 @@
         <end note="last value of all stations">31/12/2007</end>
         <first_time_step>0</first_time_step>
         <nan>32767</nan>
-        <coordinate_system>21781</coordinate_system>
+        <coordinate_system>CH1903</coordinate_system>
         <data_list>
             <data id="1" name="Disentis / Sedrun">
                 <local_id>0060</local_id>

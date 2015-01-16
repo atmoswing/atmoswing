@@ -74,7 +74,6 @@ public:
 
     typedef struct
     {
-        wxString MethodName;
         int AnalogsNumber;
         VectorParamsPredictors Predictors;
     } ParamsStep;
@@ -317,13 +316,6 @@ public:
     }
 
     bool SetPredictandTimeHours(double val);
-
-    wxString GetMethodName(int i_step)
-    {
-        return m_Steps[i_step].MethodName;
-    }
-
-    bool SetMethodName(int i_step, const wxString& val);
 
     int GetAnalogsNumber(int i_step)
     {

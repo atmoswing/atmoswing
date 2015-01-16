@@ -32,7 +32,7 @@
 
 namespace
 {
-    
+    /*
 TEST(SaveAndLoadXmlFileWxStyle)
 {
     wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest");
@@ -138,7 +138,7 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     CHECK_EQUAL("40", childBuildingHeight->GetNodeContent());
 
     asRemoveDir(tmpDir);
-}
+}*/
 /*
 TEST(LoadSimpleXmlFile)
 {

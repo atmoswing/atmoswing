@@ -6,10 +6,6 @@
             <start_year>1962</start_year>
             <end_year>2008</end_year>
         </archive_period>
-        <calibration_period>
-            <start_year>1962</start_year>
-            <end_year>2008</end_year>
-        </calibration_period>
         <time_step>24</time_step>
         <time_array_target>
             <time_array>simple</time_array>
@@ -31,15 +27,17 @@
             <spatial_window>
                 <x_min>-10</x_min>
                 <x_points_nb>9</x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min>30</y_min>
                 <y_points_nb>5</y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
             <weight>0.6</weight>
         </predictor>
         <predictor>
             <preprocessing>
-                <preprocessing_method>Gradients</preprocessing_method>
+                <preprocessing_method>gradients</preprocessing_method>
                 <preprocessing_data>
                     <dataset_id>NCEP_R-1</dataset_id>
                     <data_id>hgt</data_id>
@@ -50,8 +48,10 @@
             <spatial_window>
                 <x_min>-15</x_min>
                 <x_points_nb>11</x_points_nb>
+                <x_step>2.5</x_step>
                 <y_min>35</y_min>
                 <y_points_nb>7</y_points_nb>
+                <y_step>2.5</y_step>
             </spatial_window>
             <criteria>S1</criteria>
             <weight>0.4</weight>

@@ -536,18 +536,18 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
     wxASSERT(dataArea->GetNbComposites()>0);
     wxASSERT(desiredArea);
     wxASSERT(desiredArea->GetNbComposites()>0);
-    bool changeUstart=false, changeXsteps=false, changeVstart=false, changeYsteps=false;
+    bool changeXstart=false, changeXsteps=false, changeYstart=false, changeYsteps=false;
 
     // Check beginning on longitudes
     if (dataArea->GetAbsoluteXmin()!=desiredArea->GetAbsoluteXmin())
     {
-        changeUstart = true;
+        changeXstart = true;
     }
 
     // Check beginning on latitudes
     if (dataArea->GetAbsoluteYmin()!=desiredArea->GetAbsoluteYmin())
     {
-        changeVstart = true;
+        changeYstart = true;
     }
 
     // Check the cells size on longitudes
@@ -558,7 +558,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
     }
 
     // Proceed to the interpolation
-    if (changeUstart || changeVstart || changeXsteps || changeYsteps)
+    if (changeXstart || changeYstart || changeXsteps || changeYsteps)
     {
         // Containers for results
         int finalLengthLon = desiredArea->GetXaxisPtsnb();
@@ -653,8 +653,8 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                                                 axisFinalLat[i_lat], axisDataLat[indexLastLat], indexLastLat, axisDataLat[axisDataLatEnd], axisDataLatEnd, (int)axisDataLat.size()));
                     return false;
                 }
-                wxASSERT_MSG(indexVfloor>=0, wxString::Format("%f in %f to %f",axisFinalLat[i_lat], axisDataLat[indexLastLat], axisDataLat[axisDataLatEnd]));
-                wxASSERT(indexVceil>=0);
+                wxASSERT_MSG(indexYfloor>=0, wxString::Format("%f in %f to %f",axisFinalLat[i_lat], axisDataLat[indexLastLat], axisDataLat[axisDataLatEnd]));
+                wxASSERT(indexYceil>=0);
 
                 // Save last index
                 indexLastLat = indexYfloor;
@@ -685,8 +685,8 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
                         return false;
                     }
 
-                    wxASSERT(indexUfloor>=0);
-                    wxASSERT(indexUceil>=0);
+                    wxASSERT(indexXfloor>=0);
+                    wxASSERT(indexXceil>=0);
 
                     // Save last index
                     indexLastLon = indexXfloor;

@@ -64,7 +64,6 @@ void asParameters::AddStep()
 {
     ParamsStep step;
 
-    step.MethodName = wxEmptyString;
     step.AnalogsNumber = 0;
 
     m_Steps.push_back(step);
@@ -249,18 +248,18 @@ bool asParameters::LoadFromFile(const wxString &filePath)
                             wxXmlNode *nodePreprocess = nodeParam->GetChildren();
                             while (nodePreprocess) {
                                 if (nodePreprocess->GetName() == "preprocessing_method") {
-                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
+                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodePreprocess))) return false;
                                 } else if (nodePreprocess->GetName() == "preprocessing_data") {
                                     wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
                                     while (nodeParamPreprocess) {
-                                        if (nodeParam->GetName() == "dataset_id") {
-                                            if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "data_id") {
-                                            if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "level") {
-                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParam))) return false;
-                                        } else if (nodeParam->GetName() == "time") {
-                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParam))) return false;
+                                        if (nodeParamPreprocess->GetName() == "dataset_id") {
+                                            if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "data_id") {
+                                            if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "level") {
+                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "time") {
+                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess))) return false;
                                         } else {
                                             fileParams.UnknownNode(nodeParamPreprocess);
                                         }
@@ -324,7 +323,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
             while (nodeParamBlock) {
                 if (nodeParamBlock->GetName() == "predictand") {
-                    wxXmlNode *nodeParam = nodeProcess->GetChildren();
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
                     while (nodeParam) {
                         if (nodeParam->GetName() == "station_id") {
                             if(!SetPredictandStationIds(fileParams.GetStationIds(fileParams.GetString(nodeParam)))) return false;
@@ -1091,17 +1090,6 @@ bool asParameters::SetPredictandTimeHours(double val)
         return false;
     }
     m_PredictandTimeHours = val;
-    return true;
-}
-
-bool asParameters::SetMethodName(int i_step, const wxString& val)
-{
-    if (val.IsEmpty())
-    {
-        asLogError(_("The provided value for the method name is null"));
-        return false;
-    }
-    m_Steps[i_step].MethodName = val;
     return true;
 }
 
