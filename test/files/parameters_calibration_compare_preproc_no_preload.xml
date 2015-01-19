@@ -43,11 +43,13 @@
                 <preprocessing_data>
                     <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
                     <data_id>prwtr</data_id>
+                    <level>0</level>
                     <time>12</time>
                 </preprocessing_data>
                 <preprocessing_data>
                     <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
                     <data_id>prwtr</data_id>
+                    <level>0</level>
                     <time>24</time>
                 </preprocessing_data>
             </preprocessing>
