@@ -39,9 +39,9 @@ asParameters::asParameters()
     m_ArchiveEnd = 0;
     m_TimeMinHours = 0;
     m_TimeMaxHours = 0;
-    m_TimeArrayTargetMode = "Simple";
+    m_TimeArrayTargetMode = "simple";
     m_TimeArrayTargetTimeStepHours = 0;
-    m_TimeArrayAnalogsMode = "DaysInterval";
+    m_TimeArrayAnalogsMode = "days_interval";
     m_TimeArrayAnalogsTimeStepHours = 0;
     m_TimeArrayAnalogsExcludeDays = 0;
     m_TimeArrayAnalogsIntervalDays = 0;
@@ -317,7 +317,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
                 nodeParamBlock = nodeParamBlock->GetNext();
             }
             i_step++;
-            
+
         // Analog values
         } else if (nodeProcess->GetName() == "analog_values") {
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
@@ -407,7 +407,7 @@ bool asParameters::SetPreloadingProperties()
                 if(!SetPreloadYptsnb(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor))) return false;
             }
 
-            // Change predictor properties when preprocessing 
+            // Change predictor properties when preprocessing
             if (NeedsPreprocessing(i_step, i_ptor))
             {
                 if(GetPreprocessSize(i_step, i_ptor)==1)
@@ -519,7 +519,7 @@ bool asParameters::InputsOK()
         return false;
     }
 
-    if(GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds")==0 
+    if(GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds")==0
         || GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds")==0) {
         if(GetTimeArrayTargetPredictandSerieName().IsEmpty()) {
             asLogError(_("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
@@ -531,7 +531,7 @@ bool asParameters::InputsOK()
         }
     }
 
-    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0 
+    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0
         || GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays")==0) {
         if(GetTimeArrayAnalogsIntervalDays()<=0) {
             asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
@@ -878,7 +878,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     strVal.ToDouble(&dVal);
                     SetPreprocessLevel(i_step, i_ptor, i_dataset, float(dVal));
                     stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                     iLeft = 0;
                     iRight = stringVals.Find("\t");
                     strVal = stringVals.SubString(iLeft, iRight-1);
@@ -895,7 +895,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 strVal.ToDouble(&dVal);
                 SetPredictorLevel(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                 iLeft = 0;
                 iRight = stringVals.Find("\t");
                 strVal = stringVals.SubString(iLeft, iRight-1);
@@ -903,49 +903,49 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 SetPredictorTimeHours(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight, stringVals.Length());
             }
-            
+
             iLeft = stringVals.Find("Xmin");
             iRight = stringVals.Find("Xptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorXmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Xptsnb");
             iRight = stringVals.Find("Xstep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
             SetPredictorXptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Xstep");
             iRight = stringVals.Find("Ymin");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorXstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Ymin");
             iRight = stringVals.Find("Yptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorYmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Yptsnb");
             iRight = stringVals.Find("Ystep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
             SetPredictorYptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Ystep");
             iRight = stringVals.Find("Weight");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
             SetPredictorYstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Weight");
             iRight = stringVals.Find("Criteria");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
