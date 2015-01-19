@@ -1,99 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AtmoSwingFile version="0.2">
-    <StandardSet>
-        <General name="General">
-            <Options />
-            <Params name="Archive Period">
-                <YearStart value="1962" />
-                <YearEnd value="2008" />
-            </Params>
-            <Params name="Time Properties">
-                <TimeStepHours value="24" />
-            </Params>
-            <Params name="Time Array Target">
-                <TimeArrayMode value="Simple" />
-            </Params>
-            <Params name="Time Array Analogs">
-                <TimeArrayMode value="DaysInterval" />
-                <IntervalDays value="60" />
-                <ExcludeDays value="60" />
-            </Params>
-        </General>
-        <Process name="Analogs Dates">
-            <Options />
-            <Params name="Method Name">
-                <MethodName value="Analogs" />
-            </Params>
-            <Params name="Analogs Number">
-                <AnalogsNumber value="100" />
-            </Params>
-            <Data name="Predictor">
-                <Options />
-                <Params name="Data">
-                    <DatasetId value="NCEP_R-1" />
-                    <DataId value="hgt" />
-                </Params>
-                <Params name="Level">
-                    <Level value="500" />
-                </Params>
-                <Params name="Time frame">
-                    <TimeHours value="24" />
-                </Params>
-                <Params name="Preprocessing">
-                    <Preprocess value="0" />
-                </Params>
-                <Params name="Area">
-                    <GridType value="Regular" />
-                    <Umin value="-10" />
-                    <Uptsnb value="9" />
-                    <Ustep value="2.5" />
-                    <Vmin value="30" />
-                    <Vptsnb value="5" />
-                    <Vstep value="2.5" />
-                </Params>
-                <Params name="Criteria">
-                    <Criteria value="S1" />
-                </Params>
-                <Params name="Weight">
-                    <Weight value="0.6" />
-                </Params>
-            </Data>
-            <Data name="Predictor Preprocessed">
-                <Options />
-                <Params name="Preprocessing">
-                    <Preprocess value="1" />
-                    <PreprocessMethod value="Gradients" />
-                    <SubData>
-                        <PreprocessDatasetId value="NCEP_R-1" />
-                        <PreprocessDataId value="hgt" />
-                        <PreprocessLevel value="1000" />
-                        <PreprocessTimeHours value="12" />
-                    </SubData>
-                </Params>
-                <Params name="Area">
-                    <GridType value="Regular" />
-                    <Umin value="-15" />
-                    <Uptsnb value="11" />
-                    <Ustep value="2.5" />
-                    <Vmin value="35" />
-                    <Vptsnb value="7" />
-                    <Vstep value="2.5" />
-                </Params>
-                <Params name="Criteria">
-                    <Criteria value="S1" />
-                </Params>
-                <Params name="Weight">
-                    <Weight value="0.4" />
-                </Params>
-            </Data>
-        </Process>
-        <Process name="Analogs Values">
-            <Options />
-            <Data name="Predictand">
-                <Params name="Database">
-                    <PredictandStationId value="(40,41,42,43,44)" />
-                </Params>
-            </Data>
-        </Process>
-    </StandardSet>
-</AtmoSwingFile>
+
+<atmoswing_file version="1.0" target="calibrator">
+    <time_properties>
+        <archive_period>
+            <start_year>1962</start_year>
+            <end_year>2008</end_year>
+        </archive_period>
+        <time_step>24</time_step>
+        <time_array_target>
+            <time_array>simple</time_array>
+        </time_array_target>
+        <time_array_analogs>
+            <time_array>days_interval</time_array>
+            <interval_days>60</interval_days>
+            <exclude_days>60</exclude_days>
+        </time_array_analogs>
+    </time_properties>
+    <analog_dates>
+        <analogs_number>100</analogs_number>
+        <predictor>
+            <preload>1</preload>
+            <dataset_id>NCEP_R-1</dataset_id>
+            <data_id>hgt</data_id>
+            <level>500</level>
+            <time>24</time>
+            <spatial_window>
+                <x_min>-10</x_min>
+                <x_points_nb>9</x_points_nb>
+                <x_step>2.5</x_step>
+                <y_min>30</y_min>
+                <y_points_nb>5</y_points_nb>
+                <y_step>2.5</y_step>
+            </spatial_window>
+            <criteria>S1</criteria>
+            <weight>0.6</weight>
+        </predictor>
+        <predictor>
+            <preprocessing>
+                <preprocessing_method>Gradients</preprocessing_method>
+                <preprocessing_data>
+                    <dataset_id>NCEP_R-1</dataset_id>
+                    <data_id>hgt</data_id>
+                    <level>1000</level>
+                    <time>12</time>
+                </preprocessing_data>
+            </preprocessing>
+            <spatial_window>
+                <x_min>-15</x_min>
+                <x_points_nb>11</x_points_nb>
+                <x_step>2.5</x_step>
+                <y_min>35</y_min>
+                <y_points_nb>7</y_points_nb>
+                <y_step>2.5</y_step>
+            </spatial_window>
+            <criteria>S1</criteria>
+            <weight>0.4</weight>
+        </predictor>
+    </analog_dates>
+    <analog_values>
+        <predictand>
+            <station_id method="array">(40,41,42,43,44)</station_id>
+        </predictand>
+    </analog_values>
+</atmoswing_file>

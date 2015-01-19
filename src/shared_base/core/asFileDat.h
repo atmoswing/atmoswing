@@ -35,18 +35,7 @@
 class asFileDat : public asFileAscii
 {
 public:
-/*
-    //!< The file structure type
-    enum ContentType
-    {
-        year,
-        month,
-        day,
-        hours,
-        minutes,
-        data
-    };
-*/
+
     //!< Structure for pattern information
     struct Pattern
     {
@@ -65,7 +54,6 @@ public:
         int TimeHourEnd;
         int TimeMinuteBegin;
         int TimeMinuteEnd;
-        DataParameter DataParam;
         int DataBegin;
         int DataEnd;
     };
@@ -106,19 +94,6 @@ private:
      */
     static FileStructType StringToStructType(const wxString &StructTypeStr);
 
-    /** Convert a string to a ContentType enum value
-     * \param ContentTypeChar The string corresponding to a ContentType enum value
-     * \return The ContentType enum value
-     */
-//    static ContentType StringToContentType(const wxString &ContentTypeStr);
-
-    /** Assign the pattern extracted from the file into the structure
-     * \param Pattern The Pattern structure
-     * \param ContentTypeStr The content type as a wxString
-     * \param charstart The char number of the begining
-     * \param charend The char number of the end
-     */
-    static bool AssignStruct(asFileDat::Pattern &Pattern, const wxString &ContentTypeStr, const int &charstart, const int &charend);
 };
 
 #endif // ASFILEDAT_H

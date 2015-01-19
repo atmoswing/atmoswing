@@ -234,7 +234,7 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
         wxString directory = asTime::GetStringTime(runDateInUse, dirstructure);
         wxString nowstr = asTime::GetStringTime(runDateInUse, "YYYYMMDDhh");
         wxString leadtimestr = timeStrFileName;
-        wxString ext = asGlobEnums::FileFormatEnumToExtension(m_FileFormat);
+        wxString ext = m_FileExtension;
 
         wxString filename = wxString::Format("%s.%s.%s.%s.%s",nowstr.c_str(),m_DatasetId.c_str(),m_DataId.c_str(),leadtimestr.c_str(),ext.c_str());
         wxString filenameres = directory + DS + filename;

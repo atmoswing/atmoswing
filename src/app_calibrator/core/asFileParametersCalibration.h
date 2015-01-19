@@ -40,8 +40,8 @@ public:
     /** Default destructor */
     virtual ~asFileParametersCalibration();
 
-    bool InsertRootElement();
-    bool GoToRootElement();
+    bool EditRootElement();
+    bool CheckRootElement();
 
 protected:
 private:

@@ -39,19 +39,22 @@ asFileParametersForecast::~asFileParametersForecast()
     //dtor
 }
 
-bool asFileParametersForecast::InsertRootElement()
+bool asFileParametersForecast::EditRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "ForecastSet")) return false;
-    if(!GoToFirstNodeWithPath("ForecastSet")) return false;
+    if (!GetRoot()) return false;
+    GetRoot()->AddAttribute("target", "forecaster");
     return true;
 }
 
-bool asFileParametersForecast::GoToRootElement()
+bool asFileParametersForecast::CheckRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.ForecastSet"))
+    if (!GetRoot()) return false;
+    if (!IsAnAtmoSwingFile()) return false;
+    if (!FileVersionIsOrAbove(1.0)) return false;
+
+    if (!GetRoot()->GetAttribute("target").IsSameAs("forecaster", false))
     {
-        asLogError(wxString::Format(_("The file %s is not an AtmoSwing forecast parameters file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not a parameters file for the Forecaster."), m_FileName.GetFullName()));
         return false;
     }
     return true;

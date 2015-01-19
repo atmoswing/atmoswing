@@ -56,13 +56,13 @@ asDataPredictorRealtime(dataId)
     m_NanValues.push_back(NaNDouble);
     m_NanValues.push_back(NaNFloat);
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0;
-    m_VaxisShift = 0;
-    m_UaxisStep = 1;
-    m_VaxisStep = 1;
+    m_XaxisShift = 0;
+    m_YaxisShift = 0;
+    m_XaxisStep = 1;
+    m_YaxisStep = 1;
     m_RestrictTimeHours = 0;
     m_RestrictTimeStepHours = 24;
-    m_FileFormat = grib2;
+    m_FileExtension = "grib2";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("hgt", false))
@@ -210,10 +210,10 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
         // Get full axes from the grib file
         Array1DFloat axisDataLon, axisDataLat;
-        int axisDataLonLength = g2File.GetUPtsnb();
-        g2File.GetUaxis(axisDataLon);
-        int axisDataLatLength = g2File.GetVPtsnb();
-        g2File.GetVaxis(axisDataLat);
+        int axisDataLonLength = g2File.GetXPtsnb();
+        g2File.GetXaxis(axisDataLon);
+        int axisDataLatLength = g2File.GetYPtsnb();
+        g2File.GetYaxis(axisDataLat);
 
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
@@ -228,14 +228,14 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
             if (dataArea)
             {
                 // Get the spatial extent
-                float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-                float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
-                float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
-                float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
+                float lonMin = dataArea->GetXaxisCompositeStart(i_area);
+                float lonMax = dataArea->GetXaxisCompositeEnd(i_area);
+                float latMinStart = dataArea->GetYaxisCompositeStart(i_area);
+                float latMinEnd = dataArea->GetYaxisCompositeEnd(i_area);
 
                 // The dimensions lengths
-                indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
-                indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
+                indexLengthLon = dataArea->GetXaxisCompositePtsnb(i_area);
+                indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
                 if(lonMax==360)
                 {
@@ -244,7 +244,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                     for (int i_check = 0; i_check<dataArea->GetNbComposites(); i_check++)
                     {
                         // If so, already loaded in another composite
-                        if(dataArea->GetComposite(i_check).GetUmin() == 0)
+                        if(dataArea->GetComposite(i_check).GetXmin() == 0)
                         {
                             load360 = false;
                         }

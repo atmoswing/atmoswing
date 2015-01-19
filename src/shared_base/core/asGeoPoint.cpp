@@ -43,14 +43,14 @@ asGeo(coosys)
     wxLogVerbose(_("The point was successfully created."));
 }
 
-asGeoPoint::asGeoPoint(CoordSys coosys, double U, double V, float Level, float Height)
+asGeoPoint::asGeoPoint(CoordSys coosys, double x, double y, float Level, float Height)
 :
 asGeo(coosys)
 {
     // Set the members
     m_CoordSys = coosys;
-    m_Point.u = U;
-    m_Point.v = V;
+    m_Point.x = x;
+    m_Point.y = y;
     m_Level = Level;
     m_Height = Height;
 

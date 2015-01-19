@@ -53,55 +53,90 @@ bool asWorkspace::Load(const wxString &filePath)
     // Open the file
     m_FilePath = filePath;
     asFileWorkspace fileWorkspace(filePath, asFile::ReadOnly);
-    if(!fileWorkspace.Open()) return false;
-
-    if(!fileWorkspace.GoToRootElement()) return false;
-
-    // Get general data
-    m_CoordinateSys = fileWorkspace.GetFirstElementAttributeValueText("CoordinateSys", "value");
-    m_ForecastsDirectory = fileWorkspace.GetFirstElementAttributeValueText("ForecastsDirectory", "value");
-    
-    // Display options
-    m_ColorbarMaxValue = fileWorkspace.GetFirstElementAttributeValueDouble("ColorbarMaxValue", "value");
-    m_TimeSeriesPlotPastDaysNb = fileWorkspace.GetFirstElementAttributeValueInt("TimeSeriesPlotPastDaysNb", "value");
-    m_AlarmsPanelReturnPeriod = fileWorkspace.GetFirstElementAttributeValueInt("AlarmsPanelReturnPeriod", "value");
-    m_AlarmsPanelPercentile = fileWorkspace.GetFirstElementAttributeValueFloat("AlarmsPanelPercentile", "value");
-
-    // GIS layers
-    if(!fileWorkspace.GoToFirstNodeWithPath("GISLayers")) return false;
-    
-    if(fileWorkspace.GoToFirstNodeWithPath("Layer"))
+    if(!fileWorkspace.Open())
     {
-        // Open new layers
-        while(true)
-        {
-            // Get attributes
-            wxString path = fileWorkspace.GetFirstElementAttributeValueText("Path", "value");
-            m_LayerPaths.push_back(path);
-            wxString type = fileWorkspace.GetFirstElementAttributeValueText("Type", "value");
-            m_LayerTypes.push_back(type);
-            int transparency = fileWorkspace.GetFirstElementAttributeValueInt("Transparency", "value", 0);
-            m_LayerTransparencies.push_back(transparency);
-            bool visibility = fileWorkspace.GetFirstElementAttributeValueBool("Visibility", "value", true);
-            m_LayerVisibilities.push_back(visibility);
-            int width = fileWorkspace.GetFirstElementAttributeValueInt("LineWidth", "value", 1);
-            m_LayerLineWidths.push_back(width);
-            #if wxUSE_GUI
-                wxString lineColorStr = fileWorkspace.GetFirstElementAttributeValueText("LineColor", "value", "black");
-                wxColour lineColor;
-                wxFromString(lineColorStr, &lineColor);
-                m_LayerLineColors.push_back(lineColor);
-                wxString fillColorStr = fileWorkspace.GetFirstElementAttributeValueText("FillColor", "value", "black");
-                wxColour fillColor;
-                wxFromString(fillColorStr, &fillColor);
-                m_LayerFillColors.push_back(lineColor);
-                wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetFirstElementAttributeValueInt("BrushStyle", "value", wxBRUSHSTYLE_TRANSPARENT);
-                m_LayerBrushStyles.push_back(brushStyle);
-            #endif
-        
-            // Find the next layer
-            if (!fileWorkspace.GoToNextSameNode()) break;
+        asLogError(_("Cannot open the workspace file."));
+        return false;
+    }
+    if(!fileWorkspace.CheckRootElement())
+    {
+        asLogError(_("Errors were found in the workspace file."));
+        return false;
+    }
+
+    // Get data
+    wxXmlNode *node = fileWorkspace.GetRoot()->GetChildren();
+    while (node) {
+        if (node->GetName() == "coordinate_system") {
+            m_CoordinateSys = fileWorkspace.GetString(node);
+        } else if (node->GetName() == "forecast_directory") {
+            m_ForecastsDirectory = fileWorkspace.GetString(node);
+        } else if (node->GetName() == "colorbar_max_value") {
+            m_ColorbarMaxValue = fileWorkspace.GetDouble(node);
+        } else if (node->GetName() == "plot_time_series_past_days_nb") {
+            m_TimeSeriesPlotPastDaysNb = fileWorkspace.GetInt(node);
+        } else if (node->GetName() == "panel_alarms_return_period") {
+            m_AlarmsPanelReturnPeriod = fileWorkspace.GetInt(node);
+        } else if (node->GetName() == "panel_alarms_percentile") {
+            m_AlarmsPanelPercentile = fileWorkspace.GetFloat(node);
+        } else if (node->GetName() == "layer") {
+            wxXmlNode *nodeLayer = node->GetChildren();
+            while (nodeLayer) {
+                if (nodeLayer->GetName() == "path") {
+                    wxString path = fileWorkspace.GetString(nodeLayer);
+                    wxFileName absolutePath(path);
+                    absolutePath.Normalize();
+                    m_LayerPaths.push_back(absolutePath.GetFullPath());
+                } else if (nodeLayer->GetName() == "type") {
+                    m_LayerTypes.push_back(fileWorkspace.GetString(nodeLayer));
+                } else if (nodeLayer->GetName() == "transparency") {
+                    m_LayerTransparencies.push_back(fileWorkspace.GetInt(nodeLayer));
+                } else if (nodeLayer->GetName() == "visibility") {
+                    m_LayerVisibilities.push_back(fileWorkspace.GetBool(nodeLayer));
+                } else if (nodeLayer->GetName() == "line_width") {
+                    m_LayerLineWidths.push_back(fileWorkspace.GetInt(nodeLayer));
+                #if wxUSE_GUI
+                } else if (nodeLayer->GetName() == "line_color") {
+                    wxString lineColorStr = fileWorkspace.GetString(nodeLayer);
+                    wxColour lineColor;
+                    wxFromString(lineColorStr, &lineColor);
+                    m_LayerLineColors.push_back(lineColor);
+                } else if (nodeLayer->GetName() == "fill_color") {
+                    wxString fillColorStr = fileWorkspace.GetString(nodeLayer);
+                    wxColour fillColor;
+                    wxFromString(fillColorStr, &fillColor);
+                    m_LayerFillColors.push_back(fillColor);
+                } else if (nodeLayer->GetName() == "brush_style") {
+                    wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetInt(nodeLayer);
+                    m_LayerBrushStyles.push_back(brushStyle);
+                #endif
+                } else {
+                    fileWorkspace.UnknownNode(nodeLayer);
+                }
+
+                nodeLayer = nodeLayer->GetNext();
+            }
+
+            if (m_LayerPaths.size()!=m_LayerTypes.size() ||
+                m_LayerPaths.size()!=m_LayerTransparencies.size() ||
+                m_LayerPaths.size()!=m_LayerVisibilities.size() ||
+                m_LayerPaths.size()!=m_LayerLineWidths.size() 
+                #if wxUSE_GUI 
+                || m_LayerPaths.size()!=m_LayerLineColors.size()
+                || m_LayerPaths.size()!=m_LayerFillColors.size()
+                || m_LayerPaths.size()!=m_LayerBrushStyles.size()
+                #endif
+                )
+            {
+                asLogError(_("The number of elements in the layers is not consistent in the workspace file."));
+                return false;
+            }
+
+        } else {
+            fileWorkspace.UnknownNode(node);
         }
+
+        node = node->GetNext();
     }
 
     return true;
@@ -113,55 +148,36 @@ bool asWorkspace::Save()
     asFileWorkspace fileWorkspace(m_FilePath, asFile::Replace);
     if(!fileWorkspace.Open()) return false;
 
-    if(!fileWorkspace.InsertRootElement()) return false;
+    if(!fileWorkspace.EditRootElement()) return false;
+    fileWorkspace.GetRoot()->AddAttribute("target", "viewer");
 
-    // Get general data
-    if(!fileWorkspace.InsertElementAndAttribute("", "CoordinateSys", "value", m_CoordinateSys)) return false;
-    if(!fileWorkspace.InsertElementAndAttribute("", "ForecastsDirectory", "value", m_ForecastsDirectory)) return false;
-    
-    // Display options
-    wxString strColorbarMaxValue;
-    strColorbarMaxValue << m_ColorbarMaxValue;
-    if(!fileWorkspace.InsertElementAndAttribute("", "ColorbarMaxValue", "value", strColorbarMaxValue)) return false;
-    wxString strTimeSeriesPlotPastDaysNb;
-    strTimeSeriesPlotPastDaysNb << m_TimeSeriesPlotPastDaysNb;
-    if(!fileWorkspace.InsertElementAndAttribute("", "TimeSeriesPlotPastDaysNb", "value", strTimeSeriesPlotPastDaysNb)) return false;
-    wxString strAlarmsPanelReturnPeriod;
-    strAlarmsPanelReturnPeriod << m_AlarmsPanelReturnPeriod;
-    if(!fileWorkspace.InsertElementAndAttribute("", "AlarmsPanelReturnPeriod", "value", strAlarmsPanelReturnPeriod)) return false;
-    wxString strAlarmsPanelPercentile;
-    strAlarmsPanelPercentile << m_AlarmsPanelPercentile;
-    if(!fileWorkspace.InsertElementAndAttribute("", "AlarmsPanelPercentile", "value", strAlarmsPanelPercentile)) return false;
+    // General data
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("coordinate_system", m_CoordinateSys));
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("forecast_directory", m_ForecastsDirectory));
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("colorbar_max_value", m_ColorbarMaxValue));
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("plot_time_series_past_days_nb", m_TimeSeriesPlotPastDaysNb));
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_return_period", m_AlarmsPanelReturnPeriod));
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_percentile", m_AlarmsPanelPercentile));
 
     // GIS layers
-    if(!fileWorkspace.InsertElement("", "GISLayers")) return false;
-    if(!fileWorkspace.GoToFirstNodeWithPath("GISLayers")) return false;
-    
     for (int i_layer=0; i_layer<GetLayersNb(); i_layer++)
     {
-        if(!fileWorkspace.InsertElement("", "Layer")) return false;
-        if(!fileWorkspace.GoToLastNodeWithPath("Layer")) return false;
+        wxXmlNode * nodeLayer = new wxXmlNode(wxXML_ELEMENT_NODE ,"layer" );
 
-        if(!fileWorkspace.InsertElementAndAttribute("", "Path", "value", m_LayerPaths[i_layer])) return false;
-        if(!fileWorkspace.InsertElementAndAttribute("", "Type", "value", m_LayerTypes[i_layer])) return false;
-        wxString strTransparency;
-        strTransparency << m_LayerTransparencies[i_layer];
-        if(!fileWorkspace.InsertElementAndAttribute("", "Transparency", "value", strTransparency)) return false;
-        wxString strVisibility;
-        strVisibility << m_LayerVisibilities[i_layer];
-        if(!fileWorkspace.InsertElementAndAttribute("", "Visibility", "value", strVisibility)) return false;
-        wxString strWidth;
-        strWidth << m_LayerLineWidths[i_layer];
-        if(!fileWorkspace.InsertElementAndAttribute("", "LineWidth", "value", strWidth)) return false;
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", m_LayerPaths[i_layer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("type", m_LayerTypes[i_layer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("transparency", m_LayerTransparencies[i_layer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("visibility", m_LayerVisibilities[i_layer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_width", m_LayerLineWidths[i_layer]));
         #if wxUSE_GUI
-            if(!fileWorkspace.InsertElementAndAttribute("", "LineColor", "value", wxToString(m_LayerLineColors[i_layer]))) return false;
-            if(!fileWorkspace.InsertElementAndAttribute("", "FillColor", "value", wxToString(m_LayerFillColors[i_layer]))) return false;
+            nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_color", wxToString(m_LayerLineColors[i_layer])));
+            nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("fill_color", wxToString(m_LayerFillColors[i_layer])));
             wxString strBrush;
             strBrush << m_LayerBrushStyles[i_layer];
-            if(!fileWorkspace.InsertElementAndAttribute("", "BrushStyle", "value", strBrush)) return false;
+            nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("brush_style", strBrush));
         #endif
-        
-        if(!fileWorkspace.GoANodeBack()) return false;
+
+        fileWorkspace.AddChild(nodeLayer);
     }
 
     fileWorkspace.Save();

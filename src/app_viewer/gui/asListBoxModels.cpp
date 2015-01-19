@@ -69,8 +69,6 @@ bool asListBoxModels::Add(const wxString &modelName, const wxString &leadTimeOri
 
     Append(newOption);
 
-    SetSelection(GetCount()-1);
-
     return true;
 }
 

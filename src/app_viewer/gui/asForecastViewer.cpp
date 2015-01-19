@@ -43,6 +43,7 @@ asForecastViewer::asForecastViewer( asFrameForecast* parent, asForecastManager *
     m_LayerManager = layerManager;
     m_ViewerLayerManager = viewerLayerManager;
     m_LeadTimeIndex = 0;
+    m_LeadTimeDate = 0;
     m_LayerMaxValue = 1;
 
     m_DisplayForecast.Add(_("Value"));
@@ -135,7 +136,24 @@ float asForecastViewer::GetSelectedTargetDate()
 {
     Array1DFloat targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
     wxASSERT(m_LeadTimeIndex>=0);
+    if (m_LeadTimeIndex>=targetDates.size())
+    {
+        return 0;
+    }
     return targetDates[m_LeadTimeIndex];
+}
+
+void asForecastViewer::SetLeadTimeDate(float date)
+{
+    if (date>0 && m_ModelSelection>0)
+    {
+        Array1DFloat targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+        int index = asTools::SortedArraySearchClosest(&targetDates[0], &targetDates[targetDates.size()-1], date);
+        if (index>=0)
+        {
+            m_LeadTimeIndex = index;
+        }
+    }
 }
 
 void asForecastViewer::SetForecastDisplay(int i)
@@ -265,8 +283,8 @@ void asForecastViewer::Redraw()
         for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
         {
             OGRPoint station;
-            station.setX( forecast->GetStationLocCoordU(i_stat) );
-            station.setY( forecast->GetStationLocCoordV(i_stat) );
+            station.setX( forecast->GetStationLocCoordX(i_stat) );
+            station.setY( forecast->GetStationLocCoordY(i_stat) );
 
             // Field container
             wxArrayDouble data;
@@ -377,8 +395,8 @@ void asForecastViewer::Redraw()
         for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
         {
             OGRPoint station;
-            station.setX( forecast->GetStationLocCoordU(i_stat) );
-            station.setY( forecast->GetStationLocCoordV(i_stat) );
+            station.setX( forecast->GetStationLocCoordX(i_stat) );
+            station.setY( forecast->GetStationLocCoordY(i_stat) );
 
             // Field container
             wxArrayDouble data;
@@ -469,6 +487,8 @@ void asForecastViewer::ChangeLeadTime( int val )
 
     m_LeadTimeIndex = val;
     wxASSERT(m_LeadTimeIndex>=0);
+
+    m_LeadTimeDate = GetSelectedTargetDate();
 
     Redraw();
 }

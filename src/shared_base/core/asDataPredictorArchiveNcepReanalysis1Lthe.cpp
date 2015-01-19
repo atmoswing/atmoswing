@@ -54,11 +54,15 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*std::pow(10.f,34.f));
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0;
-    m_VaxisShift = 0;
-    m_UaxisStep = 2.5;
-    m_VaxisStep = 2.5;
+    m_XaxisShift = 0;
+    m_YaxisShift = 0;
+    m_XaxisStep = 2.5;
+    m_YaxisStep = 2.5;
     m_SubFolder = wxEmptyString;
+    m_FileAxisLatName = "lat";
+    m_FileAxisLonName = "lon";
+    m_FileAxisTimeName = "time";
+    m_FileAxisLevelName = "level";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("hgt_500hPa", false))

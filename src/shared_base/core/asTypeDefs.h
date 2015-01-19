@@ -35,8 +35,8 @@
 // Coordinates
 typedef struct
 {
-    double u; // East
-    double v; // North
+    double x; // East
+    double y; // North
 } Coo;
 
 // A time structure

@@ -59,25 +59,14 @@ public:
     /** Default destructor */
     virtual ~asCatalogPredictands();
 
-    bool Load(int StationId = 0);
+    bool Load();
 
-    /** Method that get data information from file
-    * \param DataSetId The data Set ID
-    */
-    bool LoadDatasetProp();
-
-    /** Method that get data information from file
-    * \param DataSetId The data Set ID
-    * \param DataId The station ID
-    */
-    bool LoadDataProp(int StationId);
-
-    /** Access m_Station
-     * \return The current value of m_Station
+    /** Access m_Stations
+     * \return The current value of m_Stations
      */
-    DataStruct GetStationInfo()
+    DataStruct GetStationInfo(int index)
     {
-        return m_Station;
+        return m_Stations[index];
     }
 
     /** Access m_Parameter
@@ -112,155 +101,159 @@ public:
         m_Unit = val;
     }
 
-    /** Access m_Station.Id
-     * \return The current value of m_Station.Id
+    /** Access m_Stations[index].Id
+     * \return The current value of m_Stations[index].Id
      */
-    int GetStationId()
+    int GetStationId(int index)
     {
-        return m_Station.Id;
+        return m_Stations[index].Id;
     }
 
-    /** Set m_Station.Id
+    /** Set m_Stations[index].Id
      * \param val New value to set
      */
-    void SetStationId(int val)
+    void SetStationId(int index, int val)
     {
-        m_Station.Id = val;
+        m_Stations[index].Id = val;
     }
 
-    /** Access m_Station.LocalId
-     * \return The current value of m_Station.LocalId
+    /** Access m_Stations[index].LocalId
+     * \return The current value of m_Stations[index].LocalId
      */
-    wxString GetStationLocalId()
+    wxString GetStationLocalId(int index)
     {
-        return m_Station.LocalId;
+        return m_Stations[index].LocalId;
     }
 
-    /** Set m_Station.LocalId
+    /** Set m_Stations[index].LocalId
      * \param val New value to set
      */
-    void SetStationLocalId(const wxString &val)
+    void SetStationLocalId(int index, const wxString &val)
     {
-        m_Station.LocalId = val;
+        m_Stations[index].LocalId = val;
     }
 
-    /** Access m_Station.Name
-     * \return The current value of m_Station.Name
+    /** Access m_Stations[index].Name
+     * \return The current value of m_Stations[index].Name
      */
-    wxString GetStationName()
+    wxString GetStationName(int index)
     {
-        return m_Station.Name;
+        return m_Stations[index].Name;
     }
 
-    /** Set m_Station.Name
+    /** Set m_Stations[index].Name
      * \param val New value to set
      */
-    void SetStationName(const wxString &val)
+    void SetStationName(int index, const wxString &val)
     {
-        m_Station.Name = val;
+        m_Stations[index].Name = val;
     }
 
-    /** Access m_Station.Filename
-     * \return The current value of m_Station.Filename
+    /** Access m_Stations[index].Filename
+     * \return The current value of m_Stations[index].Filename
      */
-    wxString GetStationFilename()
+    wxString GetStationFilename(int index)
     {
-        return m_Station.Filename;
+        return m_Stations[index].Filename;
     }
 
-    /** Set m_Station.Filename
+    /** Set m_Stations[index].Filename
      * \param val New value to set
      */
-    void SetStationFilename(const wxString &val)
+    void SetStationFilename(int index, const wxString &val)
     {
-        m_Station.Filename = val;
+        m_Stations[index].Filename = val;
     }
 
-    /** Access m_Station.Filepattern
-     * \return The current value of m_Station.Filepattern
+    /** Access m_Stations[index].Filepattern
+     * \return The current value of m_Stations[index].Filepattern
      */
-    wxString GetStationFilepattern()
+    wxString GetStationFilepattern(int index)
     {
-        return m_Station.Filepattern;
+        return m_Stations[index].Filepattern;
     }
 
-    /** Set m_Station.Filepattern
+    /** Set m_Stations[index].Filepattern
      * \param val New value to set
      */
-    void SetStationFilepattern(const wxString &val)
+    void SetStationFilepattern(int index, const wxString &val)
     {
-        m_Station.Filepattern = val;
+        m_Stations[index].Filepattern = val;
     }
 
-    /** Access m_Station.Start
-     * \return The current value of m_Station.Start
+    /** Access m_Stations[index].Start
+     * \return The current value of m_Stations[index].Start
      */
-    double GetStationStart()
+    double GetStationStart(int index)
     {
-        return m_Station.Start;
+        return m_Stations[index].Start;
     }
 
-    /** Set m_Station.Start
+    /** Set m_Stations[index].Start
      * \param val New value to set
      */
-    void SetStationStart(double val)
+    void SetStationStart(int index, double val)
     {
-        m_Station.Start = val;
+        m_Stations[index].Start = val;
     }
 
-    /** Access m_Station.End
-     * \return The current value of m_Station.End
+    /** Access m_Stations[index].End
+     * \return The current value of m_Stations[index].End
      */
-    double GetStationEnd()
+    double GetStationEnd(int index)
     {
-        return m_Station.End;
+        return m_Stations[index].End;
     }
 
-    /** Set m_Station.End
+    /** Set m_Stations[index].End
      * \param val New value to set
      */
-    void SetStationEnd(double val)
+    void SetStationEnd(int index, double val)
     {
-        m_Station.End = val;
+        m_Stations[index].End = val;
     }
 
-    /** Access m_Station.Coord
-     * \return The current value of m_Station.Coord
+    /** Access m_Stations[index].Coord
+     * \return The current value of m_Stations[index].Coord
      */
-    Coo GetStationCoord()
+    Coo GetStationCoord(int index)
     {
-        return m_Station.Coord;
+        return m_Stations[index].Coord;
     }
 
-    /** Set m_Station.Coord
+    /** Set m_Stations[index].Coord
      * \param val New value to set
      */
-    void SetStationCoord(const Coo &val)
+    void SetStationCoord(int index, const Coo &val)
     {
-        m_Station.Coord = val;
+        m_Stations[index].Coord = val;
     }
 
-    /** Access m_Station.Height
-     * \return The current value of m_Station.Height
+    /** Access m_Stations[index].Height
+     * \return The current value of m_Stations[index].Height
      */
-    float GetStationHeight()
+    float GetStationHeight(int index)
     {
-        return m_Station.Height;
+        return m_Stations[index].Height;
     }
 
-    /** Set m_Station.Height
+    /** Set m_Stations[index].Height
      * \param val New value to set
      */
-    void SetStationHeight(float val)
+    void SetStationHeight(int index, float val)
     {
-        m_Station.Height = val;
+        m_Stations[index].Height = val;
     }
-
+    
+    int GetStationsNb()
+    {
+        return int(m_Stations.size());
+    }
 
 protected:
     DataParameter m_Parameter; //!< Member variable "m_Parameter"
     DataUnit m_Unit; //!< Member variable "m_Unit"
-    DataStruct m_Station; //!< Member variable "m_Station"
+    std::vector < DataStruct > m_Stations; //!< Member variable "m_Stations"
     DataTemporalResolution m_TemporalResolution;
     DataSpatialAggregation m_SpatialAggregation;
 

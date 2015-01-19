@@ -54,11 +54,14 @@ asDataPredictorArchive(dataId)
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*std::pow(10.f,34.f));
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0.125;
-    m_VaxisShift = 0.125;
-    m_UaxisStep = 1;
-    m_VaxisStep = 1;
+    m_XaxisShift = 0.125;
+    m_YaxisShift = 0.125;
+    m_XaxisStep = 1;
+    m_YaxisStep = 1;
     m_SubFolder = wxEmptyString;
+    m_FileAxisLatName = "lat";
+    m_FileAxisLonName = "lon";
+    m_FileAxisTimeName = "time";
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("sst", false))
@@ -142,11 +145,6 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         return false;
     }
 
-    // Number of dimensions
-    int nDims = ncFile.GetNDims();
-    wxASSERT(nDims>=3);
-    wxASSERT(nDims<=4);
-
     // Get some attributes
     float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
     if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
@@ -156,26 +154,21 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
     // Get full axes from the netcdf file
-    Array1DFloat axisDataLon(ncFile.GetVarLength("lon"));
-    ncFile.GetVar("lon", &axisDataLon[0]);
-    Array1DFloat axisDataLat(ncFile.GetVarLength("lat"));
-    ncFile.GetVar("lat", &axisDataLat[0]);
+    Array1DFloat axisDataLon(ncFile.GetVarLength(m_FileAxisLonName));
+    ncFile.GetVar(m_FileAxisLonName, &axisDataLon[0]);
+    Array1DFloat axisDataLat(ncFile.GetVarLength(m_FileAxisLatName));
+    ncFile.GetVar(m_FileAxisLatName, &axisDataLat[0]);
     Array1DFloat axisDataLevel;
-    if (nDims==4)
-    {
-        axisDataLevel.resize(ncFile.GetVarLength("level"));
-        ncFile.GetVar("level", &axisDataLevel[0]);
-    }
     
     // Adjust axes if necessary
     dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
         
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
-    size_t axisDataTimeLength = ncFile.GetVarLength("time");
-    double valFirstTime = ncFile.GetVarOneDouble("time", 0);
+    size_t axisDataTimeLength = ncFile.GetVarLength(m_FileAxisTimeName);
+    double valFirstTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, 0);
     valFirstTime = (valFirstTime/24.0); // hours to days
     valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-    double valLastTime = ncFile.GetVarOneDouble("time", axisDataTimeLength-1);
+    double valLastTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, axisDataTimeLength-1);
     valLastTime = (valLastTime/24.0); // hours to days
     valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
 
@@ -227,13 +220,13 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         if (dataArea)
         {
             // Get the spatial extent
-            float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-            float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
-            float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
+            float lonMin = dataArea->GetXaxisCompositeStart(i_area);
+            float latMinStart = dataArea->GetYaxisCompositeStart(i_area);
+            float latMinEnd = dataArea->GetYaxisCompositeEnd(i_area);
 
             // The dimensions lengths
-            indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
-            indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
+            indexLengthLon = dataArea->GetXaxisCompositePtsnb(i_area);
+            indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
             // Get the spatial indices of the desired data
             indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin, 0.01f);
@@ -266,11 +259,6 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
             indexStartLat = 0;
             indexLengthLon = m_LonPtsnb;
             indexLengthLat = m_LatPtsnb;
-        }
-        int indexLevel = 0;
-        if (nDims==4)
-        {
-            indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_Level, 0.01f);
         }
 
         // Create the arrays to receive the data
@@ -312,47 +300,21 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         }
 
         // Get the indices for data
-        if (nDims==4)
-        {
-            // Set the indices for data
-            size_t indexStartData[4] = {0,0,0,0};
-            indexStartData[0] = indexStartTime;
-            indexStartData[1] = indexLevel;
-            indexStartData[2] = indexStartLat;
-            indexStartData[3] = indexStartLon;
-            size_t indexCountData[4] = {0,0,0,0};
-            indexCountData[0] = indexLengthTime;
-            indexCountData[1] = 1;
-            indexCountData[2] = indexLengthLat;
-            indexCountData[3] = indexLengthLon;
-            ptrdiff_t indexStrideData[4] = {0,0,0,0};
-            indexStrideData[0] = m_TimeIndexStep;
-            indexStrideData[1] = 1;
-            indexStrideData[2] = m_LatIndexStep;
-            indexStrideData[3] = m_LonIndexStep;
+        size_t indexStartData[3] = {0,0,0};
+        indexStartData[0] = indexStartTime;
+        indexStartData[1] = indexStartLat;
+        indexStartData[2] = indexStartLon;
+        size_t indexCountData[3] = {0,0,0};
+        indexCountData[0] = indexLengthTime;
+        indexCountData[1] = indexLengthLat;
+        indexCountData[2] = indexLengthLon;
+        ptrdiff_t indexStrideData[3] = {0,0,0};
+        indexStrideData[0] = m_TimeIndexStep;
+        indexStrideData[1] = m_LatIndexStep;
+        indexStrideData[2] = m_LonIndexStep;
 
-            // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
-        }
-        else
-        {
-            // Set the indices for data
-            size_t indexStartData[3] = {0,0,0};
-            indexStartData[0] = indexStartTime;
-            indexStartData[1] = indexStartLat;
-            indexStartData[2] = indexStartLon;
-            size_t indexCountData[3] = {0,0,0};
-            indexCountData[0] = indexLengthTime;
-            indexCountData[1] = indexLengthLat;
-            indexCountData[2] = indexLengthLon;
-            ptrdiff_t indexStrideData[3] = {0,0,0};
-            indexStrideData[0] = m_TimeIndexStep;
-            indexStrideData[1] = m_LatIndexStep;
-            indexStrideData[2] = m_LonIndexStep;
-
-            // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
-        }
+        // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
+        ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
 
         // Keep data for later treatment
         vectIndexLengthLat.push_back(indexLengthLat);
