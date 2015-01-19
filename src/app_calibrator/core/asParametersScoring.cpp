@@ -62,7 +62,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
     predictor.Yptsnb.push_back(0);
     predictor.TimeHours.push_back(0);
     predictor.Criteria.push_back(wxEmptyString);
-    predictor.Weight.push_back(0);
+    predictor.Weight.push_back(1);
 
     step.Predictors.push_back(predictor);
 }
@@ -88,14 +88,14 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
     // Time properties
     wxXmlNode * nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE ,"time_properties" );
-    
+
     wxXmlNode * nodeTimeArchivePeriod = new wxXmlNode(wxXML_ELEMENT_NODE ,"archive_period" );
     nodeTime->AddChild(nodeTimeArchivePeriod);
     wxString archiveStart = asTime::GetStringTime(GetArchiveStart(), "DD.MM.YYYY");
     nodeTimeArchivePeriod->AddChild(fileParams.CreateNodeWithValue("start", archiveStart));
     wxString archiveEnd = asTime::GetStringTime(GetArchiveEnd(), "DD.MM.YYYY");
     nodeTimeArchivePeriod->AddChild(fileParams.CreateNodeWithValue("end", archiveEnd));
-    
+
     wxXmlNode * nodeTimeCalibrationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE ,"calibration_period" );
     nodeTime->AddChild(nodeTimeCalibrationPeriod);
     wxString calibrationStart = asTime::GetStringTime(GetCalibrationStart(), "DD.MM.YYYY");
@@ -133,7 +133,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeTimeArrayTarget->AddChild(fileParams.CreateNodeWithValue("predictand_min_threshold", GetTimeArrayTargetPredictandMinThreshold()));
         nodeTimeArrayTarget->AddChild(fileParams.CreateNodeWithValue("predictand_max_threshold", GetTimeArrayTargetPredictandMaxThreshold()));
     }
-    
+
     wxXmlNode * nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE ,"time_array_analogs" );
     nodeTime->AddChild(nodeTimeArrayAnalogs);
     nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayAnalogsMode()));
@@ -174,7 +174,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                     nodePreprocessingData->AddChild(fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(i_step, i_ptor, i_preproc)));
                     nodePreprocessingData->AddChild(fileParams.CreateNodeWithValue("level", GetPreprocessLevel(i_step, i_ptor, i_preproc)));
                     nodePreprocessingData->AddChild(fileParams.CreateNodeWithValue("time", GetPreprocessTimeHours(i_step, i_ptor, i_preproc)));
-                }            
+                }
             }
             else
             {
@@ -232,7 +232,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("percentile", fsPercentile));
     }
-    
+
     fileParams.AddChild(nodeAnalogScore);
 
 
@@ -240,7 +240,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxXmlNode * nodeAnalogScoreFinal = new wxXmlNode(wxXML_ELEMENT_NODE ,"analog_forecast_score_final" );
 
     nodeAnalogScoreFinal->AddChild(fileParams.CreateNodeWithValue("time_array", GetForecastScoreTimeArrayMode()));
-    
+
     fileParams.AddChild(nodeAnalogScoreFinal);
 
 

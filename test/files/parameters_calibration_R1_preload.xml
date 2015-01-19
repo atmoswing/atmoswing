@@ -10,6 +10,9 @@
             <start_year>1962</start_year>
             <end_year>2001</end_year>
         </calibration_period>
+        <validation_period>
+            <years method="array">1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000</years>
+        </validation_period>
         <time_step>24</time_step>
         <time_array_target>
             <time_array>simple</time_array>
@@ -55,7 +58,6 @@
             <criteria>S1</criteria>
         </predictor>
     </analog_dates>
-    <analog_values>
     <analog_values>
         <predictand>
             <station_id>1</station_id>
