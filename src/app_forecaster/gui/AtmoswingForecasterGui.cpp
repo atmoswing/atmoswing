@@ -435,22 +435,6 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	
 	m_SizerFields = new wxBoxSizer( wxVERTICAL );
 	
-	m_StaticTextModelNameInput = new wxStaticText( this, wxID_ANY, _("Model tag name (short!)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextModelNameInput->Wrap( -1 );
-	m_SizerFields->Add( m_StaticTextModelNameInput, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_TextCtrlModelName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlModelName->SetMaxLength( 0 ); 
-	m_SizerFields->Add( m_TextCtrlModelName, 0, wxRIGHT|wxLEFT|wxEXPAND, 5 );
-	
-	m_StaticTextModelDescriptionInput = new wxStaticText( this, wxID_ANY, _("Model description (no accent!)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextModelDescriptionInput->Wrap( -1 );
-	m_SizerFields->Add( m_StaticTextModelDescriptionInput, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_TextCtrlModelDescription = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_TextCtrlModelDescription->SetMaxLength( 0 ); 
-	m_SizerFields->Add( m_TextCtrlModelDescription, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
-	
 	m_StaticTextParametersFileName = new wxStaticText( this, wxID_ANY, _("Parameters file name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextParametersFileName->Wrap( -1 );
 	m_SizerFields->Add( m_StaticTextParametersFileName, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
@@ -478,7 +462,6 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	// Connect Events
 	m_BpButtonReduce->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastingModelVirtual::ReducePanel ), NULL, this );
 	m_BpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastingModelVirtual::ClosePanel ), NULL, this );
-	m_TextCtrlModelName->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( asPanelForecastingModelVirtual::ChangeModelName ), NULL, this );
 }
 
 asPanelForecastingModelVirtual::~asPanelForecastingModelVirtual()
@@ -486,7 +469,6 @@ asPanelForecastingModelVirtual::~asPanelForecastingModelVirtual()
 	// Disconnect Events
 	m_BpButtonReduce->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastingModelVirtual::ReducePanel ), NULL, this );
 	m_BpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastingModelVirtual::ClosePanel ), NULL, this );
-	m_TextCtrlModelName->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( asPanelForecastingModelVirtual::ChangeModelName ), NULL, this );
 	
 }
 

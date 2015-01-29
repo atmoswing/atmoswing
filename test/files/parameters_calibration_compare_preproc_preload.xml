@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <atmoswing_file version="1.0" target="calibrator">
+    <description>
+        <method_id>PD-A2HI</method_id>
+        <method_id_display>Humidity index only</method_id_display>
+        <specific_tag>somwhere</specific_tag>
+        <specific_tag_display>groupment of interest</specific_tag_display>
+        <description>Analogy on the humidity index only</description>
+    </description>
     <time_properties>
         <archive_period>
             <start_year>1962</start_year>

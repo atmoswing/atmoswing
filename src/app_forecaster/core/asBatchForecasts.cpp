@@ -68,7 +68,7 @@ bool asBatchForecasts::Load(const wxString &filePath)
     while (node) {
         if (node->GetName() == "forecasts_output_directory") {
             m_ForecastsOutputDirectory = fileBatch.GetString(node);
-        } else if (node->GetName() == "parameters_file_directory") {
+        } else if (node->GetName() == "parameters_files_directory") {
             m_ParametersFileDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictors_archive_directory") {
             m_PredictorsArchiveDirectory = fileBatch.GetString(node);
@@ -79,11 +79,7 @@ bool asBatchForecasts::Load(const wxString &filePath)
         } else if (node->GetName() == "model") {
             wxXmlNode *nodeModel = node->GetChildren();
             while (nodeModel) {
-                if (nodeModel->GetName() == "name") {
-                    m_ModelNames.push_back(fileBatch.GetString(nodeModel));
-                } else if (nodeModel->GetName() == "description") {
-                    m_ModelDescriptions.push_back(fileBatch.GetString(nodeModel));
-                } else if (nodeModel->GetName() == "filename") {
+                if (nodeModel->GetName() == "filename") {
                     m_ModelFileNames.push_back(fileBatch.GetString(nodeModel));
                 } else if (nodeModel->GetName() == "predictand_db") {
                     m_ModelPredictandDBs.push_back(fileBatch.GetString(nodeModel));
@@ -94,9 +90,7 @@ bool asBatchForecasts::Load(const wxString &filePath)
                 nodeModel = nodeModel->GetNext();
             }
 
-            if (m_ModelNames.size()!=m_ModelDescriptions.size() ||
-                m_ModelNames.size()!=m_ModelFileNames.size() ||
-                m_ModelNames.size()!=m_ModelPredictandDBs.size())
+            if (m_ModelFileNames.size()!=m_ModelPredictandDBs.size())
             {
                 asLogError(_("The number of elements in models is not consistent in the batch file."));
                 return false;
@@ -123,7 +117,7 @@ bool asBatchForecasts::Save()
 
     // Get general data
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_ForecastsOutputDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_file_directory", m_ParametersFileDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_files_directory", m_ParametersFileDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_archive_directory", m_PredictorsArchiveDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_PredictorsRealtimeDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_PredictandDBDirectory));
@@ -133,8 +127,6 @@ bool asBatchForecasts::Save()
     {
         wxXmlNode * nodeModel = new wxXmlNode(wxXML_ELEMENT_NODE ,"model" );
 
-        nodeModel->AddChild(fileBatch.CreateNodeWithValue("name", m_ModelNames[i_model]));
-        nodeModel->AddChild(fileBatch.CreateNodeWithValue("description", m_ModelDescriptions[i_model]));
         nodeModel->AddChild(fileBatch.CreateNodeWithValue("filename", m_ModelFileNames[i_model]));
         nodeModel->AddChild(fileBatch.CreateNodeWithValue("predictand_db", m_ModelPredictandDBs[i_model]));
     
@@ -148,23 +140,19 @@ bool asBatchForecasts::Save()
 
 int asBatchForecasts::GetModelsNb()
 {
-    int modelsNb = (int)m_ModelNames.size();
+    int modelsNb = (int)m_ModelFileNames.size();
     return modelsNb;
 }
 
 void asBatchForecasts::ClearModels()
 {
-    m_ModelNames.clear();
-    m_ModelDescriptions.clear();
     m_ModelFileNames.clear();
     m_ModelPredictandDBs.clear();
 }
 
 void asBatchForecasts::AddModel()
 {
-    int nb = m_ModelNames.size()+1;
-    m_ModelNames.resize(nb);
-    m_ModelDescriptions.resize(nb);
+    int nb = m_ModelFileNames.size()+1;
     m_ModelFileNames.resize(nb);
     m_ModelPredictandDBs.resize(nb);
 }

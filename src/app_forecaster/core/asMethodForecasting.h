@@ -86,7 +86,6 @@ protected:
 private:
     asBatchForecasts* m_BatchForecasts;
     double m_ForecastDate;
-    wxString m_ModelName;
     VectorString m_ResultsFilePaths;
     wxWindow* m_Parent;
     std::vector < asDataPredictorArchive* > m_StoragePredictorsArchivePreprocess;

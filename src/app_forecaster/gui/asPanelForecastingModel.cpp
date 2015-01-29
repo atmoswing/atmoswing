@@ -113,5 +113,6 @@ bool asPanelForecastingModel::Layout()
 
 void asPanelForecastingModel::ChangeModelName( wxCommandEvent& event )
 {
-    m_StaticTextModelName->SetLabel(m_TextCtrlModelName->GetValue());
+    wxFileName fileName(m_TextCtrlParametersFileName->GetValue());
+    m_StaticTextModelName->SetLabel(fileName.GetName());
 }

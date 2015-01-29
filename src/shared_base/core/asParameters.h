@@ -114,7 +114,56 @@ public:
     bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString);
 
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
+    
+    wxString GetMethodId()
+    {
+        return m_MethodId;
+    }
 
+    void SetMethodId(const wxString& val)
+    {
+        m_MethodId = val;
+    }
+    
+    wxString GetMethodIdDisplay()
+    {
+        return m_MethodIdDisplay;
+    }
+
+    void SetMethodIdDisplay(const wxString& val)
+    {
+        m_MethodIdDisplay = val;
+    }
+    
+    wxString GetSpecificTag()
+    {
+        return m_SpecificTag;
+    }
+
+    void SetSpecificTag(const wxString& val)
+    {
+        m_SpecificTag = val;
+    }
+    
+    wxString GetSpecificTagDisplay()
+    {
+        return m_SpecificTagDisplay;
+    }
+
+    void SetSpecificTagDisplay(const wxString& val)
+    {
+        m_SpecificTagDisplay = val;
+    }
+    
+    wxString GetDescription()
+    {
+        return m_Description;
+    }
+
+    void SetDescription(const wxString& val)
+    {
+        m_Description = val;
+    }
 
     wxString GetDateProcessed()
     {
@@ -548,6 +597,11 @@ public:
 
 
 protected:
+    wxString m_MethodId;
+    wxString m_MethodIdDisplay;
+    wxString m_SpecificTag;
+    wxString m_SpecificTagDisplay;
+    wxString m_Description;
     double m_ArchiveStart;
     double m_ArchiveEnd;
     int m_TimeArrayAnalogsIntervalDays;
