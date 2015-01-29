@@ -62,27 +62,6 @@ public:
 
     void ReducePanel();
 
-    wxString GetModelName()
-    {
-        return m_TextCtrlModelName->GetValue();
-    }
-
-    void SetModelName(const wxString &val)
-    {
-        m_TextCtrlModelName->SetValue(val);
-        m_StaticTextModelName->SetLabelText(val);
-    }
-
-    wxString GetModelDescription()
-    {
-        return m_TextCtrlModelDescription->GetValue();
-    }
-
-    void SetModelDescription(const wxString &val)
-    {
-        m_TextCtrlModelDescription->SetValue(val);
-    }
-
     wxString GetParametersFileName()
     {
         return m_TextCtrlParametersFileName->GetValue();
@@ -91,6 +70,8 @@ public:
     void SetParametersFileName(const wxString &val)
     {
         m_TextCtrlParametersFileName->SetValue(val);
+        wxFileName fileName(val);
+        m_StaticTextModelName->SetLabel(fileName.GetName());
     }
 
     wxString GetPredictandDBName()

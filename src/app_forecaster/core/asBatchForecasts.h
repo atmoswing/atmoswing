@@ -116,30 +116,6 @@ public:
         m_PredictandDBDirectory = val;
     }
 
-    wxString GetModelName(int i)
-    {
-        wxASSERT(m_ModelNames.size()>i);
-        return m_ModelNames[i];
-    }
-
-    void SetModelName(int i, const wxString &val)
-    {
-        wxASSERT(m_ModelNames.size()>i);
-        m_ModelNames[i] = val;
-    }
-
-    wxString GetModelDescription(int i)
-    {
-        wxASSERT(m_ModelDescriptions.size()>i);
-        return m_ModelDescriptions[i];
-    }
-
-    void SetModelDescription(int i, const wxString &val)
-    {
-        wxASSERT(m_ModelDescriptions.size()>i);
-        m_ModelDescriptions[i] = val;
-    }
-
     wxString GetModelFileName(int i)
     {
         wxASSERT(m_ModelFileNames.size()>i);
@@ -173,8 +149,6 @@ private:
     wxString m_PredictorsArchiveDirectory;
     wxString m_PredictorsRealtimeDirectory;
     wxString m_PredictandDBDirectory;
-    VectorString m_ModelNames;
-    VectorString m_ModelDescriptions;
     VectorString m_ModelFileNames;
     VectorString m_ModelPredictandDBs;
 

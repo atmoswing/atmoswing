@@ -30,11 +30,10 @@
 #include "asFileNetcdf.h"
 #include "asThreadsManager.h"
 
-asResultsAnalogsForecast::asResultsAnalogsForecast(const wxString &modelName)
+asResultsAnalogsForecast::asResultsAnalogsForecast()
 :
 asResults()
 {
-    m_ModelName = modelName;
     m_FilePath = wxEmptyString;
     m_HasReferenceValues = false;
     m_LeadTimeOrigin = 0.0;
@@ -69,6 +68,12 @@ void asResultsAnalogsForecast::Init(asParametersForecast &params, double leadTim
     m_ReferenceAxis.resize(0);
     m_ReferenceValues.resize(0,0);
 
+    m_MethodId = params.GetMethodId();
+    m_MethodIdDisplay = params.GetMethodIdDisplay();
+    m_SpecificTag = params.GetSpecificTag();
+    m_SpecificTagDisplay = params.GetSpecificTagDisplay();
+    m_Description = params.GetDescription();
+
     m_LeadTimeOrigin = leadTimeOrigin;
     m_DateProcessed = asTime::NowMJD(asUTM);
 
@@ -84,8 +89,12 @@ void asResultsAnalogsForecast::Init(asParametersForecast &params, double leadTim
 
 void asResultsAnalogsForecast::BuildFileName()
 {
-    wxASSERT(!m_ModelName.IsEmpty());
     wxASSERT(!m_ForecastsDirectory.IsEmpty());
+
+    if(m_MethodId.IsEmpty() || m_SpecificTag.IsEmpty())
+    {
+        asLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
+    }
 
     // Base directory
     m_FilePath = m_ForecastsDirectory;
@@ -102,7 +111,7 @@ void asResultsAnalogsForecast::BuildFileName()
     m_FilePath.Append(DS);
 
     // Filename
-    wxString modelname = m_ModelName;
+    wxString modelname = m_MethodId + '.' + m_SpecificTag;
     wxString nowstr = asTime::GetStringTime(m_LeadTimeOrigin, "YYYYMMDDhh");
     wxString ext = "fcst";
     wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),modelname.c_str(),ext.c_str());
@@ -171,7 +180,11 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     int dataSpatialAggregation = (int)m_PredictandSpatialAggregation;
     ncFile.PutAtt("predictand_spatial_aggregation", &dataSpatialAggregation);
     ncFile.PutAtt("predictand_dataset_id", m_PredictandDatasetId);
-    ncFile.PutAtt("model_name", m_ModelName);
+    ncFile.PutAtt("method_id", m_MethodId);
+    ncFile.PutAtt("method_id_display", m_MethodIdDisplay);
+    ncFile.PutAtt("specific_tag", m_SpecificTag);
+    ncFile.PutAtt("specific_tag_display", m_SpecificTagDisplay);
+    ncFile.PutAtt("description", m_Description);
     ncFile.PutAtt("date_processed", &m_DateProcessed);
     ncFile.PutAtt("lead_time_origin", &m_LeadTimeOrigin);
     short hasReferenceValues = 0;
@@ -368,18 +381,38 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         m_PredictandTemporalResolution = Daily;
         m_PredictandSpatialAggregation = Station;
         m_PredictandDatasetId = "MeteoSwiss-Rhone";
-        m_ModelName = ncFile.GetAttString("modelName");
+        m_MethodId = ncFile.GetAttString("modelName");
+        m_MethodIdDisplay = ncFile.GetAttString("modelName");
+        m_SpecificTag = wxEmptyString;
+        m_SpecificTagDisplay = wxEmptyString;
+        m_Description = wxEmptyString;
         m_DateProcessed = ncFile.GetAttDouble("dateProcessed");
         m_LeadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
         m_HasReferenceValues = true;
     }
     else
     {
+        if(version<1.5)
+        {
+            m_MethodId = ncFile.GetAttString("model_name");
+            m_MethodIdDisplay = ncFile.GetAttString("model_name");
+            m_SpecificTag = wxEmptyString;
+            m_SpecificTagDisplay = wxEmptyString;
+            m_Description = wxEmptyString;
+        }
+        else
+        {
+            m_MethodId = ncFile.GetAttString("method_id");
+            m_MethodIdDisplay = ncFile.GetAttString("method_id_display");
+            m_SpecificTag = ncFile.GetAttString("specific_tag");
+            m_SpecificTagDisplay = ncFile.GetAttString("specific_tag_display");
+            m_Description = ncFile.GetAttString("description");
+        }
+
         m_PredictandParameter = (DataParameter)ncFile.GetAttInt("predictand_parameter");
         m_PredictandTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("predictand_temporal_resolution");
         m_PredictandSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("predictand_spatial_aggregation");
         m_PredictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
-        m_ModelName = ncFile.GetAttString("model_name");
         m_DateProcessed = ncFile.GetAttDouble("date_processed");
         m_LeadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
         m_HasReferenceValues = false;

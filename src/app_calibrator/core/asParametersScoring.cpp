@@ -85,7 +85,15 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if(!fileParams.EditRootElement()) return false;
     fileParams.GetRoot()->AddAttribute("target", "calibrator");
 
-
+    
+    // Description
+    wxXmlNode * nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE ,"description" );
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id", GetMethodId()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id_display", GetMethodIdDisplay()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag", GetSpecificTag()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag_display", GetSpecificTagDisplay()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("description", GetDescription()));
+    
     // Time properties
     wxXmlNode * nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE ,"time_properties" );
 

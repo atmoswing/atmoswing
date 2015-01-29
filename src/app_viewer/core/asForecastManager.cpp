@@ -104,7 +104,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     }
 
     // Create and load the forecast
-    asResultsAnalogsForecast* forecast = new asResultsAnalogsForecast(wxEmptyString);
+    asResultsAnalogsForecast* forecast = new asResultsAnalogsForecast;
 
     if(!forecast->Load(filePath)) 
     {
@@ -164,7 +164,7 @@ bool asForecastManager::OpenPastForecast(const wxString &filePath, int forecastS
     }
 
     // Create and load the forecast
-    asResultsAnalogsForecast* forecast = new asResultsAnalogsForecast(wxEmptyString);
+    asResultsAnalogsForecast* forecast = new asResultsAnalogsForecast;
 
     if(!forecast->Load(filePath))
     {
@@ -180,7 +180,7 @@ bool asForecastManager::OpenPastForecast(const wxString &filePath, int forecastS
     }
     m_PastForecasts[forecastSelection].push_back(forecast);
 
-    asLogMessage(wxString::Format("Past forecast of %s of the %s loaded", forecast->GetModelName().c_str(), forecast->GetLeadTimeOriginString().c_str()));
+    asLogMessage(wxString::Format("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId().c_str(), forecast->GetSpecificTag().c_str(), forecast->GetLeadTimeOriginString().c_str()));
 
     return true;
 }
@@ -220,7 +220,7 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
 
             double currentTimeHour = floor(currentTime)+ hr/24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
-            wxString modelname = GetCurrentForecast(forecastSelection)->GetModelName();
+            wxString modelname = GetCurrentForecast(forecastSelection)->GetMethodId() + '.' + GetCurrentForecast(forecastSelection)->GetSpecificTag();
             wxString ext = "fcst";
             wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),modelname.c_str(),ext.c_str());
             wxString fullPath = currentDirPath + filename;
@@ -261,7 +261,9 @@ wxString asForecastManager::GetModelName(int i_fcst)
 
     if(m_CurrentForecasts.size()>(unsigned)i_fcst)
     {
-        modelName = m_CurrentForecasts[i_fcst]->GetModelName();
+        wxString modelName = m_CurrentForecasts[i_fcst]->GetMethodId();
+        modelName.Append(" - ");
+        modelName.Append(m_CurrentForecasts[i_fcst]->GetSpecificTag());
     }
 
     wxASSERT(!modelName.IsEmpty());
@@ -275,7 +277,10 @@ VectorString asForecastManager::GetModelsNames()
 
     for (unsigned int i_model=0; i_model<m_CurrentForecasts.size(); i_model++)
     {
-        models.push_back(m_CurrentForecasts[i_model]->GetModelName());
+        wxString modelName = m_CurrentForecasts[i_model]->GetMethodId();
+        modelName.Append(" - ");
+        modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTag());
+        models.push_back(modelName);
     }
 
     return models;
@@ -287,7 +292,10 @@ wxArrayString asForecastManager::GetModelsNamesWxArray()
 
     for (unsigned int i_model=0; i_model<m_CurrentForecasts.size(); i_model++)
     {
-        models.Add(m_CurrentForecasts[i_model]->GetModelName());
+        wxString modelName = m_CurrentForecasts[i_model]->GetMethodId();
+        modelName.Append(" - ");
+        modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTag());
+        models.Add(modelName);
     }
 
     return models;

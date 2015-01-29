@@ -69,8 +69,28 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
 
+        // Description
+        if (nodeProcess->GetName() == "description") {
+            wxXmlNode *nodeParam = nodeProcess->GetChildren();
+            while (nodeParam) {
+                if (nodeParam->GetName() == "method_id") {
+                    SetMethodId(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "method_id_display") {
+                    SetMethodIdDisplay(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag") {
+                    SetSpecificTag(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag_display") {
+                    SetSpecificTagDisplay(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "description") {
+                    SetDescription(fileParams.GetString(nodeParam));
+                } else {
+                    fileParams.UnknownNode(nodeParam);
+                }
+                nodeParam = nodeParam->GetNext();
+            }
+
         // Time properties
-        if (nodeProcess->GetName() == "time_properties") {
+        } else if (nodeProcess->GetName() == "time_properties") {
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
             while (nodeParamBlock) {
                 if (nodeParamBlock->GetName() == "archive_period") {

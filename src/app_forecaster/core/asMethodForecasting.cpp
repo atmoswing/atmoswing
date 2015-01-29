@@ -46,7 +46,6 @@ asMethodStandard()
 {
     m_BatchForecasts = batchForecasts;
     m_ForecastDate = NaNDouble;
-    m_ModelName = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
     m_PredictandDBFilePath = wxEmptyString;
     m_Parent = parent;
@@ -102,7 +101,6 @@ bool asMethodForecasting::Manager()
             #endif
 
             // Set the content to data members
-            m_ModelName = m_BatchForecasts->GetModelName(i);
             m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
             m_PredictandDBFilePath = predictandDBDir + DS + m_BatchForecasts->GetModelPredictandDB(i);
 
@@ -135,7 +133,7 @@ bool asMethodForecasting::Manager()
             else
             {
                 // Display processing time
-                asLogMessageImportant(wxString::Format(_("Processing of the model %s took %ldms to execute"), m_ModelName.c_str(), sw.Time()));
+                asLogMessageImportant(wxString::Format(_("Processing of the model %s - %s took %ldms to execute"), params.GetMethodId().c_str(), params.GetSpecificTag().c_str(), sw.Time()));
 
                 #if wxUSE_GUI
                     // Send event
@@ -175,7 +173,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     int stepsNb = params.GetStepsNb();
 
     // Download real-time predictors
-    asResultsAnalogsForecast resultsCheck(m_ModelName);
+    asResultsAnalogsForecast resultsCheck;
     resultsCheck.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
     bool forecastDateChanged = true;
     while(forecastDateChanged)
@@ -255,8 +253,8 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     if (m_Cancel) return false;
 
     // Resulting object
-    asResultsAnalogsForecast resultsPrevious(m_ModelName);
-    asResultsAnalogsForecast results(m_ModelName);
+    asResultsAnalogsForecast resultsPrevious;
+    asResultsAnalogsForecast results;
     results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
 
     for (int i_step=0; i_step<stepsNb; i_step++)
@@ -365,7 +363,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             m_ForecastDate = predictorRealtime->SetRunDateInUse(m_ForecastDate);
 
             // Check if result already exists
-            asResultsAnalogsForecast resultsCheck(m_ModelName);
+            asResultsAnalogsForecast resultsCheck;
             resultsCheck.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
             resultsCheck.SetCurrentStep(params.GetStepsNb()-1);
             resultsCheck.Init(params, m_ForecastDate);

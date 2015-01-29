@@ -37,7 +37,7 @@ class asResultsAnalogsForecast: public asResults
 public:
 
     /** Default constructor */
-    asResultsAnalogsForecast(const wxString &modelName);
+    asResultsAnalogsForecast();
 
     /** Default destructor */
     virtual ~asResultsAnalogsForecast();
@@ -105,22 +105,54 @@ public:
         return m_HasReferenceValues;
     }
 
-    /** Access m_ModelName
-     * \return The model name
-     */
-    wxString GetModelName()
+    wxString GetMethodId()
     {
-        wxASSERT(!m_ModelName.IsEmpty());
-        return m_ModelName;
+        return m_MethodId;
     }
 
-    /** Set m_ModelName
-     * \param val The new model name to set
-     */
-    void SetModelName(const wxString &val)
+    void SetMethodId(const wxString &val)
     {
-        m_ModelName = val;
-        BuildFileName();
+        m_MethodId = val;
+    }
+
+    wxString GetMethodIdDisplay()
+    {
+        return m_MethodIdDisplay;
+    }
+
+    void SetMethodIdDisplay(const wxString &val)
+    {
+        m_MethodIdDisplay = val;
+    }
+
+    wxString GetSpecificTag()
+    {
+        return m_SpecificTag;
+    }
+
+    void SetSpecificTag(const wxString &val)
+    {
+        m_SpecificTag = val;
+    }
+
+    wxString GetSpecificTagDisplay()
+    {
+        return m_SpecificTagDisplay;
+    }
+
+    void SetSpecificTagDisplay(const wxString &val)
+    {
+        m_SpecificTagDisplay = val;
+    }
+
+    wxString GetDescription()
+    {
+        return m_Description;
+    }
+
+    void SetDescription(const wxString &val)
+    {
+        m_Description = val;
     }
 
     /** Access m_LeadTimeOrigin
@@ -558,13 +590,16 @@ protected:
     void BuildFileName();
 
 private:
+    wxString m_MethodId;
+    wxString m_MethodIdDisplay;
+    wxString m_SpecificTag;
+    wxString m_SpecificTagDisplay;
+    wxString m_Description;
     DataParameter m_PredictandParameter;
     DataTemporalResolution m_PredictandTemporalResolution;
     DataSpatialAggregation m_PredictandSpatialAggregation;
     wxString m_ForecastsDirectory;
     wxString m_PredictandDatasetId;
-    wxString m_ModelName;
-    wxString m_ModelLongName;
     bool m_HasReferenceValues;
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"

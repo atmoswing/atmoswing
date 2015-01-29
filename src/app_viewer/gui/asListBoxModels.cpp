@@ -49,9 +49,16 @@ asListBoxModels::~asListBoxModels()
     //dtor
 }
 
-bool asListBoxModels::Add(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
+bool asListBoxModels::Add(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
 {
-    wxString newOption = wxString::Format("%d. ", (int)GetStrings().GetCount()+1) + modelName + " (" + leadTimeOriginStr + ") ";
+    wxString newOption = wxString::Format("%d. ", (int)GetStrings().GetCount()+1);
+    newOption.Append(methodIdDisplay);
+    if(!specificTagDisplay.IsEmpty())
+    {
+        newOption.Append(" - ");
+        newOption.Append(specificTagDisplay);
+    }
+    
     /*
     switch (dataParameter)
     {
