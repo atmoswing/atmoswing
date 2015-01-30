@@ -1835,7 +1835,7 @@ void asFrameForecast::DrawPlotStation( int station )
 void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 {
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
-    m_PanelSidebarForecasts->AddForecast(forecast->GetModelName(), forecast->GetLeadTimeOriginString(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
+    m_PanelSidebarForecasts->AddForecast(forecast->GetMethodId(), forecast->GetMethodIdDisplay(), forecast->GetSpecificTag(), forecast->GetSpecificTagDisplay(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
 
     if (event.GetString().IsSameAs("last"))
     {
