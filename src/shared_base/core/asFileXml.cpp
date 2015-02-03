@@ -173,6 +173,12 @@ void asFileXml::UnknownNode(wxXmlNode *node)
 
 bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
 {
+    if (!node->GetChildren())
+    {
+        asLogWarning(_("The node is empty in the xml file."));
+        return defaultValue;
+    }
+
     wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsSameAs("true", false)) {
         return true;
@@ -217,6 +223,12 @@ bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
 
 int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
 {
+    if (!node->GetChildren())
+    {
+        asLogWarning(_("The node is empty in the xml file."));
+        return defaultValue;
+    }
+
     long value;
     wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsEmpty()) {
@@ -230,6 +242,12 @@ int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
 
 float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
 {
+    if (!node->GetChildren())
+    {
+        asLogWarning(_("The node is empty in the xml file."));
+        return defaultValue;
+    }
+
     double value;
     wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsEmpty()) {
@@ -243,6 +261,12 @@ float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
 
 double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
 {
+    if (!node->GetChildren())
+    {
+        asLogWarning(_("The node is empty in the xml file."));
+        return defaultValue;
+    }
+
     double value;
     wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsEmpty()) {
@@ -256,6 +280,12 @@ double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
 
 wxString asFileXml::GetString(wxXmlNode *node, const wxString &defaultValue)
 {
+    if (!node->GetChildren())
+    {
+        asLogWarning(_("The node is empty in the xml file."));
+        return wxEmptyString;
+    }
+
     wxString value = node->GetChildren()->GetContent();
     if (value.IsEmpty()) {
         return defaultValue;

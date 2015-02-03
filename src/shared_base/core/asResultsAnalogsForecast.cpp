@@ -120,7 +120,7 @@ void asResultsAnalogsForecast::BuildFileName()
 
 bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
 {
-    wxASSERT(!m_ModelName.IsEmpty());
+    wxASSERT(!m_FilePath.IsEmpty());
     wxASSERT(m_TargetDates.size()>0);
     wxASSERT(m_AnalogsNb.size()>0);
     wxASSERT(m_StationsNames.size()>0);
@@ -603,7 +603,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         }
     }
 
-    wxASSERT(!m_ModelName.IsEmpty());
+    wxASSERT(!m_FilePath.IsEmpty());
     wxASSERT(!m_PredictandDatasetId.IsEmpty());
     wxASSERT(m_TargetDates.size()>0);
     wxASSERT(m_AnalogsNb.size()>0);
