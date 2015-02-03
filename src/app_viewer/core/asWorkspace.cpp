@@ -149,7 +149,6 @@ bool asWorkspace::Save()
     if(!fileWorkspace.Open()) return false;
 
     if(!fileWorkspace.EditRootElement()) return false;
-    fileWorkspace.GetRoot()->AddAttribute("target", "viewer");
 
     // General data
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("coordinate_system", m_CoordinateSys));

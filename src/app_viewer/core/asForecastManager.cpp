@@ -261,9 +261,12 @@ wxString asForecastManager::GetModelName(int i_fcst)
 
     if(m_CurrentForecasts.size()>(unsigned)i_fcst)
     {
-        wxString modelName = m_CurrentForecasts[i_fcst]->GetMethodId();
-        modelName.Append(" - ");
-        modelName.Append(m_CurrentForecasts[i_fcst]->GetSpecificTag());
+        modelName = m_CurrentForecasts[i_fcst]->GetMethodId();
+        if (!m_CurrentForecasts[i_fcst]->GetSpecificTag().IsEmpty())
+        {
+            modelName.Append(" - ");
+            modelName.Append(m_CurrentForecasts[i_fcst]->GetSpecificTag());
+        }
     }
 
     wxASSERT(!modelName.IsEmpty());
