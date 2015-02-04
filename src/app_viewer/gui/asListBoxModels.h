@@ -47,6 +47,16 @@ public:
         return m_IsAggregator;
     }
 
+    int GetModelId() 
+    { 
+        return m_ModelId; 
+    }
+
+    void SetModelId(int modelId)
+    {
+        m_ModelId = modelId;
+    }
+
     wxString const& GetMethodId() const 
     { 
         return m_MethodId; 
@@ -109,6 +119,7 @@ public:
 
 private:
     bool m_IsAggregator;
+    int m_ModelId;
     wxString m_MethodId;
     wxString m_MethodIdDisplay;
     wxString m_SpecificTag;
@@ -134,11 +145,16 @@ public:
     virtual ~asListBoxModels();
     void CreateImageList();
     bool Add(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
+    void Clear();
+    void SetSelection(int modelId);
 
 protected:
 
 private:
-    void OnModelSlctChange( wxCommandEvent & event );
+    int m_Counter;
+    bool m_SkipSlctChangeEvent;
+
+    void OnModelSlctChange( wxTreeEvent& event );
 
     DECLARE_EVENT_TABLE();
 };

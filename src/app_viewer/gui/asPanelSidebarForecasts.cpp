@@ -70,7 +70,7 @@ asPanelSidebarForecasts::~asPanelSidebarForecasts()
 
 void asPanelSidebarForecasts::ClearForecasts()
 {
-    m_ModelsCtrl->DeleteAllItems();
+    m_ModelsCtrl->Clear();
 }
 
 void asPanelSidebarForecasts::AddForecast(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
