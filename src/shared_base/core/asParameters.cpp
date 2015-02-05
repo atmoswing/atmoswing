@@ -30,6 +30,7 @@
 
 #include "asFileParametersStandard.h"
 #include "asFileAscii.h"
+#include <wx/tokenzr.h>
 
 
 asParameters::asParameters()
@@ -1088,6 +1089,19 @@ bool asParameters::SetPredictandStationIds(VectorInt val)
         }
     }
     m_PredictandStationIds = val;
+    return true;
+}
+
+bool asParameters::SetPredictandStationIds(wxString val)
+{
+    wxStringTokenizer tokenizer(val, ":,; ");
+    while ( tokenizer.HasMoreTokens() )
+    {
+        wxString token = tokenizer.GetNextToken();
+        long stationId;
+        token.ToLong(&stationId);
+        m_PredictandStationIds.push_back(stationId);
+    }
     return true;
 }
 

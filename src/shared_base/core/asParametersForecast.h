@@ -74,6 +74,16 @@ public:
 
     void InitValues();
 
+    wxString GetPredictandDatabase()
+    {
+        return m_PredictandDatabase;
+    }
+
+    void SetPredictandDatabase(wxString val)
+    {
+        m_PredictandDatabase = val;
+    }
+
     int GetLeadTimeNb()
     {
         return m_LeadTimeDaysVect.size();
@@ -170,6 +180,7 @@ protected:
 private:
     VectorInt m_LeadTimeDaysVect;
     VectorParamsStepForecast m_StepsForecast;
+    wxString m_PredictandDatabase;
 };
 
 #endif // ASPARAMETERSFORECAST_H

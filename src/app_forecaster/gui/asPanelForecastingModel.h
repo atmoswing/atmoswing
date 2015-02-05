@@ -60,8 +60,6 @@ public:
         m_PanelsManager = panelManager;
     }
 
-    void ReducePanel();
-
     wxString GetParametersFileName()
     {
         return m_TextCtrlParametersFileName->GetValue();
@@ -70,26 +68,12 @@ public:
     void SetParametersFileName(const wxString &val)
     {
         m_TextCtrlParametersFileName->SetValue(val);
-        wxFileName fileName(val);
-        m_StaticTextModelName->SetLabel(fileName.GetName());
-    }
-
-    wxString GetPredictandDBName()
-    {
-        return m_TextCtrlPredictandDB->GetValue();
-    }
-
-    void SetPredictandDBName(const wxString &val)
-    {
-        m_TextCtrlPredictandDB->SetValue(val);
     }
 
 protected:
-    bool m_Reduced;
     wxWindow* m_ParentFrame;
     awxLed* m_Led;
 
-    void ReducePanel( wxCommandEvent& event );
     void ClosePanel( wxCommandEvent& event );
     void ChangeModelName( wxCommandEvent& event );
 

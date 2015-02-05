@@ -76,24 +76,16 @@ bool asBatchForecasts::Load(const wxString &filePath)
             m_PredictorsRealtimeDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictand_db_directory") {
             m_PredictandDBDirectory = fileBatch.GetString(node);
-        } else if (node->GetName() == "model") {
+        } else if (node->GetName() == "models") {
             wxXmlNode *nodeModel = node->GetChildren();
             while (nodeModel) {
                 if (nodeModel->GetName() == "filename") {
                     m_ModelFileNames.push_back(fileBatch.GetString(nodeModel));
-                } else if (nodeModel->GetName() == "predictand_db") {
-                    m_ModelPredictandDBs.push_back(fileBatch.GetString(nodeModel));
                 } else {
                     fileBatch.UnknownNode(nodeModel);
                 }
 
                 nodeModel = nodeModel->GetNext();
-            }
-
-            if (m_ModelFileNames.size()!=m_ModelPredictandDBs.size())
-            {
-                asLogError(_("The number of elements in models is not consistent in the batch file."));
-                return false;
             }
 
         } else {
@@ -113,7 +105,6 @@ bool asBatchForecasts::Save()
     if(!fileBatch.Open()) return false;
 
     if(!fileBatch.EditRootElement()) return false;
-    fileBatch.GetRoot()->AddAttribute("target", "forecaster");
 
     // Get general data
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_ForecastsOutputDirectory));
@@ -123,15 +114,12 @@ bool asBatchForecasts::Save()
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_PredictandDBDirectory));
 
     // Models
+    wxXmlNode * nodeModels = new wxXmlNode(wxXML_ELEMENT_NODE ,"models" );
     for (int i_model=0; i_model<GetModelsNb(); i_model++)
     {
-        wxXmlNode * nodeModel = new wxXmlNode(wxXML_ELEMENT_NODE ,"model" );
-
-        nodeModel->AddChild(fileBatch.CreateNodeWithValue("filename", m_ModelFileNames[i_model]));
-        nodeModel->AddChild(fileBatch.CreateNodeWithValue("predictand_db", m_ModelPredictandDBs[i_model]));
-    
-        fileBatch.AddChild(nodeModel);
+        nodeModels->AddChild(fileBatch.CreateNodeWithValue("filename", m_ModelFileNames[i_model]));
     }
+    fileBatch.AddChild(nodeModels);
 
     fileBatch.Save();
 
@@ -147,12 +135,10 @@ int asBatchForecasts::GetModelsNb()
 void asBatchForecasts::ClearModels()
 {
     m_ModelFileNames.clear();
-    m_ModelPredictandDBs.clear();
 }
 
 void asBatchForecasts::AddModel()
 {
     int nb = m_ModelFileNames.size()+1;
     m_ModelFileNames.resize(nb);
-    m_ModelPredictandDBs.resize(nb);
 }

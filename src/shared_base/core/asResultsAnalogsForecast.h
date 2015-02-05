@@ -67,6 +67,28 @@ public:
         m_PredictandDatasetId = val;
     }
 
+    wxString GetPredictandDatabase()
+    {
+        return m_PredictandDatabase;
+    }
+
+    void SetPredictandDatabase(const wxString &val)
+    {
+        m_PredictandDatabase = val;
+    }
+
+    VectorInt GetPredictandStationIds()
+    {
+        return m_PredictandStationIds;
+    }
+
+    void SetPredictandStationIds(VectorInt val)
+    {
+        m_PredictandStationIds = val;
+    }
+    
+    void SetPredictandStationIds(wxString val);
+
     DataParameter GetPredictandParameter()
     {
         return m_PredictandParameter;
@@ -582,6 +604,8 @@ public:
      */
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
+    wxString GetPredictandStationIdsString();
+
 
 protected:
 
@@ -598,8 +622,10 @@ private:
     DataParameter m_PredictandParameter;
     DataTemporalResolution m_PredictandTemporalResolution;
     DataSpatialAggregation m_PredictandSpatialAggregation;
-    wxString m_ForecastsDirectory;
     wxString m_PredictandDatasetId;
+    wxString m_PredictandDatabase;
+    VectorInt m_PredictandStationIds;
+    wxString m_ForecastsDirectory;
     bool m_HasReferenceValues;
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"

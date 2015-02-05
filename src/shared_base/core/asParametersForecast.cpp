@@ -123,7 +123,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 } else if (nodeParamBlock->GetName() == "lead_time") {
                     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
                     while (nodeParam) {
-                        if (nodeParam->GetName() == "lead_time_hours") {
+                        if (nodeParam->GetName() == "lead_time_days") {
                             if(!SetLeadTimeDaysVector(fileParams.GetVectorInt(nodeParam))) return false;
                         } else {
                             fileParams.UnknownNode(nodeParam);
@@ -253,6 +253,28 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 nodeParamBlock = nodeParamBlock->GetNext();
             }
             i_step++;
+            
+        // Analog values
+        } else if (nodeProcess->GetName() == "analog_values") {
+            wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+            while (nodeParamBlock) {
+                if (nodeParamBlock->GetName() == "predictand") {
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
+                            if(!SetPredictandStationIds(fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "database") {
+                            SetPredictandDatabase(fileParams.GetString(nodeParam));
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                } else {
+                    fileParams.UnknownNode(nodeParamBlock);
+                }
+                nodeParamBlock = nodeParamBlock->GetNext();
+            }
 
         } else {
             fileParams.UnknownNode(nodeProcess);
