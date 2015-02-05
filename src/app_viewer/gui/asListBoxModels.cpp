@@ -50,6 +50,14 @@ wxTreeItemData()
 }
 
 
+asMessageModelChoice::asMessageModelChoice(bool isAggregator)
+:
+wxObject()
+{
+    m_IsAggregator = isAggregator;
+}
+
+
 asListBoxModels::asListBoxModels(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size)
 :
 wxTreeCtrl(parent, id, pos, size, wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT|wxTR_TWIST_BUTTONS|wxTR_FULL_ROW_HIGHLIGHT|wxTR_NO_LINES|wxNO_BORDER, wxDefaultValidator)
@@ -174,7 +182,11 @@ void asListBoxModels::OnModelSlctChange( wxTreeEvent& event )
         if (modelId>=0) // If not an aggregator
         {
             wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED);
-            eventSlct.SetInt(modelId);
+
+            asMessageModelChoice* message = new asMessageModelChoice(false);
+            message->SetModelId(modelId);
+
+            eventSlct.SetClientData(message);
             GetParent()->ProcessWindowEvent(eventSlct);
         }
         else // Aggregator
@@ -188,15 +200,34 @@ void asListBoxModels::OnModelSlctChange( wxTreeEvent& event )
                     modelId = childItem->GetModelId();
 
                     wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED);
-                    eventSlct.SetInt(modelId);
+
+                    asMessageModelChoice* message = new asMessageModelChoice(false);
+                    message->SetModelId(modelId);
+
+                    eventSlct.SetClientData(message);
                     GetParent()->ProcessWindowEvent(eventSlct);
                 }
             }
             else // Multiple children: needs aggregation
             {
+                wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED);
 
-                asLogError("Aggregation is not yet implemented.");
+                asMessageModelChoice* message = new asMessageModelChoice(true);
 
+                wxTreeItemIdValue cookie;
+                wxTreeItemId childId = GetFirstChild(itemId, cookie);
+
+                while (childId.IsOk())
+                {
+                    asModelTreeItemData *childItem = (asModelTreeItemData *)GetItemData(childId);
+                    modelId = childItem->GetModelId();
+                    message->AddModelId(modelId);
+
+                    childId = GetNextChild(itemId, cookie);
+                }
+
+                eventSlct.SetClientData(message);
+                GetParent()->ProcessWindowEvent(eventSlct);
             }
         }
     }

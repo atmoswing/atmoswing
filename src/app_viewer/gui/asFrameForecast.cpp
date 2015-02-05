@@ -1803,15 +1803,29 @@ void asFrameForecast::OnForecastRatioSelectionChange( wxCommandEvent& event )
 
 void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     Freeze();
 
-    m_ForecastViewer->SetModel(event.GetInt());
+    asMessageModelChoice* message = (asMessageModelChoice*)event.GetClientData();
+
+    if (message->IsAggregator())
+    {
+        asLogError("Aggregator not yet implemented!");
+    }
+    else
+    {
+        m_ForecastViewer->SetModel(message->GetModelId());
+    }
+    
     m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
 
     UpdateHeaderTexts();
     UpdatePanelCaptionAll();
     UpdatePanelAnalogDates();
     UpdatePanelStationsList();
+
+    wxDELETE(message);
 
     Thaw();
 }
@@ -1839,9 +1853,6 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 
     if (event.GetString().IsSameAs("last"))
     {
-        float previousDate = m_ForecastViewer->GetLeadTimeDate();
-        m_ForecastViewer->SetLeadTimeDate(previousDate);
-
         int modelIndex = m_ForecastViewer->GetModelSelection();
         if (modelIndex>event.GetInt() || modelIndex<0) 
         {
@@ -1849,6 +1860,9 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
         }
         m_ForecastViewer->SetModel(modelIndex);
         m_PanelSidebarForecasts->GetModelsCtrl()->SetSelection(modelIndex);
+        
+        float previousDate = m_ForecastViewer->GetLeadTimeDate();
+        m_ForecastViewer->SetLeadTimeDate(previousDate);
 
         UpdatePanelAlarms();
         UpdateHeaderTexts();
