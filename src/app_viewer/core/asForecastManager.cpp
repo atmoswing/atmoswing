@@ -261,11 +261,17 @@ wxString asForecastManager::GetModelName(int i_fcst)
 
     if(m_CurrentForecasts.size()>(unsigned)i_fcst)
     {
-        modelName = m_CurrentForecasts[i_fcst]->GetMethodId();
+        modelName = m_CurrentForecasts[i_fcst]->GetMethodIdDisplay();
+
+        if (!modelName.IsSameAs(m_CurrentForecasts[i_fcst]->GetMethodId()))
+        {
+            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_fcst]->GetMethodId().c_str()));
+        }
+
         if (!m_CurrentForecasts[i_fcst]->GetSpecificTag().IsEmpty())
         {
             modelName.Append(" - ");
-            modelName.Append(m_CurrentForecasts[i_fcst]->GetSpecificTag());
+            modelName.Append(m_CurrentForecasts[i_fcst]->GetSpecificTagDisplay());
         }
     }
 

@@ -1879,8 +1879,7 @@ void asFrameForecast::UpdateHeaderTexts()
     m_StaticTextForecastDate->SetLabel(dateStr);
 
     wxString model = m_ForecastManager->GetModelName(m_ForecastViewer->GetModelSelection());
-    wxString modelStr = wxString::Format(_("Model selected : %s"), model.c_str());
-    m_StaticTextForecastModel->SetLabel(modelStr);
+    m_StaticTextForecastModel->SetLabel(model);
 
     m_PanelTop->Layout();
     m_PanelTop->Refresh();
