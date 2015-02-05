@@ -129,6 +129,49 @@ private:
 };
 
 
+class asMessageModelChoice : public wxObject
+{
+public:
+    asMessageModelChoice(bool isAggregator);
+
+    bool IsAggregator()
+    {
+        return m_IsAggregator;
+    }
+
+    VectorInt GetModelsIds()
+    {
+        return m_ModelsIds;
+    }
+
+    void SetModelsIds(VectorInt val)
+    {
+        m_ModelsIds = val;
+    }
+
+    int GetModelId()
+    {
+        wxASSERT(m_ModelsIds.size()>0);
+        return m_ModelsIds[0];
+    }
+
+    void SetModelId(int val)
+    {
+        m_ModelsIds.clear();
+        m_ModelsIds.push_back(val);
+    }
+
+    void AddModelId(int val)
+    {
+        m_ModelsIds.push_back(val);
+    }
+
+private:
+    bool m_IsAggregator;
+    VectorInt m_ModelsIds;
+};
+
+
 class asListBoxModels : public wxTreeCtrl
 {
 public:
