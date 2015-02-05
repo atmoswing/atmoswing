@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<atmoswing_file version="1.0">
+    <first_node id="N1" name="Node 1 name" description="C'est pô Noël">
+        <something>1</something>
+        <location>Zürich</location>
+        <list>
+            <data id="1" name="data 1-1" >
+                <something>éviter</something>
+            </data>
+            <data id="2" name="data 1-2" >
+                <something>l'hôpital</something>
+            </data>
+            <data id="3" name="data 1-3" >
+                <something>à tout prix</something>
+            </data>
+        </list>
+    </first_node>
+    <second_node id="N2" name="Node 2 name" description="C'est toujours pô Noël">
+        <something>2</something>
+        <location>Genève</location>
+    </second_nod>
+</atmoswing_file>

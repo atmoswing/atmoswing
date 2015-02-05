@@ -125,25 +125,25 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 checkSizes = false;
                 errorField.Append(wxString::Format("PredictorTimeHours (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorUminVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorXminVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorUmin (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorXmin (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorUptsnbVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorXptsnbVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorUptsnb (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorXptsnb (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorVminVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorYminVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorVmin (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorYmin (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorVptsnbVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorYptsnbVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorVptsnb (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorYptsnb (step %d, predictor %d), ", i_step, i_predictor));
             }
             if( params.GetPredictorCriteriaVector(i_step, i_predictor).size()>1 )
             {

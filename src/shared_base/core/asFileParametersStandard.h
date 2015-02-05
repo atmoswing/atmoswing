@@ -39,8 +39,8 @@ public:
     /** Default destructor */
     virtual ~asFileParametersStandard();
 
-    bool InsertRootElement();
-    bool GoToRootElement();
+    bool EditRootElement();
+    bool CheckRootElement();
 
 protected:
 private:

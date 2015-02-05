@@ -42,14 +42,14 @@ TEST(LoadEasy)
 	wxString str("Testing general archive predictors...\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 	
-    double Umin = 10;
-    int Uptsnb = 5;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = 10;
+    int Xptsnb = 5;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double step = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -130,14 +130,14 @@ TEST(LoadEasy)
 
 TEST(LoadComposite)
 {
-    double Umin = -10;
-    int Uptsnb = 7;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = -10;
+    int Xptsnb = 7;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double step = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -226,14 +226,14 @@ TEST(LoadComposite)
 
 TEST(LoadBorderLeft)
 {
-    double Umin = 0;
-    int Uptsnb = 3;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = 0;
+    int Xptsnb = 3;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double step = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -294,14 +294,14 @@ TEST(LoadBorderLeft)
 
 TEST(LoadBorderLeftOn720)
 {
-    double Umin = 360;
-    int Uptsnb = 3;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = 360;
+    int Xptsnb = 3;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double step = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -362,14 +362,14 @@ TEST(LoadBorderLeftOn720)
 
 TEST(LoadBorderRight)
 {
-    double Umin = 350;
-    int Uptsnb = 5;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = 350;
+    int Xptsnb = 5;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double step = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, step, Vmin, Vptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -436,15 +436,15 @@ TEST(LoadBorderRight)
 
 TEST(LoadCompositeStepLon)
 {
-    double Umin = -10;
-    int Uptsnb = 7;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = -10;
+    int Xptsnb = 7;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double steplon = 5;
     double steplat = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, steplon, Vmin, Vptsnb, steplat, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -508,15 +508,15 @@ TEST(LoadCompositeStepLon)
 
 TEST(LoadCompositeStepLonMoved)
 {
-    double Umin = -7.5;
-    int Uptsnb = 5;
-    double Vmin = 35;
-    int Vptsnb = 3;
+    double Xmin = -7.5;
+    int Xptsnb = 5;
+    double Ymin = 35;
+    int Yptsnb = 3;
     double steplon = 5;
     double steplat = 2.5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, steplon, Vmin, Vptsnb, steplat, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -565,15 +565,15 @@ TEST(LoadCompositeStepLonMoved)
 
 TEST(LoadCompositeStepLonLat)
 {
-    double Umin = -10;
-    int Uptsnb = 4;
-    double Vmin = 35;
-    int Vptsnb = 2;
+    double Xmin = -10;
+    int Xptsnb = 4;
+    double Ymin = 35;
+    int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, steplon, Vmin, Vptsnb, steplat, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -631,15 +631,15 @@ TEST(LoadCompositeStepLonLat)
 
 TEST(LoadCompositeStepLonLatTime)
 {
-    double Umin = -10;
-    int Uptsnb = 4;
-    double Vmin = 35;
-    int Vptsnb = 2;
+    double Xmin = -10;
+    int Xptsnb = 4;
+    double Ymin = 35;
+    int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, steplon, Vmin, Vptsnb, steplat, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -686,15 +686,15 @@ TEST(LoadCompositeStepLonLatTime)
 
 TEST(SetData)
 {
-    double Umin = -10;
-    int Uptsnb = 4;
-    double Vmin = 35;
-    int Vptsnb = 2;
+    double Xmin = -10;
+    int Xptsnb = 4;
+    double Ymin = 35;
+    int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
     double level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Umin, Uptsnb, steplon, Vmin, Vptsnb, steplat, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,5,00,00);

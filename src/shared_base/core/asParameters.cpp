@@ -30,6 +30,7 @@
 
 #include "asFileParametersStandard.h"
 #include "asFileAscii.h"
+#include <wx/tokenzr.h>
 
 
 asParameters::asParameters()
@@ -39,9 +40,9 @@ asParameters::asParameters()
     m_ArchiveEnd = 0;
     m_TimeMinHours = 0;
     m_TimeMaxHours = 0;
-    m_TimeArrayTargetMode = "Simple";
+    m_TimeArrayTargetMode = "simple";
     m_TimeArrayTargetTimeStepHours = 0;
-    m_TimeArrayAnalogsMode = "DaysInterval";
+    m_TimeArrayAnalogsMode = "days_interval";
     m_TimeArrayAnalogsTimeStepHours = 0;
     m_TimeArrayAnalogsExcludeDays = 0;
     m_TimeArrayAnalogsIntervalDays = 0;
@@ -60,48 +61,11 @@ asParameters::~asParameters()
     //dtor
 }
 
-bool asParameters::IsOk()
-{
-    for (int i_step=0; i_step<GetStepsNb(); i_step++)
-    {
-        for (int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
-        {
-            if (GetPredictorUptsnb(i_step, i_ptor)<=0)
-            {
-                asLogError("The number of points on the U axis must be >= 1.");
-                return false;
-            }
-            if (GetPredictorVptsnb(i_step, i_ptor)<=0)
-            {
-                asLogError("The number of points on the V axis must be >= 1.");
-                return false;
-            }
-            if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular") && GetPredictorUstep(i_step, i_ptor)<=0)
-            {
-                asLogError("The step length on the U axis cannot be null for regular grids.");
-                return false;
-            }
-            if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular") && GetPredictorVstep(i_step, i_ptor)<=0)
-            {
-                asLogError("The step length on the V axis cannot be null for regular grids.");
-                return false;
-            }
-
-// TODO (phorton#1#): Check every parameter.
-        }
-    }
-
-    return true;
-}
-
 void asParameters::AddStep()
 {
     ParamsStep step;
 
-    step.MethodName = wxEmptyString;
     step.AnalogsNumber = 0;
-
-    AddPredictor(step);
 
     m_Steps.push_back(step);
     SetSizes();
@@ -119,21 +83,21 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.DatasetId = wxEmptyString;
     predictor.DataId = wxEmptyString;
     predictor.Preload = false;
-    predictor.PreloadUmin = 0;
-    predictor.PreloadUptsnb = 0;
-    predictor.PreloadVmin = 0;
-    predictor.PreloadVptsnb = 0;
+    predictor.PreloadXmin = 0;
+    predictor.PreloadXptsnb = 0;
+    predictor.PreloadYmin = 0;
+    predictor.PreloadYptsnb = 0;
     predictor.Preprocess = false;
     predictor.PreprocessMethod = wxEmptyString;
     predictor.Level = 0;
-    predictor.Umin = 0;
-    predictor.Uptsnb = 1;
-    predictor.Ustep = 0;
-    predictor.Ushift = 0;
-    predictor.Vmin = 0;
-    predictor.Vptsnb = 1;
-    predictor.Vstep = 0;
-    predictor.Vshift = 0;
+    predictor.Xmin = 0;
+    predictor.Xptsnb = 1;
+    predictor.Xstep = 0;
+    predictor.Xshift = 0;
+    predictor.Ymin = 0;
+    predictor.Yptsnb = 1;
+    predictor.Ystep = 0;
+    predictor.Yshift = 0;
     predictor.FlatAllowed = asFLAT_FORBIDDEN;
     predictor.TimeHours = 0;
     predictor.Criteria = wxEmptyString;
@@ -150,22 +114,22 @@ void asParameters::AddPredictor(int i_step)
     predictor.DatasetId = wxEmptyString;
     predictor.DataId = wxEmptyString;
     predictor.Preload = false;
-    predictor.PreloadUmin = 0;
-    predictor.PreloadUptsnb = 0;
-    predictor.PreloadVmin = 0;
-    predictor.PreloadVptsnb = 0;
+    predictor.PreloadXmin = 0;
+    predictor.PreloadXptsnb = 0;
+    predictor.PreloadYmin = 0;
+    predictor.PreloadYptsnb = 0;
     predictor.Preprocess = false;
     predictor.PreprocessMethod = wxEmptyString;
     predictor.Level = 0;
-    predictor.GridType = wxEmptyString;
-    predictor.Umin = 0;
-    predictor.Uptsnb = 1;
-    predictor.Ustep = 0;
-    predictor.Ushift = 0;
-    predictor.Vmin = 0;
-    predictor.Vptsnb = 1;
-    predictor.Vstep = 0;
-    predictor.Vshift = 0;
+    predictor.GridType = "regular";
+    predictor.Xmin = 0;
+    predictor.Xptsnb = 1;
+    predictor.Xstep = 0;
+    predictor.Xshift = 0;
+    predictor.Ymin = 0;
+    predictor.Yptsnb = 1;
+    predictor.Ystep = 0;
+    predictor.Yshift = 0;
     predictor.FlatAllowed = asFLAT_FORBIDDEN;
     predictor.TimeHours = 0;
     predictor.Criteria = wxEmptyString;
@@ -185,6 +149,484 @@ void asParameters::SetSizes()
     }
 }
 
+bool asParameters::LoadFromFile(const wxString &filePath)
+{
+    asLogMessage(_("Loading parameters file."));
+
+    if(filePath.IsEmpty())
+    {
+        asLogError(_("The given path to the parameters file is empty."));
+        return false;
+    }
+
+    asFileParametersStandard fileParams(filePath, asFile::ReadOnly);
+    if(!fileParams.Open()) return false;
+
+    if(!fileParams.CheckRootElement()) return false;
+
+    int i_step = 0;
+    wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
+    while (nodeProcess) {
+
+        // Description
+        if (nodeProcess->GetName() == "description") {
+            wxXmlNode *nodeParam = nodeProcess->GetChildren();
+            while (nodeParam) {
+                if (nodeParam->GetName() == "method_id") {
+                    SetMethodId(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "method_id_display") {
+                    SetMethodIdDisplay(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag") {
+                    SetSpecificTag(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag_display") {
+                    SetSpecificTagDisplay(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "description") {
+                    SetDescription(fileParams.GetString(nodeParam));
+                } else {
+                    fileParams.UnknownNode(nodeParam);
+                }
+                nodeParam = nodeParam->GetNext();
+            }
+
+        // Time properties
+        } else if (nodeProcess->GetName() == "time_properties") {
+            wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+            while (nodeParamBlock) {
+                if (nodeParamBlock->GetName() == "archive_period") {
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "start_year") {
+                            if(!SetArchiveYearStart(fileParams.GetInt(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "end_year") {
+                            if(!SetArchiveYearEnd(fileParams.GetInt(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "start") {
+                            if(!SetArchiveStart(fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "end") {
+                            if(!SetArchiveEnd(fileParams.GetString(nodeParam))) return false;
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                } else if (nodeParamBlock->GetName() == "time_step") {
+                    if(!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock))) return false;
+                    if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock))) return false;
+                } else if (nodeParamBlock->GetName() == "time_array_target") {
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "time_array") {
+                            if(!SetTimeArrayTargetMode(fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "predictand_serie_name") {
+                            if(!SetTimeArrayTargetPredictandSerieName(fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "predictand_min_threshold") {
+                            if(!SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFloat(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "predictand_max_threshold") {
+                            if(!SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFloat(nodeParam))) return false;
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                } else if (nodeParamBlock->GetName() == "time_array_analogs") {
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "time_array") {
+                            if(!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "interval_days") {
+                            if(!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "exclude_days") {
+                            if(!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam))) return false;
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                } else {
+                    fileParams.UnknownNode(nodeParamBlock);
+                }
+                nodeParamBlock = nodeParamBlock->GetNext();
+            }
+
+        // Analog dates
+        } else if (nodeProcess->GetName() == "analog_dates") {
+            AddStep();
+            int i_ptor = 0;
+            wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+            while (nodeParamBlock) {
+                if (nodeParamBlock->GetName() == "analogs_number") {
+                    if(!SetAnalogsNumber(i_step, fileParams.GetInt(nodeParamBlock))) return false;
+                } else if (nodeParamBlock->GetName() == "predictor") {
+                    AddPredictor(i_step);
+                    SetPreprocess(i_step, i_ptor, false);
+                    SetPreload(i_step, i_ptor, false);
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "preload") {
+                            SetPreload(i_step, i_ptor, fileParams.GetBool(nodeParam));
+                        } else if (nodeParam->GetName() == "preprocessing") {
+                            SetPreprocess(i_step, i_ptor, true);
+                            int i_dataset = 0;
+                            wxXmlNode *nodePreprocess = nodeParam->GetChildren();
+                            while (nodePreprocess) {
+                                if (nodePreprocess->GetName() == "preprocessing_method") {
+                                    if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodePreprocess))) return false;
+                                } else if (nodePreprocess->GetName() == "preprocessing_data") {
+                                    wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
+                                    while (nodeParamPreprocess) {
+                                        if (nodeParamPreprocess->GetName() == "dataset_id") {
+                                            if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "data_id") {
+                                            if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "level") {
+                                            if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParamPreprocess))) return false;
+                                        } else if (nodeParamPreprocess->GetName() == "time") {
+                                            if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess))) return false;
+                                        } else {
+                                            fileParams.UnknownNode(nodeParamPreprocess);
+                                        }
+                                        nodeParamPreprocess = nodeParamPreprocess->GetNext();
+                                    }
+                                    i_dataset++;
+                                } else {
+                                    fileParams.UnknownNode(nodePreprocess);
+                                }
+                                nodePreprocess = nodePreprocess->GetNext();
+                            }
+                        } else if (nodeParam->GetName() == "dataset_id") {
+                            if(!SetPredictorDatasetId(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "data_id") {
+                            if(!SetPredictorDataId(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "level") {
+                            if(!SetPredictorLevel(i_step, i_ptor, fileParams.GetFloat(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "time") {
+                            if(!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetDouble(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "spatial_window") {
+                            wxXmlNode *nodeWindow = nodeParam->GetChildren();
+                            while (nodeWindow) {
+                                if (nodeWindow->GetName() == "grid_type") {
+                                    if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetString(nodeWindow, "regular"))) return false;
+                                } else if (nodeWindow->GetName() == "x_min") {
+                                    if(!SetPredictorXmin(i_step, i_ptor, fileParams.GetDouble(nodeWindow))) return false;
+                                } else if (nodeWindow->GetName() == "x_points_nb") {
+                                    if(!SetPredictorXptsnb(i_step, i_ptor, fileParams.GetInt(nodeWindow))) return false;
+                                } else if (nodeWindow->GetName() == "x_step") {
+                                    if(!SetPredictorXstep(i_step, i_ptor, fileParams.GetDouble(nodeWindow))) return false;
+                                } else if (nodeWindow->GetName() == "y_min") {
+                                    if(!SetPredictorYmin(i_step, i_ptor, fileParams.GetDouble(nodeWindow))) return false;
+                                } else if (nodeWindow->GetName() == "y_points_nb") {
+                                    if(!SetPredictorYptsnb(i_step, i_ptor, fileParams.GetInt(nodeWindow))) return false;
+                                } else if (nodeWindow->GetName() == "y_step") {
+                                    if(!SetPredictorYstep(i_step, i_ptor, fileParams.GetDouble(nodeWindow))) return false;
+                                } else {
+                                    fileParams.UnknownNode(nodeWindow);
+                                }
+                                nodeWindow = nodeWindow->GetNext();
+                            }
+                        } else if (nodeParam->GetName() == "criteria") {
+                            if(!SetPredictorCriteria(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "weight") {
+                            if(!SetPredictorWeight(i_step, i_ptor, fileParams.GetFloat(nodeParam))) return false;
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                    i_ptor++;
+                } else {
+                    fileParams.UnknownNode(nodeParamBlock);
+                }
+                nodeParamBlock = nodeParamBlock->GetNext();
+            }
+            i_step++;
+
+        // Analog values
+        } else if (nodeProcess->GetName() == "analog_values") {
+            wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+            while (nodeParamBlock) {
+                if (nodeParamBlock->GetName() == "predictand") {
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "station_id") {
+                            if(!SetPredictandStationIds(fileParams.GetStationIds(fileParams.GetString(nodeParam)))) return false;
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                } else {
+                    fileParams.UnknownNode(nodeParamBlock);
+                }
+                nodeParamBlock = nodeParamBlock->GetNext();
+            }
+
+        } else {
+            fileParams.UnknownNode(nodeProcess);
+        }
+
+        nodeProcess = nodeProcess->GetNext();
+    }
+
+    // Set properties
+    SetSpatialWindowProperties();
+    SetPreloadingProperties();
+
+    // Set sizes
+    SetSizes();
+
+    // Check inputs and init parameters
+    if(!InputsOK()) return false;
+
+    // Fixes
+    FixTimeLimits();
+    FixWeights();
+    FixCoordinates();
+
+    asLogMessage(_("Parameters file loaded."));
+
+    return true;
+}
+
+bool asParameters::SetSpatialWindowProperties()
+{
+    for(int i_step=0; i_step<GetStepsNb();i_step++)
+    {
+        for(int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
+        {
+            if (GetPredictorXptsnb(i_step, i_ptor)==0) SetPredictorXptsnb(i_step, i_ptor, 1);
+            if (GetPredictorYptsnb(i_step, i_ptor)==0) SetPredictorYptsnb(i_step, i_ptor, 1);
+
+            double Xshift = fmod(GetPredictorXmin(i_step, i_ptor), GetPredictorXstep(i_step, i_ptor));
+            if (Xshift<0) Xshift += GetPredictorXstep(i_step, i_ptor);
+            if(!SetPredictorXshift(i_step, i_ptor, Xshift)) return false;
+
+            double Yshift = fmod(GetPredictorYmin(i_step, i_ptor), GetPredictorYstep(i_step, i_ptor));
+            if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
+            if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
+
+            if (GetPredictorXptsnb(i_step, i_ptor)==1 || GetPredictorYptsnb(i_step, i_ptor)==1)
+            {
+                SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            }
+        }
+    }
+
+    return true;
+}
+
+bool asParameters::SetPreloadingProperties()
+{
+    for(int i_step=0; i_step<GetStepsNb(); i_step++)
+    {
+        for(int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
+        {
+            // Set maximum extent
+            if (NeedsPreloading(i_step, i_ptor))
+            {
+                if(!SetPreloadXmin(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor))) return false;
+                if(!SetPreloadYmin(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor))) return false;
+                if(!SetPreloadXptsnb(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor))) return false;
+                if(!SetPreloadYptsnb(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor))) return false;
+            }
+
+            // Change predictor properties when preprocessing
+            if (NeedsPreprocessing(i_step, i_ptor))
+            {
+                if(GetPreprocessSize(i_step, i_ptor)==1)
+                {
+                    SetPredictorDatasetId(i_step, i_ptor, GetPreprocessDatasetId(i_step, i_ptor, 0));
+                    SetPredictorDataId(i_step, i_ptor, GetPreprocessDataId(i_step, i_ptor, 0));
+                    SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
+                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
+                }
+                else
+                {
+                    SetPredictorDatasetId(i_step, i_ptor, "mix");
+                    SetPredictorDataId(i_step, i_ptor, "mix");
+                    SetPredictorLevel(i_step, i_ptor, 0);
+                    SetPredictorTimeHours(i_step, i_ptor, 0);
+                }
+            }
+
+            // Set levels and time for preloading
+            if (NeedsPreloading(i_step, i_ptor) && !NeedsPreprocessing(i_step, i_ptor))
+            {
+                if(!SetPreloadLevels(i_step, i_ptor, GetPredictorLevel(i_step, i_ptor))) return false;
+                if(!SetPreloadTimeHours(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor))) return false;
+            }
+            else if (NeedsPreloading(i_step, i_ptor) && NeedsPreprocessing(i_step, i_ptor))
+            {
+                // Check the preprocessing method
+                wxString method = GetPreprocessMethod(i_step, i_ptor);
+                VectorFloat preprocLevels;
+                VectorDouble preprocTimeHours;
+                int preprocSize = GetPreprocessSize(i_step, i_ptor);
+
+                // Different actions depending on the preprocessing method.
+                if (method.IsSameAs("Gradients"))
+                {
+                    if (preprocSize!=1)
+                    {
+                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."), preprocSize));
+                        return false;
+                    }
+                    preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
+                    preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
+                }
+                else if (method.IsSameAs("HumidityFlux"))
+                {
+                    if (preprocSize!=4)
+                    {
+                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."), preprocSize));
+                        return false;
+                    }
+                    preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
+                    preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
+                }
+                else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+                {
+                    if (preprocSize!=2)
+                    {
+                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."), preprocSize));
+                        return false;
+                    }
+                    preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
+                    preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
+                }
+                else if (method.IsSameAs("FormerHumidityIndex"))
+                {
+                    if (preprocSize!=4)
+                    {
+                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."), preprocSize));
+                        return false;
+                    }
+                    preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
+                    preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
+                    preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 1));
+                }
+                else
+                {
+                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+                }
+
+                if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;
+                if(!SetPreloadTimeHours(i_step, i_ptor, preprocTimeHours)) return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool asParameters::InputsOK()
+{
+    // Time properties
+    if(GetArchiveStart()<=0) {
+        asLogError(_("The beginning of the archive period was not provided in the parameters file."));
+        return false;
+    }
+
+    if(GetArchiveEnd()<=0) {
+        asLogError(_("The end of the archive period was not provided in the parameters file."));
+        return false;
+    }
+
+    if(GetTimeArrayTargetTimeStepHours()<=0) {
+        asLogError(_("The time step was not provided in the parameters file."));
+        return false;
+    }
+
+    if(GetTimeArrayAnalogsTimeStepHours()<=0) {
+        asLogError(_("The time step was not provided in the parameters file."));
+        return false;
+    }
+
+    if(GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds")==0
+        || GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds")==0) {
+        if(GetTimeArrayTargetPredictandSerieName().IsEmpty()) {
+            asLogError(_("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
+            return false;
+        }
+        if(GetTimeArrayTargetPredictandMinThreshold()==GetTimeArrayTargetPredictandMaxThreshold()) {
+            asLogError(_("The provided min/max predictand thresholds are equal in the parameters file."));
+            return false;
+        }
+    }
+
+    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0
+        || GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays")==0) {
+        if(GetTimeArrayAnalogsIntervalDays()<=0) {
+            asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
+            return false;
+        }
+        if(GetTimeArrayAnalogsExcludeDays()<=0) {
+            asLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
+            return false;
+        }
+    }
+
+    // Analog dates
+    for(int i=0;i<GetStepsNb();i++)
+    {
+        if(GetAnalogsNumber(i)<=0) {
+            asLogError(wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            return false;
+        }
+
+        for(int j=0;j<GetPredictorsNb(i);j++)
+        {
+            if (NeedsPreprocessing(i,j))
+            {
+                if(GetPreprocessMethod(i, j).IsEmpty()) {
+                    asLogError(wxString::Format(_("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    return false;
+                }
+
+                for(int k=0; k<GetPreprocessSize(i,j); k++)
+                {
+                    if(GetPreprocessDatasetId(i, j, k).IsEmpty()) {
+                        asLogError(wxString::Format(_("The dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                        return false;
+                    }
+                    if(GetPreprocessDataId(i, j, k).IsEmpty()) {
+                        asLogError(wxString::Format(_("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                if(GetPredictorDatasetId(i, j).IsEmpty()) {
+                    asLogError(wxString::Format(_("The dataset (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    return false;
+                }
+                if(GetPredictorDataId(i, j).IsEmpty()) {
+                    asLogError(wxString::Format(_("The data (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    return false;
+                }
+            }
+
+            if(GetPredictorGridType(i, j).IsEmpty()) {
+                asLogError(wxString::Format(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i, j));
+                return false;
+            }
+            if(GetPredictorXptsnb(i, j)==0) {
+                asLogError(wxString::Format(_("The X points nb value (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                return false;
+            }
+            if(GetPredictorYptsnb(i, j)==0) {
+                asLogError(wxString::Format(_("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                return false;
+            }
+            if(GetPredictorCriteria(i, j).IsEmpty()) {
+                asLogError(wxString::Format(_("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 bool asParameters::FixAnalogsNb()
 {
     // Check analogs number coherence
@@ -202,446 +644,6 @@ bool asParameters::FixAnalogsNb()
     }
 
     return true;
-}
-
-VectorInt asParameters::BuildVectorInt(int min, int max, int step)
-{
-    int stepsnb = 1+(max-min)/step;
-    VectorInt vect(stepsnb);
-    for(int i=0; i<stepsnb; i++)
-    {
-        vect[i] = min+i*step;
-    }
-
-    return vect;
-}
-
-VectorInt asParameters::BuildVectorInt(wxString str)
-{
-    VectorInt vect;
-    wxChar separator = ',';
-    while(str.Find(separator)!=wxNOT_FOUND)
-    {
-        wxString strbefore = str.BeforeFirst(separator);
-        str = str.AfterFirst(separator);
-        double val;
-        strbefore.ToDouble(&val);
-        int valint = (int) val;
-        vect.push_back(valint);
-    }
-    if(!str.IsEmpty())
-    {
-        double val;
-        str.ToDouble(&val);
-        int valint = (int) val;
-        vect.push_back(valint);
-    }
-
-    return vect;
-}
-
-VectorFloat asParameters::BuildVectorFloat(float min, float max, float step)
-{
-    int stepsnb = 1+(max-min)/step;
-    VectorFloat vect(stepsnb);
-    for(int i=0; i<stepsnb; i++)
-    {
-        vect[i] = min+(float)i*step;
-    }
-
-    return vect;
-}
-
-VectorFloat asParameters::BuildVectorFloat(wxString str)
-{
-    VectorFloat vect;
-    wxChar separator = ',';
-    while(str.Find(separator)!=wxNOT_FOUND)
-    {
-        wxString strbefore = str.BeforeFirst(separator);
-        str = str.AfterFirst(separator);
-        double val;
-        strbefore.ToDouble(&val);
-        float valfloat = (float) val;
-        vect.push_back(valfloat);
-    }
-    if(!str.IsEmpty())
-    {
-        double val;
-        str.ToDouble(&val);
-        float valfloat = (float) val;
-        vect.push_back(valfloat);
-    }
-
-    return vect;
-}
-
-VectorDouble asParameters::BuildVectorDouble(double min, double max, double step)
-{
-    int stepsnb = 1+(max-min)/step;
-    VectorDouble vect(stepsnb);
-    for(int i=0; i<stepsnb; i++)
-    {
-        vect[i] = min+(double)i*step;
-    }
-
-    return vect;
-}
-
-VectorDouble asParameters::BuildVectorDouble(wxString str)
-{
-    VectorDouble vect;
-    wxChar separator = ',';
-    while(str.Find(separator)!=wxNOT_FOUND)
-    {
-        wxString strbefore = str.BeforeFirst(separator);
-        str = str.AfterFirst(separator);
-        double val;
-        strbefore.ToDouble(&val);
-        vect.push_back(val);
-    }
-    if(!str.IsEmpty())
-    {
-        double val;
-        str.ToDouble(&val);
-        vect.push_back(val);
-    }
-
-    return vect;
-}
-
-VectorString asParameters::BuildVectorString(wxString str)
-{
-    VectorString vect;
-    wxChar separator = ',';
-    while(str.Find(separator)!=wxNOT_FOUND)
-    {
-        wxString strbefore = str.BeforeFirst(separator);
-        str = str.AfterFirst(separator);
-        vect.push_back(strbefore);
-    }
-    if(!str.IsEmpty())
-    {
-        vect.push_back(str);
-    }
-
-    return vect;
-}
-
-bool asParameters::LoadFromFile(const wxString &filePath)
-{
-    if(filePath.IsEmpty())
-    {
-        asLogError(_("The given path to the parameters file is empty."));
-        return false;
-    }
-
-    asFileParametersStandard fileParams(filePath, asFile::ReadOnly);
-    if(!fileParams.Open()) return false;
-    if(!fileParams.GoToRootElement()) return false;
-
-    // Get general parameters
-    if(!fileParams.GoToFirstNodeWithPath("General")) return false;
-    if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
-    if(!fileParams.GoANodeBack()) return false;
-
-    if(!fileParams.CheckDeprecatedChildNode("Period")) return false;
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Archive Period")) return false;
-    wxString archiveStart = fileParams.GetFirstElementAttributeValueText("Start", "value");
-    wxString archiveEnd = fileParams.GetFirstElementAttributeValueText("End", "value");
-    if (!archiveStart.IsEmpty() && !archiveEnd.IsEmpty())
-    {
-        SetArchiveStart(archiveStart);
-        SetArchiveEnd(archiveEnd);
-    }
-    else
-    {
-        if(!SetArchiveYearStart(fileParams.GetFirstElementAttributeValueInt("YearStart", "value"))) return false;
-        if(!SetArchiveYearEnd(fileParams.GetFirstElementAttributeValueInt("YearEnd", "value"))) return false;
-    }
-    if(!fileParams.GoANodeBack()) return false;
-
-    if(fileParams.GoToChildNodeWithAttributeValue("name", "Time Properties", asHIDE_WARNINGS))
-    {
-        if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
-        if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
-        if(!fileParams.GoANodeBack()) return false;
-    }
-    else
-    {
-        if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
-        if(!SetTimeArrayTargetTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
-        if(!fileParams.GoANodeBack()) return false;
-        if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
-        if(!SetTimeArrayAnalogsTimeStepHours(fileParams.GetFirstElementAttributeValueDouble("TimeStepHours", "value"))) return false;
-        if(!fileParams.GoANodeBack()) return false;
-    }
-
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Target")) return false;
-    if(!SetTimeArrayTargetMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"))) return false;
-    if(GetTimeArrayTargetMode().IsSameAs("PredictandThresholds"))
-    {
-        if(!SetTimeArrayTargetPredictandSerieName(fileParams.GetFirstElementAttributeValueText("PredictandSerieName", "value"))) return false;
-        if(!SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFirstElementAttributeValueFloat("PredictandMinThreshold", "value"))) return false;
-        if(!SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFirstElementAttributeValueFloat("PredictandMaxThreshold", "value"))) return false;
-    }
-    if(!fileParams.GoANodeBack()) return false;
-
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time Array Analogs")) return false;
-    if(!SetTimeArrayAnalogsMode(fileParams.GetFirstElementAttributeValueText("TimeArrayMode", "value"))) return false;
-    if(!SetTimeArrayAnalogsExcludeDays(fileParams.GetFirstElementAttributeValueInt("ExcludeDays", "value"))) return false;
-    if(!SetTimeArrayAnalogsIntervalDays(fileParams.GetFirstElementAttributeValueInt("IntervalDays", "value"))) return false;
-    if(!fileParams.GoANodeBack()) return false;
-
-    if(!fileParams.GoANodeBack()) return false;
-
-    // Get Analogs Dates processs
-    int i_step = 0;
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Dates")) return false;
-
-    while(true)
-    {
-        AddStep();
-
-        if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
-        if(!fileParams.GoANodeBack()) return false;
-
-        if(!fileParams.GoToChildNodeWithAttributeValue("name", "Method Name")) return false;
-        if(!SetMethodName(i_step, fileParams.GetFirstElementAttributeValueText("MethodName", "value"))) return false;
-        if(!fileParams.GoANodeBack()) return false;
-
-        if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Number")) return false;
-        if(!SetAnalogsNumber(i_step, fileParams.GetFirstElementAttributeValueInt("AnalogsNumber", "value"))) return false;
-        if(!fileParams.GoANodeBack()) return false;
-
-        // Get first data
-        if(!fileParams.GoToFirstNodeWithPath("Data")) return false;
-        bool dataOver = false;
-        int i_ptor = 0;
-        while(!dataOver)
-        {
-            wxString predictorNature = fileParams.GetThisElementAttributeValueText("name", "value");
-
-            if(predictorNature.IsSameAs("Predictor", false))
-            {
-                if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
-                if(!fileParams.GoANodeBack()) return false;
-
-                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
-                SetPreprocess(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preprocess", "value"));
-                if(NeedsPreprocessing(i_step, i_ptor))
-                {
-                    asLogError(_("Preprocessing option is not coherent."));
-                }
-                if(!fileParams.GoANodeBack()) return false;
-
-                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Data")) return false;
-                if(!SetPredictorDatasetId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DatasetId", "value"))) return false;
-                if(!SetPredictorDataId(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("DataId", "value"))) return false;
-                if(!fileParams.GoANodeBack()) return false;
-
-                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Level")) return false;
-                if(!SetPredictorLevel(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Level", "value"))) return false;
-                if(!fileParams.GoANodeBack()) return false;
-
-                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Time frame")) return false;
-                if(!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("TimeHours", "value"))) return false;
-                if(!fileParams.GoANodeBack()) return false;
-
-            }
-            else if(predictorNature.IsSameAs("Predictor Preprocessed", false))
-            {
-                if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
-                if(!fileParams.GoANodeBack()) return false;
-
-                if(!fileParams.GoToChildNodeWithAttributeValue("name", "Preprocessing")) return false;
-                SetPreprocess(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Preprocess", "value"));
-                if(!SetPreprocessMethod(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("PreprocessMethod", "value"))) return false;
-                if(!NeedsPreprocessing(i_step, i_ptor))
-                {
-                    asLogError(_("Preprocessing option is not coherent."));
-                }
-
-                if(!fileParams.GoToFirstNodeWithPath("SubData")) return false;
-                int i_dataset = 0;
-                bool preprocessDataOver = false;
-                while(!preprocessDataOver)
-                {
-                    if(!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDatasetId", "value"))) return false;
-                    if(!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueText("PreprocessDataId", "value"))) return false;
-                    if(!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueFloat("PreprocessLevel", "value"))) return false;
-                    if(!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetFirstElementAttributeValueDouble("PreprocessTimeHours", "value"))) return false;
-
-                    if(fileParams.GoToNextSameNode())
-                    {
-                        i_dataset++;
-                    }
-                    else
-                    {
-                        preprocessDataOver = true;
-                    }
-                }
-
-                // Set data for predictor
-                if(i_dataset>0)
-                {
-                    SetPredictorDatasetId(i_step, i_ptor, "mix");
-                    SetPredictorDataId(i_step, i_ptor, "mix");
-                    SetPredictorLevel(i_step, i_ptor, -1);
-                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
-                }
-                else
-                {
-                    SetPredictorDatasetId(i_step, i_ptor, GetPreprocessDatasetId(i_step, i_ptor, 0));
-                    SetPredictorDataId(i_step, i_ptor, GetPreprocessDataId(i_step, i_ptor, 0));
-                    SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
-                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
-                }
-                if(!fileParams.GoANodeBack()) return false;
-                if(!fileParams.GoANodeBack()) return false;
-            }
-            else
-            {
-                asThrowException(_("Preprocessing option not correctly defined in the parameters file."));
-            }
-
-            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area")) return false;
-            if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
-            if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
-            if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Uptsnb", "value"))) return false;
-            if (GetPredictorUptsnb(i_step, i_ptor)==0) SetPredictorUptsnb(i_step, i_ptor, 1);
-            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
-            double Ushift = fmod(GetPredictorUmin(i_step, i_ptor), GetPredictorUstep(i_step, i_ptor));
-            if (Ushift<0) Ushift += GetPredictorUstep(i_step, i_ptor);
-            if(!SetPredictorUshift(i_step, i_ptor, Ushift)) return false;
-            if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
-            if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vptsnb", "value"))) return false;
-            if (GetPredictorVptsnb(i_step, i_ptor)==0) SetPredictorVptsnb(i_step, i_ptor, 1);
-            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value", 0))) return false;
-            double Vshift = fmod(GetPredictorVmin(i_step, i_ptor), GetPredictorVstep(i_step, i_ptor));
-            if (Vshift<0) Vshift += GetPredictorVstep(i_step, i_ptor);
-            if(!SetPredictorVshift(i_step, i_ptor, Vshift)) return false;
-            if (GetPredictorUptsnb(i_step, i_ptor)==1 || GetPredictorVptsnb(i_step, i_ptor)==1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if(!fileParams.GoANodeBack()) return false;
-
-            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Criteria")) return false;
-            if(!SetPredictorCriteria(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("Criteria", "value"))) return false;
-            if(!fileParams.GoANodeBack()) return false;
-
-            if(!fileParams.GoToChildNodeWithAttributeValue("name", "Weight")) return false;
-            if(!SetPredictorWeight(i_step, i_ptor, fileParams.GetFirstElementAttributeValueFloat("Weight", "value"))) return false;
-
-            if(!fileParams.GoANodeBack()) return false;
-
-            if(fileParams.GoToNextSameNode())
-            {
-                i_ptor++;
-                AddPredictor(m_Steps[i_step]);
-            }
-            else
-            {
-                dataOver = true;
-            }
-        }
-
-        if(!fileParams.GoANodeBack()) return false;
-
-        // Find the next analogs date block
-        if (!fileParams.GoToNextSameNodeWithAttributeValue("name", "Analogs Dates", asHIDE_WARNINGS)) break;
-
-        i_step++;
-    }
-    if(!fileParams.GoANodeBack()) return false;
-
-    // Get first Analogs Dates process
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Analogs Values")) return false;
-    if(!fileParams.GoToFirstNodeWithPath("Options")) return false;
-    if(!fileParams.GoANodeBack()) return false;
-
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Predictand")) return false;
-    if(!fileParams.GoToChildNodeWithAttributeValue("name", "Database")) return false;
-    if(!SetPredictandStationIds(GetFileStationIds(fileParams.GetFirstElementAttributeValueText("PredictandStationId", "value")))) return false;
-    if(!SetPredictandTimeHours(fileParams.GetFirstElementAttributeValueDouble("PredictandTimeHours", "value", 0.0))) return false;
-    if(!fileParams.GoANodeBack()) return false;
-    if(!fileParams.GoANodeBack()) return false;
-
-    if(!fileParams.GoANodeBack()) return false;
-
-    // Set sizes
-    SetSizes();
-
-    // Fixes
-    FixTimeLimits();
-    FixWeights();
-    FixCoordinates();
-
-    // Check
-    if (!IsOk()) return false;
-
-    return true;
-}
-
-VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
-{
-    // Trim
-    stationIdsString.Trim(true);
-    stationIdsString.Trim(false);
-
-    VectorInt ids;
-
-    if (stationIdsString.IsEmpty())
-    {
-        asLogError(_("The station ID was not provided."));
-        return ids;
-    }
-
-    // Multivariate
-    if (stationIdsString.SubString(0, 0).IsSameAs("("))
-    {
-        wxString subStr = stationIdsString.SubString(1, stationIdsString.Len()-1);
-
-        // Check that it contains only 1 opening bracket
-        if (subStr.Find("(") != wxNOT_FOUND)
-        {
-            asLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
-            return ids;
-        }
-
-        // Check that it contains 1 closing bracket at the end
-        if (subStr.Find(")") != subStr.size()-1)
-        {
-            asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
-            return ids;
-        }
-
-        // Extract content
-        wxChar separator = ',';
-        while(subStr.Find(separator)!=wxNOT_FOUND)
-        {
-            wxString strBefore = subStr.BeforeFirst(separator);
-            subStr = subStr.AfterFirst(separator);
-            int id = wxAtoi(strBefore);
-            ids.push_back(id);
-        }
-        if(!subStr.IsEmpty())
-        {
-            int id = wxAtoi(subStr);
-            ids.push_back(id);
-        }
-    }
-    else
-    {
-        // Check for single value
-        if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND || stationIdsString.Find(",") != wxNOT_FOUND)
-        {
-            asLogError(_("The format of the station ID is not correct (should be only digits)."));
-            return ids;
-        }
-        int id = wxAtoi(stationIdsString);
-        ids.push_back(id);
-    }
-
-    return ids;
 }
 
 wxString asParameters::GetPredictandStationIdsString()
@@ -735,49 +737,49 @@ bool asParameters::FixCoordinates()
     {
         for(int j=0;j<m_PredictorsNb[i];j++)
         {
-            if (m_Steps[i].Predictors[j].GridType.IsSameAs("Regular", false))
+            if (m_Steps[i].Predictors[j].GridType.IsSameAs("regular", false))
             {
 
                 // Check that the coordinates are a multiple of the steps
-                if(abs(fmod(m_Steps[i].Predictors[j].Umin-m_Steps[i].Predictors[j].Ushift, m_Steps[i].Predictors[j].Ustep))>0)
+                if(abs(fmod(m_Steps[i].Predictors[j].Xmin-m_Steps[i].Predictors[j].Xshift, m_Steps[i].Predictors[j].Xstep))>0)
                 {
-                    double factor = (m_Steps[i].Predictors[j].Umin-m_Steps[i].Predictors[j].Ushift)/m_Steps[i].Predictors[j].Ustep;
+                    double factor = (m_Steps[i].Predictors[j].Xmin-m_Steps[i].Predictors[j].Xshift)/m_Steps[i].Predictors[j].Xstep;
                     factor = asTools::Round(factor);
-                    m_Steps[i].Predictors[j].Umin = factor*m_Steps[i].Predictors[j].Ustep+m_Steps[i].Predictors[j].Ushift;
+                    m_Steps[i].Predictors[j].Xmin = factor*m_Steps[i].Predictors[j].Xstep+m_Steps[i].Predictors[j].Xshift;
                 }
 
-                if(abs(fmod(m_Steps[i].Predictors[j].Vmin-m_Steps[i].Predictors[j].Vshift, m_Steps[i].Predictors[j].Vstep))>0)
+                if(abs(fmod(m_Steps[i].Predictors[j].Ymin-m_Steps[i].Predictors[j].Yshift, m_Steps[i].Predictors[j].Ystep))>0)
                 {
-                    double factor = (m_Steps[i].Predictors[j].Vmin-m_Steps[i].Predictors[j].Vshift)/m_Steps[i].Predictors[j].Vstep;
+                    double factor = (m_Steps[i].Predictors[j].Ymin-m_Steps[i].Predictors[j].Yshift)/m_Steps[i].Predictors[j].Ystep;
                     factor = asTools::Round(factor);
-                    m_Steps[i].Predictors[j].Vmin = factor*m_Steps[i].Predictors[j].Vstep+m_Steps[i].Predictors[j].Vshift;
+                    m_Steps[i].Predictors[j].Ymin = factor*m_Steps[i].Predictors[j].Ystep+m_Steps[i].Predictors[j].Yshift;
                 }
             }
 
             if (m_Steps[i].Predictors[j].FlatAllowed==asFLAT_FORBIDDEN)
             {
                 // Check that the size is larger than 1 point
-                if(m_Steps[i].Predictors[j].Uptsnb<2)
+                if(m_Steps[i].Predictors[j].Xptsnb<2)
                 {
-                    m_Steps[i].Predictors[j].Uptsnb = 2;
+                    m_Steps[i].Predictors[j].Xptsnb = 2;
                 }
 
-                if(m_Steps[i].Predictors[j].Vptsnb<2)
+                if(m_Steps[i].Predictors[j].Yptsnb<2)
                 {
-                    m_Steps[i].Predictors[j].Vptsnb = 2;
+                    m_Steps[i].Predictors[j].Yptsnb = 2;
                 }
             }
             else
             {
                 // Check that the size is larger than 0
-                if(m_Steps[i].Predictors[j].Uptsnb<1)
+                if(m_Steps[i].Predictors[j].Xptsnb<1)
                 {
-                    m_Steps[i].Predictors[j].Uptsnb = 1;
+                    m_Steps[i].Predictors[j].Xptsnb = 1;
                 }
 
-                if(m_Steps[i].Predictors[j].Vptsnb<1)
+                if(m_Steps[i].Predictors[j].Yptsnb<1)
                 {
-                    m_Steps[i].Predictors[j].Vptsnb = 1;
+                    m_Steps[i].Predictors[j].Yptsnb = 1;
                 }
             }
         }
@@ -822,12 +824,12 @@ wxString asParameters::Print()
             }
 
             content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(i_step, i_ptor).c_str()));
-            content.Append(wxString::Format("Umin\t%g\t", GetPredictorUmin(i_step, i_ptor)));
-            content.Append(wxString::Format("Uptsnb\t%d\t", GetPredictorUptsnb(i_step, i_ptor)));
-            content.Append(wxString::Format("Ustep\t%g\t", GetPredictorUstep(i_step, i_ptor)));
-            content.Append(wxString::Format("Vmin\t%g\t", GetPredictorVmin(i_step, i_ptor)));
-            content.Append(wxString::Format("Vptsnb\t%d\t", GetPredictorVptsnb(i_step, i_ptor)));
-            content.Append(wxString::Format("Vstep\t%g\t", GetPredictorVstep(i_step, i_ptor)));
+            content.Append(wxString::Format("Xmin\t%g\t", GetPredictorXmin(i_step, i_ptor)));
+            content.Append(wxString::Format("Xptsnb\t%d\t", GetPredictorXptsnb(i_step, i_ptor)));
+            content.Append(wxString::Format("Xstep\t%g\t", GetPredictorXstep(i_step, i_ptor)));
+            content.Append(wxString::Format("Ymin\t%g\t", GetPredictorYmin(i_step, i_ptor)));
+            content.Append(wxString::Format("Yptsnb\t%d\t", GetPredictorYptsnb(i_step, i_ptor)));
+            content.Append(wxString::Format("Ystep\t%g\t", GetPredictorYstep(i_step, i_ptor)));
             content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(i_step, i_ptor)));
             content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(i_step, i_ptor).c_str()));
         }
@@ -897,7 +899,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     strVal.ToDouble(&dVal);
                     SetPreprocessLevel(i_step, i_ptor, i_dataset, float(dVal));
                     stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                     iLeft = 0;
                     iRight = stringVals.Find("\t");
                     strVal = stringVals.SubString(iLeft, iRight-1);
@@ -914,7 +916,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 strVal.ToDouble(&dVal);
                 SetPredictorLevel(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight+5, stringVals.Length());
-                    
+
                 iLeft = 0;
                 iRight = stringVals.Find("\t");
                 strVal = stringVals.SubString(iLeft, iRight-1);
@@ -922,49 +924,49 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 SetPredictorTimeHours(i_step, i_ptor, float(dVal));
                 stringVals = stringVals.SubString(iRight, stringVals.Length());
             }
-            
-            iLeft = stringVals.Find("Umin");
-            iRight = stringVals.Find("Uptsnb");
+
+            iLeft = stringVals.Find("Xmin");
+            iRight = stringVals.Find("Xptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorUmin(i_step, i_ptor, dVal);
+            SetPredictorXmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
-            iLeft = stringVals.Find("Uptsnb");
-            iRight = stringVals.Find("Ustep");
+
+            iLeft = stringVals.Find("Xptsnb");
+            iRight = stringVals.Find("Xstep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
-            SetPredictorUptsnb(i_step, i_ptor, int(lVal));
+            SetPredictorXptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
-            iLeft = stringVals.Find("Ustep");
-            iRight = stringVals.Find("Vmin");
+
+            iLeft = stringVals.Find("Xstep");
+            iRight = stringVals.Find("Ymin");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorUstep(i_step, i_ptor, dVal);
+            SetPredictorXstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
-            iLeft = stringVals.Find("Vmin");
-            iRight = stringVals.Find("Vptsnb");
+
+            iLeft = stringVals.Find("Ymin");
+            iRight = stringVals.Find("Yptsnb");
             strVal = stringVals.SubString(iLeft+5, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorVmin(i_step, i_ptor, dVal);
+            SetPredictorYmin(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
-            iLeft = stringVals.Find("Vptsnb");
-            iRight = stringVals.Find("Vstep");
+
+            iLeft = stringVals.Find("Yptsnb");
+            iRight = stringVals.Find("Ystep");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
             strVal.ToLong(&lVal);
-            SetPredictorVptsnb(i_step, i_ptor, int(lVal));
+            SetPredictorYptsnb(i_step, i_ptor, int(lVal));
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
-            iLeft = stringVals.Find("Vstep");
+
+            iLeft = stringVals.Find("Ystep");
             iRight = stringVals.Find("Weight");
             strVal = stringVals.SubString(iLeft+6, iRight-2);
             strVal.ToDouble(&dVal);
-            SetPredictorVstep(i_step, i_ptor, dVal);
+            SetPredictorYstep(i_step, i_ptor, dVal);
             stringVals = stringVals.SubString(iRight, stringVals.Length());
-            
+
             iLeft = stringVals.Find("Weight");
             iRight = stringVals.Find("Criteria");
             strVal = stringVals.SubString(iLeft+7, iRight-2);
@@ -974,5 +976,603 @@ bool asParameters::GetValuesFromString(wxString stringVals)
         }
     }
 
+    return true;
+}
+
+bool asParameters::SetTimeArrayTargetTimeStepHours(double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the target time step is null"));
+        return false;
+    }
+    m_TimeArrayTargetTimeStepHours = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayAnalogsTimeStepHours(double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the analogs time step is null"));
+        return false;
+    }
+    m_TimeArrayAnalogsTimeStepHours = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayTargetMode(const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the target time array mode is null"));
+        return false;
+    }
+    m_TimeArrayTargetMode = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayTargetPredictandSerieName(const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the predictand serie name is null"));
+        return false;
+    }
+    m_TimeArrayTargetPredictandSerieName = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayTargetPredictandMinThreshold(float val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictand min threshold is null"));
+        return false;
+    }
+    m_TimeArrayTargetPredictandMinThreshold = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayTargetPredictandMaxThreshold(float val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictand max threshold is null"));
+        return false;
+    }
+    m_TimeArrayTargetPredictandMaxThreshold = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayAnalogsMode(const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the analogy time array mode is null"));
+        return false;
+    }
+    m_TimeArrayAnalogsMode = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayAnalogsExcludeDays(int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the 'exclude days' is null"));
+        return false;
+    }
+    m_TimeArrayAnalogsExcludeDays = val;
+    return true;
+}
+
+bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the analogs interval days is null"));
+        return false;
+    }
+    m_TimeArrayAnalogsIntervalDays = val;
+    return true;
+}
+
+bool asParameters::SetPredictandStationIds(VectorInt val)
+{
+    for (int i=0; i<val.size(); i++)
+    {
+        if (asTools::IsNaN(val[i]))
+        {
+            asLogError(_("The provided value for the predictand ID is null"));
+            return false;
+        }
+    }
+    m_PredictandStationIds = val;
+    return true;
+}
+
+bool asParameters::SetPredictandStationIds(wxString val)
+{
+    wxStringTokenizer tokenizer(val, ":,; ");
+    while ( tokenizer.HasMoreTokens() )
+    {
+        wxString token = tokenizer.GetNextToken();
+        long stationId;
+        token.ToLong(&stationId);
+        m_PredictandStationIds.push_back(stationId);
+    }
+    return true;
+}
+
+bool asParameters::SetPredictandDatasetId(const wxString &val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the predictand dataset ID is null"));
+        return false;
+    }
+    m_PredictandDatasetId = val;
+    return true;
+}
+
+bool asParameters::SetPredictandTimeHours(double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictand time (hours) is null"));
+        return false;
+    }
+    m_PredictandTimeHours = val;
+    return true;
+}
+
+bool asParameters::SetAnalogsNumber(int i_step, int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the analogs number is null"));
+        return false;
+    }
+    m_Steps[i_step].AnalogsNumber = val;
+    return true;
+}
+
+bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val)
+{
+    if (val.size()<1)
+    {
+        asLogError(_("The provided preload time (hours) vector is empty."));
+        return false;
+    }
+    else
+    {
+        for (int i=0; i<val.size(); i++)
+        {
+            if (asTools::IsNaN(val[i]))
+            {
+                asLogError(_("There are NaN values in the provided preload time (hours) vector."));
+                return false;
+            }
+        }
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours = val;
+    return true;
+}
+
+bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided preload time parameter is a NaN."));
+        return false;
+    }
+
+    m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours.clear();
+    m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours.push_back(val);
+    return true;
+}
+
+bool asParameters::SetPreloadLevels(int i_step, int i_predictor, VectorFloat val)
+{
+    if (val.size()<1)
+    {
+        asLogError(_("The provided 'preload levels' vector is empty."));
+        return false;
+    }
+    else
+    {
+        for (int i=0; i<val.size(); i++)
+        {
+            if (asTools::IsNaN(val[i]))
+            {
+                asLogError(_("There are NaN values in the provided 'preload levels' vector."));
+                return false;
+            }
+        }
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreloadLevels = val;
+    return true;
+}
+
+bool asParameters::SetPreloadLevels(int i_step, int i_predictor, float val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided preload level parameter is a NaN."));
+        return false;
+    }
+
+    m_Steps[i_step].Predictors[i_predictor].PreloadLevels.clear();
+    m_Steps[i_step].Predictors[i_predictor].PreloadLevels.push_back(val);
+    return true;
+}
+
+bool asParameters::SetPreloadXmin(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the preload Xmin is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreloadXmin = val;
+    return true;
+}
+
+bool asParameters::SetPreloadXptsnb(int i_step, int i_predictor, int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the preload points number on X is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreloadXptsnb = val;
+    return true;
+}
+
+bool asParameters::SetPreloadYmin(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the preload Ymin is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreloadYmin = val;
+    return true;
+}
+
+bool asParameters::SetPreloadYptsnb(int i_step, int i_predictor, int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the preload points number on Y is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreloadYptsnb = val;
+    return true;
+}
+
+bool asParameters::SetPreprocessMethod(int i_step, int i_predictor, const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the preprocess method is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].PreprocessMethod = val;
+    return true;
+}
+
+wxString asParameters::GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset)
+{
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()>=(unsigned)(i_dataset+1))
+    {
+        return m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds[i_dataset];
+    }
+    else
+    {
+        asLogError(_("Trying to access to an element outside of PreprocessDatasetIds in the parameters object."));
+        return wxEmptyString;
+    }
+}
+
+bool asParameters::SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the preprocess dataset ID is null"));
+        return false;
+    }
+
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()>=(unsigned)(i_dataset+1))
+    {
+        m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds[i_dataset] = val;
+    }
+    else
+    {
+        wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()==i_dataset);
+        m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.push_back(val);
+    }
+
+    return true;
+}
+
+wxString asParameters::GetPreprocessDataId(int i_step, int i_predictor, int i_dataset)
+{
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()>=(unsigned)(i_dataset+1))
+    {
+        return m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds[i_dataset];
+    }
+    else
+    {
+        asLogError(_("Trying to access to an element outside of PreprocessDataIds in the parameters object."));
+        return wxEmptyString;
+    }
+}
+
+bool asParameters::SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the preprocess data ID is null"));
+        return false;
+    }
+
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()>=(unsigned)(i_dataset+1))
+    {
+        m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds[i_dataset] = val;
+    }
+    else
+    {
+        wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()==i_dataset);
+        m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.push_back(val);
+    }
+
+    return true;
+}
+
+float asParameters::GetPreprocessLevel(int i_step, int i_predictor, int i_dataset)
+{
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
+    {
+        return m_Steps[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
+    }
+    else
+    {
+        asLogError(_("Trying to access to an element outside of PreprocessLevels in the parameters object."));
+        return NaNFloat;
+    }
+}
+
+bool asParameters::SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the preprocess level is null"));
+        return false;
+    }
+
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
+    {
+        m_Steps[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset] = val;
+    }
+    else
+    {
+        wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()==i_dataset);
+        m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
+    }
+
+    return true;
+}
+
+double asParameters::GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset)
+{
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    {
+        return m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
+    }
+    else
+    {
+        asLogError(_("Trying to access to an element outside of PreprocessTimeHours (std) in the parameters object."));
+        return NaNDouble;
+    }
+}
+
+bool asParameters::SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the preprocess time (hours) is null"));
+        return false;
+    }
+
+    if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    {
+        m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
+    }
+    else
+    {
+        wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()==i_dataset);
+        m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+    }
+
+    return true;
+}
+
+bool asParameters::SetPredictorDatasetId(int i_step, int i_predictor, const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the predictor dataset is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].DatasetId = val;
+    return true;
+}
+
+bool asParameters::SetPredictorDataId(int i_step, int i_predictor, wxString val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the predictor data is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].DataId = val;
+    return true;
+}
+
+bool asParameters::SetPredictorLevel(int i_step, int i_predictor, float val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor level is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Level = val;
+    return true;
+}
+
+bool asParameters::SetPredictorGridType(int i_step, int i_predictor, wxString val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the predictor grid type is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].GridType = val;
+    return true;
+}
+
+bool asParameters::SetPredictorXmin(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor Xmin is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Xmin = val;
+    return true;
+}
+
+bool asParameters::SetPredictorXptsnb(int i_step, int i_predictor, int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor points number on X is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Xptsnb = val;
+    return true;
+}
+
+bool asParameters::SetPredictorXstep(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor X step is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Xstep = val;
+    return true;
+}
+
+bool asParameters::SetPredictorXshift(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor X shift is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Xshift = val;
+    return true;
+}
+
+bool asParameters::SetPredictorYmin(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor Ymin is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Ymin = val;
+    return true;
+}
+
+bool asParameters::SetPredictorYptsnb(int i_step, int i_predictor, int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor points number on Y is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Yptsnb = val;
+    return true;
+}
+
+bool asParameters::SetPredictorYstep(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor Y step is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Ystep = val;
+    return true;
+}
+
+bool asParameters::SetPredictorYshift(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor Y shift is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Yshift = val;
+    return true;
+}
+
+bool asParameters::SetPredictorFlatAllowed(int i_step, int i_predictor, int val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the 'flat allowed' property is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].FlatAllowed = val;
+    return true;
+}
+
+bool asParameters::SetPredictorTimeHours(int i_step, int i_predictor, double val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor time (hours) is null"));
+        return false;
+    }
+
+    m_Steps[i_step].Predictors[i_predictor].TimeHours = val;
+
+    return true;
+}
+
+bool asParameters::SetPredictorCriteria(int i_step, int i_predictor, const wxString& val)
+{
+    if (val.IsEmpty())
+    {
+        asLogError(_("The provided value for the predictor criteria is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Criteria = val;
+    return true;
+}
+
+bool asParameters::SetPredictorWeight(int i_step, int i_predictor, float val)
+{
+    if (asTools::IsNaN(val))
+    {
+        asLogError(_("The provided value for the predictor weight is null"));
+        return false;
+    }
+    m_Steps[i_step].Predictors[i_predictor].Weight = val;
     return true;
 }

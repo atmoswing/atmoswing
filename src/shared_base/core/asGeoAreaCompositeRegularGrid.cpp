@@ -27,26 +27,26 @@
  
 #include "asGeoAreaCompositeRegularGrid.h"
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Ustep, double Vstep, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height, int flatAllowed)
 :
 asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     m_GridType = Regular;
-    m_Ustep = Ustep;
-    m_Vstep = Vstep;
+    m_Xstep = Xstep;
+    m_Ystep = Ystep;
 
-    if(!IsOnGrid(Ustep, Vstep)) asThrowException(_("The given area does not match a grid."));
+    if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(CoordSys coosys, double Umin, double Uwidth, double Ustep, double Vmin, double Vwidth, double Vstep, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(CoordSys coosys, double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
 :
-asGeoAreaCompositeGrid(coosys, Umin, Uwidth, Vmin, Vwidth, Level, Height, flatAllowed)
+asGeoAreaCompositeGrid(coosys, Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
     m_GridType = Regular;
-    m_Ustep = Ustep;
-    m_Vstep = Vstep;
+    m_Xstep = Xstep;
+    m_Ystep = Ystep;
 
-    if(!IsOnGrid(Ustep, Vstep)) asThrowException(_("The given area does not match a grid."));
+    if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 }
 
 asGeoAreaCompositeRegularGrid::~asGeoAreaCompositeRegularGrid()
@@ -58,63 +58,63 @@ bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherar
 {
     if (otherarea->GetGridType()!=Regular) return false;
     asGeoAreaCompositeRegularGrid* otherareaRegular(dynamic_cast<asGeoAreaCompositeRegularGrid*>(otherarea));
-    if (GetUstep()!=otherareaRegular->GetUstep()) return false;
-    if (GetVstep()!=otherareaRegular->GetVstep()) return false;
+    if (GetXstep()!=otherareaRegular->GetXstep()) return false;
+    if (GetYstep()!=otherareaRegular->GetYstep()) return false;
     return true;
 }
 
-Array1DDouble asGeoAreaCompositeRegularGrid::GetUaxisComposite(int compositeNb)
+Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
 {
     // Get axis size
-    int size = GetUaxisCompositePtsnb(compositeNb);
-    Array1DDouble Uaxis = Array1DDouble(size);
+    int size = GetXaxisCompositePtsnb(compositeNb);
+    Array1DDouble Xaxis = Array1DDouble(size);
 
     // Build array
-    double umin = GetComposite(compositeNb).GetUmin();
+    double Xmin = GetComposite(compositeNb).GetXmin();
     if (compositeNb==0) // Left border
     {
-        double umax = GetComposite(compositeNb).GetUmax();
-        double restovers = umax-umin-m_Ustep*(size-1);
-        umin += restovers;
+        double Xmax = GetComposite(compositeNb).GetXmax();
+        double restovers = Xmax-Xmin-m_Xstep*(size-1);
+        Xmin += restovers;
     }
 
     for (int i=0; i<size; i++)
     {
-        Uaxis(i) = umin+(double)i*m_Ustep;
+        Xaxis(i) = Xmin+(double)i*m_Xstep;
     }
-    //wxASSERT_MSG(Uaxis(size-1)==GetComposite(compositeNb).GetUmax(), wxString::Format("Uaxis(size-1)=%f, GetComposite(%d).GetUmax()=%f", Uaxis(size-1), compositeNb, GetComposite(compositeNb).GetUmax()));  // Not always true
+    //wxASSERT_MSG(Xaxis(size-1)==GetComposite(compositeNb).GetXmax(), wxString::Format("Xaxis(size-1)=%f, GetComposite(%d).GetXmax()=%f", Xaxis(size-1), compositeNb, GetComposite(compositeNb).GetXmax()));  // Not always true
 
-    return Uaxis;
+    return Xaxis;
 }
 
-Array1DDouble asGeoAreaCompositeRegularGrid::GetVaxisComposite(int compositeNb)
+Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
 {
     // Get axis size
-    int size = GetVaxisCompositePtsnb(compositeNb);
-    Array1DDouble Vaxis = Array1DDouble(size);
+    int size = GetYaxisCompositePtsnb(compositeNb);
+    Array1DDouble Yaxis = Array1DDouble(size);
 
     // Build array
-    double vmin = GetComposite(compositeNb).GetVmin();
+    double Ymin = GetComposite(compositeNb).GetYmin();
 // FIXME (Pascal#3#): Check the compositeNb==0 in this case
     if (compositeNb==0) // Not sure...
     {
-        double vmax = GetComposite(compositeNb).GetVmax();
-        double restovers = vmax-vmin-m_Vstep*(size-1);
-        vmin += restovers;
+        double Ymax = GetComposite(compositeNb).GetYmax();
+        double restovers = Ymax-Ymin-m_Ystep*(size-1);
+        Ymin += restovers;
     }
 
     for (int i=0; i<size; i++)
     {
-        Vaxis(i) = vmin+i*m_Vstep;
+        Yaxis(i) = Ymin+i*m_Ystep;
     }
-    //wxASSERT(Vaxis(size-1)==GetComposite(compositeNb).GetVmax()); // Not always true
+    //wxASSERT(Yaxis(size-1)==GetComposite(compositeNb).GetYmax()); // Not always true
 
-    return Vaxis;
+    return Yaxis;
 }
 
-int asGeoAreaCompositeRegularGrid::GetUaxisCompositePtsnb(int compositeNb)
+int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
-    double diff = abs((GetComposite(compositeNb).GetUmax()-GetComposite(compositeNb).GetUmin()))/m_Ustep;
+    double diff = abs((GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin()))/m_Xstep;
     double size;
     double rest = modf (diff , &size);
 
@@ -141,9 +141,9 @@ int asGeoAreaCompositeRegularGrid::GetUaxisCompositePtsnb(int compositeNb)
     }
 }
 
-int asGeoAreaCompositeRegularGrid::GetVaxisCompositePtsnb(int compositeNb)
+int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
-    double diff = abs((GetComposite(compositeNb).GetVmax()-GetComposite(compositeNb).GetVmin()))/m_Vstep;
+    double diff = abs((GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin()))/m_Ystep;
     double size;
     double rest = modf (diff , &size);
     size += 1;
@@ -158,43 +158,43 @@ int asGeoAreaCompositeRegularGrid::GetVaxisCompositePtsnb(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetUaxisCompositeWidth(int compositeNb)
+double asGeoAreaCompositeRegularGrid::GetXaxisCompositeWidth(int compositeNb)
 {
-    return abs(GetComposite(compositeNb).GetUmax()-GetComposite(compositeNb).GetUmin());
+    return abs(GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin());
 }
 
-double asGeoAreaCompositeRegularGrid::GetVaxisCompositeWidth(int compositeNb)
+double asGeoAreaCompositeRegularGrid::GetYaxisCompositeWidth(int compositeNb)
 {
-    return abs(GetComposite(compositeNb).GetVmax()-GetComposite(compositeNb).GetVmin());
+    return abs(GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin());
 }
 
-double asGeoAreaCompositeRegularGrid::GetUaxisCompositeStart(int compositeNb)
+double asGeoAreaCompositeRegularGrid::GetXaxisCompositeStart(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetUmin();
+        return GetComposite(compositeNb).GetXmin();
     }
 
     // If multiple composites
     if(compositeNb==0) // from 0
     {
         // Composites are not forced on the grid. So we may need to adjust the split of the longitudes axis.
-        double dU = abs(GetComposite(1).GetUmax()-GetComposite(1).GetUmin());
+        double dX = abs(GetComposite(1).GetXmax()-GetComposite(1).GetXmin());
 
-        if(fmod(dU, m_Ustep)<0.000001)
+        if(fmod(dX, m_Xstep)<0.000001)
         {
-            return GetComposite(compositeNb).GetUmin();
+            return GetComposite(compositeNb).GetXmin();
         }
         else
         {
-            double rest = fmod(dU, m_Ustep);
-            return m_Ustep-rest;
+            double rest = fmod(dX, m_Xstep);
+            return m_Xstep-rest;
         }
     }
     else if (compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetUmin();
+        return GetComposite(compositeNb).GetXmin();
     }
     else
     {
@@ -202,22 +202,22 @@ double asGeoAreaCompositeRegularGrid::GetUaxisCompositeStart(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetVaxisCompositeStart(int compositeNb)
+double asGeoAreaCompositeRegularGrid::GetYaxisCompositeStart(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetVmin();
+        return GetComposite(compositeNb).GetYmin();
     }
 
     // If multiple composites
     if(compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetVmin();
+        return GetComposite(compositeNb).GetYmin();
     }
     else if (compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetVmin();
+        return GetComposite(compositeNb).GetYmin();
     }
     else
     {
@@ -225,32 +225,32 @@ double asGeoAreaCompositeRegularGrid::GetVaxisCompositeStart(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetUaxisCompositeEnd(int compositeNb)
+double asGeoAreaCompositeRegularGrid::GetXaxisCompositeEnd(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetUmax();
+        return GetComposite(compositeNb).GetXmax();
     }
 
     // If multiple composites
     if(compositeNb==1) // to 360
     {
         // Composites are not forced on the grid. So we may need to adjust the split of the longitudes axis.
-        double dU = abs(GetComposite(1).GetUmax()-GetComposite(1).GetUmin());
-        double rest = fmod(dU, m_Ustep);
+        double dX = abs(GetComposite(1).GetXmax()-GetComposite(1).GetXmin());
+        double rest = fmod(dX, m_Xstep);
         if(rest<0.000001)
         {
-            return GetComposite(compositeNb).GetUmax();
+            return GetComposite(compositeNb).GetXmax();
         }
         else
         {
-            return GetComposite(compositeNb).GetUmax()-rest;
+            return GetComposite(compositeNb).GetXmax()-rest;
         }
     }
     else if (compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetUmax();
+        return GetComposite(compositeNb).GetXmax();
     }
     else
     {
@@ -258,22 +258,22 @@ double asGeoAreaCompositeRegularGrid::GetUaxisCompositeEnd(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetVaxisCompositeEnd(int compositeNb)
+double asGeoAreaCompositeRegularGrid::GetYaxisCompositeEnd(int compositeNb)
 {
     // If only one composite
     if(GetNbComposites()==1)
     {
-        return GetComposite(compositeNb).GetVmax();
+        return GetComposite(compositeNb).GetYmax();
     }
 
     // If multiple composites
     if(compositeNb==1) // to 360
     {
-        return GetComposite(compositeNb).GetVmax();
+        return GetComposite(compositeNb).GetYmax();
     }
     else if (compositeNb==0) // from 0
     {
-        return GetComposite(compositeNb).GetVmax();
+        return GetComposite(compositeNb).GetYmax();
     }
     else
     {
@@ -285,18 +285,18 @@ bool asGeoAreaCompositeRegularGrid::IsOnGrid(double step)
 {
     if (!IsRectangle()) return false;
 
-    if (abs(fmod(GetUaxisWidth(),step))>0.0000001) return false;
-    if (abs(fmod(GetVaxisWidth(),step))>0.0000001) return false;
+    if (abs(fmod(GetXaxisWidth(),step))>0.0000001) return false;
+    if (abs(fmod(GetYaxisWidth(),step))>0.0000001) return false;
 
     return true;
 }
 
-bool asGeoAreaCompositeRegularGrid::IsOnGrid(double stepU, double stepV)
+bool asGeoAreaCompositeRegularGrid::IsOnGrid(double stepX, double stepY)
 {
     if (!IsRectangle()) return false;
 
-    if (abs(fmod(GetUaxisWidth(),stepU))>0.0000001) return false;
-    if (abs(fmod(GetVaxisWidth(),stepV))>0.0000001) return false;
+    if (abs(fmod(GetXaxisWidth(),stepX))>0.0000001) return false;
+    if (abs(fmod(GetYaxisWidth(),stepY))>0.0000001) return false;
 
     return true;
 }

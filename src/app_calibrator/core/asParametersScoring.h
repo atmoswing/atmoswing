@@ -59,10 +59,10 @@ public:
         VVectorDouble PreprocessTimeHours;
         VectorString DataId;
         VectorFloat Level;
-        VectorDouble Umin;
-        VectorInt Uptsnb;
-        VectorDouble Vmin;
-        VectorInt Vptsnb;
+        VectorDouble Xmin;
+        VectorInt Xptsnb;
+        VectorDouble Ymin;
+        VectorInt Yptsnb;
         VectorDouble TimeHours;
         VectorString Criteria;
         VectorFloat Weight;
@@ -95,10 +95,10 @@ public:
         VectorBool PreprocessTimeHours;
         bool DataId;
         bool Level;
-        bool Umin;
-        bool Uptsnb;
-        bool Vmin;
-        bool Vptsnb;
+        bool Xmin;
+        bool Xptsnb;
+        bool Ymin;
+        bool Yptsnb;
         bool TimeHours;
         bool Weight;
         bool Criteria;
@@ -126,16 +126,6 @@ public:
     bool GenerateSimpleParametersFile(const wxString &filePath);
 
     wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect);
-
-    VectorInt GetFileParamIntVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorFloat GetFileParamFloatVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorDouble GetFileParamDoubleVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorString GetFileParamStringVector(asFileParameters &fileParams, const wxString &tag);
-
-    VVectorInt GetFileStationIdsVector(asFileParameters &fileParams);
     
     wxString Print();
 

@@ -46,7 +46,6 @@ asMethodStandard()
 {
     m_BatchForecasts = batchForecasts;
     m_ForecastDate = NaNDouble;
-    m_ModelName = wxEmptyString;
     m_ParamsFilePath = wxEmptyString;
     m_PredictandDBFilePath = wxEmptyString;
     m_Parent = parent;
@@ -101,15 +100,13 @@ bool asMethodForecasting::Manager()
                 if (g_Responsive) wxGetApp().Yield();
             #endif
 
-            // Set the content to data members
-            m_ModelName = m_BatchForecasts->GetModelName(i);
-            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
-            m_PredictandDBFilePath = predictandDBDir + DS + m_BatchForecasts->GetModelPredictandDB(i);
-
             // Load parameters
+            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
             asParametersForecast params;
             if(!params.LoadFromFile(m_ParamsFilePath)) return false;
             params.InitValues();
+
+            m_PredictandDBFilePath = predictandDBDir + DS + params.GetPredictandDatabase();
 
             #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
@@ -135,7 +132,7 @@ bool asMethodForecasting::Manager()
             else
             {
                 // Display processing time
-                asLogMessageImportant(wxString::Format(_("Processing of the model %s took %ldms to execute"), m_ModelName.c_str(), sw.Time()));
+                asLogMessageImportant(wxString::Format(_("Processing of the model %s - %s took %ldms to execute"), params.GetMethodId().c_str(), params.GetSpecificTag().c_str(), sw.Time()));
 
                 #if wxUSE_GUI
                     // Send event
@@ -175,7 +172,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     int stepsNb = params.GetStepsNb();
 
     // Download real-time predictors
-    asResultsAnalogsForecast resultsCheck(m_ModelName);
+    asResultsAnalogsForecast resultsCheck;
     resultsCheck.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
     bool forecastDateChanged = true;
     while(forecastDateChanged)
@@ -255,8 +252,8 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     if (m_Cancel) return false;
 
     // Resulting object
-    asResultsAnalogsForecast resultsPrevious(m_ModelName);
-    asResultsAnalogsForecast results(m_ModelName);
+    asResultsAnalogsForecast resultsPrevious;
+    asResultsAnalogsForecast results;
     results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
 
     for (int i_step=0; i_step<stepsNb; i_step++)
@@ -365,7 +362,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             m_ForecastDate = predictorRealtime->SetRunDateInUse(m_ForecastDate);
 
             // Check if result already exists
-            asResultsAnalogsForecast resultsCheck(m_ModelName);
+            asResultsAnalogsForecast resultsCheck;
             resultsCheck.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
             resultsCheck.SetCurrentStep(params.GetStepsNb()-1);
             resultsCheck.Init(params, m_ForecastDate);
@@ -619,8 +616,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     wxLongLong neededMem = 0;
     for(int i_ptor=0;i_ptor<params.GetPredictorsNb(i_step);i_ptor++)
     {
-        neededMem += (params.GetPredictorUptsnb(i_step, i_ptor))
-                    * (params.GetPredictorVptsnb(i_step, i_ptor));
+        neededMem += (params.GetPredictorXptsnb(i_step, i_ptor))
+                    * (params.GetPredictorYptsnb(i_step, i_ptor));
     }
     neededMem *= timeArrayArchive.GetSize(); // time dimension
     neededMem *= 4; // to bytes (for floats)
@@ -725,12 +722,12 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             wxASSERT(predictorArchive->GetCoordSys()==predictorRealtime->GetCoordSys());
             asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchive->GetCoordSys(), 
                                                                                params.GetPredictorGridType(i_step, i_ptor), 
-                                                                               params.GetPredictorUmin(i_step, i_ptor), 
-                                                                               params.GetPredictorUptsnb(i_step, i_ptor), 
-                                                                               params.GetPredictorUstep(i_step, i_ptor), 
-                                                                               params.GetPredictorVmin(i_step, i_ptor), 
-                                                                               params.GetPredictorVptsnb(i_step, i_ptor), 
-                                                                               params.GetPredictorVstep(i_step, i_ptor), 
+                                                                               params.GetPredictorXmin(i_step, i_ptor), 
+                                                                               params.GetPredictorXptsnb(i_step, i_ptor), 
+                                                                               params.GetPredictorXstep(i_step, i_ptor), 
+                                                                               params.GetPredictorYmin(i_step, i_ptor), 
+                                                                               params.GetPredictorYptsnb(i_step, i_ptor), 
+                                                                               params.GetPredictorYstep(i_step, i_ptor), 
                                                                                params.GetPredictorLevel(i_step, i_ptor), 
                                                                                asNONE, 
                                                                                params.GetPredictorFlatAllowed(i_step, i_ptor));
@@ -829,7 +826,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 VectorDouble listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size()>=(unsigned)timeArrayDataTarget.GetSize(), wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d", (int)listTimeArray.size(), (int)timeArrayDataTarget.GetSize()));
 
-                for (unsigned int i=0; i<timeArrayDataTarget.GetSize(); i++)
+                for (int i=0; i<timeArrayDataTarget.GetSize(); i++)
                 {
                     if(listTimeArray[i]!=timeArrayDataTarget[i])
                     {
@@ -843,7 +840,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 // Area object instantiation
                 wxASSERT(predictorArchivePreprocess->GetCoordSys()==predictorRealtimePreprocess->GetCoordSys());
-                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchivePreprocess->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPreprocessLevel(i_step, i_ptor, i_prepro), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
+                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchivePreprocess->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorXmin(i_step, i_ptor), params.GetPredictorXptsnb(i_step, i_ptor), params.GetPredictorXstep(i_step, i_ptor), params.GetPredictorYmin(i_step, i_ptor), params.GetPredictorYptsnb(i_step, i_ptor), params.GetPredictorYstep(i_step, i_ptor), params.GetPreprocessLevel(i_step, i_ptor, i_prepro), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
 
                 // Check the starting dates coherence
                 if (predictorArchivePreprocess->GetOriginalProviderStart()>ptorStartArchive)
@@ -1079,8 +1076,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     wxLongLong neededMem = 0;
     for(int i_ptor=0;i_ptor<params.GetPredictorsNb(i_step);i_ptor++)
     {
-        neededMem += (params.GetPredictorUptsnb(i_step, i_ptor))
-                    * (params.GetPredictorVptsnb(i_step, i_ptor));
+        neededMem += (params.GetPredictorXptsnb(i_step, i_ptor))
+                    * (params.GetPredictorYptsnb(i_step, i_ptor));
     }
     neededMem *= timeArrayArchive.GetSize(); // time dimension
     neededMem *= 4; // to bytes (for floats)
@@ -1179,7 +1176,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             // Area object instantiation
             wxASSERT(predictorArchive->GetCoordSys()==predictorRealtime->GetCoordSys());
-            asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchive->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPredictorLevel(i_step, i_ptor), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
+            asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchive->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorXmin(i_step, i_ptor), params.GetPredictorXptsnb(i_step, i_ptor), params.GetPredictorXstep(i_step, i_ptor), params.GetPredictorYmin(i_step, i_ptor), params.GetPredictorYptsnb(i_step, i_ptor), params.GetPredictorYstep(i_step, i_ptor), params.GetPredictorLevel(i_step, i_ptor), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
 
             // Check the starting dates coherence
             if (predictorArchive->GetOriginalProviderStart()>ptorStartArchive)
@@ -1278,7 +1275,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
                 // Area object instantiation
                 wxASSERT(predictorArchivePreprocess->GetCoordSys()==predictorRealtimePreprocess->GetCoordSys());
-                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchivePreprocess->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorUmin(i_step, i_ptor), params.GetPredictorUptsnb(i_step, i_ptor), params.GetPredictorUstep(i_step, i_ptor), params.GetPredictorVmin(i_step, i_ptor), params.GetPredictorVptsnb(i_step, i_ptor), params.GetPredictorVstep(i_step, i_ptor), params.GetPreprocessLevel(i_step, i_ptor, i_prepro), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
+                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorArchivePreprocess->GetCoordSys(), params.GetPredictorGridType(i_step, i_ptor), params.GetPredictorXmin(i_step, i_ptor), params.GetPredictorXptsnb(i_step, i_ptor), params.GetPredictorXstep(i_step, i_ptor), params.GetPredictorYmin(i_step, i_ptor), params.GetPredictorYptsnb(i_step, i_ptor), params.GetPredictorYstep(i_step, i_ptor), params.GetPreprocessLevel(i_step, i_ptor, i_prepro), asNONE, params.GetPredictorFlatAllowed(i_step, i_ptor));
 
                 // Check the starting dates coherence
                 if (predictorArchivePreprocess->GetOriginalProviderStart()>ptorStartArchive)
@@ -1463,8 +1460,8 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     results.SetStationsHeights(m_PredictandDB->GetStationsHeightArray());
     results.SetStationsLat(m_PredictandDB->GetStationsLatArray());
     results.SetStationsLon(m_PredictandDB->GetStationsLonArray());
-    results.SetStationsLocCoordU(m_PredictandDB->GetStationsLocCoordUArray());
-    results.SetStationsLocCoordV(m_PredictandDB->GetStationsLocCoordVArray());
+    results.SetStationsLocCoordX(m_PredictandDB->GetStationsLocCoordXArray());
+    results.SetStationsLocCoordY(m_PredictandDB->GetStationsLocCoordYArray());
     Array1DFloat refAxis = m_PredictandDB->GetReferenceAxis();
     results.SetReferenceAxis(refAxis);
     Array2DFloat refValues = m_PredictandDB->GetReferenceValuesArray();

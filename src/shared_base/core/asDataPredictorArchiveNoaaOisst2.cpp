@@ -54,10 +54,10 @@ asDataPredictorArchive(dataId)
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*std::pow(10.f,34.f));
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0.125;
-    m_VaxisShift = 0.125;
-    m_UaxisStep = 0.25;
-    m_VaxisStep = 0.25;
+    m_XaxisShift = 0.125;
+    m_YaxisShift = 0.125;
+    m_XaxisStep = 0.25;
+    m_YaxisStep = 0.25;
     m_SubFolder = wxEmptyString;
     m_FileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
     m_FileAxisLatName = "lat";
@@ -199,23 +199,23 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
             if (dataArea)
             {
                 // Get the spatial extent
-                float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-                float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
-                float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
-                float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
+                float lonMin = dataArea->GetXaxisCompositeStart(i_area);
+                float lonMax = dataArea->GetXaxisCompositeEnd(i_area);
+                float latMinStart = dataArea->GetYaxisCompositeStart(i_area);
+                float latMinEnd = dataArea->GetYaxisCompositeEnd(i_area);
 
                 // The dimensions lengths
-                indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
-                indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
+                indexLengthLon = dataArea->GetXaxisCompositePtsnb(i_area);
+                indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
-                if(lonMax==dataArea->GetAxisUmax())
+                if(lonMax==dataArea->GetAxisXmax())
                 {
                     // Correction if the lon 360 degrees is required (doesn't exist)
                     load360 = true;
                     for (int i_check = 0; i_check<compositeData.size(); i_check++)
                     {
                         // If so, already loaded in another composite
-                        if(dataArea->GetComposite(i_check).GetUmin() == 0)
+                        if(dataArea->GetComposite(i_check).GetXmin() == 0)
                         {
                             load360 = false;
                         }

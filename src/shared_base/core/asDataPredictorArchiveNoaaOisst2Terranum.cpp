@@ -54,10 +54,10 @@ asDataPredictorArchive(dataId)
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*std::pow(10.f,34.f));
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0.125;
-    m_VaxisShift = 0.125;
-    m_UaxisStep = 1;
-    m_VaxisStep = 1;
+    m_XaxisShift = 0.125;
+    m_YaxisShift = 0.125;
+    m_XaxisStep = 1;
+    m_YaxisStep = 1;
     m_SubFolder = wxEmptyString;
     m_FileAxisLatName = "lat";
     m_FileAxisLonName = "lon";
@@ -220,13 +220,13 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         if (dataArea)
         {
             // Get the spatial extent
-            float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-            float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
-            float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
+            float lonMin = dataArea->GetXaxisCompositeStart(i_area);
+            float latMinStart = dataArea->GetYaxisCompositeStart(i_area);
+            float latMinEnd = dataArea->GetYaxisCompositeEnd(i_area);
 
             // The dimensions lengths
-            indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
-            indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
+            indexLengthLon = dataArea->GetXaxisCompositePtsnb(i_area);
+            indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
             // Get the spatial indices of the desired data
             indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin, 0.01f);

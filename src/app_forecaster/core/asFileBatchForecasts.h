@@ -42,9 +42,9 @@ public:
     /** Default destructor */
     virtual ~asFileBatchForecasts();
 
-    virtual bool InsertRootElement();
+    virtual bool EditRootElement();
 
-    virtual bool GoToRootElement();
+    virtual bool CheckRootElement();
 
 
 protected:

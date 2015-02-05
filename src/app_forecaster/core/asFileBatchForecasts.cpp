@@ -40,19 +40,22 @@ asFileBatchForecasts::~asFileBatchForecasts()
     //dtor
 }
 
-bool asFileBatchForecasts::InsertRootElement()
+bool asFileBatchForecasts::EditRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "BatchForecasts")) return false;
-    if(!GoToFirstNodeWithPath("BatchForecasts")) return false;
+    if (!GetRoot()) return false;
+    GetRoot()->AddAttribute("target", "forecaster");
     return true;
 }
 
-bool asFileBatchForecasts::GoToRootElement()
+bool asFileBatchForecasts::CheckRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.BatchForecasts"))
+    if (!GetRoot()) return false;
+    if (!IsAnAtmoSwingFile()) return false;
+    if (!FileVersionIsOrAbove(1.0)) return false;
+
+    if (!GetRoot()->GetAttribute("target").IsSameAs("forecaster", false))
     {
-        asLogError(wxString::Format(_("The file %s is not an AtmoSwing batch file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not a parameters file for the Forecaster."), m_FileName.GetFullName()));
         return false;
     }
     return true;

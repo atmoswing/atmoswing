@@ -86,115 +86,126 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
         ThreadsManager().CritSectionConfig().Leave();
         FileName = PatternsDir + DS + FilePatternName + ".xml";
     }
+
     asFileXml xmlFile( FileName, asFile::ReadOnly );
-    if(!xmlFile.Open()) return pattern;
-
-    // XML struct for the dataset information
-    wxString PatternAccess = "pattern";
-    wxString PatternTimeBlockAccess = "time.block";
-    wxString PatternDataBlockAccess = "data.block";
-
-    // Set the base node
-    if(!xmlFile.GoToFirstNodeWithPath(PatternAccess)) return pattern;
-
-    // Get the pattern informations
-    pattern.Id = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "id", wxEmptyString);
-    pattern.Name = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "name", wxEmptyString);
-
-    // Get file structure
-    wxString tmpStructType = xmlFile.GetFirstElementValueText("structtype", wxEmptyString);
-    pattern.StructType = StringToStructType(tmpStructType);
-    pattern.HeaderLines = xmlFile.GetFirstElementValueInt("headerlines", 0);
-    pattern.ParseTime = xmlFile.GetFirstElementValueBool("parsetime", true);
-
-    // Different tags if it's a constant width or tab delimited file
-    wxString tagstart, tagend;
-    switch (pattern.StructType)
+    if(!xmlFile.Open())
     {
-        case (asFileDat::ConstantWidth):
-            tagstart = "charstart";
-            tagend = "charend";
-            break;
-        case (asFileDat::TabsDelimited):
-            tagstart = "column";
-            tagend = "column";
-            break;
-        default:
-            asThrowException(_("The file structure type in unknown"));
+        asThrowException(_("Cannot open the pattern file."));
     }
-
-    // Get first time block element
-    wxString tmpTimeBlockContent = xmlFile.GetFirstElementValueText(PatternTimeBlockAccess, wxEmptyString);
-
-    int charstart = xmlFile.GetThisElementAttributeValueInt(tagstart, 0);
-    int charend = xmlFile.GetThisElementAttributeValueInt(tagend, 0);
-
-    //AssignStruct(Pattern, tmpTimeBlockContent, xmlFile.GetFirstElementAttributeValueInt(PatternTimeBlockAccess, tagstart, 0), xmlFile.GetFirstElementAttributeValueInt(PatternTimeBlockAccess, tagend, 0))
-    asFileDat::AssignStruct(pattern, tmpTimeBlockContent, charstart, charend);
-
-    // Get other time block elements
-    while(xmlFile.GetNextElement(PatternTimeBlockAccess))
+    if(!xmlFile.CheckRootElement())
     {
-        tmpTimeBlockContent = xmlFile.GetThisElementValueText(wxEmptyString);
-        int charstart = xmlFile.GetThisElementAttributeValueInt(tagstart, 0);
-        int charend = xmlFile.GetThisElementAttributeValueInt(tagend, 0);
-        AssignStruct(pattern, tmpTimeBlockContent, charstart, charend);
+        asThrowException(_("Errors were found in the pattern file."));
     }
+    
+    // Get data
+    long charStart, charEnd;
+    wxString charStartStr, charEndStr, attributeStart, attributeEnd;
+    wxXmlNode *node = xmlFile.GetRoot()->GetChildren();
+    if (node->GetName() == "pattern") {
+        pattern.Id = node->GetAttribute("id");
+        pattern.Name = node->GetAttribute("name");
 
-    // Get first data block element
-    wxString tmpDataBlockContent = xmlFile.GetFirstElementValueText(PatternDataBlockAccess, wxEmptyString);
-    pattern.DataParam = asGlobEnums::StringToDataParameterEnum(tmpDataBlockContent);
-    pattern.DataBegin = xmlFile.GetFirstElementAttributeValueInt(PatternDataBlockAccess, tagstart, 0);
-    pattern.DataEnd = xmlFile.GetFirstElementAttributeValueInt(PatternDataBlockAccess, tagend, 0);
+        wxXmlNode *nodeParam = node->GetChildren();
+        while (nodeParam) {
+            if (nodeParam->GetName() == "structure_type") {
+                pattern.StructType = StringToStructType(xmlFile.GetString(nodeParam));
+                switch (pattern.StructType)
+                {
+                    case (asFileDat::ConstantWidth):
+                        attributeStart = "char_start";
+                        attributeEnd = "char_end";
+                        break;
+                    case (asFileDat::TabsDelimited):
+                        attributeStart = "column";
+                        attributeEnd = "column";
+                        break;
+                    default:
+                        asThrowException(_("The file structure type in unknown"));
+                }
+            } else if (nodeParam->GetName() == "header_lines") {
+                pattern.HeaderLines = xmlFile.GetInt(nodeParam);
+            } else if (nodeParam->GetName() == "parse_time") {
+                pattern.ParseTime = xmlFile.GetBool(nodeParam);
+            } else if (nodeParam->GetName() == "time") {
+                if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
+                    asThrowException(_("The file structure type in undefined"));
+                }
 
-    // Reset the base path
-    xmlFile.ClearCurrenNodePath();
+                wxXmlNode *nodeTime = nodeParam->GetChildren();
+                while (nodeTime) {
+                    
+                    charStartStr = nodeTime->GetAttribute(attributeStart);
+                    charStartStr.ToLong(&charStart);
+                    charEndStr = nodeTime->GetAttribute(attributeEnd);
+                    charEndStr.ToLong(&charEnd);
+
+                    if (nodeTime->GetName() == "year") {
+                        pattern.TimeYearBegin = charStart;
+                        pattern.TimeYearEnd = charEnd;
+                    } else if (nodeTime->GetName() == "month") {
+                        pattern.TimeMonthBegin = charStart;
+                        pattern.TimeMonthEnd = charEnd;
+                    } else if (nodeTime->GetName() == "day") {
+                        pattern.TimeDayBegin = charStart;
+                        pattern.TimeDayEnd = charEnd;
+                    } else if (nodeTime->GetName() == "hour") {
+                        pattern.TimeHourBegin = charStart;
+                        pattern.TimeHourEnd = charEnd;
+                    } else if (nodeTime->GetName() == "minute") {
+                        pattern.TimeMinuteBegin = charStart;
+                        pattern.TimeMinuteEnd = charEnd;
+                    } else {
+                        xmlFile.UnknownNode(nodeTime);
+                    }
+                    
+                    nodeTime = nodeTime->GetNext();
+                }
+            } else if (nodeParam->GetName() == "data") {
+                if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
+                    asThrowException(_("The file structure type in undefined"));
+                }
+
+                wxXmlNode *nodeData = nodeParam->GetChildren();
+                while (nodeData) {
+
+                    charStartStr = nodeData->GetAttribute(attributeStart);
+                    charStartStr.ToLong(&charStart);
+                    charEndStr = nodeData->GetAttribute(attributeEnd);
+                    charEndStr.ToLong(&charEnd);
+
+                    if (nodeData->GetName() == "value") {
+                        pattern.DataBegin = charStart;
+                        pattern.DataEnd = charEnd;
+                    } else {
+                        xmlFile.UnknownNode(nodeData);
+                    }
+
+                    nodeData = nodeData->GetNext();
+                }
+            } else {
+                xmlFile.UnknownNode(nodeParam);
+            }
+
+            nodeParam = nodeParam->GetNext();
+        }
+
+    } else {
+        asThrowException(_("Expecting the tag pattern in the pattern file..."));
+    }
 
     return pattern;
 }
 
 asFileDat::FileStructType asFileDat::StringToStructType(const wxString &StructTypeStr)
 {
-    if (StructTypeStr.CmpNoCase("tabsdelimited")==0) {return asFileDat::TabsDelimited;}
-    else if (StructTypeStr.CmpNoCase("constantwidth")==0) {return asFileDat::ConstantWidth;}
-    else {asThrowException(_("The file structure type in unknown"));}
-}
-
-bool asFileDat::AssignStruct(asFileDat::Pattern &Pattern, const wxString &ContentTypeStr, const int &charstart, const int &charend)
-{
-    if ((ContentTypeStr.CmpNoCase("year")==0) | (ContentTypeStr.CmpNoCase("years")==0))
-    {
-        Pattern.TimeYearBegin = charstart;
-        Pattern.TimeYearEnd = charend;
-        return true;
+    if (StructTypeStr.CmpNoCase("tabs_delimited")==0) {
+        return asFileDat::TabsDelimited;
     }
-    else if ((ContentTypeStr.CmpNoCase("month")==0) | (ContentTypeStr.CmpNoCase("months")==0))
-    {
-        Pattern.TimeMonthBegin = charstart;
-        Pattern.TimeMonthEnd = charend;
-        return true;
+    else if (StructTypeStr.CmpNoCase("constant_width")==0) {
+        return asFileDat::ConstantWidth;
     }
-    else if ((ContentTypeStr.CmpNoCase("day")==0) | (ContentTypeStr.CmpNoCase("days")==0))
-    {
-        Pattern.TimeDayBegin = charstart;
-        Pattern.TimeDayEnd = charend;
-        return true;
-    }
-    else if ((ContentTypeStr.CmpNoCase("hour")==0) | (ContentTypeStr.CmpNoCase("hours")==0))
-    {
-        Pattern.TimeHourBegin = charstart;
-        Pattern.TimeHourEnd = charend;
-        return true;
-    }
-    else if ((ContentTypeStr.CmpNoCase("minute")==0) | (ContentTypeStr.CmpNoCase("minutes")==0))
-    {
-        Pattern.TimeMinuteBegin = charstart;
-        Pattern.TimeMinuteEnd = charend;
-        return true;
-    }
-    else
-    {
-        asThrowException(_("The content type in unknown"));
+    else {
+        asThrowException(_("The file structure type in unknown"));
     }
 }
 

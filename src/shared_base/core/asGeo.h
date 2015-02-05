@@ -50,24 +50,24 @@ public:
         return m_CoordSys;
     }
 
-    double GetAxisUmin()
+    double GetAxisXmin()
     {
-        return m_AxisUmin;
+        return m_AxisXmin;
     }
 
-    double GetAxisUmax()
+    double GetAxisXmax()
     {
-        return m_AxisUmax;
+        return m_AxisXmax;
     }
 
-    double GetAxisVin()
+    double GetAxisYmin()
     {
-        return m_AxisVmin;
+        return m_AxisYmin;
     }
 
-    double GetAxisVmax()
+    double GetAxisYmax()
     {
-        return m_AxisVmax;
+        return m_AxisYmax;
     }
 
     /** Access m_CoordSys information
@@ -77,10 +77,10 @@ public:
 
 protected:
     CoordSys m_CoordSys; //!< Member variable "m_CoordSys"
-    double m_AxisUmin; //!< Member variable "m_AxisUmin"
-    double m_AxisUmax; //!< Member variable "m_AxisUmax"
-    double m_AxisVmin; //!< Member variable "m_AxisVmin"
-    double m_AxisVmax; //!< Member variable "m_AxisVmax"
+    double m_AxisXmin; //!< Member variable "m_AxisXmin"
+    double m_AxisXmax; //!< Member variable "m_AxisXmax"
+    double m_AxisYmin; //!< Member variable "m_AxisYmin"
+    double m_AxisYmax; //!< Member variable "m_AxisYmax"
 
     /** Initialization */
     void InitBounds();

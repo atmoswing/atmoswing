@@ -29,19 +29,36 @@
 
 #include <asForecastViewer.h>
 
+#include "img_treectrl.h"
 
-BEGIN_EVENT_TABLE(asListBoxModels, wxListBox)
-    EVT_LISTBOX(wxID_ANY, asListBoxModels::OnModelSlctChange)
+
+BEGIN_EVENT_TABLE(asListBoxModels, wxTreeCtrl)
+    EVT_TREE_SEL_CHANGED(wxID_ANY, asListBoxModels::OnModelSlctChange)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, wxCommandEvent);
 
 
-asListBoxModels::asListBoxModels(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, int n, const wxString choices[], long style)
+asModelTreeItemData::asModelTreeItemData(const wxString& methodId, DataParameter dataParameter, bool isAggregator)
 :
-wxListBox(parent, id, pos, size, n, choices, style)
+wxTreeItemData()
 {
-    //ctor
+    m_MethodId = methodId;
+    m_DataParameter = dataParameter;
+    m_IsAggregator = isAggregator;
+    m_ModelId = -1;
+}
+
+
+asListBoxModels::asListBoxModels(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size)
+:
+wxTreeCtrl(parent, id, pos, size, wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT|wxTR_TWIST_BUTTONS|wxTR_FULL_ROW_HIGHLIGHT|wxTR_NO_LINES|wxNO_BORDER, wxDefaultValidator)
+{
+    CreateImageList();
+    unsigned int indent = GetIndent();
+    if (indent > 16) SetIndent( indent-5 );
+    m_Counter = 0;
+    m_SkipSlctChangeEvent = false;
 }
 
 asListBoxModels::~asListBoxModels()
@@ -49,32 +66,174 @@ asListBoxModels::~asListBoxModels()
     //dtor
 }
 
-bool asListBoxModels::Add(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
+void asListBoxModels::CreateImageList()
 {
-    wxString newOption = wxString::Format("%d. ", (int)GetStrings().GetCount()+1) + modelName + " (" + leadTimeOriginStr + ") ";
-    /*
-    switch (dataParameter)
+    int size = 16;
+
+    // Make an image list containing small icons
+    wxImageList *images = new wxImageList(size, size, true);
+
+    // Images must match the enum
+    images->Add(img_precipitation_s);
+    images->Add(img_temperature_s);
+    images->Add(img_lightning_s);
+    images->Add(img_wind_s);
+    images->Add(img_other_s);
+
+    AssignImageList(images);
+}
+
+bool asListBoxModels::Add(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
+{
+    if(!GetRootItem().IsOk())
     {
-        case (Precipitation):
-            break;
-        case (AirTemperature):
-            break;
-        case (Wind):
-            break;
-        case (Lightnings):
-            break;
-        default:
+        AddRoot(_("Root"), -1, -1, new wxTreeItemData());
+    }
 
-    }*/
+    wxTreeItemId parentItemId;
 
-    Append(newOption);
+    // Check if the method ID already exists
+    wxTreeItemId itemId = GetFirstVisibleItem();
+    while (itemId.IsOk())
+    {
+        bool isSameCategory = true;
+        asModelTreeItemData *item = (asModelTreeItemData *)GetItemData(itemId);
+
+        if (!item->GetMethodId().IsSameAs(methodId)) isSameCategory = false;
+        if (item->GetDataParameter() != dataParameter) isSameCategory = false;
+        if (item->GetDataTemporalResolution() != dataTemporalResolution) isSameCategory = false;
+
+        if (isSameCategory)
+        {
+            parentItemId = itemId;
+            break;
+        }
+
+        itemId = GetNextSibling(itemId);
+    }
+
+    // If parent was not found
+    if (!parentItemId.IsOk())
+    {
+        int image;
+        switch (dataParameter)
+        {
+            case Precipitation:
+                image = asListBoxModels::TreeCtrlIcon_Precipitation;
+                break;
+            case AirTemperature:
+                image = asListBoxModels::TreeCtrlIcon_Temperature;
+                break;
+            case Lightnings:
+                image = asListBoxModels::TreeCtrlIcon_Lightnings;
+                break;
+            case Wind:
+                image = asListBoxModels::TreeCtrlIcon_Wind;
+                break;
+            default:
+                image = asListBoxModels::TreeCtrlIcon_Other;
+        }
+
+        asModelTreeItemData *newItemAggregator = new asModelTreeItemData(methodId, dataParameter, true);
+        newItemAggregator->SetMethodIdDisplay(methodIdDisplay);
+        newItemAggregator->SetDataTemporalResolution(dataTemporalResolution);
+
+        parentItemId = AppendItem( GetRootItem(), methodIdDisplay, image, image, newItemAggregator);
+
+    }
+
+    // Create the new item
+    asModelTreeItemData *newItem = new asModelTreeItemData(methodId, dataParameter);
+    newItem->SetMethodIdDisplay(methodIdDisplay);
+    newItem->SetSpecificTag(specificTag);
+    newItem->SetSpecificTagDisplay(specificTagDisplay);
+    newItem->SetDataTemporalResolution(dataTemporalResolution);
+    newItem->SetModelId(m_Counter);
+    m_Counter++;
+
+    wxString name = specificTagDisplay;
+    if (name.IsEmpty()) name = methodIdDisplay;
+    wxTreeItemId newItemId = AppendItem( parentItemId, name, -1, -1, newItem);
 
     return true;
 }
 
-void asListBoxModels::OnModelSlctChange( wxCommandEvent & event )
+void asListBoxModels::OnModelSlctChange( wxTreeEvent& event )
 {
-    wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED);
-    eventSlct.SetInt(event.GetInt());
-    GetParent()->ProcessWindowEvent(eventSlct);
+    wxBusyCursor wait;
+
+    wxTreeItemId itemId = event.GetItem();
+
+    if (!m_SkipSlctChangeEvent && itemId.IsOk())
+    {
+        asModelTreeItemData *item = (asModelTreeItemData *)GetItemData(itemId);
+
+        int modelId = item->GetModelId();
+
+        if (modelId>=0) // If not an aggregator
+        {
+            wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED);
+            eventSlct.SetInt(modelId);
+            GetParent()->ProcessWindowEvent(eventSlct);
+        }
+        else // Aggregator
+        {
+            if (GetChildrenCount(itemId)==1) // If only 1 child
+            {
+                wxTreeItemId childId = GetLastChild(itemId);
+                if (childId.IsOk())
+                {
+                    asModelTreeItemData *childItem = (asModelTreeItemData *)GetItemData(childId);
+                    modelId = childItem->GetModelId();
+
+                    wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED);
+                    eventSlct.SetInt(modelId);
+                    GetParent()->ProcessWindowEvent(eventSlct);
+                }
+            }
+            else // Multiple children: needs aggregation
+            {
+
+                asLogError("Aggregation is not yet implemented.");
+
+            }
+        }
+    }
+}
+
+void asListBoxModels::Clear()
+{
+    m_SkipSlctChangeEvent = true;
+    DeleteAllItems();
+    m_Counter = 0;
+    m_SkipSlctChangeEvent = false;
+}
+
+void asListBoxModels::SetSelection(int modelId)
+{
+    m_SkipSlctChangeEvent = true;
+
+    // Look for the correct entry in the treectrl
+    wxTreeItemId itemId = GetFirstVisibleItem();
+    while (itemId.IsOk())
+    {
+        wxTreeItemIdValue cookie;
+        wxTreeItemId childId = GetFirstChild(itemId, cookie);
+
+        while (childId.IsOk())
+        {
+            asModelTreeItemData *item = (asModelTreeItemData *)GetItemData(childId);
+            if (item->GetModelId()==modelId)
+            {
+                SelectItem(childId);
+                m_SkipSlctChangeEvent = false;
+                return;
+            }
+            childId = GetNextChild(itemId, cookie);
+        }
+
+        itemId = GetNextSibling(itemId);
+    }
+
+    m_SkipSlctChangeEvent = false;
 }
