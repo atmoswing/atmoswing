@@ -75,6 +75,8 @@ void asResultsAnalogsForecast::Init(asParametersForecast &params, double leadTim
     m_SpecificTag = params.GetSpecificTag();
     m_SpecificTagDisplay = params.GetSpecificTagDisplay();
     m_Description = params.GetDescription();
+    m_PredictandDatabase = params.GetPredictandDatabase();
+    m_PredictandStationIds = params.GetPredictandStationIds();
 
     m_LeadTimeOrigin = leadTimeOrigin;
     m_DateProcessed = asTime::NowMJD(asUTM);
@@ -372,9 +374,9 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Get global attributes
     float version = ncFile.GetAttFloat("version");
-    if (version>1.4f)
+    if (version>1.5f)
     {
-        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (version %.1f). It cannot be opened here."), version));
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (file version %.1f). It cannot be opened here."), version));
         return false;
     }
 

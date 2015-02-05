@@ -121,35 +121,35 @@ public:
 
     /** Set an attribute value of type short
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const short* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const short* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Set an attribute value of type int
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const int* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const int* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Set an attribute value of type float
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const float* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const float* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Set an attribute value of type double
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const double* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const double* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Write an array of shorts to the file
      * \param VarName The variable name

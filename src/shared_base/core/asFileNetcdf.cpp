@@ -240,7 +240,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const wxString &TextStr, cons
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &AttName, const short* Value, size_t Length, const wxString &VarName)
+void asFileNetcdf::PutAtt(const wxString &AttName, const short* attrValue, size_t Length, const wxString &VarName)
 {
     wxASSERT(m_Opened);
 
@@ -252,7 +252,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const short* Value, size_t Le
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_Status = nc_put_att_short (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_SHORT, Length, Value);
+        m_Status = nc_put_att_short (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_SHORT, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, NC_GLOBAL, AttName.mb_str(), &AttId);
@@ -260,7 +260,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const short* Value, size_t Le
     } else {
         m_Status = nc_inq_varid (m_FileId, VarName.mb_str(), &VarId);
         if(m_Status) HandleErrorNetcdf();
-        m_Status = nc_put_att_short (m_FileId, VarId, AttName.mb_str(), NC_SHORT, Length, Value);
+        m_Status = nc_put_att_short (m_FileId, VarId, AttName.mb_str(), NC_SHORT, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, VarId, AttName.mb_str(), &AttId);
@@ -268,7 +268,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const short* Value, size_t Le
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &AttName, const int* Value, size_t Length, const wxString &VarName)
+void asFileNetcdf::PutAtt(const wxString &AttName, const int* attrValue, size_t Length, const wxString &VarName)
 {
     wxASSERT(m_Opened);
 
@@ -280,7 +280,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const int* Value, size_t Leng
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_Status = nc_put_att_int (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_INT, Length, Value);
+        m_Status = nc_put_att_int (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_INT, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, NC_GLOBAL, AttName.mb_str(), &AttId);
@@ -288,7 +288,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const int* Value, size_t Leng
     } else {
         m_Status = nc_inq_varid (m_FileId, VarName.mb_str(), &VarId);
         if(m_Status) HandleErrorNetcdf();
-        m_Status = nc_put_att_int (m_FileId, VarId, AttName.mb_str(), NC_INT, Length, Value);
+        m_Status = nc_put_att_int (m_FileId, VarId, AttName.mb_str(), NC_INT, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, VarId, AttName.mb_str(), &AttId);
@@ -296,7 +296,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const int* Value, size_t Leng
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &AttName, const float* Value, size_t Length, const wxString &VarName)
+void asFileNetcdf::PutAtt(const wxString &AttName, const float* attrValue, size_t Length, const wxString &VarName)
 {
     wxASSERT(m_Opened);
 
@@ -308,7 +308,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const float* Value, size_t Le
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_Status = nc_put_att_float (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_FLOAT, Length, Value);
+        m_Status = nc_put_att_float (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_FLOAT, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, NC_GLOBAL, AttName.mb_str(), &AttId);
@@ -316,7 +316,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const float* Value, size_t Le
     } else {
         m_Status = nc_inq_varid (m_FileId, VarName.mb_str(), &VarId);
         if(m_Status) HandleErrorNetcdf();
-        m_Status = nc_put_att_float (m_FileId, VarId, AttName.mb_str(), NC_FLOAT, Length, Value);
+        m_Status = nc_put_att_float (m_FileId, VarId, AttName.mb_str(), NC_FLOAT, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, VarId, AttName.mb_str(), &AttId);
@@ -324,7 +324,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const float* Value, size_t Le
     }
 }
 
-void asFileNetcdf::PutAtt(const wxString &AttName, const double* Value, size_t Length, const wxString &VarName)
+void asFileNetcdf::PutAtt(const wxString &AttName, const double* attrValue, size_t Length, const wxString &VarName)
 {
     wxASSERT(m_Opened);
 
@@ -336,7 +336,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const double* Value, size_t L
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_Status = nc_put_att_double (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_DOUBLE, Length, Value);
+        m_Status = nc_put_att_double (m_FileId, NC_GLOBAL, AttName.mb_str(), NC_DOUBLE, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, NC_GLOBAL, AttName.mb_str(), &AttId);
@@ -344,7 +344,7 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const double* Value, size_t L
     } else {
         m_Status = nc_inq_varid (m_FileId, VarName.mb_str(), &VarId);
         if(m_Status) HandleErrorNetcdf();
-        m_Status = nc_put_att_double (m_FileId, VarId, AttName.mb_str(), NC_DOUBLE, Length, Value);
+        m_Status = nc_put_att_double (m_FileId, VarId, AttName.mb_str(), NC_DOUBLE, Length, attrValue);
         if(m_Status) HandleErrorNetcdf();
         // Get the ID
         m_Status = nc_inq_attid (m_FileId, VarId, AttName.mb_str(), &AttId);
@@ -851,7 +851,7 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
     wxASSERT(m_Opened);
 
     size_t len;
-    wxString Value;
+    wxString attrValue;
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
@@ -883,14 +883,10 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
         text[len] = '\0';
 
         // Copy into a wxString
-        Value = wxString(text, wxConvUTF8);
-        wxASSERT(!Value.IsEmpty());
-        if (Value.Len()==0) // If failed, try from ascii (http://old.nabble.com/Code-to-convert-std::string-to-from-wxString-td4769602.html)
-        {
-            Value = wxString(wxString::FromAscii(text));
-        }
-        Value.Remove(len); // Remove the stuff after the end of the string
-        wxASSERT(!Value.IsEmpty());
+        attrValue = wxString(text);
+        wxASSERT(!attrValue.IsEmpty());
+        attrValue.Remove(len); // Remove the stuff after the end of the string
+        wxASSERT(!attrValue.IsEmpty());
         wxDELETE(text);
 
     } else { // Variable attribute
@@ -918,18 +914,14 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
         text[len] = '\0';
 
         // Copy into a wxString
-        Value = wxString(text, wxConvUTF8);
-        wxASSERT(!Value.IsEmpty());
-        if (Value.Len()==0) // If failed, try from ascii (http://old.nabble.com/Code-to-convert-std::string-to-from-wxString-td4769602.html)
-        {
-            Value = wxString(wxString::FromAscii(text));
-        }
-        Value.Remove(len); // Remove the stuff after the end of the string
-        wxASSERT(!Value.IsEmpty());
+        attrValue = wxString(text);
+        wxASSERT(!attrValue.IsEmpty());
+        attrValue.Remove(len); // Remove the stuff after the end of the string
+        wxASSERT(!attrValue.IsEmpty());
         wxDELETE(text);
     }
 
-    return Value;
+    return attrValue;
 }
 
 size_t asFileNetcdf::GetDimLength(const wxString &DimName)
