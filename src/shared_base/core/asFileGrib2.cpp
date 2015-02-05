@@ -95,7 +95,7 @@ bool asFileGrib2::GDALOpenDataset()
     }
 
     // Display some info
-    asLogMessage( wxString::Format(_("GRIB file size is %dx%d (%d bands) with pixel size of (%.3f,%.3f). Origin = (%.3f,%.3f)"), GetUcellsNb(), GetVcellsNb(), GetBandsNb(), GetUCellSize(), GetVCellSize(), GetUOrigin(), GetVOrigin() ));
+    asLogMessage( wxString::Format(_("GRIB file size is %dx%d (%d bands) with pixel size of (%.3f,%.3f). Origin = (%.3f,%.3f)"), GetXcellsNb(), GetYcellsNb(), GetBandsNb(), GetXCellSize(), GetYCellSize(), GetXOrigin(), GetYOrigin() ));
 
     // Parse metadata keys and elements
     ParseMetaData();
@@ -106,7 +106,7 @@ bool asFileGrib2::GDALOpenDataset()
     return true;
 }
 
-double asFileGrib2::GetUCellSize()
+double asFileGrib2::GetXCellSize()
 {
     double adfGeoTransform[6];
     if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
@@ -117,7 +117,7 @@ double asFileGrib2::GetUCellSize()
     return NaNDouble;
 }
 
-double asFileGrib2::GetVCellSize()
+double asFileGrib2::GetYCellSize()
 {
     double adfGeoTransform[6];
     if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
@@ -128,23 +128,23 @@ double asFileGrib2::GetVCellSize()
     return NaNDouble;
 }
 
-double asFileGrib2::GetUOrigin()
+double asFileGrib2::GetXOrigin()
 {
     double adfGeoTransform[6];
     if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
-        return adfGeoTransform[0]+GetUCellSize()/2.0;
+        return adfGeoTransform[0]+GetXCellSize()/2.0;
     }
 
     return NaNDouble;
 }
 
-double asFileGrib2::GetVOrigin()
+double asFileGrib2::GetYOrigin()
 {
     double adfGeoTransform[6];
     if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
-        double vOrigin = adfGeoTransform[3]+GetVCellSize()/2.0;
+        double vOrigin = adfGeoTransform[3]+GetYCellSize()/2.0;
         while (vOrigin>90)
         {
             vOrigin -= 180;
@@ -326,22 +326,22 @@ int asFileGrib2::FindBand(const wxString &VarName, float Level)
     return asNOT_FOUND;
 }
 
-bool asFileGrib2::GetUaxis(Array1DFloat &uaxis)
+bool asFileGrib2::GetXaxis(Array1DFloat &uaxis)
 {
     wxASSERT(m_Opened);
 
     // Origin is the corner of the cell --> we must correct (first point is first value)
-    uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetUPtsnb(), GetUOrigin(), GetUOrigin()+float(GetUPtsnb()-1)*GetUCellSize());
+    uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetXPtsnb(), GetXOrigin(), GetXOrigin()+float(GetXPtsnb()-1)*GetXCellSize());
     
     return true;
 }
 
-bool asFileGrib2::GetVaxis(Array1DFloat &vaxis)
+bool asFileGrib2::GetYaxis(Array1DFloat &vaxis)
 {
     wxASSERT(m_Opened);
 
     // Origin is the corner of the cell --> we must correct (first point is first value)
-    vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetVPtsnb(), GetVOrigin(), GetVOrigin()+float(GetVPtsnb()-1)*GetVCellSize());
+    vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetYPtsnb(), GetYOrigin(), GetYOrigin()+float(GetYPtsnb()-1)*GetYCellSize());
 
     return true;
 }

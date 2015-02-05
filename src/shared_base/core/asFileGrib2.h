@@ -57,29 +57,29 @@ public:
 
     bool GetVarArray(const wxString &VarName, const int IndexStart[], const int IndexCount[], float level, float* pValue);
 
-    bool GetUaxis(Array1DFloat &uaxis);
-    bool GetVaxis(Array1DFloat &vaxis);
+    bool GetXaxis(Array1DFloat &uaxis);
+    bool GetYaxis(Array1DFloat &vaxis);
 
-    /** Get the number of cells on the U axis. Same as GetUPtsnb() */
-    int GetUcellsNb()
+    /** Get the number of cells on the X axis. Same as GetXPtsnb() */
+    int GetXcellsNb()
     {
         return m_PtorDataset->GetRasterXSize();
     }
 
-    /** Get the number of cells on the V (Y) axis. Same as GetVPtsnb() */
-    int GetVcellsNb()
+    /** Get the number of cells on the Y axis. Same as GetYPtsnb() */
+    int GetYcellsNb()
     {
         return m_PtorDataset->GetRasterYSize();
     }
 
-    /** Get the number of cells on the U axis. Same as GetUcellsNb() */
-    int GetUPtsnb()
+    /** Get the number of cells on the X axis. Same as GetUcellsNb() */
+    int GetXPtsnb()
     {
         return m_PtorBand->GetXSize();
     }
 
-    /** Get the number of cells on the V axis. Same as GetVcellsNb() */
-    int GetVPtsnb()
+    /** Get the number of cells on the Y axis. Same as GetVcellsNb() */
+    int GetYPtsnb()
     {
         return m_PtorBand->GetYSize();
     }
@@ -99,17 +99,17 @@ public:
         return val;
     }
 
-    /** Get the grid cell size on U */
-    double GetUCellSize();
+    /** Get the grid cell size on X */
+    double GetXCellSize();
 
-    /** Get the grid cell size on V */
-    double GetVCellSize();
+    /** Get the grid cell size on Y */
+    double GetYCellSize();
 
-    /** Get the grid cell origin on U */
-    double GetUOrigin();
+    /** Get the grid cell origin on X */
+    double GetXOrigin();
 
-    /** Get the grid cell origin on V */
-    double GetVOrigin();
+    /** Get the grid cell origin on Y */
+    double GetYOrigin();
 
 
 

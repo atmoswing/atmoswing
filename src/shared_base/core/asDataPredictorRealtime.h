@@ -304,7 +304,6 @@ protected:
     VectorString m_FileNames;
     VectorString m_Urls;
     VectorDouble m_DataDates;
-    FileFormat m_FileFormat;
 
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check

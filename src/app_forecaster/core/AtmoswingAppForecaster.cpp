@@ -51,6 +51,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster);
 #if wxUSE_GUI
     #include "img_bullets.h"
     #include "img_toolbar.h"
+    #include "img_treectrl.h"
     #include "img_logo.h"
 #endif
 
@@ -139,6 +140,7 @@ bool AtmoswingAppForecaster::OnInit()
         // Initialize images
         initialize_images_bullets();
         initialize_images_toolbar();
+        initialize_images_treectrl();
         initialize_images_logo();
 
         // Create frame

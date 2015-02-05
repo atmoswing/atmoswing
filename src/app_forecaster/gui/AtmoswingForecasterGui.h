@@ -152,27 +152,16 @@ class asFramePredictandDBVirtual : public wxFrame
 class asPanelForecastingModelVirtual : public wxPanel 
 {
 	private:
+		wxBoxSizer* m_SizerFilename;
 	
 	protected:
 		wxBoxSizer* m_SizerPanel;
 		wxBoxSizer* m_SizerHeader;
-		wxStaticText* m_StaticTextModelName;
-		wxBitmapButton* m_BpButtonReduce;
-		wxBitmapButton* m_BpButtonClose;
-		wxBoxSizer* m_SizerFields;
-		wxStaticText* m_StaticTextModelNameInput;
-		wxTextCtrl* m_TextCtrlModelName;
-		wxStaticText* m_StaticTextModelDescriptionInput;
-		wxTextCtrl* m_TextCtrlModelDescription;
-		wxStaticText* m_StaticTextParametersFileName;
 		wxTextCtrl* m_TextCtrlParametersFileName;
-		wxStaticText* m_StaticTextPredictandDB;
-		wxTextCtrl* m_TextCtrlPredictandDB;
+		wxBitmapButton* m_BpButtonClose;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void ReducePanel( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ClosePanel( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ChangeModelName( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

@@ -44,7 +44,7 @@ public:
     ~asPanelSidebarForecasts();
 
     void ClearForecasts();
-    void AddForecast(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
+    void AddForecast(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
 
     asListBoxModels *GetModelsCtrl()
     {

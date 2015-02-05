@@ -60,29 +60,6 @@ public:
         m_PanelsManager = panelManager;
     }
 
-    void ReducePanel();
-
-    wxString GetModelName()
-    {
-        return m_TextCtrlModelName->GetValue();
-    }
-
-    void SetModelName(const wxString &val)
-    {
-        m_TextCtrlModelName->SetValue(val);
-        m_StaticTextModelName->SetLabelText(val);
-    }
-
-    wxString GetModelDescription()
-    {
-        return m_TextCtrlModelDescription->GetValue();
-    }
-
-    void SetModelDescription(const wxString &val)
-    {
-        m_TextCtrlModelDescription->SetValue(val);
-    }
-
     wxString GetParametersFileName()
     {
         return m_TextCtrlParametersFileName->GetValue();
@@ -93,22 +70,10 @@ public:
         m_TextCtrlParametersFileName->SetValue(val);
     }
 
-    wxString GetPredictandDBName()
-    {
-        return m_TextCtrlPredictandDB->GetValue();
-    }
-
-    void SetPredictandDBName(const wxString &val)
-    {
-        m_TextCtrlPredictandDB->SetValue(val);
-    }
-
 protected:
-    bool m_Reduced;
     wxWindow* m_ParentFrame;
     awxLed* m_Led;
 
-    void ReducePanel( wxCommandEvent& event );
     void ClosePanel( wxCommandEvent& event );
     void ChangeModelName( wxCommandEvent& event );
 

@@ -12,7 +12,7 @@ endif (UNIX)
 # Version number
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "3")
-set(VERSION_PATCH "2")
+set(VERSION_PATCH "3")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
@@ -144,12 +144,6 @@ file(GLOB_RECURSE src_lib_wxthings_cpp ../src/app_viewer/libs/wxthings/src/*.cpp
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_h} ${src_lib_wxplotctrl_h} ${src_lib_wxplotctrl_hh})
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_cpp} ${src_lib_wxplotctrl_cpp} ${src_lib_wxplotctrl_c} ${src_lib_wxthings_cpp})
 
-# tiCPP library
-file(GLOB_RECURSE src_lib_ticpp_h ../src/shared_base/libs/ticpp/*.h)
-file(GLOB_RECURSE src_lib_ticpp_cpp ../src/shared_base/libs/ticpp/*.cpp)
-list(APPEND src_lib_ticpp ${src_lib_ticpp_h})
-list(APPEND src_lib_ticpp ${src_lib_ticpp_cpp})
-
 # Folder test
 file(GLOB_RECURSE src_tests_h ../test/src/*.h)
 file(GLOB_RECURSE src_tests_cpp ../test/src/*.cpp)
@@ -200,7 +194,6 @@ list(REMOVE_DUPLICATES src_tests)
 
 list(APPEND inc_dirs 
     "${PROJECT_SOURCE_DIR}/../src/shared_base/core/"
-    "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/ticpp/"
     )
 
 if (BUILD_FORECASTER)
@@ -269,7 +262,6 @@ if (BUILD_FORECASTER OR BUILD_CALIBRATOR)
     add_library(asprocessing STATIC ${src_shared_processing})
 endif (BUILD_FORECASTER OR BUILD_CALIBRATOR)
 
-add_library(ticpp STATIC ${src_lib_ticpp})
 if (BUILD_VIEWER)
 	add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
 endif (BUILD_VIEWER)
@@ -296,9 +288,9 @@ endif (WIN32)
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 if (USE_GUI)
-    find_package(wxWidgets COMPONENTS core base adv REQUIRED)
+    find_package(wxWidgets COMPONENTS core base adv xml REQUIRED)
 else (USE_GUI)
-    find_package(wxWidgets COMPONENTS base REQUIRED)
+    find_package(wxWidgets COMPONENTS base xml REQUIRED)
 endif (USE_GUI)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
@@ -520,9 +512,15 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DwxDEBUG_
 if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer ")
+    if (BUILD_VIEWER)
+        set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
+        set_target_properties(wxplotctrl PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
+    endif (BUILD_VIEWER)
+    if (USE_WXHGVERSION)
+        set_target_properties(wxhgversion PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
+    endif (USE_WXHGVERSION)
 elseif (WIN32)
     set_target_properties(asbase PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-        set_target_properties(ticpp PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
     if (BUILD_FORECASTER)
         set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
         set_target_properties(asprocessing PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
@@ -545,7 +543,7 @@ elseif (WIN32)
 endif (UNIX AND NOT APPLE)
 
 # Global definitions
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL)
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_STL)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -609,7 +607,6 @@ message("CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 #### LINKING
 
 target_link_libraries(asbase ${GDAL_LIBRARIES})
-target_link_libraries(asbase ticpp)
 	
 if (BUILD_FORECASTER)
 	target_link_libraries(asbase ${GDAL_LIBRARIES})

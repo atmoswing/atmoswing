@@ -44,10 +44,10 @@ public:
         bool Preload;
         VectorDouble PreloadTimeHours;
         VectorFloat PreloadLevels;
-        double PreloadUmin;
-        int PreloadUptsnb;
-        double PreloadVmin;
-        int PreloadVptsnb;
+        double PreloadXmin;
+        int PreloadXptsnb;
+        double PreloadYmin;
+        int PreloadYptsnb;
         bool Preprocess;
         wxString PreprocessMethod;
         VectorString PreprocessDatasetIds;
@@ -56,14 +56,14 @@ public:
         VectorDouble PreprocessTimeHours;
         float Level;
         wxString GridType;
-        double Umin;
-        int Uptsnb;
-        double Ustep;
-        double Ushift;
-        double Vmin;
-        int Vptsnb;
-        double Vstep;
-        double Vshift;
+        double Xmin;
+        int Xptsnb;
+        double Xstep;
+        double Xshift;
+        double Ymin;
+        int Yptsnb;
+        double Ystep;
+        double Yshift;
         int FlatAllowed;
         double TimeHours;
         wxString Criteria;
@@ -74,7 +74,6 @@ public:
 
     typedef struct
     {
-        wxString MethodName;
         int AnalogsNumber;
         VectorParamsPredictors Predictors;
     } ParamsStep;
@@ -94,23 +93,13 @@ public:
 
     bool FixAnalogsNb();
 
-    VectorInt BuildVectorInt(int min, int max, int step);
-
-    VectorInt BuildVectorInt(wxString str);
-
-    VectorFloat BuildVectorFloat(float min, float max, float step);
-
-    VectorFloat BuildVectorFloat(wxString str);
-
-    VectorDouble BuildVectorDouble(double min, double max, double step);
-
-    VectorDouble BuildVectorDouble(wxString str);
-
-    VectorString BuildVectorString(wxString str);
-
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 
-    static VectorInt GetFileStationIds(wxString stationIdsString);
+    bool SetSpatialWindowProperties();
+
+    bool SetPreloadingProperties();
+
+    bool InputsOK();
 
     wxString GetPredictandStationIdsString();
 
@@ -126,6 +115,57 @@ public:
 
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
 
+    bool SetPredictandStationIds(wxString val);
+    
+    wxString GetMethodId()
+    {
+        return m_MethodId;
+    }
+
+    void SetMethodId(const wxString& val)
+    {
+        m_MethodId = val;
+    }
+    
+    wxString GetMethodIdDisplay()
+    {
+        return m_MethodIdDisplay;
+    }
+
+    void SetMethodIdDisplay(const wxString& val)
+    {
+        m_MethodIdDisplay = val;
+    }
+    
+    wxString GetSpecificTag()
+    {
+        return m_SpecificTag;
+    }
+
+    void SetSpecificTag(const wxString& val)
+    {
+        m_SpecificTag = val;
+    }
+    
+    wxString GetSpecificTagDisplay()
+    {
+        return m_SpecificTagDisplay;
+    }
+
+    void SetSpecificTagDisplay(const wxString& val)
+    {
+        m_SpecificTagDisplay = val;
+    }
+    
+    wxString GetDescription()
+    {
+        return m_Description;
+    }
+
+    void SetDescription(const wxString& val)
+    {
+        m_Description = val;
+    }
 
     wxString GetDateProcessed()
     {
@@ -212,144 +252,63 @@ public:
         return m_TimeArrayTargetTimeStepHours;
     }
 
-    bool SetTimeArrayTargetTimeStepHours(double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the target time step is null"));
-            return false;
-        }
-        m_TimeArrayTargetTimeStepHours = val;
-        return true;
-    }
+    bool SetTimeArrayTargetTimeStepHours(double val);
 
     double GetTimeArrayAnalogsTimeStepHours()
     {
         return m_TimeArrayAnalogsTimeStepHours;
     }
 
-    bool SetTimeArrayAnalogsTimeStepHours(double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the analogs time step is null"));
-            return false;
-        }
-        m_TimeArrayAnalogsTimeStepHours = val;
-        return true;
-    }
+    bool SetTimeArrayAnalogsTimeStepHours(double val);
 
     wxString GetTimeArrayTargetMode()
     {
         return m_TimeArrayTargetMode;
     }
 
-    bool SetTimeArrayTargetMode(const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the target time array mode is null"));
-            return false;
-        }
-        m_TimeArrayTargetMode = val;
-        return true;
-    }
+    bool SetTimeArrayTargetMode(const wxString& val);
 
     wxString GetTimeArrayTargetPredictandSerieName()
     {
         return m_TimeArrayTargetPredictandSerieName;
     }
 
-    bool SetTimeArrayTargetPredictandSerieName(const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the predictand serie name is null"));
-            return false;
-        }
-        m_TimeArrayTargetPredictandSerieName = val;
-        return true;
-    }
+    bool SetTimeArrayTargetPredictandSerieName(const wxString& val);
 
     float GetTimeArrayTargetPredictandMinThreshold()
     {
         return m_TimeArrayTargetPredictandMinThreshold;
     }
 
-    bool SetTimeArrayTargetPredictandMinThreshold(float val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictand min threshold is null"));
-            return false;
-        }
-        m_TimeArrayTargetPredictandMinThreshold = val;
-        return true;
-    }
+    bool SetTimeArrayTargetPredictandMinThreshold(float val);
 
     float GetTimeArrayTargetPredictandMaxThreshold()
     {
         return m_TimeArrayTargetPredictandMaxThreshold;
     }
 
-    bool SetTimeArrayTargetPredictandMaxThreshold(float val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictand max threshold is null"));
-            return false;
-        }
-        m_TimeArrayTargetPredictandMaxThreshold = val;
-        return true;
-    }
+    bool SetTimeArrayTargetPredictandMaxThreshold(float val);
 
     wxString GetTimeArrayAnalogsMode()
     {
         return m_TimeArrayAnalogsMode;
     }
 
-    bool SetTimeArrayAnalogsMode(const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the analogy time array mode is null"));
-            return false;
-        }
-        m_TimeArrayAnalogsMode = val;
-        return true;
-    }
+    bool SetTimeArrayAnalogsMode(const wxString& val);
 
     int GetTimeArrayAnalogsExcludeDays()
     {
         return m_TimeArrayAnalogsExcludeDays;
     }
 
-    bool SetTimeArrayAnalogsExcludeDays(int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the 'exclude days' is null"));
-            return false;
-        }
-        m_TimeArrayAnalogsExcludeDays = val;
-        return true;
-    }
+    bool SetTimeArrayAnalogsExcludeDays(int val);
 
     int GetTimeArrayAnalogsIntervalDays()
     {
         return m_TimeArrayAnalogsIntervalDays;
     }
 
-    bool SetTimeArrayAnalogsIntervalDays(int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the analogs interval days is null"));
-            return false;
-        }
-        m_TimeArrayAnalogsIntervalDays = val;
-        return true;
-    }
+    bool SetTimeArrayAnalogsIntervalDays(int val);
 
     VectorInt GetPredictandStationIds()
     {
@@ -363,35 +322,14 @@ public:
         return vec;
     }
 
-    bool SetPredictandStationIds(VectorInt val)
-    {
-        for (int i=0; i<val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("The provided value for the predictand ID is null"));
-                return false;
-            }
-        }
-        m_PredictandStationIds = val;
-        return true;
-    }
+    bool SetPredictandStationIds(VectorInt val);
 
     wxString GePredictandtDatasetId()
     {
         return m_PredictandDatasetId;
     }
 
-    bool SetPredictandDatasetId(const wxString &val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the predictand dataset ID is null"));
-            return false;
-        }
-        m_PredictandDatasetId = val;
-        return true;
-    }
+    bool SetPredictandDatasetId(const wxString &val);
 
     DataParameter GetPredictandParameter()
     {
@@ -428,48 +366,14 @@ public:
         return m_PredictandTimeHours;
     }
 
-    bool SetPredictandTimeHours(double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictand time (hours) is null"));
-            return false;
-        }
-        m_PredictandTimeHours = val;
-        return true;
-    }
-
-    wxString GetMethodName(int i_step)
-    {
-        return m_Steps[i_step].MethodName;
-    }
-
-    bool SetMethodName(int i_step, const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the method name is null"));
-            return false;
-        }
-        m_Steps[i_step].MethodName = val;
-        return true;
-    }
+    bool SetPredictandTimeHours(double val);
 
     int GetAnalogsNumber(int i_step)
     {
         return m_Steps[i_step].AnalogsNumber;
     }
 
-    bool SetAnalogsNumber(int i_step, int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the analogs number is null"));
-            return false;
-        }
-        m_Steps[i_step].AnalogsNumber = val;
-        return true;
-    }
+    bool SetAnalogsNumber(int i_step, int val);
 
     bool NeedsPreloading(int i_step, int i_predictor)
     {
@@ -486,118 +390,46 @@ public:
         return m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours;
     }
 
-    bool SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val)
-    {
-        if (val.size()<1)
-        {
-            asLogError(_("The provided preload time (hours) vector is empty."));
-            return false;
-        }
-        else
-        {
-            for (int i=0; i<val.size(); i++)
-            {
-                if (asTools::IsNaN(val[i]))
-                {
-                    asLogError(_("There are NaN values in the provided preload time (hours) vector."));
-                    return false;
-                }
-            }
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreloadTimeHours = val;
-        return true;
-    }
+    bool SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val);
+
+    bool SetPreloadTimeHours(int i_step, int i_predictor, double val);
 
     VectorFloat GetPreloadLevels(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].PreloadLevels;
     }
 
-    bool SetPreloadLevels(int i_step, int i_predictor, VectorFloat val)
+    bool SetPreloadLevels(int i_step, int i_predictor, VectorFloat val);
+
+    bool SetPreloadLevels(int i_step, int i_predictor, float val);
+
+    double GetPreloadXmin(int i_step, int i_predictor)
     {
-        if (val.size()<1)
-        {
-            asLogError(_("The provided 'preload levels' vector is empty."));
-            return false;
-        }
-        else
-        {
-            for (int i=0; i<val.size(); i++)
-            {
-                if (asTools::IsNaN(val[i]))
-                {
-                    asLogError(_("There are NaN values in the provided 'preload levels' vector."));
-                    return false;
-                }
-            }
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreloadLevels = val;
-        return true;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadXmin;
     }
 
-    double GetPreloadUmin(int i_step, int i_predictor)
+    bool SetPreloadXmin(int i_step, int i_predictor, double val);
+
+    int GetPreloadXptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadUmin;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadXptsnb;
     }
 
-    bool SetPreloadUmin(int i_step, int i_predictor, double val)
+    bool SetPreloadXptsnb(int i_step, int i_predictor, int val);
+
+    double GetPreloadYmin(int i_step, int i_predictor)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the preload Umin is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreloadUmin = val;
-        return true;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadYmin;
     }
 
-    int GetPreloadUptsnb(int i_step, int i_predictor)
+    bool SetPreloadYmin(int i_step, int i_predictor, double val);
+
+    int GetPreloadYptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadUptsnb;
+        return m_Steps[i_step].Predictors[i_predictor].PreloadYptsnb;
     }
 
-    bool SetPreloadUptsnb(int i_step, int i_predictor, int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the preload points number on U is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreloadUptsnb = val;
-        return true;
-    }
-
-    double GetPreloadVmin(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadVmin;
-    }
-
-    bool SetPreloadVmin(int i_step, int i_predictor, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the preload Vmin is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreloadVmin = val;
-        return true;
-    }
-
-    int GetPreloadVptsnb(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].PreloadVptsnb;
-    }
-
-    bool SetPreloadVptsnb(int i_step, int i_predictor, int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the preload points number on V is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreloadVptsnb = val;
-        return true;
-    }
+    bool SetPreloadYptsnb(int i_step, int i_predictor, int val);
 
     bool NeedsPreprocessing(int i_step, int i_predictor)
     {
@@ -619,410 +451,135 @@ public:
         return m_Steps[i_step].Predictors[i_predictor].PreprocessMethod;
     }
 
-    bool SetPreprocessMethod(int i_step, int i_predictor, const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the preprocess method is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].PreprocessMethod = val;
-        return true;
-    }
+    bool SetPreprocessMethod(int i_step, int i_predictor, const wxString& val);
 
-    wxString GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset)
-    {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()>=(unsigned)(i_dataset+1))
-        {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds[i_dataset];
-        }
-        else
-        {
-            asLogError(_("Trying to access to an element outside of PreprocessDatasetIds in the parameters object."));
-            return wxEmptyString;
-        }
-    }
+    wxString GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset);
 
-    bool SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the preprocess dataset ID is null"));
-            return false;
-        }
+    bool SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val);
 
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()>=(unsigned)(i_dataset+1))
-        {
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds[i_dataset] = val;
-        }
-        else
-        {
-            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()==i_dataset);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.push_back(val);
-        }
+    wxString GetPreprocessDataId(int i_step, int i_predictor, int i_dataset);
 
-        return true;
-    }
+    bool SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString& val);
 
-    wxString GetPreprocessDataId(int i_step, int i_predictor, int i_dataset)
-    {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()>=(unsigned)(i_dataset+1))
-        {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds[i_dataset];
-        }
-        else
-        {
-            asLogError(_("Trying to access to an element outside of PreprocessDataIds in the parameters object."));
-            return wxEmptyString;
-        }
-    }
+    float GetPreprocessLevel(int i_step, int i_predictor, int i_dataset);
 
-    bool SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the preprocess data ID is null"));
-            return false;
-        }
+    bool SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val);
 
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()>=(unsigned)(i_dataset+1))
-        {
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds[i_dataset] = val;
-        }
-        else
-        {
-            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()==i_dataset);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessDataIds.push_back(val);
-        }
+    double GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset);
 
-        return true;
-    }
-
-    float GetPreprocessLevel(int i_step, int i_predictor, int i_dataset)
-    {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
-        {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
-        }
-        else
-        {
-            asLogError(_("Trying to access to an element outside of PreprocessLevels in the parameters object."));
-            return NaNFloat;
-        }
-    }
-
-    bool SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the preprocess level is null"));
-            return false;
-        }
-
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
-        {
-            m_Steps[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset] = val;
-        }
-        else
-        {
-            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.size()==i_dataset);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
-        }
-
-        return true;
-    }
-
-    double GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset)
-    {
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
-        {
-            return m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
-        }
-        else
-        {
-            asLogError(_("Trying to access to an element outside of PreprocessTimeHours (std) in the parameters object."));
-            return NaNDouble;
-        }
-    }
-
-    bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the preprocess time (hours) is null"));
-            return false;
-        }
-
-        if(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
-        {
-            m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
-        }
-        else
-        {
-            wxASSERT(m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()==i_dataset);
-            m_Steps[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
-        }
-
-        return true;
-    }
+    bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val);
 
     wxString GetPredictorDatasetId(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].DatasetId;
     }
 
-    bool SetPredictorDatasetId(int i_step, int i_predictor, const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the predictor dataset is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].DatasetId = val;
-        return true;
-    }
+    bool SetPredictorDatasetId(int i_step, int i_predictor, const wxString& val);
 
     wxString GetPredictorDataId(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].DataId;
     }
 
-    bool SetPredictorDataId(int i_step, int i_predictor, wxString val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the predictor data is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].DataId = val;
-        return true;
-    }
+    bool SetPredictorDataId(int i_step, int i_predictor, wxString val);
 
     float GetPredictorLevel(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].Level;
     }
 
-    bool SetPredictorLevel(int i_step, int i_predictor, float val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor level is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Level = val;
-        return true;
-    }
+    bool SetPredictorLevel(int i_step, int i_predictor, float val);
 
     wxString GetPredictorGridType(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].GridType;
     }
 
-    bool SetPredictorGridType(int i_step, int i_predictor, wxString val)
+    bool SetPredictorGridType(int i_step, int i_predictor, wxString val);
+
+    double GetPredictorXmin(int i_step, int i_predictor)
     {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the predictor grid type is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].GridType = val;
-        return true;
+        return m_Steps[i_step].Predictors[i_predictor].Xmin;
     }
 
-    double GetPredictorUmin(int i_step, int i_predictor)
+    bool SetPredictorXmin(int i_step, int i_predictor, double val);
+
+    int GetPredictorXptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Umin;
+        return m_Steps[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    bool SetPredictorUmin(int i_step, int i_predictor, double val)
+    bool SetPredictorXptsnb(int i_step, int i_predictor, int val);
+
+    double GetPredictorXstep(int i_step, int i_predictor)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor Umin is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Umin = val;
-        return true;
+        return m_Steps[i_step].Predictors[i_predictor].Xstep;
     }
 
-    int GetPredictorUptsnb(int i_step, int i_predictor)
+    bool SetPredictorXstep(int i_step, int i_predictor, double val);
+
+    double GetPredictorXshift(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Uptsnb;
+        return m_Steps[i_step].Predictors[i_predictor].Xshift;
     }
 
-    bool SetPredictorUptsnb(int i_step, int i_predictor, int val)
+    bool SetPredictorXshift(int i_step, int i_predictor, double val);
+
+    double GetPredictorYmin(int i_step, int i_predictor)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor points number on U is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Uptsnb = val;
-        return true;
+        return m_Steps[i_step].Predictors[i_predictor].Ymin;
     }
 
-    double GetPredictorUstep(int i_step, int i_predictor)
+    bool SetPredictorYmin(int i_step, int i_predictor, double val);
+
+    int GetPredictorYptsnb(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Ustep;
+        return m_Steps[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    bool SetPredictorUstep(int i_step, int i_predictor, double val)
+    bool SetPredictorYptsnb(int i_step, int i_predictor, int val);
+
+    double GetPredictorYstep(int i_step, int i_predictor)
     {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor U step is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Ustep = val;
-        return true;
+        return m_Steps[i_step].Predictors[i_predictor].Ystep;
     }
 
-    double GetPredictorUshift(int i_step, int i_predictor)
+    bool SetPredictorYstep(int i_step, int i_predictor, double val);
+
+    double GetPredictorYshift(int i_step, int i_predictor)
     {
-        return m_Steps[i_step].Predictors[i_predictor].Ushift;
+        return m_Steps[i_step].Predictors[i_predictor].Yshift;
     }
 
-    bool SetPredictorUshift(int i_step, int i_predictor, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor U shift is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Ushift = val;
-        return true;
-    }
-
-    double GetPredictorVmin(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].Vmin;
-    }
-
-    bool SetPredictorVmin(int i_step, int i_predictor, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor Vmin is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Vmin = val;
-        return true;
-    }
-
-    int GetPredictorVptsnb(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].Vptsnb;
-    }
-
-    bool SetPredictorVptsnb(int i_step, int i_predictor, int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor points number on V is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Vptsnb = val;
-        return true;
-    }
-
-    double GetPredictorVstep(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].Vstep;
-    }
-
-    bool SetPredictorVstep(int i_step, int i_predictor, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor V step is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Vstep = val;
-        return true;
-    }
-
-    double GetPredictorVshift(int i_step, int i_predictor)
-    {
-        return m_Steps[i_step].Predictors[i_predictor].Vshift;
-    }
-
-    bool SetPredictorVshift(int i_step, int i_predictor, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor V shift is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Vshift = val;
-        return true;
-    }
+    bool SetPredictorYshift(int i_step, int i_predictor, double val);
 
     int GetPredictorFlatAllowed(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].FlatAllowed;
     }
 
-    bool SetPredictorFlatAllowed(int i_step, int i_predictor, int val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the 'flat allowed' property is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].FlatAllowed = val;
-        return true;
-    }
+    bool SetPredictorFlatAllowed(int i_step, int i_predictor, int val);
 
     double GetPredictorTimeHours(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].TimeHours;
     }
 
-    bool SetPredictorTimeHours(int i_step, int i_predictor, double val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor time (hours) is null"));
-            return false;
-        }
-
-        m_Steps[i_step].Predictors[i_predictor].TimeHours = val;
-
-        return true;
-    }
+    bool SetPredictorTimeHours(int i_step, int i_predictor, double val);
 
     wxString GetPredictorCriteria(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].Criteria;
     }
 
-    bool SetPredictorCriteria(int i_step, int i_predictor, const wxString& val)
-    {
-        if (val.IsEmpty())
-        {
-            asLogError(_("The provided value for the predictor criteria is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Criteria = val;
-        return true;
-    }
+    bool SetPredictorCriteria(int i_step, int i_predictor, const wxString& val);
 
     float GetPredictorWeight(int i_step, int i_predictor)
     {
         return m_Steps[i_step].Predictors[i_predictor].Weight;
     }
 
-    bool SetPredictorWeight(int i_step, int i_predictor, float val)
-    {
-        if (asTools::IsNaN(val))
-        {
-            asLogError(_("The provided value for the predictor weight is null"));
-            return false;
-        }
-        m_Steps[i_step].Predictors[i_predictor].Weight = val;
-        return true;
-    }
+    bool SetPredictorWeight(int i_step, int i_predictor, float val);
 
     int GetStepsNb()
     {
@@ -1042,6 +599,11 @@ public:
 
 
 protected:
+    wxString m_MethodId;
+    wxString m_MethodIdDisplay;
+    wxString m_SpecificTag;
+    wxString m_SpecificTagDisplay;
+    wxString m_Description;
     double m_ArchiveStart;
     double m_ArchiveEnd;
     int m_TimeArrayAnalogsIntervalDays;

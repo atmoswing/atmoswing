@@ -1595,8 +1595,8 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
 
         // Get real rectangle
         vrRealRect realRect;
-        bool success = coord->ConvertFromPixels(msg->m_Rect, realRect);
-        wxASSERT(success == true);
+        coord->ConvertFromPixels(msg->m_Rect, realRect);
+        wxASSERT(realRect.IsOk());
 
         // Get fitted rectangle
         vrRealRect fittedRect =coord->GetRectFitted(realRect);
@@ -1618,8 +1618,8 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
 
         // Get real rectangle
         vrRealRect realRect;
-        bool success = coord->ConvertFromPixels(msg->m_Rect, realRect);
-        wxASSERT(success == true);
+        wxASSERT(coord->ConvertFromPixels(msg->m_Rect, realRect));
+        coord->ConvertFromPixels(msg->m_Rect, realRect);
 
         // Get fitted rectangle
         vrRealRect fittedRect = coord->GetRectFitted(realRect);
@@ -1728,7 +1728,7 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
     }
     else
     {
-        asLogError(_("Operation not supported now"));
+        asLogError(_("Operation not supported now. Please contact the developers."));
     }
 
     wxDELETE(msg);
@@ -1835,7 +1835,7 @@ void asFrameForecast::DrawPlotStation( int station )
 void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 {
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
-    m_PanelSidebarForecasts->AddForecast(forecast->GetModelName(), forecast->GetLeadTimeOriginString(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
+    m_PanelSidebarForecasts->AddForecast(forecast->GetMethodId(), forecast->GetMethodIdDisplay(), forecast->GetSpecificTag(), forecast->GetSpecificTagDisplay(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
 
     if (event.GetString().IsSameAs("last"))
     {

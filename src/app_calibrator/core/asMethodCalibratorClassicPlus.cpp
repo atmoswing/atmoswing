@@ -152,33 +152,33 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
             }
 
             // Get spatial boundaries
-            double predictorUminLowerLimit = params.GetPredictorUminLowerLimit(i_step, 0);
-            double predictorUminUpperLimit = params.GetPredictorUminUpperLimit(i_step, 0);
-            double predictorUminIteration = params.GetPredictorUminIteration(i_step, 0);
-            int predictorUptsnbIteration = params.GetPredictorUptsnbIteration(i_step, 0);
-            int predictorUptsnbLowerLimit = params.GetPredictorUptsnbLowerLimit(i_step, 0);
-            int predictorUptsnbUpperLimit = params.GetPredictorUptsnbUpperLimit(i_step, 0);
-            double predictorVminLowerLimit = params.GetPredictorVminLowerLimit(i_step, 0);
-            double predictorVminUpperLimit = params.GetPredictorVminUpperLimit(i_step, 0);
-            double predictorVminIteration = params.GetPredictorVminIteration(i_step, 0);
-            int predictorVptsnbIteration = params.GetPredictorVptsnbIteration(i_step, 0);
-            int predictorVptsnbLowerLimit = params.GetPredictorVptsnbLowerLimit(i_step, 0);
-            int predictorVptsnbUpperLimit = params.GetPredictorVptsnbUpperLimit(i_step, 0);
+            double predictorXminLowerLimit = params.GetPredictorXminLowerLimit(i_step, 0);
+            double predictorXminUpperLimit = params.GetPredictorXminUpperLimit(i_step, 0);
+            double predictorXminIteration = params.GetPredictorXminIteration(i_step, 0);
+            int predictorXptsnbIteration = params.GetPredictorXptsnbIteration(i_step, 0);
+            int predictorXptsnbLowerLimit = params.GetPredictorXptsnbLowerLimit(i_step, 0);
+            int predictorXptsnbUpperLimit = params.GetPredictorXptsnbUpperLimit(i_step, 0);
+            double predictorYminLowerLimit = params.GetPredictorYminLowerLimit(i_step, 0);
+            double predictorYminUpperLimit = params.GetPredictorYminUpperLimit(i_step, 0);
+            double predictorYminIteration = params.GetPredictorYminIteration(i_step, 0);
+            int predictorYptsnbIteration = params.GetPredictorYptsnbIteration(i_step, 0);
+            int predictorYptsnbLowerLimit = params.GetPredictorYptsnbLowerLimit(i_step, 0);
+            int predictorYptsnbUpperLimit = params.GetPredictorYptsnbUpperLimit(i_step, 0);
 
             for (int i_ptor=0; i_ptor<ptorsNb; i_ptor++)
             {
-                predictorUminLowerLimit = wxMax(predictorUminLowerLimit, params.GetPredictorUminLowerLimit(i_step, i_ptor));
-                predictorUminUpperLimit = wxMin(predictorUminUpperLimit, params.GetPredictorUminUpperLimit(i_step, i_ptor));
-                predictorUminIteration = wxMin(predictorUminIteration, params.GetPredictorUminIteration(i_step, i_ptor));
-                predictorUptsnbIteration = wxMin(predictorUptsnbIteration, params.GetPredictorUptsnbIteration(i_step, i_ptor));
-                predictorUptsnbLowerLimit = wxMax(predictorUptsnbLowerLimit, params.GetPredictorUptsnbLowerLimit(i_step, i_ptor));
-                predictorUptsnbUpperLimit = wxMin(predictorUptsnbUpperLimit, params.GetPredictorUptsnbUpperLimit(i_step, i_ptor));
-                predictorVminLowerLimit = wxMax(predictorVminLowerLimit, params.GetPredictorVminLowerLimit(i_step, i_ptor));
-                predictorVminUpperLimit = wxMin(predictorVminUpperLimit, params.GetPredictorVminUpperLimit(i_step, i_ptor));
-                predictorVminIteration = wxMin(predictorVminIteration, params.GetPredictorVminIteration(i_step, i_ptor));
-                predictorVptsnbIteration = wxMin(predictorVptsnbIteration, params.GetPredictorVptsnbIteration(i_step, i_ptor));
-                predictorVptsnbLowerLimit = wxMax(predictorVptsnbLowerLimit, params.GetPredictorVptsnbLowerLimit(i_step, i_ptor));
-                predictorVptsnbUpperLimit = wxMax(predictorVptsnbUpperLimit, params.GetPredictorVptsnbUpperLimit(i_step, i_ptor));
+                predictorXminLowerLimit = wxMax(predictorXminLowerLimit, params.GetPredictorXminLowerLimit(i_step, i_ptor));
+                predictorXminUpperLimit = wxMin(predictorXminUpperLimit, params.GetPredictorXminUpperLimit(i_step, i_ptor));
+                predictorXminIteration = wxMin(predictorXminIteration, params.GetPredictorXminIteration(i_step, i_ptor));
+                predictorXptsnbIteration = wxMin(predictorXptsnbIteration, params.GetPredictorXptsnbIteration(i_step, i_ptor));
+                predictorXptsnbLowerLimit = wxMax(predictorXptsnbLowerLimit, params.GetPredictorXptsnbLowerLimit(i_step, i_ptor));
+                predictorXptsnbUpperLimit = wxMin(predictorXptsnbUpperLimit, params.GetPredictorXptsnbUpperLimit(i_step, i_ptor));
+                predictorYminLowerLimit = wxMax(predictorYminLowerLimit, params.GetPredictorYminLowerLimit(i_step, i_ptor));
+                predictorYminUpperLimit = wxMin(predictorYminUpperLimit, params.GetPredictorYminUpperLimit(i_step, i_ptor));
+                predictorYminIteration = wxMin(predictorYminIteration, params.GetPredictorYminIteration(i_step, i_ptor));
+                predictorYptsnbIteration = wxMin(predictorYptsnbIteration, params.GetPredictorYptsnbIteration(i_step, i_ptor));
+                predictorYptsnbLowerLimit = wxMax(predictorYptsnbLowerLimit, params.GetPredictorYptsnbLowerLimit(i_step, i_ptor));
+                predictorYptsnbUpperLimit = wxMax(predictorYptsnbUpperLimit, params.GetPredictorYptsnbUpperLimit(i_step, i_ptor));
             }
 
             // Set the same analogs number at the step level and at the score level.
@@ -206,20 +206,20 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
             }
             params.FixAnalogsNb();
 
-            if (predictorUminIteration!=0 || predictorUptsnbIteration!=0 || predictorVminIteration!=0 || predictorVptsnbIteration!=0)
+            if (predictorXminIteration!=0 || predictorXptsnbIteration!=0 || predictorYminIteration!=0 || predictorYptsnbIteration!=0)
             {
                 // Set the minimal size
                 for (int i_ptor=0; i_ptor<ptorsNb; i_ptor++)
                 {
                     if (params.GetPredictorFlatAllowed(i_step, i_ptor))
                     {
-                        params.SetPredictorUptsnb(i_step, i_ptor, 1);
-                        params.SetPredictorVptsnb(i_step, i_ptor, 1);
+                        params.SetPredictorXptsnb(i_step, i_ptor, 1);
+                        params.SetPredictorYptsnb(i_step, i_ptor, 1);
                     }
                     else
                     {
-                        params.SetPredictorUptsnb(i_step, i_ptor, predictorUptsnbLowerLimit);
-                        params.SetPredictorVptsnb(i_step, i_ptor, predictorVptsnbLowerLimit);
+                        params.SetPredictorXptsnb(i_step, i_ptor, predictorXptsnbLowerLimit);
+                        params.SetPredictorYptsnb(i_step, i_ptor, predictorYptsnbLowerLimit);
                     }
                 }
 
@@ -228,17 +228,17 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 // Build map to explore
                 ClearTemp();
 
-                for (int i_u=0; i_u<=((predictorUminUpperLimit-predictorUminLowerLimit)/(predictorUminIteration*stepsLonPertinenceMap)); i_u++)
+                for (int i_x=0; i_x<=((predictorXminUpperLimit-predictorXminLowerLimit)/(predictorXminIteration*stepsLonPertinenceMap)); i_x++)
                 {
-                    for (int i_v=0; i_v<=((predictorVminUpperLimit-predictorVminLowerLimit)/(predictorVminIteration*stepsLatPertinenceMap)); i_v++)
+                    for (int i_y=0; i_y<=((predictorYminUpperLimit-predictorYminLowerLimit)/(predictorYminIteration*stepsLatPertinenceMap)); i_y++)
                     {
-                        double u = predictorUminLowerLimit+(predictorUminIteration*stepsLonPertinenceMap)*i_u;
-                        double v = predictorVminLowerLimit+(predictorVminIteration*stepsLatPertinenceMap)*i_v;
+                        double x = predictorXminLowerLimit+(predictorXminIteration*stepsLonPertinenceMap)*i_x;
+                        double y = predictorYminLowerLimit+(predictorYminIteration*stepsLatPertinenceMap)*i_y;
 // TODO (phorton#5#): This is not exact for unregular grids... Improve this approach !
                         for (int i_ptor=0; i_ptor<ptorsNb; i_ptor++)
                         {
-                            params.SetPredictorUmin(i_step, i_ptor, u);
-                            params.SetPredictorVmin(i_step, i_ptor, v);
+                            params.SetPredictorXmin(i_step, i_ptor, x);
+                            params.SetPredictorYmin(i_step, i_ptor, y);
 
                             // Fixes and checks
                             params.FixWeights();
@@ -318,7 +318,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 wxASSERT(m_Parameters.size()==1);
                 ClearTemp();
 
-                asLogMessageImportant(wxString::Format(_("Best point on relevance map: %.2f lat, %.2f lon"), m_Parameters[m_Parameters.size()-1].GetPredictorVmin(i_step, 0), m_Parameters[m_Parameters.size()-1].GetPredictorUmin(i_step, 0)));
+                asLogMessageImportant(wxString::Format(_("Best point on relevance map: %.2f lat, %.2f lon"), m_Parameters[m_Parameters.size()-1].GetPredictorYmin(i_step, 0), m_Parameters[m_Parameters.size()-1].GetPredictorXmin(i_step, 0)));
 
                 // Resize domain
                 asLogState(wxString::Format(_("Calibration: resize the spatial domain for every predictor (station %s)."), GetPredictandStationIdsList(stationId).c_str()));
@@ -328,8 +328,8 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 bool isover = false;
                 while (!isover)
                 {
-                    double utmp, vtmp;
-                    int uptsnbtmp, vptsnbtmp;
+                    double xtmp, ytmp;
+                    int xptsnbtmp, yptsnbtmp;
                     isover = true;
 
                     ClearTemp();
@@ -345,33 +345,33 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                             {
                                 case 0:
                                     // Enlarge top
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)+predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)+predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
                                     break;
                                 case 1:
                                     // Enlarge right
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)+predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)+predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
                                     break;
                                 case 2:
                                     // Enlarge bottom
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)+predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)+predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 3:
                                     // Enlarge left
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)+predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)+predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 default:
                                     asLogError(_("Resizing not correctly defined."));
@@ -457,8 +457,8 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                 asLogState(wxString::Format(_("Calibration: reshape again the spatial domain for every predictor (station %s)."), GetPredictandStationIdsList(stationId).c_str()));
 
                 // Try other moves. No while loop but reinitialize the for loops
-                double utmp, vtmp;
-                int uptsnbtmp, vptsnbtmp;
+                double xtmp, ytmp;
+                int xptsnbtmp, yptsnbtmp;
 
                 ClearTemp();
 
@@ -477,189 +477,189 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                             {
                                 case 0:
                                     // Enlarge all
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)+2*multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)+2*multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)+2*multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)+2*multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(ytmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 1:
                                     // Reduce all
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)-2*multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)-2*multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)+multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)+multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)-2*multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)-2*multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)+multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)+multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 2:
                                     // Reduce top
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)-multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)-multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
                                     break;
                                 case 3:
                                     // Reduce right
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)-multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)-multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
                                     break;
                                 case 4:
                                     // Reduce bottom
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)-multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)+multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)-multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)+multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 5:
                                     // Reduce left
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)-multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)+multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)-multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)+multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 6:
                                     // Reduce top & bottom
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)-2*multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)+multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)-2*multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)+multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 7:
                                     // Reduce right & left
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)-2*multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)+multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)-2*multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)+multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 8:
                                     // Enlarge top
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)+multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)+multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
                                     break;
                                 case 9:
                                     // Enlarge right
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)+multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)+multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
                                     break;
                                 case 10:
                                     // Enlarge bottom
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)+multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)+multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 11:
                                     // Enlarge left
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)+multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)+multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 12:
                                     // Enlarge top & bottom
-                                    vptsnbtmp = params.GetPredictorVptsnb(i_step, i_ptor)+2*multipleFactor*predictorVptsnbIteration;
-                                    vptsnbtmp = wxMax(wxMin(vptsnbtmp, predictorVptsnbUpperLimit), predictorVptsnbLowerLimit);
-                                    params.SetPredictorVptsnb(i_step, i_ptor, vptsnbtmp);
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor)+2*multipleFactor*predictorYptsnbIteration;
+                                    yptsnbtmp = wxMax(wxMin(yptsnbtmp, predictorYptsnbUpperLimit), predictorYptsnbLowerLimit);
+                                    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 13:
                                     // Enlarge right & left
-                                    uptsnbtmp = params.GetPredictorUptsnb(i_step, i_ptor)+2*multipleFactor*predictorUptsnbIteration;
-                                    uptsnbtmp = wxMax(wxMin(uptsnbtmp, predictorUptsnbUpperLimit), predictorUptsnbLowerLimit);
-                                    params.SetPredictorUptsnb(i_step, i_ptor, uptsnbtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor)+2*multipleFactor*predictorXptsnbIteration;
+                                    xptsnbtmp = wxMax(wxMin(xptsnbtmp, predictorXptsnbUpperLimit), predictorXptsnbLowerLimit);
+                                    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 14:
                                     // Move top
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)+multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)+multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 15:
                                     // Move right
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)+multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)+multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 16:
                                     // Move bottom
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     break;
                                 case 17:
                                     // Move left
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 18:
                                     // Move top-left
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)+multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)+multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 19:
                                     // Move top-right
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)+multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)+multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)+multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)+multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 20:
                                     // Move bottom-left
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)-multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)-multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
                                 case 21:
                                     // Move bottom-right
-                                    vtmp = params.GetPredictorVmin(i_step, i_ptor)-multipleFactor*predictorVminIteration;
-                                    vtmp = wxMax(wxMin(vtmp, predictorVminUpperLimit), predictorVminLowerLimit);
-                                    params.SetPredictorVmin(i_step, i_ptor, vtmp);
-                                    utmp = params.GetPredictorUmin(i_step, i_ptor)+multipleFactor*predictorUminIteration;
-                                    utmp = wxMax(wxMin(utmp, predictorUminUpperLimit), predictorUminLowerLimit);
-                                    params.SetPredictorUmin(i_step, i_ptor, utmp);
+                                    ytmp = params.GetPredictorYmin(i_step, i_ptor)-multipleFactor*predictorYminIteration;
+                                    ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
+                                    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+                                    xtmp = params.GetPredictorXmin(i_step, i_ptor)+multipleFactor*predictorXminIteration;
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;
 
                                 default:
@@ -763,11 +763,11 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
             {
                 asLogError(_("The final dates selection contains NaNs"));
 
-                double tmpVmin = m_Parameters[m_Parameters.size()-1].GetPredictorVmin(i_step, 0);
-                double tmpUmin = m_Parameters[m_Parameters.size()-1].GetPredictorUmin(i_step, 0);
-                int tmpVptsnb = m_Parameters[m_Parameters.size()-1].GetPredictorVptsnb(i_step, 0);
-                int tmpUptsnb = m_Parameters[m_Parameters.size()-1].GetPredictorUptsnb(i_step, 0);
-                asLogMessageImportant(wxString::Format(_("Area: Vmin = %.2f, Vptsnb = %d, Umin = %.2f, Uptsnb = %d"), tmpVmin, tmpVptsnb, tmpUmin, tmpUptsnb ));
+                double tmpYmin = m_Parameters[m_Parameters.size()-1].GetPredictorYmin(i_step, 0);
+                double tmpXmin = m_Parameters[m_Parameters.size()-1].GetPredictorXmin(i_step, 0);
+                int tmpYptsnb = m_Parameters[m_Parameters.size()-1].GetPredictorYptsnb(i_step, 0);
+                int tmpXptsnb = m_Parameters[m_Parameters.size()-1].GetPredictorXptsnb(i_step, 0);
+                asLogMessageImportant(wxString::Format(_("Area: Ymin = %.2f, Yptsnb = %d, Xmin = %.2f, Xptsnb = %d"), tmpYmin, tmpYptsnb, tmpXmin, tmpXptsnb ));
 
 
                 return false;

@@ -108,11 +108,6 @@ public:
         return m_CritSectionConfig;
     }
 
-    wxCriticalSection& CritSectionTiCPP()
-    {
-        return m_CritSectionTiCPP;
-    }
-
     wxCriticalSection& CritSectionPreloadedData()
     {
         return m_CritSectionPreloadedData;
@@ -151,7 +146,6 @@ private:
     wxCriticalSection m_CritSectionPreloadedData;
     wxCriticalSection m_CritSectionNetCDF;
     wxCriticalSection m_CritSectionConfig;
-    wxCriticalSection m_CritSectionTiCPP;
     wxSemaphore m_SemAllDone; //!< Member variable "m_SemAllDone". Semaphore used to wait for the threads to exit.
     bool m_WaitingUntilAllDone; //!< Member variable "m_WaitingUntilAllDone". The last exiting thread should post to m_semAllDone if this is true.
     bool m_Cancelled;

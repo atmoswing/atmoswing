@@ -28,25 +28,136 @@
 #ifndef ASLISTBOXMODELS_H
 #define ASLISTBOXMODELS_H
 
-#include <wx/listbox.h>
+#include <wx/treectrl.h>
 
 #include "asIncludes.h"
 
 class asForecastViewer;
 
-class asListBoxModels : public wxListBox
+
+class asModelTreeItemData : public wxTreeItemData
 {
 public:
-    asListBoxModels(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL, long style = 0);
+    asModelTreeItemData(const wxString& methodId, DataParameter dataParameter, bool isAggregator = false);
+
+    void ShowInfo(wxTreeCtrl *tree);
+
+    bool IsAggregator()
+    {
+        return m_IsAggregator;
+    }
+
+    int GetModelId() 
+    { 
+        return m_ModelId; 
+    }
+
+    void SetModelId(int modelId)
+    {
+        m_ModelId = modelId;
+    }
+
+    wxString const& GetMethodId() const 
+    { 
+        return m_MethodId; 
+    }
+
+    void SetMethodId(wxString const& methodId)
+    {
+        m_MethodId = methodId;
+    }
+
+    wxString const& GetMethodIdDisplay() const 
+    { 
+        return m_MethodIdDisplay; 
+    }
+
+    void SetMethodIdDisplay(wxString const& methodIdDisplay)
+    {
+        m_MethodIdDisplay = methodIdDisplay;
+    }
+
+    wxString const& GetSpecificTag() const 
+    { 
+        return m_SpecificTag; 
+    }
+
+    void SetSpecificTag(wxString const& specificTag)
+    {
+        m_SpecificTag = specificTag;
+    }
+
+    wxString const& GetSpecificTagDisplay() const 
+    { 
+        return m_SpecificTagDisplay; 
+    }
+
+    void SetSpecificTagDisplay(wxString const& specificTagDisplay)
+    {
+        m_SpecificTagDisplay = specificTagDisplay;
+    }
+
+    DataParameter const& GetDataParameter() const 
+    { 
+        return m_DataParameter; 
+    }
+
+    void SetDataParameter(DataParameter dataParameter)
+    {
+        m_DataParameter = dataParameter;
+    }
+
+    DataTemporalResolution const& GetDataTemporalResolution() const 
+    { 
+        return m_DataTemporalResolution; 
+    }
+
+    void SetDataTemporalResolution(DataTemporalResolution dataTemporalResolution)
+    {
+        m_DataTemporalResolution = dataTemporalResolution;
+    }
+
+private:
+    bool m_IsAggregator;
+    int m_ModelId;
+    wxString m_MethodId;
+    wxString m_MethodIdDisplay;
+    wxString m_SpecificTag;
+    wxString m_SpecificTagDisplay;
+    DataParameter m_DataParameter;
+    DataTemporalResolution m_DataTemporalResolution;
+};
+
+
+class asListBoxModels : public wxTreeCtrl
+{
+public:
+    enum
+    {
+        TreeCtrlIcon_Precipitation,
+        TreeCtrlIcon_Temperature,
+        TreeCtrlIcon_Lightnings,
+        TreeCtrlIcon_Wind,
+        TreeCtrlIcon_Other
+    };
+
+    asListBoxModels(wxWindow *parent, wxWindowID id=wxID_ANY, const wxPoint &pos=wxDefaultPosition, const wxSize &size=wxDefaultSize);
     virtual ~asListBoxModels();
-    bool Add(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
+    void CreateImageList();
+    bool Add(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
+    void Clear();
+    void SetSelection(int modelId);
 
 protected:
 
 private:
-    void OnModelSlctChange( wxCommandEvent & event );
+    int m_Counter;
+    bool m_SkipSlctChangeEvent;
+
+    void OnModelSlctChange( wxTreeEvent& event );
 
     DECLARE_EVENT_TABLE();
 };
+
 
 #endif // ASLISTBOXMODELS_H

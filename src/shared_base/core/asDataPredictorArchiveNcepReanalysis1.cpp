@@ -54,16 +54,16 @@ asDataPredictorArchive(dataId)
     m_NanValues.push_back(32767);
     m_NanValues.push_back(936*std::pow(10.f,34.f));
     m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0;
-    m_VaxisShift = 0;
+    m_XaxisShift = 0;
+    m_YaxisShift = 0;
     m_FileAxisLatName = "lat";
     m_FileAxisLonName = "lon";
     m_FileAxisTimeName = "time";
     m_FileAxisLevelName = "level";
 
     // The axis steps are defined here for regular grids and will be overridden for unregular grids.
-    m_UaxisStep = 2.5;
-    m_VaxisStep = 2.5;
+    m_XaxisStep = 2.5;
+    m_YaxisStep = 2.5;
 
     // Identify data ID and set the corresponding properties.
     if (m_DataId.IsSameAs("hgt", false))
@@ -212,8 +212,8 @@ asDataPredictorArchive(dataId)
     }
     else
     {
-        m_UaxisStep = NaNFloat;
-        m_VaxisStep = NaNFloat;
+        m_XaxisStep = NaNFloat;
+        m_YaxisStep = NaNFloat;
 
         if (m_DataId.IsSameAs("flux_air2m", false))
         {
@@ -622,23 +622,23 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             if (dataArea)
             {
                 // Get the spatial extent
-                float lonMin = dataArea->GetUaxisCompositeStart(i_area);
-                float lonMax = dataArea->GetUaxisCompositeEnd(i_area);
-                float latMinStart = dataArea->GetVaxisCompositeStart(i_area);
-                float latMinEnd = dataArea->GetVaxisCompositeEnd(i_area);
+                float lonMin = dataArea->GetXaxisCompositeStart(i_area);
+                float lonMax = dataArea->GetXaxisCompositeEnd(i_area);
+                float latMinStart = dataArea->GetYaxisCompositeStart(i_area);
+                float latMinEnd = dataArea->GetYaxisCompositeEnd(i_area);
 
                 // The dimensions lengths
-                indexLengthLon = dataArea->GetUaxisCompositePtsnb(i_area);
-                indexLengthLat = dataArea->GetVaxisCompositePtsnb(i_area);
+                indexLengthLon = dataArea->GetXaxisCompositePtsnb(i_area);
+                indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
-                if(lonMax==dataArea->GetAxisUmax())
+                if(lonMax==dataArea->GetAxisXmax())
                 {
                     // Correction if the lon 360 degrees is required (doesn't exist)
                     load360 = true;
                     for (int i_check = 0; i_check<compositeData.size(); i_check++)
                     {
                         // If so, already loaded in another composite
-                        if(dataArea->GetComposite(i_check).GetUmin() == 0)
+                        if(dataArea->GetComposite(i_check).GetXmin() == 0)
                         {
                             load360 = false;
                         }

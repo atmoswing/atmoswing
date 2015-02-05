@@ -46,22 +46,22 @@ TEST(Gradients)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    double Umin = 10;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 5;
+    double Xmin = 10;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 5;
     double step = 2.5;
     double level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    CHECK_CLOSE(10, geoarea.GetUmin(), 0.01);
-    CHECK_CLOSE(20, geoarea.GetUmax(), 0.01);
-    CHECK_CLOSE(35, geoarea.GetVmin(), 0.01);
-    CHECK_CLOSE(40, geoarea.GetVmax(), 0.01);
-    CHECK_CLOSE(5, geoarea.GetUaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(3, geoarea.GetVaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetUstep(), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetVstep(), 0.01);
+    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
+    CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
+    CHECK_CLOSE(35, geoarea.GetYmin(), 0.01);
+    CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
+    CHECK_CLOSE(5, geoarea.GetXaxisCompositePtsnb(0), 0.01);
+    CHECK_CLOSE(3, geoarea.GetYaxisCompositePtsnb(0), 0.01);
+    CHECK_CLOSE(2.5, geoarea.GetXstep(), 0.01);
+    CHECK_CLOSE(2.5, geoarea.GetYstep(), 0.01);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -178,22 +178,22 @@ TEST(GradientsMultithreading)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
-    double Umin = 10;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 5;
+    double Xmin = 10;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 5;
     double step = 2.5;
     double level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    CHECK_CLOSE(10, geoarea.GetUmin(), 0.01);
-    CHECK_CLOSE(20, geoarea.GetUmax(), 0.01);
-    CHECK_CLOSE(35, geoarea.GetVmin(), 0.01);
-    CHECK_CLOSE(40, geoarea.GetVmax(), 0.01);
-    CHECK_CLOSE(5, geoarea.GetUaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(3, geoarea.GetVaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetUstep(), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetVstep(), 0.01);
+    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
+    CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
+    CHECK_CLOSE(35, geoarea.GetYmin(), 0.01);
+    CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
+    CHECK_CLOSE(5, geoarea.GetXaxisCompositePtsnb(0), 0.01);
+    CHECK_CLOSE(3, geoarea.GetYaxisCompositePtsnb(0), 0.01);
+    CHECK_CLOSE(2.5, geoarea.GetXstep(), 0.01);
+    CHECK_CLOSE(2.5, geoarea.GetYstep(), 0.01);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);

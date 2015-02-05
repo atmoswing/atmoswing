@@ -236,36 +236,36 @@ public:
         return m_DatasetName;
     }
 
-    /** Access m_UaxisStep
-     * \return The current value of m_UaxisStep
+    /** Access m_XaxisStep
+     * \return The current value of m_XaxisStep
      */
-    double GetUaxisStep()
+    double GetXaxisStep()
     {
-        return m_UaxisStep;
+        return m_XaxisStep;
     }
 
-    /** Access m_UaxisShift
-     * \return The current value of m_UaxisShift
+    /** Access m_XaxisShift
+     * \return The current value of m_XaxisShift
      */
-    double GetUaxisShift()
+    double GetXaxisShift()
     {
-        return m_UaxisShift;
+        return m_XaxisShift;
     }
 
-    /** Access m_VaxisStep
-     * \return The current value of m_VaxisStep
+    /** Access m_YaxisStep
+     * \return The current value of m_YaxisStep
      */
-    double GetVaxisStep()
+    double GetYaxisStep()
     {
-        return m_VaxisStep;
+        return m_YaxisStep;
     }
 
-    /** Access m_VaxisShift
-     * \return The current value of m_VaxisShift
+    /** Access m_YaxisShift
+     * \return The current value of m_YaxisShift
      */
-    double GetVaxisShift()
+    double GetYaxisShift()
     {
-        return m_VaxisShift;
+        return m_YaxisShift;
     }
 
     /** Access m_CoordinateSystem
@@ -295,10 +295,10 @@ protected:
     DataParameter m_DataParameter;
     wxString m_FileVariableName;
     DataUnit m_Unit;
-    float m_UaxisStep;
-    float m_VaxisStep;
-    float m_UaxisShift;
-    float m_VaxisShift;
+    float m_XaxisStep;
+    float m_YaxisStep;
+    float m_XaxisShift;
+    float m_YaxisShift;
     float m_Level;
     Array1DDouble m_Time;
     VArray2DFloat m_Data;
@@ -316,6 +316,7 @@ protected:
     wxString m_FileAxisLonName;
     wxString m_FileAxisTimeName;
     wxString m_FileAxisLevelName;
+    wxString m_FileExtension;
         
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check

@@ -43,16 +43,16 @@ void asGeo::InitBounds()
     switch (m_CoordSys)
         {
         case WGS84:
-            m_AxisUmin = 0;
-            m_AxisUmax = 360;
-            m_AxisVmin = -90;
-            m_AxisVmax = 90;
+            m_AxisXmin = 0;
+            m_AxisXmax = 360;
+            m_AxisYmin = -90;
+            m_AxisYmax = 90;
             break;
         default:
-            m_AxisUmin = 0;
-            m_AxisUmax = 0;
-            m_AxisVmin = 0;
-            m_AxisVmax = 0;
+            m_AxisXmin = 0;
+            m_AxisXmax = 0;
+            m_AxisYmin = 0;
+            m_AxisYmax = 0;
         }
 }
 
@@ -61,37 +61,37 @@ bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
     switch (m_CoordSys)
         {
         case WGS84:
-            if(Point.v<m_AxisVmin)
+            if(Point.y<m_AxisYmin)
             {
                 if (ChangesAllowed == asEDIT_ALLOWED)
                 {
-                    Point.v = m_AxisVmin + (m_AxisVmin - Point.v);
-                    Point.u = Point.u + 180;
+                    Point.y = m_AxisYmin + (m_AxisYmin - Point.y);
+                    Point.x = Point.x + 180;
                 }
                 return false;
             }
-            if(Point.v>m_AxisVmax)
+            if(Point.y>m_AxisYmax)
             {
                 if (ChangesAllowed == asEDIT_ALLOWED)
                 {
-                    Point.v = m_AxisVmax + (m_AxisVmax - Point.v);
-                    Point.u = Point.u + 180;
+                    Point.y = m_AxisYmax + (m_AxisYmax - Point.y);
+                    Point.x = Point.x + 180;
                 }
                 return false;
             }
-            if(Point.u<m_AxisUmin)
+            if(Point.x<m_AxisXmin)
             {
                 if (ChangesAllowed == asEDIT_ALLOWED)
                 {
-                    Point.u += m_AxisUmax;
+                    Point.x += m_AxisXmax;
                 }
                 return false;
             }
-            if(Point.u>m_AxisUmax)
+            if(Point.x>m_AxisXmax)
             {
                 if (ChangesAllowed == asEDIT_ALLOWED)
                 {
-                    Point.u -= m_AxisUmax;
+                    Point.x -= m_AxisXmax;
                 }
                 return false;
             }
@@ -190,12 +190,12 @@ Coo asGeo::ProjWGS84toCH1903(Coo coo_src)
     // http://spatialreference.org/ref/epsg/21781/
     // based on: cs2cs +proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs +to +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs
 
-    projUV data;
+    projXY data;
     double height = 0;
     Coo coo_dst;
 
-    data.u = coo_src.u;
-    data.v = coo_src.v;
+    data.u = coo_src.x;
+    data.v = coo_src.y;
     data.u *= DEG_TO_RAD;
     data.v *= DEG_TO_RAD;
 
@@ -219,8 +219,8 @@ Coo asGeo::ProjWGS84toCH1903(Coo coo_src)
 
     if (data.u != HUGE_VAL)
     {
-        coo_dst.u = data.u;
-        coo_dst.v = data.v;
+        coo_dst.x = data.u;
+        coo_dst.y = data.v;
     }
     else
     {
@@ -240,12 +240,12 @@ Coo asGeo::ProjCH1903toWGS84(Coo coo_src)
     // http://spatialreference.org/ref/epsg/21781/
     // based on: cs2cs +proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs +to +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs
 
-    projUV data;
+    projXY data;
     double height = 0;
     Coo coo_dst;
 
-    data.u = coo_src.u;
-    data.v = coo_src.v;
+    data.u = coo_src.x;
+    data.v = coo_src.y;
 
     projPJ ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
     if (!ref_src) {
@@ -267,16 +267,16 @@ Coo asGeo::ProjCH1903toWGS84(Coo coo_src)
 
     if (data.u != HUGE_VAL)
     {
-        coo_dst.u = data.u;
-        coo_dst.v = data.v;
+        coo_dst.x = data.u;
+        coo_dst.y = data.v;
     }
     else
     {
         asThrowException(_("Projection transformation failed"));
     }
 
-    coo_dst.u *= RAD_TO_DEG;
-    coo_dst.v *= RAD_TO_DEG;
+    coo_dst.x *= RAD_TO_DEG;
+    coo_dst.y *= RAD_TO_DEG;
 
     // Memory associated with the projection is freed
     pj_free(ref_src);
@@ -290,12 +290,12 @@ Coo asGeo::ProjWGS84toCH1903p(Coo coo_src)
     // EPSG:2056
     // http://spatialreference.org/ref/epsg/2056/
 
-    projUV data;
+    projXY data;
     double height = 0;
     Coo coo_dst;
 
-    data.u = coo_src.u;
-    data.v = coo_src.v;
+    data.u = coo_src.x;
+    data.v = coo_src.y;
     data.u *= DEG_TO_RAD;
     data.v *= DEG_TO_RAD;
 
@@ -319,8 +319,8 @@ Coo asGeo::ProjWGS84toCH1903p(Coo coo_src)
 
     if (data.u != HUGE_VAL)
     {
-        coo_dst.u = data.u;
-        coo_dst.v = data.v;
+        coo_dst.x = data.u;
+        coo_dst.y = data.v;
     }
     else
     {
@@ -339,12 +339,12 @@ Coo asGeo::ProjCH1903ptoWGS84(Coo coo_src)
     // EPSG:2056
     // http://spatialreference.org/ref/epsg/2056/
 
-    projUV data;
+    projXY data;
     double height = 0;
     Coo coo_dst;
 
-    data.u = coo_src.u;
-    data.v = coo_src.v;
+    data.u = coo_src.x;
+    data.v = coo_src.y;
 
     projPJ ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
     if (!ref_src) {
@@ -366,16 +366,16 @@ Coo asGeo::ProjCH1903ptoWGS84(Coo coo_src)
 
     if (data.u != HUGE_VAL)
     {
-        coo_dst.u = data.u;
-        coo_dst.v = data.v;
+        coo_dst.x = data.u;
+        coo_dst.y = data.v;
     }
     else
     {
         asThrowException(_("Projection transformation failed"));
     }
 
-    coo_dst.u *= RAD_TO_DEG;
-    coo_dst.v *= RAD_TO_DEG;
+    coo_dst.x *= RAD_TO_DEG;
+    coo_dst.y *= RAD_TO_DEG;
 
     // Memory associated with the projection is freed
     pj_free(ref_src);
@@ -388,12 +388,12 @@ Coo asGeo::ProjCH1903ptoCH1903(Coo coo_src)
 {
     // EPSG:2056 & 21781
 
-    projUV data;
+    projXY data;
     double height = 0;
     Coo coo_dst;
 
-    data.u = coo_src.u;
-    data.v = coo_src.v;
+    data.u = coo_src.x;
+    data.v = coo_src.y;
 
     projPJ ref_src = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
     if (!ref_src) {
@@ -415,8 +415,8 @@ Coo asGeo::ProjCH1903ptoCH1903(Coo coo_src)
 
     if (data.u != HUGE_VAL)
     {
-        coo_dst.u = data.u;
-        coo_dst.v = data.v;
+        coo_dst.x = data.u;
+        coo_dst.y = data.v;
     }
     else
     {
@@ -434,12 +434,12 @@ Coo asGeo::ProjCH1903toCH1903p(Coo coo_src)
 {
     // EPSG:2056 & 21781
 
-    projUV data;
+    projXY data;
     double height = 0;
     Coo coo_dst;
 
-    data.u = coo_src.u;
-    data.v = coo_src.v;
+    data.u = coo_src.x;
+    data.v = coo_src.y;
 
     projPJ ref_src  = pj_init_plus("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs");
     if (!ref_src) {
@@ -461,8 +461,8 @@ Coo asGeo::ProjCH1903toCH1903p(Coo coo_src)
 
     if (data.u != HUGE_VAL)
     {
-        coo_dst.u = data.u;
-        coo_dst.v = data.v;
+        coo_dst.x = data.u;
+        coo_dst.y = data.v;
     }
     else
     {
