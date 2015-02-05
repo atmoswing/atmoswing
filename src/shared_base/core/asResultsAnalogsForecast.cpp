@@ -29,6 +29,7 @@
 
 #include "asFileNetcdf.h"
 #include "asThreadsManager.h"
+#include <wx/tokenzr.h>
 
 asResultsAnalogsForecast::asResultsAnalogsForecast()
 :
@@ -43,6 +44,7 @@ asResults()
     m_PredictandTemporalResolution = Daily;
     m_PredictandSpatialAggregation = Station;
     m_PredictandDatasetId = wxEmptyString;
+    m_PredictandDatabase = wxEmptyString;
 }
 
 asResultsAnalogsForecast::~asResultsAnalogsForecast()
@@ -180,6 +182,8 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     int dataSpatialAggregation = (int)m_PredictandSpatialAggregation;
     ncFile.PutAtt("predictand_spatial_aggregation", &dataSpatialAggregation);
     ncFile.PutAtt("predictand_dataset_id", m_PredictandDatasetId);
+    ncFile.PutAtt("predictand_database", m_PredictandDatabase);
+    ncFile.PutAtt("predictand_station_ids", GetPredictandStationIdsString());
     ncFile.PutAtt("method_id", m_MethodId);
     ncFile.PutAtt("method_id_display", m_MethodIdDisplay);
     ncFile.PutAtt("specific_tag", m_SpecificTag);
@@ -413,6 +417,13 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         m_PredictandTemporalResolution = (DataTemporalResolution)ncFile.GetAttInt("predictand_temporal_resolution");
         m_PredictandSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("predictand_spatial_aggregation");
         m_PredictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
+
+        if(version>=1.5)
+        {
+            m_PredictandDatabase = ncFile.GetAttString("predictand_database");
+            SetPredictandStationIds(ncFile.GetAttString("predictand_station_ids"));
+        }
+
         m_DateProcessed = ncFile.GetAttDouble("date_processed");
         m_LeadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
         m_HasReferenceValues = false;
@@ -668,4 +679,33 @@ wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat)
         stationName = wxString::Format("%s", m_StationsNames[i_stat].c_str());
     }
     return stationName;
+}
+
+wxString asResultsAnalogsForecast::GetPredictandStationIdsString()
+{
+    wxString Ids;
+
+    for (int i=0; i<m_PredictandStationIds.size(); i++)
+    {
+        Ids << m_PredictandStationIds[i];
+
+        if (i<m_PredictandStationIds.size()-1)
+        {
+            Ids.Append(",");
+        }
+    }
+
+    return Ids;
+}
+
+void asResultsAnalogsForecast::SetPredictandStationIds(wxString val)
+{
+    wxStringTokenizer tokenizer(val, ":,; ");
+    while ( tokenizer.HasMoreTokens() )
+    {
+        wxString token = tokenizer.GetNextToken();
+        long stationId;
+        token.ToLong(&stationId);
+        m_PredictandStationIds.push_back(stationId);
+    }
 }

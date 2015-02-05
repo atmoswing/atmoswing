@@ -236,7 +236,6 @@ bool asFrameMain::SaveBatchForecasts()
         m_BatchForecasts.AddModel();
 
         m_BatchForecasts.SetModelFileName(i, panel->GetParametersFileName());
-        m_BatchForecasts.SetModelPredictandDB(i, panel->GetPredictandDBName());
     }
 
     if(!m_BatchForecasts.Save())
@@ -268,8 +267,6 @@ bool asFrameMain::OpenBatchForecasts()
     {
         asPanelForecastingModel *panel = new asPanelForecastingModel( m_ScrolledWindowModels );
         panel->SetParametersFileName(m_BatchForecasts.GetModelFileName(i));
-        panel->SetPredictandDBName(m_BatchForecasts.GetModelPredictandDB(i));
-        panel->ReducePanel();
         panel->Layout();
         m_SizerModels->Add( panel, 0, wxALL|wxEXPAND, 5 );
         // Add to the array

@@ -100,14 +100,13 @@ bool asMethodForecasting::Manager()
                 if (g_Responsive) wxGetApp().Yield();
             #endif
 
-            // Set the content to data members
-            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
-            m_PredictandDBFilePath = predictandDBDir + DS + m_BatchForecasts->GetModelPredictandDB(i);
-
             // Load parameters
+            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
             asParametersForecast params;
             if(!params.LoadFromFile(m_ParamsFilePath)) return false;
             params.InitValues();
+
+            m_PredictandDBFilePath = predictandDBDir + DS + params.GetPredictandDatabase();
 
             #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();

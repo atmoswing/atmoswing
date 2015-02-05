@@ -128,18 +128,6 @@ public:
         m_ModelFileNames[i] = val;
     }
 
-    wxString GetModelPredictandDB(int i)
-    {
-        wxASSERT(m_ModelPredictandDBs.size()>i);
-        return m_ModelPredictandDBs[i];
-    }
-
-    void SetModelPredictandDB(int i, const wxString &val)
-    {
-        wxASSERT(m_ModelPredictandDBs.size()>i);
-        m_ModelPredictandDBs[i] = val;
-    }
-
 protected:
 private:
     bool m_HasChanged;
@@ -150,7 +138,6 @@ private:
     wxString m_PredictorsRealtimeDirectory;
     wxString m_PredictandDBDirectory;
     VectorString m_ModelFileNames;
-    VectorString m_ModelPredictandDBs;
 
 };
 

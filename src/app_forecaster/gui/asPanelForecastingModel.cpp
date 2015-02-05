@@ -43,11 +43,8 @@ asPanelForecastingModelVirtual( parent )
 
     // Set the buttons bitmaps
     m_BpButtonClose->SetBitmapLabel(img_close);
-    m_BpButtonReduce->SetBitmapLabel(img_shown);
 
-    m_Reduced = false;
-
-        // Fix the color of the file/dir pickers
+    // Fix the color of the file/dir pickers
     wxColour col = parent->GetParent()->GetBackgroundColour();
     if (col.IsOk())
     {
@@ -65,41 +62,6 @@ asPanelForecastingModelVirtual( parent )
     #endif
 }
 
-void asPanelForecastingModel::ReducePanel( wxCommandEvent& event )
-{
-    wxWindow* topFrame = m_PanelsManager->GetTopFrame(this);
-    topFrame->Freeze();
-
-    if(m_Reduced)
-    {
-        m_Reduced = false;
-        m_BpButtonReduce->SetBitmapLabel(img_shown);
-        m_SizerPanel->Show(m_SizerFields, true);
-    } else {
-        m_Reduced = true;
-        m_BpButtonReduce->SetBitmapLabel(img_hidden);
-        m_SizerPanel->Hide(m_SizerFields, true);
-    }
-
-    // Refresh elements
-    m_SizerPanel->Layout();
-    Layout();
-    GetSizer()->Fit(GetParent());
-    topFrame->Layout();
-    topFrame->Refresh();
-
-    topFrame->Thaw();
-}
-
-void asPanelForecastingModel::ReducePanel()
-{
-    m_Reduced = true;
-    m_BpButtonReduce->SetBitmapLabel(img_hidden);
-    m_SizerPanel->Hide(m_SizerFields, true);
-
-    m_PanelsManager->LayoutFrame(this);
-}
-
 void asPanelForecastingModel::ClosePanel( wxCommandEvent& event )
 {
     m_PanelsManager->RemovePanel(this);
@@ -113,6 +75,5 @@ bool asPanelForecastingModel::Layout()
 
 void asPanelForecastingModel::ChangeModelName( wxCommandEvent& event )
 {
-    wxFileName fileName(m_TextCtrlParametersFileName->GetValue());
-    m_StaticTextModelName->SetLabel(fileName.GetName());
+    //
 }
