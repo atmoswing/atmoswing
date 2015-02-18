@@ -36,6 +36,8 @@
 #include "vrrender.h"
 
 
+wxDEFINE_EVENT(asEVT_ACTION_FORECAST_MODEL_SELECT_FIRST, wxCommandEvent);
+
 asForecastViewer::asForecastViewer( asFrameForecast* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager)
 {
     m_Parent = parent;
@@ -112,29 +114,87 @@ wxArrayString asForecastViewer::GetPercentilesStringArray()
     return m_DisplayPercentiles;
 }
 
-void asForecastViewer::SetModel(int i)
+void asForecastViewer::FixModelSelection()
 {
-    m_ModelSelection = i;
+    if (m_ModelSelection<0 && m_ModelMultipleSelection.size()==0)
+    {
+        wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECT_FIRST);
+        m_Parent->ProcessWindowEvent(eventSlct);
+    }
+}
 
-    wxString model = m_ForecastManager->GetModelName(m_ModelSelection);
-    asLogMessage(wxString::Format(_("Selected model : %s."), model.c_str()));
+void asForecastViewer::SetModel(int id)
+{
+    m_ModelSelection = id;
+    m_ModelMultipleSelection.clear();
 
     Redraw();
 }
 
-void asForecastViewer::SetLastModel()
+void asForecastViewer::SetMultipleModels(VectorInt ids)
 {
-    SetModel(m_ForecastManager->GetModelsNb()-1);
+    m_ModelSelection = -1;
+    m_ModelMultipleSelection = ids;
+
+    Redraw();
+}
+
+bool asForecastViewer::ModelSelectionOk()
+{
+    if (m_ModelSelection<0)
+    {
+        if(m_ModelMultipleSelection.size()==0)
+        {
+            asLogError(_("No model was selected."));
+            return false;
+        }
+    }
+    else
+    {
+        if(m_ModelMultipleSelection.size()>0)
+        {
+            asLogError(_("Single and multiple models selection was enabled."));
+            return false;
+        }
+    }
+    return true;
+}
+
+bool asForecastViewer::MultipleModelsSelected()
+{
+    if(m_ModelMultipleSelection.size()>0)
+    {
+        return true;
+    }
+    return false;
 }
 
 wxString asForecastViewer::GetStationName(int i_stat)
 {
+    if (!ModelSelectionOk()) return wxEmptyString;
+
+    if (MultipleModelsSelected())
+    {
+        return m_ForecastManager->GetStationName(m_ModelMultipleSelection[0], i_stat);
+    }
+
     return m_ForecastManager->GetStationName(m_ModelSelection, i_stat);
 }
 
 float asForecastViewer::GetSelectedTargetDate()
 {
-    Array1DFloat targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+    if (!ModelSelectionOk()) return 0;
+
+    Array1DFloat targetDates;
+    if (MultipleModelsSelected())
+    {
+        targetDates = m_ForecastManager->GetCurrentForecast(m_ModelMultipleSelection[0])->GetTargetDates();
+    }
+    else
+    {
+        targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+    }
+
     wxASSERT(m_LeadTimeIndex>=0);
     if (m_LeadTimeIndex>=targetDates.size())
     {
@@ -147,7 +207,18 @@ void asForecastViewer::SetLeadTimeDate(float date)
 {
     if (date>0 && m_ModelSelection>0)
     {
-        Array1DFloat targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+        if (!ModelSelectionOk()) return;
+
+        Array1DFloat targetDates;
+        if (MultipleModelsSelected())
+        {
+            targetDates = m_ForecastManager->GetCurrentForecast(m_ModelMultipleSelection[0])->GetTargetDates();
+        }
+        else
+        {
+            targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+        }
+
         int index = asTools::SortedArraySearchClosest(&targetDates[0], &targetDates[targetDates.size()-1], date);
         if (index>=0)
         {
@@ -179,30 +250,62 @@ void asForecastViewer::SetPercentile(int i)
 void asForecastViewer::LoadPastForecast()
 {
     // Check that elements are selected
-    if ( (m_ModelSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if ( ((m_ModelSelection==-1) && (m_ModelMultipleSelection.size()==0)) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if (!ModelSelectionOk()) return;
     if ( m_ModelSelection >= m_ForecastManager->GetModelsNb() ) return;
-
-    m_ForecastManager->LoadPastForecast(m_ModelSelection);
+    
+    if (MultipleModelsSelected())
+    {
+        asLogError(_("LoadPastForecast not yet implemented for aggregators."));
+    }
+    else
+    {
+        m_ForecastManager->LoadPastForecast(m_ModelSelection);
+    }
 }
 
 void asForecastViewer::Redraw()
 {
     // Check that elements are selected
-    if ( (m_ModelSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if ( ((m_ModelSelection==-1) && (m_ModelMultipleSelection.size()==0)) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
     if ( m_ModelSelection >= m_ForecastManager->GetModelsNb() ) return;
     if ( (unsigned)m_ForecastDisplaySelection >= m_DisplayForecast.size() ) return;
     if ( m_Percentiles.size() != m_DisplayPercentiles.size() ) return;
     if ( m_ReturnPeriods.size() != m_DisplayForecast.size() ) return;
+    
+    // Get data
+    vector <asResultsAnalogsForecast*> forecasts;
+    if (!ModelSelectionOk()) return;
+    if (MultipleModelsSelected())
+    {
+        for (int i=0; i<m_ModelMultipleSelection.size(); i++)
+        {
+            forecasts.push_back(m_ForecastManager->GetCurrentForecast(m_ModelMultipleSelection[i]));
+        }
+    }
+    else
+    {
+        forecasts.push_back(m_ForecastManager->GetCurrentForecast(m_ModelSelection));
+    }
+
+    // Check data consistency
+    if (forecasts.size()>1)
+    {
+        for (int i=1; i<forecasts.size(); i++)
+        {
+            if(!forecasts[0]->IsCompatibleWith(forecasts[i])) return;
+        }
+    }
 
     // Create a memory layer
-    wxFileName memoryLayerName ("", _("Forecast"), "memory");
-    wxASSERT(memoryLayerName.GetExt() == "memory");
+    wxFileName memoryLayerNameSpecific ("", "Forecast - specific", "memory");
+    wxFileName memoryLayerNameOther ("", "Forecast - other", "memory");
 
     // Check if memory layer already added
     m_ViewerLayerManager->FreezeBegin();
     for (int i = 0; i < m_ViewerLayerManager->GetCount(); i++)
     {
-        if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerName)
+        if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific)
         {
             vrRenderer *renderer = m_ViewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -212,9 +315,18 @@ void asForecastViewer::Redraw()
             m_LayerManager->Close(layer);
         }
     }
-    
-    // Get data
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ModelSelection);
+    for (int i = 0; i < m_ViewerLayerManager->GetCount(); i++)
+    {
+        if (m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther)
+        {
+            vrRenderer *renderer = m_ViewerLayerManager->GetRenderer(i);
+            vrLayer *layer = renderer->GetLayer();
+            wxASSERT(renderer);
+            m_ViewerLayerManager->Remove(renderer);
+            // Close layer
+            m_LayerManager->Close(layer);
+        }
+    }
 
     // Get display option
     float percentile = m_Percentiles[m_PercentileSelection];
@@ -222,9 +334,9 @@ void asForecastViewer::Redraw()
 
     // Get reference axis index
     int indexReferenceAxis = asNOT_FOUND;
-    if (forecast->HasReferenceValues() && returnPeriod!=0)
+    if (forecasts[0]->HasReferenceValues() && returnPeriod!=0)
     {
-        Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
+        Array1DFloat forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
         indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriod);
         if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
@@ -243,45 +355,100 @@ void asForecastViewer::Redraw()
     // Display according to the chosen display type
     if (m_LeadTimeIndex==m_ForecastManager->GetLeadTimeLengthMax())
     {
-        // Create the layer
-        vrLayerVectorFcstRing * layer = new vrLayerVectorFcstRing();
-        if(layer->Create(memoryLayerName, wkbPoint)==false)
+        // Create the layers
+        vrLayerVectorFcstRing * layerSpecific = new vrLayerVectorFcstRing();
+        vrLayerVectorFcstRing * layerOther = new vrLayerVectorFcstRing();
+        if(layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)==false)
         {
             wxFAIL;
             m_ViewerLayerManager->FreezeEnd();
-            wxDELETE(layer);
+            wxDELETE(layerSpecific);
+            wxDELETE(layerOther);
+            return;
+        }
+        if(layerOther->Create(memoryLayerNameOther, wkbPoint)==false)
+        {
+            wxFAIL;
+            m_ViewerLayerManager->FreezeEnd();
+            wxDELETE(layerSpecific);
+            wxDELETE(layerOther);
             return;
         }
 
         // Set the maximum value
         if (m_ForecastDisplaySelection==0) // Only if the value option is selected, and not the ratio
         {
-            layer->SetMaxValue(colorbarMaxValue);
+            layerSpecific->SetMaxValue(colorbarMaxValue);
+            layerOther->SetMaxValue(colorbarMaxValue);
             m_LayerMaxValue = colorbarMaxValue;
         }
         else
         {
-            layer->SetMaxValue(1.0);
+            layerSpecific->SetMaxValue(1.0);
+            layerOther->SetMaxValue(1.0);
             m_LayerMaxValue = 1.0;
         }
 
         // Length of the lead time
-        int leadTimeSize = forecast->GetTargetDatesLength();
+        int leadTimeSize = forecasts[0]->GetTargetDatesLength();
 
         // Adding size field
         OGRFieldDefn fieldLeadTimeSize ("leadtimesize", OFTReal);
-        layer->AddField(fieldLeadTimeSize);
+        layerSpecific->AddField(fieldLeadTimeSize);
+        layerOther->AddField(fieldLeadTimeSize);
 
         // Adding a field for every lead time
         for (int i=0; i<leadTimeSize; i++)
         {
             OGRFieldDefn fieldLeadTime (wxString::Format("leadtime%d", i), OFTReal);
-            layer->AddField(fieldLeadTime);
+            layerSpecific->AddField(fieldLeadTime);
+            layerOther->AddField(fieldLeadTime);
         }
 
         // Adding features to the layer
-        for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
+        for (int i_stat=0; i_stat<forecasts[0]->GetStationsNb(); i_stat++)
         {
+            int currentId = forecasts[0]->GetStationId(i_stat);
+
+            // Select the accurate forecast
+            bool accurateForecast = false;
+            asResultsAnalogsForecast* forecast = NULL;
+            if (!MultipleModelsSelected())
+            {
+                forecast = forecasts[0];
+
+                VectorInt stationIds = forecast->GetPredictandStationIds();
+                for (int j=0; j<stationIds.size(); j++)
+                {
+                    if (stationIds[j]==currentId)
+                    {
+                        accurateForecast = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i=0; i<m_ModelMultipleSelection.size(); i++)
+                {
+                    VectorInt stationIds = forecasts[i]->GetPredictandStationIds();
+                    for (int j=0; j<stationIds.size(); j++)
+                    {
+                        if (stationIds[j]==currentId)
+                        {
+                            accurateForecast = true;
+                            forecast = forecasts[i];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(!forecast) {
+                asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecast->GetStationName(i_stat).c_str()));
+                continue;
+            }
+
             OGRPoint station;
             station.setX( forecast->GetStationLocCoordX(i_stat) );
             station.setY( forecast->GetStationLocCoordY(i_stat) );
@@ -347,53 +514,121 @@ void asForecastViewer::Redraw()
                 }
             }
 
-            layer->AddFeature(&station, &data);
+            if (accurateForecast)
+            {
+                layerSpecific->AddFeature(&station, &data);
+            }
+            else
+            {
+                layerOther->AddFeature(&station, &data);
+            }
         }
 
-        wxASSERT(layer);
-        m_LayerManager->Add(layer);
+        wxASSERT(layerSpecific);
+        wxASSERT(layerOther);
+        m_LayerManager->Add(layerSpecific);
+        m_LayerManager->Add(layerOther);
 
-        // Change default render
-        vrRenderVector * render = new vrRenderVector();
-        render->SetSize(1);
-        render->SetColorPen(*wxBLACK);
-
-        m_ViewerLayerManager->Add(-1, layer, render);
+        // Set renders
+        vrRenderVector * renderSpecific = new vrRenderVector();
+        vrRenderVector * renderOther = new vrRenderVector();
+        renderSpecific->SetSize(1);
+        renderOther->SetSize(1);
+        renderSpecific->SetColorPen(*wxBLACK);
+        renderOther->SetColorPen(wxColor(150, 150, 150));
+        
+        m_ViewerLayerManager->Add(-1, layerOther, renderOther);
+        m_ViewerLayerManager->Add(-1, layerSpecific, renderSpecific);
         m_ViewerLayerManager->FreezeEnd();
     }
     else
     {
         // Create the layer
-        vrLayerVectorFcstDots * layer = new vrLayerVectorFcstDots();
-        if(layer->Create(memoryLayerName, wkbPoint)==false)
+        vrLayerVectorFcstDots * layerSpecific = new vrLayerVectorFcstDots();
+        vrLayerVectorFcstDots * layerOther = new vrLayerVectorFcstDots();
+        if(layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)==false)
         {
             wxFAIL;
             m_ViewerLayerManager->FreezeEnd();
-            wxDELETE(layer);
+            wxDELETE(layerSpecific);
+            wxDELETE(layerOther);
+            return;
+        }
+        if(layerOther->Create(memoryLayerNameOther, wkbPoint)==false)
+        {
+            wxFAIL;
+            m_ViewerLayerManager->FreezeEnd();
+            wxDELETE(layerSpecific);
+            wxDELETE(layerOther);
             return;
         }
 
         // Set the maximum value
         if (m_ForecastDisplaySelection==0) // Only if the value option is selected, and not the ratio
         {
-            layer->SetMaxValue(colorbarMaxValue);
+            layerSpecific->SetMaxValue(colorbarMaxValue);
+            layerOther->SetMaxValue(colorbarMaxValue);
             m_LayerMaxValue = colorbarMaxValue;
         }
         else
         {
-            layer->SetMaxValue(1.0);
+            layerSpecific->SetMaxValue(1.0);
+            layerOther->SetMaxValue(1.0);
             m_LayerMaxValue = 1.0;
         }
 
         // Adding size field
         OGRFieldDefn fieldValueReal ("valueReal", OFTReal);
-        layer->AddField(fieldValueReal);
+        layerSpecific->AddField(fieldValueReal);
+        layerOther->AddField(fieldValueReal);
         OGRFieldDefn fieldValueNorm ("valueNorm", OFTReal);
-        layer->AddField(fieldValueNorm);
+        layerSpecific->AddField(fieldValueNorm);
+        layerOther->AddField(fieldValueNorm);
 
         // Adding features to the layer
-        for (int i_stat=0; i_stat<forecast->GetStationsNb(); i_stat++)
+        for (int i_stat=0; i_stat<forecasts[0]->GetStationsNb(); i_stat++)
         {
+            int currentId = forecasts[0]->GetStationId(i_stat);
+
+            // Select the accurate forecast
+            bool accurateForecast = false;
+            asResultsAnalogsForecast* forecast = NULL;
+            if (!MultipleModelsSelected())
+            {
+                forecast = forecasts[0];
+
+                VectorInt stationIds = forecast->GetPredictandStationIds();
+                for (int j=0; j<stationIds.size(); j++)
+                {
+                    if (stationIds[j]==currentId)
+                    {
+                        accurateForecast = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i=0; i<m_ModelMultipleSelection.size(); i++)
+                {
+                    VectorInt stationIds = forecasts[i]->GetPredictandStationIds();
+                    for (int j=0; j<stationIds.size(); j++)
+                    {
+                        if (stationIds[j]==currentId)
+                        {
+                            accurateForecast = true;
+                            forecast = forecasts[i];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(!forecast) {
+                asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecast->GetStationName(i_stat).c_str()));
+                continue;
+            }
+
             OGRPoint station;
             station.setX( forecast->GetStationLocCoordX(i_stat) );
             station.setY( forecast->GetStationLocCoordY(i_stat) );
@@ -464,18 +699,31 @@ void asForecastViewer::Redraw()
                 }
             }
 
-            layer->AddFeature(&station, &data);
+            if (accurateForecast)
+            {
+                layerSpecific->AddFeature(&station, &data);
+            }
+            else
+            {
+                layerOther->AddFeature(&station, &data);
+            }
         }
+        
+        wxASSERT(layerSpecific);
+        wxASSERT(layerOther);
+        m_LayerManager->Add(layerSpecific);
+        m_LayerManager->Add(layerOther);
 
-        wxASSERT(layer);
-        m_LayerManager->Add(layer);
-
-        // Change default render
-        vrRenderVector * render = new vrRenderVector();
-        render->SetSize(1);
-        render->SetColorPen(*wxBLACK);
-
-        m_ViewerLayerManager->Add(-1, layer, render);
+        // Set renders
+        vrRenderVector * renderSpecific = new vrRenderVector();
+        vrRenderVector * renderOther = new vrRenderVector();
+        renderSpecific->SetSize(1);
+        renderOther->SetSize(1);
+        renderSpecific->SetColorPen(*wxBLACK);
+        renderOther->SetColorPen(wxColor(150, 150, 150));
+        
+        m_ViewerLayerManager->Add(-1, layerOther, renderOther);
+        m_ViewerLayerManager->Add(-1, layerSpecific, renderSpecific);
         m_ViewerLayerManager->FreezeEnd();
     }
 }

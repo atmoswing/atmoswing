@@ -79,6 +79,7 @@ BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, asFrameForecast::OnForecastModelSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECT_FIRST, asFrameForecast::OnForecastModelSelectFirst)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecast::OnForecastPercentileSelectionChange)
 END_EVENT_TABLE()
 
@@ -1506,7 +1507,7 @@ void asFrameForecast::OnToolZoomToFit (wxCommandEvent & event)
 
 void asFrameForecast::FitExtentToForecasts ()
 {
-    vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast.memory"));
+    vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast - specific.memory"));
 
     if(layer!=NULL)
     {
@@ -1811,14 +1812,17 @@ void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
 
     if (message->IsAggregator())
     {
-        asLogError("Aggregator not yet implemented!");
+        m_ForecastViewer->SetMultipleModels(message->GetModelsIds());
     }
     else
     {
         m_ForecastViewer->SetModel(message->GetModelId());
     }
     
-    m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
+    if(m_LeadTimeSwitcher)
+    {
+        m_LeadTimeSwitcher->SetLeadTime(m_ForecastViewer->GetLeadTimeIndex());
+    }
 
     UpdateHeaderTexts();
     UpdatePanelCaptionAll();
@@ -1828,6 +1832,11 @@ void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
     wxDELETE(message);
 
     Thaw();
+}
+
+void asFrameForecast::OnForecastModelSelectFirst( wxCommandEvent& event )
+{
+    m_PanelSidebarForecasts->GetModelsCtrl()->SelectFirst();
 }
 
 void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )
@@ -1850,25 +1859,15 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 {
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
     m_PanelSidebarForecasts->AddForecast(forecast->GetMethodId(), forecast->GetMethodIdDisplay(), forecast->GetSpecificTag(), forecast->GetSpecificTagDisplay(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
-
+    
     if (event.GetString().IsSameAs("last"))
     {
-        int modelIndex = m_ForecastViewer->GetModelSelection();
-        if (modelIndex>event.GetInt() || modelIndex<0) 
-        {
-            modelIndex = event.GetInt();
-        }
-        m_ForecastViewer->SetModel(modelIndex);
-        m_PanelSidebarForecasts->GetModelsCtrl()->SetSelection(modelIndex);
-        
+        m_ForecastViewer->FixModelSelection();
+
         float previousDate = m_ForecastViewer->GetLeadTimeDate();
         m_ForecastViewer->SetLeadTimeDate(previousDate);
-
+        
         UpdatePanelAlarms();
-        UpdateHeaderTexts();
-        UpdatePanelCaptionAll();
-        UpdatePanelAnalogDates();
-        UpdatePanelStationsList();
     }
 }
 

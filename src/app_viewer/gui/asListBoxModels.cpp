@@ -269,3 +269,12 @@ void asListBoxModels::SetSelection(int modelId)
 
     m_SkipSlctChangeEvent = false;
 }
+
+void asListBoxModels::SelectFirst()
+{
+    wxTreeItemId itemId = GetFirstVisibleItem();
+    if (itemId.IsOk())
+    {
+        SelectItem(itemId);
+    }
+}
