@@ -79,7 +79,8 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 {
     // Set the defaut pen
 	wxASSERT(render->GetType() == vrRENDER_VECTOR);
-	wxPen defaultPen (*wxBLACK, 1);
+    vrRenderVector * renderVector = (vrRenderVector *) render;
+    wxPen defaultPen (renderVector->GetColorPen(), renderVector->GetSize());
 	wxPen selPen (*wxGREEN, 3);
 	
 	// Get graphics context 
@@ -95,7 +96,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 		
 		// Set font
 		wxFont defFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-		gc->SetFont( defFont, *wxBLACK );
+		gc->SetFont( defFont, renderVector->GetColorPen() );
 
 		// Get geometries
 		OGRPoint * geom = (OGRPoint*) geometry;

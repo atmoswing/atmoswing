@@ -47,6 +47,8 @@ public:
      */
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
+    bool IsCompatibleWith(asResultsAnalogsForecast * otherForecast);
+
     wxString GetForecastsDirectory()
     {
         return m_ForecastsDirectory;

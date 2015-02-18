@@ -190,6 +190,7 @@ public:
     bool Add(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
     void Clear();
     void SetSelection(int modelId);
+    void SelectFirst();
 
 protected:
 

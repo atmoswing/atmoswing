@@ -194,6 +194,7 @@ private:
     void DisplayLogLevelMenu();
     void OnForecastRatioSelectionChange( wxCommandEvent& event );
     void OnForecastModelSelectionChange( wxCommandEvent& event );
+    void OnForecastModelSelectFirst( wxCommandEvent& event );
     void OnForecastPercentileSelectionChange( wxCommandEvent& event );
     void DrawPlotStation( int station );
     void OnOpenLayer( wxCommandEvent & event );

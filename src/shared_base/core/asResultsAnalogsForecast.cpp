@@ -711,3 +711,55 @@ void asResultsAnalogsForecast::SetPredictandStationIds(wxString val)
         m_PredictandStationIds.push_back(stationId);
     }
 }
+
+bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast * otherForecast)
+{
+    bool compatible = true;
+
+    if (!m_MethodId.IsSameAs(otherForecast->GetMethodId(), false)) compatible = false;
+    if (m_PredictandParameter != otherForecast->GetPredictandParameter()) compatible = false;
+    if (m_PredictandTemporalResolution != otherForecast->GetPredictandTemporalResolution()) compatible = false;
+    if (m_PredictandSpatialAggregation != otherForecast->GetPredictandSpatialAggregation()) compatible = false;
+    if (!m_PredictandDatasetId.IsSameAs(otherForecast->GetPredictandDatasetId(), false)) compatible = false;
+    if (!m_PredictandDatabase.IsSameAs(otherForecast->GetPredictandDatabase(), false)) compatible = false;
+    if (m_HasReferenceValues != otherForecast->HasReferenceValues()) compatible = false;
+    if (m_LeadTimeOrigin != otherForecast->GetLeadTimeOrigin()) compatible = false;
+
+    Array1DFloat targetDates = otherForecast->GetTargetDates();
+    if (m_TargetDates.size() != targetDates.size()) {
+        compatible = false;
+    }
+    else {
+        for (int i=0; i<m_TargetDates.size(); i++) {
+            if (m_TargetDates[i] != targetDates[i]) compatible = false;
+        }
+    }
+
+    Array1DInt stationsIds = otherForecast->GetStationsIds();
+    if (m_StationsIds.size() != stationsIds.size()) {
+        compatible = false;
+    }
+    else {
+        for (int i=0; i<m_StationsIds.size(); i++) {
+            if (m_StationsIds[i] != stationsIds[i]) compatible = false;
+        }
+    }
+
+    Array1DFloat referenceAxis = otherForecast->GetReferenceAxis();
+    if (m_ReferenceAxis.size() != referenceAxis.size()) {
+        compatible = false;
+    }
+    else {
+        for (int i=0; i<m_ReferenceAxis.size(); i++) {
+            if (m_ReferenceAxis[i] != referenceAxis[i]) compatible = false;
+        }
+    }
+
+    if (!compatible)
+    {
+        asLogError(wxString::Format(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_SpecificTagDisplay.c_str(), otherForecast->GetSpecificTagDisplay().c_str()));
+        return false;
+    }
+
+    return true;
+}

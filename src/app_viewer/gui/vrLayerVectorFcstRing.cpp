@@ -79,7 +79,8 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 {
     // Set the defaut pen
 	wxASSERT(render->GetType() == vrRENDER_VECTOR);
-	wxPen defaultPen (*wxBLACK, 1);
+    vrRenderVector * renderVector = (vrRenderVector *) render;
+    wxPen defaultPen (renderVector->GetColorPen(), renderVector->GetSize());
 	wxPen selPen (*wxGREEN, 3);
 	
 	// Get graphics context 
