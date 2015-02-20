@@ -146,8 +146,9 @@ bool asListBoxModels::Add(const wxString &methodId, const wxString &methodIdDisp
         newItemAggregator->SetMethodIdDisplay(methodIdDisplay);
         newItemAggregator->SetDataTemporalResolution(dataTemporalResolution);
 
-        wxString label = wxString::Format("%s (%s)", methodIdDisplay.c_str(), methodId.c_str());
-        parentItemId = AppendItem( GetRootItem(), methodIdDisplay, image, image, newItemAggregator);
+        int row = GetChildrenCount (GetRootItem(), false);
+        wxString label = wxString::Format("%d. %s (%s)", row+1, methodIdDisplay.c_str(), methodId.c_str());
+        parentItemId = AppendItem( GetRootItem(), label, image, image, newItemAggregator);
 
     }
 

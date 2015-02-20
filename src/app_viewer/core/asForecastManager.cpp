@@ -251,6 +251,14 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
     }
 }
 
+void asForecastManager::LoadPastForecast(VectorInt forecastSelection)
+{
+    for (int i=0; i<forecastSelection.size(); i++)
+    {
+        LoadPastForecast(forecastSelection[i]);
+    }
+}
+
 wxString asForecastManager::GetModelName(int i_fcst)
 {
     wxString modelName = wxEmptyString;
@@ -280,15 +288,46 @@ wxString asForecastManager::GetModelName(int i_fcst)
     return modelName;
 }
 
+wxString asForecastManager::GetModelNameMethodOnly(int i_fcst)
+{
+    wxString modelName = wxEmptyString;
+
+    if (m_CurrentForecasts.size()==0) return wxEmptyString;
+
+    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
+
+    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
+    {
+        modelName = m_CurrentForecasts[i_fcst]->GetMethodIdDisplay();
+
+        if (!modelName.IsSameAs(m_CurrentForecasts[i_fcst]->GetMethodId()))
+        {
+            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_fcst]->GetMethodId().c_str()));
+        }
+    }
+
+    wxASSERT(!modelName.IsEmpty());
+
+    return modelName;
+}
+
 VectorString asForecastManager::GetModelsNames()
 {
     VectorString models;
 
     for (unsigned int i_model=0; i_model<m_CurrentForecasts.size(); i_model++)
     {
-        wxString modelName = m_CurrentForecasts[i_model]->GetMethodId();
-        modelName.Append(" - ");
-        modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTag());
+        wxString modelName = m_CurrentForecasts[i_model]->GetMethodIdDisplay();
+        if (!modelName.IsSameAs(m_CurrentForecasts[i_model]->GetMethodId()))
+        {
+            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_model]->GetMethodId().c_str()));
+        }
+
+        if (!m_CurrentForecasts[i_model]->GetSpecificTag().IsEmpty())
+        {
+            modelName.Append(" - ");
+            modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTagDisplay());
+        }
         models.push_back(modelName);
     }
 
@@ -301,9 +340,17 @@ wxArrayString asForecastManager::GetModelsNamesWxArray()
 
     for (unsigned int i_model=0; i_model<m_CurrentForecasts.size(); i_model++)
     {
-        wxString modelName = m_CurrentForecasts[i_model]->GetMethodId();
-        modelName.Append(" - ");
-        modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTag());
+        wxString modelName = m_CurrentForecasts[i_model]->GetMethodIdDisplay();
+        if (!modelName.IsSameAs(m_CurrentForecasts[i_model]->GetMethodId()))
+        {
+            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_model]->GetMethodId().c_str()));
+        }
+
+        if (!m_CurrentForecasts[i_model]->GetSpecificTag().IsEmpty())
+        {
+            modelName.Append(" - ");
+            modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTagDisplay());
+        }
         models.Add(modelName);
     }
 

@@ -215,10 +215,10 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 	protected:
 		wxPanel* m_PanelOptions;
 		wxStaticText* m_StaticTextForecast;
-		wxStaticText* m_StaticTextStation;
-		wxStaticText* m_StaticTextDate;
 		wxChoice* m_ChoiceForecast;
+		wxStaticText* m_StaticTextStation;
 		wxChoice* m_ChoiceStation;
+		wxStaticText* m_StaticTextDate;
 		wxChoice* m_ChoiceDate;
 		wxGrid* m_Grid;
 		
@@ -231,7 +231,7 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 	
 	public:
 		
-		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameGridAnalogsValuesVirtual();
 	

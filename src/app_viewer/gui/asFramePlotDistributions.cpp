@@ -38,6 +38,8 @@ asFramePlotDistributions::asFramePlotDistributions( wxWindow* parent, int select
 :
 asFramePlotDistributionsVirutal( parent, id )
 {
+    selectedForecast = wxMax(selectedForecast, 0);
+
     m_ForecastManager = forecastManager;
     m_SelectedForecast = selectedForecast;
     m_SelectedStation = 0;
