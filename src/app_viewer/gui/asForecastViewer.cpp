@@ -205,7 +205,7 @@ float asForecastViewer::GetSelectedTargetDate()
 
 void asForecastViewer::SetLeadTimeDate(float date)
 {
-    if (date>0 && m_ModelSelection>0)
+    if (date>0 && (m_ModelSelection>0 || m_ModelMultipleSelection.size()>0))
     {
         if (!ModelSelectionOk()) return;
 
@@ -249,6 +249,8 @@ void asForecastViewer::SetPercentile(int i)
 
 void asForecastViewer::LoadPastForecast()
 {
+    wxBusyCursor wait;
+
     // Check that elements are selected
     if ( ((m_ModelSelection==-1) && (m_ModelMultipleSelection.size()==0)) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
     if (!ModelSelectionOk()) return;
@@ -256,7 +258,7 @@ void asForecastViewer::LoadPastForecast()
     
     if (MultipleModelsSelected())
     {
-        asLogError(_("LoadPastForecast not yet implemented for aggregators."));
+        m_ForecastManager->LoadPastForecast(m_ModelMultipleSelection);
     }
     else
     {
@@ -392,7 +394,13 @@ void asForecastViewer::Redraw()
         // Length of the lead time
         int leadTimeSize = forecasts[0]->GetTargetDatesLength();
 
-        // Adding size field
+        // Adding fields
+        OGRFieldDefn fieldStationRow ("stationrow", OFTReal);
+        layerSpecific->AddField(fieldStationRow);
+        layerOther->AddField(fieldStationRow);
+        OGRFieldDefn fieldStationId ("stationid", OFTReal);
+        layerSpecific->AddField(fieldStationId);
+        layerOther->AddField(fieldStationId);
         OGRFieldDefn fieldLeadTimeSize ("leadtimesize", OFTReal);
         layerSpecific->AddField(fieldLeadTimeSize);
         layerOther->AddField(fieldLeadTimeSize);
@@ -455,6 +463,8 @@ void asForecastViewer::Redraw()
 
             // Field container
             wxArrayDouble data;
+            data.Add((double)i_stat);
+            data.Add((double)currentId);
             data.Add((double)leadTimeSize);
 
             // For normalization by the return period
@@ -526,20 +536,25 @@ void asForecastViewer::Redraw()
 
         wxASSERT(layerSpecific);
         wxASSERT(layerOther);
-        m_LayerManager->Add(layerSpecific);
-        m_LayerManager->Add(layerOther);
 
-        // Set renders
+        if(layerOther->GetFeatureCount()>0) {
+            m_LayerManager->Add(layerOther);
+            vrRenderVector * renderOther = new vrRenderVector();
+            renderOther->SetSize(1);
+            renderOther->SetColorPen(wxColor(150, 150, 150));
+            m_ViewerLayerManager->Add(-1, layerOther, renderOther);
+        }
+        else {
+            wxDELETE(layerOther);
+        }
+
+        m_LayerManager->Add(layerSpecific);
         vrRenderVector * renderSpecific = new vrRenderVector();
-        vrRenderVector * renderOther = new vrRenderVector();
         renderSpecific->SetSize(1);
-        renderOther->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
-        renderOther->SetColorPen(wxColor(150, 150, 150));
-        
-        m_ViewerLayerManager->Add(-1, layerOther, renderOther);
         m_ViewerLayerManager->Add(-1, layerSpecific, renderSpecific);
         m_ViewerLayerManager->FreezeEnd();
+
     }
     else
     {
@@ -577,7 +592,13 @@ void asForecastViewer::Redraw()
             m_LayerMaxValue = 1.0;
         }
 
-        // Adding size field
+        // Adding fields
+        OGRFieldDefn fieldStationRow ("stationrow", OFTReal);
+        layerSpecific->AddField(fieldStationRow);
+        layerOther->AddField(fieldStationRow);
+        OGRFieldDefn fieldStationId ("stationid", OFTReal);
+        layerSpecific->AddField(fieldStationId);
+        layerOther->AddField(fieldStationId);
         OGRFieldDefn fieldValueReal ("valueReal", OFTReal);
         layerSpecific->AddField(fieldValueReal);
         layerOther->AddField(fieldValueReal);
@@ -635,6 +656,8 @@ void asForecastViewer::Redraw()
 
             // Field container
             wxArrayDouble data;
+            data.Add((double)i_stat);
+            data.Add((double)currentId);
 
             // For normalization by the return period
             double factor = 1;
@@ -711,18 +734,22 @@ void asForecastViewer::Redraw()
         
         wxASSERT(layerSpecific);
         wxASSERT(layerOther);
-        m_LayerManager->Add(layerSpecific);
-        m_LayerManager->Add(layerOther);
 
-        // Set renders
+        if(layerOther->GetFeatureCount()>0) {
+            m_LayerManager->Add(layerOther);
+            vrRenderVector * renderOther = new vrRenderVector();
+            renderOther->SetSize(1);
+            renderOther->SetColorPen(wxColor(150, 150, 150));
+            m_ViewerLayerManager->Add(-1, layerOther, renderOther);
+        }
+        else {
+            wxDELETE(layerOther);
+        }
+
+        m_LayerManager->Add(layerSpecific);
         vrRenderVector * renderSpecific = new vrRenderVector();
-        vrRenderVector * renderOther = new vrRenderVector();
         renderSpecific->SetSize(1);
-        renderOther->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
-        renderOther->SetColorPen(wxColor(150, 150, 150));
-        
-        m_ViewerLayerManager->Add(-1, layerOther, renderOther);
         m_ViewerLayerManager->Add(-1, layerSpecific, renderSpecific);
         m_ViewerLayerManager->FreezeEnd();
     }

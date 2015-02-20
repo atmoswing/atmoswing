@@ -44,7 +44,7 @@ public:
     asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asLeadTimeSwitcher();
     
-    void Draw( Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts );
+    void Draw( Array1DFloat &dates, std::vector <asResultsAnalogsForecast*> forecasts );
     void SetLeadTime(int leadTime);
     void SetParent( wxWindow* parent );
 
@@ -57,7 +57,6 @@ private:
     wxGraphicsContext* m_Gdc;
     wxWindow* m_Parent;
     void OnLeadTimeSlctChange( wxMouseEvent& event );
-    Array1DFloat GetValues(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts);
     void SetBitmap(wxBitmap *bmp);
     void SetLeadTimeMarker(int leadTime);
     wxBitmap* GetBitmap();

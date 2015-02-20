@@ -27,6 +27,7 @@
  
 #include "asLeadTimeSwitcher.h"
 #include "asFrameForecast.h"
+#include "asResultsAnalogsForecastAggregator.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
@@ -71,11 +72,11 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange( wxMouseEvent& event )
     GetParent()->ProcessWindowEvent(eventSlct);
 }
 
-void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
+void asLeadTimeSwitcher::Draw(Array1DFloat &dates, std::vector <asResultsAnalogsForecast*> forecasts)
 {
     // Get sizes
     int cols = dates.size();
-    int rows = models.size();
+    int rows = forecasts.size();
     
     // Required size
     m_CellWidth = 40;
@@ -83,7 +84,9 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, s
     int height = m_CellWidth+5;
 
     // Get color values
-    Array1DFloat values = GetValues(dates, models, forecasts);
+    int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
+    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
+    Array1DFloat values = asResultsAnalogsForecastAggregator::GetMaxValues(dates, forecasts, returnPeriodRef, percentileThreshold);
     wxASSERT(values.size()==dates.size());
 
     // Create bitmap
@@ -185,108 +188,6 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
 
         wxDELETE(gc);
     }
-}
-
-Array1DFloat asLeadTimeSwitcher::GetValues(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
-{
-    int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
-    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
-
-    wxASSERT(returnPeriodRef>=2);
-    wxASSERT(percentileThreshold>0);
-    wxASSERT(percentileThreshold<1);
-    if (returnPeriodRef<2) returnPeriodRef = 2;
-    if (percentileThreshold<=0) percentileThreshold = (float)0.9;
-    if (percentileThreshold>1) percentileThreshold = (float)0.9;
-
-    Array2DFloat allValues = Array2DFloat::Ones(models.size(), dates.size());
-    allValues *= NaNFloat;
-
-    for (unsigned int i_model=0; i_model<models.size(); i_model++)
-    {
-        asResultsAnalogsForecast* forecast = forecasts[i_model];
-        int stationsNb = forecast->GetStationsNb();
-
-        // Get return period index
-        int indexReferenceAxis=asNOT_FOUND;
-        if(forecast->HasReferenceValues())
-        {
-            Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
-
-            indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodRef);
-            if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
-            {
-                asLogError(_("The desired return period is not available in the forecast file."));
-            }
-        }
-
-        // Check lead times effectively available for the current model
-        int leadtimeMin = 0;
-        int leadtimeMax = dates.size()-1;
-
-        Array1DFloat availableDates = forecast->GetTargetDates();
-
-        while (dates[leadtimeMin]<availableDates[0])
-        {
-            leadtimeMin++;
-        }
-        while (dates[leadtimeMax]>availableDates[availableDates.size()-1])
-        {
-            leadtimeMax--;
-        }
-        wxASSERT(leadtimeMin<leadtimeMax);
-
-        for (int i_leadtime=leadtimeMin; i_leadtime<=leadtimeMax; i_leadtime++)
-        {
-            float maxVal = 0;
-
-            // Get the maximum value of every station
-            for (int i_station=0; i_station<stationsNb; i_station++)
-            {
-                float thisVal = 0;
-
-                // Get values for return period
-                float factor = 1;
-                if(forecast->HasReferenceValues())
-                {
-                    float precip = forecast->GetReferenceValue(i_station, indexReferenceAxis);
-                    wxASSERT(precip>0);
-                    wxASSERT(precip<500);
-                    factor = 1.0/precip;
-                    wxASSERT(factor>0);
-                }
-
-                // Get values
-                Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);
-
-                // Process percentiles
-                if(asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size()-1]))
-                {
-                    thisVal = NaNFloat;
-                }
-                else
-                {
-                    float forecastVal = asTools::Percentile(&theseVals[0], &theseVals[theseVals.size()-1], percentileThreshold);
-                    wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                    forecastVal *= factor;
-                    thisVal = forecastVal;
-                }
-
-                // Keep it if higher
-                if (thisVal>maxVal)
-                {
-                    maxVal = thisVal;
-                }
-            }
-
-            allValues(i_model,i_leadtime) = maxVal;
-        }
-    }
-
-    // Extract the highest values
-    Array1DFloat values = allValues.colwise().maxCoeff();
-
-    return values;
 }
 
 void asLeadTimeSwitcher::SetBitmap(wxBitmap * bmp)

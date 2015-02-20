@@ -328,6 +328,8 @@ asFrameForecast::~asFrameForecast()
 
 void asFrameForecast::Init()
 {
+    wxBusyCursor wait;
+
     // Update gui elements
     DisplayLogLevelMenu();
     
@@ -437,6 +439,8 @@ void asFrameForecast::OnOpenWorkspace(wxCommandEvent & event)
     if(openFileDialog.ShowModal()==wxID_CANCEL)
         return;
 
+    wxBusyCursor wait;
+
     wxString workspaceFilePath = openFileDialog.GetPath();
 
     // Save preferences
@@ -474,6 +478,8 @@ void asFrameForecast::OnSaveWorkspaceAs(wxCommandEvent & event)
     if(openFileDialog.ShowModal()==wxID_CANCEL)
         return;
 
+    wxBusyCursor wait;
+
     wxString workspaceFilePath = openFileDialog.GetPath();
     m_Workspace.SetFilePath(workspaceFilePath);
 
@@ -495,7 +501,7 @@ bool asFrameForecast::SaveWorkspace()
         wxFileName fileName = m_ViewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName();
         wxString path = fileName.GetFullPath();
 
-        if(!path.IsSameAs("Forecast.memory"))
+        if(!path.IsSameAs("Forecast - specific.memory") && !path.IsSameAs("Forecast - other.memory"))
         {
             counter++;
             m_Workspace.AddLayer();
@@ -723,7 +729,7 @@ void asFrameForecast::UpdateLeadTimeSwitch()
     m_LeadTimeSwitcher->SetMinSize( wxSize( width, height ) );
     m_LeadTimeSwitcher->Layout();
     Array1DFloat dates = m_ForecastManager->GetFullTargetDatesVector();
-    m_LeadTimeSwitcher->Draw(dates, m_ForecastManager->GetModelsNames(), m_ForecastManager->GetCurrentForecasts());
+    m_LeadTimeSwitcher->Draw(dates, m_ForecastManager->GetCurrentForecasts());
     
     m_SizerLeadTimeSwitch->Add( m_LeadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5 );
     m_SizerLeadTimeSwitch->Layout();
@@ -880,6 +886,8 @@ void asFrameForecast::OpenFrameForecaster( wxCommandEvent& event )
 
 void asFrameForecast::OpenFramePlots( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     asFramePlotDistributions* framePlot = new asFramePlotDistributions(this, m_ForecastViewer->GetModelSelection(), m_ForecastManager);
     framePlot->Layout();
     framePlot->Init();
@@ -889,6 +897,8 @@ void asFrameForecast::OpenFramePlots( wxCommandEvent& event )
 
 void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     asFrameGridAnalogsValues* frameGrid = new asFrameGridAnalogsValues(this, m_ForecastViewer->GetModelSelection(), m_ForecastManager);
     frameGrid->Layout();
     frameGrid->Init();
@@ -897,6 +907,8 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 
 void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     asFramePreferencesViewer* frame = new asFramePreferencesViewer(this, &m_Workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
@@ -904,6 +916,8 @@ void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
 
 void asFrameForecast::OpenFrameAbout( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     asFrameAbout* frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
@@ -1016,6 +1030,8 @@ void asFrameForecast::OnOpenLayer(wxCommandEvent & event)
 
     wxArrayString pathsFileName;
 
+    wxBusyCursor wait;
+
     // Try to open files
     if(myFileDlg.ShowModal()==wxID_OK)
     {
@@ -1062,6 +1078,8 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent & event)
         return;
     }
 
+    wxBusyCursor wait;
+
     // Get indices of layer to remove
     wxArrayInt layerToRemoveIndex = choiceDlg.GetSelections();
     if (layerToRemoveIndex.IsEmpty())
@@ -1104,6 +1122,8 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
                             wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR | wxFD_MULTIPLE);
 
     wxArrayString pathsFileName;
+
+    wxBusyCursor wait;
 
     // Try to open files
     if(myFileDlg.ShowModal()==wxID_OK)
@@ -1255,6 +1275,8 @@ void asFrameForecast::OnLoadNextDay( wxCommandEvent & event )
 
 void asFrameForecast::SwitchForecast( double increment )
 {
+    wxBusyCursor wait;
+
     if (m_ForecastManager->GetCurrentForecastsNb()==0)
     {
         asLogError("There is no forecast open.");
@@ -1264,6 +1286,11 @@ void asFrameForecast::SwitchForecast( double increment )
     // Get path
     VectorString forecastsPaths = m_ForecastManager->GetFilePaths();
     int index = m_ForecastViewer->GetModelSelection();
+    if (index<0)
+    {
+        index = m_ForecastViewer->GetModelMultipleSelection()[0];
+    }
+
     wxASSERT(forecastsPaths.size()>index);
     wxString forecastsPath = forecastsPaths[index];
     wxFileName forecastFileName(forecastsPath);
@@ -1333,6 +1360,12 @@ void asFrameForecast::SwitchForecast( double increment )
         asLogError(_("Failed to open the forecasts."));
         return;
     }
+
+    // Refresh view
+    m_ForecastViewer->Redraw();
+    UpdateHeaderTexts();
+    UpdatePanelCaptionAll();
+    UpdatePanelAnalogDates();
 }
 
 bool asFrameForecast::OpenForecast (const wxArrayString & names)
@@ -1507,6 +1540,8 @@ void asFrameForecast::OnToolZoomToFit (wxCommandEvent & event)
 
 void asFrameForecast::FitExtentToForecasts ()
 {
+    wxBusyCursor wait;
+
     vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast - specific.memory"));
 
     if(layer!=NULL)
@@ -1539,6 +1574,8 @@ void asFrameForecast::FitExtentToForecasts ()
 
 void asFrameForecast::OnMoveLayer (wxCommandEvent & event)
 {
+    wxBusyCursor wait;
+
     // Check than more than 1 layer
     if (m_ViewerLayerManager->GetCount() <= 1)
     {
@@ -1671,12 +1708,10 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
             polygon.addRing(&linRing);
 
             // Get layer
-            vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast.memory"));
+            vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast - specific.memory"));
 
             if(layer!=NULL)
             {
-                wxASSERT(layer);
-
                 // Search features
                 wxArrayLong stationsClose;
                 layer->SearchFeatures(&polygon, stationsClose);
@@ -1686,13 +1721,40 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
                 if (stationsClose.Count()>0)
                 {
                     station.Add(stationsClose.Item(0));
-                    int stationRow = stationsClose.Item(0);
+                    int stationItem = stationsClose.Item(0);
+                    OGRFeature * feature = layer->GetFeature(stationItem);
+                    int stationRow = (int)feature->GetFieldAsDouble(0);
 
                     if (stationRow>=0)
                     {
                         m_PanelSidebarStationsList->GetChoiceCtrl()->Select(stationRow);
                     }
                     DrawPlotStation(stationRow);
+                }
+                else
+                {
+                    // Search on the other (not specific) forecast layer
+                    vrLayerVector * layerOther = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast - other.memory"));
+                    if(layerOther!=NULL)
+                    {
+                        // Search features
+                        layerOther->SearchFeatures(&polygon, stationsClose);
+
+                        // Allow only one selection
+                        if (stationsClose.Count()>0)
+                        {
+                            station.Add(stationsClose.Item(0));
+                            int stationItem = stationsClose.Item(0);
+                            OGRFeature * feature = layerOther->GetFeature(stationItem);
+                            int stationRow = (int)feature->GetFieldAsDouble(0);
+
+                            if (stationRow>=0)
+                            {
+                                m_PanelSidebarStationsList->GetChoiceCtrl()->Select(stationRow);
+                            }
+                            DrawPlotStation(stationRow);
+                        }
+                    }
                 }
                 layer->SetSelectedIDs(station);
 
@@ -1737,6 +1799,8 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
 
 void asFrameForecast::OnStationSelection( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     // Get selection
     int choice = event.GetInt();
 
@@ -1746,31 +1810,26 @@ void asFrameForecast::OnStationSelection( wxCommandEvent& event )
         return;
     }
 
-    // Get layer to display selection
-    vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast.memory"));
-
-    if(layer!=NULL)
+    // Display on the map when only the specific layer exists
+    vrLayerVector * layer = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast - specific.memory"));
+    vrLayerVector * layerOther = (vrLayerVector*)m_LayerManager->GetLayer(_("Forecast - other.memory"));
+    if(layer!=NULL && layerOther==NULL)
     {
-        wxASSERT(layer);
-
         // Set selection
         wxArrayLong station;
         station.Add(choice);
         layer->SetSelectedIDs(station);
     }
-    else
-    {
-        asLogError(_("The desired layer was not found."));
-    }
 
     DrawPlotStation(choice);
 
     ReloadViewerLayerManager();
-
 }
 
 void asFrameForecast::OnChangeLeadTime( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     Freeze();
 
     m_ForecastViewer->ChangeLeadTime(event.GetInt());
@@ -1797,6 +1856,8 @@ void asFrameForecast::OnForecastClear( wxCommandEvent& event )
 
 void asFrameForecast::OnForecastRatioSelectionChange( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     m_ForecastViewer->SetForecastDisplay(event.GetInt());
 
     UpdatePanelCaptionColorbar();
@@ -1829,6 +1890,10 @@ void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
     UpdatePanelAnalogDates();
     UpdatePanelStationsList();
 
+    m_ScrolledWindowOptions->Layout();
+    m_SizerScrolledWindow->Fit( m_ScrolledWindowOptions );
+    Layout();
+
     wxDELETE(message);
 
     Thaw();
@@ -1841,14 +1906,44 @@ void asFrameForecast::OnForecastModelSelectFirst( wxCommandEvent& event )
 
 void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     m_ForecastViewer->SetPercentile(event.GetInt());
 }
 
 void asFrameForecast::DrawPlotStation( int station )
 {
+    wxBusyCursor wait;
+
     m_ForecastViewer->LoadPastForecast();
 
-    asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, m_ForecastViewer->GetModelSelection(), station, m_ForecastManager);
+    // Get data
+    int modelId = m_ForecastViewer->GetModelSelection();
+    if (modelId<0) // Aggregator
+    {
+        VectorInt modelIds = m_ForecastViewer->GetModelMultipleSelection();
+        wxASSERT(modelIds.size()>0);
+
+        // Default value
+        modelId = modelIds[0];
+
+        // Pick up the most relevant forecast for the station
+        for (int i=0; i<modelIds.size(); i++)
+        {
+            asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(modelIds[i]);
+            VectorInt stationIds = forecast->GetPredictandStationIds();
+            for (int j=0; j<stationIds.size(); j++)
+            {
+                if (stationIds[j]==station)
+                {
+                    modelId = modelIds[i];
+                    break;
+                }
+            }
+        }
+    }
+
+    asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, modelId, station, m_ForecastManager);
     framePlotStation->Layout();
     framePlotStation->Init();
     framePlotStation->Plot();
@@ -1857,6 +1952,8 @@ void asFrameForecast::DrawPlotStation( int station )
 
 void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
     m_PanelSidebarForecasts->AddForecast(forecast->GetMethodId(), forecast->GetMethodIdDisplay(), forecast->GetSpecificTag(), forecast->GetSpecificTagDisplay(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
     
@@ -1873,6 +1970,8 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 
 void asFrameForecast::ReloadViewerLayerManager( )
 {
+    wxBusyCursor wait;
+
     m_ViewerLayerManager->Reload();
 
     /* Not sure there is any way to make it safe with threads.
@@ -1891,9 +1990,19 @@ void asFrameForecast::UpdateHeaderTexts()
     wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast.c_str());
     m_StaticTextForecastDate->SetLabel(dateStr);
 
-    wxString model = m_ForecastManager->GetModelName(m_ForecastViewer->GetModelSelection());
-    m_StaticTextForecastModel->SetLabel(model);
+    wxString model;
+    int modelId = m_ForecastViewer->GetModelSelection();
+    if (modelId<0) {
+        wxASSERT(m_ForecastViewer->GetModelMultipleSelection().size()>0);
+        modelId = m_ForecastViewer->GetModelMultipleSelection()[0];
+        model = m_ForecastManager->GetModelNameMethodOnly(modelId);
+    }
+    else {
+        model = m_ForecastManager->GetModelName(modelId);
+    }
 
+    m_StaticTextForecastModel->SetLabel(model);
+    
     m_PanelTop->Layout();
     m_PanelTop->Refresh();
 }
@@ -1913,7 +2022,14 @@ void asFrameForecast::UpdatePanelCaptionAll()
         m_PanelSidebarCaptionForecastRing->Show();
 
         m_PanelSidebarCaptionForecastRing->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
-        asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
+
+        int modelId = m_ForecastViewer->GetModelSelection();
+        if (modelId<0) {
+            wxASSERT(m_ForecastViewer->GetModelMultipleSelection().size()>0);
+            modelId = m_ForecastViewer->GetModelMultipleSelection()[0];
+        }
+
+        asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(modelId);
         Array1DFloat dates = forecast->GetTargetDates();
         m_PanelSidebarCaptionForecastRing->SetDates(dates);
     }
@@ -1928,13 +2044,14 @@ void asFrameForecast::UpdatePanelCaptionColorbar()
 
 void asFrameForecast::UpdatePanelAnalogDates()
 {
-    if (m_ForecastViewer->GetLeadTimeIndex()>=m_ForecastManager->GetLeadTimeLengthMax())
+    if (m_ForecastViewer->GetLeadTimeIndex()>=m_ForecastManager->GetLeadTimeLengthMax() || m_ForecastViewer->GetModelSelection()<0)
     {
         m_PanelSidebarAnalogDates->Hide();
         return;
     }
 
     m_PanelSidebarAnalogDates->Show();
+
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
     Array1DFloat arrayDate = forecast->GetAnalogsDates(m_ForecastViewer->GetLeadTimeIndex());
     Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria(m_ForecastViewer->GetLeadTimeIndex());
@@ -1943,7 +2060,23 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
 void asFrameForecast::UpdatePanelStationsList()
 {
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_ForecastViewer->GetModelSelection());
+    int modelId = m_ForecastViewer->GetModelSelection();
+    if (modelId<0)
+    {
+        if (m_ForecastViewer->GetModelMultipleSelection().size()>0)
+        {
+            modelId = m_ForecastViewer->GetModelMultipleSelection()[0];
+        }
+        else
+        {
+            m_PanelSidebarStationsList->Hide();
+            return;
+        }
+    }
+    
+    m_PanelSidebarStationsList->Show();
+
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(modelId);
     m_PanelSidebarStationsList->SetChoices(arrayStation);
 }
 

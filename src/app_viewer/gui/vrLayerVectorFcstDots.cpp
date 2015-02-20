@@ -54,7 +54,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry * geometry, void * data)
 	if (data != NULL)
     {
         wxArrayDouble * dataArray = (wxArrayDouble*) data;
-		wxASSERT(dataArray->GetCount() == 2);
+		wxASSERT(dataArray->GetCount() == 4);
 
         for (unsigned int i_dat=0; i_dat<dataArray->size(); i_dat++)
         {
@@ -129,8 +129,8 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 		}
 
 		// Get value to set color
-		double realValue = feature->GetFieldAsDouble(0);
-		double normValue = feature->GetFieldAsDouble(1);
+		double realValue = feature->GetFieldAsDouble(2);
+		double normValue = feature->GetFieldAsDouble(3);
 		_Paint(gc, path, normValue);
 		_AddLabel(gc, point, realValue);
 	}

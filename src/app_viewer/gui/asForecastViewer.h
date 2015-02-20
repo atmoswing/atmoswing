@@ -45,8 +45,11 @@ public:
 
     wxArrayString GetForecastDisplayStringArray();
     wxArrayString GetPercentilesStringArray();
-    void SetModel(int i);
-    void SetLastModel();
+    void FixModelSelection();
+    void SetModel(int id);
+    void SetMultipleModels(VectorInt ids);
+    bool ModelSelectionOk();
+    bool MultipleModelsSelected();
     wxString GetStationName(int i_stat);
     float GetSelectedTargetDate();
     void SetForecastDisplay(int i);
@@ -59,6 +62,11 @@ public:
     int GetModelSelection()
     {
         return m_ModelSelection;
+    }
+
+    VectorInt GetModelMultipleSelection()
+    {
+        return m_ModelMultipleSelection;
     }
 
     int GetForecastDisplaySelection()
@@ -113,6 +121,7 @@ private:
     int m_ForecastDisplaySelection;
     int m_PercentileSelection;
     int m_ModelSelection;
+    VectorInt m_ModelMultipleSelection;
 
 };
 

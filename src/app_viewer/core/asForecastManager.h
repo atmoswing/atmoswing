@@ -53,9 +53,13 @@ public:
 
     void LoadPastForecast(int forecastSelection);
 
+    void LoadPastForecast(VectorInt forecastSelection);
+
     void UpdateAlarms();
 
     wxString GetModelName(int i_fcst);
+
+    wxString GetModelNameMethodOnly(int i_fcst);
 
     VectorString GetModelsNames();
 
