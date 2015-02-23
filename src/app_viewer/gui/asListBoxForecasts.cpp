@@ -176,13 +176,13 @@ void asListBoxForecasts::Clear()
     m_SkipSlctChangeEvent = false;
 }
 
-void asListBoxForecasts::SetSelection(int methodId, int forecastId)
+void asListBoxForecasts::SetSelection(int methodRow, int forecastRow)
 {
     m_SkipSlctChangeEvent = true;
 
     // Look for the correct entry in the treectrl
     wxTreeItemId methodItemId = GetFirstVisibleItem();
-    for (int i=0; i<methodId; i++)
+    for (int i=0; i<methodRow; i++)
     {
         if(methodItemId.IsOk())
         {
@@ -190,7 +190,7 @@ void asListBoxForecasts::SetSelection(int methodId, int forecastId)
         }
     }
 
-    if (forecastId<0)
+    if (forecastRow<0)
     {
         if(methodItemId.IsOk())
         {
@@ -203,7 +203,7 @@ void asListBoxForecasts::SetSelection(int methodId, int forecastId)
         {
             wxTreeItemIdValue cookie;
             wxTreeItemId forecastItemId = GetFirstChild(methodItemId, cookie);
-            for (int i=0; i<forecastId; i++)
+            for (int i=0; i<forecastRow; i++)
             {
                 if(forecastItemId.IsOk())
                 {

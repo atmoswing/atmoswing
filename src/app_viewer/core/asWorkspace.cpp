@@ -79,37 +79,46 @@ bool asWorkspace::Load(const wxString &filePath)
             m_AlarmsPanelReturnPeriod = fileWorkspace.GetInt(node);
         } else if (node->GetName() == "panel_alarms_percentile") {
             m_AlarmsPanelPercentile = fileWorkspace.GetFloat(node);
-        } else if (node->GetName() == "layer") {
+        } else if (node->GetName() == "layers") {
             wxXmlNode *nodeLayer = node->GetChildren();
             while (nodeLayer) {
-                if (nodeLayer->GetName() == "path") {
-                    wxString path = fileWorkspace.GetString(nodeLayer);
-                    wxFileName absolutePath(path);
-                    absolutePath.Normalize();
-                    m_LayerPaths.push_back(absolutePath.GetFullPath());
-                } else if (nodeLayer->GetName() == "type") {
-                    m_LayerTypes.push_back(fileWorkspace.GetString(nodeLayer));
-                } else if (nodeLayer->GetName() == "transparency") {
-                    m_LayerTransparencies.push_back(fileWorkspace.GetInt(nodeLayer));
-                } else if (nodeLayer->GetName() == "visibility") {
-                    m_LayerVisibilities.push_back(fileWorkspace.GetBool(nodeLayer));
-                } else if (nodeLayer->GetName() == "line_width") {
-                    m_LayerLineWidths.push_back(fileWorkspace.GetInt(nodeLayer));
-                #if wxUSE_GUI
-                } else if (nodeLayer->GetName() == "line_color") {
-                    wxString lineColorStr = fileWorkspace.GetString(nodeLayer);
-                    wxColour lineColor;
-                    wxFromString(lineColorStr, &lineColor);
-                    m_LayerLineColors.push_back(lineColor);
-                } else if (nodeLayer->GetName() == "fill_color") {
-                    wxString fillColorStr = fileWorkspace.GetString(nodeLayer);
-                    wxColour fillColor;
-                    wxFromString(fillColorStr, &fillColor);
-                    m_LayerFillColors.push_back(fillColor);
-                } else if (nodeLayer->GetName() == "brush_style") {
-                    wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetInt(nodeLayer);
-                    m_LayerBrushStyles.push_back(brushStyle);
-                #endif
+                if (nodeLayer->GetName() == "layer") {
+                    wxXmlNode *nodeLayerData = nodeLayer->GetChildren();
+                    while (nodeLayerData) {
+                        if (nodeLayerData->GetName() == "path") {
+                            wxString path = fileWorkspace.GetString(nodeLayerData);
+                            wxFileName absolutePath(path);
+                            absolutePath.Normalize();
+                            m_LayerPaths.push_back(absolutePath.GetFullPath());
+                        } else if (nodeLayerData->GetName() == "type") {
+                            m_LayerTypes.push_back(fileWorkspace.GetString(nodeLayerData));
+                        } else if (nodeLayerData->GetName() == "transparency") {
+                            m_LayerTransparencies.push_back(fileWorkspace.GetInt(nodeLayerData));
+                        } else if (nodeLayerData->GetName() == "visibility") {
+                            m_LayerVisibilities.push_back(fileWorkspace.GetBool(nodeLayerData));
+                        } else if (nodeLayerData->GetName() == "line_width") {
+                            m_LayerLineWidths.push_back(fileWorkspace.GetInt(nodeLayerData));
+                        #if wxUSE_GUI
+                        } else if (nodeLayerData->GetName() == "line_color") {
+                            wxString lineColorStr = fileWorkspace.GetString(nodeLayerData);
+                            wxColour lineColor;
+                            wxFromString(lineColorStr, &lineColor);
+                            m_LayerLineColors.push_back(lineColor);
+                        } else if (nodeLayerData->GetName() == "fill_color") {
+                            wxString fillColorStr = fileWorkspace.GetString(nodeLayerData);
+                            wxColour fillColor;
+                            wxFromString(fillColorStr, &fillColor);
+                            m_LayerFillColors.push_back(fillColor);
+                        } else if (nodeLayerData->GetName() == "brush_style") {
+                            wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetInt(nodeLayerData);
+                            m_LayerBrushStyles.push_back(brushStyle);
+                        #endif
+                        } else {
+                            fileWorkspace.UnknownNode(nodeLayerData);
+                        }
+
+                        nodeLayerData = nodeLayerData->GetNext();
+                    }
                 } else {
                     fileWorkspace.UnknownNode(nodeLayer);
                 }
@@ -159,6 +168,7 @@ bool asWorkspace::Save()
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_percentile", m_AlarmsPanelPercentile));
 
     // GIS layers
+    wxXmlNode * nodeLayers = new wxXmlNode(wxXML_ELEMENT_NODE ,"layers" );
     for (int i_layer=0; i_layer<GetLayersNb(); i_layer++)
     {
         wxXmlNode * nodeLayer = new wxXmlNode(wxXML_ELEMENT_NODE ,"layer" );
@@ -176,8 +186,9 @@ bool asWorkspace::Save()
             nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("brush_style", strBrush));
         #endif
 
-        fileWorkspace.AddChild(nodeLayer);
+        nodeLayers->AddChild(nodeLayer);
     }
+    fileWorkspace.AddChild(nodeLayers);
 
     fileWorkspace.Save();
 

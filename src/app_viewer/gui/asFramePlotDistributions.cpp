@@ -101,7 +101,8 @@ void asFramePlotDistributions::Init()
     // Forecast list
     wxArrayString arrayForecasts = m_ForecastManager->GetAllForecastNamesWxArray();
     m_ChoiceForecast->Set(arrayForecasts);
-    m_ChoiceForecast->Select(m_SelectedForecast);
+    int linearIndex = m_ForecastManager->GetLinearIndex(m_SelectedMethod, m_SelectedForecast);
+    m_ChoiceForecast->Select(linearIndex);
 
     // Dates list
     wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedMethod, m_SelectedForecast);
@@ -120,7 +121,9 @@ void asFramePlotDistributions::Init()
 
 void asFramePlotDistributions::OnChoiceForecastChange( wxCommandEvent& event )
 {
-    m_SelectedForecast = event.GetInt();
+    int linearIndex = event.GetInt();
+    m_SelectedMethod = m_ForecastManager->GetMethodRowFromLinearIndex(linearIndex);
+    m_SelectedForecast = m_ForecastManager->GetForecastRowFromLinearIndex(linearIndex);
 
     // Dates list
     wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedMethod, m_SelectedForecast);

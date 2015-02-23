@@ -61,9 +61,9 @@ public:
 
     asResultsAnalogsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow);
 
-    wxString GetForecastName(int methodId, int forecastId);
+    wxString GetForecastName(int methodRow, int forecastRow);
 
-    wxString GetMethodName(int methodId);
+    wxString GetMethodName(int methodRow);
     
     VectorString GetAllMethodIds();
 

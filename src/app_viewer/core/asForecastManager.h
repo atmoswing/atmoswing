@@ -57,6 +57,12 @@ public:
 
     void AddDirectoryPastForecasts(const wxString &dir);
 
+    int GetLinearIndex(int methodRow, int forecastRow);
+
+    int GetMethodRowFromLinearIndex(int linearIndex);
+
+    int GetForecastRowFromLinearIndex(int linearIndex);
+
     asResultsAnalogsForecastAggregator* GetAggregator()
     {
         return m_Aggregator;
