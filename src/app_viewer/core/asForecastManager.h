@@ -29,9 +29,7 @@
 #define ASFORECASTMANAGER_H
 
 #include <asIncludes.h>
-
-
-class asResultsAnalogsForecast;
+#include <asResultsAnalogsForecastAggregator.h>
 #include "asWorkspace.h"
 
 class asForecastManager
@@ -49,106 +47,54 @@ public:
 
     bool Open(const wxString &filePath, bool doRefresh = true);
 
-    bool OpenPastForecast(const wxString &filePath, int forecastSelection);
+    bool OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath);
 
-    void LoadPastForecast(int forecastSelection);
+    void LoadPastForecast(int methodRow, int forecastRow);
 
-    void LoadPastForecast(VectorInt forecastSelection);
+    void LoadPastForecast(int methodRow);
 
     void UpdateAlarms();
 
-    wxString GetModelName(int i_fcst);
-
-    wxString GetModelNameMethodOnly(int i_fcst);
-
-    VectorString GetModelsNames();
-
-    wxArrayString GetModelsNamesWxArray();
-
-    VectorString GetFilePaths();
-
-    wxArrayString GetFilePathsWxArray();
-
-    Array1DFloat GetFullTargetDatesVector();
-
-    wxArrayString GetStationNames(int i_fcst);
-
-    wxString GetStationName(int i_fcst, int i_stat);
-
-    wxArrayString GetStationNamesWithHeights(int i_fcst);
-
-    wxString GetStationNameWithHeight(int i_fcst, int i_stat);
-
-    int GetLeadTimeLength(int i_fcst);
-
-    int GetLeadTimeLengthMax();
-
-    wxArrayString GetLeadTimes(int i_fcst);
-
     void AddDirectoryPastForecasts(const wxString &dir);
 
-    /** Get the number of models
-     * \return The number of current forecasts
-     */
-    int GetModelsNb()
+    asResultsAnalogsForecastAggregator* GetAggregator()
     {
-        return m_CurrentForecasts.size();
+        return m_Aggregator;
     }
 
-    /** Get the number of current forecasts
-     * \return The number of current forecasts
-     */
-    int GetCurrentForecastsNb()
+    int GetMethodsNb()
     {
-        return m_CurrentForecasts.size();
+        return m_Aggregator->GetMethodsNb();
     }
 
-    /** Access m_CurrentForecasts
-     * \return The current value of m_CurrentForecasts
-     */
-    std::vector <asResultsAnalogsForecast*> GetCurrentForecasts()
+    int GetForecastsNb(int methodRow)
     {
-        return m_CurrentForecasts;
+        return m_Aggregator->GetForecastsNb(methodRow);
     }
 
-    /** Access m_CurrentForecast[i]
-     * \return The ith element in m_CurrentForecasts
-     */
-    asResultsAnalogsForecast* GetCurrentForecast(int i)
+    int GetPastMethodsNb()
     {
-        return m_CurrentForecasts[i];
+        return m_Aggregator->GetPastMethodsNb();
     }
 
-    /** Set m_CurrentForecasts
-     * \param val New value to set
-     */
-    void SetCurrentForecasts(std::vector <asResultsAnalogsForecast*> val)
+    int GetPastForecastsNb(int methodRow)
     {
-        m_CurrentForecasts = val;
+        return m_Aggregator->GetPastForecastsNb(methodRow);
+    }
+    
+    int GetPastForecastsNb(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
-    /** Access m_PastForecasts
-     * \return The current value of m_PastForecasts
-     */
-    std::vector <asResultsAnalogsForecast*> GetPastForecasts(int forecast)
+    asResultsAnalogsForecast* GetForecast(int methodRow, int forecastRow)
     {
-        return m_PastForecasts[forecast];
+        return m_Aggregator->GetForecast(methodRow, forecastRow);
     }
 
-    /** Access m_PastForecasts
-     * \return The current value of m_PastForecasts
-     */
-    asResultsAnalogsForecast* GetPastForecast(int forecast, int time)
+    asResultsAnalogsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow)
     {
-        return m_PastForecasts[forecast][time];
-    }
-
-    /** Access m_PastForecasts
-     * \return The current value of m_PastForecasts
-     */
-    int GetPastForecastsNb(int i)
-    {
-        return m_PastForecasts[i].size();
+        return m_Aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
 
     /** Access m_LeadTimeOrigin
@@ -167,12 +113,106 @@ public:
         m_LeadTimeOrigin = val;
     }
 
+    wxString GetForecastName(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetForecastName(methodRow, forecastRow);
+    }
+
+    wxString GetMethodName(int methodRow)
+    {
+        return m_Aggregator->GetMethodName(methodRow);
+    }
+
+    VectorString GetAllMethodNames()
+    {
+        return m_Aggregator->GetAllMethodNames();
+    }
+
+    VectorString GetAllForecastNames()
+    {
+        return m_Aggregator->GetAllForecastNames();
+    }
+
+    wxArrayString GetAllForecastNamesWxArray()
+    {
+        return m_Aggregator->GetAllForecastNamesWxArray();
+    }
+
+    VectorString GetFilePaths()
+    {
+        return m_Aggregator->GetFilePaths();
+    }
+
+    wxString GetFilePath(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetFilePath(methodRow, forecastRow);
+    }
+
+    wxArrayString GetFilePathsWxArray()
+    {
+        return m_Aggregator->GetFilePathsWxArray();
+    }
+
+    Array1DFloat GetTargetDates(int methodRow)
+    {
+        return m_Aggregator->GetTargetDates(methodRow);
+    }
+
+    Array1DFloat GetTargetDates(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetTargetDates(methodRow, forecastRow);
+    }
+
+    Array1DFloat GetFullTargetDates()
+    {
+        return m_Aggregator->GetFullTargetDates();
+    }
+
+    int GetForecastRowSpecificForStation(int methodRow, int stationRow)
+    {
+        return m_Aggregator->GetForecastRowSpecificForStation(methodRow, stationRow);
+    }
+
+    wxArrayString GetStationNames(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetStationNames(methodRow, forecastRow);
+    }
+
+    wxString GetStationName(int methodRow, int forecastRow, int stationRow)
+    {
+        return m_Aggregator->GetStationName(methodRow, forecastRow, stationRow);
+    }
+
+    wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetStationNamesWithHeights(methodRow, forecastRow);
+    }
+
+    wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow)
+    {
+        return m_Aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
+    }
+
+    int GetLeadTimeLength(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetLeadTimeLength(methodRow, forecastRow);
+    }
+
+    int GetLeadTimeLengthMax()
+    {
+        return m_Aggregator->GetLeadTimeLengthMax();
+    }
+
+    wxArrayString GetLeadTimes(int methodRow, int forecastRow)
+    {
+        return m_Aggregator->GetLeadTimes(methodRow, forecastRow);
+    } 
+
 protected:
 private:
     wxWindow* m_Parent;
     asWorkspace* m_Workspace;
-    std::vector <asResultsAnalogsForecast*> m_CurrentForecasts; //!< Member variable "m_CurrentForecasts"
-    std::vector <std::vector <asResultsAnalogsForecast*> > m_PastForecasts; //!< Member variable "m_PastForecasts"
+    asResultsAnalogsForecastAggregator* m_Aggregator;
     double m_LeadTimeOrigin; //!< Member variable "m_LeadTimeOrigin"
     wxArrayString m_DirectoriesPastForecasts;
 

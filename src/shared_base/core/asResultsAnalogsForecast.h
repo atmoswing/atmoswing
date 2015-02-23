@@ -49,6 +49,10 @@ public:
 
     bool IsCompatibleWith(asResultsAnalogsForecast * otherForecast);
 
+    bool IsSpecificForStation(int stationId);
+
+    int GetStationRowFromId(int stationId);
+
     wxString GetForecastsDirectory()
     {
         return m_ForecastsDirectory;

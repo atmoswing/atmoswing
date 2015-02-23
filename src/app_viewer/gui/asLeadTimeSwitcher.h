@@ -29,8 +29,8 @@
 #define __ASLEADTIMESWITCHER__
 
 #include "asIncludes.h"
-#include "asResultsAnalogsForecast.h"
 #include "asWorkspace.h"
+#include "asForecastManager.h"
 #include <wx/graphics.h>
 #include <wx/panel.h>
 #include <wx/overlay.h>
@@ -41,16 +41,17 @@ class asLeadTimeSwitcher : public wxPanel
 {
 public:
     /** Constructor */
-    asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asLeadTimeSwitcher();
     
-    void Draw( Array1DFloat &dates, std::vector <asResultsAnalogsForecast*> forecasts );
+    void Draw( Array1DFloat &dates );
     void SetLeadTime(int leadTime);
     void SetParent( wxWindow* parent );
 
 private:
     int m_CellWidth;
     int m_LeadTime;
+    asForecastManager* m_ForecastManager;
     asWorkspace* m_Workspace;
     wxBitmap *m_Bmp;
     wxOverlay m_Overlay;
@@ -67,7 +68,6 @@ private:
     void CreatePathMarker(wxGraphicsPath & path, int i_col);
     void OnPaint( wxPaintEvent &event );
     
-//    DECLARE_EVENT_TABLE();
 };
 
 #endif // __ASLEADTIMESWITCHER__

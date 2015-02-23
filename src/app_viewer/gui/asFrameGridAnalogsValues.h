@@ -43,7 +43,7 @@ class asFrameGridAnalogsValues : public asFrameGridAnalogsValuesVirtual
 {
 public:
     /** Constructor */
-    asFrameGridAnalogsValues( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id=asWINDOW_GRID_ANALOGS );
+    asFrameGridAnalogsValues( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id=asWINDOW_GRID_ANALOGS );
     void Init();
 
 protected:
@@ -54,6 +54,7 @@ protected:
 
 private:
     asForecastManager *m_ForecastManager;
+    int m_SelectedMethod;
     int m_SelectedForecast;
     int m_SelectedStation;
     int m_SelectedDate;

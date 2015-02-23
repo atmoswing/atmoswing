@@ -78,8 +78,8 @@ BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
-    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECTION_CHANGED, asFrameForecast::OnForecastModelSelectionChange)
-    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_MODEL_SELECT_FIRST, asFrameForecast::OnForecastModelSelectFirst)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECTION_CHANGED, asFrameForecast::OnForecastForecastSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECT_FIRST, asFrameForecast::OnForecastForecastSelectFirst)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecast::OnForecastPercentileSelectionChange)
 END_EVENT_TABLE()
 
@@ -101,15 +101,15 @@ bool vroomDropFiles::OnDropFiles(wxCoord x, wxCoord y,
 }
 
 
-/* modelDropFiles */
+/* forecastDropFiles */
 
-modelDropFiles::modelDropFiles(asFrameForecast * parent){
+forecastDropFiles::forecastDropFiles(asFrameForecast * parent){
     wxASSERT(parent);
     m_LoaderFrame = parent;
 }
 
 
-bool modelDropFiles::OnDropFiles(wxCoord x, wxCoord y,
+bool forecastDropFiles::OnDropFiles(wxCoord x, wxCoord y,
                                  const wxArrayString & filenames){
     if (filenames.GetCount() == 0) return false;
 
@@ -147,13 +147,31 @@ asFrameForecastVirtual( parent, id )
     m_SizerGIS->Add( m_DisplayCtrl, 1, wxEXPAND, 5 );
     m_PanelGIS->Layout();
 
+    // Gis panel
+    m_PanelSidebarGisLayers = new asPanelSidebarGisLayers( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarGisLayers->Layout();
+    m_SizerScrolledWindow->Add( m_PanelSidebarGisLayers, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    m_PanelSidebarGisLayers->SetDropTarget(new vroomDropFiles(this));
+
+    // VroomGIS
+    m_LayerManager = new vrLayerManager();
+    m_ViewerLayerManager = new vrViewerLayerManager(m_LayerManager, this, m_DisplayCtrl , m_PanelSidebarGisLayers->GetTocCtrl());
+//    m_LayerManager->AllowReprojectOnTheFly(true);
+    
+    // Forecast manager
+    m_ForecastManager = new asForecastManager( this, &m_Workspace);
+
+    // Forecast viewer
+    m_ForecastViewer = new asForecastViewer( this, m_ForecastManager, m_LayerManager, m_ViewerLayerManager);
+
     // Forecasts
-    m_PanelSidebarForecasts = new asPanelSidebarForecasts( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarForecasts = new asPanelSidebarForecasts( m_ScrolledWindowOptions, m_ForecastManager, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarForecasts->Layout();
-    m_SizerScrolledWindow->Add( m_PanelSidebarForecasts, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    m_SizerScrolledWindow->Insert(0, m_PanelSidebarForecasts, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
+    m_PanelSidebarForecasts->SetDropTarget(new forecastDropFiles(this));
 
     // Alarms
-    m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, &m_Workspace, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
+    m_PanelSidebarAlarms = new asPanelSidebarAlarms( m_ScrolledWindowOptions, &m_Workspace, m_ForecastManager, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarAlarms->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarAlarms, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
 
@@ -161,11 +179,6 @@ asFrameForecastVirtual( parent, id )
     m_PanelSidebarStationsList = new asPanelSidebarStationsList( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
     m_PanelSidebarStationsList->Layout();
     m_SizerScrolledWindow->Add( m_PanelSidebarStationsList, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
-
-    // Gis panel
-    m_PanelSidebarGisLayers = new asPanelSidebarGisLayers( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
-    m_PanelSidebarGisLayers->Layout();
-    m_SizerScrolledWindow->Add( m_PanelSidebarGisLayers, 0, wxEXPAND|wxTOP|wxBOTTOM, 2 );
     
     // Analog dates sidebar
     m_PanelSidebarAnalogDates = new asPanelSidebarAnalogDates( m_ScrolledWindowOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL );
@@ -203,21 +216,6 @@ asFrameForecastVirtual( parent, id )
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingNow ) );
     this->Connect( asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::LaunchForecastingPast ) );
     this->Connect( asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameForecast::OnOpenForecast ) );
-
-    // DND
-    m_PanelSidebarGisLayers->SetDropTarget(new vroomDropFiles(this));
-    m_PanelSidebarForecasts->SetDropTarget(new modelDropFiles(this));
-
-    // VroomGIS
-    m_LayerManager = new vrLayerManager();
-    m_ViewerLayerManager = new vrViewerLayerManager(m_LayerManager, this, m_DisplayCtrl , m_PanelSidebarGisLayers->GetTocCtrl());
-//    m_LayerManager->AllowReprojectOnTheFly(true);
-
-    // Forecast manager
-    m_ForecastManager = new asForecastManager(m_PanelSidebarForecasts->GetModelsCtrl(), &m_Workspace);
-
-    // Forecast viewer
-    m_ForecastViewer = new asForecastViewer( this, m_ForecastManager, m_LayerManager, m_ViewerLayerManager);
 
     // Process
     m_ProcessForecast = NULL;
@@ -719,17 +717,17 @@ void asFrameForecast::UpdateLeadTimeSwitch()
 {
     // Required size
     int squareSize = 40;
-    int width = (m_ForecastManager->GetFullTargetDatesVector().size()+1)*squareSize;
+    int width = (m_ForecastManager->GetFullTargetDates().size()+1)*squareSize;
     int height = squareSize + 5;
 
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_LeadTimeSwitcher);
-    m_LeadTimeSwitcher = new asLeadTimeSwitcher( m_PanelTop, &m_Workspace, wxID_ANY, wxDefaultPosition, wxSize(width,height), wxTAB_TRAVERSAL );
+    m_LeadTimeSwitcher = new asLeadTimeSwitcher( m_PanelTop, &m_Workspace, m_ForecastManager, wxID_ANY, wxDefaultPosition, wxSize(width,height), wxTAB_TRAVERSAL );
     m_LeadTimeSwitcher->SetBackgroundColour( wxColour( 77, 77, 77 ) );
     m_LeadTimeSwitcher->SetMinSize( wxSize( width, height ) );
     m_LeadTimeSwitcher->Layout();
-    Array1DFloat dates = m_ForecastManager->GetFullTargetDatesVector();
-    m_LeadTimeSwitcher->Draw(dates, m_ForecastManager->GetCurrentForecasts());
+    Array1DFloat dates = m_ForecastManager->GetFullTargetDates();
+    m_LeadTimeSwitcher->Draw(dates);
     
     m_SizerLeadTimeSwitch->Add( m_LeadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5 );
     m_SizerLeadTimeSwitch->Layout();
@@ -836,7 +834,7 @@ void asFrameForecast::OnForecastProcessTerminate( wxProcessEvent &event )
 
     if (m_LaunchedPresentForecast)
     {
-        if (m_ForecastManager->GetCurrentForecastsNb()>0)
+        if (m_ForecastManager->GetMethodsNb()>0)
         {
             wxMessageDialog dlg(this,
                                 "The forecast processing is over. Do you want to load the results? "
@@ -888,7 +886,7 @@ void asFrameForecast::OpenFramePlots( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
-    asFramePlotDistributions* framePlot = new asFramePlotDistributions(this, m_ForecastViewer->GetModelSelection(), m_ForecastManager);
+    asFramePlotDistributions* framePlot = new asFramePlotDistributions(this, m_ForecastViewer->GetMethodSelection(), m_ForecastViewer->GetForecastSelection(), m_ForecastManager);
     framePlot->Layout();
     framePlot->Init();
     framePlot->Plot();
@@ -899,7 +897,7 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
-    asFrameGridAnalogsValues* frameGrid = new asFrameGridAnalogsValues(this, m_ForecastViewer->GetModelSelection(), m_ForecastManager);
+    asFrameGridAnalogsValues* frameGrid = new asFrameGridAnalogsValues(this, m_ForecastViewer->GetMethodSelection(), m_ForecastViewer->GetForecastSelection(), m_ForecastManager);
     frameGrid->Layout();
     frameGrid->Init();
     frameGrid->Show();
@@ -1277,22 +1275,14 @@ void asFrameForecast::SwitchForecast( double increment )
 {
     wxBusyCursor wait;
 
-    if (m_ForecastManager->GetCurrentForecastsNb()==0)
+    if (m_ForecastManager->GetMethodsNb()==0)
     {
-        asLogError("There is no forecast open.");
+        asLogError("There is no opened forecast.");
         return;
     }
 
     // Get path
-    VectorString forecastsPaths = m_ForecastManager->GetFilePaths();
-    int index = m_ForecastViewer->GetModelSelection();
-    if (index<0)
-    {
-        index = m_ForecastViewer->GetModelMultipleSelection()[0];
-    }
-
-    wxASSERT(forecastsPaths.size()>index);
-    wxString forecastsPath = forecastsPaths[index];
+    wxString forecastsPath = m_ForecastManager->GetFilePath(m_ForecastViewer->GetMethodSelection(), m_ForecastViewer->GetForecastSelection());
     wxFileName forecastFileName(forecastsPath);
     wxString fileName = forecastFileName.GetName();
     wxString partialFileName = fileName.SubString(10,fileName.size()-1);
@@ -1674,7 +1664,7 @@ void asFrameForecast::OnToolAction (wxCommandEvent & event)
     else if (msg->m_EvtType == vrEVT_TOOL_SELECT)
     {
         // If no forecast open
-        if (m_ForecastManager->GetModelsNb()==0)
+        if (m_ForecastManager->GetMethodsNb()==0)
         {
             wxDELETE(msg);
             return;
@@ -1805,7 +1795,7 @@ void asFrameForecast::OnStationSelection( wxCommandEvent& event )
     int choice = event.GetInt();
 
     // If no forecast open
-    if (m_ForecastManager->GetModelsNb()==0)
+    if (m_ForecastManager->GetMethodsNb()==0)
     {
         return;
     }
@@ -1863,22 +1853,15 @@ void asFrameForecast::OnForecastRatioSelectionChange( wxCommandEvent& event )
     UpdatePanelCaptionColorbar();
 }
 
-void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
+void asFrameForecast::OnForecastForecastSelectionChange( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
     Freeze();
 
-    asMessageModelChoice* message = (asMessageModelChoice*)event.GetClientData();
+    asMessageForecastChoice* message = (asMessageForecastChoice*)event.GetClientData();
 
-    if (message->IsAggregator())
-    {
-        m_ForecastViewer->SetMultipleModels(message->GetModelsIds());
-    }
-    else
-    {
-        m_ForecastViewer->SetModel(message->GetModelId());
-    }
+    m_ForecastViewer->SetForecast(message->GetMethodRow(), message->GetForecastRow());
     
     if(m_LeadTimeSwitcher)
     {
@@ -1899,9 +1882,9 @@ void asFrameForecast::OnForecastModelSelectionChange( wxCommandEvent& event )
     Thaw();
 }
 
-void asFrameForecast::OnForecastModelSelectFirst( wxCommandEvent& event )
+void asFrameForecast::OnForecastForecastSelectFirst( wxCommandEvent& event )
 {
-    m_PanelSidebarForecasts->GetModelsCtrl()->SelectFirst();
+    m_PanelSidebarForecasts->GetForecastsCtrl()->SelectFirst();
 }
 
 void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )
@@ -1918,32 +1901,15 @@ void asFrameForecast::DrawPlotStation( int station )
     m_ForecastViewer->LoadPastForecast();
 
     // Get data
-    int modelId = m_ForecastViewer->GetModelSelection();
-    if (modelId<0) // Aggregator
+    int methodRow = m_ForecastViewer->GetMethodSelection();
+    int forecastRow = m_ForecastViewer->GetForecastSelection();
+
+    if (forecastRow<0) // Aggregator
     {
-        VectorInt modelIds = m_ForecastViewer->GetModelMultipleSelection();
-        wxASSERT(modelIds.size()>0);
-
-        // Default value
-        modelId = modelIds[0];
-
-        // Pick up the most relevant forecast for the station
-        for (int i=0; i<modelIds.size(); i++)
-        {
-            asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(modelIds[i]);
-            VectorInt stationIds = forecast->GetPredictandStationIds();
-            for (int j=0; j<stationIds.size(); j++)
-            {
-                if (stationIds[j]==station)
-                {
-                    modelId = modelIds[i];
-                    break;
-                }
-            }
-        }
+        forecastRow = m_ForecastManager->GetForecastRowSpecificForStation(methodRow, station);
     }
 
-    asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, modelId, station, m_ForecastManager);
+    asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, station, m_ForecastManager);
     framePlotStation->Layout();
     framePlotStation->Init();
     framePlotStation->Plot();
@@ -1954,17 +1920,16 @@ void asFrameForecast::OnForecastNewAdded( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(event.GetInt());
-    m_PanelSidebarForecasts->AddForecast(forecast->GetMethodId(), forecast->GetMethodIdDisplay(), forecast->GetSpecificTag(), forecast->GetSpecificTagDisplay(), forecast->GetPredictandParameter(), forecast->GetPredictandTemporalResolution());
-    
+    m_PanelSidebarForecasts->Update();
+
     if (event.GetString().IsSameAs("last"))
     {
-        m_ForecastViewer->FixModelSelection();
+        m_ForecastViewer->FixForecastSelection();
 
         float previousDate = m_ForecastViewer->GetLeadTimeDate();
         m_ForecastViewer->SetLeadTimeDate(previousDate);
         
-        UpdatePanelAlarms();
+        m_PanelSidebarAlarms->Update();
     }
 }
 
@@ -1990,18 +1955,15 @@ void asFrameForecast::UpdateHeaderTexts()
     wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast.c_str());
     m_StaticTextForecastDate->SetLabel(dateStr);
 
-    wxString model;
-    int modelId = m_ForecastViewer->GetModelSelection();
-    if (modelId<0) {
-        wxASSERT(m_ForecastViewer->GetModelMultipleSelection().size()>0);
-        modelId = m_ForecastViewer->GetModelMultipleSelection()[0];
-        model = m_ForecastManager->GetModelNameMethodOnly(modelId);
+    wxString forecastName;
+    if (m_ForecastViewer->GetForecastSelection()<0) {
+        forecastName = m_ForecastManager->GetMethodName(m_ForecastViewer->GetMethodSelection());
     }
     else {
-        model = m_ForecastManager->GetModelName(modelId);
+        forecastName = m_ForecastManager->GetForecastName(m_ForecastViewer->GetMethodSelection(), m_ForecastViewer->GetForecastSelection());
     }
 
-    m_StaticTextForecastModel->SetLabel(model);
+    m_StaticTextForecast->SetLabel(forecastName);
     
     m_PanelTop->Layout();
     m_PanelTop->Refresh();
@@ -2022,14 +1984,14 @@ void asFrameForecast::UpdatePanelCaptionAll()
         m_PanelSidebarCaptionForecastRing->Show();
 
         m_PanelSidebarCaptionForecastRing->SetColorbarMax(m_ForecastViewer->GetLayerMaxValue());
-
-        int modelId = m_ForecastViewer->GetModelSelection();
-        if (modelId<0) {
-            wxASSERT(m_ForecastViewer->GetModelMultipleSelection().size()>0);
-            modelId = m_ForecastViewer->GetModelMultipleSelection()[0];
+        
+        int methodRow = m_ForecastViewer->GetMethodSelection();
+        int forecastRow = m_ForecastViewer->GetForecastSelection();
+        if (forecastRow<0) {
+            forecastRow = 0;
         }
 
-        asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(modelId);
+        asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(methodRow, forecastRow);
         Array1DFloat dates = forecast->GetTargetDates();
         m_PanelSidebarCaptionForecastRing->SetDates(dates);
     }
@@ -2044,7 +2006,7 @@ void asFrameForecast::UpdatePanelCaptionColorbar()
 
 void asFrameForecast::UpdatePanelAnalogDates()
 {
-    if (m_ForecastViewer->GetLeadTimeIndex()>=m_ForecastManager->GetLeadTimeLengthMax() || m_ForecastViewer->GetModelSelection()<0)
+    if (m_ForecastViewer->GetLeadTimeIndex()>=m_ForecastManager->GetLeadTimeLengthMax() || m_ForecastViewer->GetForecastSelection()<0)
     {
         m_PanelSidebarAnalogDates->Hide();
         return;
@@ -2052,7 +2014,7 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
     m_PanelSidebarAnalogDates->Show();
 
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_ForecastViewer->GetModelSelection());
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_ForecastViewer->GetMethodSelection(), m_ForecastViewer->GetForecastSelection());
     Array1DFloat arrayDate = forecast->GetAnalogsDates(m_ForecastViewer->GetLeadTimeIndex());
     Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria(m_ForecastViewer->GetLeadTimeIndex());
     m_PanelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
@@ -2060,30 +2022,15 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
 void asFrameForecast::UpdatePanelStationsList()
 {
-    int modelId = m_ForecastViewer->GetModelSelection();
-    if (modelId<0)
+    int methodRow = m_ForecastViewer->GetMethodSelection();
+    int forecastRow = m_ForecastViewer->GetForecastSelection();
+    if (forecastRow<0)
     {
-        if (m_ForecastViewer->GetModelMultipleSelection().size()>0)
-        {
-            modelId = m_ForecastViewer->GetModelMultipleSelection()[0];
-        }
-        else
-        {
-            m_PanelSidebarStationsList->Hide();
-            return;
-        }
+        forecastRow = 0;
     }
     
     m_PanelSidebarStationsList->Show();
 
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(modelId);
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(methodRow, forecastRow);
     m_PanelSidebarStationsList->SetChoices(arrayStation);
-}
-
-void asFrameForecast::UpdatePanelAlarms()
-{
-    Array1DFloat datesFull = m_ForecastManager->GetFullTargetDatesVector();
-    VectorString models = m_ForecastManager->GetModelsNames();
-    std::vector <asResultsAnalogsForecast*> forecasts = m_ForecastManager->GetCurrentForecasts();
-    m_PanelSidebarAlarms->UpdateAlarms(datesFull, models, forecasts);
 }

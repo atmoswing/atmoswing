@@ -36,7 +36,7 @@
 #include "vrrender.h"
 
 
-wxDEFINE_EVENT(asEVT_ACTION_FORECAST_MODEL_SELECT_FIRST, wxCommandEvent);
+wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
 
 asForecastViewer::asForecastViewer( asFrameForecast* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager)
 {
@@ -80,7 +80,8 @@ asForecastViewer::asForecastViewer( asFrameForecast* parent, asForecastManager *
     m_Percentiles.push_back(0.6f);
     m_Percentiles.push_back(0.2f);
 
-    m_ModelSelection = -1;
+    m_MethodSelection = -1;
+    m_ForecastSelection = -1;
 
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Read("/ForecastViewer/DisplaySelection", &m_ForecastDisplaySelection, 3);
@@ -114,85 +115,39 @@ wxArrayString asForecastViewer::GetPercentilesStringArray()
     return m_DisplayPercentiles;
 }
 
-void asForecastViewer::FixModelSelection()
+void asForecastViewer::FixForecastSelection()
 {
-    if (m_ModelSelection<0 && m_ModelMultipleSelection.size()==0)
+    if (m_MethodSelection<0)
     {
-        wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_MODEL_SELECT_FIRST);
+        wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_SELECT_FIRST);
         m_Parent->ProcessWindowEvent(eventSlct);
     }
 }
 
-void asForecastViewer::SetModel(int id)
+void asForecastViewer::SetForecast(int methodRow, int forecastRow)
 {
-    m_ModelSelection = id;
-    m_ModelMultipleSelection.clear();
+    m_MethodSelection = methodRow;
+    m_ForecastSelection = forecastRow;
 
     Redraw();
-}
-
-void asForecastViewer::SetMultipleModels(VectorInt ids)
-{
-    m_ModelSelection = -1;
-    m_ModelMultipleSelection = ids;
-
-    Redraw();
-}
-
-bool asForecastViewer::ModelSelectionOk()
-{
-    if (m_ModelSelection<0)
-    {
-        if(m_ModelMultipleSelection.size()==0)
-        {
-            asLogError(_("No model was selected."));
-            return false;
-        }
-    }
-    else
-    {
-        if(m_ModelMultipleSelection.size()>0)
-        {
-            asLogError(_("Single and multiple models selection was enabled."));
-            return false;
-        }
-    }
-    return true;
-}
-
-bool asForecastViewer::MultipleModelsSelected()
-{
-    if(m_ModelMultipleSelection.size()>0)
-    {
-        return true;
-    }
-    return false;
 }
 
 wxString asForecastViewer::GetStationName(int i_stat)
 {
-    if (!ModelSelectionOk()) return wxEmptyString;
-
-    if (MultipleModelsSelected())
-    {
-        return m_ForecastManager->GetStationName(m_ModelMultipleSelection[0], i_stat);
-    }
-
-    return m_ForecastManager->GetStationName(m_ModelSelection, i_stat);
+    return m_ForecastManager->GetStationName(m_MethodSelection, m_ForecastSelection, i_stat);
 }
 
 float asForecastViewer::GetSelectedTargetDate()
 {
-    if (!ModelSelectionOk()) return 0;
-
     Array1DFloat targetDates;
-    if (MultipleModelsSelected())
+
+    if(m_ForecastSelection>0)
     {
-        targetDates = m_ForecastManager->GetCurrentForecast(m_ModelMultipleSelection[0])->GetTargetDates();
+        targetDates = m_ForecastManager->GetTargetDates(m_MethodSelection, m_ForecastSelection);
     }
     else
     {
-        targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+        targetDates = m_ForecastManager->GetTargetDates(m_MethodSelection);
     }
 
     wxASSERT(m_LeadTimeIndex>=0);
@@ -205,18 +160,17 @@ float asForecastViewer::GetSelectedTargetDate()
 
 void asForecastViewer::SetLeadTimeDate(float date)
 {
-    if (date>0 && (m_ModelSelection>0 || m_ModelMultipleSelection.size()>0))
+    if (date>0 && (m_MethodSelection>0))
     {
-        if (!ModelSelectionOk()) return;
-
         Array1DFloat targetDates;
-        if (MultipleModelsSelected())
+
+        if(m_ForecastSelection>0)
         {
-            targetDates = m_ForecastManager->GetCurrentForecast(m_ModelMultipleSelection[0])->GetTargetDates();
+            targetDates = m_ForecastManager->GetTargetDates(m_MethodSelection, m_ForecastSelection);
         }
         else
         {
-            targetDates = m_ForecastManager->GetCurrentForecast(m_ModelSelection)->GetTargetDates();
+            targetDates = m_ForecastManager->GetTargetDates(m_MethodSelection);
         }
 
         int index = asTools::SortedArraySearchClosest(&targetDates[0], &targetDates[targetDates.size()-1], date);
@@ -252,51 +206,41 @@ void asForecastViewer::LoadPastForecast()
     wxBusyCursor wait;
 
     // Check that elements are selected
-    if ( ((m_ModelSelection==-1) && (m_ModelMultipleSelection.size()==0)) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
-    if (!ModelSelectionOk()) return;
-    if ( m_ModelSelection >= m_ForecastManager->GetModelsNb() ) return;
+    if ( (m_MethodSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if ( m_MethodSelection >= m_ForecastManager->GetMethodsNb() ) return;
     
-    if (MultipleModelsSelected())
+    if (m_ForecastSelection>0)
     {
-        m_ForecastManager->LoadPastForecast(m_ModelMultipleSelection);
+        m_ForecastManager->LoadPastForecast(m_MethodSelection, m_ForecastSelection);
     }
     else
     {
-        m_ForecastManager->LoadPastForecast(m_ModelSelection);
+        m_ForecastManager->LoadPastForecast(m_MethodSelection);
     }
 }
 
 void asForecastViewer::Redraw()
 {
     // Check that elements are selected
-    if ( ((m_ModelSelection==-1) && (m_ModelMultipleSelection.size()==0)) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
-    if ( m_ModelSelection >= m_ForecastManager->GetModelsNb() ) return;
+    if ( (m_MethodSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if ( m_MethodSelection >= m_ForecastManager->GetMethodsNb() ) return;
     if ( (unsigned)m_ForecastDisplaySelection >= m_DisplayForecast.size() ) return;
     if ( m_Percentiles.size() != m_DisplayPercentiles.size() ) return;
     if ( m_ReturnPeriods.size() != m_DisplayForecast.size() ) return;
     
     // Get data
     vector <asResultsAnalogsForecast*> forecasts;
-    if (!ModelSelectionOk()) return;
-    if (MultipleModelsSelected())
+
+    if (m_ForecastSelection<0)
     {
-        for (int i=0; i<m_ModelMultipleSelection.size(); i++)
+        for (int i=0; i<m_ForecastManager->GetForecastsNb(m_MethodSelection); i++)
         {
-            forecasts.push_back(m_ForecastManager->GetCurrentForecast(m_ModelMultipleSelection[i]));
+            forecasts.push_back(m_ForecastManager->GetForecast(m_MethodSelection, i));
         }
     }
     else
     {
-        forecasts.push_back(m_ForecastManager->GetCurrentForecast(m_ModelSelection));
-    }
-
-    // Check data consistency
-    if (forecasts.size()>1)
-    {
-        for (int i=1; i<forecasts.size(); i++)
-        {
-            if(!forecasts[0]->IsCompatibleWith(forecasts[i])) return;
-        }
+        forecasts.push_back(m_ForecastManager->GetForecast(m_MethodSelection, m_ForecastSelection));
     }
 
     // Create a memory layer
@@ -421,33 +365,20 @@ void asForecastViewer::Redraw()
             // Select the accurate forecast
             bool accurateForecast = false;
             asResultsAnalogsForecast* forecast = NULL;
-            if (!MultipleModelsSelected())
+            if (m_ForecastSelection>=0)
             {
                 forecast = forecasts[0];
-
-                VectorInt stationIds = forecast->GetPredictandStationIds();
-                for (int j=0; j<stationIds.size(); j++)
-                {
-                    if (stationIds[j]==currentId)
-                    {
-                        accurateForecast = true;
-                        break;
-                    }
-                }
+                accurateForecast = forecast->IsSpecificForStation(currentId);
             }
             else
             {
-                for (int i=0; i<m_ModelMultipleSelection.size(); i++)
-                {
-                    VectorInt stationIds = forecasts[i]->GetPredictandStationIds();
-                    for (int j=0; j<stationIds.size(); j++)
+                for (int i=0; i<forecasts.size(); i++)
+                {   
+                    accurateForecast = forecasts[i]->IsSpecificForStation(currentId);
+                    if (accurateForecast)
                     {
-                        if (stationIds[j]==currentId)
-                        {
-                            accurateForecast = true;
-                            forecast = forecasts[i];
-                            break;
-                        }
+                        forecast = forecasts[i];
+                        break;
                     }
                 }
             }
@@ -614,39 +545,26 @@ void asForecastViewer::Redraw()
             // Select the accurate forecast
             bool accurateForecast = false;
             asResultsAnalogsForecast* forecast = NULL;
-            if (!MultipleModelsSelected())
+            if (m_ForecastSelection>=0)
             {
                 forecast = forecasts[0];
-
-                VectorInt stationIds = forecast->GetPredictandStationIds();
-                for (int j=0; j<stationIds.size(); j++)
-                {
-                    if (stationIds[j]==currentId)
-                    {
-                        accurateForecast = true;
-                        break;
-                    }
-                }
+                accurateForecast = forecast->IsSpecificForStation(currentId);
             }
             else
             {
-                for (int i=0; i<m_ModelMultipleSelection.size(); i++)
-                {
-                    VectorInt stationIds = forecasts[i]->GetPredictandStationIds();
-                    for (int j=0; j<stationIds.size(); j++)
+                for (int i=0; i<forecasts.size(); i++)
+                {   
+                    accurateForecast = forecasts[i]->IsSpecificForStation(currentId);
+                    if (accurateForecast)
                     {
-                        if (stationIds[j]==currentId)
-                        {
-                            accurateForecast = true;
-                            forecast = forecasts[i];
-                            break;
-                        }
+                        forecast = forecasts[i];
+                        break;
                     }
                 }
             }
 
             if(!forecast) {
-                asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecast->GetStationName(i_stat).c_str()));
+                asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(i_stat).c_str()));
                 continue;
             }
 
@@ -673,7 +591,7 @@ void asForecastViewer::Redraw()
             // Check available lead times
             if(forecast->GetTargetDatesLength()<=m_LeadTimeIndex)
             {
-                asLogError(_("Lead time not available for this model."));
+                asLogError(_("Lead time not available for this forecast."));
                 m_LeadTimeIndex = forecast->GetTargetDatesLength()-1;
             }
 

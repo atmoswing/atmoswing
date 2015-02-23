@@ -27,15 +27,15 @@
  
 #include "asLeadTimeSwitcher.h"
 #include "asFrameForecast.h"
-#include "asResultsAnalogsForecastAggregator.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
-asLeadTimeSwitcher::asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+asLeadTimeSwitcher::asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 :
 wxPanel( parent, id, pos, size, style )
 {
     m_Workspace = workspace;
+    m_ForecastManager = forecastManager;
     m_Bmp = NULL;
     m_Gdc = NULL;
     m_CellWidth = 10;
@@ -72,21 +72,17 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange( wxMouseEvent& event )
     GetParent()->ProcessWindowEvent(eventSlct);
 }
 
-void asLeadTimeSwitcher::Draw(Array1DFloat &dates, std::vector <asResultsAnalogsForecast*> forecasts)
+void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
 {
-    // Get sizes
-    int cols = dates.size();
-    int rows = forecasts.size();
-    
     // Required size
     m_CellWidth = 40;
-    int width = (cols+1)*m_CellWidth;
+    int width = (dates.size()+1)*m_CellWidth;
     int height = m_CellWidth+5;
 
     // Get color values
     int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
     float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
-    Array1DFloat values = asResultsAnalogsForecastAggregator::GetMaxValues(dates, forecasts, returnPeriodRef, percentileThreshold);
+    Array1DFloat values = m_ForecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, percentileThreshold);
     wxASSERT(values.size()==dates.size());
 
     // Create bitmap
@@ -104,7 +100,7 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, std::vector <asResultsAnalogs
     // Create graphics context
     wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
 
-    if ( gc && cols>0 && rows>0 )
+    if ( gc && values.size()>0 )
     {
         gc->SetPen( *wxBLACK );
         wxFont datesFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );

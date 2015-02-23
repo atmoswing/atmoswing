@@ -43,7 +43,7 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal
 {
 public:
     /** Constructor */
-    asFramePlotDistributions( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_DISTRIBUTIONS );
+    asFramePlotDistributions( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_DISTRIBUTIONS );
     /** Destructor */
     ~asFramePlotDistributions();
 
@@ -72,6 +72,7 @@ private:
     asPanelPlot *m_PanelPlotPredictands;
     asPanelPlot *m_PanelPlotCriteria;
     asForecastManager *m_ForecastManager;
+    int m_SelectedMethod;
     int m_SelectedForecast;
     int m_SelectedStation;
     int m_SelectedDate;

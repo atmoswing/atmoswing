@@ -89,12 +89,12 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	
 	m_SizerTopLeft->Add( bSizer52, 1, wxEXPAND, 5 );
 	
-	m_StaticTextForecastModel = new wxStaticText( m_PanelTop, wxID_ANY, _("No model selected"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextForecastModel->Wrap( -1 );
-	m_StaticTextForecastModel->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
-	m_StaticTextForecastModel->SetForegroundColour( wxColour( 255, 255, 255 ) );
+	m_StaticTextForecast = new wxStaticText( m_PanelTop, wxID_ANY, _("No forecast selected"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextForecast->Wrap( -1 );
+	m_StaticTextForecast->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	m_StaticTextForecast->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	
-	m_SizerTopLeft->Add( m_StaticTextForecastModel, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_SizerTopLeft->Add( m_StaticTextForecast, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
 	m_SizerTop->Add( m_SizerTopLeft, 0, wxALIGN_LEFT|wxEXPAND, 5 );
@@ -643,7 +643,7 @@ asFramePredictorsVirtual::asFramePredictorsVirtual( wxWindow* parent, wxWindowID
 	m_ScrolledWindowOptions->SetScrollRate( 5, 5 );
 	m_SizerScrolledWindow = new wxBoxSizer( wxVERTICAL );
 	
-	m_StaticTextChoiceForecast = new wxStaticText( m_ScrolledWindowOptions, wxID_ANY, _("Forecast model"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextChoiceForecast = new wxStaticText( m_ScrolledWindowOptions, wxID_ANY, _("Forecast"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_StaticTextChoiceForecast->Wrap( -1 );
 	m_SizerScrolledWindow->Add( m_StaticTextChoiceForecast, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
