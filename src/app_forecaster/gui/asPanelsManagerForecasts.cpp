@@ -25,18 +25,18 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
  
-#include "asPanelsManagerForecastingModels.h"
+#include "asPanelsManagerForecasts.h"
 
-#include <asPanelForecastingModel.h>
+#include <asPanelForecast.h>
 
-asPanelsManagerForecastingModels::asPanelsManagerForecastingModels()
+asPanelsManagerForecasts::asPanelsManagerForecasts()
 :
 asPanelsManager()
 {
     //ctor
 }
 
-asPanelsManagerForecastingModels::~asPanelsManagerForecastingModels()
+asPanelsManagerForecasts::~asPanelsManagerForecasts()
 {
     // Destroy panels
     for (unsigned int i=0; i<m_ArrayPanels.size(); i++)
@@ -45,7 +45,7 @@ asPanelsManagerForecastingModels::~asPanelsManagerForecastingModels()
     }
 }
 
-void asPanelsManagerForecastingModels::AddPanel(asPanelForecastingModel* panel)
+void asPanelsManagerForecasts::AddPanel(asPanelForecast* panel)
 {
     // Set a pointer to the PanelsManager
     panel->SetPanelsManager(this);
@@ -56,13 +56,13 @@ void asPanelsManagerForecastingModels::AddPanel(asPanelForecastingModel* panel)
     m_ArrayPanels.push_back(panel);
 }
 
-void asPanelsManagerForecastingModels::RemovePanel(asPanelForecastingModel* panel)
+void asPanelsManagerForecasts::RemovePanel(asPanelForecast* panel)
 {
     wxWindow* parent = panel->GetParent();
 
     int id = panel->GetId();
 
-    std::vector <asPanelForecastingModel*> tmpArrayPanels;
+    std::vector <asPanelForecast*> tmpArrayPanels;
     tmpArrayPanels = m_ArrayPanels;
     m_ArrayPanels.clear();
 
@@ -81,7 +81,7 @@ void asPanelsManagerForecastingModels::RemovePanel(asPanelForecastingModel* pane
     LayoutFrame(parent);
 }
 
-void asPanelsManagerForecastingModels::Clear()
+void asPanelsManagerForecasts::Clear()
 {
     // Destroy panels
     for (unsigned int i=0; i<m_ArrayPanels.size(); i++)
@@ -92,19 +92,19 @@ void asPanelsManagerForecastingModels::Clear()
     m_ArrayPanels.clear();
 }
 
-asPanelForecastingModel* asPanelsManagerForecastingModels::GetPanel( int i )
+asPanelForecast* asPanelsManagerForecasts::GetPanel( int i )
 {
     wxASSERT(i<m_ArrayPanels.size());
     return m_ArrayPanels[i];
 }
 
-int asPanelsManagerForecastingModels::GetPanelsNb()
+int asPanelsManagerForecasts::GetPanelsNb()
 {
     int nb = (int)m_ArrayPanels.size();
     return nb;
 }
 
-void asPanelsManagerForecastingModels::SetForecastingModelLedRunning( int num )
+void asPanelsManagerForecasts::SetForecastLedRunning( int num )
 {
     if ((unsigned)num<m_ArrayPanels.size())
     {
@@ -118,7 +118,7 @@ void asPanelsManagerForecastingModels::SetForecastingModelLedRunning( int num )
     }
 }
 
-void asPanelsManagerForecastingModels::SetForecastingModelLedError( int num )
+void asPanelsManagerForecasts::SetForecastLedError( int num )
 {
     if ((unsigned)num<m_ArrayPanels.size())
     {
@@ -132,7 +132,7 @@ void asPanelsManagerForecastingModels::SetForecastingModelLedError( int num )
     }
 }
 
-void asPanelsManagerForecastingModels::SetForecastingModelLedDone( int num )
+void asPanelsManagerForecasts::SetForecastLedDone( int num )
 {
     if ((unsigned)num<m_ArrayPanels.size())
     {
@@ -146,7 +146,7 @@ void asPanelsManagerForecastingModels::SetForecastingModelLedDone( int num )
     }
 }
 
-void asPanelsManagerForecastingModels::SetForecastingModelLedOff( int num )
+void asPanelsManagerForecasts::SetForecastLedOff( int num )
 {
     if ((unsigned)num<m_ArrayPanels.size())
     {
@@ -159,7 +159,7 @@ void asPanelsManagerForecastingModels::SetForecastingModelLedOff( int num )
     }
 }
 
-void asPanelsManagerForecastingModels::SetForecastingModelsAllLedsOff( )
+void asPanelsManagerForecasts::SetForecastsAllLedsOff( )
 {
     for (unsigned int i=0; i<m_ArrayPanels.size(); i++)
     {

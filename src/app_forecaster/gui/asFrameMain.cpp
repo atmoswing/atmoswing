@@ -31,7 +31,7 @@
 #include "asFramePreferencesForecaster.h"
 #include "asFrameXmlEditor.h"
 #include "asFrameAbout.h"
-#include "asPanelForecastingModel.h"
+#include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
 #include "img_bullets.h"
 #include "img_toolbar.h"
@@ -107,7 +107,7 @@ asFrameMainVirtual( parent )
     m_BpButtonAdd->SetBitmapLabel(img_plus);
 
     // Create panels manager
-    m_PanelsManager = new asPanelsManagerForecastingModels();
+    m_PanelsManager = new asPanelsManagerForecasts();
 
     // Connect events
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
@@ -227,15 +227,15 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent & event)
 bool asFrameMain::SaveBatchForecasts()
 {
     // Update the GIS layers
-    m_BatchForecasts.ClearModels();
+    m_BatchForecasts.ClearForecasts();
 
     for (int i=0; i<m_PanelsManager->GetPanelsNb(); i++)
     {
-        asPanelForecastingModel* panel = m_PanelsManager->GetPanel(i);
+        asPanelForecast* panel = m_PanelsManager->GetPanel(i);
 
-        m_BatchForecasts.AddModel();
+        m_BatchForecasts.AddForecast();
 
-        m_BatchForecasts.SetModelFileName(i, panel->GetParametersFileName());
+        m_BatchForecasts.SetForecastFileName(i, panel->GetParametersFileName());
     }
 
     if(!m_BatchForecasts.Save())
@@ -263,12 +263,12 @@ bool asFrameMain::OpenBatchForecasts()
     m_PanelsManager->Clear();
 
     // Create the panels
-    for (int i=0; i<m_BatchForecasts.GetModelsNb(); i++)
+    for (int i=0; i<m_BatchForecasts.GetForecastsNb(); i++)
     {
-        asPanelForecastingModel *panel = new asPanelForecastingModel( m_ScrolledWindowModels );
-        panel->SetParametersFileName(m_BatchForecasts.GetModelFileName(i));
+        asPanelForecast *panel = new asPanelForecast( m_ScrolledWindowForecasts );
+        panel->SetParametersFileName(m_BatchForecasts.GetForecastFileName(i));
         panel->Layout();
-        m_SizerModels->Add( panel, 0, wxALL|wxEXPAND, 5 );
+        m_SizerForecasts->Add( panel, 0, wxALL|wxEXPAND, 5 );
         // Add to the array
         m_PanelsManager->AddPanel(panel);
     }
@@ -365,15 +365,15 @@ void asFrameMain::OnStatusMethodUpdate( wxCommandEvent& event )
 
     if(eventType==asEVT_STATUS_STARTING)
     {
-        m_PanelsManager->SetForecastingModelsAllLedsOff();
+        m_PanelsManager->SetForecastsAllLedsOff();
     }
     else if(eventType==asEVT_STATUS_FAILED)
     {
-        m_PanelsManager->SetForecastingModelLedError(eventInt);
+        m_PanelsManager->SetForecastLedError(eventInt);
     }
     else if(eventType==asEVT_STATUS_SUCCESS)
     {
-        m_PanelsManager->SetForecastingModelLedDone(eventInt);
+        m_PanelsManager->SetForecastLedDone(eventInt);
     }
     else if(eventType==asEVT_STATUS_DOWNLOADING)
     {
@@ -425,7 +425,7 @@ void asFrameMain::OnStatusMethodUpdate( wxCommandEvent& event )
     }
     else if( (eventType==asEVT_STATUS_RUNNING) )
     {
-        m_PanelsManager->SetForecastingModelLedRunning(eventInt);
+        m_PanelsManager->SetForecastLedRunning(eventInt);
         m_LedDownloading->SetState(awxLED_OFF);
         m_LedLoading->SetState(awxLED_OFF);
         m_LedProcessing->SetState(awxLED_OFF);
@@ -525,12 +525,12 @@ void asFrameMain::CancelForecasting( wxCommandEvent& event )
     }
 }
 
-void asFrameMain::AddForecastingModel( wxCommandEvent& event )
+void asFrameMain::AddForecast( wxCommandEvent& event )
 {
     Freeze();
-    asPanelForecastingModel *panel = new asPanelForecastingModel( m_ScrolledWindowModels );
+    asPanelForecast *panel = new asPanelForecast( m_ScrolledWindowForecasts );
     panel->Layout();
-    m_SizerModels->Add( panel, 0, wxALL|wxEXPAND, 5 );
+    m_SizerForecasts->Add( panel, 0, wxALL|wxEXPAND, 5 );
     Layout(); // For the scrollbar
     Thaw();
 

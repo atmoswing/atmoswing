@@ -115,10 +115,10 @@ void asResultsAnalogsForecast::BuildFileName()
     m_FilePath.Append(DS);
 
     // Filename
-    wxString modelname = m_MethodId + '.' + m_SpecificTag;
+    wxString forecastname = m_MethodId + '.' + m_SpecificTag;
     wxString nowstr = asTime::GetStringTime(m_LeadTimeOrigin, "YYYYMMDDhh");
     wxString ext = "fcst";
-    wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),modelname.c_str(),ext.c_str());
+    wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
     m_FilePath.Append(filename);
 }
 

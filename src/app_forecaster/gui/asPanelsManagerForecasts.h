@@ -25,39 +25,39 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
  
-#ifndef ASPANELSMANAGERFORECASTINGMODELS_H
-#define ASPANELSMANAGERFORECASTINGMODELS_H
+#ifndef ASPANELSMANAGERFORECASTS_H
+#define ASPANELSMANAGERFORECASTS_H
 
 #include "asIncludes.h"
 
 #include <asPanelsManager.h>
 
-class asPanelForecastingModel;
+class asPanelForecast;
 
-class asPanelsManagerForecastingModels : public asPanelsManager
+class asPanelsManagerForecasts : public asPanelsManager
 {
 public:
-    asPanelsManagerForecastingModels();
-    virtual ~asPanelsManagerForecastingModels();
+    asPanelsManagerForecasts();
+    virtual ~asPanelsManagerForecasts();
 
-    void AddPanel(asPanelForecastingModel* panel);
-    void RemovePanel(asPanelForecastingModel* panel);
+    void AddPanel(asPanelForecast* panel);
+    void RemovePanel(asPanelForecast* panel);
     void Clear();
 
-    asPanelForecastingModel* GetPanel( int i );
+    asPanelForecast* GetPanel( int i );
     int GetPanelsNb();
 
-    void SetForecastingModelLedRunning( int num );
-    void SetForecastingModelLedError( int num );
-    void SetForecastingModelLedDone( int num );
-    void SetForecastingModelLedOff( int num );
-    void SetForecastingModelsAllLedsOff();
+    void SetForecastLedRunning( int num );
+    void SetForecastLedError( int num );
+    void SetForecastLedDone( int num );
+    void SetForecastLedOff( int num );
+    void SetForecastsAllLedsOff();
 
 protected:
-    std::vector <asPanelForecastingModel*> m_ArrayPanels;
+    std::vector <asPanelForecast*> m_ArrayPanels;
 
 private:
 
 };
 
-#endif // ASPANELSMANAGERFORECASTINGMODELS_H
+#endif // ASPANELSMANAGERFORECASTS_H

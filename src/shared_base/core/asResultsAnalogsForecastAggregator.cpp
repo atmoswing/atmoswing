@@ -582,7 +582,7 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
             }
         }
 
-        // Check lead times effectively available for the current model
+        // Check lead times effectively available for the current forecast
         int leadtimeMin = 0;
         int leadtimeMax = dates.size()-1;
 

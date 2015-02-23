@@ -42,9 +42,9 @@ public:
 
     bool Load(const wxString &filePath);
     bool Save();
-    int GetModelsNb();
-    void ClearModels();
-    void AddModel();;
+    int GetForecastsNb();
+    void ClearForecasts();
+    void AddForecast();;
 
     wxString GetFilePath()
     {
@@ -116,16 +116,16 @@ public:
         m_PredictandDBDirectory = val;
     }
 
-    wxString GetModelFileName(int i)
+    wxString GetForecastFileName(int i)
     {
-        wxASSERT(m_ModelFileNames.size()>i);
-        return m_ModelFileNames[i];
+        wxASSERT(m_ForecastFileNames.size()>i);
+        return m_ForecastFileNames[i];
     }
 
-    void SetModelFileName(int i, const wxString &val)
+    void SetForecastFileName(int i, const wxString &val)
     {
-        wxASSERT(m_ModelFileNames.size()>i);
-        m_ModelFileNames[i] = val;
+        wxASSERT(m_ForecastFileNames.size()>i);
+        m_ForecastFileNames[i] = val;
     }
 
 protected:
@@ -137,7 +137,7 @@ private:
     wxString m_PredictorsArchiveDirectory;
     wxString m_PredictorsRealtimeDirectory;
     wxString m_PredictandDBDirectory;
-    VectorString m_ModelFileNames;
+    VectorString m_ForecastFileNames;
 
 };
 
