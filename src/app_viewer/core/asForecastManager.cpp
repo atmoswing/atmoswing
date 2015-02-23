@@ -53,6 +53,63 @@ void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
     }
 }
 
+int asForecastManager::GetLinearIndex(int methodRow, int forecastRow)
+{
+    int counter = 0;
+    for (int i=0; i<m_Aggregator->GetMethodsNb(); i++)
+    {
+        for (int j=0; j<m_Aggregator->GetForecastsNb(i); j++)
+        {
+            if (i==methodRow && j==forecastRow)
+            {
+                return counter;
+            }
+            counter++;
+        }
+    }
+
+    wxFAIL;
+    return 0;
+}
+
+int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex)
+{
+    int counter = 0;
+    for (int i=0; i<m_Aggregator->GetMethodsNb(); i++)
+    {
+        for (int j=0; j<m_Aggregator->GetForecastsNb(i); j++)
+        {
+            if (counter==linearIndex)
+            {
+                return i;
+            }
+            counter++;
+        }
+    }
+
+    wxFAIL;
+    return 0;
+}
+
+int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex)
+{
+    int counter = 0;
+    for (int i=0; i<m_Aggregator->GetMethodsNb(); i++)
+    {
+        for (int j=0; j<m_Aggregator->GetForecastsNb(i); j++)
+        {
+            if (counter==linearIndex)
+            {
+                return j;
+            }
+            counter++;
+        }
+    }
+
+    wxFAIL;
+    return 0;
+}
+
 void asForecastManager::ClearArrays()
 {
     m_Aggregator->ClearArrays();

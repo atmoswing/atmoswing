@@ -282,7 +282,6 @@ VectorString asResultsAnalogsForecastAggregator::GetAllForecastNames()
         {
             methodName.Append(wxString::Format(" (%s)", m_Forecasts[methodRow][0]->GetMethodId().c_str()));
         }
-        names.push_back(methodName);
 
         for (unsigned int forecastRow=0; forecastRow<m_Forecasts[methodRow].size(); forecastRow++)
         {
@@ -315,7 +314,6 @@ wxArrayString asResultsAnalogsForecastAggregator::GetAllForecastNamesWxArray()
         {
             methodName.Append(wxString::Format(" (%s)", m_Forecasts[methodRow][0]->GetMethodId().c_str()));
         }
-        names.push_back(methodName);
 
         for (unsigned int forecastRow=0; forecastRow<m_Forecasts[methodRow].size(); forecastRow++)
         {

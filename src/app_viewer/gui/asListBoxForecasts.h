@@ -127,7 +127,7 @@ public:
     void CreateImageList();
     void Update();
     void Clear();
-    void SetSelection(int methodId, int forecastId);
+    void SetSelection(int methodRow, int forecastRow);
     void SelectFirst();
 
 protected:
