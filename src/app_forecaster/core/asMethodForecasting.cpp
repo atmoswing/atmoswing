@@ -83,8 +83,8 @@ bool asMethodForecasting::Manager()
         wxString forecastParametersDir = m_BatchForecasts->GetParametersFileDirectory();
         wxString predictandDBDir = m_BatchForecasts->GetPredictandDBDirectory();
 
-        // Execute the models
-        for (int i=0; i<m_BatchForecasts->GetModelsNb(); i++)
+        // Execute the forecasts
+        for (int i=0; i<m_BatchForecasts->GetForecastsNb(); i++)
         {
             #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
@@ -101,7 +101,7 @@ bool asMethodForecasting::Manager()
             #endif
 
             // Load parameters
-            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetModelFileName(i);
+            m_ParamsFilePath = forecastParametersDir + DS + m_BatchForecasts->GetForecastFileName(i);
             asParametersForecast params;
             if(!params.LoadFromFile(m_ParamsFilePath)) return false;
             params.InitValues();
@@ -132,7 +132,7 @@ bool asMethodForecasting::Manager()
             else
             {
                 // Display processing time
-                asLogMessageImportant(wxString::Format(_("Processing of the model %s - %s took %ldms to execute"), params.GetMethodId().c_str(), params.GetSpecificTag().c_str(), sw.Time()));
+                asLogMessageImportant(wxString::Format(_("Processing of the forecast %s - %s took %ldms to execute"), params.GetMethodId().c_str(), params.GetSpecificTag().c_str(), sw.Time()));
 
                 #if wxUSE_GUI
                     // Send event

@@ -60,8 +60,8 @@ class asFrameMainVirtual : public wxFrame
 		wxBitmapButton* m_BpButtonNow;
 		wxFlexGridSizer* m_SizerLeds;
 		wxButton* m_button2;
-		wxScrolledWindow* m_ScrolledWindowModels;
-		wxBoxSizer* m_SizerModels;
+		wxScrolledWindow* m_ScrolledWindowForecasts;
+		wxBoxSizer* m_SizerForecasts;
 		wxBitmapButton* m_BpButtonAdd;
 		wxMenuBar* m_MenuBar;
 		wxMenu* m_MenuFile;
@@ -76,7 +76,7 @@ class asFrameMainVirtual : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSetPresentDate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnConfigureDirectories( wxCommandEvent& event ) { event.Skip(); }
-		virtual void AddForecastingModel( wxCommandEvent& event ) { event.Skip(); }
+		virtual void AddForecast( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveBatchForecasts( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSaveBatchForecastsAs( wxCommandEvent& event ) { event.Skip(); }
@@ -147,9 +147,9 @@ class asFramePredictandDBVirtual : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asPanelForecastingModelVirtual
+/// Class asPanelForecastVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asPanelForecastingModelVirtual : public wxPanel 
+class asPanelForecastVirtual : public wxPanel 
 {
 	private:
 		wxBoxSizer* m_SizerFilename;
@@ -166,8 +166,8 @@ class asPanelForecastingModelVirtual : public wxPanel
 	
 	public:
 		
-		asPanelForecastingModelVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~asPanelForecastingModelVirtual();
+		asPanelForecastVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~asPanelForecastVirtual();
 	
 };
 

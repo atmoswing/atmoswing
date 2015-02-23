@@ -25,13 +25,13 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
  
-#include "asPanelForecastingModel.h"
+#include "asPanelForecast.h"
 
-#include "asPanelsManagerForecastingModels.h"
+#include "asPanelsManagerForecasts.h"
 
-asPanelForecastingModel::asPanelForecastingModel( wxWindow* parent )
+asPanelForecast::asPanelForecast( wxWindow* parent )
 :
-asPanelForecastingModelVirtual( parent )
+asPanelForecastVirtual( parent )
 {
     m_ParentFrame = NULL;
     m_PanelsManager = NULL;
@@ -62,18 +62,18 @@ asPanelForecastingModelVirtual( parent )
     #endif
 }
 
-void asPanelForecastingModel::ClosePanel( wxCommandEvent& event )
+void asPanelForecast::ClosePanel( wxCommandEvent& event )
 {
     m_PanelsManager->RemovePanel(this);
 }
 
-bool asPanelForecastingModel::Layout()
+bool asPanelForecast::Layout()
 {
-    asPanelForecastingModelVirtual::Layout();
+    asPanelForecastVirtual::Layout();
     return true;
 }
 
-void asPanelForecastingModel::ChangeModelName( wxCommandEvent& event )
+void asPanelForecast::ChangeForecastName( wxCommandEvent& event )
 {
     //
 }

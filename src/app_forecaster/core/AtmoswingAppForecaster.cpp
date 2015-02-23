@@ -468,10 +468,10 @@ int AtmoswingAppForecaster::OnRun()
             
                 pConfig->Write("/BatchForecasts/LastOpened", batchForecasts.GetFilePath());
 
-                // Check if any model exist
-                if(batchForecasts.GetModelsNb()==0)
+                // Check if any forecast exist
+                if(batchForecasts.GetForecastsNb()==0)
                 {
-                    cout << _("Warning: there is no model listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
+                    cout << _("Warning: there is no forecast listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
                 }
 
             #endif

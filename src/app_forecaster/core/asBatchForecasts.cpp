@@ -47,7 +47,7 @@ asBatchForecasts::~asBatchForecasts()
 
 bool asBatchForecasts::Load(const wxString &filePath)
 {
-    ClearModels();
+    ClearForecasts();
 
     // Open the file
     m_FilePath = filePath;
@@ -76,16 +76,16 @@ bool asBatchForecasts::Load(const wxString &filePath)
             m_PredictorsRealtimeDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictand_db_directory") {
             m_PredictandDBDirectory = fileBatch.GetString(node);
-        } else if (node->GetName() == "models") {
-            wxXmlNode *nodeModel = node->GetChildren();
-            while (nodeModel) {
-                if (nodeModel->GetName() == "filename") {
-                    m_ModelFileNames.push_back(fileBatch.GetString(nodeModel));
+        } else if (node->GetName() == "forecasts") {
+            wxXmlNode *nodeForecast = node->GetChildren();
+            while (nodeForecast) {
+                if (nodeForecast->GetName() == "filename") {
+                    m_ForecastFileNames.push_back(fileBatch.GetString(nodeForecast));
                 } else {
-                    fileBatch.UnknownNode(nodeModel);
+                    fileBatch.UnknownNode(nodeForecast);
                 }
 
-                nodeModel = nodeModel->GetNext();
+                nodeForecast = nodeForecast->GetNext();
             }
 
         } else {
@@ -113,32 +113,32 @@ bool asBatchForecasts::Save()
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_PredictorsRealtimeDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_PredictandDBDirectory));
 
-    // Models
-    wxXmlNode * nodeModels = new wxXmlNode(wxXML_ELEMENT_NODE ,"models" );
-    for (int i_model=0; i_model<GetModelsNb(); i_model++)
+    // Forecasts
+    wxXmlNode * nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE ,"forecasts" );
+    for (int i_forecast=0; i_forecast<GetForecastsNb(); i_forecast++)
     {
-        nodeModels->AddChild(fileBatch.CreateNodeWithValue("filename", m_ModelFileNames[i_model]));
+        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_ForecastFileNames[i_forecast]));
     }
-    fileBatch.AddChild(nodeModels);
+    fileBatch.AddChild(nodeForecasts);
 
     fileBatch.Save();
 
     return true;
 }
 
-int asBatchForecasts::GetModelsNb()
+int asBatchForecasts::GetForecastsNb()
 {
-    int modelsNb = (int)m_ModelFileNames.size();
-    return modelsNb;
+    int forecastsNb = (int)m_ForecastFileNames.size();
+    return forecastsNb;
 }
 
-void asBatchForecasts::ClearModels()
+void asBatchForecasts::ClearForecasts()
 {
-    m_ModelFileNames.clear();
+    m_ForecastFileNames.clear();
 }
 
-void asBatchForecasts::AddModel()
+void asBatchForecasts::AddForecast()
 {
-    int nb = m_ModelFileNames.size()+1;
-    m_ModelFileNames.resize(nb);
+    int nb = m_ForecastFileNames.size()+1;
+    m_ForecastFileNames.resize(nb);
 }

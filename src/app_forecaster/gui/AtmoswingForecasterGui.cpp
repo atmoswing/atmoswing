@@ -62,7 +62,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer19->Add( sbSizer13, 0, wxEXPAND|wxALL, 5 );
 	
 	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_PanelMain, wxID_ANY, _("Current model state") ), wxVERTICAL );
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_PanelMain, wxID_ANY, _("Current forecast state") ), wxVERTICAL );
 	
 	m_SizerLeds = new wxFlexGridSizer( 4, 2, 0, 0 );
 	m_SizerLeds->SetFlexibleDirection( wxBOTH );
@@ -78,7 +78,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer18->Add( bSizer19, 0, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer6;
-	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_PanelMain, wxID_ANY, _("List of the forecasting models") ), wxVERTICAL );
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_PanelMain, wxID_ANY, _("List of the forecasts") ), wxVERTICAL );
 	
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
@@ -87,25 +87,25 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_button2 = new wxButton( m_PanelMain, wxID_ANY, _("Configure directories"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer22->Add( m_button2, 0, wxALL, 5 );
 	
-	m_ScrolledWindowModels = new wxScrolledWindow( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
-	m_ScrolledWindowModels->SetScrollRate( 5, 5 );
-	m_ScrolledWindowModels->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
-	m_ScrolledWindowModels->SetMinSize( wxSize( -1,200 ) );
+	m_ScrolledWindowForecasts = new wxScrolledWindow( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
+	m_ScrolledWindowForecasts->SetScrollRate( 5, 5 );
+	m_ScrolledWindowForecasts->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
+	m_ScrolledWindowForecasts->SetMinSize( wxSize( -1,200 ) );
 	
 	wxBoxSizer* bSizer32;
 	bSizer32 = new wxBoxSizer( wxVERTICAL );
 	
-	m_SizerModels = new wxBoxSizer( wxVERTICAL );
+	m_SizerForecasts = new wxBoxSizer( wxVERTICAL );
 	
 	
-	bSizer32->Add( m_SizerModels, 0, wxEXPAND, 5 );
+	bSizer32->Add( m_SizerForecasts, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer34;
 	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_BpButtonAdd = new wxBitmapButton( m_ScrolledWindowModels, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 28,28 ), wxBU_AUTODRAW|wxNO_BORDER );
+	m_BpButtonAdd = new wxBitmapButton( m_ScrolledWindowForecasts, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 28,28 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_BpButtonAdd->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
-	m_BpButtonAdd->SetToolTip( _("Add a model.") );
+	m_BpButtonAdd->SetToolTip( _("Add a parameters file.") );
 	
 	bSizer34->Add( m_BpButtonAdd, 0, wxALL, 5 );
 	
@@ -113,10 +113,10 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer32->Add( bSizer34, 0, wxLEFT, 5 );
 	
 	
-	m_ScrolledWindowModels->SetSizer( bSizer32 );
-	m_ScrolledWindowModels->Layout();
-	bSizer32->Fit( m_ScrolledWindowModels );
-	bSizer22->Add( m_ScrolledWindowModels, 1, wxEXPAND | wxALL, 5 );
+	m_ScrolledWindowForecasts->SetSizer( bSizer32 );
+	m_ScrolledWindowForecasts->Layout();
+	bSizer32->Fit( m_ScrolledWindowForecasts );
+	bSizer22->Add( m_ScrolledWindowForecasts, 1, wxEXPAND | wxALL, 5 );
 	
 	
 	sbSizer6->Add( bSizer22, 1, wxEXPAND, 5 );
@@ -211,7 +211,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	// Connect Events
 	m_BpButtonNow->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnSetPresentDate ), NULL, this );
 	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnConfigureDirectories ), NULL, this );
-	m_BpButtonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecastingModel ), NULL, this );
+	m_BpButtonAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecast ), NULL, this );
 	this->Connect( m_MenuItemOpenBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ) );
 	this->Connect( m_MenuItemSaveBatchFile->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ) );
 	this->Connect( m_MenuItemSaveBatchFileAs->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ) );
@@ -230,7 +230,7 @@ asFrameMainVirtual::~asFrameMainVirtual()
 	// Disconnect Events
 	m_BpButtonNow->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnSetPresentDate ), NULL, this );
 	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::OnConfigureDirectories ), NULL, this );
-	m_BpButtonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecastingModel ), NULL, this );
+	m_BpButtonAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameMainVirtual::AddForecast ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnOpenBatchForecasts ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecasts ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnSaveBatchForecastsAs ) );
@@ -414,7 +414,7 @@ asFramePredictandDBVirtual::~asFramePredictandDBVirtual()
 	
 }
 
-asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	m_SizerPanel = new wxBoxSizer( wxVERTICAL );
 	
@@ -443,13 +443,13 @@ asPanelForecastingModelVirtual::asPanelForecastingModelVirtual( wxWindow* parent
 	m_SizerPanel->Fit( this );
 	
 	// Connect Events
-	m_BpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastingModelVirtual::ClosePanel ), NULL, this );
+	m_BpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
 }
 
-asPanelForecastingModelVirtual::~asPanelForecastingModelVirtual()
+asPanelForecastVirtual::~asPanelForecastVirtual()
 {
 	// Disconnect Events
-	m_BpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastingModelVirtual::ClosePanel ), NULL, this );
+	m_BpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
 	
 }
 
