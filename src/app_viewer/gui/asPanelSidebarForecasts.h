@@ -31,24 +31,25 @@
 #include "asPanelSidebar.h"
 
 #include "asIncludes.h"
-#include "asListBoxModels.h"
+#include "asListBoxForecasts.h"
 #include "asListBoxForecastDisplay.h"
 #include "asListBoxPercentiles.h"
+#include "asForecastManager.h"
 
 /** Implementing asPanelSidebarForecasts */
 class asPanelSidebarForecasts : public asPanelSidebar
 {
 public:
     /** Constructor */
-    asPanelSidebarForecasts( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarForecasts( wxWindow* parent, asForecastManager* forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarForecasts();
 
     void ClearForecasts();
-    void AddForecast(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution);
+    void Update();
 
-    asListBoxModels *GetModelsCtrl()
+    asListBoxForecasts *GetForecastsCtrl()
     {
-        return m_ModelsCtrl;
+        return m_ForecastsCtrl;
     }
 
     asListBoxPercentiles *GetPercentilesCtrl()
@@ -62,7 +63,7 @@ public:
     }
 
 private:
-    asListBoxModels *m_ModelsCtrl;
+    asListBoxForecasts *m_ForecastsCtrl;
     asListBoxPercentiles *m_PercentilesCtrl;
     asListBoxForecastDisplay *m_ForecastDisplayCtrl;
 };

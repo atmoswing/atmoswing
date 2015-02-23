@@ -68,7 +68,7 @@ class asFrameForecastVirtual : public wxFrame
 		wxButton* m_button5;
 		wxButton* m_button6;
 		wxButton* m_button61;
-		wxStaticText* m_StaticTextForecastModel;
+		wxStaticText* m_StaticTextForecast;
 		wxBoxSizer* m_SizerTopRight;
 		wxBoxSizer* m_SizerLeadTimeSwitch;
 		wxPanel* m_PanelGIS;

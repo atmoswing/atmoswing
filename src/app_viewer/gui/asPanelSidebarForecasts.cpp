@@ -29,17 +29,17 @@
 
 #include <wx/statline.h>
 
-asPanelSidebarForecasts::asPanelSidebarForecasts( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
+asPanelSidebarForecasts::asPanelSidebarForecasts( wxWindow* parent, asForecastManager* forecastManager, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
     m_Header->SetLabelText(_("Forecasts"));
 
     // Forecasts controls
-    wxSize modelsSize = wxSize();
-    modelsSize.SetHeight(120);
-    m_ModelsCtrl = new asListBoxModels( this, wxID_ANY, wxDefaultPosition, modelsSize);
-    m_SizerContent->Add( m_ModelsCtrl, 1, wxEXPAND, 5 );
+    wxSize forecastsSize = wxSize();
+    forecastsSize.SetHeight(120);
+    m_ForecastsCtrl = new asListBoxForecasts( this, forecastManager, wxID_ANY, wxDefaultPosition, forecastsSize);
+    m_SizerContent->Add( m_ForecastsCtrl, 1, wxEXPAND, 5 );
 
     wxSize lineSize = wxSize();
     lineSize.SetHeight(10);
@@ -70,10 +70,10 @@ asPanelSidebarForecasts::~asPanelSidebarForecasts()
 
 void asPanelSidebarForecasts::ClearForecasts()
 {
-    m_ModelsCtrl->Clear();
+    m_ForecastsCtrl->Clear();
 }
 
-void asPanelSidebarForecasts::AddForecast(const wxString &methodId, const wxString &methodIdDisplay, const wxString &specificTag, const wxString &specificTagDisplay, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
+void asPanelSidebarForecasts::Update()
 {
-    m_ModelsCtrl->Add(methodId, methodIdDisplay, specificTag, specificTagDisplay, dataParameter, dataTemporalResolution);
+    m_ForecastsCtrl->Update();
 }

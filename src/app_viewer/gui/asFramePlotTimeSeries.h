@@ -43,7 +43,7 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual
 {
 public:
     /** Constructor */
-    asFramePlotTimeSeries( wxWindow* parent, int selectedForecast, int selectedStation, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_TIMESERIES );
+    asFramePlotTimeSeries( wxWindow* parent, int selectedMethod, int selectedForecast, int selectedStation, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_TIMESERIES );
     /** Destructor */
     ~asFramePlotTimeSeries();
 
@@ -71,6 +71,7 @@ private:
     asPanelPlot *m_PanelPlot;
     asForecastManager *m_ForecastManager;
     int m_SelectedStation;
+    int m_SelectedMethod;
     int m_SelectedForecast;
     float m_MaxVal;
     VectorDouble m_LeadTimes;

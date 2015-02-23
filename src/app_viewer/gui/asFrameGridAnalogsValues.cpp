@@ -31,14 +31,15 @@
 #include "asResultsAnalogsForecast.h"
 
 
-asFrameGridAnalogsValues::asFrameGridAnalogsValues( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id )
+asFrameGridAnalogsValues::asFrameGridAnalogsValues( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id )
 :
 asFrameGridAnalogsValuesVirtual( parent )
 {
-    selectedForecast = wxMax(selectedForecast, 0);
+    forecastRow = wxMax(forecastRow, 0);
 
     m_ForecastManager = forecastManager;
-    m_SelectedForecast = selectedForecast;
+    m_SelectedMethod = methodRow;
+    m_SelectedForecast = forecastRow;
     m_SelectedStation = 0;
     m_SelectedDate = 0;
     m_SortAfterCol = 0;
@@ -53,17 +54,17 @@ asFrameGridAnalogsValuesVirtual( parent )
 void asFrameGridAnalogsValues::Init()
 {
     // Forecast list
-    wxArrayString arrayForecasts = m_ForecastManager->GetModelsNamesWxArray();
+    wxArrayString arrayForecasts = m_ForecastManager->GetAllForecastNamesWxArray();
     m_ChoiceForecast->Set(arrayForecasts);
     m_ChoiceForecast->Select(m_SelectedForecast);
 
     // Dates list
-    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedForecast);
+    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceDate->Set(arrayDates);
     m_ChoiceDate->Select(m_SelectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedForecast);
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceStation->Set(arrayStation);
     m_ChoiceStation->Select(m_SelectedStation);
 
@@ -79,7 +80,7 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange( wxCommandEvent& event )
     m_SelectedForecast = event.GetInt();
 
     // Dates list
-    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedForecast);
+    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceDate->Set(arrayDates);
     if (arrayDates.size()<=(unsigned)m_SelectedDate)
     {
@@ -88,7 +89,7 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange( wxCommandEvent& event )
     m_ChoiceDate->Select(m_SelectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedForecast);
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceStation->Set(arrayStation);
     if (arrayStation.size()<=(unsigned)m_SelectedStation)
     {
@@ -145,9 +146,9 @@ void asFrameGridAnalogsValues::SortGrid( wxGridEvent& event )
 
 bool asFrameGridAnalogsValues::UpdateGrid()
 {
-    if (m_ForecastManager->GetModelsNb()<1) return false;
+    if (m_ForecastManager->GetMethodsNb()<1) return false;
 
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     Array1DFloat dates = forecast->GetAnalogsDates(m_SelectedDate);
     Array1DFloat values = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
     Array1DFloat criteria = forecast->GetAnalogsCriteria(m_SelectedDate);

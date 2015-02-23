@@ -41,14 +41,76 @@ public:
     /** Default destructor */
     virtual ~asResultsAnalogsForecastAggregator();
 
-    static Array1DFloat GetMaxValues(Array1DFloat &dates, std::vector <asResultsAnalogsForecast*> forecasts, int returnPeriodRef, float percentileThreshold);
+    void Add(asResultsAnalogsForecast* forecast);
 
-    static VectorString ExtractMethodIds(std::vector <asResultsAnalogsForecast*> forecasts);
+    void AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast* forecast);
+
+    void ClearArrays();
+
+    int GetMethodsNb();
+
+    int GetForecastsNb(int methodRow);
+
+    int GetPastMethodsNb();
+
+    int GetPastForecastsNb(int methodRow);
+    
+    int GetPastForecastsNb(int methodRow, int forecastRow);
+
+    asResultsAnalogsForecast* GetForecast(int methodRow, int forecastRow);
+
+    asResultsAnalogsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow);
+
+    wxString GetForecastName(int methodId, int forecastId);
+
+    wxString GetMethodName(int methodId);
+    
+    VectorString GetAllMethodIds();
+
+    VectorString GetAllMethodNames();
+
+    VectorString GetAllForecastNames();
+
+    wxArrayString GetAllForecastNamesWxArray();
+
+    VectorString GetFilePaths();
+
+    wxString GetFilePath(int methodRow, int forecastRow);
+
+    wxArrayString GetFilePathsWxArray();
+    
+    Array1DFloat GetTargetDates(int methodRow);
+
+    Array1DFloat GetTargetDates(int methodRow, int forecastRow);
+
+    Array1DFloat GetFullTargetDates();
+    
+    int GetForecastRowSpecificForStation(int methodRow, int stationRow);
+
+    wxArrayString GetStationNames(int methodRow, int forecastRow);
+
+    wxString GetStationName(int methodRow, int forecastRow, int stationRow);
+
+    wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow);
+
+    wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow);
+
+    int GetLeadTimeLength(int methodRow, int forecastRow);
+
+    int GetLeadTimeLengthMax();
+
+    wxArrayString GetLeadTimes(int methodRow, int forecastRow);
+
+    Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float percentileThreshold);
+
+    Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float percentileThreshold);
 
 protected:
 
 private:
-    
+    std::vector <std::vector <asResultsAnalogsForecast*>> m_Forecasts;
+    std::vector <std::vector <std::vector <asResultsAnalogsForecast*>>> m_PastForecasts;
+
 };
 
 #endif // ASRESULTSANALOGSFORECASTAGGREGATOR_H

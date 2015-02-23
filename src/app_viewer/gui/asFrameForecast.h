@@ -66,15 +66,15 @@ public:
 };
 
 
-/** Implementing modelDropFiles */
+/** Implementing forecastDropFiles */
 class asFrameForecast;
-class modelDropFiles : public wxFileDropTarget
+class forecastDropFiles : public wxFileDropTarget
 {
 private:
     asFrameForecast * m_LoaderFrame;
 
 public:
-    modelDropFiles(asFrameForecast * parent);
+    forecastDropFiles(asFrameForecast * parent);
     virtual bool OnDropFiles(wxCoord x, wxCoord y,
                              const wxArrayString & filenames);
 };
@@ -193,8 +193,8 @@ private:
     void OnLogLevel3( wxCommandEvent& event );
     void DisplayLogLevelMenu();
     void OnForecastRatioSelectionChange( wxCommandEvent& event );
-    void OnForecastModelSelectionChange( wxCommandEvent& event );
-    void OnForecastModelSelectFirst( wxCommandEvent& event );
+    void OnForecastForecastSelectionChange( wxCommandEvent& event );
+    void OnForecastForecastSelectFirst( wxCommandEvent& event );
     void OnForecastPercentileSelectionChange( wxCommandEvent& event );
     void DrawPlotStation( int station );
     void OnOpenLayer( wxCommandEvent & event );
@@ -224,7 +224,6 @@ private:
     void UpdatePanelCaptionColorbar();
     void UpdatePanelAnalogDates();
     void UpdatePanelStationsList();
-    void UpdatePanelAlarms();
     #if defined (__WIN32__)
         wxCriticalSection m_CritSectionViewerLayerManager;
     #endif

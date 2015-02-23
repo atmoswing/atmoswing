@@ -27,8 +27,6 @@
  
 #include "asForecastManager.h"
 
-#include <asResultsAnalogsForecast.h>
-
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
@@ -37,11 +35,12 @@ asForecastManager::asForecastManager(wxWindow* parent, asWorkspace* workspace)
     m_LeadTimeOrigin = 0;
     m_Parent = parent;
     m_Workspace = workspace;
+    m_Aggregator = new asResultsAnalogsForecastAggregator();
 }
 
 asForecastManager::~asForecastManager()
 {
-    ClearArrays();
+    wxDELETE(m_Aggregator);
 }
 
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
@@ -56,20 +55,7 @@ void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
 
 void asForecastManager::ClearArrays()
 {
-    for (int i=0; (unsigned)i<m_CurrentForecasts.size(); i++)
-    {
-        wxDELETE(m_CurrentForecasts[i]);
-    }
-    m_CurrentForecasts.resize(0);
-
-    for (int i=0; (unsigned)i<m_PastForecasts.size(); i++)
-    {
-        for (int j=0; (unsigned)j<m_PastForecasts[i].size(); j++)
-        {
-            wxDELETE(m_PastForecasts[i][j]);
-        }
-    }
-    m_PastForecasts.resize(0);
+    m_Aggregator->ClearArrays();
 }
 
 void asForecastManager::ClearForecasts()
@@ -120,15 +106,12 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     }
     m_LeadTimeOrigin = forecast->GetLeadTimeOrigin();
 
-    m_CurrentForecasts.push_back(forecast);
-    std::vector <asResultsAnalogsForecast*> emptyVector;
-    m_PastForecasts.push_back(emptyVector);
+    m_Aggregator->Add(forecast);
 
     #if wxUSE_GUI
         // Send event
         wxCommandEvent eventNew (asEVT_ACTION_FORECAST_NEW_ADDED);
         if (m_Parent != NULL) {
-            eventNew.SetInt(m_CurrentForecasts.size()-1);
             if (doRefresh)
             {
                 eventNew.SetString("last");
@@ -145,7 +128,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     return true;
 }
 
-bool asForecastManager::OpenPastForecast(const wxString &filePath, int forecastSelection)
+bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath)
 {
     // Check existance
     if (!wxFileName::FileExists(filePath))
@@ -178,18 +161,19 @@ bool asForecastManager::OpenPastForecast(const wxString &filePath, int forecastS
         wxDELETE(forecast);
         return false;
     }
-    m_PastForecasts[forecastSelection].push_back(forecast);
+    m_Aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
     asLogMessage(wxString::Format("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId().c_str(), forecast->GetSpecificTag().c_str(), forecast->GetLeadTimeOriginString().c_str()));
 
     return true;
 }
 
-void asForecastManager::LoadPastForecast(int forecastSelection)
+void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
 {
     // Check if already loaded
-    wxASSERT(m_PastForecasts.size()>(unsigned)forecastSelection);
-    if (m_PastForecasts[forecastSelection].size()>0) return;
+    wxASSERT(m_Aggregator->GetMethodsNb()>methodRow);
+    wxASSERT(m_Aggregator->GetPastMethodsNb()>methodRow);
+    if (m_Aggregator->GetPastForecastsNb(methodRow)>0) return;
 
     // Get the number of days to load
     int nbPastDays = m_Workspace->GetTimeSeriesPlotPastDaysNb();
@@ -220,14 +204,14 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
 
             double currentTimeHour = floor(currentTime)+ hr/24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
-            wxString modelname = GetCurrentForecast(forecastSelection)->GetMethodId() + '.' + GetCurrentForecast(forecastSelection)->GetSpecificTag();
+            wxString forecastname = m_Aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' + m_Aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
             wxString ext = "fcst";
-            wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),modelname.c_str(),ext.c_str());
+            wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
             wxString fullPath = currentDirPath + filename;
 
             if (wxFileName::FileExists(fullPath))
             {
-                OpenPastForecast(fullPath, forecastSelection);
+                OpenPastForecast(methodRow, forecastRow, fullPath);
             }
             else
             {
@@ -241,7 +225,7 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
 
                     if (wxFileName::FileExists(fullPath))
                     {
-                        OpenPastForecast(fullPath, forecastSelection);
+                        OpenPastForecast(methodRow, forecastRow, fullPath);
                         goto quitloop;
                     }
                 }
@@ -251,272 +235,10 @@ void asForecastManager::LoadPastForecast(int forecastSelection)
     }
 }
 
-void asForecastManager::LoadPastForecast(VectorInt forecastSelection)
+void asForecastManager::LoadPastForecast(int methodRow)
 {
-    for (int i=0; i<forecastSelection.size(); i++)
+    for (int i=0; i<GetForecastsNb(methodRow); i++)
     {
-        LoadPastForecast(forecastSelection[i]);
+        LoadPastForecast(methodRow, i);
     }
-}
-
-wxString asForecastManager::GetModelName(int i_fcst)
-{
-    wxString modelName = wxEmptyString;
-
-    if (m_CurrentForecasts.size()==0) return wxEmptyString;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        modelName = m_CurrentForecasts[i_fcst]->GetMethodIdDisplay();
-
-        if (!modelName.IsSameAs(m_CurrentForecasts[i_fcst]->GetMethodId()))
-        {
-            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_fcst]->GetMethodId().c_str()));
-        }
-
-        if (!m_CurrentForecasts[i_fcst]->GetSpecificTag().IsEmpty())
-        {
-            modelName.Append(" - ");
-            modelName.Append(m_CurrentForecasts[i_fcst]->GetSpecificTagDisplay());
-        }
-    }
-
-    wxASSERT(!modelName.IsEmpty());
-
-    return modelName;
-}
-
-wxString asForecastManager::GetModelNameMethodOnly(int i_fcst)
-{
-    wxString modelName = wxEmptyString;
-
-    if (m_CurrentForecasts.size()==0) return wxEmptyString;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        modelName = m_CurrentForecasts[i_fcst]->GetMethodIdDisplay();
-
-        if (!modelName.IsSameAs(m_CurrentForecasts[i_fcst]->GetMethodId()))
-        {
-            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_fcst]->GetMethodId().c_str()));
-        }
-    }
-
-    wxASSERT(!modelName.IsEmpty());
-
-    return modelName;
-}
-
-VectorString asForecastManager::GetModelsNames()
-{
-    VectorString models;
-
-    for (unsigned int i_model=0; i_model<m_CurrentForecasts.size(); i_model++)
-    {
-        wxString modelName = m_CurrentForecasts[i_model]->GetMethodIdDisplay();
-        if (!modelName.IsSameAs(m_CurrentForecasts[i_model]->GetMethodId()))
-        {
-            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_model]->GetMethodId().c_str()));
-        }
-
-        if (!m_CurrentForecasts[i_model]->GetSpecificTag().IsEmpty())
-        {
-            modelName.Append(" - ");
-            modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTagDisplay());
-        }
-        models.push_back(modelName);
-    }
-
-    return models;
-}
-
-wxArrayString asForecastManager::GetModelsNamesWxArray()
-{
-    wxArrayString models;
-
-    for (unsigned int i_model=0; i_model<m_CurrentForecasts.size(); i_model++)
-    {
-        wxString modelName = m_CurrentForecasts[i_model]->GetMethodIdDisplay();
-        if (!modelName.IsSameAs(m_CurrentForecasts[i_model]->GetMethodId()))
-        {
-            modelName.Append(wxString::Format(" (%s)", m_CurrentForecasts[i_model]->GetMethodId().c_str()));
-        }
-
-        if (!m_CurrentForecasts[i_model]->GetSpecificTag().IsEmpty())
-        {
-            modelName.Append(" - ");
-            modelName.Append(m_CurrentForecasts[i_model]->GetSpecificTagDisplay());
-        }
-        models.Add(modelName);
-    }
-
-    return models;
-}
-
-VectorString asForecastManager::GetFilePaths()
-{
-    VectorString files;
-
-    for (unsigned int i_file=0; i_file<m_CurrentForecasts.size(); i_file++)
-    {
-        files.push_back(m_CurrentForecasts[i_file]->GetFilePath());
-    }
-
-    return files;
-}
-
-wxArrayString asForecastManager::GetFilePathsWxArray()
-{
-    wxArrayString files;
-
-    for (unsigned int i_file=0; i_file<m_CurrentForecasts.size(); i_file++)
-    {
-        files.Add(m_CurrentForecasts[i_file]->GetFilePath());
-    }
-
-    return files;
-}
-
-Array1DFloat asForecastManager::GetFullTargetDatesVector()
-{
-    double firstDate = 9999999999, lastDate = 0;
-
-    for (unsigned int i_fcats=0; i_fcats<m_CurrentForecasts.size(); i_fcats++)
-    {
-        Array1DFloat fcastDates = m_CurrentForecasts[i_fcats]->GetTargetDates();
-        if (fcastDates[0]<firstDate)
-        {
-            firstDate = fcastDates[0];
-        }
-        if (fcastDates[fcastDates.size()-1]>lastDate)
-        {
-            lastDate = fcastDates[fcastDates.size()-1];
-        }
-    }
-
-    int size = asTools::Round(lastDate-firstDate+1);
-    Array1DFloat dates = Array1DFloat::LinSpaced(size,firstDate,lastDate);
-
-    return dates;
-}
-
-wxArrayString asForecastManager::GetStationNames(int i_fcst)
-{
-    wxArrayString stationNames;
-
-    if (m_CurrentForecasts.size()==0) return stationNames;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        stationNames = m_CurrentForecasts[i_fcst]->GetStationNamesWxArrayString();
-    }
-
-    return stationNames;
-}
-
-wxString asForecastManager::GetStationName(int i_fcst, int i_stat)
-{
-    wxString stationName;
-
-    if (m_CurrentForecasts.size()==0) return wxEmptyString;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        stationName = m_CurrentForecasts[i_fcst]->GetStationName(i_stat);
-    }
-
-    return stationName;
-}
-
-wxArrayString asForecastManager::GetStationNamesWithHeights(int i_fcst)
-{
-    wxArrayString stationNames;
-
-    if (m_CurrentForecasts.size()==0) return stationNames;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        stationNames = m_CurrentForecasts[i_fcst]->GetStationNamesAndHeightsWxArrayString();
-    }
-
-    return stationNames;
-}
-
-wxString asForecastManager::GetStationNameWithHeight(int i_fcst, int i_stat)
-{
-    wxString stationName;
-
-    if (m_CurrentForecasts.size()==0) return wxEmptyString;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        stationName = m_CurrentForecasts[i_fcst]->GetStationNameAndHeight(i_stat);
-    }
-
-    return stationName;
-}
-
-int asForecastManager::GetLeadTimeLength(int i_fcst)
-{
-    if (m_CurrentForecasts.size()==0) return 0;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    int length = 0;
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        length = m_CurrentForecasts[i_fcst]->GetTargetDatesLength();
-    }
-
-    wxASSERT(length>0);
-
-    return length;
-}
-
-int asForecastManager::GetLeadTimeLengthMax()
-{
-    if (m_CurrentForecasts.size()==0) return 0;
-    
-    int length = 0;
-
-    for (int i=0; i<m_CurrentForecasts.size(); i++)
-    {
-        length = wxMax(length, m_CurrentForecasts[i]->GetTargetDatesLength());
-    }
-
-    return length;
-}
-
-wxArrayString asForecastManager::GetLeadTimes(int i_fcst)
-{
-    wxArrayString leadTimes;
-
-    if (m_CurrentForecasts.size()==0) return leadTimes;
-
-    wxASSERT(m_CurrentForecasts.size()>(unsigned)i_fcst);
-
-    if(m_CurrentForecasts.size()>(unsigned)i_fcst)
-    {
-        Array1DFloat dates = m_CurrentForecasts[i_fcst]->GetTargetDates();
-
-        for (int i=0; i<dates.size(); i++)
-        {
-            leadTimes.Add(asTime::GetStringTime(dates[i], "DD.MM.YYYY"));
-        }
-    }
-
-    return leadTimes;
 }

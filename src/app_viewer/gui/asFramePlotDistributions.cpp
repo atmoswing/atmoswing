@@ -34,14 +34,15 @@ BEGIN_EVENT_TABLE(asFramePlotDistributions, wxFrame)
     EVT_CLOSE(asFramePlotDistributions::OnClose)
 END_EVENT_TABLE()
 
-asFramePlotDistributions::asFramePlotDistributions( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id )
+asFramePlotDistributions::asFramePlotDistributions( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id )
 :
 asFramePlotDistributionsVirutal( parent, id )
 {
-    selectedForecast = wxMax(selectedForecast, 0);
+    forecastRow = wxMax(forecastRow, 0);
 
     m_ForecastManager = forecastManager;
-    m_SelectedForecast = selectedForecast;
+    m_SelectedMethod = methodRow;
+    m_SelectedForecast = forecastRow;
     m_SelectedStation = 0;
     m_SelectedDate = 0;
     m_XmaxPredictands = 0;
@@ -98,17 +99,17 @@ void asFramePlotDistributions::OnClose( wxCloseEvent& evt )
 void asFramePlotDistributions::Init()
 {
     // Forecast list
-    wxArrayString arrayForecasts = m_ForecastManager->GetModelsNamesWxArray();
+    wxArrayString arrayForecasts = m_ForecastManager->GetAllForecastNamesWxArray();
     m_ChoiceForecast->Set(arrayForecasts);
     m_ChoiceForecast->Select(m_SelectedForecast);
 
     // Dates list
-    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedForecast);
+    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceDate->Set(arrayDates);
     m_ChoiceDate->Select(m_SelectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedForecast);
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceStation->Set(arrayStation);
     m_ChoiceStation->Select(m_SelectedStation);
 
@@ -122,7 +123,7 @@ void asFramePlotDistributions::OnChoiceForecastChange( wxCommandEvent& event )
     m_SelectedForecast = event.GetInt();
 
     // Dates list
-    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedForecast);
+    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceDate->Set(arrayDates);
     if (arrayDates.size()<=(unsigned)m_SelectedDate)
     {
@@ -131,7 +132,7 @@ void asFramePlotDistributions::OnChoiceForecastChange( wxCommandEvent& event )
     m_ChoiceDate->Select(m_SelectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedForecast);
+    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedMethod, m_SelectedForecast);
     m_ChoiceStation->Set(arrayStation);
     if (arrayStation.size()<=(unsigned)m_SelectedStation)
     {
@@ -261,7 +262,7 @@ void asFramePlotDistributions::OnTocSelectionChange( wxCommandEvent& event )
 
 bool asFramePlotDistributions::Plot()
 {
-    if (m_ForecastManager->GetModelsNb()<1) return false;
+    if (m_ForecastManager->GetMethodsNb()<1) return false;
     if (!PlotPredictands()) return false;
     if (!PlotCriteria()) return false;
     return true;
@@ -269,13 +270,13 @@ bool asFramePlotDistributions::Plot()
 
 bool asFramePlotDistributions::PlotPredictands()
 {
-    if (m_ForecastManager->GetModelsNb()<1) return false;
+    if (m_ForecastManager->GetMethodsNb()<1) return false;
 
     // Get a pointer to the plotctrl
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
     if (asTools::HasNaN(&analogs[0], &analogs[analogs.size()-1]))
     {
@@ -385,13 +386,13 @@ bool asFramePlotDistributions::PlotPredictands()
 
 bool asFramePlotDistributions::PlotCriteria()
 {
-    if (m_ForecastManager->GetModelsNb()<1) return false;
+    if (m_ForecastManager->GetMethodsNb()<1) return false;
 
     // Get a pointer to the plotctrl
     wxPlotCtrl* plotctrl = m_PanelPlotCriteria->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     Array1DFloat criteria = forecast->GetAnalogsCriteria(m_SelectedDate);
     if (asTools::HasNaN(&criteria[0], &criteria[criteria.size()-1]))
     {
@@ -441,14 +442,14 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceAxis();
+    Array1DFloat retPeriods = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceAxis();
 
     for (int i=retPeriods.size()-1; i>=0; i--)
     {
         if (abs(retPeriods[i]-2.33)<0.1) continue;
 
         // Get precipitation value
-        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
+        float val = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i/(float)(retPeriods.size()-1);
@@ -507,7 +508,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceAxis();
+    Array1DFloat retPeriods = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceAxis();
 
     // Find the value 10
     int index = asTools::SortedArraySearch(&retPeriods[0], &retPeriods[retPeriods.size()-1], returnPeriod);
@@ -515,7 +516,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
     if ( (index!=asNOT_FOUND) && (index!=asOUT_OF_RANGE) )
     {
         // Get precipitation value
-        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, index);
+        float val = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceValue(m_SelectedStation, index);
 
         // Color (red)
         wxGenericPen pen(wxGenericColour(255,0,0), 2);
@@ -540,7 +541,7 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Get the total number of points
     Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
@@ -602,7 +603,7 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Get the total number of points
     Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
@@ -663,7 +664,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Extract best analogs
     Array1DFloat analogsAll = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
@@ -728,7 +729,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Extract best analogs
     Array1DFloat analogsAll = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
@@ -804,7 +805,7 @@ void asFramePlotDistributions::PlotClassicPercentiles()
     wxPlotCtrl* plotctrl = m_PanelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
 
     // Loop over the percentiles
@@ -853,7 +854,7 @@ void asFramePlotDistributions::PlotCriteriaCurve()
     wxPlotCtrl* plotctrl = m_PanelPlotCriteria->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Get the criteria
     Array1DFloat criteria = forecast->GetAnalogsCriteria(m_SelectedDate);

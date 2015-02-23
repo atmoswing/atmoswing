@@ -45,11 +45,8 @@ public:
 
     wxArrayString GetForecastDisplayStringArray();
     wxArrayString GetPercentilesStringArray();
-    void FixModelSelection();
-    void SetModel(int id);
-    void SetMultipleModels(VectorInt ids);
-    bool ModelSelectionOk();
-    bool MultipleModelsSelected();
+    void FixForecastSelection();
+    void SetForecast(int methodRow, int forecastRow);
     wxString GetStationName(int i_stat);
     float GetSelectedTargetDate();
     void SetForecastDisplay(int i);
@@ -59,14 +56,14 @@ public:
     void ChangeLeadTime( int val );
     void SetLeadTimeDate(float date);
 
-    int GetModelSelection()
+    int GetMethodSelection()
     {
-        return m_ModelSelection;
+        return m_MethodSelection;
     }
 
-    VectorInt GetModelMultipleSelection()
+    int GetForecastSelection()
     {
-        return m_ModelMultipleSelection;
+        return m_ForecastSelection;
     }
 
     int GetForecastDisplaySelection()
@@ -120,8 +117,8 @@ private:
     VectorFloat m_Percentiles;
     int m_ForecastDisplaySelection;
     int m_PercentileSelection;
-    int m_ModelSelection;
-    VectorInt m_ModelMultipleSelection;
+    int m_MethodSelection;
+    int m_ForecastSelection;
 
 };
 

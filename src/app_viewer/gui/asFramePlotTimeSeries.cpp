@@ -35,13 +35,14 @@ BEGIN_EVENT_TABLE(asFramePlotTimeSeries, wxFrame)
     EVT_CLOSE(asFramePlotTimeSeries::OnClose)
 END_EVENT_TABLE()
 
-asFramePlotTimeSeries::asFramePlotTimeSeries( wxWindow* parent, int selectedForecast, int selectedStation, asForecastManager *forecastManager, wxWindowID id )
+asFramePlotTimeSeries::asFramePlotTimeSeries( wxWindow* parent, int selectedMethod, int selectedForecast, int selectedStation, asForecastManager *forecastManager, wxWindowID id )
 :
 asFramePlotTimeSeriesVirtual( parent, id )
 {
     m_MaxVal = 100;
 
     m_SelectedStation = selectedStation;
+    m_SelectedMethod = selectedMethod;
     m_SelectedForecast = selectedForecast;
     m_ForecastManager = forecastManager;
 
@@ -50,7 +51,7 @@ asFramePlotTimeSeriesVirtual( parent, id )
     m_SizerPlot->Add( m_PanelPlot, 1, wxALL|wxEXPAND, 0 );
     m_SizerPlot->Fit(m_PanelRight);
 
-    m_StaticTextStationName->SetLabel(forecastManager->GetStationNameWithHeight(m_SelectedForecast, m_SelectedStation));
+    m_StaticTextStationName->SetLabel(forecastManager->GetStationNameWithHeight(m_SelectedMethod, m_SelectedForecast, m_SelectedStation));
     wxFont titleFont = m_StaticTextStationName->GetFont();
     titleFont.SetPointSize(titleFont.GetPointSize()+2);
     m_StaticTextStationName->SetFont(titleFont);
@@ -117,14 +118,14 @@ void asFramePlotTimeSeries::InitCheckListBox()
     m_CheckListToc->Set(checkList);
 
     wxArrayString listPast;
-    for (int i=0; i<m_ForecastManager->GetPastForecastsNb(m_SelectedForecast); i++)
+    for (int i=0; i<m_ForecastManager->GetPastForecastsNb(m_SelectedMethod, m_SelectedForecast); i++)
     {
-        asResultsAnalogsForecast* forecast = m_ForecastManager->GetPastForecast(m_SelectedForecast, i);
+        asResultsAnalogsForecast* forecast = m_ForecastManager->GetPastForecast(m_SelectedMethod, m_SelectedForecast, i);
         listPast.Add(forecast->GetLeadTimeOriginString());
     }
     m_CheckListPast->Set(listPast);
 
-    for (int i=0; i<m_ForecastManager->GetPastForecastsNb(m_SelectedForecast); i++)
+    for (int i=0; i<m_ForecastManager->GetPastForecastsNb(m_SelectedMethod, m_SelectedForecast); i++)
     {
         m_CheckListPast->Check(i);
     }
@@ -156,7 +157,7 @@ void asFramePlotTimeSeries::InitPlotCtrl()
     plotctrl->SetGridColour(gridColor);
 
     // Set the x axis
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     int length = forecast->GetTargetDatesLength();
     Array1DFloat dates = forecast->GetTargetDates();
     m_LeadTimes.resize(length);
@@ -213,8 +214,8 @@ void asFramePlotTimeSeries::OnTocSelectionChange( wxCommandEvent& event )
 
 void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
 {
-    wxString stationName = m_ForecastManager->GetStationName(m_SelectedForecast, m_SelectedStation);
-    wxString forecastName = m_ForecastManager->GetModelName(m_SelectedForecast);
+    wxString stationName = m_ForecastManager->GetStationName(m_SelectedMethod, m_SelectedForecast, m_SelectedStation);
+    wxString forecastName = m_ForecastManager->GetForecastName(m_SelectedMethod, m_SelectedForecast);
     wxString date = asTime::GetStringTime(m_ForecastManager->GetLeadTimeOrigin(), "YYYY.MM.DD hh");
     wxString filename = wxString::Format("%sh - %s - %s", date.c_str(), forecastName.c_str(), stationName.c_str());
 
@@ -229,7 +230,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
 
         // Add header
         file.AddLineContent(wxString::Format("Forecast of the %sh", asTime::GetStringTime(m_ForecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh").c_str()));
-        file.AddLineContent(wxString::Format("Model: %s", forecastName.c_str()));
+        file.AddLineContent(wxString::Format("Forecast: %s", forecastName.c_str()));
         file.AddLineContent(wxString::Format("Station: %s", stationName.c_str()));
         file.AddLineContent();
 
@@ -238,7 +239,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         pc << 1, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f, 0;
 
         // Get forecast
-        asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+        asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
         // Set lead times
         file.AddLineContent("Percentiles:");
@@ -309,7 +310,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         // All traces
         file.AddLineContent("All traces:");
 
-        asResultsAnalogsForecast* oldestForecast = m_ForecastManager->GetPastForecast(m_SelectedForecast,m_ForecastManager->GetPastForecastsNb(m_SelectedForecast)-1);
+        asResultsAnalogsForecast* oldestForecast = m_ForecastManager->GetPastForecast(m_SelectedMethod, m_SelectedForecast, m_ForecastManager->GetPastForecastsNb(m_SelectedMethod, m_SelectedForecast)-1);
         float leadtimeStart = oldestForecast->GetTargetDates()[0];
         float leadtimeEnd = forecast->GetTargetDates()[forecast->GetTargetDatesLength()-1];
 
@@ -333,9 +334,9 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
             file.AddLineContent(wxString::Format("Percentile %f:", pcAll[i_pc]));
             file.AddLineContent(allLeadtimesStr);
 
-            for (int past=0; past<m_ForecastManager->GetPastForecastsNb(m_SelectedForecast); past++)
+            for (int past=0; past<m_ForecastManager->GetPastForecastsNb(m_SelectedMethod, m_SelectedForecast); past++)
             {
-                asResultsAnalogsForecast* forecast = m_ForecastManager->GetPastForecast(m_SelectedForecast,past);
+                asResultsAnalogsForecast* forecast = m_ForecastManager->GetPastForecast(m_SelectedMethod, m_SelectedForecast, past);
                 Array1DFloat dates = forecast->GetTargetDates();
                 wxString currentLine = asTime::GetStringTime(forecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
 
@@ -389,7 +390,7 @@ bool asFramePlotTimeSeries::Plot()
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
     {
         Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
@@ -512,14 +513,14 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods()
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceAxis();
+    Array1DFloat retPeriods = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceAxis();
 
     for (int i=retPeriods.size()-1; i>=0; i--)
     {
         if (abs(retPeriods[i]-2.33)<0.1) continue;
 
         // Get precipitation value
-        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
+        float val = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceValue(m_SelectedStation, i);
 
         // Color (from yellow to red)
         float ratio = (float)i/(float)(retPeriods.size()-1);
@@ -578,7 +579,7 @@ void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod)
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceAxis();
+    Array1DFloat retPeriods = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceAxis();
 
     // Find the value 10
     int index = asTools::SortedArraySearch(&retPeriods[0], &retPeriods[retPeriods.size()-1], returnPeriod);
@@ -586,7 +587,7 @@ void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod)
     if ( (index!=asNOT_FOUND) && (index!=asOUT_OF_RANGE) )
     {
         // Get precipitation value
-        float val = m_ForecastManager->GetCurrentForecast(m_SelectedForecast)->GetReferenceValue(m_SelectedStation, index);
+        float val = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast)->GetReferenceValue(m_SelectedStation, index);
 
         // Color (red)
         wxGenericPen pen(wxGenericColour(255,0,0), 2);
@@ -611,7 +612,7 @@ void asFramePlotTimeSeries::PlotAllAnalogs()
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Get the total number of points
     int nbPoints = 0;
@@ -673,7 +674,7 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb)
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Loop over the analogs to set the color (from the less important to the best)
     for (int i_analog=pointsNb-1; i_analog>=0; i_analog--)
@@ -747,7 +748,7 @@ void asFramePlotTimeSeries::PlotClassicPercentiles()
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Loop over the percentiles
     for (int i_pc=0; i_pc<pc.size(); i_pc++)
@@ -798,7 +799,7 @@ void asFramePlotTimeSeries::PlotClassicPercentiles()
 
 void asFramePlotTimeSeries::PlotPastForecasts()
 {
-    for (int past=0; past<m_ForecastManager->GetPastForecastsNb(m_SelectedForecast); past++)
+    for (int past=0; past<m_ForecastManager->GetPastForecastsNb(m_SelectedMethod, m_SelectedForecast); past++)
     {
         if(m_CheckListPast->IsChecked(past))
         {
@@ -821,7 +822,7 @@ void asFramePlotTimeSeries::PlotPastForecast(int i)
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetPastForecast(m_SelectedForecast,i);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetPastForecast(m_SelectedMethod, m_SelectedForecast, i);
     int length = forecast->GetTargetDatesLength();
     Array1DFloat dates = forecast->GetTargetDates();
 
@@ -891,7 +892,7 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Loop over the percentiles to display as polygons
     for (int i_pc=0; i_pc<pcUp.size(); i_pc++)
@@ -1002,7 +1003,7 @@ void asFramePlotTimeSeries::PlotInterpretation()
     wxPlotCtrl* plotctrl = m_PanelPlot->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
+    asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
     // Create plot data
     wxPlotData plotData;

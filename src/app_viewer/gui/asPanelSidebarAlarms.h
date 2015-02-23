@@ -31,7 +31,7 @@
 #include "asPanelSidebar.h"
 
 #include "asIncludes.h"
-#include "asResultsAnalogsForecast.h"
+#include "asForecastManager.h"
 #include "asWorkspace.h"
 #include <wx/graphics.h>
 
@@ -45,7 +45,7 @@ public:
     asPanelSidebarAlarmsDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarAlarmsDrawing();
     
-    void DrawAlarms( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
+    void DrawAlarms( Array1DFloat &dates, const VectorString &forecasts, Array2DFloat &values );
     void SetParent( asPanelSidebarAlarms* parent );
 
 private:
@@ -65,11 +65,11 @@ class asPanelSidebarAlarms : public asPanelSidebar
 {
 public:
     /** Constructor */
-    asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, asForecastManager * forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarAlarms();
 
-    void SetData( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
-    void UpdateAlarms(Array1DFloat &dates, VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts);
+    void SetData( Array1DFloat &dates, Array2DFloat &values );
+    void Update();
     int GetMode()
     {
         return m_Mode;
@@ -77,6 +77,7 @@ public:
 
 private:
     asWorkspace* m_Workspace;
+    asForecastManager* m_ForecastManager;
     asPanelSidebarAlarmsDrawing *m_PanelDrawing;
     int m_Mode;
     void OnPaint( wxPaintEvent &event );

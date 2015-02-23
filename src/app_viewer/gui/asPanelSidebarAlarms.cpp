@@ -33,11 +33,12 @@
  * asPanelSidebarAlarms
  */
 
-asPanelSidebarAlarms::asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+asPanelSidebarAlarms::asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, asForecastManager * forecastManager, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
     m_Workspace = workspace;
+    m_ForecastManager = forecastManager;
 
     m_Header->SetLabelText(_("Alarms"));
 
@@ -66,32 +67,14 @@ void asPanelSidebarAlarms::OnPaint(wxPaintEvent & event)
     event.Skip();
 }
 
-void asPanelSidebarAlarms::SetData(Array1DFloat &dates, const VectorString &models, Array2DFloat &values)
-{
-    // Required size
-    int rows = models.size();
-    int cellHeight = 20;
-    int totHeight = cellHeight*rows+20;
-
-    // Delete and recreate the panel. Cannot get it work with a resize...
-    wxDELETE(m_PanelDrawing);
-    m_PanelDrawing = new asPanelSidebarAlarmsDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,totHeight), wxTAB_TRAVERSAL );
-    m_PanelDrawing->SetParent(this);
-    m_PanelDrawing->Layout();
-    m_PanelDrawing->DrawAlarms(dates, models, values);
-    
-    m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
-    m_SizerContent->Fit(this);
-
-    GetParent()->FitInside();
-}
-
-void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
+void asPanelSidebarAlarms::Update()
 {
     int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
     float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
 
     m_Header->SetLabelText(wxString::Format(_("Alarms (T=%d, q=%g)"), returnPeriodRef, percentileThreshold));
+
+    Array1DFloat dates = m_ForecastManager->GetFullTargetDates();
 
     switch (m_Mode)
     {
@@ -104,248 +87,47 @@ void asPanelSidebarAlarms::UpdateAlarms(Array1DFloat &dates, VectorString &model
             if (percentileThreshold<=0) percentileThreshold = (float)0.9;
             if (percentileThreshold>1) percentileThreshold = (float)0.9;
 
-            Array2DFloat values = Array2DFloat::Ones(models.size(), dates.size());
+            Array2DFloat values = Array2DFloat::Ones(m_ForecastManager->GetMethodsNb(), dates.size());
             values *= NaNFloat;
 
-            for (unsigned int i_model=0; i_model<models.size(); i_model++)
+            for (int methodRow=0; methodRow<m_ForecastManager->GetMethodsNb(); methodRow++)
             {
-                asResultsAnalogsForecast* forecast = forecasts[i_model];
-                int stationsNb = forecast->GetStationsNb();
 
-                // Get return period index
-                int indexReferenceAxis=asNOT_FOUND;
-                if(forecast->HasReferenceValues())
-                {
-                    Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
-
-                    indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodRef);
-                    if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
-                    {
-                        asLogError(_("The desired return period is not available in the forecast file."));
-                        return;
-                    }
-                }
-
-                // Check lead times effectively available for the current model
-                int leadtimeMin = 0;
-                int leadtimeMax = dates.size()-1;
-
-                Array1DFloat availableDates = forecast->GetTargetDates();
-
-                while (dates[leadtimeMin]<availableDates[0])
-                {
-                    leadtimeMin++;
-                }
-                while (dates[leadtimeMax]>availableDates[availableDates.size()-1])
-                {
-                    leadtimeMax--;
-                }
-                wxASSERT(leadtimeMin<leadtimeMax);
-
-                for (int i_leadtime=leadtimeMin; i_leadtime<=leadtimeMax; i_leadtime++)
-                {
-                    float maxVal = 0;
-
-                    // Get the maximum value of every station
-                    for (int i_station=0; i_station<stationsNb; i_station++)
-                    {
-                        float thisVal = 0;
-
-                        // Get values for return period
-                        float factor = 1;
-                        if(forecast->HasReferenceValues())
-                        {
-                            float precip = forecast->GetReferenceValue(i_station, indexReferenceAxis);
-                            wxASSERT(precip>0);
-                            wxASSERT(precip<500);
-                            factor = 1.0/precip;
-                            wxASSERT(factor>0);
-                        }
-
-                        // Get values
-                        Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);
-
-                        // Process percentiles
-                        if(asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size()-1]))
-                        {
-                            thisVal = NaNFloat;
-                        }
-                        else
-                        {
-                            float forecastVal = asTools::Percentile(&theseVals[0], &theseVals[theseVals.size()-1], percentileThreshold);
-                            wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                            forecastVal *= factor;
-                            thisVal = forecastVal;
-                        }
-
-                        // Keep it if higher
-                        if (thisVal>maxVal)
-                        {
-                            maxVal = thisVal;
-                        }
-                    }
-
-                    values(i_model,i_leadtime) = maxVal;
-                }
+                Array1DFloat methodMaxValues = m_ForecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow, returnPeriodRef, percentileThreshold);
+                values.row(methodRow) = methodMaxValues;
             }
 
-            SetData(dates, models, values);
+            SetData(dates, values);
             break;
         }
 
         case (2):
         {
-            // Get display option
-            float percentileThreshold1 = (float) 0.9;
-            float returnPeriodThreshold1 = 2;
-            float percentileThreshold2 = (float) 0.9;
-            float returnPeriodThreshold2 = 5;
-
-            // Checks of the ranges
-            if ( (percentileThreshold1>1) || (percentileThreshold1<0) || (percentileThreshold2>1) || (percentileThreshold2<0) )
-            {
-                asLogError(_("The given percentile thresholds for the alarms are outside the allowed range."));
-                return;
-            }
-            if ( (returnPeriodThreshold1>500) || (returnPeriodThreshold1<0) || (returnPeriodThreshold2>500) || (returnPeriodThreshold2<0) )
-            {
-                asLogError(_("The given return periods thresholds for the alarms are outside the allowed range."));
-                return;
-            }
-
-            Array2DFloat values = Array2DFloat::Ones(models.size(), dates.size());
-            values *= NaNFloat;
-
-            for (unsigned int i_model=0; i_model<models.size(); i_model++)
-            {
-                asResultsAnalogsForecast* forecast = forecasts[i_model];
-                int stationsNb = forecast->GetStationsNb();
-
-                // Get return period index
-                int indexReferenceAxis1=asNOT_FOUND;
-                int indexReferenceAxis2=asNOT_FOUND;
-                if(forecast->HasReferenceValues())
-                {
-                    if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
-                    {
-                        Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
-
-                        indexReferenceAxis1 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold1);
-                        indexReferenceAxis2 = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodThreshold2);
-                        if ( (indexReferenceAxis1==asNOT_FOUND) || (indexReferenceAxis1==asOUT_OF_RANGE) || (indexReferenceAxis2==asNOT_FOUND) || (indexReferenceAxis2==asOUT_OF_RANGE) )
-                        {
-                            asLogError(_("The desired return period is not available in the forecast file."));
-                            return;
-                        }
-                    }
-                }
-
-                // Check lead times effectively available for the current model
-                int leadtimeMin = 0;
-                int leadtimeMax = dates.size()-1;
-
-                Array1DFloat availableDates = forecast->GetTargetDates();
-
-                while (dates[leadtimeMin]<availableDates[0])
-                {
-                    leadtimeMin++;
-                }
-                while (dates[leadtimeMax]>availableDates[availableDates.size()-1])
-                {
-                    leadtimeMax--;
-                }
-                wxASSERT(leadtimeMin<leadtimeMax);
-
-                for (int i_leadtime=leadtimeMin; i_leadtime<=leadtimeMax; i_leadtime++)
-                {
-                    float maxVal1 = 0;
-                    float maxVal2 = 0;
-
-                    // Get the maximum value of every station
-                    for (int i_station=0; i_station<stationsNb; i_station++)
-                    {
-                        float thisVal1 = 0;
-                        float thisVal2 = 0;
-
-                        // Get values for return period
-                        float factor1 = 1;
-                        float factor2 = 1;
-                        if(forecast->HasReferenceValues())
-                        {
-                            if ( (returnPeriodThreshold1>0) && (returnPeriodThreshold2>0) )
-                            {
-                                float precip1 = forecast->GetReferenceValue(i_station, indexReferenceAxis1);
-                                float precip2 = forecast->GetReferenceValue(i_station, indexReferenceAxis2);
-                                wxASSERT(precip1>0);
-                                wxASSERT(precip2>0);
-                                wxASSERT(precip1<500);
-                                wxASSERT(precip2<500);
-                                factor1 = 1.0/precip1;
-                                factor2 = 1.0/precip2;
-                                wxASSERT(factor1>0);
-                                wxASSERT(factor2>0);
-                            }
-                        }
-
-                        // Get values
-                        Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);
-
-                        // Process percentiles
-                        if(asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size()-1]))
-                        {
-                            thisVal1 = NaNFloat;
-                            thisVal2 = NaNFloat;
-                        }
-                        else
-                        {
-                            if ( (percentileThreshold1>=0) && (percentileThreshold2>=0) )
-                            {
-                                float forecastVal1 = asTools::Percentile(&theseVals[0], &theseVals[theseVals.size()-1], percentileThreshold1);
-                                float forecastVal2 = asTools::Percentile(&theseVals[0], &theseVals[theseVals.size()-1], percentileThreshold2);
-                                wxASSERT_MSG(forecastVal1>=0, wxString::Format("Forecast value = %g", forecastVal1));
-                                wxASSERT_MSG(forecastVal2>=0, wxString::Format("Forecast value = %g", forecastVal2));
-                                forecastVal1 *= factor1;
-                                forecastVal2 *= factor2;
-                                thisVal1 = forecastVal1;
-                                thisVal2 = forecastVal2;
-                            }
-                            else
-                            {
-                                thisVal1 = NaNFloat;
-                                thisVal2 = NaNFloat;
-                            }
-                        }
-
-                        // Keep it if higher
-                        if (thisVal1>maxVal1)
-                        {
-                            maxVal1 = thisVal1;
-                        }
-                        if (thisVal2>maxVal2)
-                        {
-                            maxVal2 = thisVal2;
-                        }
-                    }
-
-                    // Apply the rules
-                    if (maxVal2>1) // Most critical
-                    {
-                        values(i_model,i_leadtime) = 3;
-                    }
-                    else if (maxVal1>1)
-                    {
-                        values(i_model,i_leadtime) = 2;
-                    }
-                    else
-                    {
-                        values(i_model,i_leadtime) = 1;
-                    }
-                }
-            }
-
-            SetData(dates, models, values);
+            // Not yet implemented
         }
     }
+}
+
+void asPanelSidebarAlarms::SetData(Array1DFloat &dates, Array2DFloat &values)
+{
+    VectorString names = m_ForecastManager->GetAllMethodNames();
+
+    // Required size
+    int rows = values.rows();
+    int cellHeight = 20;
+    int totHeight = cellHeight*rows+20;
+
+    // Delete and recreate the panel. Cannot get it work with a resize...
+    wxDELETE(m_PanelDrawing);
+    m_PanelDrawing = new asPanelSidebarAlarmsDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,totHeight), wxTAB_TRAVERSAL );
+    m_PanelDrawing->SetParent(this);
+    m_PanelDrawing->Layout();
+    m_PanelDrawing->DrawAlarms(dates, names, values);
+    
+    m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
+    m_SizerContent->Fit(this);
+
+    GetParent()->FitInside();
 }
 
 /*
@@ -375,11 +157,11 @@ void asPanelSidebarAlarmsDrawing::SetParent(asPanelSidebarAlarms* parent)
     m_Parent = parent;
 }
 
-void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorString &models, Array2DFloat &values)
+void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorString &names, Array2DFloat &values)
 {
     // Get sizes
     int cols = dates.size();
-    int rows = models.size();
+    int rows = names.size();
     wxASSERT_MSG( (values.cols()==cols) , wxString::Format("values.cols()=%d, cols=%d", (int)values.cols(), cols));
     wxASSERT_MSG( (values.rows()==rows) , wxString::Format("values.rows()=%d, rows=%d", (int)values.rows(), rows));
 
@@ -420,18 +202,18 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorSt
             gc->SetFont( datesFont, *wxBLACK );
             CreateDatesText(gc, startText, cellWitdh, i_leadtime, dateStr);
 
-            for (int i_model=0; (unsigned)i_model<models.size(); i_model++)
+            for (int i_forecast=0; (unsigned)i_forecast<names.size(); i_forecast++)
             {
                 if (i_leadtime==0)
                 {
-                    wxString modelStr = wxString::Format("%d", i_model+1);
+                    wxString forecastStr = wxString::Format("%d", i_forecast+1);
                     gc->SetFont( numFont, *wxBLACK );
-                    CreateNbText(gc, startNb, cellHeight, i_model, modelStr);
+                    CreateNbText(gc, startNb, cellHeight, i_forecast, forecastStr);
                 }
 
                 wxGraphicsPath path = gc->CreatePath();
-                CreatePath(path, startGrid, cellWitdh, cellHeight, i_leadtime, i_model, cols, rows);
-                float value = values(i_model,i_leadtime);
+                CreatePath(path, startGrid, cellWitdh, cellHeight, i_leadtime, i_forecast, cols, rows);
+                float value = values(i_forecast,i_leadtime);
                 FillPath(gc, path, value);
             }
         }

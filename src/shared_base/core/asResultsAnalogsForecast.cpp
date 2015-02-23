@@ -763,3 +763,30 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast * other
 
     return true;
 }
+
+bool asResultsAnalogsForecast::IsSpecificForStation(int stationId)
+{
+    for (int i=0; i<m_PredictandStationIds.size(); i++)
+    {
+        if (m_PredictandStationIds[i]==stationId)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int asResultsAnalogsForecast::GetStationRowFromId(int stationId)
+{
+    for (int i=0; i<m_StationsIds.size(); i++)
+    {
+        if (m_StationsIds[i]==stationId)
+        {
+            return i;
+        }
+    }
+
+    wxFAIL;
+    asLogError(wxString::Format("The station ID %d was not found in the forecast results.", stationId));
+    return -1;
+}
