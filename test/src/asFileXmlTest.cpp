@@ -120,7 +120,7 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     bool success = fileXml2.Open();
     CHECK_EQUAL(true, success);
 
-    CHECK_EQUAL("atmoswing_file", fileXml2.GetRoot()->GetName());
+    CHECK_EQUAL("atmoswing", fileXml2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = fileXml2.GetRoot()->GetChildren();
     CHECK_EQUAL("Rôtillon", childBuilding->GetAttribute("id"));

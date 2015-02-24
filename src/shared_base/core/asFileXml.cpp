@@ -56,7 +56,7 @@ bool asFileXml::Open()
     // If new, set declaration and the root element
     if ( (m_FileMode==asFile::New) | (m_FileMode==asFile::Replace) )
     {
-        wxXmlNode * nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE ,"atmoswing_file");
+        wxXmlNode * nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE ,"atmoswing");
         nodeBase->AddAttribute("version", "1.0"); // AtmoSwing file version
         m_Document.SetRoot(nodeBase);
     }
@@ -144,7 +144,7 @@ bool asFileXml::IsAnAtmoSwingFile()
         asLogError(wxString::Format(_("The file %s is for an old version of AtmoSwing and is no longer supported (root: %s)."), m_FileName.GetFullName(), GetRoot()->GetName()));
         return false;
     }
-    if (!GetRoot()->GetName().IsSameAs("atmoswing_file", false))
+    if (!GetRoot()->GetName().IsSameAs("atmoswing", false))
     {
         asLogError(wxString::Format(_("The file %s is not an AtmoSwing file (root: %s)."), m_FileName.GetFullName(), GetRoot()->GetName()));
         return false;

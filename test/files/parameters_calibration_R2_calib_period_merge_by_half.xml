@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<atmoswing_file version="1.0" target="calibrator">
+<atmoswing version="1.0" target="calibrator">
     <description>
         <method_id>PD-A2Z-A2HI</method_id>
         <method_id_display>Classic humidity</method_id_display>
@@ -125,4 +125,4 @@
     <analog_forecast_score_final>
         <time_array>simple</time_array>
     </analog_forecast_score_final>
-</atmoswing_file>
+</atmoswing>
