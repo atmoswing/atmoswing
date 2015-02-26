@@ -30,12 +30,26 @@
 #include "wx/fileconf.h"
 
 #include <asFileXml.h>
+#include <asTime.h>
 
 
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
 :
-asCatalog(filePath)
+wxObject()
 {
+    m_CatalogFilePath = filePath;
+
+    // Initialize some data
+    m_SetId = wxEmptyString;
+    m_Name = wxEmptyString;
+    m_Description = wxEmptyString;
+    m_TimeZoneHours = 0;
+    m_TimeStepHours = 0;
+    m_FirstTimeStepHour = 0;
+    m_DataPath = wxEmptyString;
+    m_Start = 0;
+    m_End = 0;
+
     // Get the xml file path
     if (m_CatalogFilePath.IsEmpty())
     {
@@ -63,13 +77,16 @@ bool asCatalogPredictands::Load()
     wxXmlNode *nodeDataset = xmlFile.GetRoot()->GetChildren();
     while (nodeDataset) {
         if (nodeDataset->GetName() == "dataset") {
-            m_SetId = nodeDataset->GetAttribute("id");
-            m_Name = nodeDataset->GetAttribute("name");
-            m_Description = nodeDataset->GetAttribute("description");
 
             wxXmlNode *nodeProp = nodeDataset->GetChildren();
             while (nodeProp) {
-                if (nodeProp->GetName() == "parameter") {
+                if (nodeProp->GetName() == "id") {
+                    m_SetId = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "name") {
+                    m_Name = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "description") {
+                    m_Description = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "parameter") {
                     m_Parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
                     m_Unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetString(nodeProp));
@@ -90,23 +107,24 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "nan") {
                     m_Nan.push_back(xmlFile.GetDouble(nodeProp));
                 } else if (nodeProp->GetName() == "coordinate_system") {
-                    m_CoordSys = asGlobEnums::StringToCoordSysEnum(xmlFile.GetString(nodeProp));
-                } else if (nodeProp->GetName() == "data_list") {
+                    m_CoordSys = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "stations") {
                     wxXmlNode *nodeData = nodeProp->GetChildren();
                     while (nodeData) {
-                        if (nodeData->GetName() == "data") {
+                        if (nodeData->GetName() == "station") {
                             DataStruct station;
-                            
-                            wxString idStr = nodeData->GetAttribute("id");
-                            long id;
-                            idStr.ToLong(&id);
-                            station.Id = id;
-                            station.Name = nodeData->GetAttribute("name");
 
                             wxXmlNode *nodeDetail = nodeData->GetChildren();
                             while (nodeDetail) {
-                                if (nodeDetail->GetName() == "local_id") {
-                                    station.LocalId = xmlFile.GetString(nodeDetail);
+                                if (nodeDetail->GetName() == "official_id") {
+                                    station.OfficialId = xmlFile.GetString(nodeDetail);
+                                } else if (nodeDetail->GetName() == "id") {
+                                    wxString idStr = xmlFile.GetString(nodeDetail);
+                                    long id;
+                                    idStr.ToLong(&id);
+                                    station.Id = id;
+                                } else if (nodeDetail->GetName() == "name") {
+                                    station.Name = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "x_coordinate") {
                                     wxString coordXStr = xmlFile.GetString(nodeDetail);
                                     double x;
