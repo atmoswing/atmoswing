@@ -40,6 +40,11 @@ public:
     /** Default destructor */
     virtual ~asGeo();
 
+    /** Check the point coordinates
+     * \param Point The point to check
+     */
+    bool CheckPoint(Coo &Point, int ChangesAllowed = asEDIT_FORBIDEN);
+
     double GetAxisXmin()
     {
         return m_AxisXmin;
@@ -68,11 +73,6 @@ protected:
 
     /** Initialization */
     void InitBounds();
-
-    /** Check the point coordinates
-     * \param Point The point to check
-     */
-    bool CheckPoint(Coo &Point, int ChangesAllowed = asEDIT_FORBIDEN);
 
 private:
 
