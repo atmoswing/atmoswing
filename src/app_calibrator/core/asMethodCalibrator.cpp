@@ -1632,7 +1632,7 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     // Instantiate a forecast score object
     asLogMessage(_("Instantiating a forecast score object"));
     asForecastScore* forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
-    forecastScore->SetPercentile(params.GetForecastScorePercentile());
+    forecastScore->SetQuantile(params.GetForecastScoreQuantile());
     forecastScore->SetThreshold(params.GetForecastScoreThreshold());
 
     if (forecastScore->UsesClimatology() && m_ScoreClimatology.size()==0)

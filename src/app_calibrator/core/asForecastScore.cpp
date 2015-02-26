@@ -49,7 +49,7 @@ asForecastScore::asForecastScore()
     m_Score = Undefined;
     m_ScoreClimatology = 0;
     m_Threshold = NaNFloat;
-    m_Percentile = NaNFloat;
+    m_Quantile = NaNFloat;
     m_UsesClimatology = false;
     m_SingleValue = true;
     m_ScaleBest = NaNFloat;

@@ -57,8 +57,8 @@ protected:
 private:
     enum PlotData
     {
-        ClassicPercentiles,
-        AllPercentiles,
+        ClassicQuantiles,
+        AllQuantiles,
         AllAnalogs,
         BestAnalogs10,
         BestAnalogs5,
@@ -88,10 +88,10 @@ private:
     void PlotReturnPeriod(int returnPeriod);
     void PlotAllAnalogs();
     void PlotBestAnalogs(int pointsNb);
-    void PlotClassicPercentiles();
+    void PlotClassicQuantiles();
     void PlotPastForecasts();
     void PlotPastForecast(int i);
-    void PlotAllPercentiles();
+    void PlotAllQuantiles();
     void PlotInterpretation();
 
     DECLARE_EVENT_TABLE()

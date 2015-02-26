@@ -345,9 +345,9 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxStaticText* m_StaticTextAlarmsReturnPeriod;
 		wxChoice* m_ChoiceAlarmsReturnPeriod;
 		wxStaticText* m_StaticTextAlarmsReturnPeriodYears;
-		wxStaticText* m_StaticTextAlarmsPercentile;
-		wxTextCtrl* m_TextCtrlAlarmsPercentile;
-		wxStaticText* m_StaticTextAlarmsPercentileRange;
+		wxStaticText* m_StaticTextAlarmsQuantile;
+		wxTextCtrl* m_TextCtrlAlarmsQuantile;
+		wxStaticText* m_StaticTextAlarmsQuantileRange;
 		wxPanel* m_PanelGeneralCommon;
 		wxRadioBox* m_RadioBoxLogLevel;
 		wxCheckBox* m_CheckBoxDisplayLogWindow;

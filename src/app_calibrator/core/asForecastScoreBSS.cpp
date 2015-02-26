@@ -57,7 +57,7 @@ float asForecastScoreBSS::Assess(float ObservedVal, const Array1DFloat &ForcastV
     // First process the BS and then the skill score
     asForecastScoreBS scoreBS = asForecastScoreBS();
     scoreBS.SetThreshold(GetThreshold());
-    scoreBS.SetPercentile(GetPercentile());
+    scoreBS.SetQuantile(GetQuantile());
     float score = scoreBS.Assess(ObservedVal, ForcastVals, nbElements);
     float skillScore = (score-m_ScoreClimatology) / ((float)0-m_ScoreClimatology);
 
@@ -75,7 +75,7 @@ bool asForecastScoreBSS::ProcessScoreClimatology(const Array1DFloat &refVals, co
     // Set the original score and process
     asForecastScore* forecastScore = asForecastScore::GetInstance(asForecastScore::BS);
     forecastScore->SetThreshold(GetThreshold());
-    forecastScore->SetPercentile(GetPercentile());
+    forecastScore->SetQuantile(GetQuantile());
 
     for (int i_reftime=0; i_reftime<refVals.size(); i_reftime++)
     {

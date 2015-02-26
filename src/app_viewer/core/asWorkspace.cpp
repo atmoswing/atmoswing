@@ -38,7 +38,7 @@ wxObject()
     m_ColorbarMaxValue = 50.0;
     m_TimeSeriesPlotPastDaysNb = 3;
     m_AlarmsPanelReturnPeriod = 10;
-    m_AlarmsPanelPercentile = 0.9f;
+    m_AlarmsPanelQuantile = 0.9f;
 }
 
 asWorkspace::~asWorkspace()
@@ -77,8 +77,8 @@ bool asWorkspace::Load(const wxString &filePath)
             m_TimeSeriesPlotPastDaysNb = fileWorkspace.GetInt(node);
         } else if (node->GetName() == "panel_alarms_return_period") {
             m_AlarmsPanelReturnPeriod = fileWorkspace.GetInt(node);
-        } else if (node->GetName() == "panel_alarms_percentile") {
-            m_AlarmsPanelPercentile = fileWorkspace.GetFloat(node);
+        } else if (node->GetName() == "panel_alarms_quantile") {
+            m_AlarmsPanelQuantile = fileWorkspace.GetFloat(node);
         } else if (node->GetName() == "layers") {
             wxXmlNode *nodeLayer = node->GetChildren();
             while (nodeLayer) {
@@ -165,7 +165,7 @@ bool asWorkspace::Save()
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("colorbar_max_value", m_ColorbarMaxValue));
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("plot_time_series_past_days_nb", m_TimeSeriesPlotPastDaysNb));
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_return_period", m_AlarmsPanelReturnPeriod));
-    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_percentile", m_AlarmsPanelPercentile));
+    fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_quantile", m_AlarmsPanelQuantile));
 
     // GIS layers
     wxXmlNode * nodeLayers = new wxXmlNode(wxXML_ELEMENT_NODE ,"layers" );

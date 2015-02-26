@@ -147,13 +147,12 @@ public:
      */
     static double StDev(double* pArrStart, double* pArrEnd, int sample = asSAMPLE);
 
-    /** Percentile of an array
-     * \param pArrStart The beginning (pointer) of the vector/array
-     * \param pArrEnd The end (pointer) of the vector/array
-     * \param percentile The desired percentile
-     * \return The value for the percentile.
+    /** Get the cumulative frequency
+     * \return The cumulative frequency corresponding to a certain sample size
      */
-    static float Percentile(float* pArrStart, float* pArrEnd, float percentile);
+    static Array1DFloat GetCumulativeFrequency(int size);
+
+    static float GetValueForQuantile(Array1DFloat &values, float quantile);
 
     /** Check if the value is a NaN
      * \param value The value to check

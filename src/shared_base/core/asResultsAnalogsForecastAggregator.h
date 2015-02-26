@@ -103,9 +103,9 @@ public:
 
     wxArrayString GetLeadTimes(int methodRow, int forecastRow);
 
-    Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float percentileThreshold);
+    Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float quantileThreshold);
 
-    Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float percentileThreshold);
+    Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float quantileThreshold);
 
     bool ExportSyntheticXml();
 

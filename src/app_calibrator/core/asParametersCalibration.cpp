@@ -298,8 +298,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     if(!SetForecastScoreNameVector(fileParams.GetVectorString(nodeParamBlock))) return false;
                 } else if (nodeParamBlock->GetName() == "threshold") {
                     SetForecastScoreThreshold(fileParams.GetFloat(nodeParamBlock));
-                } else if (nodeParamBlock->GetName() == "percentile") {
-                    SetForecastScorePercentile(fileParams.GetFloat(nodeParamBlock));
+                } else if (nodeParamBlock->GetName() == "quantile") {
+                    SetForecastScoreQuantile(fileParams.GetFloat(nodeParamBlock));
                 } else if (nodeParamBlock->GetName() == "postprocessing") {
                     asLogError(_("The postptocessing is not yet fully implemented."));
                 } else {

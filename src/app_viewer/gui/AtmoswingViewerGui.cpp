@@ -958,17 +958,17 @@ asFramePreferencesViewerVirtual::asFramePreferencesViewerVirtual( wxWindow* pare
 	m_StaticTextAlarmsReturnPeriodYears->Wrap( -1 );
 	fgSizer13->Add( m_StaticTextAlarmsReturnPeriodYears, 0, wxALL, 5 );
 	
-	m_StaticTextAlarmsPercentile = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Percentile to display"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextAlarmsPercentile->Wrap( -1 );
-	fgSizer13->Add( m_StaticTextAlarmsPercentile, 0, wxALL, 5 );
+	m_StaticTextAlarmsQuantile = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("Quantile to display"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsQuantile->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextAlarmsQuantile, 0, wxALL, 5 );
 	
-	m_TextCtrlAlarmsPercentile = new wxTextCtrl( m_PanelWorkspace, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
-	m_TextCtrlAlarmsPercentile->SetMaxLength( 0 ); 
-	fgSizer13->Add( m_TextCtrlAlarmsPercentile, 0, wxALL, 5 );
+	m_TextCtrlAlarmsQuantile = new wxTextCtrl( m_PanelWorkspace, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_TextCtrlAlarmsQuantile->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlAlarmsQuantile, 0, wxALL, 5 );
 	
-	m_StaticTextAlarmsPercentileRange = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("(in between 0 - 1)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_StaticTextAlarmsPercentileRange->Wrap( -1 );
-	fgSizer13->Add( m_StaticTextAlarmsPercentileRange, 0, wxALL, 5 );
+	m_StaticTextAlarmsQuantileRange = new wxStaticText( m_PanelWorkspace, wxID_ANY, _("(in between 0 - 1)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextAlarmsQuantileRange->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextAlarmsQuantileRange, 0, wxALL, 5 );
 	
 	
 	sbSizer191->Add( fgSizer13, 1, wxEXPAND, 5 );

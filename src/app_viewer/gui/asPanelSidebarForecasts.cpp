@@ -54,8 +54,8 @@ asPanelSidebar( parent, id, pos, size, style )
     m_ForecastDisplayCtrl = new asListBoxForecastDisplay( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
     subSizer->Add( m_ForecastDisplayCtrl, 1, wxEXPAND, 5 );
 
-    m_PercentilesCtrl = new asListBoxPercentiles( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
-    subSizer->Add( m_PercentilesCtrl, 1, wxEXPAND, 5 );
+    m_QuantilesCtrl = new asListBoxQuantiles( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
+    subSizer->Add( m_QuantilesCtrl, 1, wxEXPAND, 5 );
     subSizer->Fit( this );
     m_SizerContent->Add( subSizer, 0, wxEXPAND, 5 );
 

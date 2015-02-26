@@ -48,7 +48,7 @@ public:
         float PostprocessDupliExp;
         wxString PostprocessMethod;
         float Threshold;
-        float Percentile;
+        float Quantile;
     } ParamsForecastScore;
 
     /** Vectors */
@@ -266,14 +266,14 @@ public:
         m_ForecastScore.Threshold = val;
     }
 
-    float GetForecastScorePercentile()
+    float GetForecastScoreQuantile()
     {
-        return m_ForecastScore.Percentile;
+        return m_ForecastScore.Quantile;
     }
 
-    void SetForecastScorePercentile(float val)
+    void SetForecastScoreQuantile(float val)
     {
-        m_ForecastScore.Percentile = val;
+        m_ForecastScore.Quantile = val;
     }
 
     int GetForecastScoreAnalogsNumber()

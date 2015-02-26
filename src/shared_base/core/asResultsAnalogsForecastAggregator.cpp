@@ -569,14 +569,14 @@ wxArrayString asResultsAnalogsForecastAggregator::GetLeadTimes(int methodRow, in
     return leadTimes;
 }
 
-Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float percentileThreshold)
+Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float quantileThreshold)
 {
     wxASSERT(returnPeriodRef>=2);
-    wxASSERT(percentileThreshold>0);
-    wxASSERT(percentileThreshold<1);
+    wxASSERT(quantileThreshold>0);
+    wxASSERT(quantileThreshold<1);
     if (returnPeriodRef<2) returnPeriodRef = 2;
-    if (percentileThreshold<=0) percentileThreshold = (float)0.9;
-    if (percentileThreshold>1) percentileThreshold = (float)0.9;
+    if (quantileThreshold<=0) quantileThreshold = (float)0.9;
+    if (quantileThreshold>1) quantileThreshold = (float)0.9;
 
     wxASSERT(m_Forecasts.size()>methodRow);
 
@@ -644,14 +644,14 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
                 // Get values
                 Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, indexStation);
 
-                // Process percentiles
+                // Process quantiles
                 if(asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size()-1]))
                 {
                     thisVal = NaNFloat;
                 }
                 else
                 {
-                    float forecastVal = asTools::Percentile(&theseVals[0], &theseVals[theseVals.size()-1], percentileThreshold);
+                    float forecastVal = asTools::GetValueForQuantile(theseVals, quantileThreshold);
                     forecastVal *= factor;
                     thisVal = forecastVal;
                 }
@@ -668,13 +668,13 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
     return maxValues;
 }
 
-Array1DFloat asResultsAnalogsForecastAggregator::GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float percentileThreshold)
+Array1DFloat asResultsAnalogsForecastAggregator::GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float quantileThreshold)
 {
     Array2DFloat allMax(dates.size(), m_Forecasts.size());
 
     for (int methodRow=0; methodRow<m_Forecasts.size(); methodRow++)
     {
-        allMax.col(methodRow) = GetMethodMaxValues(dates, methodRow, returnPeriodRef, percentileThreshold);
+        allMax.col(methodRow) = GetMethodMaxValues(dates, methodRow, returnPeriodRef, quantileThreshold);
     }
 
     // Extract the highest values
@@ -812,7 +812,7 @@ bool asResultsAnalogsForecastAggregator::ExportSyntheticXml()
                 wxXmlNode * nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE ,"target_date" );
                 for (int k=0; k<wxMin(10, quantiles.size()); k++)
                 {
-                    float pcVal = asTools::Percentile(&analogValues[0], &analogValues[analogValues.size()-1], quantiles[k]/100);
+                    float pcVal = asTools::GetValueForQuantile(analogValues, quantiles[k]/100);
                     nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("quantile", wxString::Format("%.1f", pcVal)));
                 }
                 nodeAnalogsQuantiles->AddChild(nodeTargetDate);

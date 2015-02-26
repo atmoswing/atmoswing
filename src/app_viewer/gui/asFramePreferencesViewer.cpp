@@ -104,8 +104,8 @@ void asFramePreferencesViewer::LoadPreferences()
         default:
             m_ChoiceAlarmsReturnPeriod->SetSelection(2);
     }
-    wxString alarmsPercentile = wxString::Format("%g", m_Workspace->GetAlarmsPanelPercentile());
-    m_TextCtrlAlarmsPercentile->SetValue(alarmsPercentile);
+    wxString alarmsQuantile = wxString::Format("%g", m_Workspace->GetAlarmsPanelQuantile());
+    m_TextCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
     /*
      * General
@@ -200,14 +200,14 @@ void asFramePreferencesViewer::SavePreferences( )
             alarmsReturnPeriod = 10;
     }
     m_Workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
-    wxString alarmsPercentile = m_TextCtrlAlarmsPercentile->GetValue();
-    double alarmsPercentileVal;
-    alarmsPercentile.ToDouble(&alarmsPercentileVal);
-    if (alarmsPercentileVal>1)
-        alarmsPercentileVal = 0.9;
-    if (alarmsPercentileVal<0)
-        alarmsPercentileVal = 0.9;
-    m_Workspace->SetAlarmsPanelPercentile(alarmsPercentileVal);
+    wxString alarmsQuantile = m_TextCtrlAlarmsQuantile->GetValue();
+    double alarmsQuantileVal;
+    alarmsQuantile.ToDouble(&alarmsQuantileVal);
+    if (alarmsQuantileVal>1)
+        alarmsQuantileVal = 0.9;
+    if (alarmsQuantileVal<0)
+        alarmsQuantileVal = 0.9;
+    m_Workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
 
     /*
      * General

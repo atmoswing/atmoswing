@@ -70,9 +70,9 @@ void asPanelSidebarAlarms::OnPaint(wxPaintEvent & event)
 void asPanelSidebarAlarms::Update()
 {
     int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
-    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
+    float quantileThreshold = m_Workspace->GetAlarmsPanelQuantile();
 
-    m_Header->SetLabelText(wxString::Format(_("Alarms (T=%d, q=%g)"), returnPeriodRef, percentileThreshold));
+    m_Header->SetLabelText(wxString::Format(_("Alarms (T=%d, q=%g)"), returnPeriodRef, quantileThreshold));
 
     Array1DFloat dates = m_ForecastManager->GetFullTargetDates();
 
@@ -81,11 +81,11 @@ void asPanelSidebarAlarms::Update()
         case (1):
         {
             wxASSERT(returnPeriodRef>=2);
-            wxASSERT(percentileThreshold>0);
-            wxASSERT(percentileThreshold<1);
+            wxASSERT(quantileThreshold>0);
+            wxASSERT(quantileThreshold<1);
             if (returnPeriodRef<2) returnPeriodRef = 2;
-            if (percentileThreshold<=0) percentileThreshold = (float)0.9;
-            if (percentileThreshold>1) percentileThreshold = (float)0.9;
+            if (quantileThreshold<=0) quantileThreshold = (float)0.9;
+            if (quantileThreshold>1) quantileThreshold = (float)0.9;
 
             Array2DFloat values = Array2DFloat::Ones(m_ForecastManager->GetMethodsNb(), dates.size());
             values *= NaNFloat;
@@ -93,7 +93,7 @@ void asPanelSidebarAlarms::Update()
             for (int methodRow=0; methodRow<m_ForecastManager->GetMethodsNb(); methodRow++)
             {
 
-                Array1DFloat methodMaxValues = m_ForecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow, returnPeriodRef, percentileThreshold);
+                Array1DFloat methodMaxValues = m_ForecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow, returnPeriodRef, quantileThreshold);
                 values.row(methodRow) = methodMaxValues;
             }
 

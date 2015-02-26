@@ -246,23 +246,23 @@ public:
         m_Threshold = val;
     }
 
-    /** Access m_Percentile
-     * \return The current value of m_Percentile
+    /** Access m_Quantile
+     * \return The current value of m_Quantile
      */
-    float GetPercentile()
+    float GetQuantile()
     {
-        return m_Percentile;
+        return m_Quantile;
     }
 
-    /** Set m_Percentile
+    /** Set m_Quantile
      * \param val New value to set
      */
-    void SetPercentile(float val)
+    void SetQuantile(float val)
     {
-        m_Percentile = val;
+        m_Quantile = val;
     }
 
-    /** Access m_Percentile
+    /** Access m_Quantile
      * \return The current value of m_UsesClimatology
      */
     bool UsesClimatology()
@@ -288,7 +288,7 @@ protected:
     bool m_UsesClimatology;
     bool m_SingleValue;
     float m_Threshold; //!< For discrete scores
-    float m_Percentile; //!< For discrete scores
+    float m_Quantile; //!< For discrete scores
 
 private:
 
