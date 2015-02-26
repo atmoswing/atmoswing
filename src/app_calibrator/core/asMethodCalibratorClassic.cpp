@@ -46,7 +46,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     m_OriginalParams = params;
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
+    VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
     // Create result object to save the final parameters sets
     asResultsParametersArray results_all;

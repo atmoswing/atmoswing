@@ -38,7 +38,7 @@ asResults::asResults()
     m_SaveIntermediateResults = false;
     m_LoadIntermediateResults = false;
     m_CurrentStep = 0;
-    m_FileVersion = 1.5f;
+    m_FileVersion = 1.6f;
     m_DateProcessed = 0;
 }
 
@@ -94,10 +94,17 @@ bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile)
     return true;
 }
 
-bool asResults::DefStationsIdsAttributes(asFileNetcdf &ncFile)
+bool asResults::DefStationIdsAttributes(asFileNetcdf &ncFile)
 {
-    ncFile.PutAtt("long_name", "Stations IDs", "stations_ids");
-    ncFile.PutAtt("var_desc", "The stations IDs", "stations_ids");
+    ncFile.PutAtt("long_name", "Stations IDs", "station_ids");
+    ncFile.PutAtt("var_desc", "The stations IDs", "station_ids");
+    return true;
+}
+
+bool asResults::DefStationOfficialIdsAttributes(asFileNetcdf &ncFile)
+{
+    ncFile.PutAtt("long_name", "Stations official IDs", "station_official_ids");
+    ncFile.PutAtt("var_desc", "The stations official IDs", "station_official_ids");
     return true;
 }
 
@@ -124,30 +131,37 @@ bool asResults::DefTargetValuesGrossAttributes(asFileNetcdf &ncFile)
 
 bool asResults::DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile)
 {
-    ncFile.PutAtt("long_name", "Analogs criteria", "analogs_criteria");
-    ncFile.PutAtt("var_desc", "Criteria matching the dates from the analog method", "analogs_criteria");
+    ncFile.PutAtt("long_name", "Analogs criteria", "analog_criteria");
+    ncFile.PutAtt("var_desc", "Criteria matching the dates from the analog method", "analog_criteria");
     return true;
 }
 
 bool asResults::DefAnalogsDatesAttributes(asFileNetcdf &ncFile)
 {
-    ncFile.PutAtt("long_name", "Analogs dates", "analogs_dates");
-    ncFile.PutAtt("var_desc", "Analogs dates from the analog method", "analogs_dates");
-    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "analogs_dates");
+    ncFile.PutAtt("long_name", "Analogs dates", "analog_dates");
+    ncFile.PutAtt("var_desc", "Analogs dates from the analog method", "analog_dates");
+    ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "analog_dates");
     return true;
 }
 
 bool asResults::DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile)
 {
-    ncFile.PutAtt("long_name", "Analogs predictand normalized values", "analogs_values_norm");
-    ncFile.PutAtt("var_desc", "Predictand values (normalized) corresponding to the scores from the analog method", "analogs_values_norm");
+    ncFile.PutAtt("long_name", "Analogs predictand normalized values", "analog_values_norm");
+    ncFile.PutAtt("var_desc", "Predictand values (normalized) from the analog method", "analog_values_norm");
     return true;
 }
 
 bool asResults::DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile)
 {
-    ncFile.PutAtt("long_name", "Analogs predictand gross values", "analogs_values_gross");
-    ncFile.PutAtt("var_desc", "Predictand values (original) corresponding to the scores from the analog method", "analogs_values_gross");
+    ncFile.PutAtt("long_name", "Analogs predictand gross values", "analog_values_gross");
+    ncFile.PutAtt("var_desc", "Predictand values (original) from the analog method", "analog_values_gross");
+    return true;
+}
+
+bool asResults::DefAnalogsValuesAttributes(asFileNetcdf &ncFile)
+{
+    ncFile.PutAtt("long_name", "Analogs predictand values", "analog_values");
+    ncFile.PutAtt("var_desc", "Predictand values (original) from the analog method", "analog_values");
     return true;
 }
 
@@ -162,15 +176,6 @@ bool asResults::DefForecastScoreFinalAttributes(asFileNetcdf &ncFile)
 {
     ncFile.PutAtt("long_name", "Final score", "forecast_score");
     ncFile.PutAtt("var_desc", "Final score of the method", "forecast_score");
-    return true;
-}
-
-bool asResults::DefLonLatAttributes(asFileNetcdf &ncFile)
-{
-    ncFile.PutAtt("long_name", "Lat", "lat");
-    ncFile.PutAtt("long_name", "Lon", "lon");
-    ncFile.PutAtt("units", "degrees_north", "lat");
-    ncFile.PutAtt("units", "degrees_east", "lon");
     return true;
 }
 

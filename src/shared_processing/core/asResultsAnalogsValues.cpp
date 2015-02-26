@@ -128,9 +128,9 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
     ncFile.DefVar("target_dates", NC_FLOAT, 1, dimT);
     ncFile.DefVar("target_values_norm", NC_FLOAT, 2, dimST);
     ncFile.DefVar("target_values_gross", NC_FLOAT, 2, dimST);
-    ncFile.DefVar("analogs_criteria", NC_FLOAT, 2, dimTA);
-    ncFile.DefVar("analogs_values_norm", NC_FLOAT, 3, dimSTA);
-    ncFile.DefVar("analogs_values_gross", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVar("analog_criteria", NC_FLOAT, 2, dimTA);
+    ncFile.DefVar("analog_values_norm", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVar("analog_values_gross", NC_FLOAT, 3, dimSTA);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -193,9 +193,9 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
     ncFile.PutVarArray("target_dates", startT, countT, &m_TargetDates(0));
     ncFile.PutVarArray("target_values_norm", startST, countST, &m_TargetValuesNorm[0]);
     ncFile.PutVarArray("target_values_gross", startST, countST, &m_TargetValuesGross[0]);
-    ncFile.PutVarArray("analogs_criteria", startTA, countTA, &analogsCriteria[0]);
-    ncFile.PutVarArray("analogs_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
-    ncFile.PutVarArray("analogs_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
+    ncFile.PutVarArray("analog_criteria", startTA, countTA, &analogsCriteria[0]);
+    ncFile.PutVarArray("analog_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
+    ncFile.PutVarArray("analog_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -262,9 +262,9 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     ncFile.GetVar("stations", &m_PredictandStationIds[0]);
     ncFile.GetVarArray("target_values_norm", startST, countST, &targetValuesNorm[0]);
     ncFile.GetVarArray("target_values_gross", startST, countST, &targetValuesGross[0]);
-    ncFile.GetVarArray("analogs_criteria", startTA, countTA, &analogsCriteria[0]);
-    ncFile.GetVarArray("analogs_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
-    ncFile.GetVarArray("analogs_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
+    ncFile.GetVarArray("analog_criteria", startTA, countTA, &analogsCriteria[0]);
+    ncFile.GetVarArray("analog_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
+    ncFile.GetVarArray("analog_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
 
     // Set data into the matrices
     m_AnalogsCriteria.resize( Ntime, Nanalogs );

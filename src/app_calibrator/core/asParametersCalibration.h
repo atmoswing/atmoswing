@@ -56,12 +56,12 @@ public:
 
     void InitValues();
 
-    VVectorInt GetPredictandStationsIdsVector()
+    VVectorInt GetPredictandStationIdsVector()
     {
-        return m_PredictandStationsIdsVect;
+        return m_PredictandStationIdsVect;
     }
 
-    bool SetPredictandStationsIdsVector(VVectorInt val);
+    bool SetPredictandStationIdsVector(VVectorInt val);
 
     VectorInt GetTimeArrayAnalogsIntervalDaysVector()
     {
@@ -270,7 +270,7 @@ public:
 protected:
 
 private:
-    VVectorInt m_PredictandStationsIdsVect;
+    VVectorInt m_PredictandStationIdsVect;
     VectorInt m_TimeArrayAnalogsIntervalDaysVect;
     VectorParamsStepVect m_StepsVect;
     ParamsForecastScoreVect m_ForecastScoreVect;

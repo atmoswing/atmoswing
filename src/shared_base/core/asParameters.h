@@ -315,7 +315,7 @@ public:
         return m_PredictandStationIds;
     }
 
-    VVectorInt GetPredictandStationsIdsVector()
+    VVectorInt GetPredictandStationIdsVector()
     {
         VVectorInt vec;
         vec.push_back(m_PredictandStationIds);

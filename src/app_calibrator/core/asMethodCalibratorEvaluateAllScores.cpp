@@ -189,7 +189,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     bool processRankHistogramScores = true;
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
+    VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
     for (unsigned int i_stat=0; i_stat<stationsId.size(); i_stat++)
     {

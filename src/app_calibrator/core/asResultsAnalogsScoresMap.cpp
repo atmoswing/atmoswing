@@ -177,7 +177,6 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
     ncFile.PutAtt("title", title);
 
     // Put attributes
-    DefLonLatAttributes(ncFile);
     DefLevelAttributes(ncFile);
     DefScoresMapAttributes(ncFile);
 
