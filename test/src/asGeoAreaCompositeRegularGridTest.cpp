@@ -50,7 +50,7 @@ TEST(ConstructorStepException)
         CornerLR.x = 20;
         CornerLR.y = 30;
         double step = 2.6;
-        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
     }
 }
 
@@ -66,7 +66,7 @@ TEST(ConstructorOneArea)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(1, geoarea.GetNbComposites());
 }
@@ -83,7 +83,7 @@ TEST(ConstructorTwoAreas)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(2, geoarea.GetNbComposites());
 }
@@ -95,7 +95,7 @@ TEST(ConstructorAlternativeOneArea)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
     CHECK_EQUAL(1, geoarea.GetNbComposites());
 }
@@ -107,7 +107,7 @@ TEST(ConstructorAlternativeTwoAreas)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
     CHECK_EQUAL(2, geoarea.GetNbComposites());
 }
@@ -119,7 +119,7 @@ TEST(CheckConsistency)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
     CHECK_CLOSE(355, geoarea.GetCornerUL().x, 0.01);
     CHECK_CLOSE(355, geoarea.GetCornerLL().x, 0.01);
@@ -136,7 +136,7 @@ TEST(CheckConsistencyException)
         double Ymin = 40;
         double Ywidth = -10;
         double step = 2.5;
-        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
+        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
     }
 }
 
@@ -152,7 +152,7 @@ TEST(IsRectangleTrue)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(true, geoarea.IsRectangle());
 }
@@ -171,7 +171,7 @@ TEST(IsRectangleFalse)
         CornerLR.x = 20;
         CornerLR.y = 30;
         double step = 2.5;
-        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
     }
 
 }
@@ -188,7 +188,7 @@ TEST(GetBounds)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
@@ -203,7 +203,7 @@ TEST(GetBoundsSplitted)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
     CHECK_CLOSE(0, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
@@ -223,7 +223,7 @@ TEST(GetCenter)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(15, center.x, 0.01);
@@ -242,7 +242,7 @@ TEST(GetCenterSplitted)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(345, center.x, 0.01);
@@ -261,7 +261,7 @@ TEST(GetCenterSplittedEdge)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(360, center.x, 0.01);
@@ -280,7 +280,7 @@ TEST(GetCornersSplitted)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_CLOSE(0, geoarea.GetComposite(0).GetCornerUL().x, 0.01);
     CHECK_CLOSE(40, geoarea.GetComposite(0).GetCornerUL().y, 0.01);
@@ -313,7 +313,7 @@ TEST(IsOnGridTrue)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(true, geoarea.IsOnGrid(2.5));
 }
@@ -330,7 +330,7 @@ TEST(IsOnGridTrueTwoAxes)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(true, geoarea.IsOnGrid(2.5, 5));
 }
@@ -347,7 +347,7 @@ TEST(IsOnGridFalseStep)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(false, geoarea.IsOnGrid(6));
 }
@@ -364,7 +364,7 @@ TEST(IsOnGridFalseSecondStep)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(false, geoarea.IsOnGrid(5, 6));
 }
@@ -381,7 +381,7 @@ TEST(GetAxes)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     Array1DDouble uaxis0, vaxis0;
     uaxis0.resize(geoarea.GetXaxisCompositePtsnb(0));
@@ -422,7 +422,7 @@ TEST(GetUYaxisCompositeSize)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
     CHECK_CLOSE(5, geoarea.GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(17, geoarea.GetXaxisCompositePtsnb(1), 0.01);
@@ -438,7 +438,7 @@ TEST(GetUYaxisCompositeSizeStepLon)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(3, geoarea.GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(9, geoarea.GetXaxisCompositePtsnb(1), 0.01);
@@ -454,7 +454,7 @@ TEST(GetUYaxisCompositeSizeStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(2, geoarea.GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(2, geoarea.GetXaxisCompositePtsnb(1), 0.01);
@@ -470,7 +470,7 @@ TEST(GetUYaxisCompositeWidthStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(7.5, geoarea.GetXaxisCompositeWidth(0), 0.01);
     CHECK_CLOSE(7.5, geoarea.GetXaxisCompositeWidth(1), 0.01);
@@ -486,7 +486,7 @@ TEST(GetUYaxisPtsnbStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(4, geoarea.GetXaxisPtsnb(), 0.01);
     CHECK_CLOSE(5, geoarea.GetYaxisPtsnb(), 0.01);
@@ -500,7 +500,7 @@ TEST(GetUYaxisWidthStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(15, geoarea.GetXaxisWidth(), 0.01);
     CHECK_CLOSE(10, geoarea.GetYaxisWidth(), 0.01);
@@ -514,7 +514,7 @@ TEST(GetUYaxisCompositeLimits)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(0, geoarea.GetXaxisCompositeStart(0), 0.01);
     CHECK_CLOSE(350, geoarea.GetXaxisCompositeStart(1), 0.01);
@@ -534,7 +534,7 @@ TEST(GetUYaxisCompositeLimitsMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     CHECK_CLOSE(2.5, geoarea.GetXaxisCompositeStart(0), 0.01);
     CHECK_CLOSE(360-7.5, geoarea.GetXaxisCompositeStart(1), 0.01);

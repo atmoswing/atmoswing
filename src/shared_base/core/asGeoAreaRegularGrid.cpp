@@ -27,9 +27,9 @@
  
 #include "asGeoAreaRegularGrid.h"
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height, int flatAllowed)
+asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height, int flatAllowed)
 :
-asGeoArea(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 
@@ -37,9 +37,9 @@ asGeoArea(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAll
     m_Ystep = Ystep;
 }
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(CoordSys coosys, double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
+asGeoAreaRegularGrid::asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
 :
-asGeoArea(coosys, Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
+asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 

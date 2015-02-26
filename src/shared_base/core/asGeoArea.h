@@ -45,7 +45,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoArea(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Alternative constructor
      * \param coosys The coordinate system
@@ -57,10 +57,10 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoArea(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
 
-    asGeoArea(CoordSys coosys, float Level = asNONE, float Height = asNONE);
+    asGeoArea(float Level = asNONE, float Height = asNONE);
 
 
     /** Default destructor */
@@ -192,11 +192,6 @@ public:
      * \return True if the area is a straight rectangle
      */
     bool IsRectangle();
-
-    /** Convert projection
-     * \param newcoordsys The destination projection
-     */
-    void ProjConvert(const CoordSys &newcoordsys);
 
 protected:
     Coo m_CornerUL; //!< Member variable "m_CornerUL"

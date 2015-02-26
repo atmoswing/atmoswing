@@ -584,7 +584,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                                       asTimeArray::Simple);
                                 timeArray.Init();
 
-                                asGeo geo(predictor->GetCoordSys());
+                                asGeo geo;
                                 double Ymax = params.GetPreloadYmin(tmp_step, tmp_ptor)+params.GetPredictorYstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadYptsnb(tmp_step, tmp_ptor)-1);
                                 if (Ymax > geo.GetAxisYmax())
                                 {
@@ -599,17 +599,16 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 wxASSERT(params.GetPreloadYptsnb(tmp_step, tmp_ptor)>0);
 
                                 // Area object instantiation
-                                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(),
-                                                               params.GetPredictorGridType(tmp_step, tmp_ptor),
-                                                               params.GetPreloadXmin(tmp_step, tmp_ptor),
-                                                               params.GetPreloadXptsnb(tmp_step, tmp_ptor),
-                                                               params.GetPredictorXstep(tmp_step, tmp_ptor),
-                                                               params.GetPreloadYmin(tmp_step, tmp_ptor),
-                                                               params.GetPreloadYptsnb(tmp_step, tmp_ptor),
-                                                               params.GetPredictorYstep(tmp_step, tmp_ptor),
-                                                               preloadLevels[tmp_level],
-                                                               asNONE,
-                                                               params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
+                                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(tmp_step, tmp_ptor),
+                                    params.GetPreloadXmin(tmp_step, tmp_ptor),
+                                    params.GetPreloadXptsnb(tmp_step, tmp_ptor),
+                                    params.GetPredictorXstep(tmp_step, tmp_ptor),
+                                    params.GetPreloadYmin(tmp_step, tmp_ptor),
+                                    params.GetPreloadYptsnb(tmp_step, tmp_ptor),
+                                    params.GetPredictorYstep(tmp_step, tmp_ptor),
+                                    preloadLevels[tmp_level],
+                                    asNONE,
+                                    params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
                                 wxASSERT(area);
 
                                 // Check the starting dates coherence
@@ -777,7 +776,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         return false;
                                     }
 
-                                    asGeo geo(predictorPreprocess->GetCoordSys());
+                                    asGeo geo;
                                     double Ymax = params.GetPreloadYmin(tmp_step, tmp_ptor)+params.GetPredictorYstep(tmp_step, tmp_ptor)*(double)(params.GetPreloadYptsnb(tmp_step, tmp_ptor)-1);
                                     if (Ymax > geo.GetAxisYmax())
                                     {
@@ -788,17 +787,16 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     }
 
                                     // Area object instantiation
-                                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
-                                                                   params.GetPredictorGridType(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadXmin(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadXptsnb(tmp_step, tmp_ptor),
-                                                                   params.GetPredictorXstep(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadYmin(tmp_step, tmp_ptor),
-                                                                   params.GetPreloadYptsnb(tmp_step, tmp_ptor),
-                                                                   params.GetPredictorYstep(tmp_step, tmp_ptor),
-                                                                   level,
-                                                                   asNONE,
-                                                                   params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
+                                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(tmp_step, tmp_ptor),
+                                        params.GetPreloadXmin(tmp_step, tmp_ptor),
+                                        params.GetPreloadXptsnb(tmp_step, tmp_ptor),
+                                        params.GetPredictorXstep(tmp_step, tmp_ptor),
+                                        params.GetPreloadYmin(tmp_step, tmp_ptor),
+                                        params.GetPreloadYptsnb(tmp_step, tmp_ptor),
+                                        params.GetPredictorYstep(tmp_step, tmp_ptor),
+                                        level,
+                                        asNONE,
+                                        params.GetPredictorFlatAllowed(tmp_step, tmp_ptor));
                                     wxASSERT(area);
 
                                     // Check the starting dates coherence
@@ -1011,17 +1009,16 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
             ThreadsManager().CritSectionPreloadedData().Leave();
 
             // Area object instantiation
-            asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(desiredPredictor->GetCoordSys(),
-                                            params.GetPredictorGridType(i_step, i_ptor),
-                                            params.GetPredictorXmin(i_step, i_ptor),
-                                            params.GetPredictorXptsnb(i_step, i_ptor),
-                                            params.GetPredictorXstep(i_step, i_ptor),
-                                            params.GetPredictorYmin(i_step, i_ptor),
-                                            params.GetPredictorYptsnb(i_step, i_ptor),
-                                            params.GetPredictorYstep(i_step, i_ptor),
-                                            params.GetPredictorLevel(i_step, i_ptor),
-                                            asNONE,
-                                            params.GetPredictorFlatAllowed(i_step, i_ptor));
+            asGeoAreaCompositeGrid* desiredArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, i_ptor),
+                params.GetPredictorXmin(i_step, i_ptor),
+                params.GetPredictorXptsnb(i_step, i_ptor),
+                params.GetPredictorXstep(i_step, i_ptor),
+                params.GetPredictorYmin(i_step, i_ptor),
+                params.GetPredictorYptsnb(i_step, i_ptor),
+                params.GetPredictorYstep(i_step, i_ptor),
+                params.GetPredictorLevel(i_step, i_ptor),
+                asNONE,
+                params.GetPredictorFlatAllowed(i_step, i_ptor));
 
             wxASSERT(desiredArea);
 
@@ -1083,17 +1080,16 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                 }
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictor->GetCoordSys(),
-                                               params.GetPredictorGridType(i_step, i_ptor),
-                                               params.GetPredictorXmin(i_step, i_ptor),
-                                               params.GetPredictorXptsnb(i_step, i_ptor),
-                                               params.GetPredictorXstep(i_step, i_ptor),
-                                               params.GetPredictorYmin(i_step, i_ptor),
-                                               params.GetPredictorYptsnb(i_step, i_ptor),
-                                               params.GetPredictorYstep(i_step, i_ptor),
-                                               params.GetPredictorLevel(i_step, i_ptor),
-                                               asNONE,
-                                               params.GetPredictorFlatAllowed(i_step, i_ptor));
+                asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, i_ptor),
+                    params.GetPredictorXmin(i_step, i_ptor),
+                    params.GetPredictorXptsnb(i_step, i_ptor),
+                    params.GetPredictorXstep(i_step, i_ptor),
+                    params.GetPredictorYmin(i_step, i_ptor),
+                    params.GetPredictorYptsnb(i_step, i_ptor),
+                    params.GetPredictorYstep(i_step, i_ptor),
+                    params.GetPredictorLevel(i_step, i_ptor),
+                    asNONE,
+                    params.GetPredictorFlatAllowed(i_step, i_ptor));
                 wxASSERT(area);
 
                 // Check the starting dates coherence
@@ -1147,17 +1143,16 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                     }
 
                     // Area object instantiation
-                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(predictorPreprocess->GetCoordSys(),
-                                                                                       params.GetPredictorGridType(i_step, i_ptor),
-                                                                                       params.GetPredictorXmin(i_step, i_ptor),
-                                                                                       params.GetPredictorXptsnb(i_step, i_ptor),
-                                                                                       params.GetPredictorXstep(i_step, i_ptor),
-                                                                                       params.GetPredictorYmin(i_step, i_ptor),
-                                                                                       params.GetPredictorYptsnb(i_step, i_ptor),
-                                                                                       params.GetPredictorYstep(i_step, i_ptor),
-                                                                                       params.GetPreprocessLevel(i_step, i_ptor, i_prepro),
-                                                                                       asNONE,
-                                                                                       params.GetPredictorFlatAllowed(i_step, i_ptor));
+                    asGeoAreaCompositeGrid* area = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, i_ptor),
+                        params.GetPredictorXmin(i_step, i_ptor),
+                        params.GetPredictorXptsnb(i_step, i_ptor),
+                        params.GetPredictorXstep(i_step, i_ptor),
+                        params.GetPredictorYmin(i_step, i_ptor),
+                        params.GetPredictorYptsnb(i_step, i_ptor),
+                        params.GetPredictorYstep(i_step, i_ptor),
+                        params.GetPreprocessLevel(i_step, i_ptor, i_prepro),
+                        asNONE,
+                        params.GetPredictorFlatAllowed(i_step, i_ptor));
                     wxASSERT(area);
 
                     // Check the starting dates coherence

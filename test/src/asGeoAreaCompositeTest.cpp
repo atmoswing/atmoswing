@@ -47,7 +47,7 @@ TEST(ConstructorOneArea)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     CHECK_EQUAL(1, geoarea.GetNbComposites());
 }
@@ -63,7 +63,7 @@ TEST(ConstructorTwoAreas)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     CHECK_EQUAL(2, geoarea.GetNbComposites());
 }
@@ -74,7 +74,7 @@ TEST(ConstructorAlternativeOneArea)
     double Xwidth = 20;
     double Ymin = 30;
     double Ywidth = 40;
-    asGeoAreaComposite geoarea(WGS84, Xmin, Xwidth, Ymin, Ywidth);
+    asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth);
 
     CHECK_EQUAL(1, geoarea.GetNbComposites());
 }
@@ -85,7 +85,7 @@ TEST(ConstructorAlternativeTwoAreas)
     double Xwidth = 20;
     double Ymin = 30;
     double Ywidth = 40;
-    asGeoAreaComposite geoarea(WGS84, Xmin, Xwidth, Ymin, Ywidth);
+    asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth);
 
     CHECK_EQUAL(2, geoarea.GetNbComposites());
 }
@@ -96,7 +96,7 @@ TEST(CheckConsistency)
     double Xwidth = 20;
     double Ymin = 30;
     double Ywidth = 40;
-    asGeoAreaComposite geoarea(WGS84, Xmin, Xwidth, Ymin, Ywidth);
+    asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth);
 
     CHECK_CLOSE(355, geoarea.GetCornerUL().x, 0.01);
     CHECK_CLOSE(355, geoarea.GetCornerLL().x, 0.01);
@@ -112,7 +112,7 @@ TEST(CheckConsistencyException)
         double Xwidth = 10;
         double Ymin = 40;
         double Ywidth = 30;
-        CHECK_THROW(asGeoAreaComposite geoarea(WGS84, Xmin, Xwidth, Ymin, Ywidth), asException);
+        CHECK_THROW(asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth), asException);
     }
 }
 
@@ -127,7 +127,7 @@ TEST(IsSquareTrue)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     CHECK_EQUAL(true, geoarea.IsRectangle());
 }
@@ -143,7 +143,7 @@ TEST(IsSquareFalse)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     CHECK_EQUAL(false, geoarea.IsRectangle());
 }
@@ -159,7 +159,7 @@ TEST(GetBounds)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
@@ -173,7 +173,7 @@ TEST(GetBoundsSplitted)
     double Xwidth = 20;
     double Ymin = 30;
     double Ywidth = 40;
-    asGeoAreaComposite geoarea(WGS84, Xmin, Xwidth, Ymin, Ywidth);
+    asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth);
 
     CHECK_CLOSE(0, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
@@ -192,7 +192,7 @@ TEST(GetCenter)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(15, center.x, 0.01);
@@ -210,7 +210,7 @@ TEST(GetCenterSplitted)
     CornerLL.y = 30;
     CornerLR.x = 10;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(345, center.x, 0.01);
@@ -228,7 +228,7 @@ TEST(GetCenterSplittedEdge)
     CornerLL.y = 30;
     CornerLR.x = 10;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(360, center.x, 0.01);
@@ -246,7 +246,7 @@ TEST(GetCornersSplitted)
     CornerLL.y = 30;
     CornerLR.x = 10;
     CornerLR.y = 30;
-    asGeoAreaComposite geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
     CHECK_CLOSE(0, geoarea.GetComposite(0).GetCornerUL().x, 0.01);
     CHECK_CLOSE(40, geoarea.GetComposite(0).GetCornerUL().y, 0.01);
@@ -265,27 +265,6 @@ TEST(GetCornersSplitted)
     CHECK_CLOSE(30, geoarea.GetComposite(1).GetCornerLL().y, 0.01);
     CHECK_CLOSE(360, geoarea.GetComposite(1).GetCornerLR().x, 0.01);
     CHECK_CLOSE(30, geoarea.GetComposite(1).GetCornerLR().y, 0.01);
-}
-
-TEST(ProjConvert)
-{
-    double Xmin = 7;
-    double Xwidth = 3;
-    double Ymin = 46;
-    double Ywidth = 2;
-
-    asGeoAreaComposite geoarea(WGS84, Xmin, Xwidth, Ymin, Ywidth);
-
-    geoarea.ProjConvert(CH1903);
-
-    CHECK_CLOSE(566017.05, geoarea.GetCornerLL().x, 2);
-    CHECK_CLOSE(94366.97, geoarea.GetCornerLL().y, 2);
-    CHECK_CLOSE(798403.40, geoarea.GetCornerLR().x, 2);
-    CHECK_CLOSE(97511.91, geoarea.GetCornerLR().y, 2);
-    CHECK_CLOSE(791142.61, geoarea.GetCornerUR().x, 2);
-    CHECK_CLOSE(319746.83, geoarea.GetCornerUR().y, 2);
-    CHECK_CLOSE(567262.39, geoarea.GetCornerUL().x, 2);
-    CHECK_CLOSE(316716.97, geoarea.GetCornerUL().y, 2);
 }
 
 }

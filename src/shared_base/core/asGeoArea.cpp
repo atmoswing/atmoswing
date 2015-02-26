@@ -27,12 +27,11 @@
  
 #include "asGeoArea.h"
 
-asGeoArea::asGeoArea(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
+asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_CornerUL = CornerUL;
     m_CornerUR = CornerUR;
     m_CornerLL = CornerLL;
@@ -47,9 +46,9 @@ asGeo(coosys)
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
+asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
 :
-asGeo(coosys)
+asGeo()
 {
     if (flatAllowed==asFLAT_ALLOWED)
     {
@@ -63,7 +62,6 @@ asGeo(coosys)
     }
 
     // Set the members
-    m_CoordSys = coosys;
     m_CornerUL.x = Xmin;
     m_CornerUL.y = Ymin+Ywidth;
     m_CornerUR.x = Xmin+Xwidth;
@@ -82,12 +80,11 @@ asGeo(coosys)
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(CoordSys coosys, float Level, float Height)
+asGeoArea::asGeoArea(float Level, float Height)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_CornerUL.x = 0;
     m_CornerUL.y = 0;
     m_CornerUR.x = 0;
@@ -241,18 +238,4 @@ bool asGeoArea::IsRectangle()
         return false;
     }
     return true;
-}
-
-void asGeoArea::ProjConvert(const CoordSys &newcoordsys)
-{
-    m_CornerUL = ProjTransform(newcoordsys, m_CornerUL);
-    m_CornerUR = ProjTransform(newcoordsys, m_CornerUR);
-    m_CornerLL = ProjTransform(newcoordsys, m_CornerLL);
-    m_CornerLR = ProjTransform(newcoordsys, m_CornerLR);
-    m_CoordSys = newcoordsys;
-
-    // Initialization and check points
-    Init();
-
-    wxLogVerbose(_("The coordinate system was successfully converted."));
 }

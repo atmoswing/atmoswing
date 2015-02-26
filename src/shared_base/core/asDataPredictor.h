@@ -268,14 +268,6 @@ public:
         return m_YaxisShift;
     }
 
-    /** Access m_CoordinateSystem
-     * \return The current value of m_CoordinateSystem
-     */
-    CoordSys GetCoordSys()
-    {
-        return m_CoordinateSystem;
-    }
-
 protected:
     wxString m_DirectoryPath;
     bool m_Initialized;
@@ -291,7 +283,6 @@ protected:
     double m_TimeStepHours;
     double m_FirstTimeStepHours;
     VectorDouble m_NanValues;
-    CoordSys m_CoordinateSystem;
     DataParameter m_DataParameter;
     wxString m_FileVariableName;
     DataUnit m_Unit;

@@ -27,9 +27,9 @@
  
 #include "asGeoAreaCompositeGaussianGrid.h"
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
 :
-asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     m_GaussianGridType = type;
 
@@ -56,9 +56,9 @@ asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, He
     if(!IsOnGrid(CornerLR)) asThrowException(_("The given area does not match a gaussian grid."));
 }
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(CoordSys coosys, double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeoAreaGaussianGrid::GaussianGridType type, float Level, float Height, int flatAllowed)
 :
-asGeoAreaCompositeGrid(coosys, Level, Height)
+asGeoAreaCompositeGrid(Level, Height)
 {
     m_GridType = GaussianT62;
     m_GaussianGridType = type;

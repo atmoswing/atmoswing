@@ -27,9 +27,9 @@
  
 #include "asGeoAreaCompositeRegularGrid.h"
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height, int flatAllowed)
 :
-asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     m_GridType = Regular;
     m_Xstep = Xstep;
@@ -38,9 +38,9 @@ asGeoAreaCompositeGrid(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, He
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(CoordSys coosys, double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
 :
-asGeoAreaCompositeGrid(coosys, Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
+asGeoAreaCompositeGrid(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
     m_GridType = Regular;
     m_Xstep = Xstep;

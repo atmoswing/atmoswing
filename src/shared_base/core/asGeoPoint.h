@@ -41,7 +41,7 @@ public:
      * \param Level The height in hPa
      * \param Level The height in m
      */
-    asGeoPoint(CoordSys coosys, const Coo &Point, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(const Coo &Point, float Level = asNONE, float Height = asNONE);
 
     /** Other constructor
      * \param coosys The coordinate system
@@ -50,7 +50,7 @@ public:
      * \param Level The height in hPa
      * \param Level The height in m
      */
-    asGeoPoint(CoordSys coosys, double x, double y, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(double x, double y, float Level = asNONE, float Height = asNONE);
 
     /** Default destructor */
     virtual ~asGeoPoint();
@@ -103,11 +103,6 @@ public:
     {
         m_Level = val;
     }
-
-    /** Convert projection
-     * \param newcoordsys The destination projection
-     */
-    void ProjConvert(CoordSys newcoordsys);
 
 protected:
 private:

@@ -27,9 +27,9 @@
  
 #include "asGeoAreaGaussianGrid.h"
 
-asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, GaussianGridType type, float Level, float Height, int flatAllowed)
+asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, GaussianGridType type, float Level, float Height, int flatAllowed)
 :
-asGeoArea(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     switch (type)
     {
@@ -54,9 +54,9 @@ asGeoArea(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAll
     if(!IsOnGrid(CornerLR)) asThrowException(_("The given area does not match a gaussian grid."));
 }
 
-asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(CoordSys coosys, double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type, float Level, float Height, int flatAllowed)
+asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type, float Level, float Height, int flatAllowed)
 :
-asGeoArea(coosys, Level, Height)
+asGeoArea(Level, Height)
 {
     switch (type)
     {

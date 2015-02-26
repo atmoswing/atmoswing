@@ -44,7 +44,7 @@ TEST(ConstructorAlternativeOneArea)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
     CHECK_EQUAL(1, geoarea->GetNbComposites());
     wxDELETE(geoarea);
@@ -58,7 +58,7 @@ TEST(ConstructorAlternativeTwoAreas)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
     CHECK_EQUAL(2, geoarea->GetNbComposites());
     wxDELETE(geoarea);
@@ -72,7 +72,7 @@ TEST(CheckConsistency)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
     CHECK_CLOSE(355, geoarea->GetCornerUL().x, 0.01);
     CHECK_CLOSE(355, geoarea->GetCornerLL().x, 0.01);
@@ -92,7 +92,7 @@ TEST(CheckConsistencyException)
         double step = 2.5;
         wxString gridType = "Regular";
         asGeoAreaCompositeGrid* geoarea = NULL;
-        CHECK_THROW(geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step), asException);
+        CHECK_THROW(geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step), asException);
         wxDELETE(geoarea);
     }
 }
@@ -105,7 +105,7 @@ TEST(GetBoundsSplitted)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
     CHECK_CLOSE(0, geoarea->GetXmin(), 0.01);
     CHECK_CLOSE(30, geoarea->GetYmin(), 0.01);
@@ -122,7 +122,7 @@ TEST(GetUYaxisCompositeSize)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
     CHECK_CLOSE(5, geoarea->GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(17, geoarea->GetXaxisCompositePtsnb(1), 0.01);
@@ -140,7 +140,7 @@ TEST(GetUYaxisCompositeSizeStepLon)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(3, geoarea->GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(9, geoarea->GetXaxisCompositePtsnb(1), 0.01);
@@ -158,7 +158,7 @@ TEST(GetUYaxisCompositeSizeStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(2, geoarea->GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(2, geoarea->GetXaxisCompositePtsnb(1), 0.01);
@@ -176,7 +176,7 @@ TEST(GetUYaxisCompositeWidthStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(7.5, geoarea->GetXaxisCompositeWidth(0), 0.01);
     CHECK_CLOSE(7.5, geoarea->GetXaxisCompositeWidth(1), 0.01);
@@ -194,7 +194,7 @@ TEST(GetUYaxisPtsnbStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(4, geoarea->GetXaxisPtsnb(), 0.01);
     CHECK_CLOSE(5, geoarea->GetYaxisPtsnb(), 0.01);
@@ -210,7 +210,7 @@ TEST(GetUYaxisWidthStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(15, geoarea->GetXaxisWidth(), 0.01);
     CHECK_CLOSE(10, geoarea->GetYaxisWidth(), 0.01);
@@ -226,7 +226,7 @@ TEST(GetUYaxisCompositeLimits)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(0, geoarea->GetXaxisCompositeStart(0), 0.01);
     CHECK_CLOSE(350, geoarea->GetXaxisCompositeStart(1), 0.01);
@@ -248,7 +248,7 @@ TEST(GetUYaxisCompositeLimitsMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
     CHECK_CLOSE(2.5, geoarea->GetXaxisCompositeStart(0), 0.01);
     CHECK_CLOSE(360-7.5, geoarea->GetXaxisCompositeStart(1), 0.01);

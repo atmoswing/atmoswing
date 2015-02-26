@@ -234,7 +234,7 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             }
         }
 
-        asGeoAreaCompositeGrid* dataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, dataXmin, dataXptsnb, dataXstep, dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+        asGeoAreaCompositeGrid* dataArea = asGeoAreaCompositeGrid::GetInstance(gridType, dataXmin, dataXptsnb, dataXstep, dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false))
@@ -289,7 +289,7 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                         wxASSERT(Xwidth>=0);
                         int Xptsnb = 1+Xwidth/dataArea->GetXstep();
                         asLogMessage(wxString::Format(_("Xptsnb = %d."), Xptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(dataArea->GetGridTypeString(),
                                                                             dataArea->GetAbsoluteXmin(), Xptsnb,
                                                                             dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
                                                                             dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
@@ -311,7 +311,7 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                         wxASSERT(Xwidth>=0);
                         int Xptsnb = 1+Xwidth/dataArea->GetXstep();
                         asLogMessage(wxString::Format(_("Xptsnb = %d."), Xptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(dataArea->GetGridTypeString(),
                                                                             dataArea->GetAbsoluteXmin(), Xptsnb,
                                                                             dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
                                                                             dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
@@ -349,7 +349,7 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                         wxASSERT(Ywidth>=0);
                         int Yptsnb = 1+Ywidth/dataArea->GetYstep();
                         asLogMessage(wxString::Format(_("Yptsnb = %d."), Yptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(dataArea->GetGridTypeString(),
                                                                             dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                                                             dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
                                                                             Yptsnb, dataArea->GetYstep(),
@@ -372,7 +372,7 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                         wxASSERT(Ywidth>=0);
                         int Yptsnb = 1+Ywidth/dataArea->GetYstep();
                         asLogMessage(wxString::Format(_("Yptsnb = %d."), Yptsnb));
-                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(WGS84, dataArea->GetGridTypeString(),
+                        asGeoAreaCompositeGrid* newdataArea = asGeoAreaCompositeGrid::GetInstance(dataArea->GetGridTypeString(),
                                                                             dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                                                             dataArea->GetXstep(), dataArea->GetAbsoluteYmin(),
                                                                             Yptsnb, dataArea->GetYstep(),
