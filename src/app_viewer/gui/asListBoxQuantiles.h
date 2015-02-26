@@ -25,34 +25,31 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
  
-#include "asListBoxPercentiles.h"
+#ifndef ASLISTBOXQUANTILES_H
+#define ASLISTBOXQUANTILES_H
 
-#include "asIncludes.h"
-#include <asForecastViewer.h>
+#include <wx/listbox.h>
 
+class asForecastViewer;
 
-BEGIN_EVENT_TABLE(asListBoxPercentiles, wxListBox)
-    EVT_LISTBOX(wxID_ANY, asListBoxPercentiles::OnPercentileSlctChange)
-END_EVENT_TABLE()
-
-wxDEFINE_EVENT(asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, wxCommandEvent);
-
-
-asListBoxPercentiles::asListBoxPercentiles(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, int n, const wxString choices[], long style)
-:
-wxListBox(parent, id, pos, size, n, choices, style)
+class asListBoxQuantiles : public wxListBox
 {
-    //ctor
-}
+public:
+    asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL, long style = 0);
+    virtual ~asListBoxQuantiles();
 
-asListBoxPercentiles::~asListBoxPercentiles()
-{
-    //dtor
-}
+    void SetStringArray(wxArrayString options)
+    {
+        Set(options);
+        SetSelection(1);
+    }
 
-void asListBoxPercentiles::OnPercentileSlctChange( wxCommandEvent & event )
-{
-    wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED);
-    eventSlct.SetInt(event.GetInt());
-    GetParent()->ProcessWindowEvent(eventSlct);
-}
+protected:
+
+private:
+    void OnQuantileSlctChange( wxCommandEvent & event );
+
+    DECLARE_EVENT_TABLE();
+};
+
+#endif // ASLISTBOXQUANTILES_H

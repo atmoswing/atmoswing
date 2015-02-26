@@ -44,13 +44,13 @@ public:
     virtual ~asForecastViewer();
 
     wxArrayString GetForecastDisplayStringArray();
-    wxArrayString GetPercentilesStringArray();
+    wxArrayString GetQuantilesStringArray();
     void FixForecastSelection();
     void SetForecast(int methodRow, int forecastRow);
     wxString GetStationName(int i_stat);
     float GetSelectedTargetDate();
     void SetForecastDisplay(int i);
-    void SetPercentile(int i);
+    void SetQuantile(int i);
     void LoadPastForecast();
     void Redraw();
     void ChangeLeadTime( int val );
@@ -71,9 +71,9 @@ public:
         return m_ForecastDisplaySelection;
     }
 
-    int GetPercentileSelection()
+    int GetQuantileSelection()
     {
-        return m_PercentileSelection;
+        return m_QuantileSelection;
     }
 
     /** Access the maximum value of the current layer
@@ -112,11 +112,11 @@ private:
     vrLayerManager *m_LayerManager;
     vrViewerLayerManager *m_ViewerLayerManager;
     wxArrayString m_DisplayForecast;
-    wxArrayString m_DisplayPercentiles;
+    wxArrayString m_DisplayQuantiles;
     VectorFloat m_ReturnPeriods;
-    VectorFloat m_Percentiles;
+    VectorFloat m_Quantiles;
     int m_ForecastDisplaySelection;
-    int m_PercentileSelection;
+    int m_QuantileSelection;
     int m_MethodSelection;
     int m_ForecastSelection;
 

@@ -79,21 +79,8 @@ float asForecastScoreDF0::Assess(float ObservedVal, const Array1DFloat &ForcastV
 
     float score = 0;
 
-    // Containers
-    Array1DFloat F(nbForecasts);
-
-    // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
-    // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
-    // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
-    float irep = 0.44f;
-    float nrep = 0.12f;
-
-    // Change the values for unit testing to compare to the results from Grenoble
-    if (g_UnitTesting)
-    {
-        irep = 0.375;
-        nrep = 0.25;
-    }
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
 
 	// Identify the last 0
     int indexLastZero = -1;
@@ -103,14 +90,6 @@ float asForecastScoreDF0::Assess(float ObservedVal, const Array1DFloat &ForcastV
         {
             indexLastZero = i;
         }
-    }
-
-    // Build the cumulative distribution function for the middle of the x
-    float divisor = 1.0f/(nbForecasts+nrep);
-    for(float i=0; i<nbForecasts; i++)
-    {
-
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
     }
 
 	// Display F(0)analog

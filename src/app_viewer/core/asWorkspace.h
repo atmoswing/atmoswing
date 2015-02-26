@@ -205,14 +205,14 @@ public:
         m_AlarmsPanelReturnPeriod = val;
     }
 
-    float GetAlarmsPanelPercentile()
+    float GetAlarmsPanelQuantile()
     {
-        return m_AlarmsPanelPercentile;
+        return m_AlarmsPanelQuantile;
     }
     
-    void SetAlarmsPanelPercentile(float val)
+    void SetAlarmsPanelQuantile(float val)
     {
-        m_AlarmsPanelPercentile = val;
+        m_AlarmsPanelQuantile = val;
     }
 
     bool HasChanged()
@@ -245,7 +245,7 @@ private:
     double m_ColorbarMaxValue;
     int m_TimeSeriesPlotPastDaysNb;
     int m_AlarmsPanelReturnPeriod;
-    float m_AlarmsPanelPercentile;
+    float m_AlarmsPanelQuantile;
 
 };
 

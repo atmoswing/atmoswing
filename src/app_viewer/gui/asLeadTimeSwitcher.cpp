@@ -81,8 +81,8 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
 
     // Get color values
     int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
-    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
-    Array1DFloat values = m_ForecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, percentileThreshold);
+    float quantileThreshold = m_Workspace->GetAlarmsPanelQuantile();
+    Array1DFloat values = m_ForecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, quantileThreshold);
     wxASSERT(values.size()==dates.size());
 
     // Create bitmap

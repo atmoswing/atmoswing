@@ -308,20 +308,20 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             thresholds.push_back(0.5f); // 1/2 of P10 (if data are normalized)
             thresholds.push_back(1);  // P10 (if data are normalized)
 
-            VectorFloat percentiles;
-            percentiles.push_back(0.2f);
-            percentiles.push_back(0.6f);
-            percentiles.push_back(0.9f);
+            VectorFloat quantiles;
+            quantiles.push_back(0.2f);
+            quantiles.push_back(0.6f);
+            quantiles.push_back(0.9f);
 
             for (unsigned int i_score=0;i_score<scoresContingency.size();i_score++)
             {
                 asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContingency[i_score]));
                 for (unsigned int i_thres=0;i_thres<thresholds.size();i_thres++)
                 {
-                    for (unsigned int i_pc=0;i_pc<percentiles.size();i_pc++)
+                    for (unsigned int i_pc=0;i_pc<quantiles.size();i_pc++)
                     {
                         params.SetForecastScoreName(scoresContingency[i_score]);
-                        params.SetForecastScorePercentile(percentiles[i_pc]);
+                        params.SetForecastScoreQuantile(quantiles[i_pc]);
                         params.SetForecastScoreThreshold(thresholds[i_thres]);
                         if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
                         if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
@@ -333,18 +333,18 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 }
             }
 
-            VectorString scoresPercentile;
-            scoresPercentile.push_back("MAE"); // MAE - Mean absolute error
-            scoresPercentile.push_back("RMSE"); // RMSE - Root mean squared error
-            scoresPercentile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
+            VectorString scoresQuantile;
+            scoresQuantile.push_back("MAE"); // MAE - Mean absolute error
+            scoresQuantile.push_back("RMSE"); // RMSE - Root mean squared error
+            scoresQuantile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
 
-            for (unsigned int i_score=0;i_score<scoresPercentile.size();i_score++)
+            for (unsigned int i_score=0;i_score<scoresQuantile.size();i_score++)
             {
-                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresPercentile[i_score]));
-                for (unsigned int i_pc=0;i_pc<percentiles.size();i_pc++)
+                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresQuantile[i_score]));
+                for (unsigned int i_pc=0;i_pc<quantiles.size();i_pc++)
                 {
-                    params.SetForecastScoreName(scoresPercentile[i_score]);
-                    params.SetForecastScorePercentile(percentiles[i_pc]);
+                    params.SetForecastScoreName(scoresQuantile[i_score]);
+                    params.SetForecastScoreQuantile(quantiles[i_pc]);
                     if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
                     if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
                     if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;

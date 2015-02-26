@@ -1194,7 +1194,7 @@ TEST(ProcessPCwithConstantDistribution)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("PC");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.5f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1227,7 +1227,7 @@ TEST(ProcessPC)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("PC");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1260,7 +1260,7 @@ TEST(ProcessTS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("TS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1293,7 +1293,7 @@ TEST(ProcessBIAS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("BIAS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1326,7 +1326,7 @@ TEST(ProcessFARA)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("FARA");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1359,7 +1359,7 @@ TEST(ProcessH)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("H");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1392,7 +1392,7 @@ TEST(ProcessF)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("F");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1425,7 +1425,7 @@ TEST(ProcessHSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("HSS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1458,7 +1458,7 @@ TEST(ProcessPSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("PSS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1491,7 +1491,7 @@ TEST(ProcessGSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("GSS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1542,7 +1542,7 @@ TEST(ProcessMAE)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("MAE");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
@@ -1592,7 +1592,7 @@ TEST(ProcessRMSE)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("RMSE");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
@@ -1642,7 +1642,7 @@ TEST(ProcessBS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("BS");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1693,7 +1693,7 @@ TEST(ProcessBSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("BSS");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
     score->ProcessScoreClimatology(vecObs,vecObs);

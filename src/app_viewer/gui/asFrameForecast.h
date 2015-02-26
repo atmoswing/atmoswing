@@ -195,7 +195,7 @@ private:
     void OnForecastRatioSelectionChange( wxCommandEvent& event );
     void OnForecastForecastSelectionChange( wxCommandEvent& event );
     void OnForecastForecastSelectFirst( wxCommandEvent& event );
-    void OnForecastPercentileSelectionChange( wxCommandEvent& event );
+    void OnForecastQuantileSelectionChange( wxCommandEvent& event );
     void DrawPlotStation( int stationRow );
     void OnOpenLayer( wxCommandEvent & event );
     void OnCloseLayer( wxCommandEvent & event );

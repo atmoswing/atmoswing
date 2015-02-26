@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 #include "asListBoxForecasts.h"
 #include "asListBoxForecastDisplay.h"
-#include "asListBoxPercentiles.h"
+#include "asListBoxQuantiles.h"
 #include "asForecastManager.h"
 
 /** Implementing asPanelSidebarForecasts */
@@ -52,9 +52,9 @@ public:
         return m_ForecastsCtrl;
     }
 
-    asListBoxPercentiles *GetPercentilesCtrl()
+    asListBoxQuantiles *GetQuantilesCtrl()
     {
-        return m_PercentilesCtrl;
+        return m_QuantilesCtrl;
     }
 
     asListBoxForecastDisplay *GetForecastDisplayCtrl()
@@ -64,7 +64,7 @@ public:
 
 private:
     asListBoxForecasts *m_ForecastsCtrl;
-    asListBoxPercentiles *m_PercentilesCtrl;
+    asListBoxQuantiles *m_QuantilesCtrl;
     asListBoxForecastDisplay *m_ForecastDisplayCtrl;
 };
 

@@ -73,8 +73,8 @@ void asFramePlotTimeSeries::OnClose( wxCloseEvent& evt )
 {
     // Save checked layers
     wxConfigBase *pConfig = wxFileConfig::Get();
-    bool doPlotAllPercentiles = m_CheckListToc->IsChecked(AllPercentiles);
-    pConfig->Write("/PlotsTimeSeries/DoPlotAllPercentiles", doPlotAllPercentiles);
+    bool doPlotAllQuantiles = m_CheckListToc->IsChecked(AllQuantiles);
+    pConfig->Write("/PlotsTimeSeries/DoPlotAllQuantiles", doPlotAllQuantiles);
     bool doPlotAllAnalogs = m_CheckListToc->IsChecked(AllAnalogs);
     pConfig->Write("/PlotsTimeSeries/DoPlotAllAnalogs", doPlotAllAnalogs);
     bool doPlotBestAnalogs10 = m_CheckListToc->IsChecked(BestAnalogs10);
@@ -85,8 +85,8 @@ void asFramePlotTimeSeries::OnClose( wxCloseEvent& evt )
     pConfig->Write("/PlotsTimeSeries/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
     bool doPlotClassicReturnPeriod = m_CheckListToc->IsChecked(ClassicReturnPeriod);
     pConfig->Write("/PlotsTimeSeries/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
-    bool doPlotClassicPercentiles = m_CheckListToc->IsChecked(ClassicPercentiles);
-    pConfig->Write("/PlotsTimeSeries/DoPlotClassicPercentiles", doPlotClassicPercentiles);
+    bool doPlotClassicQuantiles = m_CheckListToc->IsChecked(ClassicQuantiles);
+    pConfig->Write("/PlotsTimeSeries/DoPlotClassicQuantiles", doPlotClassicQuantiles);
     bool doPlotPreviousForecasts = m_CheckListToc->IsChecked(PreviousForecasts);
     pConfig->Write("/PlotsTimeSeries/DoPlotPreviousForecasts", doPlotPreviousForecasts);
     //bool doPlotInterpretation = m_CheckListToc->IsChecked(Interpretation);
@@ -105,8 +105,8 @@ void asFramePlotTimeSeries::InitCheckListBox()
 {
     wxArrayString checkList;
 
-    checkList.Add(_("3 percentiles"));
-    checkList.Add(_("All percentiles"));
+    checkList.Add(_("3 quantiles"));
+    checkList.Add(_("All quantiles"));
     checkList.Add(_("All analogs"));
     checkList.Add(_("10 best analogs"));
     checkList.Add(_("5 best analogs"));
@@ -178,9 +178,9 @@ void asFramePlotTimeSeries::InitPlotCtrl()
 
     // Open layers defined in the preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
-    bool doPlotAllPercentiles;
-    pConfig->Read("/PlotsTimeSeries/DoPlotAllPercentiles", &doPlotAllPercentiles, false);
-    if (doPlotAllPercentiles) m_CheckListToc->Check(AllPercentiles);
+    bool doPlotAllQuantiles;
+    pConfig->Read("/PlotsTimeSeries/DoPlotAllQuantiles", &doPlotAllQuantiles, false);
+    if (doPlotAllQuantiles) m_CheckListToc->Check(AllQuantiles);
     bool doPlotAllAnalogs;
     pConfig->Read("/PlotsTimeSeries/DoPlotAllAnalogs", &doPlotAllAnalogs, true);
     if (doPlotAllAnalogs) m_CheckListToc->Check(AllAnalogs);
@@ -196,9 +196,9 @@ void asFramePlotTimeSeries::InitPlotCtrl()
     bool doPlotClassicReturnPeriod;
     pConfig->Read("/PlotsTimeSeries/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
     if (doPlotClassicReturnPeriod) m_CheckListToc->Check(ClassicReturnPeriod);
-    bool doPlotClassicPercentiles;
-    pConfig->Read("/PlotsTimeSeries/DoPlotClassicPercentiles", &doPlotClassicPercentiles, true);
-    if (doPlotClassicPercentiles) m_CheckListToc->Check(ClassicPercentiles);
+    bool doPlotClassicQuantiles;
+    pConfig->Read("/PlotsTimeSeries/DoPlotClassicQuantiles", &doPlotClassicQuantiles, true);
+    if (doPlotClassicQuantiles) m_CheckListToc->Check(ClassicQuantiles);
     bool doPlotPreviousForecasts;
     pConfig->Read("/PlotsTimeSeries/DoPlotPreviousForecasts", &doPlotPreviousForecasts, true);
     if (doPlotPreviousForecasts) m_CheckListToc->Check(PreviousForecasts);
@@ -234,7 +234,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         file.AddLineContent(wxString::Format("Station: %s", stationName.c_str()));
         file.AddLineContent();
 
-        // Percentiles
+        // Quantiles
         Array1DFloat pc(11);
         pc << 1, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f, 0;
 
@@ -242,7 +242,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
         // Set lead times
-        file.AddLineContent("Percentiles:");
+        file.AddLineContent("Quantiles:");
         wxString leadTimes = "\t";
         for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
         {
@@ -250,22 +250,22 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         }
         file.AddLineContent(leadTimes);
 
-        // Loop over the percentiles to display as polygons
+        // Loop over the quantiles to display as polygons
         for (int i_pc=0; i_pc<pc.size(); i_pc++)
         {
-            float thisPercentile = pc[i_pc];
+            float thisQuantile = pc[i_pc];
 
-            wxString percentilesStr = wxString::Format("%f\t", thisPercentile);
+            wxString quantilesStr = wxString::Format("%f\t", thisQuantile);
 
             for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
             {
                 Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-                float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentile);
+                float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
 
-                percentilesStr.Append(wxString::Format("%f\t",pcVal));
+                quantilesStr.Append(wxString::Format("%f\t",pcVal));
             }
 
-            file.AddLineContent(percentilesStr);
+            file.AddLineContent(quantilesStr);
         }
         file.AddLineContent();
 
@@ -273,7 +273,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         file.AddLineContent("Best analogs values:");
         file.AddLineContent(leadTimes);
 
-        // Loop over the percentiles to display as polygons
+        // Loop over the quantiles to display as polygons
         for (int rk=0; rk<10; rk++)
         {
             wxString rankStr = wxString::Format("%d\t", rk+1);
@@ -292,7 +292,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         file.AddLineContent("Best analogs dates:");
         file.AddLineContent(leadTimes);
 
-        // Loop over the percentiles to display as polygons
+        // Loop over the quantiles to display as polygons
         for (int rk=0; rk<10; rk++)
         {
             wxString rankStr = wxString::Format("%d\t", rk+1);
@@ -331,7 +331,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         for (int i_pc=0; i_pc<pcAll.size(); i_pc++)
         {
             file.AddLineContent();
-            file.AddLineContent(wxString::Format("Percentile %f:", pcAll[i_pc]));
+            file.AddLineContent(wxString::Format("Quantile %f:", pcAll[i_pc]));
             file.AddLineContent(allLeadtimesStr);
 
             for (int past=0; past<m_ForecastManager->GetPastForecastsNb(m_SelectedMethod, m_SelectedForecast); past++)
@@ -343,7 +343,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
                 for (int i_leadtime=0; i_leadtime<forecast->GetTargetDatesLength(); i_leadtime++)
                 {
                     Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-                    float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], pcAll[i_pc]);
+                    float pcVal = asTools::GetValueForQuantile(analogs, pcAll[i_pc]);
 
                     if (i_leadtime==0)
                     {
@@ -425,13 +425,13 @@ bool asFramePlotTimeSeries::Plot()
     m_MaxVal = 50;
 
     // Get curves to plot
-    bool DoPlotAllPercentiles = false;
+    bool DoPlotAllQuantiles = false;
     bool DoPlotAllAnalogs = false;
     bool DoPlotBestAnalogs10 = false;
     bool DoPlotBestAnalogs5 = false;
     bool DoPlotAllReturnPeriods = false;
     bool DoPlotClassicReturnPeriod = false;
-    bool DoPlotClassicPercentiles = false;
+    bool DoPlotClassicQuantiles = false;
     bool DoPlotPreviousForecasts = false;
     bool DoPlotInterpretation = false;
 
@@ -441,8 +441,8 @@ bool asFramePlotTimeSeries::Plot()
         {
             switch (curve)
             {
-            case (AllPercentiles):
-                DoPlotAllPercentiles = true;
+            case (AllQuantiles):
+                DoPlotAllQuantiles = true;
                 break;
             case (AllAnalogs):
                 DoPlotAllAnalogs = true;
@@ -459,8 +459,8 @@ bool asFramePlotTimeSeries::Plot()
             case (ClassicReturnPeriod):
                 DoPlotClassicReturnPeriod = true;
                 break;
-            case (ClassicPercentiles):
-                DoPlotClassicPercentiles = true;
+            case (ClassicQuantiles):
+                DoPlotClassicQuantiles = true;
                 break;
             case (PreviousForecasts):
                 DoPlotPreviousForecasts = true;
@@ -475,8 +475,8 @@ bool asFramePlotTimeSeries::Plot()
         }
     }
 
-    if (DoPlotAllPercentiles)
-        PlotAllPercentiles();
+    if (DoPlotAllQuantiles)
+        PlotAllQuantiles();
     if (DoPlotAllAnalogs)
         PlotAllAnalogs();
     if (DoPlotBestAnalogs10)
@@ -492,8 +492,8 @@ bool asFramePlotTimeSeries::Plot()
     }
     if (DoPlotPreviousForecasts)
         PlotPastForecasts();
-    if (DoPlotClassicPercentiles)
-        PlotClassicPercentiles();
+    if (DoPlotClassicQuantiles)
+        PlotClassicQuantiles();
     if (DoPlotInterpretation)
         PlotInterpretation();
 
@@ -734,9 +734,9 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb)
     }
 }
 
-void asFramePlotTimeSeries::PlotClassicPercentiles()
+void asFramePlotTimeSeries::PlotClassicQuantiles()
 {
-    // Percentiles
+    // Quantiles
     Array1DFloat pc(3);
     pc << 0.9f, 0.6f, 0.2f;
     vector < wxColour > colours;
@@ -750,21 +750,21 @@ void asFramePlotTimeSeries::PlotClassicPercentiles()
     // Get forecast
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
-    // Loop over the percentiles
+    // Loop over the quantiles
     for (int i_pc=0; i_pc<pc.size(); i_pc++)
     {
-        float thisPercentile = pc[i_pc];
+        float thisQuantile = pc[i_pc];
 
         // Create plot data
         wxPlotData plotData;
         plotData.Create(m_LeadTimes.size());
-        int percentileRounded = (int)(asTools::Round(thisPercentile*100.0));
-        plotData.SetFilename(wxString::Format("Percentile %d",percentileRounded));
+        int quantileRounded = (int)(asTools::Round(thisQuantile*100.0));
+        plotData.SetFilename(wxString::Format("Quantile %d",quantileRounded));
         int counter=0;
         for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
         {
             Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-            float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentile);
+            float pcVal = asTools::Quantile(&analogs[0], &analogs[analogs.size()-1], thisQuantile);
             plotData.SetValue(counter, m_LeadTimes[i_leadtime], pcVal);
             counter++;
 
@@ -790,7 +790,7 @@ void asFramePlotTimeSeries::PlotClassicPercentiles()
         }
         else
         {
-            asLogError(_("The percentiles couldn't be added to the plot"));
+            asLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -810,7 +810,7 @@ void asFramePlotTimeSeries::PlotPastForecasts()
 
 void asFramePlotTimeSeries::PlotPastForecast(int i)
 {
-    // Percentiles
+    // Quantiles
     Array1DFloat pc(3);
     pc << 0.9f, 0.6f, 0.2f;
     vector < wxColour > colours;
@@ -826,20 +826,20 @@ void asFramePlotTimeSeries::PlotPastForecast(int i)
     int length = forecast->GetTargetDatesLength();
     Array1DFloat dates = forecast->GetTargetDates();
 
-    // Loop over the percentiles
+    // Loop over the quantiles
     for (int i_pc=0; i_pc<pc.size(); i_pc++)
     {
-        float thisPercentile = pc[i_pc];
+        float thisQuantile = pc[i_pc];
 
         // Create plot data
         wxPlotData plotData;
         plotData.Create(length);
-        //int percentileRounded = (int)(asTools::Round(thisPercentile*100.0));
+        //int quantileRounded = (int)(asTools::Round(thisQuantile*100.0));
         int counter=0;
         for (int i_leadtime=0; i_leadtime<length; i_leadtime++)
         {
             Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-            float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentile);
+            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
             plotData.SetValue(counter, dates[i_leadtime], pcVal);
             counter++;
 
@@ -865,16 +865,16 @@ void asFramePlotTimeSeries::PlotPastForecast(int i)
         }
         else
         {
-            asLogError(_("The percentiles couldn't be added to the plot"));
+            asLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
     }
 }
 
-void asFramePlotTimeSeries::PlotAllPercentiles()
+void asFramePlotTimeSeries::PlotAllQuantiles()
 {
-    // Percentiles
+    // Quantiles
     Array1DFloat pcUp(5);
     pcUp << 1, 0.9f, 0.8f, 0.7f, 0.6f;
     Array1DFloat pcDown(5);
@@ -894,11 +894,11 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
     // Get forecast
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
 
-    // Loop over the percentiles to display as polygons
+    // Loop over the quantiles to display as polygons
     for (int i_pc=0; i_pc<pcUp.size(); i_pc++)
     {
-        float thisPercentileUp = pcUp[i_pc];
-        float thisPercentileDown = pcDown[i_pc];
+        float thisQuantileUp = pcUp[i_pc];
+        float thisQuantileDown = pcDown[i_pc];
 
         // Create plot data
         wxPlotData plotData;
@@ -909,7 +909,7 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
         for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
         {
             Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-            float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentileUp);
+            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantileUp);
             plotData.SetValue(counter, m_LeadTimes[i_leadtime], pcVal);
             counter++;
             if (i_leadtime==0) bkpVal = pcVal;
@@ -921,7 +921,7 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
         for (int i_leadtime=m_LeadTimes.size()-1; i_leadtime>=0; i_leadtime--)
         {
             Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-            float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentileDown);
+            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantileDown);
             plotData.SetValue(counter, m_LeadTimes[i_leadtime], pcVal);
             counter++;
         }
@@ -949,15 +949,15 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
         }
         else
         {
-            asLogError(_("The percentiles couldn't be added to the plot"));
+            asLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
 
     }
 
-    // Set the percentile to display as line
-    float thisPercentile = pcMid;
+    // Set the quantile to display as line
+    float thisQuantile = pcMid;
 
     // Create plot data
     wxPlotData plotData;
@@ -966,7 +966,7 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
     for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
     {
         Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-        float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentile);
+        float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
         plotData.SetValue(counter, m_LeadTimes[i_leadtime], pcVal);
         counter++;
     }
@@ -990,7 +990,7 @@ void asFramePlotTimeSeries::PlotAllPercentiles()
     }
     else
     {
-        asLogError(_("The percentiles couldn't be added to the plot"));
+        asLogError(_("The quantiles couldn't be added to the plot"));
     }
 
     plotData.Destroy();
@@ -1012,19 +1012,19 @@ void asFramePlotTimeSeries::PlotInterpretation()
 
     for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
     {
-        // Process percentiles
+        // Process quantiles
         Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-        float pc30 = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], 0.3f);
-        float pc60 = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], 0.6f);
-        float pc90 = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], 0.9f);
+        float pc30 = asTools::GetValueForQuantile(analogs, 0.3f);
+        float pc60 = asTools::GetValueForQuantile(analogs, 0.6f);
+        float pc90 = asTools::GetValueForQuantile(analogs, 0.9f);
 
         // Follow the rules
         float val = 0;
-        if (pc60==0) // if percentile 60% is null, there will be no rain
+        if (pc60==0) // if quantile 60% is null, there will be no rain
         {
             val = 0;
         }
-        else if (pc30>0) // if percentile 30% is not null, it's gonna rain
+        else if (pc30>0) // if quantile 30% is not null, it's gonna rain
         {
             val = pc90;
         }

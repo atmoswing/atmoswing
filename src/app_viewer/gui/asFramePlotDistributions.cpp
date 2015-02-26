@@ -90,8 +90,8 @@ void asFramePlotDistributions::OnClose( wxCloseEvent& evt )
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", doPlotAllReturnPeriods);
     bool doPlotClassicReturnPeriod = m_CheckListTocPredictands->IsChecked(ClassicReturnPeriod);
     pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", doPlotClassicReturnPeriod);
-    bool doPlotClassicPercentiles = m_CheckListTocPredictands->IsChecked(ClassicPercentiles);
-    pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicPercentiles", doPlotClassicPercentiles);
+    bool doPlotClassicQuantiles = m_CheckListTocPredictands->IsChecked(ClassicQuantiles);
+    pConfig->Write("/PlotsDistributionsPredictands/DoPlotClassicQuantiles", doPlotClassicQuantiles);
 
     evt.Skip();
 }
@@ -164,7 +164,7 @@ void asFramePlotDistributions::InitPredictandsCheckListBox()
 {
     wxArrayString checkList;
 
-    checkList.Add(_("Percentiles 90%, 60%, 30%"));
+    checkList.Add(_("Quantiles 90%, 60%, 30%"));
     checkList.Add(_("All analogs (points)"));
     checkList.Add(_("All analogs (curve)"));
     checkList.Add(_("10 best analogs (points)"));
@@ -229,9 +229,9 @@ void asFramePlotDistributions::InitPredictandsPlotCtrl()
     bool doPlotClassicReturnPeriod;
     pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
     if (doPlotClassicReturnPeriod) m_CheckListTocPredictands->Check(ClassicReturnPeriod);
-    bool doPlotClassicPercentiles;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicPercentiles", &doPlotClassicPercentiles, true);
-    if (doPlotClassicPercentiles) m_CheckListTocPredictands->Check(ClassicPercentiles);
+    bool doPlotClassicQuantiles;
+    pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicQuantiles", &doPlotClassicQuantiles, true);
+    if (doPlotClassicQuantiles) m_CheckListTocPredictands->Check(ClassicQuantiles);
 }
 
 void asFramePlotDistributions::InitCriteriaPlotCtrl()
@@ -313,7 +313,7 @@ bool asFramePlotDistributions::PlotPredictands()
     bool DoPlotBestAnalogs5Curve = false;
     bool DoPlotAllReturnPeriods = false;
     bool DoPlotClassicReturnPeriod = false;
-    bool DoPlotClassicPercentiles = false;
+    bool DoPlotClassicQuantiles = false;
 
     for (int curve=0; curve<=8; curve++)
     {
@@ -345,8 +345,8 @@ bool asFramePlotDistributions::PlotPredictands()
             case (ClassicReturnPeriod):
                 DoPlotClassicReturnPeriod = true;
                 break;
-            case (ClassicPercentiles):
-                DoPlotClassicPercentiles = true;
+            case (ClassicQuantiles):
+                DoPlotClassicQuantiles = true;
                 break;
             default:
                 asLogError(_("The option was not found."));
@@ -361,8 +361,8 @@ bool asFramePlotDistributions::PlotPredictands()
         PlotBestAnalogsPoints(10);
     if (DoPlotBestAnalogs5Points)
         PlotBestAnalogsPoints(5);
-    if (DoPlotClassicPercentiles)
-        PlotClassicPercentiles();
+    if (DoPlotClassicQuantiles)
+        PlotClassicQuantiles();
     if (DoPlotAllAnalogsCurve)
         PlotAllAnalogsCurve();
     if (DoPlotBestAnalogs10Curve)
@@ -551,15 +551,8 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
     asTools::SortArray(&analogs[0], &analogs[analogs.size()-1], Asc);
     int nbPoints = analogs.size();
 
-    // Cumulative frequency (See asForecastScore::ProcessCRPSapproxRectangleMethod for explanations)
-    Array1DFloat F(analogs.size());
-    float irep = 0.44f;
-    float nrep = 0.12f;
-    float divisor = 1.0f/(analogs.size()+nrep);
-    for(float i=0; i<analogs.size(); i++)
-    {
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
-    }
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
@@ -613,15 +606,8 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
     asTools::SortArray(&analogs[0], &analogs[analogs.size()-1], Asc);
     int nbPoints = analogs.size();
 
-    // Cumulative frequency (See asForecastScore::ProcessCRPSapproxRectangleMethod for explanations)
-    Array1DFloat F(analogs.size());
-    float irep = 0.44f;
-    float nrep = 0.12f;
-    float divisor = 1.0f/(analogs.size()+nrep);
-    for(float i=0; i<analogs.size(); i++)
-    {
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
-    }
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
@@ -676,15 +662,8 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
     Array1DFloat ranks = Array1DFloat::LinSpaced(nbPoints,0,nbPoints-1);
     asTools::SortArrays(&analogs[0], &analogs[analogs.size()-1], &ranks[0], &ranks[ranks.size()-1], Asc);
 
-    // Cumulative frequency (See asForecastScore::ProcessCRPSapproxRectangleMethod for explanations)
-    Array1DFloat F(analogs.size());
-    float irep = 0.44f;
-    float nrep = 0.12f;
-    float divisor = 1.0f/(analogs.size()+nrep);
-    for(float i=0; i<analogs.size(); i++)
-    {
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
-    }
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     for (int i_analog=0; i_analog<analogs.size(); i_analog++)
@@ -740,15 +719,8 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     Array1DFloat analogs = analogsAll.head(nbPoints);
     asTools::SortArray(&analogs[0], &analogs[analogs.size()-1], Asc);
 
-    // Cumulative frequency (See asForecastScore::ProcessCRPSapproxRectangleMethod for explanations)
-    Array1DFloat F(analogs.size());
-    float irep = 0.44f;
-    float nrep = 0.12f;
-    float divisor = 1.0f/(analogs.size()+nrep);
-    for(float i=0; i<analogs.size(); i++)
-    {
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
-    }
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
@@ -798,9 +770,9 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     plotData.Destroy();
 }
 
-void asFramePlotDistributions::PlotClassicPercentiles()
+void asFramePlotDistributions::PlotClassicQuantiles()
 {
-    // Percentiles
+    // Quantiles
     Array1DFloat pc(3);
     pc << 0.2f, 0.6f, 0.9f;
 
@@ -811,16 +783,16 @@ void asFramePlotDistributions::PlotClassicPercentiles()
     asResultsAnalogsForecast* forecast = m_ForecastManager->GetForecast(m_SelectedMethod, m_SelectedForecast);
     Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
 
-    // Loop over the percentiles
+    // Loop over the quantiles
     for (int i_pc=0; i_pc<pc.size(); i_pc++)
     {
-        float thisPercentile = pc[i_pc];
+        float thisQuantile = pc[i_pc];
 
         // Create plot data
         wxPlotData plotData;
         plotData.Create(1);
-        float pcVal = asTools::Percentile(&analogs[0], &analogs[analogs.size()-1], thisPercentile);
-        plotData.SetValue(0, pcVal, thisPercentile);
+        float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
+        plotData.SetValue(0, pcVal, thisQuantile);
 
         // Store max val
         if (pcVal>m_XmaxPredictands) m_XmaxPredictands = pcVal;
@@ -844,7 +816,7 @@ void asFramePlotDistributions::PlotClassicPercentiles()
         }
         else
         {
-            asLogError(_("The percentiles couldn't be added to the plot"));
+            asLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();

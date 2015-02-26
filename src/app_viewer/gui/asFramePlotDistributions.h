@@ -58,7 +58,7 @@ protected:
 private:
     enum PlotPredictandsData
     {
-        ClassicPercentiles,
+        ClassicQuantiles,
         AllAnalogsPoints,
         AllAnalogsCurve,
         BestAnalogs10Points,
@@ -87,7 +87,7 @@ private:
     void PlotAllAnalogsCurve();
     void PlotBestAnalogsPoints(int analogsNb);
     void PlotBestAnalogsCurve(int analogsNb);
-    void PlotClassicPercentiles();
+    void PlotClassicQuantiles();
     void PlotCriteriaCurve();
     void OnChoiceForecastChange( wxCommandEvent& event );
     void OnChoiceStationChange( wxCommandEvent& event );

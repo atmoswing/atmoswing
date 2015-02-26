@@ -285,32 +285,60 @@ double asTools::StDev(double* pArrStart, double* pArrEnd, int sample)
     }
 }
 
-float asTools::Percentile(float* pArrStart, float* pArrEnd, float percentile)
+Array1DFloat asTools::GetCumulativeFrequency(int size)
 {
-    wxASSERT(percentile>=0);
-    wxASSERT(percentile<=1);
+    Array1DFloat F(size);
 
-    asTools::SortArray(pArrStart, pArrEnd, Asc);
+    // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
+    // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
+    // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
+    float irep = 0.44f;
+    float nrep = 0.12f;
 
-    int size = pArrEnd-pArrStart+1;
-    float indexRough = (float)size * percentile;
-    if (indexRough!=0)
+    // Change the values for unit testing to compare to the results from Grenoble
+    if (g_UnitTesting)
     {
-        indexRough--; // From size to index.
+        irep = 0.375;
+        nrep = 0.25;
     }
 
-    if( asTools::IsRound(indexRough) )
+    float divisor = 1.0f/(size+nrep);
+    for(float i=0; i<size; i++)
     {
-        return *(pArrStart+(int)indexRough);
+        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
+    }
+
+    return F;
+}
+
+float asTools::GetValueForQuantile(Array1DFloat &values, float quantile)
+{
+    float value = NaNFloat;
+    int size = values.size();
+
+    // Sort the forcast array
+    asTools::SortArray(&values[0], &values[size-1], Asc);
+
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(size);
+
+    // Indices for the left and right part (according to xObs)
+    int indLeft = asTools::SortedArraySearchFloor(&F[0], &F[size-1], quantile);
+    int indRight = asTools::SortedArraySearchCeil(&F[0], &F[size-1], quantile);
+    wxASSERT(indLeft>=0);
+    wxASSERT(indRight>=0);
+    wxASSERT(indLeft<=indRight);
+
+    if (indLeft==indRight)
+    {
+        value = values[indLeft];
     }
     else
     {
-        float ratio = indexRough-floor(indexRough);
-        float valFloor = *(pArrStart+(int)floor(indexRough));
-        float valCeil = *(pArrStart+(int)ceil(indexRough));
-
-        return valFloor+(valCeil-valFloor)*ratio;
+        value = values(indLeft)+(values(indRight)-values(indLeft))*(quantile-F(indLeft))/(F(indRight)-F(indLeft));
     }
+
+    return value;
 }
 
 bool asTools::IsNaN(int value)

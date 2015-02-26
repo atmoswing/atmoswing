@@ -80,7 +80,7 @@ BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECTION_CHANGED, asFrameForecast::OnForecastForecastSelectionChange)
     EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECT_FIRST, asFrameForecast::OnForecastForecastSelectFirst)
-    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_PERCENTILE_SELECTION_CHANGED, asFrameForecast::OnForecastPercentileSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, asFrameForecast::OnForecastQuantileSelectionChange)
 END_EVENT_TABLE()
 
 
@@ -359,9 +359,9 @@ void asFrameForecast::Init()
 
     // Set the display options
     m_PanelSidebarForecasts->GetForecastDisplayCtrl()->SetStringArray(m_ForecastViewer->GetForecastDisplayStringArray());
-    m_PanelSidebarForecasts->GetPercentilesCtrl()->SetStringArray(m_ForecastViewer->GetPercentilesStringArray());
+    m_PanelSidebarForecasts->GetQuantilesCtrl()->SetStringArray(m_ForecastViewer->GetQuantilesStringArray());
     m_PanelSidebarForecasts->GetForecastDisplayCtrl()->Select(m_ForecastViewer->GetForecastDisplaySelection());
-    m_PanelSidebarForecasts->GetPercentilesCtrl()->Select(m_ForecastViewer->GetPercentileSelection());
+    m_PanelSidebarForecasts->GetQuantilesCtrl()->Select(m_ForecastViewer->GetQuantileSelection());
 
     // Reduce some panels
     bool display = true;
@@ -1887,11 +1887,11 @@ void asFrameForecast::OnForecastForecastSelectFirst( wxCommandEvent& event )
     m_PanelSidebarForecasts->GetForecastsCtrl()->SelectFirst();
 }
 
-void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event )
+void asFrameForecast::OnForecastQuantileSelectionChange( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
-    m_ForecastViewer->SetPercentile(event.GetInt());
+    m_ForecastViewer->SetQuantile(event.GetInt());
 }
 
 void asFrameForecast::DrawPlotStation( int stationRow )

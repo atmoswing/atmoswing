@@ -235,10 +235,10 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("threshold", fsThreshold));
     }
 
-    float fsPercentile = GetForecastScorePercentile();
-    if (!asTools::IsNaN(fsPercentile))
+    float fsQuantile = GetForecastScoreQuantile();
+    if (!asTools::IsNaN(fsQuantile))
     {
-        nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("percentile", fsPercentile));
+        nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
     }
 
     fileParams.AddChild(nodeAnalogScore);
@@ -304,9 +304,9 @@ wxString asParametersScoring::Print()
     wxString content = asParameters::Print();
 
     content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName().c_str()));
-    if (!asTools::IsNaN(GetForecastScorePercentile()))
+    if (!asTools::IsNaN(GetForecastScoreQuantile()))
     {
-        content.Append(wxString::Format("Percentile \t%f\t", GetForecastScorePercentile()));
+        content.Append(wxString::Format("Quantile \t%f\t", GetForecastScoreQuantile()));
     }
     if (!asTools::IsNaN(GetForecastScoreThreshold()))
     {

@@ -57,7 +57,7 @@ float asForecastScoreCRPSS::Assess(float ObservedVal, const Array1DFloat &Forcas
     // First process the CRPS and then the skill score
     asForecastScoreCRPSAR scoreCRPS = asForecastScoreCRPSAR();
     scoreCRPS.SetThreshold(GetThreshold());
-    scoreCRPS.SetPercentile(GetPercentile());
+    scoreCRPS.SetQuantile(GetQuantile());
     float score = scoreCRPS.Assess(ObservedVal, ForcastVals, nbElements);
     float skillScore = (score-m_ScoreClimatology) / ((float)0-m_ScoreClimatology);
 
@@ -75,7 +75,7 @@ bool asForecastScoreCRPSS::ProcessScoreClimatology(const Array1DFloat &refVals, 
     // Set the original score and process
     asForecastScore* forecastScore = asForecastScore::GetInstance(asForecastScore::CRPSAR);
     forecastScore->SetThreshold(GetThreshold());
-    forecastScore->SetPercentile(GetPercentile());
+    forecastScore->SetQuantile(GetQuantile());
 
     for (int i_reftime=0; i_reftime<refVals.size(); i_reftime++)
     {

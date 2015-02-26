@@ -70,29 +70,29 @@ asForecastViewer::asForecastViewer( asFrameForecast* parent, asForecastManager *
     m_ReturnPeriods.push_back(300);
     m_ReturnPeriods.push_back(500);
 
-    //m_DisplayPercentiles.Add(_("interpretation"));
-    m_DisplayPercentiles.Add(_("q90"));
-    m_DisplayPercentiles.Add(_("q60"));
-    m_DisplayPercentiles.Add(_("q20"));
+    //m_DisplayQuantiles.Add(_("interpretation"));
+    m_DisplayQuantiles.Add(_("q90"));
+    m_DisplayQuantiles.Add(_("q60"));
+    m_DisplayQuantiles.Add(_("q20"));
 
-    //m_Percentiles.push_back(-1);
-    m_Percentiles.push_back(0.9f);
-    m_Percentiles.push_back(0.6f);
-    m_Percentiles.push_back(0.2f);
+    //m_Quantiles.push_back(-1);
+    m_Quantiles.push_back(0.9f);
+    m_Quantiles.push_back(0.6f);
+    m_Quantiles.push_back(0.2f);
 
     m_MethodSelection = -1;
     m_ForecastSelection = -1;
 
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Read("/ForecastViewer/DisplaySelection", &m_ForecastDisplaySelection, 3);
-    pConfig->Read("/ForecastViewer/PercentileSelection", &m_PercentileSelection, 0);
+    pConfig->Read("/ForecastViewer/QuantileSelection", &m_QuantileSelection, 0);
     if ((unsigned)m_ForecastDisplaySelection>=m_ReturnPeriods.size())
     {
         m_ForecastDisplaySelection = 1;
     }
-    if ((unsigned)m_PercentileSelection>=m_Percentiles.size())
+    if ((unsigned)m_QuantileSelection>=m_Quantiles.size())
     {
-        m_PercentileSelection = 0;
+        m_QuantileSelection = 0;
     }
 
     m_Opened = false;
@@ -102,7 +102,7 @@ asForecastViewer::~asForecastViewer()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/ForecastViewer/DisplaySelection", m_ForecastDisplaySelection);
-    pConfig->Write("/ForecastViewer/PercentileSelection", m_PercentileSelection);
+    pConfig->Write("/ForecastViewer/QuantileSelection", m_QuantileSelection);
 }
 
 wxArrayString asForecastViewer::GetForecastDisplayStringArray()
@@ -110,9 +110,9 @@ wxArrayString asForecastViewer::GetForecastDisplayStringArray()
     return m_DisplayForecast;
 }
 
-wxArrayString asForecastViewer::GetPercentilesStringArray()
+wxArrayString asForecastViewer::GetQuantilesStringArray()
 {
-    return m_DisplayPercentiles;
+    return m_DisplayQuantiles;
 }
 
 void asForecastViewer::FixForecastSelection()
@@ -191,12 +191,12 @@ void asForecastViewer::SetForecastDisplay(int i)
     Redraw();
 }
 
-void asForecastViewer::SetPercentile(int i)
+void asForecastViewer::SetQuantile(int i)
 {
-    m_PercentileSelection = i;
+    m_QuantileSelection = i;
 
-    wxString percentile = m_DisplayPercentiles.Item(m_PercentileSelection);
-    asLogMessage(wxString::Format(_("Selected percentile : %s."), percentile.c_str()));
+    wxString quantile = m_DisplayQuantiles.Item(m_QuantileSelection);
+    asLogMessage(wxString::Format(_("Selected quantile : %s."), quantile.c_str()));
 
     Redraw();
 }
@@ -206,7 +206,7 @@ void asForecastViewer::LoadPastForecast()
     wxBusyCursor wait;
 
     // Check that elements are selected
-    if ( (m_MethodSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if ( (m_MethodSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_QuantileSelection==-1) ) return;
     if ( m_MethodSelection >= m_ForecastManager->GetMethodsNb() ) return;
     
     if (m_ForecastSelection>0)
@@ -222,10 +222,10 @@ void asForecastViewer::LoadPastForecast()
 void asForecastViewer::Redraw()
 {
     // Check that elements are selected
-    if ( (m_MethodSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_PercentileSelection==-1) ) return;
+    if ( (m_MethodSelection==-1) || (m_ForecastDisplaySelection==-1) || (m_QuantileSelection==-1) ) return;
     if ( m_MethodSelection >= m_ForecastManager->GetMethodsNb() ) return;
     if ( (unsigned)m_ForecastDisplaySelection >= m_DisplayForecast.size() ) return;
-    if ( m_Percentiles.size() != m_DisplayPercentiles.size() ) return;
+    if ( m_Quantiles.size() != m_DisplayQuantiles.size() ) return;
     if ( m_ReturnPeriods.size() != m_DisplayForecast.size() ) return;
     
     // Get data
@@ -275,7 +275,7 @@ void asForecastViewer::Redraw()
     }
 
     // Get display option
-    float percentile = m_Percentiles[m_PercentileSelection];
+    float quantile = m_Quantiles[m_QuantileSelection];
     float returnPeriod = m_ReturnPeriods[m_ForecastDisplaySelection];
 
     // Get reference axis index
@@ -420,9 +420,9 @@ void asForecastViewer::Redraw()
                 }
                 else
                 {
-                    if (percentile>=0)
+                    if (quantile>=0)
                     {
-                        double forecastVal = asTools::Percentile(&values[0], &values[values.size()-1], percentile);
+                        double forecastVal = asTools::GetValueForQuantile(values, quantile);
                         wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
                         forecastVal *= factor;
                         data.Add(forecastVal);
@@ -431,9 +431,9 @@ void asForecastViewer::Redraw()
                     {
                         // Interpretatio
                         double forecastVal = 0;
-                        double forecastVal30 = asTools::Percentile(&values[0], &values[values.size()-1], 0.3f);
-                        double forecastVal60 = asTools::Percentile(&values[0], &values[values.size()-1], 0.6f);
-                        double forecastVal90 = asTools::Percentile(&values[0], &values[values.size()-1], 0.9f);
+                        double forecastVal30 = asTools::GetValueForQuantile(values, 0.2f);
+                        double forecastVal60 = asTools::GetValueForQuantile(values, 0.6f);
+                        double forecastVal90 = asTools::GetValueForQuantile(values, 0.9f);
 
                         if(forecastVal60==0)
                         {
@@ -604,9 +604,9 @@ void asForecastViewer::Redraw()
             }
             else
             {
-                if (percentile>=0)
+                if (quantile>=0)
                 {
-                    double forecastVal = asTools::Percentile(&values[0], &values[values.size()-1], percentile);
+                    double forecastVal = asTools::GetValueForQuantile(values, quantile);
                     wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
                     data.Add(forecastVal); // 1st real value
                     forecastVal *= factor;
@@ -616,9 +616,9 @@ void asForecastViewer::Redraw()
                 {
                     // Interpretatio
                     double forecastVal = 0;
-                    double forecastVal30 = asTools::Percentile(&values[0], &values[values.size()-1], 0.3f);
-                    double forecastVal60 = asTools::Percentile(&values[0], &values[values.size()-1], 0.6f);
-                    double forecastVal90 = asTools::Percentile(&values[0], &values[values.size()-1], 0.9f);
+                    double forecastVal30 = asTools::GetValueForQuantile(values, 0.3f);
+                    double forecastVal60 = asTools::GetValueForQuantile(values, 0.6f);
+                    double forecastVal90 = asTools::GetValueForQuantile(values, 0.9f);
 
                     if(forecastVal60==0)
                     {
