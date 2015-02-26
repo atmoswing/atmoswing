@@ -27,12 +27,11 @@
  
 #include "asGeoPoint.h"
 
-asGeoPoint::asGeoPoint(CoordSys coosys, const Coo &Point, float Level, float Height)
+asGeoPoint::asGeoPoint(const Coo &Point, float Level, float Height)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_Point = Point;
     m_Level = Level;
     m_Height = Height;
@@ -43,12 +42,11 @@ asGeo(coosys)
     wxLogVerbose(_("The point was successfully created."));
 }
 
-asGeoPoint::asGeoPoint(CoordSys coosys, double x, double y, float Level, float Height)
+asGeoPoint::asGeoPoint(double x, double y, float Level, float Height)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_Point.x = x;
     m_Point.y = y;
     m_Level = Level;
@@ -76,15 +74,4 @@ bool asGeoPoint::DoCheckPoints()
     // Check the point and proceed to changes if necessary
     CheckPoint(m_Point, asEDIT_ALLOWED);
     return true;
-}
-
-void asGeoPoint::ProjConvert(CoordSys newcoordsys)
-{
-    m_Point = ProjTransform(newcoordsys, m_Point);
-    m_CoordSys = newcoordsys;
-
-    // Initialization and check points
-    Init();
-
-    wxLogVerbose(_("The coordinate system was successfully converted."));
 }

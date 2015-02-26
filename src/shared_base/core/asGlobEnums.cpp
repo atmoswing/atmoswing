@@ -457,24 +457,3 @@ wxString asGlobEnums::DataSpatialAggregationEnumToString(DataSpatialAggregation 
     }
     return wxEmptyString;
 }
-
-CoordSys asGlobEnums::StringToCoordSysEnum(const wxString &CoordSysStr)
-{
-    if (CoordSysStr.CmpNoCase("WGS84")==0)
-    {
-        return WGS84;
-    }
-    else if (CoordSysStr.CmpNoCase("CH1903")==0)
-    {
-        return CH1903;
-    }
-    else if (CoordSysStr.CmpNoCase("CH1903p")==0)
-    {
-        return CH1903p;
-    }
-    else
-    {
-        asLogError(_("The coordinate system in unknown"));
-    }
-    return NoCoordSys;
-}

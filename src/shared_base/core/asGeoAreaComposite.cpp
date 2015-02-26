@@ -27,12 +27,11 @@
  
 #include "asGeoAreaComposite.h"
 
-asGeoAreaComposite::asGeoAreaComposite(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
+asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_CornerUL = CornerUL;
     m_CornerUR = CornerUR;
     m_CornerLL = CornerLL;
@@ -52,12 +51,11 @@ asGeo(coosys)
     wxLogVerbose(_("The composite area was successfully created."));
 }
 
-asGeoAreaComposite::asGeoAreaComposite(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
+asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_CornerUL.x = Xmin;
     m_CornerUL.y = Ymin+Ywidth;
     m_CornerUR.x = Xmin+Xwidth;
@@ -81,12 +79,11 @@ asGeo(coosys)
     wxLogVerbose(_("The composite area was successfully created."));
 }
 
-asGeoAreaComposite::asGeoAreaComposite(CoordSys coosys, float Level, float Height)
+asGeoAreaComposite::asGeoAreaComposite(float Level, float Height)
 :
-asGeo(coosys)
+asGeo()
 {
     // Set the members
-    m_CoordSys = coosys;
     m_Level = Level;
     m_Height = Height;
     m_NbComposites = 0;
@@ -262,19 +259,6 @@ bool asGeoAreaComposite::IsRectangle()
     return true;
 }
 
-void asGeoAreaComposite::ProjConvert(CoordSys newcoordsys)
-{
-    m_CornerUL = ProjTransform(newcoordsys, m_CornerUL);
-    m_CornerUR = ProjTransform(newcoordsys, m_CornerUR);
-    m_CornerLL = ProjTransform(newcoordsys, m_CornerLL);
-    m_CornerLR = ProjTransform(newcoordsys, m_CornerLR);
-    m_CoordSys = newcoordsys;
-
-    // Initialization and check points
-    Init();
-    CreateComposites();
-}
-
 void asGeoAreaComposite::CreateComposites()
 {
     m_Composites.clear();
@@ -282,7 +266,7 @@ void asGeoAreaComposite::CreateComposites()
 
     if((m_CornerUL.x<=m_CornerUR.x) & (m_CornerLL.x<=m_CornerLR.x) & (m_CornerLL.y<=m_CornerUL.y) & (m_CornerLR.y<=m_CornerUR.y))
     {
-        asGeoArea area(m_CoordSys, m_CornerUL, m_CornerUR, m_CornerLL, m_CornerLR, m_Level, m_Height, m_FlatAllowed);
+        asGeoArea area(m_CornerUL, m_CornerUR, m_CornerLL, m_CornerLR, m_Level, m_Height, m_FlatAllowed);
         m_Composites.push_back(area);
         m_NbComposites = 1;
     }
@@ -290,7 +274,7 @@ void asGeoAreaComposite::CreateComposites()
     {
         m_CornerLR.x = m_AxisXmax;
         m_CornerUR.x = m_AxisXmax;
-        asGeoArea area(m_CoordSys, m_CornerUL, m_CornerUR, m_CornerLL, m_CornerLR, m_Level, m_Height, m_FlatAllowed);
+        asGeoArea area(m_CornerUL, m_CornerUR, m_CornerLL, m_CornerLR, m_Level, m_Height, m_FlatAllowed);
         m_Composites.push_back(area);
         m_NbComposites = 1;
     }
@@ -302,8 +286,8 @@ void asGeoAreaComposite::CreateComposites()
         a1LL.x = m_AxisXmin;
         a2UR.x = m_AxisXmax;
         a2LR.x = m_AxisXmax;
-        asGeoArea area1(m_CoordSys, a1UL, a1UR, a1LL, a1LR, m_Level, m_Height, m_FlatAllowed);
-        asGeoArea area2(m_CoordSys, a2UL, a2UR, a2LL, a2LR, m_Level, m_Height, m_FlatAllowed);
+        asGeoArea area1(a1UL, a1UR, a1LL, a1LR, m_Level, m_Height, m_FlatAllowed);
+        asGeoArea area2(a2UL, a2UR, a2LL, a2LR, m_Level, m_Height, m_FlatAllowed);
         m_Composites.push_back(area1);
         m_Composites.push_back(area2);
         m_NbComposites = 2;

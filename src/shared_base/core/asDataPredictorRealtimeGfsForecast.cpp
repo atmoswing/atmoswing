@@ -55,7 +55,6 @@ asDataPredictorRealtime(dataId)
     m_FirstTimeStepHours = 0;
     m_NanValues.push_back(NaNDouble);
     m_NanValues.push_back(NaNFloat);
-    m_CoordinateSystem = WGS84;
     m_XaxisShift = 0;
     m_YaxisShift = 0;
     m_XaxisStep = 0.5;

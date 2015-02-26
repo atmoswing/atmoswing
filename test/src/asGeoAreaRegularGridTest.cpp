@@ -51,7 +51,7 @@ TEST(ConstructorLimitsException)
         CornerLR.y = 30;
         double step = 2.5;
 
-        CHECK_THROW(asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+        CHECK_THROW(asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
     }
 }
 
@@ -64,7 +64,7 @@ TEST(ConstructorAlternativeLimitsException)
         double Ymin = 30;
         double Ywidth = 10;
         double step = 2.5;
-        CHECK_THROW(asGeoAreaRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
+        CHECK_THROW(asGeoAreaRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
     }
 }
 
@@ -77,7 +77,7 @@ TEST(ConstructorStepException)
         double Ymin = 30;
         double Ywidth = 10;
         double step = 2.7;
-        CHECK_THROW(asGeoAreaRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
+        CHECK_THROW(asGeoAreaRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
     }
 }
 
@@ -90,7 +90,7 @@ TEST(CheckConsistencyException)
         double Ymin = 40;
         double Ywidth = 0;
         double step = 2.5;
-        CHECK_THROW(asGeoAreaRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
+        CHECK_THROW(asGeoAreaRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
     }
 }
 
@@ -106,7 +106,7 @@ TEST(IsRectangleTrue)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(true, geoarea.IsRectangle());
 }
@@ -125,7 +125,7 @@ TEST(IsRectangleFalse)
         CornerLR.x = 20;
         CornerLR.y = 30;
         double step = 2.5;
-        CHECK_THROW(asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+        CHECK_THROW(asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
     }
 }
 
@@ -141,7 +141,7 @@ TEST(GetBounds)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
@@ -161,7 +161,7 @@ TEST(GetCenter)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     Coo center = geoarea.GetCenter();
     CHECK_CLOSE(15, center.x, 0.01);
@@ -180,7 +180,7 @@ TEST(IsOnGridTrue)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(true, geoarea.IsOnGrid(2.5));
 }
@@ -197,7 +197,7 @@ TEST(IsOnGridTrueTwoAxes)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(true, geoarea.IsOnGrid(2.5, 5));
 }
@@ -214,7 +214,7 @@ TEST(IsOnGridFalseStep)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(false, geoarea.IsOnGrid(6));
 }
@@ -231,7 +231,7 @@ TEST(IsOnGridFalseSecondStep)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     CHECK_EQUAL(false, geoarea.IsOnGrid(5, 6));
 }
@@ -243,7 +243,7 @@ TEST(GetAxes)
     double Ymin = 45;
     double Ywidth = 2.5;
     double step = 2.5;
-    asGeoAreaRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
     Array1DDouble uaxis;
     uaxis.resize(geoarea.GetXaxisPtsnb());

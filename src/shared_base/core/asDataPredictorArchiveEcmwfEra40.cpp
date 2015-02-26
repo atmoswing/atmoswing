@@ -51,7 +51,6 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_TimeStepHours = 6;
     m_FirstTimeStepHours = 0;
     m_NanValues.push_back(-32767);
-    m_CoordinateSystem = WGS84;
     m_XaxisShift = 0;
     m_YaxisShift = 0;
     m_SubFolder = wxEmptyString;

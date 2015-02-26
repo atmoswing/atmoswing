@@ -293,7 +293,7 @@ public:
     /** Access m_CoordSys
      * \return The current value of m_CoordSys
      */
-    CoordSys GetCoordSys()
+    wxString GetCoordSys()
     {
         return m_CoordSys;
     }
@@ -301,7 +301,7 @@ public:
     /** Set m_CoordSys
      * \param val New value to set
      */
-    void SetCoordSys(CoordSys val)
+    void SetCoordSys(wxString val)
     {
         m_CoordSys = val;
     }
@@ -320,7 +320,7 @@ protected:
     double m_FirstTimeStepHour; //!< Member variable "m_FirstTimeStep" in hours
     wxString m_DataPath; //!< Member variable "m_FilePath"
     VectorDouble m_Nan; //!< Member variable "m_Nan"
-    CoordSys m_CoordSys; //!< Member variable "m_CoordSys"
+    wxString m_CoordSys; //!< Member variable "m_CoordSys"
 
 
 private:

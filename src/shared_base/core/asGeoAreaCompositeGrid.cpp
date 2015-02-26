@@ -30,7 +30,7 @@
 #include "asGeoAreaGaussianGrid.h"
 #include "asGeoAreaCompositeGaussianGrid.h"
 
-asGeoAreaCompositeGrid* asGeoAreaCompositeGrid::GetInstance(CoordSys coosys, const wxString &type, double Xmin, int Xptsnb, double Xstep, double Ymin, int Yptsnb, double Ystep, float Level, float Height, int flatAllowed )
+asGeoAreaCompositeGrid* asGeoAreaCompositeGrid::GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep, double Ymin, int Yptsnb, double Ystep, float Level, float Height, int flatAllowed )
 {
     // If empty, set Regular.
     if (type.IsEmpty())
@@ -38,20 +38,20 @@ asGeoAreaCompositeGrid* asGeoAreaCompositeGrid::GetInstance(CoordSys coosys, con
         asLogMessage(_("The given grid type is empty. A regular grid has been considered."));
         double Xwidth = (double)(Xptsnb-1)*Xstep;
         double Ywidth = (double)(Yptsnb-1)*Ystep;
-        asGeoAreaCompositeGrid* area = new asGeoAreaCompositeRegularGrid(coosys, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, Level, Height, flatAllowed);
+        asGeoAreaCompositeGrid* area = new asGeoAreaCompositeRegularGrid(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, Level, Height, flatAllowed);
         return area;
     }
     else if (type.IsSameAs("Regular", false))
     {
         double Xwidth = (double)(Xptsnb-1)*Xstep;
         double Ywidth = (double)(Yptsnb-1)*Ystep;
-        asGeoAreaCompositeGrid* area = new asGeoAreaCompositeRegularGrid(coosys, Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, Level, Height, flatAllowed);
+        asGeoAreaCompositeGrid* area = new asGeoAreaCompositeRegularGrid(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, Level, Height, flatAllowed);
         return area;
     }
     else if (type.IsSameAs("GaussianT62", false))
     {
         asGeoAreaGaussianGrid::GaussianGridType gaussianType = asGeoAreaGaussianGrid::T62;
-        asGeoAreaCompositeGrid* area = new asGeoAreaCompositeGaussianGrid(coosys, Xmin, Xptsnb, Ymin, Yptsnb, gaussianType, Level, Height, flatAllowed);
+        asGeoAreaCompositeGrid* area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, gaussianType, Level, Height, flatAllowed);
         return area;
     }
     else
@@ -61,23 +61,23 @@ asGeoAreaCompositeGrid* asGeoAreaCompositeGrid::GetInstance(CoordSys coosys, con
     }
 }
 
-asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
 :
-asGeoAreaComposite(coosys, CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+asGeoAreaComposite(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     m_GridType = Regular;
 }
 
-asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
+asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
 :
-asGeoAreaComposite(coosys, Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
+asGeoAreaComposite(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
     m_GridType = Regular;
 }
 
-asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(CoordSys coosys, float Level, float Height)
+asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(float Level, float Height)
 :
-asGeoAreaComposite(coosys, Level, Height)
+asGeoAreaComposite(Level, Height)
 {
     m_GridType = Regular;
 }
