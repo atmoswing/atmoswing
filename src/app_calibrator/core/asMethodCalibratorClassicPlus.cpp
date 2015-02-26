@@ -62,7 +62,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
     ThreadsManager().CritSectionConfig().Leave();
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
+    VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
     // Preload data
     try

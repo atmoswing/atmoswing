@@ -49,7 +49,7 @@ public:
 
     bool IsCompatibleWith(asResultsAnalogsForecast * otherForecast);
 
-    bool IsSpecificForStation(int stationId);
+    bool IsSpecificForStationId(int stationId);
 
     int GetStationRowFromId(int stationId);
 
@@ -205,25 +205,35 @@ public:
      */
     int GetStationsNb()
     {
-        return (int)m_StationsIds.size();
+        return (int)m_StationIds.size();
     }
 
-    /** Access m_StationsIds
-     * \return The whole array m_StationsIds
+    /** Access m_StationIds
+     * \return The whole array m_StationIds
      */
-    Array1DInt GetStationsIds()
+    Array1DInt GetStationIds()
     {
-        return m_StationsIds;
+        return m_StationIds;
     }
 
-    /** Access an element of m_StationsNames
-     * \return An item of m_StationsNames
+    /** Access an element of m_StationOfficialIds
+     * \return An item of m_StationOfficialIds
+     */
+    wxString GetStationOfficialId(int i)
+    {
+        wxASSERT(i>=0);
+        wxASSERT((unsigned)i<m_StationOfficialIds.size());
+        return m_StationOfficialIds[i];
+    }
+
+    /** Access an element of m_StationNames
+     * \return An item of m_StationNames
      */
     wxString GetStationName(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT((unsigned)i<m_StationsNames.size());
-        return m_StationsNames[i];
+        wxASSERT((unsigned)i<m_StationNames.size());
+        return m_StationNames[i];
     }
 
 
@@ -235,152 +245,105 @@ public:
     wxString GetStationNameAndHeight(int i_stat);
 
 
-    /** Set m_StationsNames
+    /** Set m_StationNames
      * \param stationsNames The new array to set
      */
-    void SetStationsNames(VectorString &stationsNames)
+    void SetStationNames(VectorString &stationsNames)
     {
-        m_StationsNames = stationsNames;
+        m_StationNames = stationsNames;
     }
 
-    /** Access an element of m_StationsIds
-     * \return An item of m_StationsIds
+    /** Access an element of m_StationIds
+     * \return An item of m_StationIds
      */
     int GetStationId(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationsIds.size());
-        return m_StationsIds[i];
+        wxASSERT(i<m_StationIds.size());
+        return m_StationIds[i];
     }
 
-    /** Set m_StationsIds
+    /** Set m_StationIds
      * \param stationsIds The new array to set
      */
-    void SetStationsIds(Array1DInt &stationsIds)
+    void SetStationIds(Array1DInt &stationsIds)
     {
-        m_StationsIds = stationsIds;
+        m_StationIds = stationsIds;
     }
 
-    /** Access an element of m_StationsHeights
-     * \return An item of m_StationsHeights
+    void SetStationOfficialIds(VectorString &stationsOfficialIds)
+    {
+        m_StationOfficialIds = stationsOfficialIds;
+    }
+
+    /** Access an element of m_StationHeights
+     * \return An item of m_StationHeights
      */
     int GetStationHeight(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationsHeights.size());
-        return m_StationsHeights[i];
+        wxASSERT(i<m_StationHeights.size());
+        return m_StationHeights[i];
     }
 
-    /** Set m_StationsHeights
+    /** Set m_StationHeights
      * \param stationsHeights The new array to set
      */
-    void SetStationsHeights(Array1DFloat &stationsHeights)
+    void SetStationHeights(Array1DFloat &stationsHeights)
     {
-        m_StationsHeights = stationsHeights;
+        m_StationHeights = stationsHeights;
     }
 
-    /** Access m_StationsLat
-     * \return The whole array m_StationsLat
+    /** Access m_StationXCoords
+     * \return The whole array m_StationXCoords
      */
-    Array1DDouble GetStationsLat()
+    Array1DDouble GetStationXCoords()
     {
-        return m_StationsLat;
+        return m_StationXCoords;
     }
 
-    /** Access an element of m_StationsLat
-     * \return An item of m_StationsLat
+    /** Access an element of m_StationXCoords
+     * \return An item of m_StationXCoords
      */
-    double GetStationLat(int i)
+    double GetStationXCoord(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationsLat.size());
-        return m_StationsLat[i];
+        wxASSERT(i<m_StationXCoords.size());
+        return m_StationXCoords[i];
     }
 
-    /** Set m_StationsLat
-     * \param stationsLat The new array to set
+    /** Set m_StationXCoords
+     * \param stationsXCoords The new array to set
      */
-    void SetStationsLat(Array1DDouble &stationsLat)
+    void SetStationXCoords(Array1DDouble &stationsXCoords)
     {
-        m_StationsLat = stationsLat;
+        m_StationXCoords = stationsXCoords;
     }
 
-    /** Access m_StationsLon
-     * \return The whole array m_StationsLon
+    /** Access m_StationYCoords
+     * \return The whole array m_StationYCoords
      */
-    Array1DDouble GetStationsLon()
+    Array1DDouble GetStationYCoords()
     {
-        return m_StationsLon;
+        return m_StationYCoords;
     }
 
-    /** Access an element of m_StationsLon
-     * \return An item of m_StationsLon
+    /** Access an element of m_StationYCoords
+     * \return An item of m_StationYCoords
      */
-    float GetStationLon(int i)
-    {
-        wxASSERT(i>=0);
-        wxASSERT(i<m_StationsLon.size());
-        return m_StationsLon[i];
-    }
-
-    /** Set m_StationsLon
-     * \param stationsLon The new array to set
-     */
-    void SetStationsLon(Array1DDouble &stationsLon)
-    {
-        m_StationsLon = stationsLon;
-    }
-
-    /** Access m_StationsLocCoordX
-     * \return The whole array m_StationsLocCoordX
-     */
-    Array1DDouble GetStationsLocCoordX()
-    {
-        return m_StationsLocCoordX;
-    }
-
-    /** Access an element of m_StationsLocCoordX
-     * \return An item of m_StationsLocCoordX
-     */
-    float GetStationLocCoordX(int i)
+    double GetStationYCoord(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationsLocCoordX.size());
-        return m_StationsLocCoordX[i];
+        wxASSERT(i<m_StationYCoords.size());
+        return m_StationYCoords[i];
     }
 
-    /** Set m_StationsLocCoordX
-     * \param stationsLocCoordX The new array to set
+    /** Set m_StationYCoords
+     * \param stationsYCoords The new array to set
      */
-    void SetStationsLocCoordX(Array1DDouble &stationsLocCoordX)
+    void SetStationYCoords(Array1DDouble &stationsYCoords)
     {
-        m_StationsLocCoordX = stationsLocCoordX;
-    }
-
-    /** Access m_StationsLocCoordY
-     * \return The whole array m_StationsLocCoordY
-     */
-    Array1DDouble GetStationsLocCoordY()
-    {
-        return m_StationsLocCoordY;
-    }
-
-    /** Access an element of m_StationsLocCoordY
-     * \return An item of m_StationsLocCoordY
-     */
-    double GetStationLocCoordY(int i)
-    {
-        wxASSERT(i>=0);
-        wxASSERT(i<m_StationsLocCoordY.size());
-        return m_StationsLocCoordY[i];
-    }
-
-    /** Set m_StationsLocCoordY
-     * \param stationsLocCoordY The new array to set
-     */
-    void SetStationsLocCoordY(Array1DDouble &stationsLocCoordY)
-    {
-        m_StationsLocCoordY = stationsLocCoordY;
+        m_StationYCoords = stationsYCoords;
     }
 
     /** Access m_ReferenceAxis
@@ -539,7 +502,7 @@ public:
         }
         else if (m_AnalogsValuesGross.size()==i_leadtime)
         {
-            Array2DFloat emptyBlock(m_StationsIds.size(), m_AnalogsNb[i_leadtime]);
+            Array2DFloat emptyBlock(m_StationIds.size(), m_AnalogsNb[i_leadtime]);
             m_AnalogsValuesGross.push_back(emptyBlock);
 
             wxASSERT(m_AnalogsValuesGross[i_leadtime].rows()>i_station);
@@ -636,13 +599,12 @@ private:
     double m_LeadTimeOrigin;
     Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
     Array1DInt m_AnalogsNb; //!< Member variable "m_AnalogsNb"
-    VectorString m_StationsNames; //!< Member variable "m_StationsNames"
-    Array1DInt m_StationsIds; //!< Member variable "m_StationsIds"
-    Array1DFloat m_StationsHeights; //!< Member variable "m_StationsHeight"
-    Array1DDouble m_StationsLat; //!< Member variable "m_StationsLat"
-    Array1DDouble m_StationsLon; //!< Member variable "m_StationsLon"
-    Array1DDouble m_StationsLocCoordX; //!< Member variable "m_StationsLocCoordX"
-    Array1DDouble m_StationsLocCoordY; //!< Member variable "m_StationsLocCoordY"
+    VectorString m_StationNames; //!< Member variable "m_StationNames"
+    VectorString m_StationOfficialIds;
+    Array1DInt m_StationIds; //!< Member variable "m_StationIds"
+    Array1DFloat m_StationHeights; //!< Member variable "m_StationHeights"
+    Array1DDouble m_StationXCoords; //!< Member variable "m_StationXCoords"
+    Array1DDouble m_StationYCoords; //!< Member variable "m_StationYCoords"
     Array1DFloat m_ReferenceAxis;
     Array2DFloat m_ReferenceValues;
     VArray1DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogCriteria"

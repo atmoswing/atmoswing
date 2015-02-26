@@ -1894,7 +1894,7 @@ void asFrameForecast::OnForecastPercentileSelectionChange( wxCommandEvent& event
     m_ForecastViewer->SetPercentile(event.GetInt());
 }
 
-void asFrameForecast::DrawPlotStation( int station )
+void asFrameForecast::DrawPlotStation( int stationRow )
 {
     wxBusyCursor wait;
 
@@ -1906,10 +1906,10 @@ void asFrameForecast::DrawPlotStation( int station )
 
     if (forecastRow<0) // Aggregator
     {
-        forecastRow = m_ForecastManager->GetForecastRowSpecificForStation(methodRow, station);
+        forecastRow = m_ForecastManager->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
-    asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, station, m_ForecastManager);
+    asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow, m_ForecastManager);
     framePlotStation->Layout();
     framePlotStation->Init();
     framePlotStation->Plot();

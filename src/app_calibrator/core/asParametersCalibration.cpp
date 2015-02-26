@@ -278,7 +278,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
                     while (nodeParam) {
                         if (nodeParam->GetName() == "station_id") {
-                            if(!SetPredictandStationsIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
+                            if(!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
                         } else {
                             fileParams.UnknownNode(nodeParam);
                         }
@@ -651,7 +651,7 @@ bool asParametersCalibration::InputsOK()
     }
 
     // Analog values
-    if(GetPredictandStationsIdsVector().size()==0) {
+    if(GetPredictandStationIdsVector().size()==0) {
         asLogWarning(_("The station ID was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
@@ -704,7 +704,7 @@ bool asParametersCalibration::FixTimeLimits()
 
 void asParametersCalibration::InitValues()
 {
-    wxASSERT(m_PredictandStationsIdsVect.size()>0);
+    wxASSERT(m_PredictandStationIdsVect.size()>0);
     wxASSERT(m_TimeArrayAnalogsIntervalDaysVect.size()>0);
     wxASSERT(m_ForecastScoreVect.Name.size()>0);
     wxASSERT(m_ForecastScoreVect.TimeArrayMode.size()>0);
@@ -713,7 +713,7 @@ void asParametersCalibration::InitValues()
     //wxASSERT(m_ForecastScoreVect.PostprocessDupliExp.size()>0);
 
     // Initialize the parameters values with the first values of the vectors
-    m_PredictandStationIds = m_PredictandStationsIdsVect[0];
+    m_PredictandStationIds = m_PredictandStationIdsVect[0];
     m_TimeArrayAnalogsIntervalDays = m_TimeArrayAnalogsIntervalDaysVect[0];
     SetForecastScoreName(m_ForecastScoreVect.Name[0]);
     SetForecastScoreTimeArrayMode(m_ForecastScoreVect.TimeArrayMode[0]);
@@ -767,7 +767,7 @@ void asParametersCalibration::InitValues()
     FixAnalogsNb();
 }
 
-bool asParametersCalibration::SetPredictandStationsIdsVector(VVectorInt val)
+bool asParametersCalibration::SetPredictandStationIdsVector(VVectorInt val)
 {
     if (val.size()<1)
     {
@@ -795,7 +795,7 @@ bool asParametersCalibration::SetPredictandStationsIdsVector(VVectorInt val)
         }
     }
 
-    m_PredictandStationsIdsVect = val;
+    m_PredictandStationIdsVect = val;
 
     return true;
 }

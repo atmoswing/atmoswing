@@ -130,7 +130,8 @@ protected:
      * \param ncFile The NetCDF file to save the result
      * \return True on success
      */
-    bool DefStationsIdsAttributes(asFileNetcdf &ncFile);
+    bool DefStationIdsAttributes(asFileNetcdf &ncFile);
+    bool DefStationOfficialIdsAttributes(asFileNetcdf &ncFile);
 
     /** Defines attributes in the destination file
      * \param ncFile The NetCDF file to save the result
@@ -174,6 +175,8 @@ protected:
      */
     bool DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile);
 
+    bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile);
+
     /** Defines attributes in the destination file
      * \param ncFile The NetCDF file to save the result
      * \return True on success
@@ -185,12 +188,6 @@ protected:
      * \return True on success
      */
     bool DefForecastScoreFinalAttributes(asFileNetcdf &ncFile);
-
-    /** Defines attributes in the destination file
-     * \param ncFile The NetCDF file to save the result
-     * \return True on success
-     */
-    bool DefLonLatAttributes(asFileNetcdf &ncFile);
 
     /** Defines attributes in the destination file
      * \param ncFile The NetCDF file to save the result

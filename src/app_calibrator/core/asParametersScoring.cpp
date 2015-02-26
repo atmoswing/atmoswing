@@ -217,7 +217,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxXmlNode * nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE ,"predictand" );
     nodeAnalogValues->AddChild(nodePredictand);
 
-    VVectorInt predictandStationIdsVect = GetPredictandStationsIdsVector();
+    VVectorInt predictandStationIdsVect = GetPredictandStationIdsVector();
     wxString predictandStationIds = GetPredictandStationIdsVectorString(predictandStationIdsVect);
     nodePredictand->AddChild(fileParams.CreateNodeWithValue("station_id", predictandStationIds));
 

@@ -174,9 +174,14 @@ public:
         return m_Aggregator->GetFullTargetDates();
     }
 
-    int GetForecastRowSpecificForStation(int methodRow, int stationRow)
+    int GetForecastRowSpecificForStationId(int methodRow, int stationId)
     {
-        return m_Aggregator->GetForecastRowSpecificForStation(methodRow, stationRow);
+        return m_Aggregator->GetForecastRowSpecificForStationId(methodRow, stationId);
+    }
+
+    int GetForecastRowSpecificForStationRow(int methodRow, int stationRow)
+    {
+        return m_Aggregator->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
     wxArrayString GetStationNames(int methodRow, int forecastRow)

@@ -368,13 +368,13 @@ void asForecastViewer::Redraw()
             if (m_ForecastSelection>=0)
             {
                 forecast = forecasts[0];
-                accurateForecast = forecast->IsSpecificForStation(currentId);
+                accurateForecast = forecast->IsSpecificForStationId(currentId);
             }
             else
             {
                 for (int i=0; i<forecasts.size(); i++)
                 {   
-                    accurateForecast = forecasts[i]->IsSpecificForStation(currentId);
+                    accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
                     if (accurateForecast)
                     {
                         forecast = forecasts[i];
@@ -389,8 +389,8 @@ void asForecastViewer::Redraw()
             }
 
             OGRPoint station;
-            station.setX( forecast->GetStationLocCoordX(i_stat) );
-            station.setY( forecast->GetStationLocCoordY(i_stat) );
+            station.setX( forecast->GetStationXCoord(i_stat) );
+            station.setY( forecast->GetStationYCoord(i_stat) );
 
             // Field container
             wxArrayDouble data;
@@ -548,13 +548,13 @@ void asForecastViewer::Redraw()
             if (m_ForecastSelection>=0)
             {
                 forecast = forecasts[0];
-                accurateForecast = forecast->IsSpecificForStation(currentId);
+                accurateForecast = forecast->IsSpecificForStationId(currentId);
             }
             else
             {
                 for (int i=0; i<forecasts.size(); i++)
                 {   
-                    accurateForecast = forecasts[i]->IsSpecificForStation(currentId);
+                    accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
                     if (accurateForecast)
                     {
                         forecast = forecasts[i];
@@ -569,8 +569,8 @@ void asForecastViewer::Redraw()
             }
 
             OGRPoint station;
-            station.setX( forecast->GetStationLocCoordX(i_stat) );
-            station.setY( forecast->GetStationLocCoordY(i_stat) );
+            station.setX( forecast->GetStationXCoord(i_stat) );
+            station.setY( forecast->GetStationYCoord(i_stat) );
 
             // Field container
             wxArrayDouble data;

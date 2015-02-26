@@ -31,7 +31,6 @@
 
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
-#include <asCatalog.h>
 #include <asCatalogPredictands.h>
 
 

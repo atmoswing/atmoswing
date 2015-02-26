@@ -85,7 +85,9 @@ public:
 
     Array1DFloat GetFullTargetDates();
     
-    int GetForecastRowSpecificForStation(int methodRow, int stationRow);
+    int GetForecastRowSpecificForStationId(int methodRow, int stationId);
+    
+    int GetForecastRowSpecificForStationRow(int methodRow, int stationRow);
 
     wxArrayString GetStationNames(int methodRow, int forecastRow);
 
@@ -104,6 +106,8 @@ public:
     Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float percentileThreshold);
 
     Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float percentileThreshold);
+
+    bool ExportSyntheticXml();
 
 protected:
 

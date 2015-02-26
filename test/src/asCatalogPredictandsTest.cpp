@@ -70,9 +70,8 @@ TEST(LoadCatalogProp)
     CHECK_EQUAL(0,catalog.GetFirstTimeStepHours());
     VectorDouble nans = catalog.GetNan();
     CHECK_EQUAL(32767,nans[0]);
-    int coordinatesys = catalog.GetCoordSys();
-    int coordinatesysreal = CH1903;
-    CHECK_EQUAL(coordinatesysreal,coordinatesys);
+    samestr = catalog.GetCoordSys().CompareTo(_T("EPSG:3857"));
+    CHECK_EQUAL(0,samestr);
 }
 
 TEST(LoadDataProp)
@@ -86,7 +85,7 @@ TEST(LoadDataProp)
     CHECK_EQUAL(1,catalog.GetStationId(0));
     int samestr = catalog.GetStationName(0).CompareTo(_T("Disentis / Sedrun"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetStationLocalId(0).CompareTo(_T("0060"));
+    samestr = catalog.GetStationOfficialId(0).CompareTo(_T("0060"));
     CHECK_EQUAL(0,samestr);
     CHECK_EQUAL(708200,catalog.GetStationCoord(0).x);
     CHECK_EQUAL(173800,catalog.GetStationCoord(0).y);

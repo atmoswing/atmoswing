@@ -189,8 +189,8 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 
     // Define variables: the analogcriteria and the corresponding dates
     ncFile.DefVar("target_dates", NC_FLOAT, 1, DimNames1);
-    ncFile.DefVar("analogs_criteria", NC_FLOAT, 2, DimNames2);
-    ncFile.DefVar("analogs_dates", NC_FLOAT, 2, DimNames2);
+    ncFile.DefVar("analog_criteria", NC_FLOAT, 2, DimNames2);
+    ncFile.DefVar("analog_dates", NC_FLOAT, 2, DimNames2);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -225,8 +225,8 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 
     // Write data
     ncFile.PutVarArray("target_dates", start1D, count1D, &m_TargetDates(0));
-    ncFile.PutVarArray("analogs_criteria", start2D, count2D, &analogsCriteria[0]);
-    ncFile.PutVarArray("analogs_dates", start2D, count2D, &analogsDates[0]);
+    ncFile.PutVarArray("analog_criteria", start2D, count2D, &analogsCriteria[0]);
+    ncFile.PutVarArray("analog_dates", start2D, count2D, &analogsDates[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -395,8 +395,8 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     // Get data
     size_t IndexStart[2] = {0,0};
     size_t IndexCount[2] = {size_t(Ntime), size_t(Nanalogs)};
-    ncFile.GetVarArray("analogs_dates", IndexStart, IndexCount, &analogsDates[0]);
-    ncFile.GetVarArray("analogs_criteria", IndexStart, IndexCount, &analogsCriteria[0]);
+    ncFile.GetVarArray("analog_dates", IndexStart, IndexCount, &analogsDates[0]);
+    ncFile.GetVarArray("analog_criteria", IndexStart, IndexCount, &analogsCriteria[0]);
 
     // Set data into the matrices
     m_AnalogsDates.resize( Ntime, Nanalogs );

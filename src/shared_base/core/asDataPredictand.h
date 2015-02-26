@@ -161,60 +161,52 @@ class asDataPredictand: public wxObject
             return m_TimeLength;
         }
 
-        /** Access m_StationsName
-         * \return The current value of m_StationsName
+        /** Access m_StationNames
+         * \return The current value of m_StationNames
          */
-        VectorString& GetStationsNameArray()
+        VectorString& GetStationNamesArray()
         {
-            return m_StationsName;
+            return m_StationNames;
         }
 
-        /** Access m_StationsHeight
-         * \return The current value of m_StationsHeight
+        /** Access m_StationOfficialIds
+         * \return The current value of m_StationOfficialIds
          */
-        Array1DFloat& GetStationsHeightArray()
+        VectorString& GetStationOfficialIdsArray()
         {
-            return m_StationsHeight;
+            return m_StationOfficialIds;
         }
 
-        /** Access m_StationsIds
-         * \return The current value of m_StationsIds
+        /** Access m_StationHeights
+         * \return The current value of m_StationHeights
+         */
+        Array1DFloat& GetStationHeightsArray()
+        {
+            return m_StationHeights;
+        }
+
+        /** Access m_StationIds
+         * \return The current value of m_StationIds
          */
         Array1DInt& GetStationsIdArray()
         {
-            return m_StationsIds;
+            return m_StationIds;
         }
 
-        /** Access m_StationsLocCoordX
-         * \return The current value of m_StationsLocCoordX
+        /** Access m_StationXCoords
+         * \return The current value of m_StationXCoords
          */
-        Array1DDouble& GetStationsLocCoordXArray()
+        Array1DDouble& GetStationXCoordsArray()
         {
-            return m_StationsLocCoordX;
+            return m_StationXCoords;
         }
 
-        /** Access m_StationsLocCoordY
-         * \return The current value of m_StationsLocCoordY
+        /** Access m_StationYCoords
+         * \return The current value of m_StationYCoords
          */
-        Array1DDouble& GetStationsLocCoordYArray()
+        Array1DDouble& GetStationYCoordsArray()
         {
-            return m_StationsLocCoordY;
-        }
-
-        /** Access m_StationsLon
-         * \return The current value of m_StationsLon
-         */
-        Array1DDouble& GetStationsLonArray()
-        {
-            return m_StationsLon;
-        }
-
-        /** Access m_StationsLat
-         * \return The current value of m_StationsLat
-         */
-        Array1DDouble& GetStationsLatArray()
-        {
-            return m_StationsLat;
+            return m_StationYCoords;
         }
 
         /** Access m_DataGross: data(station,time)
@@ -300,15 +292,14 @@ class asDataPredictand: public wxObject
         // Vector (dim = time)
         Array1DDouble m_Time;
         // Vector (dim = stations)
-        VectorString m_StationsName;
-        Array1DInt m_StationsIds;
-        Array1DFloat m_StationsHeight;
-        Array1DDouble m_StationsLocCoordX;
-        Array1DDouble m_StationsLocCoordY;
-        Array1DDouble m_StationsLon;
-        Array1DDouble m_StationsLat;
-        Array1DDouble m_StationsStart;
-        Array1DDouble m_StationsEnd;
+        VectorString m_StationNames;
+        VectorString m_StationOfficialIds;
+        Array1DInt m_StationIds;
+        Array1DFloat m_StationHeights;
+        Array1DDouble m_StationXCoords;
+        Array1DDouble m_StationYCoords;
+        Array1DDouble m_StationStarts;
+        Array1DDouble m_StationEnds;
 
 
         wxString GetDBFilePathSaving(const wxString &destinationDir);
