@@ -764,7 +764,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
         for (unsigned int i_leadtime=0; i_leadtime<m_LeadTimes.size(); i_leadtime++)
         {
             Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_SelectedStation);
-            float pcVal = asTools::Quantile(&analogs[0], &analogs[analogs.size()-1], thisQuantile);
+            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
             plotData.SetValue(counter, m_LeadTimes[i_leadtime], pcVal);
             counter++;
 

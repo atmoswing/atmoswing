@@ -322,6 +322,10 @@ float asTools::GetValueForQuantile(Array1DFloat &values, float quantile)
     // Cumulative frequency
     Array1DFloat F = asTools::GetCumulativeFrequency(size);
 
+    // Check limits
+    if (quantile<=F[0]) return values[0];
+    if (quantile>=F[size-1]) return values[size-1];
+
     // Indices for the left and right part (according to xObs)
     int indLeft = asTools::SortedArraySearchFloor(&F[0], &F[size-1], quantile);
     int indRight = asTools::SortedArraySearchCeil(&F[0], &F[size-1], quantile);
