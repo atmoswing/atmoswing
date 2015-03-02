@@ -31,13 +31,13 @@ asPredictorCriteriaMRDtoMax::asPredictorCriteriaMRDtoMax(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::MRDtoMax;
-    m_Name = "MRDtoMax";
-    m_FullName = _("Mean Relative Differences to the Maximum");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::MRDtoMax;
+    m_name = "MRDtoMax";
+    m_fullName = _("Mean Relative Differences to the Maximum");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaMRDtoMax::~asPredictorCriteriaMRDtoMax()
@@ -52,7 +52,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
 
     float rd = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
         case (asLIN_ALGEBRA): // Not implemented yet

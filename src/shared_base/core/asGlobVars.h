@@ -32,15 +32,15 @@
 
 using namespace std;
 
-extern bool g_SilentMode;
-extern bool g_VerboseMode;
-extern bool g_Responsive;
-extern bool g_UnitTesting;
-extern bool g_GuiMode;
+extern bool g_silentMode;
+extern bool g_verboseMode;
+extern bool g_responsive;
+extern bool g_unitTesting;
+extern bool g_guiMode;
 
 // Constants
-const extern double g_Cst_Euler;
-const extern double g_Cst_Pi;
+const extern double g_cst_Euler;
+const extern double g_cst_Pi;
 
 // Useful variables
 const extern wxString DS;

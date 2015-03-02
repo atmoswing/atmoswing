@@ -75,7 +75,7 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
     // Create log window and file
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
-    m_LogWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
+    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
     Log().CreateFile("AtmoswingCalibrator.log");
 
     // Restore frame position and size
@@ -103,15 +103,15 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
     long guiOptions = pConfig->Read("/General/GuiOptions", 0l);
     if (guiOptions==0l)
     {
-        g_SilentMode = true;
+        g_silentMode = true;
     }
     else
     {
-        g_SilentMode = false;
-        g_VerboseMode = false;
+        g_silentMode = false;
+        g_verboseMode = false;
         if (guiOptions==2l)
         {
-            g_VerboseMode = true;
+            g_verboseMode = true;
         }
     }
 

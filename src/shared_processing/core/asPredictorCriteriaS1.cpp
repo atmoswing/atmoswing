@@ -31,13 +31,13 @@ asPredictorCriteriaS1::asPredictorCriteriaS1(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::S1;
-    m_Name = "S1";
-    m_FullName = _("Teweles-Wobus");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = 200;
-    m_CanUseInline = false;
+    m_criteria = asPredictorCriteria::S1;
+    m_name = "S1";
+    m_fullName = _("Teweles-Wobus");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = 200;
+    m_canUseInline = false;
 }
 
 asPredictorCriteriaS1::~asPredictorCriteriaS1()
@@ -59,7 +59,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
 
     float dividend = 0, divisor = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         {
@@ -163,7 +163,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
         if (dividend==0)
         {
             asLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return m_ScaleBest;
+            return m_scaleBest;
         }
         else
         {

@@ -32,13 +32,13 @@ asForecastScoreCRPSHersbachDecomp::asForecastScoreCRPSHersbachDecomp()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::CRPSHersbachDecomp;
-    m_Name = _("CRPS Hersbach decomposition");
-    m_FullName = _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_SingleValue = false;
+    m_score = asForecastScore::CRPSHersbachDecomp;
+    m_name = _("CRPS Hersbach decomposition");
+    m_fullName = _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_singleValue = false;
 }
 
 asForecastScoreCRPSHersbachDecomp::~asForecastScoreCRPSHersbachDecomp()

@@ -42,7 +42,7 @@ wxLogWindow(parent, title, show, passToOld)
 
 asLogWindow::~asLogWindow()
 {
-    //wxDELETE(m_LogWindow);
+    //wxDELETE(m_logWindow);
 }
 
 void asLogWindow::DoShow(bool bShow)

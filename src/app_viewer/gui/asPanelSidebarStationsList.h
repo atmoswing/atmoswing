@@ -44,11 +44,11 @@ public:
 
     wxChoice* GetChoiceCtrl()
     {
-        return m_ChoiceStationSelection;
+        return m_choiceStationSelection;
     }
 
 private:
-    wxChoice* m_ChoiceStationSelection;
+    wxChoice* m_choiceStationSelection;
 
     void OnStationSelection( wxCommandEvent& event );
 

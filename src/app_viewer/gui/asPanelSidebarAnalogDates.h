@@ -44,7 +44,7 @@ public:
     void SetChoices(Array1DFloat &arrayDate, Array1DFloat &arrayCriteria);
 
 private:
-    wxListCtrl* m_ListCtrl;
+    wxListCtrl* m_listCtrl;
 
     void OnDateSelection( wxListEvent& event );
 

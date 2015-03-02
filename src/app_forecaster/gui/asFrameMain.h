@@ -59,13 +59,13 @@ public:
 
 
 protected:
-    asLogWindow *m_LogWindow;
-    asMethodForecasting *m_Forecaster;
-	awxLed* m_LedDownloading;
-	awxLed* m_LedLoading;
-	awxLed* m_LedProcessing;
-	awxLed* m_LedSaving;
-    asBatchForecasts m_BatchForecasts;
+    asLogWindow *m_logWindow;
+    asMethodForecasting *m_forecaster;
+	awxLed* m_ledDownloading;
+	awxLed* m_ledLoading;
+	awxLed* m_ledProcessing;
+	awxLed* m_ledSaving;
+    asBatchForecasts m_batchForecasts;
 
     void OnOpenBatchForecasts(wxCommandEvent & event);
     void OnSaveBatchForecasts(wxCommandEvent & event);
@@ -92,7 +92,7 @@ protected:
     void SetPresentDate();
 
 private:
-    asPanelsManagerForecasts* m_PanelsManager;
+    asPanelsManagerForecasts* m_panelsManager;
 
     DECLARE_EVENT_TABLE()
 

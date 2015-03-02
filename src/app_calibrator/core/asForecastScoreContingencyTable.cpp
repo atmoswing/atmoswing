@@ -32,12 +32,12 @@ asForecastScoreContingencyTable::asForecastScoreContingencyTable()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::ContingencyTable;
-    m_Name = _("Contingency table");
-    m_FullName = _("Contingency table class");
-    m_Order = NoOrder;
-    m_ScaleBest = NaNFloat;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::ContingencyTable;
+    m_name = _("Contingency table");
+    m_fullName = _("Contingency table class");
+    m_order = NoOrder;
+    m_scaleBest = NaNFloat;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreContingencyTable::~asForecastScoreContingencyTable()
@@ -49,10 +49,10 @@ float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFl
 {
     wxASSERT(ForcastVals.size()>1);
     wxASSERT(nbElements>0);
-    wxASSERT(!asTools::IsNaN(m_Threshold));
-    wxASSERT(!asTools::IsNaN(m_Quantile));
-    wxASSERT(m_Quantile>0);
-    wxASSERT(m_Quantile<1);
+    wxASSERT(!asTools::IsNaN(m_threshold));
+    wxASSERT(!asTools::IsNaN(m_quantile));
+    wxASSERT(m_quantile>0);
+    wxASSERT(m_quantile<1);
 
     // Create the container to sort the data
     Array1DFloat x(nbElements);
@@ -74,25 +74,25 @@ float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFl
     float score = NaNFloat;
 
     // Get value for quantile
-    float xQuantile = asTools::GetValueForQuantile(cleanValues, m_Quantile);
+    float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
 
 	// Forecasted and observed
-	if (xQuantile>=m_Threshold && ObservedVal>=m_Threshold)
+	if (xQuantile>=m_threshold && ObservedVal>=m_threshold)
     {
         score = 1;
 	}
 	// Forecasted but not observed
-	else if (xQuantile>=m_Threshold && ObservedVal<m_Threshold)
+	else if (xQuantile>=m_threshold && ObservedVal<m_threshold)
     {
         score = 2;
 	}
 	// Not forecasted but observed
-	else if (xQuantile<m_Threshold && ObservedVal>=m_Threshold)
+	else if (xQuantile<m_threshold && ObservedVal>=m_threshold)
     {
         score = 3;
 	}
 	// Not forecasted and not observed
-	else if (xQuantile<m_Threshold && ObservedVal<m_Threshold)
+	else if (xQuantile<m_threshold && ObservedVal<m_threshold)
     {
         score = 4;
 	}

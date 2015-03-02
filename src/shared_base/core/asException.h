@@ -101,51 +101,51 @@ public:
      */
     virtual ~asException() throw ();
 
-    /** Access m_Message
-     * \return The current value of m_Message
+    /** Access m_message
+     * \return The current value of m_message
      */
     wxString GetMessage()
     {
-        return m_Message;
+        return m_message;
     }
 
-    /** Set m_Message
+    /** Set m_message
      * \param val New value to set
      */
     void SetMessage(const wxString &val)
     {
-        m_Message = val;
+        m_message = val;
     }
 
-    /** Access m_FileName
-     * \return The current value of m_FileName
+    /** Access m_fileName
+     * \return The current value of m_fileName
      */
     wxString GetFileName()
     {
-        return m_FileName;
+        return m_fileName;
     }
 
-    /** Access m_LineNum
-     * \return The current value of m_LineNum
+    /** Access m_lineNum
+     * \return The current value of m_lineNum
      */
     int GetLineNum()
     {
-        return m_LineNum;
+        return m_lineNum;
     }
 
-    /** Access m_HasChild
-     * \return The current value of m_HasChild
+    /** Access m_hasChild
+     * \return The current value of m_hasChild
      */
     bool GetHasChild()
     {
-        return m_HasChild;
+        return m_hasChild;
     }
 
 
     /** The virtual std what() member */
     virtual const char* what() const throw()
     {
-        return m_Message.char_str();
+        return m_message.char_str();
 
     }
 
@@ -157,11 +157,11 @@ public:
 protected:
 
 private:
-    std::vector < PrevExceptions* > m_Previous; //!< Member variable "m_Previous"
-    wxString m_Message; //!< Member variable "m_Message"
-    wxString m_FileName; //!< Member variable "m_FileName"
-    int m_LineNum; //!< Member variable "m_LineNum"
-    bool m_HasChild; //!< Member variable "m_IsReal"
+    std::vector < PrevExceptions* > m_previous; //!< Member variable "m_previous"
+    wxString m_message; //!< Member variable "m_message"
+    wxString m_fileName; //!< Member variable "m_fileName"
+    int m_lineNum; //!< Member variable "m_lineNum"
+    bool m_hasChild; //!< Member variable "m_isReal"
 };
 
 #endif

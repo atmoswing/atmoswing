@@ -91,12 +91,12 @@ bool AtmoswingAppForecaster::OnInit()
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
-    g_GuiMode = true;
-    m_DoConfig = false;
-    m_DoForecast = false;
-    m_DoForecastPast = false;
-    m_ForecastDate = 0.0;
-    m_ForecastPastDays = 0;
+    g_guiMode = true;
+    m_doConfig = false;
+    m_doForecast = false;
+    m_doForecastPast = false;
+    m_forecastDate = 0.0;
+    m_forecastPastDays = 0;
 
     // Set the local config object
     wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingForecaster.ini",asConfig::GetUserDataDir()+"AtmoSwingForecaster.ini",wxCONFIG_USE_LOCAL_FILE);
@@ -110,8 +110,8 @@ bool AtmoswingAppForecaster::OnInit()
         if (!multipleInstances)
         {
             const wxString instanceName = wxString::Format(wxT("AtmoSwingForecaster-%s"),wxGetUserId().c_str());
-            m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-            if ( m_SingleInstanceChecker->IsAnotherRunning() )
+            m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+            if ( m_singleInstanceChecker->IsAnotherRunning() )
             {
                 wxMessageBox(_("Program already running, aborting."));
 
@@ -119,7 +119,7 @@ bool AtmoswingAppForecaster::OnInit()
                 delete wxFileConfig::Set((wxFileConfig *) NULL);
                 DeleteThreadsManager();
                 DeleteLog();
-                delete m_SingleInstanceChecker;
+                delete m_singleInstanceChecker;
 
                 return false;
             }
@@ -159,9 +159,9 @@ bool AtmoswingAppForecaster::OnInit()
 
 bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
 {
-    g_GuiMode = false;
-    g_UnitTesting = false;
-    g_SilentMode = true;
+    g_guiMode = false;
+    g_unitTesting = false;
+    g_silentMode = true;
 
     // Set log level
     if (logLevel<0)
@@ -203,7 +203,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing version %s, %s", g_version.c_str(), (const wxChar*) date);
 
             msgOut->Printf( wxT("%s"), msg.c_str() );
         }
@@ -219,7 +219,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("c"))
     {
         InitForCmdLineOnly(2);
-        m_DoConfig = true;
+        m_doConfig = true;
 
         return false;
     }
@@ -297,8 +297,8 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("fn"))
     {
         InitForCmdLineOnly(logLevel);
-        m_DoForecast = true;
-        m_ForecastDate = asTime::NowMJD();
+        m_doForecast = true;
+        m_forecastDate = asTime::NowMJD();
 
         return false;
     }
@@ -311,8 +311,8 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         numberOfDaysStr.ToLong(&numberOfDays);
 
         InitForCmdLineOnly(logLevel);
-        m_DoForecastPast = true;
-        m_ForecastPastDays = (int)numberOfDays;
+        m_doForecastPast = true;
+        m_forecastPastDays = (int)numberOfDays;
 
         return false;
     }
@@ -322,8 +322,8 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("fd", & dateForecastStr))
     {
         InitForCmdLineOnly(logLevel);
-        m_DoForecast = true;
-        m_ForecastDate = asTime::GetTimeFromString(dateForecastStr, YYYYMMDDhh);
+        m_doForecast = true;
+        m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYYMMDDhh);
 
         return false;
     }
@@ -333,9 +333,9 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
 
 int AtmoswingAppForecaster::OnRun()
 {
-    if (!g_GuiMode)
+    if (!g_guiMode)
     {
-        if (m_DoConfig)
+        if (m_doConfig)
         {
             wxMessageOutput* msgOut = wxMessageOutput::Get();
             if ( !msgOut )
@@ -477,12 +477,12 @@ int AtmoswingAppForecaster::OnRun()
             #endif
         }
 
-        if (m_DoForecast)
+        if (m_doForecast)
         {
             wxMessageOutput* msgOut = wxMessageOutput::Get();
 
             // Log message
-            wxString forecastDateStr = asTime::GetStringTime(m_ForecastDate, "DD.MM.YYYY hh:mm");
+            wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
             asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
             if ( msgOut )
             {
@@ -520,7 +520,7 @@ int AtmoswingAppForecaster::OnRun()
 
             // Launch forecasting
             asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
-            forecaster.SetForecastDate(m_ForecastDate);
+            forecaster.SetForecastDate(m_forecastDate);
             if (!forecaster.Manager())
             {
                 asLogError(_("Failed processing the forecast."));
@@ -554,12 +554,12 @@ int AtmoswingAppForecaster::OnRun()
             filePaths.Close();
         }
 
-        if (m_DoForecastPast)
+        if (m_doForecastPast)
         {
             wxMessageOutput* msgOut = wxMessageOutput::Get();
             if ( msgOut )
             {
-                msgOut->Printf( "Forecast started for the last %d days", m_ForecastPastDays );
+                msgOut->Printf( "Forecast started for the last %d days", m_forecastPastDays );
             }
 
             // Open last batch file
@@ -593,7 +593,7 @@ int AtmoswingAppForecaster::OnRun()
 
             double now = asTime::NowMJD();
             double startDate = floor(now) + 23.0/24.0;
-            double endDate = floor(now) - m_ForecastPastDays;
+            double endDate = floor(now) - m_forecastPastDays;
             double increment = 1.0/24.0;
 
             for (double date=startDate; date>=endDate; date-=increment)
@@ -646,7 +646,7 @@ int AtmoswingAppForecaster::OnExit()
 {
     #if wxUSE_GUI
         // Instance checker
-        delete m_SingleInstanceChecker;
+        delete m_singleInstanceChecker;
     #endif
 
     // Config file (from wxWidgets samples)

@@ -54,12 +54,12 @@ public:
 
     GridType GetGridType()
     {
-        return m_GridType;
+        return m_gridType;
     }
 
     wxString GetGridTypeString()
     {
-        switch (m_GridType)
+        switch (m_gridType)
         {
             case (Regular):
                 return "Regular";
@@ -159,7 +159,7 @@ public:
 
 
 protected:
-    GridType m_GridType;
+    GridType m_gridType;
 
 private:
 

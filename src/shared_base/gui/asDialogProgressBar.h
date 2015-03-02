@@ -44,13 +44,13 @@ public:
 protected:
 
 private:
-    wxProgressDialog* m_ProgressBar;
-    bool m_Initiated;
-    int m_Steps;
-    int m_DelayUpdate;
-    int m_ValueMax;
-    VectorInt m_VectorSteps;
-    int m_CurrentStepIndex;
+    wxProgressDialog* m_progressBar;
+    bool m_initiated;
+    int m_steps;
+    int m_delayUpdate;
+    int m_valueMax;
+    VectorInt m_vectorSteps;
+    int m_currentStepIndex;
 
 };
 

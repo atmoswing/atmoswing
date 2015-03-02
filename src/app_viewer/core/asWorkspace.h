@@ -52,200 +52,200 @@ public:
 
     wxString GetFilePath()
     {
-        return m_FilePath;
+        return m_filePath;
     }
     
     void SetFilePath(wxString &path)
     {
-        m_FilePath = path;
+        m_filePath = path;
     }
 
     wxString GetCoordinateSys()
     {
-        return m_CoordinateSys;
+        return m_coordinateSys;
     }
 
     wxString GetForecastsDirectory()
     {
-        return m_ForecastsDirectory;
+        return m_forecastsDirectory;
     }
     
     void SetForecastsDirectory(wxString val)
     {
-        m_ForecastsDirectory = val;
+        m_forecastsDirectory = val;
     }
 
     wxString GetLayerPath(int i)
     {
-        wxASSERT(m_LayerPaths.size()>i);
-        return m_LayerPaths[i];
+        wxASSERT(m_layerPaths.size()>i);
+        return m_layerPaths[i];
     }
     
     void SetLayerPath(int i, const wxString &val)
     {
-        wxASSERT(m_LayerPaths.size()>i);
-        m_LayerPaths[i] = val;
+        wxASSERT(m_layerPaths.size()>i);
+        m_layerPaths[i] = val;
     }
 
     wxString GetLayerType(int i)
     {
-        wxASSERT(m_LayerTypes.size()>i);
-        return m_LayerTypes[i];
+        wxASSERT(m_layerTypes.size()>i);
+        return m_layerTypes[i];
     }
     
     void SetLayerType(int i, const wxString &val)
     {
-        wxASSERT(m_LayerTypes.size()>i);
-        m_LayerTypes[i] = val;
+        wxASSERT(m_layerTypes.size()>i);
+        m_layerTypes[i] = val;
     }
 
     int GetLayerTransparency(int i)
     {
-        wxASSERT(m_LayerTransparencies.size()>i);
-        return m_LayerTransparencies[i];
+        wxASSERT(m_layerTransparencies.size()>i);
+        return m_layerTransparencies[i];
     }
 
     void SetLayerTransparency(int i, int val)
     {
-        wxASSERT(m_LayerTransparencies.size()>i);
-        m_LayerTransparencies[i] = val;
+        wxASSERT(m_layerTransparencies.size()>i);
+        m_layerTransparencies[i] = val;
     }
 
     bool GetLayerVisibility(int i)
     {
-        wxASSERT(m_LayerVisibilities.size()>i);
-        return m_LayerVisibilities[i];
+        wxASSERT(m_layerVisibilities.size()>i);
+        return m_layerVisibilities[i];
     }
 
     void SetLayerVisibility(int i, bool val)
     {
-        wxASSERT(m_LayerVisibilities.size()>i);
-        m_LayerVisibilities[i] = val;
+        wxASSERT(m_layerVisibilities.size()>i);
+        m_layerVisibilities[i] = val;
     }
 
     int GetLayerLineWidth(int i)
     {
-        wxASSERT(m_LayerLineWidths.size()>i);
-        return m_LayerLineWidths[i];
+        wxASSERT(m_layerLineWidths.size()>i);
+        return m_layerLineWidths[i];
     }
 
     void SetLayerLineWidth(int i, int val)
     {
-        wxASSERT(m_LayerLineWidths.size()>i);
-        m_LayerLineWidths[i] = val;
+        wxASSERT(m_layerLineWidths.size()>i);
+        m_layerLineWidths[i] = val;
     }
 
     #if wxUSE_GUI
 
     wxColour GetLayerLineColor(int i)
     {
-        wxASSERT(m_LayerLineColors.size()>i);
-        return m_LayerLineColors[i];
+        wxASSERT(m_layerLineColors.size()>i);
+        return m_layerLineColors[i];
     }
 
     void SetLayerLineColor(int i, wxColour &val)
     {
-        wxASSERT(m_LayerLineColors.size()>i);
-        m_LayerLineColors[i] = val;
+        wxASSERT(m_layerLineColors.size()>i);
+        m_layerLineColors[i] = val;
     }
 
     wxColour GetLayerFillColor(int i)
     {
-        wxASSERT(m_LayerFillColors.size()>i);
-        return m_LayerFillColors[i];
+        wxASSERT(m_layerFillColors.size()>i);
+        return m_layerFillColors[i];
     }
 
     void SetLayerFillColor(int i, wxColour &val)
     {
-        wxASSERT(m_LayerFillColors.size()>i);
-        m_LayerFillColors[i] = val;
+        wxASSERT(m_layerFillColors.size()>i);
+        m_layerFillColors[i] = val;
     }
     
     wxBrushStyle GetLayerBrushStyle(int i)
     {
-        wxASSERT(m_LayerBrushStyles.size()>i);
-        return m_LayerBrushStyles[i];
+        wxASSERT(m_layerBrushStyles.size()>i);
+        return m_layerBrushStyles[i];
     }
     
     void SetLayerBrushStyle(int i, wxBrushStyle &val)
     {
-        wxASSERT(m_LayerBrushStyles.size()>i);
-        m_LayerBrushStyles[i] = val;
+        wxASSERT(m_layerBrushStyles.size()>i);
+        m_layerBrushStyles[i] = val;
     }
 
     #endif
 
     double GetColorbarMaxValue()
     {
-        return m_ColorbarMaxValue;
+        return m_colorbarMaxValue;
     }
     
     void SetColorbarMaxValue(double val)
     {
-        m_ColorbarMaxValue = val;
+        m_colorbarMaxValue = val;
     }
 
     int GetTimeSeriesPlotPastDaysNb()
     {
-        return m_TimeSeriesPlotPastDaysNb;
+        return m_timeSeriesPlotPastDaysNb;
     }
 
     void SetTimeSeriesPlotPastDaysNb(int val)
     {
-        m_TimeSeriesPlotPastDaysNb = val;
+        m_timeSeriesPlotPastDaysNb = val;
     }
 
     int GetAlarmsPanelReturnPeriod()
     {
-        return m_AlarmsPanelReturnPeriod;
+        return m_alarmsPanelReturnPeriod;
     }
     
     void SetAlarmsPanelReturnPeriod(int val)
     {
-        m_AlarmsPanelReturnPeriod = val;
+        m_alarmsPanelReturnPeriod = val;
     }
 
     float GetAlarmsPanelQuantile()
     {
-        return m_AlarmsPanelQuantile;
+        return m_alarmsPanelQuantile;
     }
     
     void SetAlarmsPanelQuantile(float val)
     {
-        m_AlarmsPanelQuantile = val;
+        m_alarmsPanelQuantile = val;
     }
 
     bool HasChanged()
     {
-        return m_HasChanged;
+        return m_hasChanged;
     }
 
     void SetHasChanged(bool val)
     {
-        m_HasChanged = val;
+        m_hasChanged = val;
     }
 
 
 protected:
 private:
-    bool m_HasChanged;
-    wxString m_FilePath;
-    wxString m_CoordinateSys;
-    wxString m_ForecastsDirectory;
-    VectorString m_LayerPaths;
-    VectorString m_LayerTypes;
-    VectorInt m_LayerTransparencies;
-    VectorBool m_LayerVisibilities;
-    VectorInt m_LayerLineWidths;
+    bool m_hasChanged;
+    wxString m_filePath;
+    wxString m_coordinateSys;
+    wxString m_forecastsDirectory;
+    VectorString m_layerPaths;
+    VectorString m_layerTypes;
+    VectorInt m_layerTransparencies;
+    VectorBool m_layerVisibilities;
+    VectorInt m_layerLineWidths;
     #if wxUSE_GUI
-        vector < wxColour > m_LayerLineColors;
-        vector < wxColour > m_LayerFillColors;
-        vector < wxBrushStyle > m_LayerBrushStyles;
+        vector < wxColour > m_layerLineColors;
+        vector < wxColour > m_layerFillColors;
+        vector < wxBrushStyle > m_layerBrushStyles;
     #endif
-    double m_ColorbarMaxValue;
-    int m_TimeSeriesPlotPastDaysNb;
-    int m_AlarmsPanelReturnPeriod;
-    float m_AlarmsPanelQuantile;
+    double m_colorbarMaxValue;
+    int m_timeSeriesPlotPastDaysNb;
+    int m_alarmsPanelReturnPeriod;
+    float m_alarmsPanelQuantile;
 
 };
 

@@ -31,13 +31,13 @@ asPredictorCriteriaMRDtoMean::asPredictorCriteriaMRDtoMean(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::MRDtoMean;
-    m_Name = "MRDtoMean";
-    m_FullName = _("Mean Relative Differences to the Mean");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::MRDtoMean;
+    m_name = "MRDtoMean";
+    m_fullName = _("Mean Relative Differences to the Mean");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaMRDtoMean::~asPredictorCriteriaMRDtoMean()
@@ -52,7 +52,7 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
 
     float rd = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
         case (asLIN_ALGEBRA): // Not implemented yet

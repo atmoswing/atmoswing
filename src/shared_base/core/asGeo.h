@@ -47,29 +47,29 @@ public:
 
     double GetAxisXmin()
     {
-        return m_AxisXmin;
+        return m_axisXmin;
     }
 
     double GetAxisXmax()
     {
-        return m_AxisXmax;
+        return m_axisXmax;
     }
 
     double GetAxisYmin()
     {
-        return m_AxisYmin;
+        return m_axisYmin;
     }
 
     double GetAxisYmax()
     {
-        return m_AxisYmax;
+        return m_axisYmax;
     }
 
 protected:
-    double m_AxisXmin; //!< Member variable "m_AxisXmin"
-    double m_AxisXmax; //!< Member variable "m_AxisXmax"
-    double m_AxisYmin; //!< Member variable "m_AxisYmin"
-    double m_AxisYmax; //!< Member variable "m_AxisYmax"
+    double m_axisXmin; //!< Member variable "m_axisXmin"
+    double m_axisXmax; //!< Member variable "m_axisXmax"
+    double m_axisYmin; //!< Member variable "m_axisYmin"
+    double m_axisYmax; //!< Member variable "m_axisYmax"
 
     /** Initialization */
     void InitBounds();

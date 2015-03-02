@@ -75,10 +75,10 @@ public:
 
 
 protected:
-    ListFileMode m_FileMode;
-    wxFileName m_FileName;
+    ListFileMode m_fileMode;
+    wxFileName m_fileName;
     bool m_Exists;
-    bool m_Opened;
+    bool m_opened;
 
 private:
 };

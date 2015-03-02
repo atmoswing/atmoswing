@@ -1824,7 +1824,7 @@ TEST(RandomDouble)
 // 2. figure; hist(data(:,i), 100);
 TEST(RandomUniformDistributionToFile)
 {
-    if(g_UnitTestRandomDistributions)
+    if(g_unitTestRandomDistributions)
     {
         asTools::InitRandom();
 
@@ -1867,7 +1867,7 @@ TEST(RandomUniformDistributionToFile)
 // 2. figure; hist(data(:,i), 100);
 TEST(RandomNormalDistributionToFile)
 {
-    if(g_UnitTestRandomDistributions)
+    if(g_unitTestRandomDistributions)
     {
         asTools::InitRandom();
 

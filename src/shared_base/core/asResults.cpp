@@ -35,11 +35,11 @@
 
 asResults::asResults()
 {
-    m_SaveIntermediateResults = false;
-    m_LoadIntermediateResults = false;
-    m_CurrentStep = 0;
-    m_FileVersion = 1.6f;
-    m_DateProcessed = 0;
+    m_saveIntermediateResults = false;
+    m_loadIntermediateResults = false;
+    m_currentStep = 0;
+    m_fileVersion = 1.6f;
+    m_dateProcessed = 0;
 }
 
 asResults::~asResults()
@@ -59,24 +59,24 @@ bool asResults::Save(const wxString &AlternateFilePath)
 
 bool asResults::Exists()
 {
-    return asFile::Exists(m_FilePath);
+    return asFile::Exists(m_filePath);
 }
 
 wxString asResults::GetPredictandStationIdsList()
 {
     wxString id;
 
-    if (m_PredictandStationIds.size()==1)
+    if (m_predictandStationIds.size()==1)
     {
-        id << m_PredictandStationIds[0];
+        id << m_predictandStationIds[0];
     }
     else
     {
-        for (int i=0; i<m_PredictandStationIds.size(); i++)
+        for (int i=0; i<m_predictandStationIds.size(); i++)
         {
-            id << m_PredictandStationIds[i];
+            id << m_predictandStationIds[i];
 
-            if (i<m_PredictandStationIds.size()-1)
+            if (i<m_predictandStationIds.size()-1)
             {
                 id << ",";
             }

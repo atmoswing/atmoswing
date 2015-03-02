@@ -35,7 +35,7 @@ namespace
 
 TEST(ConstructorLimitsException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
 	    wxString str("Testing regular grids...\n");
         printf("%s", str.mb_str(wxConvUTF8).data());
@@ -57,7 +57,7 @@ TEST(ConstructorLimitsException)
 
 TEST(ConstructorAlternativeLimitsException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         double Xmin = -10;
         double Xwidth = 30;
@@ -70,7 +70,7 @@ TEST(ConstructorAlternativeLimitsException)
 
 TEST(ConstructorStepException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         double Xmin = -10;
         double Xwidth = 30;
@@ -83,7 +83,7 @@ TEST(ConstructorStepException)
 
 TEST(CheckConsistencyException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         double Xmin = 10;
         double Xwidth = 0;
@@ -113,7 +113,7 @@ TEST(IsRectangleTrue)
 
 TEST(IsRectangleFalse)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         Coo CornerUL, CornerUR, CornerLL, CornerLR;
         CornerUL.x = 10;

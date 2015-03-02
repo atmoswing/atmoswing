@@ -34,15 +34,15 @@ asParametersScoring::asParametersScoring()
 :
 asParameters()
 {
-    m_CalibrationStart = 0;
-    m_CalibrationEnd = 0;
-    m_ForecastScore.Name = wxEmptyString;
-    m_ForecastScore.TimeArrayMode = wxEmptyString;
-    m_ForecastScore.TimeArrayDate = 0;
-    m_ForecastScore.TimeArrayIntervalDays = 0;
-    m_ForecastScore.Postprocess = false;
-    m_ForecastScore.PostprocessDupliExp = 0;
-    m_ForecastScore.PostprocessMethod = wxEmptyString;
+    m_calibrationStart = 0;
+    m_calibrationEnd = 0;
+    m_forecastScore.Name = wxEmptyString;
+    m_forecastScore.TimeArrayMode = wxEmptyString;
+    m_forecastScore.TimeArrayDate = 0;
+    m_forecastScore.TimeArrayIntervalDays = 0;
+    m_forecastScore.Postprocess = false;
+    m_forecastScore.PostprocessDupliExp = 0;
+    m_forecastScore.PostprocessMethod = wxEmptyString;
 }
 
 asParametersScoring::~asParametersScoring()

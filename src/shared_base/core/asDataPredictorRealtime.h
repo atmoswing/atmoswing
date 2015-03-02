@@ -54,7 +54,7 @@ public:
      */
     double UpdateRunDateInUse();
 
-    /** Set m_RunDateInUse
+    /** Set m_runDateInUse
      * \param val New value to set
      */
     double SetRunDateInUse(double val = 0);
@@ -70,111 +70,111 @@ public:
 
     void SetRestrictDownloads(bool val)
     {
-        m_RestrictDownloads = val;
+        m_restrictDownloads = val;
     }
 
-    /** Access m_ForecastLeadTimeStart
-     * \return The current value of m_ForecastLeadTimeStart
+    /** Access m_forecastLeadTimeStart
+     * \return The current value of m_forecastLeadTimeStart
      */
     int GetForecastLeadTimeStart()
     {
-        return m_ForecastLeadTimeStart;
+        return m_forecastLeadTimeStart;
     }
 
-    /** Set m_ForecastLeadTimeStart
+    /** Set m_forecastLeadTimeStart
      * \param val New value to set
      */
     void SetForecastLeadTimeStart(int val)
     {
-        m_ForecastLeadTimeStart = val;
+        m_forecastLeadTimeStart = val;
     }
 
-    /** Access m_ForecastLeadTimeEnd
-     * \return The current value of m_ForecastLeadTimeEnd
+    /** Access m_forecastLeadTimeEnd
+     * \return The current value of m_forecastLeadTimeEnd
      */
     int GetForecastLeadTimeEnd()
     {
-        return m_ForecastLeadTimeEnd;
+        return m_forecastLeadTimeEnd;
     }
 
-    /** Set m_ForecastLeadTimeEnd
+    /** Set m_forecastLeadTimeEnd
      * \param val New value to set
      */
     void SetForecastLeadTimeEnd(int val)
     {
-        m_ForecastLeadTimeEnd = val;
+        m_forecastLeadTimeEnd = val;
     }
 
-    /** Access m_ForecastLeadTimeStep
-     * \return The current value of m_ForecastLeadTimeStep
+    /** Access m_forecastLeadTimeStep
+     * \return The current value of m_forecastLeadTimeStep
      */
     int GetForecastLeadTimeStep()
     {
-        return m_ForecastLeadTimeStep;
+        return m_forecastLeadTimeStep;
     }
 
-    /** Set m_ForecastLeadTimeStep
+    /** Set m_forecastLeadTimeStep
      * \param val New value to set
      */
     void SetForecastLeadTimeStep(int val)
     {
-        m_ForecastLeadTimeStep = val;
+        m_forecastLeadTimeStep = val;
     }
 
-    /** Access m_RunHourStart
-     * \return The current value of m_RunHourStart
+    /** Access m_runHourStart
+     * \return The current value of m_runHourStart
      */
     int GetRunHourStart()
     {
-        return m_RunHourStart;
+        return m_runHourStart;
     }
 
-    /** Set m_RunHourStart
+    /** Set m_runHourStart
      * \param val New value to set
      */
     void SetRunHourStart(int val)
     {
-        m_RunHourStart = val;
+        m_runHourStart = val;
     }
 
-    /** Access m_RunUpdate
-     * \return The current value of m_RunUpdate
+    /** Access m_runUpdate
+     * \return The current value of m_runUpdate
      */
     int GetRunUpdate()
     {
-        return m_RunUpdate;
+        return m_runUpdate;
     }
 
-    /** Set m_RunUpdate
+    /** Set m_runUpdate
      * \param val New value to set
      */
     void SetRunUpdate(int val)
     {
-        m_RunUpdate = val;
+        m_runUpdate = val;
     }
 
-    /** Access m_RunDateInUse
-     * \return The current value of m_RunDateInUse
+    /** Access m_runDateInUse
+     * \return The current value of m_runDateInUse
      */
     double GetRunDateInUse()
     {
-        return m_RunDateInUse;
+        return m_runDateInUse;
     }
 
-    /** Access m_CommandDownload
-     * \return The current value of m_CommandDownload
+    /** Access m_commandDownload
+     * \return The current value of m_commandDownload
      */
     wxString GetCommandDownload()
     {
-        return m_CommandDownload;
+        return m_commandDownload;
     }
 
-    /** Set m_CommandDownload
+    /** Set m_commandDownload
      * \param val New value to set
      */
     void SetCommandDownload(const wxString &val)
     {
-        m_CommandDownload = val;
+        m_commandDownload = val;
     }
 
     /** Access
@@ -182,7 +182,7 @@ public:
      */
     int GetUlrsNb()
     {
-        int urlsNb = m_Urls.size();
+        int urlsNb = m_urls.size();
         return urlsNb;
     }
 
@@ -191,7 +191,7 @@ public:
      */
     VectorString GetUrls()
     {
-        return m_Urls;
+        return m_urls;
     }
 
     /** Access
@@ -199,9 +199,9 @@ public:
      */
     wxString GetUrl(int i)
     {
-        wxASSERT(m_FileNames.size()==m_Urls.size());
-        if ((unsigned)i>=m_Urls.size()) return wxEmptyString;
-        return m_Urls[i];
+        wxASSERT(m_fileNames.size()==m_urls.size());
+        if ((unsigned)i>=m_urls.size()) return wxEmptyString;
+        return m_urls[i];
     }
 
     /** Access
@@ -209,7 +209,7 @@ public:
      */
     void SetUrls(const VectorString &val)
     {
-        m_Urls = val;
+        m_urls = val;
     }
 
     /** Access
@@ -217,7 +217,7 @@ public:
      */
     VectorString GetFileNames()
     {
-        return m_FileNames;
+        return m_fileNames;
     }
 
     /** Access
@@ -225,7 +225,7 @@ public:
      */
     void SetFileNames(const VectorString &val)
     {
-        m_FileNames = val;
+        m_fileNames = val;
     }
 
     /** Access
@@ -233,9 +233,9 @@ public:
      */
     wxString GetFileName(int i)
     {
-        wxASSERT(m_FileNames.size()==m_Urls.size());
-        if ((unsigned)i>=m_FileNames.size()) return wxEmptyString;
-        return m_FileNames[i];
+        wxASSERT(m_fileNames.size()==m_urls.size());
+        if ((unsigned)i>=m_fileNames.size()) return wxEmptyString;
+        return m_fileNames[i];
     }
 
     /** Access
@@ -243,9 +243,9 @@ public:
      */
     int GetDatesNb()
     {
-        wxASSERT(m_DataDates.size()==m_Urls.size());
-        wxASSERT(m_DataDates.size()==m_FileNames.size());
-        int datesNb = m_DataDates.size();
+        wxASSERT(m_dataDates.size()==m_urls.size());
+        wxASSERT(m_dataDates.size()==m_fileNames.size());
+        int datesNb = m_dataDates.size();
         return datesNb;
     }
 
@@ -254,7 +254,7 @@ public:
      */
     VectorDouble GetDataDates()
     {
-        return m_DataDates;
+        return m_dataDates;
     }
 
     /** Access
@@ -262,10 +262,10 @@ public:
      */
     double GetDataDate(int i)
     {
-        wxASSERT(m_DataDates.size()==m_Urls.size());
-        wxASSERT(m_DataDates.size()==m_FileNames.size());
-        if ((unsigned)i>=m_DataDates.size()) return asNOT_VALID;
-        return m_DataDates[i];
+        wxASSERT(m_dataDates.size()==m_urls.size());
+        wxASSERT(m_dataDates.size()==m_fileNames.size());
+        if ((unsigned)i>=m_dataDates.size()) return asNOT_VALID;
+        return m_dataDates[i];
     }
 
     /** Access
@@ -273,37 +273,37 @@ public:
      */
     double GetLastDataDate()
     {
-        wxASSERT(m_DataDates.size()==m_Urls.size());
-        wxASSERT(m_DataDates.size()==m_FileNames.size());
-        return m_DataDates[m_DataDates.size()-1];
+        wxASSERT(m_dataDates.size()==m_urls.size());
+        wxASSERT(m_dataDates.size()==m_fileNames.size());
+        return m_dataDates[m_dataDates.size()-1];
     }
 
     wxString GetPredictorsRealtimeDirectory()
     {
-        return m_PredictorsRealtimeDirectory;
+        return m_predictorsRealtimeDirectory;
     }
     
     void SetPredictorsRealtimeDirectory(const wxString &dir)
     {
-        m_PredictorsRealtimeDirectory = dir;
+        m_predictorsRealtimeDirectory = dir;
     }
 
 
 protected:
-    wxString m_PredictorsRealtimeDirectory;
-    double m_ForecastLeadTimeStart;
-    double m_ForecastLeadTimeEnd;
-    double m_ForecastLeadTimeStep;
-    double m_RunHourStart;
-    double m_RunUpdate;
-    double m_RunDateInUse;
-    wxString m_CommandDownload;
-    bool m_RestrictDownloads;
-    double m_RestrictTimeHours;
-    double m_RestrictTimeStepHours;
-    VectorString m_FileNames;
-    VectorString m_Urls;
-    VectorDouble m_DataDates;
+    wxString m_predictorsRealtimeDirectory;
+    double m_forecastLeadTimeStart;
+    double m_forecastLeadTimeEnd;
+    double m_forecastLeadTimeStep;
+    double m_runHourStart;
+    double m_runUpdate;
+    double m_runDateInUse;
+    wxString m_commandDownload;
+    bool m_restrictDownloads;
+    double m_restrictTimeHours;
+    double m_restrictTimeStepHours;
+    VectorString m_fileNames;
+    VectorString m_urls;
+    VectorDouble m_dataDates;
 
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check

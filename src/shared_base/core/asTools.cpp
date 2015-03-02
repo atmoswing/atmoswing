@@ -296,7 +296,7 @@ Array1DFloat asTools::GetCumulativeFrequency(int size)
     float nrep = 0.12f;
 
     // Change the values for unit testing to compare to the results from Grenoble
-    if (g_UnitTesting)
+    if (g_unitTesting)
     {
         irep = 0.375;
         nrep = 0.25;

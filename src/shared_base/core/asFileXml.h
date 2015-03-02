@@ -55,8 +55,8 @@ public:
 
     wxXmlNode * GetRoot()
     {
-        wxASSERT(m_Document.GetRoot());
-        return m_Document.GetRoot();
+        wxASSERT(m_document.GetRoot());
+        return m_document.GetRoot();
     }
     
     void AddChild(wxXmlNode* node);
@@ -91,7 +91,7 @@ public:
 
 protected:
 private:
-    wxXmlDocument m_Document;
+    wxXmlDocument m_document;
 
 };
 

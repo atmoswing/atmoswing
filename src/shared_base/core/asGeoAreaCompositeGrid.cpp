@@ -65,21 +65,21 @@ asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &C
 :
 asGeoAreaComposite(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
-    m_GridType = Regular;
+    m_gridType = Regular;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
 :
 asGeoAreaComposite(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
-    m_GridType = Regular;
+    m_gridType = Regular;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(float Level, float Height)
 :
 asGeoAreaComposite(Level, Height)
 {
-    m_GridType = Regular;
+    m_gridType = Regular;
 }
 
 int asGeoAreaCompositeGrid::GetXaxisPtsnb()
@@ -96,7 +96,7 @@ int asGeoAreaCompositeGrid::GetXaxisPtsnb()
         } else {
             if (GetComposite(i_area).GetYmin() == GetComposite(i_area-1).GetYmin())
             {
-                if (GetXaxisCompositeEnd(i_area) == m_AxisXmax)
+                if (GetXaxisCompositeEnd(i_area) == m_axisXmax)
                 {
                     ptsLon += GetXaxisCompositePtsnb(i_area)-1;
                 }
@@ -125,7 +125,7 @@ int asGeoAreaCompositeGrid::GetYaxisPtsnb()
         } else {
             if (GetComposite(i_area).GetXmin() == GetComposite(i_area-1).GetXmin())
             {
-                if (GetYaxisCompositeEnd(i_area) == m_AxisYmax)
+                if (GetYaxisCompositeEnd(i_area) == m_axisYmax)
                 {
                     ptsLat += GetYaxisCompositePtsnb(i_area)-1;
                 }
@@ -208,7 +208,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
                     Xaxisfinal.head(Xaxisbis.size()) = Xaxisbis;
                     for (int i=1; i<Xaxis.size(); i++)
                     {
-                        Xaxisfinal[Xaxisbis.size()-1+i] = Xaxis[i]+m_AxisXmax;
+                        Xaxisfinal[Xaxisbis.size()-1+i] = Xaxis[i]+m_axisXmax;
                     }
                     return Xaxisfinal;
                 }
@@ -218,7 +218,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
                     Xaxisfinal.head(Xaxisbis.size()) = Xaxisbis;
                     for (int i=0; i<Xaxis.size(); i++)
                     {
-                        Xaxisfinal[Xaxisbis.size()+i] = Xaxis[i]+m_AxisXmax;
+                        Xaxisfinal[Xaxisbis.size()+i] = Xaxis[i]+m_axisXmax;
                     }
                     return Xaxisfinal;
                 }
@@ -255,7 +255,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
                     Yaxisfinal.head(Yaxisbis.size()) = Yaxisbis;
                     for (int i=1; i<Yaxis.size(); i++)
                     {
-                        Yaxisfinal[Yaxisbis.size()-1+i] = Yaxis[i]+m_AxisYmax;
+                        Yaxisfinal[Yaxisbis.size()-1+i] = Yaxis[i]+m_axisYmax;
                     }
                     return Yaxisfinal;
                 }
@@ -265,7 +265,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
                     Yaxisfinal.head(Yaxisbis.size()) = Yaxisbis;
                     for (int i=0; i<Yaxis.size(); i++)
                     {
-                        Yaxisfinal[Yaxisbis.size()+i] = Yaxis[i]+m_AxisYmax;
+                        Yaxisfinal[Yaxisbis.size()+i] = Yaxis[i]+m_axisYmax;
                     }
                     return Yaxisfinal;
                 }

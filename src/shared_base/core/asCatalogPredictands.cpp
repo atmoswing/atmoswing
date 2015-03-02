@@ -37,27 +37,27 @@ asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
 :
 wxObject()
 {
-    m_CatalogFilePath = filePath;
+    m_catalogFilePath = filePath;
 
     // Initialize some data
-    m_SetId = wxEmptyString;
-    m_Name = wxEmptyString;
-    m_Description = wxEmptyString;
-    m_TimeZoneHours = 0;
-    m_TimeStepHours = 0;
-    m_FirstTimeStepHour = 0;
-    m_DataPath = wxEmptyString;
-    m_Start = 0;
+    m_setId = wxEmptyString;
+    m_name = wxEmptyString;
+    m_description = wxEmptyString;
+    m_timeZoneHours = 0;
+    m_timeStepHours = 0;
+    m_firstTimeStepHour = 0;
+    m_dataPath = wxEmptyString;
+    m_start = 0;
     m_End = 0;
 
     // Get the xml file path
-    if (m_CatalogFilePath.IsEmpty())
+    if (m_catalogFilePath.IsEmpty())
     {
         asLogError(_("No path was given for the predictand catalog."));
     }
 
     // Initiate some data
-    m_DataPath = wxEmptyString;
+    m_dataPath = wxEmptyString;
 }
 
 asCatalogPredictands::~asCatalogPredictands()
@@ -68,7 +68,7 @@ asCatalogPredictands::~asCatalogPredictands()
 bool asCatalogPredictands::Load()
 {
     // Load xml file
-    asFileXml xmlFile( m_CatalogFilePath, asFile::ReadOnly );
+    asFileXml xmlFile( m_catalogFilePath, asFile::ReadOnly );
     if(!xmlFile.Open()) return false;
 
     if(!xmlFile.CheckRootElement()) return false;
@@ -81,33 +81,33 @@ bool asCatalogPredictands::Load()
             wxXmlNode *nodeProp = nodeDataset->GetChildren();
             while (nodeProp) {
                 if (nodeProp->GetName() == "id") {
-                    m_SetId = xmlFile.GetString(nodeProp);
+                    m_setId = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "name") {
-                    m_Name = xmlFile.GetString(nodeProp);
+                    m_name = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "description") {
-                    m_Description = xmlFile.GetString(nodeProp);
+                    m_description = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "parameter") {
-                    m_Parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetString(nodeProp));
+                    m_parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
-                    m_Unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetString(nodeProp));
+                    m_unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "temporal_resolution") {
-                    m_TemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(xmlFile.GetString(nodeProp));
+                    m_temporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "spatial_aggregation") {
-                    m_SpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(xmlFile.GetString(nodeProp));
+                    m_spatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "time_zone") {
-                    m_TimeZoneHours = xmlFile.GetFloat(nodeProp);
+                    m_timeZoneHours = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
-                    m_Start = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
+                    m_start = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "end") {
                     m_End = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "first_time_step") {
-                    m_FirstTimeStepHour = xmlFile.GetFloat(nodeProp);
+                    m_firstTimeStepHour = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "path") {
-                    m_DataPath = xmlFile.GetString(nodeProp);
+                    m_dataPath = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "nan") {
-                    m_Nan.push_back(xmlFile.GetDouble(nodeProp));
+                    m_nan.push_back(xmlFile.GetDouble(nodeProp));
                 } else if (nodeProp->GetName() == "coordinate_system") {
-                    m_CoordSys = xmlFile.GetString(nodeProp);
+                    m_coordSys = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "stations") {
                     wxXmlNode *nodeData = nodeProp->GetChildren();
                     while (nodeData) {
@@ -154,7 +154,7 @@ bool asCatalogPredictands::Load()
 
                                 nodeDetail = nodeDetail->GetNext();
                             }
-                            m_Stations.push_back(station);
+                            m_stations.push_back(station);
 
                         } else {
                             xmlFile.UnknownNode(nodeData);
@@ -178,32 +178,32 @@ bool asCatalogPredictands::Load()
     }
 
     // Get the timestep
-    switch (m_TemporalResolution)
+    switch (m_temporalResolution)
     {
         case (Daily):
-            m_TimeStepHours = 24.0;
+            m_timeStepHours = 24.0;
             break;
         case (SixHourly):
-            m_TimeStepHours = 6.0;
+            m_timeStepHours = 6.0;
             break;
         case (Hourly):
-            m_TimeStepHours = 1.0;
+            m_timeStepHours = 1.0;
             break;
         case (SixHourlyMovingDailyTemporalWindow):
-            m_TimeStepHours = 6.0;
+            m_timeStepHours = 6.0;
             break;
         case (TwoDays):
-            m_TimeStepHours = 48.0;
+            m_timeStepHours = 48.0;
             break;
         case (ThreeDays):
-            m_TimeStepHours = 72.0;
+            m_timeStepHours = 72.0;
             break;
         case (Weekly):
-            m_TimeStepHours = 168.0;
+            m_timeStepHours = 168.0;
             break;
         default:
             wxFAIL;
-            m_TimeStepHours = 0;
+            m_timeStepHours = 0;
     }
     
     xmlFile.Close();

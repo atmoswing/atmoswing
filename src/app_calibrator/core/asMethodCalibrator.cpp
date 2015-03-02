@@ -36,11 +36,11 @@ asMethodCalibrator::asMethodCalibrator()
     :
     asMethodStandard()
 {
-    m_PredictorDataDir = wxEmptyString;
-    m_ParamsFilePath = wxEmptyString;
-    m_Preloaded = false;
-    m_ValidationMode = false;
-    m_ScoreValid = NaNFloat;
+    m_predictorDataDir = wxEmptyString;
+    m_paramsFilePath = wxEmptyString;
+    m_preloaded = false;
+    m_validationMode = false;
+    m_scoreValid = NaNFloat;
 
     // Seeds the random generator
     asTools::InitRandom();
@@ -54,23 +54,23 @@ asMethodCalibrator::~asMethodCalibrator()
 bool asMethodCalibrator::Manager()
 {
     // Set unresponsive to speedup
-    g_Responsive = false;
+    g_responsive = false;
 
     // Reset the score of the climatology
-    m_ScoreClimatology.clear();
+    m_scoreClimatology.clear();
 
     // Seeds the random generator
     asTools::InitRandom();
 
     // Load parameters
     asParametersCalibration params;
-    if(!params.LoadFromFile(m_ParamsFilePath)) return false;
+    if(!params.LoadFromFile(m_paramsFilePath)) return false;
     params.InitValues();
-    m_OriginalParams = params;
+    m_originalParams = params;
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-    if(!LoadPredictandDB(m_PredictandDBFilePath)) return false;
+    if(!LoadPredictandDB(m_predictandDBFilePath)) return false;
     asLogMessage(_("Predictand DB loaded."));
 
     // Get a forecast score object to extract the score order
@@ -102,26 +102,26 @@ bool asMethodCalibrator::Manager()
 
 void asMethodCalibrator::ClearAll()
 {
-    m_ParametersTemp.clear();
-    m_ScoresCalibTemp.clear();
-    m_Parameters.clear();
-    m_ScoresCalib.clear();
-    m_ScoreValid = NaNFloat;
+    m_parametersTemp.clear();
+    m_scoresCalibTemp.clear();
+    m_parameters.clear();
+    m_scoresCalib.clear();
+    m_scoreValid = NaNFloat;
 }
 
 void asMethodCalibrator::ClearTemp()
 {
-    m_ParametersTemp.clear();
-    m_ScoresCalibTemp.clear();
+    m_parametersTemp.clear();
+    m_scoresCalibTemp.clear();
 }
 
 void asMethodCalibrator::ClearScores()
 {
-    for (unsigned int i=0; i<m_ScoresCalib.size(); i++)
+    for (unsigned int i=0; i<m_scoresCalib.size(); i++)
     {
-        m_ScoresCalib[i] = NaNFloat;
+        m_scoresCalib[i] = NaNFloat;
     }
-    m_ScoreValid = NaNFloat;
+    m_scoreValid = NaNFloat;
 }
 
 void asMethodCalibrator::PushBackBestTemp()
@@ -132,25 +132,25 @@ void asMethodCalibrator::PushBackBestTemp()
 
 void asMethodCalibrator::RemoveNaNsInTemp()
 {
-    wxASSERT(m_ParametersTemp.size()==m_ScoresCalibTemp.size());
+    wxASSERT(m_parametersTemp.size()==m_scoresCalibTemp.size());
 
     std::vector <asParametersCalibration> copyParametersTemp;
     VectorFloat copyScoresCalibTemp;
 
-    for (unsigned int i=0; i<m_ScoresCalibTemp.size(); i++)
+    for (unsigned int i=0; i<m_scoresCalibTemp.size(); i++)
     {
-        if (!asTools::IsNaN(m_ScoresCalibTemp[i]))
+        if (!asTools::IsNaN(m_scoresCalibTemp[i]))
         {
-            copyScoresCalibTemp.push_back(m_ScoresCalibTemp[i]);
-            copyParametersTemp.push_back(m_ParametersTemp[i]);
+            copyScoresCalibTemp.push_back(m_scoresCalibTemp[i]);
+            copyParametersTemp.push_back(m_parametersTemp[i]);
         }
     }
 
-    m_ScoresCalibTemp = copyScoresCalibTemp;
-    m_ParametersTemp = copyParametersTemp;
+    m_scoresCalibTemp = copyScoresCalibTemp;
+    m_parametersTemp = copyParametersTemp;
 
-    wxASSERT(m_ParametersTemp.size()==m_ScoresCalibTemp.size());
-    wxASSERT(m_ParametersTemp.size()>0);
+    wxASSERT(m_parametersTemp.size()==m_scoresCalibTemp.size());
+    wxASSERT(m_parametersTemp.size()>0);
 }
 
 void asMethodCalibrator::KeepBestTemp()
@@ -161,80 +161,80 @@ void asMethodCalibrator::KeepBestTemp()
 
 void asMethodCalibrator::PushBackFirstTemp()
 {
-    m_Parameters.push_back(m_ParametersTemp[0]);
-    m_ScoresCalib.push_back(m_ScoresCalibTemp[0]);
+    m_parameters.push_back(m_parametersTemp[0]);
+    m_scoresCalib.push_back(m_scoresCalibTemp[0]);
 }
 
 void asMethodCalibrator::KeepFirstTemp()
 {
-    wxASSERT(m_Parameters.size()>0);
-    wxASSERT(m_ParametersTemp.size()>0);
-    wxASSERT(m_ScoresCalibTemp.size()>0);
-    m_Parameters[0] = m_ParametersTemp[0];
-    if (m_ScoresCalib.size()==0)
+    wxASSERT(m_parameters.size()>0);
+    wxASSERT(m_parametersTemp.size()>0);
+    wxASSERT(m_scoresCalibTemp.size()>0);
+    m_parameters[0] = m_parametersTemp[0];
+    if (m_scoresCalib.size()==0)
     {
-        m_ScoresCalib.push_back(m_ScoresCalibTemp[0]);
+        m_scoresCalib.push_back(m_scoresCalibTemp[0]);
     }
     else
     {
-        m_ScoresCalib[0] = m_ScoresCalibTemp[0];
+        m_scoresCalib[0] = m_scoresCalibTemp[0];
     }
 
 }
 
 void asMethodCalibrator::SortScoresAndParameters()
 {
-    wxASSERT(m_ScoresCalib.size()==m_Parameters.size());
-    wxASSERT(m_ScoresCalib.size()>=1);
-    wxASSERT(m_Parameters.size()>=1);
+    wxASSERT(m_scoresCalib.size()==m_parameters.size());
+    wxASSERT(m_scoresCalib.size()>=1);
+    wxASSERT(m_parameters.size()>=1);
 
-    if (m_Parameters.size()==1) return;
+    if (m_parameters.size()==1) return;
 
     // Sort according to the score
-    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,m_ScoresCalib.size(),
-                            0,m_ScoresCalib.size()-1);
-    asTools::SortArrays(&m_ScoresCalib[0], &m_ScoresCalib[m_ScoresCalib.size()-1],
-                        &vIndices[0], &vIndices[m_ScoresCalib.size()-1],
-                        m_ScoreOrder);
+    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,m_scoresCalib.size(),
+                            0,m_scoresCalib.size()-1);
+    asTools::SortArrays(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size()-1],
+                        &vIndices[0], &vIndices[m_scoresCalib.size()-1],
+                        m_scoreOrder);
 
     // Sort the parameters sets as the scores
     std::vector <asParametersCalibration> copyParameters;
-    for (unsigned int i=0; i<m_ScoresCalib.size(); i++)
+    for (unsigned int i=0; i<m_scoresCalib.size(); i++)
     {
-        copyParameters.push_back(m_Parameters[i]);
+        copyParameters.push_back(m_parameters[i]);
     }
-    for (unsigned int i=0; i<m_ScoresCalib.size(); i++)
+    for (unsigned int i=0; i<m_scoresCalib.size(); i++)
     {
         int index = vIndices(i);
-        m_Parameters[i] = copyParameters[index];
+        m_parameters[i] = copyParameters[index];
     }
 }
 
 void asMethodCalibrator::SortScoresAndParametersTemp()
 {
-    wxASSERT(m_ScoresCalibTemp.size()==m_ParametersTemp.size());
-    wxASSERT(m_ScoresCalibTemp.size()>0);
-    wxASSERT(m_ParametersTemp.size()>0);
+    wxASSERT(m_scoresCalibTemp.size()==m_parametersTemp.size());
+    wxASSERT(m_scoresCalibTemp.size()>0);
+    wxASSERT(m_parametersTemp.size()>0);
 
-    if (m_ParametersTemp.size()==1) return;
+    if (m_parametersTemp.size()==1) return;
 
     // Sort according to the score
-    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,m_ScoresCalibTemp.size(),
-                            0,m_ScoresCalibTemp.size()-1);
-    asTools::SortArrays(&m_ScoresCalibTemp[0], &m_ScoresCalibTemp[m_ScoresCalibTemp.size()-1],
-                        &vIndices[0], &vIndices[m_ScoresCalibTemp.size()-1],
-                        m_ScoreOrder);
+    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,m_scoresCalibTemp.size(),
+                            0,m_scoresCalibTemp.size()-1);
+    asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size()-1],
+                        &vIndices[0], &vIndices[m_scoresCalibTemp.size()-1],
+                        m_scoreOrder);
 
     // Sort the parameters sets as the scores
     std::vector <asParametersCalibration> copyParameters;
-    for (unsigned int i=0; i<m_ScoresCalibTemp.size(); i++)
+    for (unsigned int i=0; i<m_scoresCalibTemp.size(); i++)
     {
-        copyParameters.push_back(m_ParametersTemp[i]);
+        copyParameters.push_back(m_parametersTemp[i]);
     }
-    for (unsigned int i=0; i<m_ScoresCalibTemp.size(); i++)
+    for (unsigned int i=0; i<m_scoresCalibTemp.size(); i++)
     {
         int index = vIndices(i);
-        m_ParametersTemp[i] = copyParameters[index];
+        m_parametersTemp[i] = copyParameters[index];
     }
 }
 
@@ -242,22 +242,22 @@ bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params,
 {
     float thisScore = scoreFinal.GetForecastScore();
 
-    switch (m_ScoreOrder)
+    switch (m_scoreOrder)
     {
     case Asc:
-        if (thisScore<m_ScoresCalib[0])
+        if (thisScore<m_scoresCalib[0])
         {
-            m_ParametersTemp.push_back(params);
-            m_ScoresCalibTemp.push_back(thisScore);
+            m_parametersTemp.push_back(params);
+            m_scoresCalibTemp.push_back(thisScore);
             return true;
         }
         break;
 
     case Desc:
-        if (thisScore>m_ScoresCalib[0])
+        if (thisScore>m_scoresCalib[0])
         {
-            m_ParametersTemp.push_back(params);
-            m_ScoresCalibTemp.push_back(thisScore);
+            m_parametersTemp.push_back(params);
+            m_scoresCalibTemp.push_back(thisScore);
             return true;
         }
         break;
@@ -273,26 +273,26 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
 {
     float thisScore = scoreFinal.GetForecastScore();
 
-    switch (m_ScoreOrder)
+    switch (m_scoreOrder)
     {
     case Asc:
-        if (thisScore<m_ScoresCalib[0])
+        if (thisScore<m_scoresCalib[0])
         {
-            wxASSERT(m_Parameters.size()>0);
-            wxASSERT(m_ScoresCalib.size()>0);
-            m_Parameters[0] = params;
-            m_ScoresCalib[0] = thisScore;
+            wxASSERT(m_parameters.size()>0);
+            wxASSERT(m_scoresCalib.size()>0);
+            m_parameters[0] = params;
+            m_scoresCalib[0] = thisScore;
             return true;
         }
         break;
 
     case Desc:
-        if (thisScore>m_ScoresCalib[0])
+        if (thisScore>m_scoresCalib[0])
         {
-            wxASSERT(m_Parameters.size()>0);
-            wxASSERT(m_ScoresCalib.size()>0);
-            m_Parameters[0] = params;
-            m_ScoresCalib[0] = thisScore;
+            wxASSERT(m_parameters.size()>0);
+            wxASSERT(m_scoresCalib.size()>0);
+            m_parameters[0] = params;
+            m_scoresCalib[0] = thisScore;
             return true;
         }
         break;
@@ -307,9 +307,9 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
 bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results)
 {
     // Extract selected parameters & best parameters
-    for (unsigned int i=0; i<m_Parameters.size(); i++)
+    for (unsigned int i=0; i<m_parameters.size(); i++)
     {
-        results.Add(m_Parameters[i],m_ScoresCalib[i],m_ScoreValid);
+        results.Add(m_parameters[i],m_scoresCalib[i],m_scoreValid);
     }
 
     return true;
@@ -317,28 +317,28 @@ bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results
 
 bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
 {
-    wxASSERT(m_Parameters.size()>0);
-    wxASSERT(m_ScoresCalib.size()>0);
+    wxASSERT(m_parameters.size()>0);
+    wxASSERT(m_scoresCalib.size()>0);
 
     // Extract selected parameters & best parameters
-    float bestscore = m_ScoresCalib[0];
+    float bestscore = m_scoresCalib[0];
     int bestscorerow = 0;
 
-    for (unsigned int i=0; i<m_Parameters.size(); i++)
+    for (unsigned int i=0; i<m_parameters.size(); i++)
     {
-        if(m_ScoreOrder==Asc)
+        if(m_scoreOrder==Asc)
         {
-            if(m_ScoresCalib[i]<bestscore)
+            if(m_scoresCalib[i]<bestscore)
             {
-                bestscore = m_ScoresCalib[i];
+                bestscore = m_scoresCalib[i];
                 bestscorerow = i;
             }
         }
         else
         {
-            if(m_ScoresCalib[i]>bestscore)
+            if(m_scoresCalib[i]>bestscore)
             {
-                bestscore = m_ScoresCalib[i];
+                bestscore = m_scoresCalib[i];
                 bestscorerow = i;
             }
         }
@@ -350,7 +350,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
         Validate(bestscorerow);
     }
 
-    results.Add(m_Parameters[bestscorerow],m_ScoresCalib[bestscorerow],m_ScoreValid);
+    results.Add(m_parameters[bestscorerow],m_scoresCalib[bestscorerow],m_scoreValid);
 
     return true;
 }
@@ -382,10 +382,10 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
 bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
     // Load data once.
-    if(!m_Preloaded)
+    if(!m_preloaded)
     {
         // Set preload to true here, so cleanup is made in case of exceptions.
-        m_Preloaded = true;
+        m_preloaded = true;
 
         // Archive date array
         double timeStartArchive = params.GetArchiveStart();
@@ -403,21 +403,21 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         double timeEndData = wxMax(timeEndCalibration, timeEndArchive);
 
         // Resize container
-        if (m_PreloadedArchive.size()==0)
+        if (m_preloadedArchive.size()==0)
         {
-            m_PreloadedArchive.resize(params.GetStepsNb());
-            m_PreloadedArchivePointerCopy.resize(params.GetStepsNb());
+            m_preloadedArchive.resize(params.GetStepsNb());
+            m_preloadedArchivePointerCopy.resize(params.GetStepsNb());
             for (int tmp_step=0; tmp_step<params.GetStepsNb(); tmp_step++)
             {
-                m_PreloadedArchive[tmp_step].resize(params.GetPredictorsNb(tmp_step));
-                m_PreloadedArchivePointerCopy[tmp_step].resize(params.GetPredictorsNb(tmp_step));
+                m_preloadedArchive[tmp_step].resize(params.GetPredictorsNb(tmp_step));
+                m_preloadedArchivePointerCopy[tmp_step].resize(params.GetPredictorsNb(tmp_step));
 
                 for (int tmp_ptor=0; tmp_ptor<params.GetPredictorsNb(tmp_step); tmp_ptor++)
                 {
-                    m_PreloadedArchivePointerCopy[tmp_step][tmp_ptor] = false;
-                    m_PreloadedArchive[tmp_step][tmp_ptor].resize(1);
-                    m_PreloadedArchive[tmp_step][tmp_ptor][0].resize(1);
-                    m_PreloadedArchive[tmp_step][tmp_ptor][0][0]=NULL;
+                    m_preloadedArchivePointerCopy[tmp_step][tmp_ptor] = false;
+                    m_preloadedArchive[tmp_step][tmp_ptor].resize(1);
+                    m_preloadedArchive[tmp_step][tmp_ptor][0].resize(1);
+                    m_preloadedArchive[tmp_step][tmp_ptor][0][0]=NULL;
                 }
             }
         }
@@ -511,22 +511,22 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             wxASSERT(preloadLevels.size()>0);
                             wxASSERT(preloadTimeHours.size()>0);
 
-                            m_PreloadedArchivePointerCopy[tmp_step][tmp_ptor] = true;
-                            m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevels.size());
+                            m_preloadedArchivePointerCopy[tmp_step][tmp_ptor] = true;
+                            m_preloadedArchive[tmp_step][tmp_ptor].resize(preloadLevels.size());
 
-                            wxASSERT(m_PreloadedArchive[tmp_step].size()>(unsigned)prev);
-                            wxASSERT(m_PreloadedArchive[tmp_step][prev].size()==preloadLevels.size());
+                            wxASSERT(m_preloadedArchive[tmp_step].size()>(unsigned)prev);
+                            wxASSERT(m_preloadedArchive[tmp_step][prev].size()==preloadLevels.size());
 
                             // Load data for every level and every hour
                             for (unsigned int tmp_level=0; tmp_level<preloadLevels.size(); tmp_level++)
                             {
-                                m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHours.size());
-                                wxASSERT(m_PreloadedArchive[tmp_step][prev][tmp_level].size()==preloadTimeHours.size());
+                                m_preloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHours.size());
+                                wxASSERT(m_preloadedArchive[tmp_step][prev][tmp_level].size()==preloadTimeHours.size());
 
                                 for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
                                 {
                                     // Copy pointer
-                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=m_PreloadedArchive[tmp_step][prev][tmp_level][tmp_hour];
+                                    m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=m_preloadedArchive[tmp_step][prev][tmp_level][tmp_hour];
                                 }
                             }
 
@@ -546,13 +546,13 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         wxASSERT(preloadTimeHours.size()>0);
 
                         // Resize container and set null pointers
-                        m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevels.size());
+                        m_preloadedArchive[tmp_step][tmp_ptor].resize(preloadLevels.size());
                         for (unsigned int tmp_level=0; tmp_level<preloadLevels.size(); tmp_level++)
                         {
-                            m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHours.size());
+                            m_preloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHours.size());
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
                             {
-                                m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour] = NULL;
+                                m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour] = NULL;
                             }
                         }
 
@@ -562,7 +562,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHours.size(); tmp_hour++)
                             {
                                 // Loading the datasets information
-                                asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_PredictorDataDir);
+                                asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(tmp_step, tmp_ptor), params.GetPredictorDataId(tmp_step, tmp_ptor), m_predictorDataDir);
                                 if(!predictor) {
                                     return false;
                                 }
@@ -655,7 +655,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 asLogMessage(_("Data loaded."));
                                 wxDELETE(area);
 
-                                m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
+                                m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
                             }
                         }
                     }
@@ -693,13 +693,13 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                         }
 
                         // Resize container and set null pointers
-                        m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevelsSize);
+                        m_preloadedArchive[tmp_step][tmp_ptor].resize(preloadLevelsSize);
                         for (unsigned int tmp_level=0; tmp_level<preloadLevelsSize; tmp_level++)
                         {
-                            m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHoursSize);
+                            m_preloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHoursSize);
                             for (unsigned int tmp_hour=0; tmp_hour<preloadTimeHoursSize; tmp_hour++)
                             {
-                                m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour] = NULL;
+                                m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour] = NULL;
                             }
                         }
 
@@ -769,7 +769,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     // Loading the datasets information
                                     asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(tmp_step, tmp_ptor, tmp_prepro),
                                                                                                                       params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro),
-                                                                                                                      m_PredictorDataDir);
+                                                                                                                      m_predictorDataDir);
                                     if(!predictorPreprocess)
                                     {
                                         Cleanup(predictorsPreprocess);
@@ -838,11 +838,11 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         Cleanup(predictorsPreprocess);
                                         return false;
                                     }
-                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
+                                    m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
                                 }
                                 catch(bad_alloc& ba)
                                 {
-                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
+                                    m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                                     wxString msg(ba.what(), wxConvUTF8);
                                     asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg.c_str()));
                                     wxDELETE(predictor);
@@ -851,7 +851,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 }
                                 catch (exception& e)
                                 {
-                                    m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
+                                    m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                                     wxString msg(e.what(), wxConvUTF8);
                                     asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg.c_str()));
                                     wxDELETE(predictor);
@@ -878,16 +878,16 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                     int preloadLevelsSize = wxMax(preloadLevels.size(),1);
                     int preloadTimeHoursSize = wxMax(preloadTimeHours.size(),1);
 
-                    m_PreloadedArchive[tmp_step][tmp_ptor].resize(preloadLevelsSize);
+                    m_preloadedArchive[tmp_step][tmp_ptor].resize(preloadLevelsSize);
 
                     // Load data for every level and every hour
                     for (int tmp_level=0; tmp_level<preloadLevelsSize; tmp_level++)
                     {
-                        m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHoursSize);
+                        m_preloadedArchive[tmp_step][tmp_ptor][tmp_level].resize(preloadTimeHoursSize);
 
                         for (int tmp_hour=0; tmp_hour<preloadTimeHoursSize; tmp_hour++)
                         {
-                            m_PreloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
+                            m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                         }
                     }
                 }
@@ -993,19 +993,19 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
             }
 
             // Get data on the desired domain
-            wxASSERT_MSG((unsigned)i_step<m_PreloadedArchive.size(), wxString::Format("i_step=%d, m_PreloadedArchive.size()=%d", i_step, (int)m_PreloadedArchive.size()));
-            wxASSERT_MSG((unsigned)i_ptor<m_PreloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_PreloadedArchive[i_step].size()=%d", i_ptor, (int)m_PreloadedArchive[i_step].size()));
-            wxASSERT_MSG((unsigned)i_level<m_PreloadedArchive[i_step][i_ptor].size(), wxString::Format("i_level=%d, m_PreloadedArchive[i_step][i_ptor].size()=%d", i_level, (int)m_PreloadedArchive[i_step][i_ptor].size()));
-            wxASSERT_MSG((unsigned)i_hour<m_PreloadedArchive[i_step][i_ptor][i_level].size(), wxString::Format("i_hour=%d, m_PreloadedArchive[i_step][i_ptor][i_level].size()=%d", i_hour, (int)m_PreloadedArchive[i_step][i_ptor][i_level].size()));
+            wxASSERT_MSG((unsigned)i_step<m_preloadedArchive.size(), wxString::Format("i_step=%d, m_preloadedArchive.size()=%d", i_step, (int)m_preloadedArchive.size()));
+            wxASSERT_MSG((unsigned)i_ptor<m_preloadedArchive[i_step].size(), wxString::Format("i_ptor=%d, m_preloadedArchive[i_step].size()=%d", i_ptor, (int)m_preloadedArchive[i_step].size()));
+            wxASSERT_MSG((unsigned)i_level<m_preloadedArchive[i_step][i_ptor].size(), wxString::Format("i_level=%d, m_preloadedArchive[i_step][i_ptor].size()=%d", i_level, (int)m_preloadedArchive[i_step][i_ptor].size()));
+            wxASSERT_MSG((unsigned)i_hour<m_preloadedArchive[i_step][i_ptor][i_level].size(), wxString::Format("i_hour=%d, m_preloadedArchive[i_step][i_ptor][i_level].size()=%d", i_hour, (int)m_preloadedArchive[i_step][i_ptor][i_level].size()));
             ThreadsManager().CritSectionPreloadedData().Enter();
-            if (m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]==NULL)
+            if (m_preloadedArchive[i_step][i_ptor][i_level][i_hour]==NULL)
             {
                 asLogError(_("The pointer to preloaded data is null."));
                 return false;
             }
             // Copy the data
-            wxASSERT(m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
-            asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_PreloadedArchive[i_step][i_ptor][i_level][i_hour]);
+            wxASSERT(m_preloadedArchive[i_step][i_ptor][i_level][i_hour]);
+            asDataPredictorArchive* desiredPredictor = new asDataPredictorArchive(*m_preloadedArchive[i_step][i_ptor][i_level][i_hour]);
             ThreadsManager().CritSectionPreloadedData().Leave();
 
             // Area object instantiation
@@ -1073,7 +1073,7 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                 // Loading the datasets information
                 asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(i_step, i_ptor),
                                                                                         params.GetPredictorDataId(i_step, i_ptor),
-                                                                                        m_PredictorDataDir);
+                                                                                        m_predictorDataDir);
                 if(!predictor)
                 {
                     return false;
@@ -1135,7 +1135,7 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
                     // Loading the datasets information
                     asDataPredictorArchive* predictorPreprocess = asDataPredictorArchive::GetInstance(params.GetPreprocessDatasetId(i_step, i_ptor, i_prepro),
                                                                                                              params.GetPreprocessDataId(i_step, i_ptor, i_prepro),
-                                                                                                             m_PredictorDataDir);
+                                                                                                             m_predictorDataDir);
                     if(!predictorPreprocess)
                     {
                         Cleanup(predictorsPreprocess);
@@ -1209,7 +1209,7 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
 	VectorInt stationIds = params.GetPredictandStationIds();
 
 	// Get start and end dates
-	Array1DDouble predictandTime = m_PredictandDB->GetTime();
+	Array1DDouble predictandTime = m_predictandDB->GetTime();
 	float predictandTimeDays = params.GetPredictandTimeHours()/24.0;
 	double timeStart, timeEnd;
 	timeStart = wxMax(predictandTime[0],params.GetArchiveStart());
@@ -1223,7 +1223,7 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
 
 	for (int i_st=0; i_st<stationIds.size(); i_st++)
 	{
-		Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
+		Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[i_st]);
 
 		while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart)))
 		{
@@ -1254,7 +1254,7 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
 	VArray1DFloat climatologyData(stationIds.size(), Array1DFloat(dataLength));
 	for (int i_st=0; i_st<stationIds.size(); i_st++)
 	{
-		Array1DFloat predictandDataNorm = m_PredictandDB->GetDataNormalizedStation(stationIds[i_st]);
+		Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[i_st]);
 
 		// Set data
 		int counter = 0;
@@ -1307,26 +1307,26 @@ void asMethodCalibrator::Cleanup(std::vector < asPredictorCriteria* > criteria)
 
 void asMethodCalibrator::DeletePreloadedData()
 {
-    if (!m_Preloaded) return;
+    if (!m_preloaded) return;
 
-    for (unsigned int i=0; i<m_PreloadedArchive.size(); i++)
+    for (unsigned int i=0; i<m_preloadedArchive.size(); i++)
     {
-        for (unsigned int j=0; j<m_PreloadedArchive[i].size(); j++)
+        for (unsigned int j=0; j<m_preloadedArchive[i].size(); j++)
         {
-            if(!m_PreloadedArchivePointerCopy[i][j])
+            if(!m_preloadedArchivePointerCopy[i][j])
             {
-                for (unsigned int k=0; k<m_PreloadedArchive[i][j].size(); k++)
+                for (unsigned int k=0; k<m_preloadedArchive[i][j].size(); k++)
                 {
-                    for (unsigned int l=0; l<m_PreloadedArchive[i][j][k].size(); l++)
+                    for (unsigned int l=0; l<m_preloadedArchive[i][j][k].size(); l++)
                     {
-                        wxDELETE(m_PreloadedArchive[i][j][k][l]);
+                        wxDELETE(m_preloadedArchive[i][j][k][l]);
                     }
                 }
             }
         }
     }
 
-    m_Preloaded = false;
+    m_preloaded = false;
 }
 
 bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParametersScoring &params, int i_step, bool &containsNaNs)
@@ -1369,7 +1369,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
                                 params.GetTimeArrayTargetTimeStepHours(),
                                 params.GetTimeArrayTargetMode());
 
-    if(!m_ValidationMode)
+    if(!m_validationMode)
     {
         if(params.HasValidationPeriod()) // remove validation years
         {
@@ -1387,7 +1387,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
             return false;
         }
 
-        if(!timeArrayTarget.Init(*m_PredictandDB, params.GetTimeArrayTargetPredictandSerieName(), stations[0], params.GetTimeArrayTargetPredictandMinThreshold(), params.GetTimeArrayTargetPredictandMaxThreshold()))
+        if(!timeArrayTarget.Init(*m_predictandDB, params.GetTimeArrayTargetPredictandSerieName(), stations[0], params.GetTimeArrayTargetPredictandMinThreshold(), params.GetTimeArrayTargetPredictandMaxThreshold()))
         {
             asLogError(_("The time array mode for the target dates is not correctly defined."));
             return false;
@@ -1403,7 +1403,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
 
     // If in validation mode, only keep validation years
-    if(m_ValidationMode)
+    if(m_validationMode)
     {
         timeArrayTarget.KeepOnlyYears(params.GetValidationYearsVector());
     }
@@ -1605,9 +1605,9 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsAnalogsValues &results, asPar
     if (results.Load()) return true;
 
     // Set the predictands values to the corresponding analog dates
-    wxASSERT(m_PredictandDB);
+    wxASSERT(m_predictandDB);
     asLogMessage(_("Start setting the predictand values to the corresponding analog dates."));
-    if(!asProcessor::GetAnalogsValues(*m_PredictandDB, anaDates, params, results))
+    if(!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, results))
     {
         asLogError(_("Failed setting the predictand values to the corresponding analog dates."));
         return false;
@@ -1635,25 +1635,25 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     forecastScore->SetQuantile(params.GetForecastScoreQuantile());
     forecastScore->SetThreshold(params.GetForecastScoreThreshold());
 
-    if (forecastScore->UsesClimatology() && m_ScoreClimatology.size()==0)
+    if (forecastScore->UsesClimatology() && m_scoreClimatology.size()==0)
     {
         asLogMessage(_("Processing the score of the climatology."));
 
         VArray1DFloat climatologyData = GetClimatologyData(params);
         VectorInt stationIds = params.GetPredictandStationIds();
-        m_ScoreClimatology.resize(stationIds.size());
+        m_scoreClimatology.resize(stationIds.size());
 
         for (int i_st=0; i_st<stationIds.size(); i_st++)
         {
             forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues()[i_st], climatologyData[i_st]);
-            m_ScoreClimatology[i_st] = forecastScore->GetScoreClimatology();
+            m_scoreClimatology[i_st] = forecastScore->GetScoreClimatology();
         }
     }
 
     // Pass data and score to processor
     asLogMessage(_("Start processing the forecast score."));
 
-    if(!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results, m_ScoreClimatology))
+    if(!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results, m_scoreClimatology))
     {
         asLogError(_("Failed processing the forecast score."));
         wxDELETE(forecastScore);
@@ -1773,8 +1773,8 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
             if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, i_step))
                 return false;
 
-            m_ParametersTemp.push_back(params);
-            m_ScoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
+            m_parametersTemp.push_back(params);
+            m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
         }
 
     }
@@ -1826,24 +1826,24 @@ bool asMethodCalibrator::Validate(const int bestscorerow)
         return true;
     }
 
-    if (m_Parameters.size()==0)
+    if (m_parameters.size()==0)
     {
         asLogError("The parameters array is empty in the validation procedure.");
         return false;
     }
-    else if (m_Parameters.size()<unsigned(bestscorerow+1))
+    else if (m_parameters.size()<unsigned(bestscorerow+1))
     {
         asLogError("Trying to access parameters outside the array in the validation procedure.");
         return false;
     }
 
-    if (!m_Parameters[bestscorerow].HasValidationPeriod())
+    if (!m_parameters[bestscorerow].HasValidationPeriod())
     {
         asLogWarning("The parameters have no validation period !");
         return false;
     }
 
-    m_ValidationMode = true;
+    m_validationMode = true;
 
     asResultsAnalogsDates anaDatesPrevious;
     asResultsAnalogsDates anaDates;
@@ -1852,18 +1852,18 @@ bool asMethodCalibrator::Validate(const int bestscorerow)
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
     // Process every step one after the other
-    int stepsNb = m_Parameters[bestscorerow].GetStepsNb();
+    int stepsNb = m_parameters[bestscorerow].GetStepsNb();
     for (int i_step=0; i_step<stepsNb; i_step++)
     {
         bool containsNaNs = false;
         if (i_step==0)
         {
-            if(!GetAnalogsDates(anaDates, m_Parameters[bestscorerow], i_step, containsNaNs)) return false;
+            if(!GetAnalogsDates(anaDates, m_parameters[bestscorerow], i_step, containsNaNs)) return false;
         }
         else
         {
             anaDatesPrevious = anaDates;
-            if(!GetAnalogsSubDates(anaDates, m_Parameters[bestscorerow], anaDatesPrevious, i_step, containsNaNs)) return false;
+            if(!GetAnalogsSubDates(anaDates, m_parameters[bestscorerow], anaDatesPrevious, i_step, containsNaNs)) return false;
         }
         if (containsNaNs)
         {
@@ -1871,13 +1871,13 @@ bool asMethodCalibrator::Validate(const int bestscorerow)
             return false;
         }
     }
-    if(!GetAnalogsValues(anaValues, m_Parameters[bestscorerow], anaDates, stepsNb-1)) return false;
-    if(!GetAnalogsForecastScores(anaScores, m_Parameters[bestscorerow], anaValues, stepsNb-1)) return false;
-    if(!GetAnalogsForecastScoreFinal(anaScoreFinal, m_Parameters[bestscorerow], anaScores, stepsNb-1)) return false;
+    if(!GetAnalogsValues(anaValues, m_parameters[bestscorerow], anaDates, stepsNb-1)) return false;
+    if(!GetAnalogsForecastScores(anaScores, m_parameters[bestscorerow], anaValues, stepsNb-1)) return false;
+    if(!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parameters[bestscorerow], anaScores, stepsNb-1)) return false;
 
-    m_ScoreValid = anaScoreFinal.GetForecastScore();
+    m_scoreValid = anaScoreFinal.GetForecastScore();
 
-    m_ValidationMode = false;
+    m_validationMode = false;
 
     return true;
 }

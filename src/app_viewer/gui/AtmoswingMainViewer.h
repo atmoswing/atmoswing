@@ -40,7 +40,7 @@ public:
     AtmoswingFrameViewer(wxFrame *frame);
     ~AtmoswingFrameViewer();
 private:
-    asLogWindow *m_LogWindow;
+    asLogWindow *m_logWindow;
     virtual void OnClose(wxCloseEvent& event);
     virtual void OnQuit(wxCommandEvent& event);
     void OnShowLog( wxCommandEvent& event );

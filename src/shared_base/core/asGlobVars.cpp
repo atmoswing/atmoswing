@@ -27,15 +27,15 @@
  
 #include "asGlobVars.h"
 
-bool g_SilentMode = false;
-bool g_VerboseMode = true;
-bool g_Responsive = true;
-bool g_UnitTesting = false;
-bool g_GuiMode = true;
+bool g_silentMode = false;
+bool g_verboseMode = true;
+bool g_responsive = true;
+bool g_unitTesting = false;
+bool g_guiMode = true;
 
 // Constants
-const double g_Cst_Euler = 0.57721566490153286060651209008240243104215933593992; // http://fr.wikipedia.org/wiki/Constante_d%27Euler-Mascheroni
-const double g_Cst_Pi = 3.14159265358979323846264338327950288419716939937510; // http://fr.wikipedia.org/wiki/Pi
+const double g_cst_Euler = 0.57721566490153286060651209008240243104215933593992; // http://fr.wikipedia.org/wiki/Constante_d%27Euler-Mascheroni
+const double g_cst_Pi = 3.14159265358979323846264338327950288419716939937510; // http://fr.wikipedia.org/wiki/Pi
 
 // Useful variables
 const wxString DS = wxFileName::GetPathSeparator();

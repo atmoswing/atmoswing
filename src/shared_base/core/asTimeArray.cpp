@@ -38,12 +38,12 @@ asTime()
     wxASSERT(timestephours>0);
 
     // Get values
-    m_Initialized = false;
-    m_Mode = slctmode;
-    m_TimeStepDays = timestephours/24;
-    m_Start = start;
+    m_initialized = false;
+    m_mode = slctmode;
+    m_timeStepDays = timestephours/24;
+    m_start = start;
     m_End = end;
-    m_IntervalDays = 0;
+    m_intervalDays = 0;
     m_ExclusionDays = 0;
 
 
@@ -58,42 +58,42 @@ asTime()
 
     if (slctModeString.CmpNoCase("simple")==0)
     {
-        m_Mode = Simple;
+        m_mode = Simple;
     }
     else if (slctModeString.CmpNoCase("same_season")==0
         || slctModeString.CmpNoCase("SameSeason")==0)
     {
-        m_Mode = SameSeason;
+        m_mode = SameSeason;
     }
     else if (slctModeString.CmpNoCase("season_DJF")==0
         || slctModeString.CmpNoCase("SeasonDJF")==0)
     {
-        m_Mode = SeasonDJF;
+        m_mode = SeasonDJF;
     }
     else if (slctModeString.CmpNoCase("season_MAM")==0
         || slctModeString.CmpNoCase("SeasonMAM")==0)
     {
-        m_Mode = SeasonMAM;
+        m_mode = SeasonMAM;
     }
     else if (slctModeString.CmpNoCase("season_JJA")==0
         || slctModeString.CmpNoCase("SeasonJJA")==0)
     {
-        m_Mode = SeasonJJA;
+        m_mode = SeasonJJA;
     }
     else if (slctModeString.CmpNoCase("season_SON")==0
         || slctModeString.CmpNoCase("SeasonSON")==0)
     {
-        m_Mode = SeasonSON;
+        m_mode = SeasonSON;
     }
     else if (slctModeString.CmpNoCase("days_interval")==0
         || slctModeString.CmpNoCase("DaysInterval")==0)
     {
-        m_Mode = DaysInterval;
+        m_mode = DaysInterval;
     }
     else if(slctModeString.CmpNoCase("predictand_thresholds")==0 
         || slctModeString.CmpNoCase("PredictandThresholds")==0)
     {
-        m_Mode = PredictandThresholds;
+        m_mode = PredictandThresholds;
     }
     else
     {
@@ -101,11 +101,11 @@ asTime()
     }
 
     // Get values
-    m_Initialized = false;
-    m_TimeStepDays = timestephours/24;
-    m_Start = start;
+    m_initialized = false;
+    m_timeStepDays = timestephours/24;
+    m_start = start;
     m_End = end;
-    m_IntervalDays = 0;
+    m_intervalDays = 0;
     m_ExclusionDays = 0;
 
 }
@@ -115,12 +115,12 @@ asTimeArray::asTimeArray()
 asTime()
 {
     // Should not be used for processing, only to get en empty object !
-    m_Initialized = false;
-    m_Mode = Custom;
-    m_TimeStepDays = 0;
-    m_Start = 0;
+    m_initialized = false;
+    m_mode = Custom;
+    m_timeStepDays = 0;
+    m_start = 0;
     m_End = 0;
-    m_IntervalDays = 0;
+    m_intervalDays = 0;
     m_ExclusionDays = 0;
 }
 
@@ -131,12 +131,12 @@ asTime()
     wxASSERT(slctmode==SingleDay);
 
     // Get values
-    m_Initialized = false;
-    m_Mode = slctmode;
-    m_TimeStepDays = 0;
-    m_Start = date;
+    m_initialized = false;
+    m_mode = slctmode;
+    m_timeStepDays = 0;
+    m_start = date;
     m_End = date;
-    m_IntervalDays = 0;
+    m_intervalDays = 0;
     m_ExclusionDays = 0;
 
 }
@@ -149,18 +149,18 @@ asTime()
     wxASSERT(timeArray[timeArray.size()-1]>timeArray[0]);
 
     // Get values
-    m_Initialized = false;
-    m_Mode = Custom;
-    m_TimeStepDays = timeArray[1]-timeArray[0];
-    m_Start = timeArray[0];
+    m_initialized = false;
+    m_mode = Custom;
+    m_timeStepDays = timeArray[1]-timeArray[0];
+    m_start = timeArray[0];
     m_End = timeArray[timeArray.size()-1];
-    m_IntervalDays = 0;
+    m_intervalDays = 0;
     m_ExclusionDays = 0;
-    m_TimeArray.resize(timeArray.size());
+    m_timeArray.resize(timeArray.size());
 
     for (unsigned int i=0; i<timeArray.size(); i++)
     {
-        m_TimeArray[i] = timeArray[i];
+        m_timeArray[i] = timeArray[i];
     }
 }
 
@@ -171,14 +171,14 @@ asTime()
     wxASSERT(timeArray.size()>0);
 
     // Get values
-    m_Initialized = false;
-    m_Mode = Custom;
-    m_TimeStepDays = timeArray[1]-timeArray[0];
-    m_Start = timeArray[0];
+    m_initialized = false;
+    m_mode = Custom;
+    m_timeStepDays = timeArray[1]-timeArray[0];
+    m_start = timeArray[0];
     m_End = timeArray[timeArray.size()-1];
-    m_IntervalDays = 0;
+    m_intervalDays = 0;
     m_ExclusionDays = 0;
-    m_TimeArray = timeArray;
+    m_timeArray = timeArray;
 }
 
 asTimeArray::~asTimeArray()
@@ -188,22 +188,22 @@ asTimeArray::~asTimeArray()
 
 bool asTimeArray::Init()
 {
-    switch(m_Mode)
+    switch(m_mode)
     {
         case SingleDay:
         {
-            int year = GetYear(m_Start);
+            int year = GetYear(m_start);
             if (IsYearForbidden(year))
             {
                 asLogError(_("The given date "));
             }
-            m_TimeArray.resize(1);
-            m_TimeArray[0] = m_Start;
+            m_timeArray.resize(1);
+            m_timeArray[0] = m_start;
             break;
         }
         case Simple:
         {
-            m_TimeArray.resize(0);
+            m_timeArray.resize(0);
             if (!BuildArraySimple())
             {
                 asLogError(_("Time array creation failed"));
@@ -213,7 +213,7 @@ bool asTimeArray::Init()
         }
         case SeasonDJF:
         {
-            m_TimeArray.resize(0);
+            m_timeArray.resize(0);
             double forecastdate = 51544; //01.01.2000
             if (!BuildArraySeasons(forecastdate))
             {
@@ -224,7 +224,7 @@ bool asTimeArray::Init()
         }
         case SeasonMAM:
         {
-            m_TimeArray.resize(0);
+            m_timeArray.resize(0);
             double forecastdate = 51635; //01.04.2000
             if (!BuildArraySeasons(forecastdate))
             {
@@ -235,7 +235,7 @@ bool asTimeArray::Init()
         }
         case SeasonJJA:
         {
-            m_TimeArray.resize(0);
+            m_timeArray.resize(0);
             double forecastdate = 51726; //01.07.2000
             if (!BuildArraySeasons(forecastdate))
             {
@@ -246,7 +246,7 @@ bool asTimeArray::Init()
         }
         case SeasonSON:
         {
-            m_TimeArray.resize(0);
+            m_timeArray.resize(0);
             double forecastdate = 51818; //01.10.2000
             if (!BuildArraySeasons(forecastdate))
             {
@@ -267,19 +267,19 @@ bool asTimeArray::Init()
         }
     }
 
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
 
 bool asTimeArray::Init(double forecastdate, double exclusiondays)
 {
-    m_TimeArray.resize(0);
+    m_timeArray.resize(0);
 
     wxASSERT(exclusiondays>0);
     wxASSERT(forecastdate>15022); // After 1900
     wxASSERT(forecastdate<88069); // Before 2100
-    wxASSERT(m_Mode==SameSeason);
+    wxASSERT(m_mode==SameSeason);
 
     // Get values
     m_ExclusionDays = exclusiondays;
@@ -290,23 +290,23 @@ bool asTimeArray::Init(double forecastdate, double exclusiondays)
         return false;
     }
 
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
 
 bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusiondays)
 {
-    m_TimeArray.resize(0);
+    m_timeArray.resize(0);
 
     wxASSERT(exclusiondays>0);
     wxASSERT(intervaldays>0);
     wxASSERT(forecastdate>15022); // After 1900
     wxASSERT(forecastdate<88069); // Before 2100
-    wxASSERT(m_Mode==DaysInterval);
+    wxASSERT(m_mode==DaysInterval);
 
     // Get values
-    m_IntervalDays = intervaldays;
+    m_intervalDays = intervaldays;
     m_ExclusionDays = exclusiondays;
 
     if (!BuildArrayDaysInterval(forecastdate))
@@ -315,17 +315,17 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         return false;
     }
 
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
 
 bool asTimeArray::Init(asDataPredictand &predictand, const wxString &serieName, int stationId, float minThreshold, float maxThreshold)
 {
-    m_TimeArray.resize(0);
+    m_timeArray.resize(0);
 
-    wxASSERT(m_Mode==PredictandThresholds);
-    if (m_Mode!=PredictandThresholds)
+    wxASSERT(m_mode==PredictandThresholds);
+    if (m_mode!=PredictandThresholds)
     {
         asLogError(_("The time array mode is not correctly set"));
         return false;
@@ -337,7 +337,7 @@ bool asTimeArray::Init(asDataPredictand &predictand, const wxString &serieName, 
         return false;
     }
 
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
@@ -346,9 +346,9 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
 {
     wxASSERT(exclusiondays>0);
 
-    m_TimeArray.resize(0);
+    m_timeArray.resize(0);
 
-    switch(m_Mode)
+    switch(m_mode)
     {
         case Simple:
         {
@@ -415,7 +415,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         {
             wxASSERT(forecastdate>15022); // After 1900
             wxASSERT(forecastdate<88069); // Before 2100
-            m_IntervalDays = intervaldays;
+            m_intervalDays = intervaldays;
             m_ExclusionDays = exclusiondays;
             if (!BuildArrayDaysInterval(forecastdate))
             {
@@ -440,7 +440,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         }
     }
 
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
@@ -448,38 +448,38 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
 bool asTimeArray::BuildArraySimple()
 {
     // Check the timestep integrity
-    wxCHECK(m_TimeStepDays>0, false);
-    wxASSERT_MSG(fmod ((m_End-m_Start), m_TimeStepDays)==0, wxString::Format("start=%f, end=%f, timestepdays=%f", m_Start, m_End, m_TimeStepDays ));
-    wxCHECK(fmod ((m_End-m_Start), m_TimeStepDays)==0, false);
+    wxCHECK(m_timeStepDays>0, false);
+    wxASSERT_MSG(fmod ((m_End-m_start), m_timeStepDays)==0, wxString::Format("start=%f, end=%f, timestepdays=%f", m_start, m_End, m_timeStepDays ));
+    wxCHECK(fmod ((m_End-m_start), m_timeStepDays)==0, false);
 
     // Get the time serie length for allocation.
-    size_t length = 1+(m_End-m_Start)/m_TimeStepDays;
-    m_TimeArray.resize(length);
+    size_t length = 1+(m_End-m_start)/m_timeStepDays;
+    m_timeArray.resize(length);
 
     // Build array
     int counter = 0;
-    double previousVal = m_Start-m_TimeStepDays;
+    double previousVal = m_start-m_timeStepDays;
     for (size_t i=0; i<length; i++)
     {
-        double date = previousVal + m_TimeStepDays;
+        double date = previousVal + m_timeStepDays;
         previousVal = date;
         if (HasForbiddenYears())
         {
             if (!IsYearForbidden(GetYear(date)))
             {
-                m_TimeArray[counter] = date;
+                m_timeArray[counter] = date;
                 counter++;
             }
         }
         else
         {
-            m_TimeArray[counter] = date;
+            m_timeArray[counter] = date;
             counter++;
         }
     }
 
     // Copy to final array
-    m_TimeArray.conservativeResize(counter);
+    m_timeArray.conservativeResize(counter);
 
     return true;
 }
@@ -487,12 +487,12 @@ bool asTimeArray::BuildArraySimple()
 bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 {
     // Check the timestep integrity
-    wxASSERT(m_TimeStepDays>0);
-    wxASSERT(fmod ((m_End-m_Start), m_TimeStepDays)==0);
-    wxCHECK(m_TimeStepDays>0, false);
-    wxCHECK(fmod ((m_End-m_Start), m_TimeStepDays)==0, false);
-    wxASSERT(m_End>m_Start);
-    wxASSERT(m_Start>0);
+    wxASSERT(m_timeStepDays>0);
+    wxASSERT(fmod ((m_End-m_start), m_timeStepDays)==0);
+    wxCHECK(m_timeStepDays>0, false);
+    wxCHECK(fmod ((m_End-m_start), m_timeStepDays)==0, false);
+    wxASSERT(m_End>m_start);
+    wxASSERT(m_start>0);
     wxASSERT(m_End>0);
 
     // The period to exclude
@@ -503,12 +503,12 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
     TimeStruct forecastDateStruct = GetTimeStruct(forecastDate);
 
     // Array resizing (larger than required)
-    int firstYear = GetTimeStruct(m_Start).year;
+    int firstYear = GetTimeStruct(m_start).year;
     int lastYear = GetTimeStruct(m_End).year;
-    int totLength = (lastYear-firstYear+1)*2*(m_IntervalDays+1)*(1.0/m_TimeStepDays)+50;
+    int totLength = (lastYear-firstYear+1)*2*(m_intervalDays+1)*(1.0/m_timeStepDays)+50;
     wxASSERT(totLength>0);
     wxASSERT(totLength<289600); // 4 times daily during 200 years...
-    m_TimeArray.resize(totLength);
+    m_timeArray.resize(totLength);
 
     // Loop over the years
     int counter = 0;
@@ -517,8 +517,8 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
         // Get the interval boundaries
         TimeStruct adaptedForecastDateStruct = forecastDateStruct;
         adaptedForecastDateStruct.year = year;
-        double currentStart = GetMJD(adaptedForecastDateStruct)-m_IntervalDays;
-        double currentEnd = GetMJD(adaptedForecastDateStruct)+m_IntervalDays;
+        double currentStart = GetMJD(adaptedForecastDateStruct)-m_intervalDays;
+        double currentEnd = GetMJD(adaptedForecastDateStruct)+m_intervalDays;
         
         // Check for forbiden years (validation)
         if (HasForbiddenYears())
@@ -531,7 +531,7 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
                 double firstYearEnd = GetMJD(currentFirstYear, 12, 31, 23, 59);
                 while (currentStart<=firstYearEnd)
                 {
-                    currentStart += m_TimeStepDays;
+                    currentStart += m_timeStepDays;
                 }
             }
             if (IsYearForbidden(currentSecondYear))
@@ -539,29 +539,29 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
                 double secondYearStart = GetMJD(currentSecondYear, 1, 1, 0, 0);
                 while (currentEnd>=secondYearStart)
                 {
-                    currentEnd -= m_TimeStepDays;
+                    currentEnd -= m_timeStepDays;
                 }
                 
             }
         }
 
-        for (double thisTimeStep=currentStart; thisTimeStep<=currentEnd; thisTimeStep+=m_TimeStepDays)
+        for (double thisTimeStep=currentStart; thisTimeStep<=currentEnd; thisTimeStep+=m_timeStepDays)
         {
-            if (thisTimeStep>=m_Start && thisTimeStep<=m_End)
+            if (thisTimeStep>=m_start && thisTimeStep<=m_End)
             {
                 if (thisTimeStep<excludestart || thisTimeStep>excludeend)
                 {
                     wxASSERT(counter<totLength);
 
-                    m_TimeArray[counter] = thisTimeStep;
+                    m_timeArray[counter] = thisTimeStep;
                     counter++;
 
                     #ifdef _DEBUG
                         if(counter>1)
                         {
-                            wxASSERT_MSG(m_TimeArray[counter-1]>m_TimeArray[counter-2], wxString::Format(_("m_TimeArray[%d]=%s, m_TimeArray[%d]=%s"),
-                                                                                                   counter-1, asTime::GetStringTime(m_TimeArray[counter-1]).c_str(),
-                                                                                                   counter-2, asTime::GetStringTime(m_TimeArray[counter-2])).c_str());
+                            wxASSERT_MSG(m_timeArray[counter-1]>m_timeArray[counter-2], wxString::Format(_("m_timeArray[%d]=%s, m_timeArray[%d]=%s"),
+                                                                                                   counter-1, asTime::GetStringTime(m_timeArray[counter-1]).c_str(),
+                                                                                                   counter-2, asTime::GetStringTime(m_timeArray[counter-2])).c_str());
                         }
                     #endif
                 }
@@ -570,9 +570,9 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
     }
 
     // Check the vector length
-    if (m_TimeArray.size()!=counter)
+    if (m_timeArray.size()!=counter)
     {
-        m_TimeArray.conservativeResize(counter);
+        m_timeArray.conservativeResize(counter);
     }
 
     return true;
@@ -581,8 +581,8 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 bool asTimeArray::BuildArraySeasons(double forecastdate)
 {
     // Check the timestep integrity
-    wxCHECK(m_TimeStepDays>0, false);
-    wxCHECK(fmod ((m_End-m_Start), m_TimeStepDays)<0.000001, false);
+    wxCHECK(m_timeStepDays>0, false);
+    wxCHECK(fmod ((m_End-m_start), m_timeStepDays)<0.000001, false);
 
     // The period to exclude
     double excludestart, excludeend;
@@ -604,29 +604,29 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     // Adapt the hour if the timestep allows for it
     double hourstart = forecastdatestruct.hour;
     double hourend = forecastdatestruct.hour;
-    while ((hourstart-m_TimeStepDays*24)>=0)
+    while ((hourstart-m_timeStepDays*24)>=0)
     {
-        hourstart -= m_TimeStepDays*24;
+        hourstart -= m_timeStepDays*24;
     }
-    while ((hourend+m_TimeStepDays*24)<24)
+    while ((hourend+m_timeStepDays*24)<24)
     {
-        hourend += m_TimeStepDays*24;
+        hourend += m_timeStepDays*24;
     }
 
     // Adapt the minute if the timestep allows for it
     double minutestart = forecastdatestruct.min;
     double minuteend = forecastdatestruct.min;
-    while ((minutestart-m_TimeStepDays*24*60)>=0)
+    while ((minutestart-m_timeStepDays*24*60)>=0)
     {
-        minutestart -= m_TimeStepDays*24*60;
+        minutestart -= m_timeStepDays*24*60;
     }
-    while ((minuteend+m_TimeStepDays*24*60)<60)
+    while ((minuteend+m_timeStepDays*24*60)<60)
     {
-        minuteend += m_TimeStepDays*24*60;
+        minuteend += m_timeStepDays*24*60;
     }
 
     // Get the beginning of the time array
-    TimeStruct startstruct = GetTimeStruct(m_Start);
+    TimeStruct startstruct = GetTimeStruct(m_start);
     TimeStruct endstruct = GetTimeStruct(m_End);
 
     TimeStruct startfirstyearstruct, endfirstyearstruct;
@@ -652,7 +652,7 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     double startfirstyear = GetMJD(startfirstyearstruct);
     double endfirstyear = GetMJD(endfirstyearstruct);
 
-    if (endfirstyear<m_Start)
+    if (endfirstyear<m_start)
     {
         startfirstyear = AddYear(startfirstyear);
         endfirstyearstruct.month = GetSeasonEnd(forecastseason,startstruct.year+1).month;
@@ -660,9 +660,9 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
         endfirstyear = GetMJD(endfirstyearstruct);
     }
 
-    if (startfirstyear<m_Start)
+    if (startfirstyear<m_start)
     {
-        startfirstyear = m_Start;
+        startfirstyear = m_start;
     }
 
     startfirstyearstruct = GetTimeStruct(startfirstyear);
@@ -710,17 +710,17 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     // Get the time serie length for allocation.
         // First year
     double difffirstyear = endfirstyear-startfirstyear;
-    int rowsnbfirstyear = ceil((difffirstyear+1)/m_TimeStepDays);
+    int rowsnbfirstyear = ceil((difffirstyear+1)/m_timeStepDays);
         // Last year
     double difflastyear = endlastyear-startlastyear;
-    int rowsnblastyear = ceil((difflastyear+1)/m_TimeStepDays);
+    int rowsnblastyear = ceil((difflastyear+1)/m_timeStepDays);
         // Center - this is approximative, as it considers 92 days per month whatever the month is
     int yearsnb = endlastyearstruct.year-startfirstyearstruct.year-1;
-    int rowsnbcenter = ceil(93/m_TimeStepDays);
+    int rowsnbcenter = ceil(93/m_timeStepDays);
     int rowsnbcentertot = yearsnb*rowsnbcenter;
     int totlength = rowsnbfirstyear+rowsnbcentertot+rowsnblastyear;
         // Array resizing
-    m_TimeArray.resize(totlength);
+    m_timeArray.resize(totlength);
 
     // Build the array
     double thistimestep = 0;
@@ -770,13 +770,13 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
                 {
                     if (!IsYearForbidden(GetYear(thistimestep)))
                     {
-                        m_TimeArray[rowid] = thistimestep;
+                        m_timeArray[rowid] = thistimestep;
                         rowid++;
                     }
                 }
                 else
                 {
-                    m_TimeArray[rowid] = thistimestep;
+                    m_timeArray[rowid] = thistimestep;
                     rowid++;
                 }
             }
@@ -790,26 +790,26 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
                     {
                         if (!IsYearForbidden(GetYear(thistimestep)))
                         {
-                            m_TimeArray[rowid] = thistimestep;
+                            m_timeArray[rowid] = thistimestep;
                             rowid++;
                         }
                     }
                     else
                     {
-                        m_TimeArray[rowid] = thistimestep;
+                        m_timeArray[rowid] = thistimestep;
                         rowid++;
                     }
                 }
             }
-            thistimestep += m_TimeStepDays;
+            thistimestep += m_timeStepDays;
         }
     }
 
     // Check the vector length
-    wxCHECK(m_TimeArray.rows()>=rowid, false);
-    if (m_TimeArray.rows()!=rowid)
+    wxCHECK(m_timeArray.rows()>=rowid, false);
+    if (m_timeArray.rows()!=rowid)
     {
-        m_TimeArray.conservativeResize(rowid);
+        m_timeArray.conservativeResize(rowid);
     }
 
     return true;
@@ -825,7 +825,7 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
 
     // Get the time arrays
     Array1DDouble predictandTimeArray = predictand.GetTime();
-    Array1DDouble fullTimeArray = m_TimeArray;
+    Array1DDouble fullTimeArray = m_timeArray;
     Array1DDouble finalTimeArray = Array1DDouble(fullTimeArray.size());
 
     // Get data
@@ -907,15 +907,15 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     }
 
     // Set result
-    m_TimeArray.resize(counter);
-    m_TimeArray = finalTimeArray.head(counter);
+    m_timeArray.resize(counter);
+    m_timeArray = finalTimeArray.head(counter);
 
     return true;
 }
 
 int asTimeArray::GetIndexFirstAfter(double date)
 {
-    wxASSERT(m_Initialized);
+    wxASSERT(m_initialized);
 
     if (date>m_End)
     {
@@ -923,7 +923,7 @@ int asTimeArray::GetIndexFirstAfter(double date)
         return NaNDouble;
     }
 
-    int index = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[GetSize()-1], date);
+    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize()-1], date);
 
     if (index==asOUT_OF_RANGE) return 0;
 
@@ -932,15 +932,15 @@ int asTimeArray::GetIndexFirstAfter(double date)
 
 int asTimeArray::GetIndexFirstBefore(double date)
 {
-    wxASSERT(m_Initialized);
+    wxASSERT(m_initialized);
 
-    if (date<m_Start)
+    if (date<m_start)
     {
         asLogWarning(_("Trying to get a date outside of the time array."));
         return NaNDouble;
     }
 
-    int index = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[GetSize()-1], date, asHIDE_WARNINGS);
+    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize()-1], date, asHIDE_WARNINGS);
 
     if (index==asOUT_OF_RANGE) return GetSize()-1;
 
@@ -949,14 +949,14 @@ int asTimeArray::GetIndexFirstBefore(double date)
 
 bool asTimeArray::RemoveYears(const VectorInt &years)
 {
-    wxASSERT(m_TimeArray.size()>0);
+    wxASSERT(m_timeArray.size()>0);
     wxASSERT(years.size()>0);
 
     VectorInt yearsRemove = years;
 
     asTools::SortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size()-1], Asc);
 
-    int arraySize = m_TimeArray.size();
+    int arraySize = m_timeArray.size();
     Array1DInt flags = Array1DInt::Zero(arraySize);
 
     for (unsigned int i=0; i<yearsRemove.size(); i++)
@@ -965,8 +965,8 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdStart, asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdEnd, asHIDE_WARNINGS);
+        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize-1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize-1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart!=asOUT_OF_RANGE && indexStart!=asNOT_FOUND)
         {
@@ -999,27 +999,27 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
     {
         if (flags[i]==0)
         {
-            newTimeArray[counter] = m_TimeArray[i];
+            newTimeArray[counter] = m_timeArray[i];
             counter++;
         }
     }
 
-    m_TimeArray.resize(0);
-    m_TimeArray = newTimeArray.segment(0,counter);
+    m_timeArray.resize(0);
+    m_timeArray = newTimeArray.segment(0,counter);
 
     return true;
 }
 
 bool asTimeArray::KeepOnlyYears(const VectorInt &years)
 {
-    wxASSERT(m_TimeArray.size()>0);
+    wxASSERT(m_timeArray.size()>0);
     wxASSERT(years.size()>0);
 
     VectorInt yearsKeep = years;
 
     asTools::SortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size()-1], Asc);
 
-    int arraySize = m_TimeArray.size();
+    int arraySize = m_timeArray.size();
     Array1DInt flags = Array1DInt::Zero(arraySize);
 
     for (unsigned int i=0; i<yearsKeep.size(); i++)
@@ -1028,8 +1028,8 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdStart, asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_TimeArray[0], &m_TimeArray[arraySize-1], mjdEnd, asHIDE_WARNINGS);
+        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize-1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize-1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart!=asOUT_OF_RANGE && indexStart!=asNOT_FOUND)
         {
@@ -1062,29 +1062,29 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
     {
         if (flags[i]==1)
         {
-            newTimeArray[counter] = m_TimeArray[i];
+            newTimeArray[counter] = m_timeArray[i];
             counter++;
         }
     }
 
-    m_TimeArray.resize(0);
-    m_TimeArray = newTimeArray.segment(0,counter);
+    m_timeArray.resize(0);
+    m_timeArray = newTimeArray.segment(0,counter);
 
     return true;
 }
 
 bool asTimeArray::HasForbiddenYears()
 {
-    if (m_ForbiddenYears.size()==0) return false;
+    if (m_forbiddenYears.size()==0) return false;
 
     return true;
 }
 
 bool asTimeArray::IsYearForbidden(int year)
 {
-    if (m_ForbiddenYears.size()==0) return false;
+    if (m_forbiddenYears.size()==0) return false;
 
-    int index = asTools::SortedArraySearch(&m_ForbiddenYears[0], &m_ForbiddenYears[m_ForbiddenYears.size()-1], year, 0, asHIDE_WARNINGS);
+    int index = asTools::SortedArraySearch(&m_forbiddenYears[0], &m_forbiddenYears[m_forbiddenYears.size()-1], year, 0, asHIDE_WARNINGS);
 
     if (index!=asOUT_OF_RANGE && index!=asNOT_FOUND)
     {

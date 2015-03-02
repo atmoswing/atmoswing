@@ -46,27 +46,27 @@ public:
 
     wxCalendarCtrl* GetCalendar()
     {
-        return m_CalendarForecastDate;
+        return m_calendarForecastDate;
     }
 
     wxDateTime GetDate()
     {
-        return m_CalendarForecastDate->GetDate();
+        return m_calendarForecastDate->GetDate();
     }
 
     double GetHour()
     {
-        wxString forecastHourStr = m_TextCtrlForecastHour->GetValue();
+        wxString forecastHourStr = m_textCtrlForecastHour->GetValue();
         double forecastHour = 0;
         forecastHourStr.ToDouble(&forecastHour);
         return forecastHour;
     }
 
 private:
-    wxCalendarCtrl* m_CalendarForecastDate;
-    wxStaticText* m_StaticTextForecastHour;
-    wxTextCtrl* m_TextCtrlForecastHour;
-    wxBitmapButton* m_BpButtonNow;
+    wxCalendarCtrl* m_calendarForecastDate;
+    wxStaticText* m_staticTextForecastHour;
+    wxTextCtrl* m_textCtrlForecastHour;
+    wxBitmapButton* m_bpButtonNow;
 };
 
 #endif // __asPanelSidebar__

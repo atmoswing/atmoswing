@@ -46,52 +46,52 @@ public:
 
     wxString GetPredictandStationIdsList();
 
-    /** Access m_CurrentStep
-     * \return The current value of m_CurrentStep
+    /** Access m_currentStep
+     * \return The current value of m_currentStep
      */
     int GetCurrentStep()
     {
-        return m_CurrentStep;
+        return m_currentStep;
     }
 
-    /** Set m_CurrentStep
+    /** Set m_currentStep
      * \param val The new value
      */
     void SetCurrentStep(int val)
     {
-        m_CurrentStep = val;
+        m_currentStep = val;
     }
 
-    /** Access m_DateProcessed
-     * \return The current value of m_DateProcessed
+    /** Access m_dateProcessed
+     * \return The current value of m_dateProcessed
      */
     double GetDateProcessed()
     {
-        return m_DateProcessed;
+        return m_dateProcessed;
     }
 
-    /** Set m_DateProcessed
+    /** Set m_dateProcessed
      * \param val The new value
      */
     void SetDateProcessed(double val)
     {
-        m_DateProcessed = val;
+        m_dateProcessed = val;
     }
 
-    /** Access m_DateProcessed
-     * \return The current value of m_DateProcessed
+    /** Access m_dateProcessed
+     * \return The current value of m_dateProcessed
      */
     wxString GetFilePath()
     {
-        return m_FilePath;
+        return m_filePath;
     }
 
-    /** Set m_FilePath
+    /** Set m_filePath
      * \param val The new value
      */
     void SetDateProcessed(const wxString& val)
     {
-        m_FilePath = val;
+        m_filePath = val;
     }
 
     /** Check if the result file exists
@@ -112,13 +112,13 @@ public:
     virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
 protected:
-    float m_FileVersion;
-    int m_CurrentStep;
-    VectorInt m_PredictandStationIds;
-    double m_DateProcessed; //!< Member variable "m_DateProcessed"
-    wxString m_FilePath; //!< Member variable "m_FilePath"
-    bool m_SaveIntermediateResults;
-    bool m_LoadIntermediateResults;
+    float m_fileVersion;
+    int m_currentStep;
+    VectorInt m_predictandStationIds;
+    double m_dateProcessed; //!< Member variable "m_dateProcessed"
+    wxString m_filePath; //!< Member variable "m_filePath"
+    bool m_saveIntermediateResults;
+    bool m_loadIntermediateResults;
 
     /** Defines attributes in the destination file
      * \param ncFile The NetCDF file to save the result

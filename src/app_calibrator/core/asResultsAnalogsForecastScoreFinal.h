@@ -49,46 +49,46 @@ public:
      */
     void Init(asParametersScoring &params);
 
-    /** Access m_ForecastScore
-     * \return The value of m_ForecastScore
+    /** Access m_forecastScore
+     * \return The value of m_forecastScore
      */
     float GetForecastScore()
     {
-        return m_ForecastScore;
+        return m_forecastScore;
     }
 
-    /** Set m_ForecastScore
+    /** Set m_forecastScore
      * \param val The new value to set
      */
     void SetForecastScore(float val)
     {
-        m_ForecastScore = val;
+        m_forecastScore = val;
     }
     
-    /** Access m_ForecastScoreArray
-     * \return The value of m_ForecastScoreArray
+    /** Access m_forecastScoreArray
+     * \return The value of m_forecastScoreArray
      */
     Array1DFloat GetForecastScoreArray()
     {
-        return m_ForecastScoreArray;
+        return m_forecastScoreArray;
     }
 
-    /** Set m_ForecastScoreArray
+    /** Set m_forecastScoreArray
      * \param val The new value to set
      */
     void SetForecastScore(Array1DFloat val)
     {
-        m_ForecastScoreArray = val;
-        m_HasSingleValue = false;
+        m_forecastScoreArray = val;
+        m_hasSingleValue = false;
     }
 
-    /** Set m_ForecastScoreArray
+    /** Set m_forecastScoreArray
      * \param val The new value to set
      */
     void SetForecastScoreArray(Array1DFloat val)
     {
-        m_ForecastScoreArray = val;
-        m_HasSingleValue = false;
+        m_forecastScoreArray = val;
+        m_hasSingleValue = false;
     }
 
     /** Save the result file
@@ -111,9 +111,9 @@ protected:
     void BuildFileName(asParametersScoring &params);
 
 private:
-    bool m_HasSingleValue;
-    float m_ForecastScore; //!< Member variable "m_ForecastScore"
-    Array1DFloat m_ForecastScoreArray; //!< Member variable "m_ForecastScoreArray"
+    bool m_hasSingleValue;
+    float m_forecastScore; //!< Member variable "m_forecastScore"
+    Array1DFloat m_forecastScoreArray; //!< Member variable "m_forecastScoreArray"
 };
 
 #endif // ASRESULTSANALOGSFORECASTSCOREFINAL_H

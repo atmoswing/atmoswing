@@ -49,14 +49,14 @@ public:
     void SetParent( wxWindow* parent );
 
 private:
-    int m_CellWidth;
-    int m_LeadTime;
-    asForecastManager* m_ForecastManager;
-    asWorkspace* m_Workspace;
-    wxBitmap *m_Bmp;
-    wxOverlay m_Overlay;
-    wxGraphicsContext* m_Gdc;
-    wxWindow* m_Parent;
+    int m_cellWidth;
+    int m_leadTime;
+    asForecastManager* m_forecastManager;
+    asWorkspace* m_workspace;
+    wxBitmap *m_bmp;
+    wxOverlay m_overlay;
+    wxGraphicsContext* m_gdc;
+    wxWindow* m_parent;
     void OnLeadTimeSlctChange( wxMouseEvent& event );
     void SetBitmap(wxBitmap *bmp);
     void SetLeadTimeMarker(int leadTime);

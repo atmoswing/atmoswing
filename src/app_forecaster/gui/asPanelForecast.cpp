@@ -33,16 +33,16 @@ asPanelForecast::asPanelForecast( wxWindow* parent )
 :
 asPanelForecastVirtual( parent )
 {
-    m_ParentFrame = NULL;
-    m_PanelsManager = NULL;
+    m_parentFrame = NULL;
+    m_panelsManager = NULL;
 
     // Led
-    m_Led = new awxLed( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0 );
-	m_Led->SetState( awxLED_OFF );
-	m_SizerHeader->Insert( 0, m_Led, 0, wxALL, 5 );
+    m_led = new awxLed( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0 );
+	m_led->SetState( awxLED_OFF );
+	m_sizerHeader->Insert( 0, m_led, 0, wxALL, 5 );
 
     // Set the buttons bitmaps
-    m_BpButtonClose->SetBitmapLabel(img_close);
+    m_bpButtonClose->SetBitmapLabel(img_close);
 
     // Fix the color of the file/dir pickers
     wxColour col = parent->GetParent()->GetBackgroundColour();
@@ -64,7 +64,7 @@ asPanelForecastVirtual( parent )
 
 void asPanelForecast::ClosePanel( wxCommandEvent& event )
 {
-    m_PanelsManager->RemovePanel(this);
+    m_panelsManager->RemovePanel(this);
 }
 
 bool asPanelForecast::Layout()

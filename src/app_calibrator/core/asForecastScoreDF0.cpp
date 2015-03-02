@@ -32,12 +32,12 @@ asForecastScoreDF0::asForecastScoreDF0()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::DF0;
-    m_Name = _("Difference of F(0)");
-    m_FullName = _("Absolute difference of the frequency of null precipitations.");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::DF0;
+    m_name = _("Difference of F(0)");
+    m_fullName = _("Absolute difference of the frequency of null precipitations.");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreDF0::~asForecastScoreDF0()

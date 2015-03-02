@@ -46,9 +46,9 @@ public:
     void DrawColorbar( double maxval );
 
 private:
-    wxBitmap *m_BmpDates;
-    wxBitmap *m_BmpColorbar;
-    wxGraphicsContext* m_Gdc;
+    wxBitmap *m_bmpDates;
+    wxBitmap *m_bmpColorbar;
+    wxGraphicsContext* m_gdc;
     void SetBitmapDates(wxBitmap * bmp);
     void SetBitmapColorbar(wxBitmap * bmp);
     void CreateDatesPath( wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb );
@@ -73,7 +73,7 @@ public:
     void SetColorbarMax(double maxval);
 
 private:
-    asPanelSidebarCaptionForecastRingDrawing *m_PanelDrawing;
+    asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
     void OnPaint( wxPaintEvent & event );
 };
 

@@ -27,6 +27,6 @@
 
 #include "include_tests.h"
 
-bool g_UnitTestExceptions = false;
-bool g_UnitTestLongProcessing = true;
-bool g_UnitTestRandomDistributions = true;
+bool g_unitTestExceptions = false;
+bool g_unitTestLongProcessing = true;
+bool g_unitTestRandomDistributions = true;

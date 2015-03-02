@@ -33,7 +33,7 @@
 using namespace std;
 
 #if wxUSE_GUI
-    extern wxColour g_LinuxBgColour;
+    extern wxColour g_linuxBgColour;
 #endif
 
 #endif // ASGLOBVARSFORECASTER_H_INCLUDED

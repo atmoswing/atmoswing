@@ -80,40 +80,40 @@ wxPanel( parent, id, pos, size, style )
     wxBoxSizer* bSizer;
 	bSizer = new wxBoxSizer( wxVERTICAL );
 	
-	m_PlotCtrl = new wxPlotCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
-	m_PlotCtrl->SetScrollOnThumbRelease( false );
-	m_PlotCtrl->SetDrawSymbols( false );
-	m_PlotCtrl->SetDrawLines( true );
-	m_PlotCtrl->SetDrawSpline( false );
-	m_PlotCtrl->SetDrawGrid( true );
-	m_PlotCtrl->SetAreaMouseFunction( wxPLOTCTRL_MOUSE_PAN );
-	m_PlotCtrl->SetAreaMouseMarker( wxPLOTCTRL_MARKER_RECT );
-	m_PlotCtrl->SetCrossHairCursor( false );
-	m_PlotCtrl->SetShowXAxis( true );
-	m_PlotCtrl->SetShowXAxisLabel( true );
-	m_PlotCtrl->SetXAxisLabel( _("X Axis") );
-	m_PlotCtrl->SetShowYAxis( true );
-	m_PlotCtrl->SetShowYAxisLabel( true );
-	m_PlotCtrl->SetYAxisLabel( _("Y Axis") );
-	m_PlotCtrl->SetShowPlotTitle( false );
-	m_PlotCtrl->SetPlotTitle( _("Title") );
-	m_PlotCtrl->SetShowKey( true );
-	m_PlotCtrl->SetKeyPosition( wxPoint( 100,100 ) );
+	m_plotCtrl = new wxPlotCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
+	m_plotCtrl->SetScrollOnThumbRelease( false );
+	m_plotCtrl->SetDrawSymbols( false );
+	m_plotCtrl->SetDrawLines( true );
+	m_plotCtrl->SetDrawSpline( false );
+	m_plotCtrl->SetDrawGrid( true );
+	m_plotCtrl->SetAreaMouseFunction( wxPLOTCTRL_MOUSE_PAN );
+	m_plotCtrl->SetAreaMouseMarker( wxPLOTCTRL_MARKER_RECT );
+	m_plotCtrl->SetCrossHairCursor( false );
+	m_plotCtrl->SetShowXAxis( true );
+	m_plotCtrl->SetShowXAxisLabel( true );
+	m_plotCtrl->SetXAxisLabel( _("X Axis") );
+	m_plotCtrl->SetShowYAxis( true );
+	m_plotCtrl->SetShowYAxisLabel( true );
+	m_plotCtrl->SetYAxisLabel( _("Y Axis") );
+	m_plotCtrl->SetShowPlotTitle( false );
+	m_plotCtrl->SetPlotTitle( _("Title") );
+	m_plotCtrl->SetShowKey( true );
+	m_plotCtrl->SetKeyPosition( wxPoint( 100,100 ) );
     
-    m_PlotCtrl->SetScrollOnThumbRelease(false);
-    m_PlotCtrl->SetCrossHairCursor(false);
-    m_PlotCtrl->SetDrawSymbols(false);
-    m_PlotCtrl->SetDrawLines(true);
-    m_PlotCtrl->SetDrawSpline(false);
-    m_PlotCtrl->SetDrawGrid(true);
-    m_PlotCtrl->SetShowXAxis(true);
-    m_PlotCtrl->SetShowYAxis(true);
-    m_PlotCtrl->SetShowXAxisLabel(true);
-    m_PlotCtrl->SetShowYAxisLabel(true);
-    m_PlotCtrl->SetShowPlotTitle(false);
-    m_PlotCtrl->SetShowKey(true);
+    m_plotCtrl->SetScrollOnThumbRelease(false);
+    m_plotCtrl->SetCrossHairCursor(false);
+    m_plotCtrl->SetDrawSymbols(false);
+    m_plotCtrl->SetDrawLines(true);
+    m_plotCtrl->SetDrawSpline(false);
+    m_plotCtrl->SetDrawGrid(true);
+    m_plotCtrl->SetShowXAxis(true);
+    m_plotCtrl->SetShowYAxis(true);
+    m_plotCtrl->SetShowXAxisLabel(true);
+    m_plotCtrl->SetShowYAxisLabel(true);
+    m_plotCtrl->SetShowPlotTitle(false);
+    m_plotCtrl->SetShowKey(true);
 	
-	bSizer->Add( m_PlotCtrl, 1, wxEXPAND, 5 );
+	bSizer->Add( m_plotCtrl, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( bSizer );
 	this->Layout();
@@ -123,7 +123,7 @@ wxPanel( parent, id, pos, size, style )
 void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event)
 {
     // Check that the pointer is set
-    if (!m_PlotCtrl) return;
+    if (!m_plotCtrl) return;
 
     // Get event type
     wxEventType eventType = event.GetEventType();
@@ -240,14 +240,14 @@ void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event)
 
 void asPanelPlot::Print()
 {
-    wxPlotPrintout plotPrint(m_PlotCtrl, wxT("AtmoSwing Printout"));
+    wxPlotPrintout plotPrint(m_plotCtrl, wxT("AtmoSwing Printout"));
 
     plotPrint.ShowPrintDialog();
 }
 
 void asPanelPlot::PrintPreview()
 {
-    wxPlotPrintout plotPrint(m_PlotCtrl, wxT("AtmoSwing Printout"));
+    wxPlotPrintout plotPrint(m_plotCtrl, wxT("AtmoSwing Printout"));
 
     plotPrint.ShowPrintPreviewDialog(wxT("AtmoSwing Print Preview"));
 }

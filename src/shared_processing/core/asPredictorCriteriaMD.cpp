@@ -31,13 +31,13 @@ asPredictorCriteriaMD::asPredictorCriteriaMD(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::MD;
-    m_Name = "MD";
-    m_FullName = _("Mean Differences");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::MD;
+    m_name = "MD";
+    m_fullName = _("Mean Differences");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaMD::~asPredictorCriteriaMD()
@@ -52,7 +52,7 @@ float asPredictorCriteriaMD::Assess(const Array2DFloat &refData, const Array2DFl
 
     float rescriteria = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):

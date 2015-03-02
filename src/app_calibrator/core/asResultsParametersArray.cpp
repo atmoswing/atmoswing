@@ -50,53 +50,53 @@ void asResultsParametersArray::Init(const wxString &fileTag)
     BuildFileName(fileTag);
 
     // Resize to 0 to avoid keeping old results
-    m_Parameters.resize(0);
-    m_ScoresCalib.resize(0);
-    m_ScoresValid.resize(0);
+    m_parameters.resize(0);
+    m_scoresCalib.resize(0);
+    m_scoresValid.resize(0);
 }
 
 void asResultsParametersArray::BuildFileName(const wxString &fileTag)
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_FilePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    m_filePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-    m_FilePath.Append(wxString::Format("/Calibration/%s_%s.txt", time.c_str(), fileTag.c_str()));
+    m_filePath.Append(wxString::Format("/Calibration/%s_%s.txt", time.c_str(), fileTag.c_str()));
 }
 
 void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib)
 {
-    m_Parameters.push_back(params);
-    m_ScoresCalib.push_back(scoreCalib);
-    m_ScoresValid.push_back(NaNFloat);
+    m_parameters.push_back(params);
+    m_scoresCalib.push_back(scoreCalib);
+    m_scoresValid.push_back(NaNFloat);
 }
 
 void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib, float scoreValid)
 {
-    m_Parameters.push_back(params);
-    m_ScoresCalib.push_back(scoreCalib);
-    m_ScoresValid.push_back(scoreValid);
+    m_parameters.push_back(params);
+    m_scoresCalib.push_back(scoreCalib);
+    m_scoresValid.push_back(scoreValid);
 }
 
 void asResultsParametersArray::Add(asParametersScoring params, Array1DFloat scoreCalib, Array1DFloat scoreValid)
 {
-    m_ParametersForScoreOnArray.push_back(params);
-    m_ScoresCalibForScoreOnArray.push_back(scoreCalib);
-    m_ScoresValidForScoreOnArray.push_back(scoreValid);
+    m_parametersForScoreOnArray.push_back(params);
+    m_scoresCalibForScoreOnArray.push_back(scoreCalib);
+    m_scoresValidForScoreOnArray.push_back(scoreValid);
 }
 
 void asResultsParametersArray::Clear()
 {
     // Resize to 0 to avoid keeping old results
-    m_Parameters.resize(0);
-    m_ScoresCalib.resize(0);
-    m_ScoresValid.resize(0);
+    m_parameters.resize(0);
+    m_scoresCalib.resize(0);
+    m_scoresValid.resize(0);
 }
 
 bool asResultsParametersArray::Print()
 {
     // Create a file
-    asFileAscii fileRes(m_FilePath, asFileAscii::Replace);
+    asFileAscii fileRes(m_filePath, asFileAscii::Replace);
     if(!fileRes.Open()) return false;
 
     wxString header;
@@ -106,27 +106,27 @@ bool asResultsParametersArray::Print()
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (unsigned int i_param=0; i_param<m_Parameters.size(); i_param++)
+    for (unsigned int i_param=0; i_param<m_parameters.size(); i_param++)
     {
-        content.Append(m_Parameters[i_param].Print());
-        content.Append(wxString::Format("Calib\t%e\t", m_ScoresCalib[i_param]));
-        content.Append(wxString::Format("Valid\t%e", m_ScoresValid[i_param]));
+        content.Append(m_parameters[i_param].Print());
+        content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[i_param]));
+        content.Append(wxString::Format("Valid\t%e", m_scoresValid[i_param]));
         content.Append("\n");
     }
     
     // Write every parameter for scores on array one after the other
-    for (unsigned int i_param=0; i_param<m_ParametersForScoreOnArray.size(); i_param++)
+    for (unsigned int i_param=0; i_param<m_parametersForScoreOnArray.size(); i_param++)
     {
-        content.Append(m_ParametersForScoreOnArray[i_param].Print());
+        content.Append(m_parametersForScoreOnArray[i_param].Print());
         content.Append("Calib\t");
-        for (unsigned int i_row=0; i_row<m_ScoresCalibForScoreOnArray[i_param].size(); i_row++)
+        for (unsigned int i_row=0; i_row<m_scoresCalibForScoreOnArray[i_param].size(); i_row++)
         {
-            content.Append(wxString::Format("%e\t", m_ScoresCalibForScoreOnArray[i_param][i_row]));
+            content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[i_param][i_row]));
         }
         content.Append("Valid\t");
-        for (unsigned int i_row=0; i_row<m_ScoresValidForScoreOnArray[i_param].size(); i_row++)
+        for (unsigned int i_row=0; i_row<m_scoresValidForScoreOnArray[i_param].size(); i_row++)
         {
-            content.Append(wxString::Format("%e\t", m_ScoresValidForScoreOnArray[i_param][i_row]));
+            content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[i_param][i_row]));
         }
         content.Append("\n");
     }
@@ -141,7 +141,7 @@ bool asResultsParametersArray::Print()
 void asResultsParametersArray::CreateFile()
 {
     // Create a file
-    asFileAscii fileRes(m_FilePath, asFileAscii::Replace);
+    asFileAscii fileRes(m_filePath, asFileAscii::Replace);
     fileRes.Open();
 
     wxString header;
@@ -154,18 +154,18 @@ void asResultsParametersArray::CreateFile()
 bool asResultsParametersArray::AppendContent()
 {
     // Create a file
-    asFileAscii fileRes(m_FilePath, asFileAscii::Append);
+    asFileAscii fileRes(m_filePath, asFileAscii::Append);
     if(!fileRes.Open()) return false;
 
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (unsigned int i_param=0; i_param<m_Parameters.size(); i_param++)
+    for (unsigned int i_param=0; i_param<m_parameters.size(); i_param++)
     {
         content.Append(wxString::Format("Param(%d)\t", i_param));
-        content.Append(m_Parameters[i_param].Print());
-        content.Append(wxString::Format("Score calib\t%e\t", m_ScoresCalib[i_param]));
-        content.Append(wxString::Format("valid\t%e", m_ScoresValid[i_param]));
+        content.Append(m_parameters[i_param].Print());
+        content.Append(wxString::Format("Score calib\t%e\t", m_scoresCalib[i_param]));
+        content.Append(wxString::Format("valid\t%e", m_scoresValid[i_param]));
         content.Append("\n");
     }
 

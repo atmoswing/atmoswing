@@ -31,13 +31,13 @@ asBatchForecasts::asBatchForecasts()
 :
 wxObject()
 {
-    m_HasChanged = false;
-    m_FilePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.xml";
-    m_ForecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
-    m_ParametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
-    m_PredictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
-    m_PredictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
-    m_PredictandDBDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Predictands";
+    m_hasChanged = false;
+    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.xml";
+    m_forecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
+    m_parametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
+    m_predictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
+    m_predictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
+    m_predictandDBDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Predictands";
 }
 
 asBatchForecasts::~asBatchForecasts()
@@ -50,7 +50,7 @@ bool asBatchForecasts::Load(const wxString &filePath)
     ClearForecasts();
 
     // Open the file
-    m_FilePath = filePath;
+    m_filePath = filePath;
     asFileBatchForecasts fileBatch(filePath, asFile::ReadOnly);
     if(!fileBatch.Open())
     {
@@ -67,20 +67,20 @@ bool asBatchForecasts::Load(const wxString &filePath)
     wxXmlNode *node = fileBatch.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "forecasts_output_directory") {
-            m_ForecastsOutputDirectory = fileBatch.GetString(node);
+            m_forecastsOutputDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "parameters_files_directory") {
-            m_ParametersFileDirectory = fileBatch.GetString(node);
+            m_parametersFileDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictors_archive_directory") {
-            m_PredictorsArchiveDirectory = fileBatch.GetString(node);
+            m_predictorsArchiveDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictors_realtime_directory") {
-            m_PredictorsRealtimeDirectory = fileBatch.GetString(node);
+            m_predictorsRealtimeDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictand_db_directory") {
-            m_PredictandDBDirectory = fileBatch.GetString(node);
+            m_predictandDBDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "forecasts") {
             wxXmlNode *nodeForecast = node->GetChildren();
             while (nodeForecast) {
                 if (nodeForecast->GetName() == "filename") {
-                    m_ForecastFileNames.push_back(fileBatch.GetString(nodeForecast));
+                    m_forecastFileNames.push_back(fileBatch.GetString(nodeForecast));
                 } else {
                     fileBatch.UnknownNode(nodeForecast);
                 }
@@ -101,23 +101,23 @@ bool asBatchForecasts::Load(const wxString &filePath)
 bool asBatchForecasts::Save()
 {
     // Open the file
-    asFileBatchForecasts fileBatch(m_FilePath, asFile::Replace);
+    asFileBatchForecasts fileBatch(m_filePath, asFile::Replace);
     if(!fileBatch.Open()) return false;
 
     if(!fileBatch.EditRootElement()) return false;
 
     // Get general data
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_ForecastsOutputDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_files_directory", m_ParametersFileDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_archive_directory", m_PredictorsArchiveDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_PredictorsRealtimeDirectory));
-    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_PredictandDBDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_forecastsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_files_directory", m_parametersFileDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_archive_directory", m_predictorsArchiveDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_predictorsRealtimeDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_predictandDBDirectory));
 
     // Forecasts
     wxXmlNode * nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE ,"forecasts" );
     for (int i_forecast=0; i_forecast<GetForecastsNb(); i_forecast++)
     {
-        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_ForecastFileNames[i_forecast]));
+        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_forecastFileNames[i_forecast]));
     }
     fileBatch.AddChild(nodeForecasts);
 
@@ -128,17 +128,17 @@ bool asBatchForecasts::Save()
 
 int asBatchForecasts::GetForecastsNb()
 {
-    int forecastsNb = (int)m_ForecastFileNames.size();
+    int forecastsNb = (int)m_forecastFileNames.size();
     return forecastsNb;
 }
 
 void asBatchForecasts::ClearForecasts()
 {
-    m_ForecastFileNames.clear();
+    m_forecastFileNames.clear();
 }
 
 void asBatchForecasts::AddForecast()
 {
-    int nb = m_ForecastFileNames.size()+1;
-    m_ForecastFileNames.resize(nb);
+    int nb = m_forecastFileNames.size()+1;
+    m_forecastFileNames.resize(nb);
 }

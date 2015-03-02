@@ -32,17 +32,17 @@ asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR,
 asGeo()
 {
     // Set the members
-    m_CornerUL = CornerUL;
-    m_CornerUR = CornerUR;
-    m_CornerLL = CornerLL;
-    m_CornerLR = CornerLR;
-    m_Level = Level;
-    m_Height = Height;
-    m_FlatAllowed = flatAllowed;
-    m_AbsoluteXmin = m_CornerUL.x;
-    m_AbsoluteXmax = m_CornerUR.x;
-    m_AbsoluteYmin = m_CornerLL.y;
-    m_AbsoluteYmax = m_CornerUL.y;
+    m_cornerUL = CornerUL;
+    m_cornerUR = CornerUR;
+    m_cornerLL = CornerLL;
+    m_cornerLR = CornerLR;
+    m_level = Level;
+    m_height = Height;
+    m_flatAllowed = flatAllowed;
+    m_absoluteXmin = m_cornerUL.x;
+    m_absoluteXmax = m_cornerUR.x;
+    m_absoluteYmin = m_cornerLL.y;
+    m_absoluteYmax = m_cornerUL.y;
 
     // Initialization and check points
     Init();
@@ -56,21 +56,21 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
 asGeo()
 {
     // Set the members
-    m_CornerUL.x = Xmin;
-    m_CornerUL.y = Ymin+Ywidth;
-    m_CornerUR.x = Xmin+Xwidth;
-    m_CornerUR.y = Ymin+Ywidth;
-    m_CornerLL.x = Xmin;
-    m_CornerLL.y = Ymin;
-    m_CornerLR.x = Xmin+Xwidth;
-    m_CornerLR.y = Ymin;
-    m_Level = Level;
-    m_Height = Height;
-    m_FlatAllowed = flatAllowed;
-    m_AbsoluteXmin = m_CornerUL.x;
-    m_AbsoluteXmax = m_CornerUR.x;
-    m_AbsoluteYmin = m_CornerLL.y;
-    m_AbsoluteYmax = m_CornerUL.y;
+    m_cornerUL.x = Xmin;
+    m_cornerUL.y = Ymin+Ywidth;
+    m_cornerUR.x = Xmin+Xwidth;
+    m_cornerUR.y = Ymin+Ywidth;
+    m_cornerLL.x = Xmin;
+    m_cornerLL.y = Ymin;
+    m_cornerLR.x = Xmin+Xwidth;
+    m_cornerLR.y = Ymin;
+    m_level = Level;
+    m_height = Height;
+    m_flatAllowed = flatAllowed;
+    m_absoluteXmin = m_cornerUL.x;
+    m_absoluteXmax = m_cornerUR.x;
+    m_absoluteYmin = m_cornerLL.y;
+    m_absoluteYmax = m_cornerUL.y;
 
     // Initialization and check points
     Init();
@@ -84,22 +84,22 @@ asGeoAreaComposite::asGeoAreaComposite(float Level, float Height)
 asGeo()
 {
     // Set the members
-    m_Level = Level;
-    m_Height = Height;
-    m_NbComposites = 0;
-    m_CornerUL.x = 0;
-    m_CornerUL.y = 0;
-    m_CornerUR.x = 0;
-    m_CornerUR.y = 0;
-    m_CornerLL.x = 0;
-    m_CornerLL.y = 0;
-    m_CornerLR.x = 0;
-    m_CornerLR.y = 0;
-    m_FlatAllowed = asFLAT_ALLOWED;
-    m_AbsoluteXmin = 0;
-    m_AbsoluteXmax = 0;
-    m_AbsoluteYmin = 0;
-    m_AbsoluteYmax = 0;
+    m_level = Level;
+    m_height = Height;
+    m_nbComposites = 0;
+    m_cornerUL.x = 0;
+    m_cornerUL.y = 0;
+    m_cornerUR.x = 0;
+    m_cornerUR.y = 0;
+    m_cornerLL.x = 0;
+    m_cornerLL.y = 0;
+    m_cornerLR.x = 0;
+    m_cornerLR.y = 0;
+    m_flatAllowed = asFLAT_ALLOWED;
+    m_absoluteXmin = 0;
+    m_absoluteXmax = 0;
+    m_absoluteYmin = 0;
+    m_absoluteYmax = 0;
 }
 
 asGeoAreaComposite::~asGeoAreaComposite()
@@ -110,19 +110,19 @@ asGeoAreaComposite::~asGeoAreaComposite()
 void asGeoAreaComposite::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
 {
     // Set the members
-    m_CornerUL.x = Xmin;
-    m_CornerUL.y = Ymin+Ywidth;
-    m_CornerUR.x = Xmin+Xwidth;
-    m_CornerUR.y = Ymin+Ywidth;
-    m_CornerLL.x = Xmin;
-    m_CornerLL.y = Ymin;
-    m_CornerLR.x = Xmin+Xwidth;
-    m_CornerLR.y = Ymin;
-    m_FlatAllowed = flatAllowed;
-    m_AbsoluteXmin = m_CornerUL.x;
-    m_AbsoluteXmax = m_CornerUR.x;
-    m_AbsoluteYmin = m_CornerLL.y;
-    m_AbsoluteYmax = m_CornerUL.y;
+    m_cornerUL.x = Xmin;
+    m_cornerUL.y = Ymin+Ywidth;
+    m_cornerUR.x = Xmin+Xwidth;
+    m_cornerUR.y = Ymin+Ywidth;
+    m_cornerLL.x = Xmin;
+    m_cornerLL.y = Ymin;
+    m_cornerLR.x = Xmin+Xwidth;
+    m_cornerLR.y = Ymin;
+    m_flatAllowed = flatAllowed;
+    m_absoluteXmin = m_cornerUL.x;
+    m_absoluteXmax = m_cornerUR.x;
+    m_absoluteYmin = m_cornerLL.y;
+    m_absoluteYmax = m_cornerUL.y;
 
     // Initialization and check points
     Init();
@@ -141,36 +141,36 @@ void asGeoAreaComposite::Init()
 bool asGeoAreaComposite::DoCheckPoints()
 {
     // Check the points and proceed to changes if necessary
-    CheckPoint(m_CornerUL, asEDIT_ALLOWED);
-    CheckPoint(m_CornerUR, asEDIT_ALLOWED);
-    CheckPoint(m_CornerLL, asEDIT_ALLOWED);
-    CheckPoint(m_CornerLR, asEDIT_ALLOWED);
+    CheckPoint(m_cornerUL, asEDIT_ALLOWED);
+    CheckPoint(m_cornerUR, asEDIT_ALLOWED);
+    CheckPoint(m_cornerLL, asEDIT_ALLOWED);
+    CheckPoint(m_cornerLR, asEDIT_ALLOWED);
     return true;
 }
 
 bool asGeoAreaComposite::CheckConsistency()
 {
     // Area is a single point
-    if (m_FlatAllowed == asFLAT_FORBIDDEN)
+    if (m_flatAllowed == asFLAT_FORBIDDEN)
     {
-        if ((m_CornerUL.x == m_CornerUR.x) || (m_CornerLL.x == m_CornerLR.x) || (m_CornerLL.y == m_CornerUL.y) || (m_CornerLR.y == m_CornerUR.y))
+        if ((m_cornerUL.x == m_cornerUR.x) || (m_cornerLL.x == m_cornerLR.x) || (m_cornerLL.y == m_cornerUL.y) || (m_cornerLR.y == m_cornerUR.y))
         {
             return false;
         }
     }
 
     // Lon min is on the edge and should be corrected
-    if ((m_CornerUL.x > m_CornerUR.x) && (m_CornerUL.x == m_AxisXmax))
+    if ((m_cornerUL.x > m_cornerUR.x) && (m_cornerUL.x == m_axisXmax))
     {
-        m_CornerUL.x -= m_AxisXmax;
+        m_cornerUL.x -= m_axisXmax;
     }
-    if ((m_CornerLL.x > m_CornerLR.x) && (m_CornerLL.x == m_AxisXmax))
+    if ((m_cornerLL.x > m_cornerLR.x) && (m_cornerLL.x == m_axisXmax))
     {
-        m_CornerLL.x -= m_AxisXmax;
+        m_cornerLL.x -= m_axisXmax;
     }
 
     // Coordinates order vary
-    if ((m_CornerUL.x > m_CornerUR.x) || (m_CornerLL.x > m_CornerLR.x) || (m_CornerLL.y > m_CornerUL.y) || (m_CornerLR.y > m_CornerUR.y))
+    if ((m_cornerUL.x > m_cornerUR.x) || (m_cornerLL.x > m_cornerLR.x) || (m_cornerLL.y > m_cornerUL.y) || (m_cornerLR.y > m_cornerUR.y))
     {
         // Do not proceed to change
         wxLogVerbose(_("The given coordinates are not increasing. This is a normal behavior if the area is on the coordinates edge."));
@@ -182,9 +182,9 @@ bool asGeoAreaComposite::CheckConsistency()
 double asGeoAreaComposite::GetXmin()
 {
     double RealXmin = InfDouble;
-    for (int i_area = 0; i_area<m_NbComposites; i_area++)
+    for (int i_area = 0; i_area<m_nbComposites; i_area++)
     {
-        RealXmin = wxMin(RealXmin, m_Composites[i_area].GetXmin());
+        RealXmin = wxMin(RealXmin, m_composites[i_area].GetXmin());
     }
     return RealXmin;
 }
@@ -192,9 +192,9 @@ double asGeoAreaComposite::GetXmin()
 double asGeoAreaComposite::GetXmax()
 {
     double RealXmax = -InfDouble;
-    for (int i_area = 0; i_area<m_NbComposites; i_area++)
+    for (int i_area = 0; i_area<m_nbComposites; i_area++)
     {
-        RealXmax = wxMax(RealXmax, m_Composites[i_area].GetXmax());
+        RealXmax = wxMax(RealXmax, m_composites[i_area].GetXmax());
     }
     return RealXmax;
 }
@@ -202,9 +202,9 @@ double asGeoAreaComposite::GetXmax()
 double asGeoAreaComposite::GetYmin()
 {
     double RealYmin = InfDouble;
-    for (int i_area = 0; i_area<m_NbComposites; i_area++)
+    for (int i_area = 0; i_area<m_nbComposites; i_area++)
     {
-        RealYmin = wxMin(RealYmin, m_Composites[i_area].GetYmin());
+        RealYmin = wxMin(RealYmin, m_composites[i_area].GetYmin());
     }
     return RealYmin;
 }
@@ -212,9 +212,9 @@ double asGeoAreaComposite::GetYmin()
 double asGeoAreaComposite::GetYmax()
 {
     double RealYmax = -InfDouble;
-    for (int i_area = 0; i_area<m_NbComposites; i_area++)
+    for (int i_area = 0; i_area<m_nbComposites; i_area++)
     {
-        RealYmax = wxMax(RealYmax, m_Composites[i_area].GetYmax());
+        RealYmax = wxMax(RealYmax, m_composites[i_area].GetYmax());
     }
     return RealYmax;
 }
@@ -223,15 +223,15 @@ Coo asGeoAreaComposite::GetCenter()
 {
     Coo center;
 
-    if((m_CornerUL.x<m_CornerUR.x) & (m_CornerLL.x<m_CornerLR.x) & (m_CornerLL.y<m_CornerUL.y) & (m_CornerLR.y<m_CornerUR.y))
+    if((m_cornerUL.x<m_cornerUR.x) & (m_cornerLL.x<m_cornerLR.x) & (m_cornerLL.y<m_cornerUL.y) & (m_cornerLR.y<m_cornerUR.y))
     {
-        center = m_Composites[0].GetCenter();
+        center = m_composites[0].GetCenter();
     }
-    else if((m_CornerUL.x>m_CornerUR.x) & (m_CornerLL.x>m_CornerLR.x) & (m_CornerLL.y<m_CornerUL.y) & (m_CornerLR.y<m_CornerUR.y))
+    else if((m_cornerUL.x>m_cornerUR.x) & (m_cornerLL.x>m_cornerLR.x) & (m_cornerLL.y<m_cornerUL.y) & (m_cornerLR.y<m_cornerUR.y))
     {
-        double CornerUR = 360+m_CornerUR.x;
-        double CornerLR = 360+m_CornerLR.x;
-        double Xmin = wxMin(m_CornerUL.x, m_CornerLL.x);
+        double CornerUR = 360+m_cornerUR.x;
+        double CornerLR = 360+m_cornerLR.x;
+        double Xmin = wxMin(m_cornerUL.x, m_cornerLL.x);
         double Xmax = wxMin(CornerUR, CornerLR);
         center.x = Xmin + (Xmax-Xmin)/2;
         center.y = GetYmin() + (GetYmax()-GetYmin())/2;
@@ -252,7 +252,7 @@ Coo asGeoAreaComposite::GetCenter()
 bool asGeoAreaComposite::IsRectangle()
 {
     // Check that the area is a square
-    if ((m_CornerUL.x != m_CornerLL.x) | (m_CornerUL.y != m_CornerUR.y) | (m_CornerUR.x != m_CornerLR.x) | (m_CornerLL.y != m_CornerLR.y))
+    if ((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) | (m_cornerLL.y != m_cornerLR.y))
     {
         return false;
     }
@@ -261,49 +261,49 @@ bool asGeoAreaComposite::IsRectangle()
 
 void asGeoAreaComposite::CreateComposites()
 {
-    m_Composites.clear();
-    m_NbComposites = 0;
+    m_composites.clear();
+    m_nbComposites = 0;
 
-    if((m_CornerUL.x<=m_CornerUR.x) & (m_CornerLL.x<=m_CornerLR.x) & (m_CornerLL.y<=m_CornerUL.y) & (m_CornerLR.y<=m_CornerUR.y))
+    if((m_cornerUL.x<=m_cornerUR.x) & (m_cornerLL.x<=m_cornerLR.x) & (m_cornerLL.y<=m_cornerUL.y) & (m_cornerLR.y<=m_cornerUR.y))
     {
-        asGeoArea area(m_CornerUL, m_CornerUR, m_CornerLL, m_CornerLR, m_Level, m_Height, m_FlatAllowed);
-        m_Composites.push_back(area);
-        m_NbComposites = 1;
+        asGeoArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_height, m_flatAllowed);
+        m_composites.push_back(area);
+        m_nbComposites = 1;
     }
-    else if((m_CornerUL.x>=m_CornerUR.x) & (m_CornerLL.x>=m_CornerLR.x) & (m_CornerLL.y<=m_CornerUL.y) & (m_CornerLR.y<=m_CornerUR.y) & (m_CornerLR.x==m_AxisXmin) & (m_CornerUR.x==m_AxisXmin))
+    else if((m_cornerUL.x>=m_cornerUR.x) & (m_cornerLL.x>=m_cornerLR.x) & (m_cornerLL.y<=m_cornerUL.y) & (m_cornerLR.y<=m_cornerUR.y) & (m_cornerLR.x==m_axisXmin) & (m_cornerUR.x==m_axisXmin))
     {
-        m_CornerLR.x = m_AxisXmax;
-        m_CornerUR.x = m_AxisXmax;
-        asGeoArea area(m_CornerUL, m_CornerUR, m_CornerLL, m_CornerLR, m_Level, m_Height, m_FlatAllowed);
-        m_Composites.push_back(area);
-        m_NbComposites = 1;
+        m_cornerLR.x = m_axisXmax;
+        m_cornerUR.x = m_axisXmax;
+        asGeoArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_height, m_flatAllowed);
+        m_composites.push_back(area);
+        m_nbComposites = 1;
     }
-    else if((m_CornerUL.x>=m_CornerUR.x) & (m_CornerLL.x>=m_CornerLR.x) & (m_CornerLL.y<=m_CornerUL.y) & (m_CornerLR.y<=m_CornerUR.y) & (m_CornerLR.x!=m_AxisXmin) & (m_CornerUR.x!=m_AxisXmin))
+    else if((m_cornerUL.x>=m_cornerUR.x) & (m_cornerLL.x>=m_cornerLR.x) & (m_cornerLL.y<=m_cornerUL.y) & (m_cornerLR.y<=m_cornerUR.y) & (m_cornerLR.x!=m_axisXmin) & (m_cornerUR.x!=m_axisXmin))
     {
-        Coo a1UL = m_CornerUL, a1UR = m_CornerUR, a1LL = m_CornerLL, a1LR = m_CornerLR;
-        Coo a2UL = m_CornerUL, a2UR = m_CornerUR, a2LL = m_CornerLL, a2LR = m_CornerLR;
-        a1UL.x = m_AxisXmin;
-        a1LL.x = m_AxisXmin;
-        a2UR.x = m_AxisXmax;
-        a2LR.x = m_AxisXmax;
-        asGeoArea area1(a1UL, a1UR, a1LL, a1LR, m_Level, m_Height, m_FlatAllowed);
-        asGeoArea area2(a2UL, a2UR, a2LL, a2LR, m_Level, m_Height, m_FlatAllowed);
-        m_Composites.push_back(area1);
-        m_Composites.push_back(area2);
-        m_NbComposites = 2;
+        Coo a1UL = m_cornerUL, a1UR = m_cornerUR, a1LL = m_cornerLL, a1LR = m_cornerLR;
+        Coo a2UL = m_cornerUL, a2UR = m_cornerUR, a2LL = m_cornerLL, a2LR = m_cornerLR;
+        a1UL.x = m_axisXmin;
+        a1LL.x = m_axisXmin;
+        a2UR.x = m_axisXmax;
+        a2LR.x = m_axisXmax;
+        asGeoArea area1(a1UL, a1UR, a1LL, a1LR, m_level, m_height, m_flatAllowed);
+        asGeoArea area2(a2UL, a2UR, a2LL, a2LR, m_level, m_height, m_flatAllowed);
+        m_composites.push_back(area1);
+        m_composites.push_back(area2);
+        m_nbComposites = 2;
     }
     else
     {
 // TODO (phorton#1#): Implement me and check the other functions (GetCenter(), ...)!
         wxString error = "This case is not managed yet (asGeoAreaComposite::CreateComposites):\n ";
-        error.Append(wxString::Format( "m_CornerUL.x = %g\n", m_CornerUL.x ));
-        error.Append(wxString::Format( "m_CornerUR.x = %g\n", m_CornerUR.x ));
-        error.Append(wxString::Format( "m_CornerLL.x = %g\n", m_CornerLL.x ));
-        error.Append(wxString::Format( "m_CornerLR.x = %g\n", m_CornerLR.x ));
-        error.Append(wxString::Format( "m_CornerLL.y = %g\n", m_CornerLL.y ));
-        error.Append(wxString::Format( "m_CornerUL.y = %g\n", m_CornerUL.y ));
-        error.Append(wxString::Format( "m_CornerLR.y = %g\n", m_CornerLR.y ));
-        error.Append(wxString::Format( "m_CornerUR.y = %g\n", m_CornerUR.y ));
+        error.Append(wxString::Format( "m_cornerUL.x = %g\n", m_cornerUL.x ));
+        error.Append(wxString::Format( "m_cornerUR.x = %g\n", m_cornerUR.x ));
+        error.Append(wxString::Format( "m_cornerLL.x = %g\n", m_cornerLL.x ));
+        error.Append(wxString::Format( "m_cornerLR.x = %g\n", m_cornerLR.x ));
+        error.Append(wxString::Format( "m_cornerLL.y = %g\n", m_cornerLL.y ));
+        error.Append(wxString::Format( "m_cornerUL.y = %g\n", m_cornerUL.y ));
+        error.Append(wxString::Format( "m_cornerLR.y = %g\n", m_cornerLR.y ));
+        error.Append(wxString::Format( "m_cornerUR.y = %g\n", m_cornerUR.y ));
         asLogError(error);
         asThrowException(_("This case is not managed yet."));
     }

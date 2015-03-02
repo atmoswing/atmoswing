@@ -33,29 +33,29 @@
 
 asDataPredictor::asDataPredictor(const wxString &dataId)
 {
-    m_DataId = dataId;
-    m_Level = 0;
-    m_IsPreprocessed = false;
-    m_CanBeClipped = true;
-    m_LatPtsnb = 0;
-    m_LonPtsnb = 0;
-    m_LatIndexStep = 0;
-    m_LonIndexStep = 0;
-    m_PreprocessMethod = wxEmptyString;
-    m_Initialized = false;
-    m_AxesChecked = false;
-    m_TimeZoneHours = 0.0;
-    m_TimeStepHours = 0.0;
-    m_FirstTimeStepHours = 0.0;
-    m_XaxisStep = 0.0f;
-    m_YaxisStep = 0.0f;
-    m_XaxisShift = 0.0f;
-    m_YaxisShift = 0.0f;
-    m_FileAxisLatName = wxEmptyString;
-    m_FileAxisLonName = wxEmptyString;
-    m_FileAxisTimeName = wxEmptyString;
-    m_FileAxisLevelName = wxEmptyString;
-    m_FileExtension = wxEmptyString;
+    m_dataId = dataId;
+    m_level = 0;
+    m_isPreprocessed = false;
+    m_canBeClipped = true;
+    m_latPtsnb = 0;
+    m_lonPtsnb = 0;
+    m_latIndexStep = 0;
+    m_lonIndexStep = 0;
+    m_preprocessMethod = wxEmptyString;
+    m_initialized = false;
+    m_axesChecked = false;
+    m_timeZoneHours = 0.0;
+    m_timeStepHours = 0.0;
+    m_firstTimeStepHours = 0.0;
+    m_xaxisStep = 0.0f;
+    m_yaxisStep = 0.0f;
+    m_xaxisShift = 0.0f;
+    m_yaxisShift = 0.0f;
+    m_fileAxisLatName = wxEmptyString;
+    m_fileAxisLonName = wxEmptyString;
+    m_fileAxisTimeName = wxEmptyString;
+    m_fileAxisLevelName = wxEmptyString;
+    m_fileExtension = wxEmptyString;
 }
 
 asDataPredictor::~asDataPredictor()
@@ -65,23 +65,23 @@ asDataPredictor::~asDataPredictor()
 
 bool asDataPredictor::SetData(VArray2DFloat &val)
 {
-    wxASSERT(m_Time.size()>0);
-    wxASSERT((int)m_Time.size()==(int)val.size());
+    wxASSERT(m_time.size()>0);
+    wxASSERT((int)m_time.size()==(int)val.size());
 
-    m_LatPtsnb = val[0].rows();
-    m_LonPtsnb = val[0].cols();
-    m_Data.clear();
-    m_Data = val;
+    m_latPtsnb = val[0].rows();
+    m_lonPtsnb = val[0].cols();
+    m_data.clear();
+    m_data = val;
 
     return true;
 }
 
 bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
 {
-    if (!m_Initialized)
+    if (!m_initialized)
     {
         if (!Init()) {
-            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_DatasetName.c_str()));
+            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_datasetName.c_str()));
             return false;
         }
     }
@@ -99,13 +99,13 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         asGeoAreaCompositeGrid* dataArea = CreateMatchingArea(desiredArea);
 
         // Store time array
-        m_Time = timeArray.GetTimeArray();
-        m_TimeIndexStep = wxMax(timeArray.GetTimeStepHours()/m_TimeStepHours, 1);
+        m_time = timeArray.GetTimeArray();
+        m_timeIndexStep = wxMax(timeArray.GetTimeStepHours()/m_timeStepHours, 1);
         
         // The desired level
         if (desiredArea)
         {
-            m_Level = desiredArea->GetComposite(0).GetLevel();
+            m_level = desiredArea->GetComposite(0).GetLevel();
         }
 
         // Number of composites
@@ -125,7 +125,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
             return false;
         }
         
-        // Merge the composites into m_Data
+        // Merge the composites into m_data
         if (!MergeComposites(compositeData, dataArea))
         {
             asLogError(_("Merging the composites failed."));
@@ -142,7 +142,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         }
 
         // Check the data container length
-        if ((unsigned)m_Time.size()!=m_Data.size())
+        if ((unsigned)m_time.size()!=m_data.size())
         {
             asLogError(_("The date and the data array lengths do not match."));
             wxDELETE(dataArea);
@@ -196,7 +196,7 @@ bool asDataPredictor::LoadFullArea(double date, float level)
 {
     asTimeArray timeArray(date, asTimeArray::SingleDay);
     timeArray.Init();
-    m_Level = level;
+    m_level = level;
 
     return Load(NULL, timeArray);
 }
@@ -210,12 +210,12 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
         wxString gridType = desiredArea->GetGridTypeString();
         if (gridType.IsSameAs("Regular", false))
         {
-            dataXmin = floor((desiredArea->GetAbsoluteXmin()-m_XaxisShift)/m_XaxisStep)*m_XaxisStep+m_XaxisShift;
-            dataYmin = floor((desiredArea->GetAbsoluteYmin()-m_YaxisShift)/m_YaxisStep)*m_YaxisStep+m_YaxisShift;
-            dataXmax = ceil((desiredArea->GetAbsoluteXmax()-m_XaxisShift)/m_XaxisStep)*m_XaxisStep+m_XaxisShift;
-            dataYmax = ceil((desiredArea->GetAbsoluteYmax()-m_YaxisShift)/m_YaxisStep)*m_YaxisStep+m_YaxisShift;
-            dataXstep = m_XaxisStep;
-            dataYstep = m_YaxisStep;
+            dataXmin = floor((desiredArea->GetAbsoluteXmin()-m_xaxisShift)/m_xaxisStep)*m_xaxisStep+m_xaxisShift;
+            dataYmin = floor((desiredArea->GetAbsoluteYmin()-m_yaxisShift)/m_yaxisStep)*m_yaxisStep+m_yaxisShift;
+            dataXmax = ceil((desiredArea->GetAbsoluteXmax()-m_xaxisShift)/m_xaxisStep)*m_xaxisStep+m_xaxisShift;
+            dataYmax = ceil((desiredArea->GetAbsoluteYmax()-m_yaxisShift)/m_yaxisStep)*m_yaxisStep+m_yaxisShift;
+            dataXstep = m_xaxisStep;
+            dataYstep = m_yaxisStep;
             dataXptsnb = (dataXmax-dataXmin)/dataXstep+1;
             dataYptsnb = (dataYmax-dataYmin)/dataYstep+1;
         }
@@ -227,7 +227,7 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataYstep = desiredArea->GetYstep();
             dataXptsnb = desiredArea->GetXaxisPtsnb();
             dataYptsnb = desiredArea->GetYaxisPtsnb();
-            if (!asTools::IsNaN(m_XaxisStep) && !asTools::IsNaN(m_YaxisStep) && (dataXstep!=m_XaxisStep || dataYstep!=m_YaxisStep))
+            if (!asTools::IsNaN(m_xaxisStep) && !asTools::IsNaN(m_yaxisStep) && (dataXstep!=m_xaxisStep || dataYstep!=m_yaxisStep))
             {
                 asLogError(_("Interpolation is not allowed on irregular grids."));
                 return NULL;
@@ -239,18 +239,18 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false))
         {
-            m_LonIndexStep = dataArea->GetXstep()/m_XaxisStep;
-            m_LatIndexStep = dataArea->GetYstep()/m_YaxisStep;
+            m_lonIndexStep = dataArea->GetXstep()/m_xaxisStep;
+            m_latIndexStep = dataArea->GetYstep()/m_yaxisStep;
         }
         else
         {
-            m_LonIndexStep = 1;
-            m_LatIndexStep = 1;
+            m_lonIndexStep = 1;
+            m_latIndexStep = 1;
         }
 
         // Get axes length for preallocation
-        m_LonPtsnb = dataArea->GetXaxisPtsnb();
-        m_LatPtsnb = dataArea->GetYaxisPtsnb();
+        m_lonPtsnb = dataArea->GetXaxisPtsnb();
+        m_latPtsnb = dataArea->GetYaxisPtsnb();
 
         return dataArea;
     }
@@ -260,15 +260,15 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
 
 asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
 {
-    if (!m_AxesChecked)
+    if (!m_axesChecked)
     {
         if (dataArea==NULL)
         {
             // Get axes length for preallocation
-            m_LonPtsnb = axisDataLon.size();
-            m_LatPtsnb = axisDataLat.size();
-            m_AxisLon = axisDataLon;
-            m_AxisLat = axisDataLat;
+            m_lonPtsnb = axisDataLon.size();
+            m_latPtsnb = axisDataLat.size();
+            m_axisLon = axisDataLon;
+            m_axisLat = axisDataLat;
         }
         else
         {
@@ -324,13 +324,13 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             }
 
             Array1DDouble axisLon = dataArea->GetXaxis();
-            m_AxisLon.resize(axisLon.size());
+            m_axisLon.resize(axisLon.size());
             for (int i=0; i<axisLon.size(); i++)
             {
-                m_AxisLon[i] = (float)axisLon[i];
+                m_axisLon[i] = (float)axisLon[i];
             }
-            m_LonPtsnb = dataArea->GetXaxisPtsnb();
-            wxASSERT_MSG(m_AxisLon.size()==m_LonPtsnb, wxString::Format("m_AxisLon.size()=%d, m_LonPtsnb=%d",(int)m_AxisLon.size(),m_LonPtsnb));
+            m_lonPtsnb = dataArea->GetXaxisPtsnb();
+            wxASSERT_MSG(m_axisLon.size()==m_lonPtsnb, wxString::Format("m_axisLon.size()=%d, m_lonPtsnb=%d",(int)m_axisLon.size(),m_lonPtsnb));
 
             // Check that requested data do not overtake the file
             for (int i_comp=0; i_comp<dataArea->GetNbComposites(); i_comp++)
@@ -385,18 +385,18 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             }
 
             Array1DDouble axisLat = dataArea->GetYaxis();
-            m_AxisLat.resize(axisLat.size());
+            m_axisLat.resize(axisLat.size());
             for (int i=0; i<axisLat.size(); i++)
             {
                 // Latitude axis in reverse order
-                m_AxisLat[i] = (float)axisLat[axisLat.size()-1-i];
+                m_axisLat[i] = (float)axisLat[axisLat.size()-1-i];
             }
-            m_LatPtsnb = dataArea->GetYaxisPtsnb();
-            wxASSERT_MSG(m_AxisLat.size()==m_LatPtsnb, wxString::Format("m_AxisLat.size()=%d, m_LatPtsnb=%d",(int)m_AxisLat.size(),m_LatPtsnb));
+            m_latPtsnb = dataArea->GetYaxisPtsnb();
+            wxASSERT_MSG(m_axisLat.size()==m_latPtsnb, wxString::Format("m_axisLat.size()=%d, m_latPtsnb=%d",(int)m_axisLat.size(),m_latPtsnb));
         }
 
         compositeData = VVArray2DFloat(dataArea->GetNbComposites());
-        m_AxesChecked = true;
+        m_axesChecked = true;
     }
 
     return dataArea;
@@ -405,40 +405,40 @@ asGeoAreaCompositeGrid* asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
 bool asDataPredictor::Inline()
 {
     //Already inlined
-    if (m_LonPtsnb==1 || m_LatPtsnb==1)
+    if (m_lonPtsnb==1 || m_latPtsnb==1)
     {
         return true;
     }
 
-    wxASSERT(m_Data.size()>0);
+    wxASSERT(m_data.size()>0);
 
-    int timeSize = m_Data.size();
-    int cols = m_Data[0].cols();
-    int rows = m_Data[0].rows();
+    int timeSize = m_data.size();
+    int cols = m_data[0].cols();
+    int rows = m_data[0].rows();
 
     Array2DFloat inlineData = Array2DFloat::Zero(1,cols*rows);
 
     VArray2DFloat newData;
-    newData.reserve(m_Time.size()*m_LonPtsnb*m_LatPtsnb);
+    newData.reserve(m_time.size()*m_lonPtsnb*m_latPtsnb);
     newData.resize(timeSize);
 
     for (int i_time=0; i_time<timeSize; i_time++)
     {
         for (int i_row=0; i_row<rows; i_row++)
         {
-            inlineData.block(0,i_row*cols,1,cols) = m_Data[i_time].row(i_row);
+            inlineData.block(0,i_row*cols,1,cols) = m_data[i_time].row(i_row);
         }
         newData[i_time] = inlineData;
     }
 
-    m_Data = newData;
+    m_data = newData;
 
-    m_LatPtsnb = m_Data[0].rows();
-    m_LonPtsnb = m_Data[0].cols();
+    m_latPtsnb = m_data[0].rows();
+    m_lonPtsnb = m_data[0].cols();
     Array1DFloat emptyAxis(1);
     emptyAxis[0] = NaNFloat;
-    m_AxisLat = emptyAxis;
-    m_AxisLon = emptyAxis;
+    m_axisLat = emptyAxis;
+    m_axisLon = emptyAxis;
 
     return true;
 }
@@ -449,7 +449,7 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
     {
         // Get a container with the final size
         int sizeTime = compositeData[0].size();
-        m_Data = VArray2DFloat(sizeTime, Array2DFloat(m_LatPtsnb,m_LonPtsnb));
+        m_data = VArray2DFloat(sizeTime, Array2DFloat(m_latPtsnb,m_lonPtsnb));
 
         Array2DFloat blockUL, blockLL, blockUR, blockLR;
         int isblockUL = asNONE, isblockLL = asNONE, isblockUR = asNONE, isblockLR = asNONE;
@@ -493,12 +493,12 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
                 if(i_area == isblockUL)
                 {
                     blockUL = compositeData[i_area][i_time];
-                    m_Data[i_time].topLeftCorner(blockUL.rows(), blockUL.cols()) = blockUL;
+                    m_data[i_time].topLeftCorner(blockUL.rows(), blockUL.cols()) = blockUL;
                 }
                 else if(i_area == isblockUR)
                 {
                     blockUR = compositeData[i_area][i_time];
-                    m_Data[i_time].block(0, m_LonPtsnb-blockUR.cols(), blockUR.rows(), blockUR.cols()) = blockUR;
+                    m_data[i_time].block(0, m_lonPtsnb-blockUR.cols(), blockUR.rows(), blockUR.cols()) = blockUR;
                 }
                 else if(i_area == isblockLL)
                 {
@@ -524,7 +524,7 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
     }
     else
     {
-        m_Data = compositeData[0];
+        m_data = compositeData[0];
     }
 
     return true;
@@ -563,7 +563,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
         // Containers for results
         int finalLengthLon = desiredArea->GetXaxisPtsnb();
         int finalLengthLat = desiredArea->GetYaxisPtsnb();
-        VArray2DFloat latlonTimeData(m_Data.size(), Array2DFloat(finalLengthLat,finalLengthLon));
+        VArray2DFloat latlonTimeData(m_data.size(), Array2DFloat(finalLengthLat,finalLengthLon));
 
         // Creation of the axes
         Array1DFloat axisDataLon;
@@ -624,7 +624,7 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
         float valLLcorner, valULcorner, valLRcorner, valURcorner;
 
         // The interpolation loop
-        for (unsigned int i_time=0; i_time<m_Data.size(); i_time++)
+        for (unsigned int i_time=0; i_time<m_data.size(); i_time++)
         {
             // Loop to extract the data from the array
             for (int i_lat=0; i_lat<finalLengthLat; i_lat++)
@@ -712,30 +712,30 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
 
                     if (dX==0 && dY==0)
                     {
-                        latlonTimeData[i_time](i_lat, i_lon) = m_Data[i_time](indexYfloor, indexXfloor);
+                        latlonTimeData[i_time](i_lat, i_lon) = m_data[i_time](indexYfloor, indexXfloor);
                     }
                     else if (dX==0)
                     {
-                        valLLcorner = m_Data[i_time](indexYfloor, indexXfloor);
-                        valULcorner = m_Data[i_time](indexYceil, indexXfloor);
+                        valLLcorner = m_data[i_time](indexYfloor, indexXfloor);
+                        valULcorner = m_data[i_time](indexYceil, indexXfloor);
 
                         latlonTimeData[i_time](i_lat, i_lon) =  (1-dX)*(1-dY)*valLLcorner
                                                   + (1-dX)*(dY)*valULcorner;
                     }
                     else if (dY==0)
                     {
-                        valLLcorner = m_Data[i_time](indexYfloor, indexXfloor);
-                        valLRcorner = m_Data[i_time](indexYfloor, indexXceil);
+                        valLLcorner = m_data[i_time](indexYfloor, indexXfloor);
+                        valLRcorner = m_data[i_time](indexYfloor, indexXceil);
 
                         latlonTimeData[i_time](i_lat, i_lon) =  (1-dX)*(1-dY)*valLLcorner
                                                   + (dX)*(1-dY)*valLRcorner;
                     }
                     else
                     {
-                        valLLcorner = m_Data[i_time](indexYfloor, indexXfloor);
-                        valULcorner = m_Data[i_time](indexYceil, indexXfloor);
-                        valLRcorner = m_Data[i_time](indexYfloor, indexXceil);
-                        valURcorner = m_Data[i_time](indexYceil, indexXceil);
+                        valLLcorner = m_data[i_time](indexYfloor, indexXfloor);
+                        valULcorner = m_data[i_time](indexYceil, indexXfloor);
+                        valLRcorner = m_data[i_time](indexYfloor, indexXceil);
+                        valURcorner = m_data[i_time](indexYceil, indexXceil);
 
                         latlonTimeData[i_time](i_lat, i_lon) =  (1-dX)*(1-dY)*valLLcorner
                                                   + (1-dX)*(dY)*valULcorner
@@ -750,9 +750,9 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
             indexLastLat = 0;
         }
 
-        m_Data = latlonTimeData;
-        m_LatPtsnb = finalLengthLat;
-        m_LonPtsnb = finalLengthLon;
+        m_data = latlonTimeData;
+        m_latPtsnb = finalLengthLat;
+        m_lonPtsnb = finalLengthLon;
     }
 
     return true;

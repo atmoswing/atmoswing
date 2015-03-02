@@ -38,50 +38,50 @@ asDataPredictorArchiveNoaaOisst2Terranum::asDataPredictorArchiveNoaaOisst2Terran
 asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
-    m_Initialized = false;
-    m_DataId = dataId;
-    m_DatasetId = "NOAA_OISST_v2_terranum";
-    m_OriginalProvider = "NOAA";
-    m_FinalProvider = "Terranum";
-    m_FinalProviderWebsite = "http://www.terranum.ch";
-    m_FinalProviderFTP = "";
-    m_DatasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset from terranum";
-    m_OriginalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_OriginalProviderEnd = NaNDouble;
-    m_TimeZoneHours = 0;
-    m_TimeStepHours = 24;
-    m_FirstTimeStepHours = 12;
-    m_NanValues.push_back(32767);
-    m_NanValues.push_back(936*std::pow(10.f,34.f));
-    m_XaxisShift = 0.125;
-    m_YaxisShift = 0.125;
-    m_XaxisStep = 1;
-    m_YaxisStep = 1;
-    m_SubFolder = wxEmptyString;
-    m_FileAxisLatName = "lat";
-    m_FileAxisLonName = "lon";
-    m_FileAxisTimeName = "time";
+    m_initialized = false;
+    m_dataId = dataId;
+    m_datasetId = "NOAA_OISST_v2_terranum";
+    m_originalProvider = "NOAA";
+    m_finalProvider = "Terranum";
+    m_finalProviderWebsite = "http://www.terranum.ch";
+    m_finalProviderFTP = "";
+    m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset from terranum";
+    m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
+    m_originalProviderEnd = NaNDouble;
+    m_timeZoneHours = 0;
+    m_timeStepHours = 24;
+    m_firstTimeStepHours = 12;
+    m_nanValues.push_back(32767);
+    m_nanValues.push_back(936*std::pow(10.f,34.f));
+    m_xaxisShift = 0.125;
+    m_yaxisShift = 0.125;
+    m_xaxisStep = 1;
+    m_yaxisStep = 1;
+    m_subFolder = wxEmptyString;
+    m_fileAxisLatName = "lat";
+    m_fileAxisLonName = "lon";
+    m_fileAxisTimeName = "time";
 
     // Identify data ID and set the corresponding properties.
-    if (m_DataId.IsSameAs("sst", false))
+    if (m_dataId.IsSameAs("sst", false))
     {
-        m_DataParameter = SeaSurfaceTemperature;
-        m_FileNamePattern = "sst_1deg.nc";
-        m_FileVariableName = "sst";
-        m_Unit = degC;
+        m_dataParameter = SeaSurfaceTemperature;
+        m_fileNamePattern = "sst_1deg.nc";
+        m_fileVariableName = "sst";
+        m_unit = degC;
     }
-    else if (m_DataId.IsSameAs("sst_anom", false))
+    else if (m_dataId.IsSameAs("sst_anom", false))
     {
-        m_DataParameter = SeaSurfaceTemperatureAnomaly;
-        m_FileNamePattern = "sst_anom_1deg.nc";
-        m_FileVariableName = "anom";
-        m_Unit = degC;
+        m_dataParameter = SeaSurfaceTemperatureAnomaly;
+        m_fileNamePattern = "sst_anom_1deg.nc";
+        m_fileVariableName = "anom";
+        m_unit = degC;
     }
     else
     {
-        m_DataParameter = NoDataParameter;
-        m_FileVariableName = wxEmptyString;
-        m_Unit = NoDataUnit;
+        m_dataParameter = NoDataParameter;
+        m_fileVariableName = wxEmptyString;
+        m_unit = NoDataUnit;
     }
 }
 
@@ -93,19 +93,19 @@ asDataPredictorArchiveNoaaOisst2Terranum::~asDataPredictorArchiveNoaaOisst2Terra
 bool asDataPredictorArchiveNoaaOisst2Terranum::Init()
 {
     // Check data ID
-    if (m_FileNamePattern.IsEmpty() || m_FileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId.c_str(), m_datasetName.c_str()));
         return false;
     }
 
     // Check directory is set
-    if (m_DirectoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_directoryPath.IsEmpty()) {
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId.c_str(), m_datasetName.c_str()));
         return false;
     }
 
     // Set to initialized
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
@@ -133,7 +133,7 @@ VectorString asDataPredictorArchiveNoaaOisst2Terranum::GetDataIdDescriptionList(
 bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // Build the file path
-    wxString fileFullPath = m_DirectoryPath + m_FileNamePattern;
+    wxString fileFullPath = m_directoryPath + m_fileNamePattern;
 
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -145,29 +145,29 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     }
 
     // Get some attributes
-    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
+    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
     if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
-    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_FileVariableName);
+    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
     if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
     bool scalingNeeded = true;
     if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
     // Get full axes from the netcdf file
-    Array1DFloat axisDataLon(ncFile.GetVarLength(m_FileAxisLonName));
-    ncFile.GetVar(m_FileAxisLonName, &axisDataLon[0]);
-    Array1DFloat axisDataLat(ncFile.GetVarLength(m_FileAxisLatName));
-    ncFile.GetVar(m_FileAxisLatName, &axisDataLat[0]);
+    Array1DFloat axisDataLon(ncFile.GetVarLength(m_fileAxisLonName));
+    ncFile.GetVar(m_fileAxisLonName, &axisDataLon[0]);
+    Array1DFloat axisDataLat(ncFile.GetVarLength(m_fileAxisLatName));
+    ncFile.GetVar(m_fileAxisLatName, &axisDataLat[0]);
     Array1DFloat axisDataLevel;
     
     // Adjust axes if necessary
     dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
         
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
-    size_t axisDataTimeLength = ncFile.GetVarLength(m_FileAxisTimeName);
-    double valFirstTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, 0);
+    size_t axisDataTimeLength = ncFile.GetVarLength(m_fileAxisTimeName);
+    double valFirstTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, 0);
     valFirstTime = (valFirstTime/24.0); // hours to days
     valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-    double valLastTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, axisDataTimeLength-1);
+    double valLastTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, axisDataTimeLength-1);
     valLastTime = (valLastTime/24.0); // hours to days
     valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
 
@@ -199,7 +199,7 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     int cutEnd = 0;
     while (valFirstTime<timeArray[timeArrayIndexStart])
     {
-        valFirstTime += m_TimeStepHours/24.0;
+        valFirstTime += m_timeStepHours/24.0;
         indexStartTime++;
     }
     if (indexStartTime+indexLengthTime>axisDataTimeLength)
@@ -256,8 +256,8 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         {
             indexStartLon = 0;
             indexStartLat = 0;
-            indexLengthLon = m_LonPtsnb;
-            indexLengthLat = m_LatPtsnb;
+            indexLengthLon = m_lonPtsnb;
+            indexLengthLat = m_latPtsnb;
         }
 
         // Create the arrays to receive the data
@@ -308,12 +308,12 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         indexCountData[1] = indexLengthLat;
         indexCountData[2] = indexLengthLon;
         ptrdiff_t indexStrideData[3] = {0,0,0};
-        indexStrideData[0] = m_TimeIndexStep;
-        indexStrideData[1] = m_LatIndexStep;
-        indexStrideData[2] = m_LonIndexStep;
+        indexStrideData[0] = m_timeIndexStep;
+        indexStrideData[1] = m_latIndexStep;
+        indexStrideData[2] = m_lonIndexStep;
 
         // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-        ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
+        ncFile.GetVarSample(m_fileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
 
         // Keep data for later treatment
         vectIndexLengthLat.push_back(indexLengthLat);
@@ -333,7 +333,7 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         {
             int indexLengthLat = vectIndexLengthLat[i_area];
             int indexLengthLon = vectIndexLengthLon[i_area];
-            totSize += m_Time.size() * indexLengthLat * indexLengthLon;
+            totSize += m_time.size() * indexLengthLat * indexLengthLon;
         }
         compositeData.reserve(totSize);
     }
@@ -370,9 +370,9 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
 
                     // Check if not NaN
                     bool notNan = true;
-                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
+                    for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
                     {
-                        if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
+                        if ((float)data[ind]==m_nanValues[i_nan] || latlonData(i_lat,i_lon)==m_nanValues[i_nan])
                         {
                             notNan = false;
                         }

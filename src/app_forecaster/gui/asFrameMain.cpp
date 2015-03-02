@@ -59,55 +59,55 @@ asFrameMain::asFrameMain( wxWindow* parent )
 :
 asFrameMainVirtual( parent )
 {
-    m_Forecaster = NULL;
-    m_LogWindow = NULL;
+    m_forecaster = NULL;
+    m_logWindow = NULL;
 
     // Toolbar
-    m_ToolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL );
-    m_ToolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
-    m_ToolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
-    m_ToolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
-    m_ToolBar->Realize();
+    m_toolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL );
+    m_toolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
+    m_toolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
+    m_toolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+    m_toolBar->Realize();
 
     // Leds
-    m_LedDownloading = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedDownloading->SetState( awxLED_OFF );
-	m_SizerLeds->Add( m_LedDownloading, 0, wxALL, 5 );
+    m_ledDownloading = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_ledDownloading->SetState( awxLED_OFF );
+	m_sizerLeds->Add( m_ledDownloading, 0, wxALL, 5 );
 	
-	wxStaticText *textDownloading = new wxStaticText( m_PanelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *textDownloading = new wxStaticText( m_panelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	textDownloading->Wrap( -1 );
-	m_SizerLeds->Add( textDownloading, 0, wxALL, 5 );
+	m_sizerLeds->Add( textDownloading, 0, wxALL, 5 );
 	
-	m_LedLoading = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedLoading->SetState( awxLED_OFF );
-	m_SizerLeds->Add( m_LedLoading, 0, wxALL, 5 );
+	m_ledLoading = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_ledLoading->SetState( awxLED_OFF );
+	m_sizerLeds->Add( m_ledLoading, 0, wxALL, 5 );
 	
-	wxStaticText *textLoading = new wxStaticText( m_PanelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *textLoading = new wxStaticText( m_panelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0 );
 	textLoading->Wrap( -1 );
-	m_SizerLeds->Add( textLoading, 0, wxALL, 5 );
+	m_sizerLeds->Add( textLoading, 0, wxALL, 5 );
 	
-	m_LedProcessing = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedProcessing->SetState( awxLED_OFF );
-	m_SizerLeds->Add( m_LedProcessing, 0, wxALL, 5 );
+	m_ledProcessing = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_ledProcessing->SetState( awxLED_OFF );
+	m_sizerLeds->Add( m_ledProcessing, 0, wxALL, 5 );
 	
-	wxStaticText *textProcessing = new wxStaticText( m_PanelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *textProcessing = new wxStaticText( m_panelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0 );
 	textProcessing->Wrap( -1 );
-	m_SizerLeds->Add( textProcessing, 0, wxALL, 5 );
+	m_sizerLeds->Add( textProcessing, 0, wxALL, 5 );
 	
-	m_LedSaving = new awxLed( m_PanelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
-	m_LedSaving->SetState( awxLED_OFF );
-	m_SizerLeds->Add( m_LedSaving, 0, wxALL, 5 );
+	m_ledSaving = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
+	m_ledSaving->SetState( awxLED_OFF );
+	m_sizerLeds->Add( m_ledSaving, 0, wxALL, 5 );
 	
-	wxStaticText *textSaving = new wxStaticText( m_PanelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *textSaving = new wxStaticText( m_panelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0 );
 	textSaving->Wrap( -1 );
-	m_SizerLeds->Add( textSaving, 0, wxALL, 5 );
+	m_sizerLeds->Add( textSaving, 0, wxALL, 5 );
 
     // Buttons
-    m_BpButtonNow->SetBitmapLabel(img_clock_now);
-    m_BpButtonAdd->SetBitmapLabel(img_plus);
+    m_bpButtonNow->SetBitmapLabel(img_clock_now);
+    m_bpButtonAdd->SetBitmapLabel(img_plus);
 
     // Create panels manager
-    m_PanelsManager = new asPanelsManagerForecasts();
+    m_panelsManager = new asPanelsManagerForecasts();
 
     // Connect events
     this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
@@ -123,7 +123,7 @@ asFrameMainVirtual( parent )
 
 asFrameMain::~asFrameMain()
 {
-    wxDELETE(m_PanelsManager);
+    wxDELETE(m_panelsManager);
 
     // Disconnect events
     this->Disconnect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameMain::LaunchForecasting ) );
@@ -144,7 +144,7 @@ void asFrameMain::OnInit()
 
     if(!batchFilePath.IsEmpty())
     {
-        if (!m_BatchForecasts.Load(batchFilePath))
+        if (!m_batchForecasts.Load(batchFilePath))
         {
             asLogWarning(_("Failed to open the batch file ") + batchFilePath);
         }
@@ -156,7 +156,7 @@ void asFrameMain::OnInit()
     }
     else
     {
-        asWizardBatchForecasts wizard(this, &m_BatchForecasts);
+        asWizardBatchForecasts wizard(this, &m_batchForecasts);
         wizard.RunWizard(wizard.GetFirstPage());
 
         OpenBatchForecasts();
@@ -183,7 +183,7 @@ void asFrameMain::OnOpenBatchForecasts(wxCommandEvent & event)
     pConfig->Write("/BatchForecasts/LastOpened", batchFilePath);
 
     // Do open the batch file
-    if (!m_BatchForecasts.Load(batchFilePath))
+    if (!m_batchForecasts.Load(batchFilePath))
     {
         asLogError(_("Failed to open the batch file ") + batchFilePath);
     }
@@ -214,7 +214,7 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent & event)
         return;
 
     wxString batchFilePath = openFileDialog.GetPath();
-    m_BatchForecasts.SetFilePath(batchFilePath);
+    m_batchForecasts.SetFilePath(batchFilePath);
 
     if(SaveBatchForecasts())
     {
@@ -227,31 +227,31 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent & event)
 bool asFrameMain::SaveBatchForecasts()
 {
     // Update the GIS layers
-    m_BatchForecasts.ClearForecasts();
+    m_batchForecasts.ClearForecasts();
 
-    for (int i=0; i<m_PanelsManager->GetPanelsNb(); i++)
+    for (int i=0; i<m_panelsManager->GetPanelsNb(); i++)
     {
-        asPanelForecast* panel = m_PanelsManager->GetPanel(i);
+        asPanelForecast* panel = m_panelsManager->GetPanel(i);
 
-        m_BatchForecasts.AddForecast();
+        m_batchForecasts.AddForecast();
 
-        m_BatchForecasts.SetForecastFileName(i, panel->GetParametersFileName());
+        m_batchForecasts.SetForecastFileName(i, panel->GetParametersFileName());
     }
 
-    if(!m_BatchForecasts.Save())
+    if(!m_batchForecasts.Save())
     {
         asLogError(_("Could not save the batch file."));
         return false;
     }
 
-    m_BatchForecasts.SetHasChanged(false);
+    m_batchForecasts.SetHasChanged(false);
 
     return true;
 }
 
 void asFrameMain::OnNewBatchForecasts(wxCommandEvent & event)
 {
-    asWizardBatchForecasts wizard(this, &m_BatchForecasts);
+    asWizardBatchForecasts wizard(this, &m_batchForecasts);
     wizard.RunWizard(wizard.GetSecondPage());
 }
 
@@ -260,17 +260,17 @@ bool asFrameMain::OpenBatchForecasts()
     Freeze();
 
     // Cleanup the actual panels
-    m_PanelsManager->Clear();
+    m_panelsManager->Clear();
 
     // Create the panels
-    for (int i=0; i<m_BatchForecasts.GetForecastsNb(); i++)
+    for (int i=0; i<m_batchForecasts.GetForecastsNb(); i++)
     {
-        asPanelForecast *panel = new asPanelForecast( m_ScrolledWindowForecasts );
-        panel->SetParametersFileName(m_BatchForecasts.GetForecastFileName(i));
+        asPanelForecast *panel = new asPanelForecast( m_scrolledWindowForecasts );
+        panel->SetParametersFileName(m_batchForecasts.GetForecastFileName(i));
         panel->Layout();
-        m_SizerForecasts->Add( panel, 0, wxALL|wxEXPAND, 5 );
+        m_sizerForecasts->Add( panel, 0, wxALL|wxEXPAND, 5 );
         // Add to the array
-        m_PanelsManager->AddPanel(panel);
+        m_panelsManager->AddPanel(panel);
     }
     
     Layout(); // For the scrollbar
@@ -300,14 +300,14 @@ void asFrameMain::OpenFramePredictandDB( wxCommandEvent& event )
 
 void asFrameMain::OnConfigureDirectories( wxCommandEvent& event )
 {
-    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this, &m_BatchForecasts);
+    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameMain::OpenFramePreferences( wxCommandEvent& event )
 {
-    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this, &m_BatchForecasts);
+    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
@@ -321,16 +321,16 @@ void asFrameMain::OpenFrameAbout( wxCommandEvent& event )
 
 void asFrameMain::OnShowLog( wxCommandEvent& event )
 {
-    wxASSERT(m_LogWindow);
-    m_LogWindow->DoShow();
+    wxASSERT(m_logWindow);
+    m_logWindow->DoShow();
 }
 
 void asFrameMain::OnLogLevel1( wxCommandEvent& event )
 {
     Log().SetLevel(1);
-    m_MenuLogLevel->FindItemByPosition(0)->Check(true);
-    m_MenuLogLevel->FindItemByPosition(1)->Check(false);
-    m_MenuLogLevel->FindItemByPosition(2)->Check(false);
+    m_menuLogLevel->FindItemByPosition(0)->Check(true);
+    m_menuLogLevel->FindItemByPosition(1)->Check(false);
+    m_menuLogLevel->FindItemByPosition(2)->Check(false);
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
@@ -339,9 +339,9 @@ void asFrameMain::OnLogLevel1( wxCommandEvent& event )
 void asFrameMain::OnLogLevel2( wxCommandEvent& event )
 {
     Log().SetLevel(2);
-    m_MenuLogLevel->FindItemByPosition(0)->Check(false);
-    m_MenuLogLevel->FindItemByPosition(1)->Check(true);
-    m_MenuLogLevel->FindItemByPosition(2)->Check(false);
+    m_menuLogLevel->FindItemByPosition(0)->Check(false);
+    m_menuLogLevel->FindItemByPosition(1)->Check(true);
+    m_menuLogLevel->FindItemByPosition(2)->Check(false);
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
@@ -350,9 +350,9 @@ void asFrameMain::OnLogLevel2( wxCommandEvent& event )
 void asFrameMain::OnLogLevel3( wxCommandEvent& event )
 {
     Log().SetLevel(3);
-    m_MenuLogLevel->FindItemByPosition(0)->Check(false);
-    m_MenuLogLevel->FindItemByPosition(1)->Check(false);
-    m_MenuLogLevel->FindItemByPosition(2)->Check(true);
+    m_menuLogLevel->FindItemByPosition(0)->Check(false);
+    m_menuLogLevel->FindItemByPosition(1)->Check(false);
+    m_menuLogLevel->FindItemByPosition(2)->Check(true);
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
     if (prefFrame) prefFrame->Update();
@@ -365,71 +365,71 @@ void asFrameMain::OnStatusMethodUpdate( wxCommandEvent& event )
 
     if(eventType==asEVT_STATUS_STARTING)
     {
-        m_PanelsManager->SetForecastsAllLedsOff();
+        m_panelsManager->SetForecastsAllLedsOff();
     }
     else if(eventType==asEVT_STATUS_FAILED)
     {
-        m_PanelsManager->SetForecastLedError(eventInt);
+        m_panelsManager->SetForecastLedError(eventInt);
     }
     else if(eventType==asEVT_STATUS_SUCCESS)
     {
-        m_PanelsManager->SetForecastLedDone(eventInt);
+        m_panelsManager->SetForecastLedDone(eventInt);
     }
     else if(eventType==asEVT_STATUS_DOWNLOADING)
     {
-        m_LedDownloading->SetColour(awxLED_YELLOW);
-        m_LedDownloading->SetState(awxLED_ON);
-        m_LedDownloading->Refresh();
+        m_ledDownloading->SetColour(awxLED_YELLOW);
+        m_ledDownloading->SetState(awxLED_ON);
+        m_ledDownloading->Refresh();
     }
     else if(eventType==asEVT_STATUS_DOWNLOADED)
     {
-        m_LedDownloading->SetColour(awxLED_GREEN);
-        m_LedDownloading->SetState(awxLED_ON);
-        m_LedDownloading->Refresh();
+        m_ledDownloading->SetColour(awxLED_GREEN);
+        m_ledDownloading->SetState(awxLED_ON);
+        m_ledDownloading->Refresh();
     }
     else if(eventType==asEVT_STATUS_LOADING)
     {
-        m_LedLoading->SetColour(awxLED_YELLOW);
-        m_LedLoading->SetState(awxLED_ON);
-        m_LedLoading->Refresh();
+        m_ledLoading->SetColour(awxLED_YELLOW);
+        m_ledLoading->SetState(awxLED_ON);
+        m_ledLoading->Refresh();
     }
     else if(eventType==asEVT_STATUS_LOADED)
     {
-        m_LedLoading->SetColour(awxLED_GREEN);
-        m_LedLoading->SetState(awxLED_ON);
-        m_LedLoading->Refresh();
+        m_ledLoading->SetColour(awxLED_GREEN);
+        m_ledLoading->SetState(awxLED_ON);
+        m_ledLoading->Refresh();
     }
     else if(eventType==asEVT_STATUS_SAVING)
     {
-        m_LedSaving->SetColour(awxLED_YELLOW);
-        m_LedSaving->SetState(awxLED_ON);
-        m_LedSaving->Refresh();
+        m_ledSaving->SetColour(awxLED_YELLOW);
+        m_ledSaving->SetState(awxLED_ON);
+        m_ledSaving->Refresh();
     }
     else if(eventType==asEVT_STATUS_SAVED)
     {
-        m_LedSaving->SetColour(awxLED_GREEN);
-        m_LedSaving->SetState(awxLED_ON);
-        m_LedSaving->Refresh();
+        m_ledSaving->SetColour(awxLED_GREEN);
+        m_ledSaving->SetState(awxLED_ON);
+        m_ledSaving->Refresh();
     }
     else if(eventType==asEVT_STATUS_PROCESSING)
     {
-        m_LedProcessing->SetColour(awxLED_YELLOW);
-        m_LedProcessing->SetState(awxLED_ON);
-        m_LedProcessing->Refresh();
+        m_ledProcessing->SetColour(awxLED_YELLOW);
+        m_ledProcessing->SetState(awxLED_ON);
+        m_ledProcessing->Refresh();
     }
     else if(eventType==asEVT_STATUS_PROCESSED)
     {
-        m_LedProcessing->SetColour(awxLED_GREEN);
-        m_LedProcessing->SetState(awxLED_ON);
-        m_LedProcessing->Refresh();
+        m_ledProcessing->SetColour(awxLED_GREEN);
+        m_ledProcessing->SetState(awxLED_ON);
+        m_ledProcessing->Refresh();
     }
     else if( (eventType==asEVT_STATUS_RUNNING) )
     {
-        m_PanelsManager->SetForecastLedRunning(eventInt);
-        m_LedDownloading->SetState(awxLED_OFF);
-        m_LedLoading->SetState(awxLED_OFF);
-        m_LedProcessing->SetState(awxLED_OFF);
-        m_LedSaving->SetState(awxLED_OFF);
+        m_panelsManager->SetForecastLedRunning(eventInt);
+        m_ledDownloading->SetState(awxLED_OFF);
+        m_ledLoading->SetState(awxLED_OFF);
+        m_ledProcessing->SetState(awxLED_OFF);
+        m_ledSaving->SetState(awxLED_OFF);
     }
     else
     {
@@ -441,25 +441,25 @@ void asFrameMain::DisplayLogLevelMenu()
 {
     // Set log level in the menu
     int logLevel = (int)wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-    m_MenuLogLevel->FindItemByPosition(0)->Check(false);
-    m_MenuLogLevel->FindItemByPosition(1)->Check(false);
-    m_MenuLogLevel->FindItemByPosition(2)->Check(false);
+    m_menuLogLevel->FindItemByPosition(0)->Check(false);
+    m_menuLogLevel->FindItemByPosition(1)->Check(false);
+    m_menuLogLevel->FindItemByPosition(2)->Check(false);
     switch (logLevel)
     {
     case 1:
-        m_MenuLogLevel->FindItemByPosition(0)->Check(true);
+        m_menuLogLevel->FindItemByPosition(0)->Check(true);
         Log().SetLevel(1);
         break;
     case 2:
-        m_MenuLogLevel->FindItemByPosition(1)->Check(true);
+        m_menuLogLevel->FindItemByPosition(1)->Check(true);
         Log().SetLevel(2);
         break;
     case 3:
-        m_MenuLogLevel->FindItemByPosition(2)->Check(true);
+        m_menuLogLevel->FindItemByPosition(2)->Check(true);
         Log().SetLevel(3);
         break;
     default:
-        m_MenuLogLevel->FindItemByPosition(1)->Check(true);
+        m_menuLogLevel->FindItemByPosition(1)->Check(true);
         Log().SetLevel(2);
     }
 }
@@ -471,16 +471,16 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
     asLogMessage(wxString::Format(_("Trying to run the forecast for the date %s"), forecastDateStr.c_str()));
 
-    if (m_Forecaster)
+    if (m_forecaster)
     {
         asLogError(_("The forecaster is already processing."));
         return;
     }
 
     // Launch forecasting
-    m_Forecaster = new asMethodForecasting(&m_BatchForecasts, this);
-    m_Forecaster->SetForecastDate(forecastDate);
-    if(!m_Forecaster->Manager())
+    m_forecaster = new asMethodForecasting(&m_batchForecasts, this);
+    m_forecaster->SetForecastDate(forecastDate);
+    if(!m_forecaster->Manager())
     {
         asLogError(_("Failed processing the forecast."));
 
@@ -502,40 +502,40 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
         smtp->Destroy();
         */
 
-        wxDELETE(m_Forecaster);
+        wxDELETE(m_forecaster);
 
         return;
     }
 
-    double realForecastDate = m_Forecaster->GetForecastDate();
+    double realForecastDate = m_forecaster->GetForecastDate();
     SetForecastDate(realForecastDate);
 
     // Log message
     wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
     asLogMessage(wxString::Format(_("Forecast processed for the date %s"), realForecastDateStr.c_str()));
 
-    wxDELETE(m_Forecaster);
+    wxDELETE(m_forecaster);
 }
 
 void asFrameMain::CancelForecasting( wxCommandEvent& event )
 {
-    if (m_Forecaster)
+    if (m_forecaster)
     {
-        m_Forecaster->Cancel();
+        m_forecaster->Cancel();
     }
 }
 
 void asFrameMain::AddForecast( wxCommandEvent& event )
 {
     Freeze();
-    asPanelForecast *panel = new asPanelForecast( m_ScrolledWindowForecasts );
+    asPanelForecast *panel = new asPanelForecast( m_scrolledWindowForecasts );
     panel->Layout();
-    m_SizerForecasts->Add( panel, 0, wxALL|wxEXPAND, 5 );
+    m_sizerForecasts->Add( panel, 0, wxALL|wxEXPAND, 5 );
     Layout(); // For the scrollbar
     Thaw();
 
     // Add to the array
-    m_PanelsManager->AddPanel(panel);
+    m_panelsManager->AddPanel(panel);
 }
 
 void asFrameMain::OnSetPresentDate( wxCommandEvent& event )
@@ -549,18 +549,18 @@ void asFrameMain::SetPresentDate( )
     wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
     TimeStruct nowStruct = asTime::NowTimeStruct(asUTM);
     wxString hourStr = wxString::Format("%d", nowStruct.hour);
-    m_CalendarForecastDate->SetDate(nowWx);
-    m_TextCtrlForecastHour->SetValue(hourStr);
+    m_calendarForecastDate->SetDate(nowWx);
+    m_textCtrlForecastHour->SetValue(hourStr);
 }
 
 double asFrameMain::GetForecastDate( )
 {
     // Date
-    wxDateTime forecastDateWx = m_CalendarForecastDate->GetDate();
+    wxDateTime forecastDateWx = m_calendarForecastDate->GetDate();
     double forecastDate = asTime::GetMJD(forecastDateWx);
 
     // Hour
-    wxString forecastHourStr = m_TextCtrlForecastHour->GetValue();
+    wxString forecastHourStr = m_textCtrlForecastHour->GetValue();
     double forecastHour = 0;
     forecastHourStr.ToDouble(&forecastHour);
 
@@ -574,9 +574,9 @@ void asFrameMain::SetForecastDate( double date )
 {
     // Calendar
     wxDateTime forecastDateWx = asTime::GetWxDateTime(date);
-    m_CalendarForecastDate->SetDate(forecastDateWx);
+    m_calendarForecastDate->SetDate(forecastDateWx);
     // Hour
     TimeStruct forecastDateStruct = asTime::GetTimeStruct(date);
     wxString hourStr = wxString::Format("%d", forecastDateStruct.hour);
-    m_TextCtrlForecastHour->SetValue(hourStr);
+    m_textCtrlForecastHour->SetValue(hourStr);
 }

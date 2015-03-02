@@ -48,7 +48,7 @@ TEST(ConstructorLimitsException)
     CornerLR.x = 20;
     CornerLR.y = 30;
 
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR), asException);
     }
@@ -56,7 +56,7 @@ TEST(ConstructorLimitsException)
 
 TEST(ConstructorAlternativeLimitsException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         double Xmin = -10;
         double Xwidth = 30;
