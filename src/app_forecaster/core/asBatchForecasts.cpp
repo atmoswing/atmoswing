@@ -32,8 +32,10 @@ asBatchForecasts::asBatchForecasts()
 wxObject()
 {
     m_hasChanged = false;
+    m_exportSyntheticXml = false;
     m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.xml";
     m_forecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
+    m_exportsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Exports";
     m_parametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
     m_predictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
     m_predictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
@@ -68,6 +70,8 @@ bool asBatchForecasts::Load(const wxString &filePath)
     while (node) {
         if (node->GetName() == "forecasts_output_directory") {
             m_forecastsOutputDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "exports_output_directory") {
+            m_exportsOutputDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "parameters_files_directory") {
             m_parametersFileDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictors_archive_directory") {
@@ -76,6 +80,8 @@ bool asBatchForecasts::Load(const wxString &filePath)
             m_predictorsRealtimeDirectory = fileBatch.GetString(node);
         } else if (node->GetName() == "predictand_db_directory") {
             m_predictandDBDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "export_synthetic_xml") {
+            m_exportSyntheticXml = fileBatch.GetBool(node);
         } else if (node->GetName() == "forecasts") {
             wxXmlNode *nodeForecast = node->GetChildren();
             while (nodeForecast) {
@@ -108,10 +114,12 @@ bool asBatchForecasts::Save()
 
     // Get general data
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_forecastsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("exports_output_directory", m_exportsOutputDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_files_directory", m_parametersFileDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_archive_directory", m_predictorsArchiveDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_predictorsRealtimeDirectory));
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_predictandDBDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("export_synthetic_xml", m_exportSyntheticXml));
 
     // Forecasts
     wxXmlNode * nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE ,"forecasts" );
@@ -141,4 +149,10 @@ void asBatchForecasts::AddForecast()
 {
     int nb = m_forecastFileNames.size()+1;
     m_forecastFileNames.resize(nb);
+}
+
+bool asBatchForecasts::HasExports()
+{
+    if (m_exportSyntheticXml) return true;
+    return false;
 }

@@ -193,6 +193,9 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxDirPickerCtrl* m_dirPickerRealtimePredictorSaving;
 		wxStaticText* m_staticTextForecastResultsDir;
 		wxDirPickerCtrl* m_dirPickerForecastResults;
+		wxStaticText* m_staticTextForecastResultsExportsDir;
+		wxDirPickerCtrl* m_dirPickerForecastResultsExports;
+		wxCheckBox* m_checkBoxExportSyntheticXml;
 		wxPanel* m_panelGeneralCommon;
 		wxRadioBox* m_radioBoxLogLevel;
 		wxCheckBox* m_checkBoxDisplayLogWindow;

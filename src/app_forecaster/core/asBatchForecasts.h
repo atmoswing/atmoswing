@@ -61,6 +61,18 @@ public:
         return m_hasChanged;
     }
 
+    bool HasExports();
+
+    bool ExportSyntheticXml()
+    {
+        return m_exportSyntheticXml;
+    }
+
+    void SetExportSyntheticXml(bool val)
+    {
+        m_exportSyntheticXml = val;
+    }
+
     void SetHasChanged(bool val)
     {
         m_hasChanged = val;
@@ -74,6 +86,16 @@ public:
     void SetForecastsOutputDirectory(const wxString &val)
     {
         m_forecastsOutputDirectory = val;
+    }
+
+    wxString GetExportsOutputDirectory()
+    {
+        return m_exportsOutputDirectory;
+    }
+
+    void SetExportsOutputDirectory(const wxString &val)
+    {
+        m_exportsOutputDirectory = val;
     }
 
     wxString GetParametersFileDirectory()
@@ -131,8 +153,10 @@ public:
 protected:
 private:
     bool m_hasChanged;
+    bool m_exportSyntheticXml;
     wxString m_filePath;
     wxString m_forecastsOutputDirectory;
+    wxString m_exportsOutputDirectory;
     wxString m_parametersFileDirectory;
     wxString m_predictorsArchiveDirectory;
     wxString m_predictorsRealtimeDirectory;

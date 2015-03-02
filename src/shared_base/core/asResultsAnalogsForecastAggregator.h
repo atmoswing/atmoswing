@@ -107,7 +107,7 @@ public:
 
     Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float quantileThreshold);
 
-    bool ExportSyntheticXml();
+    bool ExportSyntheticXml(const wxString &dirPath);
 
 protected:
 
