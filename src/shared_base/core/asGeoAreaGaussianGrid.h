@@ -92,8 +92,8 @@ public:
 protected:
 
 private:
-    Array1DDouble m_FullAxisX;
-    Array1DDouble m_FullAxisY;
+    Array1DDouble m_fullAxisX;
+    Array1DDouble m_fullAxisY;
 
     bool IsOnGrid(const Coo &point);
     bool IsOnGrid(double Xcoord, double Ycoord);

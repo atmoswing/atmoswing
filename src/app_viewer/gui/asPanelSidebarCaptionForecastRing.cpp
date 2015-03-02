@@ -37,15 +37,15 @@ asPanelSidebarCaptionForecastRing::asPanelSidebarCaptionForecastRing( wxWindow* 
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
-    m_Header->SetLabelText(_("Forecast caption"));
+    m_header->SetLabelText(_("Forecast caption"));
 
-    m_PanelDrawing = new asPanelSidebarCaptionForecastRingDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,240), wxTAB_TRAVERSAL );
-    m_SizerContent->Add( m_PanelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
+    m_panelDrawing = new asPanelSidebarCaptionForecastRingDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,240), wxTAB_TRAVERSAL );
+    m_sizerContent->Add( m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarCaptionForecastRing::OnPaint ), NULL, this );
 
     Layout();
-    m_SizerMain->Fit( this );
+    m_sizerMain->Fit( this );
     FitInside();
 }
 
@@ -61,12 +61,12 @@ void asPanelSidebarCaptionForecastRing::OnPaint(wxPaintEvent & event)
 
 void asPanelSidebarCaptionForecastRing::SetDates(Array1DFloat & dates)
 {
-    m_PanelDrawing->DrawDates(dates);
+    m_panelDrawing->DrawDates(dates);
 }
 
 void asPanelSidebarCaptionForecastRing::SetColorbarMax(double valmax)
 {
-    m_PanelDrawing->DrawColorbar(valmax);
+    m_panelDrawing->DrawColorbar(valmax);
 }
 
 
@@ -78,9 +78,9 @@ asPanelSidebarCaptionForecastRingDrawing::asPanelSidebarCaptionForecastRingDrawi
 :
 wxPanel( parent, id, pos, size, style )
 {
-    m_BmpDates = NULL;
-    m_BmpColorbar = NULL;
-    m_Gdc = NULL;
+    m_bmpDates = NULL;
+    m_bmpColorbar = NULL;
+    m_gdc = NULL;
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarCaptionForecastRingDrawing::OnPaint ), NULL, this );
 
@@ -94,8 +94,8 @@ wxPanel( parent, id, pos, size, style )
 asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDrawing()
 {
     Disconnect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarCaptionForecastRingDrawing::OnPaint ), NULL, this );
-    wxDELETE(m_BmpDates);
-    wxDELETE(m_BmpColorbar);
+    wxDELETE(m_bmpDates);
+    wxDELETE(m_bmpColorbar);
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawDates(Array1DFloat & dates)
@@ -107,7 +107,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(Array1DFloat & dates)
     wxMemoryDC dc (*bmp);
     dc.SetBackground(wxBrush(GetBackgroundColour()));
     #if defined(__UNIX__)
-        dc.SetBackground(wxBrush(g_LinuxBgColour));
+        dc.SetBackground(wxBrush(g_linuxBgColour));
     #endif
     dc.Clear();
 
@@ -163,7 +163,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax)
     wxMemoryDC dc (*bmp);
     dc.SetBackground(wxBrush(GetBackgroundColour()));
     #if defined(__UNIX__)
-        dc.SetBackground(wxBrush(g_LinuxBgColour));
+        dc.SetBackground(wxBrush(g_linuxBgColour));
     #endif
     dc.Clear();
 
@@ -196,27 +196,27 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax)
 
 void asPanelSidebarCaptionForecastRingDrawing::SetBitmapDates(wxBitmap * bmp)
 {
-    wxDELETE(m_BmpDates);
-    wxASSERT(!m_BmpDates);
+    wxDELETE(m_bmpDates);
+    wxASSERT(!m_bmpDates);
 
     if (bmp != NULL)
     {
         wxASSERT(bmp);
-        m_BmpDates = new wxBitmap(*bmp);
-        wxASSERT(m_BmpDates);
+        m_bmpDates = new wxBitmap(*bmp);
+        wxASSERT(m_bmpDates);
     }
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::SetBitmapColorbar(wxBitmap * bmp)
 {
-    wxDELETE(m_BmpColorbar);
-    wxASSERT(!m_BmpColorbar);
+    wxDELETE(m_bmpColorbar);
+    wxASSERT(!m_bmpColorbar);
 
     if (bmp != NULL)
     {
         wxASSERT(bmp);
-        m_BmpColorbar = new wxBitmap(*bmp);
-        wxASSERT(m_BmpColorbar);
+        m_bmpColorbar = new wxBitmap(*bmp);
+        wxASSERT(m_bmpColorbar);
     }
 }
 
@@ -224,14 +224,14 @@ void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent & event)
 {
     wxPaintDC dc(this);
 
-    if (m_BmpDates != NULL)
+    if (m_bmpDates != NULL)
     {
-        dc.DrawBitmap(*m_BmpDates, 0,0, true);
+        dc.DrawBitmap(*m_bmpDates, 0,0, true);
     }
 
-    if (m_BmpColorbar != NULL)
+    if (m_bmpColorbar != NULL)
     {
-        dc.DrawBitmap(*m_BmpColorbar, 0,190, true);
+        dc.DrawBitmap(*m_bmpColorbar, 0,190, true);
     }
 
     Layout();

@@ -33,34 +33,34 @@ asPanelSidebarForecasts::asPanelSidebarForecasts( wxWindow* parent, asForecastMa
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
-    m_Header->SetLabelText(_("Forecasts"));
+    m_header->SetLabelText(_("Forecasts"));
 
     // Forecasts controls
     wxSize forecastsSize = wxSize();
     forecastsSize.SetHeight(120);
-    m_ForecastsCtrl = new asListBoxForecasts( this, forecastManager, wxID_ANY, wxDefaultPosition, forecastsSize);
-    m_SizerContent->Add( m_ForecastsCtrl, 1, wxEXPAND, 5 );
+    m_forecastsCtrl = new asListBoxForecasts( this, forecastManager, wxID_ANY, wxDefaultPosition, forecastsSize);
+    m_sizerContent->Add( m_forecastsCtrl, 1, wxEXPAND, 5 );
 
     wxSize lineSize = wxSize();
     lineSize.SetHeight(10);
     wxStaticLine *staticline = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, lineSize);
-    m_SizerContent->Add( staticline, 0, 0, 0 );
+    m_sizerContent->Add( staticline, 0, 0, 0 );
 
     wxBoxSizer* subSizer;
     subSizer = new wxBoxSizer( wxHORIZONTAL );
 
     wxSize displaySize = wxSize();
     displaySize.SetHeight(100);
-    m_ForecastDisplayCtrl = new asListBoxForecastDisplay( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
-    subSizer->Add( m_ForecastDisplayCtrl, 1, wxEXPAND, 5 );
+    m_forecastDisplayCtrl = new asListBoxForecastDisplay( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
+    subSizer->Add( m_forecastDisplayCtrl, 1, wxEXPAND, 5 );
 
-    m_QuantilesCtrl = new asListBoxQuantiles( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
-    subSizer->Add( m_QuantilesCtrl, 1, wxEXPAND, 5 );
+    m_quantilesCtrl = new asListBoxQuantiles( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
+    subSizer->Add( m_quantilesCtrl, 1, wxEXPAND, 5 );
     subSizer->Fit( this );
-    m_SizerContent->Add( subSizer, 0, wxEXPAND, 5 );
+    m_sizerContent->Add( subSizer, 0, wxEXPAND, 5 );
 
     Layout();
-    m_SizerContent->Fit( this );
+    m_sizerContent->Fit( this );
 }
 
 asPanelSidebarForecasts::~asPanelSidebarForecasts()
@@ -70,10 +70,10 @@ asPanelSidebarForecasts::~asPanelSidebarForecasts()
 
 void asPanelSidebarForecasts::ClearForecasts()
 {
-    m_ForecastsCtrl->Clear();
+    m_forecastsCtrl->Clear();
 }
 
 void asPanelSidebarForecasts::Update()
 {
-    m_ForecastsCtrl->Update();
+    m_forecastsCtrl->Update();
 }

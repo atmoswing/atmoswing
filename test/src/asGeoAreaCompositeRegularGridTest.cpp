@@ -38,7 +38,7 @@ TEST(ConstructorStepException)
 	wxString str("Testing composite regular grids...\n");
     printf("%s", str.mb_str(wxConvUTF8).data());
 	
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         Coo CornerUL, CornerUR, CornerLL, CornerLR;
         CornerUL.x = -10;
@@ -129,7 +129,7 @@ TEST(CheckConsistency)
 
 TEST(CheckConsistencyException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         double Xmin = 10;
         double Xwidth = 0;
@@ -159,7 +159,7 @@ TEST(IsRectangleTrue)
 
 TEST(IsRectangleFalse)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         Coo CornerUL, CornerUR, CornerLL, CornerLR;
         CornerUL.x = 10;

@@ -63,38 +63,38 @@ public:
     /** Get the number of cells on the X axis. Same as GetXPtsnb() */
     int GetXcellsNb()
     {
-        return m_PtorDataset->GetRasterXSize();
+        return m_ptorDataset->GetRasterXSize();
     }
 
     /** Get the number of cells on the Y axis. Same as GetYPtsnb() */
     int GetYcellsNb()
     {
-        return m_PtorDataset->GetRasterYSize();
+        return m_ptorDataset->GetRasterYSize();
     }
 
     /** Get the number of cells on the X axis. Same as GetUcellsNb() */
     int GetXPtsnb()
     {
-        return m_PtorBand->GetXSize();
+        return m_ptorBand->GetXSize();
     }
 
     /** Get the number of cells on the Y axis. Same as GetVcellsNb() */
     int GetYPtsnb()
     {
-        return m_PtorBand->GetYSize();
+        return m_ptorBand->GetYSize();
     }
 
     /** Get the number of bands */
     int GetBandsNb()
     {
-        return m_PtorDataset->GetRasterCount();
+        return m_ptorDataset->GetRasterCount();
     }
 
     /** Get the NaN value */
     double GetNaNValue()
     {
         int success;
-        double val = m_PtorBand->GetNoDataValue(&success);
+        double val = m_ptorBand->GetNoDataValue(&success);
         if (success==0) return NaNDouble;
         return val;
     }
@@ -146,7 +146,7 @@ public:
     double GetOffset()
     {
         int offsetSuccess;
-        double offset = m_PtorBand->GetOffset(&offsetSuccess);
+        double offset = m_ptorBand->GetOffset(&offsetSuccess);
         if (offsetSuccess==0)
         {
             asLogError(_("Failed to get the offset of the grib2 file."));
@@ -159,7 +159,7 @@ public:
     double GetScale()
     {
         int scaleSuccess;
-        double scale = m_PtorBand->GetScale(&scaleSuccess);
+        double scale = m_ptorBand->GetScale(&scaleSuccess);
         if (scaleSuccess==0)
         {
             asLogError(_("Failed to get the scale of the grib2 file."));
@@ -172,12 +172,12 @@ public:
 protected:
 
 private:
-    GDALDataset  *m_PtorDataset;
-    GDALRasterBand  *m_PtorBand;
-    VVectorString m_MetaKeys;
-    VVectorString m_MetaValues;
-    VectorString m_BandsVars;
-    VectorFloat m_BandsLevels;
+    GDALDataset  *m_ptorDataset;
+    GDALRasterBand  *m_ptorBand;
+    VVectorString m_metaKeys;
+    VVectorString m_metaValues;
+    VectorString m_bandsVars;
+    VectorFloat m_bandsLevels;
 
     /** Method to open the file with GDAL */
     bool GDALOpenDataset();

@@ -35,23 +35,23 @@ asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, con
 :
 asThread()
 {
-    m_Status = Initializing;
+    m_status = Initializing;
 
-    m_Urls = urls;
-    m_FileNames = fileNames;
-    m_DestinationDir = destinationDir;
-    m_UsesProxy = usesProxy;
-    m_ProxyAddress = proxyAddress;
-    m_ProxyPort = proxyPort;
-    m_ProxyUser = proxyUser;
-    m_ProxyPasswd = proxyPasswd;
-    m_Start = start;
-    m_End = wxMin(end, (int)m_FileNames.size()-1);
+    m_urls = urls;
+    m_fileNames = fileNames;
+    m_destinationDir = destinationDir;
+    m_usesProxy = usesProxy;
+    m_proxyAddress = proxyAddress;
+    m_proxyPort = proxyPort;
+    m_proxyUser = proxyUser;
+    m_proxyPasswd = proxyPasswd;
+    m_start = start;
+    m_End = wxMin(end, (int)m_fileNames.size()-1);
 
     wxASSERT((unsigned)m_End<urls.size());
     wxASSERT((unsigned)m_End<fileNames.size());
 
-    m_Status = Waiting;
+    m_status = Waiting;
 }
 
 asThreadInternetDownload::~asThreadInternetDownload()
@@ -61,7 +61,7 @@ asThreadInternetDownload::~asThreadInternetDownload()
 
 wxThread::ExitCode asThreadInternetDownload::Entry()
 {
-    m_Status = Working;
+    m_status = Working;
 
     // Initialize
     CURL *curl;
@@ -80,11 +80,11 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         // Maximum time in seconds that we allow the connection to the server to take. This only limits the connection phase.
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 20);
 
-        for (int i_file=m_Start; i_file<=m_End; i_file++)
+        for (int i_file=m_start; i_file<=m_End; i_file++)
         {
-            wxString fileName = m_FileNames[i_file];
-            wxString filePath = m_DestinationDir + DS + fileName;
-            wxString url = m_Urls[i_file];
+            wxString fileName = m_fileNames[i_file];
+            wxString filePath = m_destinationDir + DS + fileName;
+            wxString url = m_urls[i_file];
             asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str())); // Do not log the URL, it bugs !
 
             // Use of a wxFileName object to create the directory.
@@ -116,20 +116,20 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
 
                 // If a proxy is used
-                if (m_UsesProxy)
+                if (m_usesProxy)
                 {
-                    if (!m_ProxyAddress.IsEmpty())
+                    if (!m_proxyAddress.IsEmpty())
                     {
-                        wxCharBuffer proxyAddressBuffer = m_ProxyAddress.ToUTF8();
+                        wxCharBuffer proxyAddressBuffer = m_proxyAddress.ToUTF8();
                         curl_easy_setopt(curl, CURLOPT_PROXY, proxyAddressBuffer.data());
                     }
-                    if (m_ProxyPort>0)
+                    if (m_proxyPort>0)
                     {
-                        curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_ProxyPort);
+                        curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
-                    if (!m_ProxyUser.IsEmpty())
+                    if (!m_proxyUser.IsEmpty())
                     {
-                        wxString proxyLogin = m_ProxyUser + ":" + m_ProxyPasswd;
+                        wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
                         wxCharBuffer proxyLoginBuffer = proxyLogin.ToUTF8();
                         curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, proxyLoginBuffer.data());
                     }
@@ -159,7 +159,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         wxDELETE(errorbuffer);
     }
 
-    m_Status = Done;
+    m_status = Done;
 
     return 0;
 }

@@ -30,8 +30,8 @@
 
 #include "wx/filename.h" 
 
-extern bool g_UnitTestExceptions;
-extern bool g_UnitTestLongProcessing;
-extern bool g_UnitTestRandomDistributions;
+extern bool g_unitTestExceptions;
+extern bool g_unitTestLongProcessing;
+extern bool g_unitTestRandomDistributions;
 
 #endif // INCLUDE_TESTS_H_INCLUDED

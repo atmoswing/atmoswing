@@ -31,13 +31,13 @@ asPredictorCriteriaRSE::asPredictorCriteriaRSE(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::RSE;
-    m_Name = "RSE";
-    m_FullName = _("Root Squared Error");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::RSE;
+    m_name = "RSE";
+    m_fullName = _("Root Squared Error");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaRSE::~asPredictorCriteriaRSE()
@@ -52,7 +52,7 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
 
     float se = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):

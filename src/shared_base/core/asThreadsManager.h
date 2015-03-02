@@ -75,21 +75,21 @@ public:
      */
     int GetAvailableThreadsNb();
 
-    /** Access m_Cancelled
-     * \return The current value of m_Cancelled
+    /** Access m_cancelled
+     * \return The current value of m_cancelled
      */
     bool Cancelled()
     {
-        wxCriticalSectionLocker lock(m_CritSectionManager);
-        return m_Cancelled;
+        wxCriticalSectionLocker lock(m_critSectionManager);
+        return m_cancelled;
     }
 
-    /** Set m_Cancelled to true
+    /** Set m_cancelled to true
      */
     void Cancel()
     {
-        wxCriticalSectionLocker lock(m_CritSectionManager);
-        m_Cancelled = true;
+        wxCriticalSectionLocker lock(m_critSectionManager);
+        m_cancelled = true;
     }
 
     /** Get a reference to the critical section of the data access
@@ -97,7 +97,7 @@ public:
      */
     wxCriticalSection& CritSectionNetCDF()
     {
-        return m_CritSectionNetCDF;
+        return m_critSectionNetCDF;
     }
 
     /** Get a reference to the critical section of the config pointer
@@ -105,12 +105,12 @@ public:
      */
     wxCriticalSection& CritSectionConfig()
     {
-        return m_CritSectionConfig;
+        return m_critSectionConfig;
     }
 
     wxCriticalSection& CritSectionPreloadedData()
     {
-        return m_CritSectionPreloadedData;
+        return m_critSectionPreloadedData;
     }
 
     /** Get a reference to the semaphore
@@ -118,39 +118,39 @@ public:
      */
     wxSemaphore& SemAllDone()
     {
-        return m_SemAllDone;
+        return m_semAllDone;
     }
 
-    /** Get the m_WaitingUntilAllDone tag
-     * \return The m_WaitingUntilAllDone current value
+    /** Get the m_waitingUntilAllDone tag
+     * \return The m_waitingUntilAllDone current value
      */
     bool GetWaitingUntilAllDone()
     {
-        return m_WaitingUntilAllDone;
+        return m_waitingUntilAllDone;
     }
 
-    /** Set the m_WaitingUntilAllDone tag
+    /** Set the m_waitingUntilAllDone tag
      * \param The new value
      */
     void SetWaitingUntilAllDone(bool val)
     {
-        m_WaitingUntilAllDone = val;
+        m_waitingUntilAllDone = val;
     }
 
 
 protected:
 private:
-    int m_IdCounter;
-    std::vector < asThread* > m_Threads; //!< Member variable "m_Threads". All the threads currently alive (as soon as the thread terminates, it's removed from the array)
-    wxCriticalSection m_CritSectionManager; //!< Member variable "m_CritSectionManager". Critical section.
-    wxCriticalSection m_CritSectionPreloadedData;
-    wxCriticalSection m_CritSectionNetCDF;
-    wxCriticalSection m_CritSectionConfig;
-    wxSemaphore m_SemAllDone; //!< Member variable "m_SemAllDone". Semaphore used to wait for the threads to exit.
-    bool m_WaitingUntilAllDone; //!< Member variable "m_WaitingUntilAllDone". The last exiting thread should post to m_semAllDone if this is true.
-    bool m_Cancelled;
-    int m_MaxThreadsNb;
-    long m_Priority;
+    int m_idCounter;
+    std::vector < asThread* > m_threads; //!< Member variable "m_threads". All the threads currently alive (as soon as the thread terminates, it's removed from the array)
+    wxCriticalSection m_critSectionManager; //!< Member variable "m_critSectionManager". Critical section.
+    wxCriticalSection m_critSectionPreloadedData;
+    wxCriticalSection m_critSectionNetCDF;
+    wxCriticalSection m_critSectionConfig;
+    wxSemaphore m_semAllDone; //!< Member variable "m_semAllDone". Semaphore used to wait for the threads to exit.
+    bool m_waitingUntilAllDone; //!< Member variable "m_waitingUntilAllDone". The last exiting thread should post to m_semAllDone if this is true.
+    bool m_cancelled;
+    int m_maxThreadsNb;
+    long m_priority;
 };
 
 #endif // ASTHREADSMANAGER_H

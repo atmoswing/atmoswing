@@ -49,23 +49,23 @@ public:
 
     asListBoxForecasts *GetForecastsCtrl()
     {
-        return m_ForecastsCtrl;
+        return m_forecastsCtrl;
     }
 
     asListBoxQuantiles *GetQuantilesCtrl()
     {
-        return m_QuantilesCtrl;
+        return m_quantilesCtrl;
     }
 
     asListBoxForecastDisplay *GetForecastDisplayCtrl()
     {
-        return m_ForecastDisplayCtrl;
+        return m_forecastDisplayCtrl;
     }
 
 private:
-    asListBoxForecasts *m_ForecastsCtrl;
-    asListBoxQuantiles *m_QuantilesCtrl;
-    asListBoxForecastDisplay *m_ForecastDisplayCtrl;
+    asListBoxForecasts *m_forecastsCtrl;
+    asListBoxQuantiles *m_quantilesCtrl;
+    asListBoxForecastDisplay *m_forecastDisplayCtrl;
 };
 
 #endif // __asPanelSidebarForecasts__

@@ -40,46 +40,46 @@ asGeo::~asGeo()
 void asGeo::InitBounds()
 {
     // We always consider WGS84 for the predictors
-    m_AxisXmin = 0;
-    m_AxisXmax = 360;
-    m_AxisYmin = -90;
-    m_AxisYmax = 90;
+    m_axisXmin = 0;
+    m_axisXmax = 360;
+    m_axisYmin = -90;
+    m_axisYmax = 90;
 }
 
 bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
 {
     // We always consider WGS84 for the predictors
-    if(Point.y<m_AxisYmin)
+    if(Point.y<m_axisYmin)
     {
         if (ChangesAllowed == asEDIT_ALLOWED)
         {
-            Point.y = m_AxisYmin + (m_AxisYmin - Point.y);
+            Point.y = m_axisYmin + (m_axisYmin - Point.y);
             Point.x = Point.x + 180;
         }
         return false;
     }
-    if(Point.y>m_AxisYmax)
+    if(Point.y>m_axisYmax)
     {
         if (ChangesAllowed == asEDIT_ALLOWED)
         {
-            Point.y = m_AxisYmax + (m_AxisYmax - Point.y);
+            Point.y = m_axisYmax + (m_axisYmax - Point.y);
             Point.x = Point.x + 180;
         }
         return false;
     }
-    if(Point.x<m_AxisXmin)
+    if(Point.x<m_axisXmin)
     {
         if (ChangesAllowed == asEDIT_ALLOWED)
         {
-            Point.x += m_AxisXmax;
+            Point.x += m_axisXmax;
         }
         return false;
     }
-    if(Point.x>m_AxisXmax)
+    if(Point.x>m_axisXmax)
     {
         if (ChangesAllowed == asEDIT_ALLOWED)
         {
-            Point.x -= m_AxisXmax;
+            Point.x -= m_axisXmax;
         }
         return false;
     }

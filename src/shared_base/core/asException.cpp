@@ -31,22 +31,22 @@ asException::asException()
 :
 std::exception()
 {
-    m_Message = wxEmptyString;
-    m_FileName = wxEmptyString;
-    m_LineNum = 0;
-    m_HasChild = false;
+    m_message = wxEmptyString;
+    m_fileName = wxEmptyString;
+    m_lineNum = 0;
+    m_hasChild = false;
     asLogError(_("An exception occured."));
 }
 
 asException::asException(const wxString &message, const char *filename, unsigned int line)
 {
     wxString wxfilename(filename, wxConvUTF8);
-    m_Message = message;
-    m_FileName = wxfilename;
-    m_LineNum = line;
-    m_HasChild = false;
+    m_message = message;
+    m_fileName = wxfilename;
+    m_lineNum = line;
+    m_hasChild = false;
     wxString logMessage;
-    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_Message.c_str(), m_FileName.c_str(), m_LineNum);
+    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_message.c_str(), m_fileName.c_str(), m_lineNum);
     asLogError(logMessage);
 }
 
@@ -54,13 +54,13 @@ asException::asException(const std::string &message, const char *filename, unsig
 {
     wxString wxmessage(message.c_str(), wxConvUTF8);
     wxString wxfilename(filename, wxConvUTF8);
-    m_Message = wxmessage;
-    m_FileName = wxfilename;
-    m_FileName = wxString::FromAscii(filename);
-    m_LineNum = line;
-    m_HasChild = false;
+    m_message = wxmessage;
+    m_fileName = wxfilename;
+    m_fileName = wxString::FromAscii(filename);
+    m_lineNum = line;
+    m_hasChild = false;
     wxString logMessage;
-    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_Message.c_str(), m_FileName.c_str(), m_LineNum);
+    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_message.c_str(), m_fileName.c_str(), m_lineNum);
     asLogError(logMessage);
 }
 
@@ -68,32 +68,32 @@ asException::asException(const char *message, const char *filename, unsigned int
 {
     wxString wxmessage(message, wxConvUTF8);
     wxString wxfilename(filename, wxConvUTF8);
-    m_Message = wxmessage;
-    m_FileName = wxfilename;
-    m_LineNum = line;
-    m_HasChild = false;
+    m_message = wxmessage;
+    m_fileName = wxfilename;
+    m_lineNum = line;
+    m_hasChild = false;
     wxString logMessage;
-    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_Message.c_str(), m_FileName.c_str(), m_LineNum);
+    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_message.c_str(), m_fileName.c_str(), m_lineNum);
     asLogError(logMessage);
 }
 
 asException::asException(const wxString &message, const char *filename, unsigned int line, asException prevexception)
 {
     wxString wxfilename(filename, wxConvUTF8);
-    m_Message = message;
-    m_FileName = wxfilename;
-    m_LineNum = line;
-    m_HasChild = true;
-    m_Previous = prevexception.m_Previous;
+    m_message = message;
+    m_fileName = wxfilename;
+    m_lineNum = line;
+    m_hasChild = true;
+    m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
-    Previous.Message = prevexception.m_Message;
-    Previous.FileName = prevexception.m_FileName;
-    Previous.LineNum = prevexception.m_LineNum;
-    m_Previous.push_back(&Previous);
+    Previous.Message = prevexception.m_message;
+    Previous.FileName = prevexception.m_fileName;
+    Previous.LineNum = prevexception.m_lineNum;
+    m_previous.push_back(&Previous);
 
     wxString logMessage;
-    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_Message.c_str(), m_FileName.c_str(), m_LineNum);
+    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_message.c_str(), m_fileName.c_str(), m_lineNum);
     asLogError(logMessage);
 }
 
@@ -101,20 +101,20 @@ asException::asException(const std::string &message, const char *filename, unsig
 {
     wxString wxmessage(message.c_str(), wxConvUTF8);
     wxString wxfilename(filename, wxConvUTF8);
-    m_Message = wxmessage;
-    m_FileName = wxfilename;
-    m_LineNum = line;
-    m_HasChild = true;
-    m_Previous = prevexception.m_Previous;
+    m_message = wxmessage;
+    m_fileName = wxfilename;
+    m_lineNum = line;
+    m_hasChild = true;
+    m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
-    Previous.Message = prevexception.m_Message;
-    Previous.FileName = prevexception.m_FileName;
-    Previous.LineNum = prevexception.m_LineNum;
-    m_Previous.push_back(&Previous);
+    Previous.Message = prevexception.m_message;
+    Previous.FileName = prevexception.m_fileName;
+    Previous.LineNum = prevexception.m_lineNum;
+    m_previous.push_back(&Previous);
 
     wxString logMessage;
-    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_Message.c_str(), m_FileName.c_str(), m_LineNum);
+    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_message.c_str(), m_fileName.c_str(), m_lineNum);
     asLogError(logMessage);
 }
 
@@ -122,20 +122,20 @@ asException::asException(const char *message, const char *filename, unsigned int
 {
     wxString wxmessage(message, wxConvUTF8);
     wxString wxfilename(filename, wxConvUTF8);
-    m_Message = wxmessage;
-    m_FileName = wxfilename;
-    m_LineNum = line;
-    m_HasChild = true;
-    m_Previous = prevexception.m_Previous;
+    m_message = wxmessage;
+    m_fileName = wxfilename;
+    m_lineNum = line;
+    m_hasChild = true;
+    m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
-    Previous.Message = prevexception.m_Message;
-    Previous.FileName = prevexception.m_FileName;
-    Previous.LineNum = prevexception.m_LineNum;
-    m_Previous.push_back(&Previous);
+    Previous.Message = prevexception.m_message;
+    Previous.FileName = prevexception.m_fileName;
+    Previous.LineNum = prevexception.m_lineNum;
+    m_previous.push_back(&Previous);
 
     wxString logMessage;
-    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_Message.c_str(), m_FileName.c_str(), m_LineNum);
+    logMessage = wxString::Format(_("An exception occured: %s. File: %s (%d)"), m_message.c_str(), m_fileName.c_str(), m_lineNum);
     asLogError(logMessage);
 }
 // TODO (phorton#5#): Is it alright ?
@@ -150,7 +150,7 @@ wxString asException::GetFullMessage()
 
     if (GetHasChild())
     {
-        int prevnb = m_Previous.size();
+        int prevnb = m_previous.size();
 
         for (int i=0; i<prevnb; i++)
         {
@@ -158,9 +158,9 @@ wxString asException::GetFullMessage()
             wxString prevmessage;
             wxString prevfilename;
 
-            prevlinenum = m_Previous[i]->LineNum;
-            prevmessage = m_Previous[i]->Message;
-            prevfilename = m_Previous[i]->FileName;
+            prevlinenum = m_previous[i]->LineNum;
+            prevmessage = m_previous[i]->Message;
+            prevfilename = m_previous[i]->FileName;
             prevmessage.Replace("\n"," // ");
             prevfilename = prevfilename.AfterLast('/');
             prevfilename = prevfilename.AfterLast('\\');
@@ -172,9 +172,9 @@ wxString asException::GetFullMessage()
         }
     }
 
-    int currlinenum = m_LineNum;
-    wxString currmessage = m_Message;
-    wxString currfilename = m_FileName;
+    int currlinenum = m_lineNum;
+    wxString currmessage = m_message;
+    wxString currfilename = m_fileName;
     currmessage.Replace("\n"," // ");
     currfilename = currfilename.AfterLast('/');
     currfilename = currfilename.AfterLast('\\');

@@ -33,11 +33,11 @@
 
 using namespace std;
 
-extern bool g_DistributionVersion;
-extern bool g_Local;
-extern int g_RunNb;
+extern bool g_distributionVersion;
+extern bool g_local;
+extern int g_runNb;
 #if wxUSE_GUI
-extern wxColour g_LinuxBgColour;
+extern wxColour g_linuxBgColour;
 #endif
 
 #endif // ASGLOBVARSCALIBRATOR_H_INCLUDED

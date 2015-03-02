@@ -32,12 +32,12 @@ asForecastScoreBS::asForecastScoreBS()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::BS;
-    m_Name = _("Brier score");
-    m_FullName = _("Brier score");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::BS;
+    m_name = _("Brier score");
+    m_fullName = _("Brier score");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreBS::~asForecastScoreBS()
@@ -49,7 +49,7 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
 {
     wxASSERT(ForcastVals.size()>1);
     wxASSERT(nbElements>0);
-    wxASSERT(!asTools::IsNaN(m_Threshold));
+    wxASSERT(!asTools::IsNaN(m_threshold));
 
     // Create the container to sort the data
     Array1DFloat x(nbElements);
@@ -77,25 +77,25 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
 
     // Search probability
     float probaOccurrence;
-    if (m_Threshold<x[0])
+    if (m_threshold<x[0])
     {
         probaOccurrence = 1;
     }
-    else if (m_Threshold>x[nbForecasts-1])
+    else if (m_threshold>x[nbForecasts-1])
     {
         probaOccurrence = 0;
     }
     else
     {
-        int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts-1], m_Threshold);
-        while (x[ind]<=m_Threshold)
+        int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts-1], m_threshold);
+        while (x[ind]<=m_threshold)
         {
             ind++;
         }
 
-        if(m_Threshold>x[ind-1])
+        if(m_threshold>x[ind-1])
         {
-            probaOccurrence = F(ind-1)+(F(ind)-F(ind-1))*(m_Threshold-x(ind-1))/(x(ind)-x(ind-1));
+            probaOccurrence = F(ind-1)+(F(ind)-F(ind-1))*(m_threshold-x(ind-1))/(x(ind)-x(ind-1));
         }
         else
         {
@@ -104,7 +104,7 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
     }
 
     float probaObservedVal = 0;
-    if (ObservedVal>=m_Threshold)
+    if (ObservedVal>=m_threshold)
     {
         probaObservedVal = 1;
     }

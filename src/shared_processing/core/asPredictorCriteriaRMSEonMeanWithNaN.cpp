@@ -31,13 +31,13 @@ asPredictorCriteriaRMSEonMeanWithNaN::asPredictorCriteriaRMSEonMeanWithNaN(int l
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::RMSEwithNaN;
-    m_Name = "RMSEonMeanWithNaN";
-    m_FullName = _("Root Mean Square Error on the mean value of the grid, with NaNs management");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::RMSEwithNaN;
+    m_name = "RMSEonMeanWithNaN";
+    m_fullName = _("Root Mean Square Error on the mean value of the grid, with NaNs management");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaRMSEonMeanWithNaN::~asPredictorCriteriaRMSEonMeanWithNaN()
@@ -58,7 +58,7 @@ float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, 
     float mse = 0, evalMean = 0, refMean = 0;
     float finalsize = (float)refData.size();
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):

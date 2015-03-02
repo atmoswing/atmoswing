@@ -44,8 +44,8 @@ public:
     void DrawColorbar( double maxval );
 
 private:
-    wxBitmap *m_BmpColorbar;
-    wxGraphicsContext* m_Gdc;
+    wxBitmap *m_bmpColorbar;
+    wxGraphicsContext* m_gdc;
     void SetBitmapColorbar(wxBitmap * bmp);
     void CreateColorbarPath( wxGraphicsPath & path );
     void CreateColorbarText( wxGraphicsContext * gc, wxGraphicsPath & path, double valmax);
@@ -65,7 +65,7 @@ public:
     void SetColorbarMax(double maxval);
 
 private:
-    asPanelSidebarCaptionForecastDotsDrawing *m_PanelDrawing;
+    asPanelSidebarCaptionForecastDotsDrawing *m_panelDrawing;
     void OnPaint( wxPaintEvent & event );
 };
 

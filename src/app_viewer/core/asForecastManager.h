@@ -65,167 +65,167 @@ public:
 
     asResultsAnalogsForecastAggregator* GetAggregator()
     {
-        return m_Aggregator;
+        return m_aggregator;
     }
 
     int GetMethodsNb()
     {
-        return m_Aggregator->GetMethodsNb();
+        return m_aggregator->GetMethodsNb();
     }
 
     int GetForecastsNb(int methodRow)
     {
-        return m_Aggregator->GetForecastsNb(methodRow);
+        return m_aggregator->GetForecastsNb(methodRow);
     }
 
     int GetPastMethodsNb()
     {
-        return m_Aggregator->GetPastMethodsNb();
+        return m_aggregator->GetPastMethodsNb();
     }
 
     int GetPastForecastsNb(int methodRow)
     {
-        return m_Aggregator->GetPastForecastsNb(methodRow);
+        return m_aggregator->GetPastForecastsNb(methodRow);
     }
     
     int GetPastForecastsNb(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetPastForecastsNb(methodRow, forecastRow);
+        return m_aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
     asResultsAnalogsForecast* GetForecast(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetForecast(methodRow, forecastRow);
+        return m_aggregator->GetForecast(methodRow, forecastRow);
     }
 
     asResultsAnalogsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow)
     {
-        return m_Aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
+        return m_aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
 
-    /** Access m_LeadTimeOrigin
-     * \return The current value of m_LeadTimeOrigin
+    /** Access m_leadTimeOrigin
+     * \return The current value of m_leadTimeOrigin
      */
     double GetLeadTimeOrigin()
     {
-        return m_LeadTimeOrigin;
+        return m_leadTimeOrigin;
     }
 
-    /** Set m_LeadTimeOrigin
+    /** Set m_leadTimeOrigin
      * \param val New value to set
      */
     void SetLeadTimeOrigin(double val)
     {
-        m_LeadTimeOrigin = val;
+        m_leadTimeOrigin = val;
     }
 
     wxString GetForecastName(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetForecastName(methodRow, forecastRow);
+        return m_aggregator->GetForecastName(methodRow, forecastRow);
     }
 
     wxString GetMethodName(int methodRow)
     {
-        return m_Aggregator->GetMethodName(methodRow);
+        return m_aggregator->GetMethodName(methodRow);
     }
 
     VectorString GetAllMethodNames()
     {
-        return m_Aggregator->GetAllMethodNames();
+        return m_aggregator->GetAllMethodNames();
     }
 
     VectorString GetAllForecastNames()
     {
-        return m_Aggregator->GetAllForecastNames();
+        return m_aggregator->GetAllForecastNames();
     }
 
     wxArrayString GetAllForecastNamesWxArray()
     {
-        return m_Aggregator->GetAllForecastNamesWxArray();
+        return m_aggregator->GetAllForecastNamesWxArray();
     }
 
     VectorString GetFilePaths()
     {
-        return m_Aggregator->GetFilePaths();
+        return m_aggregator->GetFilePaths();
     }
 
     wxString GetFilePath(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetFilePath(methodRow, forecastRow);
+        return m_aggregator->GetFilePath(methodRow, forecastRow);
     }
 
     wxArrayString GetFilePathsWxArray()
     {
-        return m_Aggregator->GetFilePathsWxArray();
+        return m_aggregator->GetFilePathsWxArray();
     }
 
     Array1DFloat GetTargetDates(int methodRow)
     {
-        return m_Aggregator->GetTargetDates(methodRow);
+        return m_aggregator->GetTargetDates(methodRow);
     }
 
     Array1DFloat GetTargetDates(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetTargetDates(methodRow, forecastRow);
+        return m_aggregator->GetTargetDates(methodRow, forecastRow);
     }
 
     Array1DFloat GetFullTargetDates()
     {
-        return m_Aggregator->GetFullTargetDates();
+        return m_aggregator->GetFullTargetDates();
     }
 
     int GetForecastRowSpecificForStationId(int methodRow, int stationId)
     {
-        return m_Aggregator->GetForecastRowSpecificForStationId(methodRow, stationId);
+        return m_aggregator->GetForecastRowSpecificForStationId(methodRow, stationId);
     }
 
     int GetForecastRowSpecificForStationRow(int methodRow, int stationRow)
     {
-        return m_Aggregator->GetForecastRowSpecificForStationRow(methodRow, stationRow);
+        return m_aggregator->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
     wxArrayString GetStationNames(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetStationNames(methodRow, forecastRow);
+        return m_aggregator->GetStationNames(methodRow, forecastRow);
     }
 
     wxString GetStationName(int methodRow, int forecastRow, int stationRow)
     {
-        return m_Aggregator->GetStationName(methodRow, forecastRow, stationRow);
+        return m_aggregator->GetStationName(methodRow, forecastRow, stationRow);
     }
 
     wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetStationNamesWithHeights(methodRow, forecastRow);
+        return m_aggregator->GetStationNamesWithHeights(methodRow, forecastRow);
     }
 
     wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow)
     {
-        return m_Aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
+        return m_aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
     }
 
     int GetLeadTimeLength(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetLeadTimeLength(methodRow, forecastRow);
+        return m_aggregator->GetLeadTimeLength(methodRow, forecastRow);
     }
 
     int GetLeadTimeLengthMax()
     {
-        return m_Aggregator->GetLeadTimeLengthMax();
+        return m_aggregator->GetLeadTimeLengthMax();
     }
 
     wxArrayString GetLeadTimes(int methodRow, int forecastRow)
     {
-        return m_Aggregator->GetLeadTimes(methodRow, forecastRow);
+        return m_aggregator->GetLeadTimes(methodRow, forecastRow);
     } 
 
 protected:
 private:
-    wxWindow* m_Parent;
-    asWorkspace* m_Workspace;
-    asResultsAnalogsForecastAggregator* m_Aggregator;
-    double m_LeadTimeOrigin; //!< Member variable "m_LeadTimeOrigin"
-    wxArrayString m_DirectoriesPastForecasts;
+    wxWindow* m_parent;
+    asWorkspace* m_workspace;
+    asResultsAnalogsForecastAggregator* m_aggregator;
+    double m_leadTimeOrigin; //!< Member variable "m_leadTimeOrigin"
+    wxArrayString m_directoriesPastForecasts;
 
 };
 

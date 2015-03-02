@@ -73,14 +73,14 @@ private:
     asTimeArray* m_pTimeArrayArchiveSelection;
     asTimeArray* m_pTimeArrayTargetData;
     asTimeArray* m_pTimeArrayTargetSelection;
-    std::vector < asPredictorCriteria* > m_Criteria;
-    asParameters m_Params;
-    int m_Step;
+    std::vector < asPredictorCriteria* > m_criteria;
+    asParameters m_params;
+    int m_step;
     VpArray2DFloat m_vTargData;
     VpArray2DFloat m_vArchData;
     Array1DInt m_vRowsNb;
     Array1DInt m_vColsNb;
-    int m_Start;
+    int m_start;
     int m_End;
     Array2DFloat* m_pFinalAnalogsCriteria;
     Array2DFloat* m_pFinalAnalogsDates;

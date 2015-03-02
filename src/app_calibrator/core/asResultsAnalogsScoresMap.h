@@ -77,14 +77,14 @@ protected:
     void BuildFileName(asParametersScoring &params);
 
 private:
-    Array1DFloat m_MapLon;
-    Array1DFloat m_MapLat;
-    Array1DFloat m_MapLevel;
-    VArray2DFloat m_MapScores; //!< Member variable "m_Scores"
-    VectorFloat m_Scores; //!< Member variable "m_Scores".
-    VectorFloat m_Lon; //!< Member variable "m_Lon".
-    VectorFloat m_Lat; //!< Member variable "m_Lat".
-    VectorFloat m_Level; //!< Member variable "m_Level".
+    Array1DFloat m_mapLon;
+    Array1DFloat m_mapLat;
+    Array1DFloat m_mapLevel;
+    VArray2DFloat m_mapScores; //!< Member variable "m_scores"
+    VectorFloat m_scores; //!< Member variable "m_scores".
+    VectorFloat m_lon; //!< Member variable "m_lon".
+    VectorFloat m_lat; //!< Member variable "m_lat".
+    VectorFloat m_level; //!< Member variable "m_level".
 };
 
 #endif // ASRESULTSANALOGSSCORESMAP_H

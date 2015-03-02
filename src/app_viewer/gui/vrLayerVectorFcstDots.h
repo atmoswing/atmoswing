@@ -58,16 +58,16 @@ public:
             asLogWarning(_("The given maximum value for the vrLayerVectorFcstDots class was too small, so it has been increased."));
             val = 0.1;
         }
-        m_ValueMax = val;
+        m_valueMax = val;
     }
 
     double GetMaxValue()
     {
-        return m_ValueMax;
+        return m_valueMax;
     }
 
 protected:
-    double m_ValueMax;
+    double m_valueMax;
 
     virtual void _DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeometry * geometry, const wxRect2DDouble & coord, const vrRender * render,  vrLabel * label, double pxsize);
 

@@ -46,8 +46,8 @@ public:
 
 
 protected:
-    asLogWindow *m_LogWindow;
-    asMethodCalibrator *m_MethodCalibrator;
+    asLogWindow *m_logWindow;
+    asMethodCalibrator *m_methodCalibrator;
 
     // Handlers for asFrameCalibrationVirtual events.
     void Update();

@@ -68,13 +68,13 @@ private:
         Interpretation
     };
 
-    asPanelPlot *m_PanelPlot;
-    asForecastManager *m_ForecastManager;
-    int m_SelectedStation;
-    int m_SelectedMethod;
-    int m_SelectedForecast;
-    float m_MaxVal;
-    VectorDouble m_LeadTimes;
+    asPanelPlot *m_panelPlot;
+    asForecastManager *m_forecastManager;
+    int m_selectedStation;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    float m_maxVal;
+    VectorDouble m_leadTimes;
 
     void OnClose( wxCloseEvent& evt );
     void OnTocSelectionChange( wxCommandEvent& event );

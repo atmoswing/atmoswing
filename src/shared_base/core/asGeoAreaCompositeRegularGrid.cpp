@@ -31,9 +31,9 @@ asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &CornerUL
 :
 asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
-    m_GridType = Regular;
-    m_Xstep = Xstep;
-    m_Ystep = Ystep;
+    m_gridType = Regular;
+    m_xstep = Xstep;
+    m_ystep = Ystep;
 
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 }
@@ -42,9 +42,9 @@ asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double Xmin, double
 :
 asGeoAreaCompositeGrid(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
-    m_GridType = Regular;
-    m_Xstep = Xstep;
-    m_Ystep = Ystep;
+    m_gridType = Regular;
+    m_xstep = Xstep;
+    m_ystep = Ystep;
 
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 }
@@ -74,13 +74,13 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
     if (compositeNb==0) // Left border
     {
         double Xmax = GetComposite(compositeNb).GetXmax();
-        double restovers = Xmax-Xmin-m_Xstep*(size-1);
+        double restovers = Xmax-Xmin-m_xstep*(size-1);
         Xmin += restovers;
     }
 
     for (int i=0; i<size; i++)
     {
-        Xaxis(i) = Xmin+(double)i*m_Xstep;
+        Xaxis(i) = Xmin+(double)i*m_xstep;
     }
     //wxASSERT_MSG(Xaxis(size-1)==GetComposite(compositeNb).GetXmax(), wxString::Format("Xaxis(size-1)=%f, GetComposite(%d).GetXmax()=%f", Xaxis(size-1), compositeNb, GetComposite(compositeNb).GetXmax()));  // Not always true
 
@@ -99,13 +99,13 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
     if (compositeNb==0) // Not sure...
     {
         double Ymax = GetComposite(compositeNb).GetYmax();
-        double restovers = Ymax-Ymin-m_Ystep*(size-1);
+        double restovers = Ymax-Ymin-m_ystep*(size-1);
         Ymin += restovers;
     }
 
     for (int i=0; i<size; i++)
     {
-        Yaxis(i) = Ymin+i*m_Ystep;
+        Yaxis(i) = Ymin+i*m_ystep;
     }
     //wxASSERT(Yaxis(size-1)==GetComposite(compositeNb).GetYmax()); // Not always true
 
@@ -114,7 +114,7 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
 
 int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
-    double diff = abs((GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin()))/m_Xstep;
+    double diff = abs((GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin()))/m_xstep;
     double size;
     double rest = modf (diff , &size);
 
@@ -143,7 +143,7 @@ int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
 
 int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
-    double diff = abs((GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin()))/m_Ystep;
+    double diff = abs((GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin()))/m_ystep;
     double size;
     double rest = modf (diff , &size);
     size += 1;
@@ -182,14 +182,14 @@ double asGeoAreaCompositeRegularGrid::GetXaxisCompositeStart(int compositeNb)
         // Composites are not forced on the grid. So we may need to adjust the split of the longitudes axis.
         double dX = abs(GetComposite(1).GetXmax()-GetComposite(1).GetXmin());
 
-        if(fmod(dX, m_Xstep)<0.000001)
+        if(fmod(dX, m_xstep)<0.000001)
         {
             return GetComposite(compositeNb).GetXmin();
         }
         else
         {
-            double rest = fmod(dX, m_Xstep);
-            return m_Xstep-rest;
+            double rest = fmod(dX, m_xstep);
+            return m_xstep-rest;
         }
     }
     else if (compositeNb==1) // to 360
@@ -238,7 +238,7 @@ double asGeoAreaCompositeRegularGrid::GetXaxisCompositeEnd(int compositeNb)
     {
         // Composites are not forced on the grid. So we may need to adjust the split of the longitudes axis.
         double dX = abs(GetComposite(1).GetXmax()-GetComposite(1).GetXmin());
-        double rest = fmod(dX, m_Xstep);
+        double rest = fmod(dX, m_xstep);
         if(rest<0.000001)
         {
             return GetComposite(compositeNb).GetXmax();

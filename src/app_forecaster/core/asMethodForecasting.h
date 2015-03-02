@@ -52,28 +52,28 @@ public:
 
     bool Forecast(asParametersForecast &params);
 
-    /** Access m_ForecastDate
-     * \return The current value of m_ForecastDate
+    /** Access m_forecastDate
+     * \return The current value of m_forecastDate
      */
     double GetForecastDate()
     {
-        return m_ForecastDate;
+        return m_forecastDate;
     }
 
-    /** Set m_ForecastDate
+    /** Set m_forecastDate
      * \param val New value to set
      */
     void SetForecastDate(double val)
     {
-        m_ForecastDate = val;
+        m_forecastDate = val;
     }
 
-    /** Get m_ResultsFilePaths
-     * \return The current value of m_ResultsFilePaths
+    /** Get m_resultsFilePaths
+     * \return The current value of m_resultsFilePaths
      */
     VectorString GetResultsFilePaths()
     {
-        return m_ResultsFilePaths;
+        return m_resultsFilePaths;
     }
 
 protected:
@@ -87,16 +87,16 @@ protected:
 
 
 private:
-    asBatchForecasts* m_BatchForecasts;
-    double m_ForecastDate;
-    asResultsAnalogsForecastAggregator m_Aggregator;
-    VectorString m_ResultsFilePaths;
-    wxWindow* m_Parent;
-    std::vector < asDataPredictorArchive* > m_StoragePredictorsArchivePreprocess;
-	std::vector < asDataPredictorRealtime* > m_StoragePredictorsRealtimePreprocess;
-    std::vector < asDataPredictor* > m_StoragePredictorsArchive;
-	std::vector < asDataPredictor* > m_StoragePredictorsRealtime;
-    std::vector < asPredictorCriteria* > m_StorageCriteria;
+    asBatchForecasts* m_batchForecasts;
+    double m_forecastDate;
+    asResultsAnalogsForecastAggregator m_aggregator;
+    VectorString m_resultsFilePaths;
+    wxWindow* m_parent;
+    std::vector < asDataPredictorArchive* > m_storagePredictorsArchivePreprocess;
+	std::vector < asDataPredictorRealtime* > m_storagePredictorsRealtimePreprocess;
+    std::vector < asDataPredictor* > m_storagePredictorsArchive;
+	std::vector < asDataPredictor* > m_storagePredictorsRealtime;
+    std::vector < asPredictorCriteria* > m_storageCriteria;
 };
 
 #endif // ASMETHODFORECASTING_H

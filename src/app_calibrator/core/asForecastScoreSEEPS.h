@@ -70,12 +70,12 @@ public:
 
     void SetThresNull(float val)
     {
-        m_ThresNull = val;
+        m_thresNull = val;
     }
 
     void SetThresHigh(float val)
     {
-        m_ThresHigh = val;
+        m_thresHigh = val;
     }
 
 
@@ -84,8 +84,8 @@ protected:
 private:
     float m_p1;
     float m_p3;
-    float m_ThresNull;
-    float m_ThresHigh;
+    float m_thresNull;
+    float m_thresHigh;
 
 };
 

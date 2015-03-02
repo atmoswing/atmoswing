@@ -46,77 +46,77 @@ public:
 
     void Cancel();
 
-    /** Access m_ParamsFilePath
-     * \return The current value of m_ParamsFilePath
+    /** Access m_paramsFilePath
+     * \return The current value of m_paramsFilePath
      */
     wxString GetParamsFilePath()
     {
-        return m_ParamsFilePath;
+        return m_paramsFilePath;
     }
 
-    /** Set m_ParamsFilePath
+    /** Set m_paramsFilePath
      * \param val New value to set
      */
     void SetParamsFilePath(const wxString &val)
     {
-        m_ParamsFilePath = val;
+        m_paramsFilePath = val;
     }
 
-    /** Access m_PredictandDBFilePath
-     * \return The current value of m_PredictandDBFilePath
+    /** Access m_predictandDBFilePath
+     * \return The current value of m_predictandDBFilePath
      */
     wxString GetPredictandDBFilePath()
     {
-        return m_PredictandDBFilePath;
+        return m_predictandDBFilePath;
     }
 
-    /** Set m_PredictandDBFilePath
+    /** Set m_predictandDBFilePath
      * \param val New value to set
      */
     void SetPredictandDBFilePath(const wxString &val)
     {
-        m_PredictandDBFilePath = val;
+        m_predictandDBFilePath = val;
     }
 
-    /** Access m_PredictandDB
-     * \return The current m_PredictandDB pointer
+    /** Access m_predictandDB
+     * \return The current m_predictandDB pointer
      */
     asDataPredictand* GetPredictandDB()
     {
-        return m_PredictandDB;
+        return m_predictandDB;
     }
 
-    /** Set m_PredictandDB
+    /** Set m_predictandDB
      * \param pDB Pointer to the DB
      */
     void SetPredictandDB(asDataPredictand* pDB)
     {
-        m_PredictandDB = pDB;
+        m_predictandDB = pDB;
     }
 
-    /** Access m_PredictorDataDir
-     * \return The current value of m_PredictorDataDir
+    /** Access m_predictorDataDir
+     * \return The current value of m_predictorDataDir
      */
     wxString GetPredictorDataDir()
     {
-        return m_PredictorDataDir;
+        return m_predictorDataDir;
     }
 
-    /** Set m_PredictorDataDir
+    /** Set m_predictorDataDir
      * \param val New value to set
      */
     void SetPredictorDataDir(const wxString &val)
     {
-        m_PredictorDataDir = val;
+        m_predictorDataDir = val;
     }
 
 protected:
-    bool m_Cancel;
-    wxString m_ParamsFilePath;
-    wxString m_PredictandDBFilePath;
-    wxString m_PredictorDataDir;
+    bool m_cancel;
+    wxString m_paramsFilePath;
+    wxString m_predictandDBFilePath;
+    wxString m_predictorDataDir;
     // TODO (Pascal#5#): Make it compatible for temperature predictand DB.
-    asDataPredictand* m_PredictandDB;
+    asDataPredictand* m_predictandDB;
 
 private:
 };

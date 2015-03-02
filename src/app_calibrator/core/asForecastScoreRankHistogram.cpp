@@ -31,12 +31,12 @@ asForecastScoreRankHistogram::asForecastScoreRankHistogram()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::RankHistogram;
-    m_Name = _("Rank Histogram");
-    m_FullName = _("Verification Rank Histogram (Talagrand Diagram)");
-    m_Order = NoOrder;
-    m_ScaleBest = NaNFloat;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::RankHistogram;
+    m_name = _("Rank Histogram");
+    m_fullName = _("Verification Rank Histogram (Talagrand Diagram)");
+    m_order = NoOrder;
+    m_scaleBest = NaNFloat;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreRankHistogram::~asForecastScoreRankHistogram()

@@ -38,15 +38,15 @@ asDataPredictorRealtime::asDataPredictorRealtime(const wxString &dataId)
 :
 asDataPredictor(dataId)
 {
-    m_RunDateInUse = 0.0;
-    m_RestrictDownloads = false;
-    m_RestrictTimeHours = 0.0;
-    m_RestrictTimeStepHours = 0.0;
-    m_ForecastLeadTimeStart = 0.0;
-    m_ForecastLeadTimeEnd = 0.0;
-    m_ForecastLeadTimeStep = 0.0;
-    m_RunHourStart = 0.0;
-    m_RunUpdate = 0.0;
+    m_runDateInUse = 0.0;
+    m_restrictDownloads = false;
+    m_restrictTimeHours = 0.0;
+    m_restrictTimeStepHours = 0.0;
+    m_forecastLeadTimeStart = 0.0;
+    m_forecastLeadTimeEnd = 0.0;
+    m_forecastLeadTimeStep = 0.0;
+    m_runHourStart = 0.0;
+    m_runUpdate = 0.0;
 }
 
 asDataPredictorRealtime::~asDataPredictorRealtime()
@@ -83,12 +83,12 @@ bool asDataPredictorRealtime::Init()
 
 int asDataPredictorRealtime::Download()
 {
-    wxASSERT(!m_PredictorsRealtimeDirectory.IsEmpty());
+    wxASSERT(!m_predictorsRealtimeDirectory.IsEmpty());
 
     // Internet (cURL)
     asInternet internet;
 
-    return internet.Download(GetUrls(), GetFileNames(), m_PredictorsRealtimeDirectory);
+    return internet.Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDirectory);
 }
 
 bool asDataPredictorRealtime::CheckTimeArray(asTimeArray &timeArray)
@@ -98,26 +98,26 @@ bool asDataPredictorRealtime::CheckTimeArray(asTimeArray &timeArray)
 
 double asDataPredictorRealtime::UpdateRunDateInUse()
 {
-    m_FileNames.clear();
-    m_Urls.clear();
+    m_fileNames.clear();
+    m_urls.clear();
 
-// TODO (Pascal#1#): Fix the use of m_TimeZoneHours
+// TODO (Pascal#1#): Fix the use of m_timeZoneHours
 
     // Round time to the last available data
-    double runHourStart = (double)m_RunHourStart;
-    double runUpdate = (double)m_RunUpdate;
-    double hourNow = (m_RunDateInUse-floor(m_RunDateInUse))*24;
+    double runHourStart = (double)m_runHourStart;
+    double runUpdate = (double)m_runUpdate;
+    double hourNow = (m_runDateInUse-floor(m_runDateInUse))*24;
     if (runUpdate>0)
     {
         double factorUpdate = floor((hourNow-runHourStart)/runUpdate);
-        m_RunDateInUse = floor(m_RunDateInUse)+(factorUpdate*runUpdate)/(double)24;
+        m_runDateInUse = floor(m_runDateInUse)+(factorUpdate*runUpdate)/(double)24;
     }
     else
     {
-        m_RunDateInUse = floor(m_RunDateInUse)+runHourStart/(double)24;
+        m_runDateInUse = floor(m_runDateInUse)+runHourStart/(double)24;
     }
 
-    return m_RunDateInUse;
+    return m_runDateInUse;
 }
 
 double asDataPredictorRealtime::SetRunDateInUse(double val)
@@ -128,38 +128,38 @@ double asDataPredictorRealtime::SetRunDateInUse(double val)
         val = asTime::NowMJD(asUTM);
     }
 
-    m_RunDateInUse = val;
+    m_runDateInUse = val;
     UpdateRunDateInUse();
 
-    return m_RunDateInUse;
+    return m_runDateInUse;
 }
 
 double asDataPredictorRealtime::DecrementRunDateInUse()
 {
-    m_FileNames.clear();
-    m_Urls.clear();
-    m_RunDateInUse -= (double)m_RunUpdate/(double)24;
+    m_fileNames.clear();
+    m_urls.clear();
+    m_runDateInUse -= (double)m_runUpdate/(double)24;
 
-    return m_RunDateInUse;
+    return m_runDateInUse;
 }
 
 void asDataPredictorRealtime::RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours)
 {
-    m_RestrictDownloads = true;
-    m_RestrictTimeHours = restrictTimeHours;
-    m_RestrictTimeStepHours = restrictTimeStepHours;
-    wxASSERT(m_RestrictTimeStepHours>0);
-    wxASSERT(m_RestrictTimeHours>-100);
-    wxASSERT(m_RestrictTimeHours<100);
+    m_restrictDownloads = true;
+    m_restrictTimeHours = restrictTimeHours;
+    m_restrictTimeStepHours = restrictTimeStepHours;
+    wxASSERT(m_restrictTimeStepHours>0);
+    wxASSERT(m_restrictTimeHours>-100);
+    wxASSERT(m_restrictTimeHours<100);
 }
 
 bool asDataPredictorRealtime::BuildFilenamesUrls()
 {
-    m_DataDates.clear();
-    m_FileNames.clear();
-    m_Urls.clear();
+    m_dataDates.clear();
+    m_fileNames.clear();
+    m_urls.clear();
 
-    wxString thisCommand = m_CommandDownload;
+    wxString thisCommand = m_commandDownload;
 
     // Replace time in the command
     while (thisCommand.Find("CURRENTDATE")!=wxNOT_FOUND )
@@ -174,37 +174,37 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
         {
             thisCommand.Remove(posEnd,1); // Removes ']'
             wxString dateFormat = thisCommand.SubString(posStart, posEnd);
-            wxString date = asTime::GetStringTime(m_RunDateInUse, dateFormat);
+            wxString date = asTime::GetStringTime(m_runDateInUse, dateFormat);
             thisCommand.replace(posStart,date.Length(),date);
         }
     }
 
     // Restrict the downloads to used data
-    if (m_RestrictDownloads)
+    if (m_restrictDownloads)
     {
         // Get the real lead time
-        double dayRun = floor(m_RunDateInUse);
-        double desiredTime = dayRun+m_RestrictTimeHours/24.0;
-        double diff = desiredTime-m_RunDateInUse;
-        m_ForecastLeadTimeStart = (int)(diff*24.0);
-        m_ForecastLeadTimeStep = m_RestrictTimeStepHours;
-        m_ForecastLeadTimeEnd = floor(((double)m_ForecastLeadTimeEnd-(double)m_ForecastLeadTimeStart)/(double)m_ForecastLeadTimeStep)*(double)m_ForecastLeadTimeStep+m_ForecastLeadTimeStart;
+        double dayRun = floor(m_runDateInUse);
+        double desiredTime = dayRun+m_restrictTimeHours/24.0;
+        double diff = desiredTime-m_runDateInUse;
+        m_forecastLeadTimeStart = (int)(diff*24.0);
+        m_forecastLeadTimeStep = m_restrictTimeStepHours;
+        m_forecastLeadTimeEnd = floor(((double)m_forecastLeadTimeEnd-(double)m_forecastLeadTimeStart)/(double)m_forecastLeadTimeStep)*(double)m_forecastLeadTimeStep+m_forecastLeadTimeStart;
     }
 
-    wxASSERT(m_ForecastLeadTimeStep>0);
-    wxASSERT(m_ForecastLeadTimeEnd>=m_ForecastLeadTimeStart);
+    wxASSERT(m_forecastLeadTimeStep>0);
+    wxASSERT(m_forecastLeadTimeEnd>=m_forecastLeadTimeStart);
 
     // Change the leadtimes
-    for (int leadtime=m_ForecastLeadTimeStart; leadtime<=m_ForecastLeadTimeEnd; leadtime+=m_ForecastLeadTimeStep)
+    for (int leadtime=m_forecastLeadTimeStart; leadtime<=m_forecastLeadTimeEnd; leadtime+=m_forecastLeadTimeStep)
     {
         int currentLeadtime = leadtime;
-        double runDateInUse = m_RunDateInUse;
+        double runDateInUse = m_runDateInUse;
 
         // Manage if ledtime if negative -> get previous download
         while(currentLeadtime<0)
         {
-            currentLeadtime += m_RunUpdate;
-            runDateInUse -= (double)m_RunUpdate/24.0;
+            currentLeadtime += m_runUpdate;
+            runDateInUse -= (double)m_runUpdate/24.0;
         }
 
         wxString thisCommandLeadTime = thisCommand;
@@ -234,21 +234,21 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
         wxString directory = asTime::GetStringTime(runDateInUse, dirstructure);
         wxString nowstr = asTime::GetStringTime(runDateInUse, "YYYYMMDDhh");
         wxString leadtimestr = timeStrFileName;
-        wxString ext = m_FileExtension;
+        wxString ext = m_fileExtension;
 
-        wxString filename = wxString::Format("%s.%s.%s.%s.%s",nowstr.c_str(),m_DatasetId.c_str(),m_DataId.c_str(),leadtimestr.c_str(),ext.c_str());
+        wxString filename = wxString::Format("%s.%s.%s.%s.%s",nowstr.c_str(),m_datasetId.c_str(),m_dataId.c_str(),leadtimestr.c_str(),ext.c_str());
         wxString filenameres = directory + DS + filename;
 
         double dataDate = runDateInUse+currentLeadtime/24.0;
 
         // Save resulting strings
-        m_Urls.push_back(thisCommandLeadTime);
-        m_FileNames.push_back(filenameres);
-        m_DataDates.push_back(dataDate);
+        m_urls.push_back(thisCommandLeadTime);
+        m_fileNames.push_back(filenameres);
+        m_dataDates.push_back(dataDate);
     }
 
-    wxASSERT(m_DataDates.size()==m_Urls.size());
-    wxASSERT(m_DataDates.size()==m_FileNames.size());
+    wxASSERT(m_dataDates.size()==m_urls.size());
+    wxASSERT(m_dataDates.size()==m_fileNames.size());
 
     return true;
 }

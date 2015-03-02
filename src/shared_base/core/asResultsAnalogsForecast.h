@@ -55,148 +55,148 @@ public:
 
     wxString GetForecastsDirectory()
     {
-        return m_ForecastsDirectory;
+        return m_forecastsDirectory;
     }
 
     void SetForecastsDirectory(const wxString &val)
     {
-        m_ForecastsDirectory = val;
+        m_forecastsDirectory = val;
     }
 
     wxString GetPredictandDatasetId()
     {
-        return m_PredictandDatasetId;
+        return m_predictandDatasetId;
     }
 
     void SetPredictandDatasetId(const wxString &val)
     {
-        m_PredictandDatasetId = val;
+        m_predictandDatasetId = val;
     }
 
     wxString GetPredictandDatabase()
     {
-        return m_PredictandDatabase;
+        return m_predictandDatabase;
     }
 
     void SetPredictandDatabase(const wxString &val)
     {
-        m_PredictandDatabase = val;
+        m_predictandDatabase = val;
     }
 
     VectorInt GetPredictandStationIds()
     {
-        return m_PredictandStationIds;
+        return m_predictandStationIds;
     }
 
     void SetPredictandStationIds(VectorInt val)
     {
-        m_PredictandStationIds = val;
+        m_predictandStationIds = val;
     }
     
     void SetPredictandStationIds(wxString val);
 
     DataParameter GetPredictandParameter()
     {
-        return m_PredictandParameter;
+        return m_predictandParameter;
     }
 
     void SetPredictandParameter(DataParameter val)
     {
-        m_PredictandParameter = val;
+        m_predictandParameter = val;
     }
 
     DataTemporalResolution GetPredictandTemporalResolution()
     {
-        return m_PredictandTemporalResolution;
+        return m_predictandTemporalResolution;
     }
 
     void SetPredictandTemporalResolution(DataTemporalResolution val)
     {
-        m_PredictandTemporalResolution = val;
+        m_predictandTemporalResolution = val;
     }
 
     DataSpatialAggregation GetPredictandSpatialAggregation()
     {
-        return m_PredictandSpatialAggregation;
+        return m_predictandSpatialAggregation;
     }
 
     void SetPredictandSpatialAggregation(DataSpatialAggregation val)
     {
-        m_PredictandSpatialAggregation = val;
+        m_predictandSpatialAggregation = val;
     }
 
-    /** Access m_HasReferenceValues
-    * \return The current value of m_HasReferenceValues
+    /** Access m_hasReferenceValues
+    * \return The current value of m_hasReferenceValues
     */
     bool HasReferenceValues()
     {
-        return m_HasReferenceValues;
+        return m_hasReferenceValues;
     }
 
     wxString GetMethodId()
     {
-        return m_MethodId;
+        return m_methodId;
     }
 
     void SetMethodId(const wxString &val)
     {
-        m_MethodId = val;
+        m_methodId = val;
     }
 
     wxString GetMethodIdDisplay()
     {
-        return m_MethodIdDisplay;
+        return m_methodIdDisplay;
     }
 
     void SetMethodIdDisplay(const wxString &val)
     {
-        m_MethodIdDisplay = val;
+        m_methodIdDisplay = val;
     }
 
     wxString GetSpecificTag()
     {
-        return m_SpecificTag;
+        return m_specificTag;
     }
 
     void SetSpecificTag(const wxString &val)
     {
-        m_SpecificTag = val;
+        m_specificTag = val;
     }
 
     wxString GetSpecificTagDisplay()
     {
-        return m_SpecificTagDisplay;
+        return m_specificTagDisplay;
     }
 
     void SetSpecificTagDisplay(const wxString &val)
     {
-        m_SpecificTagDisplay = val;
+        m_specificTagDisplay = val;
     }
 
     wxString GetDescription()
     {
-        return m_Description;
+        return m_description;
     }
 
     void SetDescription(const wxString &val)
     {
-        m_Description = val;
+        m_description = val;
     }
 
-    /** Access m_LeadTimeOrigin
+    /** Access m_leadTimeOrigin
      * \return The origin of the lead time
      */
     double GetLeadTimeOrigin()
     {
-        return m_LeadTimeOrigin;
+        return m_leadTimeOrigin;
     }
 
-    /** Access m_LeadTimeOrigin
+    /** Access m_leadTimeOrigin
      * \return The origin of the lead time
      */
     wxString GetLeadTimeOriginString()
     {
-        wxString leadTimeStr = asTime::GetStringTime(m_LeadTimeOrigin, "DD.MM.YYYY hh:mm");
+        wxString leadTimeStr = asTime::GetStringTime(m_leadTimeOrigin, "DD.MM.YYYY hh:mm");
         return leadTimeStr;
     }
 
@@ -205,35 +205,35 @@ public:
      */
     int GetStationsNb()
     {
-        return (int)m_StationIds.size();
+        return (int)m_stationIds.size();
     }
 
-    /** Access m_StationIds
-     * \return The whole array m_StationIds
+    /** Access m_stationIds
+     * \return The whole array m_stationIds
      */
     Array1DInt GetStationIds()
     {
-        return m_StationIds;
+        return m_stationIds;
     }
 
-    /** Access an element of m_StationOfficialIds
-     * \return An item of m_StationOfficialIds
+    /** Access an element of m_stationOfficialIds
+     * \return An item of m_stationOfficialIds
      */
     wxString GetStationOfficialId(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT((unsigned)i<m_StationOfficialIds.size());
-        return m_StationOfficialIds[i];
+        wxASSERT((unsigned)i<m_stationOfficialIds.size());
+        return m_stationOfficialIds[i];
     }
 
-    /** Access an element of m_StationNames
-     * \return An item of m_StationNames
+    /** Access an element of m_stationNames
+     * \return An item of m_stationNames
      */
     wxString GetStationName(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT((unsigned)i<m_StationNames.size());
-        return m_StationNames[i];
+        wxASSERT((unsigned)i<m_stationNames.size());
+        return m_stationNames[i];
     }
 
 
@@ -245,129 +245,129 @@ public:
     wxString GetStationNameAndHeight(int i_stat);
 
 
-    /** Set m_StationNames
+    /** Set m_stationNames
      * \param stationsNames The new array to set
      */
     void SetStationNames(VectorString &stationsNames)
     {
-        m_StationNames = stationsNames;
+        m_stationNames = stationsNames;
     }
 
-    /** Access an element of m_StationIds
-     * \return An item of m_StationIds
+    /** Access an element of m_stationIds
+     * \return An item of m_stationIds
      */
     int GetStationId(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationIds.size());
-        return m_StationIds[i];
+        wxASSERT(i<m_stationIds.size());
+        return m_stationIds[i];
     }
 
-    /** Set m_StationIds
+    /** Set m_stationIds
      * \param stationsIds The new array to set
      */
     void SetStationIds(Array1DInt &stationsIds)
     {
-        m_StationIds = stationsIds;
+        m_stationIds = stationsIds;
     }
 
     void SetStationOfficialIds(VectorString &stationsOfficialIds)
     {
-        m_StationOfficialIds = stationsOfficialIds;
+        m_stationOfficialIds = stationsOfficialIds;
     }
 
-    /** Access an element of m_StationHeights
-     * \return An item of m_StationHeights
+    /** Access an element of m_stationHeights
+     * \return An item of m_stationHeights
      */
     int GetStationHeight(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationHeights.size());
-        return m_StationHeights[i];
+        wxASSERT(i<m_stationHeights.size());
+        return m_stationHeights[i];
     }
 
-    /** Set m_StationHeights
+    /** Set m_stationHeights
      * \param stationsHeights The new array to set
      */
     void SetStationHeights(Array1DFloat &stationsHeights)
     {
-        m_StationHeights = stationsHeights;
+        m_stationHeights = stationsHeights;
     }
 
-    /** Access m_StationXCoords
-     * \return The whole array m_StationXCoords
+    /** Access m_stationXCoords
+     * \return The whole array m_stationXCoords
      */
     Array1DDouble GetStationXCoords()
     {
-        return m_StationXCoords;
+        return m_stationXCoords;
     }
 
-    /** Access an element of m_StationXCoords
-     * \return An item of m_StationXCoords
+    /** Access an element of m_stationXCoords
+     * \return An item of m_stationXCoords
      */
     double GetStationXCoord(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationXCoords.size());
-        return m_StationXCoords[i];
+        wxASSERT(i<m_stationXCoords.size());
+        return m_stationXCoords[i];
     }
 
-    /** Set m_StationXCoords
+    /** Set m_stationXCoords
      * \param stationsXCoords The new array to set
      */
     void SetStationXCoords(Array1DDouble &stationsXCoords)
     {
-        m_StationXCoords = stationsXCoords;
+        m_stationXCoords = stationsXCoords;
     }
 
-    /** Access m_StationYCoords
-     * \return The whole array m_StationYCoords
+    /** Access m_stationYCoords
+     * \return The whole array m_stationYCoords
      */
     Array1DDouble GetStationYCoords()
     {
-        return m_StationYCoords;
+        return m_stationYCoords;
     }
 
-    /** Access an element of m_StationYCoords
-     * \return An item of m_StationYCoords
+    /** Access an element of m_stationYCoords
+     * \return An item of m_stationYCoords
      */
     double GetStationYCoord(int i)
     {
         wxASSERT(i>=0);
-        wxASSERT(i<m_StationYCoords.size());
-        return m_StationYCoords[i];
+        wxASSERT(i<m_stationYCoords.size());
+        return m_stationYCoords[i];
     }
 
-    /** Set m_StationYCoords
+    /** Set m_stationYCoords
      * \param stationsYCoords The new array to set
      */
     void SetStationYCoords(Array1DDouble &stationsYCoords)
     {
-        m_StationYCoords = stationsYCoords;
+        m_stationYCoords = stationsYCoords;
     }
 
-    /** Access m_ReferenceAxis
-     * \return The whole array m_ReferenceAxis
+    /** Access m_referenceAxis
+     * \return The whole array m_referenceAxis
      */
     Array1DFloat GetReferenceAxis()
     {
-        return m_ReferenceAxis;
+        return m_referenceAxis;
     }
 
-    /** Set m_ReferenceAxis
+    /** Set m_referenceAxis
      * \param referenceAxis The new array to set
      */
     void SetReferenceAxis(Array1DFloat &referenceAxis)
     {
-        m_ReferenceAxis = referenceAxis;
-        m_HasReferenceValues = true;
+        m_referenceAxis = referenceAxis;
+        m_hasReferenceValues = true;
     }
 
-    /** Access an element of m_ReferenceValues
+    /** Access an element of m_referenceValues
      */
     float GetReferenceValue(int i_stat, int i_ref)
     {
-        if (!m_HasReferenceValues)
+        if (!m_hasReferenceValues)
         {
             asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
             return NaNFloat;
@@ -375,93 +375,93 @@ public:
 
         wxASSERT(i_stat>=0);
         wxASSERT(i_ref>=0);
-        wxASSERT(i_stat<m_ReferenceValues.rows());
-        wxASSERT(i_ref<m_ReferenceValues.cols());
-        return m_ReferenceValues(i_stat, i_ref);
+        wxASSERT(i_stat<m_referenceValues.rows());
+        wxASSERT(i_ref<m_referenceValues.cols());
+        return m_referenceValues(i_stat, i_ref);
     }
 
-    /** Access m_ReferenceValues
-     * \return The whole array m_ReferenceValues
+    /** Access m_referenceValues
+     * \return The whole array m_referenceValues
      */
     Array2DFloat GetReferenceValues()
     {
-        if (!m_HasReferenceValues)
+        if (!m_hasReferenceValues)
         {
             asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
             Array2DFloat nodata(0,0);
             return nodata;
         }
 
-        return m_ReferenceValues;
+        return m_referenceValues;
     }
 
-    /** Set m_ReferenceValues
+    /** Set m_referenceValues
      * \param referenceValues The new array to set
      */
     void SetReferenceValues(Array2DFloat &referenceValues)
     {
-        m_ReferenceValues = referenceValues;
+        m_referenceValues = referenceValues;
     }
 
-    /** Get the size of m_TargetDates
-     * \return The size of m_TargetDates
+    /** Get the size of m_targetDates
+     * \return The size of m_targetDates
      */
     int GetTargetDatesLength()
     {
-        return (int)m_TargetDates.size();
+        return (int)m_targetDates.size();
     }
 
-    /** Access m_TargetDates
-     * \return The whole array m_TargetDates
+    /** Access m_targetDates
+     * \return The whole array m_targetDates
      */
     Array1DFloat &GetTargetDates()
     {
-        return m_TargetDates;
+        return m_targetDates;
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DDouble &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
+        m_targetDates.resize(refDates.rows());
         for (int i=0; i<refDates.size(); i++)
         {
-            m_TargetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_TargetDates[i]>1,_("The target time array has unconsistent values"));
+            m_targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(m_targetDates[i]>1,_("The target time array has unconsistent values"));
         }
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DFloat &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
-        m_TargetDates = refDates;
+        m_targetDates.resize(refDates.rows());
+        m_targetDates = refDates;
     }
 
-    /** Access m_AnalogCriteria
-     * \return The whole array m_AnalogCriteria
+    /** Access m_analogCriteria
+     * \return The whole array m_analogCriteria
      */
     Array1DFloat &GetAnalogsCriteria(unsigned int i)
     {
-        wxASSERT(m_AnalogsCriteria.size()>i);
-        return m_AnalogsCriteria[i];
+        wxASSERT(m_analogsCriteria.size()>i);
+        return m_analogsCriteria[i];
     }
 
-    /** Set m_AnalogCriteria
+    /** Set m_analogCriteria
      * \param analogCriteria The new array to set
      */
     void SetAnalogsCriteria(unsigned int i, Array1DFloat &analogsCriteria)
     {
-        if (m_AnalogsCriteria.size()>=i+1)
+        if (m_analogsCriteria.size()>=i+1)
         {
-            m_AnalogsCriteria[i] = analogsCriteria;
+            m_analogsCriteria[i] = analogsCriteria;
         }
-        else if (m_AnalogsCriteria.size()==i)
+        else if (m_analogsCriteria.size()==i)
         {
-            m_AnalogsCriteria.push_back(analogsCriteria);
+            m_analogsCriteria.push_back(analogsCriteria);
         }
         else
         {
@@ -469,45 +469,45 @@ public:
         }
     }
 
-    /** Access m_AnalogValuesGross
-     * \return The whole array m_AnalogValuesGross
+    /** Access m_analogValuesGross
+     * \return The whole array m_analogValuesGross
      */
     Array2DFloat &GetAnalogsValuesGross(unsigned int i_leadtime)
     {
-        wxASSERT(m_AnalogsValuesGross.size()>i_leadtime);
-        return m_AnalogsValuesGross[i_leadtime];
+        wxASSERT(m_analogsValuesGross.size()>i_leadtime);
+        return m_analogsValuesGross[i_leadtime];
     }
 
-    /** Access m_AnalogValuesGross
-     * \return The whole array m_AnalogValuesGross
+    /** Access m_analogValuesGross
+     * \return The whole array m_analogValuesGross
      */
     Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station)
     {
-        wxASSERT(m_AnalogsValuesGross.size()>i_leadtime);
-        wxASSERT(m_AnalogsValuesGross[i_leadtime].rows()>i_station);
-        Array1DFloat vals = m_AnalogsValuesGross[i_leadtime].row(i_station);
+        wxASSERT(m_analogsValuesGross.size()>i_leadtime);
+        wxASSERT(m_analogsValuesGross[i_leadtime].rows()>i_station);
+        Array1DFloat vals = m_analogsValuesGross[i_leadtime].row(i_station);
         return vals;
     }
 
-    /** Set m_AnalogValuesGross
+    /** Set m_analogValuesGross
      * \param analogValuesGross The new array to set
      */
     void SetAnalogsValuesGross(unsigned int i_leadtime, int i_station, Array1DFloat &analogsValuesGross)
     {
-        if (m_AnalogsValuesGross.size()>=i_leadtime+1)
+        if (m_analogsValuesGross.size()>=i_leadtime+1)
         {
-            wxASSERT(m_AnalogsValuesGross[i_leadtime].rows()>i_station);
-            wxASSERT(m_AnalogsValuesGross[i_leadtime].cols()==analogsValuesGross.size());
-            m_AnalogsValuesGross[i_leadtime].row(i_station) = analogsValuesGross;
+            wxASSERT(m_analogsValuesGross[i_leadtime].rows()>i_station);
+            wxASSERT(m_analogsValuesGross[i_leadtime].cols()==analogsValuesGross.size());
+            m_analogsValuesGross[i_leadtime].row(i_station) = analogsValuesGross;
         }
-        else if (m_AnalogsValuesGross.size()==i_leadtime)
+        else if (m_analogsValuesGross.size()==i_leadtime)
         {
-            Array2DFloat emptyBlock(m_StationIds.size(), m_AnalogsNb[i_leadtime]);
-            m_AnalogsValuesGross.push_back(emptyBlock);
+            Array2DFloat emptyBlock(m_stationIds.size(), m_analogsNb[i_leadtime]);
+            m_analogsValuesGross.push_back(emptyBlock);
 
-            wxASSERT(m_AnalogsValuesGross[i_leadtime].rows()>i_station);
-            wxASSERT(m_AnalogsValuesGross[i_leadtime].cols()==analogsValuesGross.size());
-            m_AnalogsValuesGross[i_leadtime].row(i_station) = analogsValuesGross;
+            wxASSERT(m_analogsValuesGross[i_leadtime].rows()>i_station);
+            wxASSERT(m_analogsValuesGross[i_leadtime].cols()==analogsValuesGross.size());
+            m_analogsValuesGross[i_leadtime].row(i_station) = analogsValuesGross;
         }
         else
         {
@@ -516,12 +516,12 @@ public:
     }
 
     /** Get the number of analogs
-     * \return The number of analogs in m_AnalogsDates
+     * \return The number of analogs in m_analogsDates
      */
     int GetAnalogsDatesLength(int i)
     {
-        wxASSERT(m_AnalogsDates.size()>(unsigned)i);
-        return (int)m_AnalogsDates[i].size();
+        wxASSERT(m_analogsDates.size()>(unsigned)i);
+        return (int)m_analogsDates[i].size();
     }
 
     /** Get the length of the analogs dimension
@@ -529,31 +529,31 @@ public:
      */
     int GetAnalogsNumber(int i)
     {
-        wxASSERT(m_AnalogsDates.size()>(unsigned)i);
-        return (int)m_AnalogsDates[i].size();
+        wxASSERT(m_analogsDates.size()>(unsigned)i);
+        return (int)m_analogsDates[i].size();
     }
 
-    /** Access m_AnalogsDates
-     * \return The whole array m_AnalogsDates
+    /** Access m_analogsDates
+     * \return The whole array m_analogsDates
      */
     Array1DFloat &GetAnalogsDates(int i)
     {
-        wxASSERT(m_AnalogsDates.size()>(unsigned)i);
-        return m_AnalogsDates[i];
+        wxASSERT(m_analogsDates.size()>(unsigned)i);
+        return m_analogsDates[i];
     }
 
-    /** Set m_AnalogsDates
+    /** Set m_analogsDates
      * \param analogDates The new array to set
      */
     void SetAnalogsDates(unsigned int i, Array1DFloat &analogsDates)
     {
-        if (m_AnalogsDates.size()>=i+1)
+        if (m_analogsDates.size()>=i+1)
         {
-            m_AnalogsDates[i] = analogsDates;
+            m_analogsDates[i] = analogsDates;
         }
-        else if (m_AnalogsDates.size()==i)
+        else if (m_analogsDates.size()==i)
         {
-            m_AnalogsDates.push_back(analogsDates);
+            m_analogsDates.push_back(analogsDates);
         }
         else
         {
@@ -583,33 +583,33 @@ protected:
     void BuildFileName();
 
 private:
-    wxString m_MethodId;
-    wxString m_MethodIdDisplay;
-    wxString m_SpecificTag;
-    wxString m_SpecificTagDisplay;
-    wxString m_Description;
-    DataParameter m_PredictandParameter;
-    DataTemporalResolution m_PredictandTemporalResolution;
-    DataSpatialAggregation m_PredictandSpatialAggregation;
-    wxString m_PredictandDatasetId;
-    wxString m_PredictandDatabase;
-    VectorInt m_PredictandStationIds;
-    wxString m_ForecastsDirectory;
-    bool m_HasReferenceValues;
-    double m_LeadTimeOrigin;
-    Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
-    Array1DInt m_AnalogsNb; //!< Member variable "m_AnalogsNb"
-    VectorString m_StationNames; //!< Member variable "m_StationNames"
-    VectorString m_StationOfficialIds;
-    Array1DInt m_StationIds; //!< Member variable "m_StationIds"
-    Array1DFloat m_StationHeights; //!< Member variable "m_StationHeights"
-    Array1DDouble m_StationXCoords; //!< Member variable "m_StationXCoords"
-    Array1DDouble m_StationYCoords; //!< Member variable "m_StationYCoords"
-    Array1DFloat m_ReferenceAxis;
-    Array2DFloat m_ReferenceValues;
-    VArray1DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogCriteria"
-    VArray2DFloat m_AnalogsValuesGross; //!< Member variable "m_AnalogsValuesGross"
-    VArray1DFloat m_AnalogsDates; //!< Member variable "m_AnalogDates"
+    wxString m_methodId;
+    wxString m_methodIdDisplay;
+    wxString m_specificTag;
+    wxString m_specificTagDisplay;
+    wxString m_description;
+    DataParameter m_predictandParameter;
+    DataTemporalResolution m_predictandTemporalResolution;
+    DataSpatialAggregation m_predictandSpatialAggregation;
+    wxString m_predictandDatasetId;
+    wxString m_predictandDatabase;
+    VectorInt m_predictandStationIds;
+    wxString m_forecastsDirectory;
+    bool m_hasReferenceValues;
+    double m_leadTimeOrigin;
+    Array1DFloat m_targetDates; //!< Member variable "m_targetDates"
+    Array1DInt m_analogsNb; //!< Member variable "m_analogsNb"
+    VectorString m_stationNames; //!< Member variable "m_stationNames"
+    VectorString m_stationOfficialIds;
+    Array1DInt m_stationIds; //!< Member variable "m_stationIds"
+    Array1DFloat m_stationHeights; //!< Member variable "m_stationHeights"
+    Array1DDouble m_stationXCoords; //!< Member variable "m_stationXCoords"
+    Array1DDouble m_stationYCoords; //!< Member variable "m_stationYCoords"
+    Array1DFloat m_referenceAxis;
+    Array2DFloat m_referenceValues;
+    VArray1DFloat m_analogsCriteria; //!< Member variable "m_analogCriteria"
+    VArray2DFloat m_analogsValuesGross; //!< Member variable "m_analogsValuesGross"
+    VArray1DFloat m_analogsDates; //!< Member variable "m_analogDates"
 };
 
 #endif // ASRESULTSANALOGSFORECAST_H

@@ -49,7 +49,7 @@ protected:
 	void OnLoadExistingWorkspace( wxCommandEvent& event );
 
 private:
-    asWorkspace* m_Workspace;
+    asWorkspace* m_workspace;
 };
 
 #endif // __asWizardWorkspace__

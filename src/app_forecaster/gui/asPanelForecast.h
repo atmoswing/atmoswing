@@ -52,27 +52,27 @@ public:
 
     awxLed* GetLed()
     {
-        return m_Led;
+        return m_led;
     }
 
     void SetPanelsManager(asPanelsManagerForecasts* panelManager)
     {
-        m_PanelsManager = panelManager;
+        m_panelsManager = panelManager;
     }
 
     wxString GetParametersFileName()
     {
-        return m_TextCtrlParametersFileName->GetValue();
+        return m_textCtrlParametersFileName->GetValue();
     }
 
     void SetParametersFileName(const wxString &val)
     {
-        m_TextCtrlParametersFileName->SetValue(val);
+        m_textCtrlParametersFileName->SetValue(val);
     }
 
 protected:
-    wxWindow* m_ParentFrame;
-    awxLed* m_Led;
+    wxWindow* m_parentFrame;
+    awxLed* m_led;
 
     void ClosePanel( wxCommandEvent& event );
     void ChangeForecastName( wxCommandEvent& event );
@@ -80,7 +80,7 @@ protected:
 
 
 private:
-    asPanelsManagerForecasts* m_PanelsManager;
+    asPanelsManagerForecasts* m_panelsManager;
 };
 
 #endif // __asPanelForecast__

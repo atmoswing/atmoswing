@@ -45,12 +45,12 @@ public:
 
     wxString GetPath()
     {
-        return m_FilePicker->GetPath();
+        return m_filePicker->GetPath();
     }
 
     void SetPath(const wxString &path)
     {
-        m_FilePicker->SetPath(path);
+        m_filePicker->SetPath(path);
     }
 
 };

@@ -27,7 +27,7 @@
  
 #include "asVersion.h"
 
-const wxString g_Version = wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION, ATMOSWING_PATCH_VERSION);
+const wxString g_version = wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION, ATMOSWING_PATCH_VERSION);
 
 asVersion::asVersion()
 {
@@ -42,7 +42,7 @@ asVersion::~asVersion()
 wxString asVersion::GetFullString()
 {
     //ctor
-    wxString versionNb = "Version " + g_Version;
+    wxString versionNb = "Version " + g_version;
     #if defined(__WXMSW__)
         versionNb << " -Windows";
     #elif defined(__WXMAC__)

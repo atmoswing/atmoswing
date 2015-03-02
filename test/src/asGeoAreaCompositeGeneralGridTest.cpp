@@ -83,7 +83,7 @@ TEST(CheckConsistency)
 
 TEST(CheckConsistencyException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         double Xmin = 10;
         int Xptsnb = 1;

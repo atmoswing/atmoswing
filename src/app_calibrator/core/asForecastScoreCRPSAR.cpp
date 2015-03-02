@@ -32,12 +32,12 @@ asForecastScoreCRPSAR::asForecastScoreCRPSAR()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::CRPSAR;
-    m_Name = _("CRPS Approx Rectangle");
-    m_FullName = _("Continuous Ranked Probability Score approximation with the rectangle method");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::CRPSAR;
+    m_name = _("CRPS Approx Rectangle");
+    m_fullName = _("Continuous Ranked Probability Score approximation with the rectangle method");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreCRPSAR::~asForecastScoreCRPSAR()

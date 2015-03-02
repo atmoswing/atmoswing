@@ -32,42 +32,42 @@
 
 asLog::asLog()
 {
-    m_LogFile = NULL;
-    m_LogChain = NULL;
-    m_Level = 2;
-    m_Target = asLog::File;
-    m_Active = true;
-    m_RemoveDuplicates = false;
-    m_SignalDuplicates = false;
-    m_MessageBoxOnError = false;
+    m_logFile = NULL;
+    m_logChain = NULL;
+    m_level = 2;
+    m_target = asLog::File;
+    m_active = true;
+    m_removeDuplicates = false;
+    m_signalDuplicates = false;
+    m_messageBoxOnError = false;
     #if wxUSE_GUI
-        m_MessageBoxOnError = true;
+        m_messageBoxOnError = true;
     #endif
-    m_Buffer = wxEmptyString;
-    m_State = wxEmptyString;
+    m_buffer = wxEmptyString;
+    m_state = wxEmptyString;
 }
 
 asLog::~asLog()
 {
-    delete wxLog::SetActiveTarget(NULL); // Instead of deleting m_LogChain
-    if(m_LogFile)
+    delete wxLog::SetActiveTarget(NULL); // Instead of deleting m_logChain
+    if(m_logFile)
     {
-        m_LogFile->Close();
-        m_LogFile->Detach();
-        wxDELETE(m_LogFile);
+        m_logFile->Close();
+        m_logFile->Detach();
+        wxDELETE(m_logFile);
     }
 }
 
 bool asLog::CreateFile(const wxString &fileName)
 {
     // Create the log file
-    wxDELETE(m_LogFile);
+    wxDELETE(m_logFile);
     wxString logpath = asConfig::GetLogDir();
     logpath.Append(DS);
     logpath.Append(fileName);
-    m_LogFile = new wxFFile(logpath, "w");
-    wxLogStderr* pLogFile = new wxLogStderr(m_LogFile->fp());
-    m_LogChain = new wxLogChain(pLogFile);
+    m_logFile = new wxFFile(logpath, "w");
+    wxLogStderr* pLogFile = new wxLogStderr(m_logFile->fp());
+    m_logChain = new wxLogChain(pLogFile);
 
     return true;
 }
@@ -75,12 +75,12 @@ bool asLog::CreateFile(const wxString &fileName)
 bool asLog::CreateFileOnly(const wxString &fileName)
 {
     // Create the log file
-    wxDELETE(m_LogFile);
+    wxDELETE(m_logFile);
     wxString logpath = asConfig::GetLogDir();
     logpath.Append(DS);
     logpath.Append(fileName);
-    m_LogFile = new wxFFile(logpath, "w");
-    wxLogStderr* pLogFile = new wxLogStderr(m_LogFile->fp());
+    m_logFile = new wxFFile(logpath, "w");
+    wxLogStderr* pLogFile = new wxLogStderr(m_logFile->fp());
     wxLog::SetActiveTarget(pLogFile);
 
     return true;
@@ -89,9 +89,9 @@ bool asLog::CreateFileOnly(const wxString &fileName)
 bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
 {
     // Create the log file
-    wxDELETE(m_LogFile);
-    m_LogFile = new wxFFile(fullPath, "w");
-    wxLogStderr* pLogFile = new wxLogStderr(m_LogFile->fp());
+    wxDELETE(m_logFile);
+    m_logFile = new wxFFile(fullPath, "w");
+    wxLogStderr* pLogFile = new wxLogStderr(m_logFile->fp());
     wxLog::SetActiveTarget(pLogFile);
 
     return true;
@@ -99,7 +99,7 @@ bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
 
 bool asLog::IsVerbose()
 {
-    if (m_Level>=3) {
+    if (m_level>=3) {
         return true;
     }
     else {
@@ -126,67 +126,67 @@ void asLog::Resume()
 
 void asLog::Flush()
 {
-    m_LogChain->Flush();
+    m_logChain->Flush();
 }
 
 void asLog::Error(const wxString &msg)
 {
-    if(m_Level>=1)
+    if(m_level>=1)
     {
-        if(g_GuiMode && m_Active)
+        if(g_guiMode && m_active)
         {
-            if(m_RemoveDuplicates)
+            if(m_removeDuplicates)
             {
-                if(m_Buffer.IsSameAs(msg))
+                if(m_buffer.IsSameAs(msg))
                 {
-                    if(m_SignalDuplicates)
+                    if(m_signalDuplicates)
                     {
-                        m_CritSectionLog.Enter();
+                        m_critSectionLog.Enter();
                         wxLogError(_("Previous error occured multiple times."));
-                        m_SignalDuplicates = false;
-                        m_CritSectionLog.Leave();
+                        m_signalDuplicates = false;
+                        m_critSectionLog.Leave();
                     }
                 }
                 else
                 {
-                    m_CritSectionLog.Enter();
+                    m_critSectionLog.Enter();
                     wxLogError(msg);
-                    m_SignalDuplicates = true;
-                    m_Buffer = msg;
-                    if (m_MessageBoxOnError)
+                    m_signalDuplicates = true;
+                    m_buffer = msg;
+                    if (m_messageBoxOnError)
                     {
                         #if wxUSE_GUI
                             wxMessageBox(msg, _("An error occured"));
                         #endif
                     }
-                    m_CritSectionLog.Leave();
+                    m_critSectionLog.Leave();
                 }
             }
             else
             {
-                m_CritSectionLog.Enter();
+                m_critSectionLog.Enter();
                 wxLogError(msg);
-                if (m_MessageBoxOnError)
+                if (m_messageBoxOnError)
                 {
                     #if wxUSE_GUI
                         wxMessageBox(msg, _("An error occured"));
                     #endif
                 }
-                m_CritSectionLog.Leave();
+                m_critSectionLog.Leave();
             }
         }
         else
         {
 			bool processed = false;
 
-            if (m_Target==asLog::File || m_Target==asLog::Both)
+            if (m_target==asLog::File || m_target==asLog::Both)
             {
                 wxLogError(msg);
 				processed = true;
             }
 
             // To the command prompt
-            if (m_Target==asLog::Screen)
+            if (m_target==asLog::Screen)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -211,50 +211,50 @@ void asLog::Error(const wxString &msg)
 
 void asLog::Warning(const wxString &msg)
 {
-    if(m_Level>=2)
+    if(m_level>=2)
     {
-        if (g_GuiMode && m_Active)
+        if (g_guiMode && m_active)
         {
-            if(m_RemoveDuplicates)
+            if(m_removeDuplicates)
             {
-                if(m_Buffer.IsSameAs(msg))
+                if(m_buffer.IsSameAs(msg))
                 {
-                    if(m_SignalDuplicates)
+                    if(m_signalDuplicates)
                     {
-                        m_CritSectionLog.Enter();
+                        m_critSectionLog.Enter();
                         wxLogWarning(_("Previous warning occured multiple times."));
-                        m_SignalDuplicates = false;
-                        m_CritSectionLog.Leave();
+                        m_signalDuplicates = false;
+                        m_critSectionLog.Leave();
                     }
                 }
                 else
                 {
-                    m_CritSectionLog.Enter();
+                    m_critSectionLog.Enter();
                     wxLogWarning(msg);
-                    m_SignalDuplicates = true;
-                    m_Buffer = msg;
-                    m_CritSectionLog.Leave();
+                    m_signalDuplicates = true;
+                    m_buffer = msg;
+                    m_critSectionLog.Leave();
                 }
             }
             else
             {
-                m_CritSectionLog.Enter();
+                m_critSectionLog.Enter();
                 wxLogWarning(msg);
-                m_CritSectionLog.Leave();
+                m_critSectionLog.Leave();
             }
         }
         else
         {
 			bool processed = false;
 
-            if (m_Target==asLog::File || m_Target==asLog::Both)
+            if (m_target==asLog::File || m_target==asLog::Both)
             {
                 wxLogWarning(msg);
 				processed = true;
             }
 
             // To the command prompt
-            if (m_Target==asLog::Screen)
+            if (m_target==asLog::Screen)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -279,50 +279,50 @@ void asLog::Warning(const wxString &msg)
 
 void asLog::Message(const wxString &msg, bool force)
 {
-    if( (m_Level>0 && force) || m_Level>=3)
+    if( (m_level>0 && force) || m_level>=3)
     {
-        if (g_GuiMode && m_Active)
+        if (g_guiMode && m_active)
         {
-            if(m_RemoveDuplicates)
+            if(m_removeDuplicates)
             {
-                if(m_Buffer.IsSameAs(msg))
+                if(m_buffer.IsSameAs(msg))
                 {
-                    if(m_SignalDuplicates)
+                    if(m_signalDuplicates)
                     {
-                        m_CritSectionLog.Enter();
+                        m_critSectionLog.Enter();
                         wxLogMessage(_("Previous message occured multiple times."));
-                        m_SignalDuplicates = false;
-                        m_CritSectionLog.Leave();
+                        m_signalDuplicates = false;
+                        m_critSectionLog.Leave();
                     }
                 }
                 else
                 {
-                    m_CritSectionLog.Enter();
+                    m_critSectionLog.Enter();
                     wxLogMessage(msg);
-                    m_SignalDuplicates = true;
-                    m_Buffer = msg;
-                    m_CritSectionLog.Leave();
+                    m_signalDuplicates = true;
+                    m_buffer = msg;
+                    m_critSectionLog.Leave();
                 }
             }
             else
             {
-                m_CritSectionLog.Enter();
+                m_critSectionLog.Enter();
                 wxLogMessage(msg);
-                m_CritSectionLog.Leave();
+                m_critSectionLog.Leave();
             }
         }
         else
         {
 			bool processed = false;
 
-            if (m_Target==asLog::File || m_Target==asLog::Both)
+            if (m_target==asLog::File || m_target==asLog::Both)
             {
                 wxLogMessage(msg);
 				processed = true;
             }
 
             // To the command prompt
-            if (m_Target==asLog::Screen)
+            if (m_target==asLog::Screen)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -346,8 +346,8 @@ void asLog::Message(const wxString &msg, bool force)
 
 void asLog::State(const wxString &msg)
 {
-    m_CritSectionLog.Enter();
-    m_State = msg;
-    m_CritSectionLog.Leave();
+    m_critSectionLog.Enter();
+    m_state = msg;
+    m_critSectionLog.Leave();
     Message(msg); // Also log it
 }

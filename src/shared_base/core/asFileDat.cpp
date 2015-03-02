@@ -44,7 +44,7 @@ asFileDat::~asFileDat()
 
 bool asFileDat::Close()
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
     return true;
 }

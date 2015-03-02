@@ -52,7 +52,7 @@ float asForecastScoreFinalMean::Assess(Array1DFloat &targetDates, Array1DFloat &
     wxASSERT(targetDates.rows()>1);
     wxASSERT(forecastScores.rows()>1);
 
-    switch (m_Period)
+    switch (m_period)
     {
         case (asForecastScoreFinal::Total):
         {

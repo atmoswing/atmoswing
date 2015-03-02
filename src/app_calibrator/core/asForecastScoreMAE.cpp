@@ -32,12 +32,12 @@ asForecastScoreMAE::asForecastScoreMAE()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::MAE;
-    m_Name = _("Mean absolute error");
-    m_FullName = _("Mean absolute error");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::MAE;
+    m_name = _("Mean absolute error");
+    m_fullName = _("Mean absolute error");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreMAE::~asForecastScoreMAE()
@@ -49,9 +49,9 @@ float asForecastScoreMAE::Assess(float ObservedVal, const Array1DFloat &ForcastV
 {
     wxASSERT(ForcastVals.size()>1);
     wxASSERT(nbElements>0);
-    wxASSERT(!asTools::IsNaN(m_Quantile));
-    wxASSERT(m_Quantile>0);
-    wxASSERT(m_Quantile<1);
+    wxASSERT(!asTools::IsNaN(m_quantile));
+    wxASSERT(m_quantile>0);
+    wxASSERT(m_quantile<1);
 
     // Create the container to sort the data
     Array1DFloat x(nbElements);
@@ -72,7 +72,7 @@ float asForecastScoreMAE::Assess(float ObservedVal, const Array1DFloat &ForcastV
     Array1DFloat cleanValues = x.head(nbForecasts);
 
     // Get value for quantile
-    float xQuantile = asTools::GetValueForQuantile(cleanValues, m_Quantile);
+    float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
 
     float score = abs(ObservedVal-xQuantile);
 

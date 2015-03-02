@@ -134,13 +134,13 @@ public:
     bool Init(double forecastdate, double intervaldays, double exclusiondays, asDataPredictand &predictand, const wxString &serieName, int stationId, float minThreshold, float maxThreshold);
 
     /** Access an element in the time array
-     * \return The current value of an item in m_TimeArray
+     * \return The current value of an item in m_timeArray
      */
     double operator[] (unsigned int i)
     {
-        wxASSERT(m_Initialized);
+        wxASSERT(m_initialized);
         wxASSERT(i < (unsigned)GetSize());
-        return m_TimeArray[i];
+        return m_timeArray[i];
     }
 
     /** Build up the date array */
@@ -172,12 +172,12 @@ public:
 
     VectorInt GetForbiddenYears()
     {
-        return m_ForbiddenYears;
+        return m_forbiddenYears;
     }
 
     void SetForbiddenYears(const VectorInt years)
     {
-        m_ForbiddenYears = years;
+        m_forbiddenYears = years;
     }
 
     bool RemoveYears(const VectorInt &years);
@@ -185,12 +185,12 @@ public:
 
     bool KeepOnlyYears(const VectorInt &years);
 
-    /** Access m_Mode
-     * \return The current value of m_Mode
+    /** Access m_mode
+     * \return The current value of m_mode
      */
     Mode GetMode()
     {
-        return m_Mode;
+        return m_mode;
     }
 
     /** Check if it is in simple mode
@@ -198,15 +198,15 @@ public:
      */
     bool IsSimpleMode()
     {
-        return (m_Mode==Simple) || (m_Mode==SingleDay);
+        return (m_mode==Simple) || (m_mode==SingleDay);
     }
 
-    /** Access m_Start
-     * \return The current value of m_Start
+    /** Access m_start
+     * \return The current value of m_start
      */
     double GetStart()
     {
-        return m_Start;
+        return m_start;
     }
 
     /** Get the year of the first day
@@ -214,7 +214,7 @@ public:
      */
     int GetFirstDayYear()
     {
-        return GetYear(m_Start);
+        return GetYear(m_start);
     }
 
     /** Get the hour of the first day
@@ -223,7 +223,7 @@ public:
     double GetFirstDayHour()
     {
         double fractpart, intpart;
-        fractpart = modf (m_Start , &intpart);
+        fractpart = modf (m_start , &intpart);
         return fractpart*24;
     }
 
@@ -253,36 +253,36 @@ public:
         return fractpart*24;
     }
 
-    /** Access m_TimeStepDays in hours
-     * \return The current value of m_TimeStepDays in hours
+    /** Access m_timeStepDays in hours
+     * \return The current value of m_timeStepDays in hours
      */
     double GetTimeStepHours()
     {
-        return m_TimeStepDays*24;
+        return m_timeStepDays*24;
     }
 
-    /** Access m_TimeStepDays in days
-     * \return The current value of m_TimeStepDays in days
+    /** Access m_timeStepDays in days
+     * \return The current value of m_timeStepDays in days
      */
     double GetTimeStepDays()
     {
-        return m_TimeStepDays;
+        return m_timeStepDays;
     }
 
-    /** Access m_IntervalDays in hours
-     * \return The current value of m_IntervalDays
+    /** Access m_intervalDays in hours
+     * \return The current value of m_intervalDays
      */
     double GetIntervalHours()
     {
-        return m_IntervalDays*24;
+        return m_intervalDays*24;
     }
 
-    /** Return m_IntervalDays in days
-     * \return The current value of m_IntervalDays in days
+    /** Return m_intervalDays in days
+     * \return The current value of m_intervalDays in days
      */
     double GetIntervalDays()
     {
-        return m_IntervalDays;
+        return m_intervalDays;
     }
 
     /** Access m_ExclusionDays in hours
@@ -301,20 +301,20 @@ public:
         return m_ExclusionDays;
     }
 
-    /** Access m_TimeArray
-     * \return The current value of m_TimeArray
+    /** Access m_timeArray
+     * \return The current value of m_timeArray
      */
     Array1DDouble& GetTimeArray()
     {
-        return m_TimeArray;
+        return m_timeArray;
     }
 
     /** Get the size of the array
-     * \return The size of m_TimeArray
+     * \return The size of m_timeArray
      */
     int GetSize()
     {
-        return m_TimeArray.size();
+        return m_timeArray.size();
     }
 
     /** Access the first element in the time array
@@ -322,8 +322,8 @@ public:
      */
     double GetFirst()
     {
-        wxASSERT(m_Initialized);
-        return m_TimeArray(0);
+        wxASSERT(m_initialized);
+        return m_timeArray(0);
     }
 
     /** Access the last element in the time array
@@ -331,8 +331,8 @@ public:
      */
     double GetLast()
     {
-        wxASSERT(m_Initialized);
-        return m_TimeArray(m_TimeArray.rows()-1);
+        wxASSERT(m_initialized);
+        return m_timeArray(m_timeArray.rows()-1);
     }
 
     /** Get the pointer of the first element in the time array
@@ -340,8 +340,8 @@ public:
      */
     double* GetPointerStart()
     {
-        wxASSERT(m_Initialized);
-        return &m_TimeArray(0);
+        wxASSERT(m_initialized);
+        return &m_timeArray(0);
     }
 
     /** Get the pointer of the first element in the time array
@@ -349,8 +349,8 @@ public:
      */
     double* GetPointerEnd()
     {
-        wxASSERT(m_Initialized);
-        return &m_TimeArray(GetSize()-1);
+        wxASSERT(m_initialized);
+        return &m_timeArray(GetSize()-1);
     }
 
     /** Access the index of first element in the time array after the given date
@@ -367,15 +367,15 @@ public:
 protected:
 
 private:
-    bool m_Initialized;
-    Mode m_Mode; //!< Member variable "m_Mode"
-    Array1DDouble m_TimeArray; //!< Member variable "m_TimeArray"
-    double m_Start; //!< Member variable "m_Start"
+    bool m_initialized;
+    Mode m_mode; //!< Member variable "m_mode"
+    Array1DDouble m_timeArray; //!< Member variable "m_timeArray"
+    double m_start; //!< Member variable "m_start"
     double m_End; //!< Member variable "m_End"
-    double m_TimeStepDays; //!< Member variable "m_TimeStepDays"
-    double m_IntervalDays; //!< Member variable "m_IntervalDays"
+    double m_timeStepDays; //!< Member variable "m_timeStepDays"
+    double m_intervalDays; //!< Member variable "m_intervalDays"
     double m_ExclusionDays; //!< Member variable "m_ExclusionDays"
-    VectorInt m_ForbiddenYears;
+    VectorInt m_forbiddenYears;
 
 };
 

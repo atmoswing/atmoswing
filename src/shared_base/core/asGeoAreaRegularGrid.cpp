@@ -33,8 +33,8 @@ asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 
-    m_Xstep = Xstep;
-    m_Ystep = Ystep;
+    m_xstep = Xstep;
+    m_ystep = Ystep;
 }
 
 asGeoAreaRegularGrid::asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
@@ -43,8 +43,8 @@ asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
     if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
 
-    m_Xstep = Xstep;
-    m_Ystep = Ystep;
+    m_xstep = Xstep;
+    m_ystep = Ystep;
 }
 
 asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
@@ -55,13 +55,13 @@ asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
 int asGeoAreaRegularGrid::GetXaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(abs((GetXmax()-GetXmin())/m_Xstep)+1);
+    return asTools::Round(abs((GetXmax()-GetXmin())/m_xstep)+1);
 }
 
 int asGeoAreaRegularGrid::GetYaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(abs((GetYmax()-GetYmin())/m_Xstep)+1);
+    return asTools::Round(abs((GetYmax()-GetYmin())/m_xstep)+1);
 }
 
 Array1DDouble asGeoAreaRegularGrid::GetXaxis()
@@ -74,7 +74,7 @@ Array1DDouble asGeoAreaRegularGrid::GetXaxis()
     double Xmin = GetXmin();
     for (int i=0; i<ptsnb; i++)
     {
-        Xaxis(i) = Xmin+i*m_Xstep;
+        Xaxis(i) = Xmin+i*m_xstep;
     }
     wxASSERT(Xaxis(ptsnb-1)==GetXmax());
 
@@ -91,7 +91,7 @@ Array1DDouble asGeoAreaRegularGrid::GetYaxis()
     double vmin = GetYmin();
     for (int i=0; i<ptsnb; i++)
     {
-        Yaxis(i) = vmin+i*m_Ystep;
+        Yaxis(i) = vmin+i*m_ystep;
     }
     wxASSERT(Yaxis(ptsnb-1)==GetYmax());
 
@@ -102,8 +102,8 @@ bool asGeoAreaRegularGrid::IsOnGrid(double step)
 {
     if (!IsRectangle()) return false;
 
-    if (abs(fmod(m_CornerUL.x-m_CornerUR.x,step))>0.0000001) return false;
-    if (abs(fmod(m_CornerUL.y-m_CornerLL.y,step))>0.0000001) return false;
+    if (abs(fmod(m_cornerUL.x-m_cornerUR.x,step))>0.0000001) return false;
+    if (abs(fmod(m_cornerUL.y-m_cornerLL.y,step))>0.0000001) return false;
 
     return true;
 }
@@ -112,8 +112,8 @@ bool asGeoAreaRegularGrid::IsOnGrid(double stepX, double stepY)
 {
     if (!IsRectangle()) return false;
 
-    if (abs(fmod(m_CornerUL.x-m_CornerUR.x,stepX))>0.0000001) return false;
-    if (abs(fmod(m_CornerUL.y-m_CornerLL.y,stepY))>0.0000001) return false;
+    if (abs(fmod(m_cornerUL.x-m_cornerUR.x,stepX))>0.0000001) return false;
+    if (abs(fmod(m_cornerUL.y-m_cornerLL.y,stepY))>0.0000001) return false;
 
     return true;
 }

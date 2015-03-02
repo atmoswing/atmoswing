@@ -56,12 +56,12 @@ public:
     virtual void OnUnhandledException();
 
 private:
-    wxString m_CalibParamsFile;
-    wxString m_PredictandDB;
-    wxString m_PredictorsDir;
-    wxString m_CalibMethod;
+    wxString m_calibParamsFile;
+    wxString m_predictandDB;
+    wxString m_predictorsDir;
+    wxString m_calibMethod;
     #if wxUSE_GUI
-        wxSingleInstanceChecker* m_SingleInstanceChecker;
+        wxSingleInstanceChecker* m_singleInstanceChecker;
     #endif
 };
 

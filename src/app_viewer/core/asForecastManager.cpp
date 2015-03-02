@@ -32,33 +32,33 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
 asForecastManager::asForecastManager(wxWindow* parent, asWorkspace* workspace)
 {
-    m_LeadTimeOrigin = 0;
-    m_Parent = parent;
-    m_Workspace = workspace;
-    m_Aggregator = new asResultsAnalogsForecastAggregator();
+    m_leadTimeOrigin = 0;
+    m_parent = parent;
+    m_workspace = workspace;
+    m_aggregator = new asResultsAnalogsForecastAggregator();
 }
 
 asForecastManager::~asForecastManager()
 {
-    wxDELETE(m_Aggregator);
+    wxDELETE(m_aggregator);
 }
 
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
 {
-    wxString defPath = m_Workspace->GetForecastsDirectory();
+    wxString defPath = m_workspace->GetForecastsDirectory();
 
     if (!dir.IsSameAs(defPath,false) && !dir.IsSameAs(defPath+DS,false))
     {
-        m_DirectoriesPastForecasts.Add(dir);
+        m_directoriesPastForecasts.Add(dir);
     }
 }
 
 int asForecastManager::GetLinearIndex(int methodRow, int forecastRow)
 {
     int counter = 0;
-    for (int i=0; i<m_Aggregator->GetMethodsNb(); i++)
+    for (int i=0; i<m_aggregator->GetMethodsNb(); i++)
     {
-        for (int j=0; j<m_Aggregator->GetForecastsNb(i); j++)
+        for (int j=0; j<m_aggregator->GetForecastsNb(i); j++)
         {
             if (i==methodRow && j==forecastRow)
             {
@@ -75,9 +75,9 @@ int asForecastManager::GetLinearIndex(int methodRow, int forecastRow)
 int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex)
 {
     int counter = 0;
-    for (int i=0; i<m_Aggregator->GetMethodsNb(); i++)
+    for (int i=0; i<m_aggregator->GetMethodsNb(); i++)
     {
-        for (int j=0; j<m_Aggregator->GetForecastsNb(i); j++)
+        for (int j=0; j<m_aggregator->GetForecastsNb(i); j++)
         {
             if (counter==linearIndex)
             {
@@ -94,9 +94,9 @@ int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex)
 int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex)
 {
     int counter = 0;
-    for (int i=0; i<m_Aggregator->GetMethodsNb(); i++)
+    for (int i=0; i<m_aggregator->GetMethodsNb(); i++)
     {
-        for (int j=0; j<m_Aggregator->GetForecastsNb(i); j++)
+        for (int j=0; j<m_aggregator->GetForecastsNb(i); j++)
         {
             if (counter==linearIndex)
             {
@@ -112,18 +112,18 @@ int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex)
 
 void asForecastManager::ClearArrays()
 {
-    m_Aggregator->ClearArrays();
+    m_aggregator->ClearArrays();
 }
 
 void asForecastManager::ClearForecasts()
 {
     ClearArrays();
-    m_DirectoriesPastForecasts.Clear();
+    m_directoriesPastForecasts.Clear();
 
     #if wxUSE_GUI
         wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
-        if (m_Parent != NULL) {
-            m_Parent->ProcessWindowEvent(eventClear);
+        if (m_parent != NULL) {
+            m_parent->ProcessWindowEvent(eventClear);
         }
     #endif
 }
@@ -156,24 +156,24 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     }
 
     // Check the lead time origin
-    if( (m_LeadTimeOrigin!=0) && (forecast->GetLeadTimeOrigin()!=m_LeadTimeOrigin) )
+    if( (m_leadTimeOrigin!=0) && (forecast->GetLeadTimeOrigin()!=m_leadTimeOrigin) )
     {
         asLogMessage("The forecast file has another lead time origin. Previous files were removed.");
         ClearForecasts();
     }
-    m_LeadTimeOrigin = forecast->GetLeadTimeOrigin();
+    m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
 
-    m_Aggregator->Add(forecast);
+    m_aggregator->Add(forecast);
 
     #if wxUSE_GUI
         // Send event
         wxCommandEvent eventNew (asEVT_ACTION_FORECAST_NEW_ADDED);
-        if (m_Parent != NULL) {
+        if (m_parent != NULL) {
             if (doRefresh)
             {
                 eventNew.SetString("last");
             }
-            m_Parent->ProcessWindowEvent(eventNew);
+            m_parent->ProcessWindowEvent(eventNew);
         }
     #else
         if (doRefresh)
@@ -213,12 +213,12 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
 
     // Check the lead time origin
-    if(forecast->GetLeadTimeOrigin()>=m_LeadTimeOrigin)
+    if(forecast->GetLeadTimeOrigin()>=m_leadTimeOrigin)
     {
         wxDELETE(forecast);
         return false;
     }
-    m_Aggregator->AddPastForecast(methodRow, forecastRow, forecast);
+    m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
     asLogMessage(wxString::Format("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId().c_str(), forecast->GetSpecificTag().c_str(), forecast->GetLeadTimeOriginString().c_str()));
 
@@ -228,15 +228,15 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
 void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
 {
     // Check if already loaded
-    wxASSERT(m_Aggregator->GetMethodsNb()>methodRow);
-    wxASSERT(m_Aggregator->GetPastMethodsNb()>methodRow);
-    if (m_Aggregator->GetPastForecastsNb(methodRow)>0) return;
+    wxASSERT(m_aggregator->GetMethodsNb()>methodRow);
+    wxASSERT(m_aggregator->GetPastMethodsNb()>methodRow);
+    if (m_aggregator->GetPastForecastsNb(methodRow)>0) return;
 
     // Get the number of days to load
-    int nbPastDays = m_Workspace->GetTimeSeriesPlotPastDaysNb();
+    int nbPastDays = m_workspace->GetTimeSeriesPlotPastDaysNb();
 
     // Get path
-    wxString defPath = m_Workspace->GetForecastsDirectory();
+    wxString defPath = m_workspace->GetForecastsDirectory();
     defPath.Append(DS);
 
     // Directory
@@ -248,7 +248,7 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
 
     for (int bkwd=0; bkwd<=nbPastDays; bkwd++)
     {
-        double currentTime = m_LeadTimeOrigin-bkwd;
+        double currentTime = m_leadTimeOrigin-bkwd;
         wxString directory = asTime::GetStringTime(currentTime, dirstructure);
 
         // Test for every hour
@@ -261,7 +261,7 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
 
             double currentTimeHour = floor(currentTime)+ hr/24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
-            wxString forecastname = m_Aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' + m_Aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
+            wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' + m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
             wxString ext = "fcst";
             wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
             wxString fullPath = currentDirPath + filename;
@@ -273,9 +273,9 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
             else
             {
                 // Load from temporarly stored directories
-                for (unsigned int i_dir=0; i_dir<m_DirectoriesPastForecasts.Count(); i_dir++)
+                for (unsigned int i_dir=0; i_dir<m_directoriesPastForecasts.Count(); i_dir++)
                 {
-                    currentDirPath = m_DirectoriesPastForecasts.Item(i_dir);
+                    currentDirPath = m_directoriesPastForecasts.Item(i_dir);
                     currentDirPath.Append(directory);
                     currentDirPath.Append(DS);
                     fullPath = currentDirPath + filename;

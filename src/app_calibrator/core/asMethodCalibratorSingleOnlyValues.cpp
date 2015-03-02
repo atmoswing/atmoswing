@@ -175,7 +175,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
         VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology.clear();
+        m_scoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;

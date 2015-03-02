@@ -49,9 +49,9 @@ public:
     void SetParent( asPanelSidebarAlarms* parent );
 
 private:
-    wxBitmap *m_BmpAlarms;
-    wxGraphicsContext* m_Gdc;
-    asPanelSidebarAlarms* m_Parent;
+    wxBitmap *m_bmpAlarms;
+    wxGraphicsContext* m_gdc;
+    asPanelSidebarAlarms* m_parent;
     void SetBitmapAlarms(wxBitmap *bmp);
     void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols, int rows);
     void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
@@ -72,14 +72,14 @@ public:
     void Update();
     int GetMode()
     {
-        return m_Mode;
+        return m_mode;
     }
 
 private:
-    asWorkspace* m_Workspace;
-    asForecastManager* m_ForecastManager;
-    asPanelSidebarAlarmsDrawing *m_PanelDrawing;
-    int m_Mode;
+    asWorkspace* m_workspace;
+    asForecastManager* m_forecastManager;
+    asPanelSidebarAlarmsDrawing *m_panelDrawing;
+    int m_mode;
     void OnPaint( wxPaintEvent &event );
 };
 

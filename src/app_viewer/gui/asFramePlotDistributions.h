@@ -69,14 +69,14 @@ private:
         AllReturnPeriods
     };
 
-    asPanelPlot *m_PanelPlotPredictands;
-    asPanelPlot *m_PanelPlotCriteria;
-    asForecastManager *m_ForecastManager;
-    int m_SelectedMethod;
-    int m_SelectedForecast;
-    int m_SelectedStation;
-    int m_SelectedDate;
-    int m_XmaxPredictands;
+    asPanelPlot *m_panelPlotPredictands;
+    asPanelPlot *m_panelPlotCriteria;
+    asForecastManager *m_forecastManager;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    int m_selectedStation;
+    int m_selectedDate;
+    int m_xmaxPredictands;
 
     void InitPredictandsCheckListBox();
     void InitPredictandsPlotCtrl();

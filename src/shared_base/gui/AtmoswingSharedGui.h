@@ -42,11 +42,11 @@ class asDialogFilePickerVirtual : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_StaticTextDescription;
-		wxFilePickerCtrl* m_FilePicker;
-		wxStdDialogButtonSizer* m_ButtonsConfirmation;
-		wxButton* m_ButtonsConfirmationOK;
-		wxButton* m_ButtonsConfirmationCancel;
+		wxStaticText* m_staticTextDescription;
+		wxFilePickerCtrl* m_filePicker;
+		wxStdDialogButtonSizer* m_buttonsConfirmation;
+		wxButton* m_buttonsConfirmationOK;
+		wxButton* m_buttonsConfirmationCancel;
 	
 	public:
 		
@@ -63,11 +63,11 @@ class asDialogFileSaverVirtual : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_StaticTextDescription;
-		wxFilePickerCtrl* m_FilePicker;
-		wxStdDialogButtonSizer* m_ButtonsConfirmation;
-		wxButton* m_ButtonsConfirmationSave;
-		wxButton* m_ButtonsConfirmationCancel;
+		wxStaticText* m_staticTextDescription;
+		wxFilePickerCtrl* m_filePicker;
+		wxStdDialogButtonSizer* m_buttonsConfirmation;
+		wxButton* m_buttonsConfirmationSave;
+		wxButton* m_buttonsConfirmationCancel;
 	
 	public:
 		
@@ -84,8 +84,8 @@ class asFrameXmlEditorVirtual : public wxFrame
 	private:
 	
 	protected:
-		wxToolBar* m_ToolBar;
-		wxToolBarToolBase* m_ToolSave; 
+		wxToolBar* m_toolBar;
+		wxToolBarToolBase* m_toolSave; 
 	
 	public:
 		
@@ -103,25 +103,25 @@ class asFrameAboutVirtual : public wxFrame
 	private:
 	
 	protected:
-		wxPanel* m_Panel;
-		wxStaticBitmap* m_Logo;
-		wxStaticText* m_StaticTextVersion;
-		wxStaticText* m_StaticTextChangeset;
-		wxNotebook* m_Notebook;
-		wxPanel* m_PanelCredits;
-		wxStaticText* m_StaticTextDevelopers;
-		wxStaticText* m_StaticTextDevelopersList;
-		wxStaticText* m_StaticTextSupervision;
-		wxStaticText* m_StaticTextSupervisionList;
-		wxStaticText* m_StaticTextThanks;
-		wxStaticText* m_StaticTextThanksList;
-		wxStaticText* m_StaticTextOtherCredits;
-		wxStaticText* m_StaticTextOtherCreditsList;
+		wxPanel* m_panel;
+		wxStaticBitmap* m_logo;
+		wxStaticText* m_staticTextVersion;
+		wxStaticText* m_staticTextChangeset;
+		wxNotebook* m_notebook;
+		wxPanel* m_panelCredits;
+		wxStaticText* m_staticTextDevelopers;
+		wxStaticText* m_staticTextDevelopersList;
+		wxStaticText* m_staticTextSupervision;
+		wxStaticText* m_staticTextSupervisionList;
+		wxStaticText* m_staticTextThanks;
+		wxStaticText* m_staticTextThanksList;
+		wxStaticText* m_staticTextOtherCredits;
+		wxStaticText* m_staticTextOtherCreditsList;
 		wxStaticText* m_staticTextSpacer;
-		wxPanel* m_PanelLicense;
-		wxTextCtrl* m_TextCtrlLicense;
-		wxPanel* m_PanelLibraries;
-		wxTextCtrl* m_TextCtrlLibraries;
+		wxPanel* m_panelLicense;
+		wxTextCtrl* m_textCtrlLicense;
+		wxPanel* m_panelLibraries;
+		wxTextCtrl* m_textCtrlLibraries;
 	
 	public:
 		

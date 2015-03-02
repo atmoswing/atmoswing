@@ -62,25 +62,25 @@ public:
 
     int GetCount()
     {
-        return int(m_Parameters.size());
+        return int(m_parameters.size());
     }
 
     asParametersScoring GetParameter(int i)
     {
-        wxASSERT(i<m_Parameters.size());
-        return m_Parameters[i];
+        wxASSERT(i<m_parameters.size());
+        return m_parameters[i];
     }
 
     float GetScoreCalib(int i)
     {
-        wxASSERT(i<m_ScoresCalib.size());
-        return m_ScoresCalib[i];
+        wxASSERT(i<m_scoresCalib.size());
+        return m_scoresCalib[i];
     }
 
     float GetScoreValid(int i)
     {
-        wxASSERT(i<m_ScoresValid.size());
-        return m_ScoresValid[i];
+        wxASSERT(i<m_scoresValid.size());
+        return m_scoresValid[i];
     }
 
 protected:
@@ -91,12 +91,12 @@ protected:
     void BuildFileName(const wxString &fileTag);
 
 private:
-    std::vector <asParametersScoring> m_Parameters;
-    VectorFloat m_ScoresCalib;
-    VectorFloat m_ScoresValid;
-    std::vector <asParametersScoring> m_ParametersForScoreOnArray;
-    std::vector <Array1DFloat> m_ScoresCalibForScoreOnArray;
-    std::vector <Array1DFloat> m_ScoresValidForScoreOnArray;
+    std::vector <asParametersScoring> m_parameters;
+    VectorFloat m_scoresCalib;
+    VectorFloat m_scoresValid;
+    std::vector <asParametersScoring> m_parametersForScoreOnArray;
+    std::vector <Array1DFloat> m_scoresCalibForScoreOnArray;
+    std::vector <Array1DFloat> m_scoresValidForScoreOnArray;
 };
 
 #endif // ASRESULTSPARAMETERSARRAY_H

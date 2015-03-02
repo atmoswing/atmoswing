@@ -41,20 +41,20 @@ asFrameAboutVirtual( parent )
 #endif
 
     // Set logo
-    m_Logo->SetBitmap(img_logo);
+    m_logo->SetBitmap(img_logo);
 
     // Set AtmoSwing version
-    m_StaticTextVersion->SetLabel(asVersion::GetFullString());
+    m_staticTextVersion->SetLabel(asVersion::GetFullString());
 
     // Set changeset number
     wxString changesetLabel = wxString::Format("Changeset %s",wxHgVersion::GetSoftNumber().c_str());
-    m_StaticTextChangeset->SetLabel(changesetLabel);
+    m_staticTextChangeset->SetLabel(changesetLabel);
 
     // Set libraries versions
-    m_TextCtrlLibraries->SetValue(wxHgVersion::GetAllModuleInfo(false));
+    m_textCtrlLibraries->SetValue(wxHgVersion::GetAllModuleInfo(false));
 
     // Set libraries versions
-    m_TextCtrlLicense->SetValue(asFrameAbout::GetLicense());
+    m_textCtrlLicense->SetValue(asFrameAbout::GetLicense());
 
 }
 

@@ -112,8 +112,8 @@ public:
 protected:
 
 private:
-    std::vector <std::vector <asResultsAnalogsForecast*>> m_Forecasts;
-    std::vector <std::vector <std::vector <asResultsAnalogsForecast*>>> m_PastForecasts;
+    std::vector <std::vector <asResultsAnalogsForecast*>> m_forecasts;
+    std::vector <std::vector <std::vector <asResultsAnalogsForecast*>>> m_pastForecasts;
 
 };
 

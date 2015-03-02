@@ -48,7 +48,7 @@ asResults()
     pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
     if (saveAnalogDatesStep1 || saveAnalogDatesStep2 || saveAnalogDatesStep3 || saveAnalogDatesStep4 || saveAnalogDatesAllSteps)
     {
-        m_SaveIntermediateResults = true;
+        m_saveIntermediateResults = true;
     }
     bool loadAnalogDatesStep1;
     pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
@@ -62,7 +62,7 @@ asResults()
     pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
     if (loadAnalogDatesStep1 || loadAnalogDatesStep2 || loadAnalogDatesStep3 || loadAnalogDatesStep4 || loadAnalogDatesAllSteps)
     {
-        m_LoadIntermediateResults = true;
+        m_loadIntermediateResults = true;
     }
     ThreadsManager().CritSectionConfig().Leave();
 }
@@ -74,29 +74,29 @@ asResultsAnalogsDates::~asResultsAnalogsDates()
 
 void asResultsAnalogsDates::Init(asParameters &params)
 {
-    m_PredictandStationIds = params.GetPredictandStationIds();
-    if(m_SaveIntermediateResults || m_LoadIntermediateResults) BuildFileName();
+    m_predictandStationIds = params.GetPredictandStationIds();
+    if(m_saveIntermediateResults || m_loadIntermediateResults) BuildFileName();
 
     // Resize to 0 to avoid keeping old results
-    m_TargetDates.resize(0);
-    m_AnalogsCriteria.resize(0,0);
-    m_AnalogsDates.resize(0,0);
+    m_targetDates.resize(0);
+    m_analogsCriteria.resize(0,0);
+    m_analogsDates.resize(0,0);
 }
 
 void asResultsAnalogsDates::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_FilePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
-    m_FilePath.Append(DS);
-    m_FilePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_CurrentStep));
-    m_FilePath.Append(".nc");
+    m_filePath.Append(DS);
+    m_filePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_currentStep));
+    m_filePath.Append(".nc");
 }
 
 bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
-    if(!m_SaveIntermediateResults)
+    if(!m_saveIntermediateResults)
     {
         return false;
     }
@@ -119,7 +119,7 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 
         if (!saveAnalogDatesAllSteps)
         {
-            switch (m_CurrentStep)
+            switch (m_currentStep)
             {
                 case 0:
                 {
@@ -148,14 +148,14 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
             }
         }
     }
-    wxString message = _("Saving intermediate file: ") + m_FilePath;
+    wxString message = _("Saving intermediate file: ") + m_filePath;
     asLogMessage(message);
 
     // Get the file path
     wxString ResultsFile;
     if (AlternateFilePath.IsEmpty())
     {
-        ResultsFile = m_FilePath;
+        ResultsFile = m_filePath;
     }
     else
     {
@@ -163,8 +163,8 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
     }
 
     // Get the elements size
-    size_t Ntime = m_AnalogsCriteria.rows();
-    size_t Nanalogs = m_AnalogsCriteria.cols();
+    size_t Ntime = m_analogsCriteria.rows();
+    size_t Nanalogs = m_analogsCriteria.cols();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -218,13 +218,13 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
         {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            analogsCriteria[ind] = m_AnalogsCriteria(i_time,i_analog);
-            analogsDates[ind] = m_AnalogsDates(i_time,i_analog);
+            analogsCriteria[ind] = m_analogsCriteria(i_time,i_analog);
+            analogsDates[ind] = m_analogsDates(i_time,i_analog);
         }
     }
 
     // Write data
-    ncFile.PutVarArray("target_dates", start1D, count1D, &m_TargetDates(0));
+    ncFile.PutVarArray("target_dates", start1D, count1D, &m_targetDates(0));
     ncFile.PutVarArray("analog_criteria", start2D, count2D, &analogsCriteria[0]);
     ncFile.PutVarArray("analog_dates", start2D, count2D, &analogsDates[0]);
 
@@ -238,7 +238,7 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
 {
     // If we don't want to load, skip
-    if(!m_LoadIntermediateResults)
+    if(!m_loadIntermediateResults)
     {
         return false;
     }
@@ -261,7 +261,7 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
 
         if (!loadAnalogDatesAllSteps)
         {
-            switch (m_CurrentStep)
+            switch (m_currentStep)
             {
                 case 0:
                 {
@@ -277,19 +277,19 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
                                 }
                                 else
                                 {
-                                    m_CurrentStep = 3;
+                                    m_currentStep = 3;
                                     BuildFileName();
                                 }
                             }
                             else
                             {
-                                m_CurrentStep = 2;
+                                m_currentStep = 2;
                                 BuildFileName();
                             }
                         }
                         else
                         {
-                            m_CurrentStep = 1;
+                            m_currentStep = 1;
                             BuildFileName();
                         }
                     }
@@ -307,13 +307,13 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
                             }
                             else
                             {
-                                m_CurrentStep = 3;
+                                m_currentStep = 3;
                                 BuildFileName();
                             }
                         }
                         else
                         {
-                            m_CurrentStep = 2;
+                            m_currentStep = 2;
                             BuildFileName();
                         }
                     }
@@ -329,7 +329,7 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
                         }
                         else
                         {
-                            m_CurrentStep = 3;
+                            m_currentStep = 3;
                             BuildFileName();
                         }
                     }
@@ -354,7 +354,7 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     wxString ResultsFile;
     if (AlternateFilePath.IsEmpty())
     {
-        ResultsFile = m_FilePath;
+        ResultsFile = m_filePath;
     }
     else
     {
@@ -376,11 +376,11 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     int Nanalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_TargetDates.resize( Ntime );
-    ncFile.GetVar("target_dates", &m_TargetDates[0]);
+    m_targetDates.resize( Ntime );
+    ncFile.GetVar("target_dates", &m_targetDates[0]);
 
     // Check last value
-    if(m_TargetDates[m_TargetDates.size()-1]<m_TargetDates[0])
+    if(m_targetDates[m_targetDates.size()-1]<m_targetDates[0])
     {
         asLogError(_("The target date array is not consistent in the temp file (last value makes no sense)."));
         ThreadsManager().CritSectionNetCDF().Leave();
@@ -399,8 +399,8 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     ncFile.GetVarArray("analog_criteria", IndexStart, IndexCount, &analogsCriteria[0]);
 
     // Set data into the matrices
-    m_AnalogsDates.resize( Ntime, Nanalogs );
-    m_AnalogsCriteria.resize( Ntime, Nanalogs );
+    m_analogsDates.resize( Ntime, Nanalogs );
+    m_analogsCriteria.resize( Ntime, Nanalogs );
     int ind = 0;
     for (int i_time=0; i_time<Ntime; i_time++)
     {
@@ -408,8 +408,8 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
         {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            m_AnalogsCriteria(i_time,i_analog) = analogsCriteria[ind];
-            m_AnalogsDates(i_time,i_analog) = analogsDates[ind];
+            m_analogsCriteria(i_time,i_analog) = analogsCriteria[ind];
+            m_analogsDates(i_time,i_analog) = analogsDates[ind];
         }
     }
 

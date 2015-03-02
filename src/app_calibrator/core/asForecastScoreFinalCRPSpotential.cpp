@@ -32,14 +32,14 @@ asForecastScoreFinalCRPSpotential::asForecastScoreFinalCRPSpotential(Period peri
 :
 asForecastScoreFinal(period)
 {
-    m_Has2DArrayArgument = true;
+    m_has2DArrayArgument = true;
 }
 
 asForecastScoreFinalCRPSpotential::asForecastScoreFinalCRPSpotential(const wxString& periodString)
 :
 asForecastScoreFinal(periodString)
 {
-    m_Has2DArrayArgument = true;
+    m_has2DArrayArgument = true;
 }
 
 asForecastScoreFinalCRPSpotential::~asForecastScoreFinalCRPSpotential()

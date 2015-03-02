@@ -44,16 +44,16 @@ wxDEFINE_EVENT(asEVT_STATUS_PROCESSED, wxCommandEvent);
 
 asMethodStandard::asMethodStandard()
 {
-    m_ParamsFilePath = wxEmptyString;
-    m_PredictandDBFilePath = wxEmptyString;
-    m_PredictorDataDir = wxEmptyString;
-    m_PredictandDB = NULL;
-    m_Cancel = false;
+    m_paramsFilePath = wxEmptyString;
+    m_predictandDBFilePath = wxEmptyString;
+    m_predictorDataDir = wxEmptyString;
+    m_predictandDB = NULL;
+    m_cancel = false;
 }
 
 asMethodStandard::~asMethodStandard()
 {
-    wxDELETE(m_PredictandDB);
+    wxDELETE(m_predictandDB);
 }
 
 bool asMethodStandard::Manager()
@@ -63,20 +63,20 @@ bool asMethodStandard::Manager()
 
 bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
 {
-    wxDELETE(m_PredictandDB);
+    wxDELETE(m_predictandDB);
 
     if (predictandDBFilePath.IsEmpty())
     {
-        if (m_PredictandDBFilePath.IsEmpty())
+        if (m_predictandDBFilePath.IsEmpty())
         {
             asLogError(_("There is no predictand database file selected."));
             return false;
         }
 
-        m_PredictandDB = asDataPredictand::GetInstance(m_PredictandDBFilePath);
-        if (!m_PredictandDB) return false;
+        m_predictandDB = asDataPredictand::GetInstance(m_predictandDBFilePath);
+        if (!m_predictandDB) return false;
 
-        if(!m_PredictandDB->Load(m_PredictandDBFilePath))
+        if(!m_predictandDB->Load(m_predictandDBFilePath))
         {
             asLogError(_("Couldn't load the predictand database."));
             return false;
@@ -84,23 +84,23 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
     }
     else
     {
-        m_PredictandDB = asDataPredictand::GetInstance(predictandDBFilePath);
-        if (!m_PredictandDB) return false;
+        m_predictandDB = asDataPredictand::GetInstance(predictandDBFilePath);
+        if (!m_predictandDB) return false;
 
-        if(!m_PredictandDB->Load(predictandDBFilePath))
+        if(!m_predictandDB->Load(predictandDBFilePath))
         {
             asLogError(_("Couldn't load the predictand database."));
             return false;
         }
     }
 
-    if (!m_PredictandDB) return false;
-    wxASSERT(m_PredictandDB);
+    if (!m_predictandDB) return false;
+    wxASSERT(m_predictandDB);
 
     return true;
 }
 
 void asMethodStandard::Cancel()
 {
-    m_Cancel = true;
+    m_cancel = true;
 }

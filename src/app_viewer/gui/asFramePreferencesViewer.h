@@ -55,7 +55,7 @@ protected:
     void ApplyChanges( wxCommandEvent& event );
 
 private:
-    asWorkspace* m_Workspace;
+    asWorkspace* m_workspace;
 };
 
 #endif // __asFramePreferencesViewer__

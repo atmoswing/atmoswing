@@ -45,32 +45,32 @@ public:
 
     bool IsAggregator()
     {
-        return (m_ForecastRow<0);
+        return (m_forecastRow<0);
     }
 
     int GetMethodRow() 
     { 
-        return m_MethodRow; 
+        return m_methodRow; 
     }
 
     void SetMethodRow(int methodRow)
     {
-        m_MethodRow = methodRow;
+        m_methodRow = methodRow;
     }
 
     int GetForecastRow() 
     { 
-        return m_ForecastRow; 
+        return m_forecastRow; 
     }
 
     void SetForecastRow(int forecastRow)
     {
-        m_ForecastRow = forecastRow;
+        m_forecastRow = forecastRow;
     }
 
 private:
-    int m_MethodRow;
-    int m_ForecastRow;
+    int m_methodRow;
+    int m_forecastRow;
 };
 
 
@@ -81,32 +81,32 @@ public:
 
     bool IsAggregator()
     {
-        return (m_ForecastRow<0);
+        return (m_forecastRow<0);
     }
 
     int GetMethodRow() 
     { 
-        return m_MethodRow; 
+        return m_methodRow; 
     }
 
     void SetMethodRow(int methodRow)
     {
-        m_MethodRow = methodRow;
+        m_methodRow = methodRow;
     }
 
     int GetForecastRow() 
     { 
-        return m_ForecastRow; 
+        return m_forecastRow; 
     }
 
     void SetForecastRow(int forecastRow)
     {
-        m_ForecastRow = forecastRow;
+        m_forecastRow = forecastRow;
     }
 
 private:
-    int m_MethodRow;
-    int m_ForecastRow;
+    int m_methodRow;
+    int m_forecastRow;
 };
 
 
@@ -133,8 +133,8 @@ public:
 protected:
 
 private:
-    bool m_SkipSlctChangeEvent;
-    asForecastManager* m_ForecastManager;
+    bool m_skipSlctChangeEvent;
+    asForecastManager* m_forecastManager;
 
     void OnForecastSlctChange( wxTreeEvent& event );
 

@@ -45,8 +45,8 @@ public:
 
 protected:
 private:
-    vrViewerLayerManager *m_ViewerLayerManager;
-    wxCriticalSection *m_CritSectionViewerLayerManager;
+    vrViewerLayerManager *m_viewerLayerManager;
+    wxCriticalSection *m_critSectionViewerLayerManager;
 
 };
 

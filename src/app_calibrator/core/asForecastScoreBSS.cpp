@@ -33,13 +33,13 @@ asForecastScoreBSS::asForecastScoreBSS()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::BSS;
-    m_Name = _("BS Skill Score");
-    m_FullName = _("Brier Skill Score");
-    m_Order = Desc;
-    m_ScaleBest = 1;
-    m_ScaleWorst = NaNFloat;
-    m_UsesClimatology = true;
+    m_score = asForecastScore::BSS;
+    m_name = _("BS Skill Score");
+    m_fullName = _("Brier Skill Score");
+    m_order = Desc;
+    m_scaleBest = 1;
+    m_scaleWorst = NaNFloat;
+    m_usesClimatology = true;
 }
 
 asForecastScoreBSS::~asForecastScoreBSS()
@@ -52,14 +52,14 @@ float asForecastScoreBSS::Assess(float ObservedVal, const Array1DFloat &ForcastV
     wxASSERT(ForcastVals.size()>1);
     wxASSERT(nbElements>0);
 
-    wxASSERT(m_ScoreClimatology!=0);
+    wxASSERT(m_scoreClimatology!=0);
 
     // First process the BS and then the skill score
     asForecastScoreBS scoreBS = asForecastScoreBS();
     scoreBS.SetThreshold(GetThreshold());
     scoreBS.SetQuantile(GetQuantile());
     float score = scoreBS.Assess(ObservedVal, ForcastVals, nbElements);
-    float skillScore = (score-m_ScoreClimatology) / ((float)0-m_ScoreClimatology);
+    float skillScore = (score-m_scoreClimatology) / ((float)0-m_scoreClimatology);
 
     return skillScore;
 }
@@ -91,9 +91,9 @@ bool asForecastScoreBSS::ProcessScoreClimatology(const Array1DFloat &refVals, co
 
     wxDELETE(forecastScore);
 
-    m_ScoreClimatology = asTools::Mean(&scoresClimatology[0],&scoresClimatology[scoresClimatology.size()-1]);
+    m_scoreClimatology = asTools::Mean(&scoresClimatology[0],&scoresClimatology[scoresClimatology.size()-1]);
 
-    asLogMessage(wxString::Format(_("Score of the climatology: %g."), m_ScoreClimatology));
+    asLogMessage(wxString::Format(_("Score of the climatology: %g."), m_scoreClimatology));
 
     return true;
 }

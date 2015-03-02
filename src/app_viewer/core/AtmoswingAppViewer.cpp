@@ -81,15 +81,15 @@ bool AtmoswingAppViewer::OnInit()
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
-    m_SingleInstanceChecker = NULL;
+    m_singleInstanceChecker = NULL;
     bool multipleInstances;
     pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
     if (!multipleInstances)
     {
         const wxString instanceName = wxString::Format(wxT("AtmoSwingViewer-%s"),wxGetUserId().c_str());
-        m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if ( m_SingleInstanceChecker->IsAnotherRunning() )
+        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if ( m_singleInstanceChecker->IsAnotherRunning() )
         {
             //asLogError(_("Program already running, aborting."));
             wxMessageBox(_("Program already running, aborting."));
@@ -128,8 +128,8 @@ bool AtmoswingAppViewer::OnInit()
 
 bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
 {
-    g_UnitTesting = false;
-    g_SilentMode = true;
+    g_unitTesting = false;
+    g_silentMode = true;
 
     // Set log level
     if (logLevel<0)
@@ -169,7 +169,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version.c_str(), (const wxChar*) date);
 
             msgOut->Printf( wxT("%s"), msg.c_str() );
         }
@@ -212,13 +212,13 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
     {
         InitForCmdLineOnly(logLevel);
 
-        g_CmdFilename = parser.GetParam(0);
+        g_cmdFilename = parser.GetParam(0);
 
         // Under Windows when invoking via a document in Explorer, we are passed th short form.
         // So normalize and make the long form.
-        wxFileName fName(g_CmdFilename);
+        wxFileName fName(g_cmdFilename);
         fName.Normalize(wxPATH_NORM_LONG|wxPATH_NORM_DOTS|wxPATH_NORM_TILDE|wxPATH_NORM_ABSOLUTE);
-        g_CmdFilename = fName.GetFullPath();
+        g_cmdFilename = fName.GetFullPath();
 
         return true;
     }
@@ -229,7 +229,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
 int AtmoswingAppViewer::OnExit()
 {
     // Instance checker
-    wxDELETE(m_SingleInstanceChecker);
+    wxDELETE(m_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
     delete wxFileConfig::Set((wxFileConfig *) NULL);

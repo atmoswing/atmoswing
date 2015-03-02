@@ -55,20 +55,20 @@ public:
     /** Default destructor */
     virtual ~asGeoPoint();
 
-    /** Access m_Point
-     * \return The current value of m_Point
+    /** Access m_point
+     * \return The current value of m_point
      */
     Coo GetCoo()
     {
-        return m_Point;
+        return m_point;
     }
 
-    /** Set m_Point
+    /** Set m_point
      * \param val New value to set
      */
     void SetCoo(const Coo &val)
     {
-        m_Point = val;
+        m_point = val;
         Init();
     }
 
@@ -77,7 +77,7 @@ public:
      */
     double GetX()
     {
-        return m_Point.x;
+        return m_point.x;
     }
 
     /** Gives the V coordinate
@@ -85,30 +85,30 @@ public:
      */
     double GetY()
     {
-        return m_Point.y;
+        return m_point.y;
     }
 
-    /** Access m_Level
-     * \return The current value of m_Level
+    /** Access m_level
+     * \return The current value of m_level
      */
     float GetLevel()
     {
-        return m_Level;
+        return m_level;
     }
 
-    /** Set m_Level
+    /** Set m_level
      * \param val New value to set
      */
     void SetLevel(float val)
     {
-        m_Level = val;
+        m_level = val;
     }
 
 protected:
 private:
-    Coo m_Point; //!< Member variable "m_Point"
-    float m_Level; //!< Member variable "m_Level" hPa
-    float m_Height; //!< Member variable "m_Height" m
+    Coo m_point; //!< Member variable "m_point"
+    float m_level; //!< Member variable "m_level" hPa
+    float m_height; //!< Member variable "m_height" m
 
     /** Process to initialization and checks */
     void Init();

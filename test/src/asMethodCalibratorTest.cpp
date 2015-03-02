@@ -45,7 +45,7 @@ namespace
 
 void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 
@@ -470,7 +470,7 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
 
 void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 
@@ -774,7 +774,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
 
 TEST(PreloadingSimple)
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -853,7 +853,7 @@ TEST(PreloadingSimple)
 
 TEST(PreloadingWithPreprocessing)
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -945,7 +945,7 @@ TEST(PreloadingWithPreprocessing)
 
 void GrenobleComparison1Preloading()
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 
@@ -1126,7 +1126,7 @@ TEST(GrenobleComparison1PreloadingMultithreaded)
 
 void GrenobleComparison1PreloadingSubset()
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 
@@ -1224,7 +1224,7 @@ TEST(GrenobleComparison1PreloadingSubsetMultithreaded)
 
 TEST(SmallerSpatialArea)
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
@@ -1377,7 +1377,7 @@ TEST(SmallerSpatialArea)
 
 void GrenobleComparison2Preloading()
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 
@@ -1570,7 +1570,7 @@ TEST(GrenobleComparison2PreloadingProcessingMethodInsert)
 
 void GrenobleComparison2SavingIntermediateResults()
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 
@@ -1787,7 +1787,7 @@ TEST(GrenobleComparison2SavingIntermediateResults)
 
 void GrenobleComparison2MergeByHalfAndMultiply()
 {
-    if (g_UnitTestLongProcessing)
+    if (g_unitTestLongProcessing)
     {
         bool result;
 

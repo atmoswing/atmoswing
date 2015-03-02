@@ -57,7 +57,7 @@ class asFrameForecast;
 class vroomDropFiles : public wxFileDropTarget
 {
 private:
-    asFrameForecast * m_LoaderFrame;
+    asFrameForecast * m_loaderFrame;
 
 public:
     vroomDropFiles(asFrameForecast * parent);
@@ -71,7 +71,7 @@ class asFrameForecast;
 class forecastDropFiles : public wxFileDropTarget
 {
 private:
-    asFrameForecast * m_LoaderFrame;
+    asFrameForecast * m_loaderFrame;
 
 public:
     forecastDropFiles(asFrameForecast * parent);
@@ -92,80 +92,80 @@ public:
 
     vrLayerManager *GetLayerManager()
     {
-        return m_LayerManager;
+        return m_layerManager;
     }
 
     void SetLayerManager(vrLayerManager* layerManager)
     {
-        m_LayerManager = layerManager;
+        m_layerManager = layerManager;
     }
 
     vrViewerLayerManager *GetViewerLayerManager()
     {
-        return m_ViewerLayerManager;
+        return m_viewerLayerManager;
     }
 
     void SetViewerLayerManager(vrViewerLayerManager* viewerLayerManager)
     {
-        m_ViewerLayerManager = viewerLayerManager;
+        m_viewerLayerManager = viewerLayerManager;
     }
 
     vrViewerDisplay *GetViewerDisplay()
     {
-        return m_DisplayCtrl;
+        return m_displayCtrl;
     }
 
     void SetViewerDisplay(vrViewerDisplay* viewerDisplay)
     {
-        m_DisplayCtrl = viewerDisplay;
+        m_displayCtrl = viewerDisplay;
     }
 
     asForecastManager *GetForecastManager()
     {
-        return m_ForecastManager;
+        return m_forecastManager;
     }
 
     void SetForecastManager(asForecastManager* forecastManager)
     {
-        m_ForecastManager = forecastManager;
+        m_forecastManager = forecastManager;
     }
 
     asForecastViewer *GetForecastViewer()
     {
-        return m_ForecastViewer;
+        return m_forecastViewer;
     }
 
     void SetForecastViewer(asForecastViewer* forecastViewer)
     {
-        m_ForecastViewer = forecastViewer;
+        m_forecastViewer = forecastViewer;
     }
 
     asWorkspace* GetWorkspace()
     {
-        return &m_Workspace;
+        return &m_workspace;
     }
 
 
 protected:
 
 private:
-    wxProcess* m_ProcessForecast;
-    vrLayerManager *m_LayerManager;
-    vrViewerLayerManager *m_ViewerLayerManager;
-    vrViewerDisplay *m_DisplayCtrl;
-    wxKeyboardState m_KeyBoardState;
-    asForecastManager *m_ForecastManager;
-    asForecastViewer *m_ForecastViewer;
-    asPanelSidebarGisLayers *m_PanelSidebarGisLayers;
-    asPanelSidebarForecasts *m_PanelSidebarForecasts;
-    asPanelSidebarStationsList *m_PanelSidebarStationsList;
-    asPanelSidebarCaptionForecastDots *m_PanelSidebarCaptionForecastDots;
-    asPanelSidebarAnalogDates *m_PanelSidebarAnalogDates;
-    asPanelSidebarCaptionForecastRing *m_PanelSidebarCaptionForecastRing;
-    asPanelSidebarAlarms *m_PanelSidebarAlarms;
-    asLeadTimeSwitcher *m_LeadTimeSwitcher;
-    asWorkspace m_Workspace;
-    bool m_LaunchedPresentForecast;
+    wxProcess* m_processForecast;
+    vrLayerManager *m_layerManager;
+    vrViewerLayerManager *m_viewerLayerManager;
+    vrViewerDisplay *m_displayCtrl;
+    wxKeyboardState m_keyBoardState;
+    asForecastManager *m_forecastManager;
+    asForecastViewer *m_forecastViewer;
+    asPanelSidebarGisLayers *m_panelSidebarGisLayers;
+    asPanelSidebarForecasts *m_panelSidebarForecasts;
+    asPanelSidebarStationsList *m_panelSidebarStationsList;
+    asPanelSidebarCaptionForecastDots *m_panelSidebarCaptionForecastDots;
+    asPanelSidebarAnalogDates *m_panelSidebarAnalogDates;
+    asPanelSidebarCaptionForecastRing *m_panelSidebarCaptionForecastRing;
+    asPanelSidebarAlarms *m_panelSidebarAlarms;
+    asLeadTimeSwitcher *m_leadTimeSwitcher;
+    asWorkspace m_workspace;
+    bool m_launchedPresentForecast;
 
     void OpenForecastsFromTmpList();
     bool OpenRecentForecasts();
@@ -225,7 +225,7 @@ private:
     void UpdatePanelAnalogDates();
     void UpdatePanelStationsList();
     #if defined (__WIN32__)
-        wxCriticalSection m_CritSectionViewerLayerManager;
+        wxCriticalSection m_critSectionViewerLayerManager;
     #endif
 
 

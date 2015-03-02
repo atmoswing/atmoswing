@@ -69,88 +69,88 @@ public:
 
     void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    /** Access m_CornerUL
-     * \return The current value of m_CornerUL
+    /** Access m_cornerUL
+     * \return The current value of m_cornerUL
      */
     Coo GetCornerUL()
     {
-        return m_CornerUL;
+        return m_cornerUL;
     }
 
-    /** Set m_CornerUL
+    /** Set m_cornerUL
      * \param val New value to set
      */
     void SetCornerUL(const Coo &val)
     {
-        m_CornerUL = val;
+        m_cornerUL = val;
         Init();
     }
 
-    /** Access m_CornerUR
-     * \return The current value of m_CornerUR
+    /** Access m_cornerUR
+     * \return The current value of m_cornerUR
      */
     Coo GetCornerUR()
     {
-        return m_CornerUR;
+        return m_cornerUR;
     }
 
-    /** Set m_CornerUR
+    /** Set m_cornerUR
      * \param val New value to set
      */
     void SetCornerUR(const Coo &val)
     {
-        m_CornerUR = val;
+        m_cornerUR = val;
         Init();
     }
 
-    /** Access m_CornerLL
-     * \return The current value of m_CornerLL
+    /** Access m_cornerLL
+     * \return The current value of m_cornerLL
      */
     Coo GetCornerLL()
     {
-        return m_CornerLL;
+        return m_cornerLL;
     }
 
-    /** Set m_CornerLL
+    /** Set m_cornerLL
      * \param val New value to set
      */
     void SetCornerLL(const Coo &val)
     {
-        m_CornerLL = val;
+        m_cornerLL = val;
         Init();
     }
 
-    /** Access m_CornerLR
-     * \return The current value of m_CornerLR
+    /** Access m_cornerLR
+     * \return The current value of m_cornerLR
      */
     Coo GetCornerLR()
     {
-        return m_CornerLR;
+        return m_cornerLR;
     }
 
-    /** Set m_CornerLR
+    /** Set m_cornerLR
      * \param val New value to set
      */
     void SetCornerLR(const Coo &val)
     {
-        m_CornerLR = val;
+        m_cornerLR = val;
         Init();
     }
 
-    /** Access m_Level
-     * \return The current value of m_Level
+    /** Access m_level
+     * \return The current value of m_level
      */
     double GetLevel()
     {
-        return m_Level;
+        return m_level;
     }
 
-    /** Set m_Level
+    /** Set m_level
      * \param val New value to set
      */
     void SetLevel(double val)
     {
-        m_Level = val;
+        m_level = val;
     }
 
     /** Gives the area X min coordinate
@@ -194,13 +194,13 @@ public:
     bool IsRectangle();
 
 protected:
-    Coo m_CornerUL; //!< Member variable "m_CornerUL"
-    Coo m_CornerUR; //!< Member variable "m_CornerUR"
-    Coo m_CornerLL; //!< Member variable "m_CornerDL"
-    Coo m_CornerLR; //!< Member variable "m_CornerDR"
-    float m_Level; //!< Member variable "m_Level" hPa
-    float m_Height; //!< Member variable "m_Height" m
-    int m_FlatAllowed; //!< Member variable "m_FlatAllowed"
+    Coo m_cornerUL; //!< Member variable "m_cornerUL"
+    Coo m_cornerUR; //!< Member variable "m_cornerUR"
+    Coo m_cornerLL; //!< Member variable "m_cornerDL"
+    Coo m_cornerLR; //!< Member variable "m_cornerDR"
+    float m_level; //!< Member variable "m_level" hPa
+    float m_height; //!< Member variable "m_height" m
+    int m_flatAllowed; //!< Member variable "m_flatAllowed"
 
 private:
 

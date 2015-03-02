@@ -54,7 +54,7 @@ public:
     void SetForecastsAllLedsOff();
 
 protected:
-    std::vector <asPanelForecast*> m_ArrayPanels;
+    std::vector <asPanelForecast*> m_arrayPanels;
 
 private:
 

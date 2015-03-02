@@ -52,18 +52,18 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
 
     wxASSERT(targetDates.rows()>1);
     wxASSERT(forecastScores.rows()>1);
-    wxASSERT(m_RanksNb>1);
+    wxASSERT(m_ranksNb>1);
 
-    Array1DInt histogram = Array1DInt::Zero(m_RanksNb);
+    Array1DInt histogram = Array1DInt::Zero(m_ranksNb);
 
-    switch (m_Period)
+    switch (m_period)
     {
         case (asForecastScoreFinal::Total):
         {
             for (int i=0; i<forecastScores.size(); i++)
             {
                 int rank = (int)asTools::Round(forecastScores[i]);
-                wxASSERT(rank<=m_RanksNb);
+                wxASSERT(rank<=m_ranksNb);
                 histogram[rank-1]++;
             }
             break;
@@ -78,10 +78,10 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
     // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
     // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
     float delta = 0;
-    float delta_rel = float(forecastScores.size()*(m_RanksNb-1))/float(m_RanksNb);
-    for (int i=0; i<m_RanksNb; i++)
+    float delta_rel = float(forecastScores.size()*(m_ranksNb-1))/float(m_ranksNb);
+    for (int i=0; i<m_ranksNb; i++)
     {
-        delta += pow(float(histogram[i]) - float(forecastScores.size())/float(m_RanksNb), 2.0f);
+        delta += pow(float(histogram[i]) - float(forecastScores.size())/float(m_ranksNb), 2.0f);
     }
 
     float reliability = delta/delta_rel;
@@ -91,7 +91,7 @@ float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetD
 
 float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize)
 {
-    wxASSERT(m_RanksNb>1);
+    wxASSERT(m_ranksNb>1);
 
     Array1DFloat histogramReal;
     histogramReal = forecastScoresSize*histogramPercent/100.0f;
@@ -99,10 +99,10 @@ float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(Array1DFlo
     // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
     // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
     float delta = 0;
-    float delta_rel = float(forecastScoresSize*(m_RanksNb-1))/float(m_RanksNb);
-    for (int i=0; i<m_RanksNb; i++)
+    float delta_rel = float(forecastScoresSize*(m_ranksNb-1))/float(m_ranksNb);
+    for (int i=0; i<m_ranksNb; i++)
     {
-        delta += pow(float(histogramReal[i]) - float(forecastScoresSize)/float(m_RanksNb), 2.0f);
+        delta += pow(float(histogramReal[i]) - float(forecastScoresSize)/float(m_ranksNb), 2.0f);
     }
 
     float reliability = delta/delta_rel;

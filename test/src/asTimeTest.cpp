@@ -646,7 +646,7 @@ TEST(GetSeasonDec)
 
 TEST(GetSeasonException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetSeason(13), asException);
     }
@@ -822,7 +822,7 @@ TEST(GetTimeFromStringFormatDDMMYYYYSlashes)
 
 TEST(GetTimeFromStringFormatDDMMYYYYException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07", DDMMYYYY), asException);
     }
@@ -838,7 +838,7 @@ TEST(GetTimeFromStringFormatYYYYMMDD)
 
 TEST(GetTimeFromStringFormatYYYYMMDDException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.2007", YYYYMMDD), asException);
     }
@@ -854,7 +854,7 @@ TEST(GetTimeFromStringFormatDDMMYYYYhhmm)
 
 TEST(GetTimeFromStringFormatDDMMYYYYhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05", DDMMYYYYhhmm), asException);
     }
@@ -870,7 +870,7 @@ TEST(GetTimeFromStringFormatYYYYMMDDhhmm)
 
 TEST(GetTimeFromStringFormatYYYYMMDDhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYYMMDDhhmm), asException);
     }
@@ -886,7 +886,7 @@ TEST(GetTimeFromStringFormatDDMMYYYYhhmmss)
 
 TEST(GetTimeFromStringFormatDDMMYYYYhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DDMMYYYYhhmmss), asException);
     }
@@ -902,7 +902,7 @@ TEST(GetTimeFromStringFormatYYYYMMDDhhmmss)
 
 TEST(GetTimeFromStringFormatYYYYMMDDhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYYMMDDhhmmss), asException);
     }
@@ -910,7 +910,7 @@ TEST(GetTimeFromStringFormatYYYYMMDDhhmmssException)
 
 TEST(GetTimeFromStringFormathhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("13:05:01", hhmm), asException);
     }
@@ -929,7 +929,7 @@ TEST(GetTimeFromStringFormatnowplushours)
 
 TEST(GetTimeFromStringFormatnowplushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2:23", nowplushours), asException);
     }
@@ -937,7 +937,7 @@ TEST(GetTimeFromStringFormatnowplushoursException)
 
 TEST(GetTimeFromStringFormatnowplushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2.23", nowplushours), asException);
     }
@@ -956,7 +956,7 @@ TEST(GetTimeFromStringFormatnowminushours)
 
 TEST(GetTimeFromStringFormatnowminushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2:23", nowminushours), asException);
     }
@@ -964,7 +964,7 @@ TEST(GetTimeFromStringFormatnowminushoursException)
 
 TEST(GetTimeFromStringFormatnowminushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2.23", nowminushours), asException);
     }
@@ -972,7 +972,7 @@ TEST(GetTimeFromStringFormatnowminushoursExceptionDot)
 
 TEST(GetTimeFromStringFormatnowminushoursExceptionSignPlus)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2", nowminushours), asException);
     }
@@ -980,7 +980,7 @@ TEST(GetTimeFromStringFormatnowminushoursExceptionSignPlus)
 
 TEST(GetTimeFromStringFormatnowminushoursExceptionSignNo)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("2", nowminushours), asException);
     }
@@ -1004,7 +1004,7 @@ TEST(GetTimeFromStringFormatautoDDMMYYYYSlashes)
 
 TEST(GetTimeFromStringFormatautoDDMMYYYYException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07", guess), asException);
     }
@@ -1020,7 +1020,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDD)
 
 TEST(GetTimeFromStringFormatautoYYYYMMDDException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("11.2007", guess), asException);
     }
@@ -1036,7 +1036,7 @@ TEST(GetTimeFromStringFormatautoDDMMYYYYhhmm)
 
 TEST(GetTimeFromStringFormatautoDDMMYYYYhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
     }
@@ -1052,7 +1052,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDDhhmm)
 
 TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
     }
@@ -1068,7 +1068,7 @@ TEST(GetTimeFromStringFormatautoDDMMYYYYhhmmss)
 
 TEST(GetTimeFromStringFormatautoDDMMYYYYhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
     }
@@ -1084,7 +1084,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmss)
 
 TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
     }
@@ -1092,7 +1092,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 
 TEST(GetTimeFromStringFormatautohhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("13:05:01", guess), asException);
     }
@@ -1111,7 +1111,7 @@ TEST(GetTimeFromStringFormatautonowplushours)
 
 TEST(GetTimeFromStringFormatautonowplushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2:23", guess), asException);
     }
@@ -1119,7 +1119,7 @@ TEST(GetTimeFromStringFormatautonowplushoursException)
 
 TEST(GetTimeFromStringFormatautonowplushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2.23", guess), asException);
     }
@@ -1138,7 +1138,7 @@ TEST(GetTimeFromStringFormatautonowminushours)
 
 TEST(GetTimeFromStringFormatautonowminushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2:23", guess), asException);
     }
@@ -1146,7 +1146,7 @@ TEST(GetTimeFromStringFormatautonowminushoursException)
 
 TEST(GetTimeFromStringFormatautonowminushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2.23", guess), asException);
     }
@@ -1154,7 +1154,7 @@ TEST(GetTimeFromStringFormatautonowminushoursExceptionDot)
 
 TEST(GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("2", guess), asException);
     }
@@ -1162,7 +1162,7 @@ TEST(GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 
 TEST(GetTimeFromStringFormatautonowminushoursExceptionSignPlusText)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2hours", guess), asException);
     }

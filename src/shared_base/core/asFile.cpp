@@ -45,10 +45,10 @@ bool asRemoveDir(const wxString &Path)
 
 asFile::asFile(const wxString &FileName, const ListFileMode &FileMode)
 {
-    m_FileName = wxFileName( FileName );
-    m_FileMode = FileMode;
+    m_fileName = wxFileName( FileName );
+    m_fileMode = FileMode;
     m_Exists = false;
-    m_Opened = false;
+    m_opened = false;
 }
 
 asFile::~asFile()
@@ -65,21 +65,21 @@ bool asFile::Find()
 {
     bool pickfile = false, pickdir = false, mkdir = false, warnmodecomp = false, warnoverwrite = false;
 
-    if(!m_FileName.IsOk())
+    if(!m_fileName.IsOk())
     {
-        asLogError(wxString::Format(_("The file path is not OK %s"), m_FileName.GetFullPath().c_str()));
+        asLogError(wxString::Format(_("The file path is not OK %s"), m_fileName.GetFullPath().c_str()));
         return false;
     }
 
-    switch (m_FileMode)
+    switch (m_fileMode)
     {
         case (ReadOnly):
-            if (!wxFileName::FileExists(m_FileName.GetFullPath()))
+            if (!wxFileName::FileExists(m_fileName.GetFullPath()))
             {
                 pickfile = true;
             } else {
                 m_Exists = true;
-                if (!wxFileName::IsFileReadable(m_FileName.GetFullPath()))
+                if (!wxFileName::IsFileReadable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
                 }
@@ -87,22 +87,22 @@ bool asFile::Find()
             break;
 
         case (Write):
-            if (!wxFileName::FileExists(m_FileName.GetFullPath()))
+            if (!wxFileName::FileExists(m_fileName.GetFullPath()))
             {
-                if (!wxFileName::DirExists(m_FileName.GetPath()))
+                if (!wxFileName::DirExists(m_fileName.GetPath()))
                 {
                     mkdir = true;
                 }
                 else
                 {
-                    if (!wxFileName::IsDirWritable(m_FileName.GetPath()))
+                    if (!wxFileName::IsDirWritable(m_fileName.GetPath()))
                     {
                         pickdir = true;
                     }
                 }
             } else {
                 m_Exists = true;
-                if (!wxFileName::IsFileWritable(m_FileName.GetFullPath()))
+                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
                 }
@@ -110,22 +110,22 @@ bool asFile::Find()
             break;
 
         case (Replace):
-            if (!wxFileName::FileExists(m_FileName.GetFullPath()))
+            if (!wxFileName::FileExists(m_fileName.GetFullPath()))
             {
-                if (!wxFileName::DirExists(m_FileName.GetPath()))
+                if (!wxFileName::DirExists(m_fileName.GetPath()))
                 {
                     mkdir = true;
                 }
                 else
                 {
-                    if (!wxFileName::IsDirWritable(m_FileName.GetPath()))
+                    if (!wxFileName::IsDirWritable(m_fileName.GetPath()))
                     {
                         pickdir = true;
                     }
                 }
             } else {
                 m_Exists = true;
-                if (!wxFileName::IsFileWritable(m_FileName.GetFullPath()))
+                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
                 }
@@ -133,15 +133,15 @@ bool asFile::Find()
             break;
 
         case (New):
-            if (!wxFileName::FileExists(m_FileName.GetFullPath()))
+            if (!wxFileName::FileExists(m_fileName.GetFullPath()))
             {
-                if (!wxFileName::DirExists(m_FileName.GetPath()))
+                if (!wxFileName::DirExists(m_fileName.GetPath()))
                 {
                     mkdir = true;
                 }
                 else
                 {
-                    if (!wxFileName::IsDirWritable(m_FileName.GetPath()))
+                    if (!wxFileName::IsDirWritable(m_fileName.GetPath()))
                     {
                         pickdir = true;
                     }
@@ -153,12 +153,12 @@ bool asFile::Find()
             break;
 
         case (Append):
-            if (!wxFileName::FileExists(m_FileName.GetFullPath()))
+            if (!wxFileName::FileExists(m_fileName.GetFullPath()))
             {
                 pickfile = true;
             } else {
                 m_Exists = true;
-                if (!wxFileName::IsFileWritable(m_FileName.GetFullPath()))
+                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
                 }
@@ -171,19 +171,19 @@ bool asFile::Find()
 
     if (pickfile)
     {
-        asLogError(wxString::Format(_("Cannot find the file %s"), m_FileName.GetFullPath().c_str()));
+        asLogError(wxString::Format(_("Cannot find the file %s"), m_fileName.GetFullPath().c_str()));
 
-        if (!g_SilentMode)
+        if (!g_silentMode)
         {
             return false;
             /*asDialogFilePicker filePicker(0L);
-            m_FileName = wxFileName::wxFileName( filePicker.GetPath() );
+            m_fileName = wxFileName::wxFileName( filePicker.GetPath() );
             filePicker.Destroy();
 
             while (!FindAndOpen())
             {
                 asDialogFilePicker filePicker(0L);
-                m_FileName = wxFileName::wxFileName( filePicker.GetPath() );
+                m_fileName = wxFileName::wxFileName( filePicker.GetPath() );
                 filePicker.Destroy();
             }
 
@@ -194,15 +194,15 @@ bool asFile::Find()
 
     if (pickdir)
     {
-        if (g_SilentMode)
+        if (g_silentMode)
         {
-            asLogError(wxString::Format(_("Cannot find the directory %s"), m_FileName.GetFullPath().c_str()));
+            asLogError(wxString::Format(_("Cannot find the directory %s"), m_fileName.GetFullPath().c_str()));
             return false;
         }
         else
         {
             return false;
-/*            asDialogFilePicker FilePicker(m_FileName.GetPath());
+/*            asDialogFilePicker FilePicker(m_fileName.GetPath());
 
             if ( FilePicker.ShowModal() == wxID_OK )
             {
@@ -219,9 +219,9 @@ bool asFile::Find()
 
     if (mkdir)
     {
-        if (!wxFileName::Mkdir(m_FileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL))
+        if (!wxFileName::Mkdir(m_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL))
         {
-            asLogError(wxString::Format(_("The directory %s could not be created."),m_FileName.GetPath().c_str()));
+            asLogError(wxString::Format(_("The directory %s could not be created."),m_fileName.GetPath().c_str()));
             return false;
         }
         m_Exists = true;
@@ -244,9 +244,9 @@ bool asFile::Find()
     if (!pathexists)
     {
         // Find an existing dir in the path
-        while(!wxFileName::DirExists(m_FileName.GetPath()))
+        while(!wxFileName::DirExists(m_fileName.GetPath()))
         {
-            m_FileName.RemoveLastDir();
+            m_fileName.RemoveLastDir();
         }
 
 
@@ -262,9 +262,9 @@ bool asFile::Find()
 /*
 
 
-mayoverwrite = wxFileName::FileExists(m_FileName.GetFullPath());
-            ppathexists = wxFileName::DirExists(m_FileName.GetPath());
-            dirmodecomp = wxFileName::IsDirWritable(m_FileName.GetPath());
+mayoverwrite = wxFileName::FileExists(m_fileName.GetFullPath());
+            ppathexists = wxFileName::DirExists(m_fileName.GetPath());
+            dirmodecomp = wxFileName::IsDirWritable(m_fileName.GetPath());
             filemodecomp = true;
 
 

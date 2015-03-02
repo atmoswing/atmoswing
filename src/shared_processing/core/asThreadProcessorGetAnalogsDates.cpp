@@ -54,8 +54,8 @@ m_pTimeArrayArchiveData(timeArrayArchiveData),
 m_pTimeArrayArchiveSelection(timeArrayArchiveSelection),
 m_pTimeArrayTargetData(timeArrayTargetData),
 m_pTimeArrayTargetSelection(timeArrayTargetSelection),
-m_Criteria(criteria),
-m_Params(params),
+m_criteria(criteria),
+m_params(params),
 m_vTargData(vTargData),
 m_vArchData(vArchData),
 m_vRowsNb(vRowsNb),
@@ -63,17 +63,17 @@ m_vColsNb(vColsNb),
 m_pFinalAnalogsCriteria(finalAnalogsCriteria),
 m_pFinalAnalogsDates(finalAnalogsDates)
 {
-    m_Status = Initializing;
-    m_Type = asThread::ProcessorGetAnalogsDates;
-    m_Step = step;
-    m_Start = start;
+    m_status = Initializing;
+    m_type = asThread::ProcessorGetAnalogsDates;
+    m_step = step;
+    m_start = start;
     m_End = end;
     m_pContainsNaNs = containsNaNs;
 
     wxASSERT_MSG(m_End<timeArrayTargetSelection->GetSize(), _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_End!=timeArrayTargetSelection->GetSize()-2, wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_End, (int)timeArrayTargetSelection->GetSize()));
 
-    m_Status = Waiting;
+    m_status = Waiting;
 }
 
 asThreadProcessorGetAnalogsDates::~asThreadProcessorGetAnalogsDates()
@@ -83,7 +83,7 @@ asThreadProcessorGetAnalogsDates::~asThreadProcessorGetAnalogsDates()
 
 wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
 {
-    m_Status = Working;
+    m_status = Working;
 
     // Extract time arrays
     Array1DDouble timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
@@ -96,9 +96,9 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     int i_timeTarg, i_timeArch, i_timeTargRelative, i_timeArchRelative;
     int timeArchiveDataSize = timeArchiveData.size();
     int timeTargetDataSize = timeTargetData.size();
-    int predictorsNb = m_Params.GetPredictorsNb(m_Step);
-    int analogsNb = m_Params.GetAnalogsNumber(m_Step);
-    bool isasc = (m_Criteria[0]->GetOrder()==Asc);
+    int predictorsNb = m_params.GetPredictorsNb(m_step);
+    int analogsNb = m_params.GetAnalogsNumber(m_step);
+    bool isasc = (m_criteria[0]->GetOrder()==Asc);
 
     wxASSERT(m_End<timeTargetSelection.size());
     wxASSERT(timeArchiveDataSize==(m_pPredictorsArchive)[0]->GetData().size());
@@ -109,15 +109,15 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     Array1DFloat DateArrayOneDay(analogsNb);
 
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
-    asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(), m_pTimeArrayArchiveSelection->GetEnd(), m_Params.GetTimeArrayAnalogsTimeStepHours(), m_Params.GetTimeArrayAnalogsMode());
+    asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(), m_pTimeArrayArchiveSelection->GetEnd(), m_params.GetTimeArrayAnalogsTimeStepHours(), m_params.GetTimeArrayAnalogsMode());
     dateArrayArchiveSelection.SetForbiddenYears(m_pTimeArrayArchiveSelection->GetForbiddenYears());
 
     // Reset the index start target
     int i_timeTargStart = 0;
 
     // Loop through every timestep as target data
-    // Former, but disabled: for (int i_dateTarg=m_Start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
-    for (int i_dateTarg=m_Start; i_dateTarg<=m_End; i_dateTarg++)
+    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
+    for (int i_dateTarg=m_start; i_dateTarg<=m_End; i_dateTarg++)
     {
         // Check if the next data is the following. If not, search for it in the array.
         if(timeTargetDataSize>i_timeTargStart+1 && abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
@@ -141,8 +141,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
             }
 
             // DateArray object initialization.
-            dateArrayArchiveSelection.Init(timeTargetSelection[i_dateTarg], m_Params.GetTimeArrayAnalogsIntervalDays(), m_Params.GetTimeArrayAnalogsExcludeDays());
-            dateArrayArchiveSelection.Init(timeTargetSelection[i_dateTarg], m_Params.GetTimeArrayAnalogsIntervalDays(), m_Params.GetTimeArrayAnalogsExcludeDays());
+            dateArrayArchiveSelection.Init(timeTargetSelection[i_dateTarg], m_params.GetTimeArrayAnalogsIntervalDays(), m_params.GetTimeArrayAnalogsExcludeDays());
+            dateArrayArchiveSelection.Init(timeTargetSelection[i_dateTarg], m_params.GetTimeArrayAnalogsIntervalDays(), m_params.GetTimeArrayAnalogsExcludeDays());
 
             // Counter representing the current index
             counter = 0;
@@ -178,11 +178,11 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                         m_vArchData[i_ptor] = &(m_pPredictorsArchive)[i_ptor]->GetData()[i_timeArch];
 
                         // Assess the criteria
-                        wxASSERT(m_Criteria.size()>(unsigned)i_ptor);
-                        tmpscore = m_Criteria[i_ptor]->Assess(*m_vTargData[i_ptor], *m_vArchData[i_ptor], m_vRowsNb[i_ptor], m_vColsNb[i_ptor]);
+                        wxASSERT(m_criteria.size()>(unsigned)i_ptor);
+                        tmpscore = m_criteria[i_ptor]->Assess(*m_vTargData[i_ptor], *m_vArchData[i_ptor], m_vRowsNb[i_ptor], m_vColsNb[i_ptor]);
 
                         // Weight and add the score
-                        thisscore += tmpscore * m_Params.GetPredictorWeight(m_Step, i_ptor);
+                        thisscore += tmpscore * m_params.GetPredictorWeight(m_step, i_ptor);
                     }
                     if (asTools::IsNaN(thisscore))
                     {
@@ -302,15 +302,15 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
             {
                 asLogError(_("There is not enough available data to satisfy the number of analogs:"));
                 asLogError(wxString::Format(_("   Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
-                                            analogsNb, counter, dateArrayArchiveSelection.GetSize(), m_Params.GetTimeArrayAnalogsIntervalDays()));
+                                            analogsNb, counter, dateArrayArchiveSelection.GetSize(), m_params.GetTimeArrayAnalogsIntervalDays()));
                 asLogError(wxString::Format(_("   Date array start (%.0f), date array end (%.0f), timestep (%.0f), dateTarg (%.0f)."),
-                                            timeArchiveData[0], timeArchiveData[timeArchiveDataSize-1], m_Params.GetTimeArrayAnalogsTimeStepHours(),
+                                            timeArchiveData[0], timeArchiveData[timeArchiveDataSize-1], m_params.GetTimeArrayAnalogsTimeStepHours(),
                                             timeTargetSelection[i_timeTarg] ));
             }
         }
     }
 
-    m_Status = Done;
+    m_status = Done;
 
     return 0;
 }

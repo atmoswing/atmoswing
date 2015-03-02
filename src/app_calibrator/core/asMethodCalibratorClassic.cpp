@@ -43,7 +43,7 @@ asMethodCalibratorClassic::~asMethodCalibratorClassic()
 bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
 {
     // Copy of the original parameters set.
-    m_OriginalParams = params;
+    m_originalParams = params;
 
     // Extract the stations IDs
     VVectorInt stationsId = params.GetPredictandStationIdsVector();
@@ -60,7 +60,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology.clear();
+        m_scoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;
@@ -84,7 +84,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         asLogState(_("Calibration: creating the complete relevance map for a given predictor."));
 
         // Get a copy of the original parameters
-        params = m_OriginalParams;
+        params = m_originalParams;
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
@@ -96,7 +96,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             // Restore previous best parameters
             if (i_step>0)
             {
-                params = m_Parameters[0];
+                params = m_parameters[0];
             }
 
             // Clear previous results
@@ -196,39 +196,39 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                         params.FixCoordinates();
                     }
 
-                    m_ParametersTemp.push_back(params);
+                    m_parametersTemp.push_back(params);
                 }
             }
 
             // Process the relevance map
             asLogState(wxString::Format(_("Calibration: processing the relevance map for all the predictors of step %d (station %s)."), i_step, GetPredictandStationIdsList(stationId).c_str()));
-            for (unsigned int i_param=0; i_param<m_ParametersTemp.size(); i_param++)
+            for (unsigned int i_param=0; i_param<m_parametersTemp.size(); i_param++)
             {
                 bool containsNaNs = false;
                 if (i_step==0)
                 {
-                    if(!GetAnalogsDates(anaDates, m_ParametersTemp[i_param], i_step, containsNaNs)) return false;
+                    if(!GetAnalogsDates(anaDates, m_parametersTemp[i_param], i_step, containsNaNs)) return false;
                 }
                 else
                 {
-                    if(!GetAnalogsSubDates(anaDates, m_ParametersTemp[i_param], anaDatesPrevious, i_step, containsNaNs)) return false;
+                    if(!GetAnalogsSubDates(anaDates, m_parametersTemp[i_param], anaDatesPrevious, i_step, containsNaNs)) return false;
                 }
                 if (containsNaNs)
                 {
                     asLogError(_("The dates selection contains NaNs"));
                     return false;
                 }
-                if(!GetAnalogsValues(anaValues, m_ParametersTemp[i_param], anaDates, i_step)) return false;
-                if(!GetAnalogsForecastScores(anaScores, m_ParametersTemp[i_param], anaValues, i_step)) return false;
-                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, m_ParametersTemp[i_param], anaScores, i_step)) return false;
+                if(!GetAnalogsValues(anaValues, m_parametersTemp[i_param], anaDates, i_step)) return false;
+                if(!GetAnalogsForecastScores(anaScores, m_parametersTemp[i_param], anaValues, i_step)) return false;
+                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[i_param], anaScores, i_step)) return false;
 
                 // Store the result
-                m_ScoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
-                results_tested.Add(m_ParametersTemp[i_param],anaScoreFinal.GetForecastScore());
+                m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
+                results_tested.Add(m_parametersTemp[i_param],anaScoreFinal.GetForecastScore());
             }
 
             // Keep the best parameter set
-            wxASSERT(m_ParametersTemp.size()>0);
+            wxASSERT(m_parametersTemp.size()>0);
             PushBackBestTemp();
             ClearTemp();
 
@@ -247,7 +247,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 for (int i_resizing=0; i_resizing<4; i_resizing++)
                 {
                     // Consider the best point in previous iteration
-                    params = m_Parameters[0];
+                    params = m_parameters[0];
 
                     for (int i_ptor=0; i_ptor<ptorsNb; i_ptor++)
                     {
@@ -320,14 +320,14 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 }
 
                 // Apply the resizing that provides the best improvement
-                if (m_ParametersTemp.size()>0)
+                if (m_parametersTemp.size()>0)
                 {
                     KeepBestTemp();
                 }
             }
 
             // Consider the best point in previous iteration
-            params = m_Parameters[0];
+            params = m_parameters[0];
 
             // Keep the analogs dates of the best parameters set
             bool containsNaNs = false;
@@ -355,14 +355,14 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         if(!SubProcessAnalogsNumber(params, tempDates)) return false;
 
         // Extract intermediate results from temporary vectors
-        for (unsigned int i_res=0; i_res<m_ParametersTemp.size(); i_res++)
+        for (unsigned int i_res=0; i_res<m_parametersTemp.size(); i_res++)
         {
-            results_tested.Add(m_ParametersTemp[i_res],m_ScoresCalibTemp[i_res]);
+            results_tested.Add(m_parametersTemp[i_res],m_scoresCalibTemp[i_res]);
         }
         results_tested.Print();
 
         // Keep the best parameter set
-        wxASSERT(m_ParametersTemp.size()>0);
+        wxASSERT(m_parametersTemp.size()>0);
         KeepBestTemp();
         ClearTemp();
 
@@ -372,10 +372,10 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         // Keep the best parameters set
         SetBestParameters(results_best);
         if(!results_best.Print()) return false;
-        results_all.Add(m_Parameters[0],m_ScoresCalib[0],m_ScoreValid);
+        results_all.Add(m_parameters[0],m_scoresCalib[0],m_scoreValid);
         if(!results_all.Print()) return false;
         if(!results_all.Print()) return false;
-        if(!m_Parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
+        if(!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
     }
 
     return true;

@@ -70,20 +70,20 @@ public:
     bool GridsOverlay(asGeoAreaCompositeGrid *otherarea);
 
 
-    /** Access m_Xstep
-     * \return The current value of m_Xstep
+    /** Access m_xstep
+     * \return The current value of m_xstep
      */
     double GetXstep()
     {
-        return m_Xstep;
+        return m_xstep;
     }
 
-    /** Access m_Ystep
-     * \return The current value of m_Ystep
+    /** Access m_ystep
+     * \return The current value of m_ystep
      */
     double GetYstep()
     {
-        return m_Ystep;
+        return m_ystep;
     }
 
     /** Get the X axis for the given composite
@@ -150,8 +150,8 @@ public:
 protected:
 
 private:
-    double m_Xstep; //!< Member variable "m_Xstep"
-    double m_Ystep; //!< Member variable "m_Ystep"
+    double m_xstep; //!< Member variable "m_xstep"
+    double m_ystep; //!< Member variable "m_ystep"
 
     /** Tells if the area is a straight square compatible with the given step or not
      * \return True if the area is a straight square compatible with the given step

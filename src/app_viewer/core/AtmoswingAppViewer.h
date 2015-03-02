@@ -47,7 +47,7 @@ public:
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
 private:
-    wxSingleInstanceChecker* m_SingleInstanceChecker;
+    wxSingleInstanceChecker* m_singleInstanceChecker;
 };
 
 DECLARE_APP(AtmoswingAppViewer);
