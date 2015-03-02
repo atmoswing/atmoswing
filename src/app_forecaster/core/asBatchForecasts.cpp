@@ -33,7 +33,7 @@ wxObject()
 {
     m_hasChanged = false;
     m_exportSyntheticXml = false;
-    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.xml";
+    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.asfb";
     m_forecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
     m_exportsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Exports";
     m_parametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
