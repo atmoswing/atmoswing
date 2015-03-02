@@ -46,6 +46,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_axesChecked = false;
     m_timeZoneHours = 0.0;
     m_timeStepHours = 0.0;
+    m_timeIndexStep = 0.0;
     m_firstTimeStepHours = 0.0;
     m_xaxisStep = 0.0f;
     m_yaxisStep = 0.0f;
@@ -205,15 +206,15 @@ asGeoAreaCompositeGrid* asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
 {
     if (desiredArea)
     {
-        double dataXmin, dataYmin, dataXmax, dataYmax, dataXstep, dataYstep;
+        double dataXmin, dataYmin, dataXstep, dataYstep;
         int dataXptsnb, dataYptsnb;
         wxString gridType = desiredArea->GetGridTypeString();
         if (gridType.IsSameAs("Regular", false))
         {
             dataXmin = floor((desiredArea->GetAbsoluteXmin()-m_xaxisShift)/m_xaxisStep)*m_xaxisStep+m_xaxisShift;
             dataYmin = floor((desiredArea->GetAbsoluteYmin()-m_yaxisShift)/m_yaxisStep)*m_yaxisStep+m_yaxisShift;
-            dataXmax = ceil((desiredArea->GetAbsoluteXmax()-m_xaxisShift)/m_xaxisStep)*m_xaxisStep+m_xaxisShift;
-            dataYmax = ceil((desiredArea->GetAbsoluteYmax()-m_yaxisShift)/m_yaxisStep)*m_yaxisStep+m_yaxisShift;
+            double dataXmax = ceil((desiredArea->GetAbsoluteXmax()-m_xaxisShift)/m_xaxisStep)*m_xaxisStep+m_xaxisShift;
+            double dataYmax = ceil((desiredArea->GetAbsoluteYmax()-m_yaxisShift)/m_yaxisStep)*m_yaxisStep+m_yaxisShift;
             dataXstep = m_xaxisStep;
             dataYstep = m_yaxisStep;
             dataXptsnb = (dataXmax-dataXmin)/dataXstep+1;

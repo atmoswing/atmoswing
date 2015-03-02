@@ -105,7 +105,7 @@ TEST(ParametersLoadFromFileMultipleIds)
 
     VectorInt stations = params.GetPredictandStationIds();
 
-    CHECK_EQUAL(5, stations.size());
+    CHECK_EQUAL(5, (int)stations.size());
     CHECK_EQUAL(40, stations[0]);
     CHECK_EQUAL(41, stations[1]);
     CHECK_EQUAL(42, stations[2]);

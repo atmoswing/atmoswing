@@ -119,12 +119,12 @@ bool asResultsParametersArray::Print()
     {
         content.Append(m_parametersForScoreOnArray[i_param].Print());
         content.Append("Calib\t");
-        for (unsigned int i_row=0; i_row<(int)m_scoresCalibForScoreOnArray[i_param].size(); i_row++)
+        for (unsigned int i_row=0; i_row<m_scoresCalibForScoreOnArray[i_param].size(); i_row++)
         {
             content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[i_param][i_row]));
         }
         content.Append("Valid\t");
-        for (unsigned int i_row=0; i_row<(int)m_scoresValidForScoreOnArray[i_param].size(); i_row++)
+        for (unsigned int i_row=0; i_row<m_scoresValidForScoreOnArray[i_param].size(); i_row++)
         {
             content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[i_param][i_row]));
         }
