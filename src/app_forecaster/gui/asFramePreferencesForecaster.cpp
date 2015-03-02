@@ -65,6 +65,7 @@ void asFramePreferencesForecaster::LoadPreferences()
     {
         m_dirPickerPredictandDB->SetBackgroundColour(col);
         m_dirPickerForecastResults->SetBackgroundColour(col);
+        m_dirPickerForecastResultsExports->SetBackgroundColour(col);
         m_dirPickerParameters->SetBackgroundColour(col);
         m_dirPickerArchivePredictors->SetBackgroundColour(col);
         m_dirPickerRealtimePredictorSaving->SetBackgroundColour(col);
@@ -77,9 +78,13 @@ void asFramePreferencesForecaster::LoadPreferences()
     // Paths
     m_dirPickerPredictandDB->SetPath(m_batchForecasts->GetPredictandDBDirectory());
     m_dirPickerForecastResults->SetPath(m_batchForecasts->GetForecastsOutputDirectory());
+    m_dirPickerForecastResultsExports->SetPath(m_batchForecasts->GetExportsOutputDirectory());
     m_dirPickerRealtimePredictorSaving->SetPath(m_batchForecasts->GetPredictorsRealtimeDirectory());
     m_dirPickerArchivePredictors->SetPath(m_batchForecasts->GetPredictorsArchiveDirectory());
     m_dirPickerParameters->SetPath(m_batchForecasts->GetParametersFileDirectory());
+
+    // Exports
+    m_checkBoxExportSyntheticXml->SetValue(m_batchForecasts->ExportSyntheticXml());
 
     /*
      * General
@@ -210,9 +215,13 @@ void asFramePreferencesForecaster::SavePreferences( )
     // Paths
     m_batchForecasts->SetPredictandDBDirectory(m_dirPickerPredictandDB->GetPath());
     m_batchForecasts->SetForecastsOutputDirectory(m_dirPickerForecastResults->GetPath());
+    m_batchForecasts->SetExportsOutputDirectory(m_dirPickerForecastResultsExports->GetPath());
     m_batchForecasts->SetPredictorsRealtimeDirectory(m_dirPickerRealtimePredictorSaving->GetPath());
     m_batchForecasts->SetPredictorsArchiveDirectory(m_dirPickerArchivePredictors->GetPath());
     m_batchForecasts->SetParametersFileDirectory(m_dirPickerParameters->GetPath());
+
+    // Exports
+    m_batchForecasts->SetExportSyntheticXml(m_checkBoxExportSyntheticXml->GetValue());
 
     /*
      * General

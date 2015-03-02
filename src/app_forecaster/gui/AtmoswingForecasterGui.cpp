@@ -175,17 +175,17 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	m_menuLogLevel = new wxMenu();
 	wxMenuItem* m_menuLogLevelItem = new wxMenuItem( m_menuLog, wxID_ANY, _("Log level"), wxEmptyString, wxITEM_NORMAL, m_menuLogLevel );
-	wxMenuItem* m_menuItemLogLevel1;
-	m_menuItemLogLevel1 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Only errors") ) , wxEmptyString, wxITEM_CHECK );
-	m_menuLogLevel->Append( m_menuItemLogLevel1 );
+	wxMenuItem* m_MenuItemLogLevel1;
+	m_MenuItemLogLevel1 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Only errors") ) , wxEmptyString, wxITEM_CHECK );
+	m_menuLogLevel->Append( m_MenuItemLogLevel1 );
 	
-	wxMenuItem* m_menuItemLogLevel2;
-	m_menuItemLogLevel2 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Errors and warnings") ) , wxEmptyString, wxITEM_CHECK );
-	m_menuLogLevel->Append( m_menuItemLogLevel2 );
+	wxMenuItem* m_MenuItemLogLevel2;
+	m_MenuItemLogLevel2 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Errors and warnings") ) , wxEmptyString, wxITEM_CHECK );
+	m_menuLogLevel->Append( m_MenuItemLogLevel2 );
 	
-	wxMenuItem* m_menuItemLogLevel3;
-	m_menuItemLogLevel3 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Verbose") ) , wxEmptyString, wxITEM_CHECK );
-	m_menuLogLevel->Append( m_menuItemLogLevel3 );
+	wxMenuItem* m_MenuItemLogLevel3;
+	m_MenuItemLogLevel3 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Verbose") ) , wxEmptyString, wxITEM_CHECK );
+	m_menuLogLevel->Append( m_MenuItemLogLevel3 );
 	
 	m_menuLog->Append( m_menuLogLevelItem );
 	
@@ -219,9 +219,9 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	this->Connect( m_menuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePreferences ) );
 	this->Connect( m_menuItemBuildPredictandDB->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFramePredictandDB ) );
 	this->Connect( m_menuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnShowLog ) );
-	this->Connect( m_menuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel1 ) );
-	this->Connect( m_menuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel2 ) );
-	this->Connect( m_menuItemLogLevel3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel3 ) );
+	this->Connect( m_MenuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel1 ) );
+	this->Connect( m_MenuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel2 ) );
+	this->Connect( m_MenuItemLogLevel3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OnLogLevel3 ) );
 	this->Connect( m_menuItemAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameMainVirtual::OpenFrameAbout ) );
 }
 
@@ -432,7 +432,7 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_sizerHeader->Add( m_sizerFilename, 1, wxEXPAND, 5 );
 	
 	m_bpButtonClose = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 22,22 ), wxBU_AUTODRAW|wxNO_BORDER );
-	m_sizerHeader->Add( m_bpButtonClose, 0, 0, 5 );
+	m_sizerHeader->Add( m_bpButtonClose, 0, wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_sizerPanel->Add( m_sizerHeader, 0, wxEXPAND, 5 );
@@ -499,12 +499,22 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_dirPickerRealtimePredictorSaving = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_dirPickerRealtimePredictorSaving, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextForecastResultsDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory to save forecast outputs"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextForecastResultsDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory to save forecast outputs (netCDF)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextForecastResultsDir->Wrap( -1 );
 	sbSizer18->Add( m_staticTextForecastResultsDir, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_dirPickerForecastResults = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_dirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextForecastResultsExportsDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory to save forecast exports (xml)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextForecastResultsExportsDir->Wrap( -1 );
+	sbSizer18->Add( m_staticTextForecastResultsExportsDir, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_dirPickerForecastResultsExports = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	sbSizer18->Add( m_dirPickerForecastResultsExports, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	
+	m_checkBoxExportSyntheticXml = new wxCheckBox( m_panelPathsCommon, wxID_ANY, _("Export forecasts as synthetic xml"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer18->Add( m_checkBoxExportSyntheticXml, 0, wxALL, 5 );
 	
 	
 	m_sizerPanelPaths->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );

@@ -152,11 +152,11 @@ bool asMethodForecasting::Manager()
         }
 
         // Optional exports
-//        if (m_batchForecasts->HasExports())
+        if (m_batchForecasts->HasExports())
         {
-//            if (m_batchForecasts->ExportSyntheticXml())
+            if (m_batchForecasts->ExportSyntheticXml())
             {
-                if (!m_aggregator.ExportSyntheticXml())
+                if (!m_aggregator.ExportSyntheticXml(m_batchForecasts->GetExportsOutputDirectory()))
                 {
                     asLogError(_("The export of the synthetic xml failed."));
                 }

@@ -683,7 +683,7 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetOverallMaxValues(Array1DFloa
     return values;
 }
 
-bool asResultsAnalogsForecastAggregator::ExportSyntheticXml()
+bool asResultsAnalogsForecastAggregator::ExportSyntheticXml(const wxString &dirPath)
 {
     // Quantile values
     Array1DFloat quantiles(3);
@@ -692,14 +692,18 @@ bool asResultsAnalogsForecastAggregator::ExportSyntheticXml()
     // Create 1 file per method
     for (int methodRow=0; methodRow<m_forecasts.size(); methodRow++)
     {
-        
-        
-        
-        wxString filePath = wxString::Format("C:\\Users\\Pascal\\Desktop\\tets atmoswing\\export_%d.xml",methodRow);
-
-
-
-       
+        // Filename
+        wxString filePath = dirPath;
+        filePath.Append(DS);
+        wxString dirstructure = "YYYY";
+        dirstructure.Append(DS).Append("MM").Append(DS).Append("DD");
+        wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
+        filePath.Append(directory).Append(DS);
+        wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
+        wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYYMMDDhh");
+        wxString ext = "xml";
+        wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
+        filePath.Append(filename);
 
         // Create file
         asFileXml fileExport(filePath, asFile::Replace);
