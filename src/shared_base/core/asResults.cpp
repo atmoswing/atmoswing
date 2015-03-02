@@ -72,11 +72,11 @@ wxString asResults::GetPredictandStationIdsList()
     }
     else
     {
-        for (int i=0; i<m_predictandStationIds.size(); i++)
+        for (int i=0; i<(int)m_predictandStationIds.size(); i++)
         {
             id << m_predictandStationIds[i];
 
-            if (i<m_predictandStationIds.size()-1)
+            if (i<(int)m_predictandStationIds.size()-1)
             {
                 id << ",";
             }

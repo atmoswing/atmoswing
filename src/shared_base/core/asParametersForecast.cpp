@@ -447,7 +447,7 @@ bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -469,7 +469,7 @@ bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int i_step, VectorInt 
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {

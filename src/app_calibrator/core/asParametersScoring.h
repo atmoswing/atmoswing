@@ -191,7 +191,7 @@ public:
         }
         else
         {
-            for (int i=0; i<val.size(); i++)
+            for (int i=0; i<(int)val.size(); i++)
             {
                 if (asTools::IsNaN(val[i]))
                 {
@@ -217,7 +217,7 @@ public:
         }
 
         int minVal = m_validationYears[0];
-        for (int i=0; i<m_validationYears.size(); i++)
+        for (int i=0; i<(int)m_validationYears.size(); i++)
         {
             minVal = wxMin(minVal, m_validationYears[i]);
         }
@@ -232,7 +232,7 @@ public:
         }
 
         int maxVal = m_validationYears[0];
-        for (int i=0; i<m_validationYears.size(); i++)
+        for (int i=0; i<(int)m_validationYears.size(); i++)
         {
             maxVal = wxMax(maxVal, m_validationYears[i]);
         }

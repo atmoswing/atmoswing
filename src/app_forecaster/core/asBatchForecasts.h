@@ -140,13 +140,13 @@ public:
 
     wxString GetForecastFileName(int i)
     {
-        wxASSERT(m_forecastFileNames.size()>i);
+        wxASSERT((int)m_forecastFileNames.size()>i);
         return m_forecastFileNames[i];
     }
 
     void SetForecastFileName(int i, const wxString &val)
     {
-        wxASSERT(m_forecastFileNames.size()>i);
+        wxASSERT((int)m_forecastFileNames.size()>i);
         m_forecastFileNames[i] = val;
     }
 

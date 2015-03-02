@@ -117,10 +117,10 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeTime->AddChild(nodeTimeValidationPeriod);
         wxString validationYears;
         VectorInt validationYearsVect = GetValidationYearsVector();
-        for (int i=0; i<validationYearsVect.size(); i++)
+        for (int i=0; i<(int)validationYearsVect.size(); i++)
         {
             validationYears << validationYearsVect[i];
-            if (i!=validationYearsVect.size()-1)
+            if (i!=(int)validationYearsVect.size()-1)
             {
                 validationYears << ", ";
             }
@@ -264,7 +264,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
 {
     wxString Ids;
 
-    for (int i=0; i<predictandStationIdsVect.size(); i++)
+    for (int i=0; i<(int)predictandStationIdsVect.size(); i++)
     {
         VectorInt predictandStationIds = predictandStationIdsVect[i];
 
@@ -276,11 +276,11 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
         {
             Ids.Append("(");
 
-            for (int j=0; j<predictandStationIds.size(); j++)
+            for (int j=0; j<(int)predictandStationIds.size(); j++)
             {
                 Ids << predictandStationIds[j];
 
-                if (j<predictandStationIds.size()-1)
+                if (j<(int)predictandStationIds.size()-1)
                 {
                     Ids.Append(",");
                 }
@@ -289,7 +289,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
             Ids.Append(")");
         }
 
-        if (i<predictandStationIdsVect.size()-1)
+        if (i<(int)predictandStationIdsVect.size()-1)
         {
             Ids.Append(",");
         }
