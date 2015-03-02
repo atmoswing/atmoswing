@@ -555,8 +555,6 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 
                     m_timeArray[counter] = thisTimeStep;
                     counter++;
-                        m_TimeArray[counter] = thisTimeStep;
-                        counter++;
 
                     #ifdef _DEBUG
                         if(counter>1)

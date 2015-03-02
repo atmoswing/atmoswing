@@ -365,11 +365,11 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
     }
     else
     {
-        for (int i=0; i<stationIds.size(); i++)
+        for (int i=0; i<(int)stationIds.size(); i++)
         {
             id << stationIds[i];
 
-            if (i<stationIds.size()-1)
+            if (i<(int)stationIds.size()-1)
             {
                 id << ",";
             }
@@ -1221,7 +1221,7 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
 	int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeStart);
 	int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],&predictandTime[predictandTime.size()-1],timeEnd);
 
-	for (int i_st=0; i_st<stationIds.size(); i_st++)
+	for (int i_st=0; i_st<(int)stationIds.size(); i_st++)
 	{
 		Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[i_st]);
 
@@ -1252,7 +1252,7 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
 
 	// Process the climatology score
 	VArray1DFloat climatologyData(stationIds.size(), Array1DFloat(dataLength));
-	for (int i_st=0; i_st<stationIds.size(); i_st++)
+	for (int i_st=0; i_st<(int)stationIds.size(); i_st++)
 	{
 		Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[i_st]);
 
@@ -1492,7 +1492,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     #endif // _DEBUG
 
     // Inline the data when possible
-    for (int i_ptor=0; i_ptor<predictors.size(); i_ptor++)
+    for (int i_ptor=0; i_ptor<(int)predictors.size(); i_ptor++)
     {
         if (criteria[i_ptor]->CanUseInline())
         {
@@ -1567,7 +1567,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     }
 
     // Inline the data when possible
-    for (int i_ptor=0; i_ptor<predictors.size(); i_ptor++)
+    for (int i_ptor=0; i_ptor<(int)predictors.size(); i_ptor++)
     {
         if (criteria[i_ptor]->CanUseInline())
         {
@@ -1643,7 +1643,7 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
         VectorInt stationIds = params.GetPredictandStationIds();
         m_scoreClimatology.resize(stationIds.size());
 
-        for (int i_st=0; i_st<stationIds.size(); i_st++)
+        for (int i_st=0; i_st<(int)stationIds.size(); i_st++)
         {
             forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues()[i_st], climatologyData[i_st]);
             m_scoreClimatology[i_st] = forecastScore->GetScoreClimatology();

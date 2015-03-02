@@ -658,11 +658,11 @@ wxString asParameters::GetPredictandStationIdsString()
     {
         Ids = "(";
 
-        for (int i=0; i<m_predictandStationIds.size(); i++)
+        for (int i=0; i<(int)m_predictandStationIds.size(); i++)
         {
             Ids << m_predictandStationIds[i];
 
-            if (i<m_predictandStationIds.size()-1)
+            if (i<(int)m_predictandStationIds.size()-1)
             {
                 Ids.Append(",");
             }
@@ -1080,7 +1080,7 @@ bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
 
 bool asParameters::SetPredictandStationIds(VectorInt val)
 {
-    for (int i=0; i<val.size(); i++)
+    for (int i=0; i<(int)val.size(); i++)
     {
         if (asTools::IsNaN(val[i]))
         {
@@ -1147,7 +1147,7 @@ bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1182,7 +1182,7 @@ bool asParameters::SetPreloadLevels(int i_step, int i_predictor, VectorFloat val
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1290,7 +1290,7 @@ bool asParameters::SetPreprocessDatasetId(int i_step, int i_predictor, int i_dat
     }
     else
     {
-        wxASSERT(m_steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()==i_dataset);
+        wxASSERT((int)m_steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size()==i_dataset);
         m_steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.push_back(val);
     }
 
@@ -1324,7 +1324,7 @@ bool asParameters::SetPreprocessDataId(int i_step, int i_predictor, int i_datase
     }
     else
     {
-        wxASSERT(m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()==i_dataset);
+        wxASSERT((int)m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size()==i_dataset);
         m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.push_back(val);
     }
 
@@ -1358,7 +1358,7 @@ bool asParameters::SetPreprocessLevel(int i_step, int i_predictor, int i_dataset
     }
     else
     {
-        wxASSERT(m_steps[i_step].Predictors[i_predictor].PreprocessLevels.size()==i_dataset);
+        wxASSERT((int)m_steps[i_step].Predictors[i_predictor].PreprocessLevels.size()==i_dataset);
         m_steps[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
     }
 
@@ -1392,7 +1392,7 @@ bool asParameters::SetPreprocessTimeHours(int i_step, int i_predictor, int i_dat
     }
     else
     {
-        wxASSERT(m_steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()==i_dataset);
+        wxASSERT((int)m_steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size()==i_dataset);
         m_steps[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
     }
 

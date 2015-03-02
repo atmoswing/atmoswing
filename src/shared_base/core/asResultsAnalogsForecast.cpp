@@ -484,6 +484,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVar("loc_coord_y", &m_stationYCoords[0]);
     }
     else
+    {
         ncFile.GetVar("target_dates", &m_targetDates[0]);
         ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
         ncFile.GetVar("station_names", &m_stationNames[0], Nstations);
@@ -564,7 +565,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Set data into the matrices
     int ind = 0;
-    for (int i_time=0; i_time<Nleadtime; i_time++)
+    for (int i_time=0; i_time<(int)Nleadtime; i_time++)
     {
         Array1DFloat analogsCriteriaLeadTime(m_analogsNb[i_time]);
         Array1DFloat analogsDatesLeadTime(m_analogsNb[i_time]);
@@ -607,16 +608,6 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[i_time]);
             analogsValuesGrossLeadTime.fill(NaNFloat);
             m_analogsValuesGross.push_back( analogsValuesGrossLeadTime );
-        }
-    }
-    else
-    {
-        // Create containers
-        for (int i_time=0; i_time<Nleadtime; i_time++)
-        {
-            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_AnalogsNb[i_time]);
-            analogsValuesGrossLeadTime.fill(NaNFloat);
-            m_AnalogsValuesGross.push_back( analogsValuesGrossLeadTime );
         }
 
         for (int i_station=0; i_station<Nstations; i_station++)
@@ -701,11 +692,11 @@ wxString asResultsAnalogsForecast::GetPredictandStationIdsString()
 {
     wxString Ids;
 
-    for (int i=0; i<m_predictandStationIds.size(); i++)
+    for (int i=0; i<(int)m_predictandStationIds.size(); i++)
     {
         Ids << m_predictandStationIds[i];
 
-        if (i<m_predictandStationIds.size()-1)
+        if (i<(int)m_predictandStationIds.size()-1)
         {
             Ids.Append(",");
         }
@@ -780,7 +771,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast * other
 
 bool asResultsAnalogsForecast::IsSpecificForStationId(int stationId)
 {
-    for (int i=0; i<m_predictandStationIds.size(); i++)
+    for (int i=0; i<(int)m_predictandStationIds.size(); i++)
     {
         if (m_predictandStationIds[i]==stationId)
         {
