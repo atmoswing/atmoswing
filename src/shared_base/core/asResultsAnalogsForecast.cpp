@@ -484,7 +484,6 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVar("loc_coord_y", &m_stationYCoords[0]);
     }
     else
-    {
         ncFile.GetVar("target_dates", &m_targetDates[0]);
         ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
         ncFile.GetVar("station_names", &m_stationNames[0], Nstations);
@@ -608,6 +607,16 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[i_time]);
             analogsValuesGrossLeadTime.fill(NaNFloat);
             m_analogsValuesGross.push_back( analogsValuesGrossLeadTime );
+        }
+    }
+    else
+    {
+        // Create containers
+        for (int i_time=0; i_time<Nleadtime; i_time++)
+        {
+            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_AnalogsNb[i_time]);
+            analogsValuesGrossLeadTime.fill(NaNFloat);
+            m_AnalogsValuesGross.push_back( analogsValuesGrossLeadTime );
         }
 
         for (int i_station=0; i_station<Nstations; i_station++)

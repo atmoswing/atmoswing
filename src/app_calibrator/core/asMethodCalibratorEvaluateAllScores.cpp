@@ -360,6 +360,25 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
 
             for (unsigned int i_score=0;i_score<scoresThreshold.size();i_score++)
             {
+                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresPercentile[i_score]));
+                {
+                    params.SetForecastScoreName(scoresPercentile[i_score]);
+                    params.SetForecastScorePercentile(percentiles[i_pc]);
+                    if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+                    if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+                    m_Parameters[0]=params;
+                    Validate();
+                    results.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+                    m_ScoreClimatology=0;
+                }
+            }
+
+            VectorString scoresThreshold;
+            scoresThreshold.push_back("BS"); // BS - Brier score
+            scoresThreshold.push_back("BSS"); // BSS - Brier skill score
+
+            for (unsigned int i_score=0;i_score<scoresThreshold.size();i_score++)
+            {
                 asLogMessageImportant(wxString::Format(_("Processing %s"), scoresThreshold[i_score]));
                 for (unsigned int i_thres=0;i_thres<thresholds.size();i_thres++)
                 {
@@ -414,14 +433,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             int boostrapNb = 10000;
             params.SetForecastScoreName("RankHistogram");
             m_parameters[0]=params;
-
             std::vector < Array1DFloat > histoCalib;
             std::vector < Array1DFloat > histoValid;
 
             for (int i_boot=0; i_boot<boostrapNb; i_boot++)
             {
-                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
                 if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;
                 if(!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb-1)) return false;
 
@@ -437,7 +453,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             {
                 averageHistoCalib += histoCalib[i_boot];
                 averageHistoValid += histoValid[i_boot];
-            }
             averageHistoCalib = averageHistoCalib/boostrapNb;
             averageHistoValid = averageHistoValid/boostrapNb;
 
@@ -448,7 +463,6 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             params.SetForecastScoreName("RankHistogramReliability");
             int forecastScoresSize = anaScores.GetForecastScores().size();
             int forecastScoresSizeValid = anaScoresValid.GetForecastScores().size();
-
             asForecastScoreFinalRankHistogramReliability rankHistogramReliability(asForecastScoreFinal::Total);
             rankHistogramReliability.SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
             float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, forecastScoresSize);
@@ -457,6 +471,56 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             results.Add(params, resultCalib, resultValid);
             m_scoreClimatology.clear();
         }
+
+        // The Verification Rank Histogram (Talagrand Diagram)
+        asLogMessageImportant(_("Processing RankHistogram"));
+        params.SetForecastScoreName("RankHistogram");
+        if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+        if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+        m_Parameters[0]=params;
+
+        // Validation of the Verification Rank Histogram (Talagrand Diagram)
+        asResultsAnalogsForecastScoreFinal anaScoreFinalValid;
+        if (params.HasValidationPeriod()) // Validate
+        {
+            m_ValidationMode = true;
+
+            asResultsAnalogsDates anaDatesPreviousValid;
+            asResultsAnalogsDates anaDatesValid;
+            asResultsAnalogsValues anaValuesValid;
+            asResultsAnalogsForecastScores anaScoresValid;
+
+            // Process every step one after the other
+            for (int i_step=0; i_step<stepsNb; i_step++)
+            {
+                bool containsNaNs = false;
+                if (i_step==0)
+                {
+                    if(!GetAnalogsDates(anaDatesValid, params, i_step, containsNaNs)) return false;
+                }
+                else
+                {
+                    anaDatesPreviousValid = anaDatesValid;
+                    if(!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, i_step, containsNaNs)) return false;
+                }
+                if (containsNaNs)
+                {
+                    asLogError(_("The dates selection contains NaNs"));
+                    return false;
+                }
+            }
+            if(!GetAnalogsValues(anaValuesValid, params, anaDatesValid, stepsNb-1)) return false;
+            if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;
+            if(!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb-1)) return false;
+
+            m_ScoreValid = anaScoreFinalValid.GetForecastScore();
+
+            m_ValidationMode = false;
+        }
+
+        results.Add(params,anaScoreFinal.GetForecastScoreArray(), anaScoreFinalValid.GetForecastScoreArray());
+        m_ScoreClimatology=0;
+
 
         if(!results.Print()) return false;
 
