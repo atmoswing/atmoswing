@@ -140,9 +140,9 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     // Check extension
     wxFileName fname(filePath);
     wxString extension = fname.GetExt();
-    if (!extension.IsSameAs("fcst"))
+    if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst"))
     {
-        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .fcst)."), extension.c_str()));
+        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension.c_str()));
         return false;
     }
 
@@ -197,9 +197,9 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     // Check extension
     wxFileName fname(filePath);
     wxString extension = fname.GetExt();
-    if (!extension.IsSameAs("fcst"))
+    if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst"))
     {
-        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .fcst)."), extension.c_str()));
+        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension.c_str()));
         return false;
     }
 
@@ -262,13 +262,18 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
             double currentTimeHour = floor(currentTime)+ hr/24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
             wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' + m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
-            wxString ext = "fcst";
-            wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
+            wxString filename = wxString::Format("%s.%s.asff",nowstr.c_str(),forecastname.c_str());
             wxString fullPath = currentDirPath + filename;
+            wxString filenameOld = wxString::Format("%s.%s.fcst",nowstr.c_str(),forecastname.c_str());
+            wxString fullPathOld = currentDirPath + filenameOld;
 
             if (wxFileName::FileExists(fullPath))
             {
                 OpenPastForecast(methodRow, forecastRow, fullPath);
+            }
+            else if (wxFileName::FileExists(fullPathOld))
+            {
+                OpenPastForecast(methodRow, forecastRow, fullPathOld);
             }
             else
             {
@@ -279,10 +284,16 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
                     currentDirPath.Append(directory);
                     currentDirPath.Append(DS);
                     fullPath = currentDirPath + filename;
+                    fullPathOld = currentDirPath + filenameOld;
 
                     if (wxFileName::FileExists(fullPath))
                     {
                         OpenPastForecast(methodRow, forecastRow, fullPath);
+                        goto quitloop;
+                    }
+                    else if (wxFileName::FileExists(fullPathOld))
+                    {
+                        OpenPastForecast(methodRow, forecastRow, fullPathOld);
                         goto quitloop;
                     }
                 }

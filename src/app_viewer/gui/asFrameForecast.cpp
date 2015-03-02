@@ -430,7 +430,7 @@ void asFrameForecast::OnOpenWorkspace(wxCommandEvent & event)
     wxFileDialog openFileDialog (this, _("Select a workspace"),
                             wxEmptyString,
                             wxEmptyString,
-                            "xml files (*.xml)|*.xml",
+                            "AtmoSwing viewer workspace (*.asvw)|*.asvw",
                             wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
 
     // If canceled
@@ -469,7 +469,7 @@ void asFrameForecast::OnSaveWorkspaceAs(wxCommandEvent & event)
     wxFileDialog openFileDialog (this, _("Select a path to save the workspace"),
                             wxEmptyString,
                             wxEmptyString,
-                            "xml files (*.xml)|*.xml",
+                            "AtmoSwing viewer workspace (*.asvw)|*.asvw",
                             wxFD_SAVE | wxFD_CHANGE_DIR);
 
     // If canceled
@@ -1116,7 +1116,7 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
     wxFileDialog myFileDlg (this, _("Select a forecast file"),
                             wxEmptyString,
                             wxEmptyString,
-                            "*.fcst",
+                            "*.asff, *.fcst",
                             wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR | wxFD_MULTIPLE);
 
     wxArrayString pathsFileName;
@@ -1306,6 +1306,7 @@ void asFrameForecast::SwitchForecast( double increment )
     // Look for former files
     wxString basePath = forecastsBaseDirectory + wxFileName::GetPathSeparator();
     wxFileName fullPath(basePath);
+    wxFileName fullPathOld;
     for (int i=0; i<100; i++)
     {
         date += increment;
@@ -1315,9 +1316,12 @@ void asFrameForecast::SwitchForecast( double increment )
         fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(date)));
         prefixFileName = wxString::Format(patternFileName, asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date), asTime::GetHour(date));
         fullPath.SetName(prefixFileName + partialFileName);
-        fullPath.SetExt("fcst");
+        fullPathOld = fullPath;
+        fullPath.SetExt("asff");
+        fullPathOld.SetExt("fcst");
 
         if (fullPath.Exists()) break;
+        if (fullPathOld.Exists()) break;
 
         if (i==99)
         {

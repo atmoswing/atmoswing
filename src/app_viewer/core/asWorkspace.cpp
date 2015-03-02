@@ -32,7 +32,7 @@ asWorkspace::asWorkspace()
 wxObject()
 {
     m_hasChanged = false;
-    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.xml";
+    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.asvw";
     m_coordinateSys = "EPSG:3857";
     m_forecastsDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
     m_colorbarMaxValue = 50.0;

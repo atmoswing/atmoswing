@@ -903,7 +903,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 	m_staticText43->Wrap( -1 );
 	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
 	
-	m_filePickerBatchFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
+	m_filePickerBatchFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.asfb"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
 	bSizer49->Add( m_filePickerBatchFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_staticText45 = new wxStaticText( m_wizPage2, wxID_ANY, _("The preferences frame will open to configure the required directories."), wxDefaultPosition, wxDefaultSize, 0 );
