@@ -11,8 +11,8 @@ endif (UNIX)
 
 # Version number
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "3")
-set(VERSION_PATCH "3")
+set(VERSION_MINOR "4")
+set(VERSION_PATCH "0")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
