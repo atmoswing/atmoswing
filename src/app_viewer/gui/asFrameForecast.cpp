@@ -1207,7 +1207,7 @@ bool asFrameForecast::OpenRecentForecasts()
     // Identify the most recent forecasts
     long mostRecentDate = 0;
     VectorInt mostRecentRows;
-    for (int i=0; i<files.GetCount(); i++)
+    for (int i=0; i<(int)files.GetCount(); i++)
     {
         wxFileName fileName(files[i]);
         wxString fileDate = fileName.GetFullName().SubString(0,9);
@@ -1234,7 +1234,7 @@ bool asFrameForecast::OpenRecentForecasts()
 
     // Store the most recent file names
     wxArrayString recentFiles;
-    for (int i=0; i<mostRecentRows.size(); i++)
+    for (int i=0; i<(int)mostRecentRows.size(); i++)
     {
         recentFiles.Add(files[mostRecentRows[i]]);
     }
@@ -1336,7 +1336,7 @@ void asFrameForecast::SwitchForecast( double increment )
 
     // Identify the corresponding forecasts
     wxArrayString accurateFiles;
-    for (int i=0; i<files.GetCount(); i++)
+    for (int i=0; i<(int)files.GetCount(); i++)
     {
         wxFileName fileName(files[i]);
         wxString fileDate = fileName.GetFullName().SubString(0,9);

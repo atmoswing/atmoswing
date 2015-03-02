@@ -217,7 +217,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
 
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             // Check if necessary to load the data of lon=360 (so lon=0)
             bool load360 = false;

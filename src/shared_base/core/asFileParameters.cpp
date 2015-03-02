@@ -444,7 +444,7 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
         int step = (int)value;
 
         VectorInt ids = BuildVectorInt(min, max, step);
-        for (int i=0; i<ids.size(); i++)
+        for (int i=0; i<(int)ids.size(); i++)
         {
             VectorInt id;
             id.push_back(ids[i]);
@@ -487,7 +487,7 @@ VectorInt asFileParameters::GetStationIds(wxString stationIdsString)
         }
 
         // Check that it contains 1 closing bracket at the end
-        if (subStr.Find(")") != subStr.size()-1)
+        if (subStr.Find(")") != (int)subStr.size()-1)
         {
             asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
             return ids;

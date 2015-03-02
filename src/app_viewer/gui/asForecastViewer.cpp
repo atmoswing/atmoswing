@@ -372,7 +372,7 @@ void asForecastViewer::Redraw()
             }
             else
             {
-                for (int i=0; i<forecasts.size(); i++)
+                for (int i=0; i<(int)forecasts.size(); i++)
                 {   
                     accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
                     if (accurateForecast)
@@ -552,7 +552,7 @@ void asForecastViewer::Redraw()
             }
             else
             {
-                for (int i=0; i<forecasts.size(); i++)
+                for (int i=0; i<(int)forecasts.size(); i++)
                 {   
                     accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
                     if (accurateForecast)
