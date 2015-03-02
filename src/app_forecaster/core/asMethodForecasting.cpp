@@ -30,8 +30,6 @@
 #include "asDataPredictand.h"
 #include "asResultsAnalogsDates.h"
 #include "asResultsAnalogsValues.h"
-#include "asResultsAnalogsForecast.h"
-#include "asResultsAnalogsForecastAggregator.h"
 #include "asPredictorCriteria.h"
 #include "asTimeArray.h"
 #include "asGeoAreaCompositeGrid.h"
@@ -54,11 +52,18 @@ asMethodStandard()
 
 asMethodForecasting::~asMethodForecasting()
 {
-    
+    ClearForecasts();
+}
+
+void asMethodForecasting::ClearForecasts()
+{
+    m_Aggregator.ClearArrays();
 }
 
 bool asMethodForecasting::Manager()
 {
+    ClearForecasts();
+
     #if wxUSE_GUI
         if (g_Responsive) wxGetApp().Yield();
     #endif
@@ -149,18 +154,9 @@ bool asMethodForecasting::Manager()
         // Optional exports
 //        if (m_BatchForecasts->HasExports())
         {
-            // Reload results
-            asResultsAnalogsForecastAggregator aggregator;
-            for (int i=0; i<m_ResultsFilePaths.size(); i++)
-            {
-                asResultsAnalogsForecast * forecast = new asResultsAnalogsForecast();
-                forecast->Load(m_ResultsFilePaths[i]);
-                aggregator.Add(forecast);
-            }
-            
 //            if (m_BatchForecasts->ExportSyntheticXml())
             {
-                if (!aggregator.ExportSyntheticXml())
+                if (!m_Aggregator.ExportSyntheticXml())
                 {
                     asLogError(_("The export of the synthetic xml failed."));
                 }
@@ -274,24 +270,36 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     if (m_Cancel) return false;
 
     // Resulting object
-    asResultsAnalogsForecast resultsPrevious;
-    asResultsAnalogsForecast results;
-    results.SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
+    asResultsAnalogsForecast * resultsPrevious = new asResultsAnalogsForecast();
+    asResultsAnalogsForecast * results = new asResultsAnalogsForecast();
+    results->SetForecastsDirectory(m_BatchForecasts->GetForecastsOutputDirectory());
 
     for (int i_step=0; i_step<stepsNb; i_step++)
     {
         #if wxUSE_GUI
             if (g_Responsive) wxGetApp().Yield();
         #endif
-        if (m_Cancel) return false;
+        if (m_Cancel) {
+            wxDELETE(results);
+            wxDELETE(resultsPrevious);
+            return false;
+        }
 
         if (i_step==0)
         {
-            if(!GetAnalogsDates(results, params, i_step)) return false;
+            if(!GetAnalogsDates(*results, params, i_step)) {
+                wxDELETE(results);
+                wxDELETE(resultsPrevious);
+                return false;
+            }
         }
         else
         {
-            if(!GetAnalogsSubDates(results, params, resultsPrevious, i_step)) return false;
+            if(!GetAnalogsSubDates(*results, params, *resultsPrevious, i_step)) {
+                wxDELETE(results);
+                wxDELETE(resultsPrevious);
+                return false;
+            }
         }
 
         // At last get the values
@@ -300,9 +308,17 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
             #if wxUSE_GUI
                 if (g_Responsive) wxGetApp().Yield();
             #endif
-            if (m_Cancel) return false;
+            if (m_Cancel) {
+                wxDELETE(results);
+                wxDELETE(resultsPrevious);
+                return false;
+            }
 
-            if(!GetAnalogsValues(results, params, i_step)) return false;
+            if(!GetAnalogsValues(*results, params, i_step)) {
+                wxDELETE(results);
+                wxDELETE(resultsPrevious);
+                return false;
+            }
 
             #if wxUSE_GUI
                 // Send event
@@ -314,7 +330,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
             try
             {
-                results.Save();
+                results->Save();
             }
             catch(asException& e)
             {
@@ -325,7 +341,9 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
                         if (!g_SilentMode)
                             wxMessageBox(fullMessage);
                     #endif
-                }
+                } 
+                wxDELETE(results);
+                wxDELETE(resultsPrevious);
                 return false;
             }
 
@@ -339,10 +357,13 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         }
 
         // Keep the analogs dates of the best parameters set
-        resultsPrevious = results;
+        *resultsPrevious = *results;
     }
 
-    m_ResultsFilePaths.push_back(results.GetFilePath());
+    m_Aggregator.Add(results);
+    m_ResultsFilePaths.push_back(results->GetFilePath());
+
+    wxDELETE(resultsPrevious);
 
     Cleanup();
 
