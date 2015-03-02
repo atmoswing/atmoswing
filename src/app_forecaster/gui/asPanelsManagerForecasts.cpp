@@ -94,7 +94,7 @@ void asPanelsManagerForecasts::Clear()
 
 asPanelForecast* asPanelsManagerForecasts::GetPanel( int i )
 {
-    wxASSERT(i<m_arrayPanels.size());
+    wxASSERT(i<(int)m_arrayPanels.size());
     return m_arrayPanels[i];
 }
 

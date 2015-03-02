@@ -101,8 +101,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     bool isasc = (m_criteria[0]->GetOrder()==Asc);
 
     wxASSERT(m_End<timeTargetSelection.size());
-    wxASSERT(timeArchiveDataSize==(m_pPredictorsArchive)[0]->GetData().size());
-    wxASSERT(timeTargetDataSize==(m_pPredictorsTarget)[0]->GetData().size());
+    wxASSERT(timeArchiveDataSize==(int)(m_pPredictorsArchive)[0]->GetData().size());
+    wxASSERT(timeTargetDataSize==(int)(m_pPredictorsTarget)[0]->GetData().size());
 
     // Containers for daily results
     Array1DFloat ScoreArrayOneDay(analogsNb);

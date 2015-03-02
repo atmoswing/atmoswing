@@ -189,7 +189,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         VVectorShort vectData;
         VVectorShort vectData360;
 
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             // Check if necessary to load the data of lon=360 (so lon=0)
             bool load360 = false;
@@ -211,7 +211,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
                 {
                     // Correction if the lon 360 degrees is required (doesn't exist)
                     load360 = true;
-                    for (int i_check = 0; i_check<compositeData.size(); i_check++)
+                    for (int i_check = 0; i_check<(int)compositeData.size(); i_check++)
                     {
                         // If so, already loaded in another composite
                         if(dataArea->GetComposite(i_check).GetXmin() == 0)
@@ -318,7 +318,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         if (compositeData[0].capacity()==0)
         {
             int totSize = 0;
-            for (int i_area = 0; i_area<compositeData.size(); i_area++)
+            for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
             {
                 int indexLengthLat = vectIndexLengthLat[i_area];
                 int indexLengthLon = vectIndexLengthLon[i_area];
@@ -328,7 +328,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         }
 
         // Transfer data
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             // Extract data
             int indexLengthLat = vectIndexLengthLat[i_area];

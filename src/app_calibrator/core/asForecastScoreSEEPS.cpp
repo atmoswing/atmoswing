@@ -83,7 +83,7 @@ float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &Forcas
     float fcstV = asTools::GetValueForQuantile(cleanValues, m_quantile);
     float obsV = ObservedVal;
 
-    float score;
+    float score = 0;
 
 	// Forecasted 1, observed 1
 	if (fcstV<=m_thresNull && obsV<=m_thresNull)

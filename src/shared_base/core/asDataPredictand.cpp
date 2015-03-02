@@ -439,7 +439,7 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
     catalog.Load();
 
     // Get the stations list
-    for (size_t i_station=0; i_station<catalog.GetStationsNb(); i_station++)
+    for (int i_station=0; i_station<catalog.GetStationsNb(); i_station++)
     {
         #if wxUSE_GUI
             // Update the progress bar.

@@ -565,7 +565,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
 
     // Set data into the matrices
     int ind = 0;
-    for (int i_time=0; i_time<Nleadtime; i_time++)
+    for (int i_time=0; i_time<(int)Nleadtime; i_time++)
     {
         Array1DFloat analogsCriteriaLeadTime(m_analogsNb[i_time]);
         Array1DFloat analogsDatesLeadTime(m_analogsNb[i_time]);
@@ -692,11 +692,11 @@ wxString asResultsAnalogsForecast::GetPredictandStationIdsString()
 {
     wxString Ids;
 
-    for (int i=0; i<m_predictandStationIds.size(); i++)
+    for (int i=0; i<(int)m_predictandStationIds.size(); i++)
     {
         Ids << m_predictandStationIds[i];
 
-        if (i<m_predictandStationIds.size()-1)
+        if (i<(int)m_predictandStationIds.size()-1)
         {
             Ids.Append(",");
         }
@@ -771,7 +771,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast * other
 
 bool asResultsAnalogsForecast::IsSpecificForStationId(int stationId)
 {
-    for (int i=0; i<m_predictandStationIds.size(); i++)
+    for (int i=0; i<(int)m_predictandStationIds.size(); i++)
     {
         if (m_predictandStationIds[i]==stationId)
         {

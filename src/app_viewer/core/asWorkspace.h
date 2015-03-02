@@ -77,61 +77,61 @@ public:
 
     wxString GetLayerPath(int i)
     {
-        wxASSERT(m_layerPaths.size()>i);
+        wxASSERT((int)m_layerPaths.size()>i);
         return m_layerPaths[i];
     }
     
     void SetLayerPath(int i, const wxString &val)
     {
-        wxASSERT(m_layerPaths.size()>i);
+        wxASSERT((int)m_layerPaths.size()>i);
         m_layerPaths[i] = val;
     }
 
     wxString GetLayerType(int i)
     {
-        wxASSERT(m_layerTypes.size()>i);
+        wxASSERT((int)m_layerTypes.size()>i);
         return m_layerTypes[i];
     }
     
     void SetLayerType(int i, const wxString &val)
     {
-        wxASSERT(m_layerTypes.size()>i);
+        wxASSERT((int)m_layerTypes.size()>i);
         m_layerTypes[i] = val;
     }
 
     int GetLayerTransparency(int i)
     {
-        wxASSERT(m_layerTransparencies.size()>i);
+        wxASSERT((int)m_layerTransparencies.size()>i);
         return m_layerTransparencies[i];
     }
 
     void SetLayerTransparency(int i, int val)
     {
-        wxASSERT(m_layerTransparencies.size()>i);
+        wxASSERT((int)m_layerTransparencies.size()>i);
         m_layerTransparencies[i] = val;
     }
 
     bool GetLayerVisibility(int i)
     {
-        wxASSERT(m_layerVisibilities.size()>i);
+        wxASSERT((int)m_layerVisibilities.size()>i);
         return m_layerVisibilities[i];
     }
 
     void SetLayerVisibility(int i, bool val)
     {
-        wxASSERT(m_layerVisibilities.size()>i);
+        wxASSERT((int)m_layerVisibilities.size()>i);
         m_layerVisibilities[i] = val;
     }
 
     int GetLayerLineWidth(int i)
     {
-        wxASSERT(m_layerLineWidths.size()>i);
+        wxASSERT((int)m_layerLineWidths.size()>i);
         return m_layerLineWidths[i];
     }
 
     void SetLayerLineWidth(int i, int val)
     {
-        wxASSERT(m_layerLineWidths.size()>i);
+        wxASSERT((int)m_layerLineWidths.size()>i);
         m_layerLineWidths[i] = val;
     }
 
@@ -139,37 +139,37 @@ public:
 
     wxColour GetLayerLineColor(int i)
     {
-        wxASSERT(m_layerLineColors.size()>i);
+        wxASSERT((int)m_layerLineColors.size()>i);
         return m_layerLineColors[i];
     }
 
     void SetLayerLineColor(int i, wxColour &val)
     {
-        wxASSERT(m_layerLineColors.size()>i);
+        wxASSERT((int)m_layerLineColors.size()>i);
         m_layerLineColors[i] = val;
     }
 
     wxColour GetLayerFillColor(int i)
     {
-        wxASSERT(m_layerFillColors.size()>i);
+        wxASSERT((int)m_layerFillColors.size()>i);
         return m_layerFillColors[i];
     }
 
     void SetLayerFillColor(int i, wxColour &val)
     {
-        wxASSERT(m_layerFillColors.size()>i);
+        wxASSERT((int)m_layerFillColors.size()>i);
         m_layerFillColors[i] = val;
     }
     
     wxBrushStyle GetLayerBrushStyle(int i)
     {
-        wxASSERT(m_layerBrushStyles.size()>i);
+        wxASSERT((int)m_layerBrushStyles.size()>i);
         return m_layerBrushStyles[i];
     }
     
     void SetLayerBrushStyle(int i, wxBrushStyle &val)
     {
-        wxASSERT(m_layerBrushStyles.size()>i);
+        wxASSERT((int)m_layerBrushStyles.size()>i);
         m_layerBrushStyles[i] = val;
     }
 

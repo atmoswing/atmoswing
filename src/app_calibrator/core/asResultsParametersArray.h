@@ -67,19 +67,19 @@ public:
 
     asParametersScoring GetParameter(int i)
     {
-        wxASSERT(i<m_parameters.size());
+        wxASSERT(i<(int)m_parameters.size());
         return m_parameters[i];
     }
 
     float GetScoreCalib(int i)
     {
-        wxASSERT(i<m_scoresCalib.size());
+        wxASSERT(i<(int)m_scoresCalib.size());
         return m_scoresCalib[i];
     }
 
     float GetScoreValid(int i)
     {
-        wxASSERT(i<m_scoresValid.size());
+        wxASSERT(i<(int)m_scoresValid.size());
         return m_scoresValid[i];
     }
 

@@ -283,7 +283,7 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     VectorInt vectIndexLengthLon;
     VVectorShort vectData;
 
-    for (int i_area = 0; i_area<compositeData.size(); i_area++)
+    for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
     {
         int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
         if (dataArea)
@@ -432,7 +432,7 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     if (compositeData[0].capacity()==0)
     {
         int totSize = 0;
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             int indexLengthLat = vectIndexLengthLat[i_area];
             int indexLengthLon = vectIndexLengthLon[i_area];
@@ -442,7 +442,7 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     }
 
     // Transfer data
-    for (int i_area = 0; i_area<compositeData.size(); i_area++)
+    for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
     {
         // Extract data
         int indexLengthLat = vectIndexLengthLat[i_area];
