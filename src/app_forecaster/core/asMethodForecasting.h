@@ -35,6 +35,7 @@
 #include <asDataPredictorArchive.h>
 #include <asPredictorCriteria.h>
 #include <asBatchForecasts.h>
+#include <asResultsAnalogsForecastAggregator.h>
 
 class asResultsAnalogsDates;
 class asResultsAnalogsForecast;
@@ -44,6 +45,8 @@ class asMethodForecasting: public asMethodStandard
 public:
     asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent = NULL);
     virtual ~asMethodForecasting();
+
+    void ClearForecasts();
 
     virtual bool Manager();
 
@@ -86,6 +89,7 @@ protected:
 private:
     asBatchForecasts* m_BatchForecasts;
     double m_ForecastDate;
+    asResultsAnalogsForecastAggregator m_Aggregator;
     VectorString m_ResultsFilePaths;
     wxWindow* m_Parent;
     std::vector < asDataPredictorArchive* > m_StoragePredictorsArchivePreprocess;
