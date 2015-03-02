@@ -414,11 +414,14 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             int boostrapNb = 10000;
             params.SetForecastScoreName("RankHistogram");
             m_parameters[0]=params;
+
             std::vector < Array1DFloat > histoCalib;
             std::vector < Array1DFloat > histoValid;
 
             for (int i_boot=0; i_boot<boostrapNb; i_boot++)
             {
+                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
+                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
                 if(!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb-1)) return false;
                 if(!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb-1)) return false;
 
@@ -434,6 +437,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             {
                 averageHistoCalib += histoCalib[i_boot];
                 averageHistoValid += histoValid[i_boot];
+            }
             averageHistoCalib = averageHistoCalib/boostrapNb;
             averageHistoValid = averageHistoValid/boostrapNb;
 
@@ -444,6 +448,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             params.SetForecastScoreName("RankHistogramReliability");
             int forecastScoresSize = anaScores.GetForecastScores().size();
             int forecastScoresSizeValid = anaScoresValid.GetForecastScores().size();
+
             asForecastScoreFinalRankHistogramReliability rankHistogramReliability(asForecastScoreFinal::Total);
             rankHistogramReliability.SetRanksNb(params.GetForecastScoreAnalogsNumber()+1);
             float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, forecastScoresSize);
