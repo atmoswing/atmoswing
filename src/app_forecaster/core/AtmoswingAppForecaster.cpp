@@ -380,11 +380,10 @@ int AtmoswingAppForecaster::OnRun()
                 cout << _("New value: ");
                 getline (cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (wxinVal.IsEmpty())
+                if (!wxinVal.IsEmpty())
                 {
-                    wxinVal = batchForecasts.GetFilePath();
+                    batchForecasts.SetFilePath(wxinVal);
                 }
-                batchForecasts.SetFilePath(wxinVal);
                 cout << "\n";
 
                 // Check if exists and load
@@ -404,12 +403,62 @@ int AtmoswingAppForecaster::OnRun()
                 cout << _("New value: ");
                 getline (cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (wxinVal.IsEmpty())
+                if (!wxinVal.IsEmpty())
                 {
-                    wxinVal = batchForecasts.GetForecastsOutputDirectory();
+                    batchForecasts.SetForecastsOutputDirectory(wxinVal);
                 }
-                batchForecasts.SetForecastsOutputDirectory(wxinVal);
                 cout << "\n";
+
+                // Exports
+                cout << _("Do you want to export synthetic xml files of the forecasts ?\n");
+                wxString currVal;
+                if (batchForecasts.ExportSyntheticXml()) {
+                    currVal = "Y";
+                }
+                else {
+                    currVal = "N";
+                }
+                cout << _("Current value (enter to keep): ") << currVal.c_str() << "\n";
+                bool acceptValue = false;
+                while (!acceptValue)
+                {
+                    cout << _("New value (Y/N): ");
+                    getline (cin, stdinVal);
+                    wxinVal = wxString(stdinVal);
+                    if (!wxinVal.IsEmpty())
+                    {
+                        if (wxinVal.IsSameAs("Y", false))
+                        {
+                            batchForecasts.SetExportSyntheticXml(true);
+                            acceptValue = true;
+                        }
+                        else if (wxinVal.IsSameAs("N", false))
+                        {
+                            batchForecasts.SetExportSyntheticXml(false);
+                            acceptValue = true;
+                        }
+                        else
+                        {
+                            cout << _("The provided value is not allowed. Please enter Y or N.\n");
+                        }
+                    }
+                }
+                cout << "\n";
+
+                // Directory to save the exports
+                if (batchForecasts.HasExports())
+                {
+                    cout << _("Please provide a directory to save the exports.\n");
+                    cout << _("Current value (enter to keep): ") << batchForecasts.GetExportsOutputDirectory().c_str() << "\n";
+                    cout << _("New value: ");
+                    getline (cin, stdinVal);
+                    wxinVal = wxString(stdinVal);
+                    if (!wxinVal.IsEmpty())
+                    {
+                        batchForecasts.SetExportsOutputDirectory(wxinVal);
+                    }
+                    cout << "\n";
+                }
 
                 // Directory containing the parameters files
                 cout << _("Please provide the directory containing the parameters files.\n");
@@ -417,11 +466,10 @@ int AtmoswingAppForecaster::OnRun()
                 cout << _("New value: ");
                 getline (cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (wxinVal.IsEmpty())
+                if (!wxinVal.IsEmpty())
                 {
-                    wxinVal = batchForecasts.GetParametersFileDirectory();
+                    batchForecasts.SetParametersFileDirectory(wxinVal);
                 }
-                batchForecasts.SetParametersFileDirectory(wxinVal);
                 cout << "\n";
 
                 // Directory containing the archive predictors
@@ -430,11 +478,10 @@ int AtmoswingAppForecaster::OnRun()
                 cout << _("New value: ");
                 getline (cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (wxinVal.IsEmpty())
+                if (!wxinVal.IsEmpty())
                 {
-                    wxinVal = batchForecasts.GetPredictorsArchiveDirectory();
+                    batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
                 }
-                batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
                 cout << "\n";
 
                 // Directory to save the downloaded predictors
@@ -443,11 +490,10 @@ int AtmoswingAppForecaster::OnRun()
                 cout << _("New value: ");
                 getline (cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (wxinVal.IsEmpty())
+                if (!wxinVal.IsEmpty())
                 {
-                    wxinVal = batchForecasts.GetPredictorsRealtimeDirectory();
+                    batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
                 }
-                batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
                 cout << "\n";
 
                 // Directory containing the predictand database
@@ -456,11 +502,10 @@ int AtmoswingAppForecaster::OnRun()
                 cout << _("New value: ");
                 getline (cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (wxinVal.IsEmpty())
+                if (!wxinVal.IsEmpty())
                 {
-                    wxinVal = batchForecasts.GetPredictandDBDirectory();
+                    batchForecasts.SetPredictandDBDirectory(wxinVal);
                 }
-                batchForecasts.SetPredictandDBDirectory(wxinVal);
                 cout << "\n";
 
                 batchForecasts.Save();
