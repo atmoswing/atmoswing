@@ -383,6 +383,12 @@ void asForecastViewer::Redraw()
                 }
             }
 
+            if (m_forecastManager->GetForecastsNb(m_methodSelection)==1) 
+            {
+                forecast = forecasts[0];
+                accurateForecast = true;
+            }
+
             if(!forecast) {
                 asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecast->GetStationName(i_stat).c_str()));
                 continue;
@@ -561,6 +567,12 @@ void asForecastViewer::Redraw()
                         break;
                     }
                 }
+            }
+
+            if (m_forecastManager->GetForecastsNb(m_methodSelection)==1) 
+            {
+                forecast = forecasts[0];
+                accurateForecast = true;
             }
 
             if(!forecast) {
