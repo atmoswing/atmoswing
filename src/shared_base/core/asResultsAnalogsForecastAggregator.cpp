@@ -43,13 +43,14 @@ asResultsAnalogsForecastAggregator::~asResultsAnalogsForecastAggregator()
 
 void asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
 {
-    bool compatible = true;
     bool createNewMethodRow = true;
 
     for (int methodRow=0; methodRow<(int)m_forecasts.size(); methodRow++)
     {
         wxASSERT(m_forecasts[methodRow].size()>0);
         asResultsAnalogsForecast* refForecast = m_forecasts[methodRow][0];
+
+        bool compatible = true;
 
         if (!refForecast->GetMethodId().IsSameAs(forecast->GetMethodId(), false)) compatible = false;
         if (refForecast->GetPredictandParameter() != forecast->GetPredictandParameter()) compatible = false;
@@ -541,7 +542,7 @@ int asResultsAnalogsForecastAggregator::GetLeadTimeLengthMax()
 
     for (int i=0; i<(int)m_forecasts.size(); i++)
     {
-        for (int j=0; j<(int)m_forecasts.size(); j++)
+        for (int j=0; j<(int)m_forecasts[i].size(); j++)
         {
             length = wxMax(length, m_forecasts[i][j]->GetTargetDatesLength());
         }
