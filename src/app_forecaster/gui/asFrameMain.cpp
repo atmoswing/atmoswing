@@ -134,6 +134,8 @@ asFrameMain::~asFrameMain()
 
 void asFrameMain::OnInit()
 {
+    wxBusyCursor wait;
+
     DisplayLogLevelMenu();
     SetPresentDate();
     
@@ -169,12 +171,14 @@ void asFrameMain::OnOpenBatchForecasts(wxCommandEvent & event)
     wxFileDialog openFileDialog (this, _("Select a batch file"),
                             wxEmptyString,
                             wxEmptyString,
-                            "xml files (*.xml)|*.xml",
+                            "AtmoSwing forecaster batch (*.asfb)|*.asfb",
                             wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
 
     // If canceled
     if(openFileDialog.ShowModal()==wxID_CANCEL)
         return;
+
+    wxBusyCursor wait;
 
     wxString batchFilePath = openFileDialog.GetPath();
 
@@ -206,12 +210,14 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent & event)
     wxFileDialog openFileDialog (this, _("Select a path to save the batch file"),
                             wxEmptyString,
                             wxEmptyString,
-                            "xml files (*.xml)|*.xml",
+                            "AtmoSwing forecaster batch (*.asfb)|*.asfb",
                             wxFD_SAVE | wxFD_CHANGE_DIR);
 
     // If canceled
     if(openFileDialog.ShowModal()==wxID_CANCEL)
         return;
+
+    wxBusyCursor wait;
 
     wxString batchFilePath = openFileDialog.GetPath();
     m_batchForecasts.SetFilePath(batchFilePath);
@@ -226,6 +232,8 @@ void asFrameMain::OnSaveBatchForecastsAs(wxCommandEvent & event)
 
 bool asFrameMain::SaveBatchForecasts()
 {
+    wxBusyCursor wait;
+
     // Update the GIS layers
     m_batchForecasts.ClearForecasts();
 
@@ -257,6 +265,8 @@ void asFrameMain::OnNewBatchForecasts(wxCommandEvent & event)
 
 bool asFrameMain::OpenBatchForecasts()
 {
+    wxBusyCursor wait;
+
     Freeze();
 
     // Cleanup the actual panels
@@ -466,6 +476,8 @@ void asFrameMain::DisplayLogLevelMenu()
 
 void asFrameMain::LaunchForecasting( wxCommandEvent& event )
 {
+    wxBusyCursor wait;
+
     // Get date
     double forecastDate = GetForecastDate();
     wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
