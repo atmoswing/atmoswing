@@ -45,14 +45,14 @@ TEST(SaveAndLoadXmlFileWxStyle)
     wxXmlNode * nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE ,"base");
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-    nodeBuilding->AddAttribute("id", "R魌illon");
+    nodeBuilding->AddAttribute("id", "R么tillon");
    
     wxXmlNode * nodeType = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_type");
-    wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", "h魀ital" );
+    wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", "h么pital" );
     nodeType->AddChild ( nodeTypeValue );
 
     wxXmlNode * nodeLocation = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_location" );
-    wxXmlNode * nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_location", "Z黵ich" );
+    wxXmlNode * nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_location", "Z眉rich" );
     nodeLocation->AddChild (nodeLocationValue );
 
     wxXmlNode * nodeHeight = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_height" );
@@ -78,15 +78,15 @@ TEST(SaveAndLoadXmlFileWxStyle)
     CHECK_EQUAL("base", doc2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = doc2.GetRoot()->GetChildren();
-    CHECK_EQUAL("R魌illon", childBuilding->GetAttribute("id"));
+    CHECK_EQUAL("R么tillon", childBuilding->GetAttribute("id"));
     
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
     CHECK_EQUAL("building_type", childBuildingType->GetName());
-    CHECK_EQUAL("h魀ital", childBuildingType->GetNodeContent());
+    CHECK_EQUAL("h么pital", childBuildingType->GetNodeContent());
     
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
     CHECK_EQUAL("building_location", childBuildingLocation->GetName());
-    CHECK_EQUAL("Z黵ich", childBuildingLocation->GetNodeContent());
+    CHECK_EQUAL("Z眉rich", childBuildingLocation->GetNodeContent());
     
     wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
     CHECK_EQUAL("building_height", childBuildingHeight->GetName());
@@ -105,10 +105,10 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     asFileXml fileXml(filePath, asFile::New);
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-    nodeBuilding->AddAttribute("id", "R魌illon");
+    nodeBuilding->AddAttribute("id", "R么tillon");
    
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", "h魀ital"));
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", "Z黵ich"));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", "h么pital"));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", "Z眉rich"));
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", "40"));
 
     fileXml.AddChild(nodeBuilding);
@@ -123,15 +123,15 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     CHECK_EQUAL("atmoswing", fileXml2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = fileXml2.GetRoot()->GetChildren();
-    CHECK_EQUAL("R魌illon", childBuilding->GetAttribute("id"));
+    CHECK_EQUAL("R么tillon", childBuilding->GetAttribute("id"));
     
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
     CHECK_EQUAL("building_type", childBuildingType->GetName());
-    CHECK_EQUAL("h魀ital", childBuildingType->GetNodeContent());
+    CHECK_EQUAL("h么pital", childBuildingType->GetNodeContent());
     
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
     CHECK_EQUAL("building_location", childBuildingLocation->GetName());
-    CHECK_EQUAL("Z黵ich", childBuildingLocation->GetNodeContent());
+    CHECK_EQUAL("Z眉rich", childBuildingLocation->GetNodeContent());
     
     wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
     CHECK_EQUAL("building_height", childBuildingHeight->GetName());

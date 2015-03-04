@@ -75,9 +75,9 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
         if(indExact!=asOUT_OF_RANGE && indExact!=asNOT_FOUND)
         {
             // If the exact value was found in the analogs
-            // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Eta–RSM short-range ensemble
+            // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Etaâ€“RSM short-range ensemble
             // forecasts. Monthly Weather Review, 125, 1312-1327.
-            // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Eta–RSM ensemble probabilistic
+            // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Etaâ€“RSM ensemble probabilistic
             // precipitation forecasts. Monthly Weather Review, 126, 711-724.
 
             // Find first occurrence
