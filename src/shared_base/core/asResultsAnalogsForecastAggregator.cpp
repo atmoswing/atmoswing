@@ -431,6 +431,8 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetFullTargetDates()
 
 int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationId(int methodRow, int stationId)
 {
+    if (GetForecastsNb(methodRow)==1) return 0;
+
     // Pick up the most relevant forecast for the station
     for (int i=0; i<GetForecastsNb(methodRow); i++)
     {
@@ -448,6 +450,8 @@ int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationId(int m
 
 int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationRow(int methodRow, int stationRow)
 {
+    if (GetForecastsNb(methodRow)==1) return 0;
+
     // Pick up the most relevant forecast for the station
     for (int i=0; i<GetForecastsNb(methodRow); i++)
     {
@@ -584,6 +588,8 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
     Array1DFloat maxValues = Array1DFloat::Ones(dates.size());
     maxValues *= NaNFloat;
 
+    bool singleMethod = (GetForecastsNb(methodRow)==1);
+
     for (int forecastRow=0; forecastRow<(int)m_forecasts[methodRow].size(); forecastRow++)
     {
         asResultsAnalogsForecast* forecast = m_forecasts[methodRow][forecastRow];
@@ -617,7 +623,17 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
         wxASSERT(leadtimeMin<leadtimeMax);
 
         // Get the values of the relevant stations only
-        VectorInt relevantStations = forecast->GetPredictandStationIds();
+        VectorInt relevantStations;
+        if (singleMethod) {
+            Array1DInt relevantStationsTmp = forecast->GetStationIds();
+            for (int i=0; i<relevantStationsTmp.size(); i++) {
+                relevantStations.push_back(relevantStationsTmp[i]);
+            }
+        }
+        else {
+            relevantStations = forecast->GetPredictandStationIds();
+        }
+
         for (int i_st=0; i_st<(int)relevantStations.size(); i_st++)
         {
             int indexStation = forecast->GetStationRowFromId(relevantStations[i_st]);
