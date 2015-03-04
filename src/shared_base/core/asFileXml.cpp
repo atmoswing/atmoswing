@@ -280,16 +280,20 @@ double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
 
 wxString asFileXml::GetString(wxXmlNode *node, const wxString &defaultValue)
 {
+    
+    wxLogWarning("1... ");
+
     if (!node->GetChildren())
     {
         asLogWarning(_("The node is empty in the xml file."));
         return wxEmptyString;
     }
+    
+    wxLogWarning("2... ");
 
     wxString value = node->GetChildren()->GetContent();
 
-    wxLogWarning("test1: " + value);
-    wxLogWarning(wxString::Format("test2: %s", value.c_str()));
+    wxLogWarning("3: " + value);
 
     if (value.IsEmpty()) {
         return defaultValue;
