@@ -271,7 +271,7 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     int ind = 0;
     for (size_t i_time=0; i_time<Ntime; i_time++)
     {
-        for (int i_analog=0; i_analog<Nanalogs;i_analog++)
+        for (int i_analog=0; i_analog<(int)Nanalogs;i_analog++)
         {
             ind = i_analog;
             ind += i_time * Nanalogs;
@@ -284,7 +284,7 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
         Array2DFloat analogsValuesNormStation( Ntime, Nanalogs );
         Array2DFloat analogsValuesGrossStation( Ntime, Nanalogs );
         int ind = 0;
-        for (int i_time=0; i_time<Ntime; i_time++)
+        for (int i_time=0; i_time<(int)Ntime; i_time++)
         {
             for (int i_analog=0; i_analog<(int)Nanalogs;i_analog++)
             {

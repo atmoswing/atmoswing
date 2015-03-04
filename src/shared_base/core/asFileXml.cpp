@@ -287,6 +287,10 @@ wxString asFileXml::GetString(wxXmlNode *node, const wxString &defaultValue)
     }
 
     wxString value = node->GetChildren()->GetContent();
+
+    wxLogWarning("test1: " + value);
+    wxLogWarning(wxString::Format("test2: %s", value.c_str()));
+
     if (value.IsEmpty()) {
         return defaultValue;
     }
