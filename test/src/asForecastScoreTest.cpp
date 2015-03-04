@@ -1559,7 +1559,7 @@ TEST(ProcessMAE)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.311554, scoreVal, 0.000001);
+    CHECK_CLOSE(0.311834, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1609,7 +1609,7 @@ TEST(ProcessRMSE)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.358206612, scoreVal, 0.000001);
+    CHECK_CLOSE(0.358484, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1660,7 +1660,7 @@ TEST(ProcessBS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.187428558, scoreVal, 0.000001);
+    CHECK_CLOSE(0.187771, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1713,7 +1713,7 @@ TEST(ProcessBSS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.378581034, scoreVal, 0.00001);
+    CHECK_CLOSE(0.375521, scoreVal, 0.00001);
 
     wxDELETE(score);
     wxDELETE(finalScore);

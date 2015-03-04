@@ -51,8 +51,8 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(-32767);
-    m_xaxisShift = 0;
-    m_yaxisShift = 0;
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
     m_subFolder = wxEmptyString;
     m_fileAxisLatName = "latitude";
     m_fileAxisLonName = "longitude";
@@ -60,8 +60,8 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_fileAxisLevelName = "level";
 
     // The axis steps are defined here for default grids and will be overridden by real data resolution.
-    m_xaxisStep = 2.5;
-    m_yaxisStep = 2.5;
+    m_xAxisStep = 2.5;
+    m_yAxisStep = 2.5;
 
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt", false))
@@ -209,8 +209,8 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     }
     else
     {
-        m_xaxisStep = NaNFloat;
-        m_yaxisStep = NaNFloat;
+        m_xAxisStep = NaNFloat;
+        m_yAxisStep = NaNFloat;
 
         if (m_dataId.IsSameAs("flux_air2m", false))
         {

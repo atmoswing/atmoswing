@@ -53,16 +53,16 @@ asDataPredictorArchive(dataId)
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936*std::pow(10.f,34.f));
-    m_xaxisShift = 0;
-    m_yaxisShift = 0;
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
     m_fileAxisLatName = "lat";
     m_fileAxisLonName = "lon";
     m_fileAxisTimeName = "time";
     m_fileAxisLevelName = "level";
 
     // The axis steps are defined here for regular grids and will be overridden for unregular grids.
-    m_xaxisStep = 2.5;
-    m_yaxisStep = 2.5;
+    m_xAxisStep = 2.5;
+    m_yAxisStep = 2.5;
 
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt", false))
@@ -211,8 +211,8 @@ asDataPredictorArchive(dataId)
     }
     else
     {
-        m_xaxisStep = NaNFloat;
-        m_yaxisStep = NaNFloat;
+        m_xAxisStep = NaNFloat;
+        m_yAxisStep = NaNFloat;
 
         if (m_dataId.IsSameAs("flux_air2m", false))
         {

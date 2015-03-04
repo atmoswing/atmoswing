@@ -53,10 +53,10 @@ asDataPredictorArchive(dataId)
     m_firstTimeStepHours = 12;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936*std::pow(10.f,34.f));
-    m_xaxisShift = 0.125;
-    m_yaxisShift = 0.125;
-    m_xaxisStep = 0.25;
-    m_yaxisStep = 0.25;
+    m_xAxisShift = 0.125;
+    m_yAxisShift = 0.125;
+    m_xAxisStep = 0.25;
+    m_yAxisStep = 0.25;
     m_subFolder = wxEmptyString;
     m_fileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
     m_fileAxisLatName = "lat";
