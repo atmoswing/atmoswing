@@ -138,7 +138,7 @@ bool asMethodForecasting::Manager()
             else
             {
                 // Display processing time
-                asLogMessageImportant(wxString::Format(_("Processing of the forecast %s - %s took %ldms to execute"), params.GetMethodId().c_str(), params.GetSpecificTag().c_str(), sw.Time()));
+                asLogMessageImportant(wxString::Format(_("Processing of the forecast %s - %s took %ldms to execute"), params.GetMethodIdDisplay().c_str(), params.GetSpecificTagDisplay().c_str(), sw.Time()));
 
                 #if wxUSE_GUI
                     // Send event
