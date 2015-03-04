@@ -46,11 +46,11 @@ TEST(LoadCatalogProp)
     asCatalogPredictands catalog(filepath);
     catalog.Load();
 
-    int samestr = catalog.GetSetId().CompareTo(_T("MCHDR"));
+    int samestr = catalog.GetSetId().CompareTo(_T("MeteoSwiss-Rhone"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetName().CompareTo(_T("MeteoSwiss daily rainfall measurements"));
+    samestr = catalog.GetName().CompareTo(_T("MeteoSwiss daily rainfall measurements for the Rhone catchment"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetDescription().CompareTo(_T("Precipitation measurements made by MeteoSwiss at a daily timestep"));
+    samestr = catalog.GetDescription().CompareTo(_T("Precipitation measurements made by MeteoSwiss at a daily timestep for the Rhone catchment"));
     CHECK_EQUAL(0,samestr);
     DataParameter paramval = catalog.GetParameter();
     DataParameter paramref = Precipitation;
@@ -64,7 +64,7 @@ TEST(LoadCatalogProp)
     CHECK_EQUAL(0,catalog.GetTimeZoneHours());
     double startreal = asTime::GetMJD(1940,01,01,00,00);
     CHECK_EQUAL(startreal,catalog.GetStart());
-    double endreal = asTime::GetMJD(2007,12,31);
+    double endreal = asTime::GetMJD(2009,12,31);
     CHECK_EQUAL(endreal,catalog.GetEnd());
     CHECK_EQUAL(24,catalog.GetTimeStepHours());
     CHECK_EQUAL(0,catalog.GetFirstTimeStepHours());
@@ -83,20 +83,20 @@ TEST(LoadDataProp)
     catalog.Load();
 
     CHECK_EQUAL(1,catalog.GetStationId(0));
-    int samestr = catalog.GetStationName(0).CompareTo(_T("Disentis / Sedrun"));
+    int samestr = catalog.GetStationName(0).CompareTo(_T("Gütsch ob Andermatt"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetStationOfficialId(0).CompareTo(_T("0060"));
+    samestr = catalog.GetStationOfficialId(0).CompareTo(_T("4020"));
     CHECK_EQUAL(0,samestr);
-    CHECK_EQUAL(708200,catalog.GetStationCoord(0).x);
-    CHECK_EQUAL(173800,catalog.GetStationCoord(0).y);
-    CHECK_EQUAL(1190,catalog.GetStationHeight(0));
-    samestr = catalog.GetStationFilename(0).CompareTo(_T("0060_1948-2007.dat"));
+    CHECK_EQUAL(690140,catalog.GetStationCoord(0).x);
+    CHECK_EQUAL(167590,catalog.GetStationCoord(0).y);
+    CHECK_EQUAL(2287,catalog.GetStationHeight(0));
+    samestr = catalog.GetStationFilename(0).CompareTo(_T("CH4020.dat"));
     CHECK_EQUAL(0,samestr);
-    samestr = catalog.GetStationFilepattern(0).CompareTo(_T("MCH_Climap_standard"));
+    samestr = catalog.GetStationFilepattern(0).CompareTo(_T("MeteoSwiss_Climap"));
     CHECK_EQUAL(0,samestr);
-    double startreal = asTime::GetMJD(1948,01,01,00,00);
+    double startreal = asTime::GetMJD(1940,01,01,00,00);
     CHECK_EQUAL(startreal,catalog.GetStationStart(0));
-    double endreal = asTime::GetMJD(2007,12,31,00,00);
+    double endreal = asTime::GetMJD(2009,12,31,00,00);
     CHECK_EQUAL(endreal,catalog.GetStationEnd(0));
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<atmoswing_file version="1.0">
+<atmoswing version="1.0">
   <first_node id="N1" name="Node 1 name" description="C'est pô Noël">
     <something>1</something>
     <location>Zürich</location>
@@ -20,4 +20,4 @@
     <something>2</something>
     <location>Genève</location>
   </second_nod>
-</atmoswing_file>
+</atmoswing>

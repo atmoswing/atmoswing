@@ -53,10 +53,10 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936*std::pow(10.f,34.f));
-    m_xaxisShift = 0;
-    m_yaxisShift = 0;
-    m_xaxisStep = 2.5;
-    m_yaxisStep = 2.5;
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
+    m_xAxisStep = 2.5;
+    m_yAxisStep = 2.5;
     m_subFolder = wxEmptyString;
     m_fileAxisLatName = "lat";
     m_fileAxisLonName = "lon";

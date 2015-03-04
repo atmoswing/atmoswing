@@ -65,6 +65,10 @@ TEST(LoadEasySmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -154,6 +158,10 @@ TEST(LoadEasyLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -245,6 +253,10 @@ TEST(LoadCompositeSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -298,6 +310,10 @@ TEST(LoadCompositeLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -353,6 +369,10 @@ TEST(LoadBorderLeftSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -406,6 +426,10 @@ TEST(LoadBorderLeftLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -461,6 +485,10 @@ TEST(LoadBorderLeftOn720SmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -514,6 +542,10 @@ TEST(LoadBorderLeftOn720LargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -569,6 +601,10 @@ TEST(LoadBorderRightSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -622,6 +658,10 @@ TEST(LoadBorderRightLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -678,6 +718,10 @@ TEST(LoadCompositeStepLonSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -732,6 +776,10 @@ TEST(LoadCompositeStepLonLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -788,6 +836,10 @@ TEST(LoadCompositeStepLonLatSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -841,6 +893,10 @@ TEST(LoadCompositeStepLonLatLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -893,6 +949,10 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -950,6 +1010,10 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -1006,6 +1070,10 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -1056,6 +1124,10 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -1108,6 +1180,10 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
+
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
     CHECK_EQUAL(true, successLoad);
@@ -1156,6 +1232,10 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);

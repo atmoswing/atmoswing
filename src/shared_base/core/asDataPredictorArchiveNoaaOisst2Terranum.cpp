@@ -53,10 +53,10 @@ asDataPredictorArchive(dataId)
     m_firstTimeStepHours = 12;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936*std::pow(10.f,34.f));
-    m_xaxisShift = 0.125;
-    m_yaxisShift = 0.125;
-    m_xaxisStep = 1;
-    m_yaxisStep = 1;
+    m_xAxisShift = 0.125;
+    m_yAxisShift = 0.125;
+    m_xAxisStep = 1;
+    m_yAxisStep = 1;
     m_subFolder = wxEmptyString;
     m_fileAxisLatName = "lat";
     m_fileAxisLonName = "lon";

@@ -55,10 +55,10 @@ asDataPredictorRealtime(dataId)
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(NaNDouble);
     m_nanValues.push_back(NaNFloat);
-    m_xaxisShift = 0;
-    m_yaxisShift = 0;
-    m_xaxisStep = 0.5;
-    m_yaxisStep = 0.5;
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
+    m_xAxisStep = 0.5;
+    m_yAxisStep = 0.5;
     m_restrictTimeHours = 0;
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";

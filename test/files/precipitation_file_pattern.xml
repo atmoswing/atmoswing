@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<atmoswing_file version="1.0">
+<atmoswing version="1.0">
   <pattern id="precipitation_file_pattern" name="Data pattern for unit testing">
     <structure_type>constant_width</structure_type>
     <header_lines>3</header_lines>
@@ -14,4 +14,4 @@
       <value char_start="11" char_end="14"/>
     </data>
   </pattern>
-</atmoswing_file>
+</atmoswing>

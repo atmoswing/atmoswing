@@ -236,36 +236,46 @@ public:
         return m_datasetName;
     }
 
-    /** Access m_xaxisStep
-     * \return The current value of m_xaxisStep
+    /** Access m_xAxisStep
+     * \return The current value of m_xAxisStep
      */
     double GetXaxisStep()
     {
-        return m_xaxisStep;
+        return m_xAxisStep;
     }
 
-    /** Access m_xaxisShift
-     * \return The current value of m_xaxisShift
+    void SetXaxisStep(const double val)
+    {
+        m_xAxisStep = val;
+    }
+
+    /** Access m_xAxisShift
+     * \return The current value of m_xAxisShift
      */
     double GetXaxisShift()
     {
-        return m_xaxisShift;
+        return m_xAxisShift;
     }
 
-    /** Access m_yaxisStep
-     * \return The current value of m_yaxisStep
+    /** Access m_yAxisStep
+     * \return The current value of m_yAxisStep
      */
     double GetYaxisStep()
     {
-        return m_yaxisStep;
+        return m_yAxisStep;
     }
 
-    /** Access m_yaxisShift
-     * \return The current value of m_yaxisShift
+    void SetYaxisStep(const double val)
+    {
+        m_yAxisStep = val;
+    }
+
+    /** Access m_yAxisShift
+     * \return The current value of m_yAxisShift
      */
     double GetYaxisShift()
     {
-        return m_yaxisShift;
+        return m_yAxisShift;
     }
 
 protected:
@@ -286,10 +296,10 @@ protected:
     DataParameter m_dataParameter;
     wxString m_fileVariableName;
     DataUnit m_unit;
-    float m_xaxisStep;
-    float m_yaxisStep;
-    float m_xaxisShift;
-    float m_yaxisShift;
+    float m_xAxisStep;
+    float m_yAxisStep;
+    float m_xAxisShift;
+    float m_yAxisShift;
     float m_level;
     Array1DDouble m_time;
     VArray2DFloat m_data;
