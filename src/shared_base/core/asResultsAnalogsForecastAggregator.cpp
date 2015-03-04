@@ -463,7 +463,7 @@ int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationRow(int 
         }
     }
 
-    asLogWarning(wxString::Format(_("No specific forecast was found for station n°%d"), stationRow));
+    asLogWarning(wxString::Format(_("No specific forecast was found for station nÂ°%d"), stationRow));
 
     return 0;
 }

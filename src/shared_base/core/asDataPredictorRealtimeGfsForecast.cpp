@@ -238,7 +238,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
                 if(lonMax==360)
                 {
-                    // Correction if the lon 360° is required (doesn't exist)
+                    // Correction if the lon 360Â° is required (doesn't exist)
                     load360 = true;
                     for (int i_check = 0; i_check<dataArea->GetNbComposites(); i_check++)
                     {
@@ -260,7 +260,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                 }
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
-                    // If not found, try with angles above 360°
+                    // If not found, try with angles above 360Â°
                     indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin+360, 0.0001f);
                 }
                 wxASSERT(indexStartLon>=0);
@@ -299,7 +299,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
             // Get data from file
             g2File.GetVarArray(m_fileVariableName, indexStartData, indexCountData, m_level, &data[0]);
 
-            // Load data at lon = 360°
+            // Load data at lon = 360Â°
             if(load360)
             {
                 // Resize the arrays to store the new data

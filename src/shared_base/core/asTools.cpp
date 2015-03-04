@@ -114,7 +114,7 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
         u2 = ((double)rand() / (double)(RAND_MAX) );
     }
 
-    // Box–Muller transform
+    // Boxâ€“Muller transform
     double z0 = sqrt(-2*log(u1))*cos(2*M_PI*u2);
     //double z1 = sqrt(-2*log(u1))*sin(2*M_PI*u2);
 
@@ -290,7 +290,7 @@ Array1DFloat asTools::GetCumulativeFrequency(int size)
     Array1DFloat F(size);
 
     // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
-    // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
+    // Choice based on [Cunnane, C., 1978, Unbiased plotting positionsâ€”A review: Journal of Hydrology, v. 37, p. 205â€“222.]
     // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
     float irep = 0.44f;
     float nrep = 0.12f;
