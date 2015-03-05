@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<atmoswing version="1.0">
+  <dataset>
+    <id>unitTesting</id>
+    <name>data for unit testing</name>
+    <description>data for unit testing</description>
+    <parameter>Precipitation</parameter>
+    <unit>mm</unit>
+    <temporal_resolution>Daily</temporal_resolution>
+    <spatial_aggregation>Groupment</spatial_aggregation>
+    <time_zone>0</time_zone>
+    <start note="first value of all stations">01/01/1962</start>
+    <end note="last value of all stations">31/12/2001</end>
+    <first_time_step>0</first_time_step>
+    <nan>-9999</nan>
+    <coordinate_system>EPSG:3857</coordinate_system>
+    
+    <stations>
+      <station>
+        <id>1</id>
+        <name>somewhere</name>
+        <official_id>1234</official_id>
+        <x_coordinate>708200</x_coordinate>
+        <y_coordinate>173800</y_coordinate>
+        <height>0</height>
+        <file_name>precipitation_file.txt</file_name>
+        <file_pattern>precipitation_file_pattern</file_pattern>
+        <start>01/01/1962</start>
+        <end>31/12/2001</end>
+      </station>
+      <station>
+        <id>2</id>
+        <name>anywhere</name>
+        <official_id>5678</official_id>
+        <x_coordinate>690140</x_coordinate>
+        <y_coordinate>167590</y_coordinate>
+        <height>0</height>
+        <file_name>precipitation_file.txt</file_name>
+        <file_pattern>precipitation_file_pattern</file_pattern>
+        <start>01/01/1962</start>
+        <end>31/12/2001</end>
+      </station>
+    </stations>
+  </dataset>
+</atmoswing>
