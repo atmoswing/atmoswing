@@ -126,7 +126,12 @@ void asLog::Resume()
 
 void asLog::Flush()
 {
-    m_logChain->Flush();
+    if (m_logChain) {
+        m_logChain->Flush();
+    }
+    else if (m_logFile) {
+        m_logFile->Flush();
+    }
 }
 
 void asLog::Error(const wxString &msg)
