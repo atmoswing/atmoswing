@@ -713,12 +713,12 @@ endif (BUILD_CALIBRATOR)
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
+          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal110.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
           DESTINATION .
           )
     else (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib1.dll ../bin/msvcr110.dll
+          PROGRAMS ../bin/gdal110.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib.dll ../bin/msvcr110.dll
           DESTINATION .
           )
     endif (USE_PROVIDED_LIBRARIES)
@@ -726,11 +726,6 @@ endif (WIN32)
   
 install (
   FILES ../license.txt ../notice.txt
-  DESTINATION ${INSTALL_DIR_SHARE}
-  )
-  
-install (
-  DIRECTORY ../config
   DESTINATION ${INSTALL_DIR_SHARE}
   )
 
