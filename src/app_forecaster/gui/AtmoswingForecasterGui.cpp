@@ -21,10 +21,16 @@
 
 asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 500,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 600,700 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
+	
+	m_toolBar = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxSize( -1,40 ), wxTB_HORIZONTAL );
+	m_toolBar->SetToolBitmapSize( wxSize( 32,32 ) );
+	m_toolBar->Realize(); 
+	
+	bSizer3->Add( m_toolBar, 0, wxEXPAND, 5 );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer18;
@@ -56,10 +62,41 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer35->Add( m_bpButtonNow, 0, wxTOP|wxBOTTOM, 5 );
 	
 	
-	sbSizer13->Add( bSizer35, 1, wxEXPAND, 5 );
+	sbSizer13->Add( bSizer35, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
 	bSizer19->Add( sbSizer13, 0, wxEXPAND|wxALL, 5 );
+	
+	wxBoxSizer* bSizer341;
+	bSizer341 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer131;
+	sbSizer131 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, _("Overall progress") ), wxVERTICAL );
+	
+	m_gauge = new wxGauge( m_panelMain, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
+	m_gauge->SetValue( 0 ); 
+	sbSizer131->Add( m_gauge, 0, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer351;
+	bSizer351 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticTextProgressActual = new wxStaticText( m_panelMain, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextProgressActual->Wrap( -1 );
+	bSizer351->Add( m_staticTextProgressActual, 0, wxTOP|wxBOTTOM, 5 );
+	
+	m_staticText38 = new wxStaticText( m_panelMain, wxID_ANY, _("/"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText38->Wrap( -1 );
+	bSizer351->Add( m_staticText38, 0, wxALL, 5 );
+	
+	m_staticTextProgressTot = new wxStaticText( m_panelMain, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextProgressTot->Wrap( -1 );
+	bSizer351->Add( m_staticTextProgressTot, 0, wxTOP|wxBOTTOM, 5 );
+	
+	
+	sbSizer131->Add( bSizer351, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	bSizer341->Add( sbSizer131, 0, wxEXPAND|wxALL, 5 );
 	
 	wxStaticBoxSizer* sbSizer5;
 	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, _("Current forecast state") ), wxVERTICAL );
@@ -72,7 +109,10 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	sbSizer5->Add( m_sizerLeds, 0, wxEXPAND, 5 );
 	
 	
-	bSizer19->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
+	bSizer341->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	bSizer19->Add( bSizer341, 1, wxEXPAND, 5 );
 	
 	
 	bSizer18->Add( bSizer19, 0, wxEXPAND, 5 );
@@ -85,7 +125,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	bSizer22->SetMinSize( wxSize( -1,200 ) ); 
 	m_button2 = new wxButton( m_panelMain, wxID_ANY, _("Configure directories"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer22->Add( m_button2, 0, wxALL, 5 );
+	bSizer22->Add( m_button2, 0, wxALIGN_RIGHT|wxRIGHT|wxLEFT, 5 );
 	
 	m_scrolledWindowForecasts = new wxScrolledWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
 	m_scrolledWindowForecasts->SetScrollRate( 5, 5 );
@@ -133,7 +173,6 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
-	bSizer3->Fit( this );
 	m_menuBar = new wxMenuBar( 0 );
 	m_menuFile = new wxMenu();
 	wxMenuItem* m_menuItemOpenBatchFile;
@@ -199,10 +238,6 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_menuBar->Append( m_menuHelp, _("Help") ); 
 	
 	this->SetMenuBar( m_menuBar );
-	
-	m_toolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY );
-	m_toolBar->SetToolBitmapSize( wxSize( 32,32 ) );
-	m_toolBar->Realize(); 
 	
 	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
 	
@@ -429,7 +464,7 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_sizerFilename->Add( m_textCtrlParametersFileName, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
 	
 	
-	m_sizerHeader->Add( m_sizerFilename, 1, wxEXPAND, 5 );
+	m_sizerHeader->Add( m_sizerFilename, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_bpButtonClose = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 22,22 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_sizerHeader->Add( m_bpButtonClose, 0, wxALIGN_CENTER_VERTICAL, 5 );
@@ -903,7 +938,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 	m_staticText43->Wrap( -1 );
 	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
 	
-	m_filePickerBatchFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.asfb"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
+	m_filePickerBatchFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
 	bSizer49->Add( m_filePickerBatchFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_staticText45 = new wxStaticText( m_wizPage2, wxID_ANY, _("The preferences frame will open to configure the required directories."), wxDefaultPosition, wxDefaultSize, 0 );

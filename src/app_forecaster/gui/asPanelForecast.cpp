@@ -39,7 +39,7 @@ asPanelForecastVirtual( parent )
     // Led
     m_led = new awxLed( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0 );
 	m_led->SetState( awxLED_OFF );
-	m_sizerHeader->Insert( 0, m_led, 0, wxALL, 5 );
+	m_sizerHeader->Insert( 0, m_led, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
     // Set the buttons bitmaps
     m_bpButtonClose->SetBitmapLabel(img_close);

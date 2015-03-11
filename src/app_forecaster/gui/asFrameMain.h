@@ -89,7 +89,9 @@ protected:
     void LaunchForecasting( wxCommandEvent& event );
     void CancelForecasting( wxCommandEvent& event );
     void AddForecast( wxCommandEvent& event );
-    void SetPresentDate();
+	void SetPresentDate(); 
+	void InitOverallProgress();
+	void IncrementOverallProgress();
 
 private:
     asPanelsManagerForecasts* m_panelsManager;
