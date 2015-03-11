@@ -527,6 +527,14 @@ if(wxWidgets_FIND_STYLE STREQUAL "win32")
           mswunivd/wx/setup.h
           mswunivu/wx/setup.h
           mswunivud/wx/setup.h
+          base/wx/setup.h
+          based/wx/setup.h
+          baseu/wx/setup.h
+          baseud/wx/setup.h
+          baseuniv/wx/setup.h
+          baseunivd/wx/setup.h
+          baseunivu/wx/setup.h
+          baseunivud/wx/setup.h
         PATHS
         ${WX_ROOT_DIR}/lib/${WX_LIB_DIR_PREFIX}_dll   # prefer shared
         ${WX_ROOT_DIR}/lib/${WX_LIB_DIR_PREFIX}_lib
@@ -544,6 +552,14 @@ if(wxWidgets_FIND_STYLE STREQUAL "win32")
           mswunivd/wx/setup.h
           mswunivu/wx/setup.h
           mswunivud/wx/setup.h
+          base/wx/setup.h
+          based/wx/setup.h
+          baseu/wx/setup.h
+          baseud/wx/setup.h
+          baseuniv/wx/setup.h
+          baseunivd/wx/setup.h
+          baseunivu/wx/setup.h
+          baseunivud/wx/setup.h
         PATHS
         ${WX_ROOT_DIR}/lib/${WX_LIB_DIR_PREFIX}_lib   # prefer static
         ${WX_ROOT_DIR}/lib/${WX_LIB_DIR_PREFIX}_dll
@@ -866,7 +882,7 @@ DBG_MSG("wxWidgets_USE_FILE        : ${wxWidgets_USE_FILE}")
 
 #=====================================================================
 #=====================================================================
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(wxWidgets DEFAULT_MSG wxWidgets_FOUND)
 # Maintain consistency with all other variables.
 set(wxWidgets_FOUND ${WXWIDGETS_FOUND})
