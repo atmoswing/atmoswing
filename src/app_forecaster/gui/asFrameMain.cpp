@@ -72,35 +72,35 @@ asFrameMainVirtual( parent )
     // Leds
     m_ledDownloading = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
 	m_ledDownloading->SetState( awxLED_OFF );
-	m_sizerLeds->Add( m_ledDownloading, 0, wxALL, 5 );
+	m_sizerLeds->Add(m_ledDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	wxStaticText *textDownloading = new wxStaticText( m_panelMain, wxID_ANY, _("Downloading predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	textDownloading->Wrap( -1 );
-	m_sizerLeds->Add( textDownloading, 0, wxALL, 5 );
+	m_sizerLeds->Add(textDownloading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	m_ledLoading = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
 	m_ledLoading->SetState( awxLED_OFF );
-	m_sizerLeds->Add( m_ledLoading, 0, wxALL, 5 );
+	m_sizerLeds->Add(m_ledLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	wxStaticText *textLoading = new wxStaticText( m_panelMain, wxID_ANY, _("Loading data"), wxDefaultPosition, wxDefaultSize, 0 );
 	textLoading->Wrap( -1 );
-	m_sizerLeds->Add( textLoading, 0, wxALL, 5 );
+	m_sizerLeds->Add(textLoading, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	m_ledProcessing = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
 	m_ledProcessing->SetState( awxLED_OFF );
-	m_sizerLeds->Add( m_ledProcessing, 0, wxALL, 5 );
+	m_sizerLeds->Add(m_ledProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	wxStaticText *textProcessing = new wxStaticText( m_panelMain, wxID_ANY, _("Processing"), wxDefaultPosition, wxDefaultSize, 0 );
 	textProcessing->Wrap( -1 );
-	m_sizerLeds->Add( textProcessing, 0, wxALL, 5 );
+	m_sizerLeds->Add(textProcessing, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	m_ledSaving = new awxLed( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_YELLOW, 0 );
 	m_ledSaving->SetState( awxLED_OFF );
-	m_sizerLeds->Add( m_ledSaving, 0, wxALL, 5 );
+	m_sizerLeds->Add(m_ledSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	wxStaticText *textSaving = new wxStaticText( m_panelMain, wxID_ANY, _("Saving results"), wxDefaultPosition, wxDefaultSize, 0 );
 	textSaving->Wrap( -1 );
-	m_sizerLeds->Add( textSaving, 0, wxALL, 5 );
+	m_sizerLeds->Add(textSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Buttons
     m_bpButtonNow->SetBitmapLabel(img_clock_now);
@@ -282,6 +282,8 @@ bool asFrameMain::OpenBatchForecasts()
         // Add to the array
         m_panelsManager->AddPanel(panel);
     }
+
+	InitOverallProgress();
     
     Layout(); // For the scrollbar
     Thaw();
@@ -380,10 +382,12 @@ void asFrameMain::OnStatusMethodUpdate( wxCommandEvent& event )
     else if(eventType==asEVT_STATUS_FAILED)
     {
         m_panelsManager->SetForecastLedError(eventInt);
+		IncrementOverallProgress();
     }
     else if(eventType==asEVT_STATUS_SUCCESS)
     {
         m_panelsManager->SetForecastLedDone(eventInt);
+		IncrementOverallProgress();
     }
     else if(eventType==asEVT_STATUS_DOWNLOADING)
     {
@@ -478,6 +482,8 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
+	InitOverallProgress();
+
     // Get date
     double forecastDate = GetForecastDate();
     wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
@@ -495,24 +501,6 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     if(!m_forecaster->Manager())
     {
         asLogError(_("Failed processing the forecast."));
-
-// FIXME (Pascal#1#): Send email in case of failure.
-        /*
-        wxSMTP *smtp = new wxSMTP(NULL);
-        smtp->SetHost("smtp.gmail.com");
-        wxEmailMessage *msg = new wxEmailMessage("BLABLABLA",
-                                                 "Your code really sucks.\n"
-                                                 "Fix your code",
-                                                 "pascal.horton.job@gmail.com");
-        msg->AddAlternative("<html><body><h1>Bug report</h1>\n"
-                            "Your code <b>really</b> sucks <p>Fix your code</html>",
-                            "text","html");
-        msg->AddTo("pascal.horton.job@gmail.com");
-        smtp->Send(msg);
-
-        wxSleep(60);
-        smtp->Destroy();
-        */
 
         wxDELETE(m_forecaster);
 
@@ -591,4 +579,31 @@ void asFrameMain::SetForecastDate( double date )
     TimeStruct forecastDateStruct = asTime::GetTimeStruct(date);
     wxString hourStr = wxString::Format("%d", forecastDateStruct.hour);
     m_textCtrlForecastHour->SetValue(hourStr);
+}
+
+void asFrameMain::InitOverallProgress()
+{
+	m_gauge->SetRange(m_batchForecasts.GetForecastsNb());
+	m_gauge->SetValue(0);
+
+	m_staticTextProgressActual->SetLabel('0');
+	wxString totForecastsNb;
+	totForecastsNb << m_batchForecasts.GetForecastsNb();
+	m_staticTextProgressTot->SetLabel(totForecastsNb);
+}
+
+void asFrameMain::IncrementOverallProgress()
+{
+	int gaugeValue = m_gauge->GetValue()+1;
+	m_gauge->SetValue(gaugeValue);
+
+	wxString forecastsNb;
+	forecastsNb << gaugeValue;
+	m_staticTextProgressActual->SetLabel(forecastsNb);
+
+	m_staticTextProgressActual->GetParent()->Layout();
+
+	#if wxUSE_GUI
+		wxYield();
+	#endif
 }

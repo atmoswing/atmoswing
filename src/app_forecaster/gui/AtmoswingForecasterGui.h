@@ -11,12 +11,13 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-#include <wx/calctrl.h>
 #include <wx/gdicmn.h>
+#include <wx/toolbar.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
+#include <wx/calctrl.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/bitmap.h>
@@ -26,10 +27,10 @@
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/statbox.h>
+#include <wx/gauge.h>
 #include <wx/scrolwin.h>
 #include <wx/panel.h>
 #include <wx/menu.h>
-#include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
 #include <wx/choice.h>
@@ -53,11 +54,16 @@ class asFrameMainVirtual : public wxFrame
 	private:
 	
 	protected:
+		wxToolBar* m_toolBar;
 		wxPanel* m_panelMain;
 		wxCalendarCtrl* m_calendarForecastDate;
 		wxStaticText* m_staticTextForecastHour;
 		wxTextCtrl* m_textCtrlForecastHour;
 		wxBitmapButton* m_bpButtonNow;
+		wxGauge* m_gauge;
+		wxStaticText* m_staticTextProgressActual;
+		wxStaticText* m_staticText38;
+		wxStaticText* m_staticTextProgressTot;
 		wxFlexGridSizer* m_sizerLeds;
 		wxButton* m_button2;
 		wxScrolledWindow* m_scrolledWindowForecasts;
@@ -70,7 +76,6 @@ class asFrameMainVirtual : public wxFrame
 		wxMenu* m_menuLog;
 		wxMenu* m_menuLogLevel;
 		wxMenu* m_menuHelp;
-		wxToolBar* m_toolBar;
 		wxStatusBar* m_statusBar1;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -92,7 +97,7 @@ class asFrameMainVirtual : public wxFrame
 	
 	public:
 		
-		asFrameMainVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameMainVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 600,700 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameMainVirtual();
 	
