@@ -270,7 +270,7 @@ if(wxWidgets_FIND_STYLE STREQUAL "win32")
   #
   macro(WX_GET_NAME_COMPONENTS _CONFIGURATION _UNV _UCD _DBG)
     string(REGEX MATCH "univ" ${_UNV} "${_CONFIGURATION}")
-    string(REGEX REPLACE "msw.*(u)[d]*$" "u" ${_UCD} "${_CONFIGURATION}")
+    string(REGEX REPLACE "(msw|base).*(u)[d]*$" "u" ${_UCD} "${_CONFIGURATION}")
     if(${_UCD} STREQUAL ${_CONFIGURATION})
       set(${_UCD} "")
     endif()
@@ -583,7 +583,7 @@ if(wxWidgets_FIND_STYLE STREQUAL "win32")
       endif()
 
       # Search for available configuration types.
-      foreach(CFG mswunivud mswunivd mswud mswd mswunivu mswuniv mswu msw)
+      foreach(CFG mswunivud mswunivd mswud mswd mswunivu mswuniv mswu msw baseunivud baseunivd baseud based baseunivu baseuniv baseu base)
         set(WX_${CFG}_FOUND FALSE)
         if(EXISTS ${WX_LIB_DIR}/${CFG})
           list(APPEND WX_CONFIGURATION_LIST ${CFG})
