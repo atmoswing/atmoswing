@@ -44,5 +44,6 @@ const extern double g_cst_Pi;
 
 // Useful variables
 const extern wxString DS;
+extern double g_ppiScaleDc;
 
 #endif // ASGLOBVARS_H_INCLUDED

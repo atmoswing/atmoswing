@@ -26,12 +26,6 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 	
-	m_toolBar = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxSize( -1,40 ), wxTB_HORIZONTAL );
-	m_toolBar->SetToolBitmapSize( wxSize( 32,32 ) );
-	m_toolBar->Realize(); 
-	
-	bSizer3->Add( m_toolBar, 0, wxEXPAND, 5 );
-	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxVERTICAL );
@@ -125,7 +119,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	
 	bSizer22->SetMinSize( wxSize( -1,200 ) ); 
 	m_button2 = new wxButton( m_panelMain, wxID_ANY, _("Configure directories"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer22->Add( m_button2, 0, wxALIGN_RIGHT|wxRIGHT|wxLEFT, 5 );
+	bSizer22->Add( m_button2, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_scrolledWindowForecasts = new wxScrolledWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
 	m_scrolledWindowForecasts->SetScrollRate( 5, 5 );
@@ -240,6 +234,10 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	this->SetMenuBar( m_menuBar );
 	
 	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
+	m_toolBar = this->CreateToolBar( wxTB_HORIZONTAL, wxID_ANY );
+	m_toolBar->SetToolBitmapSize( wxSize( 32,32 ) );
+	m_toolBar->Realize(); 
+	
 	
 	this->Centre( wxBOTH );
 	

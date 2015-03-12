@@ -53,7 +53,7 @@ IMPLEMENT_APP(AtmoswingAppCalibrator);
 #include <asMethodCalibratorSingle.h>
 #include <asMethodCalibratorClassic.h>
 #if wxUSE_GUI
-    #include "img_toolbar.h"
+    #include "images.h"
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
@@ -126,6 +126,12 @@ bool AtmoswingAppCalibrator::OnInit()
         return true;
 
     #if wxUSE_GUI
+
+		// Set PPI
+		wxMemoryDC dcTestPpi;
+		wxSize ppiDC = dcTestPpi.GetPPI();
+		g_ppiScaleDc = double(ppiDC.x) / 96.0;
+
 	    m_singleInstanceChecker = NULL;
         if (g_guiMode)
         {
@@ -149,7 +155,7 @@ bool AtmoswingAppCalibrator::OnInit()
             wxInitAllImageHandlers();
 
             // Initialize images
-            initialize_images_toolbar();
+			initialize_images(g_ppiScaleDc);
 
             // Create frame
             AtmoswingFrameCalibrator* frame = new AtmoswingFrameCalibrator(0L);
@@ -714,6 +720,9 @@ int AtmoswingAppCalibrator::OnExit()
     // Delete threads manager and log
     DeleteThreadsManager();
     DeleteLog();
+
+	// Delete images
+	cleanup_images();
 
     // CleanUp
     wxApp::CleanUp();

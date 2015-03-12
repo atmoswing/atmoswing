@@ -29,7 +29,6 @@
 
 #include "asFramePredictandDB.h"
 #include "asFramePreferencesForecaster.h"
-#include "asFrameXmlEditor.h"
 #include "asFrameAbout.h"
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"

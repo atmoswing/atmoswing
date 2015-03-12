@@ -390,7 +390,7 @@ void asForecastViewer::Redraw()
             }
 
             if(!forecast) {
-                asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecast->GetStationName(i_stat).c_str()));
+				asLogWarning(wxString::Format(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(i_stat).c_str()));
                 continue;
             }
 

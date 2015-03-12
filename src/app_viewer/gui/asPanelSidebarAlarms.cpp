@@ -27,7 +27,7 @@
  
 #include "asPanelSidebarAlarms.h"
 
-#include "img_bullets.h"
+#include "images.h"
 
 /*
  * asPanelSidebarAlarms
@@ -46,9 +46,7 @@ asPanelSidebar( parent, id, pos, size, style )
                 // 2: thresholds -> not available yet
 
     m_panelDrawing = NULL;
-    //m_panelDrawing = new asPanelSidebarAlarmsDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(50,50), wxTAB_TRAVERSAL );
-    //m_panelDrawing->SetParent(this);
-    //m_sizerContent->Add( m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5 );
+
     m_sizerContent->Fit(this);
 
     Connect( wxEVT_PAINT, wxPaintEventHandler( asPanelSidebarAlarms::OnPaint ), NULL, this );
@@ -114,12 +112,13 @@ void asPanelSidebarAlarms::SetData(Array1DFloat &dates, Array2DFloat &values)
 
     // Required size
     int rows = values.rows();
-    int cellHeight = 20;
-    int totHeight = cellHeight*rows+20;
+    int cellHeight = 20 * g_ppiScaleDc;
+	int totHeight = cellHeight*rows + cellHeight;
+	int width = 240 * g_ppiScaleDc;
 
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_panelDrawing);
-    m_panelDrawing = new asPanelSidebarAlarmsDrawing( this, wxID_ANY, wxDefaultPosition, wxSize(240,totHeight), wxTAB_TRAVERSAL );
+	m_panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight), wxTAB_TRAVERSAL);
     m_panelDrawing->SetParent(this);
     m_panelDrawing->Layout();
     m_panelDrawing->DrawAlarms(dates, names, values);
@@ -166,11 +165,12 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorSt
     wxASSERT_MSG( (values.rows()==rows) , wxString::Format("values.rows()=%d, rows=%d", (int)values.rows(), rows));
 
     // Height of a grid row
-    int cellHeight = 20;
+	int cellHeight = 20 * g_ppiScaleDc;
+	int width = 240 * g_ppiScaleDc;
 
     // Create bitmap
-    int totHeight = cellHeight*rows+20;
-    wxBitmap * bmp = new wxBitmap(240,totHeight);
+	int totHeight = cellHeight*rows + cellHeight;
+	wxBitmap * bmp = new wxBitmap(width, totHeight);
     wxASSERT(bmp);
 
     // Create device context
@@ -191,10 +191,10 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorSt
         wxFont numFont(8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
         gc->SetFont( datesFont, *wxBLACK );
 
-        wxPoint startText(17, 0);
-        wxPoint startNb(0, 14);
-        wxPoint startGrid(12, 10);
-        int cellWitdh = 226/dates.size();
+		wxPoint startText(17 * g_ppiScaleDc, 0);
+		wxPoint startNb(0, 14 * g_ppiScaleDc);
+		wxPoint startGrid(12 * g_ppiScaleDc, 10 * g_ppiScaleDc);
+		int cellWitdh = (226*g_ppiScaleDc)/ dates.size();
 
         for (int i_leadtime=0; i_leadtime<dates.size(); i_leadtime++)
         {

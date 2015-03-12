@@ -41,6 +41,9 @@ asFramePlotTimeSeriesVirtual( parent, id )
 {
     m_maxVal = 100;
 
+	int paneMinSize = m_splitter->GetMinimumPaneSize() * g_ppiScaleDc;
+	m_splitter->SetMinimumPaneSize(paneMinSize);
+
     m_selectedStation = selectedStation;
     m_selectedMethod = selectedMethod;
     m_selectedForecast = selectedForecast;

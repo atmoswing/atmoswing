@@ -11,13 +11,12 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
+#include <wx/calctrl.h>
 #include <wx/gdicmn.h>
-#include <wx/toolbar.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/calctrl.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/bitmap.h>
@@ -32,6 +31,7 @@
 #include <wx/panel.h>
 #include <wx/menu.h>
 #include <wx/statusbr.h>
+#include <wx/toolbar.h>
 #include <wx/frame.h>
 #include <wx/choice.h>
 #include <wx/checkbox.h>
@@ -54,7 +54,6 @@ class asFrameMainVirtual : public wxFrame
 	private:
 	
 	protected:
-		wxToolBar* m_toolBar;
 		wxPanel* m_panelMain;
 		wxCalendarCtrl* m_calendarForecastDate;
 		wxStaticText* m_staticTextForecastHour;
@@ -77,6 +76,7 @@ class asFrameMainVirtual : public wxFrame
 		wxMenu* m_menuLogLevel;
 		wxMenu* m_menuHelp;
 		wxStatusBar* m_statusBar1;
+		wxToolBar* m_toolBar;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSetPresentDate( wxCommandEvent& event ) { event.Skip(); }

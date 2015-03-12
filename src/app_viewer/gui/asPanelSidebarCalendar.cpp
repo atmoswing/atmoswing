@@ -27,7 +27,7 @@
  
 #include "asPanelSidebarCalendar.h"
 
-#include "img_misc.h"
+#include "images.h"
 #include <wx/calctrl.h>
 
 asPanelSidebarCalendar::asPanelSidebarCalendar( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
@@ -52,7 +52,7 @@ asPanelSidebar( parent, id, pos, size, style )
 
     m_bpButtonNow = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
     m_bpButtonNow->SetToolTip( wxT("Set current date.") );
-    m_bpButtonNow->SetBitmapLabel(img_clock_now);
+	m_bpButtonNow->SetBitmapLabel(*_img_update);
 
     bSizer35->Add( m_bpButtonNow, 0, wxTOP|wxBOTTOM, 5 );
 

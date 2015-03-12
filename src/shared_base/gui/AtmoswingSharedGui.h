@@ -24,12 +24,11 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/toolbar.h>
-#include <wx/frame.h>
 #include <wx/statbmp.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <wx/notebook.h>
+#include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -77,25 +76,6 @@ class asDialogFileSaverVirtual : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameXmlEditorVirtual
-///////////////////////////////////////////////////////////////////////////////
-class asFrameXmlEditorVirtual : public wxFrame 
-{
-	private:
-	
-	protected:
-		wxToolBar* m_toolBar;
-		wxToolBarToolBase* m_toolSave; 
-	
-	public:
-		
-		asFrameXmlEditorVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Xml Editor"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 532,423 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
-		~asFrameXmlEditorVirtual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameAboutVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameAboutVirtual : public wxFrame 
@@ -103,7 +83,7 @@ class asFrameAboutVirtual : public wxFrame
 	private:
 	
 	protected:
-		wxPanel* m_panel;
+		wxPanel* m_Panel;
 		wxStaticBitmap* m_logo;
 		wxStaticText* m_staticTextVersion;
 		wxStaticText* m_staticTextChangeset;
@@ -115,8 +95,6 @@ class asFrameAboutVirtual : public wxFrame
 		wxStaticText* m_staticTextSupervisionList;
 		wxStaticText* m_staticTextThanks;
 		wxStaticText* m_staticTextThanksList;
-		wxStaticText* m_staticTextOtherCredits;
-		wxStaticText* m_staticTextOtherCreditsList;
 		wxStaticText* m_staticTextSpacer;
 		wxPanel* m_panelLicense;
 		wxTextCtrl* m_textCtrlLicense;
