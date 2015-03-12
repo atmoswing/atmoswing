@@ -199,7 +199,7 @@ class asFramePlotDistributionsVirutal : public wxFrame
 		
 		void m_splitterPredictandsOnIdle( wxIdleEvent& )
 		{
-			m_splitterPredictands->SetSashPosition( 150 );
+			m_splitterPredictands->SetSashPosition( 170 );
 			m_splitterPredictands->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitterPredictandsOnIdle ), NULL, this );
 		}
 	
@@ -231,7 +231,7 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 	
 	public:
 		
-		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameGridAnalogsValuesVirtual();
 	

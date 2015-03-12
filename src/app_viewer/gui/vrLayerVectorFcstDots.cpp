@@ -144,7 +144,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 
 void vrLayerVectorFcstDots::_CreatePath(wxGraphicsPath & path, const wxPoint & center)
 {
-    const wxDouble radius = 15;
+    const wxDouble radius = 15 * g_ppiScaleDc;
 
     path.AddCircle(center.x, center.y, radius);
 }

@@ -45,9 +45,7 @@
 #include "asFileAscii.h"
 #include "asFileWorkspace.h"
 #include "asWizardWorkspace.h"
-#include "img_bullets.h"
-#include "img_toolbar.h"
-#include "img_logo.h"
+#include "images.h"
 #include <wx/colour.h>
 #include <wx/statline.h>
 #include <wx/app.h>
@@ -122,24 +120,24 @@ asFrameForecast::asFrameForecast( wxWindow* parent, wxWindowID id )
 :
 asFrameForecastVirtual( parent, id )
 {
-    g_silentMode = false;
+	g_silentMode = false;
+
+	// Adjust size
+	int sashMinSize = m_splitterGIS->GetMinimumPaneSize();
+	sashMinSize *= g_ppiScaleDc;
+	m_splitterGIS->SetMinimumPaneSize(sashMinSize);
 
     // Toolbar
-    m_toolBar->AddTool( asID_OPEN, wxT("Open"), img_open, img_open, wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), NULL );
-    m_toolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run last forecast"), _("Run last forecast"), NULL );
-    m_toolBar->AddTool( asID_RUN_PREVIOUS, wxT("Run previous"), img_run_history, img_run_history, wxITEM_NORMAL, _("Run previous forecasts"), _("Run all previous forecasts"), NULL );
-    m_toolBar->AddSeparator();
-    m_toolBar->AddTool( asID_SELECT, wxT("Select"), img_map_cursor, img_map_cursor, wxITEM_NORMAL, _("Select"), _("Select data on the map"), NULL );
-    m_toolBar->AddTool( asID_ZOOM_IN, wxT("Zoom in"), img_map_zoom_in, img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), NULL );
-    m_toolBar->AddTool( asID_ZOOM_OUT, wxT("Zoom out"), img_map_zoom_out, img_map_zoom_out, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), NULL );
-    m_toolBar->AddTool( asID_PAN, wxT("Pan"), img_map_move, img_map_move, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), NULL );
-    m_toolBar->AddTool( asID_ZOOM_FIT, wxT("Fit"), img_map_fit, img_map_fit, wxITEM_NORMAL, _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), NULL );
-    m_toolBar->AddSeparator();
-    m_toolBar->AddTool( asID_FRAME_PLOTS, wxT("Open distributions plots"), img_frame_plots, img_frame_plots, wxITEM_NORMAL, _("Open distributions plots"), _("Open distributions plots"), NULL );
-    m_toolBar->AddTool( asID_FRAME_GRID, wxT("Open analogs list"), img_frame_grid, img_frame_grid, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), NULL );
-    m_toolBar->AddTool( asID_FRAME_FORECASTER, wxT("Open forecaster"), img_frame_forecaster, img_frame_forecaster, wxITEM_NORMAL, _("Open forecaster"), _("Open forecaster"), NULL );
-    m_toolBar->AddSeparator();
-    m_toolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+	m_toolBar->AddTool(asID_OPEN, wxT("Open"), *_img_open, *_img_open, wxITEM_NORMAL, _("Open forecast"), _("Open a forecast"), NULL);
+	m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run last forecast"), _("Run last forecast"), NULL);
+	m_toolBar->AddTool(asID_SELECT, wxT("Select"), *_img_map_select, *_img_map_select, wxITEM_NORMAL, _("Select"), _("Select data on the map"), NULL);
+	m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"), _("Zoom in"), NULL);
+	m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL, _("Zoom out"), _("Zoom out"), NULL);
+	m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"), _("Move the map by panning"), NULL);
+	m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL, _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), NULL);
+	m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"), *_img_frame_distributions, *_img_frame_distributions, wxITEM_NORMAL, _("Open distributions plots"), _("Open distributions plots"), NULL);
+	m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), *_img_frame_analogs, *_img_frame_analogs, wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), NULL);
+	m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL);
     m_toolBar->Realize();
 
     // VroomGIS controls
@@ -716,9 +714,10 @@ void asFrameForecast::OnQuit( wxCommandEvent& event )
 void asFrameForecast::UpdateLeadTimeSwitch()
 {
     // Required size
-    int squareSize = 40;
+	int margin = 5 * g_ppiScaleDc;
+	int squareSize = 40 * g_ppiScaleDc;
     int width = (m_forecastManager->GetFullTargetDates().size()+1)*squareSize;
-    int height = squareSize + 5;
+	int height = squareSize + margin;
 
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_leadTimeSwitcher);
@@ -887,7 +886,15 @@ void asFrameForecast::OpenFramePlots( wxCommandEvent& event )
     wxBusyCursor wait;
 
     asFramePlotDistributions* framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(), m_forecastViewer->GetForecastSelection(), m_forecastManager);
-    framePlot->Layout();
+	
+	if (g_ppiScaleDc > 1) {
+		wxSize frameSize = framePlot->GetSize();
+		frameSize.x *= g_ppiScaleDc;
+		frameSize.y *= g_ppiScaleDc;
+		framePlot->SetSize(frameSize);
+	}
+	
+	framePlot->Layout();
     framePlot->Init();
     framePlot->Plot();
     framePlot->Show();
@@ -898,7 +905,15 @@ void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
     wxBusyCursor wait;
 
     asFrameGridAnalogsValues* frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(), m_forecastViewer->GetForecastSelection(), m_forecastManager);
-    frameGrid->Layout();
+    
+	if (g_ppiScaleDc > 1) {
+		wxSize frameSize = frameGrid->GetSize();
+		frameSize.x *= g_ppiScaleDc;
+		frameSize.y *= g_ppiScaleDc;
+		frameGrid->SetSize(frameSize);
+	}
+
+	frameGrid->Layout();
     frameGrid->Init();
     frameGrid->Show();
 }
@@ -1914,7 +1929,15 @@ void asFrameForecast::DrawPlotStation( int stationRow )
     }
 
     asFramePlotTimeSeries* framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow, m_forecastManager);
-    framePlotStation->Layout();
+
+	if (g_ppiScaleDc > 1) {
+		wxSize frameSize = framePlotStation->GetSize();
+		frameSize.x *= g_ppiScaleDc;
+		frameSize.y *= g_ppiScaleDc;
+		framePlotStation->SetSize(frameSize);
+	}
+	
+	framePlotStation->Layout();
     framePlotStation->Init();
     framePlotStation->Plot();
     framePlotStation->Show();

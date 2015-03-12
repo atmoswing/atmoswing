@@ -58,7 +58,7 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
 #endif
 
     // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+	wxConfigBase *pConfig = wxFileConfig::Get();
 
     // Create log window and file
     bool displayLogWindow;

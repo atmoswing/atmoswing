@@ -44,10 +44,7 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include <asThreadsManager.h>
 #include <asInternet.h>
 #include "vroomgis_bmp.h"
-#include "img_bullets.h"
-#include "img_toolbar.h"
-#include "img_treectrl.h"
-#include "img_logo.h"
+#include "images.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
@@ -69,6 +66,11 @@ bool AtmoswingAppViewer::OnInit()
             _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
         #endif
     #endif
+
+	// Set PPI
+	wxMemoryDC dcTestPpi;
+	wxSize ppiDC = dcTestPpi.GetPPI();
+	g_ppiScaleDc = double(ppiDC.x) / 96.0;
 
     // Set application name and create user directory
     wxString appName = "AtmoSwing viewer";
@@ -100,10 +102,7 @@ bool AtmoswingAppViewer::OnInit()
     wxInitAllImageHandlers();
 
     // Initialize images
-    initialize_images_bullets();
-    initialize_images_toolbar();
-    initialize_images_treectrl();
-    initialize_images_logo();
+	initialize_images(g_ppiScaleDc);
     vroomgis_initialize_images();
 
     // Init cURL
@@ -241,8 +240,9 @@ int AtmoswingAppViewer::OnExit()
     // Cleanup cURL
     asInternet::Cleanup();
 
-    // Cleanup vroomgis
+    // Cleanup images
     vroomgis_clear_images();
+	cleanup_images();
 
     return 1;
 }

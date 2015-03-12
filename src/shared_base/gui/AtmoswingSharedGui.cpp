@@ -83,31 +83,6 @@ asDialogFileSaverVirtual::~asDialogFileSaverVirtual()
 {
 }
 
-asFrameXmlEditorVirtual::asFrameXmlEditorVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer( wxVERTICAL );
-	
-	m_toolBar = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL ); 
-	m_toolSave = m_toolBar->AddTool( wxID_ANY, _("save"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL ); 
-	
-	m_toolBar->Realize(); 
-	
-	bSizer2->Add( m_toolBar, 0, wxEXPAND, 5 );
-	
-	
-	this->SetSizer( bSizer2 );
-	this->Layout();
-	
-	this->Centre( wxBOTH );
-}
-
-asFrameXmlEditorVirtual::~asFrameXmlEditorVirtual()
-{
-}
-
 asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 350,-1 ), wxDefaultSize );
@@ -115,24 +90,24 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 	
-	m_panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_Panel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer27;
 	bSizer27 = new wxBoxSizer( wxVERTICAL );
 	
-	m_logo = new wxStaticBitmap( m_panel, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
+	m_logo = new wxStaticBitmap( m_Panel, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer27->Add( m_logo, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 20 );
 	
-	m_staticTextVersion = new wxStaticText( m_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextVersion = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextVersion->Wrap( -1 );
 	m_staticTextVersion->SetFont( wxFont( 12, 70, 90, 90, false, wxEmptyString ) );
 	
 	bSizer27->Add( m_staticTextVersion, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextChangeset = new wxStaticText( m_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextChangeset = new wxStaticText( m_Panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextChangeset->Wrap( -1 );
 	bSizer27->Add( m_staticTextChangeset, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 20 );
 	
-	m_notebook = new wxNotebook( m_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_notebook = new wxNotebook( m_Panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_panelCredits = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer28;
 	bSizer28 = new wxBoxSizer( wxVERTICAL );
@@ -143,7 +118,7 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	
 	bSizer28->Add( m_staticTextDevelopers, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 20 );
 	
-	m_staticTextDevelopersList = new wxStaticText( m_panelCredits, wxID_ANY, _("Pascal Horton (University of Lausanne)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextDevelopersList = new wxStaticText( m_panelCredits, wxID_ANY, _("Pascal Horton (University of Lausanne, Terranum)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextDevelopersList->Wrap( -1 );
 	bSizer28->Add( m_staticTextDevelopersList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
@@ -153,7 +128,7 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	
 	bSizer28->Add( m_staticTextSupervision, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
 	
-	m_staticTextSupervisionList = new wxStaticText( m_panelCredits, wxID_ANY, _("Michel Jaboyedoff (Unil) and Charles Obled (INPG)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextSupervisionList = new wxStaticText( m_panelCredits, wxID_ANY, _("Michel Jaboyedoff (University of Lausanne) \nCharles Obled (INPG)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextSupervisionList->Wrap( -1 );
 	bSizer28->Add( m_staticTextSupervisionList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
@@ -163,19 +138,9 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	
 	bSizer28->Add( m_staticTextThanks, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 10 );
 	
-	m_staticTextThanksList = new wxStaticText( m_panelCredits, wxID_ANY, _("Lucien Schreiber (CREALP), Richard Metzger (Terr@num)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextThanksList = new wxStaticText( m_panelCredits, wxID_ANY, _("Lucien Schreiber\nRichard Metzger (Terranum)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextThanksList->Wrap( -1 );
 	bSizer28->Add( m_staticTextThanksList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-	
-	m_staticTextOtherCredits = new wxStaticText( m_panelCredits, wxID_ANY, _("Other credits:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTextOtherCredits->Wrap( -1 );
-	m_staticTextOtherCredits->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	bSizer28->Add( m_staticTextOtherCredits, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
-	
-	m_staticTextOtherCreditsList = new wxStaticText( m_panelCredits, wxID_ANY, _("Icons by FatCow Web Hosting (http://www.fatcow.com/)\nand Gasyoun (http://twitter.com/gasyoun)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	m_staticTextOtherCreditsList->Wrap( -1 );
-	bSizer28->Add( m_staticTextOtherCreditsList, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
 	m_staticTextSpacer = new wxStaticText( m_panelCredits, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextSpacer->Wrap( -1 );
@@ -214,10 +179,10 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	bSizer27->Add( m_notebook, 1, wxEXPAND | wxALL, 5 );
 	
 	
-	m_panel->SetSizer( bSizer27 );
-	m_panel->Layout();
-	bSizer27->Fit( m_panel );
-	bSizer3->Add( m_panel, 1, wxEXPAND, 5 );
+	m_Panel->SetSizer( bSizer27 );
+	m_Panel->Layout();
+	bSizer27->Fit( m_Panel );
+	bSizer3->Add( m_Panel, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( bSizer3 );

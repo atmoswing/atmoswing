@@ -66,7 +66,7 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_button51->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	m_button51->SetBackgroundColour( wxColour( 77, 77, 77 ) );
 	
-	bSizer52->Add( m_button51, 0, wxALL, 5 );
+	bSizer52->Add( m_button51, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_button5 = new wxButton( m_panelTop, wxID_ANY, _("<"), wxDefaultPosition, wxSize( 20,20 ), 0|wxNO_BORDER );
 	m_button5->SetForegroundColour( wxColour( 255, 255, 255 ) );
@@ -84,17 +84,17 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_button61->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	m_button61->SetBackgroundColour( wxColour( 77, 77, 77 ) );
 	
-	bSizer52->Add( m_button61, 0, wxALL, 5 );
+	bSizer52->Add( m_button61, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	m_sizerTopLeft->Add( bSizer52, 1, wxEXPAND, 5 );
 	
 	m_staticTextForecast = new wxStaticText( m_panelTop, wxID_ANY, _("No forecast selected"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextForecast->Wrap( -1 );
-	m_staticTextForecast->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	m_staticTextForecast->SetFont( wxFont( 11, 70, 90, 90, false, wxEmptyString ) );
 	m_staticTextForecast->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	
-	m_sizerTopLeft->Add( m_staticTextForecast, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_sizerTopLeft->Add( m_staticTextForecast, 0, wxALL, 5 );
 	
 	
 	m_sizerTop->Add( m_sizerTopLeft, 0, wxALIGN_LEFT|wxEXPAND, 5 );
@@ -306,7 +306,7 @@ asFramePlotTimeSeriesVirtual::asFramePlotTimeSeriesVirtual( wxWindow* parent, wx
 	
 	bSizer37->Add( m_staticTextStationName, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_buttonSaveTxt = new wxButton( m_panelStationName, wxID_ANY, _("Export as txt"), wxDefaultPosition, wxSize( 80,20 ), 0 );
+	m_buttonSaveTxt = new wxButton( m_panelStationName, wxID_ANY, _("Export as txt"), wxDefaultPosition, wxSize( -1,25 ), 0 );
 	m_buttonSaveTxt->SetFont( wxFont( 8, 70, 90, 90, false, wxEmptyString ) );
 	
 	bSizer37->Add( m_buttonSaveTxt, 0, wxALL, 5 );
@@ -446,7 +446,7 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	
 	m_splitterPredictands = new wxSplitterWindow( m_panelPredictands, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
 	m_splitterPredictands->Connect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitterPredictandsOnIdle ), NULL, this );
-	m_splitterPredictands->SetMinimumPaneSize( 150 );
+	m_splitterPredictands->SetMinimumPaneSize( 170 );
 	
 	m_panelPredictandsLeft = new wxPanel( m_splitterPredictands, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer27;
@@ -467,7 +467,7 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_panelPredictandsRight->SetSizer( m_sizerPlotPredictands );
 	m_panelPredictandsRight->Layout();
 	m_sizerPlotPredictands->Fit( m_panelPredictandsRight );
-	m_splitterPredictands->SplitVertically( m_panelPredictandsLeft, m_panelPredictandsRight, 150 );
+	m_splitterPredictands->SplitVertically( m_panelPredictandsLeft, m_panelPredictandsRight, 170 );
 	bSizer22->Add( m_splitterPredictands, 1, wxEXPAND|wxTOP, 5 );
 	
 	
@@ -511,7 +511,7 @@ asFramePlotDistributionsVirutal::~asFramePlotDistributionsVirutal()
 
 asFrameGridAnalogsValuesVirtual::asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 550,-1 ), wxSize( 550,-1 ) );
+	this->SetSizeHints( wxSize( 630,-1 ), wxSize( 630,-1 ) );
 	
 	wxBoxSizer* bSizer29;
 	bSizer29 = new wxBoxSizer( wxVERTICAL );
@@ -561,7 +561,7 @@ asFrameGridAnalogsValuesVirtual::asFrameGridAnalogsValuesVirtual( wxWindow* pare
 	bSizer291->Fit( m_panelOptions );
 	bSizer29->Add( m_panelOptions, 0, wxEXPAND, 5 );
 	
-	m_grid = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_grid = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	
 	// Grid
 	m_grid->CreateGrid( 5, 4 );
@@ -573,11 +573,11 @@ asFrameGridAnalogsValuesVirtual::asFrameGridAnalogsValuesVirtual( wxWindow* pare
 	// Columns
 	m_grid->SetColSize( 0, 95 );
 	m_grid->SetColSize( 1, 122 );
-	m_grid->SetColSize( 2, 130 );
+	m_grid->SetColSize( 2, 190 );
 	m_grid->SetColSize( 3, 130 );
 	m_grid->EnableDragColMove( false );
 	m_grid->EnableDragColSize( true );
-	m_grid->SetColLabelSize( 20 );
+	m_grid->SetColLabelSize( 40 );
 	m_grid->SetColLabelValue( 0, _("Analog") );
 	m_grid->SetColLabelValue( 1, _("Date") );
 	m_grid->SetColLabelValue( 2, _("Precipitation (mm)") );
@@ -1228,7 +1228,7 @@ asWizardWorkspaceVirtual::asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID
 	m_staticText43->Wrap( -1 );
 	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
 	
-	m_filePickerWorkspaceFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.asvw"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
+	m_filePickerWorkspaceFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
 	bSizer49->Add( m_filePickerWorkspaceFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	

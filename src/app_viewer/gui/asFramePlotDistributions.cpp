@@ -38,7 +38,10 @@ asFramePlotDistributions::asFramePlotDistributions( wxWindow* parent, int method
 :
 asFramePlotDistributionsVirutal( parent, id )
 {
-    forecastRow = wxMax(forecastRow, 0);
+	forecastRow = wxMax(forecastRow, 0);
+
+	int paneMinSize = m_splitterPredictands->GetMinimumPaneSize() * g_ppiScaleDc;
+	m_splitterPredictands->SetMinimumPaneSize(paneMinSize);
 
     m_forecastManager = forecastManager;
     m_selectedMethod = methodRow;
@@ -164,7 +167,7 @@ void asFramePlotDistributions::InitPredictandsCheckListBox()
 {
     wxArrayString checkList;
 
-    checkList.Add(_("Quantiles 90%, 60%, 30%"));
+    checkList.Add(_("Quantiles 90%, 60%, 20%"));
     checkList.Add(_("All analogs (points)"));
     checkList.Add(_("All analogs (curve)"));
     checkList.Add(_("10 best analogs (points)"));

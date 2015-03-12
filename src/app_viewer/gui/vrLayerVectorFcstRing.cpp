@@ -165,8 +165,8 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 
 void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath & path, const wxPoint & center, int segmentsTotNb, int segmentNb)
 {
-    const wxDouble radiusOut = 25;
-    const wxDouble radiusIn = 10;
+	const wxDouble radiusOut = 25 * g_ppiScaleDc;
+	const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
     wxDouble segmentStart = -0.5*M_PI + ((double)segmentNb/(double)segmentsTotNb)*(1.5*M_PI);
     wxDouble segmentEnd = -0.5*M_PI + ((double)(segmentNb+1)/(double)segmentsTotNb)*(1.5*M_PI);

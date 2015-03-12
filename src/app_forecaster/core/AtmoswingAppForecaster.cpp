@@ -49,10 +49,7 @@ IMPLEMENT_APP(AtmoswingAppForecaster);
 #include <asMethodForecasting.h>
 #include <asFileAscii.h>
 #if wxUSE_GUI
-    #include "img_bullets.h"
-    #include "img_toolbar.h"
-    #include "img_treectrl.h"
-    #include "img_logo.h"
+    #include "images.h"
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
@@ -103,6 +100,12 @@ bool AtmoswingAppForecaster::OnInit()
     wxFileConfig::Set(pConfig);
 
     #if wxUSE_GUI
+
+		// Set PPI
+		wxMemoryDC dcTestPpi;
+		wxSize ppiDC = dcTestPpi.GetPPI();
+		g_ppiScaleDc = double(ppiDC.x) / 96.0;
+
         // Check that it is the unique instance
         bool multipleInstances;
         pConfig->Read("/General/MultiInstances", &multipleInstances, false);
@@ -138,10 +141,7 @@ bool AtmoswingAppForecaster::OnInit()
         wxInitAllImageHandlers();
 
         // Initialize images
-        initialize_images_bullets();
-        initialize_images_toolbar();
-        initialize_images_treectrl();
-        initialize_images_logo();
+        initialize_images(g_ppiScaleDc);
 
         // Create frame
         AtmoswingFrameForecaster* frame = new AtmoswingFrameForecaster(0L);
@@ -700,6 +700,9 @@ int AtmoswingAppForecaster::OnExit()
     // Delete threads manager and log
     DeleteThreadsManager();
     DeleteLog();
+
+	// Delete images
+	cleanup_images();
 
     // Cleanup cURL
     asInternet::Cleanup();
