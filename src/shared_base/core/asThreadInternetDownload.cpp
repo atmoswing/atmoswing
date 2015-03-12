@@ -94,6 +94,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
                 {
                     asLogError(_("The directory to save real-time predictors data cannot be created."));
+					wxDELETE(errorbuffer);
                     return 0;
                 }
             }
@@ -145,6 +146,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 if(CURLE_OK != res) {
                     asLogError(_("Failed downloading file."));
                     asLogError(wxString::Format(_("Curl error message: %s"), errorbuffer));
+					wxDELETE(errorbuffer);
                     return 0;
                 }
                 else

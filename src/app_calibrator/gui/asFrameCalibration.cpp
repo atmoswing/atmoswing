@@ -36,7 +36,7 @@
 #include "asMethodCalibratorSingle.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
-#include "img_toolbar.h"
+#include "images.h"
 #include "asFramePreferencesCalibrator.h"
 #include "asFrameAbout.h"
 
@@ -49,9 +49,9 @@ asFrameCalibrationVirtual( parent )
     m_methodCalibrator = NULL;
 
     // Toolbar
-    m_toolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run calibration"), _("Run calibration now"), NULL );
-    m_toolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel calibration"), _("Cancel current calibration"), NULL );
-	m_toolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+	m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run calibration"), _("Run calibration now"), NULL);
+	m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel calibration"), _("Cancel current calibration"), NULL);
+	m_toolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
     m_toolBar->Realize();
 
     // Connect events
