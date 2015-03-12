@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
 
-#ifndef _BULLETS_H_
-#define _BULLETS_H_ 1
+#ifndef _MISC_H_
+#define _MISC_H_ 1
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -37,11 +37,12 @@
     #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
 #endif
 
-extern void initialize_images_bullets(void);
+extern void initialize_images_misc(void);
 
-extern wxBitmap img_bullet_error;
-extern wxBitmap img_bullet_green;
-extern wxBitmap img_bullet_white;
-extern wxBitmap img_bullet_yellow;
+extern wxBitmap img_clock_now;
+extern wxBitmap img_close;
+extern wxBitmap img_hidden;
+extern wxBitmap img_plus;
+extern wxBitmap img_shown;
 
-#endif /* _BULLETS_H_ */
+#endif /* _MISC_H_ */
