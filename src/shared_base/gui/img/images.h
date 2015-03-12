@@ -33,7 +33,10 @@
 #	include <wx/wx.h>
 #endif
 
+#include "img_logo.h"
+#include "img_misc.h"
 #include "img_toolbar.h"
+#include "img_treectrl.h"
 
 extern void initialize_images(double ppiScaling);
 extern void cleanup_images(void);
