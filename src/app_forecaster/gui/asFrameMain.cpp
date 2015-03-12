@@ -34,6 +34,7 @@
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
 #include "img_bullets.h"
+#include "img_misc.h"
 #include "img_toolbar.h"
 #include "img_logo.h"
 

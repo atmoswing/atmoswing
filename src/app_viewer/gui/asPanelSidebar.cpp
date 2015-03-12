@@ -27,7 +27,7 @@
  
 #include "asPanelSidebar.h"
 
-#include "img_bullets.h"
+#include "img_misc.h"
 
 asPanelSidebar::asPanelSidebar( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
 :
