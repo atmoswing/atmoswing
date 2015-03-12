@@ -32,6 +32,12 @@ sub main ()
 		$Marker =~ s{[^a-z]}{_}gi;
 		print "Using marker $Marker\n";
 	}
+	
+	# Extract base file name (PH)
+	my $base_class = $cpp_file;
+	$base_class =~ s{^.*/}{};
+	$base_class =~ s{(.*)\.(?:cpp|cc)$}{$1}gis;
+	$base_class =~ s/[^a-z0-9]/_/gio;
 
 	#
 	# C++ header
@@ -96,7 +102,7 @@ extern void initialize_images(void);
 
 	print CPP
 		"\n",
-		"void initialize_images(void)\n{\n",
+		"void initialize_$base_class(void)\n{\n",
 		$main,
 		"	return;\n",
 		"}\n";
