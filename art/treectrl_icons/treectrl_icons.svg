@@ -13,7 +13,7 @@
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="treectrl_icons.svg">
   <defs
      id="defs4" />
@@ -24,19 +24,19 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313709"
-     inkscape:cx="59.482715"
-     inkscape:cy="1013.7126"
+     inkscape:zoom="5.6568545"
+     inkscape:cx="57.34653"
+     inkscape:cy="1030.5542"
      inkscape:document-units="px"
-     inkscape:current-layer="g3942-1"
+     inkscape:current-layer="layer1"
      showgrid="true"
      gridtolerance="5"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1436"
-     inkscape:window-height="1023"
-     inkscape:window-x="268"
-     inkscape:window-y="53"
+     inkscape:window-width="1280"
+     inkscape:window-height="706"
+     inkscape:window-x="7"
+     inkscape:window-y="17"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -86,7 +86,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -100,22 +100,22 @@
        id="path3019"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="sssscss"
-       inkscape:export-xdpi="301.17819"
-       inkscape:export-ydpi="301.17819"
-       inkscape:export-filename="C:\Users\Pascal\Desktop\icons\icon_precip.png" />
+       inkscape:export-xdpi="150.49475"
+       inkscape:export-ydpi="150.49475"
+       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_precip.png" />
     <path
        style="fill:#ffff7d;fill-opacity:1;stroke:#ffcc00;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 38.391636,13.428779 5.617275,0 -3.321141,4.712635 2.905997,0 -2.752242,4.930973 2.478556,0 -5.692066,8.610365 0.870262,-6.400251 -1.857069,0 1.913513,-4.723982 -2.381018,0 z"
        id="path3803"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\Pascal\Desktop\icons\icon_lightning.png"
-       inkscape:export-xdpi="301.17819"
-       inkscape:export-ydpi="301.17819" />
+       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_lightning.png"
+       inkscape:export-xdpi="151.92375"
+       inkscape:export-ydpi="151.92375" />
     <g
        id="g3980"
-       inkscape:export-filename="C:\Users\Pascal\Desktop\icons\icon_temp.png"
-       inkscape:export-xdpi="301.17819"
-       inkscape:export-ydpi="301.17819">
+       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_temp.png"
+       inkscape:export-xdpi="145.71355"
+       inkscape:export-ydpi="145.71355">
       <path
          sodipodi:nodetypes="cssscssscssc"
          inkscape:connector-curvature="0"
@@ -216,7 +216,7 @@
     </g>
     <path
        sodipodi:type="arc"
-       style="color:#000000;fill:#5ca4ff;fill-opacity:1;fill-rule:nonzero;stroke:#0070ff;stroke-width:0.99981432999999997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#b2b2b2;fill-opacity:1;fill-rule:nonzero;stroke:#696969;stroke-width:0.99981433;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="path3950"
        sodipodi:cx="101"
        sodipodi:cy="22.85976"
@@ -224,27 +224,30 @@
        sodipodi:ry="8"
        d="m 109,22.85976 a 8,8 0 1 1 -16,0 8,8 0 1 1 16,0 z"
        transform="matrix(1.0621972,0,0,1.0621972,-7.1593436,-1.9194132)"
-       inkscape:export-filename="C:\Users\Pascal\Desktop\icons\icon_other.png"
-       inkscape:export-xdpi="301.17819"
-       inkscape:export-ydpi="301.17819" />
+       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_other.png"
+       inkscape:export-xdpi="159.49379"
+       inkscape:export-ydpi="159.49379" />
     <text
        xml:space="preserve"
-       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#0070ff;fill-opacity:1;stroke:none;font-family:Palatino Linotype;-inkscape-font-specification:Palatino Linotype"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#5c5c5c;fill-opacity:1;stroke:none;font-family:Palatino Linotype;-inkscape-font-specification:Palatino Linotype;"
        x="96.125"
        y="27.36216"
        id="text3952"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_other.png"
+       inkscape:export-xdpi="159.49379"
+       inkscape:export-ydpi="159.49379"><tspan
          sodipodi:role="line"
          id="tspan3954"
          x="96.125"
          y="27.36216"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0070ff;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial">?</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#5c5c5c;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial;">?</tspan></text>
     <g
        id="g3942-1"
        transform="matrix(0.13176879,0,0,0.13176879,59.150891,28.680714)"
-       inkscape:export-filename="C:\Users\Pascal\Desktop\icons\icon_wind.png"
-       inkscape:export-xdpi="301.17819"
-       inkscape:export-ydpi="301.17819">
+       inkscape:export-filename="C:\Users\phorton\Desktop\icons\icon_wind.png"
+       inkscape:export-xdpi="156.47255"
+       inkscape:export-ydpi="156.47255">
       <g
          id="g3811"
          inkscape:export-xdpi="300"
