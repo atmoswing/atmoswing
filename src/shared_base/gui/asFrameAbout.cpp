@@ -27,7 +27,7 @@
 
 #include "asFrameAbout.h"
 #include "asIncludes.h"
-#include "img_logo.h"
+#include "images.h"
 #include "wxhgversion_core.h"
 
 
@@ -41,7 +41,7 @@ asFrameAboutVirtual( parent )
 #endif
 
     // Set logo
-    m_logo->SetBitmap(img_logo);
+    m_logo->SetBitmap(*_img_logo);
 
     // Set AtmoSwing version
     m_staticTextVersion->SetLabel(asVersion::GetFullString());

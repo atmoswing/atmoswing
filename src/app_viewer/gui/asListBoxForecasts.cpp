@@ -29,7 +29,7 @@
 
 #include <asForecastViewer.h>
 
-#include "img_treectrl.h"
+#include "images.h"
 
 
 BEGIN_EVENT_TABLE(asListBoxForecasts, wxTreeCtrl)
@@ -75,17 +75,17 @@ asListBoxForecasts::~asListBoxForecasts()
 
 void asListBoxForecasts::CreateImageList()
 {
-    int size = 16;
+    int size = 16*g_ppiScaleDc;
 
     // Make an image list containing small icons
     wxImageList *images = new wxImageList(size, size, true);
 
     // Images must match the enum
-    images->Add(img_precipitation_s);
-    images->Add(img_temperature_s);
-    images->Add(img_lightning_s);
-    images->Add(img_wind_s);
-    images->Add(img_other_s);
+    images->Add(*_img_icon_precip);
+	images->Add(*_img_icon_temp);
+	images->Add(*_img_icon_lightning);
+	images->Add(*_img_icon_wind);
+	images->Add(*_img_icon_other);
 
     AssignImageList(images);
 }

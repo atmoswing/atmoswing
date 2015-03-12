@@ -33,10 +33,7 @@
 #include "asFrameAbout.h"
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
-#include "img_bullets.h"
-#include "img_misc.h"
-#include "img_toolbar.h"
-#include "img_logo.h"
+#include "images.h"
 
 
 BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
@@ -64,10 +61,9 @@ asFrameMainVirtual( parent )
     m_logWindow = NULL;
 
     // Toolbar
-    m_toolBar->AddTool( asID_RUN, wxT("Run"), img_run, img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL );
-    m_toolBar->AddTool( asID_CANCEL, wxT("Cancel"), img_run_cancel, img_run_cancel, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL );
-    m_toolBar->AddTool( asID_DB_CREATE, wxT("Database creation"), img_database_run, img_database_run, wxITEM_NORMAL, _("Database creation"), _("Database creation"), NULL );
-    m_toolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), img_preferences, img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+	m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run forecast"), _("Run forecast now"), NULL);
+	m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel forecast"), _("Cancel current forecast"), NULL);
+	m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL);
     m_toolBar->Realize();
 
     // Leds
@@ -104,8 +100,8 @@ asFrameMainVirtual( parent )
 	m_sizerLeds->Add(textSaving, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Buttons
-    m_bpButtonNow->SetBitmapLabel(img_clock_now);
-    m_bpButtonAdd->SetBitmapLabel(img_plus);
+    m_bpButtonNow->SetBitmapLabel(*_img_update);
+    m_bpButtonAdd->SetBitmapLabel(*_img_plus);
 
     // Create panels manager
     m_panelsManager = new asPanelsManagerForecasts();
