@@ -94,7 +94,6 @@
 #include <algorithm>
 #include <vector>
 #include <exception>
-using namespace std;
 
 
 //---------------------------------

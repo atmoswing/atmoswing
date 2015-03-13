@@ -229,7 +229,7 @@ void asForecastViewer::Redraw()
     if ( m_returnPeriods.size() != m_displayForecast.size() ) return;
     
     // Get data
-    vector <asResultsAnalogsForecast*> forecasts;
+	std::vector <asResultsAnalogsForecast*> forecasts;
 
     if (m_forecastSelection<0)
     {

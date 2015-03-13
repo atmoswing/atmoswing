@@ -660,7 +660,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
 
     // Extract best analogs
     Array1DFloat analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
-    int nbPoints = min((int)analogsAll.size(), analogsNb);
+    int nbPoints = wxMin((int)analogsAll.size(), analogsNb);
     Array1DFloat analogs = analogsAll.head(nbPoints);
     Array1DFloat ranks = Array1DFloat::LinSpaced(nbPoints,0,nbPoints-1);
     asTools::SortArrays(&analogs[0], &analogs[analogs.size()-1], &ranks[0], &ranks[ranks.size()-1], Asc);
@@ -718,7 +718,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
 
     // Extract best analogs
     Array1DFloat analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
-    int nbPoints = min((int)analogsAll.size(), analogsNb);
+    int nbPoints = wxMin((int)analogsAll.size(), analogsNb);
     Array1DFloat analogs = analogsAll.head(nbPoints);
     asTools::SortArray(&analogs[0], &analogs[analogs.size()-1], Asc);
 

@@ -31,8 +31,6 @@
 
 #include "asIncludes.h"
 
-using namespace std;
-
 extern bool g_distributionVersion;
 extern bool g_local;
 extern int g_runNb;

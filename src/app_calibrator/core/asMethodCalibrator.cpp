@@ -636,7 +636,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                         return false;
                                     }
                                 }
-                                catch(bad_alloc& ba)
+								catch (std::bad_alloc& ba)
                                 {
                                     wxString msg(ba.what(), wxConvUTF8);
                                     asLogError(wxString::Format(_("Bad allocation in the data preloading: %s"), msg.c_str()));
@@ -644,7 +644,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     wxDELETE(predictor);
                                     return false;
                                 }
-                                catch (exception& e)
+								catch (std::exception& e)
                                 {
                                     wxString msg(e.what(), wxConvUTF8);
                                     asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg.c_str()));
@@ -840,7 +840,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     }
                                     m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=predictor;
                                 }
-                                catch(bad_alloc& ba)
+								catch (std::bad_alloc& ba)
                                 {
                                     m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                                     wxString msg(ba.what(), wxConvUTF8);
@@ -849,7 +849,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     Cleanup(predictorsPreprocess);
                                     return false;
                                 }
-                                catch (exception& e)
+								catch (std::exception& e)
                                 {
                                     m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                                     wxString msg(e.what(), wxConvUTF8);

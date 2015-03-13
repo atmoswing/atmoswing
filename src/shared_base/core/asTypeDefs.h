@@ -122,14 +122,14 @@ typedef std::vector < std::vector < std::vector < Array2DDouble* > > > VVVpArray
 //---------------------------------
 
 /* NaN (http://www.cplusplus.com/reference/limits/numeric_limits/) */
-static const int NaNInt = numeric_limits<int>::max();
-static const float NaNFloat = numeric_limits<float>::quiet_NaN();
-static const double NaNDouble = numeric_limits<double>::quiet_NaN();
+static const int NaNInt = std::numeric_limits<int>::max();
+static const float NaNFloat = std::numeric_limits<float>::quiet_NaN();
+static const double NaNDouble = std::numeric_limits<double>::quiet_NaN();
 
 /* Inf (http://msdn.microsoft.com/en-us/library/6hthw3cb%28VS.80%29.aspx) */
-const double InfFloat = numeric_limits<float>::infinity();
-const double InfDouble = numeric_limits<double>::infinity();
-const double InfLongDouble = numeric_limits<long double>::infinity();
+const double InfFloat = std::numeric_limits<float>::infinity();
+const double InfDouble = std::numeric_limits<double>::infinity();
+const double InfLongDouble = std::numeric_limits<long double>::infinity();
 
 
 #endif

@@ -30,8 +30,6 @@
 
 #include "asIncludes.h"
 
-using namespace std;
-
 #if wxUSE_GUI
     extern wxColour g_linuxBgColour;
 #endif

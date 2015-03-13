@@ -30,8 +30,6 @@
 
 #include "asIncludes.h"
 
-using namespace std;
-
 extern bool g_silentMode;
 extern bool g_verboseMode;
 extern bool g_responsive;

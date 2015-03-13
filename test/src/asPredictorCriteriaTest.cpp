@@ -228,7 +228,7 @@ TEST(ProcessS1preprocessed)
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
-    vector < asDataPredictorArchive* > vdata;
+	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
 

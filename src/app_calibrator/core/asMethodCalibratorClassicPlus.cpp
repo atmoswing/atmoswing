@@ -73,14 +73,14 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
             return false;
         }
     }
-    catch(bad_alloc& ba)
+	catch (std::bad_alloc& ba)
     {
         wxString msg(ba.what(), wxConvUTF8);
         asLogError(wxString::Format(_("Bad allocation caught in the data preloading: %s"), msg.c_str()));
         DeletePreloadedData();
         return false;
     }
-    catch (exception& e)
+	catch (std::exception& e)
     {
         wxString msg(e.what(), wxConvUTF8);
         asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg.c_str()));
