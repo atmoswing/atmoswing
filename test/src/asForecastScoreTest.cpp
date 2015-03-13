@@ -83,7 +83,7 @@ TEST(ProcessCRPSapproxRectangle)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.00001);
+        float precision = wxMax(target/1000,(float)0.00001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -136,7 +136,7 @@ TEST(ProcessCRPSexactPrimitive)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/500,(float)0.00002);
+        float precision = wxMax(target/500,(float)0.00002);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -189,7 +189,7 @@ TEST(ProcessCRPSapproxRectangle1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.00002);
+        float precision = wxMax(target/1000,(float)0.00002);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -242,7 +242,7 @@ TEST(ProcessCRPSexactPrimitive1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.00005);
+        float precision = wxMax(target/100,(float)0.00005);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -295,7 +295,7 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.00002);
+        float precision = wxMax(target/1000,(float)0.00002);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -348,7 +348,7 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.0001);
+        float precision = wxMax(target/100,(float)0.0001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -402,7 +402,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -456,7 +456,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/500,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/500,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -510,7 +510,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/1000,(float)0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -564,7 +564,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/100,(float)0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -618,7 +618,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -672,7 +672,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/100,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -726,7 +726,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0003);
+        float precision = wxMax(target/1000,(float)0.0003);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -780,7 +780,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/500,(float)0.0003);
+        float precision = wxMax(target/500,(float)0.0003);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -834,7 +834,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0001);
+        float precision = wxMax(target/1000,(float)0.0001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -888,7 +888,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.00005);
+        float precision = wxMax(target/100,(float)0.00005);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -942,7 +942,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0005);
+        float precision = wxMax(target/1000,(float)0.0005);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -996,7 +996,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.001);
+        float precision = wxMax(target/100,(float)0.001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header

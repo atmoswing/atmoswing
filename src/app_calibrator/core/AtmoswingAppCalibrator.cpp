@@ -682,7 +682,7 @@ int AtmoswingAppCalibrator::OnRun()
                 }
             }
         }
-        catch(bad_alloc& ba)
+		catch (std::bad_alloc& ba)
         {
             wxString msg(ba.what(), wxConvUTF8);
             asLogError(wxString::Format(_("Bad allocation caught: %s"), msg.c_str()));

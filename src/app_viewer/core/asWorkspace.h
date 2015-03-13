@@ -238,9 +238,9 @@ private:
     VectorBool m_layerVisibilities;
     VectorInt m_layerLineWidths;
     #if wxUSE_GUI
-        vector < wxColour > m_layerLineColors;
-        vector < wxColour > m_layerFillColors;
-        vector < wxBrushStyle > m_layerBrushStyles;
+        std::vector < wxColour > m_layerLineColors;
+		std::vector < wxColour > m_layerFillColors;
+		std::vector < wxBrushStyle > m_layerBrushStyles;
     #endif
     double m_colorbarMaxValue;
     int m_timeSeriesPlotPastDaysNb;

@@ -202,7 +202,7 @@ public:
     /** Gives the composite areas
      * \return The composite areas
      */
-    vector <asGeoArea> GetComposites()
+	std::vector <asGeoArea> GetComposites()
     {
         return m_composites;
     }
@@ -237,7 +237,7 @@ private:
     float m_level; //!< Member variable "m_level" hPa
     float m_height; //!< Member variable "m_height" m
     int m_nbComposites; //!< Member variable "m_nbComposites"
-    vector <asGeoArea> m_composites; //!< Member variable "m_composites"
+    std::vector <asGeoArea> m_composites; //!< Member variable "m_composites"
     int m_flatAllowed; //!< Member variable "m_flatAllowed"
 
     /** Process to initialization and checks */

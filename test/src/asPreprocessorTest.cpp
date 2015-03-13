@@ -82,7 +82,7 @@ TEST(Gradients)
     VArray2DFloat arrayData = predictor->GetData();
     CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
 
-    vector < asDataPredictorArchive* > vdata;
+	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
@@ -214,7 +214,7 @@ TEST(GradientsMultithreading)
     VArray2DFloat arrayData = predictor->GetData();
     CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
 
-    vector < asDataPredictorArchive* > vdata;
+	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";

@@ -152,7 +152,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
 
         wxDELETE(dataArea);
     }
-    catch(bad_alloc& ba)
+    catch(std::bad_alloc& ba)
     {
         wxString msg(ba.what(), wxConvUTF8);
         asLogError(wxString::Format(_("Bad allocation caught when loading data: %s"), msg.c_str()));

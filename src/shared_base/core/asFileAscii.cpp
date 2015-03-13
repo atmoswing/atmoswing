@@ -46,23 +46,23 @@ bool asFileAscii::Open()
     switch (m_fileMode)
     {
         case (ReadOnly):
-            m_file.open(m_fileName.GetFullPath().mb_str(), fstream::in);
+			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::in);
             break;
 
         case (Write):
-            m_file.open(m_fileName.GetFullPath().mb_str(), fstream::out);
+			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
             break;
 
         case (Replace):
-            m_file.open(m_fileName.GetFullPath().mb_str(), fstream::trunc | fstream::out);
+			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::trunc | std::fstream::out);
             break;
 
         case (New):
-            m_file.open(m_fileName.GetFullPath().mb_str(), fstream::out);
+			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
             break;
 
         case (Append):
-            m_file.open(m_fileName.GetFullPath().mb_str(), fstream::app | fstream::out);
+			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::app | std::fstream::out);
             break;
     }
 
