@@ -41,6 +41,8 @@ public:
     /** Default destructor */
     virtual ~asForecastManager();
 
+	bool HasForecasts();
+
     void ClearArrays();
 
     void ClearForecasts();
