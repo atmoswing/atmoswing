@@ -43,6 +43,11 @@ asForecastManager::~asForecastManager()
     wxDELETE(m_aggregator);
 }
 
+bool asForecastManager::HasForecasts()
+{
+	return (m_aggregator->GetMethodsNb() > 0);
+}
+
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
 {
     wxString defPath = m_workspace->GetForecastsDirectory();

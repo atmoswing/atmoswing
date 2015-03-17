@@ -883,39 +883,43 @@ void asFrameForecast::OpenFrameForecaster( wxCommandEvent& event )
 
 void asFrameForecast::OpenFramePlots( wxCommandEvent& event )
 {
-    wxBusyCursor wait;
+	if (m_forecastManager->HasForecasts()) {
+		wxBusyCursor wait;
 
-    asFramePlotDistributions* framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(), m_forecastViewer->GetForecastSelection(), m_forecastManager);
-	
-	if (g_ppiScaleDc > 1) {
-		wxSize frameSize = framePlot->GetSize();
-		frameSize.x *= g_ppiScaleDc;
-		frameSize.y *= g_ppiScaleDc;
-		framePlot->SetSize(frameSize);
+		asFramePlotDistributions* framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(), m_forecastViewer->GetForecastSelection(), m_forecastManager);
+
+		if (g_ppiScaleDc > 1) {
+			wxSize frameSize = framePlot->GetSize();
+			frameSize.x *= g_ppiScaleDc;
+			frameSize.y *= g_ppiScaleDc;
+			framePlot->SetSize(frameSize);
+		}
+
+		framePlot->Layout();
+		framePlot->Init();
+		framePlot->Plot();
+		framePlot->Show();
 	}
-	
-	framePlot->Layout();
-    framePlot->Init();
-    framePlot->Plot();
-    framePlot->Show();
 }
 
 void asFrameForecast::OpenFrameGrid( wxCommandEvent& event )
 {
-    wxBusyCursor wait;
+	if (m_forecastManager->HasForecasts()) {
+		wxBusyCursor wait;
 
-    asFrameGridAnalogsValues* frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(), m_forecastViewer->GetForecastSelection(), m_forecastManager);
-    
-	if (g_ppiScaleDc > 1) {
-		wxSize frameSize = frameGrid->GetSize();
-		frameSize.x *= g_ppiScaleDc;
-		frameSize.y *= g_ppiScaleDc;
-		frameGrid->SetSize(frameSize);
+		asFrameGridAnalogsValues* frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(), m_forecastViewer->GetForecastSelection(), m_forecastManager);
+
+		if (g_ppiScaleDc > 1) {
+			wxSize frameSize = frameGrid->GetSize();
+			frameSize.x *= g_ppiScaleDc;
+			frameSize.y *= g_ppiScaleDc;
+			frameGrid->SetSize(frameSize);
+		}
+
+		frameGrid->Layout();
+		frameGrid->Init();
+		frameGrid->Show();
 	}
-
-	frameGrid->Layout();
-    frameGrid->Init();
-    frameGrid->Show();
 }
 
 void asFrameForecast::OpenFramePreferences( wxCommandEvent& event )
