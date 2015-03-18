@@ -55,13 +55,13 @@ asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
 int asGeoAreaRegularGrid::GetXaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(abs((GetXmax()-GetXmin())/m_xstep)+1);
+    return asTools::Round(abs((GetXmax()-GetXmin())/m_xstep)+1.0);
 }
 
 int asGeoAreaRegularGrid::GetYaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(abs((GetYmax()-GetYmin())/m_xstep)+1);
+    return asTools::Round(abs((GetYmax()-GetYmin())/m_xstep)+1.0);
 }
 
 Array1DDouble asGeoAreaRegularGrid::GetXaxis()
