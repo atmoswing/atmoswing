@@ -204,7 +204,7 @@ double asGeoArea::GetXmax()
 
 double asGeoArea::GetXwidth()
 {
-    return abs(m_cornerUR.x-m_cornerUL.x);
+    return std::abs(m_cornerUR.x-m_cornerUL.x);
 }
 
 double asGeoArea::GetYmin()
@@ -219,7 +219,7 @@ double asGeoArea::GetYmax()
 
 double asGeoArea::GetYwidth()
 {
-    return abs(m_cornerUR.y-m_cornerLR.y);
+    return std::abs(m_cornerUR.y-m_cornerLR.y);
 }
 
 Coo asGeoArea::GetCenter()

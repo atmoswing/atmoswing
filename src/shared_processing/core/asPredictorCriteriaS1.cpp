@@ -99,8 +99,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend += abs((refData(i+1,j)-refData(i,j))-(evalData(i+1,j)-evalData(i,j)));
-                    divisor += wxMax(abs((refData(i+1,j)-refData(i,j))),abs((evalData(i+1,j)-evalData(i,j))));
+                    dividend += std::abs((refData(i+1,j)-refData(i,j))-(evalData(i+1,j)-evalData(i,j)));
+                    divisor += wxMax(std::abs((refData(i+1,j)-refData(i,j))),std::abs((evalData(i+1,j)-evalData(i,j))));
                 }
             }
 
@@ -108,8 +108,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             {
                 for (int j=0; j<colsNb-1; j++)
                 {
-                    dividend += abs((refData(i,j+1)-refData(i,j))-(evalData(i,j+1)-evalData(i,j)));
-                    divisor += wxMax(abs((refData(i,j+1)-refData(i,j))), abs((evalData(i,j+1)-evalData(i,j))));
+                    dividend += std::abs((refData(i,j+1)-refData(i,j))-(evalData(i,j+1)-evalData(i,j)));
+                    divisor += wxMax(std::abs((refData(i,j+1)-refData(i,j))), std::abs((evalData(i,j+1)-evalData(i,j))));
                 }
             }
 
@@ -127,8 +127,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
                     refGradRows = refData(i+1,j)-refData(i,j);
                     evalGradRows = evalData(i+1,j)-evalData(i,j);
 
-                    dividend += abs(refGradRows-evalGradRows);
-                    divisor += wxMax(abs(refGradRows),abs(evalGradRows));
+                    dividend += std::abs(refGradRows-evalGradRows);
+                    divisor += wxMax(std::abs(refGradRows),std::abs(evalGradRows));
                 }
             }
 
@@ -139,8 +139,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
                     refGradCols = refData(i,j+1)-refData(i,j);
                     evalGradCols = evalData(i,j+1)-evalData(i,j);
 
-                    dividend += abs(refGradCols-evalGradCols);
-                    divisor += wxMax(abs(refGradCols), abs(evalGradCols));
+                    dividend += std::abs(refGradCols-evalGradCols);
+                    divisor += wxMax(std::abs(refGradCols), std::abs(evalGradCols));
                 }
             }
 

@@ -62,13 +62,13 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    if(wxMax(abs(evalData(i,j)), abs(refData(i,j)))>0)
+                    if(wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)))>0)
                     {
-                        rd += abs(evalData(i,j) - refData(i,j))/wxMax(abs(evalData(i,j)), abs(refData(i,j)));
+                        rd += std::abs(evalData(i,j) - refData(i,j))/wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)));
                     }
                     else
                     {
-                        if (abs(evalData(i,j) - refData(i,j))!=0)
+                        if (std::abs(evalData(i,j) - refData(i,j))!=0)
                         {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
@@ -88,8 +88,8 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend = abs(evalData(i,j) - refData(i,j));
-                    divisor = wxMax(abs(evalData(i,j)), abs(refData(i,j)));
+                    dividend = std::abs(evalData(i,j) - refData(i,j));
+                    divisor = wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)));
 
                     if(divisor>0)
                     {

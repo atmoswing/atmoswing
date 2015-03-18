@@ -193,12 +193,12 @@ int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb)
 
 double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeWidth(int compositeNb)
 {
-    return abs(GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin());
+    return std::abs(GetComposite(compositeNb).GetXmax()-GetComposite(compositeNb).GetXmin());
 }
 
 double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeWidth(int compositeNb)
 {
-    return abs(GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin());
+    return std::abs(GetComposite(compositeNb).GetYmax()-GetComposite(compositeNb).GetYmin());
 }
 
 double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeStart(int compositeNb)

@@ -120,7 +120,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     for (int i_dateTarg=m_start; i_dateTarg<=m_End; i_dateTarg++)
     {
         // Check if the next data is the following. If not, search for it in the array.
-        if(timeTargetDataSize>i_timeTargStart+1 && abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
+        if(timeTargetDataSize>i_timeTargStart+1 && std::abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
         {
             i_timeTargRelative = 1;
         } else {
@@ -156,7 +156,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                 // Check if the next data is the following. If not, search for it in the array.
                 wxASSERT(timeArchiveData.size()>i_timeArchStart+1);
                 wxASSERT(dateArrayArchiveSelection.GetSize()>i_dateArch);
-                if(timeArchiveDataSize>i_timeArchStart+1 && abs(dateArrayArchiveSelection[i_dateArch]-timeArchiveData[i_timeArchStart+1])<0.01)
+                if(timeArchiveDataSize>i_timeArchStart+1 && std::abs(dateArrayArchiveSelection[i_dateArch]-timeArchiveData[i_timeArchStart+1])<0.01)
                 {
                     i_timeArchRelative = 1;
                 } else {

@@ -79,8 +79,8 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend += abs(refData(i,j)-evalData(i,j));
-                    divisor += wxMax(abs(refData(i,j)),abs(evalData(i,j)));
+                    dividend += std::abs(refData(i,j)-evalData(i,j));
+                    divisor += wxMax(std::abs(refData(i,j)),std::abs(evalData(i,j)));
                 }
             }
 

@@ -62,13 +62,13 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    if(abs(evalData(i,j)+refData(i,j))>0)
+                    if(std::abs(evalData(i,j)+refData(i,j))>0)
                     {
-                        rd += abs(evalData(i,j) - refData(i,j)) / (abs(evalData(i,j) + refData(i,j))*0.5);
+                        rd += std::abs(evalData(i,j) - refData(i,j)) / (std::abs(evalData(i,j) + refData(i,j))*0.5);
                     }
                     else
                     {
-                        if (abs(evalData(i,j) - refData(i,j))!=0)
+                        if (std::abs(evalData(i,j) - refData(i,j))!=0)
                         {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
@@ -89,8 +89,8 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend = abs(evalData(i,j) - refData(i,j));
-                    divisor = abs(evalData(i,j) + refData(i,j))*0.5;
+                    dividend = std::abs(evalData(i,j) - refData(i,j));
+                    divisor = std::abs(evalData(i,j) + refData(i,j))*0.5;
 
                     if(divisor>0)
                     {

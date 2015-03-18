@@ -390,13 +390,13 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         // Archive date array
         double timeStartArchive = params.GetArchiveStart();
         double timeEndArchive = params.GetArchiveEnd();
-        timeStartArchive += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+        timeStartArchive += std::abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
         timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
 
         // Target date array
         double timeStartCalibration = params.GetCalibrationStart();
         double timeEndCalibration = params.GetCalibrationEnd();
-        timeStartCalibration += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+        timeStartCalibration += std::abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
         timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
 
         double timeStartData = wxMin(timeStartCalibration, timeStartArchive); // Always Jan 1st
@@ -1349,7 +1349,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     // Archive date array
     double timeStartArchive = params.GetArchiveStart();
     double timeEndArchive = params.GetArchiveEnd();
-    timeStartArchive += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+    timeStartArchive += std::abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
     timeEndArchive = wxMin(timeEndArchive, timeEndArchive-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive,
                                  params.GetTimeArrayAnalogsTimeStepHours(),
@@ -1363,7 +1363,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     // Target date array
     double timeStartCalibration = params.GetCalibrationStart();
     double timeEndCalibration = params.GetCalibrationEnd();
-    timeStartCalibration += abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
+    timeStartCalibration += std::abs(params.GetTimeShiftDays()); // To avoid having dates before the start of the archive
     timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration-params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayTarget(timeStartCalibration, timeEndCalibration,
                                 params.GetTimeArrayTargetTimeStepHours(),

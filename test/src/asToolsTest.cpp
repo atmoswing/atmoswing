@@ -1777,8 +1777,8 @@ TEST(RandomFloat)
     bool equality = (result1==result2);
     CHECK_EQUAL(false, equality);
 
-    CHECK_EQUAL(0, fmod(result1,step));
-    CHECK_EQUAL(0, fmod(result2,step));
+    CHECK_EQUAL(0, std::fmod(result1,step));
+    CHECK_EQUAL(0, std::fmod(result2,step));
 
     start = 0.5;
     end = 1000;
@@ -1786,8 +1786,8 @@ TEST(RandomFloat)
     result1 = asTools::Random(start, end, step);
     result2 = asTools::Random(start, end, step);
 
-    CHECK_EQUAL(0, fmod(result1-start,step));
-    CHECK_EQUAL(0, fmod(result2-start,step));
+    CHECK_EQUAL(0, std::fmod(result1-start,step));
+    CHECK_EQUAL(0, std::fmod(result2-start,step));
 }
 
 TEST(RandomDouble)
@@ -1805,8 +1805,8 @@ TEST(RandomDouble)
     bool equality = (result1==result2);
     CHECK_EQUAL(false, equality);
 
-    CHECK_EQUAL(0, fmod(result1,step));
-    CHECK_EQUAL(0, fmod(result2,step));
+    CHECK_EQUAL(0, std::fmod(result1,step));
+    CHECK_EQUAL(0, std::fmod(result2,step));
 
     start = 0.5;
     end = 1000;
@@ -1814,8 +1814,8 @@ TEST(RandomDouble)
     result1 = asTools::Random(start, end, step);
     result2 = asTools::Random(start, end, step);
 
-    CHECK_EQUAL(0, fmod(result1-start,step));
-    CHECK_EQUAL(0, fmod(result2-start,step));
+    CHECK_EQUAL(0, std::fmod(result1-start,step));
+    CHECK_EQUAL(0, std::fmod(result2-start,step));
 }
 
 // View resulting file on Matlab:

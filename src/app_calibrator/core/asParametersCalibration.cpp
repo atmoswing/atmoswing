@@ -354,11 +354,11 @@ bool asParametersCalibration::SetSpatialWindowProperties()
     {
         for(int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
         {
-            double Xshift = fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
+            double Xshift = std::fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
             if (Xshift<0) Xshift += GetPredictorXstep(i_step, i_ptor);
             if(!SetPredictorXshift(i_step, i_ptor, Xshift)) return false;
 
-            double Yshift = fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
+            double Yshift = std::fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
             if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
             if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
             VectorInt uptsnbs = GetPredictorXptsnbVector(i_step, i_ptor);
@@ -384,9 +384,9 @@ bool asParametersCalibration::SetPreloadingProperties()
             {
                 if(!SetPreloadXmin(i_step, i_ptor, GetPredictorXminVector(i_step, i_ptor)[0])) return false;
                 if(!SetPreloadYmin(i_step, i_ptor, GetPredictorYminVector(i_step, i_ptor)[0])) return false;
-                int Xbaseptsnb = abs(GetPredictorXminVector(i_step, i_ptor)[0]-GetPredictorXminVector(i_step, i_ptor)[GetPredictorXminVector(i_step, i_ptor).size()-1])/GetPredictorXstep(i_step, i_ptor);
+                int Xbaseptsnb = std::abs(GetPredictorXminVector(i_step, i_ptor)[0]-GetPredictorXminVector(i_step, i_ptor)[GetPredictorXminVector(i_step, i_ptor).size()-1])/GetPredictorXstep(i_step, i_ptor);
                 if(!SetPreloadXptsnb(i_step, i_ptor, Xbaseptsnb+GetPredictorXptsnbVector(i_step, i_ptor)[GetPredictorXptsnbVector(i_step, i_ptor).size()-1])) return false;
-                int Ybaseptsnb = abs(GetPredictorYminVector(i_step, i_ptor)[0]-GetPredictorYminVector(i_step, i_ptor)[GetPredictorYminVector(i_step, i_ptor).size()-1])/GetPredictorYstep(i_step, i_ptor);
+                int Ybaseptsnb = std::abs(GetPredictorYminVector(i_step, i_ptor)[0]-GetPredictorYminVector(i_step, i_ptor)[GetPredictorYminVector(i_step, i_ptor).size()-1])/GetPredictorYstep(i_step, i_ptor);
                 if(!SetPreloadYptsnb(i_step, i_ptor, Ybaseptsnb+GetPredictorYptsnbVector(i_step, i_ptor)[GetPredictorYptsnbVector(i_step, i_ptor).size()-1])) return false;
             }
 
@@ -528,7 +528,7 @@ bool asParametersCalibration::InputsOK()
     }
 
     if(GetValidationYearsVector().size()<=0) {
-        asLogWarning(_("The validation period was not provided in the parameters file (it can be on purpose)."));
+        asLogMessage(_("The validation period was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
 

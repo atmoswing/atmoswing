@@ -520,7 +520,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods()
 
     for (int i=retPeriods.size()-1; i>=0; i--)
     {
-        if (abs(retPeriods[i]-2.33)<0.1) continue;
+        if (std::abs(retPeriods[i]-2.33)<0.1) continue;
 
         // Get precipitation value
         float val = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceValue(m_selectedStation, i);
@@ -540,7 +540,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods()
         // Create plot data
         wxPlotData plotData;
         plotData.Create(2);
-        if (abs(retPeriods[i]-2.33)<0.1)
+        if (std::abs(retPeriods[i]-2.33)<0.1)
         {
             plotData.SetFilename(wxString::Format("P%3.2f",retPeriods[i]));
         }
