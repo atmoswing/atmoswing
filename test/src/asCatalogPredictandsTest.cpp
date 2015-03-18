@@ -83,7 +83,7 @@ TEST(LoadDataProp)
     catalog.Load();
 
     CHECK_EQUAL(1,catalog.GetStationId(0));
-    int samestr = catalog.GetStationName(0).Cmp(_("Gütsch ob Andermatt"));
+    int samestr = catalog.GetStationName(0).Cmp(_("G\u00FCtsch ob Andermatt"));
     CHECK_EQUAL(0,samestr);
     samestr = catalog.GetStationOfficialId(0).CompareTo(_T("4020"));
     CHECK_EQUAL(0,samestr);
