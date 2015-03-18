@@ -58,46 +58,35 @@ IMPLEMENT_APP(AtmoswingAppCalibrator);
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
-    { wxCMD_LINE_SWITCH, "v", "version", "print version" },
-    { wxCMD_LINE_SWITCH, "s", "silent", "silent mode" },
-    { wxCMD_LINE_SWITCH, "l", "local", "work in local directory" },
-    { wxCMD_LINE_OPTION, "tn", "threadsnb", "number of threads to use" },
-    { wxCMD_LINE_OPTION, "ll", "loglevel", "set a log level"
-                                "\n \t\t\t\t 0: minimum"
-                                "\n \t\t\t\t 1: errors"
-                                "\n \t\t\t\t 2: warnings"
-                                "\n \t\t\t\t 3: verbose" },
-    { wxCMD_LINE_OPTION, "lt", "logtarget", "set log target"
-                                "\n \t\t\t\t file: file only"
-                                "\n \t\t\t\t prompt: command prompt"
-                                "\n \t\t\t\t both: command prompt and file (default)" },
-    { wxCMD_LINE_OPTION, "r", "runnumber", "choice of number associated with the run" },
-    { wxCMD_LINE_OPTION, "fp", "fileparams", "choice of the calibration parameters file" },
-    { wxCMD_LINE_OPTION, "fd", "filepredicand", "choice of the predictand DB" },
-    { wxCMD_LINE_OPTION, "di", "dirpredictors", "choice of the predictors directory" },
-    { wxCMD_LINE_OPTION, "cm", "calibmethod", "choice of the calibration method"
+    { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
+    { wxCMD_LINE_SWITCH, "s", "silent", "Silent mode" },
+    { wxCMD_LINE_SWITCH, "l", "local", "Work in local directory" },
+    { wxCMD_LINE_OPTION, "n", "threads-nb", "Number of threads to use" },
+    { wxCMD_LINE_OPTION, "r", "run-number", "Choice of number associated with the run" },
+	{ wxCMD_LINE_OPTION, "f", "file-parameters", "File containing the calibration parameters" },
+	{ wxCMD_LINE_OPTION, NULL, "predicand-db", "The predictand DB" },
+	{ wxCMD_LINE_OPTION, NULL, "dir-predictors", "The predictors directory" },
+	{ wxCMD_LINE_OPTION, NULL, "skip-valid", "Skip the validation calculation" },
+	{ wxCMD_LINE_OPTION, NULL, "calibration-method", "Choice of the calibration method"
                                 "\n \t\t\t\t single: single assessment"
                                 "\n \t\t\t\t classic: classic calibration"
                                 "\n \t\t\t\t classicp: classic+ calibration"
                                 "\n \t\t\t\t varexplocp: variables exploration classic+"
-                                "\n \t\t\t\t evalscores: Evaluate all scores" },
-    { wxCMD_LINE_OPTION, "cpresizeite", "cpresizeite", "options ClassicPlusResizingIterations" },
-    { wxCMD_LINE_OPTION, "cplatstepmap", "cplatstepmap", "options ClassicPlusStepsLatPertinenceMap" },
-    { wxCMD_LINE_OPTION, "cplonstepmap", "cplonstepmap", "options ClassicPlusStepsLonPertinenceMap" },
-    { wxCMD_LINE_OPTION, "cpprosseq", "cpprosseq", "options ClassicPlusProceedSequentially" },
-    { wxCMD_LINE_OPTION, "varexpstep", "varexpstep", "options VariablesExploStep" },
-    { wxCMD_LINE_OPTION, "mcrunsnb", "mcrunsnb", "options MonteCarloRandomNb" },
-    { wxCMD_LINE_OPTION, "nmrunsnb", "nmrunsnb", "options NelderMeadNbRuns" },
-    { wxCMD_LINE_OPTION, "nmrho", "nmrho", "options NelderMeadRho" },
-    { wxCMD_LINE_OPTION, "nmchi", "nmchi", "options NelderMeadChi" },
-    { wxCMD_LINE_OPTION, "nmgamma", "nmgamma", "options NelderMeadGamma" },
-    { wxCMD_LINE_OPTION, "nmsigma", "nmsigma", "options NelderMeadSigma" },
-    { wxCMD_LINE_OPTION, "savedatesstep", "savedatesstep", "options SaveAnalogDatesStep (with given number)" },
-    { wxCMD_LINE_OPTION, "loaddatesstep", "loaddatesstep", "options LoadAnalogDatesStep (with given number)" },
-    { wxCMD_LINE_OPTION, "savedatesallsteps", "savedatesallsteps", "options SaveAnalogDatesStep (all the steps)" },
-    { wxCMD_LINE_OPTION, "savevalues", "savevalues", "options SaveAnalogValues" },
-    { wxCMD_LINE_OPTION, "savescores", "savescores", "options SaveForecastScores" },
-    { wxCMD_LINE_OPTION, "skipvalid", "skipvalid", "Skip the validation calculation" },
+                                "\n \t\t\t\t evalscores: evaluate all scores" },
+    { wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration", "Classic plus: resizing iteration" },
+	{ wxCMD_LINE_OPTION, NULL, "cp-lat-step", "Classic plus: steps in latitudes for the relevance map" },
+	{ wxCMD_LINE_OPTION, NULL, "cp-lon-step", "Classic plus: steps in longitudes for the relevance map" },
+	{ wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially" },
+	{ wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step" },
+	{ wxCMD_LINE_OPTION, NULL, "log-level", "Set a log level"
+		"\n \t\t\t\t 0: minimum"
+		"\n \t\t\t\t 1: errors"
+		"\n \t\t\t\t 2: warnings"
+		"\n \t\t\t\t 3: verbose" },
+	{ wxCMD_LINE_OPTION, NULL, "log-target", "Set log target"
+		"\n \t\t\t\t file: file only"
+		"\n \t\t\t\t prompt: command prompt"
+		"\n \t\t\t\t both: command prompt and file (default)" },
 
     { wxCMD_LINE_NONE }
 };
@@ -123,7 +112,7 @@ bool AtmoswingAppCalibrator::OnInit()
 
     // Call default behaviour (mandatory for command-line mode)
     if (!wxApp::OnInit()) // When false, we are in CL mode
-        return true;
+        return false;
 
     #if wxUSE_GUI
 
@@ -251,14 +240,14 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
      */
 
     // Check if the user asked for command-line help
-    if (parser.Found("h"))
+    if (parser.Found("help"))
     {
         parser.Usage();
         return false;
     }
 
     // Check if the user asked for the version
-    if (parser.Found("v"))
+    if (parser.Found("version"))
     {
         wxMessageOutput* msgOut = wxMessageOutput::Get();
         if ( msgOut )
@@ -280,14 +269,14 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     // Check for a run number
     wxString runNbStr = wxEmptyString;
     long runNb = 0;
-    if (parser.Found("r", & runNbStr))
+    if (parser.Found("run-number", & runNbStr))
     {
         runNbStr.ToLong(&runNb);
         g_runNb = (int)runNb;
     }
 
     // Local mode
-    if (parser.Found("l"))
+    if (parser.Found("local"))
     {
         g_local = true;
         wxString localPath = wxFileName::GetCwd() + DS;
@@ -324,7 +313,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
-    if (parser.Found("ll", & logLevelStr))
+    if (parser.Found("log-level", & logLevelStr))
     {
         long logLevel = -1;
         logLevelStr.ToLong(&logLevel);
@@ -359,7 +348,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
     // Check for the log target option
     wxString logTargetStr = wxEmptyString;
-    if (parser.Found("lt", & logTargetStr))
+    if (parser.Found("log-target", & logTargetStr))
     {
         // Check and apply
         if (logTargetStr.IsSameAs("file", false))
@@ -387,20 +376,20 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     }
 
     // Check if the user asked for the silent mode
-    if (parser.Found("s"))
+    if (parser.Found("silent"))
     {
         Log().SetTarget(asLog::File);
     }
 
     // Check for a calibration params file
     wxString threadsNb = wxEmptyString;
-    if (parser.Found("tn", & threadsNb))
+    if (parser.Found("threads-nb", & threadsNb))
     {
         wxFileConfig::Get()->Write("/Processing/MaxThreadNb", threadsNb);
     }
 
     // Check for a calibration params file
-    if (parser.Found("fp", & m_calibParamsFile))
+    if (parser.Found("file-parameters", & m_calibParamsFile))
     {
         if (g_local)
         {
@@ -415,7 +404,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     }
 
     // Check for a calibration predictand DB
-    if (parser.Found("fd", & m_predictandDB))
+    if (parser.Found("predicand-db", & m_predictandDB))
     {
         if (g_local)
         {
@@ -430,7 +419,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     }
 
     // Check for a predictors directory
-    if (parser.Found("di", & m_predictorsDir))
+    if (parser.Found("dir-predictors", & m_predictorsDir))
     {
         if (g_local)
         {
@@ -451,147 +440,36 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     wxString option = wxEmptyString;
 
     // Classic+ calibration
-    if (parser.Found("cpresizeite", & option))
+    if (parser.Found("cp-resizing-iteration", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/ClassicPlus/ResizingIterations", option);
     }
 
-    if (parser.Found("cplatstepmap", & option))
+    if (parser.Found("cp-lat-step", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/ClassicPlus/StepsLatPertinenceMap", option);
     }
 
-    if (parser.Found("cplonstepmap", & option))
+    if (parser.Found("cp-lon-step", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/ClassicPlus/StepsLonPertinenceMap", option);
     }
 
-    if (parser.Found("cpprosseq", & option))
+    if (parser.Found("cp-proceed-sequentially", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/ClassicPlus/ProceedSequentially", option);
     }
 
     // Variables exploration
-    if (parser.Found("varexpstep", & option))
+    if (parser.Found("ve-step", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/VariablesExplo/Step", option);
     }
 
     // Skip validation option
-    if (parser.Found("skipvalid", & option))
+    if (parser.Found("skip-valid", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/SkipValidation", option);
-    }
-
-    // Saving and loading of intermediate results files: reinitialized as it may be catastrophic to forget that it is enabled...
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesAllSteps", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesAllSteps", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
-    wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadFinalForecastScore", false);
-
-    wxString saveDatesStep;
-    if (parser.Found("savedatesstep", & saveDatesStep))
-    {
-        long step = -1;
-        saveDatesStep.ToLong(&step);
-        int intStep = (int)step;
-
-        switch (intStep)
-        {
-            case 1:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", true);
-                break;
-            }
-            case 2:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", true);
-                break;
-            }
-            case 3:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", true);
-                break;
-            }
-            case 4:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", true);
-                break;
-            }
-            default:
-            {
-                asLogError(wxString::Format(_("Wrong given step for the intermediate saving option (%d)."), intStep));
-            }
-        }
-    }
-
-    wxString loadDatesStep;
-    if (parser.Found("loaddatesstep", & loadDatesStep))
-    {
-        long step = -1;
-        loadDatesStep.ToLong(&step);
-        int intStep = (int)step;
-
-        switch (intStep)
-        {
-            case 1:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", true);
-                break;
-            }
-            case 2:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", true);
-                break;
-            }
-            case 3:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", true);
-                break;
-            }
-            case 4:
-            {
-                wxFileConfig::Get()->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", true);
-                break;
-            }
-            default:
-            {
-                asLogError(wxString::Format(_("Wrong given step for the intermediate loading option (%d)."), intStep));
-            }
-        }
-    }
-
-    // Save analogs values
-    if (parser.Found("savedatesallsteps", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", true);
-        wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", true);
-        wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", true);
-        wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", true);
-    }
-
-    // Save analogs values
-    if (parser.Found("savevalues", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveAnalogValues", option);
-    }
-
-    // Save forecast scores
-    if (parser.Found("savescores", & option))
-    {
-        wxFileConfig::Get()->Write("/Calibration/IntermediateResults/SaveForecastScores", option);
     }
 
     /*
@@ -599,10 +477,11 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
      */
 
     // Check for a calibration method option
-    if (parser.Found("cm", & m_calibMethod))
+    if (parser.Found("calibration-method", & m_calibMethod))
     {
         if(!InitForCmdLineOnly()) return false;
         asLogMessage(wxString::Format(_("Given calibration method: %s"), m_calibMethod.c_str()));
+		return true;
     }
 
     return wxAppConsole::OnCmdLineParsed(parser);
