@@ -456,7 +456,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
         wxString valStr = *(pData+i);
         size_t length = valStr.Length();
         cstr[i] = new char[length+1];
-        std::string valStdStr = (std::string)valStr.mb_str();
+		std::string valStdStr = (std::string)valStr.mb_str(wxConvUTF8);
         strncpy(cstr[i], valStdStr.c_str(), length);
         cstr[i][length]='\0';
     }
@@ -1076,7 +1076,7 @@ void asFileNetcdf::GetVar(const wxString &VarName, wxString* pValue, const size_
     // Set in the wxString array
     for (unsigned int i=0; i<TotSize; i++)
     {
-        wxString val(data[i]);
+		wxString val(data[i], wxConvUTF8);
         *(pValue+i) = val;
     }
 
