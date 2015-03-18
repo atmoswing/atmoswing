@@ -32,7 +32,7 @@
 
 namespace
 {
-    /*
+
 TEST(SaveAndLoadXmlFileWxStyle)
 {
     wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest");
@@ -45,14 +45,14 @@ TEST(SaveAndLoadXmlFileWxStyle)
     wxXmlNode * nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE ,"base");
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-    nodeBuilding->AddAttribute("id", "Rôtillon");
+    nodeBuilding->AddAttribute("id", "R\u00F4tillon");
    
     wxXmlNode * nodeType = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_type");
-    wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", "hôpital" );
+    wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", "h\u00F4pital" );
     nodeType->AddChild ( nodeTypeValue );
 
     wxXmlNode * nodeLocation = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_location" );
-    wxXmlNode * nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_location", "Zürich" );
+    wxXmlNode * nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_location", "Z\u00FCrich" );
     nodeLocation->AddChild (nodeLocationValue );
 
     wxXmlNode * nodeHeight = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_height" );
@@ -78,15 +78,15 @@ TEST(SaveAndLoadXmlFileWxStyle)
     CHECK_EQUAL("base", doc2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = doc2.GetRoot()->GetChildren();
-    CHECK_EQUAL("Rôtillon", childBuilding->GetAttribute("id"));
+    CHECK_EQUAL("R\u00F4tillon", childBuilding->GetAttribute("id"));
     
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
     CHECK_EQUAL("building_type", childBuildingType->GetName());
-    CHECK_EQUAL("hôpital", childBuildingType->GetNodeContent());
+    CHECK_EQUAL("h\u00F4pital", childBuildingType->GetNodeContent());
     
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
     CHECK_EQUAL("building_location", childBuildingLocation->GetName());
-    CHECK_EQUAL("Zürich", childBuildingLocation->GetNodeContent());
+    CHECK_EQUAL("Z\u00FCrich", childBuildingLocation->GetNodeContent());
     
     wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
     CHECK_EQUAL("building_height", childBuildingHeight->GetName());
@@ -105,10 +105,10 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     asFileXml fileXml(filePath, asFile::New);
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-    nodeBuilding->AddAttribute("id", "Rôtillon");
+    nodeBuilding->AddAttribute("id", "R\u00F4tillon");
    
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", "hôpital"));
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", "Zürich"));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", "h\u00F4pital"));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", "Z\u00FCrich"));
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", "40"));
 
     fileXml.AddChild(nodeBuilding);
@@ -123,22 +123,22 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     CHECK_EQUAL("atmoswing", fileXml2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = fileXml2.GetRoot()->GetChildren();
-    CHECK_EQUAL("Rôtillon", childBuilding->GetAttribute("id"));
+    CHECK_EQUAL("R\u00F4tillon", childBuilding->GetAttribute("id"));
     
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
     CHECK_EQUAL("building_type", childBuildingType->GetName());
-    CHECK_EQUAL("hôpital", childBuildingType->GetNodeContent());
+    CHECK_EQUAL("h\u00F4pital", childBuildingType->GetNodeContent());
     
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
     CHECK_EQUAL("building_location", childBuildingLocation->GetName());
-    CHECK_EQUAL("Zürich", childBuildingLocation->GetNodeContent());
+    CHECK_EQUAL("Z\u00FCrich", childBuildingLocation->GetNodeContent());
     
     wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
     CHECK_EQUAL("building_height", childBuildingHeight->GetName());
     CHECK_EQUAL("40", childBuildingHeight->GetNodeContent());
 
     asRemoveDir(tmpDir);
-}*/
+}
 /*
 TEST(LoadSimpleXmlFile)
 {
