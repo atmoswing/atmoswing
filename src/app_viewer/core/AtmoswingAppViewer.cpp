@@ -48,9 +48,9 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
-    { wxCMD_LINE_SWITCH, "h", "help", "displays help on the command line parameters" },
-    { wxCMD_LINE_SWITCH, "v", "version", "print version" },
-    { wxCMD_LINE_OPTION, "l", "loglevel", "set a log level"
+    { wxCMD_LINE_SWITCH, "h", "help", "This help text" },
+    { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
+    { wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
                                 "\n \t\t\t\t 0: minimum"
                                 "\n \t\t\t\t 1: errors"
                                 "\n \t\t\t\t 2: warnings"
