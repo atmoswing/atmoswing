@@ -56,7 +56,7 @@ asGeoAreaCompositeGrid* asGeoAreaCompositeGrid::GetInstance(const wxString &type
     }
     else
     {
-        asLogError(wxString::Format(_("Given grid type: %s"), type.c_str()));
+        asLogError(wxString::Format(_("Given grid type: %s"), type));
         asThrowException("The given grid type doesn't correspond to any existing option.");
     }
 }

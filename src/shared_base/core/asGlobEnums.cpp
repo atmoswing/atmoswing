@@ -52,7 +52,7 @@ FileTimeLength asGlobEnums::StringToFileLengthEnum(const wxString &LengthStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr.c_str()));
+        asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr));
     }
     return NoFileLength;
 }
@@ -173,7 +173,7 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
     }
     else
     {
-        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr.c_str()));
+        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
     }
     return NoDataParameter;
 }
@@ -325,7 +325,7 @@ DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr.c_str()));
+        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
     }
     return NoDataUnit;
 }
@@ -391,7 +391,7 @@ DataTemporalResolution asGlobEnums::StringToDataTemporalResolutionEnum(const wxS
     }
     else
     {
-        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"), TemporalResolution.c_str()));
+        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"), TemporalResolution));
     }
     return NoDataTemporalResolution;
 }
@@ -437,7 +437,7 @@ DataSpatialAggregation asGlobEnums::StringToDataSpatialAggregationEnum(const wxS
     }
     else
     {
-        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"), SpatialAggregation.c_str()));
+        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"), SpatialAggregation));
     }
     return NoDataSpatialAggregation;
 }

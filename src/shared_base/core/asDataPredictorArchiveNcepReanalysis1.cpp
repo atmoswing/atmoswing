@@ -395,13 +395,13 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
 {
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId.c_str(), m_datasetName.c_str()));
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (m_directoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId.c_str(), m_datasetName.c_str()));
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
@@ -521,7 +521,7 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
 
         #if wxUSE_GUI
             // Update the progress bar
-            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), wxString::Format(m_fileNamePattern, i_year).c_str());
+            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), wxString::Format(m_fileNamePattern, i_year));
             if(!progressBar.Update(i_year-yearFirst, fileNameMessage))
             {
                 asLogWarning(_("The process has been canceled by the user."));

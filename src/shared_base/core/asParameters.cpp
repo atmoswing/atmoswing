@@ -505,7 +505,7 @@ bool asParameters::SetPreloadingProperties()
                 }
                 else
                 {
-                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method));
                 }
 
                 if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;
@@ -793,7 +793,7 @@ wxString asParameters::Print()
     // Create content string
     wxString content = wxEmptyString;
 
-    content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString().c_str()));
+    content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString()));
     content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
 
     for (int i_step=0; i_step<GetStepsNb(); i_step++)
@@ -807,23 +807,23 @@ wxString asParameters::Print()
 
             if (NeedsPreprocessing(i_step, i_ptor))
             {
-                content.Append(wxString::Format("%s\t", GetPreprocessMethod(i_step, i_ptor).c_str()));
+                content.Append(wxString::Format("%s\t", GetPreprocessMethod(i_step, i_ptor)));
 
                 for (int i_dataset=0; i_dataset<GetPreprocessSize(i_step,i_ptor); i_dataset++)
                 {
-                    content.Append(wxString::Format("| %s %s\t", GetPreprocessDatasetId(i_step, i_ptor, i_dataset).c_str(), GetPreprocessDataId(i_step, i_ptor, i_dataset)).c_str());
+                    content.Append(wxString::Format("| %s %s\t", GetPreprocessDatasetId(i_step, i_ptor, i_dataset), GetPreprocessDataId(i_step, i_ptor, i_dataset)));
                     content.Append(wxString::Format("Level\t%g\t", GetPreprocessLevel(i_step, i_ptor, i_dataset)));
                     content.Append(wxString::Format("Time\t%g\t", GetPreprocessTimeHours(i_step, i_ptor, i_dataset)));
                 }
             }
             else
             {
-                content.Append(wxString::Format("%s %s\t", GetPredictorDatasetId(i_step, i_ptor).c_str(), GetPredictorDataId(i_step, i_ptor)).c_str());
+                content.Append(wxString::Format("%s %s\t", GetPredictorDatasetId(i_step, i_ptor), GetPredictorDataId(i_step, i_ptor)));
                 content.Append(wxString::Format("Level\t%g\t", GetPredictorLevel(i_step, i_ptor)));
                 content.Append(wxString::Format("Time\t%g\t", GetPredictorTimeHours(i_step, i_ptor)));
             }
 
-            content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(i_step, i_ptor).c_str()));
+            content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(i_step, i_ptor)));
             content.Append(wxString::Format("Xmin\t%g\t", GetPredictorXmin(i_step, i_ptor)));
             content.Append(wxString::Format("Xptsnb\t%d\t", GetPredictorXptsnb(i_step, i_ptor)));
             content.Append(wxString::Format("Xstep\t%g\t", GetPredictorXstep(i_step, i_ptor)));
@@ -831,7 +831,7 @@ wxString asParameters::Print()
             content.Append(wxString::Format("Yptsnb\t%d\t", GetPredictorYptsnb(i_step, i_ptor)));
             content.Append(wxString::Format("Ystep\t%g\t", GetPredictorYstep(i_step, i_ptor)));
             content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(i_step, i_ptor)));
-            content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(i_step, i_ptor).c_str()));
+            content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(i_step, i_ptor)));
         }
     }
 

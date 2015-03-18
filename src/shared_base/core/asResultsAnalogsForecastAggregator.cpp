@@ -72,8 +72,8 @@ void asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
             else
             {
                 asLogError(wxString::Format(_("The forecast \"%s\" (%s) is not fully compatible with \"%s\" (%s)"), 
-                    forecast->GetSpecificTagDisplay().c_str(), forecast->GetMethodIdDisplay().c_str(),
-                    refForecast->GetSpecificTagDisplay().c_str(), refForecast->GetMethodIdDisplay().c_str()));
+                    forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
+                    refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay()));
             }
         }
     }
@@ -113,8 +113,8 @@ void asResultsAnalogsForecastAggregator::AddPastForecast(int methodRow, int fore
     else
     {
         asLogError(wxString::Format(_("The past forecast \"%s\" (%s) is not fully compatible with the current version of \"%s\" (%s)"), 
-            forecast->GetSpecificTagDisplay().c_str(), forecast->GetMethodIdDisplay().c_str(),
-            refForecast->GetSpecificTagDisplay().c_str(), refForecast->GetMethodIdDisplay().c_str()));
+            forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
+            refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay()));
     }
 }
 
@@ -199,7 +199,7 @@ wxString asResultsAnalogsForecastAggregator::GetForecastName(int methodRow, int 
 
         if (!name.IsSameAs(m_forecasts[methodRow][forecastRow]->GetMethodId()))
         {
-            name.Append(wxString::Format(" (%s)", m_forecasts[methodRow][forecastRow]->GetMethodId().c_str()));
+            name.Append(wxString::Format(" (%s)", m_forecasts[methodRow][forecastRow]->GetMethodId()));
         }
 
         if (!m_forecasts[methodRow][forecastRow]->GetSpecificTag().IsEmpty())
@@ -228,7 +228,7 @@ wxString asResultsAnalogsForecastAggregator::GetMethodName(int methodRow)
 
         if (!name.IsSameAs(m_forecasts[methodRow][0]->GetMethodId()))
         {
-            name.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId().c_str()));
+            name.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
         }
     }
 
@@ -261,7 +261,7 @@ VectorString asResultsAnalogsForecastAggregator::GetAllMethodNames()
         wxString methodName = m_forecasts[methodRow][0]->GetMethodIdDisplay();
         if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId()))
         {
-            methodName.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId().c_str()));
+            methodName.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
         }
         names.push_back(methodName);
     }
@@ -282,7 +282,7 @@ VectorString asResultsAnalogsForecastAggregator::GetAllForecastNames()
         wxString methodName = m_forecasts[methodRow][0]->GetMethodIdDisplay();
         if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId()))
         {
-            methodName.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId().c_str()));
+            methodName.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
         }
 
         for (unsigned int forecastRow=0; forecastRow<m_forecasts[methodRow].size(); forecastRow++)
@@ -314,7 +314,7 @@ wxArrayString asResultsAnalogsForecastAggregator::GetAllForecastNamesWxArray()
         wxString methodName = m_forecasts[methodRow][0]->GetMethodIdDisplay();
         if (!methodName.IsSameAs(m_forecasts[methodRow][0]->GetMethodId()))
         {
-            methodName.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId().c_str()));
+            methodName.Append(wxString::Format(" (%s)", m_forecasts[methodRow][0]->GetMethodId()));
         }
 
         for (unsigned int forecastRow=0; forecastRow<m_forecasts[methodRow].size(); forecastRow++)
@@ -719,7 +719,7 @@ bool asResultsAnalogsForecastAggregator::ExportSyntheticXml(const wxString &dirP
         wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
         wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYYMMDDhh");
         wxString ext = "xml";
-        wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
+        wxString filename = wxString::Format("%s.%s.%s",nowstr,forecastname,ext);
         filePath.Append(filename);
 
         // Create file

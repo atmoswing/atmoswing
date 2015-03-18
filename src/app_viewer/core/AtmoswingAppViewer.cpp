@@ -89,7 +89,7 @@ bool AtmoswingAppViewer::OnInit()
 
     if (!multipleInstances)
     {
-        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"),wxGetUserId().c_str());
+        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"),wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if ( m_singleInstanceChecker->IsAnotherRunning() )
         {

@@ -362,7 +362,7 @@ asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
     }
     else
     {
-		asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString.c_str()));
+		asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString));
         asForecastScore* score = new asForecastScoreCRPSAR();
         return score;
     }

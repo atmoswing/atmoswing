@@ -54,7 +54,7 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
     : asFrameForecast(frame)
 {
 #if wxUSE_STATUSBAR
-    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString().c_str());
+    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file

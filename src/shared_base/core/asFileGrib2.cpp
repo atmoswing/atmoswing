@@ -362,7 +362,7 @@ bool asFileGrib2::GetVarArray(const wxString &VarName, const int IndexStart[], c
     int bandNum = FindBand(VarName, level);
     if (bandNum==asNOT_FOUND)
     {
-        asLogError(wxString::Format(_("The given variable (%s) and level (%g) cannot be found in the grib2 file."), VarName.c_str(), level));
+        asLogError(wxString::Format(_("The given variable (%s) and level (%g) cannot be found in the grib2 file."), VarName, level));
         return false;
     }
     SetBand(bandNum);

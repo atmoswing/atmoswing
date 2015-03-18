@@ -659,17 +659,17 @@ bool asFrameForecast::OpenWorkspace()
                 }
                 else
                 {
-                    asLogError(wxString::Format(_("The GIS layer type %s does not correspond to allowed values."), type.c_str()));
+                    asLogError(wxString::Format(_("The GIS layer type %s does not correspond to allowed values."), type));
                 }
             }
             else
             {
-                asLogWarning(wxString::Format(_("The file %s cound not be opened."), path.c_str()));
+                asLogWarning(wxString::Format(_("The file %s cound not be opened."), path));
             }
         }
         else
         {
-            asLogWarning(wxString::Format(_("The file %s cound not be found."), path.c_str()));
+            asLogWarning(wxString::Format(_("The file %s cound not be found."), path));
         }
     }
 
@@ -755,7 +755,7 @@ void asFrameForecast::LaunchForecastingNow( wxCommandEvent& event )
     // Set option
     wxString options = wxString::Format(" -fn -ll 2 -lt file");
     forecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath.c_str()));
+    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath));
 
     // Create a process
     if (m_processForecast!=NULL)
@@ -800,7 +800,7 @@ void asFrameForecast::LaunchForecastingPast( wxCommandEvent& event )
     int nbPrevDays = m_workspace.GetTimeSeriesPlotPastDaysNb();
     wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
     forecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath.c_str()));
+    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath));
 
     // Create a process
     if (m_processForecast!=NULL)
@@ -1215,7 +1215,7 @@ bool asFrameForecast::OpenRecentForecasts()
     if (!fullPath.Exists())
     {
         fullPath = wxFileName(basePath);
-        asLogError(wxString::Format(_("No recent forecast was found under %s"), fullPath.GetFullPath().c_str()));
+        asLogError(wxString::Format(_("No recent forecast was found under %s"), fullPath.GetFullPath()));
         return false;
     }
     
@@ -1344,7 +1344,7 @@ void asFrameForecast::SwitchForecast( double increment )
 
         if (i==99)
         {
-            asLogError(wxString::Format(_("No previous/next forecast was found under %s"), fullPath.GetFullPath().c_str()));
+            asLogError(wxString::Format(_("No previous/next forecast was found under %s"), fullPath.GetFullPath()));
             return;
         }
     }
@@ -1451,7 +1451,7 @@ bool asFrameForecast::OpenForecast (const wxArrayString & names)
         bool successOpen = m_forecastManager->Open(names.Item(i), doRefresh);
         if(!successOpen)
         {
-            asLogError(wxString::Format(_("The forecast file %d could not be opened (%s)."), i, names.Item(i).c_str()));
+            asLogError(wxString::Format(_("The forecast file %d could not be opened (%s)."), i, names.Item(i)));
             #if defined (__WIN32__)
                 m_critSectionViewerLayerManager.Leave();
             #endif
@@ -1983,7 +1983,7 @@ void asFrameForecast::UpdateHeaderTexts()
 {
     // Set header text
     wxString dateForecast = asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY HH");
-    wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast.c_str());
+    wxString dateStr = wxString::Format(_("Forecast of the %sh"), dateForecast);
     m_staticTextForecastDate->SetLabel(dateStr);
 
     wxString forecastName;

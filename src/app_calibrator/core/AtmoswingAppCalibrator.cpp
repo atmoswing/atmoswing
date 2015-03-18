@@ -131,7 +131,7 @@ bool AtmoswingAppCalibrator::OnInit()
 
             if (!multipleInstances)
             {
-                const wxString instanceName = wxString::Format(wxT("AtmoSwingCalibrator-%s"),wxGetUserId().c_str());
+                const wxString instanceName = wxString::Format(wxT("atmoswing-calibrator-%s"),wxGetUserId());
                 m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
                 if ( m_singleInstanceChecker->IsAnotherRunning() )
                 {
@@ -398,7 +398,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
         if (!wxFileName::FileExists(m_calibParamsFile))
         {
-            asLogError(wxString::Format(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile.c_str()));
+            asLogError(wxString::Format(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile));
             return false;
         }
     }
@@ -413,7 +413,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
         if (!wxFileName::FileExists(m_predictandDB))
         {
-            asLogError(wxString::Format(_("The given predictand DB (%s) couldn't be found."), m_predictandDB.c_str()));
+            asLogError(wxString::Format(_("The given predictand DB (%s) couldn't be found."), m_predictandDB));
             return false;
         }
     }
@@ -428,7 +428,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
         if (!wxFileName::DirExists(m_predictorsDir))
         {
-            asLogError(wxString::Format(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir.c_str()));
+            asLogError(wxString::Format(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir));
             return false;
         }
     }
@@ -480,7 +480,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("calibration-method", & m_calibMethod))
     {
         if(!InitForCmdLineOnly()) return false;
-        asLogMessage(wxString::Format(_("Given calibration method: %s"), m_calibMethod.c_str()));
+        asLogMessage(wxString::Format(_("Given calibration method: %s"), m_calibMethod));
 		return true;
     }
 
@@ -564,7 +564,7 @@ int AtmoswingAppCalibrator::OnRun()
 		catch (std::bad_alloc& ba)
         {
             wxString msg(ba.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Bad allocation caught: %s"), msg.c_str()));
+            asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
             return 1011;
         }
         catch(asException& e)

@@ -403,7 +403,7 @@ void asFrameCalibration::Launch( wxCommandEvent& event )
 	catch (std::bad_alloc& ba)
     {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught: %s"), msg.c_str()));
+        asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
         asLogError(_("Failed to process the calibration."));
     }
     catch(asException& e)

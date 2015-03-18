@@ -483,7 +483,7 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     // Get date
     double forecastDate = GetForecastDate();
     wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
-    asLogMessage(wxString::Format(_("Trying to run the forecast for the date %s"), forecastDateStr.c_str()));
+    asLogMessage(wxString::Format(_("Trying to run the forecast for the date %s"), forecastDateStr));
 
     if (m_forecaster)
     {
@@ -508,7 +508,7 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
 
     // Log message
     wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
-    asLogMessage(wxString::Format(_("Forecast processed for the date %s"), realForecastDateStr.c_str()));
+    asLogMessage(wxString::Format(_("Forecast processed for the date %s"), realForecastDateStr));
 
     wxDELETE(m_forecaster);
 }
