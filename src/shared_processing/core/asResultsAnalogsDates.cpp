@@ -89,7 +89,7 @@ void asResultsAnalogsDates::BuildFileName()
     m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_currentStep));
+    m_filePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
     m_filePath.Append(".nc");
 }
 

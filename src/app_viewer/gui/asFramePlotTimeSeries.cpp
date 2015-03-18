@@ -220,7 +220,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
     wxString stationName = m_forecastManager->GetStationName(m_selectedMethod, m_selectedForecast, m_selectedStation);
     wxString forecastName = m_forecastManager->GetForecastName(m_selectedMethod, m_selectedForecast);
     wxString date = asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "YYYY.MM.DD hh");
-    wxString filename = wxString::Format("%sh - %s - %s", date.c_str(), forecastName.c_str(), stationName.c_str());
+    wxString filename = wxString::Format("%sh - %s - %s", date, forecastName, stationName);
 
     wxFileDialog dialog(this, wxT("Save file as"), wxEmptyString, filename,
         wxT("Text files (*.txt)|*.txt"),
@@ -232,9 +232,9 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         file.Open();
 
         // Add header
-        file.AddLineContent(wxString::Format("Forecast of the %sh", asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh").c_str()));
-        file.AddLineContent(wxString::Format("Forecast: %s", forecastName.c_str()));
-        file.AddLineContent(wxString::Format("Station: %s", stationName.c_str()));
+        file.AddLineContent(wxString::Format("Forecast of the %sh", asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "DD.MM.YYYY hh")));
+        file.AddLineContent(wxString::Format("Forecast: %s", forecastName));
+        file.AddLineContent(wxString::Format("Station: %s", stationName));
         file.AddLineContent();
 
         // Quantiles
@@ -249,7 +249,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         wxString leadTimes = "\t";
         for (unsigned int i_leadtime=0; i_leadtime<m_leadTimes.size(); i_leadtime++)
         {
-            leadTimes.Append(wxString::Format("%s\t",asTime::GetStringTime(m_leadTimes[i_leadtime], "DD.MM").c_str()));
+            leadTimes.Append(wxString::Format("%s\t",asTime::GetStringTime(m_leadTimes[i_leadtime], "DD.MM")));
         }
         file.AddLineContent(leadTimes);
 
@@ -325,7 +325,7 @@ void asFramePlotTimeSeries::OnExportTXT( wxCommandEvent& event )
         wxString allLeadtimesStr = "\t";
         for (int i_lt=0; i_lt<leadtimes.size(); i_lt++)
         {
-            allLeadtimesStr.Append(wxString::Format("%s\t",asTime::GetStringTime(leadtimes[i_lt], "DD.MM").c_str()));
+            allLeadtimesStr.Append(wxString::Format("%s\t",asTime::GetStringTime(leadtimes[i_lt], "DD.MM")));
         }
 
         Array1DFloat pcAll(4);

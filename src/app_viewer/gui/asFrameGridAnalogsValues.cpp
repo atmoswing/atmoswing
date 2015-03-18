@@ -258,7 +258,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         buf.Printf("%d", (int)analogNb[i]);
         m_grid->SetCellValue(i,0,buf);
 
-        buf.Printf("%s", asTime::GetStringTime(dates[i], "DD.MM.YYYY").c_str());
+        buf.Printf("%s", asTime::GetStringTime(dates[i], "DD.MM.YYYY"));
         m_grid->SetCellValue(i,1,buf);
 
         buf.Printf("%g", values[i]);

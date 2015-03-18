@@ -117,7 +117,7 @@ void asResultsAnalogsForecast::BuildFileName()
     wxString forecastname = m_methodId + '.' + m_specificTag;
     wxString nowstr = asTime::GetStringTime(m_leadTimeOrigin, "YYYYMMDDhh");
     wxString ext = "asff";
-    wxString filename = wxString::Format("%s.%s.%s",nowstr.c_str(),forecastname.c_str(),ext.c_str());
+    wxString filename = wxString::Format("%s.%s.%s",nowstr,forecastname,ext);
     m_filePath.Append(filename);
 }
 
@@ -663,11 +663,11 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
         wxString label;
         if(!asTools::IsNaN(m_stationHeights[i]))
         {
-            label = wxString::Format("%s (%4.0fm)", m_stationNames[i].c_str(), m_stationHeights[i]);
+            label = wxString::Format("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
         }
         else
         {
-            label = wxString::Format("%s", m_stationNames[i].c_str());
+            label = wxString::Format("%s", m_stationNames[i]);
         }
         stationsNames.Add(label);
     }
@@ -679,11 +679,11 @@ wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat)
     wxString stationName;
     if(!asTools::IsNaN(m_stationHeights[i_stat]))
     {
-        stationName = wxString::Format("%s (%4.0fm)", m_stationNames[i_stat].c_str(), m_stationHeights[i_stat]);
+        stationName = wxString::Format("%s (%4.0fm)", m_stationNames[i_stat], m_stationHeights[i_stat]);
     }
     else
     {
-        stationName = wxString::Format("%s", m_stationNames[i_stat].c_str());
+        stationName = wxString::Format("%s", m_stationNames[i_stat]);
     }
     return stationName;
 }
@@ -762,7 +762,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast * other
 
     if (!compatible)
     {
-        asLogError(wxString::Format(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay.c_str(), otherForecast->GetSpecificTagDisplay().c_str()));
+        asLogError(wxString::Format(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay, otherForecast->GetSpecificTagDisplay()));
         return false;
     }
 

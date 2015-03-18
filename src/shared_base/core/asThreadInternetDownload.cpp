@@ -85,7 +85,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
             wxString fileName = m_fileNames[i_file];
             wxString filePath = m_destinationDir + DS + fileName;
             wxString url = m_urls[i_file];
-            asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str())); // Do not log the URL, it bugs !
+            asLogMessage(wxString::Format(_("Downloading file %s."), filePath)); // Do not log the URL, it bugs !
 
             // Use of a wxFileName object to create the directory.
             wxFileName currentFilePath = wxFileName(filePath);
@@ -151,7 +151,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 }
                 else
                 {
-                    asLogMessage(wxString::Format(_("File %s downloaded successfully."), fileName.c_str()));
+                    asLogMessage(wxString::Format(_("File %s downloaded successfully."), fileName));
                 }
             }
         }

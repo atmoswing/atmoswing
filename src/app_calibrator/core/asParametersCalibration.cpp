@@ -478,7 +478,7 @@ bool asParametersCalibration::SetPreloadingProperties()
                 }
                 else
                 {
-                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method));
 
                     for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
                     {

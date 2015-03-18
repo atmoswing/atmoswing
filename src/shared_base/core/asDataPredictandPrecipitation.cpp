@@ -65,11 +65,11 @@ bool asDataPredictandPrecipitation::InitContainers()
 bool asDataPredictandPrecipitation::Load(const wxString &filePath)
 {
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
+    asLogMessage(wxString::Format(_("Opening the file %s"), filePath));
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if(!ncFile.Open())
     {
-        asLogError(wxString::Format(_("Couldn't open file %s"), filePath.c_str()));
+        asLogError(wxString::Format(_("Couldn't open file %s"), filePath));
         return false;
     }
     else

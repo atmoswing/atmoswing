@@ -47,7 +47,7 @@ asFrameAboutVirtual( parent )
     m_staticTextVersion->SetLabel(asVersion::GetFullString());
 
     // Set changeset number
-    wxString changesetLabel = wxString::Format("Changeset %s",wxHgVersion::GetSoftNumber().c_str());
+    wxString changesetLabel = wxString::Format("Changeset %s",wxHgVersion::GetSoftNumber());
     m_staticTextChangeset->SetLabel(changesetLabel);
 
     // Set libraries versions

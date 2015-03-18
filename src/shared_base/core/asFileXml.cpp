@@ -48,7 +48,7 @@ bool asFileXml::Open()
     if ((Exists()) & (m_fileMode!=asFile::Replace))
     {
         if(!m_document.Load(m_fileName.GetFullPath())) {
-            asLogError(wxString::Format(_("Couldn't open the xml file %s"), m_fileName.GetFullPath().c_str()));
+            asLogError(wxString::Format(_("Couldn't open the xml file %s"), m_fileName.GetFullPath()));
             return false;
         }
     }
@@ -168,7 +168,7 @@ bool asFileXml::FileVersionIsOrAbove(const float version)
 
 void asFileXml::UnknownNode(wxXmlNode *node)
 {
-    asLogError(wxString::Format(_("An unknown element was found in the file: %s"), node->GetName().c_str()));
+    asLogError(wxString::Format(_("An unknown element was found in the file: %s"), node->GetName()));
 }
 
 bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
@@ -215,7 +215,7 @@ bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
     }
     else
     {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName().c_str()));
+        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
 
     return false;
@@ -235,7 +235,7 @@ int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
         return defaultValue;
     }
     if(!valueStr.ToLong(&value)) {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName().c_str()));
+        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
     return (int)value;
 }
@@ -254,7 +254,7 @@ float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
         return defaultValue;
     }
     if(!valueStr.ToDouble(&value)) {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName().c_str()));
+        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
     return (float)value;
 }
@@ -273,7 +273,7 @@ double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
         return defaultValue;
     }
     if(!valueStr.ToDouble(&value)) {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName().c_str()));
+        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
     return value;
 }

@@ -387,8 +387,8 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray)
     if (timeArray.GetFirst()<m_originalProviderStart)
     {
         asLogError(wxString::Format(_("The requested date (%s) is anterior to the beginning of the original dataset (%s)."),
-                                    asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD).c_str(),
-                                    asTime::GetStringTime(m_originalProviderStart, YYYYMMDD).c_str()));
+                                    asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD),
+                                    asTime::GetStringTime(m_originalProviderStart, YYYYMMDD)));
         return false;
     }
     if (!asTools::IsNaN(m_originalProviderEnd))
@@ -396,8 +396,8 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray)
         if (timeArray.GetLast()>m_originalProviderEnd)
         {
             asLogError(wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
-                                        asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD).c_str(),
-                                        asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD).c_str()));
+                                        asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD),
+                                        asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD)));
             return false;
         }
     }

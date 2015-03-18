@@ -97,7 +97,7 @@ asTime()
     }
     else
     {
-        asLogError(wxString::Format(_("Time array mode not correctly defined (%s)!"), slctModeString.c_str()));
+        asLogError(wxString::Format(_("Time array mode not correctly defined (%s)!"), slctModeString));
     }
 
     // Get values
@@ -560,8 +560,8 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
                         if(counter>1)
                         {
                             wxASSERT_MSG(m_timeArray[counter-1]>m_timeArray[counter-2], wxString::Format(_("m_timeArray[%d]=%s, m_timeArray[%d]=%s"),
-                                                                                                   counter-1, asTime::GetStringTime(m_timeArray[counter-1]).c_str(),
-                                                                                                   counter-2, asTime::GetStringTime(m_timeArray[counter-2])).c_str());
+                                                                                                   counter-1, asTime::GetStringTime(m_timeArray[counter-1]),
+                                                                                                   counter-2, asTime::GetStringTime(m_timeArray[counter-2])));
                         }
                     #endif
                 }
@@ -885,15 +885,15 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
                     if (!IsYearForbidden(GetYear(predictandTimeArray[i])))
                     {
                         asLogWarning(wxString::Format(_("The day %s was not considered in the timearray due to difference in hours with %s."),
-                                      asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm").c_str(),
-                                      asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm").c_str() ));
+                                      asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm"),
+                                      asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm") ));
                     }
                 }
                 else
                 {
                     asLogWarning(wxString::Format(_("The day %s was not considered in the timearray due to difference in hours with %s."),
-                                      asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm").c_str(),
-                                      asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm").c_str() ));
+                                      asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm"),
+                                      asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm") ));
                 }
             }
         }

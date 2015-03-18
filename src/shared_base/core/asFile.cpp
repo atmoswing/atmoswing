@@ -67,7 +67,7 @@ bool asFile::Find()
 
     if(!m_fileName.IsOk())
     {
-        asLogError(wxString::Format(_("The file path is not OK %s"), m_fileName.GetFullPath().c_str()));
+        asLogError(wxString::Format(_("The file path is not OK %s"), m_fileName.GetFullPath()));
         return false;
     }
 
@@ -171,7 +171,7 @@ bool asFile::Find()
 
     if (pickfile)
     {
-        asLogError(wxString::Format(_("Cannot find the file %s"), m_fileName.GetFullPath().c_str()));
+        asLogError(wxString::Format(_("Cannot find the file %s"), m_fileName.GetFullPath()));
 
         if (!g_silentMode)
         {
@@ -196,7 +196,7 @@ bool asFile::Find()
     {
         if (g_silentMode)
         {
-            asLogError(wxString::Format(_("Cannot find the directory %s"), m_fileName.GetFullPath().c_str()));
+            asLogError(wxString::Format(_("Cannot find the directory %s"), m_fileName.GetFullPath()));
             return false;
         }
         else
@@ -221,7 +221,7 @@ bool asFile::Find()
     {
         if (!wxFileName::Mkdir(m_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL))
         {
-            asLogError(wxString::Format(_("The directory %s could not be created."),m_fileName.GetPath().c_str()));
+            asLogError(wxString::Format(_("The directory %s could not be created."),m_fileName.GetPath()));
             return false;
         }
         m_Exists = true;

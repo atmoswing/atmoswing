@@ -623,7 +623,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 
                                 // Data loading
                                 asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
-                                                              params.GetPredictorDataId(tmp_step, tmp_ptor).c_str(),
+                                                              params.GetPredictorDataId(tmp_step, tmp_ptor),
                                                               (int)preloadLevels[tmp_level],
                                                               (int)preloadTimeHours[tmp_hour]));
                                 try
@@ -639,7 +639,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 								catch (std::bad_alloc& ba)
                                 {
                                     wxString msg(ba.what(), wxConvUTF8);
-                                    asLogError(wxString::Format(_("Bad allocation in the data preloading: %s"), msg.c_str()));
+                                    asLogError(wxString::Format(_("Bad allocation in the data preloading: %s"), msg));
                                     wxDELETE(area);
                                     wxDELETE(predictor);
                                     return false;
@@ -647,7 +647,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 								catch (std::exception& e)
                                 {
                                     wxString msg(e.what(), wxConvUTF8);
-                                    asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg.c_str()));
+                                    asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg));
                                     wxDELETE(area);
                                     wxDELETE(predictor);
                                     return false;
@@ -812,7 +812,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 
                                     // Data loading
                                     asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
-                                                                  params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro).c_str(),
+                                                                  params.GetPreprocessDataId(tmp_step, tmp_ptor, tmp_prepro),
                                                                   (int)level,
                                                                   (int)timeHours));
                                     if(!predictorPreprocess->Load(area, timeArray))
@@ -844,7 +844,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 {
                                     m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                                     wxString msg(ba.what(), wxConvUTF8);
-                                    asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg.c_str()));
+                                    asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg));
                                     wxDELETE(predictor);
                                     Cleanup(predictorsPreprocess);
                                     return false;
@@ -853,7 +853,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                 {
                                     m_preloadedArchive[tmp_step][tmp_ptor][tmp_level][tmp_hour]=NULL;
                                     wxString msg(e.what(), wxConvUTF8);
-                                    asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg.c_str()));
+                                    asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg));
                                     wxDELETE(predictor);
                                     Cleanup(predictorsPreprocess);
                                     return false;

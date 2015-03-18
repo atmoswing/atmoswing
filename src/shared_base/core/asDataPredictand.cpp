@@ -114,11 +114,11 @@ asDataPredictand* asDataPredictand::GetInstance(DataParameter dataParameter, Dat
 asDataPredictand* asDataPredictand::GetInstance(const wxString& filePath)
 {
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
+    asLogMessage(wxString::Format(_("Opening the file %s"), filePath));
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if(!ncFile.Open())
     {
-        asLogError(wxString::Format(_("Couldn't open file %s"), filePath.c_str()));
+        asLogError(wxString::Format(_("Couldn't open file %s"), filePath));
         return NULL;
     }
     else
@@ -443,7 +443,7 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
     {
         #if wxUSE_GUI
             // Update the progress bar.
-            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(i_station).c_str());
+            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(i_station));
             if(!ProgressBar.Update(i_station, fileNameMessage))
             {
                 asLogError(_("The process has been canceled by the user."));
@@ -492,7 +492,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     int startIndex = asTools::SortedArraySearch(&m_time[0], &m_time[m_time.size()-1], currentData.GetStationStart(stationIndex));
     if (startIndex==asOUT_OF_RANGE || startIndex==asNOT_FOUND)
     {
-        asLogError(wxString::Format(_("The given start date for \"%s\" is out of the catalog range."), currentData.GetStationName(stationIndex).c_str()));
+        asLogError(wxString::Format(_("The given start date for \"%s\" is out of the catalog range."), currentData.GetStationName(stationIndex)));
         return false;
     }
 
@@ -548,8 +548,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         // Check again date vector
                         if ( abs(dateData - m_time(timeIndex)) > 0.0001)
                         {
-                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY").c_str(), m_time(timeIndex), asTime::GetStringTime(m_time(timeIndex),"DD.MM.YYYY").c_str(), currentData.GetStationFilename(stationIndex).c_str());
-                            asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage.c_str() ));
+                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY"), m_time(timeIndex), asTime::GetStringTime(m_time(timeIndex),"DD.MM.YYYY"), currentData.GetStationFilename(stationIndex));
+                            asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage ));
                             return false;
                         }
                     }
@@ -634,8 +634,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         // Check again date vector
                         if ( abs(dateData - m_time(timeIndex)) > 0.001)
                         {
-                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY").c_str(), m_time(timeIndex), asTime::GetStringTime(m_time(timeIndex),"DD.MM.YYYY").c_str(), currentData.GetStationFilename(stationIndex).c_str());
-                            asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage.c_str() ));
+                            wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY"), m_time(timeIndex), asTime::GetStringTime(m_time(timeIndex),"DD.MM.YYYY"), currentData.GetStationFilename(stationIndex));
+                            asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage ));
                             return false;
                         }
                     }
@@ -675,14 +675,14 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     int endIndex = asTools::SortedArraySearch(&m_time[0], &m_time[m_time.size()-1], currentData.GetStationEnd(stationIndex));
     if (endIndex==asOUT_OF_RANGE || endIndex==asNOT_FOUND)
     {
-        asLogError(wxString::Format(_("The given end date for \"%s\" is out of the catalog range."), currentData.GetStationName(stationIndex).c_str()));
+        asLogError(wxString::Format(_("The given end date for \"%s\" is out of the catalog range."), currentData.GetStationName(stationIndex)));
         return false;
     }
 
     // Check time width
     if (endIndex-startIndex!=timeIndex-startIndex-1)
     {
-        wxString messageTime = wxString::Format(_("The length of the data in \"%s / %s\" is not coherent"), currentData.GetName().c_str(), currentData.GetStationName(stationIndex).c_str());
+        wxString messageTime = wxString::Format(_("The length of the data in \"%s / %s\" is not coherent"), currentData.GetName(), currentData.GetStationName(stationIndex));
         asLogError(messageTime);
         return false;
     }

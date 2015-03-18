@@ -114,7 +114,7 @@ bool AtmoswingAppForecaster::OnInit()
 
         if (!multipleInstances)
         {
-            const wxString instanceName = wxString::Format(wxT("AtmoSwingForecaster-%s"),wxGetUserId().c_str());
+            const wxString instanceName = wxString::Format(wxT("AtmoSwingForecaster-%s"),wxGetUserId());
             m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
             if ( m_singleInstanceChecker->IsAnotherRunning() )
             {
@@ -418,7 +418,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Batch file path
                 std::cout << _("Please provide a path to save the batch file.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath().c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath() << "\n";
                 std::cout << _("New value: ");
                 std::getline (std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
@@ -441,7 +441,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Directory to save the forecasts
                 std::cout << _("Please provide a directory to save the forecasts.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory().c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory() << "\n";
                 std::cout << _("New value: ");
                 std::getline (std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
@@ -460,7 +460,7 @@ int AtmoswingAppForecaster::OnRun()
                 else {
                     currVal = "N";
                 }
-                std::cout << _("Current value (enter to keep): ") << currVal.c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << currVal << "\n";
                 bool acceptValue = false;
                 while (!acceptValue)
                 {
@@ -491,7 +491,7 @@ int AtmoswingAppForecaster::OnRun()
                 if (batchForecasts.HasExports())
                 {
                     std::cout << _("Please provide a directory to save the exports.\n");
-                    std::cout << _("Current value (enter to keep): ") << batchForecasts.GetExportsOutputDirectory().c_str() << "\n";
+                    std::cout << _("Current value (enter to keep): ") << batchForecasts.GetExportsOutputDirectory() << "\n";
                     std::cout << _("New value: ");
                     std::getline (std::cin, stdinVal);
                     wxinVal = wxString(stdinVal);
@@ -504,7 +504,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Directory containing the parameters files
                 std::cout << _("Please provide the directory containing the parameters files.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory().c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory() << "\n";
                 std::cout << _("New value: ");
                 std::getline (std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
@@ -516,7 +516,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Directory containing the archive predictors
                 std::cout << _("Please provide the directory containing the archive predictors.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory().c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory() << "\n";
                 std::cout << _("New value: ");
                 std::getline (std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
@@ -528,7 +528,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Directory to save the downloaded predictors
                 std::cout << _("Please provide a directory to save the downloaded predictors.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory().c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() << "\n";
                 std::cout << _("New value: ");
                 getline (std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
@@ -540,7 +540,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Directory containing the predictand database
                 std::cout << _("Please provide the directory containing the predictand database.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory().c_str() << "\n";
+                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory() << "\n";
                 std::cout << _("New value: ");
                 std::getline (std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
@@ -570,7 +570,7 @@ int AtmoswingAppForecaster::OnRun()
 
             // Log message
             wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
-            asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
+            asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr));
             if ( msgOut )
             {
                 msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr );
@@ -621,7 +621,7 @@ int AtmoswingAppForecaster::OnRun()
 
             // Log message
             wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
-            asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
+            asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr));
             if ( msgOut )
             {
                 msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr );
@@ -712,7 +712,7 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Log message
                 wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
-                asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
+                asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr));
                 if ( msgOut )
                 {
                     msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr );

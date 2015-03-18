@@ -303,7 +303,7 @@ wxString asParametersScoring::Print()
     // Create content string
     wxString content = asParameters::Print();
 
-    content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName().c_str()));
+    content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName()));
     if (!asTools::IsNaN(GetForecastScoreQuantile()))
     {
         content.Append(wxString::Format("Quantile \t%f\t", GetForecastScoreQuantile()));
@@ -312,7 +312,7 @@ wxString asParametersScoring::Print()
     {
         content.Append(wxString::Format("Threshold \t%f\t", GetForecastScoreThreshold()));
     }
-    content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode().c_str()));
+    content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode()));
 
     return content;
 }

@@ -80,7 +80,7 @@ void asPanelSidebarAnalogDates::SetChoices(Array1DFloat &arrayDate, Array1DFloat
         long tmp = m_listCtrl->InsertItem(i, buf, 0);
         m_listCtrl->SetItemData(tmp, i);
 
-        buf.Printf("%s", asTime::GetStringTime(arrayDate[i], "DD.MM.YYYY").c_str());
+        buf.Printf("%s", asTime::GetStringTime(arrayDate[i], "DD.MM.YYYY"));
         m_listCtrl->SetItem(tmp, 1, buf);
 
         buf.Printf("%g", arrayCriteria[i]);

@@ -82,7 +82,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
     if (!m_initialized)
     {
         if (!Init()) {
-            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_datasetName.c_str()));
+            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_datasetName));
             return false;
         }
     }
@@ -155,7 +155,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
     catch(std::bad_alloc& ba)
     {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught when loading data: %s"), msg.c_str()));
+        asLogError(wxString::Format(_("Bad allocation caught when loading data: %s"), msg));
         return false;
     }
     catch(asException& e)

@@ -138,7 +138,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     // Check existance
     if (!wxFileName::FileExists(filePath))
     {
-        asLogError(wxString::Format(_("The file %s could not be found."), filePath.c_str()));
+        asLogError(wxString::Format(_("The file %s could not be found."), filePath));
         return false;
     }
 
@@ -147,7 +147,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     wxString extension = fname.GetExt();
     if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst"))
     {
-        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension.c_str()));
+        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension));
         return false;
     }
 
@@ -195,7 +195,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     // Check existance
     if (!wxFileName::FileExists(filePath))
     {
-        asLogError(wxString::Format(_("The file %s could not be found."), filePath.c_str()));
+        asLogError(wxString::Format(_("The file %s could not be found."), filePath));
         return false;
     }
 
@@ -204,7 +204,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     wxString extension = fname.GetExt();
     if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst"))
     {
-        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension.c_str()));
+        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension));
         return false;
     }
 
@@ -225,7 +225,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
     m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
-    asLogMessage(wxString::Format("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId().c_str(), forecast->GetSpecificTag().c_str(), forecast->GetLeadTimeOriginString().c_str()));
+    asLogMessage(wxString::Format("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(), forecast->GetSpecificTag(), forecast->GetLeadTimeOriginString()));
 
     return true;
 }
@@ -267,9 +267,9 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
             double currentTimeHour = floor(currentTime)+ hr/24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
             wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' + m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
-            wxString filename = wxString::Format("%s.%s.asff",nowstr.c_str(),forecastname.c_str());
+            wxString filename = wxString::Format("%s.%s.asff",nowstr,forecastname);
             wxString fullPath = currentDirPath + filename;
-            wxString filenameOld = wxString::Format("%s.%s.fcst",nowstr.c_str(),forecastname.c_str());
+            wxString filenameOld = wxString::Format("%s.%s.fcst",nowstr,forecastname);
             wxString fullPathOld = currentDirPath + filenameOld;
 
             if (wxFileName::FileExists(fullPath))

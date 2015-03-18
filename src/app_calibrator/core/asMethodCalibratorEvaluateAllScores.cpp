@@ -196,11 +196,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         ClearAll();
 
         VectorInt stationId = stationsId[i_stat];
-        asLogMessageImportant(wxString::Format(_("Processing station %s"), GetPredictandStationIdsList(stationId).c_str()));
+        asLogMessageImportant(wxString::Format(_("Processing station %s"), GetPredictandStationIdsList(stationId)));
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results;
-        results.Init(wxString::Format(_("station_%s_evaluation"), GetPredictandStationIdsList(stationId).c_str()));
+        results.Init(wxString::Format(_("station_%s_evaluation"), GetPredictandStationIdsList(stationId)));
         
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
