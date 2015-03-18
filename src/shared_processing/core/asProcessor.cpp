@@ -407,7 +407,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 								asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]) , asTime::GetStringTime(DateArrayOneDay[i_dateArch])));
 							}
 						#endif
-					
+
 						// Check if the array is already full
 						if (resCounter>analogsNb-1)
 						{
@@ -972,7 +972,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
             if (enableMessageBox) Log().EnableMessageBoxOnError();
 
             wxASSERT(finalAnalogsDates(0,0)>0);
-            wxASSERT(finalAnalogsDates(1,1)>0);
+            wxASSERT(finalAnalogsDates(0,1)>0);
 
             break;
         }

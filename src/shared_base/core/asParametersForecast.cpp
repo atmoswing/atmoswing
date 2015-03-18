@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asParametersForecast.h"
 
 #include <asFileParametersForecast.h>
@@ -88,12 +88,15 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                     SetMethodId(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "method_id_display") {
                     SetMethodIdDisplay(fileParams.GetString(nodeParam));
+                    wxASSERT(GetMethodIdDisplay().size()>0);
                 } else if (nodeParam->GetName() == "specific_tag") {
                     SetSpecificTag(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "specific_tag_display") {
                     SetSpecificTagDisplay(fileParams.GetString(nodeParam));
+                    wxASSERT(GetSpecificTagDisplay().size()>0);
                 } else if (nodeParam->GetName() == "description") {
                     SetDescription(fileParams.GetString(nodeParam));
+                    wxASSERT(GetDescription().size()>0);
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -253,7 +256,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 nodeParamBlock = nodeParamBlock->GetNext();
             }
             i_step++;
-            
+
         // Analog values
         } else if (nodeProcess->GetName() == "analog_values") {
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
@@ -332,7 +335,7 @@ bool asParametersForecast::InputsOK()
         return false;
     }
 
-    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0 
+    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0
         || GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays")==0) {
         if(GetTimeArrayAnalogsIntervalDays()<=0) {
             asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
@@ -347,7 +350,7 @@ bool asParametersForecast::InputsOK()
     // Analog dates
     for(int i=0;i<GetStepsNb();i++)
     {
-        if(GetAnalogsNumberLeadTimeVector(i).size()!=GetLeadTimeDaysVector().size()) 
+        if(GetAnalogsNumberLeadTimeVector(i).size()!=GetLeadTimeDaysVector().size())
         {
             asLogError(wxString::Format(_("The length of the analogs numbers (step %d) do not match the number of lead times."), i));
             return false;
@@ -621,7 +624,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int i_step, int i_pred
     {
         m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.push_back(val);
     }
-        
+
     return true;
 }
 

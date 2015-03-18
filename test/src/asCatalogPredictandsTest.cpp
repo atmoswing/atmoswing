@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -82,7 +82,9 @@ TEST(LoadDataProp)
     catalog.Load();
 
     CHECK_EQUAL(1,catalog.GetStationId(0));
-    int samestr = catalog.GetStationName(0).Cmp(_("G\u00FCtsch ob Andermatt"));
+    wxString stationName = wxString("G\u00FCtsch ob Andermatt", wxConvUTF8);
+    wxString stationNameFile = catalog.GetStationName(0);
+    int samestr = stationNameFile.Cmp(stationName);
     CHECK_EQUAL(0,samestr);
     samestr = catalog.GetStationOfficialId(0).CompareTo(_T("4020"));
     CHECK_EQUAL(0,samestr);
