@@ -158,7 +158,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     }
 
     int YstartIndexReal = wxMin(YstartIndex, YendIndex);
-    int Ylength = abs(YendIndex-YstartIndex)+1;
+    int Ylength = std::abs(YendIndex-YstartIndex)+1;
 
     // Check if already the correct size
     if (YstartIndexReal==0 && XstartIndex==0 && Ylength==m_axisLat.size() && Xlength==m_axisLon.size() )

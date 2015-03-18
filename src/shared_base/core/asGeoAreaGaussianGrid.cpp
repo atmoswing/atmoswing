@@ -105,7 +105,7 @@ int asGeoAreaGaussianGrid::GetXaxisPtsnb()
     int XmaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size()-1], Xmax, 0.01);
 
     // Get axis size
-    return abs(XmaxIndex-XminIndex)+1;
+    return std::abs(XmaxIndex-XminIndex)+1;
 }
 
 int asGeoAreaGaussianGrid::GetYaxisPtsnb()
@@ -116,7 +116,7 @@ int asGeoAreaGaussianGrid::GetYaxisPtsnb()
     int YmaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size()-1], Ymax, 0.01);
 
     // Get axis size
-    return abs(YmaxIndex-YminIndex)+1;
+    return std::abs(YmaxIndex-YminIndex)+1;
 }
 
 Array1DDouble asGeoAreaGaussianGrid::GetXaxis()

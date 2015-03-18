@@ -55,13 +55,13 @@ asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
 int asGeoAreaRegularGrid::GetXaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(abs((GetXmax()-GetXmin())/m_xstep)+1.0);
+    return asTools::Round(std::abs((GetXmax()-GetXmin())/m_xstep)+1.0);
 }
 
 int asGeoAreaRegularGrid::GetYaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(abs((GetYmax()-GetYmin())/m_xstep)+1.0);
+    return asTools::Round(std::abs((GetYmax()-GetYmin())/m_xstep)+1.0);
 }
 
 Array1DDouble asGeoAreaRegularGrid::GetXaxis()
@@ -102,8 +102,8 @@ bool asGeoAreaRegularGrid::IsOnGrid(double step)
 {
     if (!IsRectangle()) return false;
 
-    if (abs(fmod(m_cornerUL.x-m_cornerUR.x,step))>0.0000001) return false;
-    if (abs(fmod(m_cornerUL.y-m_cornerLL.y,step))>0.0000001) return false;
+	if (std::abs(std::fmod(m_cornerUL.x - m_cornerUR.x, step))>0.0000001) return false;
+    if (std::abs(std::fmod(m_cornerUL.y-m_cornerLL.y,step))>0.0000001) return false;
 
     return true;
 }
@@ -112,8 +112,8 @@ bool asGeoAreaRegularGrid::IsOnGrid(double stepX, double stepY)
 {
     if (!IsRectangle()) return false;
 
-    if (abs(fmod(m_cornerUL.x-m_cornerUR.x,stepX))>0.0000001) return false;
-    if (abs(fmod(m_cornerUL.y-m_cornerLL.y,stepY))>0.0000001) return false;
+    if (std::abs(std::fmod(m_cornerUL.x-m_cornerUR.x,stepX))>0.0000001) return false;
+    if (std::abs(std::fmod(m_cornerUL.y-m_cornerLL.y,stepY))>0.0000001) return false;
 
     return true;
 }

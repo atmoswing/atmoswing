@@ -546,7 +546,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
 
                         // Check again date vector
-                        if ( abs(dateData - m_time(timeIndex)) > 0.0001)
+                        if ( std::abs(dateData - m_time(timeIndex)) > 0.0001)
                         {
                             wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY"), m_time(timeIndex), asTime::GetStringTime(m_time(timeIndex),"DD.MM.YYYY"), currentData.GetStationFilename(stationIndex));
                             asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage ));
@@ -632,7 +632,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
 
                         // Check again date vector
-                        if ( abs(dateData - m_time(timeIndex)) > 0.001)
+                        if ( std::abs(dateData - m_time(timeIndex)) > 0.001)
                         {
                             wxString errorMessage = wxString::Format(_("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"), dateData, asTime::GetStringTime(dateData,"DD.MM.YYYY"), m_time(timeIndex), asTime::GetStringTime(m_time(timeIndex),"DD.MM.YYYY"), currentData.GetStationFilename(stationIndex));
                             asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage ));
@@ -703,7 +703,7 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax)
     }
     else if(timeStepDays>m_timeStepDays)
     {
-        if(fmod(timeStepDays, m_timeStepDays)>0.0000001)
+        if(std::fmod(timeStepDays, m_timeStepDays)>0.0000001)
         {
             asLogError(_("The timestep for the extraction of the predictands maximums has to be a multiple of the data timestep."));
             Array2DFloat emptyMatrix;

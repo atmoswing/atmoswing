@@ -117,7 +117,7 @@ float asForecastScoreDF0::Assess(float ObservedVal, const Array1DFloat &ForcastV
         FxObs = 0;
     }
 
-	score = abs((1.0f-F(indexLastZero))-FxObs);
+	score = std::abs((1.0f-F(indexLastZero))-FxObs);
 
     return score;
 }

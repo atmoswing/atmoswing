@@ -60,7 +60,7 @@ wxString asConfig::GetTempDir()
 
 wxString asConfig::CreateTempFileName(const wxString& prefix)
 {
-    wxString path = asConfig::GetTempDir() + DS + prefix;
+    wxString path = asConfig::GetTempDir() + prefix;
     wxString pathTry;
 
     static const size_t numTries = 1000;
@@ -68,7 +68,7 @@ wxString asConfig::CreateTempFileName(const wxString& prefix)
     {
         // 3 hex digits is enough for numTries == 1000 < 4096
         pathTry = path + wxString::Format(wxT("%.03x"), (unsigned int) n);
-        if ( !wxFileName::FileExists(pathTry) )
+		if (!wxFileName::FileExists(pathTry) && !wxFileName::DirExists(pathTry))
         {
             break;
         }

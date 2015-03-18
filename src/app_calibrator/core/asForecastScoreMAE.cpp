@@ -74,7 +74,7 @@ float asForecastScoreMAE::Assess(float ObservedVal, const Array1DFloat &ForcastV
     // Get value for quantile
     float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
 
-    float score = abs(ObservedVal-xQuantile);
+    float score = std::abs(ObservedVal-xQuantile);
 
     return score;
 }

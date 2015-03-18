@@ -68,7 +68,7 @@ float asPredictorCriteriaSAD::Assess(const Array2DFloat &refData, const Array2DF
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    rescriteria += abs(evalData(i,j) - refData(i,j));
+                    rescriteria += std::abs(evalData(i,j) - refData(i,j));
                 }
             }
 

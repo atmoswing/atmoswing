@@ -244,7 +244,7 @@ public:
 
     int GetTimeSpanDays()
     {
-        return ceil(m_timeMaxHours/24.0)+abs(GetTimeShiftDays());
+        return ceil(m_timeMaxHours/24.0)+std::abs(GetTimeShiftDays());
     }
 
     double GetTimeArrayTargetTimeStepHours()

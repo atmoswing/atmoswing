@@ -744,7 +744,7 @@ int asTools::MinArrayStep(int* pArrStart, int* pArrEnd, int tolerance)
 
     for (i=i; i<copyData.size(); i++)
     {
-        int currentval = abs(copyData[i]-copyData[i-1]);
+        int currentval = std::abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -791,7 +791,7 @@ float asTools::MinArrayStep(float* pArrStart, float* pArrEnd, float tolerance)
 
     for (i=i; i<copyData.size(); i++)
     {
-        float currentval = abs(copyData[i]-copyData[i-1]);
+        float currentval = std::abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -838,7 +838,7 @@ double asTools::MinArrayStep(double* pArrStart, double* pArrEnd, double toleranc
 
     for (i=i; i<copyData.size(); i++)
     {
-        double currentval = abs(copyData[i]-copyData[i-1]);
+        double currentval = std::abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -872,7 +872,7 @@ Array1DInt asTools::ExtractUniqueValues(int* pArrStart, int* pArrEnd, int tolera
 
     for (unsigned int i=1; i<copyData.size(); i++)
     {
-        if((abs(copyData[i]-copyData[i-1])>tolerance))
+        if((std::abs(copyData[i]-copyData[i-1])>tolerance))
         {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -917,7 +917,7 @@ Array1DFloat asTools::ExtractUniqueValues(float* pArrStart, float* pArrEnd, floa
 
     for (unsigned int i=1; i<copyData.size(); i++)
     {
-        if((abs(copyData[i]-copyData[i-1])>tolerance))
+        if((std::abs(copyData[i]-copyData[i-1])>tolerance))
         {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -962,7 +962,7 @@ Array1DDouble asTools::ExtractUniqueValues(double* pArrStart, double* pArrEnd, d
 
     for (unsigned int i=1; i<copyData.size(); i++)
     {
-        if((abs(copyData[i]-copyData[i-1])>tolerance))
+        if((std::abs(copyData[i]-copyData[i-1])>tolerance))
         {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -1039,9 +1039,9 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
         }
 
         // If the value was not found, return closest value inside tolerance
-        if (abs(targetvalue-*pLast)<=abs(targetvalue-*(pLast+1)))
+        if (std::abs(targetvalue-*pLast)<=std::abs(targetvalue-*(pLast+1)))
         {
-            if(abs(targetvalue-*pLast)<=tolerance)
+            if(std::abs(targetvalue-*pLast)<=tolerance)
             {
                 return pLast - pArrStart;
             } else {
@@ -1059,7 +1059,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 return asNOT_FOUND;
             }
         } else {
-            if(abs(targetvalue-*(pLast+1))<=tolerance)
+            if(std::abs(targetvalue-*(pLast+1))<=tolerance)
             {
                 return pLast - pArrStart + 1;
             } else {
@@ -1109,9 +1109,9 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
         }
 
         // If the value was not found, return closest value inside tolerance
-        if (abs(targetvalue-*pFirst)<=abs(targetvalue-*(pFirst-1)))
+        if (std::abs(targetvalue-*pFirst)<=std::abs(targetvalue-*(pFirst-1)))
         {
-            if(abs(targetvalue-*pFirst)<=tolerance)
+            if(std::abs(targetvalue-*pFirst)<=tolerance)
             {
                 return pFirst - pArrStart;
             } else {
@@ -1129,7 +1129,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 return asNOT_FOUND;
             }
         } else {
-            if(abs(targetvalue-*(pLast+1))<=tolerance)
+            if(std::abs(targetvalue-*(pLast+1))<=tolerance)
             {
                 return pFirst - pArrStart - 1;
             } else {
@@ -1240,7 +1240,7 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         }
 
         // If the value was not found, return closest value
-        if (abs(targetvalue-*pLast)<=abs(targetvalue-*(pLast+1)))
+        if (std::abs(targetvalue-*pLast)<=std::abs(targetvalue-*(pLast+1)))
         {
             return pLast - pArrStart;
         } else {
@@ -1288,7 +1288,7 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         }
 
         // If the value was not found, return closest value
-        if (abs(targetvalue-*pFirst)<=abs(targetvalue-*(pFirst-1)))
+        if (std::abs(targetvalue-*pFirst)<=std::abs(targetvalue-*(pFirst-1)))
         {
             return pFirst - pArrStart;
         } else {

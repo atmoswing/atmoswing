@@ -32,12 +32,12 @@
 
 namespace
 {
-
+	
 TEST(SaveAndLoadXmlFileWxStyle)
 {
 	wxPrintf("Testing xml files...\n");
 
-    wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest");
+    wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest1");
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file.xml";
 
@@ -99,19 +99,21 @@ TEST(SaveAndLoadXmlFileWxStyle)
 
 TEST(SaveAndLoadXmlFileAtmoSwingStyle)
 {
-    wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest");
+    wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest2");
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file2.xml";
 
     // Write
-    asFileXml fileXml(filePath, asFile::New);
+	asFileXml fileXml(filePath, asFile::Replace);
+	bool success = fileXml.Open();
+	CHECK_EQUAL(true, success);
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-    nodeBuilding->AddAttribute("id", "R\u00F4tillon");
+	nodeBuilding->AddAttribute("id", wxString("R\u00F4tillon"));
    
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", "h\u00F4pital"));
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", "Z\u00FCrich"));
-    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", "40"));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", wxString("h\u00F4pital")));
+	nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", wxString("Z\u00FCrich")));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", 40));
 
     fileXml.AddChild(nodeBuilding);
 
@@ -119,7 +121,7 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     
     // Read
     asFileXml fileXml2(filePath, asFile::ReadOnly);
-    bool success = fileXml2.Open();
+    success = fileXml2.Open();
     CHECK_EQUAL(true, success);
 
     CHECK_EQUAL("atmoswing", fileXml2.GetRoot()->GetName());

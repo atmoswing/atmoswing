@@ -395,11 +395,11 @@ bool asParameters::SetSpatialWindowProperties()
             if (GetPredictorXptsnb(i_step, i_ptor)==0) SetPredictorXptsnb(i_step, i_ptor, 1);
             if (GetPredictorYptsnb(i_step, i_ptor)==0) SetPredictorYptsnb(i_step, i_ptor, 1);
 
-            double Xshift = fmod(GetPredictorXmin(i_step, i_ptor), GetPredictorXstep(i_step, i_ptor));
+            double Xshift = std::fmod(GetPredictorXmin(i_step, i_ptor), GetPredictorXstep(i_step, i_ptor));
             if (Xshift<0) Xshift += GetPredictorXstep(i_step, i_ptor);
             if(!SetPredictorXshift(i_step, i_ptor, Xshift)) return false;
 
-            double Yshift = fmod(GetPredictorYmin(i_step, i_ptor), GetPredictorYstep(i_step, i_ptor));
+            double Yshift = std::fmod(GetPredictorYmin(i_step, i_ptor), GetPredictorYstep(i_step, i_ptor));
             if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
             if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
 
@@ -741,14 +741,14 @@ bool asParameters::FixCoordinates()
             {
 
                 // Check that the coordinates are a multiple of the steps
-                if(abs(fmod(m_steps[i].Predictors[j].Xmin-m_steps[i].Predictors[j].Xshift, m_steps[i].Predictors[j].Xstep))>0)
+                if(std::abs(std::fmod(m_steps[i].Predictors[j].Xmin-m_steps[i].Predictors[j].Xshift, m_steps[i].Predictors[j].Xstep))>0)
                 {
                     double factor = (m_steps[i].Predictors[j].Xmin-m_steps[i].Predictors[j].Xshift)/m_steps[i].Predictors[j].Xstep;
                     factor = asTools::Round(factor);
                     m_steps[i].Predictors[j].Xmin = factor*m_steps[i].Predictors[j].Xstep+m_steps[i].Predictors[j].Xshift;
                 }
 
-                if(abs(fmod(m_steps[i].Predictors[j].Ymin-m_steps[i].Predictors[j].Yshift, m_steps[i].Predictors[j].Ystep))>0)
+                if(std::abs(std::fmod(m_steps[i].Predictors[j].Ymin-m_steps[i].Predictors[j].Yshift, m_steps[i].Predictors[j].Ystep))>0)
                 {
                     double factor = (m_steps[i].Predictors[j].Ymin-m_steps[i].Predictors[j].Yshift)/m_steps[i].Predictors[j].Ystep;
                     factor = asTools::Round(factor);

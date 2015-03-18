@@ -155,7 +155,7 @@ public:
      */
     double GetAbsoluteXwidth()
     {
-        return abs(m_absoluteXmax-m_absoluteXmin);
+        return std::abs(m_absoluteXmax-m_absoluteXmin);
     }
 
     /** Gives the area absolute Y width
@@ -163,7 +163,7 @@ public:
      */
     double GetAbsoluteYwidth()
     {
-        return abs(m_absoluteYmax-m_absoluteYmin);
+        return std::abs(m_absoluteYmax-m_absoluteYmin);
     }
 
     /** Gives the area X min coordinate

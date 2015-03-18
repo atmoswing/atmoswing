@@ -855,7 +855,7 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
         if(rowTimeArray!=asOUT_OF_RANGE && rowTimeArray!=asNOT_FOUND)
         {
             // Check that there is not more than a few hours of difference.
-            if(abs(predictandTimeArray[i]-fullTimeArray[rowTimeArray])<1)
+            if(std::abs(predictandTimeArray[i]-fullTimeArray[rowTimeArray])<1)
             {
                 if(predictandData[i]>=minThreshold && predictandData[i]<=maxThreshold)
                 {

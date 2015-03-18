@@ -93,7 +93,9 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag", GetSpecificTag()));
     nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag_display", GetSpecificTagDisplay()));
     nodeDescr->AddChild(fileParams.CreateNodeWithValue("description", GetDescription()));
-    
+
+	fileParams.AddChild(nodeDescr);
+
     // Time properties
     wxXmlNode * nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE ,"time_properties" );
 
