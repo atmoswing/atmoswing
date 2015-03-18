@@ -208,7 +208,7 @@ void asLog::Error(const wxString &msg)
 
 			if(!processed)
 			{
-				printf("Error: %s\n", msg);
+				wxPrintf("Error: %s\n", msg);
 			}
         }
     }
@@ -276,7 +276,7 @@ void asLog::Warning(const wxString &msg)
 
 			if(!processed)
 			{
-				printf("Warning: %s\n", msg);
+				wxPrintf("Warning: %s\n", msg);
 			}
         }
     }
@@ -343,7 +343,7 @@ void asLog::Message(const wxString &msg, bool force)
 
 			if(!processed)
 			{
-				printf("%s\n", msg);
+				wxPrintf("%s\n", msg);
 			}
         }
     }
