@@ -39,8 +39,7 @@ namespace
 
 TEST(LoadEasy)
 {
-	wxString str("Testing general archive predictors...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing general archive predictors...\n");
 	
     double Xmin = 10;
     int Xptsnb = 5;

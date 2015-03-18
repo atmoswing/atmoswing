@@ -35,8 +35,7 @@ namespace
 
 TEST(ConstructorOneArea)
 {
-	wxString str("Testing geo area composites...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing geo area composites...\n");
 	
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;

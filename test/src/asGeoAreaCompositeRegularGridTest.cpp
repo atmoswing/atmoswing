@@ -35,8 +35,7 @@ namespace
 
 TEST(ConstructorStepException)
 {
-	wxString str("Testing composite regular grids...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing composite regular grids...\n");
 	
     if(g_unitTestExceptions)
     {

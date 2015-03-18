@@ -206,9 +206,9 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing version %s, %s", g_version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing version %s, %s", g_version, (const wxChar*) date);
 
-            msgOut->Printf( wxT("%s"), msg.c_str() );
+            msgOut->Printf( msg );
         }
         else
         {
@@ -277,7 +277,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             wxMessageOutput* msgOut = wxMessageOutput::Get();
             if ( msgOut )
             {
-                msgOut->Printf( _("The given log target (%s) does not correspond to any possible option."), logTargetStr.c_str() );
+                msgOut->Printf( _("The given log target (%s) does not correspond to any possible option."), logTargetStr );
             }
         }
     }
@@ -573,7 +573,7 @@ int AtmoswingAppForecaster::OnRun()
             asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
             if ( msgOut )
             {
-                msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
+                msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr );
             }
 
             // Open last batch file
@@ -590,7 +590,7 @@ int AtmoswingAppForecaster::OnRun()
                     asLogWarning(_("Failed to open the batch file ") + batchFilePath);
                     if ( msgOut )
                     {
-                        msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath.c_str() );
+                        msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath );
                     }
                     return 0;
                 }
@@ -624,7 +624,7 @@ int AtmoswingAppForecaster::OnRun()
             asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
             if ( msgOut )
             {
-                msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr.c_str() );
+                msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr );
             }
 
             // Write the resulting files path into a temp file.
@@ -663,7 +663,7 @@ int AtmoswingAppForecaster::OnRun()
                     asLogWarning(_("Failed to open the batch file ") + batchFilePath);
                     if ( msgOut )
                     {
-                        msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath.c_str() );
+                        msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath );
                     }
                     return 0;
                 }
@@ -690,10 +690,10 @@ int AtmoswingAppForecaster::OnRun()
 
                 // Log message
                 wxString forecastDateStr = asTime::GetStringTime(date, "DD.MM.YYYY hh:mm");
-                asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr.c_str()));
+                asLogMessageImportant(wxString::Format(_("Forecast started for the %s UTC"), forecastDateStr));
                 if ( msgOut )
                 {
-                    msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr.c_str() );
+                    msgOut->Printf( "Forecast started for the %s UTC", forecastDateStr );
                 }
 
                 // Launch forecasting
@@ -715,7 +715,7 @@ int AtmoswingAppForecaster::OnRun()
                 asLogMessageImportant(wxString::Format(_("Forecast processed for the date %s UTC"), realForecastDateStr.c_str()));
                 if ( msgOut )
                 {
-                    msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr.c_str() );
+                    msgOut->Printf( "Forecast processed for the date %s UTC", realForecastDateStr );
                 }
 
                 // Apply real forecast date to increment

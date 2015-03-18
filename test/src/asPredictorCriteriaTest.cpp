@@ -42,8 +42,7 @@ namespace
 
 TEST(ProcessS1)
 {
-	wxString str("Testing the criteria...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing the criteria...\n");
 	
     // Get the data file
     wxString filepath = wxFileName::GetCwd();

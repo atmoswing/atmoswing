@@ -89,7 +89,7 @@ bool AtmoswingAppViewer::OnInit()
 
     if (!multipleInstances)
     {
-        const wxString instanceName = wxString::Format(wxT("AtmoSwingViewer-%s"),wxGetUserId().c_str());
+        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"),wxGetUserId().c_str());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if ( m_singleInstanceChecker->IsAnotherRunning() )
         {
@@ -168,9 +168,9 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar*) date);
 
-            msgOut->Printf( wxT("%s"), msg.c_str() );
+            msgOut->Printf( wxT("%s"), msg );
         }
         else
         {

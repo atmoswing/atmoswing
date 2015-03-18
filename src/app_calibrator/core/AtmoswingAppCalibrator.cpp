@@ -254,9 +254,9 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing version %s, %s", g_version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing version %s, %s", g_version, (const wxChar*) date);
 
-            msgOut->Printf( wxT("%s"), msg.c_str() );
+            msgOut->Printf( msg );
         }
         else
         {
@@ -370,7 +370,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
             wxMessageOutput* msgOut = wxMessageOutput::Get();
             if ( msgOut )
             {
-                msgOut->Printf( _("The given log target (%s) does not correspond to any possible option."), logTargetStr.c_str() );
+                msgOut->Printf( _("The given log target (%s) does not correspond to any possible option."), logTargetStr );
             }
         }
     }
@@ -557,7 +557,7 @@ int AtmoswingAppCalibrator::OnRun()
             {
                 if ( msgOut )
                 {
-                    msgOut->Printf( "Wrong calibration method selection (%s).", m_calibMethod.c_str() );
+                    msgOut->Printf( "Wrong calibration method selection (%s).", m_calibMethod );
                 }
             }
         }

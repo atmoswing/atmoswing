@@ -37,8 +37,7 @@ TEST(ConstructorLimitsException)
 {
     if(g_unitTestExceptions)
     {
-	    wxString str("Testing regular grids...\n");
-        printf("%s", str.mb_str(wxConvUTF8).data());
+		wxPrintf("Testing regular grids...\n");
 	
         Coo CornerUL, CornerUR, CornerLL, CornerLR;
         CornerUL.x = -10;

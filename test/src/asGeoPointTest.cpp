@@ -35,8 +35,7 @@ namespace
 
 TEST(ConstructorDefault)
 {
-	wxString str("Testing geo points management...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing geo points management...\n");
 	
     Coo Point;
     Point.x = 7;

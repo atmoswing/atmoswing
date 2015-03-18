@@ -39,8 +39,7 @@ namespace
 
 TEST(LoadEasySmallFile)
 {
-	wxString str("Testing general realtime predictors...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing general realtime predictors...\n");
 	
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");

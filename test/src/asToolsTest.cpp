@@ -37,8 +37,7 @@ namespace
 
 TEST(IsRoundFloatTrue)
 {
-	wxString str("Testing tools...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing tools...\n");
 
     float Value = 2;
     const bool Result = asTools::IsRound(Value);

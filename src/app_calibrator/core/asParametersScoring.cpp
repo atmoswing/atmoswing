@@ -336,8 +336,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     strVal = stringVals.SubString(iLeft, iRight-1);
     if (!strVal.IsSameAs(GetForecastScoreName()))
     {
-        asLogError(wxString::Format(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName().c_str(), strVal.c_str()));
-        printf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetForecastScoreName().c_str(), strVal.c_str()));
+        asLogError(wxString::Format(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName(), strVal));
+        printf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetForecastScoreName(), strVal));
         return false;
     }
 
