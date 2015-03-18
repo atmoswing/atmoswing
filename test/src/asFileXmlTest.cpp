@@ -35,6 +35,8 @@ namespace
 
 TEST(SaveAndLoadXmlFileWxStyle)
 {
+	wxPrintf("Testing xml files...\n");
+
     wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest");
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file.xml";
@@ -142,9 +144,6 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
 /*
 TEST(LoadSimpleXmlFile)
 {
-    wxString str("Testing xml files...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
-
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/file_xml.xml");
 
@@ -158,9 +157,6 @@ TEST(LoadSimpleXmlFile)
 
 TEST(LoadSimpleXmlFile)
 {
-    wxString str("Testing xml files...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
-
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/file_xml_error.xml");
 

@@ -40,8 +40,7 @@ namespace
 
 TEST(Gradients)
 {
-	wxString str("Testing the preprocessor...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing the preprocessor...\n");
 	
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);

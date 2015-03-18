@@ -35,8 +35,7 @@ namespace
 
 TEST(ConstructorAlternativeOneArea)
 {
-	wxString str("Testing composite grids...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing composite grids...\n");
 	
     double Xmin = 10;
     int Xptsnb = 5;

@@ -35,8 +35,7 @@ namespace
 
 TEST(BuildArraySimple)
 {
-	wxString str("Testing time arrays...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing time arrays...\n");
 	
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2009,1,1);

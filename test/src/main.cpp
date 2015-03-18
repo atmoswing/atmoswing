@@ -102,8 +102,7 @@ int main( int argc, char** argv )
 			}
 			else
 			{
-				wxString str("Cannot find the files directory\n");
-				printf("%s", str.mb_str(wxConvUTF8).data());
+				wxPrintf("Cannot find the files directory\n");
 				return 0;
 			}
 		}

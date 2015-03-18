@@ -35,8 +35,7 @@ namespace
 
 TEST(IsLeapYearDivisableBy4)
 {
-	wxString str("Testing time functionalities...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing time functionalities...\n");
 	
     const bool Result = asTime::IsLeapYear(1972);
     CHECK_EQUAL(true, Result);
@@ -692,10 +691,7 @@ TEST(NowLocalMJD)
     double mjd = asTime::NowMJD(asLOCAL);
     wxString datestr = asTime::GetStringTime(mjd);
 
-    wxString str;
-    str.Printf("Local time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Local time is %s\n", datestr);
 }
 
 TEST(NowLocalTimeStruct)
@@ -703,10 +699,7 @@ TEST(NowLocalTimeStruct)
     TimeStruct date = asTime::NowTimeStruct(asLOCAL);
     wxString datestr = asTime::GetStringTime(date);
 
-    wxString str;
-    str.Printf("Local time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Local time is %s\n", datestr);
 }
 
 TEST(NowMJD)
@@ -714,10 +707,7 @@ TEST(NowMJD)
     double mjd = asTime::NowMJD(asUTM);
     wxString datestr = asTime::GetStringTime(mjd);
 
-    wxString str;
-    str.Printf("UTM time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time is %s\n", datestr);
 }
 
 TEST(NowTimeStruct)
@@ -725,10 +715,7 @@ TEST(NowTimeStruct)
     TimeStruct date = asTime::NowTimeStruct(asUTM);
     wxString datestr = asTime::GetStringTime(date);
 
-    wxString str;
-    str.Printf("UTM time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time is %s\n", datestr);
 }
 
 TEST(GetStringDateMJD)
@@ -921,10 +908,7 @@ TEST(GetTimeFromStringFormatnowplushours)
     double conversion = asTime::GetTimeFromString("+2", nowplushours);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time +2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time +2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatnowplushoursException)
@@ -948,10 +932,7 @@ TEST(GetTimeFromStringFormatnowminushours)
     double conversion = asTime::GetTimeFromString("-2", nowminushours);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time -2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time -2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatnowminushoursException)
@@ -1103,10 +1084,7 @@ TEST(GetTimeFromStringFormatautonowplushours)
     double conversion = asTime::GetTimeFromString("+2", guess);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time +2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time +2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatautonowplushoursException)
@@ -1130,10 +1108,7 @@ TEST(GetTimeFromStringFormatautonowminushours)
     double conversion = asTime::GetTimeFromString("-2", guess);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time -2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time -2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatautonowminushoursException)
