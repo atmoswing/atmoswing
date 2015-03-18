@@ -116,7 +116,7 @@ public:
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
 
     bool SetPredictandStationIds(wxString val);
-    
+
     wxString GetMethodId()
     {
         return m_methodId;
@@ -126,7 +126,7 @@ public:
     {
         m_methodId = val;
     }
-    
+
     wxString GetMethodIdDisplay()
     {
         return m_methodIdDisplay;
@@ -136,7 +136,7 @@ public:
     {
         m_methodIdDisplay = val;
     }
-    
+
     wxString GetSpecificTag()
     {
         return m_specificTag;
@@ -146,7 +146,7 @@ public:
     {
         m_specificTag = val;
     }
-    
+
     wxString GetSpecificTagDisplay()
     {
         return m_specificTagDisplay;
@@ -156,7 +156,7 @@ public:
     {
         m_specificTagDisplay = val;
     }
-    
+
     wxString GetDescription()
     {
         return m_description;
@@ -205,18 +205,18 @@ public:
         m_archiveStart = asTime::GetTimeFromString(val);
         return true;
     }
-    
+
     double GetArchiveEnd()
     {
         return m_archiveEnd;
     }
-    
+
     bool SetArchiveEnd(double val)
     {
         m_archiveEnd = val;
         return true;
     }
-    
+
     bool SetArchiveEnd(wxString val)
     {
         m_archiveEnd = asTime::GetTimeFromString(val);

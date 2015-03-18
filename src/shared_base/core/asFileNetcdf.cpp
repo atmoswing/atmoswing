@@ -8,26 +8,26 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asFileNetcdf.h"
 
-#include <stdint.h> // To get  int32_t and int64_t 
+#include <stdint.h> // To get  int32_t and int64_t
 
 asFileNetcdf::asFileNetcdf(const wxString &FileName, const ListFileMode &FileMode)
 :
@@ -166,11 +166,11 @@ void asFileNetcdf::DefDim(const wxString &DimName, const size_t &DimSize)
 
     if (DimSize==0)
     {
-        m_status = nc_def_dim(m_fileId, DimName.mb_str(), NC_UNLIMITED, &DimId);
+        m_status = nc_def_dim(m_fileId, DimName.mb_str(wxConvUTF8), NC_UNLIMITED, &DimId);
         if(m_status) HandleErrorNetcdf();
 //        DimSize = 0;
     } else {
-        m_status = nc_def_dim(m_fileId, DimName.mb_str(), DimSize, &DimId);
+        m_status = nc_def_dim(m_fileId, DimName.mb_str(wxConvUTF8), DimSize, &DimId);
         if(m_status) HandleErrorNetcdf();
     }
 }
@@ -195,7 +195,7 @@ void asFileNetcdf::DefVar(const wxString &VarName, nc_type DataType, const int &
         DimIds.push_back(DimId);
     }
 
-    m_status = nc_def_var(m_fileId, VarName.mb_str(), DataType, VarSize, &DimIds[0], &VarId);
+    m_status = nc_def_var(m_fileId, VarName.mb_str(wxConvUTF8), DataType, VarSize, &DimIds[0], &VarId);
     if(m_status) HandleErrorNetcdf();
 }
 
@@ -205,7 +205,7 @@ void asFileNetcdf::DefVarDeflate(const wxString &VarName, int shuffle, int defla
 
     int VarId;
 
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
 
     m_status = nc_def_var_deflate(m_fileId, VarId, shuffle, 1, deflateLevel);
@@ -218,24 +218,26 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const wxString &TextStr, cons
 
     int AttId, VarId;
 
+    wxCharBuffer buffer = TextStr.ToUTF8();
+
     // Check that the file is in define mode
     CheckDefModeOpen();
 
     // Check if global or not
     if ((VarName.IsEmpty()))
     {
-        m_status = nc_put_att_text(m_fileId, NC_GLOBAL, AttName.mb_str(), TextStr.Length(), TextStr.mb_str());
+        m_status = nc_put_att_text(m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     } else {
-        m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+        m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
         if(m_status) HandleErrorNetcdf();
-        m_status = nc_put_att_text(m_fileId, VarId, AttName.mb_str(), TextStr.Length(), TextStr.mb_str());
+        m_status = nc_put_att_text(m_fileId, VarId, AttName.mb_str(wxConvUTF8), strlen(buffer.data()), buffer.data());
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     }
 }
@@ -252,18 +254,18 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const short* attrValue, size_
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_status = nc_put_att_short (m_fileId, NC_GLOBAL, AttName.mb_str(), NC_SHORT, Length, attrValue);
+        m_status = nc_put_att_short (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), NC_SHORT, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     } else {
-        m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+        m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
         if(m_status) HandleErrorNetcdf();
-        m_status = nc_put_att_short (m_fileId, VarId, AttName.mb_str(), NC_SHORT, Length, attrValue);
+        m_status = nc_put_att_short (m_fileId, VarId, AttName.mb_str(wxConvUTF8), NC_SHORT, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     }
 }
@@ -280,18 +282,18 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const int* attrValue, size_t 
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_status = nc_put_att_int (m_fileId, NC_GLOBAL, AttName.mb_str(), NC_INT, Length, attrValue);
+        m_status = nc_put_att_int (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), NC_INT, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     } else {
-        m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+        m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
         if(m_status) HandleErrorNetcdf();
-        m_status = nc_put_att_int (m_fileId, VarId, AttName.mb_str(), NC_INT, Length, attrValue);
+        m_status = nc_put_att_int (m_fileId, VarId, AttName.mb_str(wxConvUTF8), NC_INT, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     }
 }
@@ -308,18 +310,18 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const float* attrValue, size_
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_status = nc_put_att_float (m_fileId, NC_GLOBAL, AttName.mb_str(), NC_FLOAT, Length, attrValue);
+        m_status = nc_put_att_float (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), NC_FLOAT, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     } else {
-        m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+        m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
         if(m_status) HandleErrorNetcdf();
-        m_status = nc_put_att_float (m_fileId, VarId, AttName.mb_str(), NC_FLOAT, Length, attrValue);
+        m_status = nc_put_att_float (m_fileId, VarId, AttName.mb_str(wxConvUTF8), NC_FLOAT, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     }
 }
@@ -336,18 +338,18 @@ void asFileNetcdf::PutAtt(const wxString &AttName, const double* attrValue, size
     // Check if global or not
     if(VarName.IsEmpty())
     {
-        m_status = nc_put_att_double (m_fileId, NC_GLOBAL, AttName.mb_str(), NC_DOUBLE, Length, attrValue);
+        m_status = nc_put_att_double (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), NC_DOUBLE, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     } else {
-        m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+        m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
         if(m_status) HandleErrorNetcdf();
-        m_status = nc_put_att_double (m_fileId, VarId, AttName.mb_str(), NC_DOUBLE, Length, attrValue);
+        m_status = nc_put_att_double (m_fileId, VarId, AttName.mb_str(wxConvUTF8), NC_DOUBLE, Length, attrValue);
         if(m_status) HandleErrorNetcdf();
         // Get the ID
-        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(), &AttId);
+        m_status = nc_inq_attid (m_fileId, VarId, AttName.mb_str(wxConvUTF8), &AttId);
         if(m_status) HandleErrorNetcdf();
     }
 }
@@ -362,7 +364,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     CheckDefModeClosed();
 
     // Get Var ID
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
     // Write data
     m_status = nc_put_vara_short(m_fileId, VarId, ArrStart, ArrCount, pData);
@@ -380,7 +382,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     CheckDefModeClosed();
 
     // Get Var ID
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
     // Write data
     m_status = nc_put_vara_int(m_fileId, VarId, ArrStart, ArrCount, pData);
@@ -398,7 +400,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     CheckDefModeClosed();
 
     // Get Var ID
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
     // Write data
     m_status = nc_put_vara_float(m_fileId, VarId, ArrStart, ArrCount, pData);
@@ -416,7 +418,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     CheckDefModeClosed();
 
     // Get Var ID
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
     // Write data
     m_status = nc_put_vara_double(m_fileId, VarId, ArrStart, ArrCount, pData);
@@ -434,7 +436,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     CheckDefModeClosed();
 
     // Get Var ID
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
     // Write data
     m_status = nc_put_vara(m_fileId, VarId, ArrStart, ArrCount, pData);
@@ -467,7 +469,7 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     CheckDefModeClosed();
 
     // Get Var ID
-    m_status = nc_inq_varid (m_fileId, VarName.mb_str(), &VarId);
+    m_status = nc_inq_varid (m_fileId, VarName.mb_str(wxConvUTF8), &VarId);
     if(m_status) HandleErrorNetcdf();
     // Write data
     m_status = nc_put_vara_string(m_fileId, VarId, ArrStart, ArrCount, (const char**)cstr);
@@ -877,13 +879,13 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
         }
 
         // Get value
-        m_status = nc_get_att_text (m_fileId, NC_GLOBAL, AttName.mb_str(), text);
+        m_status = nc_get_att_text (m_fileId, NC_GLOBAL, AttName.mb_str(wxConvUTF8), text);
         if(m_status) HandleErrorNetcdf();
 
         text[len] = '\0';
 
         // Copy into a wxString
-        attrValue = wxString(text);
+        attrValue = wxString(text, wxConvUTF8);
         wxASSERT(!attrValue.IsEmpty());
         attrValue.Remove(len); // Remove the stuff after the end of the string
         wxASSERT(!attrValue.IsEmpty());
@@ -901,14 +903,14 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
 
         // Check the given type
         nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
-        if(nctype!=NC_CHAR) 
+        if(nctype!=NC_CHAR)
         {
             wxDELETE(text);
             asThrowException(wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."), VarName, AttName, (int)nctype, (int)NC_CHAR ));
         }
 
         // Get value
-        m_status = nc_get_att_text (m_fileId, varid, AttName.mb_str(), text);
+        m_status = nc_get_att_text (m_fileId, varid, AttName.mb_str(wxConvUTF8), text);
         if(m_status) HandleErrorNetcdf();
 
         text[len] = '\0';
