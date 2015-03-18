@@ -37,7 +37,7 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
-Copyright (C) 2013-2014, Terr@num, Switzerland.
+Copyright (C) 2013-2015, Terranum, Switzerland.
 
 Developed by Pascal Horton. 
 
