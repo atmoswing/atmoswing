@@ -133,16 +133,18 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
 bool asTools::IsRound(float value)
 {
     float valueround = Round(value);
-    if (abs(value-valueround)<0.000001)
+    if (std::abs(value-valueround)<0.000001) {
         return true;
+    }
     return false;
 }
 
 bool asTools::IsRound(double value)
 {
     double valueround = Round(value);
-    if (abs(value-valueround)<0.000000000001)
+    if (std::abs(value-valueround)<0.000000000001) {
         return true;
+    }
     return false;
 }
 

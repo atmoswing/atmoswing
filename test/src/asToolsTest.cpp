@@ -40,203 +40,203 @@ TEST(IsRoundFloatTrue)
 	wxPrintf("Testing tools...\n");
 
     float Value = 2;
-    const bool Result = asTools::IsRound(Value);
+    bool Result = asTools::IsRound(Value);
     CHECK_EQUAL(true, Result);
 }
 
 TEST(IsRoundFloatFalse)
 {
     float Value = 2.0001f;
-    const bool Result = asTools::IsRound(Value);
+    bool Result = asTools::IsRound(Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(IsRoundDoubleFalse)
 {
     double Value = 2.00000001;
-    const bool Result = asTools::IsRound(Value);
+    bool Result = asTools::IsRound(Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(RoundFloatUp)
 {
     float Value = 2.5;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(3, Result);
 }
 
 TEST(RoundDoubleUp)
 {
     double Value = 2.5;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(3, Result);
 }
 
 TEST(RoundFloatDown)
 {
     float Value = 2.49999f;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(2, Result);
 }
 
 TEST(RoundDoubleDown)
 {
     double Value = 2.499999999999;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(2, Result);
 }
 
 TEST(RoundNegativeFloatDown)
 {
     float Value = -2.5;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(-3, Result);
 }
 
 TEST(RoundNegativeDoubleDown)
 {
     double Value = -2.5;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(-3, Result);
 }
 
 TEST(RoundNegativeFloatUp)
 {
     float Value = -2.49999f;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(-2, Result);
 }
 
 TEST(RoundNegativeDoubleUp)
 {
     double Value = -2.499999999999;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(-2, Result);
 }
 
 TEST(RoundSmallFloatUp)
 {
     float Value = 0.5;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(1, Result);
 }
 
 TEST(RoundSmallDoubleUp)
 {
     double Value = 0.5;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(1, Result);
 }
 
 TEST(RoundSmallFloatDown)
 {
     float Value = 0.49999f;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(0, Result);
 }
 
 TEST(RoundSmallDoubleDown)
 {
     double Value = 0.499999999999;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(0, Result);
 }
 
 TEST(RoundSmallNegativeFloatDown)
 {
     float Value = -0.5;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(-1, Result);
 }
 
 TEST(RoundSmallNegativeDoubleDown)
 {
     double Value = -0.5;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(-1, Result);
 }
 
 TEST(RoundSmallNegativeFloatUp)
 {
     float Value = -0.49999f;
-    const float Result = asTools::Round(Value);
+    float Result = asTools::Round(Value);
     CHECK_EQUAL(0, Result);
 }
 
 TEST(RoundSmallNegativeDoubleUp)
 {
     double Value = -0.499999999999;
-    const double Result = asTools::Round(Value);
+    double Result = asTools::Round(Value);
     CHECK_EQUAL(0, Result);
 }
 
 TEST(IsNaNOne)
 {
     int Value = 1;
-    const bool Result = asTools::IsNaN((float)Value);
+    bool Result = asTools::IsNaN((float)Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(IsNaNZero)
 {
     int Value = 0;
-    const bool Result = asTools::IsNaN((float)Value);
+    bool Result = asTools::IsNaN((float)Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(IsNaNFloatTrue)
 {
     float Value = NaNFloat;
-    const bool Result = asTools::IsNaN(Value);
+    bool Result = asTools::IsNaN(Value);
     CHECK_EQUAL(true, Result);
 }
 
 TEST(IsNaNDoubleTrue)
 {
     double Value = NaNDouble;
-    const bool Result = asTools::IsNaN(Value);
+    bool Result = asTools::IsNaN(Value);
     CHECK_EQUAL(true, Result);
 }
 
 TEST(IsInfFloatFalse)
 {
     float Value = -2151;
-    const bool Result = asTools::IsInf(Value);
+    bool Result = asTools::IsInf(Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(IsInfDoubleFalse)
 {
     double Value = -2151;
-    const bool Result = asTools::IsInf(Value);
+    bool Result = asTools::IsInf(Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(IsInfLongDoubleFalse)
 {
     long double Value = -2151;
-    const bool Result = asTools::IsInf(Value);
+    bool Result = asTools::IsInf(Value);
     CHECK_EQUAL(false, Result);
 }
 
 TEST(IsInfFloatTrue)
 {
     float Value = InfFloat;
-    const bool Result = asTools::IsInf(Value);
+    bool Result = asTools::IsInf(Value);
     CHECK_EQUAL(true, Result);
 }
 
 TEST(IsInfDoubleTrue)
 {
     double Value = InfDouble;
-    const bool Result = asTools::IsInf(Value);
+    bool Result = asTools::IsInf(Value);
     CHECK_EQUAL(true, Result);
 }
 
 TEST(IsInfLongDoubleTrue)
 {
     long double Value = InfLongDouble;
-    const bool Result = asTools::IsInf(Value);
+    bool Result = asTools::IsInf(Value);
     CHECK_EQUAL(true, Result);
 }
 
