@@ -455,11 +455,10 @@ void asFileNetcdf::PutVarArray(const wxString &VarName, const size_t* ArrStart, 
     // For each string, allocate memory in the character array and copy
     for (unsigned long i=0; i<TotSize; i++)
     {
-        wxString valStr = *(pData+i);
-        size_t length = valStr.Length();
+		wxCharBuffer buffer = (pData + i)->ToUTF8();
+		size_t length = strlen(buffer.data());
         cstr[i] = new char[length+1];
-		std::string valStdStr = (std::string)valStr.mb_str(wxConvUTF8);
-        strncpy(cstr[i], valStdStr.c_str(), length);
+		strncpy(cstr[i], buffer.data(), length);
         cstr[i][length]='\0';
     }
 
