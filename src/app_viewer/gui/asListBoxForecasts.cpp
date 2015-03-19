@@ -138,7 +138,7 @@ void asListBoxForecasts::Update()
 
                 wxString name = forecast->GetSpecificTagDisplay();
                 if (name.IsEmpty()) name = forecast->GetMethodIdDisplay();
-                wxTreeItemId newItemId = AppendItem( parentItemId, name, -1, -1, itemForecast);
+                AppendItem( parentItemId, name, -1, -1, itemForecast);
             }
         }
     }
