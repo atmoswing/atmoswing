@@ -71,10 +71,10 @@ protected:
     void OnSaveBatchForecasts(wxCommandEvent & event);
     void OnSaveBatchForecastsAs(wxCommandEvent & event);
     bool SaveBatchForecasts();
+	bool UpdateBatchForecasts();
     void OnNewBatchForecasts(wxCommandEvent & event);
     bool OpenBatchForecasts();
     void Update();
-    void OpenFrameXmlEditor( wxCommandEvent& event );
     void OpenFramePredictandDB( wxCommandEvent& event );
     void OnConfigureDirectories( wxCommandEvent& event );
     void OpenFramePreferences( wxCommandEvent& event );
