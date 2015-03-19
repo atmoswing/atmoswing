@@ -174,7 +174,8 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
     }
 
     // Set general attributes
-    ncFile.PutAtt("version", &m_fileVersion);
+	ncFile.PutAtt("version_major", &m_fileVersionMajor);
+	ncFile.PutAtt("version_minor", &m_fileVersionMinor);
     int dataParameter = (int)m_predictandParameter;
     ncFile.PutAtt("predictand_parameter", &dataParameter);
     int dataTemporalResolution = (int)m_predictandTemporalResolution;
@@ -364,14 +365,27 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     if(!ncFile.Open()) return false;
 
     // Get global attributes
-    float version = ncFile.GetAttFloat("version");
-    if (version>1.6f)
+	int versionMajor = ncFile.GetAttInt("version_major");
+    int versionMinor = ncFile.GetAttInt("version_minor");
+	if (asTools::IsNaN(versionMajor)) {
+		float version = ncFile.GetAttFloat("version");
+		if (asTools::IsNaN(version)) {
+			versionMajor = 1;
+			versionMinor = 0;
+		}
+		else {
+			versionMajor = std::floor(version);
+			versionMinor = asTools::Round(10 * (version - versionMajor));
+		}
+	}
+
+	if (versionMajor >= 1 && versionMinor > 7)
     {
-        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (file version %.1f). It cannot be opened here."), version));
+        asLogError(wxString::Format(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot be opened here."), versionMajor, versionMinor));
         return false;
     }
 
-    if (asTools::IsNaN(version) || version<=1.0)
+	if (versionMinor == 0)
     {
         asLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
         m_predictandParameter = Precipitation;
@@ -389,7 +403,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     }
     else
     {
-        if(version<=1.4)
+		if (versionMinor <= 4)
         {
             m_methodId = ncFile.GetAttString("model_name");
             m_methodIdDisplay = ncFile.GetAttString("model_name");
@@ -411,7 +425,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         m_predictandSpatialAggregation = (DataSpatialAggregation)ncFile.GetAttInt("predictand_spatial_aggregation");
         m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
 
-        if(version>=1.5)
+		if (versionMinor >= 5)
         {
             m_predictandDatabase = ncFile.GetAttString("predictand_database");
             SetPredictandStationIds(ncFile.GetAttString("predictand_station_ids"));
@@ -430,7 +444,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     int Nleadtime;
     int Nanalogstot; 
     int Nstations;
-    if (asTools::IsNaN(version) || version<=1.0)
+	if (versionMinor == 0)
     {
         Nleadtime = ncFile.GetDimLength("leadtime");
         Nanalogstot = ncFile.GetDimLength("analogstot");
@@ -453,7 +467,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     m_stationXCoords.resize( Nstations );
     m_stationYCoords.resize( Nstations );
 
-    if (asTools::IsNaN(version) || version<=1.0)
+	if (versionMinor == 0)
     {
         ncFile.GetVar("targetdates", &m_targetDates[0]);
         ncFile.GetVar("analogsnb", &m_analogsNb[0]);
@@ -463,7 +477,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVar("loccoordu", &m_stationXCoords[0]);
         ncFile.GetVar("loccoordv", &m_stationYCoords[0]);
     }
-    else if (version<=1.3)
+	else if (versionMinor <= 3)
     {
         ncFile.GetVar("target_dates", &m_targetDates[0]);
         ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
@@ -473,7 +487,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
         ncFile.GetVar("loc_coord_u", &m_stationXCoords[0]);
         ncFile.GetVar("loc_coord_v", &m_stationYCoords[0]);
     }
-    else if (version<=1.5)
+	else if (versionMinor <= 5)
     {
         ncFile.GetVar("target_dates", &m_targetDates[0]);
         ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
@@ -498,7 +512,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     // Get return periods properties
     if (m_hasReferenceValues)
     {
-        if (asTools::IsNaN(version) || version<=1.0)
+		if (versionMinor == 0)
         {
             int referenceAxisLength = ncFile.GetDimLength("returnperiods");
             m_referenceAxis.resize( referenceAxisLength );
@@ -515,7 +529,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             ncFile.GetVar("reference_axis", &m_referenceAxis[0]);
             size_t startReferenceValues[2] = {0, 0};
             size_t countReferenceValues[2] = {0, 0};
-            if (version==1.1f)
+			if (versionMinor == 1)
             {
                 countReferenceValues[0] = size_t(referenceAxisLength);
                 countReferenceValues[1] = size_t(Nstations);
@@ -540,13 +554,13 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     size_t IndexCount1D[] = {size_t(Nanalogstot)};
     size_t IndexStart2D[] = {0,0};
     size_t IndexCount2D[] = {size_t(Nstations), size_t(Nanalogstot)};
-    if (asTools::IsNaN(version) || version<=1.0)
+	if (versionMinor == 0)
     {
         ncFile.GetVarArray("analogscriteria", IndexStart1D, IndexCount1D, &analogsCriteria[0]);
         ncFile.GetVarArray("analogsdates", IndexStart1D, IndexCount1D, &analogsDates[0]);
         ncFile.GetVarArray("analogsvaluesgross", IndexStart2D, IndexCount2D, &analogsValuesGross[0]);
     }
-    else if (version<=1.5)
+	else if (versionMinor <= 5)
     {
         ncFile.GetVarArray("analogs_criteria", IndexStart1D, IndexCount1D, &analogsCriteria[0]);
         ncFile.GetVarArray("analogs_dates", IndexStart1D, IndexCount1D, &analogsDates[0]);
@@ -582,7 +596,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     }
     
     int indVal = 0;
-    if (asTools::IsNaN(version) || version<=1.0)
+	if (versionMinor == 0)
     {
         for (int i_time=0; i_time<Nleadtime; i_time++)
         {

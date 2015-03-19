@@ -663,7 +663,7 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
         int attid = GetAttId(AttName);
-        if (attid==asNOT_FOUND) asThrowException(_("Cannot find the desired attribute in the netCDF file."));
+		if (attid == asNOT_FOUND) return NaNInt;
         nc_type nctype = m_struct.Atts[attid].Type;
 
         // Check the given type
@@ -681,9 +681,9 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
 
     } else { // Variable attribute
         int varid = GetVarId(VarName);
-        if (varid==asNOT_FOUND) asThrowException(_("Cannot find the desired variable in the netCDF file."));
+		if (varid == asNOT_FOUND) return NaNInt;
         int attid = GetAttId(AttName, VarName);
-        if (attid==asNOT_FOUND) asThrowException(_("Cannot find the desired attribute in the netCDF file."));
+		if (attid == asNOT_FOUND) return NaNInt;
         nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
 
         // Check the given type
