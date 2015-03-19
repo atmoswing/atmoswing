@@ -477,8 +477,8 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
 {
     wxBusyCursor wait;
 
-	InitOverallProgress();
 	UpdateBatchForecasts();
+	InitOverallProgress();
 
     // Get date
     double forecastDate = GetForecastDate();
