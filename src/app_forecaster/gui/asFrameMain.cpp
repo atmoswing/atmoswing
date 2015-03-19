@@ -230,17 +230,7 @@ bool asFrameMain::SaveBatchForecasts()
 {
     wxBusyCursor wait;
 
-    // Update the GIS layers
-    m_batchForecasts.ClearForecasts();
-
-    for (int i=0; i<m_panelsManager->GetPanelsNb(); i++)
-    {
-        asPanelForecast* panel = m_panelsManager->GetPanel(i);
-
-        m_batchForecasts.AddForecast();
-
-        m_batchForecasts.SetForecastFileName(i, panel->GetParametersFileName());
-    }
+	UpdateBatchForecasts();
 
     if(!m_batchForecasts.Save())
     {
@@ -251,6 +241,22 @@ bool asFrameMain::SaveBatchForecasts()
     m_batchForecasts.SetHasChanged(false);
 
     return true;
+}
+
+bool asFrameMain::UpdateBatchForecasts()
+{
+	m_batchForecasts.ClearForecasts();
+
+	for (int i = 0; i<m_panelsManager->GetPanelsNb(); i++)
+	{
+		asPanelForecast* panel = m_panelsManager->GetPanel(i);
+
+		m_batchForecasts.AddForecast();
+
+		m_batchForecasts.SetForecastFileName(i, panel->GetParametersFileName());
+	}
+
+	return true;
 }
 
 void asFrameMain::OnNewBatchForecasts(wxCommandEvent & event)
@@ -290,13 +296,6 @@ bool asFrameMain::OpenBatchForecasts()
 void asFrameMain::Update()
 {
     DisplayLogLevelMenu();
-}
-
-void asFrameMain::OpenFrameXmlEditor( wxCommandEvent& event )
-{
-    //asFrameXmlEditor* frame = new asFrameXmlEditor(this, asWINDOW_XML_EDITOR);
-    //frame->Fit();
-    //frame->Show();
 }
 
 void asFrameMain::OpenFramePredictandDB( wxCommandEvent& event )
@@ -479,6 +478,7 @@ void asFrameMain::LaunchForecasting( wxCommandEvent& event )
     wxBusyCursor wait;
 
 	InitOverallProgress();
+	UpdateBatchForecasts();
 
     // Get date
     double forecastDate = GetForecastDate();
