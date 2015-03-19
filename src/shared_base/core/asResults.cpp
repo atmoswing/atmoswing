@@ -38,7 +38,8 @@ asResults::asResults()
     m_saveIntermediateResults = false;
     m_loadIntermediateResults = false;
     m_currentStep = 0;
-    m_fileVersion = 1.6f;
+	m_fileVersionMajor = 1;
+	m_fileVersionMinor = 7;
     m_dateProcessed = 0;
 }
 
