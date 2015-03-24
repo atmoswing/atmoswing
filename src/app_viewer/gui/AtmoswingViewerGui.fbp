@@ -10560,7 +10560,7 @@
                 </object>
             </object>
         </object>
-        <object class="Wizard" expanded="0">
+        <object class="Wizard" expanded="1">
             <property name="bg"></property>
             <property name="bitmap"></property>
             <property name="center">wxBOTH</property>
@@ -11008,7 +11008,7 @@
                     </object>
                 </object>
             </object>
-            <object class="WizardPageSimple" expanded="0">
+            <object class="WizardPageSimple" expanded="1">
                 <property name="bg"></property>
                 <property name="bitmap"></property>
                 <property name="context_help"></property>
@@ -11052,7 +11052,7 @@
                 <event name="OnSetFocus"></event>
                 <event name="OnSize"></event>
                 <event name="OnUpdateUI"></event>
-                <object class="wxBoxSizer" expanded="0">
+                <object class="wxBoxSizer" expanded="1">
                     <property name="minimum_size"></property>
                     <property name="name">bSizer49</property>
                     <property name="orient">wxVERTICAL</property>
@@ -11282,7 +11282,7 @@
                             <property name="validator_type">wxDefaultValidator</property>
                             <property name="validator_variable"></property>
                             <property name="value"></property>
-                            <property name="wildcard">*.xml</property>
+                            <property name="wildcard">*.asvw</property>
                             <property name="window_extra_style"></property>
                             <property name="window_name"></property>
                             <property name="window_style"></property>

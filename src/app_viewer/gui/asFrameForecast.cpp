@@ -349,10 +349,26 @@ void asFrameForecast::Init()
     }
     else
     {
-        asWizardWorkspace wizard(this, &m_workspace);
+        asWizardWorkspace wizard(this);
         wizard.RunWizard(wizard.GetFirstPage());
 
-        OpenWorkspace();
+		// Open last workspace
+		wxConfigBase *pConfig = wxFileConfig::Get();
+		wxString workspaceFilePath = wxEmptyString;
+		pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
+
+		if (!workspaceFilePath.IsEmpty())
+		{
+			if (!m_workspace.Load(workspaceFilePath))
+			{
+				asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+			}
+
+			if (!OpenWorkspace())
+			{
+				asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+			}
+		}
     }
 
     // Set the display options
@@ -581,31 +597,50 @@ bool asFrameForecast::SaveWorkspace()
 
 void asFrameForecast::OnNewWorkspace(wxCommandEvent & event)
 {
-    asWizardWorkspace wizard(this, &m_workspace);
-    wizard.RunWizard(wizard.GetSecondPage());
+    asWizardWorkspace wizard(this);
+	wizard.RunWizard(wizard.GetSecondPage());
+
+	// Open last workspace
+	wxConfigBase *pConfig = wxFileConfig::Get();
+	wxString workspaceFilePath = wxEmptyString;
+	pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
+
+	if (!workspaceFilePath.IsEmpty())
+	{
+		if (!m_workspace.Load(workspaceFilePath))
+		{
+			asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+		}
+
+		if (!OpenWorkspace())
+		{
+			asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+		}
+	}
 }
 
 bool asFrameForecast::OpenWorkspace()
 {
-    // GIS layers
     #if defined (__WIN32__)
         m_critSectionViewerLayerManager.Enter();
     #endif
 
     m_viewerLayerManager->FreezeBegin();
 
-    // Remove all layers
-    for (int i = (signed) m_viewerLayerManager->GetCount()-1; i >= 0 ; i--) 
-    {
-        // Remove from viewer manager (TOC and Display)
-        vrRenderer * renderer = m_viewerLayerManager->GetRenderer(i);
-        vrLayer * layer = renderer->GetLayer();
-        wxASSERT(renderer);
-        m_viewerLayerManager->Remove(renderer);
+	m_forecastViewer->ResetForecastSelection();
 
-        // Close layer (not used anymore);
-        m_layerManager->Close(layer);
-    }
+	// Remove all layers
+	for (int i = (signed)m_viewerLayerManager->GetCount() - 1; i >= 0; i--)
+	{
+		// Remove from viewer manager (TOC and Display)
+		vrRenderer * renderer = m_viewerLayerManager->GetRenderer(i);
+		vrLayer * layer = renderer->GetLayer();
+		wxASSERT(renderer);
+		m_viewerLayerManager->Remove(renderer);
+
+		// Close layer (not used anymore);
+		m_layerManager->Close(layer);
+	}
 
     // Open new layers
     for (int i_layer=m_workspace.GetLayersNb()-1; i_layer>=0; i_layer--)
@@ -1576,13 +1611,14 @@ void asFrameForecast::FitExtentToForecasts ()
 
         // Force new extent
         m_viewerLayerManager->InitializeExtent(extent);
-    }
-    else
-    {
-        asLogError(_("The forecasts layer was not found."));
-    }
+	}
+	else
+	{
+		asLogError(_("The forecasts layer was not found."));
+	}
 
     ReloadViewerLayerManager();
+
 }
 
 void asFrameForecast::OnMoveLayer (wxCommandEvent & event)
