@@ -124,6 +124,12 @@ void asForecastViewer::FixForecastSelection()
     }
 }
 
+void asForecastViewer::ResetForecastSelection()
+{
+	m_methodSelection = -1;
+	m_forecastSelection = -1;
+}
+
 void asForecastViewer::SetForecast(int methodRow, int forecastRow)
 {
     m_methodSelection = methodRow;

@@ -46,6 +46,7 @@ public:
     wxArrayString GetForecastDisplayStringArray();
     wxArrayString GetQuantilesStringArray();
     void FixForecastSelection();
+	void ResetForecastSelection();
     void SetForecast(int methodRow, int forecastRow);
     wxString GetStationName(int i_stat);
     float GetSelectedTargetDate();
