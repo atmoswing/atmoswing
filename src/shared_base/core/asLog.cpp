@@ -126,12 +126,16 @@ void asLog::Resume()
 
 void asLog::Flush()
 {
+#if wxUSE_GUI
     if (m_logChain) {
         m_logChain->Flush();
     }
     else if (m_logFile) {
         m_logFile->Flush();
     }
+#else
+	m_logFile->Flush();
+#endif
 }
 
 void asLog::Error(const wxString &msg)
