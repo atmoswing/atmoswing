@@ -49,6 +49,8 @@ public:
 
     bool IsCompatibleWith(asResultsAnalogsForecast * otherForecast);
 
+	bool IsSameAs(asResultsAnalogsForecast * otherForecast);
+
     bool IsSpecificForStationId(int stationId);
 
     int GetStationRowFromId(int stationId);

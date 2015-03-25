@@ -41,9 +41,9 @@ public:
     /** Default destructor */
     virtual ~asResultsAnalogsForecastAggregator();
 
-    void Add(asResultsAnalogsForecast* forecast);
+    bool Add(asResultsAnalogsForecast* forecast);
 
-    void AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast* forecast);
+	bool AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast* forecast);
 
     void ClearArrays();
 

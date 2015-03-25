@@ -783,6 +783,51 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast * other
     return true;
 }
 
+bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast * otherForecast)
+{
+	if (!IsCompatibleWith(otherForecast)) return false;
+
+	if (!m_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false)) return false;
+
+	VectorInt predictandStationIds = otherForecast->GetPredictandStationIds();
+	if (m_predictandStationIds.size() != predictandStationIds.size()) {
+		return false;
+	}
+
+	for (int i = 0; i<m_predictandStationIds.size(); i++) {
+		if (m_predictandStationIds[i] != predictandStationIds[i]) return false;
+	}
+
+	Array1DFloat targetDates = otherForecast->GetTargetDates();
+	if (m_targetDates.size() != targetDates.size()) {
+		return false;
+	}
+
+	for (int i = 0; i < m_targetDates.size(); i++) {
+		if (m_targetDates[i] != targetDates[i]) return false;
+		if (m_analogsNb[i] != otherForecast->GetAnalogsNumber(i)) return false;
+		if (m_analogsCriteria[i].size() != otherForecast->GetAnalogsCriteria(i).size()) return false;
+		if (m_analogsDates[i].size() != otherForecast->GetAnalogsDates(i).size()) return false;
+		if (m_analogsValuesGross[i].size() != otherForecast->GetAnalogsValuesGross(i).size()) return false;
+
+		for (int j = 0; j < m_analogsCriteria[i].size(); j++) {
+			if (m_analogsCriteria[i][j] != otherForecast->GetAnalogsCriteria(i)[j]) return false;
+		}
+		for (int j = 0; j < m_analogsDates[i].size(); j++) {
+			if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
+		}
+		for (int j = 0; j < m_analogsDates[i].size(); j++) {
+			if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
+		}
+		for (int j = 0; j < m_analogsValuesGross[i].size(); j++) {
+			if (m_analogsValuesGross[i].rows() != otherForecast->GetAnalogsValuesGross(i).rows()) return false;
+			if (m_analogsValuesGross[i].cols() != otherForecast->GetAnalogsValuesGross(i).cols()) return false;
+		}
+	}
+
+	return true;
+}
+
 bool asResultsAnalogsForecast::IsSpecificForStationId(int stationId)
 {
     for (int i=0; i<(int)m_predictandStationIds.size(); i++)
