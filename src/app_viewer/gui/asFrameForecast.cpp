@@ -334,6 +334,20 @@ void asFrameForecast::Init()
     wxString workspaceFilePath = wxEmptyString;
     pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
 
+	// Check provided files
+	bool forecastFilesProvided = false;
+	if (!g_cmdFilename.IsEmpty())
+	{
+		int strSize = g_cmdFilename.size();
+		int strExt = g_cmdFilename.size()-4;
+		wxString ext = g_cmdFilename.SubString(strExt - 1, strSize - 1);
+		if (ext.IsSameAs(".asff", false)) {
+			forecastFilesProvided = true;
+		}
+		else if (ext.IsSameAs(".asvw", false)) {
+			workspaceFilePath = g_cmdFilename;
+		}
+	}
 
     if(!workspaceFilePath.IsEmpty())
     {
@@ -342,7 +356,7 @@ void asFrameForecast::Init()
             asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
 
-        if (!OpenWorkspace())
+		if (!OpenWorkspace(!forecastFilesProvided))
         {
             asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
@@ -427,11 +441,12 @@ void asFrameForecast::Init()
 
     m_scrolledWindowOptions->Layout();
 
-    if (!g_cmdFilename.IsEmpty())
+	if (forecastFilesProvided)
     {
         wxArrayString filePathsVect;
         filePathsVect.Add(g_cmdFilename);
         OpenForecast(filePathsVect);
+		FitExtentToForecasts();
     }
 
     Layout();
@@ -619,7 +634,7 @@ void asFrameForecast::OnNewWorkspace(wxCommandEvent & event)
 	}
 }
 
-bool asFrameForecast::OpenWorkspace()
+bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
 {
     #if defined (__WIN32__)
         m_critSectionViewerLayerManager.Enter();
@@ -710,7 +725,9 @@ bool asFrameForecast::OpenWorkspace()
 
     m_viewerLayerManager->FreezeEnd();
 
-    OpenRecentForecasts();
+	if (openRecentForecasts) {
+		OpenRecentForecasts();
+	}
 
     m_scrolledWindowOptions->Layout();
     m_sizerScrolledWindow->Fit( m_scrolledWindowOptions );
