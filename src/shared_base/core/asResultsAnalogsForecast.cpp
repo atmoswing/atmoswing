@@ -675,7 +675,7 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
     for (unsigned int i=0; i<m_stationNames.size(); i++)
     {
         wxString label;
-        if(!asTools::IsNaN(m_stationHeights[i]))
+		if (!asTools::IsNaN(m_stationHeights[i]) && m_stationHeights[i]!=0)
         {
             label = wxString::Format("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
         }
@@ -691,7 +691,7 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
 wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat)
 {
     wxString stationName;
-    if(!asTools::IsNaN(m_stationHeights[i_stat]))
+	if (!asTools::IsNaN(m_stationHeights[i_stat]) && m_stationHeights[i_stat] != 0)
     {
         stationName = wxString::Format("%s (%4.0fm)", m_stationNames[i_stat], m_stationHeights[i_stat]);
     }
