@@ -41,7 +41,7 @@ asResultsAnalogsForecastAggregator::~asResultsAnalogsForecastAggregator()
     ClearArrays();
 }
 
-void asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
+bool asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
 {
     bool createNewMethodRow = true;
 
@@ -64,6 +64,17 @@ void asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
             // Detailed checks
             if (forecast->IsCompatibleWith(refForecast))
             {
+				// Check that it is not the exact same forecast
+				for (int forecastRow = 0; forecastRow < (int)m_forecasts[methodRow].size(); forecastRow++)
+				{
+					asResultsAnalogsForecast* otherForecast = m_forecasts[methodRow][forecastRow];
+					if (forecast->IsSameAs(otherForecast))
+					{
+						asLogMessage(_("This forecast has already been loaded."));
+						return false;
+					}
+				}
+
                 m_forecasts[methodRow].push_back(forecast);
                 m_pastForecasts[methodRow].resize(m_forecasts[methodRow].size());
                 createNewMethodRow = false;
@@ -74,6 +85,7 @@ void asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
                 asLogError(wxString::Format(_("The forecast \"%s\" (%s) is not fully compatible with \"%s\" (%s)"), 
                     forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
                     refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay()));
+				return false;
             }
         }
     }
@@ -85,9 +97,11 @@ void asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast* forecast)
         m_forecasts[m_forecasts.size()-1].push_back(forecast);
         m_pastForecasts[m_pastForecasts.size()-1].resize(1);
     }
+
+	return true;
 }
 
-void asResultsAnalogsForecastAggregator::AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast* forecast)
+bool asResultsAnalogsForecastAggregator::AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast* forecast)
 {
     bool compatible = true;
 
@@ -115,7 +129,10 @@ void asResultsAnalogsForecastAggregator::AddPastForecast(int methodRow, int fore
         asLogError(wxString::Format(_("The past forecast \"%s\" (%s) is not fully compatible with the current version of \"%s\" (%s)"), 
             forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
             refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay()));
+		return false;
     }
+
+	return true;
 }
 
 void asResultsAnalogsForecastAggregator::ClearArrays()

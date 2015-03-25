@@ -163,24 +163,29 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     }
     m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
 
-    m_aggregator->Add(forecast);
-
-    #if wxUSE_GUI
-        // Send event
-        wxCommandEvent eventNew (asEVT_ACTION_FORECAST_NEW_ADDED);
-        if (m_parent != NULL) {
-            if (doRefresh)
-            {
-                eventNew.SetString("last");
-            }
-            m_parent->ProcessWindowEvent(eventNew);
-        }
-    #else
-        if (doRefresh)
-        {
-            asLogMessage("The GUI should be refreshed.");
-        }
-    #endif
+	if (m_aggregator->Add(forecast))
+	{
+#if wxUSE_GUI
+		// Send event
+		wxCommandEvent eventNew(asEVT_ACTION_FORECAST_NEW_ADDED);
+		if (m_parent != NULL) {
+			if (doRefresh)
+			{
+				eventNew.SetString("last");
+			}
+			m_parent->ProcessWindowEvent(eventNew);
+		}
+#else
+		if (doRefresh)
+		{
+			asLogMessage("The GUI should be refreshed.");
+		}
+#endif
+	}
+	else
+	{
+		wxDELETE(forecast);
+	}
 
     return true;
 }
