@@ -78,6 +78,7 @@ private:
     int m_selectedDate;
     int m_xmaxPredictands;
 
+	void RebuildChoiceForecast();
     void InitPredictandsCheckListBox();
     void InitPredictandsPlotCtrl();
     void InitCriteriaPlotCtrl();
