@@ -729,12 +729,12 @@ endif (BUILD_CALIBRATOR)
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal110.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
+          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr120.dll ${USE_PROVIDED_LIBRARIES_PATH}/proj.dll
           DESTINATION .
           )
     else (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ../bin/gdal110.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib.dll ../bin/msvcr110.dll
+          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib.dll ../bin/msvcr120.dll ../bin/proj.dll
           DESTINATION .
           )
     endif (USE_PROVIDED_LIBRARIES)
@@ -757,7 +757,7 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
 set(CPACK_PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day.")
-set(CPACK_PACKAGE_VENDOR "Terr@num")
+set(CPACK_PACKAGE_VENDOR "Terranum")
 set(CPACK_STRIP_FILES ON) # tell cpack to strip all debug symbols from all files
 
 # IDENTIFY ARCHITECTURE
@@ -843,7 +843,7 @@ if (UNIX AND NOT APPLE)
     set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pascal Horton <pascal.horton@terranum.ch>")
-    set(CPACK_PACKAGE_VENDOR "Terr@num")
+    set(CPACK_PACKAGE_VENDOR "Terranum")
     set(CPACK_DEBIAN_PACKAGE_DEPENDS " ...  MRC ... ")
     set(CPACK_PACKAGE_DESCRIPTION "AtmoSwing - Analog Technique Model for Statistical weather forecastING.")
     set(CPACK_DEBIAN_PACKAGE_SECTION "science")
