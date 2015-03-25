@@ -73,6 +73,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 								"\n \t\t\t\t both: command prompt and file (default)" },
 	{ wxCMD_LINE_OPTION, NULL, "proxy", "HOST[:PORT] Use proxy on given port" },
 	{ wxCMD_LINE_OPTION, NULL, "proxy-user", "USER[:PASSWORD] Proxy user and password" },
+	{ wxCMD_LINE_PARAM, NULL, NULL, "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_NONE }
 };
 
@@ -368,6 +369,22 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
 		parser.Usage();
 
 		return false;
+	}
+
+	// Check for input files
+	if (parser.GetParamCount()>0)
+	{
+		InitForCmdLineOnly(logLevel);
+
+		g_cmdFilename = parser.GetParam(0);
+
+		// Under Windows when invoking via a document in Explorer, we are passed th short form.
+		// So normalize and make the long form.
+		wxFileName fName(g_cmdFilename);
+		fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
+		g_cmdFilename = fName.GetFullPath();
+
+		return true;
 	}
 
     return true;

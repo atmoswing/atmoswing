@@ -179,7 +179,7 @@ private:
     void OnSaveWorkspaceAs(wxCommandEvent & event);
     bool SaveWorkspace();
     void OnNewWorkspace(wxCommandEvent & event);
-    bool OpenWorkspace();
+	bool OpenWorkspace(bool openRecentForecasts = true);
     void UpdateLeadTimeSwitch();
     void LaunchForecastingNow( wxCommandEvent& event );
     void LaunchForecastingPast( wxCommandEvent& event );
