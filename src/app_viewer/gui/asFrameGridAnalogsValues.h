@@ -61,6 +61,7 @@ private:
     int m_sortAfterCol;
     Order m_sortOrder;
 
+	void RebuildChoiceForecast();
     bool UpdateGrid();
 };
 

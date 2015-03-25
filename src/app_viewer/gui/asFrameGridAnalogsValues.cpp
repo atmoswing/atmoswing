@@ -54,10 +54,7 @@ asFrameGridAnalogsValuesVirtual( parent )
 void asFrameGridAnalogsValues::Init()
 {
     // Forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
-    m_choiceForecast->Set(arrayForecasts);
-    int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
-    m_choiceForecast->Select(linearIndex);
+	RebuildChoiceForecast();
 
     // Dates list
     wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
@@ -74,6 +71,25 @@ void asFrameGridAnalogsValues::Init()
     m_grid->SetColFormatFloat(2,-1,1);
     m_grid->SetColFormatFloat(3,-1,3);
     UpdateGrid();
+}
+
+void asFrameGridAnalogsValues::RebuildChoiceForecast()
+{
+	// Reset forecast list
+	wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+	m_choiceForecast->Set(arrayForecasts);
+	int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
+	m_choiceForecast->Select(linearIndex);
+
+	// Highlight the specific forecasts
+	for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++)
+	{
+		int stationId = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
+		int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
+		int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
+		wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+		m_choiceForecast->SetString(index, val);
+	}
 }
 
 void asFrameGridAnalogsValues::OnChoiceForecastChange( wxCommandEvent& event )
@@ -106,6 +122,8 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange( wxCommandEvent& event )
 void asFrameGridAnalogsValues::OnChoiceStationChange( wxCommandEvent& event )
 {
     m_selectedStation = event.GetInt();
+
+	RebuildChoiceForecast();
 
     UpdateGrid(); // Doesn't change for criteria
 }

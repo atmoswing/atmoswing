@@ -102,10 +102,7 @@ void asFramePlotDistributions::OnClose( wxCloseEvent& evt )
 void asFramePlotDistributions::Init()
 {
     // Forecast list
-    wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
-    m_choiceForecast->Set(arrayForecasts);
-    int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
-    m_choiceForecast->Select(linearIndex);
+	RebuildChoiceForecast();
 
     // Dates list
     wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
@@ -120,6 +117,25 @@ void asFramePlotDistributions::Init()
     InitPredictandsCheckListBox();
     InitPredictandsPlotCtrl();
     InitCriteriaPlotCtrl();
+}
+
+void asFramePlotDistributions::RebuildChoiceForecast()
+{
+	// Reset forecast list
+	wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+	m_choiceForecast->Set(arrayForecasts);
+	int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
+	m_choiceForecast->Select(linearIndex);
+
+	// Highlight the specific forecasts
+	for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++)
+	{
+		int stationId = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
+		int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
+		int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
+		wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+		m_choiceForecast->SetString(index, val);
+	}
 }
 
 void asFramePlotDistributions::OnChoiceForecastChange( wxCommandEvent& event )
@@ -152,6 +168,8 @@ void asFramePlotDistributions::OnChoiceForecastChange( wxCommandEvent& event )
 void asFramePlotDistributions::OnChoiceStationChange( wxCommandEvent& event )
 {
     m_selectedStation = event.GetInt();
+
+	RebuildChoiceForecast();
 
     PlotPredictands(); // Doesn't change for criteria
 }
