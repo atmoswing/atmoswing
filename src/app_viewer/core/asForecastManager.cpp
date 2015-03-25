@@ -50,12 +50,7 @@ bool asForecastManager::HasForecasts()
 
 void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
 {
-    wxString defPath = m_workspace->GetForecastsDirectory();
-
-    if (!dir.IsSameAs(defPath,false) && !dir.IsSameAs(defPath+DS,false))
-    {
-        m_directoriesPastForecasts.Add(dir);
-    }
+    m_directoriesPastForecasts.Add(dir);
 }
 
 int asForecastManager::GetLinearIndex(int methodRow, int forecastRow)
@@ -235,7 +230,7 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
     // Check if already loaded
     wxASSERT(m_aggregator->GetMethodsNb()>methodRow);
     wxASSERT(m_aggregator->GetPastMethodsNb()>methodRow);
-    if (m_aggregator->GetPastForecastsNb(methodRow)>0) return;
+	if (m_aggregator->GetPastForecastsNb(methodRow, forecastRow)>0) return;
 
     // Get the number of days to load
     int nbPastDays = m_workspace->GetTimeSeriesPlotPastDaysNb();
