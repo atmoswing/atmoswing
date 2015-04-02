@@ -1,0 +1,300 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
+ *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ * 
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
+ * All Rights Reserved.
+ * 
+ */
+
+/*
+ * Portions Copyright 2008-2013 University of Lausanne.
+ */
+ 
+#ifndef ASGLOBENUMS_H_INCLUDED
+#define ASGLOBENUMS_H_INCLUDED
+
+#include "wx/wxprec.h"
+#ifndef WX_PRECOMP
+    #include "wx/wx.h"
+#endif
+
+//---------------------------------
+// Symbolic constants
+//---------------------------------
+
+enum
+{
+    asSHOW_WARNINGS,
+    asHIDE_WARNINGS
+};
+
+enum
+{
+    asOUT_OF_RANGE = -2,
+    asNOT_FOUND = -1,
+    asFAILED = 0,
+    asEMPTY = -1,
+    asNONE = -1,
+    asCANCELLED = -1,
+    asNOT_VALID = -9999,
+    asSUCCESS = 1
+};
+
+enum
+{
+    asEDIT_FORBIDEN,
+    asEDIT_ALLOWED
+};
+
+enum
+{
+    asFLAT_FORBIDDEN,
+    asFLAT_ALLOWED
+};
+
+enum
+{
+    asUSE_NORMAL_METHOD,
+    asUSE_ALTERNATE_METHOD
+};
+
+enum
+{
+    asUTM,
+    asLOCAL
+};
+
+enum
+{
+    asSERIE_BEGINNING,
+    asSERIE_END
+};
+
+enum
+{
+    asSAMPLE,
+    asENTIRE_POPULATION
+};
+
+enum
+{
+    asCOEFF, // Direct access to the coefficients
+    asCOEFF_NOVAR, // Direct access to the coefficients without any other variable declaration
+    asLIN_ALGEBRA,    // Linear algebra using a library
+    asLIN_ALGEBRA_NOVAR    // Linear algebra using a library without any other variable declaration
+};
+
+// Processor methods
+enum
+{
+    asMULTITHREADS = 0,
+    asINSERT = 1,
+    asFULL_ARRAY = 2,
+    asCUDA = 3,
+};
+
+// Windows ID
+#if wxUSE_GUI
+    enum
+    {
+        asWINDOW_MAIN = 101,
+        asWINDOW_PREFERENCES,
+        asWINDOW_PREDICTANDDB,
+        asWINDOW_PLOTS_TIMESERIES,
+        asWINDOW_PLOTS_DISTRIBUTIONS,
+        asWINDOW_GRID_ANALOGS,
+        asWINDOW_PREDICTORS
+    };
+
+    // Menus & Controls ID
+    enum
+    {
+        asID_PREFERENCES = wxID_HIGHEST+1,
+        asID_OPEN,
+        asID_RUN,
+        asID_RUN_PREVIOUS,
+        asID_CANCEL,
+        asID_DB_OPTIONS,
+        asID_DB_CREATE,
+        asID_PRINT,
+        asID_SELECT,
+        asID_ZOOM_IN,
+        asID_ZOOM_OUT,
+        asID_ZOOM_FIT,
+        asID_PAN,
+        asID_CROSS_MARKER,
+        asID_FRAME_VIEWER,
+        asID_FRAME_FORECASTER,
+        asID_FRAME_DOTS,
+        asID_FRAME_PLOTS,
+        asID_FRAME_GRID,
+    };
+#endif
+
+
+//---------------------------------
+// Enumerations
+//---------------------------------
+
+enum Order
+{
+    Asc,    // Ascendant
+    Desc,    // Descendant
+    NoOrder
+};
+
+enum Season
+{
+    DJF,    //  Winter
+    MAM,    // Spring
+    JJA,    // Summer
+    SON,    // Fall
+    NoSeason
+};
+
+enum DataParameter
+{
+    Precipitation,
+    AirTemperature,
+    GeopotentialHeight,
+    PrecipitableWater,
+    RelativeHumidity,
+    SpecificHumidity,
+    Omega,
+    Wind,
+    Uwind,
+    Vwind,
+    SurfaceLiftedIndex,
+    PotentialTemperature,
+    Pressure,
+    PotentialEvaporation,
+    SurfaceTemperature,
+    ConvectivePrecipitation,
+    LongwaveRadiation,
+    ShortwaveRadiation,
+    SolarRadiation,
+    GroundHeatFlux,
+    LatentHeatFlux,
+    NearIRFlux,
+    SensibleHeatFlux,
+    Lightnings,
+    SeaSurfaceTemperature,
+    SeaSurfaceTemperatureAnomaly,
+    NoDataParameter
+};
+
+enum DataUnit
+{
+    nb,
+    mm,
+    m,
+    km,
+    percent,
+    degC,
+    degK,
+    Pascals,
+    PascalsPerSec,
+    kgPerKg,
+    mPerSec,
+    WPerm2,
+    kgPerm2Pers,
+    NoDataUnit
+};
+
+enum DataTemporalResolution
+{
+    Daily,
+    SixHourly,
+    Hourly,
+    SixHourlyMovingDailyTemporalWindow,
+    TwoDays,
+    ThreeDays,
+    Weekly,
+    NoDataTemporalResolution
+};
+
+enum DataSpatialAggregation
+{
+    Station,
+    Groupment,
+    Catchment,
+    NoDataSpatialAggregation
+};
+
+enum FileTimeLength
+{
+    Year,
+    Hour,
+    Total,
+    Instantaneous,
+    NoFileLength
+};
+
+enum TimeFormat
+{
+    classic,
+    DDMMYYYY,
+    YYYYMMDD,
+    full,
+    YYYYMMDDhh,
+    DDMMYYYYhhmm,
+    YYYYMMDDhhmm,
+    DDMMYYYYhhmmss,
+    YYYYMMDDhhmmss,
+    timeonly,
+    hhmm,
+    nowplushours,
+    nowminushours,
+    concentrate,
+    guess
+};
+
+
+#include <asIncludes.h>
+
+class asGlobEnums: public wxObject
+{
+public:
+    
+    static FileTimeLength StringToFileLengthEnum(const wxString &LengthStr);
+
+
+    static DataParameter StringToDataParameterEnum(const wxString &ParameterStr);
+
+    static wxString DataParameterEnumToString(DataParameter dataParameter);
+
+
+    static DataUnit StringToDataUnitEnum(const wxString &UnitStr);
+
+    static DataTemporalResolution StringToDataTemporalResolutionEnum(const wxString &TemporalResolution);
+    
+    static wxString DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution);
+
+    static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
+    
+    static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
+
+
+protected:
+
+private:
+
+};
+
+#endif // ASGLOBENUMS_H_INCLUDED
+
