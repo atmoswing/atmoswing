@@ -61,16 +61,15 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 	{ wxCMD_LINE_OPTION, "p", "forecast-past", "Run forecast for the given number of past days" },
 	{ wxCMD_LINE_OPTION, "d", "forecast-date", "YYYYMMDDHH Run forecast for a specified date" },
     { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
-    { wxCMD_LINE_SWITCH, "s", "silent", "Silent mode" },
     { wxCMD_LINE_OPTION, "l", "log-level", "Set a log level"
                                 "\n \t\t\t\t 0: minimum"
                                 "\n \t\t\t\t 1: errors"
-                                "\n \t\t\t\t 2: warnings"
+								"\n \t\t\t\t 2: warnings (default)"
                                 "\n \t\t\t\t 3: verbose" },
     { wxCMD_LINE_OPTION, "t", "log-target", "Set log target"
-                                "\n \t\t\t\t file: file only"
-                                "\n \t\t\t\t prompt: command prompt"
-								"\n \t\t\t\t both: command prompt and file (default)" },
+                                "\n \t\t\t\t file: file only (default)"
+                                "\n \t\t\t\t screen: on screen"
+								"\n \t\t\t\t both: on screen and in file" },
 	{ wxCMD_LINE_OPTION, NULL, "proxy", "HOST[:PORT] Use proxy on given port" },
 	{ wxCMD_LINE_OPTION, NULL, "proxy-user", "USER[:PASSWORD] Proxy user and password" },
 	{ wxCMD_LINE_PARAM, NULL, NULL, "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
@@ -247,10 +246,18 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         else if (logLevel==2)
         {
             Log().SetLevel(2);
-        }
+		}
+		else if (logLevel == 3)
+		{
+			Log().SetLevel(3);
+		}
         else
         {
-            Log().SetLevel(3);
+            Log().SetLevel(2);
+			wxMessageOutput* msgOut = wxMessageOutput::Get();
+			if (msgOut) {
+				msgOut->Printf(_("The given log level (%s) does not correspond to any possible option (0-3)."), logLevelStr);
+			}
         }
     }
 
@@ -273,7 +280,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         }
         else
         {
-            Log().SetTarget(asLog::Both);
+			Log().SetTarget(asLog::File);
 
             wxMessageOutput* msgOut = wxMessageOutput::Get();
             if ( msgOut )
@@ -282,12 +289,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
             }
         }
     }
-
-    // Check if the user asked for the silent mode
-    if (parser.Found("silent"))
-    {
-        Log().SetTarget(asLog::File);
-	}
 
 	// Proxy activated
 	wxString proxy;
@@ -327,6 +328,23 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/BatchForecasts/LastOpened", batchFile);
     }
+
+	// Check for input files
+	if (parser.GetParamCount()>0)
+	{
+		InitForCmdLineOnly(logLevel);
+
+		g_cmdFilename = parser.GetParam(0);
+
+		// Under Windows when invoking via a document in Explorer, we are passed the short form.
+		// So normalize and make the long form.
+		wxFileName fName(g_cmdFilename);
+		fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
+		g_cmdFilename = fName.GetFullPath();
+
+		wxConfigBase *pConfig = wxFileConfig::Get();
+		pConfig->Write("/BatchForecasts/LastOpened", g_cmdFilename);
+	}
 
     // Check for a present forecast
     if (parser.Found("forecast-now"))
@@ -371,22 +389,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser& parser)
 		return false;
 	}
 
-	// Check for input files
-	if (parser.GetParamCount()>0)
-	{
-		InitForCmdLineOnly(logLevel);
-
-		g_cmdFilename = parser.GetParam(0);
-
-		// Under Windows when invoking via a document in Explorer, we are passed th short form.
-		// So normalize and make the long form.
-		wxFileName fName(g_cmdFilename);
-		fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
-		g_cmdFilename = fName.GetFullPath();
-
-		return true;
-	}
-
     return true;
 }
 
@@ -400,13 +402,13 @@ int AtmoswingAppForecaster::OnRun()
             if ( !msgOut )
             {
                 wxFAIL_MSG( _("No wxMessageOutput object?") );
-                return 0;
+                return 1;
             }
 
             #if wxUSE_GUI
 
                 msgOut->Printf(_("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead."));
-                return 0;
+                return 1;
 
             #else
 
@@ -609,7 +611,7 @@ int AtmoswingAppForecaster::OnRun()
                     {
                         msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath );
                     }
-                    return 0;
+                    return 1;
                 }
             }
             else
@@ -619,7 +621,7 @@ int AtmoswingAppForecaster::OnRun()
                 {
                     msgOut->Printf( _("Please run 'atmoswing-forecaster -c' first in order to configure."));
                 }
-                return 0;
+                return 1;
             }
 
             // Launch forecasting
@@ -632,7 +634,7 @@ int AtmoswingAppForecaster::OnRun()
                 {
                     msgOut->Printf(_("Failed processing the forecast."));
                 }
-                return 0;
+                return 1;
             }
             double realForecastDate = forecaster.GetForecastDate();
 
@@ -682,7 +684,7 @@ int AtmoswingAppForecaster::OnRun()
                     {
                         msgOut->Printf( _("Failed to open the batch file %s"), batchFilePath );
                     }
-                    return 0;
+                    return 1;
                 }
             }
             else
@@ -692,7 +694,7 @@ int AtmoswingAppForecaster::OnRun()
                 {
                     msgOut->Printf( _("Please run 'atmoswing-forecaster -c' first in order to configure."));
                 }
-                return 0;
+                return 1;
             }
 
             double now = asTime::NowMJD();
@@ -723,7 +725,7 @@ int AtmoswingAppForecaster::OnRun()
                     {
                         msgOut->Printf( _("Failed processing the forecast."));
                     }
-                    return 0;
+                    return 1;
                 }
                 double realForecastDate = forecaster.GetForecastDate();
 

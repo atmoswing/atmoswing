@@ -37,13 +37,10 @@ asLog::asLog()
     m_level = 2;
     m_target = asLog::File;
     m_active = true;
-    m_removeDuplicates = false;
-    m_signalDuplicates = false;
     m_messageBoxOnError = false;
     #if wxUSE_GUI
         m_messageBoxOnError = true;
     #endif
-    m_buffer = wxEmptyString;
     m_state = wxEmptyString;
 }
 
@@ -144,45 +141,15 @@ void asLog::Error(const wxString &msg)
     {
         if(g_guiMode && m_active)
         {
-            if(m_removeDuplicates)
+            m_critSectionLog.Enter();
+            wxLogError(msg);
+            if (m_messageBoxOnError)
             {
-                if(m_buffer.IsSameAs(msg))
-                {
-                    if(m_signalDuplicates)
-                    {
-                        m_critSectionLog.Enter();
-                        wxLogError(_("Previous error occured multiple times."));
-                        m_signalDuplicates = false;
-                        m_critSectionLog.Leave();
-                    }
-                }
-                else
-                {
-                    m_critSectionLog.Enter();
-                    wxLogError(msg);
-                    m_signalDuplicates = true;
-                    m_buffer = msg;
-                    if (m_messageBoxOnError)
-                    {
-                        #if wxUSE_GUI
-                            wxMessageBox(msg, _("An error occured"));
-                        #endif
-                    }
-                    m_critSectionLog.Leave();
-                }
+                #if wxUSE_GUI
+                    wxMessageBox(msg, _("An error occured"));
+                #endif
             }
-            else
-            {
-                m_critSectionLog.Enter();
-                wxLogError(msg);
-                if (m_messageBoxOnError)
-                {
-                    #if wxUSE_GUI
-                        wxMessageBox(msg, _("An error occured"));
-                    #endif
-                }
-                m_critSectionLog.Leave();
-            }
+            m_critSectionLog.Leave();
         }
         else
         {
@@ -194,8 +161,7 @@ void asLog::Error(const wxString &msg)
 				processed = true;
             }
 
-            // To the command prompt
-            if (m_target==asLog::Screen)
+			if (m_target == asLog::Screen || m_target == asLog::Both)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -224,33 +190,9 @@ void asLog::Warning(const wxString &msg)
     {
         if (g_guiMode && m_active)
         {
-            if(m_removeDuplicates)
-            {
-                if(m_buffer.IsSameAs(msg))
-                {
-                    if(m_signalDuplicates)
-                    {
-                        m_critSectionLog.Enter();
-                        wxLogWarning(_("Previous warning occured multiple times."));
-                        m_signalDuplicates = false;
-                        m_critSectionLog.Leave();
-                    }
-                }
-                else
-                {
-                    m_critSectionLog.Enter();
-                    wxLogWarning(msg);
-                    m_signalDuplicates = true;
-                    m_buffer = msg;
-                    m_critSectionLog.Leave();
-                }
-            }
-            else
-            {
-                m_critSectionLog.Enter();
-                wxLogWarning(msg);
-                m_critSectionLog.Leave();
-            }
+            m_critSectionLog.Enter();
+            wxLogWarning(msg);
+            m_critSectionLog.Leave();
         }
         else
         {
@@ -262,8 +204,7 @@ void asLog::Warning(const wxString &msg)
 				processed = true;
             }
 
-            // To the command prompt
-            if (m_target==asLog::Screen)
+			if (m_target == asLog::Screen || m_target == asLog::Both)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )
@@ -292,33 +233,9 @@ void asLog::Message(const wxString &msg, bool force)
     {
         if (g_guiMode && m_active)
         {
-            if(m_removeDuplicates)
-            {
-                if(m_buffer.IsSameAs(msg))
-                {
-                    if(m_signalDuplicates)
-                    {
-                        m_critSectionLog.Enter();
-                        wxLogMessage(_("Previous message occured multiple times."));
-                        m_signalDuplicates = false;
-                        m_critSectionLog.Leave();
-                    }
-                }
-                else
-                {
-                    m_critSectionLog.Enter();
-                    wxLogMessage(msg);
-                    m_signalDuplicates = true;
-                    m_buffer = msg;
-                    m_critSectionLog.Leave();
-                }
-            }
-            else
-            {
-                m_critSectionLog.Enter();
-                wxLogMessage(msg);
-                m_critSectionLog.Leave();
-            }
+            m_critSectionLog.Enter();
+            wxLogMessage(msg);
+            m_critSectionLog.Leave();
         }
         else
         {
@@ -330,8 +247,7 @@ void asLog::Message(const wxString &msg, bool force)
 				processed = true;
             }
 
-            // To the command prompt
-            if (m_target==asLog::Screen)
+			if (m_target == asLog::Screen || m_target == asLog::Both)
             {
                 wxMessageOutput* msgOut = wxMessageOutput::Get();
                 if ( msgOut )

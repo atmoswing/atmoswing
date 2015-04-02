@@ -99,16 +99,6 @@ public:
         m_active = true;
     }
 
-    void RemoveDuplicates()
-    {
-        m_removeDuplicates = true;
-    }
-
-    void AllowDuplicates()
-    {
-        m_removeDuplicates = false;
-    }
-
     void SetLevel(int val)
     {
         m_level = val;
@@ -136,9 +126,6 @@ private:
     int m_target;
     bool m_active;
     bool m_messageBoxOnError;
-    bool m_removeDuplicates;
-    bool m_signalDuplicates;
-    wxString m_buffer;
     wxString m_state;
 };
 
