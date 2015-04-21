@@ -89,25 +89,25 @@ void asParametersOptimizationGAs::BuildChromosomes()
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 indices.push_back(counter);
             }
@@ -265,7 +265,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 if (counter==index) return false;
             }
@@ -275,7 +275,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 if (counter==index) return false;
             }
@@ -285,7 +285,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 if (counter==index) return false;
             }
@@ -295,7 +295,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 if (counter==index) return false;
             }
@@ -415,28 +415,28 @@ int asParametersOptimizationGAs::GetParamType(int index)
                 counter++;
             }
 
-            // Umin
+            // Xmin
             if (counter==index)
             {
                 return 1;
             }
             counter++;
 
-            // Uptsnb
+            // Xptsnb
             if (counter==index)
             {
                 return 1;
             }
             counter++;
 
-            // Vmin
+            // Ymin
             if (counter==index)
             {
                 return 1;
             }
             counter++;
 
-            // Vptsnb
+            // Yptsnb
             if (counter==index)
             {
                 return 1;
@@ -591,38 +591,38 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUmin(i,j);
+                    return (double)GetPredictorXmin(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUptsnb(i,j);
+                    return (double)GetPredictorXptsnb(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVmin(i,j);
+                    return (double)GetPredictorYmin(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVptsnb(i,j);
+                    return (double)GetPredictorYptsnb(i,j);
                 }
             }
             counter++;
@@ -755,38 +755,38 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUminUpperLimit(i,j);
+                    return (double)GetPredictorXminUpperLimit(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUptsnbUpperLimit(i,j);
+                    return (double)GetPredictorXptsnbUpperLimit(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVminUpperLimit(i,j);
+                    return (double)GetPredictorYminUpperLimit(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVptsnbUpperLimit(i,j);
+                    return (double)GetPredictorYptsnbUpperLimit(i,j);
                 }
             }
             counter++;
@@ -907,38 +907,38 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUminLowerLimit(i,j);
+                    return (double)GetPredictorXminLowerLimit(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUptsnbLowerLimit(i,j);
+                    return (double)GetPredictorXptsnbLowerLimit(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVminLowerLimit(i,j);
+                    return (double)GetPredictorYminLowerLimit(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVptsnbLowerLimit(i,j);
+                    return (double)GetPredictorYptsnbLowerLimit(i,j);
                 }
             }
             counter++;
@@ -1058,38 +1058,38 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUminIteration(i,j);
+                    return (double)GetPredictorXminIteration(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorUptsnbIteration(i,j);
+                    return (double)GetPredictorXptsnbIteration(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVminIteration(i,j);
+                    return (double)GetPredictorYminIteration(i,j);
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 if (counter==index)
                 {
-                    return (double)GetPredictorVptsnbIteration(i,j);
+                    return (double)GetPredictorYptsnbIteration(i,j);
                 }
             }
             counter++;
@@ -1248,43 +1248,43 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
                 if (counter==index)
                 {
-                    SetPredictorUmin(i, j, newVal);
+                    SetPredictorXmin(i, j, newVal);
                     return;
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
                 if (counter==index)
                 {
                     int val = asTools::Round(newVal);
-                    SetPredictorUptsnb(i, j, val);
+                    SetPredictorXptsnb(i, j, val);
                     return;
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
                 if (counter==index)
                 {
-                    SetPredictorVmin(i, j, newVal);
+                    SetPredictorYmin(i, j, newVal);
                     return;
                 }
             }
             counter++;
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
                 if (counter==index)
                 {
                     int val = asTools::Round(newVal);
-                    SetPredictorVptsnb(i, j, val);
+                    SetPredictorYptsnb(i, j, val);
                     return;
                 }
             }

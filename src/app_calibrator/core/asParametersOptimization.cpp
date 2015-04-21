@@ -56,10 +56,10 @@ void asParametersOptimization::AddPredictorIteration(ParamsStep &step)
 {
     ParamsPredictor predictor;
 
-    predictor.Umin = 2.5;
-    predictor.Uptsnb = 1;
-    predictor.Vmin = 2.5;
-    predictor.Vptsnb = 1;
+    predictor.Xmin = 2.5;
+    predictor.Xptsnb = 1;
+    predictor.Ymin = 2.5;
+    predictor.Yptsnb = 1;
     predictor.TimeHours = 6;
     predictor.Weight = 0.01f;
 
@@ -70,10 +70,10 @@ void asParametersOptimization::AddPredictorUpperLimit(ParamsStep &step)
 {
     ParamsPredictor predictor;
 
-    predictor.Umin = 717.5;
-    predictor.Uptsnb = 20;
-    predictor.Vmin = 87.5;
-    predictor.Vptsnb = 16;
+    predictor.Xmin = 717.5;
+    predictor.Xptsnb = 20;
+    predictor.Ymin = 87.5;
+    predictor.Yptsnb = 16;
     predictor.TimeHours = 36;
     predictor.Weight = 1;
 
@@ -84,10 +84,10 @@ void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step)
 {
     ParamsPredictor predictor;
 
-    predictor.Umin = 0;
-    predictor.Uptsnb = 1;
-    predictor.Vmin = 0;
-    predictor.Vptsnb = 1;
+    predictor.Xmin = 0;
+    predictor.Xptsnb = 1;
+    predictor.Ymin = 0;
+    predictor.Yptsnb = 1;
     predictor.TimeHours = 6;
     predictor.Weight = 0;
 
@@ -100,10 +100,10 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step)
 
     predictor.DataId = true;
     predictor.Level = true;
-    predictor.Umin = true;
-    predictor.Uptsnb = true;
-    predictor.Vmin = true;
-    predictor.Vptsnb = true;
+    predictor.Xmin = true;
+    predictor.Xptsnb = true;
+    predictor.Ymin = true;
+    predictor.Yptsnb = true;
     predictor.TimeHours = true;
     predictor.Weight = true;
     predictor.Criteria = true;
@@ -525,123 +525,123 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
                 if(!fileParams.GoToChildNodeWithAttributeValue("name", "Area Moving")) return false;
             }
             if(!SetPredictorGridType(i_step, i_ptor, fileParams.GetFirstElementAttributeValueText("GridType", "value", "Regular"))) return false;
-            SetPredictorUminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Umin", "lock", true));
-            if(IsPredictorUminLocked(i_step, i_ptor))
+            SetPredictorXminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Xmin", "lock", true));
+            if(IsPredictorXminLocked(i_step, i_ptor))
             {
-                if(!SetPredictorUmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "value"))) return false;
-                if(!SetPredictorUminLowerLimit(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor))) return false;
-                if(!SetPredictorUminUpperLimit(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor))) return false;
-                if(!SetPredictorUminIteration(i_step, i_ptor, 1)) return false; // must be >0
+                if(!SetPredictorXmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xmin", "value"))) return false;
+                if(!SetPredictorXminLowerLimit(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor))) return false;
+                if(!SetPredictorXminUpperLimit(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor))) return false;
+                if(!SetPredictorXminIteration(i_step, i_ptor, 1)) return false; // must be >0
             }
             else
             {
-                if(!SetPredictorUminLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "lowerlimit"))) return false;
-                if(!SetPredictorUminUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "upperlimit"))) return false;
-                if(!SetPredictorUminIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Umin", "iteration"))) return false;
+                if(!SetPredictorXminLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xmin", "lowerlimit"))) return false;
+                if(!SetPredictorXminUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xmin", "upperlimit"))) return false;
+                if(!SetPredictorXminIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xmin", "iteration"))) return false;
             }
 
-            SetPredictorUptsnbLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Uptsnb", "lock", true));
-            if(IsPredictorUptsnbLocked(i_step, i_ptor))
+            SetPredictorXptsnbLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Xptsnb", "lock", true));
+            if(IsPredictorXptsnbLocked(i_step, i_ptor))
             {
-                if(!SetPredictorUptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "value"))) return false;
-                if(!SetPredictorUptsnbLowerLimit(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor))) return false;
-                if(!SetPredictorUptsnbUpperLimit(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor))) return false;
-                if(!SetPredictorUptsnbIteration(i_step, i_ptor, 1)) return false; // must be >0
+                if(!SetPredictorXptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Xptsnb", "value"))) return false;
+                if(!SetPredictorXptsnbLowerLimit(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor))) return false;
+                if(!SetPredictorXptsnbUpperLimit(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor))) return false;
+                if(!SetPredictorXptsnbIteration(i_step, i_ptor, 1)) return false; // must be >0
             }
             else
             {
-                if(!SetPredictorUptsnbLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "lowerlimit"))) return false;
-                if (GetPredictorUptsnbLowerLimit(i_step, i_ptor)==0)
+                if(!SetPredictorXptsnbLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Xptsnb", "lowerlimit"))) return false;
+                if (GetPredictorXptsnbLowerLimit(i_step, i_ptor)==0)
                 {
-                    SetPredictorUptsnbLowerLimit(i_step, i_ptor, 1);
+                    SetPredictorXptsnbLowerLimit(i_step, i_ptor, 1);
                 }
-                if(!SetPredictorUptsnbUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "upperlimit"))) return false;
-                if(!SetPredictorUptsnbIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Uptsnb", "iteration"))) return false;
+                if(!SetPredictorXptsnbUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Xptsnb", "upperlimit"))) return false;
+                if(!SetPredictorXptsnbIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Xptsnb", "iteration"))) return false;
             }
 
-            if(!SetPredictorUstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ustep", "value"))) return false;
-            double Ushift = fmod(GetPredictorUminLowerLimit(i_step, i_ptor), GetPredictorUstep(i_step, i_ptor));
-            if (Ushift<0) Ushift += GetPredictorUstep(i_step, i_ptor);
+            if(!SetPredictorXstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Xstep", "value"))) return false;
+            double Ushift = fmod(GetPredictorXminLowerLimit(i_step, i_ptor), GetPredictorXstep(i_step, i_ptor));
+            if (Ushift<0) Ushift += GetPredictorXstep(i_step, i_ptor);
             if(!SetPredictorUshift(i_step, i_ptor, Ushift)) return false;
 
-            SetPredictorVminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Vmin", "lock", true));
-            if(IsPredictorVminLocked(i_step, i_ptor))
+            SetPredictorYminLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Ymin", "lock", true));
+            if(IsPredictorYminLocked(i_step, i_ptor))
             {
-                if(!SetPredictorVmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "value"))) return false;
-                if(!SetPredictorVminLowerLimit(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor))) return false;
-                if(!SetPredictorVminUpperLimit(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor))) return false;
-                if(!SetPredictorVminIteration(i_step, i_ptor, 1)) return false; // must be >0
+                if(!SetPredictorYmin(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ymin", "value"))) return false;
+                if(!SetPredictorYminLowerLimit(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor))) return false;
+                if(!SetPredictorYminUpperLimit(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor))) return false;
+                if(!SetPredictorYminIteration(i_step, i_ptor, 1)) return false; // must be >0
             }
             else
             {
-                if(!SetPredictorVminLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "lowerlimit"))) return false;
-                if(!SetPredictorVminUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "upperlimit"))) return false;
-                if(!SetPredictorVminIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vmin", "iteration"))) return false;
+                if(!SetPredictorYminLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ymin", "lowerlimit"))) return false;
+                if(!SetPredictorYminUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ymin", "upperlimit"))) return false;
+                if(!SetPredictorYminIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ymin", "iteration"))) return false;
             }
 
-            SetPredictorVptsnbLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Vptsnb", "lock", true));
-            if(IsPredictorVptsnbLocked(i_step, i_ptor))
+            SetPredictorYptsnbLock(i_step, i_ptor, fileParams.GetFirstElementAttributeValueBool("Yptsnb", "lock", true));
+            if(IsPredictorYptsnbLocked(i_step, i_ptor))
             {
-                if(!SetPredictorVptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "value"))) return false;
-                if(!SetPredictorVptsnbLowerLimit(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor))) return false;
-                if(!SetPredictorVptsnbUpperLimit(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor))) return false;
-                if(!SetPredictorVptsnbIteration(i_step, i_ptor, 1)) return false; // must be >0
+                if(!SetPredictorYptsnb(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Yptsnb", "value"))) return false;
+                if(!SetPredictorYptsnbLowerLimit(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor))) return false;
+                if(!SetPredictorYptsnbUpperLimit(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor))) return false;
+                if(!SetPredictorYptsnbIteration(i_step, i_ptor, 1)) return false; // must be >0
             }
             else
             {
-                if(!SetPredictorVptsnbLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "lowerlimit"))) return false;
-                if (GetPredictorVptsnbLowerLimit(i_step, i_ptor)==0) SetPredictorVptsnbLowerLimit(i_step, i_ptor, 1);
-                if(!SetPredictorVptsnbUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "upperlimit"))) return false;
-                if(!SetPredictorVptsnbIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Vptsnb", "iteration"))) return false;
+                if(!SetPredictorYptsnbLowerLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Yptsnb", "lowerlimit"))) return false;
+                if (GetPredictorYptsnbLowerLimit(i_step, i_ptor)==0) SetPredictorYptsnbLowerLimit(i_step, i_ptor, 1);
+                if(!SetPredictorYptsnbUpperLimit(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Yptsnb", "upperlimit"))) return false;
+                if(!SetPredictorYptsnbIteration(i_step, i_ptor, fileParams.GetFirstElementAttributeValueInt("Yptsnb", "iteration"))) return false;
             }
 
-            if(!SetPredictorVstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Vstep", "value"))) return false;
-            double Vshift = fmod(GetPredictorVminLowerLimit(i_step, i_ptor), GetPredictorVstep(i_step, i_ptor));
-            if (Vshift<0) Vshift += GetPredictorVstep(i_step, i_ptor);
+            if(!SetPredictorYstep(i_step, i_ptor, fileParams.GetFirstElementAttributeValueDouble("Ystep", "value"))) return false;
+            double Vshift = fmod(GetPredictorYminLowerLimit(i_step, i_ptor), GetPredictorYstep(i_step, i_ptor));
+            if (Vshift<0) Vshift += GetPredictorYstep(i_step, i_ptor);
             if(!SetPredictorVshift(i_step, i_ptor, Vshift)) return false;
 
-            if (GetPredictorUptsnbLowerLimit(i_step, i_ptor)<=1 || GetPredictorVptsnbLowerLimit(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if (IsPredictorUptsnbLocked(i_step, i_ptor) && GetPredictorUptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if (IsPredictorVptsnbLocked(i_step, i_ptor) && GetPredictorVptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if (GetPredictorXptsnbLowerLimit(i_step, i_ptor)<=1 || GetPredictorYptsnbLowerLimit(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if (IsPredictorXptsnbLocked(i_step, i_ptor) && GetPredictorXptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if (IsPredictorYptsnbLocked(i_step, i_ptor) && GetPredictorYptsnb(i_step, i_ptor)<=1) SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
             if (NeedsPreloading(i_step, i_ptor))
             {
                 // Set maximum extent
-                if (!IsPredictorUminLocked(i_step, i_ptor))
+                if (!IsPredictorXminLocked(i_step, i_ptor))
                 {
-                    SetPreloadUmin(i_step, i_ptor, GetPredictorUminLowerLimit(i_step, i_ptor));
+                    SetPreloadXmin(i_step, i_ptor, GetPredictorXminLowerLimit(i_step, i_ptor));
                 }
                 else
                 {
-                    SetPreloadUmin(i_step, i_ptor, GetPredictorUmin(i_step, i_ptor));
+                    SetPreloadXmin(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor));
                 }
 
-                if (!IsPredictorVminLocked(i_step, i_ptor))
+                if (!IsPredictorYminLocked(i_step, i_ptor))
                 {
-                    SetPreloadVmin(i_step, i_ptor, GetPredictorVminLowerLimit(i_step, i_ptor));
+                    SetPreloadYmin(i_step, i_ptor, GetPredictorYminLowerLimit(i_step, i_ptor));
                 }
                 else
                 {
-                    SetPreloadVmin(i_step, i_ptor, GetPredictorVmin(i_step, i_ptor));
+                    SetPreloadYmin(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor));
                 }
 
-                if (!IsPredictorUptsnbLocked(i_step, i_ptor))
+                if (!IsPredictorXptsnbLocked(i_step, i_ptor))
                 {
-                    int Ubaseptsnb = abs(GetPredictorUminUpperLimit(i_step, i_ptor)-GetPredictorUminLowerLimit(i_step, i_ptor))/GetPredictorUstep(i_step, i_ptor);
-                    SetPreloadUptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorUptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
+                    int Ubaseptsnb = abs(GetPredictorXminUpperLimit(i_step, i_ptor)-GetPredictorXminLowerLimit(i_step, i_ptor))/GetPredictorXstep(i_step, i_ptor);
+                    SetPreloadXptsnb(i_step, i_ptor, Ubaseptsnb+GetPredictorXptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
                 }
                 else
                 {
-                    SetPreloadUptsnb(i_step, i_ptor, GetPredictorUptsnb(i_step, i_ptor));
+                    SetPreloadXptsnb(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor));
                 }
 
-                if (!IsPredictorVptsnbLocked(i_step, i_ptor))
+                if (!IsPredictorYptsnbLocked(i_step, i_ptor))
                 {
-                    int Vbaseptsnb = abs(GetPredictorVminUpperLimit(i_step, i_ptor)-GetPredictorVminLowerLimit(i_step, i_ptor))/GetPredictorVstep(i_step, i_ptor);
-                    SetPreloadVptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorVptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
+                    int Vbaseptsnb = abs(GetPredictorYminUpperLimit(i_step, i_ptor)-GetPredictorYminLowerLimit(i_step, i_ptor))/GetPredictorYstep(i_step, i_ptor);
+                    SetPreloadYptsnb(i_step, i_ptor, Vbaseptsnb+GetPredictorYptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
                 }
                 else
                 {
-                    SetPreloadVptsnb(i_step, i_ptor, GetPredictorVptsnb(i_step, i_ptor));
+                    SetPreloadYptsnb(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor));
                 }
             }
             if(!fileParams.GoANodeBack()) return false;
@@ -846,24 +846,24 @@ void asParametersOptimization::InitRandomValues()
 
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
-                SetPredictorUmin(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Umin, m_stepsUpperLimit[i].Predictors[j].Umin, m_stepsIteration[i].Predictors[j].Umin));
+                SetPredictorXmin(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Xmin, m_stepsUpperLimit[i].Predictors[j].Xmin, m_stepsIteration[i].Predictors[j].Xmin));
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
-                SetPredictorUptsnb(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Uptsnb, m_stepsUpperLimit[i].Predictors[j].Uptsnb, m_stepsIteration[i].Predictors[j].Uptsnb));
+                SetPredictorXptsnb(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Xptsnb, m_stepsUpperLimit[i].Predictors[j].Xptsnb, m_stepsIteration[i].Predictors[j].Xptsnb));
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
-                SetPredictorVmin(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Vmin, m_stepsUpperLimit[i].Predictors[j].Vmin, m_stepsIteration[i].Predictors[j].Vmin));
+                SetPredictorYmin(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Ymin, m_stepsUpperLimit[i].Predictors[j].Ymin, m_stepsIteration[i].Predictors[j].Ymin));
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
-                SetPredictorVptsnb(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Vptsnb, m_stepsUpperLimit[i].Predictors[j].Vptsnb, m_stepsIteration[i].Predictors[j].Vptsnb));
+                SetPredictorYptsnb(i,j, asTools::Random(m_stepsLowerLimit[i].Predictors[j].Yptsnb, m_stepsUpperLimit[i].Predictors[j].Yptsnb, m_stepsIteration[i].Predictors[j].Yptsnb));
             }
 
             if(!m_stepsLocks[i].Predictors[j].Weight)
@@ -930,54 +930,54 @@ void asParametersOptimization::CheckRange()
             }
 
             // Check ranges
-            if(!m_stepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Xmin)
             {
-                SetPredictorUmin(i, j, wxMax( wxMin(GetPredictorUmin(i,j), m_stepsUpperLimit[i].Predictors[j].Umin), m_stepsLowerLimit[i].Predictors[j].Umin));
+                SetPredictorXmin(i, j, wxMax( wxMin(GetPredictorXmin(i,j), m_stepsUpperLimit[i].Predictors[j].Xmin), m_stepsLowerLimit[i].Predictors[j].Xmin));
             }
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
-                SetPredictorUptsnb(i, j, wxMax( wxMin(GetPredictorUptsnb(i,j), m_stepsUpperLimit[i].Predictors[j].Uptsnb), m_stepsLowerLimit[i].Predictors[j].Uptsnb));
+                SetPredictorXptsnb(i, j, wxMax( wxMin(GetPredictorXptsnb(i,j), m_stepsUpperLimit[i].Predictors[j].Xptsnb), m_stepsLowerLimit[i].Predictors[j].Xptsnb));
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Ymin)
             {
-                SetPredictorVmin(i, j, wxMax( wxMin(GetPredictorVmin(i,j), m_stepsUpperLimit[i].Predictors[j].Vmin), m_stepsLowerLimit[i].Predictors[j].Vmin));
+                SetPredictorYmin(i, j, wxMax( wxMin(GetPredictorYmin(i,j), m_stepsUpperLimit[i].Predictors[j].Ymin), m_stepsLowerLimit[i].Predictors[j].Ymin));
             }
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
-                SetPredictorVptsnb(i, j, wxMax( wxMin(GetPredictorVptsnb(i,j), m_stepsUpperLimit[i].Predictors[j].Vptsnb), m_stepsLowerLimit[i].Predictors[j].Vptsnb));
+                SetPredictorYptsnb(i, j, wxMax( wxMin(GetPredictorYptsnb(i,j), m_stepsUpperLimit[i].Predictors[j].Yptsnb), m_stepsLowerLimit[i].Predictors[j].Yptsnb));
             }
             if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 SetPredictorWeight(i, j, wxMax( wxMin(GetPredictorWeight(i,j), m_stepsUpperLimit[i].Predictors[j].Weight), m_stepsLowerLimit[i].Predictors[j].Weight));
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin || !m_stepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Xmin || !m_stepsLocks[i].Predictors[j].Xptsnb)
             {
-                if(GetPredictorUmin(i,j)+(GetPredictorUptsnb(i,j)-1)*GetPredictorUstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Umin+(m_stepsUpperLimit[i].Predictors[j].Uptsnb-1)*GetPredictorUstep(i,j))
+                if(GetPredictorXmin(i,j)+(GetPredictorXptsnb(i,j)-1)*GetPredictorXstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Xmin+(m_stepsUpperLimit[i].Predictors[j].Xptsnb-1)*GetPredictorXstep(i,j))
                 {
-                    if(!m_stepsLocks[i].Predictors[j].Uptsnb)
+                    if(!m_stepsLocks[i].Predictors[j].Xptsnb)
                     {
-                        SetPredictorUptsnb(i, j, (m_stepsUpperLimit[i].Predictors[j].Umin-GetPredictorUmin(i,j))/GetPredictorUstep(i,j)+m_stepsUpperLimit[i].Predictors[j].Uptsnb); // Correct, no need of +1
+                        SetPredictorXptsnb(i, j, (m_stepsUpperLimit[i].Predictors[j].Xmin-GetPredictorXmin(i,j))/GetPredictorXstep(i,j)+m_stepsUpperLimit[i].Predictors[j].Xptsnb); // Correct, no need of +1
                     }
                     else
                     {
-                        SetPredictorUmin(i, j, m_stepsUpperLimit[i].Predictors[j].Umin-GetPredictorUptsnb(i,j)*GetPredictorUstep(i,j));
+                        SetPredictorXmin(i, j, m_stepsUpperLimit[i].Predictors[j].Xmin-GetPredictorXptsnb(i,j)*GetPredictorXstep(i,j));
                     }
                 }
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Vmin || !m_stepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Ymin || !m_stepsLocks[i].Predictors[j].Yptsnb)
             {
-                if(GetPredictorVmin(i,j)+(GetPredictorVptsnb(i,j)-1)*GetPredictorVstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Vmin+(m_stepsUpperLimit[i].Predictors[j].Vptsnb-1)*GetPredictorVstep(i,j))
+                if(GetPredictorYmin(i,j)+(GetPredictorYptsnb(i,j)-1)*GetPredictorYstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Ymin+(m_stepsUpperLimit[i].Predictors[j].Yptsnb-1)*GetPredictorYstep(i,j))
                 {
-                    if(!m_stepsLocks[i].Predictors[j].Vptsnb)
+                    if(!m_stepsLocks[i].Predictors[j].Yptsnb)
                     {
-                        SetPredictorVptsnb(i, j, (m_stepsUpperLimit[i].Predictors[j].Vmin-GetPredictorVmin(i,j))/GetPredictorVstep(i,j)+m_stepsUpperLimit[i].Predictors[j].Vptsnb); // Correct, no need of +1
+                        SetPredictorYptsnb(i, j, (m_stepsUpperLimit[i].Predictors[j].Ymin-GetPredictorYmin(i,j))/GetPredictorYstep(i,j)+m_stepsUpperLimit[i].Predictors[j].Yptsnb); // Correct, no need of +1
                     }
                     else
                     {
-                        SetPredictorVmin(i, j, m_stepsUpperLimit[i].Predictors[j].Vmin-GetPredictorVptsnb(i,j)*GetPredictorVstep(i,j));
+                        SetPredictorYmin(i, j, m_stepsUpperLimit[i].Predictors[j].Ymin-GetPredictorYptsnb(i,j)*GetPredictorYstep(i,j));
                     }
                 }
             }
@@ -1032,38 +1032,38 @@ bool asParametersOptimization::IsInRange()
             if(!GetPredictorGridType(i,j).IsSameAs ("Regular", false)) asThrowException(wxString::Format(_("asParametersOptimization::CheckRange is not ready to use on unregular grids (PredictorGridType = %s)"), GetPredictorGridType(i,j).c_str()));
 
             // Check ranges
-            if (!m_stepsLocks[i].Predictors[j].Umin)
+            if (!m_stepsLocks[i].Predictors[j].Xmin)
             {
-                if (GetPredictorUmin(i,j)>m_stepsUpperLimit[i].Predictors[j].Umin) return false;
-                if (GetPredictorUmin(i,j)<m_stepsLowerLimit[i].Predictors[j].Umin) return false;
+                if (GetPredictorXmin(i,j)>m_stepsUpperLimit[i].Predictors[j].Xmin) return false;
+                if (GetPredictorXmin(i,j)<m_stepsLowerLimit[i].Predictors[j].Xmin) return false;
             }
-            if (!m_stepsLocks[i].Predictors[j].Uptsnb)
+            if (!m_stepsLocks[i].Predictors[j].Xptsnb)
             {
-                if (GetPredictorUptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Uptsnb) return false;
-                if (GetPredictorUptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Uptsnb) return false;
+                if (GetPredictorXptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Xptsnb) return false;
+                if (GetPredictorXptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Xptsnb) return false;
             }
-            if (!m_stepsLocks[i].Predictors[j].Vmin)
+            if (!m_stepsLocks[i].Predictors[j].Ymin)
             {
-                if (GetPredictorVmin(i,j)<m_stepsLowerLimit[i].Predictors[j].Vmin) return false;
-                if (GetPredictorVmin(i,j)<m_stepsLowerLimit[i].Predictors[j].Vmin) return false;
+                if (GetPredictorYmin(i,j)<m_stepsLowerLimit[i].Predictors[j].Ymin) return false;
+                if (GetPredictorYmin(i,j)<m_stepsLowerLimit[i].Predictors[j].Ymin) return false;
             }
-            if (!m_stepsLocks[i].Predictors[j].Vptsnb)
+            if (!m_stepsLocks[i].Predictors[j].Yptsnb)
             {
-                if (GetPredictorVptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Vptsnb) return false;
-                if (GetPredictorVptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Vptsnb) return false;
+                if (GetPredictorYptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Yptsnb) return false;
+                if (GetPredictorYptsnb(i,j)<m_stepsLowerLimit[i].Predictors[j].Yptsnb) return false;
             }
             if (!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (GetPredictorWeight(i,j)<m_stepsLowerLimit[i].Predictors[j].Weight) return false;
                 if (GetPredictorWeight(i,j)<m_stepsLowerLimit[i].Predictors[j].Weight) return false;
             }
-            if (!m_stepsLocks[i].Predictors[j].Umin ||
-                !m_stepsLocks[i].Predictors[j].Uptsnb ||
-                !m_stepsLocks[i].Predictors[j].Vmin ||
-                !m_stepsLocks[i].Predictors[j].Vptsnb)
+            if (!m_stepsLocks[i].Predictors[j].Xmin ||
+                !m_stepsLocks[i].Predictors[j].Xptsnb ||
+                !m_stepsLocks[i].Predictors[j].Ymin ||
+                !m_stepsLocks[i].Predictors[j].Yptsnb)
             {
-                if(GetPredictorUmin(i,j)+GetPredictorUptsnb(i,j)*GetPredictorUstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Umin+m_stepsLowerLimit[i].Predictors[j].Uptsnb*GetPredictorUstep(i,j)) return false;
-                if(GetPredictorVmin(i,j)+GetPredictorVptsnb(i,j)*GetPredictorVstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Vmin+m_stepsLowerLimit[i].Predictors[j].Vptsnb*GetPredictorVstep(i,j)) return false;
+                if(GetPredictorXmin(i,j)+GetPredictorXptsnb(i,j)*GetPredictorXstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Xmin+m_stepsLowerLimit[i].Predictors[j].Xptsnb*GetPredictorXstep(i,j)) return false;
+                if(GetPredictorYmin(i,j)+GetPredictorYptsnb(i,j)*GetPredictorYstep(i,j) > m_stepsUpperLimit[i].Predictors[j].Ymin+m_stepsLowerLimit[i].Predictors[j].Yptsnb*GetPredictorYstep(i,j)) return false;
             }
         }
     }
@@ -1212,10 +1212,10 @@ void asParametersOptimization::LockAll()
                 m_stepsLocks[i].Predictors[j].TimeHours = true;
             }
 
-            m_stepsLocks[i].Predictors[j].Umin = true;
-            m_stepsLocks[i].Predictors[j].Uptsnb = true;
-            m_stepsLocks[i].Predictors[j].Vmin = true;
-            m_stepsLocks[i].Predictors[j].Vptsnb = true;
+            m_stepsLocks[i].Predictors[j].Xmin = true;
+            m_stepsLocks[i].Predictors[j].Xptsnb = true;
+            m_stepsLocks[i].Predictors[j].Ymin = true;
+            m_stepsLocks[i].Predictors[j].Yptsnb = true;
             m_stepsLocks[i].Predictors[j].Weight = true;
             m_stepsLocks[i].Predictors[j].Criteria = true;
         }
@@ -1288,22 +1288,22 @@ void asParametersOptimization::Unlock(VectorInt &indices)
 
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
-                m_stepsLocks[i].Predictors[j].Umin = false;
+                m_stepsLocks[i].Predictors[j].Xmin = false;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
-                m_stepsLocks[i].Predictors[j].Uptsnb = false;
+                m_stepsLocks[i].Predictors[j].Xptsnb = false;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
-                m_stepsLocks[i].Predictors[j].Vmin = false;
+                m_stepsLocks[i].Predictors[j].Ymin = false;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
             {
-                m_stepsLocks[i].Predictors[j].Vptsnb = false;
+                m_stepsLocks[i].Predictors[j].Yptsnb = false;
             }
             counter++;
             if(asTools::SortedArraySearch(&indices[0], &indices[length-1], counter)>=0)
@@ -1348,10 +1348,10 @@ int asParametersOptimization::GetVariablesNb()
                 if(!m_stepsLocks[i].Predictors[j].TimeHours) counter++;
             }
 
-            if(!m_stepsLocks[i].Predictors[j].Umin) counter++;
-            if(!m_stepsLocks[i].Predictors[j].Uptsnb) counter++;
-            if(!m_stepsLocks[i].Predictors[j].Vmin) counter++;
-            if(!m_stepsLocks[i].Predictors[j].Vptsnb) counter++;
+            if(!m_stepsLocks[i].Predictors[j].Xmin) counter++;
+            if(!m_stepsLocks[i].Predictors[j].Xptsnb) counter++;
+            if(!m_stepsLocks[i].Predictors[j].Ymin) counter++;
+            if(!m_stepsLocks[i].Predictors[j].Yptsnb) counter++;
             if(!m_stepsLocks[i].Predictors[j].Weight) counter++;
             if(!m_stepsLocks[i].Predictors[j].Criteria) counter++;
         }
