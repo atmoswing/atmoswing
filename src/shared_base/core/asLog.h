@@ -76,70 +76,57 @@ public:
 
     bool IsMessageBoxOnErrorEnabled()
     {
-        return m_MessageBoxOnError;
+        return m_messageBoxOnError;
     }
 
     void DisableMessageBoxOnError()
     {
-        m_MessageBoxOnError = false;
+        m_messageBoxOnError = false;
     }
 
     void EnableMessageBoxOnError()
     {
-        m_MessageBoxOnError = true;
+        m_messageBoxOnError = true;
     }
 
     void StopLogging()
     {
-        m_Active = false;
+        m_active = false;
     }
 
     void ResumeLogging()
     {
-        m_Active = true;
-    }
-
-    void RemoveDuplicates()
-    {
-        m_RemoveDuplicates = true;
-    }
-
-    void AllowDuplicates()
-    {
-        m_RemoveDuplicates = false;
+        m_active = true;
     }
 
     void SetLevel(int val)
     {
-        m_Level = val;
+        m_level = val;
     }
 
     void SetTarget(int val)
     {
-        m_Target = val;
+        m_target = val;
     }
 
     wxString GetState()
     {
-        m_CritSectionLog.Enter();
-        wxString state = m_State;
-        m_CritSectionLog.Leave();
+        m_critSectionLog.Enter();
+        wxString state = m_state;
+        m_critSectionLog.Leave();
         return state;
     }
 
 protected:
 private:
-    wxFFile *m_LogFile; //!< Member variable "m_LogFile".
-    wxLogChain *m_LogChain; //!< Member variable "m_LogChain".
-    wxCriticalSection m_CritSectionLog; //!< Member variable "m_CritSectionLog". Critical section.
-    int m_Level; //!< Member variable "m_Level". 1: only errors, 2: errors & warnings, 3: all logs.
-    int m_Target;
-    bool m_Active;
-    bool m_MessageBoxOnError;
-    bool m_RemoveDuplicates;
-    bool m_SignalDuplicates;
-    wxString m_Buffer;
-    wxString m_State;
+    wxFFile *m_logFile; //!< Member variable "m_logFile".
+    wxLogChain *m_logChain; //!< Member variable "m_logChain".
+    wxCriticalSection m_critSectionLog; //!< Member variable "m_critSectionLog". Critical section.
+    int m_level; //!< Member variable "m_level". 1: only errors, 2: errors & warnings, 3: all logs.
+    int m_target;
+    bool m_active;
+    bool m_messageBoxOnError;
+    wxString m_state;
 };
 
 #endif // ASLOG_H

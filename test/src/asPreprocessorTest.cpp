@@ -40,8 +40,7 @@ namespace
 
 TEST(Gradients)
 {
-	wxString str("Testing the preprocessor...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing the preprocessor...\n");
 	
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
@@ -52,7 +51,7 @@ TEST(Gradients)
     double Ywidth = 5;
     double step = 2.5;
     double level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
@@ -82,7 +81,7 @@ TEST(Gradients)
     VArray2DFloat arrayData = predictor->GetData();
     CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
 
-    vector < asDataPredictorArchive* > vdata;
+	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
@@ -184,7 +183,7 @@ TEST(GradientsMultithreading)
     double Ywidth = 5;
     double step = 2.5;
     double level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
     CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
@@ -214,7 +213,7 @@ TEST(GradientsMultithreading)
     VArray2DFloat arrayData = predictor->GetData();
     CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
 
-    vector < asDataPredictorArchive* > vdata;
+	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";

@@ -35,13 +35,12 @@ namespace
 
 TEST(ConstructorDefault)
 {
-	wxString str("Testing geo points management...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing geo points management...\n");
 	
     Coo Point;
     Point.x = 7;
     Point.y = 46;
-    asGeoPoint geopoint(WGS84, Point);
+    asGeoPoint geopoint(Point);
 
     CHECK_CLOSE(7, geopoint.GetX(), 0.001);
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
@@ -51,7 +50,7 @@ TEST(ConstructorOther)
 {
     double x = 7;
     double y = 46;
-    asGeoPoint geopoint(WGS84, x, y);
+    asGeoPoint geopoint(x, y);
 
     CHECK_CLOSE(7, geopoint.GetX(), 0.001);
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
@@ -61,7 +60,7 @@ TEST(ConstructorOutBoundsLon)
 {
     double x = -10;
     double y = 46;
-    asGeoPoint geopoint(WGS84, x, y);
+    asGeoPoint geopoint(x, y);
 
     CHECK_CLOSE(350, geopoint.GetX(), 0.001);
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
@@ -71,7 +70,7 @@ TEST(ConstructorOutBoundsLat)
 {
     double x = 10;
     double y = -100;
-    asGeoPoint geopoint(WGS84, x, y);
+    asGeoPoint geopoint(x, y);
 
     CHECK_CLOSE(190, geopoint.GetX(), 0.001);
     CHECK_CLOSE(-80, geopoint.GetY(), 0.001);
@@ -79,7 +78,7 @@ TEST(ConstructorOutBoundsLat)
 
 TEST(SetCooOutBounds)
 {
-    asGeoPoint geopoint(WGS84, 0, 0);
+    asGeoPoint geopoint(0, 0);
     Coo Point;
     Point.x = -10;
     Point.y = 46;
@@ -87,17 +86,6 @@ TEST(SetCooOutBounds)
 
     CHECK_CLOSE(350, geopoint.GetX(), 0.001);
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
-}
-
-TEST(ProjConvert)
-{
-    double x = 10;
-    double y = 48;
-    asGeoPoint geopoint(WGS84, x, y);
-    geopoint.ProjConvert(CH1903);
-
-    CHECK_CLOSE(791142.61, geopoint.GetX(), 2);
-    CHECK_CLOSE(319746.83, geopoint.GetY(), 2);
 }
 
 }

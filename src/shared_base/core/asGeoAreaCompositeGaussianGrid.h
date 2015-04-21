@@ -48,7 +48,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaCompositeGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Alternative constructor
      * \param coosys The coordinate system
@@ -62,7 +62,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaCompositeGaussianGrid(CoordSys coosys, double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeoAreaGaussianGrid::GaussianGridType type=asGeoAreaGaussianGrid::T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Default destructor */
     virtual ~asGeoAreaCompositeGaussianGrid();
@@ -72,19 +72,19 @@ public:
 
     asGeoAreaGaussianGrid::GaussianGridType GetGaussianGridType()
     {
-        return m_GaussianGridType;
+        return m_gaussianGridType;
     }
 
-    /** Access m_Xstep
-     * \return The current value of m_Xstep
+    /** Access m_xstep
+     * \return The current value of m_xstep
      */
     double GetXstep()
     {
         return 0.0;
     }
 
-    /** Access m_Ystep
-     * \return The current value of m_Ystep
+    /** Access m_ystep
+     * \return The current value of m_ystep
      */
     double GetYstep()
     {
@@ -155,9 +155,9 @@ public:
 protected:
 
 private:
-    asGeoAreaGaussianGrid::GaussianGridType m_GaussianGridType;
-    Array1DDouble m_FullAxisX;
-    Array1DDouble m_FullAxisY;
+    asGeoAreaGaussianGrid::GaussianGridType m_gaussianGridType;
+    Array1DDouble m_fullAxisX;
+    Array1DDouble m_fullAxisY;
 
     bool IsOnGrid(const Coo &point);
     bool IsOnGrid(double Xcoord, double Ycoord);

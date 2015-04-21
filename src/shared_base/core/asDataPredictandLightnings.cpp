@@ -31,7 +31,6 @@
 
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
-#include <asCatalog.h>
 #include <asCatalogPredictands.h>
 
 
@@ -40,8 +39,8 @@ asDataPredictandLightnings::asDataPredictandLightnings(DataParameter dataParamet
 asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
-    m_HasNormalizedData = false;
-    m_HasReferenceValues = false;
+    m_hasNormalizedData = false;
+    m_hasReferenceValues = false;
 }
 
 asDataPredictandLightnings::~asDataPredictandLightnings()
@@ -58,11 +57,11 @@ bool asDataPredictandLightnings::InitContainers()
 bool asDataPredictandLightnings::Load(const wxString &filePath)
 {
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), filePath.c_str()));
+    asLogMessage(wxString::Format(_("Opening the file %s"), filePath));
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if(!ncFile.Open())
     {
-        asLogError(wxString::Format(_("Couldn't open file %s"), filePath.c_str()));
+        asLogError(wxString::Format(_("Couldn't open file %s"), filePath));
         return false;
     }
     else
@@ -105,7 +104,7 @@ bool asDataPredictandLightnings::Save(const wxString &AlternateDestinationDir)
 
 bool asDataPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
 {
-    if(!g_UnitTesting) asLogMessage(_("Building the predictand DB."));
+    if(!g_unitTesting) asLogMessage(_("Building the predictand DB."));
 
     // Initialize the members
     if(!InitMembers(catalogFilePath)) return false;
@@ -118,10 +117,10 @@ bool asDataPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePa
 
     Save(AlternateDestinationDir);
 
-    if(!g_UnitTesting) asLogMessage(_("Predictand DB saved."));
+    if(!g_unitTesting) asLogMessage(_("Predictand DB saved."));
 
     #if wxUSE_GUI
-        if (!g_SilentMode)
+        if (!g_silentMode)
         {
             wxMessageBox(_("Predictand DB saved."));
         }

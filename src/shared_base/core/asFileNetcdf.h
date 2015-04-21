@@ -121,35 +121,35 @@ public:
 
     /** Set an attribute value of type short
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const short* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const short* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Set an attribute value of type int
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const int* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const int* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Set an attribute value of type float
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const float* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const float* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Set an attribute value of type double
      * \param AttName The attribute name
-     * \param Value The value to set
+     * \param attrValue The value to set
      * \param Length The size of the array
      * \param VarName The variable name
      */
-    void PutAtt(const wxString &AttName, const double* Value, size_t Length = 1, const wxString &VarName = wxEmptyString);
+    void PutAtt(const wxString &AttName, const double* attrValue, size_t Length = 1, const wxString &VarName = wxEmptyString);
 
     /** Write an array of shorts to the file
      * \param VarName The variable name
@@ -412,36 +412,36 @@ public:
      */
     size_t GetVarLength(const wxString &VarName);
 
-    /** Access m_FileId
-     * \return The current value of m_FileId
+    /** Access m_fileId
+     * \return The current value of m_fileId
      */
     int GetFileId()
     {
-        return m_FileId;
+        return m_fileId;
     }
 
     /** Get the number of variables
-     * \return The current value of m_Struct.NVars
+     * \return The current value of m_struct.NVars
      */
     int GetNVars()
     {
-        return m_Struct.NVars;
+        return m_struct.NVars;
     }
 
     /** Get the number of dimensions
-     * \return The current value of m_Struct.NDims
+     * \return The current value of m_struct.NDims
      */
     int GetNDims()
     {
-        return m_Struct.NDims;
+        return m_struct.NDims;
     }
 
     /** Get the number of attributes
-     * \return The current value of m_Struct.NAtts
+     * \return The current value of m_struct.NAtts
      */
     int GetNGlobAtts()
     {
-        return m_Struct.NAtts;
+        return m_struct.NAtts;
     }
 
 protected:
@@ -486,10 +486,10 @@ private:
         std::vector<struct ncAttStruct> Atts;
     };
 
-    int m_FileId; //!< Member variable "m_FileId"
-    int m_Status; //!< Member variable "m_Status"
-    bool m_DefineMode; //!< Member variable "m_DefineMode"
-    struct ncStruct m_Struct; //!< Member variable "m_Struct"
+    int m_fileId; //!< Member variable "m_fileId"
+    int m_status; //!< Member variable "m_status"
+    bool m_defineMode; //!< Member variable "m_defineMode"
+    struct ncStruct m_struct; //!< Member variable "m_struct"
 
     /** Method to handle NetCDF library errors */
     void HandleErrorNetcdf();

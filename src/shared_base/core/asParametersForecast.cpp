@@ -8,23 +8,23 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ *
+ * The Original Software is AtmoSwing. The Initial Developer of the
+ * Original Software is Pascal Horton of the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2008-2013 University of Lausanne.
  */
- 
+
 #include "asParametersForecast.h"
 
 #include <asFileParametersForecast.h>
@@ -46,7 +46,7 @@ void asParametersForecast::AddStep()
     asParameters::AddStep();
     ParamsStepForecast stepForecast;
     stepForecast.AnalogsNumberLeadTime.push_back(0);
-    m_StepsForecast.push_back(stepForecast);
+    m_stepsForecast.push_back(stepForecast);
 }
 
 void asParametersForecast::AddPredictorForecast(ParamsStepForecast &step)
@@ -80,8 +80,31 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
 
+        // Description
+        if (nodeProcess->GetName() == "description") {
+            wxXmlNode *nodeParam = nodeProcess->GetChildren();
+            while (nodeParam) {
+                if (nodeParam->GetName() == "method_id") {
+                    SetMethodId(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "method_id_display") {
+                    SetMethodIdDisplay(fileParams.GetString(nodeParam));
+                    wxASSERT(GetMethodIdDisplay().size()>0);
+                } else if (nodeParam->GetName() == "specific_tag") {
+                    SetSpecificTag(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag_display") {
+                    SetSpecificTagDisplay(fileParams.GetString(nodeParam));
+                    wxASSERT(GetSpecificTagDisplay().size()>0);
+                } else if (nodeParam->GetName() == "description") {
+                    SetDescription(fileParams.GetString(nodeParam));
+                    wxASSERT(GetDescription().size()>0);
+                } else {
+                    fileParams.UnknownNode(nodeParam);
+                }
+                nodeParam = nodeParam->GetNext();
+            }
+
         // Time properties
-        if (nodeProcess->GetName() == "time_properties") {
+        } else if (nodeProcess->GetName() == "time_properties") {
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
             while (nodeParamBlock) {
                 if (nodeParamBlock->GetName() == "archive_period") {
@@ -103,7 +126,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                 } else if (nodeParamBlock->GetName() == "lead_time") {
                     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
                     while (nodeParam) {
-                        if (nodeParam->GetName() == "lead_time_hours") {
+                        if (nodeParam->GetName() == "lead_time_days") {
                             if(!SetLeadTimeDaysVector(fileParams.GetVectorInt(nodeParam))) return false;
                         } else {
                             fileParams.UnknownNode(nodeParam);
@@ -143,7 +166,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
                     if(!SetAnalogsNumberLeadTimeVector(i_step, fileParams.GetVectorInt(nodeParamBlock))) return false;
                 } else if (nodeParamBlock->GetName() == "predictor") {
                     AddPredictor(i_step);
-                    AddPredictorForecast(m_StepsForecast[i_step]);
+                    AddPredictorForecast(m_stepsForecast[i_step]);
                     SetPreprocess(i_step, i_ptor, false);
                     SetPreload(i_step, i_ptor, false);
                     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -234,6 +257,28 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
             }
             i_step++;
 
+        // Analog values
+        } else if (nodeProcess->GetName() == "analog_values") {
+            wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
+            while (nodeParamBlock) {
+                if (nodeParamBlock->GetName() == "predictand") {
+                    wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+                    while (nodeParam) {
+                        if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
+                            if(!SetPredictandStationIds(fileParams.GetString(nodeParam))) return false;
+                        } else if (nodeParam->GetName() == "database") {
+                            SetPredictandDatabase(fileParams.GetString(nodeParam));
+                        } else {
+                            fileParams.UnknownNode(nodeParam);
+                        }
+                        nodeParam = nodeParam->GetNext();
+                    }
+                } else {
+                    fileParams.UnknownNode(nodeParamBlock);
+                }
+                nodeParamBlock = nodeParamBlock->GetNext();
+            }
+
         } else {
             fileParams.UnknownNode(nodeProcess);
         }
@@ -290,7 +335,7 @@ bool asParametersForecast::InputsOK()
         return false;
     }
 
-    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0 
+    if(GetTimeArrayAnalogsMode().CmpNoCase("interval_days")==0
         || GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays")==0) {
         if(GetTimeArrayAnalogsIntervalDays()<=0) {
             asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
@@ -305,7 +350,7 @@ bool asParametersForecast::InputsOK()
     // Analog dates
     for(int i=0;i<GetStepsNb();i++)
     {
-        if(GetAnalogsNumberLeadTimeVector(i).size()!=GetLeadTimeDaysVector().size()) 
+        if(GetAnalogsNumberLeadTimeVector(i).size()!=GetLeadTimeDaysVector().size())
         {
             asLogError(wxString::Format(_("The length of the analogs numbers (step %d) do not match the number of lead times."), i));
             return false;
@@ -387,7 +432,7 @@ void asParametersForecast::InitValues()
     // Initialize the parameters values with the first values of the vectors
     for (int i=0; i<GetStepsNb(); i++)
     {
-        SetAnalogsNumber(i, m_StepsForecast[i].AnalogsNumberLeadTime[0]);
+        SetAnalogsNumber(i, m_stepsForecast[i].AnalogsNumberLeadTime[0]);
     }
 
     // Fixes and checks
@@ -405,7 +450,7 @@ bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -414,7 +459,7 @@ bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
             }
         }
     }
-    m_LeadTimeDaysVect = val;
+    m_leadTimeDaysVect = val;
     return true;
 }
 
@@ -427,7 +472,7 @@ bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int i_step, VectorInt 
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -436,7 +481,7 @@ bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int i_step, VectorInt 
             }
         }
     }
-    m_StepsForecast[i_step].AnalogsNumberLeadTime = val;
+    m_stepsForecast[i_step].AnalogsNumberLeadTime = val;
     return true;
 }
 
@@ -447,7 +492,7 @@ bool asParametersForecast::SetPredictorArchiveDatasetId(int i_step, int i_predic
         asLogError(_("The provided value for the predictor archive dataset ID is null"));
         return false;
     }
-    m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId = val;
+    m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId = val;
     return true;
 }
 
@@ -458,7 +503,7 @@ bool asParametersForecast::SetPredictorArchiveDataId(int i_step, int i_predictor
         asLogError(_("The provided value for the predictor archive data ID is null"));
         return false;
     }
-    m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDataId = val;
+    m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDataId = val;
     return true;
 }
 
@@ -469,7 +514,7 @@ bool asParametersForecast::SetPredictorRealtimeDatasetId(int i_step, int i_predi
         asLogError(_("The provided value for the predictor realtime dataset ID is null"));
         return false;
     }
-    m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId = val;
+    m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId = val;
     return true;
 }
 
@@ -480,15 +525,15 @@ bool asParametersForecast::SetPredictorRealtimeDataId(int i_step, int i_predicto
         asLogError(_("The provided value for the predictor realtime data ID is null"));
         return false;
     }
-    m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDataId = val;
+    m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDataId = val;
     return true;
 }
 
 wxString asParametersForecast::GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset];
+        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset];
     }
     else
     {
@@ -505,13 +550,13 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int i_step, int i_predi
         return false;
     }
 
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset] = val;
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset] = val;
     }
     else
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.push_back(val);
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.push_back(val);
     }
 
     return true;
@@ -519,9 +564,9 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int i_step, int i_predi
 
 wxString asParametersForecast::GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset];
+        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset];
     }
     else
     {
@@ -538,13 +583,13 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int i_step, int i_predicto
         return false;
     }
 
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset] = val;
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset] = val;
     }
     else
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.push_back(val);
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.push_back(val);
     }
 
     return true;
@@ -552,9 +597,9 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int i_step, int i_predicto
 
 wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset];
+        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset];
     }
     else
     {
@@ -571,23 +616,23 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int i_step, int i_pred
         return false;
     }
 
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset] = val;
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset] = val;
     }
     else
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.push_back(val);
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.push_back(val);
     }
-        
+
     return true;
 }
 
 wxString asParametersForecast::GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset];
+        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset];
     }
     else
     {
@@ -604,13 +649,13 @@ bool asParametersForecast::SetPreprocessRealtimeDataId(int i_step, int i_predict
         return false;
     }
 
-    if(m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset] = val;
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset] = val;
     }
     else
     {
-        m_StepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.push_back(val);
+        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.push_back(val);
     }
 
     return true;

@@ -103,7 +103,7 @@ class asFileAscii : public asFile
 
 protected:
 private:
-    std::fstream m_File;
+    std::fstream m_file;
 
 };
 

@@ -34,15 +34,15 @@ asParametersScoring::asParametersScoring()
 :
 asParameters()
 {
-    m_CalibrationStart = 0;
-    m_CalibrationEnd = 0;
-    m_ForecastScore.Name = wxEmptyString;
-    m_ForecastScore.TimeArrayMode = wxEmptyString;
-    m_ForecastScore.TimeArrayDate = 0;
-    m_ForecastScore.TimeArrayIntervalDays = 0;
-    m_ForecastScore.Postprocess = false;
-    m_ForecastScore.PostprocessDupliExp = 0;
-    m_ForecastScore.PostprocessMethod = wxEmptyString;
+    m_calibrationStart = 0;
+    m_calibrationEnd = 0;
+    m_forecastScore.Name = wxEmptyString;
+    m_forecastScore.TimeArrayMode = wxEmptyString;
+    m_forecastScore.TimeArrayDate = 0;
+    m_forecastScore.TimeArrayIntervalDays = 0;
+    m_forecastScore.Postprocess = false;
+    m_forecastScore.PostprocessDupliExp = 0;
+    m_forecastScore.PostprocessMethod = wxEmptyString;
 }
 
 asParametersScoring::~asParametersScoring()
@@ -85,6 +85,16 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if(!fileParams.EditRootElement()) return false;
     fileParams.GetRoot()->AddAttribute("target", "calibrator");
 
+    
+    // Description
+    wxXmlNode * nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE ,"description" );
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id", GetMethodId()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("method_id_display", GetMethodIdDisplay()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag", GetSpecificTag()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("specific_tag_display", GetSpecificTagDisplay()));
+    nodeDescr->AddChild(fileParams.CreateNodeWithValue("description", GetDescription()));
+
+	fileParams.AddChild(nodeDescr);
 
     // Time properties
     wxXmlNode * nodeTime = new wxXmlNode(wxXML_ELEMENT_NODE ,"time_properties" );
@@ -109,10 +119,10 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeTime->AddChild(nodeTimeValidationPeriod);
         wxString validationYears;
         VectorInt validationYearsVect = GetValidationYearsVector();
-        for (int i=0; i<validationYearsVect.size(); i++)
+        for (int i=0; i<(int)validationYearsVect.size(); i++)
         {
             validationYears << validationYearsVect[i];
-            if (i!=validationYearsVect.size()-1)
+            if (i!=(int)validationYearsVect.size()-1)
             {
                 validationYears << ", ";
             }
@@ -209,7 +219,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxXmlNode * nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE ,"predictand" );
     nodeAnalogValues->AddChild(nodePredictand);
 
-    VVectorInt predictandStationIdsVect = GetPredictandStationsIdsVector();
+    VVectorInt predictandStationIdsVect = GetPredictandStationIdsVector();
     wxString predictandStationIds = GetPredictandStationIdsVectorString(predictandStationIdsVect);
     nodePredictand->AddChild(fileParams.CreateNodeWithValue("station_id", predictandStationIds));
 
@@ -227,10 +237,10 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("threshold", fsThreshold));
     }
 
-    float fsPercentile = GetForecastScorePercentile();
-    if (!asTools::IsNaN(fsPercentile))
+    float fsQuantile = GetForecastScoreQuantile();
+    if (!asTools::IsNaN(fsQuantile))
     {
-        nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("percentile", fsPercentile));
+        nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
     }
 
     fileParams.AddChild(nodeAnalogScore);
@@ -256,7 +266,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
 {
     wxString Ids;
 
-    for (int i=0; i<predictandStationIdsVect.size(); i++)
+    for (int i=0; i<(int)predictandStationIdsVect.size(); i++)
     {
         VectorInt predictandStationIds = predictandStationIdsVect[i];
 
@@ -268,11 +278,11 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
         {
             Ids.Append("(");
 
-            for (int j=0; j<predictandStationIds.size(); j++)
+            for (int j=0; j<(int)predictandStationIds.size(); j++)
             {
                 Ids << predictandStationIds[j];
 
-                if (j<predictandStationIds.size()-1)
+                if (j<(int)predictandStationIds.size()-1)
                 {
                     Ids.Append(",");
                 }
@@ -281,7 +291,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
             Ids.Append(")");
         }
 
-        if (i<predictandStationIdsVect.size()-1)
+        if (i<(int)predictandStationIdsVect.size()-1)
         {
             Ids.Append(",");
         }
@@ -295,16 +305,16 @@ wxString asParametersScoring::Print()
     // Create content string
     wxString content = asParameters::Print();
 
-    content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName().c_str()));
-    if (!asTools::IsNaN(GetForecastScorePercentile()))
+    content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName()));
+    if (!asTools::IsNaN(GetForecastScoreQuantile()))
     {
-        content.Append(wxString::Format("Percentile \t%f\t", GetForecastScorePercentile()));
+        content.Append(wxString::Format("Quantile \t%f\t", GetForecastScoreQuantile()));
     }
     if (!asTools::IsNaN(GetForecastScoreThreshold()))
     {
         content.Append(wxString::Format("Threshold \t%f\t", GetForecastScoreThreshold()));
     }
-    content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode().c_str()));
+    content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode()));
 
     return content;
 }
@@ -328,8 +338,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     strVal = stringVals.SubString(iLeft, iRight-1);
     if (!strVal.IsSameAs(GetForecastScoreName()))
     {
-        asLogError(wxString::Format(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName().c_str(), strVal.c_str()));
-        printf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetForecastScoreName().c_str(), strVal.c_str()));
+        asLogError(wxString::Format(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName(), strVal));
+        printf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetForecastScoreName(), strVal));
         return false;
     }
 

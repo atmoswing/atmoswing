@@ -26,8 +26,8 @@
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
 
-#ifndef ASDATAPREDICTORARCHIVENOAAOISST2Terranum_H
-#define ASDATAPREDICTORARCHIVENOAAOISST2Terranum_H
+#ifndef ASDATAPREDICTORARCHIVENOAAOISST2Terranum_h
+#define ASDATAPREDICTORARCHIVENOAAOISST2Terranum_h
 
 #include <asIncludes.h>
 #include <asDataPredictorArchive.h>
@@ -59,4 +59,4 @@ private:
 
 };
 
-#endif // ASDATAPREDICTORARCHIVENOAAOISST2Terranum_H
+#endif // ASDATAPREDICTORARCHIVENOAAOISST2Terranum_h

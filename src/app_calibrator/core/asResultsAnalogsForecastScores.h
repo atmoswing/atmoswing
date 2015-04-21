@@ -49,80 +49,80 @@ public:
      */
     void Init(asParametersScoring &params);
 
-    /** Access m_TargetDates
-     * \return The whole array m_TargetDates
+    /** Access m_targetDates
+     * \return The whole array m_targetDates
      */
     Array1DFloat &GetTargetDates()
     {
-        return m_TargetDates;
+        return m_targetDates;
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DDouble &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
+        m_targetDates.resize(refDates.rows());
         for (int i=0; i<refDates.size(); i++)
         {
-            m_TargetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_TargetDates[i]>1,_("The target time array has unconsistent values"));
+            m_targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(m_targetDates[i]>1,_("The target time array has unconsistent values"));
         }
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DFloat &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
-        m_TargetDates = refDates;
+        m_targetDates.resize(refDates.rows());
+        m_targetDates = refDates;
     }
 
-    /** Access m_ForecastScores
-     * \return The whole array m_ForecastScores
+    /** Access m_forecastScores
+     * \return The whole array m_forecastScores
      */
     Array1DFloat &GetForecastScores()
     {
-        return m_ForecastScores;
+        return m_forecastScores;
     }
 
-    /** Access m_ForecastScores2DArray
-     * \return The whole array m_ForecastScores2DArray
+    /** Access m_forecastScores2DArray
+     * \return The whole array m_forecastScores2DArray
      */
     Array2DFloat &GetForecastScores2DArray()
     {
-        return m_ForecastScores2DArray;
+        return m_forecastScores2DArray;
     }
 
-    /** Set m_ForecastScores
+    /** Set m_forecastScores
      * \param forecastScores The new array to set
      */
     void SetForecastScores(Array1DDouble &forecastScores)
     {
-        m_ForecastScores.resize(forecastScores.rows());
+        m_forecastScores.resize(forecastScores.rows());
         for (int i=0; i<forecastScores.size(); i++)
         {
-            m_ForecastScores[i] = (float)forecastScores[i];
+            m_forecastScores[i] = (float)forecastScores[i];
         }
     }
 
-    /** Set m_ForecastScores
+    /** Set m_forecastScores
      * \param forecastScores The new array to set
      */
     void SetForecastScores(Array1DFloat &forecastScores)
     {
-        m_ForecastScores.resize(forecastScores.rows());
-        m_ForecastScores = forecastScores;
+        m_forecastScores.resize(forecastScores.rows());
+        m_forecastScores = forecastScores;
     }
 
-    /** Set m_ForecastScores
+    /** Set m_forecastScores
      * \param forecastScores The new array to set
      */
     void SetForecastScores2DArray(Array2DFloat &forecastScores)
     {
-        m_ForecastScores2DArray.resize(forecastScores.rows(),forecastScores.cols());
-        m_ForecastScores2DArray = forecastScores;
+        m_forecastScores2DArray.resize(forecastScores.rows(),forecastScores.cols());
+        m_forecastScores2DArray = forecastScores;
     }
 
     /** Get the length of the target time dimension
@@ -130,7 +130,7 @@ public:
      */
     int GetTargetDatesLength()
     {
-        return m_TargetDates.size();
+        return m_targetDates.size();
     }
 
     /** Save the result file
@@ -153,9 +153,9 @@ protected:
     void BuildFileName(asParametersScoring &params);
 
 private:
-    Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
-    Array1DFloat m_ForecastScores; //!< Member variable "m_ForecastScores"
-    Array2DFloat m_ForecastScores2DArray; //!< Member variable "m_ForecastScores2DArray"
+    Array1DFloat m_targetDates; //!< Member variable "m_targetDates"
+    Array1DFloat m_forecastScores; //!< Member variable "m_forecastScores"
+    Array2DFloat m_forecastScores2DArray; //!< Member variable "m_forecastScores2DArray"
 };
 
 #endif // ASRESULTSANALOGSFORECASTSCORES_H

@@ -49,7 +49,7 @@ protected:
 	void OnLoadExistingBatchForecasts( wxCommandEvent& event );
 
 private:
-    asBatchForecasts* m_BatchForecasts;
+    asBatchForecasts* m_batchForecasts;
 };
 
 #endif // __asWizardBatchForecasts__

@@ -38,88 +38,87 @@ asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxS
 asDataPredictorRealtime(dataId)
 {
     // Set the basic properties.
-    m_Initialized = false;
-    m_DataId = dataId;
-    m_DatasetId = "NWS_GFS_Forecast";
-    m_OriginalProvider = "NWS";
-    m_FinalProvider = "NWS";
-    m_FinalProviderWebsite = "http://www.emc.ncep.noaa.gov/GFS/";
-    m_FinalProviderFTP = "http://nomads.ncep.noaa.gov/";
-    m_DatasetName = "Global Forecast System";
-    m_TimeZoneHours = 0;
-    m_ForecastLeadTimeStart = 0;
-    m_ForecastLeadTimeEnd = 192; // After 192h, available in another resolution
-    m_ForecastLeadTimeStep = 6;
-    m_RunHourStart = 0;
-    m_RunUpdate = 6;
-    m_FirstTimeStepHours = 0;
-    m_NanValues.push_back(NaNDouble);
-    m_NanValues.push_back(NaNFloat);
-    m_CoordinateSystem = WGS84;
-    m_XaxisShift = 0;
-    m_YaxisShift = 0;
-    m_XaxisStep = 1;
-    m_YaxisStep = 1;
-    m_RestrictTimeHours = 0;
-    m_RestrictTimeStepHours = 24;
-    m_FileExtension = "grib2";
+    m_initialized = false;
+    m_dataId = dataId;
+    m_datasetId = "NWS_GFS_Forecast";
+    m_originalProvider = "NWS";
+    m_finalProvider = "NWS";
+    m_finalProviderWebsite = "http://www.emc.ncep.noaa.gov/GFS/";
+    m_finalProviderFTP = "http://nomads.ncep.noaa.gov/";
+    m_datasetName = "Global Forecast System";
+    m_timeZoneHours = 0;
+    m_forecastLeadTimeStart = 0;
+    m_forecastLeadTimeEnd = 240; // After 240h, available in another temporal resolution
+    m_forecastLeadTimeStep = 6;
+    m_runHourStart = 0;
+    m_runUpdate = 6;
+    m_firstTimeStepHours = 0;
+    m_nanValues.push_back(NaNDouble);
+    m_nanValues.push_back(NaNFloat);
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
+    m_xAxisStep = 0.5;
+    m_yAxisStep = 0.5;
+    m_restrictTimeHours = 0;
+    m_restrictTimeStepHours = 24;
+    m_fileExtension = "grib2";
 
     // Identify data ID and set the corresponding properties.
-    if (m_DataId.IsSameAs("hgt", false))
+    if (m_dataId.IsSameAs("hgt", false))
     {
-        m_DataParameter = GeopotentialHeight;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "HGT";
-        m_Unit = m;
+        m_dataParameter = GeopotentialHeight;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "HGT";
+        m_unit = m;
     }
-    else if (m_DataId.IsSameAs("air", false))
+    else if (m_dataId.IsSameAs("air", false))
     {
-        m_DataParameter = AirTemperature;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "TEMP";
-        m_Unit = degK;
+        m_dataParameter = AirTemperature;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "TEMP";
+        m_unit = degK;
     }
-    else if (m_DataId.IsSameAs("omega", false))
+    else if (m_dataId.IsSameAs("omega", false))
     {
-        m_DataParameter = Omega;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "VVEL";
-        m_Unit = PascalsPerSec;
+        m_dataParameter = Omega;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "VVEL";
+        m_unit = PascalsPerSec;
     }
-    else if (m_DataId.IsSameAs("rhum", false))
+    else if (m_dataId.IsSameAs("rhum", false))
     {
-        m_DataParameter = RelativeHumidity;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "RH";
-        m_Unit = percent;
+        m_dataParameter = RelativeHumidity;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "RH";
+        m_unit = percent;
     }
-    else if (m_DataId.IsSameAs("uwnd", false))
+    else if (m_dataId.IsSameAs("uwnd", false))
     {
-        m_DataParameter = Uwind;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "UGRD";
-        m_Unit = mPerSec;
+        m_dataParameter = Uwind;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "UGRD";
+        m_unit = mPerSec;
     }
-    else if (m_DataId.IsSameAs("vwnd", false))
+    else if (m_dataId.IsSameAs("vwnd", false))
     {
-        m_DataParameter = Vwind;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_200_mb=on&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "VGRD";
-        m_Unit = mPerSec;
+        m_dataParameter = Vwind;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "VGRD";
+        m_unit = mPerSec;
     }
-    else if (m_DataId.IsSameAs("surf_prwtr", false))
+    else if (m_dataId.IsSameAs("surf_prwtr", false))
     {
-        m_DataParameter = PrecipitableWater;
-        m_CommandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t[CURRENTDATE-hh]z.pgrbf[LEADTIME-hh].grib2&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=60&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
-        m_FileVariableName = "PWAT";
-        m_Unit = mm;
+        m_dataParameter = PrecipitableWater;
+        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_fileVariableName = "PWAT";
+        m_unit = mm;
     }
     else
     {
-        m_DataParameter = NoDataParameter;
-        m_CommandDownload = wxEmptyString;
-        m_FileVariableName = wxEmptyString;
-        m_Unit = NoDataUnit;
+        m_dataParameter = NoDataParameter;
+        m_commandDownload = wxEmptyString;
+        m_fileVariableName = wxEmptyString;
+        m_unit = NoDataUnit;
     }
 }
 
@@ -131,13 +130,13 @@ asDataPredictorRealtimeGfsForecast::~asDataPredictorRealtimeGfsForecast()
 bool asDataPredictorRealtimeGfsForecast::Init()
 {
     // Check data ID
-    if (m_CommandDownload.IsEmpty() || m_FileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_commandDownload.IsEmpty() || m_fileVariableName.IsEmpty()) {
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Set to initialized
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
@@ -188,9 +187,9 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
         // Check if the volume is present
         wxFileName fileName(filePaths[i_file]);
-        if (!fileName.HasVolume() && !m_PredictorsRealtimeDirectory.IsEmpty())
+        if (!fileName.HasVolume() && !m_predictorsRealtimeDirectory.IsEmpty())
         {
-            filePath = m_PredictorsRealtimeDirectory;
+            filePath = m_predictorsRealtimeDirectory;
             filePath.Append(DS);
         }
         filePath.Append(filePaths[i_file]);
@@ -218,7 +217,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
 
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             // Check if necessary to load the data of lon=360 (so lon=0)
             bool load360 = false;
@@ -239,7 +238,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
                 if(lonMax==360)
                 {
-                    // Correction if the lon 360° is required (doesn't exist)
+                    // Correction if the lon 360Â° is required (doesn't exist)
                     load360 = true;
                     for (int i_check = 0; i_check<dataArea->GetNbComposites(); i_check++)
                     {
@@ -261,7 +260,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                 }
                 if(indexStartLon==asOUT_OF_RANGE)
                 {
-                    // If not found, try with angles above 360°
+                    // If not found, try with angles above 360Â°
                     indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin+360, 0.0001f);
                 }
                 wxASSERT(indexStartLon>=0);
@@ -275,8 +274,8 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
             {
                 indexStartLon = 0;
                 indexStartLat = 0;
-                indexLengthLon = m_LonPtsnb;
-                indexLengthLat = m_LatPtsnb;
+                indexLengthLon = m_lonPtsnb;
+                indexLengthLat = m_latPtsnb;
             }
 
             // Create the arrays to receive the data
@@ -298,9 +297,9 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
             indexCountData[1] = indexLengthLat;
 
             // Get data from file
-            g2File.GetVarArray(m_FileVariableName, indexStartData, indexCountData, m_Level, &data[0]);
+            g2File.GetVarArray(m_fileVariableName, indexStartData, indexCountData, m_level, &data[0]);
 
-            // Load data at lon = 360°
+            // Load data at lon = 360Â°
             if(load360)
             {
                 // Resize the arrays to store the new data
@@ -318,7 +317,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                 indexCountData[0] = 1;
 
                 // Get data from file
-                g2File.GetVarArray(m_FileVariableName, indexStartData, indexCountData, m_Level, &data360[0]);
+                g2File.GetVarArray(m_fileVariableName, indexStartData, indexCountData, m_level, &data360[0]);
             }
 
             // Containers for results

@@ -63,29 +63,29 @@ public:
 
     Period GetPeriod()
     {
-        return m_Period;
+        return m_period;
     }
 
     bool SingleValue()
     {
-        return m_SingleValue;
+        return m_singleValue;
     }
 
     bool Has2DArrayArgument()
     {
-        return m_Has2DArrayArgument;
+        return m_has2DArrayArgument;
     }
 
     void SetRanksNb(int val)
     {
-        m_RanksNb = val;
+        m_ranksNb = val;
     }
 
 protected:
-    Period m_Period;
-    bool m_SingleValue;
-    bool m_Has2DArrayArgument;
-    int m_RanksNb;
+    Period m_period;
+    bool m_singleValue;
+    bool m_has2DArrayArgument;
+    int m_ranksNb;
 
 private:
 

@@ -31,13 +31,13 @@ asPredictorCriteriaSAD::asPredictorCriteriaSAD(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::SAD;
-    m_Name = "SAD";
-    m_FullName = _("Sum of Absolute Differences");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::SAD;
+    m_name = "SAD";
+    m_fullName = _("Sum of Absolute Differences");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaSAD::~asPredictorCriteriaSAD()
@@ -52,7 +52,7 @@ float asPredictorCriteriaSAD::Assess(const Array2DFloat &refData, const Array2DF
 
     float rescriteria = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):
@@ -68,7 +68,7 @@ float asPredictorCriteriaSAD::Assess(const Array2DFloat &refData, const Array2DF
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    rescriteria += abs(evalData(i,j) - refData(i,j));
+                    rescriteria += std::abs(evalData(i,j) - refData(i,j));
                 }
             }
 

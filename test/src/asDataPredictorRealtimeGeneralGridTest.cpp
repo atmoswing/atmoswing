@@ -39,8 +39,7 @@ namespace
 
 TEST(LoadEasySmallFile)
 {
-	wxString str("Testing general realtime predictors...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing general realtime predictors...\n");
 	
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -57,13 +56,17 @@ TEST(LoadEasySmallFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -147,13 +150,17 @@ TEST(LoadEasyLargeFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -237,13 +244,17 @@ TEST(LoadCompositeSmallFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -291,13 +302,17 @@ TEST(LoadCompositeLargeFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -345,13 +360,17 @@ TEST(LoadBorderLeftSmallFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -399,13 +418,17 @@ TEST(LoadBorderLeftLargeFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -453,13 +476,17 @@ TEST(LoadBorderLeftOn720SmallFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -507,13 +534,17 @@ TEST(LoadBorderLeftOn720LargeFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -561,13 +592,17 @@ TEST(LoadBorderRightSmallFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -615,13 +650,17 @@ TEST(LoadBorderRightLargeFile)
     double step = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -670,13 +709,17 @@ TEST(LoadCompositeStepLonSmallFile)
     double Ystep = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -725,13 +768,17 @@ TEST(LoadCompositeStepLonLargeFile)
     double Ystep = 1;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -780,13 +827,17 @@ TEST(LoadCompositeStepLonLatSmallFile)
     double Ystep = 3;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -833,13 +884,17 @@ TEST(LoadCompositeStepLonLatLargeFile)
     double Ystep = 3;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -886,13 +941,17 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     double Ystep = 2.5;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -942,13 +1001,17 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     double Ystep = 2.5;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -998,13 +1061,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     double Ystep = 2.5;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -1049,13 +1116,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     double Ystep = 2.5;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -1100,13 +1171,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     double Ystep = 2.5;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
@@ -1149,13 +1224,17 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     double Ystep = 2.5;
     double level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(WGS84, gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
+    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
     asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
     predictor->SetFileNames(filepaths);
+
+    // Correct the step according to former GFS files.
+    predictor->SetXaxisStep(1);
+    predictor->SetYaxisStep(1);
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);

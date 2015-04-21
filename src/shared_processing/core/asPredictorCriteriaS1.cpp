@@ -31,13 +31,13 @@ asPredictorCriteriaS1::asPredictorCriteriaS1(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::S1;
-    m_Name = "S1";
-    m_FullName = _("Teweles-Wobus");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = 200;
-    m_CanUseInline = false;
+    m_criteria = asPredictorCriteria::S1;
+    m_name = "S1";
+    m_fullName = _("Teweles-Wobus");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = 200;
+    m_canUseInline = false;
 }
 
 asPredictorCriteriaS1::~asPredictorCriteriaS1()
@@ -59,7 +59,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
 
     float dividend = 0, divisor = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         {
@@ -99,8 +99,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend += abs((refData(i+1,j)-refData(i,j))-(evalData(i+1,j)-evalData(i,j)));
-                    divisor += wxMax(abs((refData(i+1,j)-refData(i,j))),abs((evalData(i+1,j)-evalData(i,j))));
+                    dividend += std::abs((refData(i+1,j)-refData(i,j))-(evalData(i+1,j)-evalData(i,j)));
+                    divisor += wxMax(std::abs((refData(i+1,j)-refData(i,j))),std::abs((evalData(i+1,j)-evalData(i,j))));
                 }
             }
 
@@ -108,8 +108,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             {
                 for (int j=0; j<colsNb-1; j++)
                 {
-                    dividend += abs((refData(i,j+1)-refData(i,j))-(evalData(i,j+1)-evalData(i,j)));
-                    divisor += wxMax(abs((refData(i,j+1)-refData(i,j))), abs((evalData(i,j+1)-evalData(i,j))));
+                    dividend += std::abs((refData(i,j+1)-refData(i,j))-(evalData(i,j+1)-evalData(i,j)));
+                    divisor += wxMax(std::abs((refData(i,j+1)-refData(i,j))), std::abs((evalData(i,j+1)-evalData(i,j))));
                 }
             }
 
@@ -127,8 +127,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
                     refGradRows = refData(i+1,j)-refData(i,j);
                     evalGradRows = evalData(i+1,j)-evalData(i,j);
 
-                    dividend += abs(refGradRows-evalGradRows);
-                    divisor += wxMax(abs(refGradRows),abs(evalGradRows));
+                    dividend += std::abs(refGradRows-evalGradRows);
+                    divisor += wxMax(std::abs(refGradRows),std::abs(evalGradRows));
                 }
             }
 
@@ -139,8 +139,8 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
                     refGradCols = refData(i,j+1)-refData(i,j);
                     evalGradCols = evalData(i,j+1)-evalData(i,j);
 
-                    dividend += abs(refGradCols-evalGradCols);
-                    divisor += wxMax(abs(refGradCols), abs(evalGradCols));
+                    dividend += std::abs(refGradCols-evalGradCols);
+                    divisor += wxMax(std::abs(refGradCols), std::abs(evalGradCols));
                 }
             }
 
@@ -163,7 +163,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
         if (dividend==0)
         {
             asLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return m_ScaleBest;
+            return m_scaleBest;
         }
         else
         {

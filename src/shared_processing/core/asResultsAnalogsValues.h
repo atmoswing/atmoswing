@@ -46,147 +46,147 @@ public:
      */
     void Init(asParameters &params);
 
-    /** Access m_TargetDates
-     * \return The whole array m_TargetDates
+    /** Access m_targetDates
+     * \return The whole array m_targetDates
      */
     Array1DFloat &GetTargetDates()
     {
-        return m_TargetDates;
+        return m_targetDates;
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DDouble &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
+        m_targetDates.resize(refDates.rows());
         for (int i=0; i<refDates.size(); i++)
         {
-            m_TargetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_TargetDates[i]>1,_("The target time array has unconsistent values"));
+            m_targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(m_targetDates[i]>1,_("The target time array has unconsistent values"));
         }
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DFloat &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
-        m_TargetDates = refDates;
+        m_targetDates.resize(refDates.rows());
+        m_targetDates = refDates;
     }
 
-    /** Access m_TargetValuesNorm
-     * \return The whole array m_TargetValuesNorm
+    /** Access m_targetValuesNorm
+     * \return The whole array m_targetValuesNorm
      */
     VArray1DFloat &GetTargetValues()
     {
-        return m_TargetValuesNorm;
+        return m_targetValuesNorm;
     }
 
-    /** Set m_TargetValuesNorm
+    /** Set m_targetValuesNorm
      * \param targetValues The new array to set
      */
     void SetTargetValues(VArray1DFloat &targetValues)
     {
-        m_TargetValuesNorm = targetValues;
+        m_targetValuesNorm = targetValues;
     }
 
-    /** Access m_TargetValuesNorm
-     * \return The whole array m_TargetValuesNorm
+    /** Access m_targetValuesNorm
+     * \return The whole array m_targetValuesNorm
      */
     VArray1DFloat &GetTargetValuesNorm()
     {
-        return m_TargetValuesNorm;
+        return m_targetValuesNorm;
     }
 
-    /** Set m_TargetValuesNorm
+    /** Set m_targetValuesNorm
      * \param targetValuesNorm The new array to set
      */
     void SetTargetValuesNorm(VArray1DFloat &targetValuesNorm)
     {
-        m_TargetValuesNorm = targetValuesNorm;
+        m_targetValuesNorm = targetValuesNorm;
     }
 
-    /** Access m_TargetValuesGross
-     * \return The whole array m_TargetValuesGross
+    /** Access m_targetValuesGross
+     * \return The whole array m_targetValuesGross
      */
     VArray1DFloat &GetTargetValuesGross()
     {
-        return m_TargetValuesGross;
+        return m_targetValuesGross;
     }
 
-    /** Set m_TargetValuesGross
+    /** Set m_targetValuesGross
      * \param targetValuesGross The new array to set
      */
     void SetTargetValuesGross(VArray1DFloat &targetValuesGross)
     {
-        m_TargetValuesGross = targetValuesGross;
+        m_targetValuesGross = targetValuesGross;
     }
 
-    /** Access m_AnalogCriteria
-     * \return The whole array m_AnalogCriteria
+    /** Access m_analogCriteria
+     * \return The whole array m_analogCriteria
      */
     Array2DFloat &GetAnalogsCriteria()
     {
-        return m_AnalogsCriteria;
+        return m_analogsCriteria;
     }
 
-    /** Set m_AnalogCriteria
+    /** Set m_analogCriteria
      * \param analogCriteria The new array to set
      */
     void SetAnalogsCriteria(Array2DFloat &analogsCriteria)
     {
-        m_AnalogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
-        m_AnalogsCriteria = analogsCriteria;
+        m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
+        m_analogsCriteria = analogsCriteria;
     }
 
-    /** Access m_AnalogValues
-     * \return The whole array m_AnalogValues
+    /** Access m_analogValues
+     * \return The whole array m_analogValues
      */
     VArray2DFloat &GetAnalogsValues()
     {
-        return m_AnalogsValuesNorm;
+        return m_analogsValuesNorm;
     }
 
-    /** Set m_AnalogValues
+    /** Set m_analogValues
      * \param analogValues The new array to set
      */
     void SetAnalogsValues(VArray2DFloat &analogsValues)
     {
-        m_AnalogsValuesNorm = analogsValues;
+        m_analogsValuesNorm = analogsValues;
     }
 
-    /** Access m_AnalogValuesNorm
-     * \return The whole array m_AnalogValuesNorm
+    /** Access m_analogValuesNorm
+     * \return The whole array m_analogValuesNorm
      */
     VArray2DFloat GetAnalogsValuesNorm()
     {
-        return m_AnalogsValuesNorm;
+        return m_analogsValuesNorm;
     }
 
-    /** Set m_AnalogValuesNorm
+    /** Set m_analogValuesNorm
      * \param analogValuesNorm The new array to set
      */
     void SetAnalogsValuesNorm(VArray2DFloat &analogsValuesNorm)
     {
-        m_AnalogsValuesNorm = analogsValuesNorm;
+        m_analogsValuesNorm = analogsValuesNorm;
     }
 
-    /** Access m_AnalogValuesGross
-     * \return The whole array m_AnalogValuesGross
+    /** Access m_analogValuesGross
+     * \return The whole array m_analogValuesGross
      */
     VArray2DFloat GetAnalogsValuesGross()
     {
-        return m_AnalogsValuesGross;
+        return m_analogsValuesGross;
     }
 
-    /** Set m_AnalogValuesGross
+    /** Set m_analogValuesGross
      * \param analogValuesGross The new array to set
      */
     void SetAnalogsValuesGross(VArray2DFloat &analogsValuesGross)
     {
-        m_AnalogsValuesGross = analogsValuesGross;
+        m_analogsValuesGross = analogsValuesGross;
     }
 
     /** Get the length of the target time dimension
@@ -194,7 +194,7 @@ public:
      */
     int GetTargetDatesLength()
     {
-        return m_TargetDates.size();
+        return m_targetDates.size();
     }
 
     /** Save the result file
@@ -216,12 +216,12 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates". Dimensions: time
-    VArray1DFloat m_TargetValuesNorm; //!< Member variable "m_TargetValuesNorm". Dimensions: stations x time
-    VArray1DFloat m_TargetValuesGross; //!< Member variable "m_TargetValuesGross". Dimensions: stations x time
-    Array2DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogsCriteria". Dimensions: time x analogs
-    VArray2DFloat m_AnalogsValuesNorm; //!< Member variable "m_AnalogsValuesNorm". Dimensions: stations x time x analogs
-    VArray2DFloat m_AnalogsValuesGross; //!< Member variable "m_AnalogsValuesGross". Dimensions: stations x time x analogs
+    Array1DFloat m_targetDates; //!< Member variable "m_targetDates". Dimensions: time
+    VArray1DFloat m_targetValuesNorm; //!< Member variable "m_targetValuesNorm". Dimensions: stations x time
+    VArray1DFloat m_targetValuesGross; //!< Member variable "m_targetValuesGross". Dimensions: stations x time
+    Array2DFloat m_analogsCriteria; //!< Member variable "m_analogsCriteria". Dimensions: time x analogs
+    VArray2DFloat m_analogsValuesNorm; //!< Member variable "m_analogsValuesNorm". Dimensions: stations x time x analogs
+    VArray2DFloat m_analogsValuesGross; //!< Member variable "m_analogsValuesGross". Dimensions: stations x time x analogs
 };
 
 #endif // ASRESULTSANALOGSVALUES_H

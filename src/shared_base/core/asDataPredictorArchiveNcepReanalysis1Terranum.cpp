@@ -38,95 +38,94 @@ asDataPredictorArchiveNcepReanalysis1Terranum::asDataPredictorArchiveNcepReanaly
 asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
-    m_Initialized = false;
-    m_DataId = dataId;
-    m_DatasetId = "NCEP_Reanalysis_v1_terranum";
-    m_OriginalProvider = "NCEP/NCAR";
-    m_FinalProvider = "Terranum";
-    m_FinalProviderWebsite = "http://www.terranum.ch";
-    m_FinalProviderFTP = wxEmptyString;
-    m_DatasetName = "Reanalysis 1 subset from terranum";
-    m_OriginalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_OriginalProviderEnd = NaNDouble;
-    m_TimeZoneHours = 0;
-    m_TimeStepHours = 6;
-    m_FirstTimeStepHours = 0;
-    m_NanValues.push_back(32767);
-    m_NanValues.push_back(936*std::pow(10.f,34.f));
-    m_CoordinateSystem = WGS84;
-    m_XaxisShift = 0;
-    m_YaxisShift = 0;
-    m_XaxisStep = 2.5;
-    m_YaxisStep = 2.5;
-    m_SubFolder = wxEmptyString;
-    m_FileAxisLatName = "lat";
-    m_FileAxisLonName = "lon";
-    m_FileAxisTimeName = "time";
-    m_FileAxisLevelName = "level";
+    m_initialized = false;
+    m_dataId = dataId;
+    m_datasetId = "NCEP_Reanalysis_v1_terranum";
+    m_originalProvider = "NCEP/NCAR";
+    m_finalProvider = "Terranum";
+    m_finalProviderWebsite = "http://www.terranum.ch";
+    m_finalProviderFTP = wxEmptyString;
+    m_datasetName = "Reanalysis 1 subset from terranum";
+    m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
+    m_originalProviderEnd = NaNDouble;
+    m_timeZoneHours = 0;
+    m_timeStepHours = 6;
+    m_firstTimeStepHours = 0;
+    m_nanValues.push_back(32767);
+    m_nanValues.push_back(936*std::pow(10.f,34.f));
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
+    m_xAxisStep = 2.5;
+    m_yAxisStep = 2.5;
+    m_subFolder = wxEmptyString;
+    m_fileAxisLatName = "lat";
+    m_fileAxisLonName = "lon";
+    m_fileAxisTimeName = "time";
+    m_fileAxisLevelName = "level";
 
     // Identify data ID and set the corresponding properties.
-    if (m_DataId.IsSameAs("hgt", false))
+    if (m_dataId.IsSameAs("hgt", false))
     {
-        m_DataParameter = GeopotentialHeight;
-        m_FileNamePattern = "hgt.nc";
-        m_FileVariableName = "hgt";
-        m_Unit = m;
+        m_dataParameter = GeopotentialHeight;
+        m_fileNamePattern = "hgt.nc";
+        m_fileVariableName = "hgt";
+        m_unit = m;
     }
-    else if (m_DataId.IsSameAs("air", false))
+    else if (m_dataId.IsSameAs("air", false))
     {
-        m_DataParameter = AirTemperature;
-        m_FileNamePattern = "air.nc";
-        m_FileVariableName = "air";
-        m_Unit = degK;
+        m_dataParameter = AirTemperature;
+        m_fileNamePattern = "air.nc";
+        m_fileVariableName = "air";
+        m_unit = degK;
     }
-    else if (m_DataId.IsSameAs("omega", false))
+    else if (m_dataId.IsSameAs("omega", false))
     {
-        m_DataParameter = Omega;
-        m_FileNamePattern = "omega.nc";
-        m_FileVariableName = "omega";
-        m_Unit = PascalsPerSec;
+        m_dataParameter = Omega;
+        m_fileNamePattern = "omega.nc";
+        m_fileVariableName = "omega";
+        m_unit = PascalsPerSec;
     }
-    else if (m_DataId.IsSameAs("rhum", false))
+    else if (m_dataId.IsSameAs("rhum", false))
     {
-        m_DataParameter = RelativeHumidity;
-        m_FileNamePattern = "rhum.nc";
-        m_FileVariableName = "rhum";
-        m_Unit = percent;
+        m_dataParameter = RelativeHumidity;
+        m_fileNamePattern = "rhum.nc";
+        m_fileVariableName = "rhum";
+        m_unit = percent;
     }
-    else if (m_DataId.IsSameAs("shum", false))
+    else if (m_dataId.IsSameAs("shum", false))
     {
-        m_DataParameter = SpecificHumidity;
-        m_FileNamePattern = "shum.nc";
-        m_FileVariableName = "shum";
-        m_Unit = kgPerKg;
+        m_dataParameter = SpecificHumidity;
+        m_fileNamePattern = "shum.nc";
+        m_fileVariableName = "shum";
+        m_unit = kgPerKg;
     }
-    else if (m_DataId.IsSameAs("uwnd", false))
+    else if (m_dataId.IsSameAs("uwnd", false))
     {
-        m_DataParameter = Uwind;
-        m_FileNamePattern = "uwnd.nc";
-        m_FileVariableName = "uwnd";
-        m_Unit = mPerSec;
+        m_dataParameter = Uwind;
+        m_fileNamePattern = "uwnd.nc";
+        m_fileVariableName = "uwnd";
+        m_unit = mPerSec;
     }
-    else if (m_DataId.IsSameAs("vwnd", false))
+    else if (m_dataId.IsSameAs("vwnd", false))
     {
-        m_DataParameter = Vwind;
-        m_FileNamePattern = "vwnd.nc";
-        m_FileVariableName = "vwnd";
-        m_Unit = mPerSec;
+        m_dataParameter = Vwind;
+        m_fileNamePattern = "vwnd.nc";
+        m_fileVariableName = "vwnd";
+        m_unit = mPerSec;
     }
-    else if (m_DataId.IsSameAs("surf_prwtr", false))
+    else if (m_dataId.IsSameAs("surf_prwtr", false))
     {
-        m_DataParameter = PrecipitableWater;
-        m_FileNamePattern = "pr_wtr.nc";
-        m_FileVariableName = "pr_wtr";
-        m_Unit = mm;
+        m_dataParameter = PrecipitableWater;
+        m_fileNamePattern = "pr_wtr.nc";
+        m_fileVariableName = "pr_wtr";
+        m_unit = mm;
     }
     else
     {
-        m_DataParameter = NoDataParameter;
-        m_FileNamePattern = wxEmptyString;
-        m_FileVariableName = wxEmptyString;
-        m_Unit = NoDataUnit;
+        m_dataParameter = NoDataParameter;
+        m_fileNamePattern = wxEmptyString;
+        m_fileVariableName = wxEmptyString;
+        m_unit = NoDataUnit;
     }
 }
 
@@ -138,19 +137,19 @@ asDataPredictorArchiveNcepReanalysis1Terranum::~asDataPredictorArchiveNcepReanal
 bool asDataPredictorArchiveNcepReanalysis1Terranum::Init()
 {
     // Check data ID
-    if (m_FileNamePattern.IsEmpty() || m_FileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
-    if (m_DirectoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_directoryPath.IsEmpty()) {
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Set to initialized
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
@@ -190,7 +189,7 @@ VectorString asDataPredictorArchiveNcepReanalysis1Terranum::GetDataIdDescription
 bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // Build the file path
-    wxString fileFullPath = m_DirectoryPath + m_FileNamePattern;
+    wxString fileFullPath = m_directoryPath + m_fileNamePattern;
 
     // Open the NetCDF 
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -207,23 +206,23 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     wxASSERT(nDims<=4);
 
     // Get some attributes
-    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
+    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
     if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
-    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_FileVariableName);
+    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
     if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
     bool scalingNeeded = true;
     if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
     // Get full axes from the netcdf file
-    Array1DFloat axisDataLon(ncFile.GetVarLength(m_FileAxisLonName));
-    ncFile.GetVar(m_FileAxisLonName, &axisDataLon[0]);
-    Array1DFloat axisDataLat(ncFile.GetVarLength(m_FileAxisLatName));
-    ncFile.GetVar(m_FileAxisLatName, &axisDataLat[0]);
+    Array1DFloat axisDataLon(ncFile.GetVarLength(m_fileAxisLonName));
+    ncFile.GetVar(m_fileAxisLonName, &axisDataLon[0]);
+    Array1DFloat axisDataLat(ncFile.GetVarLength(m_fileAxisLatName));
+    ncFile.GetVar(m_fileAxisLatName, &axisDataLat[0]);
     Array1DFloat axisDataLevel;
     if (nDims==4)
     {
-        axisDataLevel.resize(ncFile.GetVarLength(m_FileAxisLevelName));
-        ncFile.GetVar(m_FileAxisLevelName, &axisDataLevel[0]);
+        axisDataLevel.resize(ncFile.GetVarLength(m_fileAxisLevelName));
+        ncFile.GetVar(m_fileAxisLevelName, &axisDataLevel[0]);
     }
 
     // Adjust axes if necessary
@@ -234,23 +233,23 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     }
         
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
-    size_t axisDataTimeLength = ncFile.GetVarLength(m_FileAxisTimeName);
-    double valFirstTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, 0);
+    size_t axisDataTimeLength = ncFile.GetVarLength(m_fileAxisTimeName);
+    double valFirstTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, 0);
     valFirstTime = (valFirstTime/24.0); // hours to days
     valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-    double valLastTime = ncFile.GetVarOneDouble(m_FileAxisTimeName, axisDataTimeLength-1);
+    double valLastTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, axisDataTimeLength-1);
     valLastTime = (valLastTime/24.0); // hours to days
     valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
 
     // Check requested time array
     if(timeArray.GetFirst()<valFirstTime)
     {
-        asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()).c_str(), asTime::GetStringTime(valFirstTime).c_str()));
+        asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()), asTime::GetStringTime(valFirstTime)));
         return false;
     }
     if(timeArray.GetLast()>valLastTime)
     {
-        asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()).c_str(), asTime::GetStringTime(valLastTime).c_str()));
+        asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()), asTime::GetStringTime(valLastTime)));
         return false;
     }
 
@@ -270,7 +269,7 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     int cutEnd = 0;
     while (valFirstTime<timeArray[timeArrayIndexStart])
     {
-        valFirstTime += m_TimeStepHours/24.0;
+        valFirstTime += m_timeStepHours/24.0;
         indexStartTime++;
     }
     if (indexStartTime+indexLengthTime>axisDataTimeLength)
@@ -284,7 +283,7 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     VectorInt vectIndexLengthLon;
     VVectorShort vectData;
 
-    for (int i_area = 0; i_area<compositeData.size(); i_area++)
+    for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
     {
         int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
         if (dataArea)
@@ -329,13 +328,13 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
         {
             indexStartLon = 0;
             indexStartLat = 0;
-            indexLengthLon = m_LonPtsnb;
-            indexLengthLat = m_LatPtsnb;
+            indexLengthLon = m_lonPtsnb;
+            indexLengthLat = m_latPtsnb;
         }
         int indexLevel = 0;
         if (nDims==4)
         {
-            indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_Level, 0.01f);
+            indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_level, 0.01f);
         }
 
         // Create the arrays to receive the data
@@ -391,13 +390,13 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
             indexCountData[2] = indexLengthLat;
             indexCountData[3] = indexLengthLon;
             ptrdiff_t indexStrideData[4] = {0,0,0,0};
-            indexStrideData[0] = m_TimeIndexStep;
+            indexStrideData[0] = m_timeIndexStep;
             indexStrideData[1] = 1;
-            indexStrideData[2] = m_LatIndexStep;
-            indexStrideData[3] = m_LonIndexStep;
+            indexStrideData[2] = m_latIndexStep;
+            indexStrideData[3] = m_lonIndexStep;
 
             // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
+            ncFile.GetVarSample(m_fileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
         }
         else
         {
@@ -411,12 +410,12 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
             indexCountData[1] = indexLengthLat;
             indexCountData[2] = indexLengthLon;
             ptrdiff_t indexStrideData[3] = {0,0,0};
-            indexStrideData[0] = m_TimeIndexStep;
-            indexStrideData[1] = m_LatIndexStep;
-            indexStrideData[2] = m_LonIndexStep;
+            indexStrideData[0] = m_timeIndexStep;
+            indexStrideData[1] = m_latIndexStep;
+            indexStrideData[2] = m_lonIndexStep;
 
             // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
+            ncFile.GetVarSample(m_fileVariableName, indexStartData, indexCountData, indexStrideData, &data[indexBegining]);
         }
 
         // Keep data for later treatment
@@ -433,17 +432,17 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
     if (compositeData[0].capacity()==0)
     {
         int totSize = 0;
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             int indexLengthLat = vectIndexLengthLat[i_area];
             int indexLengthLon = vectIndexLengthLon[i_area];
-            totSize += m_Time.size() * indexLengthLat * (indexLengthLon);
+            totSize += m_time.size() * indexLengthLat * (indexLengthLon);
         }
         compositeData.reserve(totSize);
     }
 
     // Transfer data
-    for (int i_area = 0; i_area<compositeData.size(); i_area++)
+    for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
     {
         // Extract data
         int indexLengthLat = vectIndexLengthLat[i_area];
@@ -472,9 +471,9 @@ bool asDataPredictorArchiveNcepReanalysis1Terranum::ExtractFromFiles(asGeoAreaCo
 
                     // Check if not NaN
                     bool notNan = true;
-                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
+                    for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
                     {
-                        if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
+                        if ((float)data[ind]==m_nanValues[i_nan] || latlonData(i_lat,i_lon)==m_nanValues[i_nan])
                         {
                             notNan = false;
                         }

@@ -40,8 +40,7 @@ namespace
 
 TEST(ProcessCRPSapproxRectangle)
 {
-	wxString str("Testing forecast scores...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing forecast scores...\n");
 	
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -83,7 +82,7 @@ TEST(ProcessCRPSapproxRectangle)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.00001);
+        float precision = wxMax(target/1000,(float)0.00001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -136,7 +135,7 @@ TEST(ProcessCRPSexactPrimitive)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/500,(float)0.00002);
+        float precision = wxMax(target/500,(float)0.00002);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -189,7 +188,7 @@ TEST(ProcessCRPSapproxRectangle1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.00002);
+        float precision = wxMax(target/1000,(float)0.00002);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -242,7 +241,7 @@ TEST(ProcessCRPSexactPrimitive1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.00005);
+        float precision = wxMax(target/100,(float)0.00005);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -295,7 +294,7 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.00002);
+        float precision = wxMax(target/1000,(float)0.00002);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -348,7 +347,7 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.0001);
+        float precision = wxMax(target/100,(float)0.0001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -402,7 +401,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -456,7 +455,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/500,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/500,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -510,7 +509,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/1000,(float)0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -564,7 +563,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/100,(float)0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -618,7 +617,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -672,7 +671,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target/100,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -726,7 +725,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0003);
+        float precision = wxMax(target/1000,(float)0.0003);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -780,7 +779,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/500,(float)0.0003);
+        float precision = wxMax(target/500,(float)0.0003);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -834,7 +833,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0001);
+        float precision = wxMax(target/1000,(float)0.0001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -888,7 +887,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.00005);
+        float precision = wxMax(target/100,(float)0.00005);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -942,7 +941,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/1000,(float)0.0005);
+        float precision = wxMax(target/1000,(float)0.0005);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -996,7 +995,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = max(target/100,(float)0.001);
+        float precision = wxMax(target/100,(float)0.001);
         CHECK_CLOSE(target, result, precision);
 
         // Go to header
@@ -1194,7 +1193,7 @@ TEST(ProcessPCwithConstantDistribution)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("PC");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.5f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1227,7 +1226,7 @@ TEST(ProcessPC)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("PC");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1260,7 +1259,7 @@ TEST(ProcessTS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("TS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1293,7 +1292,7 @@ TEST(ProcessBIAS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("BIAS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1326,7 +1325,7 @@ TEST(ProcessFARA)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("FARA");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1359,7 +1358,7 @@ TEST(ProcessH)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("H");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1392,7 +1391,7 @@ TEST(ProcessF)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("F");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1425,7 +1424,7 @@ TEST(ProcessHSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("HSS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1458,7 +1457,7 @@ TEST(ProcessPSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("PSS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1491,7 +1490,7 @@ TEST(ProcessGSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("GSS");
-    score->SetPercentile(0.5f);
+    score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1542,7 +1541,7 @@ TEST(ProcessMAE)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("MAE");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
@@ -1559,7 +1558,7 @@ TEST(ProcessMAE)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.311554, scoreVal, 0.000001);
+    CHECK_CLOSE(0.311834, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1592,7 +1591,7 @@ TEST(ProcessRMSE)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("RMSE");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
@@ -1609,7 +1608,7 @@ TEST(ProcessRMSE)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.358206612, scoreVal, 0.000001);
+    CHECK_CLOSE(0.358484, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1642,7 +1641,7 @@ TEST(ProcessBS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("BS");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
@@ -1660,7 +1659,7 @@ TEST(ProcessBS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.187428558, scoreVal, 0.000001);
+    CHECK_CLOSE(0.187771, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1693,7 +1692,7 @@ TEST(ProcessBSS)
 
     // Instantiate the score
     asForecastScore* score = asForecastScore::GetInstance("BSS");
-    score->SetPercentile(0.6f);
+    score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
     score->ProcessScoreClimatology(vecObs,vecObs);
@@ -1713,7 +1712,7 @@ TEST(ProcessBSS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.378581034, scoreVal, 0.00001);
+    CHECK_CLOSE(0.375521, scoreVal, 0.00001);
 
     wxDELETE(score);
     wxDELETE(finalScore);

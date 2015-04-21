@@ -56,7 +56,7 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteria(const Array1DFloa
     // Process ranges
     for (int i_day=0; i_day<analogsValues.rows(); i_day++)
     {
-        range = abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[i_day]);
+        range = std::abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[i_day]);
         sum += range;
         analogsWeight[i_day] = range;
     }
@@ -95,7 +95,7 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const Arr
     // Process ranges
     for (int i_day=0; i_day<analogsValues.rows(); i_day++)
     {
-        range = abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[i_day]);
+        range = std::abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[i_day]);
         sum1 += range;
         analogsWeight[i_day] = range;
     }

@@ -182,7 +182,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     }
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
+    VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
     // Create result object to save the final parameters sets
     asResultsParametersArray results_all;
@@ -198,7 +198,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology.clear();
+        m_scoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;
@@ -208,7 +208,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
@@ -236,18 +236,18 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
             if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, i_step)) return false;
 
             // Store the result
-            results_tested.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+            results_tested.Add(params,anaScoreFinal.GetForecastScore(), m_scoreValid);
             
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
         }
 
         // Validate
-        m_Parameters.push_back(params);
+        m_parameters.push_back(params);
         Validate();
 
         // Keep the best parameters set
-        results_all.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+        results_all.Add(params,anaScoreFinal.GetForecastScore(), m_scoreValid);
         if(!results_all.Print()) return false;
         if(!results_tested.Print()) return false;
     }

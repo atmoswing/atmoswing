@@ -44,8 +44,8 @@ asFile(FileName, FileMode)
             asThrowException(_("Grib2 files edition is not implemented."));
     }
 
-    m_PtorBand = NULL;
-    m_PtorDataset = NULL;
+    m_ptorBand = NULL;
+    m_ptorDataset = NULL;
 }
 
 asFileGrib2::~asFileGrib2()
@@ -60,20 +60,20 @@ bool asFileGrib2::Open()
     // Let GDAL open the dataset
     if(!GDALOpenDataset()) return false;
 
-    m_Opened = true;
+    m_opened = true;
 
     return true;
 }
 
 bool asFileGrib2::Close()
 {
-    // m_PtorBand : Applications should never destroy GDALRasterBands directly, instead destroy the GDALDataset.
+    // m_ptorBand : Applications should never destroy GDALRasterBands directly, instead destroy the GDALDataset.
 // FIXME (Pascal#1#): Why is the dataset pointer nul ??
-//    wxASSERT(m_PtorDataset);
-    if (m_PtorDataset!=NULL)
+//    wxASSERT(m_ptorDataset);
+    if (m_ptorDataset!=NULL)
     {
-        GDALClose(m_PtorDataset);
-        m_PtorDataset = NULL;
+        GDALClose(m_ptorDataset);
+        m_ptorDataset = NULL;
     }
     return true;
 }
@@ -84,11 +84,11 @@ bool asFileGrib2::GDALOpenDataset()
     GDALRegister_GRIB();
 
     // Filepath
-    wxString filePath = m_FileName.GetFullPath();
+    wxString filePath = m_fileName.GetFullPath();
 
     // Open file
-    m_PtorDataset = (GDALDataset *) GDALOpen( filePath.mb_str(), GA_ReadOnly );
-    if( m_PtorDataset == NULL ) // Failed
+    m_ptorDataset = (GDALDataset *) GDALOpen( filePath.mb_str(), GA_ReadOnly );
+    if( m_ptorDataset == NULL ) // Failed
     {
         asLogError(_("The opening of the grib file failed."));
         return false;
@@ -109,7 +109,7 @@ bool asFileGrib2::GDALOpenDataset()
 double asFileGrib2::GetXCellSize()
 {
     double adfGeoTransform[6];
-    if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
+    if( m_ptorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
         return adfGeoTransform[1];
     }
@@ -120,7 +120,7 @@ double asFileGrib2::GetXCellSize()
 double asFileGrib2::GetYCellSize()
 {
     double adfGeoTransform[6];
-    if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
+    if( m_ptorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
         return adfGeoTransform[5];
     }
@@ -131,7 +131,7 @@ double asFileGrib2::GetYCellSize()
 double asFileGrib2::GetXOrigin()
 {
     double adfGeoTransform[6];
-    if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
+    if( m_ptorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
         return adfGeoTransform[0]+GetXCellSize()/2.0;
     }
@@ -142,7 +142,7 @@ double asFileGrib2::GetXOrigin()
 double asFileGrib2::GetYOrigin()
 {
     double adfGeoTransform[6];
-    if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
+    if( m_ptorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
         double vOrigin = adfGeoTransform[3]+GetYCellSize()/2.0;
         while (vOrigin>90)
@@ -158,10 +158,10 @@ double asFileGrib2::GetYOrigin()
 
 double asFileGrib2::GetRotation()
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
     double adfGeoTransform[6];
-    if( m_PtorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
+    if( m_ptorDataset->GetGeoTransform( adfGeoTransform ) == CE_None )
     {
         wxASSERT(adfGeoTransform[2]==adfGeoTransform[4]);
         return adfGeoTransform[2];
@@ -172,9 +172,9 @@ double asFileGrib2::GetRotation()
 
 void asFileGrib2::SetBand( int i )
 {
-    if (i>=1 && i<=m_PtorDataset->GetRasterCount())
+    if (i>=1 && i<=m_ptorDataset->GetRasterCount())
     {
-        m_PtorBand = m_PtorDataset->GetRasterBand( i );
+        m_ptorBand = m_ptorDataset->GetRasterBand( i );
     }
     else
     {
@@ -184,15 +184,15 @@ void asFileGrib2::SetBand( int i )
 
 double asFileGrib2::GetBandEstimatedMax()
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
-    if (m_PtorBand)
+    if (m_ptorBand)
     {
         int bGotMax;
         double adfMinMax[2];
-        adfMinMax[1] = m_PtorBand->GetMaximum( &bGotMax );
+        adfMinMax[1] = m_ptorBand->GetMaximum( &bGotMax );
         if( !bGotMax )
-            GDALComputeRasterMinMax((GDALRasterBandH)m_PtorBand, TRUE, adfMinMax);
+            GDALComputeRasterMinMax((GDALRasterBandH)m_ptorBand, TRUE, adfMinMax);
 
         return adfMinMax[1];
     }
@@ -202,15 +202,15 @@ double asFileGrib2::GetBandEstimatedMax()
 
 double asFileGrib2::GetBandEstimatedMin()
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
-    if (m_PtorBand)
+    if (m_ptorBand)
     {
         int bGotMin;
         double adfMinMax[2];
-        adfMinMax[1] = m_PtorBand->GetMinimum( &bGotMin );
+        adfMinMax[1] = m_ptorBand->GetMinimum( &bGotMin );
         if( !bGotMin )
-            GDALComputeRasterMinMax((GDALRasterBandH)m_PtorBand, TRUE, adfMinMax);
+            GDALComputeRasterMinMax((GDALRasterBandH)m_ptorBand, TRUE, adfMinMax);
 
         return adfMinMax[0];
     }
@@ -220,9 +220,9 @@ double asFileGrib2::GetBandEstimatedMin()
 
 wxString asFileGrib2::GetBandDescription()
 {
-    wxASSERT(m_Opened);
-    wxASSERT(m_PtorBand);
-    const char *descr = m_PtorBand->GetDescription();
+    wxASSERT(m_opened);
+    wxASSERT(m_ptorBand);
+    const char *descr = m_ptorBand->GetDescription();
 
     if(descr)
     {
@@ -243,8 +243,8 @@ void asFileGrib2::ParseMetaData()
         VectorString vKeys;
         VectorString vValues;
 
-        wxASSERT(m_PtorBand);
-        char** meta = m_PtorBand->GetMetadata();
+        wxASSERT(m_ptorBand);
+        char** meta = m_ptorBand->GetMetadata();
 
         // Extract every meta entry for this band
         while(meta)
@@ -262,32 +262,32 @@ void asFileGrib2::ParseMetaData()
             meta++;
         }
 
-        m_MetaKeys.push_back(vKeys);
-        m_MetaValues.push_back(vValues);
+        m_metaKeys.push_back(vKeys);
+        m_metaValues.push_back(vValues);
     }
 
 }
 
 void asFileGrib2::ParseVarsLevels()
 {
-    m_BandsVars.resize(GetBandsNb());
-    m_BandsLevels.resize(GetBandsNb());
+    m_bandsVars.resize(GetBandsNb());
+    m_bandsLevels.resize(GetBandsNb());
 
     // Iterate over every band
     for (int i_band=0; i_band<GetBandsNb(); i_band++)
     {
-        m_BandsVars[i_band] = wxEmptyString;
-        m_BandsLevels[i_band] = NaNFloat;
+        m_bandsVars[i_band] = wxEmptyString;
+        m_bandsLevels[i_band] = NaNFloat;
 
-        for (unsigned int i_meta=0; i_meta<m_MetaKeys[i_band].size(); i_meta++)
+        for (unsigned int i_meta=0; i_meta<m_metaKeys[i_band].size(); i_meta++)
         {
-            if (m_MetaKeys[i_band][i_meta].IsSameAs("GRIB_ELEMENT"))
+            if (m_metaKeys[i_band][i_meta].IsSameAs("GRIB_ELEMENT"))
             {
-                m_BandsVars[i_band] = m_MetaValues[i_band][i_meta];
+                m_bandsVars[i_band] = m_metaValues[i_band][i_meta];
             }
-            else if (m_MetaKeys[i_band][i_meta].IsSameAs("GRIB_SHORT_NAME"))
+            else if (m_metaKeys[i_band][i_meta].IsSameAs("GRIB_SHORT_NAME"))
             {
-                wxString level = m_MetaValues[i_band][i_meta];
+                wxString level = m_metaValues[i_band][i_meta];
                 int tag = level.Find("-ISBL");
                 if(tag!=wxNOT_FOUND)
                 {
@@ -295,12 +295,12 @@ void asFileGrib2::ParseVarsLevels()
                     double val;
                     level.ToDouble(&val);
                     val = val/(float)100; // Pa to hPa
-                    m_BandsLevels[i_band] = (float)val;
+                    m_bandsLevels[i_band] = (float)val;
                 }
                 else
                 {
                     asLogMessage(_("There was no level information found in the grib file metadata."));
-                    m_BandsLevels[i_band] = 0;
+                    m_bandsLevels[i_band] = 0;
                 }
             }
         }
@@ -310,12 +310,12 @@ void asFileGrib2::ParseVarsLevels()
 
 int asFileGrib2::FindBand(const wxString &VarName, float Level)
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
     // Iterate over every band
     for (int i_band=0; i_band<GetBandsNb(); i_band++)
     {
-        if (m_BandsVars[i_band].IsSameAs(VarName) && m_BandsLevels[i_band]==Level)
+        if (m_bandsVars[i_band].IsSameAs(VarName) && m_bandsLevels[i_band]==Level)
         {
             return i_band+1;
         }
@@ -328,7 +328,7 @@ int asFileGrib2::FindBand(const wxString &VarName, float Level)
 
 bool asFileGrib2::GetXaxis(Array1DFloat &uaxis)
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
     // Origin is the corner of the cell --> we must correct (first point is first value)
     uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetXPtsnb(), GetXOrigin(), GetXOrigin()+float(GetXPtsnb()-1)*GetXCellSize());
@@ -338,7 +338,7 @@ bool asFileGrib2::GetXaxis(Array1DFloat &uaxis)
 
 bool asFileGrib2::GetYaxis(Array1DFloat &vaxis)
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
     // Origin is the corner of the cell --> we must correct (first point is first value)
     vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetYPtsnb(), GetYOrigin(), GetYOrigin()+float(GetYPtsnb()-1)*GetYCellSize());
@@ -348,11 +348,11 @@ bool asFileGrib2::GetYaxis(Array1DFloat &vaxis)
 
 bool asFileGrib2::GetVarArray(const wxString &VarName, const int IndexStart[], const int IndexCount[], float level, float* pValue)
 {
-    wxASSERT(m_Opened);
+    wxASSERT(m_opened);
 
     // Check that the metadata already exist
-    if (m_MetaKeys.size()==0) ParseMetaData();
-    if (m_BandsVars.size()==0)
+    if (m_metaKeys.size()==0) ParseMetaData();
+    if (m_bandsVars.size()==0)
     {
         asLogError("No variable was found in the grib2 file.");
         return false;
@@ -362,7 +362,7 @@ bool asFileGrib2::GetVarArray(const wxString &VarName, const int IndexStart[], c
     int bandNum = FindBand(VarName, level);
     if (bandNum==asNOT_FOUND)
     {
-        asLogError(wxString::Format(_("The given variable (%s) and level (%g) cannot be found in the grib2 file."), VarName.c_str(), level));
+        asLogError(wxString::Format(_("The given variable (%s) and level (%g) cannot be found in the grib2 file."), VarName, level));
         return false;
     }
     SetBand(bandNum);
@@ -372,8 +372,8 @@ bool asFileGrib2::GetVarArray(const wxString &VarName, const int IndexStart[], c
        CPLErr GDALRasterBand::RasterIO(  GDALRWFlag eRWFlag, int nXOff, int nYOff, int nXSize, int nYSize,
                                          void * pData, int nBufXSize, int nBufYSize, GDALDataType eBufType,
                                          int nPixelSpace, int nLineSpace )*/
-    wxASSERT(m_PtorBand);
-    CPLErr error = m_PtorBand->RasterIO( GF_Read, IndexStart[0], IndexStart[1], IndexCount[0], IndexCount[1],
+    wxASSERT(m_ptorBand);
+    CPLErr error = m_ptorBand->RasterIO( GF_Read, IndexStart[0], IndexStart[1], IndexCount[0], IndexCount[1],
                                          pValue, IndexCount[0], IndexCount[1], GDT_Float32,
                                          0, 0 );
 

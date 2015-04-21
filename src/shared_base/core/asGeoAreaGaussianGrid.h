@@ -50,7 +50,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Alternative constructor
      * \param coosys The coordinate system
@@ -63,7 +63,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaGaussianGrid(CoordSys coosys, double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Default destructor */
     virtual ~asGeoAreaGaussianGrid();
@@ -92,8 +92,8 @@ public:
 protected:
 
 private:
-    Array1DDouble m_FullAxisX;
-    Array1DDouble m_FullAxisY;
+    Array1DDouble m_fullAxisX;
+    Array1DDouble m_fullAxisY;
 
     bool IsOnGrid(const Coo &point);
     bool IsOnGrid(double Xcoord, double Ycoord);

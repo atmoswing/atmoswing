@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<atmoswing_file version="1.0">
-    <pattern id="Basic_daily" name="Basic daily file structure with tabs">
-        <structure_type>tabs_delimited</structure_type>
-        <header_lines>2</header_lines>
-        <parse_time>1</parse_time>
-        <time>
-            <year column="1"/>
-            <month column="2"/>
-            <day column="3"/>
-            <hour column="4"/>
-        </time>
-        <data>
-            <value column="5"/>
-        </data>
-    </pattern>
-</atmoswing_file>
+<atmoswing version="1.0">
+  <pattern id="Basic_daily" name="Basic daily file structure with tabs">
+    <structure_type>tabs_delimited</structure_type>
+    <header_lines>2</header_lines>
+    <parse_time>1</parse_time>
+    <time>
+      <year column="1"/>
+      <month column="2"/>
+      <day column="3"/>
+      <hour column="4"/>
+    </time>
+    <data>
+      <value column="5"/>
+    </data>
+  </pattern>
+</atmoswing>

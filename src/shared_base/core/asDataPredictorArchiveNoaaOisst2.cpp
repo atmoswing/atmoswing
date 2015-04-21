@@ -38,49 +38,48 @@ asDataPredictorArchiveNoaaOisst2::asDataPredictorArchiveNoaaOisst2(const wxStrin
 asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
-    m_Initialized = false;
-    m_DataId = dataId;
-    m_DatasetId = "NOAA_OISST_v2";
-    m_OriginalProvider = "NOAA";
-    m_FinalProvider = "NOAA";
-    m_FinalProviderWebsite = "http://www.esrl.noaa.gov/psd/data/gridded/data.noaa.oisst.v2.html";
-    m_FinalProviderFTP = "ftp://eclipse.ncdc.noaa.gov/pub/OI-daily-v2";
-    m_DatasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
-    m_OriginalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_OriginalProviderEnd = NaNDouble;
-    m_TimeZoneHours = 0;
-    m_TimeStepHours = 24;
-    m_FirstTimeStepHours = 12;
-    m_NanValues.push_back(32767);
-    m_NanValues.push_back(936*std::pow(10.f,34.f));
-    m_CoordinateSystem = WGS84;
-    m_XaxisShift = 0.125;
-    m_YaxisShift = 0.125;
-    m_XaxisStep = 0.25;
-    m_YaxisStep = 0.25;
-    m_SubFolder = wxEmptyString;
-    m_FileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
-    m_FileAxisLatName = "lat";
-    m_FileAxisLonName = "lon";
+    m_initialized = false;
+    m_dataId = dataId;
+    m_datasetId = "NOAA_OISST_v2";
+    m_originalProvider = "NOAA";
+    m_finalProvider = "NOAA";
+    m_finalProviderWebsite = "http://www.esrl.noaa.gov/psd/data/gridded/data.noaa.oisst.v2.html";
+    m_finalProviderFTP = "ftp://eclipse.ncdc.noaa.gov/pub/OI-daily-v2";
+    m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
+    m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
+    m_originalProviderEnd = NaNDouble;
+    m_timeZoneHours = 0;
+    m_timeStepHours = 24;
+    m_firstTimeStepHours = 12;
+    m_nanValues.push_back(32767);
+    m_nanValues.push_back(936*std::pow(10.f,34.f));
+    m_xAxisShift = 0.125;
+    m_yAxisShift = 0.125;
+    m_xAxisStep = 0.25;
+    m_yAxisStep = 0.25;
+    m_subFolder = wxEmptyString;
+    m_fileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
+    m_fileAxisLatName = "lat";
+    m_fileAxisLonName = "lon";
 
     // Identify data ID and set the corresponding properties.
-    if (m_DataId.IsSameAs("sst", false))
+    if (m_dataId.IsSameAs("sst", false))
     {
-        m_DataParameter = SeaSurfaceTemperature;
-        m_FileVariableName = "sst";
-        m_Unit = degC;
+        m_dataParameter = SeaSurfaceTemperature;
+        m_fileVariableName = "sst";
+        m_unit = degC;
     }
-    else if (m_DataId.IsSameAs("sst_anom", false))
+    else if (m_dataId.IsSameAs("sst_anom", false))
     {
-        m_DataParameter = SeaSurfaceTemperatureAnomaly;
-        m_FileVariableName = "anom";
-        m_Unit = degC;
+        m_dataParameter = SeaSurfaceTemperatureAnomaly;
+        m_fileVariableName = "anom";
+        m_unit = degC;
     }
     else
     {
-        m_DataParameter = NoDataParameter;
-        m_FileVariableName = wxEmptyString;
-        m_Unit = NoDataUnit;
+        m_dataParameter = NoDataParameter;
+        m_fileVariableName = wxEmptyString;
+        m_unit = NoDataUnit;
     }
 
 }
@@ -93,19 +92,19 @@ asDataPredictorArchiveNoaaOisst2::~asDataPredictorArchiveNoaaOisst2()
 bool asDataPredictorArchiveNoaaOisst2::Init()
 {
     // Check data ID
-    if (m_FileNamePattern.IsEmpty() || m_FileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
-    if (m_DirectoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_directoryPath.IsEmpty()) {
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Set to initialized
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }
@@ -144,12 +143,12 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
     for (double date=dateFirst; date<=dateLast; date++)
     {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
-        wxString fileName = wxString::Format(m_FileNamePattern, asTime::GetYear(date), asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date));
-        wxString fileFullPath = m_DirectoryPath + fileName;
+        wxString fileName = wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date), asTime::GetMonth(date), asTime::GetDay(date));
+        wxString fileFullPath = m_directoryPath + fileName;
 
         #if wxUSE_GUI
             // Update the progress bar
-            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), fileName.c_str());
+            wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"), fileName);
             if(!progressBar.Update(date-dateFirst, fileNameMessage))
             {
                 asLogWarning(_("The process has been canceled by the user."));
@@ -167,18 +166,18 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         }
 
         // Get some attributes
-        float dataAddOffset = ncFile.GetAttFloat("add_offset", m_FileVariableName);
+        float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
         if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
-        float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_FileVariableName);
+        float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
         if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
         bool scalingNeeded = true;
         if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
 
         // Get full axes from the netcdf file
-        Array1DFloat axisDataLon(ncFile.GetVarLength(m_FileAxisLonName));
-        ncFile.GetVar(m_FileAxisLonName, &axisDataLon[0]);
-        Array1DFloat axisDataLat(ncFile.GetVarLength(m_FileAxisLatName));
-        ncFile.GetVar(m_FileAxisLatName, &axisDataLat[0]);
+        Array1DFloat axisDataLon(ncFile.GetVarLength(m_fileAxisLonName));
+        ncFile.GetVar(m_fileAxisLonName, &axisDataLon[0]);
+        Array1DFloat axisDataLat(ncFile.GetVarLength(m_fileAxisLatName));
+        ncFile.GetVar(m_fileAxisLatName, &axisDataLat[0]);
         
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
@@ -190,7 +189,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         VVectorShort vectData;
         VVectorShort vectData360;
 
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             // Check if necessary to load the data of lon=360 (so lon=0)
             bool load360 = false;
@@ -212,7 +211,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
                 {
                     // Correction if the lon 360 degrees is required (doesn't exist)
                     load360 = true;
-                    for (int i_check = 0; i_check<compositeData.size(); i_check++)
+                    for (int i_check = 0; i_check<(int)compositeData.size(); i_check++)
                     {
                         // If so, already loaded in another composite
                         if(dataArea->GetComposite(i_check).GetXmin() == 0)
@@ -252,8 +251,8 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
             {
                 indexStartLon = 0;
                 indexStartLat = 0;
-                indexLengthLon = m_LonPtsnb;
-                indexLengthLat = m_LatPtsnb;
+                indexLengthLon = m_lonPtsnb;
+                indexLengthLat = m_latPtsnb;
             }
 
             // Create the arrays to receive the data
@@ -274,11 +273,11 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
             indexStartData[1] = indexStartLon;
             indexCountData[0] = indexLengthLat;
             indexCountData[1] = indexLengthLon;
-            indexStrideData[0] = m_LatIndexStep;
-            indexStrideData[1] = m_LonIndexStep;
+            indexStrideData[0] = m_latIndexStep;
+            indexStrideData[1] = m_lonIndexStep;
 
             // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-            ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data[0]);
+            ncFile.GetVarSample(m_fileVariableName, indexStartData, indexCountData, indexStrideData, &data[0]);
 
             // Load data at lon = 360 degrees
             if(load360)
@@ -300,7 +299,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
                 indexStrideData[1] = 1;
 
                 // Load data at 0 degrees (corresponds to 360 degrees)
-                ncFile.GetVarSample(m_FileVariableName, indexStartData, indexCountData, indexStrideData, &data360[0]);
+                ncFile.GetVarSample(m_fileVariableName, indexStartData, indexCountData, indexStrideData, &data360[0]);
             }
 
             // Keep data for later treatment
@@ -319,17 +318,17 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         if (compositeData[0].capacity()==0)
         {
             int totSize = 0;
-            for (int i_area = 0; i_area<compositeData.size(); i_area++)
+            for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
             {
                 int indexLengthLat = vectIndexLengthLat[i_area];
                 int indexLengthLon = vectIndexLengthLon[i_area];
-                totSize += m_Time.size() * indexLengthLat * (indexLengthLon+1); // +1 in case of a border
+                totSize += m_time.size() * indexLengthLat * (indexLengthLon+1); // +1 in case of a border
             }
             compositeData.reserve(totSize);
         }
 
         // Transfer data
-        for (int i_area = 0; i_area<compositeData.size(); i_area++)
+        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
             // Extract data
             int indexLengthLat = vectIndexLengthLat[i_area];
@@ -367,9 +366,9 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
 
                     // Check if not NaN
                     bool notNan = true;
-                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
+                    for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
                     {
-                        if ((float)data[ind]==m_NanValues[i_nan] || latlonData(i_lat,i_lon)==m_NanValues[i_nan])
+                        if ((float)data[ind]==m_nanValues[i_nan] || latlonData(i_lat,i_lon)==m_nanValues[i_nan])
                         {
                             notNan = false;
                         }
@@ -395,9 +394,9 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
 
                     // Check if not NaN
                     bool notNan = true;
-                    for (size_t i_nan=0; i_nan<m_NanValues.size(); i_nan++)
+                    for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
                     {
-                        if ((float)data360[ind]==m_NanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_NanValues[i_nan])
+                        if ((float)data360[ind]==m_nanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_nanValues[i_nan])
                         {
                             notNan = false;
                         }

@@ -24,12 +24,11 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/toolbar.h>
-#include <wx/frame.h>
 #include <wx/statbmp.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <wx/notebook.h>
+#include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -42,11 +41,11 @@ class asDialogFilePickerVirtual : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_StaticTextDescription;
-		wxFilePickerCtrl* m_FilePicker;
-		wxStdDialogButtonSizer* m_ButtonsConfirmation;
-		wxButton* m_ButtonsConfirmationOK;
-		wxButton* m_ButtonsConfirmationCancel;
+		wxStaticText* m_staticTextDescription;
+		wxFilePickerCtrl* m_filePicker;
+		wxStdDialogButtonSizer* m_buttonsConfirmation;
+		wxButton* m_buttonsConfirmationOK;
+		wxButton* m_buttonsConfirmationCancel;
 	
 	public:
 		
@@ -63,35 +62,16 @@ class asDialogFileSaverVirtual : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_StaticTextDescription;
-		wxFilePickerCtrl* m_FilePicker;
-		wxStdDialogButtonSizer* m_ButtonsConfirmation;
-		wxButton* m_ButtonsConfirmationSave;
-		wxButton* m_ButtonsConfirmationCancel;
+		wxStaticText* m_staticTextDescription;
+		wxFilePickerCtrl* m_filePicker;
+		wxStdDialogButtonSizer* m_buttonsConfirmation;
+		wxButton* m_buttonsConfirmationSave;
+		wxButton* m_buttonsConfirmationCancel;
 	
 	public:
 		
 		asDialogFileSaverVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Save to a file"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 374,130 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~asDialogFileSaverVirtual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameXmlEditorVirtual
-///////////////////////////////////////////////////////////////////////////////
-class asFrameXmlEditorVirtual : public wxFrame 
-{
-	private:
-	
-	protected:
-		wxToolBar* m_ToolBar;
-		wxToolBarToolBase* m_ToolSave; 
-	
-	public:
-		
-		asFrameXmlEditorVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Xml Editor"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 532,423 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
-		~asFrameXmlEditorVirtual();
 	
 };
 
@@ -104,24 +84,22 @@ class asFrameAboutVirtual : public wxFrame
 	
 	protected:
 		wxPanel* m_Panel;
-		wxStaticBitmap* m_Logo;
-		wxStaticText* m_StaticTextVersion;
-		wxStaticText* m_StaticTextChangeset;
-		wxNotebook* m_Notebook;
-		wxPanel* m_PanelCredits;
-		wxStaticText* m_StaticTextDevelopers;
-		wxStaticText* m_StaticTextDevelopersList;
-		wxStaticText* m_StaticTextSupervision;
-		wxStaticText* m_StaticTextSupervisionList;
-		wxStaticText* m_StaticTextThanks;
-		wxStaticText* m_StaticTextThanksList;
-		wxStaticText* m_StaticTextOtherCredits;
-		wxStaticText* m_StaticTextOtherCreditsList;
+		wxStaticBitmap* m_logo;
+		wxStaticText* m_staticTextVersion;
+		wxStaticText* m_staticTextChangeset;
+		wxNotebook* m_notebook;
+		wxPanel* m_panelCredits;
+		wxStaticText* m_staticTextDevelopers;
+		wxStaticText* m_staticTextDevelopersList;
+		wxStaticText* m_staticTextSupervision;
+		wxStaticText* m_staticTextSupervisionList;
+		wxStaticText* m_staticTextThanks;
+		wxStaticText* m_staticTextThanksList;
 		wxStaticText* m_staticTextSpacer;
-		wxPanel* m_PanelLicense;
-		wxTextCtrl* m_TextCtrlLicense;
-		wxPanel* m_PanelLibraries;
-		wxTextCtrl* m_TextCtrlLibraries;
+		wxPanel* m_panelLicense;
+		wxTextCtrl* m_textCtrlLicense;
+		wxPanel* m_panelLibraries;
+		wxTextCtrl* m_textCtrlLibraries;
 	
 	public:
 		

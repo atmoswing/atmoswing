@@ -37,8 +37,7 @@ namespace
 
 TEST(ParametersLoadFromFile)
 {
-	wxString str("Testing base parameters...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing base parameters...\n");
 
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_read.xml");
@@ -94,8 +93,7 @@ TEST(ParametersLoadFromFile)
 
 TEST(ParametersLoadFromFileMultipleIds)
 {
-	wxString str("Testing parameters with multiple station ids...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing parameters with multiple station ids...\n");
 
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_multiple_station_ids.xml");
@@ -105,7 +103,7 @@ TEST(ParametersLoadFromFileMultipleIds)
 
     VectorInt stations = params.GetPredictandStationIds();
 
-    CHECK_EQUAL(5, stations.size());
+    CHECK_EQUAL(5, (int)stations.size());
     CHECK_EQUAL(40, stations[0]);
     CHECK_EQUAL(41, stations[1]);
     CHECK_EQUAL(42, stations[2]);

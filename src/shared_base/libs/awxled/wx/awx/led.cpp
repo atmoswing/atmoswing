@@ -8,7 +8,8 @@
 
 #include <wx/wxprec.h>
 #include "led.h"
-#include "img_bullets.h"
+#include "images.h"
+#include "asIncludes.h"
 
 BEGIN_EVENT_TABLE(awxLed, wxWindow)
     EVT_ERASE_BACKGROUND(awxLed::OnErase)
@@ -25,7 +26,7 @@ awxLed::awxLed(wxWindow* parent,
             int timerInterval )
 :
 wxWindow(parent,id,pos,size,wxNO_FULL_REPAINT_ON_RESIZE | style ),
-m_bitmap(new wxBitmap(16,16)),
+m_bitmap(new wxBitmap(16 * g_ppiScaleDc, 16 * g_ppiScaleDc)),
 m_state( awxLED_OFF ),
 m_blink(0),
 m_x(0),
@@ -33,13 +34,12 @@ m_y(0),
 m_timerInterval(timerInterval),
 m_on(false)
 {
-    initialize_images_bullets();
-
+	int imgSize = 16 * g_ppiScaleDc;
     m_timer = new BlinkTimer(this);
-    m_icons[awxLED_OFF] = img_bullet_white;
-    m_icons[awxLED_ON] = img_bullet_white;
-    SetInitialSize( wxSize( 16, 16 ) );
-    SetMinSize( wxSize( 16, 16 ) );
+    m_icons[awxLED_OFF] = *_img_bullet_white;
+    m_icons[awxLED_ON] = *_img_bullet_white;
+	SetInitialSize(wxSize(imgSize, imgSize));
+	SetMinSize(wxSize(imgSize, imgSize));
     SetColour(color);
 };
 
@@ -86,16 +86,16 @@ void awxLed::SetColour(awxLedColour colour)
     //if(m_icons[awxLED_ON]) delete m_icons[awxLED_ON];
     switch(colour) {
     case awxLED_LUCID:
-        m_icons[awxLED_ON] = img_bullet_white;
+        m_icons[awxLED_ON] = *_img_bullet_white;
         break;
     case awxLED_GREEN:
-       m_icons[awxLED_ON] = img_bullet_green;
+       m_icons[awxLED_ON] = *_img_bullet_green;
        break;
     case awxLED_YELLOW:
-       m_icons[awxLED_ON] = img_bullet_yellow;
+       m_icons[awxLED_ON] = *_img_bullet_yellow;
        break;
     default:
-       m_icons[awxLED_ON] = img_bullet_error;
+       m_icons[awxLED_ON] = *_img_bullet_red;
     }
 };
 

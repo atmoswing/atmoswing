@@ -74,78 +74,88 @@ public:
 
     void InitValues();
 
+    wxString GetPredictandDatabase()
+    {
+        return m_predictandDatabase;
+    }
+
+    void SetPredictandDatabase(wxString val)
+    {
+        m_predictandDatabase = val;
+    }
+
     int GetLeadTimeNb()
     {
-        return m_LeadTimeDaysVect.size();
+        return m_leadTimeDaysVect.size();
     }
 
     bool SetLeadTimeDaysVector(VectorInt val);
 
     VectorInt GetLeadTimeDaysVector()
     {
-        return m_LeadTimeDaysVect;
+        return m_leadTimeDaysVect;
     }
 
     int GetLeadTimeDays(int i_leadtime)
     {
-        return m_LeadTimeDaysVect[i_leadtime];
+        return m_leadTimeDaysVect[i_leadtime];
     }
 
     int GetLeadTimeHours(int i_leadtime)
     {
-        return m_LeadTimeDaysVect[i_leadtime]*24.0;
+        return m_leadTimeDaysVect[i_leadtime]*24.0;
     }
 
     bool SetAnalogsNumberLeadTimeVector(int i_step, VectorInt val);
 
     VectorInt GetAnalogsNumberLeadTimeVector(int i_step)
     {
-        return m_StepsForecast[i_step].AnalogsNumberLeadTime;
+        return m_stepsForecast[i_step].AnalogsNumberLeadTime;
     }
 
     int GetAnalogsNumberLeadTime(int i_step, int i_leadtime)
     {
-        wxASSERT(m_StepsForecast[i_step].AnalogsNumberLeadTime.size()>i_leadtime);
-        return m_StepsForecast[i_step].AnalogsNumberLeadTime[i_leadtime];
+        wxASSERT((int)m_stepsForecast[i_step].AnalogsNumberLeadTime.size()>i_leadtime);
+        return m_stepsForecast[i_step].AnalogsNumberLeadTime[i_leadtime];
     }
 
     int GetAnalogsNumberLeadTimeLastStep(int i_leadtime)
     {
-        wxASSERT(m_StepsForecast[m_StepsForecast.size()-1].AnalogsNumberLeadTime.size()>i_leadtime);
-        return m_StepsForecast[m_StepsForecast.size()-1].AnalogsNumberLeadTime[i_leadtime];
+        wxASSERT((int)m_stepsForecast[m_stepsForecast.size()-1].AnalogsNumberLeadTime.size()>i_leadtime);
+        return m_stepsForecast[m_stepsForecast.size()-1].AnalogsNumberLeadTime[i_leadtime];
     }
 
     wxString GetPredictorArchiveDatasetId(int i_step, int i_predictor)
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId;
+        return m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId;
     }
 
     bool SetPredictorArchiveDatasetId(int i_step, int i_predictor, const wxString& val);
 
     wxString GetPredictorArchiveDataId(int i_step, int i_predictor)
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].ArchiveDataId;
+        return m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDataId;
     }
 
     bool SetPredictorArchiveDataId(int i_step, int i_predictor, const wxString& val);
 
     wxString GetPredictorRealtimeDatasetId(int i_step, int i_predictor)
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId;
+        return m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId;
     }
 
     bool SetPredictorRealtimeDatasetId(int i_step, int i_predictor, const wxString& val);
 
     wxString GetPredictorRealtimeDataId(int i_step, int i_predictor)
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].RealtimeDataId;
+        return m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDataId;
     }
 
     bool SetPredictorRealtimeDataId(int i_step, int i_predictor, const wxString& val);
 
     int GetPreprocessSize(int i_step, int i_predictor)
     {
-        return m_StepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size();
+        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size();
     }
 
     wxString GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset);
@@ -168,8 +178,9 @@ public:
 protected:
 
 private:
-    VectorInt m_LeadTimeDaysVect;
-    VectorParamsStepForecast m_StepsForecast;
+    VectorInt m_leadTimeDaysVect;
+    VectorParamsStepForecast m_stepsForecast;
+    wxString m_predictandDatabase;
 };
 
 #endif // ASPARAMETERSFORECAST_H

@@ -47,7 +47,7 @@ void asParametersCalibration::AddStep()
     asParameters::AddStep();
     ParamsStepVect stepVect;
     stepVect.AnalogsNumber.push_back(0);
-    m_StepsVect.push_back(stepVect);
+    m_stepsVect.push_back(stepVect);
 }
 
 bool asParametersCalibration::LoadFromFile(const wxString &filePath)
@@ -69,8 +69,28 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
 
+        // Description
+        if (nodeProcess->GetName() == "description") {
+            wxXmlNode *nodeParam = nodeProcess->GetChildren();
+            while (nodeParam) {
+                if (nodeParam->GetName() == "method_id") {
+                    SetMethodId(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "method_id_display") {
+                    SetMethodIdDisplay(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag") {
+                    SetSpecificTag(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "specific_tag_display") {
+                    SetSpecificTagDisplay(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "description") {
+                    SetDescription(fileParams.GetString(nodeParam));
+                } else {
+                    fileParams.UnknownNode(nodeParam);
+                }
+                nodeParam = nodeParam->GetNext();
+            }
+
         // Time properties
-        if (nodeProcess->GetName() == "time_properties") {
+        } else if (nodeProcess->GetName() == "time_properties") {
             wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
             while (nodeParamBlock) {
                 if (nodeParamBlock->GetName() == "archive_period") {
@@ -164,7 +184,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     if(!SetAnalogsNumberVector(i_step, fileParams.GetVectorInt(nodeParamBlock))) return false;
                 } else if (nodeParamBlock->GetName() == "predictor") {
                     AddPredictor(i_step);
-                    AddPredictorVect(m_StepsVect[i_step]);
+                    AddPredictorVect(m_stepsVect[i_step]);
                     SetPreprocess(i_step, i_ptor, false);
                     SetPreload(i_step, i_ptor, false);
                     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -258,7 +278,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
                     while (nodeParam) {
                         if (nodeParam->GetName() == "station_id") {
-                            if(!SetPredictandStationsIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
+                            if(!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
                         } else {
                             fileParams.UnknownNode(nodeParam);
                         }
@@ -278,8 +298,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
                     if(!SetForecastScoreNameVector(fileParams.GetVectorString(nodeParamBlock))) return false;
                 } else if (nodeParamBlock->GetName() == "threshold") {
                     SetForecastScoreThreshold(fileParams.GetFloat(nodeParamBlock));
-                } else if (nodeParamBlock->GetName() == "percentile") {
-                    SetForecastScorePercentile(fileParams.GetFloat(nodeParamBlock));
+                } else if (nodeParamBlock->GetName() == "quantile") {
+                    SetForecastScoreQuantile(fileParams.GetFloat(nodeParamBlock));
                 } else if (nodeParamBlock->GetName() == "postprocessing") {
                     asLogError(_("The postptocessing is not yet fully implemented."));
                 } else {
@@ -334,11 +354,11 @@ bool asParametersCalibration::SetSpatialWindowProperties()
     {
         for(int i_ptor=0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
         {
-            double Xshift = fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
+            double Xshift = std::fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
             if (Xshift<0) Xshift += GetPredictorXstep(i_step, i_ptor);
             if(!SetPredictorXshift(i_step, i_ptor, Xshift)) return false;
 
-            double Yshift = fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
+            double Yshift = std::fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
             if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
             if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
             VectorInt uptsnbs = GetPredictorXptsnbVector(i_step, i_ptor);
@@ -364,9 +384,9 @@ bool asParametersCalibration::SetPreloadingProperties()
             {
                 if(!SetPreloadXmin(i_step, i_ptor, GetPredictorXminVector(i_step, i_ptor)[0])) return false;
                 if(!SetPreloadYmin(i_step, i_ptor, GetPredictorYminVector(i_step, i_ptor)[0])) return false;
-                int Xbaseptsnb = abs(GetPredictorXminVector(i_step, i_ptor)[0]-GetPredictorXminVector(i_step, i_ptor)[GetPredictorXminVector(i_step, i_ptor).size()-1])/GetPredictorXstep(i_step, i_ptor);
+                int Xbaseptsnb = std::abs(GetPredictorXminVector(i_step, i_ptor)[0]-GetPredictorXminVector(i_step, i_ptor)[GetPredictorXminVector(i_step, i_ptor).size()-1])/GetPredictorXstep(i_step, i_ptor);
                 if(!SetPreloadXptsnb(i_step, i_ptor, Xbaseptsnb+GetPredictorXptsnbVector(i_step, i_ptor)[GetPredictorXptsnbVector(i_step, i_ptor).size()-1])) return false;
-                int Ybaseptsnb = abs(GetPredictorYminVector(i_step, i_ptor)[0]-GetPredictorYminVector(i_step, i_ptor)[GetPredictorYminVector(i_step, i_ptor).size()-1])/GetPredictorYstep(i_step, i_ptor);
+                int Ybaseptsnb = std::abs(GetPredictorYminVector(i_step, i_ptor)[0]-GetPredictorYminVector(i_step, i_ptor)[GetPredictorYminVector(i_step, i_ptor).size()-1])/GetPredictorYstep(i_step, i_ptor);
                 if(!SetPreloadYptsnb(i_step, i_ptor, Ybaseptsnb+GetPredictorYptsnbVector(i_step, i_ptor)[GetPredictorYptsnbVector(i_step, i_ptor).size()-1])) return false;
             }
 
@@ -458,7 +478,7 @@ bool asParametersCalibration::SetPreloadingProperties()
                 }
                 else
                 {
-                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method.c_str()));
+                    asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method));
 
                     for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
                     {
@@ -508,7 +528,7 @@ bool asParametersCalibration::InputsOK()
     }
 
     if(GetValidationYearsVector().size()<=0) {
-        asLogWarning(_("The validation period was not provided in the parameters file (it can be on purpose)."));
+        asLogMessage(_("The validation period was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
 
@@ -631,7 +651,7 @@ bool asParametersCalibration::InputsOK()
     }
 
     // Analog values
-    if(GetPredictandStationsIdsVector().size()==0) {
+    if(GetPredictandStationIdsVector().size()==0) {
         asLogWarning(_("The station ID was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
@@ -676,67 +696,67 @@ bool asParametersCalibration::FixTimeLimits()
         }
     }
 
-    m_TimeMinHours = minHour;
-    m_TimeMaxHours = maxHour;
+    m_timeMinHours = minHour;
+    m_timeMaxHours = maxHour;
 
     return true;
 }
 
 void asParametersCalibration::InitValues()
 {
-    wxASSERT(m_PredictandStationsIdsVect.size()>0);
-    wxASSERT(m_TimeArrayAnalogsIntervalDaysVect.size()>0);
-    wxASSERT(m_ForecastScoreVect.Name.size()>0);
-    wxASSERT(m_ForecastScoreVect.TimeArrayMode.size()>0);
-    //wxASSERT(m_ForecastScoreVect.TimeArrayDate.size()>0);
-    //wxASSERT(m_ForecastScoreVect.TimeArrayIntervalDays.size()>0);
-    //wxASSERT(m_ForecastScoreVect.PostprocessDupliExp.size()>0);
+    wxASSERT(m_predictandStationIdsVect.size()>0);
+    wxASSERT(m_timeArrayAnalogsIntervalDaysVect.size()>0);
+    wxASSERT(m_forecastScoreVect.Name.size()>0);
+    wxASSERT(m_forecastScoreVect.TimeArrayMode.size()>0);
+    //wxASSERT(m_forecastScoreVect.TimeArrayDate.size()>0);
+    //wxASSERT(m_forecastScoreVect.TimeArrayIntervalDays.size()>0);
+    //wxASSERT(m_forecastScoreVect.PostprocessDupliExp.size()>0);
 
     // Initialize the parameters values with the first values of the vectors
-    m_PredictandStationIds = m_PredictandStationsIdsVect[0];
-    m_TimeArrayAnalogsIntervalDays = m_TimeArrayAnalogsIntervalDaysVect[0];
-    SetForecastScoreName(m_ForecastScoreVect.Name[0]);
-    SetForecastScoreTimeArrayMode(m_ForecastScoreVect.TimeArrayMode[0]);
-    //SetForecastScoreTimeArrayDate(m_ForecastScoreVect.TimeArrayDate[0]);
-    //SetForecastScoreTimeArrayIntervalDays(m_ForecastScoreVect.TimeArrayIntervalDays[0]);
-    //SetForecastScorePostprocessDupliExp(m_ForecastScoreVect.PostprocessDupliExp[0]);
+    m_predictandStationIds = m_predictandStationIdsVect[0];
+    m_timeArrayAnalogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
+    SetForecastScoreName(m_forecastScoreVect.Name[0]);
+    SetForecastScoreTimeArrayMode(m_forecastScoreVect.TimeArrayMode[0]);
+    //SetForecastScoreTimeArrayDate(m_forecastScoreVect.TimeArrayDate[0]);
+    //SetForecastScoreTimeArrayIntervalDays(m_forecastScoreVect.TimeArrayIntervalDays[0]);
+    //SetForecastScorePostprocessDupliExp(m_forecastScoreVect.PostprocessDupliExp[0]);
 
     for (int i=0; i<GetStepsNb(); i++)
     {
-        SetAnalogsNumber(i, m_StepsVect[i].AnalogsNumber[0]);
+        SetAnalogsNumber(i, m_stepsVect[i].AnalogsNumber[0]);
 
         for (int j=0; j<GetPredictorsNb(i); j++)
         {
             if (NeedsPreprocessing(i,j))
             {
-                int subDataNb = m_StepsVect[i].Predictors[j].PreprocessDataId.size();
+                int subDataNb = m_stepsVect[i].Predictors[j].PreprocessDataId.size();
                 wxASSERT(subDataNb>0);
                 for (int k=0; k<subDataNb; k++)
                 {
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessDataId.size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessDataId[k].size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessLevels.size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessLevels[k].size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessTimeHours.size()>0);
-                    wxASSERT(m_StepsVect[i].Predictors[j].PreprocessTimeHours[k].size()>0);
-                    SetPreprocessDataId(i,j,k, m_StepsVect[i].Predictors[j].PreprocessDataId[k][0]);
-                    SetPreprocessLevel(i,j,k, m_StepsVect[i].Predictors[j].PreprocessLevels[k][0]);
-                    SetPreprocessTimeHours(i,j,k, m_StepsVect[i].Predictors[j].PreprocessTimeHours[k][0]);
+                    wxASSERT(m_stepsVect[i].Predictors[j].PreprocessDataId.size()>0);
+                    wxASSERT(m_stepsVect[i].Predictors[j].PreprocessDataId[k].size()>0);
+                    wxASSERT(m_stepsVect[i].Predictors[j].PreprocessLevels.size()>0);
+                    wxASSERT(m_stepsVect[i].Predictors[j].PreprocessLevels[k].size()>0);
+                    wxASSERT(m_stepsVect[i].Predictors[j].PreprocessTimeHours.size()>0);
+                    wxASSERT(m_stepsVect[i].Predictors[j].PreprocessTimeHours[k].size()>0);
+                    SetPreprocessDataId(i,j,k, m_stepsVect[i].Predictors[j].PreprocessDataId[k][0]);
+                    SetPreprocessLevel(i,j,k, m_stepsVect[i].Predictors[j].PreprocessLevels[k][0]);
+                    SetPreprocessTimeHours(i,j,k, m_stepsVect[i].Predictors[j].PreprocessTimeHours[k][0]);
                 }
             }
             else
             {
-                SetPredictorDataId(i,j, m_StepsVect[i].Predictors[j].DataId[0]);
-                SetPredictorLevel(i,j, m_StepsVect[i].Predictors[j].Level[0]);
-                SetPredictorTimeHours(i,j, m_StepsVect[i].Predictors[j].TimeHours[0]);
+                SetPredictorDataId(i,j, m_stepsVect[i].Predictors[j].DataId[0]);
+                SetPredictorLevel(i,j, m_stepsVect[i].Predictors[j].Level[0]);
+                SetPredictorTimeHours(i,j, m_stepsVect[i].Predictors[j].TimeHours[0]);
             }
 
-            SetPredictorXmin(i,j, m_StepsVect[i].Predictors[j].Xmin[0]);
-            SetPredictorXptsnb(i,j, m_StepsVect[i].Predictors[j].Xptsnb[0]);
-            SetPredictorYmin(i,j, m_StepsVect[i].Predictors[j].Ymin[0]);
-            SetPredictorYptsnb(i,j, m_StepsVect[i].Predictors[j].Yptsnb[0]);
-            SetPredictorCriteria(i,j, m_StepsVect[i].Predictors[j].Criteria[0]);
-            SetPredictorWeight(i,j, m_StepsVect[i].Predictors[j].Weight[0]);
+            SetPredictorXmin(i,j, m_stepsVect[i].Predictors[j].Xmin[0]);
+            SetPredictorXptsnb(i,j, m_stepsVect[i].Predictors[j].Xptsnb[0]);
+            SetPredictorYmin(i,j, m_stepsVect[i].Predictors[j].Ymin[0]);
+            SetPredictorYptsnb(i,j, m_stepsVect[i].Predictors[j].Yptsnb[0]);
+            SetPredictorCriteria(i,j, m_stepsVect[i].Predictors[j].Criteria[0]);
+            SetPredictorWeight(i,j, m_stepsVect[i].Predictors[j].Weight[0]);
         }
 
     }
@@ -747,7 +767,7 @@ void asParametersCalibration::InitValues()
     FixAnalogsNb();
 }
 
-bool asParametersCalibration::SetPredictandStationsIdsVector(VVectorInt val)
+bool asParametersCalibration::SetPredictandStationIdsVector(VVectorInt val)
 {
     if (val.size()<1)
     {
@@ -762,9 +782,9 @@ bool asParametersCalibration::SetPredictandStationsIdsVector(VVectorInt val)
             return false;
         }
 
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
-            for (int j=0; j<val[i].size(); j++)
+            for (int j=0; j<(int)val[i].size(); j++)
             {
                 if (asTools::IsNaN(val[i][j]))
                 {
@@ -775,7 +795,7 @@ bool asParametersCalibration::SetPredictandStationsIdsVector(VVectorInt val)
         }
     }
 
-    m_PredictandStationsIdsVect = val;
+    m_predictandStationIdsVect = val;
 
     return true;
 }
@@ -789,7 +809,7 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt va
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -798,7 +818,7 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt va
             }
         }
     }
-    m_TimeArrayAnalogsIntervalDaysVect = val;
+    m_timeArrayAnalogsIntervalDaysVect = val;
     return true;
 }
 
@@ -811,7 +831,7 @@ bool asParametersCalibration::SetAnalogsNumberVector(int i_step, VectorInt val)
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -820,15 +840,15 @@ bool asParametersCalibration::SetAnalogsNumberVector(int i_step, VectorInt val)
             }
         }
     }
-    m_StepsVect[i_step].AnalogsNumber = val;
+    m_stepsVect[i_step].AnalogsNumber = val;
     return true;
 }
 
 VectorString asParametersCalibration::GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset];
+        return m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset];
     }
     else
     {
@@ -847,7 +867,7 @@ bool asParametersCalibration::SetPreprocessDataIdVector(int i_step, int i_predic
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (val[i].IsEmpty())
             {
@@ -857,14 +877,14 @@ bool asParametersCalibration::SetPreprocessDataIdVector(int i_step, int i_predic
         }
     }
 
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset].clear();
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset] = val;
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset].clear();
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset] = val;
     }
     else
     {
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
     }
 
     return true;
@@ -872,9 +892,9 @@ bool asParametersCalibration::SetPreprocessDataIdVector(int i_step, int i_predic
 
 VectorFloat asParametersCalibration::GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
+        return m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
     }
     else
     {
@@ -893,7 +913,7 @@ bool asParametersCalibration::SetPreprocessLevelVector(int i_step, int i_predict
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -903,14 +923,14 @@ bool asParametersCalibration::SetPreprocessLevelVector(int i_step, int i_predict
         }
     }
 
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].clear();
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset] = val;
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].clear();
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset] = val;
     }
     else
     {
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
     }
 
     return true;
@@ -918,9 +938,9 @@ bool asParametersCalibration::SetPreprocessLevelVector(int i_step, int i_predict
 
 VectorDouble asParametersCalibration::GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
     {
-        return m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
+        return m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
     }
     else
     {
@@ -939,7 +959,7 @@ bool asParametersCalibration::SetPreprocessTimeHoursVector(int i_step, int i_pre
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -949,14 +969,14 @@ bool asParametersCalibration::SetPreprocessTimeHoursVector(int i_step, int i_pre
         }
     }
 
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
     {
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].clear();
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].clear();
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
     }
     else
     {
-        m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+        m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
     }
 
     return true;
@@ -971,7 +991,7 @@ bool asParametersCalibration::SetPredictorDataIdVector(int i_step, int i_predict
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (val[i].IsEmpty())
             {
@@ -980,7 +1000,7 @@ bool asParametersCalibration::SetPredictorDataIdVector(int i_step, int i_predict
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].DataId = val;
+    m_stepsVect[i_step].Predictors[i_predictor].DataId = val;
     return true;
 }
 
@@ -993,7 +1013,7 @@ bool asParametersCalibration::SetPredictorLevelVector(int i_step, int i_predicto
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1002,7 +1022,7 @@ bool asParametersCalibration::SetPredictorLevelVector(int i_step, int i_predicto
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Level = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Level = val;
     return true;
 }
 
@@ -1015,7 +1035,7 @@ bool asParametersCalibration::SetPredictorXminVector(int i_step, int i_predictor
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1024,7 +1044,7 @@ bool asParametersCalibration::SetPredictorXminVector(int i_step, int i_predictor
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Xmin = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Xmin = val;
     return true;
 }
 
@@ -1037,7 +1057,7 @@ bool asParametersCalibration::SetPredictorXptsnbVector(int i_step, int i_predict
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1046,7 +1066,7 @@ bool asParametersCalibration::SetPredictorXptsnbVector(int i_step, int i_predict
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Xptsnb = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Xptsnb = val;
     return true;
 }
 
@@ -1059,7 +1079,7 @@ bool asParametersCalibration::SetPredictorYminVector(int i_step, int i_predictor
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1068,7 +1088,7 @@ bool asParametersCalibration::SetPredictorYminVector(int i_step, int i_predictor
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Ymin = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Ymin = val;
     return true;
 }
 
@@ -1081,7 +1101,7 @@ bool asParametersCalibration::SetPredictorYptsnbVector(int i_step, int i_predict
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1090,7 +1110,7 @@ bool asParametersCalibration::SetPredictorYptsnbVector(int i_step, int i_predict
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Yptsnb = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Yptsnb = val;
     return true;
 }
 
@@ -1103,7 +1123,7 @@ bool asParametersCalibration::SetPredictorTimeHoursVector(int i_step, int i_pred
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1112,7 +1132,7 @@ bool asParametersCalibration::SetPredictorTimeHoursVector(int i_step, int i_pred
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].TimeHours = val;
+    m_stepsVect[i_step].Predictors[i_predictor].TimeHours = val;
     return true;
 }
 
@@ -1125,7 +1145,7 @@ bool asParametersCalibration::SetPredictorCriteriaVector(int i_step, int i_predi
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (val[i].IsEmpty())
             {
@@ -1134,7 +1154,7 @@ bool asParametersCalibration::SetPredictorCriteriaVector(int i_step, int i_predi
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Criteria = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Criteria = val;
     return true;
 }
 
@@ -1147,7 +1167,7 @@ bool asParametersCalibration::SetPredictorWeightVector(int i_step, int i_predict
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1156,7 +1176,7 @@ bool asParametersCalibration::SetPredictorWeightVector(int i_step, int i_predict
             }
         }
     }
-    m_StepsVect[i_step].Predictors[i_predictor].Weight = val;
+    m_stepsVect[i_step].Predictors[i_predictor].Weight = val;
     return true;
 }
 
@@ -1169,7 +1189,7 @@ bool asParametersCalibration::SetForecastScoreNameVector(VectorString val)
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (val[i].IsEmpty())
             {
@@ -1184,7 +1204,7 @@ bool asParametersCalibration::SetForecastScoreNameVector(VectorString val)
             }
         }
     }
-    m_ForecastScoreVect.Name = val;
+    m_forecastScoreVect.Name = val;
     return true;
 }
 
@@ -1197,7 +1217,7 @@ bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(VectorString v
     }
     else
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (val[i].IsEmpty())
             {
@@ -1206,19 +1226,19 @@ bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(VectorString v
             }
         }
     }
-    m_ForecastScoreVect.TimeArrayMode = val;
+    m_forecastScoreVect.TimeArrayMode = val;
     return true;
 }
 
 bool asParametersCalibration::SetForecastScoreTimeArrayDateVector(VectorDouble val)
 {
-    m_ForecastScoreVect.TimeArrayDate = val;
+    m_forecastScoreVect.TimeArrayDate = val;
     return true;
 }
 
 bool asParametersCalibration::SetForecastScoreTimeArrayIntervalDaysVector(VectorInt val)
 {
-    m_ForecastScoreVect.TimeArrayIntervalDays = val;
+    m_forecastScoreVect.TimeArrayIntervalDays = val;
     return true;
 }
 
@@ -1231,7 +1251,7 @@ bool asParametersCalibration::SetForecastScorePostprocessDupliExpVector(VectorFl
     }
     else if (ForecastScoreNeedsPostprocessing())
     {
-        for (int i=0; i<val.size(); i++)
+        for (int i=0; i<(int)val.size(); i++)
         {
             if (asTools::IsNaN(val[i]))
             {
@@ -1240,34 +1260,34 @@ bool asParametersCalibration::SetForecastScorePostprocessDupliExpVector(VectorFl
             }
         }
     }
-    m_ForecastScoreVect.PostprocessDupliExp = val;
+    m_forecastScoreVect.PostprocessDupliExp = val;
     return true;
 }
 
 int asParametersCalibration::GetTimeArrayAnalogsIntervalDaysLowerLimit()
 {
-    int lastrow = m_TimeArrayAnalogsIntervalDaysVect.size()-1;
+    int lastrow = m_timeArrayAnalogsIntervalDaysVect.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MinArray(&m_TimeArrayAnalogsIntervalDaysVect[0],&m_TimeArrayAnalogsIntervalDaysVect[lastrow]);
+    int val = asTools::MinArray(&m_timeArrayAnalogsIntervalDaysVect[0],&m_timeArrayAnalogsIntervalDaysVect[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetAnalogsNumberLowerLimit(int i_step)
 {
-    int lastrow = m_StepsVect[i_step].AnalogsNumber.size()-1;
+    int lastrow = m_stepsVect[i_step].AnalogsNumber.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MinArray(&m_StepsVect[i_step].AnalogsNumber[0],&m_StepsVect[i_step].AnalogsNumber[lastrow]);
+    int val = asTools::MinArray(&m_stepsVect[i_step].AnalogsNumber[0],&m_stepsVect[i_step].AnalogsNumber[lastrow]);
     return val;
 }
 
 float asParametersCalibration::GetPreprocessLevelLowerLimit(int i_step, int i_predictor, int i_dataset)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
     {
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size()-1;
+        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size()-1;
         wxASSERT(lastrow>=0);
-        float val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
+        float val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],&m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
         return val;
     }
     else
@@ -1279,12 +1299,12 @@ float asParametersCalibration::GetPreprocessLevelLowerLimit(int i_step, int i_pr
 
 double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
     {
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()-1;
+        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()-1;
         wxASSERT(lastrow>=0);
-        double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
+        double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],&m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
         return val;
     }
     else
@@ -1296,115 +1316,115 @@ double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int i_step, int
 
 float asParametersCalibration::GetPredictorLevelLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Level.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Level.size()-1;
     wxASSERT(lastrow>=0);
-    float val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Level[0],&m_StepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
+    float val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Level[0],&m_stepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetPredictorXminLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xmin.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Xmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
+    double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Xmin[0],&m_stepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetPredictorXptsnbLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xptsnb.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
+    int val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[0],&m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetPredictorYminLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Ymin.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Ymin[0],&m_StepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
+    double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Ymin[0],&m_stepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetPredictorYptsnbLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Yptsnb.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
+    int val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[0],&m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].TimeHours.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[0],&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
+    double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].TimeHours[0],&m_stepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
     return val;
 }
 
 float asParametersCalibration::GetPredictorWeightLowerLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Weight.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Weight.size()-1;
     wxASSERT(lastrow>=0);
-    float val = asTools::MinArray(&m_StepsVect[i_step].Predictors[i_predictor].Weight[0],&m_StepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
+    float val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Weight[0],&m_stepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetForecastScoreTimeArrayDateLowerLimit()
 {
-    int lastrow = m_ForecastScoreVect.TimeArrayDate.size()-1;
+    int lastrow = m_forecastScoreVect.TimeArrayDate.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MinArray(&m_ForecastScoreVect.TimeArrayDate[0],&m_ForecastScoreVect.TimeArrayDate[lastrow]);
+    double val = asTools::MinArray(&m_forecastScoreVect.TimeArrayDate[0],&m_forecastScoreVect.TimeArrayDate[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetForecastScoreTimeArrayIntervalDaysLowerLimit()
 {
-    int lastrow = m_ForecastScoreVect.TimeArrayIntervalDays.size()-1;
+    int lastrow = m_forecastScoreVect.TimeArrayIntervalDays.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MinArray(&m_ForecastScoreVect.TimeArrayIntervalDays[0],&m_ForecastScoreVect.TimeArrayIntervalDays[lastrow]);
+    int val = asTools::MinArray(&m_forecastScoreVect.TimeArrayIntervalDays[0],&m_forecastScoreVect.TimeArrayIntervalDays[lastrow]);
     return val;
 }
 
 float asParametersCalibration::GetForecastScorePostprocessDupliExpLowerLimit()
 {
-    int lastrow = m_ForecastScoreVect.PostprocessDupliExp.size()-1;
+    int lastrow = m_forecastScoreVect.PostprocessDupliExp.size()-1;
     wxASSERT(lastrow>=0);
-    float val = asTools::MinArray(&m_ForecastScoreVect.PostprocessDupliExp[0],&m_ForecastScoreVect.PostprocessDupliExp[lastrow]);
+    float val = asTools::MinArray(&m_forecastScoreVect.PostprocessDupliExp[0],&m_forecastScoreVect.PostprocessDupliExp[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetTimeArrayAnalogsIntervalDaysUpperLimit()
 {
-    int lastrow = m_TimeArrayAnalogsIntervalDaysVect.size()-1;
+    int lastrow = m_timeArrayAnalogsIntervalDaysVect.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MaxArray(&m_TimeArrayAnalogsIntervalDaysVect[0],&m_TimeArrayAnalogsIntervalDaysVect[lastrow]);
+    int val = asTools::MaxArray(&m_timeArrayAnalogsIntervalDaysVect[0],&m_timeArrayAnalogsIntervalDaysVect[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetAnalogsNumberUpperLimit(int i_step)
 {
-    int lastrow = m_StepsVect[i_step].AnalogsNumber.size()-1;
+    int lastrow = m_stepsVect[i_step].AnalogsNumber.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MaxArray(&m_StepsVect[i_step].AnalogsNumber[0],&m_StepsVect[i_step].AnalogsNumber[lastrow]);
+    int val = asTools::MaxArray(&m_stepsVect[i_step].AnalogsNumber[0],&m_stepsVect[i_step].AnalogsNumber[lastrow]);
     return val;
 }
 
 float asParametersCalibration::GetPreprocessLevelUpperLimit(int i_step, int i_predictor, int i_dataset)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
     {
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size()-1;
+        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size()-1;
         wxASSERT(lastrow>=0);
-        float val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
+        float val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],&m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
         return val;
     }
     else
@@ -1416,12 +1436,12 @@ float asParametersCalibration::GetPreprocessLevelUpperLimit(int i_step, int i_pr
     
 double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
     {
-        int lastrow = m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()-1;
+        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()-1;
         wxASSERT(lastrow>=0);
-        double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],&m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
+        double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],&m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
         return val;
     }
     else
@@ -1433,111 +1453,111 @@ double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int i_step, int
 
 float asParametersCalibration::GetPredictorLevelUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Level.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Level.size()-1;
     wxASSERT(lastrow>=0);
-    float val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Level[0],&m_StepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
+    float val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Level[0],&m_stepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetPredictorXminUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xmin.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Xmin[0],&m_StepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
+    double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Xmin[0],&m_stepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetPredictorXptsnbUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Xptsnb.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
+    int val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[0],&m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetPredictorYminUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Ymin.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Ymin[0],&m_StepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
+    double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Ymin[0],&m_stepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetPredictorYptsnbUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Yptsnb.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[0],&m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
+    int val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[0],&m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].TimeHours.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[0],&m_StepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
+    double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].TimeHours[0],&m_stepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
     return val;
 }
 
 float asParametersCalibration::GetPredictorWeightUpperLimit(int i_step, int i_predictor)
 {
-    wxASSERT(m_StepsVect[i_step].Predictors.size()>i_predictor);
-    int lastrow = m_StepsVect[i_step].Predictors[i_predictor].Weight.size()-1;
+    wxASSERT((int)m_stepsVect[i_step].Predictors.size()>i_predictor);
+    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Weight.size()-1;
     wxASSERT(lastrow>=0);
-    float val = asTools::MaxArray(&m_StepsVect[i_step].Predictors[i_predictor].Weight[0],&m_StepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
+    float val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Weight[0],&m_stepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
     return val;
 }
 
 double asParametersCalibration::GetForecastScoreTimeArrayDateUpperLimit()
 {
-    int lastrow = m_ForecastScoreVect.TimeArrayDate.size()-1;
+    int lastrow = m_forecastScoreVect.TimeArrayDate.size()-1;
     wxASSERT(lastrow>=0);
-    double val = asTools::MaxArray(&m_ForecastScoreVect.TimeArrayDate[0],&m_ForecastScoreVect.TimeArrayDate[lastrow]);
+    double val = asTools::MaxArray(&m_forecastScoreVect.TimeArrayDate[0],&m_forecastScoreVect.TimeArrayDate[lastrow]);
     return val;
 }
     
 int asParametersCalibration::GetForecastScoreTimeArrayIntervalDaysUpperLimit()
 {
-    int lastrow = m_ForecastScoreVect.TimeArrayIntervalDays.size()-1;
+    int lastrow = m_forecastScoreVect.TimeArrayIntervalDays.size()-1;
     wxASSERT(lastrow>=0);
-    int val = asTools::MaxArray(&m_ForecastScoreVect.TimeArrayIntervalDays[0],&m_ForecastScoreVect.TimeArrayIntervalDays[lastrow]);
+    int val = asTools::MaxArray(&m_forecastScoreVect.TimeArrayIntervalDays[0],&m_forecastScoreVect.TimeArrayIntervalDays[lastrow]);
     return val;
 }
 
 float asParametersCalibration::GetForecastScorePostprocessDupliExpUpperLimit()
 {
-    int lastrow = m_ForecastScoreVect.PostprocessDupliExp.size()-1;
+    int lastrow = m_forecastScoreVect.PostprocessDupliExp.size()-1;
     wxASSERT(lastrow>=0);
-    float val = asTools::MaxArray(&m_ForecastScoreVect.PostprocessDupliExp[0],&m_ForecastScoreVect.PostprocessDupliExp[lastrow]);
+    float val = asTools::MaxArray(&m_forecastScoreVect.PostprocessDupliExp[0],&m_forecastScoreVect.PostprocessDupliExp[lastrow]);
     return val;
 }
 
 int asParametersCalibration::GetTimeArrayAnalogsIntervalDaysIteration()
 {
-    if (m_TimeArrayAnalogsIntervalDaysVect.size()<2) return 0;
-    int val = m_TimeArrayAnalogsIntervalDaysVect[1] - m_TimeArrayAnalogsIntervalDaysVect[0];
+    if (m_timeArrayAnalogsIntervalDaysVect.size()<2) return 0;
+    int val = m_timeArrayAnalogsIntervalDaysVect[1] - m_timeArrayAnalogsIntervalDaysVect[0];
     return val;
 }
 
 int asParametersCalibration::GetAnalogsNumberIteration(int i_step)
 {
-    if (m_StepsVect[i_step].AnalogsNumber.size()<2) return 0;
-    int val = m_StepsVect[i_step].AnalogsNumber[1] - m_StepsVect[i_step].AnalogsNumber[0];
+    if (m_stepsVect[i_step].AnalogsNumber.size()<2) return 0;
+    int val = m_stepsVect[i_step].AnalogsNumber[1] - m_stepsVect[i_step].AnalogsNumber[0];
     return val;
 }
 
 double asParametersCalibration::GetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset)
 {
-    if(m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
+    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
     {
-        if (m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()<2) return 0;
-        double val = m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][1] - m_StepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0];
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size()<2) return 0;
+        double val = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][1] - m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0];
         return val;
     }
     else
@@ -1549,65 +1569,65 @@ double asParametersCalibration::GetPreprocessTimeHoursIteration(int i_step, int 
 
 double asParametersCalibration::GetPredictorXminIteration(int i_step, int i_predictor)
 {
-    if (m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()<2) return 0;
-    int row = floor((float)m_StepsVect[i_step].Predictors[i_predictor].Xmin.size()/2.0);
-    double val = m_StepsVect[i_step].Predictors[i_predictor].Xmin[row] - m_StepsVect[i_step].Predictors[i_predictor].Xmin[row-1];
+    if (m_stepsVect[i_step].Predictors[i_predictor].Xmin.size()<2) return 0;
+    int row = floor((float)m_stepsVect[i_step].Predictors[i_predictor].Xmin.size()/2.0);
+    double val = m_stepsVect[i_step].Predictors[i_predictor].Xmin[row] - m_stepsVect[i_step].Predictors[i_predictor].Xmin[row-1];
     return val;
 }
 
 int asParametersCalibration::GetPredictorXptsnbIteration(int i_step, int i_predictor)
 {
-    if (m_StepsVect[i_step].Predictors[i_predictor].Xptsnb.size()<2) return 0;
-    int val = m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[1] - m_StepsVect[i_step].Predictors[i_predictor].Xptsnb[0];
+    if (m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size()<2) return 0;
+    int val = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[1] - m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[0];
     return val;
 }
 
 double asParametersCalibration::GetPredictorYminIteration(int i_step, int i_predictor)
 {
-    if (m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()<2) return 0;
-    int row = floor((float)m_StepsVect[i_step].Predictors[i_predictor].Ymin.size()/2.0);
-    double val = m_StepsVect[i_step].Predictors[i_predictor].Ymin[row] - m_StepsVect[i_step].Predictors[i_predictor].Ymin[row-1];
+    if (m_stepsVect[i_step].Predictors[i_predictor].Ymin.size()<2) return 0;
+    int row = floor((float)m_stepsVect[i_step].Predictors[i_predictor].Ymin.size()/2.0);
+    double val = m_stepsVect[i_step].Predictors[i_predictor].Ymin[row] - m_stepsVect[i_step].Predictors[i_predictor].Ymin[row-1];
     return val;
 }
 
 int asParametersCalibration::GetPredictorYptsnbIteration(int i_step, int i_predictor)
 {
-    if (m_StepsVect[i_step].Predictors[i_predictor].Yptsnb.size()<2) return 0;
-    int val = m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[1] - m_StepsVect[i_step].Predictors[i_predictor].Yptsnb[0];
+    if (m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size()<2) return 0;
+    int val = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[1] - m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[0];
     return val;
 }
 
 double asParametersCalibration::GetPredictorTimeHoursIteration(int i_step, int i_predictor)
 {
-    if (m_StepsVect[i_step].Predictors[i_predictor].TimeHours.size()<2) return 0;
-    double val = m_StepsVect[i_step].Predictors[i_predictor].TimeHours[1] - m_StepsVect[i_step].Predictors[i_predictor].TimeHours[0];
+    if (m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size()<2) return 0;
+    double val = m_stepsVect[i_step].Predictors[i_predictor].TimeHours[1] - m_stepsVect[i_step].Predictors[i_predictor].TimeHours[0];
     return val;
 }
 
 float asParametersCalibration::GetPredictorWeightIteration(int i_step, int i_predictor)
 {
-    if (m_StepsVect[i_step].Predictors[i_predictor].Weight.size()<2) return 0;
-    float val = m_StepsVect[i_step].Predictors[i_predictor].Weight[1] - m_StepsVect[i_step].Predictors[i_predictor].Weight[0];
+    if (m_stepsVect[i_step].Predictors[i_predictor].Weight.size()<2) return 0;
+    float val = m_stepsVect[i_step].Predictors[i_predictor].Weight[1] - m_stepsVect[i_step].Predictors[i_predictor].Weight[0];
     return val;
 }
 
 double asParametersCalibration::GetForecastScoreTimeArrayDateIteration()
 {
-    if (m_ForecastScoreVect.TimeArrayDate.size()<2) return 0;
-    double val = m_ForecastScoreVect.TimeArrayDate[1] - m_ForecastScoreVect.TimeArrayDate[0];
+    if (m_forecastScoreVect.TimeArrayDate.size()<2) return 0;
+    double val = m_forecastScoreVect.TimeArrayDate[1] - m_forecastScoreVect.TimeArrayDate[0];
     return val;
 }
 
 int asParametersCalibration::GetForecastScoreTimeArrayIntervalDaysIteration()
 {
-    if (m_ForecastScoreVect.TimeArrayIntervalDays.size()<2) return 0;
-    int val = m_ForecastScoreVect.TimeArrayIntervalDays[1] - m_ForecastScoreVect.TimeArrayIntervalDays[0];
+    if (m_forecastScoreVect.TimeArrayIntervalDays.size()<2) return 0;
+    int val = m_forecastScoreVect.TimeArrayIntervalDays[1] - m_forecastScoreVect.TimeArrayIntervalDays[0];
     return val;
 }
 
 float asParametersCalibration::GetForecastScorePostprocessDupliExpIteration()
 {
-    if (m_ForecastScoreVect.PostprocessDupliExp.size()<2) return 0;
-    float val = m_ForecastScoreVect.PostprocessDupliExp[1] - m_ForecastScoreVect.PostprocessDupliExp[0];
+    if (m_forecastScoreVect.PostprocessDupliExp.size()<2) return 0;
+    float val = m_forecastScoreVect.PostprocessDupliExp[1] - m_forecastScoreVect.PostprocessDupliExp[0];
     return val;
 }

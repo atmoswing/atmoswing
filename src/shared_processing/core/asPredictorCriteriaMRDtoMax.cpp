@@ -31,13 +31,13 @@ asPredictorCriteriaMRDtoMax::asPredictorCriteriaMRDtoMax(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::MRDtoMax;
-    m_Name = "MRDtoMax";
-    m_FullName = _("Mean Relative Differences to the Maximum");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::MRDtoMax;
+    m_name = "MRDtoMax";
+    m_fullName = _("Mean Relative Differences to the Maximum");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaMRDtoMax::~asPredictorCriteriaMRDtoMax()
@@ -52,7 +52,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
 
     float rd = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
         case (asLIN_ALGEBRA): // Not implemented yet
@@ -62,13 +62,13 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    if(wxMax(abs(evalData(i,j)), abs(refData(i,j)))>0)
+                    if(wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)))>0)
                     {
-                        rd += abs(evalData(i,j) - refData(i,j))/wxMax(abs(evalData(i,j)), abs(refData(i,j)));
+                        rd += std::abs(evalData(i,j) - refData(i,j))/wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)));
                     }
                     else
                     {
-                        if (abs(evalData(i,j) - refData(i,j))!=0)
+                        if (std::abs(evalData(i,j) - refData(i,j))!=0)
                         {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
@@ -88,8 +88,8 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend = abs(evalData(i,j) - refData(i,j));
-                    divisor = wxMax(abs(evalData(i,j)), abs(refData(i,j)));
+                    dividend = std::abs(evalData(i,j) - refData(i,j));
+                    divisor = wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)));
 
                     if(divisor>0)
                     {

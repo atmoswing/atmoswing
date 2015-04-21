@@ -47,7 +47,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaRegularGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Alternative constructor
      * \param coosys The coordinate system
@@ -61,25 +61,25 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaRegularGrid(CoordSys coosys, double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Default destructor */
     virtual ~asGeoAreaRegularGrid();
 
-    /** Access m_Xstep
-     * \return The current value of m_Xstep
+    /** Access m_xstep
+     * \return The current value of m_xstep
      */
     double GetXstep()
     {
-        return m_Xstep;
+        return m_xstep;
     }
 
-    /** Access m_Ystep
-     * \return The current value of m_Ystep
+    /** Access m_ystep
+     * \return The current value of m_ystep
      */
     double GetYstep()
     {
-        return m_Ystep;
+        return m_ystep;
     }
 
     /** Get the size of the X axis
@@ -106,8 +106,8 @@ public:
 protected:
 
 private:
-    double m_Xstep; //!< Member variable "m_Xstep"
-    double m_Ystep; //!< Member variable "m_Ystep"
+    double m_xstep; //!< Member variable "m_xstep"
+    double m_ystep; //!< Member variable "m_ystep"
 
     /** Tells if the area is a straight square compatible with the given step or not
      * \return True if the area is a straight square compatible with the given step

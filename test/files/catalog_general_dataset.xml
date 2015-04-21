@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<atmoswing_file version="1.0">
-    <dataset id="DS1" enable="1" name="dataset 1" description="dataset 1 description">
-        <something>1</something>
-        <something_else>meters</something_else>
-    </dataset>
-    <dataset id="DS2" enable="1" name="dataset 2" description="dataset 2 description">
-        <something>1</something>
-        <something_else>meters</something_else>
-    </dataset>
-    <dataset id="DS3" enable="1" name="dataset 3" description="dataset 3 description">
-        <something>1</something>
-        <something_else>meters</something_else>
-    </dataset>
-    <dataset id="DS4" enable="1" name="dataset 4" description="dataset 4 description">
-        <something>1</something>
-        <something_else>meters</something_else>
-    </dataset>
-</atmoswing_file>
+<atmoswing version="1.0">
+  <dataset>
+    <id>DS1</id>
+    <name>dataset 1</name>
+    <description>dataset 1 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+  </dataset>
+  <dataset>
+    <id>DS2</id>
+    <name>dataset 2</name>
+    <description>dataset 2 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+  </dataset>
+  <dataset>
+    <id>DS3</id>
+    <name>dataset 3</name>
+    <description>dataset 3 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+  </dataset>
+  <dataset>
+    <id>DS4</id>
+    <name>dataset 4</name>
+    <description>dataset 4 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+  </dataset>
+</atmoswing>

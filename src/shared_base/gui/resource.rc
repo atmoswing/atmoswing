@@ -1,4 +1,4 @@
-myicon ICON "../../../art/icon/icon.ico"
+myicon ICON "../../../art/logo/icon.ico"
 
 #define wxUSE_NO_MANIFEST 1
 

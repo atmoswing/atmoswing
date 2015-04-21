@@ -37,7 +37,7 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
-Copyright (C) 2013-2014, Terr@num, Switzerland.
+Copyright (C) 2013-2015, Terranum, Switzerland.
 
 Developed by Pascal Horton. 
 
@@ -46,6 +46,7 @@ Financial contributions:
 * 2008-2011 Cantons of Valais and Vaud (Switzerland): basis of the software from the MINERVE project.
 * 2011-2013 University of Lausanne (Switzerland): reorganization of the source code, improvement of the build system, documentation.
 * 2014 Direction régionale de l’environnement, de l’aménagement et du logement (France): addition of new forecast skill scores (reliability of the CRPS and rank histogram).
+* 2015 Cantons of Valais (Switzerland): addition of synthetic xml export and the aggregation of parametrizations in the viewer.
 
 See both license.txt and notice.txt files for details about the license and its enforcement.
 

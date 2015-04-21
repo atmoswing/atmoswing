@@ -34,10 +34,10 @@
 
 vrLayerVectorFcstDots::vrLayerVectorFcstDots()
 {
-	wxASSERT(m_Dataset==NULL);
-	wxASSERT(m_Layer==NULL);
-	m_DriverType = vrDRIVER_VECTOR_MEMORY;
-	m_ValueMax = 1;
+	wxASSERT(m_dataset==NULL);
+	wxASSERT(m_layer==NULL);
+	m_driverType = vrDRIVER_VECTOR_MEMORY;
+	m_valueMax = 1;
 }
 
 vrLayerVectorFcstDots::~vrLayerVectorFcstDots()
@@ -46,15 +46,15 @@ vrLayerVectorFcstDots::~vrLayerVectorFcstDots()
 
 long vrLayerVectorFcstDots::AddFeature(OGRGeometry * geometry, void * data)
 {
-	wxASSERT(m_Layer);
-	OGRFeature * feature = OGRFeature::CreateFeature(m_Layer->GetLayerDefn());
-	wxASSERT(m_Layer);
+	wxASSERT(m_layer);
+	OGRFeature * feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
+	wxASSERT(m_layer);
 	feature->SetGeometry(geometry);
 
 	if (data != NULL)
     {
         wxArrayDouble * dataArray = (wxArrayDouble*) data;
-		wxASSERT(dataArray->GetCount() == 2);
+		wxASSERT(dataArray->GetCount() == 4);
 
         for (unsigned int i_dat=0; i_dat<dataArray->size(); i_dat++)
         {
@@ -62,7 +62,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry * geometry, void * data)
         }
 	}
 
-	if(m_Layer->CreateFeature(feature) != OGRERR_NONE)
+	if(m_layer->CreateFeature(feature) != OGRERR_NONE)
     {
 		asLogError(_("Error creating feature"));
 		OGRFeature::DestroyFeature(feature);
@@ -79,7 +79,8 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 {
     // Set the defaut pen
 	wxASSERT(render->GetType() == vrRENDER_VECTOR);
-	wxPen defaultPen (*wxBLACK, 1);
+    vrRenderVector * renderVector = (vrRenderVector *) render;
+    wxPen defaultPen (renderVector->GetColorPen(), renderVector->GetSize());
 	wxPen selPen (*wxGREEN, 3);
 	
 	// Get graphics context 
@@ -95,7 +96,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 		
 		// Set font
 		wxFont defFont(7, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-		gc->SetFont( defFont, *wxBLACK );
+		gc->SetFont( defFont, renderVector->GetColorPen() );
 
 		// Get geometries
 		OGRPoint * geom = (OGRPoint*) geometry;
@@ -128,8 +129,8 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 		}
 
 		// Get value to set color
-		double realValue = feature->GetFieldAsDouble(0);
-		double normValue = feature->GetFieldAsDouble(1);
+		double realValue = feature->GetFieldAsDouble(2);
+		double normValue = feature->GetFieldAsDouble(3);
 		_Paint(gc, path, normValue);
 		_AddLabel(gc, point, realValue);
 	}
@@ -143,7 +144,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 
 void vrLayerVectorFcstDots::_CreatePath(wxGraphicsPath & path, const wxPoint & center)
 {
-    const wxDouble radius = 15;
+    const wxDouble radius = 15 * g_ppiScaleDc;
 
     path.AddCircle(center.x, center.y, radius);
 }
@@ -164,18 +165,18 @@ void vrLayerVectorFcstDots::_Paint(wxGraphicsContext * gdc, wxGraphicsPath & pat
     {
         colour.Set(255,255,255);
     }
-    else if ( value/m_ValueMax<=0.5 ) // Light green to yellow
+    else if ( value/m_valueMax<=0.5 ) // Light green to yellow
     {
         int baseVal = 200;
-        int valColour = ((value/(0.5*m_ValueMax)))*baseVal;
-        int valColourCompl = ((value/(0.5*m_ValueMax)))*(255-baseVal);
+        int valColour = ((value/(0.5*m_valueMax)))*baseVal;
+        int valColourCompl = ((value/(0.5*m_valueMax)))*(255-baseVal);
         if (valColour>baseVal) valColour = baseVal;
         if (valColourCompl+baseVal>255) valColourCompl = 255-baseVal;
         colour.Set((baseVal+valColourCompl),255,(baseVal-valColour));
     }
     else // Yellow to red
     {
-        int valColour = ((value-0.5*m_ValueMax)/(0.5*m_ValueMax))*255;
+        int valColour = ((value-0.5*m_valueMax)/(0.5*m_valueMax))*255;
         if (valColour>255) valColour = 255;
         colour.Set(255,(255-valColour),0);
     }

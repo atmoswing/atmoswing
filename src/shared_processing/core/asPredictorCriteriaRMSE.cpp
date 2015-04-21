@@ -31,13 +31,13 @@ asPredictorCriteriaRMSE::asPredictorCriteriaRMSE(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::RMSE;
-    m_Name = "RMSE";
-    m_FullName = _("Root Mean Square Error");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::RMSE;
+    m_name = "RMSE";
+    m_fullName = _("Root Mean Square Error");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaRMSE::~asPredictorCriteriaRMSE()
@@ -57,7 +57,7 @@ float asPredictorCriteriaRMSE::Assess(const Array2DFloat &refData, const Array2D
 
     float mse = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):

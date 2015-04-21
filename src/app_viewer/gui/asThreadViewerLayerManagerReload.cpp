@@ -35,14 +35,14 @@ asThreadViewerLayerManagerReload::asThreadViewerLayerManagerReload(vrViewerLayer
 :
 asThread()
 {
-    m_Status = Initializing;
+    m_status = Initializing;
 
-    m_ViewerLayerManager = viewerLayerManager;
-    m_CritSectionViewerLayerManager = critSectionViewerLayerManager;
+    m_viewerLayerManager = viewerLayerManager;
+    m_critSectionViewerLayerManager = critSectionViewerLayerManager;
 
-    wxASSERT(m_ViewerLayerManager);
+    wxASSERT(m_viewerLayerManager);
 
-    m_Status = Waiting;
+    m_status = Waiting;
 }
 
 asThreadViewerLayerManagerReload::~asThreadViewerLayerManagerReload()
@@ -52,11 +52,11 @@ asThreadViewerLayerManagerReload::~asThreadViewerLayerManagerReload()
 
 wxThread::ExitCode asThreadViewerLayerManagerReload::Entry()
 {
-    m_Status = Working;
+    m_status = Working;
 
-    m_CritSectionViewerLayerManager->Enter();
-    m_ViewerLayerManager->Reload();
-    m_CritSectionViewerLayerManager->Leave();
+    m_critSectionViewerLayerManager->Enter();
+    m_viewerLayerManager->Reload();
+    m_critSectionViewerLayerManager->Leave();
 
     return 0;
 }

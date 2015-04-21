@@ -90,38 +90,38 @@ public:
 
     void SetScore(float valCalib)
     {
-        m_ScoresCalibTemp.push_back(valCalib);
+        m_scoresCalibTemp.push_back(valCalib);
     }
 
     void SetScoreOrder(Order val)
     {
-        m_ScoreOrder = val;
+        m_scoreOrder = val;
     }
 
     VectorFloat GetScoreClimatology()
     {
-        return m_ScoreClimatology;
+        return m_scoreClimatology;
     }
 
     void SetScoreClimatology(VectorFloat val)
     {
-        m_ScoreClimatology = val;
+        m_scoreClimatology = val;
     }
 
 
 protected:
-    VectorFloat m_ScoresCalib;
-    VectorFloat m_ScoresCalibTemp;
-    Order m_ScoreOrder;
-    float m_ScoreValid;
-    VectorFloat m_ScoreClimatology;
-    std::vector <asParametersCalibration> m_Parameters;
-    std::vector <asParametersCalibration> m_ParametersTemp;
-    asParametersCalibration m_OriginalParams;
-    bool m_Preloaded;
-    bool m_ValidationMode;
-    std::vector < std::vector < std::vector < std::vector < asDataPredictorArchive* > > > > m_PreloadedArchive;
-    VVectorBool m_PreloadedArchivePointerCopy;
+    VectorFloat m_scoresCalib;
+    VectorFloat m_scoresCalibTemp;
+    Order m_scoreOrder;
+    float m_scoreValid;
+    VectorFloat m_scoreClimatology;
+    std::vector <asParametersCalibration> m_parameters;
+    std::vector <asParametersCalibration> m_parametersTemp;
+    asParametersCalibration m_originalParams;
+    bool m_preloaded;
+    bool m_validationMode;
+    std::vector < std::vector < std::vector < std::vector < asDataPredictorArchive* > > > > m_preloadedArchive;
+    VVectorBool m_preloadedArchivePointerCopy;
 
     virtual bool Calibrate(asParametersCalibration &params) = 0;
     bool PreloadData(asParametersScoring &params);

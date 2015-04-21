@@ -32,9 +32,9 @@ asThread::asThread()
 :
 wxThread(wxTHREAD_DETACHED)
 {
-    m_Status = Creating;
-    m_Type = Undefined;
-    m_Id = 0;
+    m_status = Creating;
+    m_type = Undefined;
+    m_id = 0;
 }
 
 asThread::~asThread()
@@ -49,7 +49,7 @@ wxThread::ExitCode asThread::Entry()
 
 void asThread::OnExit()
 {
-    m_Status = Exiting;
+    m_status = Exiting;
 
     // Set pointer to null.
     int id = GetId();

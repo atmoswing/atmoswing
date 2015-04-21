@@ -32,17 +32,17 @@ asForecastScoreSEEPS::asForecastScoreSEEPS()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::SEEPS;
-    m_Name = _("Stable equitable error in probability space");
-    m_FullName = _("Stable equitable error in probability space");
-    m_Order = NoOrder;
-    m_ScaleBest = NaNFloat;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::SEEPS;
+    m_name = _("Stable equitable error in probability space");
+    m_fullName = _("Stable equitable error in probability space");
+    m_order = NoOrder;
+    m_scaleBest = NaNFloat;
+    m_scaleWorst = NaNFloat;
     m_p1 = NaNFloat;
     m_p3 = NaNFloat;
-    m_ThresNull = 0.2f;
-    m_ThresHigh = NaNFloat;
-    m_UsesClimatology = true;
+    m_thresNull = 0.2f;
+    m_thresHigh = NaNFloat;
+    m_usesClimatology = true;
 }
 
 asForecastScoreSEEPS::~asForecastScoreSEEPS()
@@ -56,10 +56,10 @@ float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &Forcas
     wxASSERT(nbElements>0);
     wxASSERT(!asTools::IsNaN(m_p1));
     wxASSERT(!asTools::IsNaN(m_p3));
-    wxASSERT(!asTools::IsNaN(m_ThresHigh));
-    wxASSERT(!asTools::IsNaN(m_Percentile));
-    wxASSERT(m_Percentile>0);
-    wxASSERT(m_Percentile<1);
+    wxASSERT(!asTools::IsNaN(m_thresHigh));
+    wxASSERT(!asTools::IsNaN(m_quantile));
+    wxASSERT(m_quantile>0);
+    wxASSERT(m_quantile<1);
 
     // Create the container to sort the data
     Array1DFloat x(nbElements);
@@ -77,90 +77,56 @@ float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &Forcas
         return NaNFloat;
     }
 
-    // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbForecasts-1], Asc);
+    Array1DFloat cleanValues = x.head(nbForecasts);
 
-    float forecastedVal = NaNFloat;
-    float score = NaNFloat;
-
-    // Containers
-    Array1DFloat F(nbForecasts);
-
-    // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
-    // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
-    // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
-    float irep = 0.44f;
-    float nrep = 0.12f;
-
-    // Build the cumulative distribution function for the middle of the x
-    float divisor = 1.0f/(nbForecasts+nrep);
-    for(float i=0; i<nbForecasts; i++)
-    {
-
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
-    }
-
-    // Indices for the left and right part (according to xObs)
-    int indLeft = asTools::SortedArraySearchFloor(&F[0], &F[nbForecasts-1], m_Percentile);
-    int indRight = asTools::SortedArraySearchCeil(&F[0], &F[nbForecasts-1], m_Percentile);
-    wxASSERT(indLeft>=0);
-    wxASSERT(indRight>=0);
-    wxASSERT(indLeft<=indRight);
-
-    if (indLeft==indRight)
-    {
-        forecastedVal = x[indLeft];
-    }
-    else
-    {
-        forecastedVal = x(indLeft)+(x(indRight)-x(indLeft))*(m_Percentile-F(indLeft))/(F(indRight)-F(indLeft));
-    }
-
-    float fcstV = forecastedVal;
+    // Get value for quantile
+    float fcstV = asTools::GetValueForQuantile(cleanValues, m_quantile);
     float obsV = ObservedVal;
 
+    float score = 0;
+
 	// Forecasted 1, observed 1
-	if (fcstV<=m_ThresNull && obsV<=m_ThresNull)
+	if (fcstV<=m_thresNull && obsV<=m_thresNull)
     {
         score = 0.0f;
 	}
 	// Forecasted 2, observed 1
-	else if (fcstV<=m_ThresNull && obsV>m_ThresNull && obsV<=m_ThresHigh)
+	else if (fcstV<=m_thresNull && obsV>m_thresNull && obsV<=m_thresHigh)
     {
         score = 0.5*(1.0/(1.0-m_p1));
 	}
 	// Forecasted 3, observed 1
-	else if (fcstV<=m_ThresNull && obsV>m_ThresHigh)
+	else if (fcstV<=m_thresNull && obsV>m_thresHigh)
     {
         score = 0.5*((1.0/m_p3)+(1.0/1.0-m_p1));
 	}
 	// Forecasted 1, observed 2
-	else if (fcstV>m_ThresNull && fcstV<=m_ThresHigh && obsV<=m_ThresNull)
+	else if (fcstV>m_thresNull && fcstV<=m_thresHigh && obsV<=m_thresNull)
     {
         score = 0.5*(1.0/m_p1);
 	}
 	// Forecasted 2, observed 2
-	else if (fcstV>m_ThresNull && fcstV<=m_ThresHigh && obsV>m_ThresNull && obsV<=m_ThresHigh)
+	else if (fcstV>m_thresNull && fcstV<=m_thresHigh && obsV>m_thresNull && obsV<=m_thresHigh)
     {
         score = 0.0f;
 	}
 	// Forecasted 3, observed 2
-	else if (fcstV>m_ThresNull && fcstV<=m_ThresHigh && obsV>m_ThresHigh)
+	else if (fcstV>m_thresNull && fcstV<=m_thresHigh && obsV>m_thresHigh)
     {
         score = 0.5*(1.0/m_p3);
 	}
 	// Forecasted 1, observed 3
-	else if (fcstV>m_ThresHigh && obsV<=m_ThresNull)
+	else if (fcstV>m_thresHigh && obsV<=m_thresNull)
     {
         score = 0.5*((1.0/m_p1)+(1.0/(1.0-m_p3)));
 	}
 	// Forecasted 2, observed 3
-	else if (fcstV>m_ThresHigh && obsV>m_ThresNull && obsV<=m_ThresHigh)
+	else if (fcstV>m_thresHigh && obsV>m_thresNull && obsV<=m_thresHigh)
     {
         score = 0.5*(1.0/(1.0-m_p3));
 	}
 	// Forecasted 3, observed 3
-	else if (fcstV>m_ThresHigh && obsV>m_ThresHigh)
+	else if (fcstV>m_thresHigh && obsV>m_thresHigh)
     {
         score = 0.0f;
 	}
@@ -177,8 +143,8 @@ bool asForecastScoreSEEPS::ProcessScoreClimatology(const Array1DFloat &refVals, 
     asTools::SortArray(&climatologyDataSorted[0], &climatologyDataSorted[climatologyDataSorted.size()-1], Asc);
 
     // Find first value above the lower threshold
-    int rowAboveThreshold1 = asTools::SortedArraySearchFloor(&climatologyDataSorted[0], &climatologyDataSorted[climatologyDataSorted.size()-1], m_Threshold);
-    while (climatologyDataSorted[rowAboveThreshold1]<=m_Threshold)
+    int rowAboveThreshold1 = asTools::SortedArraySearchFloor(&climatologyDataSorted[0], &climatologyDataSorted[climatologyDataSorted.size()-1], m_threshold);
+    while (climatologyDataSorted[rowAboveThreshold1]<=m_threshold)
     {
         rowAboveThreshold1++;
     }
@@ -189,7 +155,7 @@ bool asForecastScoreSEEPS::ProcessScoreClimatology(const Array1DFloat &refVals, 
     m_p3 = (1-m_p1)/3.0f;
 
     int indexThreshold2 = climatologyDataSorted.size()*(m_p1+2*m_p3);
-    m_ThresHigh = climatologyDataSorted[indexThreshold2];
+    m_thresHigh = climatologyDataSorted[indexThreshold2];
 
     return true;
 }

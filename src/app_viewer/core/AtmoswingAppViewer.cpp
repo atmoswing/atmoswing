@@ -44,15 +44,13 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include <asThreadsManager.h>
 #include <asInternet.h>
 #include "vroomgis_bmp.h"
-#include "img_bullets.h"
-#include "img_toolbar.h"
-#include "img_logo.h"
+#include "images.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 {
-    { wxCMD_LINE_SWITCH, "h", "help", "displays help on the command line parameters" },
-    { wxCMD_LINE_SWITCH, "v", "version", "print version" },
-    { wxCMD_LINE_OPTION, "l", "loglevel", "set a log level"
+    { wxCMD_LINE_SWITCH, "h", "help", "This help text" },
+    { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
+    { wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
                                 "\n \t\t\t\t 0: minimum"
                                 "\n \t\t\t\t 1: errors"
                                 "\n \t\t\t\t 2: warnings"
@@ -69,6 +67,11 @@ bool AtmoswingAppViewer::OnInit()
         #endif
     #endif
 
+	// Set PPI
+	wxMemoryDC dcTestPpi;
+	wxSize ppiDC = dcTestPpi.GetPPI();
+	g_ppiScaleDc = double(ppiDC.x) / 96.0;
+
     // Set application name and create user directory
     wxString appName = "AtmoSwing viewer";
     wxApp::SetAppName(appName);
@@ -80,15 +83,15 @@ bool AtmoswingAppViewer::OnInit()
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
-    m_SingleInstanceChecker = NULL;
+    m_singleInstanceChecker = NULL;
     bool multipleInstances;
     pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
     if (!multipleInstances)
     {
-        const wxString instanceName = wxString::Format(wxT("AtmoSwingViewer-%s"),wxGetUserId().c_str());
-        m_SingleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if ( m_SingleInstanceChecker->IsAnotherRunning() )
+        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"),wxGetUserId());
+        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if ( m_singleInstanceChecker->IsAnotherRunning() )
         {
             //asLogError(_("Program already running, aborting."));
             wxMessageBox(_("Program already running, aborting."));
@@ -99,9 +102,7 @@ bool AtmoswingAppViewer::OnInit()
     wxInitAllImageHandlers();
 
     // Initialize images
-    initialize_images_bullets();
-    initialize_images_toolbar();
-    initialize_images_logo();
+	initialize_images(g_ppiScaleDc);
     vroomgis_initialize_images();
 
     // Init cURL
@@ -126,8 +127,8 @@ bool AtmoswingAppViewer::OnInit()
 
 bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
 {
-    g_UnitTesting = false;
-    g_SilentMode = true;
+    g_unitTesting = false;
+    g_silentMode = true;
 
     // Set log level
     if (logLevel<0)
@@ -167,9 +168,9 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
         {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_Version.c_str(), (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar*) date);
 
-            msgOut->Printf( wxT("%s"), msg.c_str() );
+            msgOut->Printf( wxT("%s"), msg );
         }
         else
         {
@@ -210,13 +211,13 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
     {
         InitForCmdLineOnly(logLevel);
 
-        g_CmdFilename = parser.GetParam(0);
+        g_cmdFilename = parser.GetParam(0);
 
         // Under Windows when invoking via a document in Explorer, we are passed th short form.
         // So normalize and make the long form.
-        wxFileName fName(g_CmdFilename);
+        wxFileName fName(g_cmdFilename);
         fName.Normalize(wxPATH_NORM_LONG|wxPATH_NORM_DOTS|wxPATH_NORM_TILDE|wxPATH_NORM_ABSOLUTE);
-        g_CmdFilename = fName.GetFullPath();
+        g_cmdFilename = fName.GetFullPath();
 
         return true;
     }
@@ -227,7 +228,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
 int AtmoswingAppViewer::OnExit()
 {
     // Instance checker
-    wxDELETE(m_SingleInstanceChecker);
+    wxDELETE(m_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
     delete wxFileConfig::Set((wxFileConfig *) NULL);
@@ -239,8 +240,9 @@ int AtmoswingAppViewer::OnExit()
     // Cleanup cURL
     asInternet::Cleanup();
 
-    // Cleanup vroomgis
+    // Cleanup images
     vroomgis_clear_images();
+	cleanup_images();
 
     return 1;
 }

@@ -54,7 +54,7 @@ float asForecastScoreFinalPC::Assess(Array1DFloat &targetDates, Array1DFloat &fo
 
     int countA=0, countD=0, countTot=0;
 
-    switch (m_Period)
+    switch (m_period)
     {
         case (asForecastScoreFinal::Total):
         {

@@ -157,7 +157,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
     }
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
+    VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
     // Create result object to save the final parameters sets
     asResultsParametersArray results_all;
@@ -175,7 +175,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
         VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology.clear();
+        m_scoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;

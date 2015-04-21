@@ -32,14 +32,14 @@ asForecastScoreFinalCRPSreliability::asForecastScoreFinalCRPSreliability(Period 
 :
 asForecastScoreFinal(period)
 {
-    m_Has2DArrayArgument = true;
+    m_has2DArrayArgument = true;
 }
 
 asForecastScoreFinalCRPSreliability::asForecastScoreFinalCRPSreliability(const wxString& periodString)
 :
 asForecastScoreFinal(periodString)
 {
-    m_Has2DArrayArgument = true;
+    m_has2DArrayArgument = true;
 }
 
 asForecastScoreFinalCRPSreliability::~asForecastScoreFinalCRPSreliability()

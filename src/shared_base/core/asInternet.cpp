@@ -29,6 +29,7 @@
 
 #include <asThreadInternetDownload.h>
 #include <asThreadsManager.h>
+#include <wx/app.h>
 
 asInternet::asInternet()
 {
@@ -81,6 +82,8 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
     long parallelRequests = 5;
     pConfig->Read("/Internet/ParallelRequestsNb", &parallelRequests, 5l);
 
+	parallelRequests = 1;
+
     if(parallelRequests>1)
     {
         // Disable message box
@@ -110,8 +113,14 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
         ThreadsManager().Wait(threadType);
 
         // Enable message box and flush the logs
-        g_pLog->EnableMessageBoxOnError();
-        g_pLog->Flush();
+#if wxUSE_GUI
+		g_pLog->EnableMessageBoxOnError();
+		g_pLog->Flush();
+		wxTheApp->Yield();
+#else
+		g_pLog->Flush();
+		wxTheApp->Yield();
+#endif
 
         // Check the files
         for (unsigned int i_file=0; i_file<fileNames.size(); i_file++)
@@ -156,7 +165,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 wxString fileName = fileNames[i_file];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[i_file];
-                asLogMessage(wxString::Format(_("Downloading file %s."), filePath.c_str())); // Do not log the URL, it bugs !
+                asLogMessage(wxString::Format(_("Downloading file %s."), filePath)); // Do not log the URL, it bugs !
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
@@ -172,7 +181,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
                 #if wxUSE_GUI
                     // Update the progress bar
-                    wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName.c_str()) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
+                    wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
                     if(!ProgressBar.Update(i_file, updatedialogmessage))
                     {
                         asLogMessage(_("The download has been canceled by the user."));

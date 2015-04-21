@@ -45,7 +45,7 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaComposite(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Alternative constructor
      * \param coosys The coordinate system
@@ -57,10 +57,10 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaComposite(CoordSys coosys, double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
 
-    asGeoAreaComposite(CoordSys coosys, float Level = asNONE, float Height = asNONE);
+    asGeoAreaComposite(float Level = asNONE, float Height = asNONE);
 
 
     /** Default destructor */
@@ -70,84 +70,84 @@ public:
     void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
 
 
-    /** Access m_CornerUL
-     * \return The current value of m_CornerUL
+    /** Access m_cornerUL
+     * \return The current value of m_cornerUL
      */
     Coo GetCornerUL()
     {
-        return m_CornerUL;
+        return m_cornerUL;
     }
 
-    /** Access m_CornerUR
-     * \return The current value of m_CornerUR
+    /** Access m_cornerUR
+     * \return The current value of m_cornerUR
      */
     Coo GetCornerUR()
     {
-        return m_CornerUR;
+        return m_cornerUR;
     }
 
-    /** Access m_CornerLL
-     * \return The current value of m_CornerLL
+    /** Access m_cornerLL
+     * \return The current value of m_cornerLL
      */
     Coo GetCornerLL()
     {
-        return m_CornerLL;
+        return m_cornerLL;
     }
 
-    /** Access m_CornerLR
-     * \return The current value of m_CornerLR
+    /** Access m_cornerLR
+     * \return The current value of m_cornerLR
      */
     Coo GetCornerLR()
     {
-        return m_CornerLR;
+        return m_cornerLR;
     }
 
-    /** Access m_Level
-     * \return The current value of m_Level
+    /** Access m_level
+     * \return The current value of m_level
      */
     double GetLevel()
     {
-        return m_Level;
+        return m_level;
     }
 
-    /** Set m_Level
+    /** Set m_level
      * \param val New value to set
      */
     void SetLevel(double val)
     {
-        m_Level = val;
+        m_level = val;
     }
 
-    /** Access m_AbsoluteXmin
-     * \return The current value of m_AbsoluteXmin
+    /** Access m_absoluteXmin
+     * \return The current value of m_absoluteXmin
      */
     double GetAbsoluteXmin()
     {
-        return m_AbsoluteXmin;
+        return m_absoluteXmin;
     }
 
-    /** Access m_AbsolutXmax
-     * \return The current value of m_AbsoluteXmax
+    /** Access m_absolutXmax
+     * \return The current value of m_absoluteXmax
      */
     double GetAbsoluteXmax()
     {
-        return m_AbsoluteXmax;
+        return m_absoluteXmax;
     }
 
-    /** Access m_AbsoluteYmin
-     * \return The current value of m_AbsoluteYmin
+    /** Access m_absoluteYmin
+     * \return The current value of m_absoluteYmin
      */
     double GetAbsoluteYmin()
     {
-        return m_AbsoluteYmin;
+        return m_absoluteYmin;
     }
 
-    /** Access m_AbsoluteYmax
-     * \return The current value of m_AbsoluteYmax
+    /** Access m_absoluteYmax
+     * \return The current value of m_absoluteYmax
      */
     double GetAbsoluteYmax()
     {
-        return m_AbsoluteYmax;
+        return m_absoluteYmax;
     }
 
     /** Gives the area absolute X width
@@ -155,7 +155,7 @@ public:
      */
     double GetAbsoluteXwidth()
     {
-        return abs(m_AbsoluteXmax-m_AbsoluteXmin);
+        return std::abs(m_absoluteXmax-m_absoluteXmin);
     }
 
     /** Gives the area absolute Y width
@@ -163,7 +163,7 @@ public:
      */
     double GetAbsoluteYwidth()
     {
-        return abs(m_AbsoluteYmax-m_AbsoluteYmin);
+        return std::abs(m_absoluteYmax-m_absoluteYmin);
     }
 
     /** Gives the area X min coordinate
@@ -196,15 +196,15 @@ public:
      */
     int GetNbComposites()
     {
-        return m_NbComposites;
+        return m_nbComposites;
     }
 
     /** Gives the composite areas
      * \return The composite areas
      */
-    vector <asGeoArea> GetComposites()
+	std::vector <asGeoArea> GetComposites()
     {
-        return m_Composites;
+        return m_composites;
     }
 
     /** Gives a specific composite area
@@ -212,8 +212,8 @@ public:
      */
     asGeoArea GetComposite(int Id)
     {
-        if(Id>=m_NbComposites) asThrowException(_("The composite area doesn't exist."));
-        return m_Composites[Id];
+        if(Id>=m_nbComposites) asThrowException(_("The composite area doesn't exist."));
+        return m_composites[Id];
     }
 
     /** Tells if the area is a straight rectangle or not
@@ -221,29 +221,24 @@ public:
      */
     bool IsRectangle();
 
-    /** Convert projection
-     * \param newcoordsys The destination projection
-     */
-    void ProjConvert(CoordSys newcoordsys);
-
 protected:
     /** Creates the composites */
     void CreateComposites();
 
 private:
-    double m_AbsoluteXmin;
-    double m_AbsoluteXmax;
-    double m_AbsoluteYmin;
-    double m_AbsoluteYmax;
-    Coo m_CornerUL; //!< Member variable "m_CornerUL"
-    Coo m_CornerUR; //!< Member variable "m_CornerUR"
-    Coo m_CornerLL; //!< Member variable "m_CornerDL"
-    Coo m_CornerLR; //!< Member variable "m_CornerDR"
-    float m_Level; //!< Member variable "m_Level" hPa
-    float m_Height; //!< Member variable "m_Height" m
-    int m_NbComposites; //!< Member variable "m_NbComposites"
-    vector <asGeoArea> m_Composites; //!< Member variable "m_Composites"
-    int m_FlatAllowed; //!< Member variable "m_FlatAllowed"
+    double m_absoluteXmin;
+    double m_absoluteXmax;
+    double m_absoluteYmin;
+    double m_absoluteYmax;
+    Coo m_cornerUL; //!< Member variable "m_cornerUL"
+    Coo m_cornerUR; //!< Member variable "m_cornerUR"
+    Coo m_cornerLL; //!< Member variable "m_cornerDL"
+    Coo m_cornerLR; //!< Member variable "m_cornerDR"
+    float m_level; //!< Member variable "m_level" hPa
+    float m_height; //!< Member variable "m_height" m
+    int m_nbComposites; //!< Member variable "m_nbComposites"
+    std::vector <asGeoArea> m_composites; //!< Member variable "m_composites"
+    int m_flatAllowed; //!< Member variable "m_flatAllowed"
 
     /** Process to initialization and checks */
     void Init();

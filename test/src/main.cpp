@@ -55,15 +55,15 @@ int main( int argc, char** argv )
 	*/
 
     // Override some globals
-    g_UnitTesting = true;
-    g_SilentMode = true;
-    g_GuiMode = false;
+    g_unitTesting = true;
+    g_silentMode = true;
+    g_guiMode = false;
 
     // Option to test or not the exception throwing
-    g_UnitTestExceptions = false;
+    g_unitTestExceptions = false;
 
     // Test random distribution: write ouput in files
-    g_UnitTestRandomDistributions = false;
+    g_unitTestRandomDistributions = false;
 
     // Initialize the library because wxApp is not called
     wxInitialize();
@@ -102,8 +102,7 @@ int main( int argc, char** argv )
 			}
 			else
 			{
-				wxString str("Cannot find the files directory\n");
-				printf("%s", str.mb_str(wxConvUTF8).data());
+				wxPrintf("Cannot find the files directory\n");
 				return 0;
 			}
 		}
@@ -122,7 +121,7 @@ int main( int argc, char** argv )
         if (shortOnly)
         {
             // Option to process time demanding processing
-            g_UnitTestLongProcessing = false;
+            g_unitTestLongProcessing = false;
 
             result = UnitTest::RunAllTests();
         }
