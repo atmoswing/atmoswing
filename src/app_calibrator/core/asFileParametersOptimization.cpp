@@ -24,7 +24,7 @@ bool asFileParametersOptimization::GoToRootElement()
 {
     if(!GoToFirstNodeWithPath("AtmoSwingFile.OptimizationSet"))
     {
-        asLogError(wxString::Format(_("The file %s is not an AtmoSwing optimization parameters file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing optimization parameters file."), m_fileName.GetFullName()));
         return false;
     }
     return true;

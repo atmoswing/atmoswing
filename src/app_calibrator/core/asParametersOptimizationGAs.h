@@ -36,26 +36,26 @@ public:
 
     int GetChromosomeLength()
     {
-        return m_ChromosomeIndices.size();
+        return m_chromosomeIndices.size();
     }
 
 
 protected:
 
 private:
-    float m_IndividualSelfAdaptationMutationRate;
-    float m_IndividualSelfAdaptationMutationRadius;
-    VectorInt m_ChromosomeIndices;
-    VectorFloat m_ChromosomeSelfAdaptationMutationRate;
-    VectorFloat m_ChromosomeSelfAdaptationMutationRadius;
-    bool m_HasChromosomeSelfAdaptationMutationRate;
-    bool m_HasChromosomeSelfAdaptationMutationRadius;
-    int m_TimeArrayAnalogsIntervalDaysIteration;
-    int m_TimeArrayAnalogsIntervalDaysUpperLimit;
-    int m_TimeArrayAnalogsIntervalDaysLowerLimit;
-    bool m_TimeArrayAnalogsIntervalDaysLocks;
-    int m_AllParametersCount;
-    bool m_ParametersListOver;
+    float m_individualSelfAdaptationMutationRate;
+    float m_individualSelfAdaptationMutationRadius;
+    VectorInt m_chromosomeIndices;
+    VectorFloat m_chromosomeSelfAdaptationMutationRate;
+    VectorFloat m_chromosomeSelfAdaptationMutationRadius;
+    bool m_hasChromosomeSelfAdaptationMutationRate;
+    bool m_hasChromosomeSelfAdaptationMutationRadius;
+    int m_timeArrayAnalogsIntervalDaysIteration;
+    int m_timeArrayAnalogsIntervalDaysUpperLimit;
+    int m_timeArrayAnalogsIntervalDaysLowerLimit;
+    bool m_timeArrayAnalogsIntervalDaysLocks;
+    int m_allParametersCount;
+    bool m_parametersListOver;
 
     bool IsParamLocked(int index);
 
@@ -72,26 +72,26 @@ private:
 
     float GetSelfAdaptationMutationRateFromChromosome(int index)
     {
-        wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()>(unsigned)index);
-        return m_ChromosomeSelfAdaptationMutationRate[index];
+        wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()>(unsigned)index);
+        return m_chromosomeSelfAdaptationMutationRate[index];
     }
 
     void SetSelfAdaptationMutationRateFromChromosome(int index, float val)
     {
-        wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()>(unsigned)index);
-        m_ChromosomeSelfAdaptationMutationRate[index] = val;
+        wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()>(unsigned)index);
+        m_chromosomeSelfAdaptationMutationRate[index] = val;
     }
 
     float GetSelfAdaptationMutationRadiusFromChromosome(int index)
     {
-        wxASSERT(m_ChromosomeSelfAdaptationMutationRadius.size()>(unsigned)index);
-        return m_ChromosomeSelfAdaptationMutationRadius[index];
+        wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size()>(unsigned)index);
+        return m_chromosomeSelfAdaptationMutationRadius[index];
     }
 
     void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val)
     {
-        wxASSERT(m_ChromosomeSelfAdaptationMutationRadius.size()>(unsigned)index);
-        m_ChromosomeSelfAdaptationMutationRadius[index] = val;
+        wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size()>(unsigned)index);
+        m_chromosomeSelfAdaptationMutationRadius[index] = val;
     }
 };
 

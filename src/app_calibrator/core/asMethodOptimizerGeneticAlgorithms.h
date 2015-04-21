@@ -57,19 +57,19 @@ public:
 protected:
 
 private:
-    std::vector <asParametersOptimizationGAs> m_Parameters;
-    std::vector <asParametersOptimizationGAs> m_ParametersTemp;
-    asParametersOptimizationGAs m_OriginalParams;
-    int m_GenerationNb;
-    int m_AssessmentCounter;
-    int m_PopSize;
-    int m_NaturalSelectionType;
-    int m_CouplesSelectionType;
-    int m_CrossoverType;
-    int m_MutationsModeType;
-    bool m_AllowElitismForTheBest;
-    VectorFloat m_BestScores;
-    VectorFloat m_MeanScores;
+    std::vector <asParametersOptimizationGAs> m_parameters;
+    std::vector <asParametersOptimizationGAs> m_parametersTemp;
+    asParametersOptimizationGAs m_originalParams;
+    int m_generationNb;
+    int m_assessmentCounter;
+    int m_popSize;
+    int m_naturalSelectionType;
+    int m_couplesSelectionType;
+    int m_crossoverType;
+    int m_mutationsModeType;
+    bool m_allowElitismForTheBest;
+    VectorFloat m_bestScores;
+    VectorFloat m_meanScores;
 
     void ClearAll();
     void ClearTemp();

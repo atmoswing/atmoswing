@@ -7,16 +7,16 @@ asParametersOptimizationGAs::asParametersOptimizationGAs()
 :
 asParametersOptimization()
 {
-    m_IndividualSelfAdaptationMutationRate = 0;
-    m_IndividualSelfAdaptationMutationRadius = 0;
-    m_HasChromosomeSelfAdaptationMutationRate = false;
-    m_HasChromosomeSelfAdaptationMutationRadius = false;
-    m_AllParametersCount = 0;
-    m_TimeArrayAnalogsIntervalDaysIteration = 0;
-    m_TimeArrayAnalogsIntervalDaysUpperLimit = 0;
-    m_TimeArrayAnalogsIntervalDaysLowerLimit = 0;
-    m_TimeArrayAnalogsIntervalDaysLocks = true;
-    m_ParametersListOver = false;
+    m_individualSelfAdaptationMutationRate = 0;
+    m_individualSelfAdaptationMutationRadius = 0;
+    m_hasChromosomeSelfAdaptationMutationRate = false;
+    m_hasChromosomeSelfAdaptationMutationRadius = false;
+    m_allParametersCount = 0;
+    m_timeArrayAnalogsIntervalDaysIteration = 0;
+    m_timeArrayAnalogsIntervalDaysUpperLimit = 0;
+    m_timeArrayAnalogsIntervalDaysLowerLimit = 0;
+    m_timeArrayAnalogsIntervalDaysLocks = true;
+    m_parametersListOver = false;
 }
 
 asParametersOptimizationGAs::~asParametersOptimizationGAs()
@@ -29,7 +29,7 @@ void asParametersOptimizationGAs::BuildChromosomes()
     int counter = 0;
     VectorInt indices;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         indices.push_back(counter);
     }
@@ -37,7 +37,7 @@ void asParametersOptimizationGAs::BuildChromosomes()
 
     for (int i=0; i<GetStepsNb(); i++)
     {
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             indices.push_back(counter);
         }
@@ -49,19 +49,19 @@ void asParametersOptimizationGAs::BuildChromosomes()
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         indices.push_back(counter);
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         indices.push_back(counter);
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         indices.push_back(counter);
                     }
@@ -70,56 +70,56 @@ void asParametersOptimizationGAs::BuildChromosomes()
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     indices.push_back(counter);
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     indices.push_back(counter);
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     indices.push_back(counter);
                 }
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 indices.push_back(counter);
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 indices.push_back(counter);
             }
@@ -127,52 +127,52 @@ void asParametersOptimizationGAs::BuildChromosomes()
         }
     }
 
-    m_ChromosomeIndices = indices;
-    m_AllParametersCount = counter;
+    m_chromosomeIndices = indices;
+    m_allParametersCount = counter;
 }
 
 void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRate()
 {
-    m_IndividualSelfAdaptationMutationRate = asTools::Random(0.0,1.0);
+    m_individualSelfAdaptationMutationRate = asTools::Random(0.0,1.0);
 }
 
 void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRadius()
 {
-    m_IndividualSelfAdaptationMutationRadius = asTools::Random(0.0,1.0);
+    m_individualSelfAdaptationMutationRadius = asTools::Random(0.0,1.0);
 }
 
 void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate()
 {
     int length = GetChromosomeLength();
-    m_ChromosomeSelfAdaptationMutationRate.resize(length);
+    m_chromosomeSelfAdaptationMutationRate.resize(length);
 
     for (int i=0; i<length; i++)
     {
-        m_ChromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0,1.0);
+        m_chromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0,1.0);
     }
 
-    m_HasChromosomeSelfAdaptationMutationRate = true;
+    m_hasChromosomeSelfAdaptationMutationRate = true;
 }
 
 void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius()
 {
     int length = GetChromosomeLength();
-    m_ChromosomeSelfAdaptationMutationRadius.resize(length);
+    m_chromosomeSelfAdaptationMutationRadius.resize(length);
 
     for (int i=0; i<length; i++)
     {
-        m_ChromosomeSelfAdaptationMutationRadius[i] = asTools::Random(0.0,1.0);
+        m_chromosomeSelfAdaptationMutationRadius[i] = asTools::Random(0.0,1.0);
     }
 
-    m_HasChromosomeSelfAdaptationMutationRadius = true;
+    m_hasChromosomeSelfAdaptationMutationRadius = true;
 }
 
 bool asParametersOptimizationGAs::IsParamLocked(int index)
 {
     int counter = 0;
-    m_ParametersListOver = false;
+    m_parametersListOver = false;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         if (counter==index) return false;
     }
@@ -185,7 +185,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
     for (int i=0; i<GetStepsNb(); i++)
     {
 
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             if (counter==index) return false;
         }
@@ -201,7 +201,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         if (counter==index) return false;
                     }
@@ -211,7 +211,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         if (counter==index) return false;
                     }
@@ -221,7 +221,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index) return false;
                     }
@@ -234,7 +234,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     if (counter==index) return false;
                 }
@@ -244,7 +244,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     if (counter==index) return false;
                 }
@@ -254,7 +254,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index) return false;
                 }
@@ -265,7 +265,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 if (counter==index) return false;
             }
@@ -275,7 +275,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 if (counter==index) return false;
             }
@@ -285,7 +285,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 if (counter==index) return false;
             }
@@ -295,7 +295,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 if (counter==index) return false;
             }
@@ -305,7 +305,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (counter==index) return false;
             }
@@ -315,7 +315,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 if (counter==index) return false;
             }
@@ -327,10 +327,10 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
-    m_ParametersListOver = true;
+    m_parametersListOver = true;
 
     return true;
 }
@@ -459,7 +459,7 @@ int asParametersOptimizationGAs::GetParamType(int index)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
     asThrowException(_("We should never reach that point..."));
@@ -470,7 +470,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
 {
     int counter = 0;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         if (counter==index)
         {
@@ -482,7 +482,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
     for (int i=0; i<GetStepsNb(); i++)
     {
 
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             if (counter==index)
             {
@@ -497,7 +497,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         if (counter==index)
                         {
@@ -515,7 +515,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         if (counter==index)
                         {
@@ -533,7 +533,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
@@ -545,7 +545,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     if (counter==index)
                     {
@@ -563,7 +563,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     if (counter==index)
                     {
@@ -581,7 +581,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
@@ -591,7 +591,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 if (counter==index)
                 {
@@ -600,7 +600,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 if (counter==index)
                 {
@@ -609,7 +609,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 if (counter==index)
                 {
@@ -618,7 +618,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 if (counter==index)
                 {
@@ -627,7 +627,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (counter==index)
                 {
@@ -636,7 +636,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 if (counter==index)
                 {
@@ -656,7 +656,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NaNDouble;
@@ -666,7 +666,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
 {
     int counter = 0;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         if (counter==index)
         {
@@ -678,7 +678,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
     for (int i=0; i<GetStepsNb(); i++)
     {
 
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             if (counter==index)
             {
@@ -693,7 +693,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         if (counter==index)
                         {
@@ -703,7 +703,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         if (counter==index)
                         {
@@ -713,7 +713,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
@@ -725,7 +725,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     if (counter==index)
                     {
@@ -735,7 +735,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     if (counter==index)
                     {
@@ -745,7 +745,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
@@ -755,7 +755,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 if (counter==index)
                 {
@@ -764,7 +764,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 if (counter==index)
                 {
@@ -773,7 +773,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 if (counter==index)
                 {
@@ -782,7 +782,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 if (counter==index)
                 {
@@ -791,7 +791,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (counter==index)
                 {
@@ -800,7 +800,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 if (counter==index)
                 {
@@ -812,7 +812,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NaNDouble;
@@ -822,7 +822,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
 {
     int counter = 0;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         if (counter==index)
         {
@@ -834,7 +834,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
     for (int i=0; i<GetStepsNb(); i++)
     {
 
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             if (counter==index)
             {
@@ -849,7 +849,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         if (counter==index)
                         {
@@ -858,7 +858,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         if (counter==index)
                         {
@@ -867,7 +867,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
@@ -879,7 +879,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     if (counter==index)
                     {
@@ -888,7 +888,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     if (counter==index)
                     {
@@ -897,7 +897,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
@@ -907,7 +907,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 if (counter==index)
                 {
@@ -916,7 +916,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 if (counter==index)
                 {
@@ -925,7 +925,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 if (counter==index)
                 {
@@ -934,7 +934,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 if (counter==index)
                 {
@@ -943,7 +943,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (counter==index)
                 {
@@ -952,7 +952,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 if (counter==index)
                 {
@@ -963,7 +963,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NaNDouble;
@@ -973,7 +973,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
 {
     int counter = 0;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         if (counter==index)
         {
@@ -985,7 +985,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
     for (int i=0; i<GetStepsNb(); i++)
     {
 
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             if (counter==index)
             {
@@ -1000,7 +1000,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         if (counter==index)
                         {
@@ -1009,7 +1009,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         if (counter==index)
                         {
@@ -1018,7 +1018,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
@@ -1030,7 +1030,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     if (counter==index)
                     {
@@ -1039,7 +1039,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     if (counter==index)
                     {
@@ -1048,7 +1048,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
@@ -1058,7 +1058,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 if (counter==index)
                 {
@@ -1067,7 +1067,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 if (counter==index)
                 {
@@ -1076,7 +1076,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 if (counter==index)
                 {
@@ -1085,7 +1085,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 if (counter==index)
                 {
@@ -1094,7 +1094,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (counter==index)
                 {
@@ -1103,7 +1103,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 if (counter==index)
                 {
@@ -1114,7 +1114,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
     return NaNDouble;
@@ -1124,7 +1124,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 {
     int counter = 0;
 
-    if(!m_TimeArrayAnalogsIntervalDaysLocks)
+    if(!m_timeArrayAnalogsIntervalDaysLocks)
     {
         if (counter==index)
         {
@@ -1137,7 +1137,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
     for (int i=0; i<GetStepsNb(); i++)
     {
-        if(!m_StepsLocks[i].AnalogsNumber)
+        if(!m_stepsLocks[i].AnalogsNumber)
         {
             if (counter==index)
             {
@@ -1154,7 +1154,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             {
                 for (int k=0; k<GetPreprocessSize(i,j); k++)
                 {
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessDataId[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessDataId[k])
                     {
                         if (counter==index)
                         {
@@ -1171,7 +1171,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessLevels[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessLevels[k])
                     {
                         if (counter==index)
                         {
@@ -1188,7 +1188,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     }
                     counter++;
 
-                    if(!m_StepsLocks[i].Predictors[j].PreprocessTimeHours[k])
+                    if(!m_stepsLocks[i].Predictors[j].PreprocessTimeHours[k])
                     {
                         if (counter==index)
                         {
@@ -1202,7 +1202,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             }
             else
             {
-                if(!m_StepsLocks[i].Predictors[j].DataId)
+                if(!m_stepsLocks[i].Predictors[j].DataId)
                 {
                     if (counter==index)
                     {
@@ -1219,7 +1219,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].Level)
+                if(!m_stepsLocks[i].Predictors[j].Level)
                 {
                     if (counter==index)
                     {
@@ -1236,7 +1236,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 }
                 counter++;
 
-                if(!m_StepsLocks[i].Predictors[j].TimeHours)
+                if(!m_stepsLocks[i].Predictors[j].TimeHours)
                 {
                     if (counter==index)
                     {
@@ -1248,7 +1248,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 counter++;
             }
 
-            if(!m_StepsLocks[i].Predictors[j].Umin)
+            if(!m_stepsLocks[i].Predictors[j].Umin)
             {
                 if (counter==index)
                 {
@@ -1258,7 +1258,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Uptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Uptsnb)
             {
                 if (counter==index)
                 {
@@ -1269,7 +1269,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vmin)
+            if(!m_stepsLocks[i].Predictors[j].Vmin)
             {
                 if (counter==index)
                 {
@@ -1279,7 +1279,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Vptsnb)
+            if(!m_stepsLocks[i].Predictors[j].Vptsnb)
             {
                 if (counter==index)
                 {
@@ -1290,7 +1290,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Weight)
+            if(!m_stepsLocks[i].Predictors[j].Weight)
             {
                 if (counter==index)
                 {
@@ -1301,7 +1301,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             }
             counter++;
 
-            if(!m_StepsLocks[i].Predictors[j].Criteria)
+            if(!m_stepsLocks[i].Predictors[j].Criteria)
             {
                 if (counter==index)
                 {
@@ -1320,7 +1320,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
         }
     }
 
-    wxASSERT_MSG(counter==m_AllParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_AllParametersCount));
+    wxASSERT_MSG(counter==m_allParametersCount, wxString::Format("The counter (%d) did not match the number of parameters (%d).", counter, m_allParametersCount));
     wxASSERT_MSG(counter<=index, "Couldn't access the desired index in the parameters chromosome.");
 
     return;
@@ -1334,7 +1334,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size()-1], Asc);
 
     unsigned int nextpointIndex = 0;
-    int nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+    int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
@@ -1349,7 +1349,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
                 if (nextpointIndex<crossingPoints.size()-1)
                 {
                     nextpointIndex++;
-                    nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+                    nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
                 }
                 else
                 {
@@ -1367,13 +1367,13 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_HasChromosomeSelfAdaptationMutationRate)
+                if (m_hasChromosomeSelfAdaptationMutationRate)
                 {
                     float mutRate = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt));
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, mutRate);
                 }
-                if (m_HasChromosomeSelfAdaptationMutationRadius)
+                if (m_hasChromosomeSelfAdaptationMutationRadius)
                 {
                     float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt, otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
@@ -1384,7 +1384,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta, double betaMin, double betaMax)
@@ -1395,7 +1395,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size()-1], Asc);
 
     unsigned int nextpointIndex = 0;
-    int nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+    int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
@@ -1411,7 +1411,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
                 if (nextpointIndex<crossingPoints.size()-1)
                 {
                     nextpointIndex++;
-                    nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+                    nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
                 }
                 else
                 {
@@ -1434,7 +1434,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_HasChromosomeSelfAdaptationMutationRate)
+                if (m_hasChromosomeSelfAdaptationMutationRate)
                 {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
@@ -1443,7 +1443,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                 }
-                if (m_HasChromosomeSelfAdaptationMutationRadius)
+                if (m_hasChromosomeSelfAdaptationMutationRadius)
                 {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
@@ -1457,7 +1457,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta, double betaMin, double betaMax)
@@ -1468,7 +1468,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size()-1], Asc);
 
     unsigned int nextpointIndex = 0;
-    int nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+    int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
@@ -1484,7 +1484,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
                 if (nextpointIndex<crossingPoints.size()-1)
                 {
                     nextpointIndex++;
-                    nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+                    nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
                 }
                 else
                 {
@@ -1507,7 +1507,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_HasChromosomeSelfAdaptationMutationRate)
+                if (m_hasChromosomeSelfAdaptationMutationRate)
                 {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
@@ -1516,7 +1516,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                 }
-                if (m_HasChromosomeSelfAdaptationMutationRadius)
+                if (m_hasChromosomeSelfAdaptationMutationRadius)
                 {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
@@ -1530,7 +1530,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 
 }
 
@@ -1542,7 +1542,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size()-1], Asc);
 
     unsigned int nextpointIndex = 0;
-    int nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+    int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
@@ -1567,7 +1567,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_HasChromosomeSelfAdaptationMutationRate)
+                if (m_hasChromosomeSelfAdaptationMutationRate)
                 {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
@@ -1576,7 +1576,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                 }
-                if (m_HasChromosomeSelfAdaptationMutationRadius)
+                if (m_hasChromosomeSelfAdaptationMutationRadius)
                 {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
@@ -1590,7 +1590,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                 if (nextpointIndex<crossingPoints.size()-1)
                 {
                     nextpointIndex++;
-                    nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+                    nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
                 }
                 else
                 {
@@ -1609,13 +1609,13 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                     otherParam.SetParameterValue(counter, newval2);
 
                     // Apply to self-adaptation
-                    if (m_HasChromosomeSelfAdaptationMutationRate)
+                    if (m_hasChromosomeSelfAdaptationMutationRate)
                     {
                         float mutRate = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                         SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt));
                         otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, mutRate);
                     }
-                    if (m_HasChromosomeSelfAdaptationMutationRadius)
+                    if (m_hasChromosomeSelfAdaptationMutationRadius)
                     {
                         float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                         SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt, otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
@@ -1627,7 +1627,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 
 }
 
@@ -1639,7 +1639,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size()-1], Asc);
 
     unsigned int nextpointIndex = 0;
-    int nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+    int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
@@ -1654,7 +1654,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
                 if (nextpointIndex<crossingPoints.size()-1)
                 {
                     nextpointIndex++;
-                    nextpoint = m_ChromosomeIndices[crossingPoints[nextpointIndex]];
+                    nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
                 }
                 else
                 {
@@ -1674,7 +1674,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
                 thirdParam.SetParameterValue(counter, newval3);
 
                 // Apply to self-adaptation
-                if (m_HasChromosomeSelfAdaptationMutationRate)
+                if (m_hasChromosomeSelfAdaptationMutationRate)
                 {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
@@ -1685,7 +1685,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                     thirdParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate3);
                 }
-                if (m_HasChromosomeSelfAdaptationMutationRadius)
+                if (m_hasChromosomeSelfAdaptationMutationRadius)
                 {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
@@ -1701,7 +1701,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 
 }
 
@@ -1728,7 +1728,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
             otherParam.SetParameterValue(counter, newval2);
 
             // Apply to self-adaptation
-            if (m_HasChromosomeSelfAdaptationMutationRate)
+            if (m_hasChromosomeSelfAdaptationMutationRate)
             {
                 float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                 float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
@@ -1737,7 +1737,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
                 SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                 otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
             }
-            if (m_HasChromosomeSelfAdaptationMutationRadius)
+            if (m_hasChromosomeSelfAdaptationMutationRadius)
             {
                 float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                 float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
@@ -1750,7 +1750,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateUniformDistribution(double probability, bool &hasMutated)
@@ -1773,7 +1773,7 @@ void asParametersOptimizationGAs::MutateUniformDistribution(double probability, 
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateNormalDistribution(double probability, double stdDevRatioRange, bool &hasMutated)
@@ -1808,7 +1808,7 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate, bool &hasMutated)
@@ -1858,34 +1858,34 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated)
 {
     // Mutate mutation probability
-    if (asTools::Random(0.0, 1.0)<m_IndividualSelfAdaptationMutationRate)
+    if (asTools::Random(0.0, 1.0)<m_individualSelfAdaptationMutationRate)
     {
-        m_IndividualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
+        m_individualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
     }
 
     // Mutate data
-    MutateUniformDistribution(m_IndividualSelfAdaptationMutationRate, hasMutated);
+    MutateUniformDistribution(m_individualSelfAdaptationMutationRate, hasMutated);
 
 }
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
 {
     // Mutate mutation probability
-    if (asTools::Random(0.0, 1.0)<m_IndividualSelfAdaptationMutationRate)
+    if (asTools::Random(0.0, 1.0)<m_individualSelfAdaptationMutationRate)
     {
-        m_IndividualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
+        m_individualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
-    if (asTools::Random(0.0, 1.0)<m_IndividualSelfAdaptationMutationRadius)
+    if (asTools::Random(0.0, 1.0)<m_individualSelfAdaptationMutationRadius)
     {
-        m_IndividualSelfAdaptationMutationRadius = asTools::Random(0.0, 1.0);
+        m_individualSelfAdaptationMutationRadius = asTools::Random(0.0, 1.0);
     }
 
     // Mutate data
@@ -1894,7 +1894,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
     {
         if (!IsParamLocked(counter))
         {
-            if (asTools::Random(0.0, 1.0)<m_IndividualSelfAdaptationMutationRate)
+            if (asTools::Random(0.0, 1.0)<m_individualSelfAdaptationMutationRate)
             {
                 if (GetParamType(counter)<3)
                 {
@@ -1907,11 +1907,11 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
 
                     if (r1<0.5)
                     {
-                        newVal = actVal + (upperLimit-actVal)*r2*m_IndividualSelfAdaptationMutationRadius;
+                        newVal = actVal + (upperLimit-actVal)*r2*m_individualSelfAdaptationMutationRadius;
                     }
                     else
                     {
-                        newVal = actVal - (actVal-lowerLimit)*r2*m_IndividualSelfAdaptationMutationRadius;
+                        newVal = actVal - (actVal-lowerLimit)*r2*m_individualSelfAdaptationMutationRadius;
                     }
 
                     SetParameterValue(counter, newVal);
@@ -1930,20 +1930,20 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMutated)
 {
-    wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()>0);
-    wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()==GetChromosomeLength());
+    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()>0);
+    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()==GetChromosomeLength());
 
     // Mutate mutation probability
-    for (unsigned int i=0; i<m_ChromosomeSelfAdaptationMutationRate.size(); i++)
+    for (unsigned int i=0; i<m_chromosomeSelfAdaptationMutationRate.size(); i++)
     {
-        if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[i])
+        if (asTools::Random(0.0, 1.0)<m_chromosomeSelfAdaptationMutationRate[i])
         {
-            m_ChromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
+            m_chromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
         }
 
     }
@@ -1955,9 +1955,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
     {
         if (!IsParamLocked(counter))
         {
-            wxASSERT(counterSelfAdapt<m_ChromosomeSelfAdaptationMutationRate.size());
+            wxASSERT(counterSelfAdapt<m_chromosomeSelfAdaptationMutationRate.size());
 
-            if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[counterSelfAdapt])
+            if (asTools::Random(0.0, 1.0)<m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt])
             {
                 // Uniform distribution in the case of parameters as a list
                 double newVal = asTools::Random(GetParameterLowerLimit(counter),
@@ -1971,32 +1971,32 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &hasMutated)
 {
-    wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()>0);
-    wxASSERT(m_ChromosomeSelfAdaptationMutationRadius.size()>0);
-    wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()==m_ChromosomeSelfAdaptationMutationRadius.size());
-    wxASSERT(m_ChromosomeSelfAdaptationMutationRate.size()==GetChromosomeLength());
+    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()>0);
+    wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size()>0);
+    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()==m_chromosomeSelfAdaptationMutationRadius.size());
+    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size()==GetChromosomeLength());
 
     // Mutate mutation probability
-    for (unsigned int i=0; i<m_ChromosomeSelfAdaptationMutationRate.size(); i++)
+    for (unsigned int i=0; i<m_chromosomeSelfAdaptationMutationRate.size(); i++)
     {
-        if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[i])
+        if (asTools::Random(0.0, 1.0)<m_chromosomeSelfAdaptationMutationRate[i])
         {
-            m_ChromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
+            m_chromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
         }
 
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
-    for (unsigned int i=0; i<m_ChromosomeSelfAdaptationMutationRadius.size(); i++)
+    for (unsigned int i=0; i<m_chromosomeSelfAdaptationMutationRadius.size(); i++)
     {
-        if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRadius[i])
+        if (asTools::Random(0.0, 1.0)<m_chromosomeSelfAdaptationMutationRadius[i])
         {
-            m_ChromosomeSelfAdaptationMutationRadius[i] = asTools::Random(0.0, 1.0);
+            m_chromosomeSelfAdaptationMutationRadius[i] = asTools::Random(0.0, 1.0);
         }
 
     }
@@ -2008,9 +2008,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     {
         if (!IsParamLocked(counter))
         {
-            wxASSERT(counterSelfAdapt<m_ChromosomeSelfAdaptationMutationRate.size());
+            wxASSERT(counterSelfAdapt<m_chromosomeSelfAdaptationMutationRate.size());
 
-            if (asTools::Random(0.0, 1.0)<m_ChromosomeSelfAdaptationMutationRate[counterSelfAdapt])
+            if (asTools::Random(0.0, 1.0)<m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt])
             {
                 if (GetParamType(counter)<3)
                 {
@@ -2023,11 +2023,11 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
 
                     if (r1<0.5)
                     {
-                        newVal = actVal + (upperLimit-actVal)*r2*m_ChromosomeSelfAdaptationMutationRadius[counterSelfAdapt];
+                        newVal = actVal + (upperLimit-actVal)*r2*m_chromosomeSelfAdaptationMutationRadius[counterSelfAdapt];
                     }
                     else
                     {
-                        newVal = actVal - (actVal-lowerLimit)*r2*m_ChromosomeSelfAdaptationMutationRadius[counterSelfAdapt];
+                        newVal = actVal - (actVal-lowerLimit)*r2*m_chromosomeSelfAdaptationMutationRadius[counterSelfAdapt];
                     }
 
                     SetParameterValue(counter, newVal);
@@ -2047,7 +2047,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }
 
 void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &hasMutated)
@@ -2115,5 +2115,5 @@ void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &has
         }
         counter++;
     }
-    while(!m_ParametersListOver);
+    while(!m_parametersListOver);
 }

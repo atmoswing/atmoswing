@@ -16,17 +16,17 @@ public:
 
     void SetPredictandStationIds(VectorInt val)
     {
-        m_PredictandStationIds = val;
+        m_predictandStationIds = val;
     }
 
 
 protected:
-    VectorInt m_PredictandStationIds;
-    bool m_IsOver;
-    bool m_SkipNext;
-    int m_OptimizerStage;
-    int m_ParamsNb;
-    int m_Iterator;
+    VectorInt m_predictandStationIds;
+    bool m_isOver;
+    bool m_skipNext;
+    int m_optimizerStage;
+    int m_paramsNb;
+    int m_iterator;
 
 
 //	virtual void InitParameters(asParametersOptimization &params) = 0;
@@ -42,17 +42,17 @@ protected:
 
 	void IncrementIterator()
     {
-        m_Iterator++;
+        m_iterator++;
     }
 
 	bool IsOver()
     {
-        return m_IsOver;
+        return m_isOver;
     }
 
     bool SkipNext()
     {
-        return m_SkipNext;
+        return m_skipNext;
     }
 
 private:
