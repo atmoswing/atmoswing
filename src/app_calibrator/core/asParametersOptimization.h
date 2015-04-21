@@ -22,6 +22,10 @@ public:
 
     void InitRandomValues();
 
+	bool SetSpatialWindowProperties();
+
+	bool SetPreloadingProperties();
+
     bool LoadFromFile(const wxString &filePath);
 
     void CheckRange();
