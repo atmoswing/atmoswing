@@ -328,6 +328,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     }
 
     // Set properties
+	if (!PreprocessingPropertiesOk()) return false;
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
@@ -361,6 +362,7 @@ bool asParametersCalibration::SetSpatialWindowProperties()
             double Yshift = std::fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
             if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
             if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
+
             VectorInt uptsnbs = GetPredictorXptsnbVector(i_step, i_ptor);
             VectorInt vptsnbs = GetPredictorYptsnbVector(i_step, i_ptor);
             if (asTools::MinArray(&uptsnbs[0], &uptsnbs[uptsnbs.size()-1])<=1 || asTools::MinArray(&vptsnbs[0], &vptsnbs[vptsnbs.size()-1])<=1)
@@ -371,6 +373,72 @@ bool asParametersCalibration::SetSpatialWindowProperties()
     }
 
     return true;
+}
+
+bool asParametersCalibration::PreprocessingPropertiesOk()
+{
+	for (int i_step = 0; i_step<GetStepsNb(); i_step++)
+	{
+		for (int i_ptor = 0; i_ptor<GetPredictorsNb(i_step); i_ptor++)
+		{
+			if (NeedsPreloading(i_step, i_ptor) && NeedsPreprocessing(i_step, i_ptor))
+			{
+				// Check the preprocessing method
+				wxString method = GetPreprocessMethod(i_step, i_ptor);
+				int preprocSize = GetPreprocessSize(i_step, i_ptor);
+
+				// Check that the data ID is unique
+				for (int i_preproc = 0; i_preproc<preprocSize; i_preproc++)
+				{
+					if (GetPreprocessDataIdVector(i_step, i_ptor, i_preproc).size() != 1)
+					{
+						asLogError(_("The preprocess DataId must be unique with the preload option."));
+						return false;
+					}
+				}
+
+				// Different actions depending on the preprocessing method.
+				if (method.IsSameAs("Gradients"))
+				{
+					if (preprocSize != 1)
+					{
+						asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."), preprocSize));
+						return false;
+					}
+				}
+				else if (method.IsSameAs("HumidityFlux"))
+				{
+					if (preprocSize != 4)
+					{
+						asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."), preprocSize));
+						return false;
+					}
+				}
+				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+				{
+					if (preprocSize != 2)
+					{
+						asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."), preprocSize));
+						return false;
+					}
+				}
+				else if (method.IsSameAs("FormerHumidityIndex"))
+				{
+					if (preprocSize != 4)
+					{
+						asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."), preprocSize));
+						return false;
+					}
+				}
+				else
+				{
+					asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method));
+				}
+			}
+		}
+	}
+
+	return true;
 }
 
 bool asParametersCalibration::SetPreloadingProperties()
@@ -421,56 +489,25 @@ bool asParametersCalibration::SetPreloadingProperties()
                 wxString method = GetPreprocessMethod(i_step, i_ptor);
                 VectorFloat preprocLevels;
                 VectorDouble preprocTimeHours;
-                int preprocSize = GetPreprocessSize(i_step, i_ptor);
-
-                // Check that the data ID is unique
-                for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
-                {
-                    if(GetPreprocessDataIdVector(i_step, i_ptor, i_preproc).size()!=1)
-                    {
-                        asLogError(_("The preprocess DataId must be unique with the preload option."));
-                        return false;
-                    }
-                }
 
                 // Different actions depending on the preprocessing method.
                 if (method.IsSameAs("Gradients"))
                 {
-                    if (preprocSize!=1)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                 }
                 else if (method.IsSameAs("HumidityFlux"))
                 {
-                    if (preprocSize!=4)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                 }
                 else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
                 {
-                    if (preprocSize!=2)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                 }
                 else if (method.IsSameAs("FormerHumidityIndex"))
                 {
-                    if (preprocSize!=4)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                     VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(i_step, i_ptor, 1);
@@ -479,20 +516,6 @@ bool asParametersCalibration::SetPreloadingProperties()
                 else
                 {
                     asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method));
-
-                    for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
-                    {
-                        if(GetPreprocessLevelVector(i_step, i_ptor, i_preproc).size()!=1)
-                        {
-                            asLogError(_("The preprocess Level option must be unique with with the preload option for unhandled preprocessing method."));
-                            return false;
-                        }
-                        if(GetPreprocessTimeHoursVector(i_step, i_ptor, i_preproc).size()!=1)
-                        {
-                            asLogError(_("The preprocess TimeHours option must be unique with with the preload option for unhandled preprocessing method."));
-                            return false;
-                        }
-                    }
                 }
 
                 if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;

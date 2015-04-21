@@ -46,9 +46,11 @@ public:
 
     bool LoadFromFile(const wxString &filePath);
     
-    bool SetSpatialWindowProperties();
+	virtual bool SetSpatialWindowProperties();
 
-    bool SetPreloadingProperties();
+    virtual bool SetPreloadingProperties();
+
+	bool PreprocessingPropertiesOk();
 
     bool InputsOK();
 
