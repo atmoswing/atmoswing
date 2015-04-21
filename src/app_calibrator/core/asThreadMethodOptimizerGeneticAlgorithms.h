@@ -18,10 +18,10 @@ public:
 
 protected:
 private:
-    asMethodOptimizerGeneticAlgorithms* m_Optimizer;
-    asParametersOptimization m_Params;
-    float* m_FinalScoreCalib;
-    VectorFloat* m_ScoreClimatology;
+    asMethodOptimizerGeneticAlgorithms* m_optimizer;
+    asParametersOptimization m_params;
+    float* m_finalScoreCalib;
+    VectorFloat* m_scoreClimatology;
 };
 
 #endif // ASTHREADMETHODOPTIMIZERGENETICALGORITHMS_H

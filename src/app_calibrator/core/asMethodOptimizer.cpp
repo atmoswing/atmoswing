@@ -12,11 +12,11 @@ asMethodOptimizer::asMethodOptimizer()
 :
 asMethodCalibrator()
 {
-    m_Iterator = 0;
-    m_OptimizerStage = asINITIALIZATION;
-    m_SkipNext = false;
-    m_IsOver = false;
-    m_ParamsNb = 0;
+    m_iterator = 0;
+    m_optimizerStage = asINITIALIZATION;
+    m_skipNext = false;
+    m_isOver = false;
+    m_paramsNb = 0;
 
     // Seeds the random generator
     asTools::InitRandom();
@@ -35,7 +35,7 @@ bool asMethodOptimizer::Validate(asParametersOptimization* params)
         return false;
     }
 
-    m_ValidationMode = true;
+    m_validationMode = true;
 
     asResultsAnalogsDates anaDatesPrevious;
     asResultsAnalogsDates anaDates;
@@ -67,9 +67,9 @@ bool asMethodOptimizer::Validate(asParametersOptimization* params)
     if(!GetAnalogsForecastScores(anaScores, *params, anaValues, stepsNb-1)) return false;
     if(!GetAnalogsForecastScoreFinal(anaScoreFinal, *params, anaScores, stepsNb-1)) return false;
 
-    m_ScoreValid = anaScoreFinal.GetForecastScore();
+    m_scoreValid = anaScoreFinal.GetForecastScore();
 
-    m_ValidationMode = false;
+    m_validationMode = false;
 
     return true;
 }

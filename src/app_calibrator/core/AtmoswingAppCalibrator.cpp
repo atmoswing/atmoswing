@@ -295,7 +295,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         if (groupsNb != pConfigRef->GetNumberOfGroups(true))
         {
             asLogError(wxString::Format(_("The number of groups (%d) differ from the previous config file (%d)."), groupsNb, int(pConfigRef->GetNumberOfGroups())));
-            m_ForceQuit = true;
+            m_forceQuit = true;
         }
 
         // We only compare the content of the Calibration group.
@@ -327,7 +327,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
                         {
                             asLogError(wxString::Format(_("The option %s (under Calibration/%s) differ from the previous config file (%s != %s)."),
                                                         entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str()));
-                            m_ForceQuit = true;
+                            m_forceQuit = true;
                         }
                     }
                     while (pConfigNow->GetNextEntry(entryName, entryIndex));
@@ -808,7 +808,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
 int AtmoswingAppCalibrator::OnRun()
 {
-    if (m_ForceQuit)
+    if (m_forceQuit)
     {
         asLogError(_("The calibration will not be processed."));
         return 0;
@@ -870,25 +870,25 @@ int AtmoswingAppCalibrator::OnRun()
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             }
-            else if (m_CalibMethod.IsSameAs("montecarlo", false))
+            else if (m_calibMethod.IsSameAs("montecarlo", false))
             {
                 asMethodOptimizerRandomSet optimizer;
-                optimizer.SetParamsFilePath(m_CalibParamsFile);
-                optimizer.SetPredictandDBFilePath(m_PredictandDB);
-                optimizer.SetPredictandStationIds(m_PredictandStationIds);
-                optimizer.SetPredictorDataDir(m_PredictorsDir);
+                optimizer.SetParamsFilePath(m_calibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_predictandDB);
+                optimizer.SetPredictandStationIds(m_predictandStationIds);
+                optimizer.SetPredictorDataDir(m_predictorsDir);
                 optimizer.Manager();
             }
-            else if (m_CalibMethod.IsSameAs("ga", false))
+            else if (m_calibMethod.IsSameAs("ga", false))
             {
                 asMethodOptimizerGeneticAlgorithms optimizer;
-                optimizer.SetParamsFilePath(m_CalibParamsFile);
-                optimizer.SetPredictandDBFilePath(m_PredictandDB);
-                optimizer.SetPredictandStationIds(m_PredictandStationIds);
-                optimizer.SetPredictorDataDir(m_PredictorsDir);
+                optimizer.SetParamsFilePath(m_calibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_predictandDB);
+                optimizer.SetPredictandStationIds(m_predictandStationIds);
+                optimizer.SetPredictorDataDir(m_predictorsDir);
                 optimizer.Manager();
             }
-            else if (m_CalibMethod.IsSameAs("evalscores", false))
+            else if (m_calibMethod.IsSameAs("evalscores", false))
             {
                 asMethodCalibratorEvaluateAllScores calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);

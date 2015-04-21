@@ -227,12 +227,12 @@ public:
         return fractpart*24;
     }
 
-    /** Access m_End
-     * \return The current value of m_End
+    /** Access m_end
+     * \return The current value of m_end
      */
     double GetEnd()
     {
-        return m_End;
+        return m_end;
     }
 
     /** Get the year of the last day
@@ -240,7 +240,7 @@ public:
      */
     int GetLastDayYear()
     {
-        return GetYear(m_End);
+        return GetYear(m_end);
     }
 
     /** Get the hour of the last day
@@ -249,7 +249,7 @@ public:
     double GetLastDayHour()
     {
         double fractpart, intpart;
-        fractpart = modf (m_End , &intpart);
+        fractpart = modf (m_end , &intpart);
         return fractpart*24;
     }
 
@@ -285,20 +285,20 @@ public:
         return m_intervalDays;
     }
 
-    /** Access m_ExclusionDays in hours
-     * \return The current value of m_ExclusionDays
+    /** Access m_exclusionDays in hours
+     * \return The current value of m_exclusionDays
      */
     double GetExclusionHours()
     {
-        return m_ExclusionDays*24;
+        return m_exclusionDays*24;
     }
 
-    /** Access m_ExclusionDays in days
-     * \return The current value of m_ExclusionDays in days
+    /** Access m_exclusionDays in days
+     * \return The current value of m_exclusionDays in days
      */
     double GetExclusionDays()
     {
-        return m_ExclusionDays;
+        return m_exclusionDays;
     }
 
     /** Access m_timeArray
@@ -371,10 +371,10 @@ private:
     Mode m_mode; //!< Member variable "m_mode"
     Array1DDouble m_timeArray; //!< Member variable "m_timeArray"
     double m_start; //!< Member variable "m_start"
-    double m_End; //!< Member variable "m_End"
+    double m_end; //!< Member variable "m_end"
     double m_timeStepDays; //!< Member variable "m_timeStepDays"
     double m_intervalDays; //!< Member variable "m_intervalDays"
-    double m_ExclusionDays; //!< Member variable "m_ExclusionDays"
+    double m_exclusionDays; //!< Member variable "m_exclusionDays"
     VectorInt m_forbiddenYears;
 
 };

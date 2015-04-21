@@ -18,8 +18,8 @@ protected:
 	virtual bool Optimize(asParametersOptimization &params);
 
 private:
-    std::vector <asParametersOptimization> m_Parameters;
-    asParametersOptimization m_OriginalParams;
+    std::vector <asParametersOptimization> m_parameters;
+    asParametersOptimization m_originalParams;
 
 };
 

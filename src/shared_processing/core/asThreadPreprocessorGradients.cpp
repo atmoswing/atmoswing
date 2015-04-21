@@ -39,7 +39,7 @@ m_pPredictors(predictors)
     m_status = Initializing;
     m_type = asThread::PreprocessorGradients;
     m_start = start;
-    m_End = end;
+    m_end = end;
     m_status = Waiting;
 }
 

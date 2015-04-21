@@ -18,10 +18,10 @@ public:
 
 protected:
 private:
-    asMethodOptimizerRandomSet m_Optimizer;
-    asParametersOptimization m_Params;
-    float* m_FinalScoreCalib;
-    VectorFloat* m_ScoreClimatology;
+    asMethodOptimizerRandomSet m_optimizer;
+    asParametersOptimization m_params;
+    float* m_finalScoreCalib;
+    VectorFloat* m_scoreClimatology;
 };
 
 #endif // ASTHREADMETHODOPTIMIZERRANDOMSET_H

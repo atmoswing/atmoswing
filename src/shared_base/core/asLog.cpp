@@ -123,13 +123,13 @@ void asLog::Resume()
 
 void asLog::Flush()
 {
-    }
-    else if(m_LogFile)
-    {
-        m_LogFile->Flush();
-    else if (m_logFile) {
-        m_logFile->Flush();
-    }
+#if wxUSE_GUI
+	if (m_logChain) {
+		m_logChain->Flush();
+	}
+	else if (m_logFile) {
+		m_logFile->Flush();
+	}
 #else
 	m_logFile->Flush();
 #endif
