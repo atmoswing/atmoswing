@@ -50,53 +50,53 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaGaussianGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Alternative constructor
      * \param coosys The coordinate system
-     * \param Umin The left border
-     * \param Uptsnb The size on U axis
-     * \param Vmin The left border
-     * \param Vptsnb The size on V axis
+     * \param Xmin The left border
+     * \param Xptsnb The size on X axis
+     * \param Ymin The left border
+     * \param Yptsnb The size on Y axis
      * \param type The Gaussian grid type
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoAreaGaussianGrid(CoordSys coosys, double Umin, int Uptsnb, double Vmin, int Vptsnb, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type = T62, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     /** Default destructor */
     virtual ~asGeoAreaGaussianGrid();
 
-    /** Get the size of the U axis
-     * \return The size of the U axis
+    /** Get the size of the X axis
+     * \return The size of the X axis
      */
-    int GetUaxisPtsnb();
+    int GetXaxisPtsnb();
 
-    /** Get the size of the V axis
-     * \return The size of the V axis
+    /** Get the size of the Y axis
+     * \return The size of the Y axis
      */
-    int GetVaxisPtsnb();
+    int GetYaxisPtsnb();
 
-    /** Get the U axis
+    /** Get the X axis
      * \return The axis built on the boundaries and the step
      */
-    Array1DDouble GetUaxis();
+    Array1DDouble GetXaxis();
 
-    /** Get the V axis
+    /** Get the Y axis
      * \param step The step of the desired axis
      * \return The axis built on the boundaries and the step
      */
-    Array1DDouble GetVaxis();
+    Array1DDouble GetYaxis();
 
 protected:
 
 private:
-    Array1DDouble m_FullAxisU;
-    Array1DDouble m_FullAxisV;
+    Array1DDouble m_fullAxisX;
+    Array1DDouble m_fullAxisY;
 
     bool IsOnGrid(const Coo &point);
-    bool IsOnGrid(double Ucoord, double Vcoord);
+    bool IsOnGrid(double Xcoord, double Ycoord);
 
 };
 

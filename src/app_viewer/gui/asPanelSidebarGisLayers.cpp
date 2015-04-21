@@ -31,14 +31,14 @@ asPanelSidebarGisLayers::asPanelSidebarGisLayers( wxWindow* parent, wxWindowID i
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
-    m_Header->SetLabelText(_("GIS layers"));
+    m_header->SetLabelText(_("GIS layers"));
 
-   // m_TocCtrl = new vrViewerTOCTree( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxNO_BORDER);
-    m_TocCtrl = new vrViewerTOCList( this, wxID_ANY);
-    m_SizerContent->Add( m_TocCtrl->GetControl(), 1, wxEXPAND, 5 );
+   // m_tocCtrl = new vrViewerTOCTree( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxNO_BORDER);
+    m_tocCtrl = new vrViewerTOCList( this, wxID_ANY);
+    m_sizerContent->Add( m_tocCtrl->GetControl(), 1, wxEXPAND, 5 );
 
     Layout();
-    m_SizerContent->Fit( this );
+    m_sizerContent->Fit( this );
 }
 
 asPanelSidebarGisLayers::~asPanelSidebarGisLayers()

@@ -31,13 +31,13 @@ asPredictorCriteriaS1grads::asPredictorCriteriaS1grads(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::S1grads;
-    m_Name = "S1grads";
-    m_FullName = _("Teweles-Wobus on gradients");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = 200;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::S1grads;
+    m_name = "S1grads";
+    m_fullName = _("Teweles-Wobus on gradients");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = 200;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaS1grads::~asPredictorCriteriaS1grads()
@@ -62,7 +62,7 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
     // Note here that the actual gradient data do not fill the entire data blocks,
     // but the rest being 0-filled, we can simplify the sum calculation !
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):
@@ -79,8 +79,8 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend += abs(refData(i,j)-evalData(i,j));
-                    divisor += wxMax(abs(refData(i,j)),abs(evalData(i,j)));
+                    dividend += std::abs(refData(i,j)-evalData(i,j));
+                    divisor += wxMax(std::abs(refData(i,j)),std::abs(evalData(i,j)));
                 }
             }
 
@@ -101,7 +101,7 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         if (dividend==0)
         {
             asLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return m_ScaleBest;
+            return m_scaleBest;
         }
         else
         {

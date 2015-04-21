@@ -28,73 +28,6 @@
 #include "asGlobEnums.h"
 
 
-FileFormat asGlobEnums::StringToFileFormatEnum(const wxString &FormatStr)
-{
-    if (FormatStr.CmpNoCase("dat")==0)
-    {
-        return dat;
-    }
-    else if (FormatStr.CmpNoCase("asc")==0)
-    {
-        return asc;
-    }
-    else if (FormatStr.CmpNoCase("txt")==0)
-    {
-        return txt;
-    }
-    else if (FormatStr.CmpNoCase("netcdf")==0)
-    {
-        return netcdf;
-    }
-    else if (FormatStr.CmpNoCase("grib")==0)
-    {
-        return grib;
-    }
-    else if (FormatStr.CmpNoCase("grib2")==0)
-    {
-        return grib2;
-    }
-    else if (FormatStr.CmpNoCase("xml")==0)
-    {
-        return xml;
-    }
-    else if (FormatStr.CmpNoCase("kml")==0)
-    {
-        return kml;
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The Format enumeration (%s) entry doesn't exists"), FormatStr.c_str()));
-    }
-    return NoFileFormat;
-}
-
-wxString asGlobEnums::FileFormatEnumToExtension(FileFormat format)
-{
-    switch (format)
-    {
-        case dat:
-            return "dat";
-        case asc:
-            return "asc";
-        case txt:
-            return "txt";
-        case netcdf:
-            return "nc";
-        case grib:
-            return "grib";
-        case grib2:
-            return "grib2";
-        case xml:
-            return "xml";
-        case kml:
-            return "kml";
-        default:
-            asLogError(_("File format unknown."));
-            return wxEmptyString;
-    }
-}
-
 FileTimeLength asGlobEnums::StringToFileLengthEnum(const wxString &LengthStr)
 {
     if ( (LengthStr.CmpNoCase("T")==0) | (LengthStr.CmpNoCase("Total")==0) )
@@ -119,7 +52,7 @@ FileTimeLength asGlobEnums::StringToFileLengthEnum(const wxString &LengthStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr.c_str()));
+        asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr));
     }
     return NoFileLength;
 }
@@ -240,7 +173,7 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
     }
     else
     {
-        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr.c_str()));
+        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
     }
     return NoDataParameter;
 }
@@ -392,7 +325,7 @@ DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
     }
     else
     {
-        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr.c_str()));
+        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
     }
     return NoDataUnit;
 }
@@ -458,7 +391,7 @@ DataTemporalResolution asGlobEnums::StringToDataTemporalResolutionEnum(const wxS
     }
     else
     {
-        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"), TemporalResolution.c_str()));
+        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"), TemporalResolution));
     }
     return NoDataTemporalResolution;
 }
@@ -504,7 +437,7 @@ DataSpatialAggregation asGlobEnums::StringToDataSpatialAggregationEnum(const wxS
     }
     else
     {
-        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"), SpatialAggregation.c_str()));
+        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"), SpatialAggregation));
     }
     return NoDataSpatialAggregation;
 }
@@ -523,25 +456,4 @@ wxString asGlobEnums::DataSpatialAggregationEnumToString(DataSpatialAggregation 
         asLogError(_("The given data spatial aggregation type in unknown."));
     }
     return wxEmptyString;
-}
-
-CoordSys asGlobEnums::StringToCoordSysEnum(const wxString &CoordSysStr)
-{
-    if (CoordSysStr.CmpNoCase("WGS84")==0)
-    {
-        return WGS84;
-    }
-    else if (CoordSysStr.CmpNoCase("CH1903")==0)
-    {
-        return CH1903;
-    }
-    else if (CoordSysStr.CmpNoCase("CH1903p")==0)
-    {
-        return CH1903p;
-    }
-    else
-    {
-        asLogError(_("The coordinate system in unknown"));
-    }
-    return NoCoordSys;
 }

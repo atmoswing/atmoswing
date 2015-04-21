@@ -47,12 +47,12 @@ public:
 
     wxPlotCtrl* GetPlotCtrl()
     {
-        wxASSERT(m_PlotCtrl);
-        return m_PlotCtrl;
+        wxASSERT(m_plotCtrl);
+        return m_plotCtrl;
     }
 
 protected:
-    wxPlotCtrl* m_PlotCtrl;
+    wxPlotCtrl* m_plotCtrl;
 
 private:
     void OnPlotCtrl(wxPlotCtrlEvent& event);

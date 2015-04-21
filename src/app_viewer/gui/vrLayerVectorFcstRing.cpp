@@ -34,10 +34,10 @@
 
 vrLayerVectorFcstRing::vrLayerVectorFcstRing()
 {
-	wxASSERT(m_Dataset==NULL);
-	wxASSERT(m_Layer==NULL);
-	m_DriverType = vrDRIVER_VECTOR_MEMORY;
-	m_ValueMax = 1;
+	wxASSERT(m_dataset==NULL);
+	wxASSERT(m_layer==NULL);
+	m_driverType = vrDRIVER_VECTOR_MEMORY;
+	m_valueMax = 1;
 }
 
 vrLayerVectorFcstRing::~vrLayerVectorFcstRing()
@@ -46,15 +46,15 @@ vrLayerVectorFcstRing::~vrLayerVectorFcstRing()
 
 long vrLayerVectorFcstRing::AddFeature(OGRGeometry * geometry, void * data)
 {
-	wxASSERT(m_Layer);
-	OGRFeature * feature = OGRFeature::CreateFeature(m_Layer->GetLayerDefn());
-	wxASSERT(m_Layer);
+	wxASSERT(m_layer);
+	OGRFeature * feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
+	wxASSERT(m_layer);
 	feature->SetGeometry(geometry);
 
 	if (data != NULL)
     {
 		wxArrayDouble * dataArray = (wxArrayDouble*) data;
-		wxASSERT(dataArray->GetCount() >= 1);
+		wxASSERT(dataArray->GetCount() >= 3);
 
 		for (unsigned int i_dat=0; i_dat<dataArray->size(); i_dat++)
         {
@@ -62,7 +62,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry * geometry, void * data)
         }
 	}
 
-	if(m_Layer->CreateFeature(feature) != OGRERR_NONE)
+	if(m_layer->CreateFeature(feature) != OGRERR_NONE)
     {
 		asLogError(_("Error creating feature"));
 		OGRFeature::DestroyFeature(feature);
@@ -79,7 +79,8 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 {
     // Set the defaut pen
 	wxASSERT(render->GetType() == vrRENDER_VECTOR);
-	wxPen defaultPen (*wxBLACK, 1);
+    vrRenderVector * renderVector = (vrRenderVector *) render;
+    wxPen defaultPen (renderVector->GetColorPen(), renderVector->GetSize());
 	wxPen selPen (*wxGREEN, 3);
 	
 	// Get graphics context 
@@ -101,7 +102,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 										 pxsize);
 
 		// Get lead time size
-		int leadTimeSize = (int)feature->GetFieldAsDouble(0);
+		int leadTimeSize = (int)feature->GetFieldAsDouble(2);
 		wxASSERT(leadTimeSize>0);
 
 		// Create graphics path
@@ -128,7 +129,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 		}
 
 		// Get value to set color
-		double value = feature->GetFieldAsDouble(1);
+		double value = feature->GetFieldAsDouble(3);
 		_Paint(gc, path, value);
 
 		// Draw next segments
@@ -139,7 +140,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 			_CreatePath(path, point, leadTimeSize, i_leadtime);
 
 			// Get value to set color
-			double value = feature->GetFieldAsDouble(i_leadtime+1);
+			double value = feature->GetFieldAsDouble(i_leadtime+3);
 			_Paint(gc, path, value);
 
 		}
@@ -164,8 +165,8 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeome
 
 void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath & path, const wxPoint & center, int segmentsTotNb, int segmentNb)
 {
-    const wxDouble radiusOut = 25;
-    const wxDouble radiusIn = 10;
+	const wxDouble radiusOut = 25 * g_ppiScaleDc;
+	const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
     wxDouble segmentStart = -0.5*M_PI + ((double)segmentNb/(double)segmentsTotNb)*(1.5*M_PI);
     wxDouble segmentEnd = -0.5*M_PI + ((double)(segmentNb+1)/(double)segmentsTotNb)*(1.5*M_PI);
@@ -210,18 +211,18 @@ void vrLayerVectorFcstRing::_Paint(wxGraphicsContext * gdc, wxGraphicsPath & pat
     {
         colour.Set(255,255,255);
     }
-    else if ( value/m_ValueMax<=0.5 ) // light green to yellow
+    else if ( value/m_valueMax<=0.5 ) // light green to yellow
     {
         int baseVal = 200;
-        int valColour = ((value/(0.5*m_ValueMax)))*baseVal;
-        int valColourCompl = ((value/(0.5*m_ValueMax)))*(255-baseVal);
+        int valColour = ((value/(0.5*m_valueMax)))*baseVal;
+        int valColourCompl = ((value/(0.5*m_valueMax)))*(255-baseVal);
         if (valColour>baseVal) valColour = baseVal;
         if (valColourCompl+baseVal>255) valColourCompl = 255-baseVal;
         colour.Set((baseVal+valColourCompl),255,(baseVal-valColour));
     }
     else // Yellow to red
     {
-        int valColour = ((value-0.5*m_ValueMax)/(0.5*m_ValueMax))*255;
+        int valColour = ((value-0.5*m_valueMax)/(0.5*m_valueMax))*255;
         if (valColour>255) valColour = 255;
         colour.Set(255,(255-valColour),0);
     }

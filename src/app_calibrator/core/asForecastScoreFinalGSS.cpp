@@ -54,7 +54,7 @@ float asForecastScoreFinalGSS::Assess(Array1DFloat &targetDates, Array1DFloat &f
 
     int countA=0, countB=0, countC=0, countD=0, countTot=0;
 
-    switch (m_Period)
+    switch (m_period)
     {
         case (asForecastScoreFinal::Total):
         {

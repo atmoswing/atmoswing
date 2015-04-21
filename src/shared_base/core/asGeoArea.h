@@ -45,143 +45,143 @@ public:
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoArea(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     /** Alternative constructor
      * \param coosys The coordinate system
-     * \param Umin The left border
-     * \param Uwidth The size on U axis
-     * \param Vmin The left border
-     * \param Vwidth The size on V axis
+     * \param Xmin The left border
+     * \param Xwidth The size on X axis
+     * \param Ymin The left border
+     * \param Ywidth The size on Y axis
      * \param Level The height in hPa
      * \param Height The height in m
      * \param flatAllowed Allows the area to have a dimension that is null
      */
-    asGeoArea(CoordSys coosys, double Umin, double Uwidth, double Vmin, double Vwidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
 
-    asGeoArea(CoordSys coosys, float Level = asNONE, float Height = asNONE);
+    asGeoArea(float Level = asNONE, float Height = asNONE);
 
 
     /** Default destructor */
     virtual ~asGeoArea();
 
 
-    void Generate(double Umin, double Uwidth, double Vmin, double Vwidth, int flatAllowed = asFLAT_FORBIDDEN);
+    void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    /** Access m_CornerUL
-     * \return The current value of m_CornerUL
+    /** Access m_cornerUL
+     * \return The current value of m_cornerUL
      */
     Coo GetCornerUL()
     {
-        return m_CornerUL;
+        return m_cornerUL;
     }
 
-    /** Set m_CornerUL
+    /** Set m_cornerUL
      * \param val New value to set
      */
     void SetCornerUL(const Coo &val)
     {
-        m_CornerUL = val;
+        m_cornerUL = val;
         Init();
     }
 
-    /** Access m_CornerUR
-     * \return The current value of m_CornerUR
+    /** Access m_cornerUR
+     * \return The current value of m_cornerUR
      */
     Coo GetCornerUR()
     {
-        return m_CornerUR;
+        return m_cornerUR;
     }
 
-    /** Set m_CornerUR
+    /** Set m_cornerUR
      * \param val New value to set
      */
     void SetCornerUR(const Coo &val)
     {
-        m_CornerUR = val;
+        m_cornerUR = val;
         Init();
     }
 
-    /** Access m_CornerLL
-     * \return The current value of m_CornerLL
+    /** Access m_cornerLL
+     * \return The current value of m_cornerLL
      */
     Coo GetCornerLL()
     {
-        return m_CornerLL;
+        return m_cornerLL;
     }
 
-    /** Set m_CornerLL
+    /** Set m_cornerLL
      * \param val New value to set
      */
     void SetCornerLL(const Coo &val)
     {
-        m_CornerLL = val;
+        m_cornerLL = val;
         Init();
     }
 
-    /** Access m_CornerLR
-     * \return The current value of m_CornerLR
+    /** Access m_cornerLR
+     * \return The current value of m_cornerLR
      */
     Coo GetCornerLR()
     {
-        return m_CornerLR;
+        return m_cornerLR;
     }
 
-    /** Set m_CornerLR
+    /** Set m_cornerLR
      * \param val New value to set
      */
     void SetCornerLR(const Coo &val)
     {
-        m_CornerLR = val;
+        m_cornerLR = val;
         Init();
     }
 
-    /** Access m_Level
-     * \return The current value of m_Level
+    /** Access m_level
+     * \return The current value of m_level
      */
     double GetLevel()
     {
-        return m_Level;
+        return m_level;
     }
 
-    /** Set m_Level
+    /** Set m_level
      * \param val New value to set
      */
     void SetLevel(double val)
     {
-        m_Level = val;
+        m_level = val;
     }
 
-    /** Gives the area U min coordinate
-     * \return The value of the minimum on the U axis
+    /** Gives the area X min coordinate
+     * \return The value of the minimum on the X axis
      */
-    double GetUmin();
+    double GetXmin();
 
-    /** Gives the area U max coordinate
-     * \return The value of the maximum on the U axis
+    /** Gives the area X max coordinate
+     * \return The value of the maximum on the X axis
      */
-    double GetUmax();
+    double GetXmax();
 
-    /** Gives the area U size
-     * \return The value of the U axis size
+    /** Gives the area X size
+     * \return The value of the X axis size
      */
-    double GetUwidth();
+    double GetXwidth();
 
-    /** Gives the area V min coordinate
-     * \return The value of the minimum on the V axis
+    /** Gives the area Y min coordinate
+     * \return The value of the minimum on the Y axis
      */
-    double GetVmin();
+    double GetYmin();
 
-    /** Gives the area V max coordinate
-     * \return The value of the maximum on the V axis
+    /** Gives the area Y max coordinate
+     * \return The value of the maximum on the Y axis
      */
-    double GetVmax();
+    double GetYmax();
 
-    /** Gives the area V size
-     * \return The value of the V axis size
+    /** Gives the area Y size
+     * \return The value of the Y axis size
      */
-    double GetVwidth();
+    double GetYwidth();
 
     /** Gives the area center coordinates
      * \return The coordinates of the center
@@ -193,19 +193,14 @@ public:
      */
     bool IsRectangle();
 
-    /** Convert projection
-     * \param newcoordsys The destination projection
-     */
-    void ProjConvert(const CoordSys &newcoordsys);
-
 protected:
-    Coo m_CornerUL; //!< Member variable "m_CornerUL"
-    Coo m_CornerUR; //!< Member variable "m_CornerUR"
-    Coo m_CornerLL; //!< Member variable "m_CornerDL"
-    Coo m_CornerLR; //!< Member variable "m_CornerDR"
-    float m_Level; //!< Member variable "m_Level" hPa
-    float m_Height; //!< Member variable "m_Height" m
-    int m_FlatAllowed; //!< Member variable "m_FlatAllowed"
+    Coo m_cornerUL; //!< Member variable "m_cornerUL"
+    Coo m_cornerUR; //!< Member variable "m_cornerUR"
+    Coo m_cornerLL; //!< Member variable "m_cornerDL"
+    Coo m_cornerLR; //!< Member variable "m_cornerDR"
+    float m_level; //!< Member variable "m_level" hPa
+    float m_height; //!< Member variable "m_height" m
+    int m_flatAllowed; //!< Member variable "m_flatAllowed"
 
 private:
 

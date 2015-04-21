@@ -31,13 +31,13 @@ asPredictorCriteriaMRDtoMean::asPredictorCriteriaMRDtoMean(int linAlgebraMethod)
 :
 asPredictorCriteria(linAlgebraMethod)
 {
-    m_Criteria = asPredictorCriteria::MRDtoMean;
-    m_Name = "MRDtoMean";
-    m_FullName = _("Mean Relative Differences to the Mean");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
-    m_CanUseInline = true;
+    m_criteria = asPredictorCriteria::MRDtoMean;
+    m_name = "MRDtoMean";
+    m_fullName = _("Mean Relative Differences to the Mean");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
+    m_canUseInline = true;
 }
 
 asPredictorCriteriaMRDtoMean::~asPredictorCriteriaMRDtoMean()
@@ -52,7 +52,7 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
 
     float rd = 0;
 
-    switch (m_LinAlgebraMethod)
+    switch (m_linAlgebraMethod)
     {
         case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
         case (asLIN_ALGEBRA): // Not implemented yet
@@ -62,13 +62,13 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    if(abs(evalData(i,j)+refData(i,j))>0)
+                    if(std::abs(evalData(i,j)+refData(i,j))>0)
                     {
-                        rd += abs(evalData(i,j) - refData(i,j)) / (abs(evalData(i,j) + refData(i,j))*0.5);
+                        rd += std::abs(evalData(i,j) - refData(i,j)) / (std::abs(evalData(i,j) + refData(i,j))*0.5);
                     }
                     else
                     {
-                        if (abs(evalData(i,j) - refData(i,j))!=0)
+                        if (std::abs(evalData(i,j) - refData(i,j))!=0)
                         {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
@@ -89,8 +89,8 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             {
                 for (int j=0; j<colsNb; j++)
                 {
-                    dividend = abs(evalData(i,j) - refData(i,j));
-                    divisor = abs(evalData(i,j) + refData(i,j))*0.5;
+                    dividend = std::abs(evalData(i,j) - refData(i,j));
+                    divisor = std::abs(evalData(i,j) + refData(i,j))*0.5;
 
                     if(divisor>0)
                     {

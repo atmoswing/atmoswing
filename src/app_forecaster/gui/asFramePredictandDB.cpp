@@ -38,27 +38,27 @@ asFramePredictandDBVirtual( parent, id )
     // Set the defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
     long choiceDataParam = pConfig->Read("/PredictandDBToolbox/ChoiceDataParam", 0l);
-    m_ChoiceDataParam->SetSelection((int)choiceDataParam);
+    m_choiceDataParam->SetSelection((int)choiceDataParam);
     long choiceDataTempResol = pConfig->Read("/PredictandDBToolbox/ChoiceDataTempResol", 0l);
-    m_ChoiceDataTempResol->SetSelection((int)choiceDataTempResol);
+    m_choiceDataTempResol->SetSelection((int)choiceDataTempResol);
     long choiceDataSpatAggreg = pConfig->Read("/PredictandDBToolbox/ChoiceDataSpatAggreg", 0l);
-    m_ChoiceDataSpatAggreg->SetSelection((int)choiceDataSpatAggreg);
+    m_choiceDataSpatAggreg->SetSelection((int)choiceDataSpatAggreg);
     wxString ReturnPeriodNorm = pConfig->Read("/PredictandDBToolbox/ReturnPeriodNorm", "10");
-    m_TextCtrlReturnPeriod->SetValue(ReturnPeriodNorm);
+    m_textCtrlReturnPeriod->SetValue(ReturnPeriodNorm);
     bool NormalizeByReturnPeriod = true;
     pConfig->Read("/PredictandDBToolbox/NormalizeByReturnPeriod", &NormalizeByReturnPeriod);
-    m_CheckBoxReturnPeriod->SetValue(NormalizeByReturnPeriod);
+    m_checkBoxReturnPeriod->SetValue(NormalizeByReturnPeriod);
     bool ProcessSquareRoot = false;
     pConfig->Read("/PredictandDBToolbox/ProcessSquareRoot", &ProcessSquareRoot);
-    m_CheckBoxSqrt->SetValue(ProcessSquareRoot);
+    m_checkBoxSqrt->SetValue(ProcessSquareRoot);
     wxString catalogPath = pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString);
-    m_FilePickerCatalogPath->SetPath(catalogPath);
+    m_filePickerCatalogPath->SetPath(catalogPath);
     wxString PredictandDataDir = pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString);
-    m_DirPickerDataDir->SetPath(PredictandDataDir);
+    m_dirPickerDataDir->SetPath(PredictandDataDir);
     wxString DestinationDir = pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString);
-    m_DirPickerDestinationDir->SetPath(DestinationDir);
+    m_dirPickerDestinationDir->SetPath(DestinationDir);
     wxString PatternsDir = pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
-    m_DirPickerPatternsDir->SetPath(PatternsDir);
+    m_dirPickerPatternsDir->SetPath(PatternsDir);
 
     ToggleProcessing();
 
@@ -72,28 +72,28 @@ void asFramePredictandDB::OnSaveDefault( wxCommandEvent& event )
 {
     // Save as defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long choiceDataParam = (long)m_ChoiceDataParam->GetSelection();
+    long choiceDataParam = (long)m_choiceDataParam->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataParam", choiceDataParam);
-    m_ChoiceDataParam->SetSelection((int)choiceDataParam);
-    long choiceDataTempResol = (long)m_ChoiceDataTempResol->GetSelection();
+    m_choiceDataParam->SetSelection((int)choiceDataParam);
+    long choiceDataTempResol = (long)m_choiceDataTempResol->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataTempResol", choiceDataTempResol);
-    m_ChoiceDataTempResol->SetSelection((int)choiceDataTempResol);
-    long choiceDataSpatAggreg = (long)m_ChoiceDataSpatAggreg->GetSelection();
+    m_choiceDataTempResol->SetSelection((int)choiceDataTempResol);
+    long choiceDataSpatAggreg = (long)m_choiceDataSpatAggreg->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataSpatAggreg", choiceDataSpatAggreg);
-    m_ChoiceDataSpatAggreg->SetSelection((int)choiceDataSpatAggreg);
-    wxString ReturnPeriodNorm = m_TextCtrlReturnPeriod->GetValue();
+    m_choiceDataSpatAggreg->SetSelection((int)choiceDataSpatAggreg);
+    wxString ReturnPeriodNorm = m_textCtrlReturnPeriod->GetValue();
     pConfig->Write("/PredictandDBToolbox/ReturnPeriodNorm", ReturnPeriodNorm);
-    bool NormalizeByReturnPeriod = m_CheckBoxReturnPeriod->GetValue();
+    bool NormalizeByReturnPeriod = m_checkBoxReturnPeriod->GetValue();
     pConfig->Write("/PredictandDBToolbox/NormalizeByReturnPeriod", NormalizeByReturnPeriod);
-    bool ProcessSquareRoot = m_CheckBoxSqrt->GetValue();
+    bool ProcessSquareRoot = m_checkBoxSqrt->GetValue();
     pConfig->Write("/PredictandDBToolbox/ProcessSquareRoot", ProcessSquareRoot);
-    wxString catalogPath = m_FilePickerCatalogPath->GetPath();
+    wxString catalogPath = m_filePickerCatalogPath->GetPath();
     pConfig->Write("/PredictandDBToolbox/CatalogPath", catalogPath);
-    wxString PredictandDataDir = m_DirPickerDataDir->GetPath();
+    wxString PredictandDataDir = m_dirPickerDataDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/PredictandDataDir", PredictandDataDir);
-    wxString DestinationDir = m_DirPickerDestinationDir->GetPath();
+    wxString DestinationDir = m_dirPickerDestinationDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/DestinationDir", DestinationDir);
-    wxString PatternsDir = m_DirPickerPatternsDir->GetPath();
+    wxString PatternsDir = m_dirPickerPatternsDir->GetPath();
     pConfig->Write("/PredictandDBToolbox/PatternsDir", PatternsDir);
 
     pConfig->Flush();
@@ -111,24 +111,24 @@ void asFramePredictandDB::OnDataSelection( wxCommandEvent& event )
 
 void asFramePredictandDB::ToggleProcessing()
 {
-    switch (m_ChoiceDataParam->GetSelection())
+    switch (m_choiceDataParam->GetSelection())
     {
         case 0: // precipitation
         {
-            m_PanelDataProcessing->Enable();
-            m_CheckBoxReturnPeriod->Enable();
-            m_TextCtrlReturnPeriod->Enable();
-            m_StaticTextYears->Enable();
-            m_CheckBoxSqrt->Enable();
+            m_panelDataProcessing->Enable();
+            m_checkBoxReturnPeriod->Enable();
+            m_textCtrlReturnPeriod->Enable();
+            m_staticTextYears->Enable();
+            m_checkBoxSqrt->Enable();
             break;
         }
         default: // other
         {
-            m_PanelDataProcessing->Disable();
-            m_CheckBoxReturnPeriod->Disable();
-            m_TextCtrlReturnPeriod->Disable();
-            m_StaticTextYears->Disable();
-            m_CheckBoxSqrt->Disable();
+            m_panelDataProcessing->Disable();
+            m_checkBoxReturnPeriod->Disable();
+            m_textCtrlReturnPeriod->Disable();
+            m_staticTextYears->Disable();
+            m_checkBoxSqrt->Disable();
             break;
         }
     }
@@ -139,25 +139,25 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
     try
     {
         // Get paths
-        wxString catalogFilePath = m_FilePickerCatalogPath->GetPath();
+        wxString catalogFilePath = m_filePickerCatalogPath->GetPath();
         if (catalogFilePath.IsEmpty())
         {
             asLogError(_("The given path for the predictand catalog is empty."));
             return;
         }
-        wxString pathDataDir = m_DirPickerDataDir->GetPath();
+        wxString pathDataDir = m_dirPickerDataDir->GetPath();
         if (pathDataDir.IsEmpty())
         {
             asLogError(_("The given path for the data directory is empty."));
             return;
         }
-        wxString pathDestinationDir = m_DirPickerDestinationDir->GetPath();
+        wxString pathDestinationDir = m_dirPickerDestinationDir->GetPath();
         if (pathDestinationDir.IsEmpty())
         {
             asLogError(_("The given path for the output destination is empty."));
             return;
         }
-        wxString pathPatternsDir = m_DirPickerPatternsDir->GetPath();
+        wxString pathPatternsDir = m_dirPickerPatternsDir->GetPath();
         if (pathPatternsDir.IsEmpty())
         {
             asLogError(_("The given path for the patterns directory is empty."));
@@ -166,7 +166,7 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
 
         // Get temporal resolution
         DataTemporalResolution dataTemporalResolution = Daily;
-        switch (m_ChoiceDataTempResol->GetSelection())
+        switch (m_choiceDataTempResol->GetSelection())
         {
             case wxNOT_FOUND:
             {
@@ -194,7 +194,7 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
 
         // Get temporal resolution
         DataSpatialAggregation dataSpatialAggregation = Station;
-        switch (m_ChoiceDataSpatAggreg->GetSelection())
+        switch (m_choiceDataSpatAggreg->GetSelection())
         {
             case wxNOT_FOUND:
             {
@@ -221,7 +221,7 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
         }
 
         // Get data parameter
-        switch (m_ChoiceDataParam->GetSelection())
+        switch (m_choiceDataParam->GetSelection())
         {
             case wxNOT_FOUND:
             {
@@ -233,9 +233,9 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
                 // Get data processing options
                 // Return period
                 double valReturnPeriod = 0;
-                if (m_CheckBoxReturnPeriod->GetValue())
+                if (m_checkBoxReturnPeriod->GetValue())
                 {
-                    wxString valReturnPeriodString = m_TextCtrlReturnPeriod->GetValue();
+                    wxString valReturnPeriodString = m_textCtrlReturnPeriod->GetValue();
                     valReturnPeriodString.ToDouble(&valReturnPeriod);
                     if ( (valReturnPeriod<1) | (valReturnPeriod>1000) )
                     {
@@ -246,7 +246,7 @@ void asFramePredictandDB::BuildDatabase( wxCommandEvent& event )
 
                 // Sqrt option
                 bool makeSqrt = false;
-                if (m_CheckBoxSqrt->GetValue())
+                if (m_checkBoxSqrt->GetValue())
                 {
                     makeSqrt = true;
                 }

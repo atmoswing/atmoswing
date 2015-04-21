@@ -48,7 +48,7 @@ public:
         float PostprocessDupliExp;
         wxString PostprocessMethod;
         float Threshold;
-        float Percentile;
+        float Quantile;
     } ParamsForecastScore;
 
     /** Vectors */
@@ -59,10 +59,10 @@ public:
         VVectorDouble PreprocessTimeHours;
         VectorString DataId;
         VectorFloat Level;
-        VectorDouble Umin;
-        VectorInt Uptsnb;
-        VectorDouble Vmin;
-        VectorInt Vptsnb;
+        VectorDouble Xmin;
+        VectorInt Xptsnb;
+        VectorDouble Ymin;
+        VectorInt Yptsnb;
         VectorDouble TimeHours;
         VectorString Criteria;
         VectorFloat Weight;
@@ -95,10 +95,10 @@ public:
         VectorBool PreprocessTimeHours;
         bool DataId;
         bool Level;
-        bool Umin;
-        bool Uptsnb;
-        bool Vmin;
-        bool Vptsnb;
+        bool Xmin;
+        bool Xptsnb;
+        bool Ymin;
+        bool Yptsnb;
         bool TimeHours;
         bool Weight;
         bool Criteria;
@@ -126,16 +126,6 @@ public:
     bool GenerateSimpleParametersFile(const wxString &filePath);
 
     wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect);
-
-    VectorInt GetFileParamIntVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorFloat GetFileParamFloatVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorDouble GetFileParamDoubleVector(asFileParameters &fileParams, const wxString &tag);
-
-    VectorString GetFileParamStringVector(asFileParameters &fileParams, const wxString &tag);
-
-    VVectorInt GetFileStationIdsVector(asFileParameters &fileParams);
     
     wxString Print();
 
@@ -143,53 +133,53 @@ public:
 
     bool SetCalibrationYearStart(int val)
     {
-        m_CalibrationStart = asTime::GetMJD(val, 1, 1);
+        m_calibrationStart = asTime::GetMJD(val, 1, 1);
         return true;
     }
 
     bool SetCalibrationYearEnd(int val)
     {
-        m_CalibrationEnd = asTime::GetMJD(val, 12, 31);
+        m_calibrationEnd = asTime::GetMJD(val, 12, 31);
         return true;
     }
 
     double GetCalibrationStart()
     {
-        return m_CalibrationStart;
+        return m_calibrationStart;
     }
 
     bool SetCalibrationStart(double val)
     {
-        m_CalibrationStart = val;
+        m_calibrationStart = val;
         return true;
     }
 
     bool SetCalibrationStart(wxString val)
     {
-        m_CalibrationStart = asTime::GetTimeFromString(val);
+        m_calibrationStart = asTime::GetTimeFromString(val);
         return true;
     }
     
     double GetCalibrationEnd()
     {
-        return m_CalibrationEnd;
+        return m_calibrationEnd;
     }
     
     bool SetCalibrationEnd(double val)
     {
-        m_CalibrationEnd = val;
+        m_calibrationEnd = val;
         return true;
     }
     
     bool SetCalibrationEnd(wxString val)
     {
-        m_CalibrationEnd = asTime::GetTimeFromString(val);
+        m_calibrationEnd = asTime::GetTimeFromString(val);
         return true;
     }
 
     VectorInt GetValidationYearsVector()
     {
-        return m_ValidationYears;
+        return m_validationYears;
     }
 
     bool SetValidationYearsVector(VectorInt val)
@@ -201,7 +191,7 @@ public:
         }
         else
         {
-            for (int i=0; i<val.size(); i++)
+            for (int i=0; i<(int)val.size(); i++)
             {
                 if (asTools::IsNaN(val[i]))
                 {
@@ -210,13 +200,13 @@ public:
                 }
             }
         }
-        m_ValidationYears = val;
+        m_validationYears = val;
         return true;
     }
 
     bool HasValidationPeriod()
     {
-        if (m_ValidationYears.size()>0) return true;
+        if (m_validationYears.size()>0) return true;
         else return false;
     }
 
@@ -226,10 +216,10 @@ public:
             return NaNInt;
         }
 
-        int minVal = m_ValidationYears[0];
-        for (int i=0; i<m_ValidationYears.size(); i++)
+        int minVal = m_validationYears[0];
+        for (int i=0; i<(int)m_validationYears.size(); i++)
         {
-            minVal = wxMin(minVal, m_ValidationYears[i]);
+            minVal = wxMin(minVal, m_validationYears[i]);
         }
 
         return minVal;
@@ -241,10 +231,10 @@ public:
             return NaNInt;
         }
 
-        int maxVal = m_ValidationYears[0];
-        for (int i=0; i<m_ValidationYears.size(); i++)
+        int maxVal = m_validationYears[0];
+        for (int i=0; i<(int)m_validationYears.size(); i++)
         {
-            maxVal = wxMax(maxVal, m_ValidationYears[i]);
+            maxVal = wxMax(maxVal, m_validationYears[i]);
         }
 
         return maxVal;
@@ -252,7 +242,7 @@ public:
 
     wxString GetForecastScoreName()
     {
-        return m_ForecastScore.Name;
+        return m_forecastScore.Name;
     }
 
     bool SetForecastScoreName(const wxString& val)
@@ -262,28 +252,28 @@ public:
             asLogError(_("The provided forecast score is null"));
             return false;
         }
-        m_ForecastScore.Name = val;
+        m_forecastScore.Name = val;
         return true;
     }
 
     float GetForecastScoreThreshold()
     {
-        return m_ForecastScore.Threshold;
+        return m_forecastScore.Threshold;
     }
 
     void SetForecastScoreThreshold(float val)
     {
-        m_ForecastScore.Threshold = val;
+        m_forecastScore.Threshold = val;
     }
 
-    float GetForecastScorePercentile()
+    float GetForecastScoreQuantile()
     {
-        return m_ForecastScore.Percentile;
+        return m_forecastScore.Quantile;
     }
 
-    void SetForecastScorePercentile(float val)
+    void SetForecastScoreQuantile(float val)
     {
-        m_ForecastScore.Percentile = val;
+        m_forecastScore.Quantile = val;
     }
 
     int GetForecastScoreAnalogsNumber()
@@ -293,7 +283,7 @@ public:
 
     wxString GetForecastScoreTimeArrayMode()
     {
-        return m_ForecastScore.TimeArrayMode;
+        return m_forecastScore.TimeArrayMode;
     }
 
     bool SetForecastScoreTimeArrayMode(const wxString& val)
@@ -303,43 +293,43 @@ public:
             asLogError(_("The provided time array mode for the forecast score is null"));
             return false;
         }
-        m_ForecastScore.TimeArrayMode = val;
+        m_forecastScore.TimeArrayMode = val;
         return true;
     }
 
     double GetForecastScoreTimeArrayDate()
     {
-        return m_ForecastScore.TimeArrayDate;
+        return m_forecastScore.TimeArrayDate;
     }
 
     void SetForecastScoreTimeArrayDate(double val)
     {
-        m_ForecastScore.TimeArrayDate = val;
+        m_forecastScore.TimeArrayDate = val;
     }
 
     int GetForecastScoreTimeArrayIntervalDays()
     {
-        return m_ForecastScore.TimeArrayIntervalDays;
+        return m_forecastScore.TimeArrayIntervalDays;
     }
 
     void SetForecastScoreTimeArrayIntervalDays(int val)
     {
-        m_ForecastScore.TimeArrayIntervalDays = val;
+        m_forecastScore.TimeArrayIntervalDays = val;
     }
 
     bool ForecastScoreNeedsPostprocessing()
     {
-        return m_ForecastScore.Postprocess;
+        return m_forecastScore.Postprocess;
     }
 
     void SetForecastScorePostprocess(bool val)
     {
-        m_ForecastScore.Postprocess = val;
+        m_forecastScore.Postprocess = val;
     }
 
     wxString GetForecastScorePostprocessMethod()
     {
-        return m_ForecastScore.PostprocessMethod;
+        return m_forecastScore.PostprocessMethod;
     }
 
     bool SetForecastScorePostprocessMethod(const wxString& val)
@@ -349,27 +339,27 @@ public:
             asLogError(_("The provided value for the postprocessing method is null"));
             return false;
         }
-        m_ForecastScore.PostprocessMethod = val;
+        m_forecastScore.PostprocessMethod = val;
         return true;
     }
 
     float GetForecastScorePostprocessDupliExp()
     {
-        return m_ForecastScore.PostprocessDupliExp;
+        return m_forecastScore.PostprocessDupliExp;
     }
 
     void SetForecastScorePostprocessDupliExp(float val)
     {
-        m_ForecastScore.PostprocessDupliExp = val;
+        m_forecastScore.PostprocessDupliExp = val;
     }
 
 protected:
-    double m_CalibrationStart;
-    double m_CalibrationEnd;
-    VectorInt m_ValidationYears;
+    double m_calibrationStart;
+    double m_calibrationEnd;
+    VectorInt m_validationYears;
 
 private:
-    ParamsForecastScore m_ForecastScore;
+    ParamsForecastScore m_forecastScore;
 };
 
 #endif // ASPARAMETERSSCORING_H

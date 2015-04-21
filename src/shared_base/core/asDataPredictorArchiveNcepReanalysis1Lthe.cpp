@@ -38,71 +38,74 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
 asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
 {
     // Set the basic properties.
-    m_Initialized = false;
-    m_DataId = dataId;
-    m_DatasetId = "NCEP_Reanalysis_v1_lthe";
-    m_OriginalProvider = "NCEP/NCAR";
-    m_FinalProvider = "LTHE";
-    m_FinalProviderWebsite = "http://www.lthe.fr";
-    m_FinalProviderFTP = wxEmptyString;
-    m_DatasetName = "Reanalysis 1 subset from LTHE";
-    m_OriginalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_OriginalProviderEnd = NaNDouble;
-    m_TimeZoneHours = 0;
-    m_TimeStepHours = 24;
-    m_FirstTimeStepHours = 0;
-    m_NanValues.push_back(32767);
-    m_NanValues.push_back(936*std::pow(10.f,34.f));
-    m_CoordinateSystem = WGS84;
-    m_UaxisShift = 0;
-    m_VaxisShift = 0;
-    m_UaxisStep = 2.5;
-    m_VaxisStep = 2.5;
-    m_SubFolder = wxEmptyString;
+    m_initialized = false;
+    m_dataId = dataId;
+    m_datasetId = "NCEP_Reanalysis_v1_lthe";
+    m_originalProvider = "NCEP/NCAR";
+    m_finalProvider = "LTHE";
+    m_finalProviderWebsite = "http://www.lthe.fr";
+    m_finalProviderFTP = wxEmptyString;
+    m_datasetName = "Reanalysis 1 subset from LTHE";
+    m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
+    m_originalProviderEnd = NaNDouble;
+    m_timeZoneHours = 0;
+    m_timeStepHours = 24;
+    m_firstTimeStepHours = 0;
+    m_nanValues.push_back(32767);
+    m_nanValues.push_back(936*std::pow(10.f,34.f));
+    m_xAxisShift = 0;
+    m_yAxisShift = 0;
+    m_xAxisStep = 2.5;
+    m_yAxisStep = 2.5;
+    m_subFolder = wxEmptyString;
+    m_fileAxisLatName = "lat";
+    m_fileAxisLonName = "lon";
+    m_fileAxisTimeName = "time";
+    m_fileAxisLevelName = "level";
 
     // Identify data ID and set the corresponding properties.
-    if (m_DataId.IsSameAs("hgt_500hPa", false))
+    if (m_dataId.IsSameAs("hgt_500hPa", false))
     {
-        m_DataParameter = GeopotentialHeight;
-        m_FileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
-        m_FileVariableName = "hgt";
-        m_Unit = m;
-        m_FirstTimeStepHours = 0;
-        m_TimeStepHours = 24;
+        m_dataParameter = GeopotentialHeight;
+        m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
+        m_fileVariableName = "hgt";
+        m_unit = m;
+        m_firstTimeStepHours = 0;
+        m_timeStepHours = 24;
     }
-    else if (m_DataId.IsSameAs("hgt_1000hPa", false))
+    else if (m_dataId.IsSameAs("hgt_1000hPa", false))
     {
-        m_DataParameter = GeopotentialHeight;
-        m_FileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
-        m_FileVariableName = "hgt";
-        m_Unit = m;
-        m_FirstTimeStepHours = 12;
-        m_TimeStepHours = 24;
+        m_dataParameter = GeopotentialHeight;
+        m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
+        m_fileVariableName = "hgt";
+        m_unit = m;
+        m_firstTimeStepHours = 12;
+        m_timeStepHours = 24;
     }
-    else if (m_DataId.IsSameAs("prwtr", false))
+    else if (m_dataId.IsSameAs("prwtr", false))
     {
-        m_DataParameter = GeopotentialHeight;
-        m_FileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
-        m_FileVariableName = "pwa";
-        m_Unit = m;
-        m_FirstTimeStepHours = 0;
-        m_TimeStepHours = 12;
+        m_dataParameter = GeopotentialHeight;
+        m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
+        m_fileVariableName = "pwa";
+        m_unit = m;
+        m_firstTimeStepHours = 0;
+        m_timeStepHours = 12;
     }
-    else if (m_DataId.IsSameAs("rhum", false))
+    else if (m_dataId.IsSameAs("rhum", false))
     {
-        m_DataParameter = GeopotentialHeight;
-        m_FileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
-        m_FileVariableName = "rhum";
-        m_Unit = m;
-        m_FirstTimeStepHours = 0;
-        m_TimeStepHours = 12;
+        m_dataParameter = GeopotentialHeight;
+        m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
+        m_fileVariableName = "rhum";
+        m_unit = m;
+        m_firstTimeStepHours = 0;
+        m_timeStepHours = 12;
     }
     else
     {
-        m_DataParameter = NoDataParameter;
-        m_FileNamePattern = wxEmptyString;
-        m_FileVariableName = wxEmptyString;
-        m_Unit = NoDataUnit;
+        m_dataParameter = NoDataParameter;
+        m_fileNamePattern = wxEmptyString;
+        m_fileVariableName = wxEmptyString;
+        m_unit = NoDataUnit;
     }
 }
 
@@ -114,19 +117,19 @@ asDataPredictorArchiveNcepReanalysis1Lthe::~asDataPredictorArchiveNcepReanalysis
 bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
 {
     // Check data ID
-    if (m_FileNamePattern.IsEmpty() || m_FileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
-    if (m_DirectoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_DataId.c_str(), m_DatasetName.c_str()));
+    if (m_directoryPath.IsEmpty()) {
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
         return false;
     }
 
     // Set to initialized
-    m_Initialized = true;
+    m_initialized = true;
 
     return true;
 }

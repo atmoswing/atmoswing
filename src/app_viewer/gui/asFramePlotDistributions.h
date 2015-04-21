@@ -43,7 +43,7 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal
 {
 public:
     /** Constructor */
-    asFramePlotDistributions( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_DISTRIBUTIONS );
+    asFramePlotDistributions( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_DISTRIBUTIONS );
     /** Destructor */
     ~asFramePlotDistributions();
 
@@ -58,7 +58,7 @@ protected:
 private:
     enum PlotPredictandsData
     {
-        ClassicPercentiles,
+        ClassicQuantiles,
         AllAnalogsPoints,
         AllAnalogsCurve,
         BestAnalogs10Points,
@@ -69,14 +69,16 @@ private:
         AllReturnPeriods
     };
 
-    asPanelPlot *m_PanelPlotPredictands;
-    asPanelPlot *m_PanelPlotCriteria;
-    asForecastManager *m_ForecastManager;
-    int m_SelectedForecast;
-    int m_SelectedStation;
-    int m_SelectedDate;
-    int m_XmaxPredictands;
+    asPanelPlot *m_panelPlotPredictands;
+    asPanelPlot *m_panelPlotCriteria;
+    asForecastManager *m_forecastManager;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    int m_selectedStation;
+    int m_selectedDate;
+    int m_xmaxPredictands;
 
+	void RebuildChoiceForecast();
     void InitPredictandsCheckListBox();
     void InitPredictandsPlotCtrl();
     void InitCriteriaPlotCtrl();
@@ -86,7 +88,7 @@ private:
     void PlotAllAnalogsCurve();
     void PlotBestAnalogsPoints(int analogsNb);
     void PlotBestAnalogsCurve(int analogsNb);
-    void PlotClassicPercentiles();
+    void PlotClassicQuantiles();
     void PlotCriteriaCurve();
     void OnChoiceForecastChange( wxCommandEvent& event );
     void OnChoiceStationChange( wxCommandEvent& event );

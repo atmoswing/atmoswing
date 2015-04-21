@@ -11,8 +11,8 @@ endif (UNIX)
 
 # Version number
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "3")
-set(VERSION_PATCH "2")
+set(VERSION_MINOR "4")
+set(VERSION_PATCH "1")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
@@ -144,12 +144,6 @@ file(GLOB_RECURSE src_lib_wxthings_cpp ../src/app_viewer/libs/wxthings/src/*.cpp
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_h} ${src_lib_wxplotctrl_h} ${src_lib_wxplotctrl_hh})
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_cpp} ${src_lib_wxplotctrl_cpp} ${src_lib_wxplotctrl_c} ${src_lib_wxthings_cpp})
 
-# tiCPP library
-file(GLOB_RECURSE src_lib_ticpp_h ../src/shared_base/libs/ticpp/*.h)
-file(GLOB_RECURSE src_lib_ticpp_cpp ../src/shared_base/libs/ticpp/*.cpp)
-list(APPEND src_lib_ticpp ${src_lib_ticpp_h})
-list(APPEND src_lib_ticpp ${src_lib_ticpp_cpp})
-
 # Folder test
 file(GLOB_RECURSE src_tests_h ../test/src/*.h)
 file(GLOB_RECURSE src_tests_cpp ../test/src/*.cpp)
@@ -200,7 +194,6 @@ list(REMOVE_DUPLICATES src_tests)
 
 list(APPEND inc_dirs 
     "${PROJECT_SOURCE_DIR}/../src/shared_base/core/"
-    "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/ticpp/"
     )
 
 if (BUILD_FORECASTER)
@@ -269,7 +262,6 @@ if (BUILD_FORECASTER OR BUILD_CALIBRATOR)
     add_library(asprocessing STATIC ${src_shared_processing})
 endif (BUILD_FORECASTER OR BUILD_CALIBRATOR)
 
-add_library(ticpp STATIC ${src_lib_ticpp})
 if (BUILD_VIEWER)
 	add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
 endif (BUILD_VIEWER)
@@ -286,7 +278,23 @@ if (WIN32)
             file(GLOB sub-dir ${CUSTOM_LIBRARY_PATH}/*)
             foreach(dir ${sub-dir})
                 if(IS_DIRECTORY ${dir})
-                    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+					# Get directory to select the correct wxWidgets configuration
+					get_filename_component(lastdir ${dir} NAME)
+					string(FIND ${lastdir} "wxWidgets" dirwx)
+					if (${dirwx} EQUAL 0)
+						string(FIND ${lastdir} "nogui" dirwxnogui)
+						if (${dirwxnogui} GREATER 0)
+							if (NOT USE_GUI)
+								set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+							endif()
+						else ()
+							if (USE_GUI)
+								set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+							endif()
+						endif()
+					else ()
+						set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
+					endif()
                 endif()
             endforeach()
         endif()
@@ -296,9 +304,9 @@ endif (WIN32)
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 if (USE_GUI)
-    find_package(wxWidgets COMPONENTS core base adv REQUIRED)
+    find_package(wxWidgets COMPONENTS core base adv xml png tiff jpeg REQUIRED)
 else (USE_GUI)
-    find_package(wxWidgets COMPONENTS base REQUIRED)
+    find_package(wxWidgets COMPONENTS base xml REQUIRED)
 endif (USE_GUI)
 include( "${wxWidgets_USE_FILE}" )
 include_directories(${wxWidgets_INCLUDE_DIRS})
@@ -320,10 +328,6 @@ else (BUILD_FORECASTER OR BUILD_VIEWER)
 	unset(CURL_INCLUDE_DIR CACHE)
 	unset(CURL_LIBRARY CACHE)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
-
-# Proj.4
-find_package(Proj4 REQUIRED)
-include_directories(${PROJ4_INCLUDE_DIR})
 
 # GDAL
 if (BUILD_FORECASTER OR BUILD_VIEWER)
@@ -520,9 +524,15 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DwxDEBUG_
 if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-strict-aliasing -Wno-sign-compare")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fno-omit-frame-pointer ")
+    if (BUILD_VIEWER)
+        set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
+        set_target_properties(wxplotctrl PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
+    endif (BUILD_VIEWER)
+    if (USE_WXHGVERSION)
+        set_target_properties(wxhgversion PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
+    endif (USE_WXHGVERSION)
 elseif (WIN32)
     set_target_properties(asbase PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
-        set_target_properties(ticpp PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W2")
     if (BUILD_FORECASTER)
         set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
         set_target_properties(asprocessing PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -W4")
@@ -545,7 +555,7 @@ elseif (WIN32)
 endif (UNIX AND NOT APPLE)
 
 # Global definitions
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_TICPP -DTIXML_USE_STL)
+add_definitions(-DUSE_JPEG2000 -DTIXML_USE_STL)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -609,7 +619,6 @@ message("CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 #### LINKING
 
 target_link_libraries(asbase ${GDAL_LIBRARIES})
-target_link_libraries(asbase ticpp)
 	
 if (BUILD_FORECASTER)
 	target_link_libraries(asbase ${GDAL_LIBRARIES})
@@ -618,7 +627,6 @@ if (BUILD_FORECASTER)
     target_link_libraries(atmoswing-forecaster ${wxWidgets_LIBRARIES})
     target_link_libraries(atmoswing-forecaster ${NetCDF_LIBRARIES})
     target_link_libraries(atmoswing-forecaster ${CURL_LIBRARIES})
-    target_link_libraries(atmoswing-forecaster ${PROJ4_LIBRARIES})
     target_link_libraries(atmoswing-forecaster ${GDAL_LIBRARIES})
     if (USE_WXHGVERSION)
         target_link_libraries(atmoswing-forecaster ${WXHGVERSION_NAME})
@@ -634,7 +642,6 @@ if (BUILD_VIEWER)
     target_link_libraries(atmoswing-viewer ${wxWidgets_LIBRARIES})
     target_link_libraries(atmoswing-viewer ${NetCDF_LIBRARIES})
     target_link_libraries(atmoswing-viewer ${CURL_LIBRARIES})
-    target_link_libraries(atmoswing-viewer ${PROJ4_LIBRARIES})
     target_link_libraries(atmoswing-viewer ${GDAL_LIBRARIES})
     target_link_libraries(atmoswing-viewer ${VROOMGIS_LIBRARY})
 	target_link_libraries(atmoswing-viewer wxplotctrl)
@@ -654,7 +661,6 @@ if (BUILD_CALIBRATOR)
     target_link_libraries(atmoswing-calibrator asprocessing)
     target_link_libraries(atmoswing-calibrator ${wxWidgets_LIBRARIES})
     target_link_libraries(atmoswing-calibrator ${NetCDF_LIBRARIES})
-    target_link_libraries(atmoswing-calibrator ${PROJ4_LIBRARIES})
     if (USE_WXHGVERSION)
         target_link_libraries(atmoswing-calibrator ${WXHGVERSION_NAME})
     endif (USE_WXHGVERSION)
@@ -674,7 +680,6 @@ if (BUILD_TESTS)
     target_link_libraries(atmoswing-tests ${wxWidgets_LIBRARIES})
     target_link_libraries(atmoswing-tests ${NetCDF_LIBRARIES})
     target_link_libraries(atmoswing-tests ${CURL_LIBRARIES})
-    target_link_libraries(atmoswing-tests ${PROJ4_LIBRARIES})
     target_link_libraries(atmoswing-tests ${UNITTEST++_LIBRARIES})
     if (BUILD_FORECASTER)
         target_link_libraries(atmoswing-tests ${GDAL_LIBRARIES})
@@ -724,12 +729,12 @@ endif (BUILD_CALIBRATOR)
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib1.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr110.dll
+          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr120.dll ${USE_PROVIDED_LIBRARIES_PATH}/proj.dll
           DESTINATION .
           )
     else (USE_PROVIDED_LIBRARIES)
         install (
-          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib1.dll ../bin/msvcr110.dll
+          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib.dll ../bin/msvcr120.dll ../bin/proj.dll
           DESTINATION .
           )
     endif (USE_PROVIDED_LIBRARIES)
@@ -737,11 +742,6 @@ endif (WIN32)
   
 install (
   FILES ../license.txt ../notice.txt
-  DESTINATION ${INSTALL_DIR_SHARE}
-  )
-  
-install (
-  DIRECTORY ../config
   DESTINATION ${INSTALL_DIR_SHARE}
   )
 
@@ -757,7 +757,7 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
 set(CPACK_PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day.")
-set(CPACK_PACKAGE_VENDOR "Terr@num")
+set(CPACK_PACKAGE_VENDOR "Terranum")
 set(CPACK_STRIP_FILES ON) # tell cpack to strip all debug symbols from all files
 
 # IDENTIFY ARCHITECTURE
@@ -843,7 +843,7 @@ if (UNIX AND NOT APPLE)
     set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pascal Horton <pascal.horton@terranum.ch>")
-    set(CPACK_PACKAGE_VENDOR "Terr@num")
+    set(CPACK_PACKAGE_VENDOR "Terranum")
     set(CPACK_DEBIAN_PACKAGE_DEPENDS " ...  MRC ... ")
     set(CPACK_PACKAGE_DESCRIPTION "AtmoSwing - Analog Technique Model for Statistical weather forecastING.")
     set(CPACK_DEBIAN_PACKAGE_SECTION "science")

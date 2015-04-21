@@ -31,13 +31,15 @@ asBatchForecasts::asBatchForecasts()
 :
 wxObject()
 {
-    m_HasChanged = false;
-    m_FilePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.xml";
-    m_ForecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
-    m_ParametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
-    m_PredictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
-    m_PredictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
-    m_PredictandDBDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Predictands";
+    m_hasChanged = false;
+    m_exportSyntheticXml = false;
+    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.asfb";
+    m_forecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
+    m_exportsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Exports";
+    m_parametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
+    m_predictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
+    m_predictorsRealtimeDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
+    m_predictandDBDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Predictands";
 }
 
 asBatchForecasts::~asBatchForecasts()
@@ -47,60 +49,56 @@ asBatchForecasts::~asBatchForecasts()
 
 bool asBatchForecasts::Load(const wxString &filePath)
 {
-    ClearModels();
+    ClearForecasts();
 
     // Open the file
-    m_FilePath = filePath;
+    m_filePath = filePath;
     asFileBatchForecasts fileBatch(filePath, asFile::ReadOnly);
     if(!fileBatch.Open())
     {
         asLogError(_("Cannot open the batch file."));
         return false;
     }
-
-    if(!fileBatch.GoToRootElement())
+    if(!fileBatch.CheckRootElement())
     {
         asLogError(_("Errors were found in the batch file."));
         return false;
     }
 
-    // Get general data
-    m_ForecastsOutputDirectory = fileBatch.GetFirstElementAttributeValueText("ForecastsOutputDirectory", "value");
-    m_ParametersFileDirectory = fileBatch.GetFirstElementAttributeValueText("ParametersFileDirectory", "value");
-    m_PredictorsArchiveDirectory = fileBatch.GetFirstElementAttributeValueText("PredictorsArchiveDirectory", "value");
-    m_PredictorsRealtimeDirectory = fileBatch.GetFirstElementAttributeValueText("PredictorsRealtimeDirectory", "value");
-    m_PredictandDBDirectory = fileBatch.GetFirstElementAttributeValueText("PredictandDBDirectory", "value");
+    // Get data
+    wxXmlNode *node = fileBatch.GetRoot()->GetChildren();
+    while (node) {
+        if (node->GetName() == "forecasts_output_directory") {
+            m_forecastsOutputDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "exports_output_directory") {
+            m_exportsOutputDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "parameters_files_directory") {
+            m_parametersFileDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "predictors_archive_directory") {
+            m_predictorsArchiveDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "predictors_realtime_directory") {
+            m_predictorsRealtimeDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "predictand_db_directory") {
+            m_predictandDBDirectory = fileBatch.GetString(node);
+        } else if (node->GetName() == "export_synthetic_xml") {
+            m_exportSyntheticXml = fileBatch.GetBool(node);
+        } else if (node->GetName() == "forecasts") {
+            wxXmlNode *nodeForecast = node->GetChildren();
+            while (nodeForecast) {
+                if (nodeForecast->GetName() == "filename") {
+                    m_forecastFileNames.push_back(fileBatch.GetString(nodeForecast));
+                } else {
+                    fileBatch.UnknownNode(nodeForecast);
+                }
 
-    // Models
-    if(!fileBatch.GoToFirstNodeWithPath("Models"))
-    {
-        asLogError(_("Errors were found in the batch file."));
-        return false;
-    }
-    
-    if(fileBatch.GoToFirstNodeWithPath("Model"))
-    {
-        // Open new models
-        while(true)
-        {
-            wxString modelName = fileBatch.GetThisElementAttributeValueText("name");
-            wxString modelDescr = fileBatch.GetThisElementAttributeValueText("description");
-            wxString modelFileName = fileBatch.GetFirstElementAttributeValueText("ModelFileName", "value");
-            wxString modelPredictandDB = fileBatch.GetFirstElementAttributeValueText("PredictandDB", "value");
+                nodeForecast = nodeForecast->GetNext();
+            }
 
-            m_ModelNames.push_back(modelName);
-            m_ModelDescriptions.push_back(modelDescr);
-            m_ModelFileNames.push_back(modelFileName);
-            m_ModelPredictandDBs.push_back(modelPredictandDB);
-
-            // Find the next model
-            if (!fileBatch.GoToNextSameNode()) break;
+        } else {
+            fileBatch.UnknownNode(node);
         }
-    }
-    else
-    {
-        asLogError(_("Errors were found in the batch file."));
-        return false;
+
+        node = node->GetNext();
     }
 
     return true;
@@ -109,59 +107,52 @@ bool asBatchForecasts::Load(const wxString &filePath)
 bool asBatchForecasts::Save()
 {
     // Open the file
-    asFileBatchForecasts fileBatch(m_FilePath, asFile::Replace);
+    asFileBatchForecasts fileBatch(m_filePath, asFile::Replace);
     if(!fileBatch.Open()) return false;
 
-    if(!fileBatch.InsertRootElement()) return false;
+    if(!fileBatch.EditRootElement()) return false;
 
     // Get general data
-    if(!fileBatch.InsertElementAndAttribute("", "ForecastsOutputDirectory", "value", m_ForecastsOutputDirectory)) return false;
-    if(!fileBatch.InsertElementAndAttribute("", "ParametersFileDirectory", "value", m_ParametersFileDirectory)) return false;
-    if(!fileBatch.InsertElementAndAttribute("", "PredictorsArchiveDirectory", "value", m_PredictorsArchiveDirectory)) return false;
-    if(!fileBatch.InsertElementAndAttribute("", "PredictorsRealtimeDirectory", "value", m_PredictorsRealtimeDirectory)) return false;
-    if(!fileBatch.InsertElementAndAttribute("", "PredictandDBDirectory", "value", m_PredictandDBDirectory)) return false;
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_forecastsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("exports_output_directory", m_exportsOutputDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("parameters_files_directory", m_parametersFileDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_archive_directory", m_predictorsArchiveDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictors_realtime_directory", m_predictorsRealtimeDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("predictand_db_directory", m_predictandDBDirectory));
+    fileBatch.AddChild(fileBatch.CreateNodeWithValue("export_synthetic_xml", m_exportSyntheticXml));
 
-    // Models
-    if(!fileBatch.InsertElement("", "Models")) return false;
-    if(!fileBatch.GoToFirstNodeWithPath("Models")) return false;
-    
-    for (int i_model=0; i_model<GetModelsNb(); i_model++)
+    // Forecasts
+    wxXmlNode * nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE ,"forecasts" );
+    for (int i_forecast=0; i_forecast<GetForecastsNb(); i_forecast++)
     {
-        if(!fileBatch.InsertElement("", "Model")) return false;
-        if(!fileBatch.GoToLastNodeWithPath("Model")) return false;
-
-        if(!fileBatch.SetElementAttribute("", "name", m_ModelNames[i_model])) return false;
-        if(!fileBatch.SetElementAttribute("", "description", m_ModelDescriptions[i_model])) return false;
-        if(!fileBatch.InsertElementAndAttribute("", "ModelFileName", "value", m_ModelFileNames[i_model])) return false;
-        if(!fileBatch.InsertElementAndAttribute("", "PredictandDB", "value", m_ModelPredictandDBs[i_model])) return false;
-        
-        if(!fileBatch.GoANodeBack()) return false;
+        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_forecastFileNames[i_forecast]));
     }
+    fileBatch.AddChild(nodeForecasts);
 
     fileBatch.Save();
 
     return true;
 }
 
-int asBatchForecasts::GetModelsNb()
+int asBatchForecasts::GetForecastsNb()
 {
-    int modelsNb = (int)m_ModelNames.size();
-    return modelsNb;
+    int forecastsNb = (int)m_forecastFileNames.size();
+    return forecastsNb;
 }
 
-void asBatchForecasts::ClearModels()
+void asBatchForecasts::ClearForecasts()
 {
-    m_ModelNames.clear();
-    m_ModelDescriptions.clear();
-    m_ModelFileNames.clear();
-    m_ModelPredictandDBs.clear();
+    m_forecastFileNames.clear();
 }
 
-void asBatchForecasts::AddModel()
+void asBatchForecasts::AddForecast()
 {
-    int nb = m_ModelNames.size()+1;
-    m_ModelNames.resize(nb);
-    m_ModelDescriptions.resize(nb);
-    m_ModelFileNames.resize(nb);
-    m_ModelPredictandDBs.resize(nb);
+    int nb = m_forecastFileNames.size()+1;
+    m_forecastFileNames.resize(nb);
+}
+
+bool asBatchForecasts::HasExports()
+{
+    if (m_exportSyntheticXml) return true;
+    return false;
 }

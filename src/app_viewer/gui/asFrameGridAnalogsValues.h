@@ -43,7 +43,7 @@ class asFrameGridAnalogsValues : public asFrameGridAnalogsValuesVirtual
 {
 public:
     /** Constructor */
-    asFrameGridAnalogsValues( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id=asWINDOW_GRID_ANALOGS );
+    asFrameGridAnalogsValues( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id=asWINDOW_GRID_ANALOGS );
     void Init();
 
 protected:
@@ -53,13 +53,15 @@ protected:
     virtual void SortGrid( wxGridEvent& event );
 
 private:
-    asForecastManager *m_ForecastManager;
-    int m_SelectedForecast;
-    int m_SelectedStation;
-    int m_SelectedDate;
-    int m_SortAfterCol;
-    Order m_SortOrder;
+    asForecastManager *m_forecastManager;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    int m_selectedStation;
+    int m_selectedDate;
+    int m_sortAfterCol;
+    Order m_sortOrder;
 
+	void RebuildChoiceForecast();
     bool UpdateGrid();
 };
 

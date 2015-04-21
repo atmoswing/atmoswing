@@ -69,125 +69,125 @@ public:
      */
     virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) = 0;
     
-    /** Access m_Criteria
-     * \return The current value of m_Criteria
+    /** Access m_criteria
+     * \return The current value of m_criteria
      */
     Criteria GetType()
     {
-        return m_Criteria;
+        return m_criteria;
     }
 
-    /** Access m_Name
-     * \return The current value of m_Name
+    /** Access m_name
+     * \return The current value of m_name
      */
     wxString GetName()
     {
-        return m_Name;
+        return m_name;
     }
 
-    /** Set m_Name
+    /** Set m_name
      * \param val New value to set
      */
     void SetName(const wxString &val)
     {
-        m_Name = val;
+        m_name = val;
     }
 
-    /** Access m_FullName
-     * \return The current value of m_FullName
+    /** Access m_fullName
+     * \return The current value of m_fullName
      */
     wxString GetFullName()
     {
-        return m_FullName;
+        return m_fullName;
     }
 
-    /** Set m_FullName
+    /** Set m_fullName
      * \param val New value to set
      */
     void SetFullName(const wxString &val)
     {
-        m_FullName = val;
+        m_fullName = val;
     }
 
-    /** Access m_Order
-     * \return The current value of m_Order
+    /** Access m_order
+     * \return The current value of m_order
      */
     Order GetOrder()
     {
-        return m_Order;
+        return m_order;
     }
 
-    /** Set m_Order
+    /** Set m_order
      * \param val New value to set
      */
     void SetOrder(const Order val)
     {
-        m_Order = val;
+        m_order = val;
     }
 
-    /** Access m_ScaleBest
-     * \return The current value of m_ScaleBest
+    /** Access m_scaleBest
+     * \return The current value of m_scaleBest
      */
     float GetScaleBest()
     {
-        return m_ScaleBest;
+        return m_scaleBest;
     }
 
-    /** Set m_ScaleBest
+    /** Set m_scaleBest
      * \param val New value to set
      */
     void SetScaleBest(float val)
     {
-        m_ScaleBest = val;
+        m_scaleBest = val;
     }
 
-    /** Access m_ScaleWorst
-     * \return The current value of m_ScaleWorst
+    /** Access m_scaleWorst
+     * \return The current value of m_scaleWorst
      */
     float GetScaleWorst()
     {
-        return m_ScaleWorst;
+        return m_scaleWorst;
     }
 
-    /** Set m_ScaleWorst
+    /** Set m_scaleWorst
      * \param val New value to set
      */
     void SetScaleWorst(float val)
     {
-        m_ScaleWorst = val;
+        m_scaleWorst = val;
     }
 
-    /** Access m_LinAlgebraMethod
-     * \return The current value of m_LinAlgebraMethod
+    /** Access m_linAlgebraMethod
+     * \return The current value of m_linAlgebraMethod
      */
     int GetLinAlgebraMethod()
     {
-        return m_LinAlgebraMethod;
+        return m_linAlgebraMethod;
     }
 
-    /** Set m_LinAlgebraMethod
+    /** Set m_linAlgebraMethod
      * \param val New value to set
      */
     void SetLinAlgebraMethod(int val)
     {
-        m_LinAlgebraMethod = val;
+        m_linAlgebraMethod = val;
     }
 
     bool CanUseInline()
     {
-        return m_CanUseInline;
+        return m_canUseInline;
     }
     
 
 protected:
-    enum Criteria m_Criteria; //!< Member variable "m_Criteria"
-    wxString m_Name; //!< Member variable "m_Name"
-    wxString m_FullName; //!< Member variable "m_FullName"
-    Order m_Order; //!< Member variable "m_Order"
-    float m_ScaleBest; //!< Member variable "m_ScaleBest"
-    float m_ScaleWorst; //!< Member variable "m_ScaleWorst"
-    int m_LinAlgebraMethod; //!< Member variable "m_LinAlgebraMethod"
-    bool m_CanUseInline;
+    enum Criteria m_criteria; //!< Member variable "m_criteria"
+    wxString m_name; //!< Member variable "m_name"
+    wxString m_fullName; //!< Member variable "m_fullName"
+    Order m_order; //!< Member variable "m_order"
+    float m_scaleBest; //!< Member variable "m_scaleBest"
+    float m_scaleWorst; //!< Member variable "m_scaleWorst"
+    int m_linAlgebraMethod; //!< Member variable "m_linAlgebraMethod"
+    bool m_canUseInline;
 
 private:
 

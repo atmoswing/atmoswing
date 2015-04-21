@@ -182,14 +182,6 @@ enum Order
     NoOrder
 };
 
-enum CoordSys //!< Enumaration of managed coordinate systems
-{
-    WGS84,    // World Geodetic System 1984
-    CH1903,    // Former swiss projection
-    CH1903p,// New swiss projection
-    NoCoordSys
-};
-
 enum Season
 {
     DJF,    //  Winter
@@ -197,14 +189,6 @@ enum Season
     JJA,    // Summer
     SON,    // Fall
     NoSeason
-};
-
-enum DataPurpose
-{
-    PredictorArchive,
-    PredictorRealtime,
-    Predictand,
-    NoDataPurpose
 };
 
 enum DataParameter
@@ -276,19 +260,6 @@ enum DataSpatialAggregation
     NoDataSpatialAggregation
 };
 
-enum FileFormat
-{
-    dat,
-    asc,
-    txt,
-    netcdf,
-    grib,
-    grib2,
-    xml,
-    kml,
-    NoFileFormat
-};
-
 enum FileTimeLength
 {
     Year,
@@ -317,12 +288,6 @@ enum TimeFormat
     guess
 };
 
-enum ParametersList //!< Define available parameters sets (for the GUI)
-{
-    AnalogsNbMulti,
-    AreaMoving
-};
-
 enum Mode //!< Define frame mode
 {
     Standard,
@@ -335,13 +300,7 @@ enum Mode //!< Define frame mode
 class asGlobEnums: public wxObject
 {
 public:
-
-
-    static FileFormat StringToFileFormatEnum(const wxString &FormatStr);
-
-    static wxString FileFormatEnumToExtension(FileFormat format);
-
-
+    
     static FileTimeLength StringToFileLengthEnum(const wxString &LengthStr);
 
 
@@ -359,12 +318,6 @@ public:
     static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
     
     static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
-
-    /** Transform a string to the corresponding CoordSys enum entry
-     * \param CoordSysStr The entry to match
-     * \return The corresponding CoordSys enum entry
-     */
-    static CoordSys StringToCoordSysEnum(const wxString &CoordSysStr);
 
 
 protected:

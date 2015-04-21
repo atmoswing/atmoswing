@@ -35,8 +35,7 @@ namespace
 
 TEST(IsLeapYearDivisableBy4)
 {
-	wxString str("Testing time functionalities...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing time functionalities...\n");
 	
     const bool Result = asTime::IsLeapYear(1972);
     CHECK_EQUAL(true, Result);
@@ -646,7 +645,7 @@ TEST(GetSeasonDec)
 
 TEST(GetSeasonException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetSeason(13), asException);
     }
@@ -692,10 +691,7 @@ TEST(NowLocalMJD)
     double mjd = asTime::NowMJD(asLOCAL);
     wxString datestr = asTime::GetStringTime(mjd);
 
-    wxString str;
-    str.Printf("Local time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Local time is %s\n", datestr);
 }
 
 TEST(NowLocalTimeStruct)
@@ -703,10 +699,7 @@ TEST(NowLocalTimeStruct)
     TimeStruct date = asTime::NowTimeStruct(asLOCAL);
     wxString datestr = asTime::GetStringTime(date);
 
-    wxString str;
-    str.Printf("Local time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Local time is %s\n", datestr);
 }
 
 TEST(NowMJD)
@@ -714,10 +707,7 @@ TEST(NowMJD)
     double mjd = asTime::NowMJD(asUTM);
     wxString datestr = asTime::GetStringTime(mjd);
 
-    wxString str;
-    str.Printf("UTM time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time is %s\n", datestr);
 }
 
 TEST(NowTimeStruct)
@@ -725,10 +715,7 @@ TEST(NowTimeStruct)
     TimeStruct date = asTime::NowTimeStruct(asUTM);
     wxString datestr = asTime::GetStringTime(date);
 
-    wxString str;
-    str.Printf("UTM time is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time is %s\n", datestr);
 }
 
 TEST(GetStringDateMJD)
@@ -822,7 +809,7 @@ TEST(GetTimeFromStringFormatDDMMYYYYSlashes)
 
 TEST(GetTimeFromStringFormatDDMMYYYYException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07", DDMMYYYY), asException);
     }
@@ -838,7 +825,7 @@ TEST(GetTimeFromStringFormatYYYYMMDD)
 
 TEST(GetTimeFromStringFormatYYYYMMDDException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.2007", YYYYMMDD), asException);
     }
@@ -854,7 +841,7 @@ TEST(GetTimeFromStringFormatDDMMYYYYhhmm)
 
 TEST(GetTimeFromStringFormatDDMMYYYYhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05", DDMMYYYYhhmm), asException);
     }
@@ -870,7 +857,7 @@ TEST(GetTimeFromStringFormatYYYYMMDDhhmm)
 
 TEST(GetTimeFromStringFormatYYYYMMDDhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYYMMDDhhmm), asException);
     }
@@ -886,7 +873,7 @@ TEST(GetTimeFromStringFormatDDMMYYYYhhmmss)
 
 TEST(GetTimeFromStringFormatDDMMYYYYhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DDMMYYYYhhmmss), asException);
     }
@@ -902,7 +889,7 @@ TEST(GetTimeFromStringFormatYYYYMMDDhhmmss)
 
 TEST(GetTimeFromStringFormatYYYYMMDDhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYYMMDDhhmmss), asException);
     }
@@ -910,7 +897,7 @@ TEST(GetTimeFromStringFormatYYYYMMDDhhmmssException)
 
 TEST(GetTimeFromStringFormathhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("13:05:01", hhmm), asException);
     }
@@ -921,15 +908,12 @@ TEST(GetTimeFromStringFormatnowplushours)
     double conversion = asTime::GetTimeFromString("+2", nowplushours);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time +2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time +2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatnowplushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2:23", nowplushours), asException);
     }
@@ -937,7 +921,7 @@ TEST(GetTimeFromStringFormatnowplushoursException)
 
 TEST(GetTimeFromStringFormatnowplushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2.23", nowplushours), asException);
     }
@@ -948,15 +932,12 @@ TEST(GetTimeFromStringFormatnowminushours)
     double conversion = asTime::GetTimeFromString("-2", nowminushours);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time -2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time -2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatnowminushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2:23", nowminushours), asException);
     }
@@ -964,7 +945,7 @@ TEST(GetTimeFromStringFormatnowminushoursException)
 
 TEST(GetTimeFromStringFormatnowminushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2.23", nowminushours), asException);
     }
@@ -972,7 +953,7 @@ TEST(GetTimeFromStringFormatnowminushoursExceptionDot)
 
 TEST(GetTimeFromStringFormatnowminushoursExceptionSignPlus)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2", nowminushours), asException);
     }
@@ -980,7 +961,7 @@ TEST(GetTimeFromStringFormatnowminushoursExceptionSignPlus)
 
 TEST(GetTimeFromStringFormatnowminushoursExceptionSignNo)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("2", nowminushours), asException);
     }
@@ -1004,7 +985,7 @@ TEST(GetTimeFromStringFormatautoDDMMYYYYSlashes)
 
 TEST(GetTimeFromStringFormatautoDDMMYYYYException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07", guess), asException);
     }
@@ -1020,7 +1001,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDD)
 
 TEST(GetTimeFromStringFormatautoYYYYMMDDException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("11.2007", guess), asException);
     }
@@ -1036,7 +1017,7 @@ TEST(GetTimeFromStringFormatautoDDMMYYYYhhmm)
 
 TEST(GetTimeFromStringFormatautoDDMMYYYYhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
     }
@@ -1052,7 +1033,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDDhhmm)
 
 TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
     }
@@ -1068,7 +1049,7 @@ TEST(GetTimeFromStringFormatautoDDMMYYYYhhmmss)
 
 TEST(GetTimeFromStringFormatautoDDMMYYYYhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
     }
@@ -1084,7 +1065,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmss)
 
 TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
     }
@@ -1092,7 +1073,7 @@ TEST(GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 
 TEST(GetTimeFromStringFormatautohhmmException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("13:05:01", guess), asException);
     }
@@ -1103,15 +1084,12 @@ TEST(GetTimeFromStringFormatautonowplushours)
     double conversion = asTime::GetTimeFromString("+2", guess);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time +2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time +2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatautonowplushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2:23", guess), asException);
     }
@@ -1119,7 +1097,7 @@ TEST(GetTimeFromStringFormatautonowplushoursException)
 
 TEST(GetTimeFromStringFormatautonowplushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2.23", guess), asException);
     }
@@ -1130,15 +1108,12 @@ TEST(GetTimeFromStringFormatautonowminushours)
     double conversion = asTime::GetTimeFromString("-2", guess);
     wxString datestr = asTime::GetStringTime(conversion);
 
-    wxString str;
-    str.Printf("UTM time -2 hours is %s\n", datestr.c_str());
-
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("UTM time -2 hours is %s\n", datestr);
 }
 
 TEST(GetTimeFromStringFormatautonowminushoursException)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2:23", guess), asException);
     }
@@ -1146,7 +1121,7 @@ TEST(GetTimeFromStringFormatautonowminushoursException)
 
 TEST(GetTimeFromStringFormatautonowminushoursExceptionDot)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("-2.23", guess), asException);
     }
@@ -1154,7 +1129,7 @@ TEST(GetTimeFromStringFormatautonowminushoursExceptionDot)
 
 TEST(GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("2", guess), asException);
     }
@@ -1162,7 +1137,7 @@ TEST(GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 
 TEST(GetTimeFromStringFormatautonowminushoursExceptionSignPlusText)
 {
-    if(g_UnitTestExceptions)
+    if(g_unitTestExceptions)
     {
         CHECK_THROW(asTime::GetTimeFromString("+2hours", guess), asException);
     }

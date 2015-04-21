@@ -123,25 +123,25 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                 checkSizes = false;
                 errorField.Append(wxString::Format("PredictorTimeHours (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorUminVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorXminVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorUmin (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorXmin (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorUptsnbVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorXptsnbVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorUptsnb (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorXptsnb (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorVminVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorYminVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorVmin (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorYmin (step %d, predictor %d), ", i_step, i_predictor));
             }
-            if( params.GetPredictorVptsnbVector(i_step, i_predictor).size()>1 )
+            if( params.GetPredictorYptsnbVector(i_step, i_predictor).size()>1 )
             {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorVptsnb (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorYptsnb (step %d, predictor %d), ", i_step, i_predictor));
             }
             if( params.GetPredictorCriteriaVector(i_step, i_predictor).size()>1 )
             {
@@ -182,7 +182,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     }
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationsIdsVector();
+    VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
     // Create result object to save the final parameters sets
     asResultsParametersArray results_all;
@@ -198,7 +198,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         VectorInt stationId = stationsId[i_stat];
 
         // Reset the score of the climatology
-        m_ScoreClimatology.clear();
+        m_scoreClimatology.clear();
 
         // Create results objects
         asResultsAnalogsDates anaDates;
@@ -208,7 +208,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
-        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+        results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
@@ -236,18 +236,18 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
             if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, i_step)) return false;
 
             // Store the result
-            results_tested.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+            results_tested.Add(params,anaScoreFinal.GetForecastScore(), m_scoreValid);
             
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
         }
 
         // Validate
-        m_Parameters.push_back(params);
+        m_parameters.push_back(params);
         Validate();
 
         // Keep the best parameters set
-        results_all.Add(params,anaScoreFinal.GetForecastScore(), m_ScoreValid);
+        results_all.Add(params,anaScoreFinal.GetForecastScore(), m_scoreValid);
         if(!results_all.Print()) return false;
         if(!results_tested.Print()) return false;
     }

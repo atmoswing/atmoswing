@@ -33,6 +33,6 @@ asDialogFilePickerVirtual( parent )
 {
     if(!description.IsEmpty())
     {
-        m_StaticTextDescription->SetLabelText(description);
+        m_staticTextDescription->SetLabelText(description);
     }
 }

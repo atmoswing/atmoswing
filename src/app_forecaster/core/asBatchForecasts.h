@@ -42,141 +42,126 @@ public:
 
     bool Load(const wxString &filePath);
     bool Save();
-    int GetModelsNb();
-    void ClearModels();
-    void AddModel();;
+    int GetForecastsNb();
+    void ClearForecasts();
+    void AddForecast();;
 
     wxString GetFilePath()
     {
-        return m_FilePath;
+        return m_filePath;
     }
     
     void SetFilePath(const wxString &path)
     {
-        m_FilePath = path;
+        m_filePath = path;
     }
 
     bool HasChanged()
     {
-        return m_HasChanged;
+        return m_hasChanged;
+    }
+
+    bool HasExports();
+
+    bool ExportSyntheticXml()
+    {
+        return m_exportSyntheticXml;
+    }
+
+    void SetExportSyntheticXml(bool val)
+    {
+        m_exportSyntheticXml = val;
     }
 
     void SetHasChanged(bool val)
     {
-        m_HasChanged = val;
+        m_hasChanged = val;
     }
 
     wxString GetForecastsOutputDirectory()
     {
-        return m_ForecastsOutputDirectory;
+        return m_forecastsOutputDirectory;
     }
     
     void SetForecastsOutputDirectory(const wxString &val)
     {
-        m_ForecastsOutputDirectory = val;
+        m_forecastsOutputDirectory = val;
+    }
+
+    wxString GetExportsOutputDirectory()
+    {
+        return m_exportsOutputDirectory;
+    }
+
+    void SetExportsOutputDirectory(const wxString &val)
+    {
+        m_exportsOutputDirectory = val;
     }
 
     wxString GetParametersFileDirectory()
     {
-        return m_ParametersFileDirectory;
+        return m_parametersFileDirectory;
     }
     
     void SetParametersFileDirectory(const wxString &val)
     {
-        m_ParametersFileDirectory = val;
+        m_parametersFileDirectory = val;
     }
 
     wxString GetPredictorsArchiveDirectory()
     {
-        return m_PredictorsArchiveDirectory;
+        return m_predictorsArchiveDirectory;
     }
     
     void SetPredictorsArchiveDirectory(const wxString &val)
     {
-        m_PredictorsArchiveDirectory = val;
+        m_predictorsArchiveDirectory = val;
     }
 
     wxString GetPredictorsRealtimeDirectory()
     {
-        return m_PredictorsRealtimeDirectory;
+        return m_predictorsRealtimeDirectory;
     }
     
     void SetPredictorsRealtimeDirectory(const wxString &val)
     {
-        m_PredictorsRealtimeDirectory = val;
+        m_predictorsRealtimeDirectory = val;
     }
 
     wxString GetPredictandDBDirectory()
     {
-        return m_PredictandDBDirectory;
+        return m_predictandDBDirectory;
     }
     
     void SetPredictandDBDirectory(const wxString &val)
     {
-        m_PredictandDBDirectory = val;
+        m_predictandDBDirectory = val;
     }
 
-    wxString GetModelName(int i)
+    wxString GetForecastFileName(int i)
     {
-        wxASSERT(m_ModelNames.size()>i);
-        return m_ModelNames[i];
+        wxASSERT((int)m_forecastFileNames.size()>i);
+        return m_forecastFileNames[i];
     }
 
-    void SetModelName(int i, const wxString &val)
+    void SetForecastFileName(int i, const wxString &val)
     {
-        wxASSERT(m_ModelNames.size()>i);
-        m_ModelNames[i] = val;
-    }
-
-    wxString GetModelDescription(int i)
-    {
-        wxASSERT(m_ModelDescriptions.size()>i);
-        return m_ModelDescriptions[i];
-    }
-
-    void SetModelDescription(int i, const wxString &val)
-    {
-        wxASSERT(m_ModelDescriptions.size()>i);
-        m_ModelDescriptions[i] = val;
-    }
-
-    wxString GetModelFileName(int i)
-    {
-        wxASSERT(m_ModelFileNames.size()>i);
-        return m_ModelFileNames[i];
-    }
-
-    void SetModelFileName(int i, const wxString &val)
-    {
-        wxASSERT(m_ModelFileNames.size()>i);
-        m_ModelFileNames[i] = val;
-    }
-
-    wxString GetModelPredictandDB(int i)
-    {
-        wxASSERT(m_ModelPredictandDBs.size()>i);
-        return m_ModelPredictandDBs[i];
-    }
-
-    void SetModelPredictandDB(int i, const wxString &val)
-    {
-        wxASSERT(m_ModelPredictandDBs.size()>i);
-        m_ModelPredictandDBs[i] = val;
+        wxASSERT((int)m_forecastFileNames.size()>i);
+        m_forecastFileNames[i] = val;
     }
 
 protected:
 private:
-    bool m_HasChanged;
-    wxString m_FilePath;
-    wxString m_ForecastsOutputDirectory;
-    wxString m_ParametersFileDirectory;
-    wxString m_PredictorsArchiveDirectory;
-    wxString m_PredictorsRealtimeDirectory;
-    wxString m_PredictandDBDirectory;
-    VectorString m_ModelNames;
-    VectorString m_ModelDescriptions;
-    VectorString m_ModelFileNames;
-    VectorString m_ModelPredictandDBs;
+    bool m_hasChanged;
+    bool m_exportSyntheticXml;
+    wxString m_filePath;
+    wxString m_forecastsOutputDirectory;
+    wxString m_exportsOutputDirectory;
+    wxString m_parametersFileDirectory;
+    wxString m_predictorsArchiveDirectory;
+    wxString m_predictorsRealtimeDirectory;
+    wxString m_predictandDBDirectory;
+    VectorString m_forecastFileNames;
 
 };
 

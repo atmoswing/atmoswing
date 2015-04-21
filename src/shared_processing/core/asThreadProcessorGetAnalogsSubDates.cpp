@@ -54,8 +54,8 @@ m_pPredictorsTarget(predictorsTarget),
 m_pTimeArrayArchiveData(timeArrayArchiveData),
 m_pTimeArrayTargetData(timeArrayTargetData),
 m_pTimeTargetSelection(timeTargetSelection),
-m_Criteria(criteria),
-m_Params(params),
+m_criteria(criteria),
+m_params(params),
 m_vTargData(vTargData),
 m_vArchData(vArchData),
 m_vRowsNb(vRowsNb),
@@ -64,17 +64,17 @@ m_pFinalAnalogsCriteria(finalAnalogsCriteria),
 m_pFinalAnalogsDates(finalAnalogsDates),
 m_pPreviousAnalogsDates(previousAnalogsDates)
 {
-    m_Status = Initializing;
-    m_Type = asThread::ProcessorGetAnalogsDates;
-    m_Step = step;
-    m_Start = start;
+    m_status = Initializing;
+    m_type = asThread::ProcessorGetAnalogsDates;
+    m_step = step;
+    m_start = start;
     m_End = end;
     m_pContainsNaNs = containsNaNs;
 
     wxASSERT_MSG(m_End<m_pTimeTargetSelection->size(), _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_End!=m_pTimeTargetSelection->size()-2, wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_End, (int)m_pTimeTargetSelection->size()));
 
-    m_Status = Waiting;
+    m_status = Waiting;
 }
 
 asThreadProcessorGetAnalogsSubDates::~asThreadProcessorGetAnalogsSubDates()
@@ -84,7 +84,7 @@ asThreadProcessorGetAnalogsSubDates::~asThreadProcessorGetAnalogsSubDates()
 
 wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 {
-    m_Status = Working;
+    m_status = Working;
 
     // Extract time arrays
     Array1DDouble timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
@@ -94,14 +94,14 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     float tmpscore, thisscore;
     int timeArchiveDataSize = timeArchiveData.size();
     int timeTargetDataSize = timeTargetData.size();
-    int predictorsNb = m_Params.GetPredictorsNb(m_Step);
-    int analogsNbPrevious = m_Params.GetAnalogsNumber(m_Step-1);
-    int analogsNb = m_Params.GetAnalogsNumber(m_Step);
-    bool isasc = (m_Criteria[0]->GetOrder()==Asc);
+    int predictorsNb = m_params.GetPredictorsNb(m_step);
+    int analogsNbPrevious = m_params.GetAnalogsNumber(m_step-1);
+    int analogsNb = m_params.GetAnalogsNumber(m_step);
+    bool isasc = (m_criteria[0]->GetOrder()==Asc);
 
     wxASSERT(m_End<m_pTimeTargetSelection->size());
-    wxASSERT(timeArchiveDataSize==(m_pPredictorsArchive)[0]->GetData().size());
-    wxASSERT(timeTargetDataSize==(m_pPredictorsTarget)[0]->GetData().size());
+    wxASSERT(timeArchiveDataSize==(int)(m_pPredictorsArchive)[0]->GetData().size());
+    wxASSERT(timeTargetDataSize==(int)(m_pPredictorsTarget)[0]->GetData().size());
 
     // Containers for daily results
     Array1DFloat currentAnalogsDates(analogsNbPrevious);
@@ -109,8 +109,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     Array1DFloat DateArrayOneDay(analogsNb);
 
     // Loop through every timestep as target data
-    // Former, but disabled: for (int i_dateTarg=m_Start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
-    for (int i_dateTarg=m_Start; i_dateTarg<=m_End; i_dateTarg++)
+    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
+    for (int i_dateTarg=m_start; i_dateTarg<=m_End; i_dateTarg++)
     {
         int i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], (double)m_pTimeTargetSelection->coeff(i_dateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(i_dateTarg)>0);
@@ -147,11 +147,11 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
                     m_vArchData[i_ptor] = &(m_pPredictorsArchive)[i_ptor]->GetData()[i_timeArch];
 
                     // Assess the criteria
-                    wxASSERT(m_Criteria.size()>(unsigned)i_ptor);
-                    tmpscore = m_Criteria[i_ptor]->Assess(*m_vTargData[i_ptor], *m_vArchData[i_ptor], m_vRowsNb[i_ptor], m_vColsNb[i_ptor]);
+                    wxASSERT(m_criteria.size()>(unsigned)i_ptor);
+                    tmpscore = m_criteria[i_ptor]->Assess(*m_vTargData[i_ptor], *m_vArchData[i_ptor], m_vRowsNb[i_ptor], m_vColsNb[i_ptor]);
 
                     // Weight and add the score
-                    thisscore += tmpscore * m_Params.GetPredictorWeight(m_Step, i_ptor);
+                    thisscore += tmpscore * m_params.GetPredictorWeight(m_step, i_ptor);
                 }
                 if (asTools::IsNaN(thisscore))
                 {
@@ -218,7 +218,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
         }
     }
 
-    m_Status = Done;
+    m_status = Done;
 
     return 0;
 }

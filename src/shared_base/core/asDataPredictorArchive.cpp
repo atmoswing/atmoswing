@@ -42,8 +42,8 @@ asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
 :
 asDataPredictor(dataId)
 {
-    m_OriginalProviderStart = 0.0;
-    m_OriginalProviderEnd = 0.0;
+    m_originalProviderStart = 0.0;
+    m_originalProviderEnd = 0.0;
 }
 
 asDataPredictorArchive::~asDataPredictorArchive()
@@ -105,67 +105,67 @@ bool asDataPredictorArchive::Init()
 
 bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 {
-    double Umin = desiredArea->GetAbsoluteUmin();
-    double Umax = desiredArea->GetAbsoluteUmax();
-    wxASSERT(m_AxisLon.size()>0);
-    int UstartIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umin, 0.0, asHIDE_WARNINGS);
-    int UendIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umax, 0.0, asHIDE_WARNINGS);
-    if (UstartIndex<0)
+    double Xmin = desiredArea->GetAbsoluteXmin();
+    double Xmax = desiredArea->GetAbsoluteXmax();
+    wxASSERT(m_axisLon.size()>0);
+    int XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size()-1], Xmin, 0.0, asHIDE_WARNINGS);
+    int XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size()-1], Xmax, 0.0, asHIDE_WARNINGS);
+    if (XstartIndex<0)
     {
-        UstartIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umin+desiredArea->GetAxisUmax());
-        UendIndex = asTools::SortedArraySearch(&m_AxisLon[0], &m_AxisLon[m_AxisLon.size()-1], Umax+desiredArea->GetAxisUmax());
-        if (UstartIndex<0 || UendIndex<0)
+        XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size()-1], Xmin+desiredArea->GetAxisXmax());
+        XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size()-1], Xmax+desiredArea->GetAxisXmax());
+        if (XstartIndex<0 || XendIndex<0)
         {
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Umin+desiredArea->GetAxisUmax(), Umax+desiredArea->GetAxisUmax(), m_AxisLon[0], m_AxisLon[m_AxisLon.size()-1] ));
+                                        Xmin+desiredArea->GetAxisXmax(), Xmax+desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
             return false;
         }
     }
-    if (UstartIndex<0 || UendIndex<0)
+    if (XstartIndex<0 || XendIndex<0)
     {
 
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
-                                    Umin, Umax, m_AxisLon[0], m_AxisLon[m_AxisLon.size()-1] ));
+                                    Xmin, Xmax, m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
         return false;
     }
-    int Ulength = UendIndex-UstartIndex+1;
+    int Xlength = XendIndex-XstartIndex+1;
 
-    double Vmin = desiredArea->GetAbsoluteVmin();
-    double Vmax = desiredArea->GetAbsoluteVmax();
-    wxASSERT(m_AxisLat.size()>0);
-    int VstartIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmin, 0.0, asHIDE_WARNINGS);
-    int VendIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmax, 0.0, asHIDE_WARNINGS);
-    if (UstartIndex<0)
+    double Ymin = desiredArea->GetAbsoluteYmin();
+    double Ymax = desiredArea->GetAbsoluteYmax();
+    wxASSERT(m_axisLat.size()>0);
+    int YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size()-1], Ymin, 0.0, asHIDE_WARNINGS);
+    int YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size()-1], Ymax, 0.0, asHIDE_WARNINGS);
+    if (XstartIndex<0)
     {
-        VstartIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmin+desiredArea->GetAxisVmax());
-        VendIndex = asTools::SortedArraySearch(&m_AxisLat[0], &m_AxisLat[m_AxisLat.size()-1], Vmax+desiredArea->GetAxisVmax());
-        if (VstartIndex<0 || VendIndex<0)
+        YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size()-1], Ymin+desiredArea->GetAxisYmax());
+        YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size()-1], Ymax+desiredArea->GetAxisYmax());
+        if (YstartIndex<0 || YendIndex<0)
         {
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Vmin+desiredArea->GetAxisVmax(), Vmax+desiredArea->GetAxisVmax(), m_AxisLat[0], m_AxisLat[m_AxisLat.size()-1] ));
+                                        Ymin+desiredArea->GetAxisYmax(), Ymax+desiredArea->GetAxisYmax(), m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
             return false;
         }
     }
-    if (VstartIndex<0 || VendIndex<0)
+    if (YstartIndex<0 || YendIndex<0)
     {
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
-                                    Vmin, Vmax, m_AxisLat[0], m_AxisLat[m_AxisLat.size()-1] ));
+                                    Ymin, Ymax, m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
         return false;
     }
 
-    int VstartIndexReal = wxMin(VstartIndex, VendIndex);
-    int Vlength = abs(VendIndex-VstartIndex)+1;
+    int YstartIndexReal = wxMin(YstartIndex, YendIndex);
+    int Ylength = std::abs(YendIndex-YstartIndex)+1;
 
     // Check if already the correct size
-    if (VstartIndexReal==0 && UstartIndex==0 && Vlength==m_AxisLat.size() && Ulength==m_AxisLon.size() )
+    if (YstartIndexReal==0 && XstartIndex==0 && Ylength==m_axisLat.size() && Xlength==m_axisLon.size() )
     {
         if (IsPreprocessed())
         {
-            if(m_Data[0].cols()==m_AxisLon.size() && m_Data[0].rows()==2*m_AxisLat.size() )
+            if(m_data[0].cols()==m_axisLon.size() && m_data[0].rows()==2*m_axisLat.size() )
             {
                 // Nothing to do
                 return true;
@@ -173,22 +173,22 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             else
             {
                 // Clear axes
-                Array1DFloat newAxisLon(Ulength);
-                for (int i=0; i<Ulength; i++)
+                Array1DFloat newAxisLon(Xlength);
+                for (int i=0; i<Xlength; i++)
                 {
                     newAxisLon[i] = NaNFloat;
                 }
-                m_AxisLon = newAxisLon;
+                m_axisLon = newAxisLon;
 
-                Array1DFloat newAxisLat(2*Vlength);
-                for (int i=0; i<2*Vlength; i++)
+                Array1DFloat newAxisLat(2*Ylength);
+                for (int i=0; i<2*Ylength; i++)
                 {
                     newAxisLat[i] = NaNFloat;
                 }
-                m_AxisLat = newAxisLat;
+                m_axisLat = newAxisLat;
 
-                m_LatPtsnb = m_AxisLat.size();
-                m_LonPtsnb = m_AxisLon.size();
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
             }
         }
         else
@@ -210,12 +210,12 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             wxString method = GetPreprocessMethod();
             if (method.IsSameAs("Gradients"))
             {
-                VArray2DFloat originalData = m_Data;
+                VArray2DFloat originalData = m_data;
 
-                if(originalData[0].cols()!=m_AxisLon.size() || originalData[0].rows()!=2*m_AxisLat.size() )
+                if(originalData[0].cols()!=m_axisLon.size() || originalData[0].rows()!=2*m_axisLat.size() )
                 {
                     asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format("originalData[0].cols() = %d, m_AxisLon.size() = %d, originalData[0].rows() = %d, m_AxisLat.size() = %d", (int)originalData[0].cols(), (int)m_AxisLon.size(), (int)originalData[0].rows(), (int)m_AxisLat.size()));
+                    asLogError(wxString::Format("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d", (int)originalData[0].cols(), (int)m_axisLon.size(), (int)originalData[0].rows(), (int)m_axisLat.size()));
                     return false;
                 }
 
@@ -236,107 +236,107 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
                 for (unsigned int i=0; i<originalData.size(); i++)
                 {
-                    Array2DFloat dat1 = originalData[i].block(VstartIndexReal,UstartIndex,Vlength-1,Ulength);
-                    Array2DFloat dat2 = originalData[i].block(VstartIndexReal+m_AxisLat.size(),UstartIndex,Vlength,Ulength-1);
-                    Array2DFloat datMerged = Array2DFloat::Zero(2*Vlength, Ulength); // Needs to be 0-filled for further simplification.
-                    datMerged.block(0,0,Vlength-1,Ulength) = dat1;
-                    datMerged.block(Vlength,0,Vlength,Ulength-1) = dat2;
-                    m_Data[i] = datMerged;
+                    Array2DFloat dat1 = originalData[i].block(YstartIndexReal,XstartIndex,Ylength-1,Xlength);
+                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal+m_axisLat.size(),XstartIndex,Ylength,Xlength-1);
+                    Array2DFloat datMerged = Array2DFloat::Zero(2*Ylength, Xlength); // Needs to be 0-filled for further simplification.
+                    datMerged.block(0,0,Ylength-1,Xlength) = dat1;
+                    datMerged.block(Ylength,0,Ylength,Xlength-1) = dat2;
+                    m_data[i] = datMerged;
                 }
 
-                Array1DFloat newAxisLon(Ulength);
-                for (int i=0; i<Ulength; i++)
+                Array1DFloat newAxisLon(Xlength);
+                for (int i=0; i<Xlength; i++)
                 {
                     newAxisLon[i] = NaNFloat;
                 }
-                m_AxisLon = newAxisLon;
+                m_axisLon = newAxisLon;
 
-                Array1DFloat newAxisLat(2*Vlength);
-                for (int i=0; i<2*Vlength; i++)
+                Array1DFloat newAxisLat(2*Ylength);
+                for (int i=0; i<2*Ylength; i++)
                 {
                     newAxisLat[i] = NaNFloat;
                 }
-                m_AxisLat = newAxisLat;
+                m_axisLat = newAxisLat;
 
-                m_LatPtsnb = m_AxisLat.size();
-                m_LonPtsnb = m_AxisLon.size();
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
 
                 return true;
 
             }
             else if (method.IsSameAs("FormerHumidityIndex"))
             {
-                VArray2DFloat originalData = m_Data;
+                VArray2DFloat originalData = m_data;
 
-                if(originalData[0].cols()!=m_AxisLon.size() || originalData[0].rows()!=2*m_AxisLat.size() )
+                if(originalData[0].cols()!=m_axisLon.size() || originalData[0].rows()!=2*m_axisLat.size() )
                 {
                     asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format("originalData[0].cols() = %d, m_AxisLon.size() = %d, originalData[0].rows() = %d, m_AxisLat.size() = %d", (int)originalData[0].cols(), (int)m_AxisLon.size(), (int)originalData[0].rows(), (int)m_AxisLat.size()));
+                    asLogError(wxString::Format("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d", (int)originalData[0].cols(), (int)m_axisLon.size(), (int)originalData[0].rows(), (int)m_axisLat.size()));
                     return false;
                 }
 
                 for (unsigned int i=0; i<originalData.size(); i++)
                 {
-                    Array2DFloat dat1 = originalData[i].block(VstartIndexReal,UstartIndex,Vlength,Ulength);
-                    Array2DFloat dat2 = originalData[i].block(VstartIndexReal+m_AxisLat.size(),UstartIndex,Vlength,Ulength);
-                    Array2DFloat datMerged(2*Vlength, Ulength);
-                    datMerged.block(0,0,Vlength,Ulength) = dat1;
-                    datMerged.block(Vlength,0,Vlength,Ulength) = dat2;
-                    m_Data[i] = datMerged;
+                    Array2DFloat dat1 = originalData[i].block(YstartIndexReal,XstartIndex,Ylength,Xlength);
+                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal+m_axisLat.size(),XstartIndex,Ylength,Xlength);
+                    Array2DFloat datMerged(2*Ylength, Xlength);
+                    datMerged.block(0,0,Ylength,Xlength) = dat1;
+                    datMerged.block(Ylength,0,Ylength,Xlength) = dat2;
+                    m_data[i] = datMerged;
                 }
 
-                Array1DFloat newAxisLon(Ulength);
-                for (int i=0; i<Ulength; i++)
+                Array1DFloat newAxisLon(Xlength);
+                for (int i=0; i<Xlength; i++)
                 {
                     newAxisLon[i] = NaNFloat;
                 }
-                m_AxisLon = newAxisLon;
+                m_axisLon = newAxisLon;
 
-                Array1DFloat newAxisLat(2*Vlength);
-                for (int i=0; i<2*Vlength; i++)
+                Array1DFloat newAxisLat(2*Ylength);
+                for (int i=0; i<2*Ylength; i++)
                 {
                     newAxisLat[i] = NaNFloat;
                 }
-                m_AxisLat = newAxisLat;
+                m_axisLat = newAxisLat;
 
-                m_LatPtsnb = m_AxisLat.size();
-                m_LonPtsnb = m_AxisLon.size();
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
 
                 return true;
 
             }
             else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") || method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux"))
             {
-                VArray2DFloat originalData = m_Data;
+                VArray2DFloat originalData = m_data;
 
-                if(originalData[0].cols()!=m_AxisLon.size() || originalData[0].rows()!=m_AxisLat.size() )
+                if(originalData[0].cols()!=m_axisLon.size() || originalData[0].rows()!=m_axisLat.size() )
                 {
                     asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format("originalData[0].cols() = %d, m_AxisLon.size() = %d, originalData[0].rows() = %d, m_AxisLat.size() = %d", (int)originalData[0].cols(), (int)m_AxisLon.size(), (int)originalData[0].rows(), (int)m_AxisLat.size()));
+                    asLogError(wxString::Format("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d", (int)originalData[0].cols(), (int)m_axisLon.size(), (int)originalData[0].rows(), (int)m_axisLat.size()));
                     return false;
                 }
 
                 for (unsigned int i=0; i<originalData.size(); i++)
                 {
-                    m_Data[i] = originalData[i].block(VstartIndexReal,UstartIndex,Vlength,Ulength);
+                    m_data[i] = originalData[i].block(YstartIndexReal,XstartIndex,Ylength,Xlength);
                 }
 
-                Array1DFloat newAxisLon(Ulength);
-                for (int i=0; i<Ulength; i++)
+                Array1DFloat newAxisLon(Xlength);
+                for (int i=0; i<Xlength; i++)
                 {
                     newAxisLon[i] = NaNFloat;
                 }
-                m_AxisLon = newAxisLon;
+                m_axisLon = newAxisLon;
 
-                Array1DFloat newAxisLat(2*Vlength);
-                for (int i=0; i<2*Vlength; i++)
+                Array1DFloat newAxisLat(2*Ylength);
+                for (int i=0; i<2*Ylength; i++)
                 {
                     newAxisLat[i] = NaNFloat;
                 }
-                m_AxisLat = newAxisLat;
+                m_axisLat = newAxisLat;
 
-                m_LatPtsnb = m_AxisLat.size();
-                m_LonPtsnb = m_AxisLon.size();
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
 
                 return true;
 
@@ -349,28 +349,28 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         }
     }
 
-    VArray2DFloat originalData = m_Data;
+    VArray2DFloat originalData = m_data;
     for (unsigned int i=0; i<originalData.size(); i++)
     {
-        m_Data[i] = originalData[i].block(VstartIndexReal,UstartIndex,Vlength,Ulength);
+        m_data[i] = originalData[i].block(YstartIndexReal,XstartIndex,Ylength,Xlength);
     }
 
-    Array1DFloat newAxisLon(Ulength);
-    for (int i=0; i<Ulength; i++)
+    Array1DFloat newAxisLon(Xlength);
+    for (int i=0; i<Xlength; i++)
     {
-        newAxisLon[i] = m_AxisLon[UstartIndex+i];
+        newAxisLon[i] = m_axisLon[XstartIndex+i];
     }
-    m_AxisLon = newAxisLon;
+    m_axisLon = newAxisLon;
 
-    Array1DFloat newAxisLat(Vlength);
-    for (int i=0; i<Vlength; i++)
+    Array1DFloat newAxisLat(Ylength);
+    for (int i=0; i<Ylength; i++)
     {
-        newAxisLat[i] = m_AxisLat[VstartIndexReal+i];
+        newAxisLat[i] = m_axisLat[YstartIndexReal+i];
     }
-    m_AxisLat = newAxisLat;
+    m_axisLat = newAxisLat;
 
-    m_LatPtsnb = m_AxisLat.size();
-    m_LonPtsnb = m_AxisLon.size();
+    m_latPtsnb = m_axisLat.size();
+    m_lonPtsnb = m_axisLon.size();
 
     return true;
 }
@@ -384,38 +384,38 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray)
     }
 
     // Check against original dataset
-    if (timeArray.GetFirst()<m_OriginalProviderStart)
+    if (timeArray.GetFirst()<m_originalProviderStart)
     {
         asLogError(wxString::Format(_("The requested date (%s) is anterior to the beginning of the original dataset (%s)."),
-                                    asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD).c_str(),
-                                    asTime::GetStringTime(m_OriginalProviderStart, YYYYMMDD).c_str()));
+                                    asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD),
+                                    asTime::GetStringTime(m_originalProviderStart, YYYYMMDD)));
         return false;
     }
-    if (!asTools::IsNaN(m_OriginalProviderEnd))
+    if (!asTools::IsNaN(m_originalProviderEnd))
     {
-        if (timeArray.GetLast()>m_OriginalProviderEnd)
+        if (timeArray.GetLast()>m_originalProviderEnd)
         {
             asLogError(wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
-                                        asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD).c_str(),
-                                        asTime::GetStringTime(m_OriginalProviderEnd, YYYYMMDD).c_str()));
+                                        asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD),
+                                        asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD)));
             return false;
         }
     }
 
     // Check the time steps
-    if ((timeArray.GetTimeStepDays()>0) && (m_TimeStepHours/24.0>timeArray.GetTimeStepDays()))
+    if ((timeArray.GetTimeStepDays()>0) && (m_timeStepHours/24.0>timeArray.GetTimeStepDays()))
     {
         asLogError(_("The desired timestep is smaller than the data timestep."));
         return false;
     }
     double intpart, fractpart;
-    fractpart = modf(timeArray.GetTimeStepDays()/(m_TimeStepHours/24.0), &intpart);
+    fractpart = modf(timeArray.GetTimeStepDays()/(m_timeStepHours/24.0), &intpart);
     if (fractpart>0.0000001)
     {
         asLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
-    fractpart = modf((timeArray.GetFirstDayHour()-m_FirstTimeStepHours)/m_TimeStepHours, &intpart);
+    fractpart = modf((timeArray.GetFirstDayHour()-m_firstTimeStepHours)/m_timeStepHours, &intpart);
     if (fractpart>0.0000001)
     {
         asLogError(wxString::Format(_("The desired start (%gh) is not coherent with the data properties."),

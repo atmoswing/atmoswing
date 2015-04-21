@@ -74,50 +74,50 @@ public:
 
     int GetId()
     {
-        return m_Id;
+        return m_id;
     }
 
     void SetId(int val)
     {
-        m_Id = val;
+        m_id = val;
     }
 
     asThread::Status GetStatus()
     {
-        return m_Status;
+        return m_status;
     }
 
     void SetStatus(asThread::Status val)
     {
-        m_Status = val;
+        m_status = val;
     }
 
     asThread::Type GetType()
     {
-        return m_Type;
+        return m_type;
     }
 
     bool IsDone()
     {
-        return m_Status==Done;
+        return m_status==Done;
     }
 
     bool IsRunning()
     {
-        return m_Status==Working;
+        return m_status==Working;
     }
 
     bool IsEnding()
     {
-        return m_Status==Exiting;
+        return m_status==Exiting;
     }
 
 protected:
-    asThread::Status m_Status;
-    asThread::Type m_Type;
+    asThread::Status m_status;
+    asThread::Type m_type;
 
 private:
-    int m_Id;
+    int m_id;
 
 };
 

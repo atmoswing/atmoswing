@@ -31,14 +31,14 @@ asForecastScoreFinalRankHistogram::asForecastScoreFinalRankHistogram(Period peri
 :
 asForecastScoreFinal(period)
 {
-    m_SingleValue = false;
+    m_singleValue = false;
 }
 
 asForecastScoreFinalRankHistogram::asForecastScoreFinalRankHistogram(const wxString& periodString)
 :
 asForecastScoreFinal(periodString)
 {
-    m_SingleValue = false;
+    m_singleValue = false;
 }
 
 asForecastScoreFinalRankHistogram::~asForecastScoreFinalRankHistogram()
@@ -56,12 +56,12 @@ Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targ
 {
     wxASSERT(targetDates.rows()>1);
     wxASSERT(forecastScores.rows()>1);
-    wxASSERT(m_RanksNb>1);
+    wxASSERT(m_ranksNb>1);
 
-    Array1DInt histogram = Array1DInt::Zero(m_RanksNb);
+    Array1DInt histogram = Array1DInt::Zero(m_ranksNb);
     int countTot = 0;
 
-    switch (m_Period)
+    switch (m_period)
     {
         case (asForecastScoreFinal::Total):
         {
@@ -70,7 +70,7 @@ Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targ
                 countTot++;
 
                 int rank = (int)asTools::Round(forecastScores[i]);
-                wxASSERT(rank<=m_RanksNb);
+                wxASSERT(rank<=m_ranksNb);
                 histogram[rank-1]++;
             }
             break;
@@ -83,9 +83,9 @@ Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targ
     }
 
     // Process percentages
-    Array1DFloat histogramPercent = Array1DFloat::Zero(m_RanksNb);
+    Array1DFloat histogramPercent = Array1DFloat::Zero(m_ranksNb);
 
-    for (int i=0; i<m_RanksNb; i++)
+    for (int i=0; i<m_ranksNb; i++)
     {
         histogramPercent[i] = float(100*histogram[i])/float(countTot);
     }

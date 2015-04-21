@@ -49,24 +49,24 @@ public:
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
     
-    /** Access m_OriginalProviderStart
-     * \return The current value of m_OriginalProviderStart
+    /** Access m_originalProviderStart
+     * \return The current value of m_originalProviderStart
      */
     int GetOriginalProviderStart()
     {
-        return m_OriginalProviderStart;
+        return m_originalProviderStart;
     }
 
     void SetFileNamePattern(const wxString &val)
     {
-        m_FileNamePattern = val;
+        m_fileNamePattern = val;
     }
 
 protected:
-    double m_OriginalProviderStart;
-    double m_OriginalProviderEnd;
-    wxString m_SubFolder;
-    wxString m_FileNamePattern;
+    double m_originalProviderStart;
+    double m_originalProviderEnd;
+    wxString m_subFolder;
+    wxString m_fileNamePattern;
 
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check

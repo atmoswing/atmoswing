@@ -43,12 +43,12 @@ public:
 
     vrViewerTOCList* GetTocCtrl()
     {
-        return m_TocCtrl;
+        return m_tocCtrl;
     }
 
 private:
     // vroomgis
-    vrViewerTOCList *m_TocCtrl;
+    vrViewerTOCList *m_tocCtrl;
 
     //void OnPaint( wxCommandEvent& event );
 };

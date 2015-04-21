@@ -34,27 +34,27 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates( wxWindow* parent, wxWindow
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
-    m_Header->SetLabelText(_("Analog dates"));
+    m_header->SetLabelText(_("Analog dates"));
 
     wxSize listSize = wxSize();
     listSize.SetHeight(120);
-    m_ListCtrl = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, listSize, wxLC_REPORT|wxNO_BORDER|wxLC_SINGLE_SEL );
-    m_ListCtrl->InsertColumn( 0l, _("Analog"), wxLIST_FORMAT_RIGHT, 50);
-    m_ListCtrl->InsertColumn( 1l, _("Date"), wxLIST_FORMAT_LEFT, 100);
-    m_ListCtrl->InsertColumn( 2l, _("Criteria"), wxLIST_FORMAT_LEFT, 80);
-    m_ListCtrl->Layout();
+    m_listCtrl = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, listSize, wxLC_REPORT|wxNO_BORDER|wxLC_SINGLE_SEL );
+    m_listCtrl->InsertColumn( 0l, _("Analog"), wxLIST_FORMAT_RIGHT, 50);
+    m_listCtrl->InsertColumn( 1l, _("Date"), wxLIST_FORMAT_LEFT, 100);
+    m_listCtrl->InsertColumn( 2l, _("Criteria"), wxLIST_FORMAT_LEFT, 80);
+    m_listCtrl->Layout();
 
-    m_SizerContent->Add( m_ListCtrl, 0, wxEXPAND, 0 );
+    m_sizerContent->Add( m_listCtrl, 0, wxEXPAND, 0 );
 
-    m_ListCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( asPanelSidebarAnalogDates::OnDateSelection ), NULL, this );
+    m_listCtrl->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( asPanelSidebarAnalogDates::OnDateSelection ), NULL, this );
 
     Layout();
-    m_SizerContent->Fit( this );
+    m_sizerContent->Fit( this );
 }
 
 asPanelSidebarAnalogDates::~asPanelSidebarAnalogDates()
 {
-    m_ListCtrl->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( asPanelSidebarAnalogDates::OnDateSelection ), NULL, this );
+    m_listCtrl->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( asPanelSidebarAnalogDates::OnDateSelection ), NULL, this );
 }
 
 void asPanelSidebarAnalogDates::OnDateSelection( wxListEvent& event )
@@ -69,23 +69,23 @@ void asPanelSidebarAnalogDates::OnDateSelection( wxListEvent& event )
 void asPanelSidebarAnalogDates::SetChoices(Array1DFloat &arrayDate, Array1DFloat &arrayCriteria)
 {
     // To speed up inserting we hide the control temporarily
-    m_ListCtrl->Freeze();
+    m_listCtrl->Freeze();
 
-    m_ListCtrl->DeleteAllItems();
+    m_listCtrl->DeleteAllItems();
 
     for ( int i=0; i<arrayDate.size(); i++ )
     {
         wxString buf;
         buf.Printf("%d", i+1);
-        long tmp = m_ListCtrl->InsertItem(i, buf, 0);
-        m_ListCtrl->SetItemData(tmp, i);
+        long tmp = m_listCtrl->InsertItem(i, buf, 0);
+        m_listCtrl->SetItemData(tmp, i);
 
-        buf.Printf("%s", asTime::GetStringTime(arrayDate[i], "DD.MM.YYYY").c_str());
-        m_ListCtrl->SetItem(tmp, 1, buf);
+        buf.Printf("%s", asTime::GetStringTime(arrayDate[i], "DD.MM.YYYY"));
+        m_listCtrl->SetItem(tmp, 1, buf);
 
         buf.Printf("%g", arrayCriteria[i]);
-        m_ListCtrl->SetItem(tmp, 2, buf);
+        m_listCtrl->SetItem(tmp, 2, buf);
     }
 
-    m_ListCtrl->Thaw();
+    m_listCtrl->Thaw();
 }

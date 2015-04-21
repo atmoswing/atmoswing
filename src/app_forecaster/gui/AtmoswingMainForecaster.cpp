@@ -66,7 +66,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     : asFrameMain(frame)
 {
 #if wxUSE_STATUSBAR
-    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString().c_str());
+    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file
@@ -78,7 +78,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     // Create log window and file
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
-    m_LogWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
+    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
     Log().CreateFile("AtmoSwingForecaster.log");
 
     // Restore frame position and size
@@ -106,15 +106,15 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     long guiOptions = pConfig->Read("/General/GuiOptions", 0l);
     if (guiOptions==0l)
     {
-        g_SilentMode = true;
+        g_silentMode = true;
     }
     else
     {
-        g_SilentMode = false;
-        g_VerboseMode = false;
+        g_silentMode = false;
+        g_verboseMode = false;
         if (guiOptions==2l)
         {
-            g_VerboseMode = true;
+            g_verboseMode = true;
         }
     }
 
@@ -193,7 +193,7 @@ AtmoswingFrameForecaster::~AtmoswingFrameForecaster()
     pConfig->Write("/MainFrame/w", (long) w);
     pConfig->Write("/MainFrame/h", (long) h);
 
-    //wxDELETE(m_LogWindow);
+    //wxDELETE(m_logWindow);
 }
 
 void AtmoswingFrameForecaster::OnClose(wxCloseEvent &event)

@@ -32,11 +32,11 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 
-asWizardWorkspace::asWizardWorkspace( wxWindow* parent, asWorkspace* workspace, wxWindowID id )
+asWizardWorkspace::asWizardWorkspace( wxWindow* parent, wxWindowID id )
 :
 asWizardWorkspaceVirtual( parent, id )
 {
-    m_Workspace = workspace;
+    
 }
 
 asWizardWorkspace::~asWizardWorkspace()
@@ -46,12 +46,12 @@ asWizardWorkspace::~asWizardWorkspace()
 
 void asWizardWorkspace::OnWizardFinished( wxWizardEvent& event )
 {
-    wxString filePath = m_FilePickerWorkspaceFile->GetPath();
-    m_Workspace->SetFilePath(filePath);
-    wxString dirPath = m_DirPickerForecastResults->GetPath();
-    m_Workspace->SetForecastsDirectory(dirPath);
+    wxString filePath = m_filePickerWorkspaceFile->GetPath();
+    m_workspace.SetFilePath(filePath);
+    wxString dirPath = m_dirPickerForecastResults->GetPath();
+    m_workspace.SetForecastsDirectory(dirPath);
 
-    int baseMapSlct = m_ChoiceBaseMap->GetSelection();
+    int baseMapSlct = m_choiceBaseMap->GetSelection();
     wxString baseMapPath = wxEmptyString;
     wxString wmsDir = wxStandardPaths::Get().GetDataDir();
     wmsDir = wmsDir + DS + "data" + DS + "wms" + DS + "basemaps" + DS;
@@ -82,14 +82,14 @@ void asWizardWorkspace::OnWizardFinished( wxWizardEvent& event )
 
     if (!baseMapPath.IsEmpty())
     {
-        m_Workspace->AddLayer();
-        m_Workspace->SetLayerPath(0, baseMapPath);
-        m_Workspace->SetLayerTransparency(0, 0);
-        m_Workspace->SetLayerType(0, "wms");
-        m_Workspace->SetLayerVisibility(0, true);
+        m_workspace.AddLayer();
+        m_workspace.SetLayerPath(0, baseMapPath);
+        m_workspace.SetLayerTransparency(0, 0);
+        m_workspace.SetLayerType(0, "wms");
+        m_workspace.SetLayerVisibility(0, true);
     }
 
-    m_Workspace->Save();
+    m_workspace.Save();
     
     if (!filePath.IsEmpty())
     {

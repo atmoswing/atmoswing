@@ -44,30 +44,37 @@ public:
     virtual ~asForecastViewer();
 
     wxArrayString GetForecastDisplayStringArray();
-    wxArrayString GetPercentilesStringArray();
-    void SetModel(int i);
-    void SetLastModel();
+    wxArrayString GetQuantilesStringArray();
+    void FixForecastSelection();
+	void ResetForecastSelection();
+    void SetForecast(int methodRow, int forecastRow);
     wxString GetStationName(int i_stat);
     float GetSelectedTargetDate();
     void SetForecastDisplay(int i);
-    void SetPercentile(int i);
+    void SetQuantile(int i);
     void LoadPastForecast();
     void Redraw();
     void ChangeLeadTime( int val );
+    void SetLeadTimeDate(float date);
 
-    int GetModelSelection()
+    int GetMethodSelection()
     {
-        return m_ModelSelection;
+        return m_methodSelection;
+    }
+
+    int GetForecastSelection()
+    {
+        return m_forecastSelection;
     }
 
     int GetForecastDisplaySelection()
     {
-        return m_ForecastDisplaySelection;
+        return m_forecastDisplaySelection;
     }
 
-    int GetPercentileSelection()
+    int GetQuantileSelection()
     {
-        return m_PercentileSelection;
+        return m_quantileSelection;
     }
 
     /** Access the maximum value of the current layer
@@ -75,34 +82,44 @@ public:
      */
     float GetLayerMaxValue()
     {
-        return m_LayerMaxValue;
+        return m_layerMaxValue;
     }
 
-    /** Access the value of m_LeadTimeIndex
-     * \return The current value of m_LeadTimeIndex
+    /** Access the value of m_leadTimeIndex
+     * \return The current value of m_leadTimeIndex
      */
     int GetLeadTimeIndex()
     {
-        return m_LeadTimeIndex;
+        return m_leadTimeIndex;
+    }
+
+    /** Access the value of m_leadTimeDate
+     * \return The current value of m_leadTimeDate
+     */
+    float GetLeadTimeDate()
+    {
+        return m_leadTimeDate;
     }
 
 protected:
 
 private:
-    int m_LeadTimeIndex;
-    float m_LayerMaxValue;
-    bool m_Opened;
-    asFrameForecast* m_Parent;
-    asForecastManager* m_ForecastManager;
-    vrLayerManager *m_LayerManager;
-    vrViewerLayerManager *m_ViewerLayerManager;
-    wxArrayString m_DisplayForecast;
-    wxArrayString m_DisplayPercentiles;
-    VectorFloat m_ReturnPeriods;
-    VectorFloat m_Percentiles;
-    int m_ForecastDisplaySelection;
-    int m_PercentileSelection;
-    int m_ModelSelection;
+    int m_leadTimeIndex;
+    float m_leadTimeDate;
+    float m_layerMaxValue;
+    bool m_opened;
+    asFrameForecast* m_parent;
+    asForecastManager* m_forecastManager;
+    vrLayerManager *m_layerManager;
+    vrViewerLayerManager *m_viewerLayerManager;
+    wxArrayString m_displayForecast;
+    wxArrayString m_displayQuantiles;
+    VectorFloat m_returnPeriods;
+    VectorFloat m_quantiles;
+    int m_forecastDisplaySelection;
+    int m_quantileSelection;
+    int m_methodSelection;
+    int m_forecastSelection;
 
 };
 

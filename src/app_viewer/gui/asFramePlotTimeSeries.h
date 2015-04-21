@@ -43,7 +43,7 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual
 {
 public:
     /** Constructor */
-    asFramePlotTimeSeries( wxWindow* parent, int selectedForecast, int selectedStation, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_TIMESERIES );
+    asFramePlotTimeSeries( wxWindow* parent, int selectedMethod, int selectedForecast, int selectedStation, asForecastManager *forecastManager, wxWindowID id=asWINDOW_PLOTS_TIMESERIES );
     /** Destructor */
     ~asFramePlotTimeSeries();
 
@@ -57,8 +57,8 @@ protected:
 private:
     enum PlotData
     {
-        ClassicPercentiles,
-        AllPercentiles,
+        ClassicQuantiles,
+        AllQuantiles,
         AllAnalogs,
         BestAnalogs10,
         BestAnalogs5,
@@ -68,12 +68,13 @@ private:
         Interpretation
     };
 
-    asPanelPlot *m_PanelPlot;
-    asForecastManager *m_ForecastManager;
-    int m_SelectedStation;
-    int m_SelectedForecast;
-    float m_MaxVal;
-    VectorDouble m_LeadTimes;
+    asPanelPlot *m_panelPlot;
+    asForecastManager *m_forecastManager;
+    int m_selectedStation;
+    int m_selectedMethod;
+    int m_selectedForecast;
+    float m_maxVal;
+    VectorDouble m_leadTimes;
 
     void OnClose( wxCloseEvent& evt );
     void OnTocSelectionChange( wxCommandEvent& event );
@@ -87,10 +88,10 @@ private:
     void PlotReturnPeriod(int returnPeriod);
     void PlotAllAnalogs();
     void PlotBestAnalogs(int pointsNb);
-    void PlotClassicPercentiles();
+    void PlotClassicQuantiles();
     void PlotPastForecasts();
     void PlotPastForecast(int i);
-    void PlotAllPercentiles();
+    void PlotAllQuantiles();
     void PlotInterpretation();
 
     DECLARE_EVENT_TABLE()

@@ -41,79 +41,74 @@ public:
      * \param Level The height in hPa
      * \param Level The height in m
      */
-    asGeoPoint(CoordSys coosys, const Coo &Point, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(const Coo &Point, float Level = asNONE, float Height = asNONE);
 
     /** Other constructor
      * \param coosys The coordinate system
-     * \param U The coordinate on the U axis
-     * \param V The coordinate on the V axis
+     * \param X The coordinate on the X axis
+     * \param Y The coordinate on the Y axis
      * \param Level The height in hPa
      * \param Level The height in m
      */
-    asGeoPoint(CoordSys coosys, double U, double V, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(double x, double y, float Level = asNONE, float Height = asNONE);
 
     /** Default destructor */
     virtual ~asGeoPoint();
 
-    /** Access m_Point
-     * \return The current value of m_Point
+    /** Access m_point
+     * \return The current value of m_point
      */
     Coo GetCoo()
     {
-        return m_Point;
+        return m_point;
     }
 
-    /** Set m_Point
+    /** Set m_point
      * \param val New value to set
      */
     void SetCoo(const Coo &val)
     {
-        m_Point = val;
+        m_point = val;
         Init();
     }
 
-    /** Gives the U coordinate
-     * \return The coordinate on the U axis
+    /** Gives the X coordinate
+     * \return The coordinate on the X axis
      */
-    double GetU()
+    double GetX()
     {
-        return m_Point.u;
+        return m_point.x;
     }
 
     /** Gives the V coordinate
-     * \return The coordinate on the V axis
+     * \return The coordinate on the Y axis
      */
-    double GetV()
+    double GetY()
     {
-        return m_Point.v;
+        return m_point.y;
     }
 
-    /** Access m_Level
-     * \return The current value of m_Level
+    /** Access m_level
+     * \return The current value of m_level
      */
     float GetLevel()
     {
-        return m_Level;
+        return m_level;
     }
 
-    /** Set m_Level
+    /** Set m_level
      * \param val New value to set
      */
     void SetLevel(float val)
     {
-        m_Level = val;
+        m_level = val;
     }
-
-    /** Convert projection
-     * \param newcoordsys The destination projection
-     */
-    void ProjConvert(CoordSys newcoordsys);
 
 protected:
 private:
-    Coo m_Point; //!< Member variable "m_Point"
-    float m_Level; //!< Member variable "m_Level" hPa
-    float m_Height; //!< Member variable "m_Height" m
+    Coo m_point; //!< Member variable "m_point"
+    float m_level; //!< Member variable "m_level" hPa
+    float m_height; //!< Member variable "m_height" m
 
     /** Process to initialization and checks */
     void Init();

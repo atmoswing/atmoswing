@@ -46,46 +46,46 @@
 
 asForecastScoreFinal::asForecastScoreFinal(Period period)
 {
-    m_Period = period;
-    m_SingleValue = true;
-    m_Has2DArrayArgument = false;
-    m_RanksNb = 0;
+    m_period = period;
+    m_singleValue = true;
+    m_has2DArrayArgument = false;
+    m_ranksNb = 0;
 }
 
 asForecastScoreFinal::asForecastScoreFinal(const wxString& periodString)
 {
-    m_SingleValue = true;
-    m_Has2DArrayArgument = false;
-    m_RanksNb = 0;
+    m_singleValue = true;
+    m_has2DArrayArgument = false;
+    m_ranksNb = 0;
 
     if (periodString.CmpNoCase("Total")==0)
     {
-        m_Period = asForecastScoreFinal::Total;
+        m_period = asForecastScoreFinal::Total;
     }
     else if (periodString.CmpNoCase("SpecificPeriod")==0)
     {
-        m_Period = asForecastScoreFinal::SpecificPeriod;
+        m_period = asForecastScoreFinal::SpecificPeriod;
     }
     else if (periodString.CmpNoCase("Summer")==0)
     {
-        m_Period = asForecastScoreFinal::Summer;
+        m_period = asForecastScoreFinal::Summer;
     }
     else if (periodString.CmpNoCase("Automn")==0)
     {
-        m_Period = asForecastScoreFinal::Automn;
+        m_period = asForecastScoreFinal::Automn;
     }
     else if (periodString.CmpNoCase("Winter")==0)
     {
-        m_Period = asForecastScoreFinal::Winter;
+        m_period = asForecastScoreFinal::Winter;
     }
     else if (periodString.CmpNoCase("Spring")==0)
     {
-        m_Period = asForecastScoreFinal::Spring;
+        m_period = asForecastScoreFinal::Spring;
     }
     else
     {
         asLogError(_("The final forecast score period was not correctly set."));
-        m_Period = asForecastScoreFinal::Total;
+        m_period = asForecastScoreFinal::Total;
     }
 }
 

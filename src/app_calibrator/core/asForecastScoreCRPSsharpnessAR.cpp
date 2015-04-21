@@ -33,12 +33,12 @@ asForecastScoreCRPSsharpnessAR::asForecastScoreCRPSsharpnessAR()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::CRPSsharpnessAR;
-    m_Name = _("CRPS Accuracy Approx Rectangle");
-    m_FullName = _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::CRPSsharpnessAR;
+    m_name = _("CRPS Accuracy Approx Rectangle");
+    m_fullName = _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreCRPSsharpnessAR::~asForecastScoreCRPSsharpnessAR()

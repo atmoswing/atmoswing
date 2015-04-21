@@ -46,68 +46,68 @@ public:
      */
     void Init(asParameters &params);
 
-    /** Access m_TargetDates
-     * \return The whole array m_TargetDates
+    /** Access m_targetDates
+     * \return The whole array m_targetDates
      */
     Array1DFloat &GetTargetDates()
     {
-        return m_TargetDates;
+        return m_targetDates;
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DDouble &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
+        m_targetDates.resize(refDates.rows());
         for (int i=0; i<refDates.size(); i++)
         {
-            m_TargetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_TargetDates[i]>1,_("The target time array has unconsistent values"));
+            m_targetDates[i] = (float)refDates[i];
+            wxASSERT_MSG(m_targetDates[i]>1,_("The target time array has unconsistent values"));
         }
     }
 
-    /** Set m_TargetDates
+    /** Set m_targetDates
      * \param refDates The new array to set
      */
     void SetTargetDates(Array1DFloat &refDates)
     {
-        m_TargetDates.resize(refDates.rows());
-        m_TargetDates = refDates;
+        m_targetDates.resize(refDates.rows());
+        m_targetDates = refDates;
     }
 
-    /** Access m_AnalogCriteria
-     * \return The whole array m_AnalogCriteria
+    /** Access m_analogCriteria
+     * \return The whole array m_analogCriteria
      */
     Array2DFloat &GetAnalogsCriteria()
     {
-        return m_AnalogsCriteria;
+        return m_analogsCriteria;
     }
 
-    /** Set m_AnalogCriteria
+    /** Set m_analogCriteria
      * \param analogCriteria The new array to set
      */
     void SetAnalogsCriteria(Array2DFloat &analogsCriteria)
     {
-        m_AnalogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
-        m_AnalogsCriteria = analogsCriteria;
+        m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
+        m_analogsCriteria = analogsCriteria;
     }
 
-    /** Access m_AnalogDates
-     * \return The whole array m_AnalogDates
+    /** Access m_analogDates
+     * \return The whole array m_analogDates
      */
     Array2DFloat &GetAnalogsDates()
     {
-        return m_AnalogsDates;
+        return m_analogsDates;
     }
 
-    /** Set m_AnalogDates
+    /** Set m_analogDates
      * \param analogDates The new array to set
      */
     void SetAnalogsDates(Array2DFloat &analogsDates)
     {
-        m_AnalogsDates.resize(analogsDates.rows(), analogsDates.cols());
-        m_AnalogsDates = analogsDates;
+        m_analogsDates.resize(analogsDates.rows(), analogsDates.cols());
+        m_analogsDates = analogsDates;
     }
 
     /** Get the length of the target time dimension
@@ -115,7 +115,7 @@ public:
      */
     int GetTargetDatesLength()
     {
-        return m_TargetDates.size();
+        return m_targetDates.size();
     }
 
     /** Get the length of the analogs dimension
@@ -123,7 +123,7 @@ public:
      */
     int GetAnalogsDatesLength()
     {
-        return m_AnalogsDates.cols();
+        return m_analogsDates.cols();
     }
 
     /** Save the result file
@@ -146,9 +146,9 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_TargetDates; //!< Member variable "m_TargetDates"
-    Array2DFloat m_AnalogsCriteria; //!< Member variable "m_AnalogCriteria"
-    Array2DFloat m_AnalogsDates; //!< Member variable "m_AnalogDates"
+    Array1DFloat m_targetDates; //!< Member variable "m_targetDates"
+    Array2DFloat m_analogsCriteria; //!< Member variable "m_analogCriteria"
+    Array2DFloat m_analogsDates; //!< Member variable "m_analogDates"
 
 };
 

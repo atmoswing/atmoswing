@@ -31,12 +31,12 @@ asForecastScoreRankHistogram::asForecastScoreRankHistogram()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::RankHistogram;
-    m_Name = _("Rank Histogram");
-    m_FullName = _("Verification Rank Histogram (Talagrand Diagram)");
-    m_Order = NoOrder;
-    m_ScaleBest = NaNFloat;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::RankHistogram;
+    m_name = _("Rank Histogram");
+    m_fullName = _("Verification Rank Histogram (Talagrand Diagram)");
+    m_order = NoOrder;
+    m_scaleBest = NaNFloat;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreRankHistogram::~asForecastScoreRankHistogram()
@@ -75,9 +75,9 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
         if(indExact!=asOUT_OF_RANGE && indExact!=asNOT_FOUND)
         {
             // If the exact value was found in the analogs
-            // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Eta–RSM short-range ensemble
+            // See: Hamill, T.M., and S.J. Colucci, 1997. Verification of Etaâ€“RSM short-range ensemble
             // forecasts. Monthly Weather Review, 125, 1312-1327.
-            // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Eta–RSM ensemble probabilistic
+            // Hamill, T.M., and S.J. Colucci, 1998. Evaluation of Etaâ€“RSM ensemble probabilistic
             // precipitation forecasts. Monthly Weather Review, 126, 711-724.
 
             // Find first occurrence

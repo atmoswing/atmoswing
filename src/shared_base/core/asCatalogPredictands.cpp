@@ -30,26 +30,34 @@
 #include "wx/fileconf.h"
 
 #include <asFileXml.h>
+#include <asTime.h>
 
 
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
 :
-asCatalog(filePath)
+wxObject()
 {
-    m_FormatStorage = netcdf;
+    m_catalogFilePath = filePath;
+
+    // Initialize some data
+    m_setId = wxEmptyString;
+    m_name = wxEmptyString;
+    m_description = wxEmptyString;
+    m_timeZoneHours = 0;
+    m_timeStepHours = 0;
+    m_firstTimeStepHour = 0;
+    m_dataPath = wxEmptyString;
+    m_start = 0;
+    m_End = 0;
 
     // Get the xml file path
-    if (m_CatalogFilePath.IsEmpty())
+    if (m_catalogFilePath.IsEmpty())
     {
         asLogError(_("No path was given for the predictand catalog."));
     }
 
     // Initiate some data
-    m_Station.Id = 0;
-    m_Station.Name = wxEmptyString;
-    m_Station.Filename = wxEmptyString;
-    m_Station.Filepattern = wxEmptyString;
-    m_DataPath = wxEmptyString;
+    m_dataPath = wxEmptyString;
 }
 
 asCatalogPredictands::~asCatalogPredictands()
@@ -57,153 +65,148 @@ asCatalogPredictands::~asCatalogPredictands()
     //dtor
 }
 
-bool asCatalogPredictands::Load(int StationId)
+bool asCatalogPredictands::Load()
 {
-    ThreadsManager().CritSectionTiCPP().Enter();
-
-    // Get data from file
-    if (StationId>0)
-    {
-        if(!LoadDataProp(StationId))
-        {
-            ThreadsManager().CritSectionTiCPP().Leave();
-            return false;
-        }
-    }
-    else
-    {
-        if(!LoadDatasetProp())
-        {
-            ThreadsManager().CritSectionTiCPP().Leave();
-            return false;
-        }
-    }
-
-    ThreadsManager().CritSectionTiCPP().Leave();
-    return true;
-}
-
-bool asCatalogPredictands::LoadDatasetProp()
-{
-    wxString DatasetAccess;
-
     // Load xml file
-    asFileXml xmlFile( m_CatalogFilePath, asFile::ReadOnly );
+    asFileXml xmlFile( m_catalogFilePath, asFile::ReadOnly );
     if(!xmlFile.Open()) return false;
 
-    // XML struct for the dataset information
-    DatasetAccess = wxString::Format("AtmoSwingFile.DataSet");
-    if(!xmlFile.GoToFirstNodeWithPath(DatasetAccess)) return false;
+    if(!xmlFile.CheckRootElement()) return false;
 
-    // Get the data set informations
-    m_SetId = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "id");;
-    m_Name = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "name");
-    m_Description = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "description");
+    // Get data
+    wxXmlNode *nodeDataset = xmlFile.GetRoot()->GetChildren();
+    while (nodeDataset) {
+        if (nodeDataset->GetName() == "dataset") {
 
-    // Get dataset information
-    m_Parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetFirstElementValueText("Parameter"));
-    m_Unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetFirstElementValueText("Unit"));
-    m_TemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(xmlFile.GetFirstElementValueText("TemporalResolution"));
-    m_SpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(xmlFile.GetFirstElementValueText("SpatialAggregation"));
+            wxXmlNode *nodeProp = nodeDataset->GetChildren();
+            while (nodeProp) {
+                if (nodeProp->GetName() == "id") {
+                    m_setId = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "name") {
+                    m_name = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "description") {
+                    m_description = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "parameter") {
+                    m_parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetString(nodeProp));
+                } else if (nodeProp->GetName() == "unit") {
+                    m_unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetString(nodeProp));
+                } else if (nodeProp->GetName() == "temporal_resolution") {
+                    m_temporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(xmlFile.GetString(nodeProp));
+                } else if (nodeProp->GetName() == "spatial_aggregation") {
+                    m_spatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(xmlFile.GetString(nodeProp));
+                } else if (nodeProp->GetName() == "time_zone") {
+                    m_timeZoneHours = xmlFile.GetFloat(nodeProp);
+                } else if (nodeProp->GetName() == "start") {
+                    m_start = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
+                } else if (nodeProp->GetName() == "end") {
+                    m_End = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
+                } else if (nodeProp->GetName() == "first_time_step") {
+                    m_firstTimeStepHour = xmlFile.GetFloat(nodeProp);
+                } else if (nodeProp->GetName() == "path") {
+                    m_dataPath = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "nan") {
+                    m_nan.push_back(xmlFile.GetDouble(nodeProp));
+                } else if (nodeProp->GetName() == "coordinate_system") {
+                    m_coordSys = xmlFile.GetString(nodeProp);
+                } else if (nodeProp->GetName() == "stations") {
+                    wxXmlNode *nodeData = nodeProp->GetChildren();
+                    while (nodeData) {
+                        if (nodeData->GetName() == "station") {
+                            DataStruct station;
+
+                            wxXmlNode *nodeDetail = nodeData->GetChildren();
+                            while (nodeDetail) {
+                                if (nodeDetail->GetName() == "official_id") {
+                                    station.OfficialId = xmlFile.GetString(nodeDetail);
+                                } else if (nodeDetail->GetName() == "id") {
+                                    wxString idStr = xmlFile.GetString(nodeDetail);
+                                    long id;
+                                    idStr.ToLong(&id);
+                                    station.Id = id;
+                                } else if (nodeDetail->GetName() == "name") {
+                                    station.Name = xmlFile.GetString(nodeDetail);
+                                } else if (nodeDetail->GetName() == "x_coordinate") {
+                                    wxString coordXStr = xmlFile.GetString(nodeDetail);
+                                    double x;
+                                    coordXStr.ToDouble(&x);
+                                    station.Coord.x = x;
+                                } else if (nodeDetail->GetName() == "y_coordinate") {
+                                    wxString coordYStr = xmlFile.GetString(nodeDetail);
+                                    double y;
+                                    coordYStr.ToDouble(&y);
+                                    station.Coord.y = y;
+                                } else if (nodeDetail->GetName() == "height") {
+                                    wxString heightStr = xmlFile.GetString(nodeDetail);
+                                    double height;
+                                    heightStr.ToDouble(&height);
+                                    station.Height = (float)height;
+                                } else if (nodeDetail->GetName() == "file_name") {
+                                    station.Filename = xmlFile.GetString(nodeDetail);
+                                } else if (nodeDetail->GetName() == "file_pattern") {
+                                    station.Filepattern = xmlFile.GetString(nodeDetail);
+                                } else if (nodeDetail->GetName() == "start") {
+                                    station.Start = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                } else if (nodeDetail->GetName() == "end") {
+                                    station.End = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                } else {
+                                    xmlFile.UnknownNode(nodeDetail);
+                                }
+
+                                nodeDetail = nodeDetail->GetNext();
+                            }
+                            m_stations.push_back(station);
+
+                        } else {
+                            xmlFile.UnknownNode(nodeData);
+                        }
+
+                        nodeData = nodeData->GetNext();
+                    }
+
+                } else {
+                    xmlFile.UnknownNode(nodeProp);
+                }
+
+                nodeProp = nodeProp->GetNext();
+            }
+
+        } else {
+            xmlFile.UnknownNode(nodeDataset);
+        }
+
+        nodeDataset = nodeDataset->GetNext();
+    }
 
     // Get the timestep
-    switch (m_TemporalResolution)
+    switch (m_temporalResolution)
     {
         case (Daily):
-            m_TimeStepHours = 24.0;
+            m_timeStepHours = 24.0;
             break;
         case (SixHourly):
-            m_TimeStepHours = 6.0;
+            m_timeStepHours = 6.0;
             break;
         case (Hourly):
-            m_TimeStepHours = 1.0;
+            m_timeStepHours = 1.0;
             break;
         case (SixHourlyMovingDailyTemporalWindow):
-            m_TimeStepHours = 6.0;
+            m_timeStepHours = 6.0;
             break;
         case (TwoDays):
-            m_TimeStepHours = 48.0;
+            m_timeStepHours = 48.0;
             break;
         case (ThreeDays):
-            m_TimeStepHours = 72.0;
+            m_timeStepHours = 72.0;
             break;
         case (Weekly):
-            m_TimeStepHours = 168.0;
+            m_timeStepHours = 168.0;
             break;
         default:
             wxFAIL;
-            m_TimeStepHours = 0;
+            m_timeStepHours = 0;
     }
     
-    // Get other dataset information
-    m_TimeZoneHours = xmlFile.GetFirstElementValueFloat("TimeZoneHours");
-    m_FirstTimeStepHour = xmlFile.GetFirstElementValueFloat("FirstTimeStepHour");
-    m_Start = ConvertStringToDatasetDate(xmlFile.GetFirstElementValueText("Start"), asSERIE_BEGINNING, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
-    m_End = ConvertStringToDatasetDate(xmlFile.GetFirstElementValueText("End"), asSERIE_END, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
-    m_FormatRaw = asGlobEnums::StringToFileFormatEnum(xmlFile.GetFirstElementValueText("FormatRaw"));
-    m_CoordSys = asGlobEnums::StringToCoordSysEnum(xmlFile.GetFirstElementValueText("CoordinateSys"));
-    m_Nan.push_back(xmlFile.GetFirstElementValueDouble("NaN", -9999));
-    while(xmlFile.GetNextElement("NaN"))
-    {
-        m_Nan.push_back(xmlFile.GetThisElementValueDouble(-9999));
-    }
-
-    // Check that there is only one dataset per file
-    if(xmlFile.GoToNextSameNode())
-    {
-        asLogError(_("More than 1 dataset was found in the predictand catalog. This is not anymore allowed."));
-        return false;
-    }
-
-    // Reset the base path
-    xmlFile.ClearCurrenNodePath();
-
-    return true;
-}
-
-bool asCatalogPredictands::LoadDataProp(int StationId)
-{
-    // Initiate the check of the timezone
-    wxString DataAccess;
-
-    // Get datset information
-    try
-    {
-        if(!asCatalogPredictands::LoadDatasetProp()) return false;
-    }
-    catch(asException& e)
-    {
-        asLogError(e.GetFullMessage());
-        asLogError(_("Failed to load the catalog properties."));
-        return false;
-    }
-
-    // Load xml file
-    asFileXml xmlFile( m_CatalogFilePath, asFile::ReadOnly );
-    if(!xmlFile.Open()) return false;
-
-    // XML struct for the dataset information
-    DataAccess = wxString::Format("AtmoSwingFile.DataSet.DataList.Data[%d]",StationId);
-    if(!xmlFile.GoToFirstNodeWithPath(DataAccess))
-    {
-        asLogError(_("The requested station id was not found in the predictand catalog."));
-        return false;
-    }
-
-    // Get the data information
-    m_Station.Id = StationId;
-    m_Station.Name = xmlFile.GetFirstElementAttributeValueText(wxEmptyString, "name");
-    m_Station.LocalId = xmlFile.GetFirstElementValueText("LocalID");
-    m_Station.Coord.u = xmlFile.GetFirstElementValueDouble("XCoordinate", NaNDouble);
-    m_Station.Coord.v = xmlFile.GetFirstElementValueDouble("YCoordinate", NaNDouble);
-    m_Station.Height = xmlFile.GetFirstElementValueFloat("Height", NaNFloat);
-    m_Station.Filename = xmlFile.GetFirstElementValueText("FileName");
-    m_Station.Filepattern = xmlFile.GetFirstElementValueText("FilePattern");
-    m_Station.Start = ConvertStringToDatasetDate(xmlFile.GetFirstElementValueText("Start"), true, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
-    m_Station.End = ConvertStringToDatasetDate(xmlFile.GetFirstElementValueText("End"), false, m_TimeZoneHours, m_TimeStepHours, m_FirstTimeStepHour);
-
-    // Reset the base path
-    xmlFile.ClearCurrenNodePath();
+    xmlFile.Close();
 
     return true;
 }

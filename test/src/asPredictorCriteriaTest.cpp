@@ -42,8 +42,7 @@ namespace
 
 TEST(ProcessS1)
 {
-	wxString str("Testing the criteria...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing the criteria...\n");
 	
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -207,13 +206,13 @@ TEST(ProcessS1)
 
 TEST(ProcessS1preprocessed)
 {
-    double Umin = 10;
-    double Uwidth = 10;
-    double Vmin = 35;
-    double Vwidth = 5;
+    double Xmin = 10;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 5;
     double step = 2.5;
     double level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(WGS84, Umin, Uwidth, step, Vmin, Vwidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -228,7 +227,7 @@ TEST(ProcessS1preprocessed)
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
-    vector < asDataPredictorArchive* > vdata;
+	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
 

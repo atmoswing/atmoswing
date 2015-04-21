@@ -39,19 +39,22 @@ asFileWorkspace::~asFileWorkspace()
     //dtor
 }
 
-bool asFileWorkspace::InsertRootElement()
+bool asFileWorkspace::EditRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile")) return false;
-    if(!InsertElement(wxEmptyString, "Workspace")) return false;
-    if(!GoToFirstNodeWithPath("Workspace")) return false;
+    if (!GetRoot()) return false;
+    GetRoot()->AddAttribute("target", "viewer");
     return true;
 }
 
-bool asFileWorkspace::GoToRootElement()
+bool asFileWorkspace::CheckRootElement()
 {
-    if(!GoToFirstNodeWithPath("AtmoSwingFile.Workspace"))
+    if (!GetRoot()) return false;
+    if (!IsAnAtmoSwingFile()) return false;
+    if (!FileVersionIsOrAbove(1.0)) return false;
+
+    if (!GetRoot()->GetAttribute("target").IsSameAs("viewer", false))
     {
-        asLogError(wxString::Format(_("The file %s is not an AtmoSwing workspace file."), m_FileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not a parameters file for the Viewer."), m_fileName.GetFullName()));
         return false;
     }
     return true;

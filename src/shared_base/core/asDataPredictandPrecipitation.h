@@ -46,7 +46,7 @@ public:
 
     virtual Array1DFloat GetReferenceAxis()
     {
-        return m_ReturnPeriods;
+        return m_returnPeriods;
     }
 
     virtual float GetReferenceValue(int i_station, double duration, float reference)
@@ -56,29 +56,29 @@ public:
 
     virtual Array2DFloat GetReferenceValuesArray()
     {
-        return m_DailyPrecipitationsForReturnPeriods;
+        return m_dailyPrecipitationsForReturnPeriods;
     }
 
     float GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod);
 
     void SetReturnPeriodNormalization(float val)
     {
-        m_ReturnPeriodNormalization = val;
+        m_returnPeriodNormalization = val;
     }
 
     float GetReturnPeriodNormalization()
     {
-        return m_ReturnPeriodNormalization;
+        return m_returnPeriodNormalization;
     }
     
     void SetIsSqrt(bool val)
     {
-        m_IsSqrt = val;
+        m_isSqrt = val;
     }
 
     bool IsSqrt()
     {
-        return m_IsSqrt;
+        return m_isSqrt;
     }
 
 
@@ -86,16 +86,16 @@ protected:
 
 private:
 
-    float m_ReturnPeriodNormalization;
-    bool m_IsSqrt;
+    float m_returnPeriodNormalization;
+    bool m_isSqrt;
     // Vector (dim = return periods)
-    Array1DFloat m_ReturnPeriods;
+    Array1DFloat m_returnPeriods;
     // Matrix data
-    Array2DFloat m_GumbelDuration; // Values of the Precipitation duration
-    Array2DFloat m_GumbelParamA; // Values of the a parameter of the Gumbel adjustment
-    Array2DFloat m_GumbelParamB; // Values of the b parameter of the Gumbel adjustment
+    Array2DFloat m_gumbelDuration; // Values of the Precipitation duration
+    Array2DFloat m_gumbelParamA; // Values of the a parameter of the Gumbel adjustment
+    Array2DFloat m_gumbelParamB; // Values of the b parameter of the Gumbel adjustment
     // Matrix with other axes
-    Array2DFloat m_DailyPrecipitationsForReturnPeriods;
+    Array2DFloat m_dailyPrecipitationsForReturnPeriods;
 
     /** Initialize the containers
      * \return True on success
