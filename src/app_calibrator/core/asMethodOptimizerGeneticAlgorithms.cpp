@@ -167,14 +167,14 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
                 return false;
             }
         }
-        catch(bad_alloc& ba)
+        catch(std::bad_alloc& ba)
         {
             wxString msg(ba.what(), wxConvUTF8);
             asLogError(wxString::Format(_("Bad allocation caught in GAs: %s"), msg.c_str()));
             DeletePreloadedData();
             return false;
         }
-        catch (exception& e)
+		catch (std::exception& e)
         {
             wxString msg(e.what(), wxConvUTF8);
             asLogError(wxString::Format(_("Exception in the GAs: %s"), msg.c_str()));
@@ -251,14 +251,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             return false;
         }
     }
-    catch(bad_alloc& ba)
+	catch (std::bad_alloc& ba)
     {
         wxString msg(ba.what(), wxConvUTF8);
         asLogError(wxString::Format(_("Bad allocation caught in the data preloading (in GAs): %s"), msg.c_str()));
         DeletePreloadedData();
         return false;
     }
-    catch (exception& e)
+	catch (std::exception& e)
     {
         wxString msg(e.what(), wxConvUTF8);
         asLogError(wxString::Format(_("Exception in the data preloading (in GAs): %s"), msg.c_str()));
@@ -298,7 +298,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             if(parallelEvaluations)
             {
                 #ifndef UNIT_TESTING
-                    if (g_Responsive) wxGetApp().Yield();
+                    if (g_responsive) wxGetApp().Yield();
                 #endif
                 if (m_cancel) return false;
 
@@ -319,7 +319,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     ThreadsManager().Wait(threadType);
 
                     #ifndef UNIT_TESTING
-                        if (g_Responsive) wxGetApp().Yield();
+                        if (g_responsive) wxGetApp().Yield();
                     #endif
 
                     if (m_cancel) return false;
@@ -362,7 +362,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 while (m_iterator<m_paramsNb)
                 {
                     #ifndef UNIT_TESTING
-                        if (g_Responsive) wxGetApp().Yield();
+                        if (g_responsive) wxGetApp().Yield();
                     #endif
                     if (m_cancel) return false;
 
@@ -410,7 +410,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             else
             {
                 #ifndef UNIT_TESTING
-                    if (g_Responsive) wxGetApp().Yield();
+                    if (g_responsive) wxGetApp().Yield();
                 #endif
                 if (m_cancel) return false;
 
@@ -549,7 +549,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
 bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs &params, asResultsParametersArray &results_generations)
 {
-    if (g_ResumePreviousRun)
+    if (g_resumePreviousRun)
     {
         wxString resultsDir = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
         resultsDir.Append("/Calibration");

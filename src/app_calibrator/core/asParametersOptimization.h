@@ -121,67 +121,67 @@ public:
         return true;
     }
 
-    double GetPredictorUminIteration(int i_step, int i_predictor)
+    double GetPredictorXminIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Umin;
+        return m_stepsIteration[i_step].Predictors[i_predictor].Xmin;
     }
 
-    bool SetPredictorUminIteration(int i_step, int i_predictor, double val)
+    bool SetPredictorXminIteration(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Umin is null"));
+            asLogError(_("The provided value for Xmin is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Umin = val;
+        m_stepsIteration[i_step].Predictors[i_predictor].Xmin = val;
         return true;
     }
 
-    int GetPredictorUptsnbIteration(int i_step, int i_predictor)
+    int GetPredictorXptsnbIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Uptsnb;
+        return m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    bool SetPredictorUptsnbIteration(int i_step, int i_predictor, int val)
+    bool SetPredictorXptsnbIteration(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Uptsnb is null"));
+            asLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Uptsnb = val;
+        m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb = val;
         return true;
     }
 
-    double GetPredictorVminIteration(int i_step, int i_predictor)
+    double GetPredictorYminIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Vmin;
+        return m_stepsIteration[i_step].Predictors[i_predictor].Ymin;
     }
 
-    bool SetPredictorVminIteration(int i_step, int i_predictor, double val)
+    bool SetPredictorYminIteration(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Vmin is null"));
+            asLogError(_("The provided value for Ymin is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Vmin = val;
+        m_stepsIteration[i_step].Predictors[i_predictor].Ymin = val;
         return true;
     }
 
-    int GetPredictorVptsnbIteration(int i_step, int i_predictor)
+    int GetPredictorYptsnbIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Vptsnb;
+        return m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    bool SetPredictorVptsnbIteration(int i_step, int i_predictor, int val)
+    bool SetPredictorYptsnbIteration(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Vptsnb is null"));
+            asLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Vptsnb = val;
+        m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb = val;
         return true;
     }
 
@@ -275,67 +275,67 @@ public:
         return true;
     }
 
-    double GetPredictorUminUpperLimit(int i_step, int i_predictor)
+    double GetPredictorXminUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Umin;
+        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Xmin;
     }
 
-    bool SetPredictorUminUpperLimit(int i_step, int i_predictor, double val)
+    bool SetPredictorXminUpperLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Umin is null"));
+            asLogError(_("The provided value for Xmin is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Umin = val;
+        m_stepsUpperLimit[i_step].Predictors[i_predictor].Xmin = val;
         return true;
     }
 
-    int GetPredictorUptsnbUpperLimit(int i_step, int i_predictor)
+    int GetPredictorXptsnbUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Uptsnb;
+        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    bool SetPredictorUptsnbUpperLimit(int i_step, int i_predictor, int val)
+    bool SetPredictorXptsnbUpperLimit(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Uptsnb is null"));
+            asLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Uptsnb = val;
+        m_stepsUpperLimit[i_step].Predictors[i_predictor].Xptsnb = val;
         return true;
     }
 
-    double GetPredictorVminUpperLimit(int i_step, int i_predictor)
+    double GetPredictorYminUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Vmin;
+        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Ymin;
     }
 
-    bool SetPredictorVminUpperLimit(int i_step, int i_predictor, double val)
+    bool SetPredictorYminUpperLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Vmin is null"));
+            asLogError(_("The provided value for Ymin is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Vmin = val;
+        m_stepsUpperLimit[i_step].Predictors[i_predictor].Ymin = val;
         return true;
     }
 
-    int GetPredictorVptsnbUpperLimit(int i_step, int i_predictor)
+    int GetPredictorYptsnbUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Vptsnb;
+        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    bool SetPredictorVptsnbUpperLimit(int i_step, int i_predictor, int val)
+    bool SetPredictorYptsnbUpperLimit(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Vptsnb is null"));
+            asLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Vptsnb = val;
+        m_stepsUpperLimit[i_step].Predictors[i_predictor].Yptsnb = val;
         return true;
     }
 
@@ -429,67 +429,67 @@ public:
         return true;
     }
 
-    double GetPredictorUminLowerLimit(int i_step, int i_predictor)
+    double GetPredictorXminLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Umin;
+        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Xmin;
     }
 
-    bool SetPredictorUminLowerLimit(int i_step, int i_predictor, double val)
+    bool SetPredictorXminLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Umin is null"));
+            asLogError(_("The provided value for Xmin is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Umin = val;
+        m_stepsLowerLimit[i_step].Predictors[i_predictor].Xmin = val;
         return true;
     }
 
-    int GetPredictorUptsnbLowerLimit(int i_step, int i_predictor)
+    int GetPredictorXptsnbLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Uptsnb;
+        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    bool SetPredictorUptsnbLowerLimit(int i_step, int i_predictor, int val)
+    bool SetPredictorXptsnbLowerLimit(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Uptsnb is null"));
+            asLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Uptsnb = val;
+        m_stepsLowerLimit[i_step].Predictors[i_predictor].Xptsnb = val;
         return true;
     }
 
-    double GetPredictorVminLowerLimit(int i_step, int i_predictor)
+    double GetPredictorYminLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Vmin;
+        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Ymin;
     }
 
-    bool SetPredictorVminLowerLimit(int i_step, int i_predictor, double val)
+    bool SetPredictorYminLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Vmin is null"));
+            asLogError(_("The provided value for Ymin is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Vmin = val;
+        m_stepsLowerLimit[i_step].Predictors[i_predictor].Ymin = val;
         return true;
     }
 
-    int GetPredictorVptsnbLowerLimit(int i_step, int i_predictor)
+    int GetPredictorYptsnbLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Vptsnb;
+        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    bool SetPredictorVptsnbLowerLimit(int i_step, int i_predictor, double val)
+    bool SetPredictorYptsnbLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val))
         {
-            asLogError(_("The provided value for Vptsnb is null"));
+            asLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Vptsnb = val;
+        m_stepsLowerLimit[i_step].Predictors[i_predictor].Yptsnb = val;
         return true;
     }
 
@@ -616,44 +616,44 @@ public:
         m_stepsLocks[i_step].Predictors[i_predictor].Level = val;
     }
 
-    bool IsPredictorUminLocked(int i_step, int i_predictor)
+    bool IsPredictorXminLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Umin;
+        return m_stepsLocks[i_step].Predictors[i_predictor].Xmin;
     }
 
-    void SetPredictorUminLock(int i_step, int i_predictor, bool val)
+    void SetPredictorXminLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Umin = val;
+        m_stepsLocks[i_step].Predictors[i_predictor].Xmin = val;
     }
 
-    bool IsPredictorUptsnbLocked(int i_step, int i_predictor)
+    bool IsPredictorXptsnbLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Uptsnb;
+        return m_stepsLocks[i_step].Predictors[i_predictor].Xptsnb;
     }
 
-    void SetPredictorUptsnbLock(int i_step, int i_predictor, bool val)
+    void SetPredictorXptsnbLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Uptsnb = val;
+        m_stepsLocks[i_step].Predictors[i_predictor].Xptsnb = val;
     }
 
-    bool IsPredictorVminLocked(int i_step, int i_predictor)
+    bool IsPredictorYminLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Vmin;
+        return m_stepsLocks[i_step].Predictors[i_predictor].Ymin;
     }
 
-    void SetPredictorVminLock(int i_step, int i_predictor, bool val)
+    void SetPredictorYminLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Vmin = val;
+        m_stepsLocks[i_step].Predictors[i_predictor].Ymin = val;
     }
 
-    bool IsPredictorVptsnbLocked(int i_step, int i_predictor)
+    bool IsPredictorYptsnbLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Vptsnb;
+        return m_stepsLocks[i_step].Predictors[i_predictor].Yptsnb;
     }
 
-    void SetPredictorVptsnbLock(int i_step, int i_predictor, bool val)
+    void SetPredictorYptsnbLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Vptsnb = val;
+        m_stepsLocks[i_step].Predictors[i_predictor].Yptsnb = val;
     }
 
     bool IsPredictorWeightLocked(int i_step, int i_predictor)
@@ -702,11 +702,11 @@ public:
         }
     }
 
-    bool IncrementPredictorUmin(int i_step, int i_predictor)
+    bool IncrementPredictorXmin(int i_step, int i_predictor)
     {
-        if (GetPredictorUmin(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Umin <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Umin)
+        if (GetPredictorXmin(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Xmin <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Xmin)
         {
-            SetPredictorUmin(i_step,i_predictor, GetPredictorUmin(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Umin);
+            SetPredictorXmin(i_step,i_predictor, GetPredictorXmin(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Xmin);
             return true;
         }
         else
@@ -715,11 +715,11 @@ public:
         }
     }
 
-    bool IncrementPredictorUptsnb(int i_step, int i_predictor)
+    bool IncrementPredictorXptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorUptsnb(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Uptsnb <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Uptsnb)
+        if (GetPredictorXptsnb(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Xptsnb)
         {
-            SetPredictorUptsnb(i_step,i_predictor, GetPredictorUptsnb(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Uptsnb);
+            SetPredictorXptsnb(i_step,i_predictor, GetPredictorXptsnb(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb);
             return true;
         }
         else
@@ -728,11 +728,11 @@ public:
         }
     }
 
-    bool IncrementPredictorVmin(int i_step, int i_predictor)
+    bool IncrementPredictorYmin(int i_step, int i_predictor)
     {
-        if (GetPredictorVmin(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Vmin <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Vmin)
+        if (GetPredictorYmin(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Ymin <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Ymin)
         {
-            SetPredictorVmin(i_step,i_predictor, GetPredictorVmin(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Vmin);
+            SetPredictorYmin(i_step,i_predictor, GetPredictorYmin(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Ymin);
             return true;
         }
         else
@@ -741,11 +741,11 @@ public:
         }
     }
 
-    bool IncrementPredictorVptsnb(int i_step, int i_predictor)
+    bool IncrementPredictorYptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorVptsnb(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Vptsnb <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Vptsnb)
+        if (GetPredictorYptsnb(i_step,i_predictor)+m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb <= m_stepsUpperLimit[i_step].Predictors[i_predictor].Yptsnb)
         {
-            SetPredictorVptsnb(i_step,i_predictor, GetPredictorVptsnb(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Vptsnb);
+            SetPredictorYptsnb(i_step,i_predictor, GetPredictorYptsnb(i_step,i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb);
             return true;
         }
         else
@@ -806,11 +806,11 @@ public:
         }
     }
 
-    bool DecrementPredictorUmin(int i_step, int i_predictor)
+    bool DecrementPredictorXmin(int i_step, int i_predictor)
     {
-        if (GetPredictorUmin(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Umin >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Umin)
+        if (GetPredictorXmin(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Xmin >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Xmin)
         {
-            SetPredictorUmin(i_step,i_predictor, GetPredictorUmin(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Umin);
+            SetPredictorXmin(i_step,i_predictor, GetPredictorXmin(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Xmin);
             return true;
         }
         else
@@ -819,11 +819,11 @@ public:
         }
     }
 
-    bool DecrementPredictorUptsnb(int i_step, int i_predictor)
+    bool DecrementPredictorXptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorUptsnb(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Uptsnb >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Uptsnb)
+        if (GetPredictorXptsnb(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Xptsnb)
         {
-            SetPredictorUptsnb(i_step,i_predictor, GetPredictorUptsnb(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Uptsnb);
+            SetPredictorXptsnb(i_step,i_predictor, GetPredictorXptsnb(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb);
             return true;
         }
         else
@@ -832,11 +832,11 @@ public:
         }
     }
 
-    bool DecrementPredictorVmin(int i_step, int i_predictor)
+    bool DecrementPredictorYmin(int i_step, int i_predictor)
     {
-        if (GetPredictorVmin(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Vmin >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Vmin)
+        if (GetPredictorYmin(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Ymin >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Ymin)
         {
-            SetPredictorVmin(i_step,i_predictor, GetPredictorVmin(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Vmin);
+            SetPredictorYmin(i_step,i_predictor, GetPredictorYmin(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Ymin);
             return true;
         }
         else
@@ -845,11 +845,11 @@ public:
         }
     }
 
-    bool DecrementPredictorVptsnb(int i_step, int i_predictor)
+    bool DecrementPredictorYptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorVptsnb(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Vptsnb >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Vptsnb)
+        if (GetPredictorYptsnb(i_step,i_predictor)-m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb >= m_stepsLowerLimit[i_step].Predictors[i_predictor].Yptsnb)
         {
-            SetPredictorVptsnb(i_step,i_predictor, GetPredictorVptsnb(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Vptsnb);
+            SetPredictorYptsnb(i_step,i_predictor, GetPredictorYptsnb(i_step,i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb);
             return true;
         }
         else

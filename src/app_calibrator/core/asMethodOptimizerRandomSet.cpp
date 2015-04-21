@@ -85,7 +85,7 @@ bool asMethodOptimizerRandomSet::Manager()
             if(parallelEvaluations)
             {
                 #ifndef UNIT_TESTING
-                    if (g_Responsive) wxGetApp().Yield();
+                    if (g_responsive) wxGetApp().Yield();
                 #endif
                 if (m_cancel) return false;
 
@@ -106,7 +106,7 @@ bool asMethodOptimizerRandomSet::Manager()
                     ThreadsManager().Wait(threadType);
 
                     #ifndef UNIT_TESTING
-                        if (g_Responsive) wxGetApp().Yield();
+                        if (g_responsive) wxGetApp().Yield();
                     #endif
                     if (m_cancel) return false;
                 }
@@ -138,7 +138,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 while (m_iterator<m_paramsNb)
                 {
                     #ifndef UNIT_TESTING
-                        if (g_Responsive) wxGetApp().Yield();
+                        if (g_responsive) wxGetApp().Yield();
                     #endif
                     if (m_cancel) return false;
 
@@ -178,7 +178,7 @@ bool asMethodOptimizerRandomSet::Manager()
             else
             {
                 #ifndef UNIT_TESTING
-                    if (g_Responsive) wxGetApp().Yield();
+                    if (g_responsive) wxGetApp().Yield();
                 #endif
                 if (m_cancel) return false;
 

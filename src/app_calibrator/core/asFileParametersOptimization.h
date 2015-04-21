@@ -12,8 +12,8 @@ public:
     /** Default destructor */
     virtual ~asFileParametersOptimization();
 
-    bool InsertRootElement();
-    bool GoToRootElement();
+	bool EditRootElement();
+	bool CheckRootElement();
 
 protected:
 private:
