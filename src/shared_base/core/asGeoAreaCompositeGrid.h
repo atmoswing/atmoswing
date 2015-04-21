@@ -40,26 +40,26 @@ public:
         GaussianT62
     };
 
-    asGeoAreaCompositeGrid(CoordSys coosys, const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(CoordSys coosys, double Umin, double Uwidth, double Vmin, double Vwidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(CoordSys coosys, float Level = asNONE, float Height = asNONE);
+    asGeoAreaCompositeGrid(float Level = asNONE, float Height = asNONE);
 
 
-    static asGeoAreaCompositeGrid* GetInstance(CoordSys coosys, const wxString &type, double Umin, int Uptsnb, double Ustep, double Vmin, int Vptsnb, double Vstep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    static asGeoAreaCompositeGrid* GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep, double Ymin, int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) = 0;
 
 
     GridType GetGridType()
     {
-        return m_GridType;
+        return m_gridType;
     }
 
     wxString GetGridTypeString()
     {
-        switch (m_GridType)
+        switch (m_gridType)
         {
             case (Regular):
                 return "Regular";
@@ -70,96 +70,96 @@ public:
         }
     }
 
-    virtual double GetUstep() = 0;
-    virtual double GetVstep() = 0;
+    virtual double GetXstep() = 0;
+    virtual double GetYstep() = 0;
 
-    /** Get the U axis for the given composite
+    /** Get the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The axis built on the boundaries and the step
      */
-    virtual Array1DDouble GetUaxisComposite(int compositeNb) = 0;
+    virtual Array1DDouble GetXaxisComposite(int compositeNb) = 0;
 
-    /** Get the V axis for the given composite
+    /** Get the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The axis built on the boundaries and the step
      */
-    virtual Array1DDouble GetVaxisComposite(int compositeNb) = 0;
+    virtual Array1DDouble GetYaxisComposite(int compositeNb) = 0;
 
-    /** Get the size of the U axis for the given composite
+    /** Get the size of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The size of the axis
      */
-    virtual int GetUaxisCompositePtsnb(int compositeNb) = 0;
+    virtual int GetXaxisCompositePtsnb(int compositeNb) = 0;
 
-    /** Get the size of the V axis for the given composite
+    /** Get the size of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The size of the axis
      */
-    virtual int GetVaxisCompositePtsnb(int compositeNb) = 0;
+    virtual int GetYaxisCompositePtsnb(int compositeNb) = 0;
 
-    /** Get the width of the U axis for the given composite
+    /** Get the width of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The width of the axis
      */
-    virtual double GetUaxisCompositeWidth(int compositeNb) = 0;
+    virtual double GetXaxisCompositeWidth(int compositeNb) = 0;
 
-    /** Get the width of the V axis for the given composite
+    /** Get the width of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The width of the axis
      */
-    virtual double GetVaxisCompositeWidth(int compositeNb) = 0;
+    virtual double GetYaxisCompositeWidth(int compositeNb) = 0;
 
-    /** Get the start value of the U axis for the given composite
+    /** Get the start value of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The start value of the axis
      */
-    virtual double GetUaxisCompositeStart(int compositeNb) = 0;
+    virtual double GetXaxisCompositeStart(int compositeNb) = 0;
 
-    /** Get the start value of the V axis for the given composite
+    /** Get the start value of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The start value of the axis
      */
-    virtual double GetVaxisCompositeStart(int compositeNb) = 0;
+    virtual double GetYaxisCompositeStart(int compositeNb) = 0;
 
-    /** Get the last value of the U axis for the given composite
+    /** Get the last value of the X axis for the given composite
      * \param compositeNb The desired composite
      * \return The last value of the axis
      */
-    virtual double GetUaxisCompositeEnd(int compositeNb) = 0;
+    virtual double GetXaxisCompositeEnd(int compositeNb) = 0;
 
-    /** Get the last value of the V axis for the given composite
+    /** Get the last value of the Y axis for the given composite
      * \param compositeNb The desired composite
      * \return The last value of the axis
      */
-    virtual double GetVaxisCompositeEnd(int compositeNb) = 0;
+    virtual double GetYaxisCompositeEnd(int compositeNb) = 0;
 
-    /** Get the total size of the U axis
+    /** Get the total size of the X axis
      * \return The total size of the axis
      */
-    int GetUaxisPtsnb();
+    int GetXaxisPtsnb();
 
-    /** Get the total size of the V axis
+    /** Get the total size of the Y axis
      * \return The total size of the axis
      */
-    int GetVaxisPtsnb();
+    int GetYaxisPtsnb();
 
-    /** Get the total width of the U axis
+    /** Get the total width of the X axis
      * \return The total width of the axis
      */
-    double GetUaxisWidth();
+    double GetXaxisWidth();
 
-    /** Get the total width of the V axis
+    /** Get the total width of the Y axis
      * \return The total width of the axis
      */
-    double GetVaxisWidth();
+    double GetYaxisWidth();
 
-    Array1DDouble GetUaxis();
+    Array1DDouble GetXaxis();
 
-    Array1DDouble GetVaxis();
+    Array1DDouble GetYaxis();
 
 
 protected:
-    GridType m_GridType;
+    GridType m_gridType;
 
 private:
 

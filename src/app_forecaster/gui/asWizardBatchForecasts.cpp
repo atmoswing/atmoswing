@@ -37,7 +37,7 @@ asWizardBatchForecasts::asWizardBatchForecasts( wxWindow* parent, asBatchForecas
 :
 asWizardBatchForecastsVirtual( parent, id )
 {
-    m_BatchForecasts = batchForecasts;
+    m_batchForecasts = batchForecasts;
 }
 
 asWizardBatchForecasts::~asWizardBatchForecasts()
@@ -47,9 +47,9 @@ asWizardBatchForecasts::~asWizardBatchForecasts()
 
 void asWizardBatchForecasts::OnWizardFinished( wxWizardEvent& event )
 {
-    wxString filePath = m_FilePickerBatchFile->GetPath();
-    m_BatchForecasts->SetFilePath(filePath);
-    m_BatchForecasts->Save();
+    wxString filePath = m_filePickerBatchFile->GetPath();
+    m_batchForecasts->SetFilePath(filePath);
+    m_batchForecasts->Save();
     
     if (!filePath.IsEmpty())
     {
@@ -58,7 +58,7 @@ void asWizardBatchForecasts::OnWizardFinished( wxWizardEvent& event )
     }
 
     // Open the preferences frame
-    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(NULL, m_BatchForecasts);
+    asFramePreferencesForecaster* frame = new asFramePreferencesForecaster(NULL, m_batchForecasts);
     frame->Fit();
     frame->Show();
 }

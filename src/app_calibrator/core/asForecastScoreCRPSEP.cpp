@@ -32,12 +32,12 @@ asForecastScoreCRPSEP::asForecastScoreCRPSEP()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::CRPSEP;
-    m_Name = _("CRPS Exact Primitive");
-    m_FullName = _("Continuous Ranked Probability Score exact solution");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::CRPSEP;
+    m_name = _("CRPS Exact Primitive");
+    m_fullName = _("Continuous Ranked Probability Score exact solution");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreCRPSEP::~asForecastScoreCRPSEP()
@@ -73,31 +73,11 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
 
     float CRPS = 0;
 
-    // Containers
-    Array1DFloat F(nbForecasts);
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
+
     float FxObs = 0;
     float DF, DVal;
-
-    // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
-    // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
-    // Bontron used a=0.375, b=25, that are optimal for a normal distribution
-    float irep = 0.44f;
-    float nrep = 0.12f;
-
-    // Change the values for unit testing to compare to the results from Grenoble
-    if (g_UnitTesting)
-    {
-        irep = 0.375;
-        nrep = 0.25;
-    }
-
-    // Build the cumulative distribution function
-    float divisor = 1.0f/(nbForecasts+nrep);
-    for(float i=0; i<nbForecasts; i++)
-    {
-
-        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
-    }
 
     // Indices for the left and right part (according to xObs) of the distribution
     int indLeftStart = 0;

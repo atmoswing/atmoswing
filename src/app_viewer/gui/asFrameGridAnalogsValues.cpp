@@ -31,16 +31,19 @@
 #include "asResultsAnalogsForecast.h"
 
 
-asFrameGridAnalogsValues::asFrameGridAnalogsValues( wxWindow* parent, int selectedForecast, asForecastManager *forecastManager, wxWindowID id )
+asFrameGridAnalogsValues::asFrameGridAnalogsValues( wxWindow* parent, int methodRow, int forecastRow, asForecastManager *forecastManager, wxWindowID id )
 :
 asFrameGridAnalogsValuesVirtual( parent )
 {
-    m_ForecastManager = forecastManager;
-    m_SelectedForecast = selectedForecast;
-    m_SelectedStation = 0;
-    m_SelectedDate = 0;
-    m_SortAfterCol = 0;
-    m_SortOrder = Asc;
+    forecastRow = wxMax(forecastRow, 0);
+
+    m_forecastManager = forecastManager;
+    m_selectedMethod = methodRow;
+    m_selectedForecast = forecastRow;
+    m_selectedStation = 0;
+    m_selectedDate = 0;
+    m_sortAfterCol = 0;
+    m_sortOrder = Asc;
 
     // Icon
 #ifdef __WXMSW__
@@ -51,62 +54,83 @@ asFrameGridAnalogsValuesVirtual( parent )
 void asFrameGridAnalogsValues::Init()
 {
     // Forecast list
-    wxArrayString arrayForecasts = m_ForecastManager->GetModelsNamesWxArray();
-    m_ChoiceForecast->Set(arrayForecasts);
-    m_ChoiceForecast->Select(m_SelectedForecast);
+	RebuildChoiceForecast();
 
     // Dates list
-    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedForecast);
-    m_ChoiceDate->Set(arrayDates);
-    m_ChoiceDate->Select(m_SelectedDate);
+    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    m_choiceDate->Set(arrayDates);
+    m_choiceDate->Select(m_selectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedForecast);
-    m_ChoiceStation->Set(arrayStation);
-    m_ChoiceStation->Select(m_SelectedStation);
+    wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(m_selectedMethod, m_selectedForecast);
+    m_choiceStation->Set(arrayStation);
+    m_choiceStation->Select(m_selectedStation);
 
     // Set grid
-    m_Grid->SetColFormatNumber(0);
-    m_Grid->SetColFormatFloat(2,-1,1);
-    m_Grid->SetColFormatFloat(3,-1,3);
+    m_grid->SetColFormatNumber(0);
+    m_grid->SetColFormatFloat(2,-1,1);
+    m_grid->SetColFormatFloat(3,-1,3);
     UpdateGrid();
+}
+
+void asFrameGridAnalogsValues::RebuildChoiceForecast()
+{
+	// Reset forecast list
+	wxArrayString arrayForecasts = m_forecastManager->GetAllForecastNamesWxArray();
+	m_choiceForecast->Set(arrayForecasts);
+	int linearIndex = m_forecastManager->GetLinearIndex(m_selectedMethod, m_selectedForecast);
+	m_choiceForecast->Select(linearIndex);
+
+	// Highlight the specific forecasts
+	for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++)
+	{
+		int stationId = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetStationId(m_selectedStation);
+		int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
+		int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
+		wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+		m_choiceForecast->SetString(index, val);
+	}
 }
 
 void asFrameGridAnalogsValues::OnChoiceForecastChange( wxCommandEvent& event )
 {
-    m_SelectedForecast = event.GetInt();
+    int linearIndex = event.GetInt();
+    m_selectedMethod = m_forecastManager->GetMethodRowFromLinearIndex(linearIndex);
+    m_selectedForecast = m_forecastManager->GetForecastRowFromLinearIndex(linearIndex);
 
     // Dates list
-    wxArrayString arrayDates = m_ForecastManager->GetLeadTimes(m_SelectedForecast);
-    m_ChoiceDate->Set(arrayDates);
-    if (arrayDates.size()<=(unsigned)m_SelectedDate)
+    wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
+    m_choiceDate->Set(arrayDates);
+    if (arrayDates.size()<=(unsigned)m_selectedDate)
     {
-        m_SelectedDate = 0;
+        m_selectedDate = 0;
     }
-    m_ChoiceDate->Select(m_SelectedDate);
+    m_choiceDate->Select(m_selectedDate);
 
     // Stations list
-    wxArrayString arrayStation = m_ForecastManager->GetStationNamesWithHeights(m_SelectedForecast);
-    m_ChoiceStation->Set(arrayStation);
-    if (arrayStation.size()<=(unsigned)m_SelectedStation)
+    wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(m_selectedMethod, m_selectedForecast);
+    m_choiceStation->Set(arrayStation);
+    if (arrayStation.size()<=(unsigned)m_selectedStation)
     {
-        m_SelectedStation = 0;
+        m_selectedStation = 0;
     }
-    m_ChoiceStation->Select(m_SelectedStation);
+    m_choiceStation->Select(m_selectedStation);
 
     UpdateGrid();
 }
 
 void asFrameGridAnalogsValues::OnChoiceStationChange( wxCommandEvent& event )
 {
-    m_SelectedStation = event.GetInt();
+    m_selectedStation = event.GetInt();
+
+	RebuildChoiceForecast();
 
     UpdateGrid(); // Doesn't change for criteria
 }
 
 void asFrameGridAnalogsValues::OnChoiceDateChange( wxCommandEvent& event )
 {
-    m_SelectedDate = event.GetInt();
+    m_selectedDate = event.GetInt();
 
     UpdateGrid();
 }
@@ -121,52 +145,52 @@ void asFrameGridAnalogsValues::SortGrid( wxGridEvent& event )
     }
 
     // Check if twice on the same col
-    if (m_SortAfterCol == event.GetCol())
+    if (m_sortAfterCol == event.GetCol())
     {
-        if (m_SortOrder==Asc)
+        if (m_sortOrder==Asc)
         {
-            m_SortOrder = Desc;
+            m_sortOrder = Desc;
         }
         else
         {
-            m_SortOrder = Asc;
+            m_sortOrder = Asc;
         }
     }
     else
     {
-        m_SortOrder = Asc;
+        m_sortOrder = Asc;
     }
-    m_SortAfterCol = event.GetCol();
+    m_sortAfterCol = event.GetCol();
 
     UpdateGrid();
 }
 
 bool asFrameGridAnalogsValues::UpdateGrid()
 {
-    if (m_ForecastManager->GetModelsNb()<1) return false;
+    if (m_forecastManager->GetMethodsNb()<1) return false;
 
-    asResultsAnalogsForecast* forecast = m_ForecastManager->GetCurrentForecast(m_SelectedForecast);
-    Array1DFloat dates = forecast->GetAnalogsDates(m_SelectedDate);
-    Array1DFloat values = forecast->GetAnalogsValuesGross(m_SelectedDate, m_SelectedStation);
-    Array1DFloat criteria = forecast->GetAnalogsCriteria(m_SelectedDate);
+    asResultsAnalogsForecast* forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    Array1DFloat dates = forecast->GetAnalogsDates(m_selectedDate);
+    Array1DFloat values = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    Array1DFloat criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     Array1DFloat analogNb = Array1DFloat::LinSpaced(dates.size(),1,dates.size());
 
-    m_Grid->Hide();
+    m_grid->Hide();
 
-    //m_Grid->ClearGrid();
-    m_Grid->DeleteRows(0, m_Grid->GetRows());
-    m_Grid->InsertRows(0, dates.size());
+    //m_grid->ClearGrid();
+    m_grid->DeleteRows(0, m_grid->GetRows());
+    m_grid->InsertRows(0, dates.size());
 
-    if (m_SortAfterCol>0 || m_SortOrder==Desc)
+    if (m_sortAfterCol>0 || m_sortOrder==Desc)
     {
-        if (m_SortAfterCol==0) // Analog nb
+        if (m_sortAfterCol==0) // Analog nb
         {
             Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,dates.size(),
                             0,dates.size()-1);
 
             asTools::SortArrays(&analogNb[0], &analogNb[analogNb.size()-1],
                         &vIndices[0], &vIndices[analogNb.size()-1],
-                        m_SortOrder);
+                        m_sortOrder);
 
             Array1DFloat copyDates = dates;
             Array1DFloat copyValues = values;
@@ -180,14 +204,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
                 criteria[i] = copyCriteria[index];
             }
         }
-        else if (m_SortAfterCol==1) // date
+        else if (m_sortAfterCol==1) // date
         {
             Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,dates.size(),
                             0,dates.size()-1);
 
             asTools::SortArrays(&dates[0], &dates[dates.size()-1],
                         &vIndices[0], &vIndices[dates.size()-1],
-                        m_SortOrder);
+                        m_sortOrder);
 
             Array1DFloat copyAnalogNb = analogNb;
             Array1DFloat copyValues = values;
@@ -201,14 +225,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
                 criteria[i] = copyCriteria[index];
             }
         }
-        else if (m_SortAfterCol==2) // value
+        else if (m_sortAfterCol==2) // value
         {
             Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,dates.size(),
                             0,dates.size()-1);
 
             asTools::SortArrays(&values[0], &values[values.size()-1],
                         &vIndices[0], &vIndices[values.size()-1],
-                        m_SortOrder);
+                        m_sortOrder);
 
             Array1DFloat copyAnalogNb = analogNb;
             Array1DFloat copyDates = dates;
@@ -223,14 +247,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
             }
 
         }
-        else if (m_SortAfterCol==3) // criteria
+        else if (m_sortAfterCol==3) // criteria
         {
             Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential,dates.size(),
                             0,dates.size()-1);
 
             asTools::SortArrays(&criteria[0], &criteria[criteria.size()-1],
                         &vIndices[0], &vIndices[criteria.size()-1],
-                        m_SortOrder);
+                        m_sortOrder);
 
             Array1DFloat copyAnalogNb = analogNb;
             Array1DFloat copyValues = values;
@@ -250,19 +274,19 @@ bool asFrameGridAnalogsValues::UpdateGrid()
     {
         wxString buf;
         buf.Printf("%d", (int)analogNb[i]);
-        m_Grid->SetCellValue(i,0,buf);
+        m_grid->SetCellValue(i,0,buf);
 
-        buf.Printf("%s", asTime::GetStringTime(dates[i], "DD.MM.YYYY").c_str());
-        m_Grid->SetCellValue(i,1,buf);
+        buf.Printf("%s", asTime::GetStringTime(dates[i], "DD.MM.YYYY"));
+        m_grid->SetCellValue(i,1,buf);
 
         buf.Printf("%g", values[i]);
-        m_Grid->SetCellValue(i,2,buf);
+        m_grid->SetCellValue(i,2,buf);
 
         buf.Printf("%g", criteria[i]);
-        m_Grid->SetCellValue(i,3,buf);
+        m_grid->SetCellValue(i,3,buf);
     }
 
-    m_Grid->Show();
+    m_grid->Show();
 
     return true;
 }

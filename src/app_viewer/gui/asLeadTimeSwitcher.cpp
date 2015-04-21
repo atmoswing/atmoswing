@@ -30,15 +30,16 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
-asLeadTimeSwitcher::asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+asLeadTimeSwitcher::asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 :
 wxPanel( parent, id, pos, size, style )
 {
-    m_Workspace = workspace;
-    m_Bmp = NULL;
-    m_Gdc = NULL;
-    m_CellWidth = 10;
-
+    m_workspace = workspace;
+    m_forecastManager = forecastManager;
+    m_bmp = NULL;
+    m_gdc = NULL;
+	m_cellWidth = 40 * g_ppiScaleDc;
+	
     Connect( wxEVT_PAINT, wxPaintEventHandler( asLeadTimeSwitcher::OnPaint ), NULL, this );
     Connect( wxEVT_LEFT_UP, wxMouseEventHandler( asLeadTimeSwitcher::OnLeadTimeSlctChange ), NULL, this);
     Connect( wxEVT_RIGHT_UP, wxMouseEventHandler( asLeadTimeSwitcher::OnLeadTimeSlctChange ), NULL, this);
@@ -54,36 +55,34 @@ asLeadTimeSwitcher::~asLeadTimeSwitcher()
     Disconnect( wxEVT_RIGHT_UP, wxMouseEventHandler( asLeadTimeSwitcher::OnLeadTimeSlctChange ), NULL, this);
     Disconnect( wxEVT_MIDDLE_UP, wxMouseEventHandler( asLeadTimeSwitcher::OnLeadTimeSlctChange ), NULL, this);
 
-    wxDELETE(m_Bmp);
+    wxDELETE(m_bmp);
 }
 
 void asLeadTimeSwitcher::SetParent(wxWindow* parent)
 {
-    m_Parent = parent;
+    m_parent = parent;
 }
 
 void asLeadTimeSwitcher::OnLeadTimeSlctChange( wxMouseEvent& event )
 {
     wxPoint position = event.GetPosition();
-    int val = floor(position.x/m_CellWidth);
+    int val = floor(position.x/m_cellWidth);
     wxCommandEvent eventSlct (asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED);
     eventSlct.SetInt(val);
     GetParent()->ProcessWindowEvent(eventSlct);
 }
 
-void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
+void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
 {
-    // Get sizes
-    int cols = dates.size();
-    int rows = models.size();
-    
     // Required size
-    m_CellWidth = 40;
-    int width = (cols+1)*m_CellWidth;
-    int height = m_CellWidth+5;
+	int margin = 5 * g_ppiScaleDc;
+	int width = (dates.size() + 1)*m_cellWidth;
+	int height = m_cellWidth + margin;
 
     // Get color values
-    Array1DFloat values = GetValues(dates, models, forecasts);
+    int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
+    float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
+    Array1DFloat values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, quantileThreshold);
     wxASSERT(values.size()==dates.size());
 
     // Create bitmap
@@ -94,20 +93,20 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, s
     wxMemoryDC dc (*bmp);
     dc.SetBackground(wxBrush(GetBackgroundColour()));
     #if defined(__UNIX__)
-        dc.SetBackground(wxBrush(g_LinuxBgColour));
+        dc.SetBackground(wxBrush(g_linuxBgColour));
     #endif
     dc.Clear();
 
     // Create graphics context
     wxGraphicsContext * gc = wxGraphicsContext::Create(dc);
 
-    if ( gc && cols>0 && rows>0 )
+    if ( gc && values.size()>0 )
     {
         gc->SetPen( *wxBLACK );
         wxFont datesFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
         gc->SetFont( datesFont, *wxBLACK );
 
-        wxPoint startText(5, m_CellWidth/2 - 10);
+		wxPoint startText(margin, m_cellWidth / 2 - 10);
 
         // For every lead time
         for (int i_leadtime=0; i_leadtime<dates.size(); i_leadtime++)
@@ -129,7 +128,7 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, s
 
         int segmentsTot = 7;
         const double scale = 0.16;
-        wxPoint center(width-m_CellWidth/2, m_CellWidth/2);
+        wxPoint center(width-m_cellWidth/2, m_cellWidth/2);
 
         for (int i=0; i<segmentsTot; i++)
         {
@@ -153,7 +152,7 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates, const VectorString &models, s
 
 void asLeadTimeSwitcher::SetLeadTime(int leadTime)
 {
-    m_LeadTime = leadTime;
+    m_leadTime = leadTime;
 }
 
 void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
@@ -161,14 +160,14 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
     // Clear overlay
     {
 		wxClientDC dc (this);
-		wxDCOverlay overlaydc (m_Overlay, &dc);
+		wxDCOverlay overlaydc (m_overlay, &dc);
 		overlaydc.Clear();
 	}
-	m_Overlay.Reset();
+	m_overlay.Reset();
     
     // Get overlay
 	wxClientDC dc (this);
-	wxDCOverlay overlaydc (m_Overlay, &dc);
+	wxDCOverlay overlaydc (m_overlay, &dc);
 	overlaydc.Clear();
 
     // Create graphics context
@@ -187,128 +186,26 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
     }
 }
 
-Array1DFloat asLeadTimeSwitcher::GetValues(Array1DFloat &dates, const VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts)
-{
-    int returnPeriodRef = m_Workspace->GetAlarmsPanelReturnPeriod();
-    float percentileThreshold = m_Workspace->GetAlarmsPanelPercentile();
-
-    wxASSERT(returnPeriodRef>=2);
-    wxASSERT(percentileThreshold>0);
-    wxASSERT(percentileThreshold<1);
-    if (returnPeriodRef<2) returnPeriodRef = 2;
-    if (percentileThreshold<=0) percentileThreshold = (float)0.9;
-    if (percentileThreshold>1) percentileThreshold = (float)0.9;
-
-    Array2DFloat allValues = Array2DFloat::Ones(models.size(), dates.size());
-    allValues *= NaNFloat;
-
-    for (unsigned int i_model=0; i_model<models.size(); i_model++)
-    {
-        asResultsAnalogsForecast* forecast = forecasts[i_model];
-        int stationsNb = forecast->GetStationsNb();
-
-        // Get return period index
-        int indexReferenceAxis=asNOT_FOUND;
-        if(forecast->HasReferenceValues())
-        {
-            Array1DFloat forecastReferenceAxis = forecast->GetReferenceAxis();
-
-            indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size()-1], returnPeriodRef);
-            if ( (indexReferenceAxis==asNOT_FOUND) || (indexReferenceAxis==asOUT_OF_RANGE) )
-            {
-                asLogError(_("The desired return period is not available in the forecast file."));
-            }
-        }
-
-        // Check lead times effectively available for the current model
-        int leadtimeMin = 0;
-        int leadtimeMax = dates.size()-1;
-
-        Array1DFloat availableDates = forecast->GetTargetDates();
-
-        while (dates[leadtimeMin]<availableDates[0])
-        {
-            leadtimeMin++;
-        }
-        while (dates[leadtimeMax]>availableDates[availableDates.size()-1])
-        {
-            leadtimeMax--;
-        }
-        wxASSERT(leadtimeMin<leadtimeMax);
-
-        for (int i_leadtime=leadtimeMin; i_leadtime<=leadtimeMax; i_leadtime++)
-        {
-            float maxVal = 0;
-
-            // Get the maximum value of every station
-            for (int i_station=0; i_station<stationsNb; i_station++)
-            {
-                float thisVal = 0;
-
-                // Get values for return period
-                float factor = 1;
-                if(forecast->HasReferenceValues())
-                {
-                    float precip = forecast->GetReferenceValue(i_station, indexReferenceAxis);
-                    wxASSERT(precip>0);
-                    wxASSERT(precip<500);
-                    factor = 1.0/precip;
-                    wxASSERT(factor>0);
-                }
-
-                // Get values
-                Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, i_station);
-
-                // Process percentiles
-                if(asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size()-1]))
-                {
-                    thisVal = NaNFloat;
-                }
-                else
-                {
-                    float forecastVal = asTools::Percentile(&theseVals[0], &theseVals[theseVals.size()-1], percentileThreshold);
-                    wxASSERT_MSG(forecastVal>=0, wxString::Format("Forecast value = %g", forecastVal));
-                    forecastVal *= factor;
-                    thisVal = forecastVal;
-                }
-
-                // Keep it if higher
-                if (thisVal>maxVal)
-                {
-                    maxVal = thisVal;
-                }
-            }
-
-            allValues(i_model,i_leadtime) = maxVal;
-        }
-    }
-
-    // Extract the highest values
-    Array1DFloat values = allValues.colwise().maxCoeff();
-
-    return values;
-}
-
 void asLeadTimeSwitcher::SetBitmap(wxBitmap * bmp)
 {
-    wxDELETE(m_Bmp);
-    wxASSERT(!m_Bmp);
+    wxDELETE(m_bmp);
+    wxASSERT(!m_bmp);
 
     if (bmp != NULL)
     {
         wxASSERT(bmp);
-        m_Bmp = new wxBitmap(*bmp);
-        wxASSERT(m_Bmp);
+        m_bmp = new wxBitmap(*bmp);
+        wxASSERT(m_bmp);
     }
 }
 
 wxBitmap* asLeadTimeSwitcher::GetBitmap()
 {
-    wxASSERT(m_Bmp);
+    wxASSERT(m_bmp);
 
-    if (m_Bmp != NULL)
+    if (m_bmp != NULL)
     {
-        return m_Bmp;
+        return m_bmp;
     }
 
     return NULL;
@@ -316,15 +213,15 @@ wxBitmap* asLeadTimeSwitcher::GetBitmap()
 
 void asLeadTimeSwitcher::OnPaint(wxPaintEvent & event)
 {
-    if (m_Bmp != NULL)
+    if (m_bmp != NULL)
     {
         wxPaintDC dc(this);
-        dc.DrawBitmap(*m_Bmp, 0,0, true);
+        dc.DrawBitmap(*m_bmp, 0,0, true);
     }
 
     Layout();
 
-    SetLeadTimeMarker(m_LeadTime);
+    SetLeadTimeMarker(m_leadTime);
 
     event.Skip();
 }
@@ -333,15 +230,15 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath & path, int i_col)
 {
     wxPoint start(0, 0);
 
-    double startPointX = (double)start.x+i_col*m_CellWidth;
+    double startPointX = (double)start.x+i_col*m_cellWidth;
 
     double startPointY = (double)start.y;
 
     path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint( startPointX+m_CellWidth, startPointY );
-    path.AddLineToPoint( startPointX+m_CellWidth, startPointY+m_CellWidth-1 );
-    path.AddLineToPoint( startPointX, startPointY+m_CellWidth-1 );
+    path.AddLineToPoint( startPointX+m_cellWidth, startPointY );
+    path.AddLineToPoint( startPointX+m_cellWidth, startPointY+m_cellWidth-1 );
+    path.AddLineToPoint( startPointX, startPointY+m_cellWidth-1 );
     path.AddLineToPoint( startPointX, startPointY );
 
     path.CloseSubpath();
@@ -349,8 +246,8 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath & path, int i_col)
 
 void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb)
 {
-    const wxDouble radiusOut = 100*scale;
-    const wxDouble radiusIn = 40*scale;
+	const wxDouble radiusOut = 100 * g_ppiScaleDc * scale;
+	const wxDouble radiusIn = 40 * g_ppiScaleDc * scale;
 
     wxDouble segmentStart = -0.5*M_PI + ((double)segmentNb/(double)segmentsTotNb)*(1.5*M_PI);
     wxDouble segmentEnd = -0.5*M_PI + ((double)(segmentNb+1)/(double)segmentsTotNb)*(1.5*M_PI);
@@ -394,7 +291,7 @@ void asLeadTimeSwitcher::FillPath( wxGraphicsContext *gc, wxGraphicsPath & path,
     else if ( value<=0.5 ) // light green to yellow
     {
         int baseVal = 200;
-        int valColour = ((value/(0.5)))*baseVal;
+		int valColour = ((value / (0.5)))*baseVal;
         int valColourCompl = ((value/(0.5)))*(255-baseVal);
         if (valColour>baseVal) valColour = baseVal;
         if (valColourCompl+baseVal>255) valColourCompl = 255-baseVal;
@@ -414,7 +311,7 @@ void asLeadTimeSwitcher::FillPath( wxGraphicsContext *gc, wxGraphicsPath & path,
 
 void asLeadTimeSwitcher::CreateDatesText( wxGraphicsContext *gc, const wxPoint& start, int i_col, const wxString &label)
 {
-    double pointX = (double)start.x+i_col*m_CellWidth;
+    double pointX = (double)start.x+i_col*m_cellWidth;
     double pointY = (double)start.y;
 
     // Draw text
@@ -423,17 +320,19 @@ void asLeadTimeSwitcher::CreateDatesText( wxGraphicsContext *gc, const wxPoint& 
 
 void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath & path, int i_col)
 {
-    int outlier = 5;
-    int markerHeight = 13;
-    wxPoint start(m_CellWidth/2, m_CellWidth-markerHeight);
+	int outlier = g_ppiScaleDc * 5;
+	int markerHeight = g_ppiScaleDc * 13;
+    wxPoint start(m_cellWidth/2, m_cellWidth-markerHeight);
 
-    double startPointX = (double)start.x+i_col*m_CellWidth;
+	double startPointX = (double)start.x + i_col*m_cellWidth;
     double startPointY = (double)start.y;
 
     path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint( startPointX-m_CellWidth/5, startPointY+markerHeight+outlier-1 );
-    path.AddLineToPoint( startPointX+m_CellWidth/5, startPointY+markerHeight+outlier-1 );
+	path.AddLineToPoint(startPointX - m_cellWidth / (g_ppiScaleDc * 5),
+		startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
+	path.AddLineToPoint(startPointX + m_cellWidth / (g_ppiScaleDc * 5),
+		startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
     path.AddLineToPoint( startPointX, startPointY );
 
     path.CloseSubpath();

@@ -31,7 +31,7 @@
 #include "asPanelSidebar.h"
 
 #include "asIncludes.h"
-#include "asResultsAnalogsForecast.h"
+#include "asForecastManager.h"
 #include "asWorkspace.h"
 #include <wx/graphics.h>
 
@@ -45,13 +45,13 @@ public:
     asPanelSidebarAlarmsDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarAlarmsDrawing();
     
-    void DrawAlarms( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
+    void DrawAlarms( Array1DFloat &dates, const VectorString &forecasts, Array2DFloat &values );
     void SetParent( asPanelSidebarAlarms* parent );
 
 private:
-    wxBitmap *m_BmpAlarms;
-    wxGraphicsContext* m_Gdc;
-    asPanelSidebarAlarms* m_Parent;
+    wxBitmap *m_bmpAlarms;
+    wxGraphicsContext* m_gdc;
+    asPanelSidebarAlarms* m_parent;
     void SetBitmapAlarms(wxBitmap *bmp);
     void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols, int rows);
     void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
@@ -65,20 +65,21 @@ class asPanelSidebarAlarms : public asPanelSidebar
 {
 public:
     /** Constructor */
-    asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, asForecastManager * forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~asPanelSidebarAlarms();
 
-    void SetData( Array1DFloat &dates, const VectorString &models, Array2DFloat &values );
-    void UpdateAlarms(Array1DFloat &dates, VectorString &models, std::vector <asResultsAnalogsForecast*> forecasts);
+    void SetData( Array1DFloat &dates, Array2DFloat &values );
+    void Update();
     int GetMode()
     {
-        return m_Mode;
+        return m_mode;
     }
 
 private:
-    asWorkspace* m_Workspace;
-    asPanelSidebarAlarmsDrawing *m_PanelDrawing;
-    int m_Mode;
+    asWorkspace* m_workspace;
+    asForecastManager* m_forecastManager;
+    asPanelSidebarAlarmsDrawing *m_panelDrawing;
+    int m_mode;
     void OnPaint( wxPaintEvent &event );
 };
 

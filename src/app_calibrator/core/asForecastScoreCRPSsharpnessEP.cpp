@@ -33,12 +33,12 @@ asForecastScoreCRPSsharpnessEP::asForecastScoreCRPSsharpnessEP()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::CRPSsharpnessEP;
-    m_Name = _("CRPS Sharpness Exact Primitive");
-    m_FullName = _("Continuous Ranked Probability Score Sharpness exact solution");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::CRPSsharpnessEP;
+    m_name = _("CRPS Sharpness Exact Primitive");
+    m_fullName = _("Continuous Ranked Probability Score Sharpness exact solution");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreCRPSsharpnessEP::~asForecastScoreCRPSsharpnessEP()

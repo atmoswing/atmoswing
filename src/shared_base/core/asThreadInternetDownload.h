@@ -45,15 +45,15 @@ public:
 
 protected:
 private:
-    VectorString m_Urls;
-    VectorString m_FileNames;
-    wxString m_DestinationDir;
-    bool m_UsesProxy;
-    wxString m_ProxyAddress;
-    long m_ProxyPort;
-    wxString m_ProxyUser;
-    wxString m_ProxyPasswd;
-    int m_Start;
+    VectorString m_urls;
+    VectorString m_fileNames;
+    wxString m_destinationDir;
+    bool m_usesProxy;
+    wxString m_proxyAddress;
+    long m_proxyPort;
+    wxString m_proxyUser;
+    wxString m_proxyPasswd;
+    int m_start;
     int m_End;
 
 };

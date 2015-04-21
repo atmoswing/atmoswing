@@ -59,12 +59,12 @@ void asFramePreferencesCalibrator::LoadPreferences()
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
-    wxColour col = m_NotebookBase->GetThemeBackgroundColour();
+    wxColour col = m_notebookBase->GetThemeBackgroundColour();
     if (col.IsOk())
     {
-        m_DirPickerPredictandDB->SetBackgroundColour(col);
-        m_DirPickerIntermediateResults->SetBackgroundColour(col);
-        m_DirPickerArchivePredictors->SetBackgroundColour(col);
+        m_dirPickerPredictandDB->SetBackgroundColour(col);
+        m_dirPickerIntermediateResults->SetBackgroundColour(col);
+        m_dirPickerArchivePredictors->SetBackgroundColour(col);
     }
 
     /*
@@ -74,18 +74,18 @@ void asFramePreferencesCalibrator::LoadPreferences()
     // Log
     long defaultLogLevel = 1; // = selection +1
     long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
-    m_RadioBoxLogLevel->SetSelection((int)logLevel-1);
+    m_radioBoxLogLevel->SetSelection((int)logLevel-1);
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
-    m_CheckBoxDisplayLogWindow->SetValue(displayLogWindow);
+    m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
 
     // Paths
     wxString dirConfig = asConfig::GetDataDir()+"config"+DS;
     wxString dirData = asConfig::GetDataDir()+"data"+DS;
     wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData+"predictands");
-    m_DirPickerPredictandDB->SetPath(PredictandDBDir);
+    m_dirPickerPredictandDB->SetPath(PredictandDBDir);
     wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData+"predictors");
-    m_DirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
+    m_dirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
 
     /*
      * Advanced
@@ -93,52 +93,52 @@ void asFramePreferencesCalibrator::LoadPreferences()
 
     // GUI options
     long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
-    m_RadioBoxGui->SetSelection((int)guiOptions);
+    m_radioBoxGui->SetSelection((int)guiOptions);
     if (guiOptions==0)
     {
-        g_SilentMode = true;
+        g_silentMode = true;
     }
     else
     {
-        g_SilentMode = false;
-        g_VerboseMode = false;
+        g_silentMode = false;
+        g_verboseMode = false;
         if (guiOptions==2l)
         {
-            g_VerboseMode = true;
+            g_verboseMode = true;
         }
     }
 
     // Advanced options
     bool responsive;
     pConfig->Read("/General/Responsive", &responsive, true);
-    m_CheckBoxResponsiveness->SetValue(responsive);
+    m_checkBoxResponsiveness->SetValue(responsive);
     if (responsive)
     {
-        g_Responsive = true;
+        g_responsive = true;
     }
     else
     {
-        g_Responsive = false;
+        g_responsive = false;
     }
 
     // Multithreading
     bool allowMultithreading;
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
-    m_CheckBoxAllowMultithreading->SetValue(allowMultithreading);
+    m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads==-1) maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
     wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    m_TextCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
+    m_textCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
     long ProcessingThreadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
-    m_SliderThreadsPriority->SetValue((int)ProcessingThreadsPriority);
+    m_sliderThreadsPriority->SetValue((int)ProcessingThreadsPriority);
 
     // Processing
     long defaultMethod = (long)asMULTITHREADS;
     long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading)
     {
-        m_RadioBoxProcessingMethods->Enable(0, false);
+        m_radioBoxProcessingMethods->Enable(0, false);
         if (ProcessingMethod==(long)asMULTITHREADS)
         {
             ProcessingMethod = (long)asINSERT;
@@ -146,22 +146,22 @@ void asFramePreferencesCalibrator::LoadPreferences()
     }
     else
     {
-        m_RadioBoxProcessingMethods->Enable(0, true);
+        m_radioBoxProcessingMethods->Enable(0, true);
     }
-    m_RadioBoxProcessingMethods->SetSelection((int)ProcessingMethod);
+    m_radioBoxProcessingMethods->SetSelection((int)ProcessingMethod);
     long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
     long ProcessingLinAlgebra = pConfig->Read("/Processing/LinAlgebra", defaultLinAlgebra);
-    m_RadioBoxLinearAlgebra->SetSelection((int)ProcessingLinAlgebra);
+    m_radioBoxLinearAlgebra->SetSelection((int)ProcessingLinAlgebra);
 
     // User directories
     wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir()+"AtmoSwing");
-    m_DirPickerIntermediateResults->SetPath(IntermediateResultsDir);
+    m_dirPickerIntermediateResults->SetPath(IntermediateResultsDir);
     wxString userpath = asConfig::GetUserDataDir();
-    m_StaticTextUserDir->SetLabel(userpath);
+    m_staticTextUserDir->SetLabel(userpath);
     wxString logpath = asConfig::GetLogDir();
     logpath.Append("AtmoSwingCalibrator.log");
-    m_StaticTextLogFile->SetLabel(logpath);
-    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini");
+    m_staticTextLogFile->SetLabel(logpath);
+    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini");
 }
 
 void asFramePreferencesCalibrator::SavePreferences( )
@@ -174,17 +174,17 @@ void asFramePreferencesCalibrator::SavePreferences( )
      */
 
     // Log    
-    long logLevel = (long)m_RadioBoxLogLevel->GetSelection();
+    long logLevel = (long)m_radioBoxLogLevel->GetSelection();
     pConfig->Write("/General/LogLevel", logLevel+1); // = selection +1
-    bool displayLogWindow = m_CheckBoxDisplayLogWindow->GetValue();
+    bool displayLogWindow = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
 
     // Paths
-    wxString PredictandDBDir = m_DirPickerPredictandDB->GetPath();
+    wxString PredictandDBDir = m_dirPickerPredictandDB->GetPath();
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = m_DirPickerIntermediateResults->GetPath();
+    wxString IntermediateResultsDir = m_dirPickerIntermediateResults->GetPath();
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString ArchivePredictorsDir = m_DirPickerArchivePredictors->GetPath();
+    wxString ArchivePredictorsDir = m_dirPickerArchivePredictors->GetPath();
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
 
     /*
@@ -192,51 +192,51 @@ void asFramePreferencesCalibrator::SavePreferences( )
      */
 
     // GUI options
-    long guiOptions = (long)m_RadioBoxGui->GetSelection();
+    long guiOptions = (long)m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions==0)
     {
-        g_SilentMode = true;
+        g_silentMode = true;
     }
     else
     {
-        g_SilentMode = false;
-        g_VerboseMode = false;
+        g_silentMode = false;
+        g_verboseMode = false;
         if (guiOptions==2l)
         {
-            g_VerboseMode = true;
+            g_verboseMode = true;
         }
     }
 
     // Advanced options
-    bool responsive = m_CheckBoxResponsiveness->GetValue();
+    bool responsive = m_checkBoxResponsiveness->GetValue();
     pConfig->Write("/General/Responsive", responsive);
     if (responsive)
     {
-        g_Responsive = true;
+        g_responsive = true;
     }
     else
     {
-        g_Responsive = false;
+        g_responsive = false;
     }
 
     // Multithreading
-    bool allowMultithreading = m_CheckBoxAllowMultithreading->GetValue();
+    bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
-    wxString ProcessingMaxThreadNb = m_TextCtrlThreadsNb->GetValue();
+    wxString ProcessingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
     if (!ProcessingMaxThreadNb.IsNumber()) ProcessingMaxThreadNb = "2";
     pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = (long)m_SliderThreadsPriority->GetValue();
+    long ProcessingThreadsPriority = (long)m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", ProcessingThreadsPriority);
     
     // Processing
-    long ProcessingMethod = (long)m_RadioBoxProcessingMethods->GetSelection();
+    long ProcessingMethod = (long)m_radioBoxProcessingMethods->GetSelection();
     if (!allowMultithreading && ProcessingMethod==(long)asMULTITHREADS)
     {
         ProcessingMethod = (long)asINSERT;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
-    long ProcessingLinAlgebra = (long)m_RadioBoxLinearAlgebra->GetSelection();
+    long ProcessingLinAlgebra = (long)m_radioBoxLinearAlgebra->GetSelection();
     pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
 
@@ -248,15 +248,15 @@ void asFramePreferencesCalibrator::OnChangeMultithreadingCheckBox( wxCommandEven
 {
     if (event.GetInt()==0)
     {
-        m_RadioBoxProcessingMethods->Enable(asMULTITHREADS, false);
-        if (m_RadioBoxProcessingMethods->GetSelection()==asMULTITHREADS)
+        m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
+        if (m_radioBoxProcessingMethods->GetSelection()==asMULTITHREADS)
         {
-            m_RadioBoxProcessingMethods->SetSelection(asINSERT);
+            m_radioBoxProcessingMethods->SetSelection(asINSERT);
         }
     }
     else
     {
-        m_RadioBoxProcessingMethods->Enable(asMULTITHREADS, true);
+        m_radioBoxProcessingMethods->Enable(asMULTITHREADS, true);
     }
 }
 

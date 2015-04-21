@@ -35,8 +35,8 @@ asResultsAnalogsValues::asResultsAnalogsValues()
 asResults()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveAnalogValues", &m_SaveIntermediateResults, false);
-    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/LoadAnalogValues", &m_LoadIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveAnalogValues", &m_saveIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/LoadAnalogValues", &m_loadIntermediateResults, false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 
@@ -47,40 +47,40 @@ asResultsAnalogsValues::~asResultsAnalogsValues()
 
 void asResultsAnalogsValues::Init(asParameters &params)
 {
-    m_PredictandStationIds = params.GetPredictandStationIds();
-    if(m_SaveIntermediateResults || m_LoadIntermediateResults) BuildFileName();
+    m_predictandStationIds = params.GetPredictandStationIds();
+    if(m_saveIntermediateResults || m_loadIntermediateResults) BuildFileName();
 
     // Resize to 0 to avoid keeping old results
-    m_TargetDates.resize(0);
-    m_TargetValuesNorm.resize(0);
-    m_TargetValuesGross.resize(0);
-    m_AnalogsCriteria.resize(0,0);
-    m_AnalogsValuesNorm.resize(0);
-    m_AnalogsValuesGross.resize(0);
+    m_targetDates.resize(0);
+    m_targetValuesNorm.resize(0);
+    m_targetValuesGross.resize(0);
+    m_analogsCriteria.resize(0,0);
+    m_analogsValuesNorm.resize(0);
+    m_analogsValuesGross.resize(0);
 }
 
 void asResultsAnalogsValues::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_FilePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
-    m_FilePath.Append(DS);
-    m_FilePath.Append(wxString::Format("AnalogsValues_id_%s_step_%d", GetPredictandStationIdsList().c_str(), m_CurrentStep));
-    m_FilePath.Append(".nc");
+    m_filePath.Append(DS);
+    m_filePath.Append(wxString::Format("AnalogsValues_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+    m_filePath.Append(".nc");
 }
 
 bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
-    if(!m_SaveIntermediateResults) return false;
-    wxString message = _("Saving intermediate file: ") + m_FilePath;
+    if(!m_saveIntermediateResults) return false;
+    wxString message = _("Saving intermediate file: ") + m_filePath;
     asLogMessage(message);
 
     // Get the file path
     wxString ResultsFile;
     if (AlternateFilePath.IsEmpty())
     {
-        ResultsFile = m_FilePath;
+        ResultsFile = m_filePath;
     }
     else
     {
@@ -88,9 +88,9 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
     }
 
     // Get the elements size
-    size_t Ntime = m_AnalogsCriteria.rows();
-    size_t Nanalogs = m_AnalogsCriteria.cols();
-    size_t Nstations = m_PredictandStationIds.size();
+    size_t Ntime = m_analogsCriteria.rows();
+    size_t Nanalogs = m_analogsCriteria.cols();
+    size_t Nstations = m_predictandStationIds.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -128,9 +128,9 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
     ncFile.DefVar("target_dates", NC_FLOAT, 1, dimT);
     ncFile.DefVar("target_values_norm", NC_FLOAT, 2, dimST);
     ncFile.DefVar("target_values_gross", NC_FLOAT, 2, dimST);
-    ncFile.DefVar("analogs_criteria", NC_FLOAT, 2, dimTA);
-    ncFile.DefVar("analogs_values_norm", NC_FLOAT, 3, dimSTA);
-    ncFile.DefVar("analogs_values_gross", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVar("analog_criteria", NC_FLOAT, 2, dimTA);
+    ncFile.DefVar("analog_values_norm", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVar("analog_values_gross", NC_FLOAT, 3, dimSTA);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -169,7 +169,7 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
         {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            analogsCriteria[ind] = m_AnalogsCriteria(i_time,i_analog);
+            analogsCriteria[ind] = m_analogsCriteria(i_time,i_analog);
         }
     }
 
@@ -182,20 +182,20 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
             {
                 ind = i_analog;
                 ind += i_time * Nanalogs;
-                analogsValuesNorm[ind] = m_AnalogsValuesNorm[i_st](i_time,i_analog);
-                analogsValuesGross[ind] = m_AnalogsValuesGross[i_st](i_time,i_analog);
+                analogsValuesNorm[ind] = m_analogsValuesNorm[i_st](i_time,i_analog);
+                analogsValuesGross[ind] = m_analogsValuesGross[i_st](i_time,i_analog);
             }
         }
     }
 
     // Write data
-    ncFile.PutVarArray("stations", startS, countS, &m_TargetDates(0));
-    ncFile.PutVarArray("target_dates", startT, countT, &m_TargetDates(0));
-    ncFile.PutVarArray("target_values_norm", startST, countST, &m_TargetValuesNorm[0]);
-    ncFile.PutVarArray("target_values_gross", startST, countST, &m_TargetValuesGross[0]);
-    ncFile.PutVarArray("analogs_criteria", startTA, countTA, &analogsCriteria[0]);
-    ncFile.PutVarArray("analogs_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
-    ncFile.PutVarArray("analogs_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
+    ncFile.PutVarArray("stations", startS, countS, &m_targetDates(0));
+    ncFile.PutVarArray("target_dates", startT, countT, &m_targetDates(0));
+    ncFile.PutVarArray("target_values_norm", startST, countST, &m_targetValuesNorm[0]);
+    ncFile.PutVarArray("target_values_gross", startST, countST, &m_targetValuesGross[0]);
+    ncFile.PutVarArray("analog_criteria", startTA, countTA, &analogsCriteria[0]);
+    ncFile.PutVarArray("analog_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
+    ncFile.PutVarArray("analog_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -208,15 +208,15 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
 bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
 {
     // If we don't want to save or the file doesn't exist
-    if(!m_LoadIntermediateResults) return false;
+    if(!m_loadIntermediateResults) return false;
     if(!Exists()) return false;
-    if(m_CurrentStep!=0) return false;
+    if(m_currentStep!=0) return false;
 
     // Get the file path
     wxString ResultsFile;
     if (AlternateFilePath.IsEmpty())
     {
-        ResultsFile = m_FilePath;
+        ResultsFile = m_filePath;
     }
     else
     {
@@ -239,8 +239,8 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     size_t Nanalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_TargetDates.resize( Ntime );
-    ncFile.GetVar("target_dates", &m_TargetDates[0]);
+    m_targetDates.resize( Ntime );
+    ncFile.GetVar("target_dates", &m_targetDates[0]);
 
     // Create vectors for matrices data
     VectorFloat targetValuesNorm(Nstations * Ntime);
@@ -258,45 +258,45 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     size_t countSTA[] = {Nstations, Ntime, Nanalogs};
 
     // Get data
-    m_PredictandStationIds.resize(Nstations);
-    ncFile.GetVar("stations", &m_PredictandStationIds[0]);
+    m_predictandStationIds.resize(Nstations);
+    ncFile.GetVar("stations", &m_predictandStationIds[0]);
     ncFile.GetVarArray("target_values_norm", startST, countST, &targetValuesNorm[0]);
     ncFile.GetVarArray("target_values_gross", startST, countST, &targetValuesGross[0]);
-    ncFile.GetVarArray("analogs_criteria", startTA, countTA, &analogsCriteria[0]);
-    ncFile.GetVarArray("analogs_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
-    ncFile.GetVarArray("analogs_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
+    ncFile.GetVarArray("analog_criteria", startTA, countTA, &analogsCriteria[0]);
+    ncFile.GetVarArray("analog_values_norm", startSTA, countSTA, &analogsValuesNorm[0]);
+    ncFile.GetVarArray("analog_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
 
     // Set data into the matrices
-    m_AnalogsCriteria.resize( Ntime, Nanalogs );
+    m_analogsCriteria.resize( Ntime, Nanalogs );
     int ind = 0;
-    for (int i_time=0; i_time<Ntime; i_time++)
+    for (size_t i_time=0; i_time<Ntime; i_time++)
     {
-        for (int i_analog=0; i_analog<Nanalogs;i_analog++)
+        for (int i_analog=0; i_analog<(int)Nanalogs;i_analog++)
         {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            m_AnalogsCriteria(i_time,i_analog) = analogsCriteria[ind];
+            m_analogsCriteria(i_time,i_analog) = analogsCriteria[ind];
         }
     }
     
-    for (int i_st=0; i_st<Nstations; i_st++)
+    for (size_t i_st=0; i_st<Nstations; i_st++)
     {
         Array2DFloat analogsValuesNormStation( Ntime, Nanalogs );
         Array2DFloat analogsValuesGrossStation( Ntime, Nanalogs );
         int ind = 0;
-        for (int i_time=0; i_time<Ntime; i_time++)
+        for (int i_time=0; i_time<(int)Ntime; i_time++)
         {
-            for (int i_analog=0; i_analog<Nanalogs;i_analog++)
+            for (int i_analog=0; i_analog<(int)Nanalogs;i_analog++)
             {
                 ind = i_analog;
                 ind += i_time * Nanalogs;
-                m_AnalogsCriteria(i_time,i_analog) = analogsCriteria[ind];
+                m_analogsCriteria(i_time,i_analog) = analogsCriteria[ind];
                 analogsValuesNormStation(i_time,i_analog) = analogsValuesNorm[ind];
                 analogsValuesGrossStation(i_time,i_analog) = analogsValuesGross[ind];
             }
         }
-        m_AnalogsValuesNorm.push_back(analogsValuesNormStation);
-        m_AnalogsValuesGross.push_back(analogsValuesGrossStation);
+        m_analogsValuesNorm.push_back(analogsValuesNormStation);
+        m_analogsValuesGross.push_back(analogsValuesGrossStation);
     }
 
     ThreadsManager().CritSectionNetCDF().Leave();

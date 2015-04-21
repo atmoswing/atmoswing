@@ -40,10 +40,35 @@ public:
     /** Default destructor */
     virtual ~asFileParameters();
 
-    virtual bool InsertRootElement() = 0;
-    virtual bool GoToRootElement() = 0;
+    virtual bool EditRootElement() = 0;
+    virtual bool CheckRootElement() = 0;
 
-    bool CheckDeprecatedChildNode(const wxString &field);
+    
+    static VectorInt BuildVectorInt(int min, int max, int step);
+
+    static VectorInt BuildVectorInt(wxString str);
+
+    static VectorFloat BuildVectorFloat(float min, float max, float step);
+
+    static VectorFloat BuildVectorFloat(wxString str);
+
+    static VectorDouble BuildVectorDouble(double min, double max, double step);
+
+    static VectorDouble BuildVectorDouble(wxString str);
+
+    static VectorString BuildVectorString(wxString str);
+
+    static VectorInt GetVectorInt(wxXmlNode *node);
+
+    static VectorFloat GetVectorFloat(wxXmlNode *node);
+
+    static VectorDouble GetVectorDouble(wxXmlNode *node);
+
+    static VectorString GetVectorString(wxXmlNode *node);
+
+    static VVectorInt GetStationIdsVector(wxXmlNode *node);
+
+    static VectorInt GetStationIds(wxString stationIdsString);
 
 protected:
 private:

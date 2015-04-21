@@ -30,10 +30,10 @@
 
 #include "asIncludes.h"
 
-using namespace std;
-
 #if wxUSE_GUI
-    extern wxColour g_LinuxBgColour;
+    extern wxColour g_linuxBgColour;
 #endif
+
+extern wxString g_cmdFilename;
 
 #endif // ASGLOBVARSFORECASTER_H_INCLUDED

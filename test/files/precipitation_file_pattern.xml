@@ -1,13 +1,17 @@
-<pattern id="precipitation_file_pattern" name="Data pattern for unit testing">
-    <structtype>constantwidth</structtype>
-    <headerlines>3</headerlines>
-    <parsetime>1</parsetime>
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<atmoswing version="1.0">
+  <pattern id="precipitation_file_pattern" name="Data pattern for unit testing">
+    <structure_type>constant_width</structure_type>
+    <header_lines>3</header_lines>
+    <parse_time>1</parse_time>
     <time>
-        <block charstart="1" charend="4">year</block>
-        <block charstart="5" charend="6">month</block>
-        <block charstart="7" charend="8">day</block>
+      <year char_start="1" char_end="4"/>
+      <month char_start="5" char_end="6"/>
+      <day char_start="7" char_end="8"/>
     </time>
     <data>
-        <block charstart="11" charend="14">Precipitation</block>
+      <value char_start="11" char_end="14"/>
     </data>
-</pattern>
+  </pattern>
+</atmoswing>

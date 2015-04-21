@@ -56,7 +56,7 @@ protected:
     void OnChangeMultithreadingCheckBox( wxCommandEvent& event );
 
 private:
-    asBatchForecasts* m_BatchForecasts;
+    asBatchForecasts* m_batchForecasts;
 };
 
 #endif // __asFramePreferencesForecaster__

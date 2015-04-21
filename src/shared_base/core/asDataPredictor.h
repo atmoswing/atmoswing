@@ -55,42 +55,42 @@ public:
 
     bool Inline();
     
-    /** Set m_Data: data[time](lat,lon)
-     * \return The new value of m_Data
+    /** Set m_data: data[time](lat,lon)
+     * \return The new value of m_data
      */
     bool SetData(VArray2DFloat &val);
 
-    /** Access m_Data: data[time](lat,lon)
-     * \return The current value of m_Data
+    /** Access m_data: data[time](lat,lon)
+     * \return The current value of m_data
      */
     VArray2DFloat& GetData()
     {
-        wxASSERT((int)m_Data.size()==(int)m_Time.size());
-        wxASSERT(m_Data.size()>1);
-        wxASSERT(m_Data[0].cols()>0);
-        wxASSERT(m_Data[0].rows()>0);
-        wxASSERT(m_Data[1].cols()>0);
-        wxASSERT(m_Data[1].rows()>0);
+        wxASSERT((int)m_data.size()==(int)m_time.size());
+        wxASSERT(m_data.size()>1);
+        wxASSERT(m_data[0].cols()>0);
+        wxASSERT(m_data[0].rows()>0);
+        wxASSERT(m_data[1].cols()>0);
+        wxASSERT(m_data[1].rows()>0);
 
-        return m_Data;
+        return m_data;
     }
 
-    /** Access m_Time
-     * \return The current value of m_Time
+    /** Access m_time
+     * \return The current value of m_time
      */
     Array1DDouble& GetTime()
     {
-        return m_Time;
+        return m_time;
     }
 
     Array1DFloat GetAxisLon()
     {
-        return m_AxisLon;
+        return m_axisLon;
     }
 
     Array1DFloat GetAxisLat()
     {
-        return m_AxisLat;
+        return m_axisLat;
     }
 
     void SetDirectoryPath(wxString directoryPath)
@@ -100,36 +100,36 @@ public:
             directoryPath.Append('/');
         }
 
-        m_DirectoryPath = directoryPath;
+        m_directoryPath = directoryPath;
     }
 
     wxString GetDirectoryPath()
     {
-        return m_DirectoryPath;
+        return m_directoryPath;
     }
 
     /** Access the size of the time array
-     * \return The current value of m_SizeTime
+     * \return The current value of m_sizeTime
      */
     int GetTimeSize()
     {
-        return (int)m_Time.size();
+        return (int)m_time.size();
     }
 
-    /** Access m_SizeLat
-     * \return The current value of m_SizeLat
+    /** Access m_sizeLat
+     * \return The current value of m_sizeLat
      */
     int GetLatPtsnb()
     {
-        return m_LatPtsnb;
+        return m_latPtsnb;
     }
 
-    /** Access m_SizeLon
-     * \return The current value of m_SizeLon
+    /** Access m_sizeLon
+     * \return The current value of m_sizeLon
      */
     int GetLonPtsnb()
     {
-        return m_LonPtsnb;
+        return m_lonPtsnb;
     }
 
     /** Access the first value of the time array
@@ -137,7 +137,7 @@ public:
      */
     double GetTimeStart()
     {
-        return m_Time[0];
+        return m_time[0];
     }
 
     /** Access the last value of the time array
@@ -145,173 +145,179 @@ public:
      */
     double GetTimeEnd()
     {
-        return m_Time[m_Time.size()-1];
+        return m_time[m_time.size()-1];
     }
 
-    /** Access m_IsPreprocessed
-     * \return The current value of m_IsPreprocessed
+    /** Access m_isPreprocessed
+     * \return The current value of m_isPreprocessed
      */
     bool IsPreprocessed()
     {
-        return m_IsPreprocessed;
+        return m_isPreprocessed;
     }
 
-    /** Access m_IsPreprocessed
-     * \return The current value of m_IsPreprocessed
+    /** Access m_isPreprocessed
+     * \return The current value of m_isPreprocessed
      */
     bool GetIsPreprocessed()
     {
-        return m_IsPreprocessed;
+        return m_isPreprocessed;
     }
 
-    /** Set m_IsPreprocessed
-     * \param The new value of m_IsPreprocessed
+    /** Set m_isPreprocessed
+     * \param The new value of m_isPreprocessed
      */
     void SetIsPreprocessed(bool val)
     {
-        m_IsPreprocessed = val;
+        m_isPreprocessed = val;
     }
 
-    /** Access m_CanBeClipped
-     * \return The current value of m_CanBeClipped
+    /** Access m_canBeClipped
+     * \return The current value of m_canBeClipped
      */
     bool CanBeClipped()
     {
-        return m_CanBeClipped;
+        return m_canBeClipped;
     }
 
-    /** Set m_CanBeClipped
-     * \param The new value of m_CanBeClipped
+    /** Set m_canBeClipped
+     * \param The new value of m_canBeClipped
      */
     void SetCanBeClipped(bool val)
     {
-        m_CanBeClipped = val;
+        m_canBeClipped = val;
     }
 
-    /** Access m_PreprocessMethod
-     * \return The current value of m_PreprocessMethod
+    /** Access m_preprocessMethod
+     * \return The current value of m_preprocessMethod
      */
     wxString GetPreprocessMethod()
     {
-        return m_PreprocessMethod;
+        return m_preprocessMethod;
     }
 
-    /** Set m_PreprocessMethod
-     * \param The new value of m_PreprocessMethod
+    /** Set m_preprocessMethod
+     * \param The new value of m_preprocessMethod
      */
     void SetPreprocessMethod(wxString val)
     {
-        m_PreprocessMethod = val;
+        m_preprocessMethod = val;
     }
 
-    /** Access m_FinalProviderWebsite
-     * \return The current value of m_FinalProviderWebsite
+    /** Access m_finalProviderWebsite
+     * \return The current value of m_finalProviderWebsite
      */
     wxString GetFinalProviderWebsite()
     {
-        return m_FinalProviderWebsite;
+        return m_finalProviderWebsite;
     }
 
-    /** Access m_FinalProviderFTP
-     * \return The current value of m_FinalProviderFTP
+    /** Access m_finalProviderFTP
+     * \return The current value of m_finalProviderFTP
      */
     wxString GetFinalProviderFTP()
     {
-        return m_FinalProviderFTP;
+        return m_finalProviderFTP;
     }
 
-    /** Access m_DataId
-     * \return The current value of m_DataId
+    /** Access m_dataId
+     * \return The current value of m_dataId
      */
     wxString GetDataId()
     {
-        return m_DataId;
+        return m_dataId;
     }
 
-    /** Access m_DatasetName
-     * \return The current value of m_DatasetName
+    /** Access m_datasetName
+     * \return The current value of m_datasetName
      */
     wxString GetDatasetName()
     {
-        return m_DatasetName;
+        return m_datasetName;
     }
 
-    /** Access m_UaxisStep
-     * \return The current value of m_UaxisStep
+    /** Access m_xAxisStep
+     * \return The current value of m_xAxisStep
      */
-    double GetUaxisStep()
+    double GetXaxisStep()
     {
-        return m_UaxisStep;
+        return m_xAxisStep;
     }
 
-    /** Access m_UaxisShift
-     * \return The current value of m_UaxisShift
-     */
-    double GetUaxisShift()
+    void SetXaxisStep(const double val)
     {
-        return m_UaxisShift;
+        m_xAxisStep = val;
     }
 
-    /** Access m_VaxisStep
-     * \return The current value of m_VaxisStep
+    /** Access m_xAxisShift
+     * \return The current value of m_xAxisShift
      */
-    double GetVaxisStep()
+    double GetXaxisShift()
     {
-        return m_VaxisStep;
+        return m_xAxisShift;
     }
 
-    /** Access m_VaxisShift
-     * \return The current value of m_VaxisShift
+    /** Access m_yAxisStep
+     * \return The current value of m_yAxisStep
      */
-    double GetVaxisShift()
+    double GetYaxisStep()
     {
-        return m_VaxisShift;
+        return m_yAxisStep;
     }
 
-    /** Access m_CoordinateSystem
-     * \return The current value of m_CoordinateSystem
-     */
-    CoordSys GetCoordSys()
+    void SetYaxisStep(const double val)
     {
-        return m_CoordinateSystem;
+        m_yAxisStep = val;
+    }
+
+    /** Access m_yAxisShift
+     * \return The current value of m_yAxisShift
+     */
+    double GetYaxisShift()
+    {
+        return m_yAxisShift;
     }
 
 protected:
-    wxString m_DirectoryPath;
-    bool m_Initialized;
-    bool m_AxesChecked;
-    wxString m_DataId;
-    wxString m_DatasetId;
-    wxString m_OriginalProvider;
-    wxString m_FinalProvider;
-    wxString m_FinalProviderWebsite;
-    wxString m_FinalProviderFTP;
-    wxString m_DatasetName;
-    double m_TimeZoneHours;
-    double m_TimeStepHours;
-    double m_FirstTimeStepHours;
-    VectorDouble m_NanValues;
-    CoordSys m_CoordinateSystem;
-    DataParameter m_DataParameter;
-    wxString m_FileVariableName;
-    DataUnit m_Unit;
-    float m_UaxisStep;
-    float m_VaxisStep;
-    float m_UaxisShift;
-    float m_VaxisShift;
-    float m_Level;
-    Array1DDouble m_Time;
-    VArray2DFloat m_Data;
-    int m_LatPtsnb; 
-    int m_LonPtsnb; 
-    size_t m_LatIndexStep; 
-    size_t m_LonIndexStep;
-    size_t m_TimeIndexStep;
-    Array1DFloat m_AxisLat;
-    Array1DFloat m_AxisLon;
-    bool m_IsPreprocessed;
-    bool m_CanBeClipped;
-    wxString m_PreprocessMethod;
+    wxString m_directoryPath;
+    bool m_initialized;
+    bool m_axesChecked;
+    wxString m_dataId;
+    wxString m_datasetId;
+    wxString m_originalProvider;
+    wxString m_finalProvider;
+    wxString m_finalProviderWebsite;
+    wxString m_finalProviderFTP;
+    wxString m_datasetName;
+    double m_timeZoneHours;
+    double m_timeStepHours;
+    double m_firstTimeStepHours;
+    VectorDouble m_nanValues;
+    DataParameter m_dataParameter;
+    wxString m_fileVariableName;
+    DataUnit m_unit;
+    float m_xAxisStep;
+    float m_yAxisStep;
+    float m_xAxisShift;
+    float m_yAxisShift;
+    float m_level;
+    Array1DDouble m_time;
+    VArray2DFloat m_data;
+    int m_latPtsnb; 
+    int m_lonPtsnb; 
+    size_t m_latIndexStep; 
+    size_t m_lonIndexStep;
+    size_t m_timeIndexStep;
+    Array1DFloat m_axisLat;
+    Array1DFloat m_axisLon;
+    bool m_isPreprocessed;
+    bool m_canBeClipped;
+    wxString m_preprocessMethod;
+    wxString m_fileAxisLatName;
+    wxString m_fileAxisLonName;
+    wxString m_fileAxisTimeName;
+    wxString m_fileAxisLevelName;
+    wxString m_fileExtension;
         
     /** Method to check the time array compatibility with the data
      * \param timeArray The time array to check

@@ -35,69 +35,57 @@ namespace
 
 TEST(ConstructorDefault)
 {
-	wxString str("Testing geo points management...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
+	wxPrintf("Testing geo points management...\n");
 	
     Coo Point;
-    Point.u = 7;
-    Point.v = 46;
-    asGeoPoint geopoint(WGS84, Point);
+    Point.x = 7;
+    Point.y = 46;
+    asGeoPoint geopoint(Point);
 
-    CHECK_CLOSE(7, geopoint.GetU(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetV(), 0.001);
+    CHECK_CLOSE(7, geopoint.GetX(), 0.001);
+    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
 TEST(ConstructorOther)
 {
-    double U = 7;
-    double V = 46;
-    asGeoPoint geopoint(WGS84, U, V);
+    double x = 7;
+    double y = 46;
+    asGeoPoint geopoint(x, y);
 
-    CHECK_CLOSE(7, geopoint.GetU(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetV(), 0.001);
+    CHECK_CLOSE(7, geopoint.GetX(), 0.001);
+    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
 TEST(ConstructorOutBoundsLon)
 {
-    double U = -10;
-    double V = 46;
-    asGeoPoint geopoint(WGS84, U, V);
+    double x = -10;
+    double y = 46;
+    asGeoPoint geopoint(x, y);
 
-    CHECK_CLOSE(350, geopoint.GetU(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetV(), 0.001);
+    CHECK_CLOSE(350, geopoint.GetX(), 0.001);
+    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
 TEST(ConstructorOutBoundsLat)
 {
-    double U = 10;
-    double V = -100;
-    asGeoPoint geopoint(WGS84, U, V);
+    double x = 10;
+    double y = -100;
+    asGeoPoint geopoint(x, y);
 
-    CHECK_CLOSE(190, geopoint.GetU(), 0.001);
-    CHECK_CLOSE(-80, geopoint.GetV(), 0.001);
+    CHECK_CLOSE(190, geopoint.GetX(), 0.001);
+    CHECK_CLOSE(-80, geopoint.GetY(), 0.001);
 }
 
 TEST(SetCooOutBounds)
 {
-    asGeoPoint geopoint(WGS84, 0, 0);
+    asGeoPoint geopoint(0, 0);
     Coo Point;
-    Point.u = -10;
-    Point.v = 46;
+    Point.x = -10;
+    Point.y = 46;
     geopoint.SetCoo(Point);
 
-    CHECK_CLOSE(350, geopoint.GetU(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetV(), 0.001);
-}
-
-TEST(ProjConvert)
-{
-    double U = 10;
-    double V = 48;
-    asGeoPoint geopoint(WGS84, U, V);
-    geopoint.ProjConvert(CH1903);
-
-    CHECK_CLOSE(791142.61, geopoint.GetU(), 2);
-    CHECK_CLOSE(319746.83, geopoint.GetV(), 2);
+    CHECK_CLOSE(350, geopoint.GetX(), 0.001);
+    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
 }

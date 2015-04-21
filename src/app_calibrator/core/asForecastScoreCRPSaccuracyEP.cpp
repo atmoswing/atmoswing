@@ -34,12 +34,12 @@ asForecastScoreCRPSaccuracyEP::asForecastScoreCRPSaccuracyEP()
 :
 asForecastScore()
 {
-    m_Score = asForecastScore::CRPSaccuracyEP;
-    m_Name = _("CRPS Accuracy Exact Primitive");
-    m_FullName = _("Continuous Ranked Probability Score Accuracy exact solution");
-    m_Order = Asc;
-    m_ScaleBest = 0;
-    m_ScaleWorst = NaNFloat;
+    m_score = asForecastScore::CRPSaccuracyEP;
+    m_name = _("CRPS Accuracy Exact Primitive");
+    m_fullName = _("Continuous Ranked Probability Score Accuracy exact solution");
+    m_order = Asc;
+    m_scaleBest = 0;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScoreCRPSaccuracyEP::~asForecastScoreCRPSaccuracyEP()

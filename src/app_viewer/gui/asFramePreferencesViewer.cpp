@@ -34,7 +34,7 @@ asFramePreferencesViewer::asFramePreferencesViewer( wxWindow* parent, asWorkspac
 :
 asFramePreferencesViewerVirtual( parent, id )
 {
-    m_Workspace = workspace;
+    m_workspace = workspace;
     LoadPreferences();
     Fit();
 
@@ -60,10 +60,10 @@ void asFramePreferencesViewer::LoadPreferences()
     pConfig = wxFileConfig::Get();
 
     // Fix the color of the file/dir pickers
-    wxColour col = m_NotebookBase->GetThemeBackgroundColour();
+    wxColour col = m_notebookBase->GetThemeBackgroundColour();
     if (col.IsOk())
     {
-        m_DirPickerForecastResults->SetBackgroundColour(col);
+        m_dirPickerForecastResults->SetBackgroundColour(col);
     }
 
     /*
@@ -71,41 +71,41 @@ void asFramePreferencesViewer::LoadPreferences()
      */
 
     // Directories
-    m_DirPickerForecastResults->SetPath(m_Workspace->GetForecastsDirectory());
+    m_dirPickerForecastResults->SetPath(m_workspace->GetForecastsDirectory());
 
     // Forecast display
-    wxString colorbarMaxValue = wxString::Format("%g", m_Workspace->GetColorbarMaxValue());
-    m_TextCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
-    wxString pastDaysNb = wxString::Format("%d", m_Workspace->GetTimeSeriesPlotPastDaysNb());
-    m_TextCtrlPastDaysNb->SetValue(pastDaysNb);
+    wxString colorbarMaxValue = wxString::Format("%g", m_workspace->GetColorbarMaxValue());
+    m_textCtrlColorbarMaxValue->SetValue(colorbarMaxValue);
+    wxString pastDaysNb = wxString::Format("%d", m_workspace->GetTimeSeriesPlotPastDaysNb());
+    m_textCtrlPastDaysNb->SetValue(pastDaysNb);
 
     // Alarms panel
-    int alarmsReturnPeriod = m_Workspace->GetAlarmsPanelReturnPeriod();
+    int alarmsReturnPeriod = m_workspace->GetAlarmsPanelReturnPeriod();
     switch (alarmsReturnPeriod)
     {
         case 2:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(0);
+            m_choiceAlarmsReturnPeriod->SetSelection(0);
             break;
         case 5:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(1);
+            m_choiceAlarmsReturnPeriod->SetSelection(1);
             break;
         case 10:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(2);
+            m_choiceAlarmsReturnPeriod->SetSelection(2);
             break;
         case 20:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(3);
+            m_choiceAlarmsReturnPeriod->SetSelection(3);
             break;
         case 50:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(4);
+            m_choiceAlarmsReturnPeriod->SetSelection(4);
             break;
         case 100:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(5);
+            m_choiceAlarmsReturnPeriod->SetSelection(5);
             break;
         default:
-            m_ChoiceAlarmsReturnPeriod->SetSelection(2);
+            m_choiceAlarmsReturnPeriod->SetSelection(2);
     }
-    wxString alarmsPercentile = wxString::Format("%g", m_Workspace->GetAlarmsPanelPercentile());
-    m_TextCtrlAlarmsPercentile->SetValue(alarmsPercentile);
+    wxString alarmsQuantile = wxString::Format("%g", m_workspace->GetAlarmsPanelQuantile());
+    m_textCtrlAlarmsQuantile->SetValue(alarmsQuantile);
 
     /*
      * General
@@ -114,23 +114,23 @@ void asFramePreferencesViewer::LoadPreferences()
     // Log
     long defaultLogLevelViewer = 1; // = selection +1
     long logLevelViewer = pConfig->Read("/General/LogLevel", defaultLogLevelViewer);
-    m_RadioBoxLogLevel->SetSelection((int)logLevelViewer-1);
+    m_radioBoxLogLevel->SetSelection((int)logLevelViewer-1);
     bool displayLogWindowViewer;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindowViewer, false);
-    m_CheckBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
+    m_checkBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
 
     // Proxy
     bool checkBoxProxy;
     pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
-    m_CheckBoxProxy->SetValue(checkBoxProxy);
+    m_checkBoxProxy->SetValue(checkBoxProxy);
     wxString ProxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    m_TextCtrlProxyAddress->SetValue(ProxyAddress);
+    m_textCtrlProxyAddress->SetValue(ProxyAddress);
     wxString ProxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
-    m_TextCtrlProxyPort->SetValue(ProxyPort);
+    m_textCtrlProxyPort->SetValue(ProxyPort);
     wxString ProxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
-    m_TextCtrlProxyUser->SetValue(ProxyUser);
+    m_textCtrlProxyUser->SetValue(ProxyUser);
     wxString ProxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
-    m_TextCtrlProxyPasswd->SetValue(ProxyPasswd);
+    m_textCtrlProxyPasswd->SetValue(ProxyPasswd);
 
     /*
      * Advanced
@@ -139,15 +139,15 @@ void asFramePreferencesViewer::LoadPreferences()
     // Advanced options
     bool multiViewer;
     pConfig->Read("/General/MultiInstances", &multiViewer, false);
-    m_CheckBoxMultiInstancesViewer->SetValue(multiViewer);
+    m_checkBoxMultiInstancesViewer->SetValue(multiViewer);
     
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
-    m_StaticTextUserDir->SetLabel(userpath);
+    m_staticTextUserDir->SetLabel(userpath);
     wxString logpathViewer = asConfig::GetLogDir();
     logpathViewer.Append("AtmoSwingForecaster.log");
-    m_StaticTextLogFile->SetLabel(logpathViewer);
-    m_StaticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingViewer.ini");
+    m_staticTextLogFile->SetLabel(logpathViewer);
+    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingViewer.ini");
 }
 
 void asFramePreferencesViewer::SavePreferences( )
@@ -160,22 +160,22 @@ void asFramePreferencesViewer::SavePreferences( )
      */
     
     // Directories
-    wxString forecastResultsDir = m_DirPickerForecastResults->GetPath();
-    m_Workspace->SetForecastsDirectory(forecastResultsDir);
+    wxString forecastResultsDir = m_dirPickerForecastResults->GetPath();
+    m_workspace->SetForecastsDirectory(forecastResultsDir);
 
     // Forecast display
-    wxString colorbarMaxValue = m_TextCtrlColorbarMaxValue->GetValue();
+    wxString colorbarMaxValue = m_textCtrlColorbarMaxValue->GetValue();
     double colorbarMaxValueDouble;
     colorbarMaxValue.ToDouble(&colorbarMaxValueDouble);
-    m_Workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
-    wxString pastDaysNb = m_TextCtrlPastDaysNb->GetValue();
+    m_workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
+    wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
     long pastDaysNbLong;
     pastDaysNb.ToLong(&pastDaysNbLong);
-    m_Workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+    m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
     
     // Alarms panel
     int alarmsReturnPeriod;
-    int alarmsReturnPeriodSlct = m_ChoiceAlarmsReturnPeriod->GetSelection();
+    int alarmsReturnPeriodSlct = m_choiceAlarmsReturnPeriod->GetSelection();
     switch (alarmsReturnPeriodSlct)
     {
         case 0:
@@ -199,36 +199,36 @@ void asFramePreferencesViewer::SavePreferences( )
         default:
             alarmsReturnPeriod = 10;
     }
-    m_Workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
-    wxString alarmsPercentile = m_TextCtrlAlarmsPercentile->GetValue();
-    double alarmsPercentileVal;
-    alarmsPercentile.ToDouble(&alarmsPercentileVal);
-    if (alarmsPercentileVal>1)
-        alarmsPercentileVal = 0.9;
-    if (alarmsPercentileVal<0)
-        alarmsPercentileVal = 0.9;
-    m_Workspace->SetAlarmsPanelPercentile(alarmsPercentileVal);
+    m_workspace->SetAlarmsPanelReturnPeriod(alarmsReturnPeriod);
+    wxString alarmsQuantile = m_textCtrlAlarmsQuantile->GetValue();
+    double alarmsQuantileVal;
+    alarmsQuantile.ToDouble(&alarmsQuantileVal);
+    if (alarmsQuantileVal>1)
+        alarmsQuantileVal = 0.9;
+    if (alarmsQuantileVal<0)
+        alarmsQuantileVal = 0.9;
+    m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
 
     /*
      * General
      */
 
     // Log
-    long logLevelViewer = (long)m_RadioBoxLogLevel->GetSelection();
+    long logLevelViewer = (long)m_radioBoxLogLevel->GetSelection();
     pConfig->Write("/General/LogLevel", logLevelViewer+1); // = selection +1
-    bool displayLogWindowViewer = m_CheckBoxDisplayLogWindow->GetValue();
+    bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 
     // Proxy
-    bool checkBoxProxy = m_CheckBoxProxy->GetValue();
+    bool checkBoxProxy = m_checkBoxProxy->GetValue();
     pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-    wxString ProxyAddress = m_TextCtrlProxyAddress->GetValue();
+    wxString ProxyAddress = m_textCtrlProxyAddress->GetValue();
     pConfig->Write("/Internet/ProxyAddress", ProxyAddress);
-    wxString ProxyPort = m_TextCtrlProxyPort->GetValue();
+    wxString ProxyPort = m_textCtrlProxyPort->GetValue();
     pConfig->Write("/Internet/ProxyPort", ProxyPort);
-    wxString ProxyUser = m_TextCtrlProxyUser->GetValue();
+    wxString ProxyUser = m_textCtrlProxyUser->GetValue();
     pConfig->Write("/Internet/ProxyUser", ProxyUser);
-    wxString ProxyPasswd = m_TextCtrlProxyPasswd->GetValue();
+    wxString ProxyPasswd = m_textCtrlProxyPasswd->GetValue();
     pConfig->Write("/Internet/ProxyPasswd", ProxyPasswd);
 
     /*
@@ -236,13 +236,13 @@ void asFramePreferencesViewer::SavePreferences( )
      */
 
     // Advanced options
-    bool multiViewer = m_CheckBoxMultiInstancesViewer->GetValue();
+    bool multiViewer = m_checkBoxMultiInstancesViewer->GetValue();
     pConfig->Write("/General/MultiInstances", multiViewer);
 
 
     GetParent()->Update();
     pConfig->Flush();
-    m_Workspace->Save();
+    m_workspace->Save();
 }
 
 void asFramePreferencesViewer::SaveAndClose( wxCommandEvent& event )

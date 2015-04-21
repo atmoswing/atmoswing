@@ -118,177 +118,177 @@ public:
      */
     int CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements);
 
-    /** Access m_Score
-     * \return The current value of m_Score
+    /** Access m_score
+     * \return The current value of m_score
      */
     Score GetScore()
     {
-        return m_Score;
+        return m_score;
     }
 
-    /** Set m_Score
+    /** Set m_score
      * \param val New value to set
      */
     void SetScore(Score val)
     {
-        m_Score = val;
+        m_score = val;
     }
 
-    /** Access m_Name
-     * \return The current value of m_Name
+    /** Access m_name
+     * \return The current value of m_name
      */
     wxString GetName()
     {
-        return m_Name;
+        return m_name;
     }
 
-    /** Set m_Name
+    /** Set m_name
      * \param val New value to set
      */
     void SetName(const wxString &val)
     {
-        m_Name = val;
+        m_name = val;
     }
 
-    /** Access m_FullName
-     * \return The current value of m_FullName
+    /** Access m_fullName
+     * \return The current value of m_fullName
      */
     wxString GetFullName()
     {
-        return m_FullName;
+        return m_fullName;
     }
 
-    /** Set m_FullName
+    /** Set m_fullName
      * \param val New value to set
      */
     void SetFullName(const wxString &val)
     {
-        m_FullName = val;
+        m_fullName = val;
     }
 
-    /** Access m_Order
-     * \return The current value of m_Order
+    /** Access m_order
+     * \return The current value of m_order
      */
     Order GetOrder()
     {
-        return m_Order;
+        return m_order;
     }
 
-    /** Set m_Order
+    /** Set m_order
      * \param val New value to set
      */
     void SetOrder(Order val)
     {
-        m_Order = val;
+        m_order = val;
     }
 
-    /** Access m_ScaleBest
-     * \return The current value of m_ScaleBest
+    /** Access m_scaleBest
+     * \return The current value of m_scaleBest
      */
     float GetScaleBest()
     {
-        return m_ScaleBest;
+        return m_scaleBest;
     }
 
-    /** Set m_ScaleBest
+    /** Set m_scaleBest
      * \param val New value to set
      */
     void SetScaleBest(float val)
     {
-        m_ScaleBest = val;
+        m_scaleBest = val;
     }
 
-    /** Access m_ScaleWorst
-     * \return The current value of m_ScaleWorst
+    /** Access m_scaleWorst
+     * \return The current value of m_scaleWorst
      */
     float GetScaleWorst()
     {
-        return m_ScaleWorst;
+        return m_scaleWorst;
     }
 
-    /** Set m_ScaleWorst
+    /** Set m_scaleWorst
      * \param val New value to set
      */
     void SetScaleWorst(float val)
     {
-        m_ScaleWorst = val;
+        m_scaleWorst = val;
     }
 
-    /** Access m_ScoreClimatology
-     * \return The current value of m_ScoreClimatology
+    /** Access m_scoreClimatology
+     * \return The current value of m_scoreClimatology
      */
     float GetScoreClimatology()
     {
-        return m_ScoreClimatology;
+        return m_scoreClimatology;
     }
 
-    /** Set m_ScoreClimatology
+    /** Set m_scoreClimatology
      * \param val New value to set
      */
     void SetScoreClimatology(float val)
     {
-        m_ScoreClimatology = val;
+        m_scoreClimatology = val;
     }
 
-    /** Access m_Threshold
-     * \return The current value of m_Threshold
+    /** Access m_threshold
+     * \return The current value of m_threshold
      */
     float GetThreshold()
     {
-        return m_Threshold;
+        return m_threshold;
     }
 
-    /** Set m_Threshold
+    /** Set m_threshold
      * \param val New value to set
      */
     void SetThreshold(float val)
     {
-        m_Threshold = val;
+        m_threshold = val;
     }
 
-    /** Access m_Percentile
-     * \return The current value of m_Percentile
+    /** Access m_quantile
+     * \return The current value of m_quantile
      */
-    float GetPercentile()
+    float GetQuantile()
     {
-        return m_Percentile;
+        return m_quantile;
     }
 
-    /** Set m_Percentile
+    /** Set m_quantile
      * \param val New value to set
      */
-    void SetPercentile(float val)
+    void SetQuantile(float val)
     {
-        m_Percentile = val;
+        m_quantile = val;
     }
 
-    /** Access m_Percentile
-     * \return The current value of m_UsesClimatology
+    /** Access m_quantile
+     * \return The current value of m_usesClimatology
      */
     bool UsesClimatology()
     {
-        return m_UsesClimatology;
+        return m_usesClimatology;
     }
 
     bool SingleValue()
     {
-        return m_SingleValue;
+        return m_singleValue;
     }
 
 
 
 protected:
-    Score m_Score; //!< Member variable "m_Score"
-    wxString m_Name; //!< Member variable "m_Name"
-    wxString m_FullName; //!< Member variable "m_FullName"
-    Order m_Order; //!< Member variable "m_Order"
-    float m_ScaleBest; //!< Member variable "m_ScaleBest"
-    float m_ScaleWorst; //!< Member variable "m_ScaleWorst"
-    float m_ScoreClimatology; //!< Member variable "m_ScoreClimatology"
-    bool m_UsesClimatology;
-    bool m_SingleValue;
-    float m_Threshold; //!< For discrete scores
-    float m_Percentile; //!< For discrete scores
+    Score m_score; //!< Member variable "m_score"
+    wxString m_name; //!< Member variable "m_name"
+    wxString m_fullName; //!< Member variable "m_fullName"
+    Order m_order; //!< Member variable "m_order"
+    float m_scaleBest; //!< Member variable "m_scaleBest"
+    float m_scaleWorst; //!< Member variable "m_scaleWorst"
+    float m_scoreClimatology; //!< Member variable "m_scoreClimatology"
+    bool m_usesClimatology;
+    bool m_singleValue;
+    float m_threshold; //!< For discrete scores
+    float m_quantile; //!< For discrete scores
 
 private:
 

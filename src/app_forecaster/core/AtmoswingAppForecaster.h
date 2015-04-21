@@ -50,13 +50,13 @@ public:
     bool CommonInit();
 
 private:
-    bool m_DoConfig;
-    bool m_DoForecast;
-    bool m_DoForecastPast;
-    double m_ForecastDate;
-    int m_ForecastPastDays;
+    bool m_doConfig;
+    bool m_doForecast;
+    bool m_doForecastPast;
+    double m_forecastDate;
+    int m_forecastPastDays;
     #if wxUSE_GUI
-        wxSingleInstanceChecker* m_SingleInstanceChecker;
+        wxSingleInstanceChecker* m_singleInstanceChecker;
     #endif
 };
 

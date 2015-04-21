@@ -101,11 +101,11 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
                             slctPreloadTimeHours.push_back(vPredictorTimeHours[i_predictortime]);
                             params.SetPreloadTimeHours(i_step, i_ptor, slctPreloadTimeHours);
 
-                            m_OriginalParams = params;
+                            m_originalParams = params;
 
                             if(!asMethodCalibratorClassicPlus::Calibrate(params)) return false;
 
-                            params = m_OriginalParams;
+                            params = m_originalParams;
 
                             ClearAll();
                         }

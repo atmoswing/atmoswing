@@ -114,7 +114,7 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
         u2 = ((double)rand() / (double)(RAND_MAX) );
     }
 
-    // Box�Muller transform
+    // Box-Muller transform
     double z0 = sqrt(-2*log(u1))*cos(2*M_PI*u2);
     //double z1 = sqrt(-2*log(u1))*sin(2*M_PI*u2);
 
@@ -133,16 +133,18 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
 bool asTools::IsRound(float value)
 {
     float valueround = Round(value);
-    if (abs(value-valueround)<0.000001)
+    if (std::abs(value-valueround)<0.000001) {
         return true;
+    }
     return false;
 }
 
 bool asTools::IsRound(double value)
 {
     double valueround = Round(value);
-    if (abs(value-valueround)<0.000000000001)
+    if (std::abs(value-valueround)<0.000000000001) {
         return true;
+    }
     return false;
 }
 
@@ -285,32 +287,64 @@ double asTools::StDev(double* pArrStart, double* pArrEnd, int sample)
     }
 }
 
-float asTools::Percentile(float* pArrStart, float* pArrEnd, float percentile)
+Array1DFloat asTools::GetCumulativeFrequency(int size)
 {
-    wxASSERT(percentile>=0);
-    wxASSERT(percentile<=1);
+    Array1DFloat F(size);
 
-    asTools::SortArray(pArrStart, pArrEnd, Asc);
+    // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
+    // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
+    // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
+    float irep = 0.44f;
+    float nrep = 0.12f;
 
-    int size = pArrEnd-pArrStart+1;
-    float indexRough = (float)size * percentile;
-    if (indexRough!=0)
+    // Change the values for unit testing to compare to the results from Grenoble
+    if (g_unitTesting)
     {
-        indexRough--; // From size to index.
+        irep = 0.375;
+        nrep = 0.25;
     }
 
-    if( asTools::IsRound(indexRough) )
+    float divisor = 1.0f/(size+nrep);
+    for(float i=0; i<size; i++)
     {
-        return *(pArrStart+(int)indexRough);
+        F(i)=(i+1.0f-irep)*divisor; // i+1 as i starts from 0
+    }
+
+    return F;
+}
+
+float asTools::GetValueForQuantile(Array1DFloat &values, float quantile)
+{
+    float value = NaNFloat;
+    int size = values.size();
+
+    // Sort the forcast array
+    asTools::SortArray(&values[0], &values[size-1], Asc);
+
+    // Cumulative frequency
+    Array1DFloat F = asTools::GetCumulativeFrequency(size);
+
+    // Check limits
+    if (quantile<=F[0]) return values[0];
+    if (quantile>=F[size-1]) return values[size-1];
+
+    // Indices for the left and right part (according to xObs)
+    int indLeft = asTools::SortedArraySearchFloor(&F[0], &F[size-1], quantile);
+    int indRight = asTools::SortedArraySearchCeil(&F[0], &F[size-1], quantile);
+    wxASSERT(indLeft>=0);
+    wxASSERT(indRight>=0);
+    wxASSERT(indLeft<=indRight);
+
+    if (indLeft==indRight)
+    {
+        value = values[indLeft];
     }
     else
     {
-        float ratio = indexRough-floor(indexRough);
-        float valFloor = *(pArrStart+(int)floor(indexRough));
-        float valCeil = *(pArrStart+(int)ceil(indexRough));
-
-        return valFloor+(valCeil-valFloor)*ratio;
+        value = values(indLeft)+(values(indRight)-values(indLeft))*(quantile-F(indLeft))/(F(indRight)-F(indLeft));
     }
+
+    return value;
 }
 
 bool asTools::IsNaN(int value)
@@ -710,7 +744,7 @@ int asTools::MinArrayStep(int* pArrStart, int* pArrEnd, int tolerance)
 
     for (i=i; i<copyData.size(); i++)
     {
-        int currentval = abs(copyData[i]-copyData[i-1]);
+        int currentval = std::abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -757,7 +791,7 @@ float asTools::MinArrayStep(float* pArrStart, float* pArrEnd, float tolerance)
 
     for (i=i; i<copyData.size(); i++)
     {
-        float currentval = abs(copyData[i]-copyData[i-1]);
+        float currentval = std::abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -804,7 +838,7 @@ double asTools::MinArrayStep(double* pArrStart, double* pArrEnd, double toleranc
 
     for (i=i; i<copyData.size(); i++)
     {
-        double currentval = abs(copyData[i]-copyData[i-1]);
+        double currentval = std::abs(copyData[i]-copyData[i-1]);
         if((currentval<minstep) & (currentval>tolerance))
         {
             minstep = currentval;
@@ -838,7 +872,7 @@ Array1DInt asTools::ExtractUniqueValues(int* pArrStart, int* pArrEnd, int tolera
 
     for (unsigned int i=1; i<copyData.size(); i++)
     {
-        if((abs(copyData[i]-copyData[i-1])>tolerance))
+        if((std::abs(copyData[i]-copyData[i-1])>tolerance))
         {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -883,7 +917,7 @@ Array1DFloat asTools::ExtractUniqueValues(float* pArrStart, float* pArrEnd, floa
 
     for (unsigned int i=1; i<copyData.size(); i++)
     {
-        if((abs(copyData[i]-copyData[i-1])>tolerance))
+        if((std::abs(copyData[i]-copyData[i-1])>tolerance))
         {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -928,7 +962,7 @@ Array1DDouble asTools::ExtractUniqueValues(double* pArrStart, double* pArrEnd, d
 
     for (unsigned int i=1; i<copyData.size(); i++)
     {
-        if((abs(copyData[i]-copyData[i-1])>tolerance))
+        if((std::abs(copyData[i]-copyData[i-1])>tolerance))
         {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -1005,9 +1039,9 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
         }
 
         // If the value was not found, return closest value inside tolerance
-        if (abs(targetvalue-*pLast)<=abs(targetvalue-*(pLast+1)))
+        if (std::abs(targetvalue-*pLast)<=std::abs(targetvalue-*(pLast+1)))
         {
-            if(abs(targetvalue-*pLast)<=tolerance)
+            if(std::abs(targetvalue-*pLast)<=tolerance)
             {
                 return pLast - pArrStart;
             } else {
@@ -1025,7 +1059,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 return asNOT_FOUND;
             }
         } else {
-            if(abs(targetvalue-*(pLast+1))<=tolerance)
+            if(std::abs(targetvalue-*(pLast+1))<=tolerance)
             {
                 return pLast - pArrStart + 1;
             } else {
@@ -1075,9 +1109,9 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
         }
 
         // If the value was not found, return closest value inside tolerance
-        if (abs(targetvalue-*pFirst)<=abs(targetvalue-*(pFirst-1)))
+        if (std::abs(targetvalue-*pFirst)<=std::abs(targetvalue-*(pFirst-1)))
         {
-            if(abs(targetvalue-*pFirst)<=tolerance)
+            if(std::abs(targetvalue-*pFirst)<=tolerance)
             {
                 return pFirst - pArrStart;
             } else {
@@ -1095,7 +1129,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 return asNOT_FOUND;
             }
         } else {
-            if(abs(targetvalue-*(pLast+1))<=tolerance)
+            if(std::abs(targetvalue-*(pLast+1))<=tolerance)
             {
                 return pFirst - pArrStart - 1;
             } else {
@@ -1206,7 +1240,7 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         }
 
         // If the value was not found, return closest value
-        if (abs(targetvalue-*pLast)<=abs(targetvalue-*(pLast+1)))
+        if (std::abs(targetvalue-*pLast)<=std::abs(targetvalue-*(pLast+1)))
         {
             return pLast - pArrStart;
         } else {
@@ -1254,7 +1288,7 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         }
 
         // If the value was not found, return closest value
-        if (abs(targetvalue-*pFirst)<=abs(targetvalue-*(pFirst-1)))
+        if (std::abs(targetvalue-*pFirst)<=std::abs(targetvalue-*(pFirst-1)))
         {
             return pFirst - pArrStart;
         } else {

@@ -28,15 +28,15 @@
 
 #include "asGlobVarsCalibrator.h"
 
-bool g_Local = false;
-int g_RunNb = 0;
-bool g_ResumePreviousRun = false;
+bool g_local = false;
+int g_runNb = 0;
+bool g_resumePreviousRun = false;
 #ifdef DISTRIBUTION_VERSION
-    bool g_DistributionVersion = true;
+    bool g_distributionVersion = true;
 #else
-    bool g_DistributionVersion = false;
+    bool g_distributionVersion = false;
 #endif
 #if wxUSE_GUI
-wxColour g_LinuxBgColour = wxColour(242,241,240);
+wxColour g_linuxBgColour = wxColour(242,241,240);
 #endif
 

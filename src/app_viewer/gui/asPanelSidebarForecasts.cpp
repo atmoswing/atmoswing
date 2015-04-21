@@ -29,38 +29,38 @@
 
 #include <wx/statline.h>
 
-asPanelSidebarForecasts::asPanelSidebarForecasts( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
+asPanelSidebarForecasts::asPanelSidebarForecasts( wxWindow* parent, asForecastManager* forecastManager, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
 :
 asPanelSidebar( parent, id, pos, size, style )
 {
-    m_Header->SetLabelText(_("Forecasts"));
+    m_header->SetLabelText(_("Forecasts"));
 
     // Forecasts controls
-    wxSize modelsSize = wxSize();
-    modelsSize.SetHeight(80);
-    m_ModelsCtrl = new asListBoxModels( this, wxID_ANY, wxDefaultPosition, modelsSize, 0, NULL, wxNO_BORDER );
-    m_SizerContent->Add( m_ModelsCtrl, 1, wxEXPAND, 5 );
+    wxSize forecastsSize = wxSize();
+    forecastsSize.SetHeight(120 * g_ppiScaleDc);
+    m_forecastsCtrl = new asListBoxForecasts( this, forecastManager, wxID_ANY, wxDefaultPosition, forecastsSize);
+    m_sizerContent->Add( m_forecastsCtrl, 1, wxEXPAND, 5 );
 
     wxSize lineSize = wxSize();
     lineSize.SetHeight(10);
     wxStaticLine *staticline = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, lineSize);
-    m_SizerContent->Add( staticline, 0, 0, 0 );
+    m_sizerContent->Add( staticline, 0, 0, 0 );
 
     wxBoxSizer* subSizer;
     subSizer = new wxBoxSizer( wxHORIZONTAL );
 
     wxSize displaySize = wxSize();
-    displaySize.SetHeight(100);
-    m_ForecastDisplayCtrl = new asListBoxForecastDisplay( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
-    subSizer->Add( m_ForecastDisplayCtrl, 1, wxEXPAND, 5 );
+	displaySize.SetHeight(100 * g_ppiScaleDc);
+    m_forecastDisplayCtrl = new asListBoxForecastDisplay( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
+    subSizer->Add( m_forecastDisplayCtrl, 1, wxEXPAND, 5 );
 
-    m_PercentilesCtrl = new asListBoxPercentiles( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
-    subSizer->Add( m_PercentilesCtrl, 1, wxEXPAND, 5 );
+    m_quantilesCtrl = new asListBoxQuantiles( this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER );
+    subSizer->Add( m_quantilesCtrl, 1, wxEXPAND, 5 );
     subSizer->Fit( this );
-    m_SizerContent->Add( subSizer, 0, wxEXPAND, 5 );
+    m_sizerContent->Add( subSizer, 0, wxEXPAND, 5 );
 
     Layout();
-    m_SizerContent->Fit( this );
+    m_sizerContent->Fit( this );
 }
 
 asPanelSidebarForecasts::~asPanelSidebarForecasts()
@@ -70,10 +70,10 @@ asPanelSidebarForecasts::~asPanelSidebarForecasts()
 
 void asPanelSidebarForecasts::ClearForecasts()
 {
-    m_ModelsCtrl->Clear();
+    m_forecastsCtrl->Clear();
 }
 
-void asPanelSidebarForecasts::AddForecast(const wxString &modelName, const wxString &leadTimeOriginStr, DataParameter dataParameter, DataTemporalResolution dataTemporalResolution)
+void asPanelSidebarForecasts::Update()
 {
-    m_ModelsCtrl->Add(modelName, leadTimeOriginStr, dataParameter, dataTemporalResolution);
+    m_forecastsCtrl->Update();
 }

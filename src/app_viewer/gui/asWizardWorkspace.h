@@ -38,7 +38,7 @@ class asWizardWorkspace : public asWizardWorkspaceVirtual
 {
 public:
     /** Constructor */
-    asWizardWorkspace( wxWindow* parent, asWorkspace* workspace, wxWindowID id = wxID_ANY );
+    asWizardWorkspace( wxWindow* parent, wxWindowID id = wxID_ANY );
     ~asWizardWorkspace();
     
     wxWizardPage *GetFirstPage() const { return m_pages.Item( 0 ); }
@@ -49,7 +49,7 @@ protected:
 	void OnLoadExistingWorkspace( wxCommandEvent& event );
 
 private:
-    asWorkspace* m_Workspace;
+    asWorkspace m_workspace;
 };
 
 #endif // __asWizardWorkspace__

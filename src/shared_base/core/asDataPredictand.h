@@ -75,202 +75,194 @@ class asDataPredictand: public wxObject
             return nodata;
         }
 
-        /** Access m_DatasetId
-         * \return The current value of m_DatasetId
+        /** Access m_datasetId
+         * \return The current value of m_datasetId
          */
         wxString GetDatasetId()
         {
-            return m_DatasetId;
+            return m_datasetId;
         }
         
         DataParameter GetDataParameter()
         {
-            return m_DataParameter;
+            return m_dataParameter;
         }
 
         void SetDataParameter(DataParameter val)
         {
-            m_DataParameter = val;
+            m_dataParameter = val;
         }
 
         DataTemporalResolution GetDataTemporalResolution()
         {
-            return m_DataTemporalResolution;
+            return m_dataTemporalResolution;
         }
 
         void SetDataTemporalResolution(DataTemporalResolution val)
         {
-            m_DataTemporalResolution = val;
+            m_dataTemporalResolution = val;
         }
 
         DataSpatialAggregation GetDataSpatialAggregation()
         {
-            return m_DataSpatialAggregation;
+            return m_dataSpatialAggregation;
         }
 
         void SetDataSpatialAggregation(DataSpatialAggregation val)
         {
-            m_DataSpatialAggregation = val;
+            m_dataSpatialAggregation = val;
         }
 
-        /** Access m_HasNormalizedData
-         * \return The current value of m_HasNormalizedData
+        /** Access m_hasNormalizedData
+         * \return The current value of m_hasNormalizedData
          */
         bool HasNormalizedData()
         {
-            return m_HasNormalizedData;
+            return m_hasNormalizedData;
         }
         
-        /** Access m_HasReferenceValues
-         * \return The current value of m_HasReferenceValues
+        /** Access m_hasReferenceValues
+         * \return The current value of m_hasReferenceValues
          */
         bool HasReferenceValues()
         {
-            return m_HasReferenceValues;
+            return m_hasReferenceValues;
         }
 
-        /** Access m_TimeStepDays
-         * \return The current value of m_TimeStepDays
+        /** Access m_timeStepDays
+         * \return The current value of m_timeStepDays
          */
         double GetTimeStepDays()
         {
-            return m_TimeStepDays;
+            return m_timeStepDays;
         }
 
-        /** Access m_TimeStepDays in hours
-         * \return The current value of m_TimeStepDays in hours
+        /** Access m_timeStepDays in hours
+         * \return The current value of m_timeStepDays in hours
          */
         double GetTimeStepHours()
         {
-            return m_TimeStepDays*24;
+            return m_timeStepDays*24;
         }
 
-        /** Access m_StationsNb
-         * \return The current value of m_StationsNb
+        /** Access m_stationsNb
+         * \return The current value of m_stationsNb
          */
         int GetStationsNb()
         {
-            return m_StationsNb;
+            return m_stationsNb;
         }
 
-        /** Access m_StationsNb
-         * \return The current value of m_StationsNb
+        /** Access m_stationsNb
+         * \return The current value of m_stationsNb
          */
         int GetTimeLength()
         {
-            return m_TimeLength;
+            return m_timeLength;
         }
 
-        /** Access m_StationsName
-         * \return The current value of m_StationsName
+        /** Access m_stationNames
+         * \return The current value of m_stationNames
          */
-        VectorString& GetStationsNameArray()
+        VectorString& GetStationNamesArray()
         {
-            return m_StationsName;
+            return m_stationNames;
         }
 
-        /** Access m_StationsHeight
-         * \return The current value of m_StationsHeight
+        /** Access m_stationOfficialIds
+         * \return The current value of m_stationOfficialIds
          */
-        Array1DFloat& GetStationsHeightArray()
+        VectorString& GetStationOfficialIdsArray()
         {
-            return m_StationsHeight;
+            return m_stationOfficialIds;
         }
 
-        /** Access m_StationsIds
-         * \return The current value of m_StationsIds
+        /** Access m_stationHeights
+         * \return The current value of m_stationHeights
+         */
+        Array1DFloat& GetStationHeightsArray()
+        {
+            return m_stationHeights;
+        }
+
+        /** Access m_stationIds
+         * \return The current value of m_stationIds
          */
         Array1DInt& GetStationsIdArray()
         {
-            return m_StationsIds;
+            return m_stationIds;
         }
 
-        /** Access m_StationsLocCoordU
-         * \return The current value of m_StationsLocCoordU
+        /** Access m_stationXCoords
+         * \return The current value of m_stationXCoords
          */
-        Array1DDouble& GetStationsLocCoordUArray()
+        Array1DDouble& GetStationXCoordsArray()
         {
-            return m_StationsLocCoordU;
+            return m_stationXCoords;
         }
 
-        /** Access m_StationsLocCoordV
-         * \return The current value of m_StationsLocCoordV
+        /** Access m_stationYCoords
+         * \return The current value of m_stationYCoords
          */
-        Array1DDouble& GetStationsLocCoordVArray()
+        Array1DDouble& GetStationYCoordsArray()
         {
-            return m_StationsLocCoordV;
+            return m_stationYCoords;
         }
 
-        /** Access m_StationsLon
-         * \return The current value of m_StationsLon
-         */
-        Array1DDouble& GetStationsLonArray()
-        {
-            return m_StationsLon;
-        }
-
-        /** Access m_StationsLat
-         * \return The current value of m_StationsLat
-         */
-        Array1DDouble& GetStationsLatArray()
-        {
-            return m_StationsLat;
-        }
-
-        /** Access m_DataGross: data(station,time)
-         * \return The current value of m_DataGross
+        /** Access m_dataGross: data(station,time)
+         * \return The current value of m_dataGross
          */
         Array2DFloat& GetDataGross()
         {
-            return m_DataGross;
+            return m_dataGross;
         }
 
-        /** Access m_DataGross: data(station,time)
-         * \return The current value of m_DataGross
+        /** Access m_dataGross: data(station,time)
+         * \return The current value of m_dataGross
          */
         Array1DFloat GetDataGrossStation(int predictandStationId)
         {
             int indexStation = GetStationIndex(predictandStationId);
-            return m_DataGross.col(indexStation);
+            return m_dataGross.col(indexStation);
         }
 
-        /** Access m_DataNormalized: data(station,time)
-         * \return The current value of m_DataNormalized
+        /** Access m_dataNormalized: data(station,time)
+         * \return The current value of m_dataNormalized
          */
         Array2DFloat& GetDataNormalized()
         {
-            if(m_HasNormalizedData)
+            if(m_hasNormalizedData)
             {
-                return m_DataNormalized;
+                return m_dataNormalized;
             }
             else
             {
-                return m_DataGross;
+                return m_dataGross;
             }
         }
 
-        /** Access m_DataNormalized for 1 station: data(station,time)
-         * \return The current value of m_DataNormalized
+        /** Access m_dataNormalized for 1 station: data(station,time)
+         * \return The current value of m_dataNormalized
          */
         Array1DFloat GetDataNormalizedStation(int predictandStationId)
         {
             int indexStation = GetStationIndex(predictandStationId);
-            if(m_HasNormalizedData)
+            if(m_hasNormalizedData)
             {
-                return m_DataNormalized.col(indexStation);
+                return m_dataNormalized.col(indexStation);
             }
             else
             {
-                return m_DataGross.col(indexStation);
+                return m_dataGross.col(indexStation);
             }
         }
 
-        /** Access m_Time
-         * \return The current value of m_Time
+        /** Access m_time
+         * \return The current value of m_time
          */
         Array1DDouble& GetTime()
         {
-            return m_Time;
+            return m_time;
         }
 
         /** Get the index of a station by its ID
@@ -281,34 +273,33 @@ class asDataPredictand: public wxObject
 
     protected:
         // Single value
-        float m_FileVersion;
-        DataParameter m_DataParameter;
-        DataTemporalResolution m_DataTemporalResolution;
-        DataSpatialAggregation m_DataSpatialAggregation;
-        wxString m_DatasetId;
-        double m_TimeStepDays;
-        int m_TimeLength;
-        int m_StationsNb;
-        double m_DateProcessed;
-        double m_DateStart;
-        double m_DateEnd;
-        bool m_HasNormalizedData;
-        bool m_HasReferenceValues;
+        float m_fileVersion;
+        DataParameter m_dataParameter;
+        DataTemporalResolution m_dataTemporalResolution;
+        DataSpatialAggregation m_dataSpatialAggregation;
+        wxString m_datasetId;
+        double m_timeStepDays;
+        int m_timeLength;
+        int m_stationsNb;
+        double m_dateProcessed;
+        double m_dateStart;
+        double m_dateEnd;
+        bool m_hasNormalizedData;
+        bool m_hasReferenceValues;
         // Matrix data
-        Array2DFloat m_DataGross;
-        Array2DFloat m_DataNormalized;
+        Array2DFloat m_dataGross;
+        Array2DFloat m_dataNormalized;
         // Vector (dim = time)
-        Array1DDouble m_Time;
+        Array1DDouble m_time;
         // Vector (dim = stations)
-        VectorString m_StationsName;
-        Array1DInt m_StationsIds;
-        Array1DFloat m_StationsHeight;
-        Array1DDouble m_StationsLocCoordU;
-        Array1DDouble m_StationsLocCoordV;
-        Array1DDouble m_StationsLon;
-        Array1DDouble m_StationsLat;
-        Array1DDouble m_StationsStart;
-        Array1DDouble m_StationsEnd;
+        VectorString m_stationNames;
+        VectorString m_stationOfficialIds;
+        Array1DInt m_stationIds;
+        Array1DFloat m_stationHeights;
+        Array1DDouble m_stationXCoords;
+        Array1DDouble m_stationYCoords;
+        Array1DDouble m_stationStarts;
+        Array1DDouble m_stationEnds;
 
 
         wxString GetDBFilePathSaving(const wxString &destinationDir);

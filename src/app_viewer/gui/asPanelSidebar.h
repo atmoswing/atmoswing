@@ -46,7 +46,7 @@ public:
     void ReducePanel();
     bool IsReduced()
     {
-        return !m_SizerMain->IsShown(m_SizerContent);
+        return !m_sizerMain->IsShown(m_sizerContent);
     }
 
 protected:

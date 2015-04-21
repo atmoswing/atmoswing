@@ -31,14 +31,14 @@
 // Safe: Critical section defined within
 asThreadsManager::asThreadsManager()
 {
-    m_CritSectionManager.Enter();
+    m_critSectionManager.Enter();
 
-    m_Cancelled = false;
-    m_IdCounter = 0;
-    m_MaxThreadsNb = -1;
-    m_Priority = -1;
+    m_cancelled = false;
+    m_idCounter = 0;
+    m_maxThreadsNb = -1;
+    m_priority = -1;
 
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 }
 
 asThreadsManager::~asThreadsManager()
@@ -48,15 +48,15 @@ asThreadsManager::~asThreadsManager()
 
 void asThreadsManager::Init()
 {
-    m_CritSectionManager.Enter();
+    m_critSectionManager.Enter();
 
     wxConfigBase *pConfig = wxFileConfig::Get();
-    m_MaxThreadsNb = wxThread::GetCPUCount();
-    if (m_MaxThreadsNb==-1) m_MaxThreadsNb = 2;
-    pConfig->Read("/Processing/MaxThreadNb", &m_MaxThreadsNb, m_MaxThreadsNb);
-    m_Priority = pConfig->Read("/Processing/ThreadsPriority", 95l);
+    m_maxThreadsNb = wxThread::GetCPUCount();
+    if (m_maxThreadsNb==-1) m_maxThreadsNb = 2;
+    pConfig->Read("/Processing/MaxThreadNb", &m_maxThreadsNb, m_maxThreadsNb);
+    m_priority = pConfig->Read("/Processing/ThreadsPriority", 95l);
 
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 }
 
 void asThreadsManager::OnClose(wxCloseEvent&)
@@ -74,7 +74,7 @@ void asThreadsManager::OnClose(wxCloseEvent&)
 // Safety to manage by caller
 int asThreadsManager::GetTotalThreadsNb()
 {
-    int size = m_Threads.size();
+    int size = m_threads.size();
 
     return size;
 }
@@ -82,15 +82,15 @@ int asThreadsManager::GetTotalThreadsNb()
 // Safe: Critical section defined within
 int asThreadsManager::GetRunningThreadsNb(int type)
 {
-    m_CritSectionManager.Enter();
+    m_critSectionManager.Enter();
 
     int counter = 0;
 
-    for (unsigned int i_threads=0; i_threads<m_Threads.size(); i_threads++)
+    for (unsigned int i_threads=0; i_threads<m_threads.size(); i_threads++)
     {
-        if (m_Threads[i_threads]!=NULL)
+        if (m_threads[i_threads]!=NULL)
         {
-            if ( (m_Threads[i_threads]->GetStatus()!=asThread::Done) & (m_Threads[i_threads]->GetStatus()!=asThread::Exiting) & (m_Threads[i_threads]->GetStatus()!=asThread::Canceled) & (m_Threads[i_threads]->GetStatus()!=asThread::Error) )
+            if ( (m_threads[i_threads]->GetStatus()!=asThread::Done) & (m_threads[i_threads]->GetStatus()!=asThread::Exiting) & (m_threads[i_threads]->GetStatus()!=asThread::Canceled) & (m_threads[i_threads]->GetStatus()!=asThread::Error) )
             {
                 if (type==-1)
                 {
@@ -98,7 +98,7 @@ int asThreadsManager::GetRunningThreadsNb(int type)
                 }
                 else
                 {
-                    if (m_Threads[i_threads]->GetType()==type)
+                    if (m_threads[i_threads]->GetType()==type)
                     {
                         counter++;
                     }
@@ -107,7 +107,7 @@ int asThreadsManager::GetRunningThreadsNb(int type)
         }
     }
 
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 
     return counter;
 }
@@ -115,14 +115,14 @@ int asThreadsManager::GetRunningThreadsNb(int type)
 // Safe: Critical section defined in GetRunningThreadsNb
 int asThreadsManager::GetAvailableThreadsNb()
 {
-    if(m_MaxThreadsNb<1) Init();
+    if(m_maxThreadsNb<1) Init();
 
     // Maximum threads nb
     int runningThreads = GetRunningThreadsNb();
     asLogMessage(wxString::Format(_("%d running threads (checking available threads)."), runningThreads));
-    m_CritSectionManager.Enter();
-    int nb = m_MaxThreadsNb-runningThreads;
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Enter();
+    int nb = m_maxThreadsNb-runningThreads;
+    m_critSectionManager.Leave();
 
     if (nb<1)
     {
@@ -152,12 +152,12 @@ bool asThreadsManager::AddThread(asThread* thread)
     }
 
     // Set the thread Id
-    m_CritSectionManager.Enter();
-    wxASSERT(m_IdCounter>=0);
-    m_IdCounter++;
-    thread->SetId(m_IdCounter);
+    m_critSectionManager.Enter();
+    wxASSERT(m_idCounter>=0);
+    m_idCounter++;
+    thread->SetId(m_idCounter);
     wxASSERT(thread->GetId()>=1);
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 
     // Check the number of threads currently running
     if(GetAvailableThreadsNb()<1)
@@ -166,15 +166,15 @@ bool asThreadsManager::AddThread(asThread* thread)
     }
 
     // Set priority
-    if (m_Priority<0) Init();
-    thread->SetPriority((int)m_Priority);
+    if (m_priority<0) Init();
+    thread->SetPriority((int)m_priority);
 
     // Add to array
-    m_CritSectionManager.Enter();
-    m_Threads.push_back(thread);
+    m_critSectionManager.Enter();
+    m_threads.push_back(thread);
     wxASSERT(thread->GetId()>=1);
     asLogMessage(wxString::Format(_("A new thread was created (id=%d)."), (int)thread->GetId()));
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 
     // Run
     if (thread->Run() != wxTHREAD_NO_ERROR )
@@ -184,26 +184,26 @@ bool asThreadsManager::AddThread(asThread* thread)
         return false;
     }
 
-    m_Cancelled = false;
-    m_WaitingUntilAllDone = true;
+    m_cancelled = false;
+    m_waitingUntilAllDone = true;
 
     return true;
 }
 
 void asThreadsManager::SetNull(int id)
 {
-    m_CritSectionManager.Enter();
+    m_critSectionManager.Enter();
 
-    for (unsigned int i_threads=0; i_threads<m_Threads.size(); i_threads++)
+    for (unsigned int i_threads=0; i_threads<m_threads.size(); i_threads++)
     {
-        if (m_Threads[i_threads]!=NULL)
+        if (m_threads[i_threads]!=NULL)
         {
-            int thisid = m_Threads[i_threads]->GetId();
+            int thisid = m_threads[i_threads]->GetId();
 
             if (thisid==id)
             {
-                m_Threads[i_threads]=NULL;
-                m_CritSectionManager.Leave();
+                m_threads[i_threads]=NULL;
+                m_critSectionManager.Leave();
                 return;
             }
         }
@@ -211,34 +211,34 @@ void asThreadsManager::SetNull(int id)
 
     asLogError(wxString::Format(_("Thread %d couldn't be removed."), id));
 
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 
 }
 
 // Safe: Critical section defined within
 bool asThreadsManager::CleanArray()
 {
-    m_CritSectionManager.Enter();
+    m_critSectionManager.Enter();
 
     if(GetTotalThreadsNb()>0)
     {
-        for (unsigned int i_threads=0; i_threads<m_Threads.size(); i_threads++)
+        for (unsigned int i_threads=0; i_threads<m_threads.size(); i_threads++)
         {
-            if (m_Threads[i_threads]!=NULL)
+            if (m_threads[i_threads]!=NULL)
             {
-                m_CritSectionManager.Leave();
+                m_critSectionManager.Leave();
                 return true;
             }
         }
 
         // If nothing is running, clear array.
-        m_Threads.clear();
-        m_IdCounter = 0;
+        m_threads.clear();
+        m_idCounter = 0;
 
         asLogMessage(_("Thread array cleared."));
     }
 
-    m_CritSectionManager.Leave();
+    m_critSectionManager.Leave();
 
     return true;
 }
@@ -255,9 +255,9 @@ void asThreadsManager::Wait(int type)
 
 void asThreadsManager::WaitForFreeThread(int type)
 {
-    if(m_MaxThreadsNb<1) Init();
+    if(m_maxThreadsNb<1) Init();
 
-    while(m_MaxThreadsNb-GetRunningThreadsNb(type)<=0)
+    while(m_maxThreadsNb-GetRunningThreadsNb(type)<=0)
     {
         wxMilliSleep(10);
     }
@@ -269,11 +269,11 @@ void asThreadsManager::PauseAll()
 {
     for (int i_threads=0; i_threads<GetTotalThreadsNb(); i_threads++)
     {
-        if (m_Threads[i_threads]!=NULL)
+        if (m_threads[i_threads]!=NULL)
         {
-            if(m_Threads[i_threads]->IsRunning())
+            if(m_threads[i_threads]->IsRunning())
             {
-//                m_Threads[i_threads]->Pause();
+//                m_threads[i_threads]->Pause();
             }
         }
     }
@@ -283,11 +283,11 @@ void asThreadsManager::ResumeAll()
 {
     for (int i_threads=0; i_threads<GetTotalThreadsNb(); i_threads++)
     {
-        if (m_Threads[i_threads]!=NULL)
+        if (m_threads[i_threads]!=NULL)
         {
-            if(m_Threads[i_threads]->IsPaused())
+            if(m_threads[i_threads]->IsPaused())
             {
-                m_Threads[i_threads]->Resume();
+                m_threads[i_threads]->Resume();
             }
         }
     }

@@ -46,14 +46,14 @@
 
 asForecastScore::asForecastScore()
 {
-    m_Score = Undefined;
-    m_ScoreClimatology = 0;
-    m_Threshold = NaNFloat;
-    m_Percentile = NaNFloat;
-    m_UsesClimatology = false;
-    m_SingleValue = true;
-    m_ScaleBest = NaNFloat;
-    m_ScaleWorst = NaNFloat;
+    m_score = Undefined;
+    m_scoreClimatology = 0;
+    m_threshold = NaNFloat;
+    m_quantile = NaNFloat;
+    m_usesClimatology = false;
+    m_singleValue = true;
+    m_scaleBest = NaNFloat;
+    m_scaleWorst = NaNFloat;
 }
 
 asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
@@ -362,7 +362,7 @@ asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
     }
     else
     {
-		asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString.c_str()));
+		asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString));
         asForecastScore* score = new asForecastScoreCRPSAR();
         return score;
     }

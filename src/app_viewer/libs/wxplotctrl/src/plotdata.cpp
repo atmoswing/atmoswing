@@ -75,12 +75,12 @@ public:
 
     int     m_count;
 
-    double *m_Xdata;
-    double *m_Ydata;
-    double *m_Yidata; // imaginary component, not normally used (see FFT)
+    double *m_xdata;
+    double *m_ydata;
+    double *m_yidata; // imaginary component, not normally used (see FFT)
     bool    m_static;
 
-    bool    m_Xordered;
+    bool    m_xordered;
 
     wxBitmap m_normalSymbol,
              m_activeSymbol,
@@ -96,13 +96,13 @@ wxPlotDataRefData::wxPlotDataRefData() : wxPlotCurveRefData()
 {
     m_count  = 0;
 
-    m_Xdata  = (double*)NULL;
-    m_Ydata  = (double*)NULL;
-    m_Yidata = (double*)NULL;
+    m_xdata  = (double*)NULL;
+    m_ydata  = (double*)NULL;
+    m_yidata = (double*)NULL;
 
     m_static = false;
 
-    m_Xordered = false;
+    m_xordered = false;
 
     m_normalSymbol   = wxBitmap(1,1);
     m_activeSymbol   = wxBitmap(1,1);
@@ -130,16 +130,16 @@ void wxPlotDataRefData::Destroy()
 {
     if (!m_static)
     {
-        if ( m_Xdata  ) free( m_Xdata );
-        if ( m_Ydata  ) free( m_Ydata );
-        if ( m_Yidata ) free( m_Yidata );
+        if ( m_xdata  ) free( m_xdata );
+        if ( m_ydata  ) free( m_ydata );
+        if ( m_yidata ) free( m_yidata );
     }
 
     m_count    = 0;
-    m_Xdata    = NULL;
-    m_Ydata    = NULL;
-    m_Yidata   = NULL;
-    m_Xordered = false;
+    m_xdata    = NULL;
+    m_ydata    = NULL;
+    m_yidata   = NULL;
+    m_xordered = false;
 }
 
 void wxPlotDataRefData::CopyData(const wxPlotDataRefData &source)
@@ -148,22 +148,22 @@ void wxPlotDataRefData::CopyData(const wxPlotDataRefData &source)
 
     m_count    = source.m_count;
     m_static   = false; // we're creating our own copy
-    m_Xordered = source.m_Xordered;
+    m_xordered = source.m_xordered;
 
-    if (m_count && source.m_Xdata)
+    if (m_count && source.m_xdata)
     {
-        m_Xdata = (double*)malloc( m_count*sizeof(double) );
-        memcpy( m_Xdata, source.m_Xdata, m_count*sizeof(double) );
+        m_xdata = (double*)malloc( m_count*sizeof(double) );
+        memcpy( m_xdata, source.m_xdata, m_count*sizeof(double) );
     }
-    if (m_count && source.m_Ydata)
+    if (m_count && source.m_ydata)
     {
-        m_Ydata = (double*)malloc( m_count*sizeof(double) );
-        memcpy( m_Ydata, source.m_Ydata, m_count*sizeof(double) );
+        m_ydata = (double*)malloc( m_count*sizeof(double) );
+        memcpy( m_ydata, source.m_ydata, m_count*sizeof(double) );
     }
-    if (m_count && source.m_Yidata)
+    if (m_count && source.m_yidata)
     {
-        m_Yidata = (double*)malloc( m_count*sizeof(double) );
-        memcpy( m_Ydata, source.m_Yidata, m_count*sizeof(double) );
+        m_yidata = (double*)malloc( m_count*sizeof(double) );
+        memcpy( m_ydata, source.m_yidata, m_count*sizeof(double) );
     }
 }
 
@@ -230,8 +230,8 @@ bool wxPlotData::Create( const wxPlotFunction &plotFunc, double x_start, double 
     if (!Create(points, false)) return false; // this checks points
 
     double x = x_start, y = 0;
-    double *x_data = M_PLOTDATA->m_Xdata;
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *x_data = M_PLOTDATA->m_xdata;
+    double *y_data = M_PLOTDATA->m_ydata;
 
     for (int i = 0; i < points; i++, x += dx, x_data++, y_data++)
     {
@@ -266,9 +266,9 @@ bool wxPlotData::Create( int points, bool zero )
     }
 
     M_PLOTDATA->m_count = points;
-    M_PLOTDATA->m_Xdata = (double*)malloc( points*sizeof(double) );
-    M_PLOTDATA->m_Ydata = (double*)malloc( points*sizeof(double) );
-    if (!M_PLOTDATA->m_Xdata || !M_PLOTDATA->m_Ydata)
+    M_PLOTDATA->m_xdata = (double*)malloc( points*sizeof(double) );
+    M_PLOTDATA->m_ydata = (double*)malloc( points*sizeof(double) );
+    if (!M_PLOTDATA->m_xdata || !M_PLOTDATA->m_ydata)
     {
         UnRef();
         wxFAIL_MSG(wxT("memory allocation error creating plot"));
@@ -277,8 +277,8 @@ bool wxPlotData::Create( int points, bool zero )
 
     if (zero)
     {
-        memset(M_PLOTDATA->m_Xdata, 0, points*sizeof(double));
-        memset(M_PLOTDATA->m_Ydata, 0, points*sizeof(double));
+        memset(M_PLOTDATA->m_xdata, 0, points*sizeof(double));
+        memset(M_PLOTDATA->m_ydata, 0, points*sizeof(double));
     }
 
     return true;
@@ -298,8 +298,8 @@ bool wxPlotData::Create( double *x_data, double *y_data, int points, bool static
         return false;
     }
 
-    M_PLOTDATA->m_Xdata  = x_data;
-    M_PLOTDATA->m_Ydata  = y_data;
+    M_PLOTDATA->m_xdata  = x_data;
+    M_PLOTDATA->m_ydata  = y_data;
     M_PLOTDATA->m_count  = points;
     M_PLOTDATA->m_static = static_data;
 
@@ -315,18 +315,18 @@ bool wxPlotData::Copy( const wxPlotData &source, bool copy_all )
 
     if (!Create(count, false)) return false;
 
-    memcpy( M_PLOTDATA->m_Xdata, source.GetXData(), count*sizeof(double) );
-    memcpy( M_PLOTDATA->m_Ydata, source.GetYData(), count*sizeof(double) );
+    memcpy( M_PLOTDATA->m_xdata, source.GetXData(), count*sizeof(double) );
+    memcpy( M_PLOTDATA->m_ydata, source.GetYData(), count*sizeof(double) );
 
     if (source.GetYiData())
     {
-        M_PLOTDATA->m_Yidata = (double*)malloc(count*sizeof(double));
-        if (!M_PLOTDATA->m_Yidata)
+        M_PLOTDATA->m_yidata = (double*)malloc(count*sizeof(double));
+        if (!M_PLOTDATA->m_yidata)
         {
             UnRef();
             return false;
         }
-        memcpy( M_PLOTDATA->m_Yidata, source.GetYiData(), count*sizeof(double) );
+        memcpy( M_PLOTDATA->m_yidata, source.GetYiData(), count*sizeof(double) );
     }
 
     if (copy_all)
@@ -352,18 +352,18 @@ bool wxPlotData::Resize( int new_size, bool zero )
     if (M_PLOTDATA->m_count == new_size)
         return true;
 
-    M_PLOTDATA->m_Xdata = (double*)realloc( M_PLOTDATA->m_Xdata, new_size*sizeof(double) );
-    M_PLOTDATA->m_Ydata = (double*)realloc( M_PLOTDATA->m_Ydata, new_size*sizeof(double) );
+    M_PLOTDATA->m_xdata = (double*)realloc( M_PLOTDATA->m_xdata, new_size*sizeof(double) );
+    M_PLOTDATA->m_ydata = (double*)realloc( M_PLOTDATA->m_ydata, new_size*sizeof(double) );
 
     bool has_yi = false;
-    if (M_PLOTDATA->m_Yidata)
+    if (M_PLOTDATA->m_yidata)
     {
         has_yi = true;
-        M_PLOTDATA->m_Yidata = (double*)realloc( M_PLOTDATA->m_Yidata, new_size*sizeof(double) );
+        M_PLOTDATA->m_yidata = (double*)realloc( M_PLOTDATA->m_yidata, new_size*sizeof(double) );
     }
 
     // realloc failed
-    if (!M_PLOTDATA->m_Xdata || !M_PLOTDATA->m_Ydata || (has_yi && (!M_PLOTDATA->m_Yidata)))
+    if (!M_PLOTDATA->m_xdata || !M_PLOTDATA->m_ydata || (has_yi && (!M_PLOTDATA->m_yidata)))
     {
         UnRef();
         return false;
@@ -373,10 +373,10 @@ bool wxPlotData::Resize( int new_size, bool zero )
     {
         int old_count = M_PLOTDATA->m_count;
         int points    = new_size - M_PLOTDATA->m_count;
-        memset(M_PLOTDATA->m_Xdata + old_count, 0, points*sizeof(double));
-        memset(M_PLOTDATA->m_Ydata + old_count, 0, points*sizeof(double));
-        if (M_PLOTDATA->m_Yidata)
-            memset(M_PLOTDATA->m_Yidata + old_count, 0, points*sizeof(double));
+        memset(M_PLOTDATA->m_xdata + old_count, 0, points*sizeof(double));
+        memset(M_PLOTDATA->m_ydata + old_count, 0, points*sizeof(double));
+        if (M_PLOTDATA->m_yidata)
+            memset(M_PLOTDATA->m_yidata + old_count, 0, points*sizeof(double));
     }
 
     M_PLOTDATA->m_count = new_size;
@@ -391,7 +391,7 @@ bool wxPlotData::Resize( int new_size, double dx, double y )
     if (!Resize(new_size, false)) return false;
 
     SetYValues(orig_count, -1, y);
-    SetXStepValues(orig_count, -1, M_PLOTDATA->m_Xdata[orig_count - 1], dx);
+    SetXStepValues(orig_count, -1, M_PLOTDATA->m_xdata[orig_count - 1], dx);
     return true;
 }
 
@@ -417,9 +417,9 @@ wxPlotData wxPlotData::Insert(int index, size_t src_count,
     wxPlotData newCurve(count + src_count, false);
     if (!newCurve.Ok()) return newCurve;
 
-    double *x_data  = M_PLOTDATA->m_Xdata;
-    double *y_data  = M_PLOTDATA->m_Ydata;
-    double *yi_data = M_PLOTDATA->m_Yidata;
+    double *x_data  = M_PLOTDATA->m_xdata;
+    double *y_data  = M_PLOTDATA->m_ydata;
+    double *yi_data = M_PLOTDATA->m_yidata;
 
     bool has_yi = false;
     if (yi_data && src_yi_data)
@@ -514,17 +514,17 @@ wxPlotData wxPlotData::GetSubPlotData(int index, int count) const
     if (!newCurve.Ok()) return newCurve;
 
     bool has_yi = false;
-    if (M_PLOTDATA->m_Yidata)
+    if (M_PLOTDATA->m_yidata)
     {
         has_yi = true;
         double *yi = (double*)malloc(count*sizeof(double));
         newCurve.SetYiData(yi);
     }
 
-    memcpy(newCurve.GetXData(), M_PLOTDATA->m_Xdata+index, count*sizeof(double));
-    memcpy(newCurve.GetYData(), M_PLOTDATA->m_Ydata+index, count*sizeof(double));
+    memcpy(newCurve.GetXData(), M_PLOTDATA->m_xdata+index, count*sizeof(double));
+    memcpy(newCurve.GetYData(), M_PLOTDATA->m_ydata+index, count*sizeof(double));
     if (has_yi)
-        memcpy(newCurve.GetYiData(), M_PLOTDATA->m_Yidata+index, count*sizeof(double));
+        memcpy(newCurve.GetYiData(), M_PLOTDATA->m_yidata+index, count*sizeof(double));
 
     newCurve.CalcBoundingRect();
     newCurve.CopyExtra( *this );
@@ -537,8 +537,8 @@ void wxPlotData::CalcBoundingRect()
 
     M_PLOTDATA->m_boundingRect = wxNullPlotBounds;
 
-    double *x_data = M_PLOTDATA->m_Xdata,
-           *y_data = M_PLOTDATA->m_Ydata;
+    double *x_data = M_PLOTDATA->m_xdata,
+           *y_data = M_PLOTDATA->m_ydata;
 
     double x = *x_data,
            y = *y_data,
@@ -582,13 +582,13 @@ void wxPlotData::CalcBoundingRect()
     else
         M_PLOTDATA->m_boundingRect = wxNullPlotBounds;
 
-    M_PLOTDATA->m_Xordered = xordered;
+    M_PLOTDATA->m_xordered = xordered;
 }
 
 bool wxPlotData::GetIsXOrdered() const
 {
     wxCHECK_MSG( Ok(), false, wxT("Invalid wxPlotData") );
-    return M_PLOTDATA->m_Xordered;
+    return M_PLOTDATA->m_xordered;
 }
 
 //----------------------------------------------------------------------------
@@ -950,8 +950,8 @@ bool wxPlotData::SaveFile( const wxString &filename, bool save_header, const wxS
 
     for (i = 0; i < M_PLOTDATA->m_count; i++)
     {
-        x = M_PLOTDATA->m_Xdata[i];
-        y = M_PLOTDATA->m_Ydata[i];
+        x = M_PLOTDATA->m_xdata[i];
+        y = M_PLOTDATA->m_ydata[i];
 
         if (wxFinite(x)) s = wxString::Format(f.c_str(), x);
         else             s = wxT("nan");
@@ -1037,41 +1037,41 @@ void wxPlotData::SetDataColumnSeparator( const wxString &separator )
 double *wxPlotData::GetXData() const
 {
     wxCHECK_MSG( Ok(), (double*)NULL, wxT("Invalid wxPlotData") );
-    return M_PLOTDATA->m_Xdata;
+    return M_PLOTDATA->m_xdata;
 }
 double *wxPlotData::GetYData() const
 {
     wxCHECK_MSG( Ok(), (double*)NULL, wxT("Invalid wxPlotData") );
-    return M_PLOTDATA->m_Ydata;
+    return M_PLOTDATA->m_ydata;
 }
 double *wxPlotData::GetYiData() const
 {
     wxCHECK_MSG( Ok(), (double*)NULL, wxT("Invalid wxPlotData") );
-    return M_PLOTDATA->m_Yidata;
+    return M_PLOTDATA->m_yidata;
 }
 
 void wxPlotData::SetYiData( double *yi_data )
 {
     wxCHECK_RET( Ok(), wxT("Invalid wxPlotData") );
 
-    if (M_PLOTDATA->m_Yidata) free(M_PLOTDATA->m_Yidata);
-    M_PLOTDATA->m_Yidata = yi_data;
+    if (M_PLOTDATA->m_yidata) free(M_PLOTDATA->m_yidata);
+    M_PLOTDATA->m_yidata = yi_data;
 }
 
 double wxPlotData::GetXValue( int index ) const
 {
     wxCHECK_MSG( Ok() && (index < M_PLOTDATA->m_count), 0.0, wxT("Invalid wxPlotData") );
-    return M_PLOTDATA->m_Xdata[index];
+    return M_PLOTDATA->m_xdata[index];
 }
 double wxPlotData::GetYValue( int index ) const
 {
     wxCHECK_MSG( Ok() && (index < M_PLOTDATA->m_count), 0.0, wxT("Invalid wxPlotData") );
-    return M_PLOTDATA->m_Ydata[index];
+    return M_PLOTDATA->m_ydata[index];
 }
 wxPoint2DDouble wxPlotData::GetPoint( int index ) const
 {
     wxCHECK_MSG( Ok() && (index < M_PLOTDATA->m_count), wxPoint2DDouble(0,0), wxT("Invalid wxPlotData") );
-    return wxPoint2DDouble(M_PLOTDATA->m_Xdata[index], M_PLOTDATA->m_Ydata[index]);
+    return wxPoint2DDouble(M_PLOTDATA->m_xdata[index], M_PLOTDATA->m_ydata[index]);
 }
 
 double wxPlotData::GetY( double x ) const
@@ -1080,22 +1080,22 @@ double wxPlotData::GetY( double x ) const
 
     int i = GetIndexFromX( x, index_floor );
 
-    if (M_PLOTDATA->m_Xdata[i] == x)
-        return M_PLOTDATA->m_Ydata[i];
+    if (M_PLOTDATA->m_xdata[i] == x)
+        return M_PLOTDATA->m_ydata[i];
 
     if (i >= M_PLOTDATA->m_count - 1)
-        return M_PLOTDATA->m_Ydata[i];
+        return M_PLOTDATA->m_ydata[i];
 
     int i1 = GetIndexFromX( x, index_ceil );
 
-    double y0 = M_PLOTDATA->m_Ydata[i];
-    double y1 = M_PLOTDATA->m_Ydata[i1];
+    double y0 = M_PLOTDATA->m_ydata[i];
+    double y1 = M_PLOTDATA->m_ydata[i1];
 
     if ( y0 == y1 )
         return y0;
 
-    return LinearInterpolateY( M_PLOTDATA->m_Xdata[i], y0,
-                               M_PLOTDATA->m_Xdata[i1], y1, x );
+    return LinearInterpolateY( M_PLOTDATA->m_xdata[i], y0,
+                               M_PLOTDATA->m_xdata[i1], y1, x );
 }
 
 void wxPlotData::SetXValue( int index, double x )
@@ -1114,7 +1114,7 @@ void wxPlotData::SetXValue( int index, double x )
             CalcBoundingRect(); // don't know recalc it all
     }
 
-    M_PLOTDATA->m_Xdata[index] = x;
+    M_PLOTDATA->m_xdata[index] = x;
 
 }
 void wxPlotData::SetYValue( int index, double y )
@@ -1133,18 +1133,18 @@ void wxPlotData::SetYValue( int index, double y )
             CalcBoundingRect(); // don't know recalc it all
     }
 
-    M_PLOTDATA->m_Ydata[index] = y;
+    M_PLOTDATA->m_ydata[index] = y;
 }
 
 void wxPlotData::SetValue(int index, double x, double y)
 {
     wxCHECK_RET( Ok() && (index < M_PLOTDATA->m_count), wxT("Invalid wxPlotData") );
 
-    double x_old = M_PLOTDATA->m_Xdata[index];
-    double y_old = M_PLOTDATA->m_Ydata[index];
+    double x_old = M_PLOTDATA->m_xdata[index];
+    double y_old = M_PLOTDATA->m_ydata[index];
 
-    M_PLOTDATA->m_Xdata[index] = x;
-    M_PLOTDATA->m_Ydata[index] = y;
+    M_PLOTDATA->m_xdata[index] = x;
+    M_PLOTDATA->m_ydata[index] = y;
 
     if (M_PLOTDATA->m_count == 1)
     {
@@ -1181,7 +1181,7 @@ void wxPlotData::SetXValues( int start_index, int count, double x )
     int end_index = start_index + count - 1;
     wxPCHECK_MINMAX_RET(start_index, 0, M_PLOTDATA->m_count-1, wxT("Invalid starting index"));
     wxPCHECK_MINMAX_RET(end_index,   0, M_PLOTDATA->m_count-1, wxT("Invalid ending index"));
-    double *x_data = M_PLOTDATA->m_Xdata;
+    double *x_data = M_PLOTDATA->m_xdata;
     for (int n = start_index; n <= end_index; n++)
         *x_data++ = x;
 }
@@ -1193,7 +1193,7 @@ void wxPlotData::SetYValues( int start_index, int count, double y )
     int end_index = start_index + count - 1;
     wxPCHECK_MINMAX_RET(start_index, 0, M_PLOTDATA->m_count-1, wxT("Invalid starting index"));
     wxPCHECK_MINMAX_RET(end_index,   0, M_PLOTDATA->m_count-1, wxT("Invalid ending index"));
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *y_data = M_PLOTDATA->m_ydata;
     for (int n = start_index; n <= end_index; n++)
         *y_data++ = y;
 }
@@ -1207,7 +1207,7 @@ void wxPlotData::SetXStepValues( int start_index, int count, double x_start, dou
     wxPCHECK_MINMAX_RET(start_index, 0, M_PLOTDATA->m_count-1, wxT("Invalid starting index"));
     wxPCHECK_MINMAX_RET(end_index,   0, M_PLOTDATA->m_count-1, wxT("Invalid ending index"));
 
-    double *x_data = M_PLOTDATA->m_Xdata + start_index;
+    double *x_data = M_PLOTDATA->m_xdata + start_index;
     for (int i = 0; i < count; i++, x_data++)
         *x_data = x_start + (i * dx);
 }
@@ -1220,7 +1220,7 @@ void wxPlotData::SetYStepValues( int start_index, int count, double y_start, dou
     wxPCHECK_MINMAX_RET(start_index, 0, M_PLOTDATA->m_count-1, wxT("Invalid starting index"));
     wxPCHECK_MINMAX_RET(end_index,   0, M_PLOTDATA->m_count-1, wxT("Invalid ending index"));
 
-    double *y_data = M_PLOTDATA->m_Ydata + start_index;
+    double *y_data = M_PLOTDATA->m_ydata + start_index;
     for (int i = 0; i < count; i++, y_data++)
         *y_data = y_start + (i * dy);
 }
@@ -1230,9 +1230,9 @@ int wxPlotData::GetIndexFromX( double x, wxPlotData::Index_Type type ) const
     wxCHECK_MSG( Ok(), 0, wxT("Invalid wxPlotData") );
 
     int count = M_PLOTDATA->m_count;
-    double *x_data = M_PLOTDATA->m_Xdata;
+    double *x_data = M_PLOTDATA->m_xdata;
 
-    if ( !M_PLOTDATA->m_Xordered )
+    if ( !M_PLOTDATA->m_xordered )
     {
         register int i;
         int index = 0, index_lower = 0, index_higher = 0;
@@ -1310,7 +1310,7 @@ int wxPlotData::GetIndexFromY( double y, wxPlotData::Index_Type type ) const
     register int i;
     int index = 0, index_lower = 0, index_higher = 0;
     int count = M_PLOTDATA->m_count;
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *y_data = M_PLOTDATA->m_ydata;
     double closest = fabs( y - *y_data++ );
 
     for (i = 1; i < count; i++)
@@ -1347,7 +1347,7 @@ int wxPlotData::GetIndexFromXY( double x, double y, double x_range ) const
     int start = 1, end = M_PLOTDATA->m_count - 1;
 
     // find bounding indexes for range
-    if (M_PLOTDATA->m_Xordered && (x_range != 0))
+    if (M_PLOTDATA->m_xordered && (x_range != 0))
     {
         start = GetIndexFromX(x - x_range, wxPlotData::index_floor) + 1;
         end = GetIndexFromX(x + x_range, wxPlotData::index_ceil);
@@ -1355,8 +1355,8 @@ int wxPlotData::GetIndexFromXY( double x, double y, double x_range ) const
 
     int i, index = start - 1;
 
-    double *x_data = &M_PLOTDATA->m_Xdata[index];
-    double *y_data = &M_PLOTDATA->m_Ydata[index];
+    double *x_data = &M_PLOTDATA->m_xdata[index];
+    double *y_data = &M_PLOTDATA->m_ydata[index];
 
     double xdiff = (*x_data++) - x;
     double ydiff = (*y_data++) - y;
@@ -1396,7 +1396,7 @@ double wxPlotData::GetAverage( int start_index, int count ) const
     wxCHECK_MSG((start_index<M_PLOTDATA->m_count) && (end_index<M_PLOTDATA->m_count), 0.0, wxT("invalid input"));
 
     double ave = 0.0;
-    double *y_data = M_PLOTDATA->m_Ydata + start_index;
+    double *y_data = M_PLOTDATA->m_ydata + start_index;
     for (int i = start_index; i <= end_index; i++) ave += *y_data++;
 
     ave /= double(count);
@@ -1418,8 +1418,8 @@ int wxPlotData::GetMinMaxAve( const wxRangeIntSelection& rangeSel,
     wxCHECK_MSG((min_index >= 0) && (min_index < (int)M_PLOTDATA->m_count), 0,
                 wxT("Invalid range selection index in data curve"));
 
-    double *x_data = M_PLOTDATA->m_Xdata;
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *x_data = M_PLOTDATA->m_xdata;
+    double *y_data = M_PLOTDATA->m_ydata;
 
     double x = x_data[min_index];
     double y = y_data[min_index];
@@ -1475,8 +1475,8 @@ wxArrayInt wxPlotData::GetCrossing( double y_value ) const
     wxCHECK_MSG( Ok(), points, wxT("Invalid wxPlotData") );
 
     int i;
-    double *y_data = M_PLOTDATA->m_Ydata;
-    double y, last_y = M_PLOTDATA->m_Ydata[0];
+    double *y_data = M_PLOTDATA->m_ydata;
+    double y, last_y = M_PLOTDATA->m_ydata[0];
 
     for (i = 1; i < M_PLOTDATA->m_count; i++)
     {
@@ -1503,7 +1503,7 @@ int wxPlotData::GetMinYIndex(int start_index, int end_index) const
     if (end_index < 0) end_index = count - 1;
     CHECK_START_END_INDEX_MSG(start_index, end_index, count, 0);
 
-    double *y_data = &M_PLOTDATA->m_Ydata[start_index];
+    double *y_data = &M_PLOTDATA->m_ydata[start_index];
     double min_y = *y_data;
     int min_y_index = start_index;
 
@@ -1527,7 +1527,7 @@ int wxPlotData::GetMaxYIndex(int start_index, int end_index) const
     if (end_index < 0) end_index = count - 1;
     CHECK_START_END_INDEX_MSG(start_index, end_index, count, 0);
 
-    double *y_data = &M_PLOTDATA->m_Ydata[start_index];
+    double *y_data = &M_PLOTDATA->m_ydata[start_index];
     double max_y = *y_data;
     int max_y_index = start_index;
 
@@ -1564,8 +1564,8 @@ void wxPlotData::OffsetXY( double offsetX, double offsetY, int start_index, int 
     CHECK_START_END_INDEX_RET(start_index, end_index, count);
 
     register int i;
-    double *x = M_PLOTDATA->m_Xdata + start_index;
-    double *y = M_PLOTDATA->m_Ydata + start_index;
+    double *x = M_PLOTDATA->m_xdata + start_index;
+    double *y = M_PLOTDATA->m_ydata + start_index;
 
     if ((offsetX != 0) && (offsetY != 0))
     {
@@ -1605,8 +1605,8 @@ void wxPlotData::ScaleXY(double scaleX, double scaleY, double offsetX, double of
     if (end_index < 0) end_index = count - 1;
     CHECK_START_END_INDEX_RET(start_index, end_index, count);
 
-    double *x = M_PLOTDATA->m_Xdata + start_index;
-    double *y = M_PLOTDATA->m_Ydata + start_index;
+    double *x = M_PLOTDATA->m_xdata + start_index;
+    double *y = M_PLOTDATA->m_ydata + start_index;
 
     if ((scaleX != 1) && (scaleY != 1))
     {
@@ -1646,8 +1646,8 @@ void wxPlotData::PowerXY( double powerX, double powerY, int start_index, int end
     CHECK_START_END_INDEX_RET(start_index, end_index, count);
 
     register int i;
-    double *x = M_PLOTDATA->m_Xdata + start_index;
-    double *y = M_PLOTDATA->m_Ydata + start_index;
+    double *x = M_PLOTDATA->m_xdata + start_index;
+    double *y = M_PLOTDATA->m_ydata + start_index;
 
     if ((powerX != 1) && (powerY != 1))
     {
@@ -1765,12 +1765,12 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
 
     if (!dst.Create(count)) return dst;
 
-    double *x_data = M_PLOTDATA->m_Xdata;
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *x_data = M_PLOTDATA->m_xdata;
+    double *y_data = M_PLOTDATA->m_ydata;
     double *dst_x_data = dst.GetXData();
     double *dst_y_data = dst.GetYData();
 
-    if (M_PLOTDATA->m_Yidata)
+    if (M_PLOTDATA->m_yidata)
     {
         double *yi = (double*)malloc(count*sizeof(double));
         if (!yi)
@@ -1788,8 +1788,8 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
         case add_x :
         {
             memcpy(dst_y_data, y_data, count*sizeof(double));
-            if (M_PLOTDATA->m_Yidata)
-                memcpy(dst.GetYiData(), M_PLOTDATA->m_Yidata, count*sizeof(double));
+            if (M_PLOTDATA->m_yidata)
+                memcpy(dst.GetYiData(), M_PLOTDATA->m_yidata, count*sizeof(double));
 
             for (i = 0; i < count; i++)
             {
@@ -1800,8 +1800,8 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
         }
         case add_y :
         {
-            if (M_PLOTDATA->m_Yidata)
-                memcpy(dst.GetYiData(), M_PLOTDATA->m_Yidata, count*sizeof(double));
+            if (M_PLOTDATA->m_yidata)
+                memcpy(dst.GetYiData(), M_PLOTDATA->m_yidata, count*sizeof(double));
 
             for (i = 0; i < count; i++)
             {
@@ -1813,8 +1813,8 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
         case mult_x :
         {
             memcpy(dst_y_data, y_data, count*sizeof(double));
-            if (M_PLOTDATA->m_Yidata)
-                memcpy(dst.GetYiData(), M_PLOTDATA->m_Yidata, count*sizeof(double));
+            if (M_PLOTDATA->m_yidata)
+                memcpy(dst.GetYiData(), M_PLOTDATA->m_yidata, count*sizeof(double));
 
             for (i = 0; i < count; i++)
             {
@@ -1825,8 +1825,8 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
         }
         case mult_y :
         {
-            if (M_PLOTDATA->m_Yidata)
-                memcpy(dst.GetYiData(), M_PLOTDATA->m_Yidata, count*sizeof(double));
+            if (M_PLOTDATA->m_yidata)
+                memcpy(dst.GetYiData(), M_PLOTDATA->m_yidata, count*sizeof(double));
 
             for (i = 0; i < count; i++)
             {
@@ -1839,7 +1839,7 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
         {
             memcpy(dst_y_data, y_data, count*sizeof(double));
 
-            double *yi_data = M_PLOTDATA->m_Yidata;
+            double *yi_data = M_PLOTDATA->m_yidata;
             double *dst_yi_data = dst.GetYiData();
 
             for (i = 0; i < count; i++)
@@ -1853,7 +1853,7 @@ wxPlotData wxPlotData::Modify( const wxPlotFunction &func_, FuncModify_Type type
         {
             memcpy(dst_y_data, y_data, count*sizeof(double));
 
-            double *yi_data = M_PLOTDATA->m_Yidata;
+            double *yi_data = M_PLOTDATA->m_yidata;
             double *dst_yi_data = dst.GetYiData();
 
             for (i = 0; i < count; i++)
@@ -1884,8 +1884,8 @@ wxPlotData wxPlotData::Add( const wxPlotData &curve2, double factor1, double fac
     int curve2_count = curve2.GetCount();
 
     int count = M_PLOTDATA->m_count;
-    double *x_data = M_PLOTDATA->m_Xdata;
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *x_data = M_PLOTDATA->m_xdata;
+    double *y_data = M_PLOTDATA->m_ydata;
 
     if (!dst.Create(count)) return dst;
 
@@ -1963,7 +1963,7 @@ wxPlotData wxPlotData::RunAverage( int points, int start_index, int count ) cons
 
     if (run_start >= run_end) return dst;
 
-    //double *src = M_PLOTDATA->m_Ydata;
+    //double *src = M_PLOTDATA->m_ydata;
     //double *dest = dst.GetYData();
 
     double run_sum = 0.0;
@@ -2033,7 +2033,7 @@ wxPlotData wxPlotData::RunAverage( int points, int start_index, int count ) cons
         dest[i] = runsum / double(half_width - (M_PLOTDATA->m_count - i) + 2);
     }
 
-    memcpy(dst.GetXData(), M_PLOTDATA->m_Xdata, M_PLOTDATA->m_count*sizeof(double));
+    memcpy(dst.GetXData(), M_PLOTDATA->m_xdata, M_PLOTDATA->m_count*sizeof(double));
 */
 
     dst.CalcBoundingRect();
@@ -2054,7 +2054,7 @@ wxPlotData wxPlotData::Abs() const
 
     if (!dst.Create(points, false)) return dst;
 
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *y_data = M_PLOTDATA->m_ydata;
 
     double *dst_y_data = dst.GetYData();
 
@@ -2082,10 +2082,10 @@ wxPlotData wxPlotData::LinearizeY(int start_index, int count) const
     if (count <= 0) count = points - start_index;
     wxCHECK_MSG((start_index + count <= points), dst, wxT("invalid index"));
 
-    double x0 = M_PLOTDATA->m_Xdata[start_index];
-    double y0 = M_PLOTDATA->m_Ydata[start_index];
-    double x1 = M_PLOTDATA->m_Xdata[start_index+count-1];
-    double y1 = M_PLOTDATA->m_Ydata[start_index+count-1];
+    double x0 = M_PLOTDATA->m_xdata[start_index];
+    double y0 = M_PLOTDATA->m_ydata[start_index];
+    double x1 = M_PLOTDATA->m_xdata[start_index+count-1];
+    double y1 = M_PLOTDATA->m_ydata[start_index+count-1];
 
     wxCHECK_MSG(wxFinite(x0)&&wxFinite(y0)&&wxFinite(x1)&&wxFinite(y1), dst, wxT("values are NaN"));
 
@@ -2111,7 +2111,7 @@ wxPlotData wxPlotData::LinearizeY(int start_index, int count) const
 
     for (int i = start_index+1; i < start_index+count-1; i++)
     {
-        x = M_PLOTDATA->m_Xdata[i];
+        x = M_PLOTDATA->m_xdata[i];
         if (wxFinite(x))
         {
             y = (m*x + (y0 - m*x0));
@@ -2133,7 +2133,7 @@ wxPlotData wxPlotData::Derivitive() const
 
     wxPlotData dst(count, false);
 
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *y_data = M_PLOTDATA->m_ydata;
     double *dst_y_data = dst.GetYData();
 
     memcpy(dst.GetXData(), GetXData(), count*sizeof(double));
@@ -2222,8 +2222,8 @@ double wxPlotData::Deviation( const wxPlotData &data, int min, int max ) const
     double data_x_max = data.GetBoundingRect().GetRight();
     const int data_count = data.GetCount();
 
-    double *x_data = M_PLOTDATA->m_Xdata + min;
-    double *y_data = M_PLOTDATA->m_Ydata + min;
+    double *x_data = M_PLOTDATA->m_xdata + min;
+    double *y_data = M_PLOTDATA->m_ydata + min;
 
     double x, y, dev = 0.0;
 
@@ -2302,8 +2302,8 @@ double wxPlotData::CrossCorrelation( const wxPlotData &other, int runave, int mi
 
     register int i;
 
-    double *x_data = M_PLOTDATA->m_Xdata;
-    double *y_data = M_PLOTDATA->m_Ydata;
+    double *x_data = M_PLOTDATA->m_xdata;
+    double *y_data = M_PLOTDATA->m_ydata;
     double *smooth_y_data = smooth.GetYData();
 
     double x;
@@ -2369,7 +2369,7 @@ double wxPlotData::MinShiftX( const wxPlotData &other ) const
     double start_shift = (boundRect.m_x - other_boundRect.m_x) - other_boundRect.m_width/2.0;
     double end_shift = (boundRect.GetRight() - other_boundRect.m_x) - other_boundRect.m_width/2.0;
     double min_dev = 0, min_shift = start_shift;
-    double step = fabs(M_PLOTDATA->m_Xdata[1] - M_PLOTDATA->m_Xdata[0]);
+    double step = fabs(M_PLOTDATA->m_xdata[1] - M_PLOTDATA->m_xdata[0]);
 
     wxPlotData shifted;
     shifted.Copy(other);
@@ -2416,8 +2416,8 @@ wxPlotData wxPlotData::FFT( bool forward )
     // resize the curve to the 2^n sample size required by fft_double
     if (samples > orig_count)
     {
-        double dx = M_PLOTDATA->m_Xdata[1] - M_PLOTDATA->m_Xdata[0];
-        source.Resize(samples, dx, M_PLOTDATA->m_Ydata[orig_count - 1]);
+        double dx = M_PLOTDATA->m_xdata[1] - M_PLOTDATA->m_xdata[0];
+        source.Resize(samples, dx, M_PLOTDATA->m_ydata[orig_count - 1]);
     }
 
     wxPlotData trans(samples);
@@ -2432,7 +2432,7 @@ wxPlotData wxPlotData::FFT( bool forward )
     {
         double *trans_xData = trans.GetXData();
         trans_xData[0] = 0.0;
-        double timestep = (M_PLOTDATA->m_Xdata[1] - M_PLOTDATA->m_Xdata[0])*samples;
+        double timestep = (M_PLOTDATA->m_xdata[1] - M_PLOTDATA->m_xdata[0])*samples;
         for (int i = 0; i < samples; i++)
         {
             trans_xData[i] = double(i)/timestep;
@@ -2451,7 +2451,7 @@ wxPlotData wxPlotData::FFT( bool forward )
     else
     {
         double *trans_xData  = trans.GetXData();
-        double timestep = 1.0/((M_PLOTDATA->m_Xdata[1] - M_PLOTDATA->m_Xdata[0])*double(samples));
+        double timestep = 1.0/((M_PLOTDATA->m_xdata[1] - M_PLOTDATA->m_xdata[0])*double(samples));
         for (int i = 0; i < samples; i++)
         {
             trans_xData[i] = timestep*double(i);
@@ -2575,7 +2575,7 @@ wxPlotData wxPlotData::FFTHiPassFilter( double fc, wxPlotData::FFTFilter_Type fi
     }
 
     wxPlotData dest( xform.FFT(false) );
-    dest.OffsetX(M_PLOTDATA->m_Xdata[0]);
+    dest.OffsetX(M_PLOTDATA->m_xdata[0]);
     dest.CalcBoundingRect();
     return dest;
 }
@@ -2618,7 +2618,7 @@ wxPlotData wxPlotData::FFTLoPassFilter( double fc, wxPlotData::FFTFilter_Type fi
     }
 
     wxPlotData dest( xform.FFT(false) );
-    dest.OffsetX(M_PLOTDATA->m_Xdata[0]);
+    dest.OffsetX(M_PLOTDATA->m_xdata[0]);
     dest.CalcBoundingRect();
     return dest;
 }
@@ -2661,7 +2661,7 @@ wxPlotData wxPlotData::FFTNotchFilter( double lo, double hi, wxPlotData::FFTFilt
     }
 
     wxPlotData dest( xform.FFT(false) );
-    dest.OffsetX(M_PLOTDATA->m_Xdata[0]);
+    dest.OffsetX(M_PLOTDATA->m_xdata[0]);
     dest.CalcBoundingRect();
     return dest;
 }
@@ -2709,7 +2709,7 @@ wxPlotData wxPlotData::FFTBandPassFilter( double lo, double hi, wxPlotData::FFTF
 
     wxPlotData dst( xform.FFT(false) );
     if (!dst.Ok()) return dst;
-    dst.OffsetX(M_PLOTDATA->m_Xdata[0]);
+    dst.OffsetX(M_PLOTDATA->m_xdata[0]);
     dst.CalcBoundingRect();
     return dst;
 }
@@ -2730,7 +2730,7 @@ wxPlotData wxPlotData::FFTCustomFilter( const wxPlotFunction &func )
     wxPlotData dst( xform.FFT(false) );
     if (!dst.Ok()) return dst;
 
-    dst.OffsetX(M_PLOTDATA->m_Xdata[0]);
+    dst.OffsetX(M_PLOTDATA->m_xdata[0]);
     dst.CalcBoundingRect();
     return dst;
 }
@@ -2738,14 +2738,14 @@ wxPlotData wxPlotData::FFTCustomFilter( const wxPlotFunction &func )
 bool wxPlotData::SortByX()
 {
     wxCHECK_MSG( Ok(), false, wxT("Invalid wxPlotData") );
-    IMPLEMENT_PIXEL_QSORT2(double, M_PLOTDATA->m_Xdata, M_PLOTDATA->m_Ydata, M_PLOTDATA->m_count);
+    IMPLEMENT_PIXEL_QSORT2(double, M_PLOTDATA->m_xdata, M_PLOTDATA->m_ydata, M_PLOTDATA->m_count);
     return true;
 }
 
 bool wxPlotData::SortByY()
 {
     wxCHECK_MSG( Ok(), false, wxT("Invalid wxPlotData") );
-    IMPLEMENT_PIXEL_QSORT2(double, M_PLOTDATA->m_Ydata, M_PLOTDATA->m_Xdata, M_PLOTDATA->m_count);
+    IMPLEMENT_PIXEL_QSORT2(double, M_PLOTDATA->m_ydata, M_PLOTDATA->m_xdata, M_PLOTDATA->m_count);
     return true;
 }
 

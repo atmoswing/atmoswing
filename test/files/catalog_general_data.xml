@@ -1,77 +1,113 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<AtmoSwingFile version="0.2">
-    <DataSet id="DSet1" enable="1" name="Dataset 1" description="Dataset 1 description">
-        <Something>1</Something>
-        <SomethingElse>Meters</SomethingElse>
-        <DataList>
-            <Data id="1" name="Data 1-1" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="2" name="Data 1-2" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="3" name="Data 1-3" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-        </DataList>
-    </DataSet>
-    <DataSet id="DSet2" enable="1" name="Dataset 2" description="Dataset 2 description">
-        <Something>1</Something>
-        <SomethingElse>Meters</SomethingElse>
-        <DataList>
-            <Data id="1" name="Data 2-1" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="2" name="Data 2-2" enable="0">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="3" name="Data 2-3" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-        </DataList>
-    </DataSet>
-    <DataSet id="DSet3" enable="1" name="Dataset 3" description="Dataset 3 description">
-        <Something>1</Something>
-        <SomethingElse>Meters</SomethingElse>
-        <DataList>
-            <Data id="1" name="Data 3-1" enable="0">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="2" name="Data 3-2" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="3" name="Data 3-3" enable="1">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-        </DataList>
-    </DataSet>
-    <DataSet id="DSet4" enable="1" name="Dataset 4" description="Dataset 4 description">
-        <Something>1</Something>
-        <SomethingElse>Meters</SomethingElse>
-        <DataList>
-            <Data id="1" name="Data 4-1" enable="0">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="2" name="Data 4-2" enable="0">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-            <Data id="3" name="Data 4-3" enable="0">
-                <Something>1</Something>
-                <SomethingElse>Meters</SomethingElse>
-            </Data>
-        </DataList>
-    </DataSet>
-</AtmoSwingFile>
+<atmoswing version="1.0">
+  <dataset>
+    <id>DS1</id>
+    <name>dataset 1</name>
+    <description>dataset 1 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+    <stations>
+      <station>
+        <id>1</id>
+        <name>data 1-1</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>2</id>
+        <name>data 1-2</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>3</id>
+        <name>data 1-3</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+    </stations>
+  </dataset>
+  <dataset>
+    <id>DS2</id>
+    <name>dataset 2</name>
+    <description>dataset 2 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+    <stations>
+      <station>
+        <id>1</id>
+        <name>data 2-1</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>2</id>
+        <name>data 2-2</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>3</id>
+        <name>data 2-3</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+    </stations>
+  </dataset>
+  <dataset>
+    <id>DS3</id>
+    <name>dataset 3</name>
+    <description>dataset 3 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+    <stations>
+      <station>
+        <id>1</id>
+        <name>data 3-1</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>2</id>
+        <name>data 3-2</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>3</id>
+        <name>data 3-3</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+    </stations>
+  </dataset>
+  <dataset>
+    <id>DS4</id>
+    <name>dataset 4</name>
+    <description>dataset 4 description</description>
+    <something>1</something>
+    <something_else>meters</something_else>
+    <stations>
+      <station>
+        <id>1</id>
+        <name>data 4-1</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>2</id>
+        <name>data 4-2</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+      <station>
+        <id>3</id>
+        <name>data 4-3</name>
+        <something>1</something>
+        <something_else>meters</something_else>
+      </station>
+    </stations>
+  </dataset>
+</atmoswing>
 
