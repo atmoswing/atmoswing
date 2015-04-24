@@ -76,7 +76,7 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
-    Log().CreateFile("AtmoswingCalibrator.log");
+    Log().CreateFile("AtmoSwingCalibrator.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;

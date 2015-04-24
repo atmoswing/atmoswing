@@ -70,14 +70,14 @@ public:
     /** Close file */
     bool Exists()
     {
-        return m_Exists;
+        return m_exists;
     }
 
 
 protected:
     ListFileMode m_fileMode;
     wxFileName m_fileName;
-    bool m_Exists;
+    bool m_exists;
     bool m_opened;
 
 private:

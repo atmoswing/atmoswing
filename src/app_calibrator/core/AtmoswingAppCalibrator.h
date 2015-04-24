@@ -59,7 +59,9 @@ private:
     wxString m_calibParamsFile;
     wxString m_predictandDB;
     wxString m_predictorsDir;
+	VectorInt m_predictandStationIds;
     wxString m_calibMethod;
+	bool m_forceQuit;
     #if wxUSE_GUI
         wxSingleInstanceChecker* m_singleInstanceChecker;
     #endif

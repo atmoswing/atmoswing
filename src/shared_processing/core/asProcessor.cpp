@@ -69,6 +69,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
     int method = (int)(pConfig->Read("/Processing/Method", defaultMethod));
     bool allowMultithreading;
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
+    bool parallelEvaluations;
+    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
@@ -154,6 +156,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
 
         case (asMULTITHREADS):
         {
+            // Disable message box
             bool enableMessageBox = false;
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
@@ -166,9 +169,6 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             {
                 threadsNb = 1;
             }
-
-            // Disable message box
-            g_pLog->DisableMessageBoxOnError();
 
             // Create and give data
             int end = -1;
@@ -199,8 +199,8 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
             ThreadsManager().Wait(threadType);
 
             // Enable message box and flush logs
-            g_pLog->EnableMessageBoxOnError();
-            g_pLog->Flush();
+            if (enableMessageBox) Log().EnableMessageBoxOnError();
+            if (!parallelEvaluations) Log().Flush();
 
             for (unsigned int i_threads=0; i_threads<vContainsNaNs.size(); i_threads++)
             {
@@ -215,7 +215,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
                 asLogWarning(_("NaNs were found in the criteria values."));
             }
 
-            if (enableMessageBox) Log().EnableMessageBoxOnError();
+
 
             break;
         }
@@ -817,6 +817,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
     int method = (int)(pConfig->Read("/Processing/Method", defaultMethod));
     bool allowMultithreading;
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
+    bool parallelEvaluations;
+    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
@@ -906,6 +908,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
     {
         case (asMULTITHREADS):
         {
+            // Disable message box
             bool enableMessageBox = false;
             if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
             Log().DisableMessageBoxOnError();
@@ -918,9 +921,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
             {
                 threadsNb = 1;
             }
-
-            // Disable message box
-            g_pLog->DisableMessageBoxOnError();
 
             // Create and give data
             int end = -1;
@@ -953,8 +953,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
             ThreadsManager().Wait(threadType);
 
             // Enable message box and flush logs
-            g_pLog->EnableMessageBoxOnError();
-            g_pLog->Flush();
+            if (enableMessageBox) Log().EnableMessageBoxOnError();
+            if (!parallelEvaluations) Log().Flush();
 
             for (unsigned int i_threads=0; i_threads<vContainsNaNs.size()-1; i_threads++)
             {
@@ -968,8 +968,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
             {
                 asLogWarning(_("NaNs were found in the criteria values."));
             }
-
-            if (enableMessageBox) Log().EnableMessageBoxOnError();
 
             wxASSERT(finalAnalogsDates(0,0)>0);
             wxASSERT(finalAnalogsDates(0,1)>0);
@@ -1169,7 +1167,11 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand,
     int timeTargetSelectionLength = timeTargetSelection.size();
     int analogsNb = analogsDates.cols();
 
-    wxASSERT(timeTargetSelectionLength>0);
+    if(timeTargetSelectionLength==0 || analogsDates.size()==0 || analogsCriteria.size()==0)
+    {
+        asLogError(_("The asResultsAnalogsDates object is empty in asProcessor::GetAnalogsValues"));
+        return false;
+    }
 
     // Correct the time arrays to account for predictand time and not predictors time
     for (int i_time=0; i_time<timeTargetSelectionLength; i_time++)

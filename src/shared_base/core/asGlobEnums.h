@@ -108,6 +108,30 @@ enum
     asCUDA = 3,
 };
 
+// Optimization stages
+enum
+{
+    asINITIALIZATION,
+    asSORTING_AND_REFLECTION,
+    asEVALUATE_REFLECTION,
+    asCOMPARE_EXPANSION_REFLECTION,
+    asEVALUATE_EXTERNAL_CONTRACTION,
+    asEVALUATE_INTERNAL_CONTRACTION,
+    asPROCESS_REDUCTION,
+    asREASSESSMENT,
+    asFINAL_REASSESSMENT,
+    asCREATE_ROUGH_MAP,
+    asEXPLORE_ROUGH_MAP,
+    asCREATE_FINE_MAP,
+    asEXPLORE_FINE_MAP,
+    asRESIZE_DOMAIN,
+    asOPTIMIZE_WEIGHTS,
+    asOPTIMIZE_ANALOGSNB_STEP,
+    asOPTIMIZE_ANALOGSNB_FINAL,
+    asOPTIMIZE_DAYS_INTERVAL,
+    asCHECK_CONVERGENCE
+};
+
 // Windows ID
 #if wxUSE_GUI
     enum
@@ -264,6 +288,12 @@ enum TimeFormat
     guess
 };
 
+enum Mode //!< Define frame mode
+{
+    Standard,
+    Calibration,
+    Optimization
+};
 
 #include <asIncludes.h>
 

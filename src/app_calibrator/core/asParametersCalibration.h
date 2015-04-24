@@ -46,15 +46,20 @@ public:
 
     bool LoadFromFile(const wxString &filePath);
     
-    bool SetSpatialWindowProperties();
+	virtual bool SetSpatialWindowProperties();
 
-    bool SetPreloadingProperties();
+    virtual bool SetPreloadingProperties();
 
     bool InputsOK();
 
     bool FixTimeLimits();
 
     void InitValues();
+
+	int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_preproc)
+	{
+		return GetPreprocessDataIdVector(i_step, i_ptor, i_preproc).size();
+	}
 
     VVectorInt GetPredictandStationIdsVector()
     {

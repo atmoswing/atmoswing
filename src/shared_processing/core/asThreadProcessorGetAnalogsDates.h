@@ -81,7 +81,7 @@ private:
     Array1DInt m_vRowsNb;
     Array1DInt m_vColsNb;
     int m_start;
-    int m_End;
+    int m_end;
     Array2DFloat* m_pFinalAnalogsCriteria;
     Array2DFloat* m_pFinalAnalogsDates;
     bool* m_pContainsNaNs;
