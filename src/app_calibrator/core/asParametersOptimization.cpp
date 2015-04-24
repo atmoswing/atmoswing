@@ -526,8 +526,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 					wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
 					while (nodeParam) {
 						if (nodeParam->GetName() == "station_id") {
-							//if(!SetPredictandStationIds(GetFileStationIds(fileParams.GetFirstElementAttributeValueText("PredictandStationId", "value")))) return false;
-							if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
+							if (!SetPredictandStationIds(fileParams.GetStationIds(fileParams.GetString(nodeParam)))) return false;
 						}
 						else {
 							fileParams.UnknownNode(nodeParam);
@@ -596,7 +595,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 
 	// Check inputs and init parameters
 	if (!InputsOK()) return false;
-	InitValues();
+	InitRandomValues();
 
 	// Fixes
 	FixTimeLimits();

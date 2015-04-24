@@ -791,6 +791,13 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         wxFileConfig::Get()->Write("/Calibration/SkipValidation", option);
     }
 
+	// Station ID
+	wxString stationIdStr = wxEmptyString;
+	if (parser.Found("stationid", &stationIdStr))
+	{
+		m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
+	}
+
     /*
      * Method choice
      */
@@ -943,8 +950,10 @@ int AtmoswingAppCalibrator::OnExit()
     DeleteThreadsManager();
     DeleteLog();
 
-	// Delete images
-	cleanup_images();
+	#if wxUSE_GUI
+		// Delete images
+		cleanup_images();
+	#endif
 
     // CleanUp
     wxApp::CleanUp();
