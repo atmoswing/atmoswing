@@ -123,11 +123,18 @@ public:
 
     void AddPredictorVect(ParamsStepVect &step);
 
-    bool GenerateSimpleParametersFile(const wxString &filePath);
+	bool GenerateSimpleParametersFile(const wxString &filePath);
+
+	bool PreprocessingPropertiesOk();
 
     wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect);
     
     wxString Print();
+
+	virtual int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_preproc)
+	{
+		return 1;
+	}
 
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
 
