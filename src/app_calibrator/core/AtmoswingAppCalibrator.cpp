@@ -86,7 +86,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel", "GAs: options CouplesSelectionOperator" },
     { wxCMD_LINE_OPTION, NULL, "ga-ope-cross", "GAs: options CrossoverOperator" },
     { wxCMD_LINE_OPTION, NULL, "ga-ope-mut", "GAs: options MutationOperator" },
-    { wxCMD_LINE_OPTION, NULL, "ga-run-snb", "GAs: options GAsRunNumbers" },
     { wxCMD_LINE_OPTION, NULL, "ga-pop-size", "GAs: options GAsPopulationSize" },
     { wxCMD_LINE_OPTION, NULL, "ga-conv-steps", "GAs: options GAsConvergenceStepsNb" },
     { wxCMD_LINE_OPTION, NULL, "ga-interm-gen", "GAs: options GAsRatioIntermediateGeneration" },
@@ -633,11 +632,6 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     if (parser.Found("ga-ope-mut", & option))
     {
         wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationOperator", option);
-    }
-
-    if (parser.Found("ga-runs-nb", & option))
-    {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/NbRuns", option);
     }
 
     if (parser.Found("ga-pop-size", & option))
