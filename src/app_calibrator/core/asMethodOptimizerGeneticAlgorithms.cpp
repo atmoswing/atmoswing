@@ -141,8 +141,6 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    int nbRuns = 0;
-    pConfig->Read("/Calibration/GeneticAlgorithms/NbRuns", &nbRuns, 20);
     pConfig->Read("/Calibration/GeneticAlgorithms/PopulationSize", &m_popSize, 50);
     m_paramsNb = m_popSize;
     pConfig->Read("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", &m_allowElitismForTheBest, true);
@@ -155,32 +153,29 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
     // Reset the score of the climatology
     m_scoreClimatology.clear();
 
-    for (int i=0; i<nbRuns; i++)
+    try
     {
-        try
+        m_isOver = false;
+        ClearAll();
+        if (!ManageOneRun())
         {
-            m_isOver = false;
-            ClearAll();
-            if (!ManageOneRun())
-            {
-                DeletePreloadedData();
-                return false;
-            }
-        }
-        catch(std::bad_alloc& ba)
-        {
-            wxString msg(ba.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Bad allocation caught in GAs: %s"), msg.c_str()));
             DeletePreloadedData();
             return false;
         }
-		catch (std::exception& e)
-        {
-            wxString msg(e.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Exception in the GAs: %s"), msg.c_str()));
-            DeletePreloadedData();
-            return false;
-        }
+    }
+    catch(std::bad_alloc& ba)
+    {
+        wxString msg(ba.what(), wxConvUTF8);
+        asLogError(wxString::Format(_("Bad allocation caught in GAs: %s"), msg.c_str()));
+        DeletePreloadedData();
+        return false;
+    }
+	catch (std::exception& e)
+    {
+        wxString msg(e.what(), wxConvUTF8);
+        asLogError(wxString::Format(_("Exception in the GAs: %s"), msg.c_str()));
+        DeletePreloadedData();
+        return false;
     }
 
     // Delete preloaded data
