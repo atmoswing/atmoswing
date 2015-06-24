@@ -82,7 +82,7 @@ TEST(LoadDataProp)
     catalog.Load();
 
     CHECK_EQUAL(1,catalog.GetStationId(0));
-    wxString stationName = wxString("G\u00FCtsch ob Andermatt", wxConvUTF8);
+    wxString stationName = wxString(L"G\u00FCtsch ob Andermatt", wxConvUTF8);
     wxString stationNameFile = catalog.GetStationName(0);
     int samestr = stationNameFile.Cmp(stationName);
     CHECK_EQUAL(0,samestr);

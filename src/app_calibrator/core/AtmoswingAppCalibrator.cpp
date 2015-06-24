@@ -600,8 +600,10 @@ int AtmoswingAppCalibrator::OnExit()
     DeleteThreadsManager();
     DeleteLog();
 
-	// Delete images
-	cleanup_images();
+	#if wxUSE_GUI
+		// Delete images
+		cleanup_images();
+	#endif
 
     // CleanUp
     wxApp::CleanUp();

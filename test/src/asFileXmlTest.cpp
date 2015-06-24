@@ -49,7 +49,7 @@ TEST(SaveAndLoadXmlFileWxStyle)
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
     nodeBuilding->AddAttribute("id", L"R\u00F4tillon");
 
-    wxString stringHopital("h\u00F4pital", wxConvUTF8);
+    wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
     CHECK_EQUAL(true, stringHopital.size()>0);
     wxXmlNode * nodeType = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_type");
     wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", stringHopital );
@@ -107,7 +107,7 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file2.xml";
 
-    wxString stringHopital("h\u00F4pital", wxConvUTF8);
+    wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
     CHECK_EQUAL(true, stringHopital.size()>0);
 
     // Write
@@ -116,10 +116,10 @@ TEST(SaveAndLoadXmlFileAtmoSwingStyle)
 	CHECK_EQUAL(true, success);
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-	nodeBuilding->AddAttribute("id", wxString("R\u00F4tillon", wxConvUTF8));
+	nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
 
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", stringHopital));
-	nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", wxString("Z\u00FCrich", wxConvUTF8)));
+	nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", wxString(L"Z\u00FCrich", wxConvUTF8)));
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", 40));
 
     fileXml.AddChild(nodeBuilding);
