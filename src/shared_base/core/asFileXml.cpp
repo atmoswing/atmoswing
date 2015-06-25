@@ -293,7 +293,7 @@ wxString asFileXml::GetString(wxXmlNode *node, const wxString &defaultValue)
     return value;
 }
 
-bool asFileXml::GetAttributeBool(wxXmlNode *node, const wxString & attribute)
+bool asFileXml::GetAttributeBool(wxXmlNode *node, const wxString & attribute, bool defaultValue, bool raiseWarning)
 {
 	wxString attrVal = node->GetAttribute(attribute);
 	if (attrVal.IsSameAs("true", false)) {
@@ -328,10 +328,12 @@ bool asFileXml::GetAttributeBool(wxXmlNode *node, const wxString & attribute)
 	}
 	else
 	{
-		asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
+		if (raiseWarning) {
+			asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
+		}
 	}
 
-	return false;
+	return defaultValue;
 }
 
 int asFileXml::GetAttributeInt(wxXmlNode *node, const wxString & attribute)

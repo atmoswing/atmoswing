@@ -246,7 +246,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 							if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam))) return false;
 						}
 						else if (nodeParam->GetName() == "interval_days") {
-							SetTimeArrayAnalogsIntervalDaysLock(fileParams.GetAttributeBool(nodeParam, "lock"));
+							SetTimeArrayAnalogsIntervalDaysLock(fileParams.GetAttributeBool(nodeParam, "lock", true, false));
 							if (IsTimeArrayAnalogsIntervalDaysLocked()) {
 								if (!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam))) return false;
 								if (!SetTimeArrayAnalogsIntervalDaysLowerLimit(GetTimeArrayAnalogsIntervalDays())) return false;
@@ -320,7 +320,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 										}
 										else if (nodeParamPreprocess->GetName() == "data_id") {
 											if (!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, fileParams.GetVectorString(nodeParamPreprocess))) return false;
-											SetPreprocessDataIdLock(i_step, i_ptor, i_dataset, fileParams.GetAttributeBool(nodeParamPreprocess, "lock"));
+											SetPreprocessDataIdLock(i_step, i_ptor, i_dataset, fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
 											if (IsPreprocessDataIdLocked(i_step, i_ptor, i_dataset))
 											{
 												if (!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess))) return false;
@@ -332,7 +332,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 										}
 										else if (nodeParamPreprocess->GetName() == "level") {
 											if (!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, fileParams.GetVectorFloat(nodeParamPreprocess))) return false;
-											SetPreprocessLevelLock(i_step, i_ptor, i_dataset, fileParams.GetAttributeBool(nodeParamPreprocess, "lock"));
+											SetPreprocessLevelLock(i_step, i_ptor, i_dataset, fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
 											if (IsPreprocessLevelLocked(i_step, i_ptor, i_dataset))
 											{
 												if (!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParamPreprocess))) return false;
@@ -343,7 +343,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 											}
 										}
 										else if (nodeParamPreprocess->GetName() == "time") {
-											SetPreprocessTimeHoursLock(i_step, i_ptor, i_dataset, fileParams.GetAttributeBool(nodeParamPreprocess, "lock"));
+											SetPreprocessTimeHoursLock(i_step, i_ptor, i_dataset, fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
 											if (IsPreprocessTimeHoursLocked(i_step, i_ptor, i_dataset)) {
 												if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess))) return false;
 												if (!SetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset, GetPreprocessTimeHours(i_step, i_ptor, i_dataset))) return false;
@@ -376,7 +376,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 						}
 						else if (nodeParam->GetName() == "data_id") {
 							if (!SetPredictorDataIdVector(i_step, i_ptor, fileParams.GetVectorString(nodeParam))) return false;
-							SetPredictorDataIdLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock"));
+							SetPredictorDataIdLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
 							if (IsPredictorDataIdLocked(i_step, i_ptor))
 							{
 								if (!SetPredictorDataId(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
@@ -384,14 +384,14 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 						}
 						else if (nodeParam->GetName() == "level") {
 							if (!SetPredictorLevelVector(i_step, i_ptor, fileParams.GetVectorFloat(nodeParam))) return false;
-							SetPredictorLevelLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock"));
+							SetPredictorLevelLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
 							if (IsPredictorLevelLocked(i_step, i_ptor))
 							{
 								if (!SetPredictorLevel(i_step, i_ptor, fileParams.GetFloat(nodeParam))) return false;
 							}
 						}
 						else if (nodeParam->GetName() == "time") {
-							SetPredictorTimeHoursLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock"));
+							SetPredictorTimeHoursLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
 							if (IsPredictorTimeHoursLocked(i_step, i_ptor)) {
 								if (!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetDouble(nodeParam))) return false;
 								VectorDouble vTimeHours;
@@ -483,14 +483,14 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 						}
 						else if (nodeParam->GetName() == "criteria") {
 							if (!SetPredictorCriteriaVector(i_step, i_ptor, fileParams.GetVectorString(nodeParam))) return false;
-							SetPredictorCriteriaLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock"));
+							SetPredictorCriteriaLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
 							if (IsPredictorCriteriaLocked(i_step, i_ptor))
 							{
 								if (!SetPredictorCriteria(i_step, i_ptor, fileParams.GetString(nodeParam))) return false;
 							}
 						}
 						else if (nodeParam->GetName() == "weight") {
-							SetPredictorWeightLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock"));
+							SetPredictorWeightLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
 							if (IsPredictorWeightLocked(i_step, i_ptor)) {
 								if (!SetPredictorWeight(i_step, i_ptor, fileParams.GetFloat(nodeParam))) return false;
 								if (!SetPredictorWeightLowerLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor))) return false;
