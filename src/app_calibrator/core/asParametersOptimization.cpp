@@ -297,6 +297,11 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 				else if (nodeParamBlock->GetName() == "predictor") {
 					AddPredictor(i_step);
 					AddPredictorVect(m_stepsVect[i_step]);
+					AddPredictorIteration(m_stepsIteration[i_step]);
+					AddPredictorUpperLimit(m_stepsUpperLimit[i_step]);
+					AddPredictorLowerLimit(m_stepsLowerLimit[i_step]);
+					AddPredictorLocks(m_stepsLocks[i_step]);
+
 					SetPreprocess(i_step, i_ptor, false);
 					SetPreload(i_step, i_ptor, false);
 					wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -355,7 +360,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 												if (!SetPreprocessTimeHoursUpperLimit(i_step, i_ptor, i_dataset, fileParams.GetAttributeDouble(nodeParamPreprocess, "upperlimit"))) return false;
 												if (!SetPreprocessTimeHoursIteration(i_step, i_ptor, i_dataset, fileParams.GetAttributeDouble(nodeParamPreprocess, "iteration"))) return false;
 												// Initialize to ensure correct array sizes
-												if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetVectorDouble(nodeParamPreprocess)[0])) return false;
+												if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset))) return false;
 											}
 										}
 										else {
@@ -405,6 +410,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 								if (!SetPredictorTimeHoursLowerLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeParam, "lowerlimit"))) return false;
 								if (!SetPredictorTimeHoursUpperLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeParam, "upperlimit"))) return false;
 								if (!SetPredictorTimeHoursIteration(i_step, i_ptor, fileParams.GetAttributeDouble(nodeParam, "iteration"))) return false;
+								// Initialize to ensure correct array sizes
+								if (!SetPredictorTimeHours(i_step, i_ptor, GetPredictorTimeHoursLowerLimit(i_step, i_ptor))) return false;
 							}
 						}
 						else if (nodeParam->GetName() == "spatial_window") {
@@ -594,8 +601,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 	SetSizes();
 
 	// Check inputs and init parameters
-	if (!InputsOK()) return false;
 	InitRandomValues();
+	if (!InputsOK()) return false;
 
 	// Fixes
 	FixTimeLimits();

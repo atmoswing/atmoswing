@@ -151,8 +151,11 @@ bool AtmoswingAppCalibrator::OnInit()
     m_forceQuit = false;
 
     // Call default behaviour (mandatory for command-line mode)
-    if (!wxApp::OnInit()) // When false, we are in CL mode
-        return false;
+	if (!wxApp::OnInit()) {
+		CleanUp();
+		return false;
+	}
+        
 
     #if wxUSE_GUI
 
@@ -654,7 +657,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
     }
 
-    if (parser.Found("ga-coup-sel-tourn-b", & option))
+    if (parser.Found("ga-coup-sel-tour-nb", & option))
     {
         wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
     }
@@ -787,7 +790,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	// Station ID
 	wxString stationIdStr = wxEmptyString;
-	if (parser.Found("stationid", &stationIdStr))
+	if (parser.Found("station-id", &stationIdStr))
 	{
 		m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
 	}
@@ -799,7 +802,10 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     // Check for a calibration method option
     if (parser.Found("calibration-method", & m_calibMethod))
     {
-        if(!InitForCmdLineOnly()) return false;
+		if (!InitForCmdLineOnly()) {
+			asLogError(_("Initialization for command-line interface failed."));
+			return false;
+		}
         asLogMessage(wxString::Format(_("Given calibration method: %s"), m_calibMethod));
 		return true;
     }
@@ -932,6 +938,13 @@ int AtmoswingAppCalibrator::OnRun()
 
 int AtmoswingAppCalibrator::OnExit()
 {
+	CleanUp();
+
+    return 0;
+}
+
+void AtmoswingAppCalibrator::CleanUp()
+{
 	#if wxUSE_GUI
 		// Instance checker
 		wxDELETE(m_singleInstanceChecker);
@@ -951,8 +964,6 @@ int AtmoswingAppCalibrator::OnExit()
 
     // CleanUp
     wxApp::CleanUp();
-
-    return 0;
 }
 
 bool AtmoswingAppCalibrator::OnExceptionInMainLoop()
