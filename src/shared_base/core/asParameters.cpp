@@ -1123,41 +1123,52 @@ bool asParameters::GetValuesFromString(wxString stringVals)
 			}
 
 			iLeft = stringVals.Find("Xmin");
+			if (iLeft<0) iLeft = stringVals.Find("Umin");
 			iRight = stringVals.Find("Xptsnb");
+			if (iRight<0) iRight = stringVals.Find("Uptsnb");
 			strVal = stringVals.SubString(iLeft + 5, iRight - 2);
 			strVal.ToDouble(&dVal);
 			SetPredictorXmin(i_step, i_ptor, dVal);
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Xptsnb");
+			if (iLeft<0) iLeft = stringVals.Find("Uptsnb");
 			iRight = stringVals.Find("Xstep");
+			if (iRight<0) iRight = stringVals.Find("Ustep");
 			strVal = stringVals.SubString(iLeft + 7, iRight - 2);
 			strVal.ToLong(&lVal);
 			SetPredictorXptsnb(i_step, i_ptor, int(lVal));
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Xstep");
+			if (iLeft<0) iLeft = stringVals.Find("Ustep");
 			iRight = stringVals.Find("Ymin");
+			if (iRight<0) iRight = stringVals.Find("Vmin");
 			strVal = stringVals.SubString(iLeft + 6, iRight - 2);
 			strVal.ToDouble(&dVal);
 			SetPredictorXstep(i_step, i_ptor, dVal);
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Ymin");
+			if (iLeft<0) iLeft = stringVals.Find("Vmin");
 			iRight = stringVals.Find("Yptsnb");
+			if (iRight<0) iRight = stringVals.Find("Vptsnb");
 			strVal = stringVals.SubString(iLeft + 5, iRight - 2);
 			strVal.ToDouble(&dVal);
 			SetPredictorYmin(i_step, i_ptor, dVal);
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Yptsnb");
+			if (iLeft<0) iLeft = stringVals.Find("Vptsnb");
 			iRight = stringVals.Find("Ystep");
+			if (iRight<0) iRight = stringVals.Find("Vstep");
 			strVal = stringVals.SubString(iLeft + 7, iRight - 2);
 			strVal.ToLong(&lVal);
 			SetPredictorYptsnb(i_step, i_ptor, int(lVal));
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Ystep");
+			if (iLeft<0) iLeft = stringVals.Find("Vstep");
 			iRight = stringVals.Find("Weight");
 			strVal = stringVals.SubString(iLeft + 6, iRight - 2);
 			strVal.ToDouble(&dVal);
