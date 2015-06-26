@@ -35,21 +35,11 @@ void asParametersOptimization::AddStep()
     stepLocks.AnalogsNumber = true;
     stepVect.AnalogsNumber.push_back(0);
 
-    AddPredictorIteration(stepIteration);
-    AddPredictorUpperLimit(stepUpperLimit);
-    AddPredictorLowerLimit(stepLowerLimit);
-    AddPredictorLocks(stepLocks);
-    AddPredictorVect(stepVect);
-
     m_stepsIteration.push_back(stepIteration);
     m_stepsUpperLimit.push_back(stepUpperLimit);
     m_stepsLowerLimit.push_back(stepLowerLimit);
     m_stepsLocks.push_back(stepLocks);
     m_stepsVect.push_back(stepVect);
-
-    // Set sizes
-    SetSizes();
-
 }
 
 void asParametersOptimization::AddPredictorIteration(ParamsStep &step)
@@ -301,7 +291,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 					AddPredictorUpperLimit(m_stepsUpperLimit[i_step]);
 					AddPredictorLowerLimit(m_stepsLowerLimit[i_step]);
 					AddPredictorLocks(m_stepsLocks[i_step]);
-
 					SetPreprocess(i_step, i_ptor, false);
 					SetPreload(i_step, i_ptor, false);
 					wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
