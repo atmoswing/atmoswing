@@ -649,7 +649,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 }
 
                 // Compare number of S1 criteria on gradients
-                while(true)
+                /*while(true)
                 {
                     indexInFile = firstLineCopy.Find("S1grads");
                     indexInParams = currentParamsPrint.Find("S1grads");
@@ -665,10 +665,10 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
                     firstLineCopy.Replace("S1grads", wxEmptyString, false);
                     currentParamsPrint.Replace("S1grads", wxEmptyString, false);
-                }
+                }*/
 
                 // Compare number of tabs
-                while(true)
+                /*while(true)
                 {
                     indexInFile = firstLineCopy.Find("\t");
                     indexInParams = currentParamsPrint.Find("\t");
@@ -701,8 +701,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
                     firstLineCopy.Replace("\t", " ", false);
                     currentParamsPrint.Replace("\t", " ", false);
-                }
-
+                }*/
+				
                 // Parse the parameters data
                 std::vector < asParametersOptimizationGAs > vectParams;
                 std::vector < float > vectScores;

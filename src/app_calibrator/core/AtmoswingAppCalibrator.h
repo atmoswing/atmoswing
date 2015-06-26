@@ -47,6 +47,7 @@ public:
     virtual bool OnInit();
     virtual int OnRun();
     virtual int OnExit();
+	void CleanUp();
     virtual void OnInitCmdLine(wxCmdLineParser& parser);
     bool InitForCmdLineOnly();
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
