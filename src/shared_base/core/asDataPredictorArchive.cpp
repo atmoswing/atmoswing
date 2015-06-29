@@ -146,7 +146,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
                                         Ymin+desiredArea->GetAxisYmax(), Ymax+desiredArea->GetAxisYmax(), m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
-            return false;
+            // std::cout << m_axisLat << std::endl;
+			return false;
         }
     }
     if (YstartIndex<0 || YendIndex<0)
@@ -154,6 +155,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
                                     Ymin, Ymax, m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
+		// std::cout << m_axisLat << std::endl;
         return false;
     }
 

@@ -441,8 +441,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 									if (!SetPredictorXstep(i_step, i_ptor, fileParams.GetDouble(nodeWindow))) return false;
 								}
 								else if (nodeWindow->GetName() == "y_min") {
-									SetPredictorXminLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeWindow, "lock"));
-									if (IsPredictorXminLocked(i_step, i_ptor)) {
+									SetPredictorYminLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeWindow, "lock"));
+									if (IsPredictorYminLocked(i_step, i_ptor)) {
 										if (!SetPredictorYmin(i_step, i_ptor, fileParams.GetDouble(nodeWindow))) return false;
 										if (!SetPredictorYminLowerLimit(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor))) return false;
 										if (!SetPredictorYminUpperLimit(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor))) return false;
