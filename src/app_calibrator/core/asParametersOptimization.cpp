@@ -737,7 +737,7 @@ bool asParametersOptimization::SetPreloadingProperties()
 						preprocTimeHours.push_back(h);
 					}
 				}
-				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
 				{
 					preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
 

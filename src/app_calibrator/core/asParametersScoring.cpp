@@ -301,7 +301,7 @@ bool asParametersScoring::PreprocessingPropertiesOk()
 						return false;
 					}
 				}
-				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
 				{
 					if (preprocSize != 2)
 					{
