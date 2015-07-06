@@ -119,8 +119,11 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         {
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Xmin+desiredArea->GetAxisXmax(), Xmax+desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
+                Xmin+desiredArea->GetAxisXmax(), Xmax+desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
+			asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
+                (int)m_data[0].cols(), (int)m_data[0].rows()));
             std::cout << m_axisLon << std::endl;
+			std::cout << '---' << std::endl;
 			return false;
         }
     }
@@ -129,8 +132,11 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
-                                    Xmin, Xmax, m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
+            Xmin, Xmax, m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
+		asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
+            (int)m_data[0].cols(), (int)m_data[0].rows()));
 		std::cout << m_axisLon << std::endl;
+		std::cout << '---' << std::endl;
         return false;
     }
     int Xlength = XendIndex-XstartIndex+1;
@@ -148,8 +154,11 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         {
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Ymin+desiredArea->GetAxisYmax(), Ymax+desiredArea->GetAxisYmax(), m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
-            std::cout << m_axisLat << std::endl;
+                Ymin+desiredArea->GetAxisYmax(), Ymax+desiredArea->GetAxisYmax(), m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
+            asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
+			    (int)m_data[0].cols(), (int)m_data[0].rows()));
+			std::cout << m_axisLat << std::endl;
+			std::cout << '---' << std::endl;
 			return false;
         }
     }
@@ -157,8 +166,11 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     {
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
-                                    Ymin, Ymax, m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
+            Ymin, Ymax, m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
+		asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
+		    (int)m_data[0].cols(), (int)m_data[0].rows()));
 		std::cout << m_axisLat << std::endl;
+		std::cout << '---' << std::endl;
         return false;
     }
 
@@ -170,31 +182,63 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     {
         if (IsPreprocessed())
         {
-            if(m_data[0].cols()==m_axisLon.size() && m_data[0].rows()==2*m_axisLat.size() )
-            {
-                // Nothing to do
-                return true;
-            }
-            else
-            {
-                // Clear axes
-                Array1DFloat newAxisLon(Xlength);
-                for (int i=0; i<Xlength; i++)
-                {
-                    newAxisLon[i] = NaNFloat;
-                }
-                m_axisLon = newAxisLon;
+			wxString method = GetPreprocessMethod();
+			if (method.IsSameAs("Gradients") || method.IsSameAs("FormerHumidityIndex")) 
+			{
+				if(m_data[0].cols()==m_axisLon.size() && m_data[0].rows()==2*m_axisLat.size() )
+				{
+					// Nothing to do
+					return true;
+				}
+				else
+				{
+					// Clear axes
+					Array1DFloat newAxisLon(Xlength);
+					for (int i=0; i<Xlength; i++)
+					{
+						newAxisLon[i] = NaNFloat;
+					}
+					m_axisLon = newAxisLon;
 
-                Array1DFloat newAxisLat(2*Ylength);
-                for (int i=0; i<2*Ylength; i++)
-                {
-                    newAxisLat[i] = NaNFloat;
-                }
-                m_axisLat = newAxisLat;
+					Array1DFloat newAxisLat(2*Ylength);
+					for (int i=0; i<2*Ylength; i++)
+					{
+						newAxisLat[i] = NaNFloat;
+					}
+					m_axisLat = newAxisLat;
 
-                m_latPtsnb = m_axisLat.size();
-                m_lonPtsnb = m_axisLon.size();
+					m_latPtsnb = m_axisLat.size();
+					m_lonPtsnb = m_axisLon.size();
+				}
             }
+			else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") || method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux"))
+			{
+				if(m_data[0].cols()==m_axisLon.size() && m_data[0].rows()==m_axisLat.size() )
+				{
+					// Nothing to do
+					return true;
+				}
+				else
+				{
+					// Clear axes
+					Array1DFloat newAxisLon(Xlength);
+					for (int i=0; i<Xlength; i++)
+					{
+						newAxisLon[i] = NaNFloat;
+					}
+					m_axisLon = newAxisLon;
+
+					Array1DFloat newAxisLat(Ylength);
+					for (int i=0; i<Ylength; i++)
+					{
+						newAxisLat[i] = NaNFloat;
+					}
+					m_axisLat = newAxisLat;
+
+					m_latPtsnb = m_axisLat.size();
+					m_lonPtsnb = m_axisLon.size();
+				}
+			}
         }
         else
         {
@@ -333,8 +377,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 }
                 m_axisLon = newAxisLon;
 
-                Array1DFloat newAxisLat(2*Ylength);
-                for (int i=0; i<2*Ylength; i++)
+                Array1DFloat newAxisLat(Ylength);
+                for (int i=0; i<Ylength; i++)
                 {
                     newAxisLat[i] = NaNFloat;
                 }
