@@ -204,27 +204,27 @@ bool AtmoswingAppCalibrator::OnInit()
     return true;
 }
 
-bool AtmoswingAppCalibrator::InitForCmdLineOnly()
+wxString AtmoswingAppCalibrator::GetLocalPath()
 {
-    g_guiMode = false;
-    g_unitTesting = false;
-    g_silentMode = true;
-    g_verboseMode = false;
-    g_responsive = false;
+	// Prepare local path
+	wxString localPath = wxFileName::GetCwd() + DS;
+	if (g_runNb > 0)
+	{
+		localPath.Append("runs");
+		localPath.Append(DS);
+		localPath.Append(wxString::Format("%d", g_runNb));
+		localPath.Append(DS);
+	}
 
-    // Prepare local path
-    wxString localPath = wxFileName::GetCwd() + DS;
-    if (g_runNb>0)
-    {
-        localPath.Append("runs");
-        localPath.Append(DS);
-        localPath.Append(wxString::Format("%d", g_runNb));
-        localPath.Append(DS);
-    }
+	return localPath;
+}
+
+bool AtmoswingAppCalibrator::InitLog()
+{
 
     if (g_local)
     {
-        wxString fullPath = localPath;
+        wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingCalibrator.log");
         if (g_resumePreviousRun)
         {
@@ -232,7 +232,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
             while (wxFileName::Exists(fullPath))
             {
                 increment++;
-                fullPath = localPath;
+                fullPath = GetLocalPath();
                 fullPath.Append(wxString::Format("AtmoSwingCalibrator-%d.log", increment));
             }
         }
@@ -243,6 +243,17 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
     {
         Log().CreateFileOnly("AtmoSwingCalibrator.log");
     }
+
+	return true;
+}
+
+bool AtmoswingAppCalibrator::InitForCmdLineOnly()
+{
+    g_guiMode = false;
+    g_unitTesting = false;
+    g_silentMode = true;
+    g_verboseMode = false;
+    g_responsive = false;
 
     Log().DisableMessageBoxOnError();
 
@@ -270,8 +281,8 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/General/Responsive", false);
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
-        pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
-        pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
+        pConfig->Write("/Paths/IntermediateResultsDir", GetLocalPath()+"temp");
+        pConfig->Write("/Paths/CalibrationResultsDir", GetLocalPath()+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
@@ -288,7 +299,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
     if (g_resumePreviousRun)
     {
         wxConfigBase *pConfigNow = wxFileConfig::Get();
-        wxString refIniPath = localPath;
+        wxString refIniPath = GetLocalPath();
         refIniPath.Append("AtmoSwing.ini");
         wxFileConfig *pConfigRef = new wxFileConfig("AtmoSwing",wxEmptyString,refIniPath,refIniPath,wxCONFIG_USE_LOCAL_FILE);
 
@@ -518,12 +529,19 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
             }
         }
     }
+	else
+	{
+		Log().SetTarget(asLog::Both);
+	}
 
     // Check if the user asked for the silent mode
     if (parser.Found("silent"))
     {
         Log().SetTarget(asLog::File);
     }
+
+	// Initialize log
+	InitLog();
 
     // Check for a calibration params file
     wxString threadsNb = wxEmptyString;
