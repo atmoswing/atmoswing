@@ -49,6 +49,8 @@ public:
     virtual int OnExit();
 	void CleanUp();
     virtual void OnInitCmdLine(wxCmdLineParser& parser);
+	wxString GetLocalPath();
+	bool InitLog();
     bool InitForCmdLineOnly();
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
     bool CommonInit();
