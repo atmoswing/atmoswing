@@ -1033,7 +1033,7 @@ bool asMethodCalibrator::LoadData(std::vector < asDataPredictor* > &predictors, 
 
             if(!desiredPredictor->ClipToArea(desiredArea))
             {
-                asLogError(_("The data could not be extracted."));
+                asLogError(wxString::Format(_("The data could not be extracted (i_step = %d, i_ptor = %d, i_level = %d, i_hour = %d)."), i_step, i_ptor, i_level, i_hour));
                 wxDELETE(desiredArea);
                 wxDELETE(desiredPredictor);
                 return false;

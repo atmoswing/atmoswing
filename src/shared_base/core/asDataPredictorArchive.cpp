@@ -37,6 +37,7 @@
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Terranum.h>
 
+#include <iostream>
 
 asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
 :
@@ -119,7 +120,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
                                         Xmin+desiredArea->GetAxisXmax(), Xmax+desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
-            return false;
+            std::cout << m_axisLon << std::endl;
+			return false;
         }
     }
     if (XstartIndex<0 || XendIndex<0)
@@ -128,6 +130,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
                                     Xmin, Xmax, m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
+		std::cout << m_axisLon << std::endl;
         return false;
     }
     int Xlength = XendIndex-XstartIndex+1;
@@ -146,7 +149,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
                                         Ymin+desiredArea->GetAxisYmax(), Ymax+desiredArea->GetAxisYmax(), m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
-            // std::cout << m_axisLat << std::endl;
+            std::cout << m_axisLat << std::endl;
 			return false;
         }
     }
@@ -155,7 +158,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         asLogError(_("An error occured while trying to clip data to another area."));
         asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
                                     Ymin, Ymax, m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
-		// std::cout << m_axisLat << std::endl;
+		std::cout << m_axisLat << std::endl;
         return false;
     }
 
