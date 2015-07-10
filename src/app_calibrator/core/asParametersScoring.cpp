@@ -43,6 +43,8 @@ asParameters()
     m_forecastScore.Postprocess = false;
     m_forecastScore.PostprocessDupliExp = 0;
     m_forecastScore.PostprocessMethod = wxEmptyString;
+	m_forecastScore.Threshold = NaNFloat; // initialization required
+    m_forecastScore.Quantile = NaNFloat; // initialization required
 }
 
 asParametersScoring::~asParametersScoring()

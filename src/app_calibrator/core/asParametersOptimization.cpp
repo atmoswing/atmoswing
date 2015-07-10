@@ -656,8 +656,8 @@ bool asParametersOptimization::SetPreloadingProperties()
 
 				if (!IsPredictorXptsnbLocked(i_step, i_ptor))
 				{
-					int Xbaseptsnb = 1 + abs(GetPredictorXminUpperLimit(i_step, i_ptor) - GetPredictorXminLowerLimit(i_step, i_ptor)) / GetPredictorXstep(i_step, i_ptor);
-					SetPreloadXptsnb(i_step, i_ptor, Xbaseptsnb + GetPredictorXptsnbUpperLimit(i_step, i_ptor));
+					int Xbaseptsnb = abs(GetPredictorXminUpperLimit(i_step, i_ptor) - GetPredictorXminLowerLimit(i_step, i_ptor)) / GetPredictorXstep(i_step, i_ptor);
+					SetPreloadXptsnb(i_step, i_ptor, Xbaseptsnb + GetPredictorXptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
 				}
 				else
 				{
@@ -666,8 +666,8 @@ bool asParametersOptimization::SetPreloadingProperties()
 
 				if (!IsPredictorYptsnbLocked(i_step, i_ptor))
 				{
-					int Ybaseptsnb = 1 + abs(GetPredictorYminUpperLimit(i_step, i_ptor) - GetPredictorYminLowerLimit(i_step, i_ptor)) / GetPredictorYstep(i_step, i_ptor);
-					SetPreloadYptsnb(i_step, i_ptor, Ybaseptsnb + GetPredictorYptsnbUpperLimit(i_step, i_ptor));
+					int Ybaseptsnb = abs(GetPredictorYminUpperLimit(i_step, i_ptor) - GetPredictorYminLowerLimit(i_step, i_ptor)) / GetPredictorYstep(i_step, i_ptor);
+					SetPreloadYptsnb(i_step, i_ptor, Ybaseptsnb + GetPredictorYptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
 				}
 				else
 				{
@@ -870,6 +870,12 @@ void asParametersOptimization::InitRandomValues()
                 wxASSERT(m_stepsVect[i].Predictors[j].Criteria.size()>(unsigned)row);
 
                 SetPredictorCriteria(i,j, m_stepsVect[i].Predictors[j].Criteria[row]);
+            }
+
+			// Fix the criteria if S1
+            if (NeedsPreprocessing(i,j) && GetPreprocessMethod(i,j).IsSameAs("Gradients") && GetPredictorCriteria(i, j).IsSameAs("S1"))
+            {
+                SetPredictorCriteria(i, j, "S1grads");
             }
 
         }
