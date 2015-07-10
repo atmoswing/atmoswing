@@ -992,6 +992,7 @@ wxString asParameters::Print()
 
 	content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString()));
 	content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
+	content.Append(wxString::Format("ExcludeDays\t%d\t", GetTimeArrayAnalogsExcludeDays()));
 
 	for (int i_step = 0; i_step<GetStepsNb(); i_step++)
 	{
