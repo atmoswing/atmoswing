@@ -37,7 +37,6 @@
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Terranum.h>
 
-#include <iostream>
 
 asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
 :
@@ -122,7 +121,6 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 Xmin+desiredArea->GetAxisXmax(), Xmax+desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
 			asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
                 (int)m_data[0].cols(), (int)m_data[0].rows()));
-            std::cout << m_axisLon << std::endl;
 			return false;
         }
     }
@@ -134,7 +132,6 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             Xmin, Xmax, m_axisLon[0], m_axisLon[m_axisLon.size()-1] ));
 		asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
             (int)m_data[0].cols(), (int)m_data[0].rows()));
-		std::cout << m_axisLon << std::endl;
         return false;
     }
     int Xlength = XendIndex-XstartIndex+1;
@@ -155,7 +152,6 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 Ymin+desiredArea->GetAxisYmax(), Ymax+desiredArea->GetAxisYmax(), m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
             asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
 			    (int)m_data[0].cols(), (int)m_data[0].rows()));
-			std::cout << m_axisLat << std::endl;
 			return false;
         }
     }
@@ -166,7 +162,6 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             Ymin, Ymax, m_axisLat[0], m_axisLat[m_axisLat.size()-1] ));
 		asLogError(wxString::Format(_("Size of data: %d cols x %d rows"),
 		    (int)m_data[0].cols(), (int)m_data[0].rows()));
-		std::cout << m_axisLat << std::endl;
         return false;
     }
 

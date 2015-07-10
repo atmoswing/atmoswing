@@ -649,7 +649,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 }
 
                 // Compare number of S1 criteria on gradients
-                /*while(true)
+                while(true)
                 {
                     indexInFile = firstLineCopy.Find("S1grads");
                     indexInParams = currentParamsPrint.Find("S1grads");
@@ -665,43 +665,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
                     firstLineCopy.Replace("S1grads", wxEmptyString, false);
                     currentParamsPrint.Replace("S1grads", wxEmptyString, false);
-                }*/
-
-                // Compare number of tabs
-                /*while(true)
-                {
-                    indexInFile = firstLineCopy.Find("\t");
-                    indexInParams = currentParamsPrint.Find("\t");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND)
-                    {
-                        break;
-                    }
-                    else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) || (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND))
-                    {
-                        // In the file, there should be 3 tabs more (for the scores)
-                        bool isOK = true;
-                        firstLineCopy.Replace("\t", " ", false);
-                        indexInFile = firstLineCopy.Find("\t");
-                        if (indexInFile == wxNOT_FOUND) isOK = false;
-                        firstLineCopy.Replace("\t", " ", false);
-                        indexInFile = firstLineCopy.Find("\t");
-                        if (indexInFile == wxNOT_FOUND) isOK = false;
-                        firstLineCopy.Replace("\t", " ", false);
-                        indexInFile = firstLineCopy.Find("\t");
-                        if (indexInFile != wxNOT_FOUND) isOK = false;
-
-                        if (!isOK)
-                        {
-                            asLogError(_("The number of tabs do not correspond between the current and the previous parameters."));
-                            return false;
-                        }
-
-                        break;
-                    }
-
-                    firstLineCopy.Replace("\t", " ", false);
-                    currentParamsPrint.Replace("\t", " ", false);
-                }*/
+                }
 				
                 // Parse the parameters data
                 std::vector < asParametersOptimizationGAs > vectParams;
