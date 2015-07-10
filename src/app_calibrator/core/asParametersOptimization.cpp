@@ -276,12 +276,12 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 						if (!SetAnalogsNumber(i_step, fileParams.GetInt(nodeParamBlock))) return false;
 						if (!SetAnalogsNumberLowerLimit(i_step, GetAnalogsNumber(i_step))) return false;
 						if (!SetAnalogsNumberUpperLimit(i_step, GetAnalogsNumber(i_step))) return false;
-						if (!SetAnalogsNumberUpperLimit(i_step, 1)) return false;
+						if (!SetAnalogsNumberIteration(i_step, 1)) return false;
 					}
 					else {
 						if (!SetAnalogsNumberLowerLimit(i_step, fileParams.GetAttributeInt(nodeParamBlock, "lowerlimit"))) return false;
 						if (!SetAnalogsNumberUpperLimit(i_step, fileParams.GetAttributeInt(nodeParamBlock, "upperlimit"))) return false;
-						if (!SetAnalogsNumberUpperLimit(i_step, fileParams.GetAttributeInt(nodeParamBlock, "iteration"))) return false;
+						if (!SetAnalogsNumberIteration(i_step, fileParams.GetAttributeInt(nodeParamBlock, "iteration"))) return false;
 					}
 				}
 				else if (nodeParamBlock->GetName() == "predictor") {
