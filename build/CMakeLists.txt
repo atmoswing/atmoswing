@@ -12,7 +12,7 @@ endif (UNIX)
 # Version number
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "1")
+set(VERSION_PATCH "2")
 
 # Choice of the targets
 set(BUILD_FORECASTER OFF CACHE BOOL "Do you want to build AtmoSwing Forecaster ?" )
@@ -731,15 +731,19 @@ endif (BUILD_CALIBRATOR)
 
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
-        install (
-          PROGRAMS ${USE_PROVIDED_LIBRARIES_PATH}/gdal111.dll ${USE_PROVIDED_LIBRARIES_PATH}/libcurl.dll ${USE_PROVIDED_LIBRARIES_PATH}/netcdf.dll ${USE_PROVIDED_LIBRARIES_PATH}/zlib.dll ${USE_PROVIDED_LIBRARIES_PATH}/msvcr120.dll ${USE_PROVIDED_LIBRARIES_PATH}/proj.dll
-          DESTINATION .
-          )
+        install(
+            DIRECTORY ${USE_PROVIDED_LIBRARIES_PATH} 
+            DESTINATION .
+            FILES_MATCHING PATTERN "*.dll"
+            PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+        )
     else (USE_PROVIDED_LIBRARIES)
-        install (
-          PROGRAMS ../bin/gdal111.dll ../bin/libcurl.dll ../bin/netcdf.dll ../bin/zlib.dll ../bin/msvcr120.dll ../bin/proj.dll
-          DESTINATION .
-          )
+        install(
+            DIRECTORY ../bin 
+            DESTINATION .
+            FILES_MATCHING PATTERN "*.dll"
+            PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+        )
     endif (USE_PROVIDED_LIBRARIES)
 endif (WIN32)
   
