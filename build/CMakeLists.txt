@@ -731,18 +731,16 @@ endif (BUILD_CALIBRATOR)
 
 if (WIN32)
     if (USE_PROVIDED_LIBRARIES)
+        file (GLOB dlls ${USE_PROVIDED_LIBRARIES_PATH}/*.dll)
         install(
-            DIRECTORY ${USE_PROVIDED_LIBRARIES_PATH} 
+            PROGRAMS ${dlls}
             DESTINATION .
-            FILES_MATCHING PATTERN "*.dll"
-            PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
         )
     else (USE_PROVIDED_LIBRARIES)
+        file (GLOB dlls ../bin/*.dll)
         install(
-            DIRECTORY ../bin 
+            PROGRAMS ${dlls}
             DESTINATION .
-            FILES_MATCHING PATTERN "*.dll"
-            PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
         )
     endif (USE_PROVIDED_LIBRARIES)
 endif (WIN32)
