@@ -207,6 +207,11 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         {
             asLogMessage(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
+			if (m_batchForecasts->HasExports()) {
+				asResultsAnalogsForecast * results = new asResultsAnalogsForecast();
+				results->Load(resultsCheck.GetFilePath());
+				m_aggregator.Add(results);
+			}
             #if wxUSE_GUI
                 if (g_responsive) wxGetApp().Yield();
             #endif
@@ -233,12 +238,17 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
             if(!DownloadRealtimePredictors(params, i_step, forecastDateChanged)) return false;
         }
 
-        // Check if result already exists
+        // Check again if result already exists (if change in date)
         resultsCheck.Init(params, m_forecastDate);
         if (resultsCheck.Exists())
         {
             asLogMessage(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
+			if (m_batchForecasts->HasExports()) {
+				asResultsAnalogsForecast * results = new asResultsAnalogsForecast();
+				results->Load(resultsCheck.GetFilePath());
+				m_aggregator.Add(results);
+			}
             #if wxUSE_GUI
                 if (g_responsive) wxGetApp().Yield();
             #endif
