@@ -1187,7 +1187,7 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
     wxFileDialog myFileDlg (this, _("Select a forecast file"),
                             wxEmptyString,
                             wxEmptyString,
-                            "*.asff, *.fcst",
+							"Forecast files (*.asff)|*.asff|Former forecast files (*.fcst)|*.fcst",
                             wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR | wxFD_MULTIPLE);
 
     wxArrayString pathsFileName;
