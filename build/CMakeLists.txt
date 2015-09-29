@@ -743,6 +743,9 @@ if (WIN32)
             DESTINATION .
         )
     endif (USE_PROVIDED_LIBRARIES)
+
+    # pack the Visual C++ Redistributable for Visual Studio
+    include(InstallRequiredSystemLibraries)
 endif (WIN32)
   
 install (
