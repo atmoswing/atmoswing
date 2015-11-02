@@ -40,8 +40,8 @@ asResults()
     m_forecastScore = NaNFloat;
 
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveFinalForecastScore", &m_saveIntermediateResults, false);
-    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/LoadFinalForecastScore", &m_loadIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveFinalForecastScore", &m_saveIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/LoadFinalForecastScore", &m_loadIntermediateResults, false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 

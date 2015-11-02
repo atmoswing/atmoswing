@@ -26,37 +26,16 @@
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
 
-#include "asFileParametersCalibration.h"
+#ifndef ASGLOBVARSOPTIMIZER_H_INCLUDED
+#define ASGLOBVARSOPTIMIZER_H_INCLUDED
 
-asFileParametersCalibration::asFileParametersCalibration(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFileParameters(FileName, FileMode)
-{
-    // FindAndOpen() processed by asFileXml
-}
+#include "asIncludes.h"
 
-asFileParametersCalibration::~asFileParametersCalibration()
-{
-    //dtor
-}
+extern bool g_distributionVersion;
+extern bool g_local;
+extern int g_runNb;
+#if wxUSE_GUI
+extern wxColour g_linuxBgColour;
+#endif
 
-bool asFileParametersCalibration::EditRootElement()
-{
-    if (!GetRoot()) return false;
-    GetRoot()->AddAttribute("target", "optimizer");
-    return true;
-}
-
-bool asFileParametersCalibration::CheckRootElement()
-{
-    if (!GetRoot()) return false;
-    if (!IsAnAtmoSwingFile()) return false;
-    if (!FileVersionIsOrAbove(1.0)) return false;
-
-    if (!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false))
-    {
-        asLogError(wxString::Format(_("The file %s is not a parameters file for the Optimizer."), m_fileName.GetFullName()));
-        return false;
-    }
-    return true;
-}
+#endif // ASGLOBVARSOPTIMIZER_H_INCLUDED

@@ -42,7 +42,7 @@ asFileParametersStandard::~asFileParametersStandard()
 bool asFileParametersStandard::EditRootElement()
 {
     if (!GetRoot()) return false;
-    GetRoot()->AddAttribute("target", "calibrator");
+    GetRoot()->AddAttribute("target", "optimizer");
     return true;
 }
 
@@ -52,9 +52,9 @@ bool asFileParametersStandard::CheckRootElement()
     if (!IsAnAtmoSwingFile()) return false;
     if (!FileVersionIsOrAbove(1.0)) return false;
 
-    if (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false))
+    if (!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false))
     {
-        asLogError(wxString::Format(_("The file %s is not a parameters file for the Calibrator."), m_fileName.GetFullName()));
+        asLogError(wxString::Format(_("The file %s is not a parameters file for the Optimizer."), m_fileName.GetFullName()));
         return false;
     }
     return true;

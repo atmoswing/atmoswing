@@ -37,29 +37,29 @@ asResults()
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase* pConfig = wxFileConfig::Get();
     bool saveAnalogDatesStep1;
-    pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
+    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
     bool saveAnalogDatesStep2;
-    pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep2", &saveAnalogDatesStep2, false);
+    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", &saveAnalogDatesStep2, false);
     bool saveAnalogDatesStep3;
-    pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep3", &saveAnalogDatesStep3, false);
+    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", &saveAnalogDatesStep3, false);
     bool saveAnalogDatesStep4;
-    pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep4", &saveAnalogDatesStep4, false);
+    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", &saveAnalogDatesStep4, false);
     bool saveAnalogDatesAllSteps;
-    pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
+    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
     if (saveAnalogDatesStep1 || saveAnalogDatesStep2 || saveAnalogDatesStep3 || saveAnalogDatesStep4 || saveAnalogDatesAllSteps)
     {
         m_saveIntermediateResults = true;
     }
     bool loadAnalogDatesStep1;
-    pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
+    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
     bool loadAnalogDatesStep2;
-    pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep2", &loadAnalogDatesStep2, false);
+    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", &loadAnalogDatesStep2, false);
     bool loadAnalogDatesStep3;
-    pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep3", &loadAnalogDatesStep3, false);
+    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", &loadAnalogDatesStep3, false);
     bool loadAnalogDatesStep4;
-    pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep4", &loadAnalogDatesStep4, false);
+    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", &loadAnalogDatesStep4, false);
     bool loadAnalogDatesAllSteps;
-    pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
+    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
     if (loadAnalogDatesStep1 || loadAnalogDatesStep2 || loadAnalogDatesStep3 || loadAnalogDatesStep4 || loadAnalogDatesAllSteps)
     {
         m_loadIntermediateResults = true;
@@ -106,15 +106,15 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
         ThreadsManager().CritSectionConfig().Enter();
         wxConfigBase* pConfig = wxFileConfig::Get();
         bool saveAnalogDatesStep1;
-        pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
+        pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
         bool saveAnalogDatesStep2;
-        pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep2", &saveAnalogDatesStep2, false);
+        pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", &saveAnalogDatesStep2, false);
         bool saveAnalogDatesStep3;
-        pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep3", &saveAnalogDatesStep3, false);
+        pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", &saveAnalogDatesStep3, false);
         bool saveAnalogDatesStep4;
-        pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesStep4", &saveAnalogDatesStep4, false);
+        pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", &saveAnalogDatesStep4, false);
         bool saveAnalogDatesAllSteps;
-        pConfig->Read("/Calibration/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
+        pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
         ThreadsManager().CritSectionConfig().Leave();
 
         if (!saveAnalogDatesAllSteps)
@@ -248,15 +248,15 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
         ThreadsManager().CritSectionConfig().Enter();
         wxConfigBase* pConfig = wxFileConfig::Get();
         bool loadAnalogDatesStep1;
-        pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
+        pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
         bool loadAnalogDatesStep2;
-        pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep2", &loadAnalogDatesStep2, false);
+        pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", &loadAnalogDatesStep2, false);
         bool loadAnalogDatesStep3;
-        pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep3", &loadAnalogDatesStep3, false);
+        pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", &loadAnalogDatesStep3, false);
         bool loadAnalogDatesStep4;
-        pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesStep4", &loadAnalogDatesStep4, false);
+        pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", &loadAnalogDatesStep4, false);
         bool loadAnalogDatesAllSteps;
-        pConfig->Read("/Calibration/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
+        pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
         ThreadsManager().CritSectionConfig().Leave();
 
         if (!loadAnalogDatesAllSteps)

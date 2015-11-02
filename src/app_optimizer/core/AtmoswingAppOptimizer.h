@@ -25,26 +25,46 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
+ 
+#ifndef AtmoswingAPPOptimizer_H
+#define AtmoswingAPPOptimizer_H
 
-#ifndef ATMOSWINGMAINFORECATSER_H
-#define ATMOSWINGMAINFORECATSER_H
+#include <wx/app.h>
+#include <wx/snglinst.h>
+#include <wx/cmdline.h>
+#include <wx/socket.h>
+#include <asIncludes.h>
 
-//#include "version.h"
-#include "asIncludes.h"
-#include "AtmoswingAppCalibrator.h"
-#include "asFrameCalibration.h"
-
-
-class AtmoswingFrameCalibrator: public asFrameCalibration
+#if wxUSE_GUI
+class AtmoswingAppOptimizer : public wxApp
+#else
+class AtmoswingAppOptimizer : public wxAppConsole
+#endif
 {
 public:
-    AtmoswingFrameCalibrator(wxFrame *frame);
-    ~AtmoswingFrameCalibrator();
+    //AtmoswingAppOptimizer();
+    virtual ~AtmoswingAppOptimizer(){};
+    virtual bool OnInit();
+    virtual int OnRun();
+    virtual int OnExit();
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+    bool InitForCmdLineOnly();
+    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
+    bool CommonInit();
+    virtual bool OnExceptionInMainLoop();
+    virtual void OnFatalException();
+    virtual void OnUnhandledException();
+
 private:
-    virtual void OnClose(wxCloseEvent& event);
-    virtual void OnQuit(wxCommandEvent& event);
-    void ProcessTest();
-    void SetDefaultOptions();
+    wxString m_calibParamsFile;
+    wxString m_predictandDB;
+    wxString m_predictorsDir;
+    wxString m_calibMethod;
+    #if wxUSE_GUI
+        wxSingleInstanceChecker* m_singleInstanceChecker;
+    #endif
 };
 
-#endif // ATMOSWINGMAINFORECATSER_H
+DECLARE_APP(AtmoswingAppOptimizer);
+
+#endif

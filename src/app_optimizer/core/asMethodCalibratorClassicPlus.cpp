@@ -49,16 +49,16 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     int stepsLatPertinenceMap = 0;
-    pConfig->Read("/Calibration/ClassicPlus/StepsLatPertinenceMap", &stepsLatPertinenceMap, 2);
+    pConfig->Read("/Optimizer/ClassicPlus/StepsLatPertinenceMap", &stepsLatPertinenceMap, 2);
     if(stepsLatPertinenceMap<1) stepsLatPertinenceMap = 1;
     int stepsLonPertinenceMap = 0;
-    pConfig->Read("/Calibration/ClassicPlus/StepsLonPertinenceMap", &stepsLonPertinenceMap, 2);
+    pConfig->Read("/Optimizer/ClassicPlus/StepsLonPertinenceMap", &stepsLonPertinenceMap, 2);
     if(stepsLonPertinenceMap<1) stepsLonPertinenceMap = 1;
     int resizingIterations = 1;
-    pConfig->Read("/Calibration/ClassicPlus/ResizingIterations", &resizingIterations, 1);
+    pConfig->Read("/Optimizer/ClassicPlus/ResizingIterations", &resizingIterations, 1);
     if(resizingIterations<1) resizingIterations = 1;
     bool proceedSequentially = true;
-    pConfig->Read("/Calibration/ClassicPlus/ProceedSequentially", &proceedSequentially, true);
+    pConfig->Read("/Optimizer/ClassicPlus/ProceedSequentially", &proceedSequentially, true);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Extract the stations IDs
@@ -117,9 +117,9 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
         results_tested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
         asResultsParametersArray results_best;
         results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId)));
-        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-        resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time, GetPredictandStationIdsList(stationId)));
+        resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time, GetPredictandStationIdsList(stationId)));
 
         // Create a complete relevance map
         asLogState(_("Calibration: creating the complete relevance map for a given predictor."));

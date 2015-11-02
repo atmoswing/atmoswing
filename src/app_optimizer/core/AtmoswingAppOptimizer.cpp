@@ -34,16 +34,16 @@
 #pragma hdrstop
 #endif //__BORLANDC__
 
-#include "AtmoswingAppCalibrator.h"
+#include "AtmoswingAppOptimizer.h"
 #if wxUSE_GUI
-    #include "AtmoswingMainCalibrator.h"
+    #include "AtmoswingMainOptimizer.h"
 #endif
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 
 
-IMPLEMENT_APP(AtmoswingAppCalibrator);
+IMPLEMENT_APP(AtmoswingAppOptimizer);
 
 #include <wx/debug.h>
 #include "wx/fileconf.h"
@@ -91,7 +91,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_NONE }
 };
 
-bool AtmoswingAppCalibrator::OnInit()
+bool AtmoswingAppOptimizer::OnInit()
 {
     #if _DEBUG
 		#ifdef __WXMSW__
@@ -100,7 +100,7 @@ bool AtmoswingAppCalibrator::OnInit()
 	#endif
 
     // Set application name
-    wxString appName = "AtmoSwing calibrator";
+    wxString appName = "AtmoSwing Optimizer";
     wxApp::SetAppName(appName);
 
     g_guiMode = true;
@@ -131,7 +131,7 @@ bool AtmoswingAppCalibrator::OnInit()
 
             if (!multipleInstances)
             {
-                const wxString instanceName = wxString::Format(wxT("atmoswing-calibrator-%s"),wxGetUserId());
+                const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"),wxGetUserId());
                 m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
                 if ( m_singleInstanceChecker->IsAnotherRunning() )
                 {
@@ -147,7 +147,7 @@ bool AtmoswingAppCalibrator::OnInit()
 			initialize_images(g_ppiScaleDc);
 
             // Create frame
-            AtmoswingFrameCalibrator* frame = new AtmoswingFrameCalibrator(0L);
+            AtmoswingFrameOptimizer* frame = new AtmoswingFrameOptimizer(0L);
             frame->OnInit();
 
             #ifdef __WXMSW__
@@ -161,7 +161,7 @@ bool AtmoswingAppCalibrator::OnInit()
     return true;
 }
 
-bool AtmoswingAppCalibrator::InitForCmdLineOnly()
+bool AtmoswingAppOptimizer::InitForCmdLineOnly()
 {
     g_guiMode = false;
     g_unitTesting = false;
@@ -182,12 +182,12 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
     if (g_local)
     {
         wxString fullPath = localPath;
-        fullPath.Append("AtmoSwingCalibrator.log");
+        fullPath.Append("AtmoSwingOptimizer.log");
         Log().CreateFileOnlyAtPath(fullPath);
     }
     else
     {
-        Log().CreateFileOnly("AtmoSwingCalibrator.log");
+        Log().CreateFileOnly("AtmoSwingOptimizer.log");
     }
 
     Log().DisableMessageBoxOnError();
@@ -205,14 +205,14 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
         pConfig->Write("/Paths/IntermediateResultsDir", localPath+"temp");
-        pConfig->Write("/Paths/CalibrationResultsDir", localPath+"results");
+        pConfig->Write("/Paths/OptimizerResultsDir", localPath+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/AllowMultithreading", true);
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
-        pConfig->Write("/Calibration/ParallelEvaluations", true);
-        pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
+        pConfig->Write("/Optimizer/ParallelEvaluations", true);
+        pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
 
         pConfig->Flush();
 
@@ -221,7 +221,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
     return true;
 }
 
-void AtmoswingAppCalibrator::OnInitCmdLine(wxCmdLineParser& parser)
+void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser& parser)
 {
     wxAppConsole::OnInitCmdLine(parser);
 
@@ -231,7 +231,7 @@ void AtmoswingAppCalibrator::OnInitCmdLine(wxCmdLineParser& parser)
     parser.SetSwitchChars (wxT("-"));
 }
 
-bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
+bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
 {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
 
@@ -307,7 +307,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
         userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini",asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini",wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingOptimizer.ini",asConfig::GetUserDataDir()+"AtmoSwingOptimizer.ini",wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
@@ -442,34 +442,34 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     // Classic+ calibration
     if (parser.Found("cp-resizing-iteration", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/ResizingIterations", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ResizingIterations", option);
     }
 
     if (parser.Found("cp-lat-step", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/StepsLatPertinenceMap", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLatPertinenceMap", option);
     }
 
     if (parser.Found("cp-lon-step", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/StepsLonPertinenceMap", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLonPertinenceMap", option);
     }
 
     if (parser.Found("cp-proceed-sequentially", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/ProceedSequentially", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ProceedSequentially", option);
     }
 
     // Variables exploration
     if (parser.Found("ve-step", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/VariablesExplo/Step", option);
+        wxFileConfig::Get()->Write("/Optimizer/VariablesExplo/Step", option);
     }
 
     // Skip validation option
     if (parser.Found("skip-valid", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/SkipValidation", option);
+        wxFileConfig::Get()->Write("/Optimizer/SkipValidation", option);
     }
 
     /*
@@ -487,7 +487,7 @@ bool AtmoswingAppCalibrator::OnCmdLineParsed(wxCmdLineParser& parser)
     return wxAppConsole::OnCmdLineParsed(parser);
 }
 
-int AtmoswingAppCalibrator::OnRun()
+int AtmoswingAppOptimizer::OnRun()
 {
     if (!g_guiMode)
     {
@@ -586,7 +586,7 @@ int AtmoswingAppCalibrator::OnRun()
     return wxApp::OnRun();
 }
 
-int AtmoswingAppCalibrator::OnExit()
+int AtmoswingAppOptimizer::OnExit()
 {
 	#if wxUSE_GUI
 		// Instance checker
@@ -611,18 +611,18 @@ int AtmoswingAppCalibrator::OnExit()
     return 0;
 }
 
-bool AtmoswingAppCalibrator::OnExceptionInMainLoop()
+bool AtmoswingAppOptimizer::OnExceptionInMainLoop()
 {
     asLogError(_("An exception occured in the main loop"));
     return false;
 }
 
-void AtmoswingAppCalibrator::OnFatalException()
+void AtmoswingAppOptimizer::OnFatalException()
 {
     asLogError(_("An fatal exception occured"));
 }
 
-void AtmoswingAppCalibrator::OnUnhandledException()
+void AtmoswingAppOptimizer::OnUnhandledException()
 {
     asLogError(_("An unhandled exception occured"));
 }

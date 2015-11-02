@@ -41,8 +41,8 @@
 #ifdef APP_FORECASTER
     #include <AtmoswingAppForecaster.h>
 #endif
-#ifdef APP_CALIBRATOR
-    #include <AtmoswingAppCalibrator.h>
+#ifdef APP_OPTIMIZER
+    #include <AtmoswingAppOptimizer.h>
 #endif
 #ifdef USE_CUDA
     #include <asProcessorCuda.cuh>

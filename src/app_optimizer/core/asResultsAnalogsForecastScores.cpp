@@ -37,8 +37,8 @@ asResultsAnalogsForecastScores::asResultsAnalogsForecastScores()
 asResults()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/SaveForecastScores", &m_saveIntermediateResults, false);
-    wxFileConfig::Get()->Read("/Calibration/IntermediateResults/LoadForecastScores", &m_loadIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveForecastScores", &m_saveIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/LoadForecastScores", &m_loadIntermediateResults, false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 

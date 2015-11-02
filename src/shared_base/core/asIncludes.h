@@ -152,11 +152,11 @@
 #ifdef APP_VIEWER
     #include "asGlobVarsViewer.h"
 #endif
-#ifdef APP_CALIBRATOR
-    #include "asGlobVarsCalibrator.h"
+#ifdef APP_OPTIMIZER
+    #include "asGlobVarsOptimizer.h"
 #endif
 #ifdef UNIT_TESTING
-    #include "asGlobVarsCalibrator.h"
+    #include "asGlobVarsOptimizer.h"
 #endif
 
 #endif // ATMOSWINGINC_H_INCLUDED

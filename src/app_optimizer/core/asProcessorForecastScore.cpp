@@ -39,7 +39,7 @@
 //#include <asDialogProgressBar.h>
 #include <asFileAscii.h>
 #ifndef UNIT_TESTING
-    #include <AtmoswingAppCalibrator.h>
+    #include <AtmoswingAppOptimizer.h>
 #endif
 
 bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &anaValues,

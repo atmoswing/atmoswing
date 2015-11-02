@@ -26,7 +26,7 @@
  * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
 
-#include "asGlobVarsCalibrator.h"
+#include "asGlobVarsOptimizer.h"
 
 bool g_local = false;
 int g_runNb = 0;

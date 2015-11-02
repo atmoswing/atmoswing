@@ -44,7 +44,7 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
 {
 
     int i_step;
-    wxFileConfig::Get()->Read("/Calibration/VariablesExplo/Step", &i_step, params.GetStepsNb()-1);
+    wxFileConfig::Get()->Read("/Optimizer/VariablesExplo/Step", &i_step, params.GetStepsNb()-1);
 
     asLogMessageImportant(wxString::Format(_("Processing variables exploration for step %d"), i_step));
     asLogMessageImportant(wxString::Format(_("Processing %d variables, %d hours, %d levels, %d criteria."),
