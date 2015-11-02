@@ -29,7 +29,7 @@
 #include "asMethodCalibrator.h"
 
 #ifndef UNIT_TESTING
-    #include "AtmoswingAppCalibrator.h"
+    #include "AtmoswingAppOptimizer.h"
 #endif
 
 asMethodCalibrator::asMethodCalibrator()
@@ -1819,7 +1819,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
 bool asMethodCalibrator::Validate(const int bestscorerow)
 {
     bool skipValidation = false;
-    wxFileConfig::Get()->Read("/Calibration/SkipValidation", &skipValidation, false);
+    wxFileConfig::Get()->Read("/Optimizer/SkipValidation", &skipValidation, false);
 
     if (skipValidation)
     {

@@ -247,19 +247,19 @@ TEST(GrenobleComparison1ProcessingMethodCuda)
     pConfig->Write("/Processing/Method", (int)asCUDA);
 
     // Reset intermediate results option
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
 
 	wxPrintf("Processing GrenobleComparison1 with CUDA\n");
 
@@ -279,19 +279,19 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
     pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
 
     // Reset intermediate results option
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
 
 	wxPrintf("Processing GrenobleComparison1 with the multithreaded option (lin algebra)\n");
 
@@ -1704,37 +1704,37 @@ TEST(GrenobleComparison2SavingIntermediateResults)
     pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
     pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
 
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", true);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", true);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", true);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", true);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", true);
-    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", true);
-    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", true);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", true);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", true);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", true);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", true);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", true);
-    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", true);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", true);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", true);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", true);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", true);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", true);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", true);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", true);
 
 	wxPrintf("Processing GrenobleComparison2 with saving/loading of intermediate results\n");
 
     GrenobleComparison2SavingIntermediateResults();
 
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Calibration/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Calibration/IntermediateResults/LoadForecastScores", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", false);
+    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
+    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
 }
 
 void GrenobleComparison2MergeByHalfAndMultiply()

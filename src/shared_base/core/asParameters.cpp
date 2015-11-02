@@ -728,7 +728,7 @@ void asParameters::SortLevelsAndTime()
 				hour = oldPtors[0].TimeHours;
 			}
 
-			for (int i = 1; i<oldPtors.size(); i++)
+			for (unsigned int i = 1; i<oldPtors.size(); i++)
 			{
 				// Get next level and hour
 				float nextLevel;

@@ -34,7 +34,7 @@
 #pragma hdrstop
 #endif //__BORLANDC__
 
-#include "AtmoswingMainCalibrator.h"
+#include "AtmoswingMainOptimizer.h"
 
 #include "asGeo.h"
 #include "asGeoArea.h"
@@ -59,8 +59,8 @@
 #include "asConfig.h"
 
 
-AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
-    : asFrameCalibration(frame)
+AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
+    : asFrameOptimizer(frame)
 {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
@@ -76,7 +76,7 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
-    Log().CreateFile("AtmoswingCalibrator.log");
+    Log().CreateFile("AtmoswingOptimizer.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
@@ -117,7 +117,7 @@ AtmoswingFrameCalibrator::AtmoswingFrameCalibrator(wxFrame *frame)
 
 }
 
-void AtmoswingFrameCalibrator::SetDefaultOptions()
+void AtmoswingFrameOptimizer::SetDefaultOptions()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     wxString pathSep = wxFileName::GetPathSeparator();
@@ -142,8 +142,8 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
     wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir() + "AtmoSwing");
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString CalibrationResultsDir = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
-    pConfig->Write("/Paths/CalibrationResultsDir", CalibrationResultsDir);
+    wxString CalibrationResultsDir = pConfig->Read("/Paths/OptimizerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
+    pConfig->Write("/Paths/OptimizerResultsDir", CalibrationResultsDir);
     wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
 
@@ -170,7 +170,7 @@ void AtmoswingFrameCalibrator::SetDefaultOptions()
     pConfig->Flush();
 }
 
-AtmoswingFrameCalibrator::~AtmoswingFrameCalibrator()
+AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer()
 {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -189,12 +189,12 @@ AtmoswingFrameCalibrator::~AtmoswingFrameCalibrator()
     Destroy();
 }
 
-void AtmoswingFrameCalibrator::OnClose(wxCloseEvent &event)
+void AtmoswingFrameOptimizer::OnClose(wxCloseEvent &event)
 {
     Close(true);
 }
 
-void AtmoswingFrameCalibrator::OnQuit(wxCommandEvent &event)
+void AtmoswingFrameOptimizer::OnQuit(wxCommandEvent &event)
 {
     Close(true);
 }

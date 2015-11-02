@@ -794,7 +794,7 @@ bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast * otherForecast
 		return false;
 	}
 
-	for (int i = 0; i<m_predictandStationIds.size(); i++) {
+	for (unsigned int i = 0; i<m_predictandStationIds.size(); i++) {
 		if (m_predictandStationIds[i] != predictandStationIds[i]) return false;
 	}
 

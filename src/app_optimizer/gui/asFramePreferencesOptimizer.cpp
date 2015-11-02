@@ -25,14 +25,14 @@
  * Portions Copyright 2008-2013 University of Lausanne.
  */
 
-#include "asFramePreferencesCalibrator.h"
+#include "asFramePreferencesOptimizer.h"
 
 #include "wx/fileconf.h"
 #include "wx/thread.h"
 
-asFramePreferencesCalibrator::asFramePreferencesCalibrator( wxWindow* parent, wxWindowID id )
+asFramePreferencesOptimizer::asFramePreferencesOptimizer( wxWindow* parent, wxWindowID id )
 :
-asFramePreferencesCalibratorVirtual( parent, id )
+asFramePreferencesOptimizerVirtual( parent, id )
 {
     LoadPreferences();
     Fit();
@@ -43,17 +43,17 @@ asFramePreferencesCalibratorVirtual( parent, id )
 #endif
 }
 
-void asFramePreferencesCalibrator::CloseFrame( wxCommandEvent& event )
+void asFramePreferencesOptimizer::CloseFrame( wxCommandEvent& event )
 {
     Close();
 }
 
-void asFramePreferencesCalibrator::Update()
+void asFramePreferencesOptimizer::Update()
 {
     LoadPreferences();
 }
 
-void asFramePreferencesCalibrator::LoadPreferences()
+void asFramePreferencesOptimizer::LoadPreferences()
 {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
@@ -159,12 +159,12 @@ void asFramePreferencesCalibrator::LoadPreferences()
     wxString userpath = asConfig::GetUserDataDir();
     m_staticTextUserDir->SetLabel(userpath);
     wxString logpath = asConfig::GetLogDir();
-    logpath.Append("AtmoSwingCalibrator.log");
+    logpath.Append("AtmoSwingOptimizer.log");
     m_staticTextLogFile->SetLabel(logpath);
-    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingCalibrator.ini");
+    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingOptimizer.ini");
 }
 
-void asFramePreferencesCalibrator::SavePreferences( )
+void asFramePreferencesOptimizer::SavePreferences( )
 {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
@@ -244,7 +244,7 @@ void asFramePreferencesCalibrator::SavePreferences( )
     pConfig->Flush();
 }
 
-void asFramePreferencesCalibrator::OnChangeMultithreadingCheckBox( wxCommandEvent& event )
+void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox( wxCommandEvent& event )
 {
     if (event.GetInt()==0)
     {
@@ -260,13 +260,13 @@ void asFramePreferencesCalibrator::OnChangeMultithreadingCheckBox( wxCommandEven
     }
 }
 
-void asFramePreferencesCalibrator::SaveAndClose( wxCommandEvent& event )
+void asFramePreferencesOptimizer::SaveAndClose( wxCommandEvent& event )
 {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesCalibrator::ApplyChanges( wxCommandEvent& event )
+void asFramePreferencesOptimizer::ApplyChanges( wxCommandEvent& event )
 {
     SavePreferences();
 }
