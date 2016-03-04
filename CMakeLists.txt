@@ -60,20 +60,20 @@ else (BUILD_OPTIMIZER)
 endif (BUILD_OPTIMIZER)
 
 # Addition of custom modules
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake)
 
 
 #### SOURCE FILES LIST
 
 # Folder shared_base
-file(GLOB_RECURSE src_base_core_h ../src/shared_base/core/*.h)
-file(GLOB_RECURSE src_base_core_cpp ../src/shared_base/core/*.cpp)
-file(GLOB_RECURSE src_base_gui_h ../src/shared_base/gui/*.h)
-file(GLOB_RECURSE src_base_gui_cpp ../src/shared_base/gui/*.cpp)
-file(GLOB_RECURSE src_base_img_h ../src/shared_base/gui/img/*.h)
-file(GLOB_RECURSE src_base_img_cpp ../src/shared_base/gui/img/*.cpp)
-file(GLOB_RECURSE src_lib_awxled_h ../src/shared_base/libs/awxled/*.h)
-file(GLOB_RECURSE src_lib_awxled_cpp ../src/shared_base/libs/awxled/*.cpp)
+file(GLOB_RECURSE src_base_core_h src/shared_base/core/*.h)
+file(GLOB_RECURSE src_base_core_cpp src/shared_base/core/*.cpp)
+file(GLOB_RECURSE src_base_gui_h src/shared_base/gui/*.h)
+file(GLOB_RECURSE src_base_gui_cpp src/shared_base/gui/*.cpp)
+file(GLOB_RECURSE src_base_img_h src/shared_base/gui/img/*.h)
+file(GLOB_RECURSE src_base_img_cpp src/shared_base/gui/img/*.cpp)
+file(GLOB_RECURSE src_lib_awxled_h src/shared_base/libs/awxled/*.h)
+file(GLOB_RECURSE src_lib_awxled_cpp src/shared_base/libs/awxled/*.cpp)
 list(APPEND src_shared_base ${src_base_core_h})
 list(APPEND src_shared_base ${src_base_core_cpp})
 if (USE_GUI)
@@ -81,31 +81,31 @@ if (USE_GUI)
     list(APPEND src_shared_base ${src_base_gui_cpp} ${src_base_img_cpp} ${src_lib_awxled_cpp})
 endif (USE_GUI)
 if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asInternet.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asInternet.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asThreadInternetDownload.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asThreadInternetDownload.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asFileGrib2.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asFileGrib2.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asDataPredictorRealtime.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asDataPredictorRealtime.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asDataPredictorRealtimeGfsForecast.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/../src/shared_base/core/asDataPredictorRealtimeGfsForecast.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asInternet.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asInternet.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asThreadInternetDownload.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asThreadInternetDownload.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asFileGrib2.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asFileGrib2.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtime.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtime.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtimeGfsForecast.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtimeGfsForecast.cpp")
 endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
 
 # Folder shared_processing
-file(GLOB_RECURSE src_proc_core_h ../src/shared_processing/core/*.h)
-file(GLOB_RECURSE src_proc_core_cpp ../src/shared_processing/core/*.cpp)
-file(GLOB src_proc_thread_h ../src/shared_base/core/asThread.h)
-file(GLOB src_proc_thread_cpp ../src/shared_base/core/asThread.cpp)
+file(GLOB_RECURSE src_proc_core_h src/shared_processing/core/*.h)
+file(GLOB_RECURSE src_proc_core_cpp src/shared_processing/core/*.cpp)
+file(GLOB src_proc_thread_h src/shared_base/core/asThread.h)
+file(GLOB src_proc_thread_cpp src/shared_base/core/asThread.cpp)
 list(APPEND src_shared_processing ${src_proc_core_h} ${src_proc_thread_h})
 list(APPEND src_shared_processing ${src_proc_core_cpp} ${src_proc_thread_cpp})
 
 # Folder app_forecaster
-file(GLOB_RECURSE src_forec_core_h ../src/app_forecaster/core/*.h)
-file(GLOB_RECURSE src_forec_core_cpp ../src/app_forecaster/core/*.cpp)
-file(GLOB_RECURSE src_forec_gui_h ../src/app_forecaster/gui/*.h)
-file(GLOB_RECURSE src_forec_gui_cpp ../src/app_forecaster/gui/*.cpp)
+file(GLOB_RECURSE src_forec_core_h src/app_forecaster/core/*.h)
+file(GLOB_RECURSE src_forec_core_cpp src/app_forecaster/core/*.cpp)
+file(GLOB_RECURSE src_forec_gui_h src/app_forecaster/gui/*.h)
+file(GLOB_RECURSE src_forec_gui_cpp src/app_forecaster/gui/*.cpp)
 list(APPEND src_app_forecaster ${src_forec_core_h})
 list(APPEND src_app_forecaster ${src_forec_core_cpp})
 if (USE_GUI)
@@ -114,10 +114,10 @@ if (USE_GUI)
 endif (USE_GUI)
 
 # Folder app_optimizer
-file(GLOB_RECURSE src_optim_core_h ../src/app_optimizer/core/*.h)
-file(GLOB_RECURSE src_optim_core_cpp ../src/app_optimizer/core/*.cpp)
-file(GLOB_RECURSE src_optim_gui_h ../src/app_optimizer/gui/*.h)
-file(GLOB_RECURSE src_optim_gui_cpp ../src/app_optimizer/gui/*.cpp)
+file(GLOB_RECURSE src_optim_core_h src/app_optimizer/core/*.h)
+file(GLOB_RECURSE src_optim_core_cpp src/app_optimizer/core/*.cpp)
+file(GLOB_RECURSE src_optim_gui_h src/app_optimizer/gui/*.h)
+file(GLOB_RECURSE src_optim_gui_cpp src/app_optimizer/gui/*.cpp)
 list(APPEND src_app_optimizer ${src_optim_core_h})
 list(APPEND src_app_optimizer ${src_optim_core_cpp})
 if (USE_GUI)
@@ -126,51 +126,51 @@ if (USE_GUI)
 endif (USE_GUI)
 
 # Folder app_viewer
-file(GLOB_RECURSE src_viewer_core_h ../src/app_viewer/core/*.h)
-file(GLOB_RECURSE src_viewer_core_cpp ../src/app_viewer/core/*.cpp)
-file(GLOB_RECURSE src_viewer_gui_h ../src/app_viewer/gui/*.h)
-file(GLOB_RECURSE src_viewer_gui_cpp ../src/app_viewer/gui/*.cpp)
+file(GLOB_RECURSE src_viewer_core_h src/app_viewer/core/*.h)
+file(GLOB_RECURSE src_viewer_core_cpp src/app_viewer/core/*.cpp)
+file(GLOB_RECURSE src_viewer_gui_h src/app_viewer/gui/*.h)
+file(GLOB_RECURSE src_viewer_gui_cpp src/app_viewer/gui/*.cpp)
 list(APPEND src_app_viewer ${src_viewer_core_h} ${src_viewer_gui_h})
 list(APPEND src_app_viewer ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
 
 # wxPlotCtrl library (and dependences)
-file(GLOB_RECURSE src_lib_wxmathplot_h ../src/app_viewer/libs/wxmathplot/*.h)
-file(GLOB_RECURSE src_lib_wxmathplot_cpp ../src/app_viewer/libs/wxmathplot/*.cpp)
-file(GLOB_RECURSE src_lib_wxplotctrl_h ../src/app_viewer/libs/wxplotctrl/src/*.h)
-file(GLOB_RECURSE src_lib_wxplotctrl_hh ../src/app_viewer/libs/wxplotctrl/src/*.hh)
-file(GLOB_RECURSE src_lib_wxplotctrl_cpp ../src/app_viewer/libs/wxplotctrl/src/*.cpp)
-file(GLOB_RECURSE src_lib_wxplotctrl_c ../src/app_viewer/libs/wxplotctrl/src/*.c)
-file(GLOB_RECURSE src_lib_wxthings_cpp ../src/app_viewer/libs/wxthings/src/*.cpp)
+file(GLOB_RECURSE src_lib_wxmathplot_h src/app_viewer/libs/wxmathplot/*.h)
+file(GLOB_RECURSE src_lib_wxmathplot_cpp src/app_viewer/libs/wxmathplot/*.cpp)
+file(GLOB_RECURSE src_lib_wxplotctrl_h src/app_viewer/libs/wxplotctrl/src/*.h)
+file(GLOB_RECURSE src_lib_wxplotctrl_hh src/app_viewer/libs/wxplotctrl/src/*.hh)
+file(GLOB_RECURSE src_lib_wxplotctrl_cpp src/app_viewer/libs/wxplotctrl/src/*.cpp)
+file(GLOB_RECURSE src_lib_wxplotctrl_c src/app_viewer/libs/wxplotctrl/src/*.c)
+file(GLOB_RECURSE src_lib_wxthings_cpp src/app_viewer/libs/wxthings/src/*.cpp)
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_h} ${src_lib_wxplotctrl_h} ${src_lib_wxplotctrl_hh})
 list(APPEND src_lib_wxplotctrl ${src_lib_wxmathplot_cpp} ${src_lib_wxplotctrl_cpp} ${src_lib_wxplotctrl_c} ${src_lib_wxthings_cpp})
 
 # Folder test
-file(GLOB_RECURSE src_tests_h ../test/src/*.h)
-file(GLOB_RECURSE src_tests_cpp ../test/src/*.cpp)
+file(GLOB_RECURSE src_tests_h test/src/*.h)
+file(GLOB_RECURSE src_tests_cpp test/src/*.cpp)
 list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h} ${src_optim_core_h}) # Include optimization files anyway (to test the analogue method)
 list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp} ${src_optim_core_cpp})
 if (BUILD_FORECASTER)
     list(APPEND src_tests ${src_forec_core_h})
     list(APPEND src_tests ${src_forec_core_cpp})
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVarsForecaster.h")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/asGlobVarsForecaster.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/AtmoswingAppForecaster.h")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/AtmoswingAppForecaster.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.h")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.cpp")
 else (BUILD_FORECASTER)
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeGeneralGridTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../test/src/asDataPredictorRealtimeRegularGridTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/test/src/asDataPredictorRealtimeGeneralGridTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/test/src/asDataPredictorRealtimeRegularGridTest.cpp")
 endif (BUILD_FORECASTER)
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVarsViewer.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/asGlobVarsViewer.cpp")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/AtmoswingAppViewer.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/AtmoswingAppViewer.cpp")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_optimizer/core/AtmoswingAppOptimizer.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/../src/app_optimizer/core/AtmoswingAppOptimizer.cpp")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.cpp")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.h")
+list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.cpp")
 
 # CUDA library
 if (USE_CUDA)
-    file(GLOB_RECURSE src_proc_core_cu ../src/shared_processing/core/*.cu)
-    file(GLOB_RECURSE src_proc_core_cuh ../src/shared_processing/core/*.cuh)
+    file(GLOB_RECURSE src_proc_core_cu src/shared_processing/core/*.cu)
+    file(GLOB_RECURSE src_proc_core_cuh src/shared_processing/core/*.cuh)
     list(APPEND src_cuda ${src_proc_core_cu})
     list(APPEND src_cuda ${src_proc_core_cuh})
     list(APPEND src_app_optimizer ${src_proc_core_cuh})
@@ -193,61 +193,61 @@ list(REMOVE_DUPLICATES src_tests)
 #### INCLUDE DIRECTORIES
 
 list(APPEND inc_dirs 
-    "${PROJECT_SOURCE_DIR}/../src/shared_base/core/"
+    "${PROJECT_SOURCE_DIR}/src/shared_base/core/"
     )
 
 if (BUILD_FORECASTER)
     list(APPEND inc_dirs 
-        "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
+        "${PROJECT_SOURCE_DIR}/src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/"
         )
     if (USE_GUI)
         list(APPEND inc_dirs 
-            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
-            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
-            "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-            "${PROJECT_SOURCE_DIR}/../src/app_forecaster/gui/"
+            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/"
+            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/img/"
+            "${PROJECT_SOURCE_DIR}/src/shared_base/libs/awxled/"
+            "${PROJECT_SOURCE_DIR}/src/app_forecaster/gui/"
             )
     endif (USE_GUI)
 endif (BUILD_FORECASTER)
 
 if (BUILD_VIEWER)
     list(APPEND inc_dirs 
-        "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
-        "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
-        "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/gui/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxmathplot/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxplotctrl/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxplotctrl/include/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/libs/wxthings/include/"
+        "${PROJECT_SOURCE_DIR}/src/shared_base/gui/"
+        "${PROJECT_SOURCE_DIR}/src/shared_base/gui/img/"
+        "${PROJECT_SOURCE_DIR}/src/shared_base/libs/awxled/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/core/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/gui/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/libs/wxmathplot/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/libs/wxplotctrl/include/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/libs/wxthings/include/"
         )
 endif (BUILD_VIEWER)
 
 if (BUILD_OPTIMIZER)
     list(APPEND inc_dirs 
-        "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_optimizer/app/"
-        "${PROJECT_SOURCE_DIR}/../src/app_optimizer/core/"
+        "${PROJECT_SOURCE_DIR}/src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/src/app_optimizer/app/"
+        "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/"
         )
     if (USE_GUI)
         list(APPEND inc_dirs 
-            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/"
-            "${PROJECT_SOURCE_DIR}/../src/shared_base/gui/img/"
-            "${PROJECT_SOURCE_DIR}/../src/shared_base/libs/awxled/"
-            "${PROJECT_SOURCE_DIR}/../src/app_optimizer/gui/"
+            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/"
+            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/img/"
+            "${PROJECT_SOURCE_DIR}/src/shared_base/libs/awxled/"
+            "${PROJECT_SOURCE_DIR}/src/app_optimizer/gui/"
             )
     endif (USE_GUI)
 endif (BUILD_OPTIMIZER)
 
 if (BUILD_TESTS)
     list(APPEND inc_dirs 
-        "${PROJECT_SOURCE_DIR}/../test/src/"
-        "${PROJECT_SOURCE_DIR}/../src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_forecaster/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_viewer/core/"
-        "${PROJECT_SOURCE_DIR}/../src/app_optimizer/core/"
+        "${PROJECT_SOURCE_DIR}/test/src/"
+        "${PROJECT_SOURCE_DIR}/src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/"
+        "${PROJECT_SOURCE_DIR}/src/app_viewer/core/"
+        "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/"
         )
 endif (BUILD_TESTS)
 
@@ -357,7 +357,7 @@ if (BUILD_VIEWER)
     mark_as_advanced(SQLITE_INCLUDE_DIR)
     mark_as_advanced(SQLITE_PATH)
     mark_as_advanced(wxWIDGETS_USING_SVN)
-    include("../src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")
+    include("src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")
     link_libraries(${wxWidgets_LIBRARIES})
 endif (BUILD_VIEWER)
 
@@ -365,7 +365,7 @@ endif (BUILD_VIEWER)
 if (USE_GUI)
     set(USE_WXHGVERSION 1)
     mark_as_advanced(USE_WXHGVERSION)
-    include("../src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+    include("src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
 else (USE_GUI)
     set(USE_WXHGVERSION 0)
     mark_as_advanced(USE_WXHGVERSION)
@@ -388,7 +388,7 @@ endif (USE_CUDA)
 
 # UnitTest++
 if (BUILD_TESTS)
-    include(cmake/FindUnitTest++.cmake)
+    include(build/cmake/FindUnitTest++.cmake)
     include_directories(${UNITTEST++_INCLUDE_DIR})
     mark_as_advanced(UnitTest++_DIR)
 else (BUILD_TESTS)
@@ -413,8 +413,8 @@ endif (USE_VLD)
 
 # Cppcheck
 if (USE_CPPCHECK)
-	include(cmake/Findcppcheck.cmake)
-	include(cmake/CppcheckTargets.cmake)
+	include(build/cmake/Findcppcheck.cmake)
+	include(build/cmake/CppcheckTargets.cmake)
 endif (USE_CPPCHECK)
 
 
@@ -424,10 +424,10 @@ if (WIN32)
 
     if (USE_GUI)
         if (BUILD_FORECASTER)
-            add_executable (atmoswing-forecaster WIN32 ${src_app_forecaster} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
+            add_executable (atmoswing-forecaster WIN32 ${src_app_forecaster} ${PROJECT_SOURCE_DIR}/src/shared_base/gui/resource.rc)
         endif (BUILD_FORECASTER)
         if (BUILD_OPTIMIZER)
-            add_executable (atmoswing-optimizer WIN32 ${src_app_optimizer} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
+            add_executable (atmoswing-optimizer WIN32 ${src_app_optimizer} ${PROJECT_SOURCE_DIR}/src/shared_base/gui/resource.rc)
         endif (BUILD_OPTIMIZER)
     else (USE_GUI)
         if (BUILD_FORECASTER)
@@ -438,7 +438,7 @@ if (WIN32)
         endif (BUILD_OPTIMIZER)
     endif (USE_GUI)
     if (BUILD_VIEWER)
-        add_executable (atmoswing-viewer WIN32 ${src_app_viewer} ${PROJECT_SOURCE_DIR}/../src/shared_base/gui/resource.rc)
+        add_executable (atmoswing-viewer WIN32 ${src_app_viewer} ${PROJECT_SOURCE_DIR}/src/shared_base/gui/resource.rc)
     endif (BUILD_VIEWER)
     if (BUILD_TESTS)
         add_executable (atmoswing-tests WIN32 ${src_tests})
@@ -737,7 +737,7 @@ if (WIN32)
             DESTINATION .
         )
     else (USE_PROVIDED_LIBRARIES)
-        file (GLOB dlls ../bin/*.dll)
+        file (GLOB dlls bin/*.dll)
         install(
             PROGRAMS ${dlls}
             DESTINATION .
@@ -749,12 +749,12 @@ if (WIN32)
 endif (WIN32)
   
 install (
-  FILES ../license.txt ../notice.txt
+  FILES license.txt notice.txt
   DESTINATION ${INSTALL_DIR_SHARE}
   )
 
 install (
-  DIRECTORY ../data
+  DIRECTORY data
   DESTINATION ${INSTALL_DIR_SHARE}
   )
   
@@ -837,7 +837,7 @@ if (WIN32)
 endif(WIN32)
 
 if (UNIX AND NOT APPLE)
-    install(FILES ../art/icon/atmoswing.png DESTINATION share/pixmaps)
+    install(FILES art/icon/atmoswing.png DESTINATION share/pixmaps)
     if (BUILD_FORECASTER)
         install(FILES cpack/atmoswing-forecaster.desktop DESTINATION share/applications)
     endif (BUILD_FORECASTER)
