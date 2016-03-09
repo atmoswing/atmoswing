@@ -46,7 +46,7 @@ TEST(LoadEasy)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -134,7 +134,7 @@ TEST(LoadComposite)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -230,7 +230,7 @@ TEST(LoadBorderLeft)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -298,7 +298,7 @@ TEST(LoadBorderLeftOn720)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -366,7 +366,7 @@ TEST(LoadBorderRight)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -441,7 +441,7 @@ TEST(LoadCompositeStepLon)
     int Yptsnb = 3;
     double steplon = 5;
     double steplat = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -513,7 +513,7 @@ TEST(LoadCompositeStepLonMoved)
     int Yptsnb = 3;
     double steplon = 5;
     double steplat = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -570,7 +570,7 @@ TEST(LoadCompositeStepLonLat)
     int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -636,7 +636,7 @@ TEST(LoadCompositeStepLonLatTime)
     int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -691,7 +691,7 @@ TEST(SetData)
     int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
