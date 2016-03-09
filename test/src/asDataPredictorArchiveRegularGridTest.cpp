@@ -46,7 +46,7 @@ TEST(LoadEasy)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -132,7 +132,7 @@ TEST(LoadComposite)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -226,7 +226,7 @@ TEST(LoadBorderLeft)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -292,7 +292,7 @@ TEST(LoadBorderLeftOn720)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -358,7 +358,7 @@ TEST(LoadBorderRight)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -431,7 +431,7 @@ TEST(LoadCompositeStepLon)
     double Ywidth = 5;
     double steplon = 5;
     double steplat = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -505,7 +505,7 @@ TEST(LoadCompositeStepLonMoved)
     double Ywidth = 5;
     double steplon = 5;
     double steplat = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -560,7 +560,7 @@ TEST(LoadCompositeStepLonLat)
     double Ywidth = 5;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -624,7 +624,7 @@ TEST(LoadCompositeStepLonLatTime)
     double Ywidth = 5;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
@@ -677,7 +677,7 @@ TEST(SetData)
     double Ywidth = 5;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
 
     double start = asTime::GetMJD(1960,1,1,00,00);
