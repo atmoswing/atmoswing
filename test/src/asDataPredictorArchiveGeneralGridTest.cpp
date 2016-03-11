@@ -15,14 +15,15 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  *
- * The Original Software is AtmoSwing. The Initial Developer of the
- * Original Software is Pascal Horton of the University of Lausanne.
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  *
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #include <wx/filename.h>
@@ -46,7 +47,7 @@ TEST(LoadEasy)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -134,7 +135,7 @@ TEST(LoadComposite)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -230,7 +231,7 @@ TEST(LoadBorderLeft)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -298,7 +299,7 @@ TEST(LoadBorderLeftOn720)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -366,7 +367,7 @@ TEST(LoadBorderRight)
     double Ymin = 35;
     int Yptsnb = 3;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -441,7 +442,7 @@ TEST(LoadCompositeStepLon)
     int Yptsnb = 3;
     double steplon = 5;
     double steplat = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -513,7 +514,7 @@ TEST(LoadCompositeStepLonMoved)
     int Yptsnb = 3;
     double steplon = 5;
     double steplat = 2.5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -570,7 +571,7 @@ TEST(LoadCompositeStepLonLat)
     int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -636,7 +637,7 @@ TEST(LoadCompositeStepLonLatTime)
     int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
@@ -691,7 +692,7 @@ TEST(SetData)
     int Yptsnb = 2;
     double steplon = 5;
     double steplat = 5;
-    double level = 1000;
+    float level = 1000;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb, steplat, level);
 
