@@ -15,15 +15,15 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  * 
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2014 Pascal Horton, Terr@num.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
  
 #include "asFrameForecast.h"
@@ -1187,7 +1187,7 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent & event)
     wxFileDialog myFileDlg (this, _("Select a forecast file"),
                             wxEmptyString,
                             wxEmptyString,
-                            "*.asff, *.fcst",
+							"Forecast files (*.asff)|*.asff|Former forecast files (*.fcst)|*.fcst",
                             wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR | wxFD_MULTIPLE);
 
     wxArrayString pathsFileName;
