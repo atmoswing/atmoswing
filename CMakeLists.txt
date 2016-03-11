@@ -558,7 +558,7 @@ elseif (WIN32)
 endif (UNIX AND NOT APPLE)
 
 # Global definitions
-add_definitions(-DUSE_JPEG2000 -DTIXML_USE_STL)
+add_definitions(-DUSE_JPEG2000)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -837,7 +837,7 @@ if (WIN32)
 endif(WIN32)
 
 if (UNIX AND NOT APPLE)
-    install(FILES art/icon/atmoswing.png DESTINATION share/pixmaps)
+    install(FILES art/logo/atmoswing.png DESTINATION share/pixmaps)
     if (BUILD_FORECASTER)
         install(FILES cpack/atmoswing-forecaster.desktop DESTINATION share/applications)
     endif (BUILD_FORECASTER)
