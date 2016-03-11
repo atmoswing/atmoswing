@@ -15,14 +15,14 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  * 
- * The Original Software is AtmoSwing. The Initial Developer of the 
- * Original Software is Pascal Horton of the University of Lausanne. 
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  * 
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
  
 #ifndef ASVERSION_H
@@ -32,7 +32,7 @@
 
 const int ATMOSWING_MAJOR_VERSION = 1;
 const int ATMOSWING_MINOR_VERSION = 4;
-const int ATMOSWING_PATCH_VERSION = 1;
+const int ATMOSWING_PATCH_VERSION = 2;
 const extern wxString g_version;
 
 class asVersion

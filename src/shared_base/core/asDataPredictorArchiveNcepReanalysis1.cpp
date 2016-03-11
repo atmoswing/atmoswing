@@ -15,15 +15,15 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  *
- * The Original Software is AtmoSwing. The Initial Developer of the
- * Original Software is Pascal Horton of the University of Lausanne.
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  *
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #include "asDataPredictorArchiveNcepReanalysis1.h"
@@ -574,7 +574,15 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
         size_t axisDataTimeLength = ncFile.GetVarLength(m_fileAxisTimeName);
         double valFirstTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, 0);
         valFirstTime = (valFirstTime/24.0); // hours to days
-        valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+        bool format2003 = false;
+        bool format2014 = false;
+        if(valFirstTime<500*365) { // New format
+            valFirstTime += asTime::GetMJD(1800,1,1); // to MJD: add a negative time span
+            format2014 = true;
+        } else { // Old format
+            valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+            format2003 = true;
+        }
             
         // Get start and end of the current year
         double timeStart = asTime::GetMJD(i_year,1,1,0,0);
@@ -609,8 +617,8 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
         VectorInt vectIndexLengthLat;
         VectorInt vectIndexLengthLon;
         VectorBool vectLoad360;
-        VVectorShort vectData;
-        VVectorShort vectData360;
+        VVectorFloat vectData;
+        VVectorFloat vectData360;
 
         for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
         {
@@ -684,12 +692,16 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             }
 
             // Create the arrays to receive the data
-            VectorShort data, data360;
+            VectorFloat data, data360;
+            VectorShort dataShort, dataShort360;
 
             // Resize the arrays to store the new data
             int totLength = indexLengthTimeArray * indexLengthLat * indexLengthLon;
             wxASSERT(totLength>0);
             data.resize(totLength);
+            if(format2003) {
+                dataShort.resize(totLength);
+            }
 
             // Fill empty begining with NaNs
             int indexBegining = 0;
@@ -746,7 +758,11 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
                 indexStrideData4[3] = m_lonIndexStep;
 
                 // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_fileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data[indexBegining]);
+                if(format2014) {
+                    ncFile.GetVarSample(m_fileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data[indexBegining]);
+                } else {
+                    ncFile.GetVarSample(m_fileVariableName, indexStartData4, indexCountData4, indexStrideData4, &dataShort[indexBegining]);
+                }
             }
             else
             {
@@ -762,7 +778,18 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
                 indexStrideData3[2] = m_lonIndexStep;
 
                 // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-                ncFile.GetVarSample(m_fileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data[indexBegining]);
+                if(format2014) {
+                    ncFile.GetVarSample(m_fileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data[indexBegining]);
+                } else {
+                    ncFile.GetVarSample(m_fileVariableName, indexStartData3, indexCountData3, indexStrideData3, &dataShort[indexBegining]);
+                }
+            }
+
+            // Convert to float
+            if(format2003) {
+                for (int i = 0; i < dataShort.size(); i++) {
+                    data[i] = (float)dataShort[i];
+                }
             }
 
             // Load data at lon = 360 degrees
@@ -771,6 +798,9 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
                 // Resize the arrays to store the new data
                 int totlength360 = indexLengthTimeArray * indexLengthLat * 1;
                 data360.resize(totlength360);
+                if (format2003) {
+                    dataShort360.resize(totlength360);
+                }
 
                 // Set the indices
                 indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], 360, 0.01f, asHIDE_WARNINGS);
@@ -826,11 +856,26 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
                 // Load data at 0 degrees (corresponds to 360 degrees)
                 if (nDims==4)
                 {
-                    ncFile.GetVarSample(m_fileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data360[indexBegining]);
+                    if(format2014){
+                        ncFile.GetVarSample(m_fileVariableName, indexStartData4, indexCountData4, indexStrideData4, &data360[indexBegining]);
+                    } else {
+                        ncFile.GetVarSample(m_fileVariableName, indexStartData4, indexCountData4, indexStrideData4, &dataShort360[indexBegining]);
+                    }
                 }
                 else
                 {
-                    ncFile.GetVarSample(m_fileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data360[indexBegining]);
+                    if(format2014){
+                        ncFile.GetVarSample(m_fileVariableName, indexStartData3, indexCountData3, indexStrideData3, &data360[indexBegining]);
+                    } else {
+                        ncFile.GetVarSample(m_fileVariableName, indexStartData3, indexCountData3, indexStrideData3, &dataShort360[indexBegining]);
+                    }
+                }
+
+                // Convert to float
+                if(format2003) {
+                    for (int i = 0; i < dataShort360.size(); i++) {
+                        data360[i] = (float)dataShort360[i];
+                    }
                 }
             }
 
@@ -866,8 +911,8 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             int indexLengthLat = vectIndexLengthLat[i_area];
             int indexLengthLon = vectIndexLengthLon[i_area];
             bool load360 = vectLoad360[i_area];
-            VectorShort data = vectData[i_area];
-            VectorShort data360 = vectData360[i_area];
+            VectorFloat data = vectData[i_area];
+            VectorFloat data360 = vectData360[i_area];
 
             // Loop to extract the data from the array
             int ind = 0;
@@ -891,18 +936,18 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
 
                         if (scalingNeeded)
                         {
-                            latlonData(i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
+                            latlonData(i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
                         }
                         else
                         {
-                            latlonData(i_lat,i_lon) = (float)data[ind];
+                            latlonData(i_lat,i_lon) = data[ind];
                         }
 
                         // Check if not NaN
                         bool notNan = true;
                         for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
                         {
-                            if ((float)data[ind]==m_nanValues[i_nan] || latlonData(i_lat,i_lon)==m_nanValues[i_nan])
+                            if (data[ind]==m_nanValues[i_nan] || latlonData(i_lat,i_lon)==m_nanValues[i_nan])
                             {
                                 notNan = false;
                             }
@@ -919,18 +964,18 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
 
                         if (scalingNeeded)
                         {
-                            latlonData(i_lat,indexLengthLon) = (float)data360[ind] * dataScaleFactor + dataAddOffset;
+                            latlonData(i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
                         }
                         else
                         {
-                            latlonData(i_lat,indexLengthLon) = (float)data360[ind];
+                            latlonData(i_lat,indexLengthLon) = data360[ind];
                         }
 
                         // Check if not NaN
                         bool notNan = true;
                         for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
                         {
-                            if ((float)data360[ind]==m_nanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_nanValues[i_nan])
+                            if (data360[ind]==m_nanValues[i_nan] || latlonData(i_lat,indexLengthLon)==m_nanValues[i_nan])
                             {
                                 notNan = false;
                             }

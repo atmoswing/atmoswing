@@ -15,14 +15,15 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  *
- * The Original Software is AtmoSwing. The Initial Developer of the
- * Original Software is Pascal Horton of the University of Lausanne.
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  *
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #include "wx/filename.h"
@@ -73,7 +74,7 @@ TEST(Gradients)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
     CHECK_EQUAL(5, predictor->GetLonPtsnb());
@@ -205,7 +206,7 @@ TEST(GradientsMultithreading)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
     CHECK_EQUAL(5, predictor->GetLonPtsnb());
