@@ -62,7 +62,7 @@ TEST(LoadEasy)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -150,7 +150,7 @@ TEST(LoadComposite)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -246,7 +246,7 @@ TEST(LoadBorderLeft)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -314,7 +314,7 @@ TEST(LoadBorderLeftOn720)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -382,7 +382,7 @@ TEST(LoadBorderRight)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -457,7 +457,7 @@ TEST(LoadCompositeStepLon)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -529,7 +529,7 @@ TEST(LoadCompositeStepLonMoved)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -586,7 +586,7 @@ TEST(LoadCompositeStepLonLat)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -652,7 +652,7 @@ TEST(LoadCompositeStepLonLatTime)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     VArray2DFloat hgt = predictor->GetData();
@@ -708,7 +708,7 @@ TEST(SetData)
 
     asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1_hgt_%d.nc");
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(geoarea, timearray);
 
     Array2DFloat tmp;
