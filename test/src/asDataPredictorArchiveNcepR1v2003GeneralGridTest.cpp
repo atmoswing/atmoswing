@@ -40,7 +40,7 @@ namespace
 
 TEST(LoadEasy)
 {
-	wxPrintf("Testing general archive predictors...\n");
+	wxPrintf("Testing NCEP R1 v2003 general archive predictors...\n");
 	
     double Xmin = 10;
     int Xptsnb = 5;
