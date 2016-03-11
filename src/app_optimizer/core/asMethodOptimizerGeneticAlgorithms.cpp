@@ -4,7 +4,7 @@
 #include "asFileAscii.h"
 #include <asThreadMethodOptimizerGeneticAlgorithms.h>
 #ifndef UNIT_TESTING
-    #include <AtmoswingAppCalibrator.h>
+    #include <AtmoswingAppOptimizer.h>
 #endif
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
@@ -574,7 +574,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 while (dir.GetNext(&generationsFileName)) {} // Select the last available.
 
                 asLogWarning(_("Previous intermediate results were found and will be loaded."));
-                printf(_("Previous intermediate results were found and will be loaded.\n"));
+                wxPrintf(_("Previous intermediate results were found and will be loaded.\n"));
                 wxString filePath = resultsDir;
                 filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
                 asFileAscii prevResults(filePath, asFile::ReadOnly);
@@ -700,7 +700,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 prevResults.Close();
 
                 asLogMessageImportant(wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
-                printf(wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
+                wxPrintf(wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
 
                 // Check that it is consistent with the population size
                 if (vectParams.size() % m_popSize != 0)
