@@ -14,15 +14,16 @@
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- *
- * The Original Software is AtmoSwing. The Initial Developer of the
- * Original Software is Pascal Horton of the University of Lausanne.
+ * 
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  *
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #include "asLog.h"

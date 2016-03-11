@@ -8,11 +8,11 @@ The software is written in C++, is cross-platform and open source (under the Com
 
 ## What's in there ##
 
-This repository contains 2 separate tools:
+This repository contains 3 separate tools:
 
 * The Forecaster: automatically processes the forecast
 * The Viewer: displays the resulting files in a GIS environment
-* The Calibrator: calibrates the method for a given precipitation timeseries
+* The Optimizer: optimizes the method for a given precipitation timeseries
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
