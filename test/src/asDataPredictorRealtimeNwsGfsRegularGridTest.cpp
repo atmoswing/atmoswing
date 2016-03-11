@@ -40,7 +40,7 @@ namespace
 
 TEST(LoadEasySmallFile)
 {
-	wxPrintf("Testing regular realtime predictors...\n");
+	wxPrintf("Testing GFS regular realtime predictors...\n");
 	
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
