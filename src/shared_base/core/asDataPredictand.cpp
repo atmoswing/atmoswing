@@ -556,20 +556,11 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                     }
 
                     // Get Precipitation value
-                    double valPrecipitationGross=0;
-                    lineContent.Mid(filePattern.DataBegin-1, filePattern.DataEnd-filePattern.DataBegin+1).ToDouble(&valPrecipitationGross);
+                    wxString dataStr = lineContent.Mid(filePattern.DataBegin-1, filePattern.DataEnd-filePattern.DataBegin+1);
 
-                    // Check if not NaN and store
-                    bool notNan = true;
-                    for (size_t i_nan=0; i_nan<currentData.GetNan().size(); i_nan++)
-                    {
-                        if (valPrecipitationGross==currentData.GetNan()[i_nan]) notNan = false;
-                    }
-                    if (notNan)
-                    {
-                        // Put value in the matrix
-                        m_dataGross(timeIndex,stationIndex) = valPrecipitationGross;
-                    }
+                    // Put value in the matrix
+                    m_dataGross(timeIndex,stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+
                     timeIndex++;
                     break;
                 }
@@ -642,20 +633,11 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                     }
 
                     // Get Precipitation value
-                    double valPrecipitationGross=0;
-                    vColumns[filePattern.DataBegin-1].ToDouble(&valPrecipitationGross);
+                    wxString dataStr = vColumns[filePattern.DataBegin-1];
 
-                    // Check if not NaN and store
-                    bool notNan = true;
-                    for (size_t i_nan=0; i_nan<currentData.GetNan().size(); i_nan++)
-                    {
-                        if (valPrecipitationGross==currentData.GetNan()[i_nan]) notNan = false;
-                    }
-                    if (notNan)
-                    {
-                        // Put value in the matrix
-                        m_dataGross(timeIndex,stationIndex) = valPrecipitationGross;
-                    }
+                    // Put value in the matrix
+                    m_dataGross(timeIndex,stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+
                     timeIndex++;
                     break;
                 }
@@ -691,6 +673,27 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     return true;
 }
 
+float asDataPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const
+{
+    // Trim
+    dataStr = dataStr.Trim();
+    dataStr = dataStr.Trim(true);
+
+    // Check if not NaN
+    for (size_t i_nan=0; i_nan<currentData.GetNan().size(); i_nan++)
+    {
+        if (dataStr.IsSameAs(currentData.GetNan()[i_nan], false)) {
+            return NaNFloat;
+        }
+    }
+
+    // Convert
+    double dataGross=0;
+    dataStr.ToDouble(&dataGross);
+
+    return (float)dataGross;
+}
+
 Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax)
 {
     // Flag to check the need of aggregation (timeStepDays>m_timeStepDays)
@@ -712,7 +715,7 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax)
             return emptyMatrix;
         }
 
-        // Aggragation necessary
+        // Aggregation necessary
         aggregate = true;
 
         // indices to add or substract around the mid value
