@@ -68,8 +68,8 @@ TEST(LoadCatalogProp)
     CHECK_EQUAL(endreal,catalog.GetEnd());
     CHECK_EQUAL(24,catalog.GetTimeStepHours());
     CHECK_EQUAL(0,catalog.GetFirstTimeStepHours());
-    VectorDouble nans = catalog.GetNan();
-    CHECK_EQUAL(32767,nans[0]);
+    VectorString nans = catalog.GetNan();
+    CHECK_EQUAL(true,nans[0].IsSameAs("32767"));
     samestr = catalog.GetCoordSys().CompareTo(_T("EPSG:3857"));
     CHECK_EQUAL(0,samestr);
 }
