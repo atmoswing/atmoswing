@@ -3,7 +3,7 @@
 #include "asFileAscii.h"
 #include <asThreadMethodOptimizerRandomSet.h>
 #ifndef UNIT_TESTING
-    #include <AtmoswingAppCalibrator.h>
+    #include <AtmoswingAppOptimizer.h>
 #endif
 
 asMethodOptimizerRandomSet::asMethodOptimizerRandomSet()
