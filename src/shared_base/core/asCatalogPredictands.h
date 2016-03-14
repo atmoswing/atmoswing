@@ -294,7 +294,7 @@ public:
     /** Access m_nan
      * \return The current value of m_nan
      */
-    VectorDouble GetNan()
+    VectorString GetNan()
     {
         return m_nan;
     }
@@ -302,7 +302,7 @@ public:
     /** Set m_nan
      * \param val New value to set
      */
-    void SetNan(const VectorDouble &val)
+    void SetNan(const VectorString &val)
     {
         m_nan = val;
     }
@@ -525,7 +525,7 @@ private:
     double m_timeStepHours; //!< Member variable "m_timeStep" in hours
     double m_firstTimeStepHour; //!< Member variable "m_firstTimeStep" in hours
     wxString m_dataPath; //!< Member variable "m_filePath"
-    VectorDouble m_nan; //!< Member variable "m_nan"
+    VectorString m_nan; //!< Member variable "m_nan"
     wxString m_coordSys; //!< Member variable "m_coordSys"
     DataParameter m_parameter; //!< Member variable "m_parameter"
     DataUnit m_unit; //!< Member variable "m_unit"

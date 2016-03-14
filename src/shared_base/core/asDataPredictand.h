@@ -344,6 +344,7 @@ class asDataPredictand: public wxObject
 
     private:
 
+        float ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const;
 };
 
 #endif // ASDATAPREDICTAND_H

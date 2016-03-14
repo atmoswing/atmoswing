@@ -106,7 +106,7 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "path") {
                     m_dataPath = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "nan") {
-                    m_nan.push_back(xmlFile.GetDouble(nodeProp));
+                    m_nan.push_back(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "coordinate_system") {
                     m_coordSys = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "stations") {
