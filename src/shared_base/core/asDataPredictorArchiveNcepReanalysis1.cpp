@@ -543,14 +543,6 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
         wxASSERT(nDims>=3);
         wxASSERT(nDims<=4);
 
-        // Get some attributes
-        float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
-        if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
-        float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
-        if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
-        bool scalingNeeded = true;
-        if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
-
         // Get full axes from the netcdf file
         Array1DFloat axisDataLon(ncFile.GetVarLength(m_fileAxisLonName));
         ncFile.GetVar(m_fileAxisLonName, &axisDataLon[0]);
@@ -583,7 +575,20 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
             format2003 = true;
         }
-            
+
+        // Get some attributes
+        bool scalingNeeded = false;
+        float dataAddOffset = 0;
+        float dataScaleFactor = 1;
+        if (format2003) {
+            dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
+            if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
+            dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
+            if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
+            scalingNeeded = true;
+            if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
+        }
+
         // Get start and end of the current year
         double timeStart = asTime::GetMJD(i_year,1,1,0,0);
         double timeEnd = asTime::GetMJD(i_year,12,31,23,59);
@@ -591,7 +596,7 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
         // Get the time length
         double timeArrayIndexStart = timeArray.GetIndexFirstAfter(timeStart);
         double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(timeEnd);
-        int indexLengthTime = timeArrayIndexEnd-timeArrayIndexStart+1;
+        int indexLengthTime = int(timeArrayIndexEnd-timeArrayIndexStart+1);
         int indexLengthTimeArray = indexLengthTime;
 
         // Correct the time start and end
@@ -599,7 +604,7 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
         int cutStart = 0;
         if(i_year==yearFirst)
         {
-            cutStart = timeArrayIndexStart;
+            cutStart = int(timeArrayIndexStart);
         }
         int cutEnd = 0;
         while (valFirstTime<timeArray[timeArrayIndexStart])
@@ -689,6 +694,10 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             if (nDims==4)
             {
                 indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_level, 0.01f);
+            }
+            if (indexLevel<0) {
+                asLogError(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName));
+                return false;
             }
 
             // Create the arrays to receive the data
