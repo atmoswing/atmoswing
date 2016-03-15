@@ -288,8 +288,10 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
-        pConfig->Write("/Optimizer/ParallelEvaluations", true);
         pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+        if (pConfig->ReadDouble("/Processing/MaxThreadNb")>1) {
+            pConfig->Write("/Optimizer/ParallelEvaluations", true);
+        }
 
         pConfig->Flush();
 
@@ -338,7 +340,7 @@ bool AtmoswingAppCalibrator::InitForCmdLineOnly()
 
                         if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef))
                         {
-                            asLogError(wxString::Format(_("The option %s (under Calibration/%s) differ from the previous config file (%s != %s)."),
+                            asLogError(wxString::Format(_("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
                                                         entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str()));
                             m_forceQuit = true;
                         }

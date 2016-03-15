@@ -12,7 +12,7 @@ public:
     asMethodOptimizer();
     virtual ~asMethodOptimizer();
 
-    bool Manager() = 0;
+    virtual bool Manager() = 0;
 
     void SetPredictandStationIds(VectorInt val)
     {

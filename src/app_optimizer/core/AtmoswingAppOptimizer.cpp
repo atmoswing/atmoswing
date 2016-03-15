@@ -338,7 +338,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
 
                         if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef))
                         {
-                            asLogError(wxString::Format(_("The option %s (under Calibration/%s) differ from the previous config file (%s != %s)."),
+                            asLogError(wxString::Format(_("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
                                                         entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str()));
                             m_forceQuit = true;
                         }
