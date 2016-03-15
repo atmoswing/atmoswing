@@ -288,8 +288,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
-        pConfig->Write("/Calibration/ParallelEvaluations", true);
-        pConfig->Write("/Calibration/GeneticAlgorithms/AllowElitismForTheBest", true);
+        pConfig->Write("/Optimizer/ParallelEvaluations", true);
+        pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
 
         pConfig->Flush();
 
@@ -312,8 +312,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         }
 
         // We only compare the content of the Calibration group.
-        pConfigNow->SetPath("Calibration");
-        pConfigRef->SetPath("Calibration");
+        pConfigNow->SetPath("Optimizer");
+        pConfigRef->SetPath("Optimizer");
 
         wxString subGroupName;
         long subGroupIndex;
@@ -604,206 +604,206 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
     // Classic+ calibration
     if (parser.Found("cp-resizing-iteration", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/ResizingIterations", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ResizingIterations", option);
     }
 
     if (parser.Found("cp-lat-step", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/StepsLatPertinenceMap", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLatPertinenceMap", option);
     }
 
     if (parser.Found("cp-lon-step", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/StepsLonPertinenceMap", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLonPertinenceMap", option);
     }
 
     if (parser.Found("cp-proceed-sequentially", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/ClassicPlus/ProceedSequentially", option);
+        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ProceedSequentially", option);
     }
 
     // Variables exploration
     if (parser.Found("ve-step", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/VariablesExplo/Step", option);
+        wxFileConfig::Get()->Write("/Optimizer/VariablesExplo/Step", option);
     }
 
     // Monte Carlo
     if (parser.Found("mc-runs-nb", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/MonteCarlo/RandomNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/MonteCarlo/RandomNb", option);
     }
 
     // Genetic algorithms
     if (parser.Found("ga-ope-nat-sel", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/NaturalSelectionOperator", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", option);
     }
 
     if (parser.Found("ga-ope-coup-sel", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/CouplesSelectionOperator", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", option);
     }
 
     if (parser.Found("ga-ope-cross", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/CrossoverOperator", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", option);
     }
 
     if (parser.Found("ga-ope-mut", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationOperator", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", option);
     }
 
     if (parser.Found("ga-pop-size", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/PopulationSize", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/PopulationSize", option);
     }
 
     if (parser.Found("ga-conv-steps", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/ConvergenceStepsNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", option);
     }
 
     if (parser.Found("ga-interm-gen", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/RatioIntermediateGeneration", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", option);
     }
 
     if (parser.Found("ga-nat-sel-tour-p", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
     }
 
     if (parser.Found("ga-coup-sel-tour-nb", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
     }
 
     if (parser.Found("ga-cross-mult-pt-nb", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverMultiplePointsNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb", option);
     }
 
     if (parser.Found("ga-cross-blen-pt-nb", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBlendingPointsNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb", option);
     }
 
     if (parser.Found("ga-cross-blen-share-b", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBlendingShareBeta", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingShareBeta", option);
     }
 
     if (parser.Found("ga-cross-lin-pt-nb", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverLinearPointsNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverLinearPointsNb", option);
     }
 
     if (parser.Found("ga-cross-heur-pt-nb", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverHeuristicPointsNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb", option);
     }
 
     if (parser.Found("ga-cross-heur-share-b", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverHeuristicShareBeta", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicShareBeta", option);
     }
 
     if (parser.Found("ga-cross-bin-pt-nb", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBinaryLikePointsNb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", option);
     }
 
     if (parser.Found("ga-cross-bin-share-b", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", option);
     }
 
     if (parser.Found("ga-mut-unif-cst-p", & option))
     {
-        wxFileConfig::Get()->Write("Calibration/GeneticAlgorithms/MutationsUniformConstantProbability", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", option);
     }
 
     if (parser.Found("ga-mut-norm-cst-p", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalConstantProbability", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", option);
     }
 
     if (parser.Found("ga-mut-norm-cst-dev", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", option);
     }
 
     if (parser.Found("ga-mut-unif-var-gens", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", option);
     }
 
     if (parser.Found("ga-mut-unif-var-p-strt", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", option);
     }
 
     if (parser.Found("ga-mut-unif-var-p-end", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", option);
     }
 
     if (parser.Found("ga-mut-norm-var-gens-p", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", option);
     }
 
     if (parser.Found("ga-mut-norm-var-gens-d", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", option);
     }
 
     if (parser.Found("ga-mut-norm-var-p-strt", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", option);
     }
 
     if (parser.Found("ga-mut-norm-var-p-end", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", option);
     }
 
     if (parser.Found("ga-mut-norm-var-d-strt", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevStart", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", option);
     }
 
     if (parser.Found("ga-mut-norm-var-d-end", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", option);
     }
 
     if (parser.Found("ga-mut-non-uni-p", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformProbability", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", option);
     }
 
     if (parser.Found("ga-mut-non-uni-gens", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", option);
     }
 
     if (parser.Found("ga-mut-non-uni-min-r", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsNonUniformMinRate", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", option);
     }
 
     if (parser.Found("ga-mut-multi-scale-p", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/GeneticAlgorithms/MutationsMultiScaleProbability", option);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", option);
     }
 
     // Skip validation option
     if (parser.Found("skip-valid", & option))
     {
-        wxFileConfig::Get()->Write("/Calibration/SkipValidation", option);
+        wxFileConfig::Get()->Write("/Optimizer/SkipValidation", option);
     }
 
     // Station ID

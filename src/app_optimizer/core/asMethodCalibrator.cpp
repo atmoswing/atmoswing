@@ -359,18 +359,13 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
 {
     wxString id;
 
-    if (stationIds.size()==1)
-    {
+    if (stationIds.size() == 1) {
         id << stationIds[0];
     }
-    else
-    {
-        for (int i=0; i<(int)stationIds.size(); i++)
-        {
+    else {
+        for (int i = 0; i < (int) stationIds.size(); i++) {
             id << stationIds[i];
-
-            if (i<(int)stationIds.size()-1)
-            {
+            if (i < (int) stationIds.size() - 1) {
                 id << ",";
             }
         }

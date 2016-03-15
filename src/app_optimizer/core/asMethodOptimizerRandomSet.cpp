@@ -24,7 +24,7 @@ bool asMethodOptimizerRandomSet::Manager()
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool parallelEvaluations;
-    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, false);
+    pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Seeds the random generator
@@ -51,7 +51,7 @@ bool asMethodOptimizerRandomSet::Manager()
     asResultsParametersArray results_best;
     results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Calibration/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
+    resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
 
     // Preload data
     if (!PreloadData(params))
@@ -256,7 +256,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Read("/Calibration/MonteCarlo/RandomNb", &m_paramsNb, 1000);
+    pConfig->Read("/Optimizer/MonteCarlo/RandomNb", &m_paramsNb, 1000);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Get the number of runs
