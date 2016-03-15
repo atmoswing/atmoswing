@@ -71,7 +71,7 @@ bool asProcessor::GetAnalogsDates(std::vector < asDataPredictor* > predictorsArc
     bool allowMultithreading;
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
     bool parallelEvaluations;
-    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
+    pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
@@ -819,7 +819,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector < asDataPredictor* > predictors
     bool allowMultithreading;
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
     bool parallelEvaluations;
-    pConfig->Read("/Calibration/ParallelEvaluations", &parallelEvaluations, true);
+    pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, true);
 
     // Check options compatibility
     if (!allowMultithreading && method==asMULTITHREADS)
