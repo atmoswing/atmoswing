@@ -320,15 +320,19 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
 
 bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
-    /*bool parallelDataLoad = false;
+    bool parallelDataLoad = false;
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, false);
-    ThreadsManager().CritSectionConfig().Leave();*/
+    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, true);
+    ThreadsManager().CritSectionConfig().Leave();
 
     // Load data once.
     if (!m_preloaded) {
         // Set preload to true here, so cleanup is made in case of exceptions.
         m_preloaded = true;
+
+        if (parallelDataLoad) {
+            asLogMessage(_("Preloading data with threads."));
+        }
 
         // Resize container
         InitializePreloadedDataContainer(params);
@@ -349,28 +353,28 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                             if (PointersShared(params, i_step, i_ptor, i_dat)) {
                                 continue;
                             }
-                            /*if (parallelDataLoad) {
+                            if (parallelDataLoad) {
                                 asThreadPreloadData* thread = new asThreadPreloadData(this, params, i_step, i_ptor, i_dat);
                                 if (!ThreadsManager().HasFreeThread(thread->GetType())) {
                                     ThreadsManager().WaitForFreeThread(thread->GetType());
                                 }
                                 ThreadsManager().AddThread(thread);
-                            } else {*/
-                            if (!PreloadDataWithoutPreprocessing(params, i_step, i_ptor, i_dat)) {
-                                return false;
+                            } else {
+                                if (!PreloadDataWithoutPreprocessing(params, i_step, i_ptor, i_dat)) {
+                                    return false;
+                                }
                             }
-
-                            //}
                         }
                     }
                 }
             }
         }
-/*
+
         if (parallelDataLoad) {
             // Wait until all done
             ThreadsManager().Wait(asThread::PreloadData);
-        }*/
+            asLogMessage(_("Data preloaded with threads."));
+        }
     }
 
     return true;
