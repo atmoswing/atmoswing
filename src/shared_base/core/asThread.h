@@ -55,6 +55,7 @@ public:
     enum Type
     {
         Undefined,
+        PreloadData,
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
         PreprocessorGradients,
