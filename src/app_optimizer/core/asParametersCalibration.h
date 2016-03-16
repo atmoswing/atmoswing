@@ -56,9 +56,9 @@ public:
 
     void InitValues();
 
-	int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_preproc)
+	int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_prep)
 	{
-		return GetPreprocessDataIdVector(i_step, i_ptor, i_preproc).size();
+		return (int) GetPreprocessDataIdVector(i_step, i_ptor, i_prep).size();
 	}
 
     VVectorInt GetPredictandStationIdsVector()
@@ -74,88 +74,6 @@ public:
     }
 
     bool SetTimeArrayAnalogsIntervalDaysVector(VectorInt val);
-
-    VectorInt GetAnalogsNumberVector(int i_step)
-    {
-        return m_stepsVect[i_step].AnalogsNumber;
-    }
-
-    bool SetAnalogsNumberVector(int i_step, VectorInt val);
-
-    VectorString GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset);
-
-    bool SetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset, VectorString val);
-
-    VectorFloat GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset);
-
-    bool SetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset, VectorFloat val);
-
-    VectorDouble GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset);
-
-    bool SetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val);
-
-    VectorString GetPredictorDataIdVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].DataId;
-    }
-
-    bool SetPredictorDataIdVector(int i_step, int i_predictor, VectorString val);
-
-    VectorFloat GetPredictorLevelVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Level;
-    }
-
-    bool SetPredictorLevelVector(int i_step, int i_predictor, VectorFloat val);
-
-    VectorDouble GetPredictorXminVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Xmin;
-    }
-
-    bool SetPredictorXminVector(int i_step, int i_predictor, VectorDouble val);
-
-    VectorInt GetPredictorXptsnbVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Xptsnb;
-    }
-
-    bool SetPredictorXptsnbVector(int i_step, int i_predictor, VectorInt val);
-
-    VectorDouble GetPredictorYminVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Ymin;
-    }
-
-    bool SetPredictorYminVector(int i_step, int i_predictor, VectorDouble val);
-
-    VectorInt GetPredictorYptsnbVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Yptsnb;
-    }
-
-    bool SetPredictorYptsnbVector(int i_step, int i_predictor, VectorInt val);
-
-    VectorDouble GetPredictorTimeHoursVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].TimeHours;
-    }
-
-    bool SetPredictorTimeHoursVector(int i_step, int i_predictor, VectorDouble val);
-
-    VectorString GetPredictorCriteriaVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Criteria;
-    }
-
-    bool SetPredictorCriteriaVector(int i_step, int i_predictor, VectorString val);
-
-    VectorFloat GetPredictorWeightVector(int i_step, int i_predictor)
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].Weight;
-    }
-
-    bool SetPredictorWeightVector(int i_step, int i_predictor, VectorFloat val);
 
     VectorString GetForecastScoreNameVector()
     {
@@ -277,7 +195,6 @@ protected:
 private:
     VVectorInt m_predictandStationIdsVect;
     VectorInt m_timeArrayAnalogsIntervalDaysVect;
-    VectorParamsStepVect m_stepsVect;
     ParamsForecastScoreVect m_forecastScoreVect;
 };
 

@@ -697,6 +697,7 @@ bool asParametersOptimization::SetPreloadingProperties()
 			// Set levels and time for preloading
 			if (NeedsPreloading(i_step, i_ptor) && !NeedsPreprocessing(i_step, i_ptor))
 			{
+				if (!SetPreloadDataIds(i_step, i_ptor, GetPredictorDataIdVector(i_step, i_ptor))) return false;
 				if (!SetPreloadLevels(i_step, i_ptor, GetPredictorLevelVector(i_step, i_ptor))) return false;
 				VectorDouble vTimeHours;
 				for (double h = GetPredictorTimeHoursLowerLimit(i_step, i_ptor);
