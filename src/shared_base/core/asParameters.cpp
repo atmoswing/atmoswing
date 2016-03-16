@@ -500,6 +500,7 @@ bool asParameters::SetPreloadingProperties()
 			// Set levels and time for preloading
 			if (NeedsPreloading(i_step, i_ptor) && !NeedsPreprocessing(i_step, i_ptor))
 			{
+				if (!SetPreloadDataIds(i_step, i_ptor, GetPredictorDataId(i_step, i_ptor))) return false;
 				if (!SetPreloadLevels(i_step, i_ptor, GetPredictorLevel(i_step, i_ptor))) return false;
 				if (!SetPreloadTimeHours(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor))) return false;
 			}
@@ -1344,6 +1345,42 @@ bool asParameters::SetAnalogsNumber(int i_step, int val)
 		return false;
 	}
 	m_steps[i_step].AnalogsNumber = val;
+	return true;
+}
+
+bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, VectorString val)
+{
+	if (val.size()<1)
+	{
+		asLogError(_("The provided preload data IDs vector is empty."));
+		return false;
+	}
+	else
+	{
+		for (int i = 0; i<(int)val.size(); i++)
+		{
+			if (val[i].IsEmpty())
+			{
+				asLogError(_("There are empty values in the provided preload data IDs vector."));
+				return false;
+			}
+		}
+	}
+	m_steps[i_step].Predictors[i_predictor].PreloadDataIds = val;
+	return true;
+}
+
+bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, wxString val)
+{
+	if (val.IsEmpty())
+	{
+		asLogError(_("The provided preload data id parameter is empty."));
+		return false;
+	}
+
+	m_steps[i_step].Predictors[i_predictor].PreloadDataIds.clear();
+	m_steps[i_step].Predictors[i_predictor].PreloadDataIds.push_back(val);
+
 	return true;
 }
 
