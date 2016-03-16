@@ -27,11 +27,10 @@
  */
 
 #include "asMethodCalibrator.h"
+#include "asThreadPreloadData.h"
 
 #ifndef UNIT_TESTING
-
     #include "AtmoswingAppOptimizer.h"
-
 #endif
 
 asMethodCalibrator::asMethodCalibrator() : asMethodStandard()
@@ -321,6 +320,11 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
 
 bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
+    /*bool parallelDataLoad = false;
+    ThreadsManager().CritSectionConfig().Enter();
+    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, false);
+    ThreadsManager().CritSectionConfig().Leave();*/
+
     // Load data once.
     if (!m_preloaded) {
         // Set preload to true here, so cleanup is made in case of exceptions.
@@ -332,45 +336,44 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
         for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
             for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
                 if (params.NeedsPreloading(i_step, i_ptor)) {
-                    if (PointersShared(params, i_step, i_ptor)) {
-                        continue;
-                    }
-                    if (!params.NeedsPreprocessing(i_step, i_ptor)) {
-                        if (!PreloadDataWithoutPreprocessing(params, i_step, i_ptor)) {
-                            return false;
+
+                    if (params.NeedsPreprocessing(i_step, i_ptor)) {
+                        if (PointersShared(params, i_step, i_ptor, 0)) {
+                            continue;
                         }
-                    } else {
                         if (!PreloadDataWithPreprocessing(params, i_step, i_ptor)) {
                             return false;
                         }
+                    } else {
+                        for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
+                            if (PointersShared(params, i_step, i_ptor, i_dat)) {
+                                continue;
+                            }
+                            /*if (parallelDataLoad) {
+                                asThreadPreloadData* thread = new asThreadPreloadData(this, params, i_step, i_ptor, i_dat);
+                                if (!ThreadsManager().HasFreeThread(thread->GetType())) {
+                                    ThreadsManager().WaitForFreeThread(thread->GetType());
+                                }
+                                ThreadsManager().AddThread(thread);
+                            } else {*/
+                            if (!PreloadDataWithoutPreprocessing(params, i_step, i_ptor, i_dat)) {
+                                return false;
+                            }
+
+                            //}
+                        }
                     }
-                } else { // no preloading
-                    SetPreloadedContainerNull(params, i_step, i_ptor);
                 }
             }
         }
+/*
+        if (parallelDataLoad) {
+            // Wait until all done
+            ThreadsManager().Wait(asThread::PreloadData);
+        }*/
     }
 
     return true;
-}
-
-void asMethodCalibrator::SetPreloadedContainerNull(asParametersScoring &params, int i_step, int i_ptor)
-{
-    VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
-    VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
-
-    unsigned long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
-    unsigned long preloadTimeHoursSize = wxMax(preloadTimeHours.size(), 1);
-
-    m_preloadedArchive[i_step][i_ptor].resize(preloadLevelsSize);
-
-    // Load data for every level and every hour
-    for (int i_level = 0; i_level < preloadLevelsSize; i_level++) {
-        m_preloadedArchive[i_step][i_ptor][i_level].resize(preloadTimeHoursSize);
-        for (int i_hour = 0; i_hour < preloadTimeHoursSize; i_hour++) {
-            m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = NULL;
-        }
-    }
 }
 
 void asMethodCalibrator::InitializePreloadedDataContainer(asParametersScoring &params)
@@ -383,10 +386,29 @@ void asMethodCalibrator::InitializePreloadedDataContainer(asParametersScoring &p
             m_preloadedArchivePointerCopy[i_step].resize((unsigned long) params.GetPredictorsNb(i_step));
 
             for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-                m_preloadedArchivePointerCopy[i_step][i_ptor] = false;
-                m_preloadedArchive[i_step][i_ptor].resize(1);
-                m_preloadedArchive[i_step][i_ptor][0].resize(1);
-                m_preloadedArchive[i_step][i_ptor][0][0] = NULL;
+
+                VectorString preloadDataIds = params.GetPreloadDataIds(i_step, i_ptor);
+                VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
+                VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
+
+                unsigned long preloadDataIdsSize = wxMax(preloadDataIds.size(), 1);
+                unsigned long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
+                unsigned long preloadTimeHoursSize = wxMax(preloadTimeHours.size(), 1);
+
+                m_preloadedArchive[i_step][i_ptor].resize(preloadDataIdsSize);
+
+                for (int i_dat = 0; i_dat < preloadDataIdsSize; i_dat++) {
+                    m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat] = false;
+                    m_preloadedArchive[i_step][i_ptor][i_dat].resize(preloadLevelsSize);
+
+                    // Load data for every level and every hour
+                    for (int i_level = 0; i_level < preloadLevelsSize; i_level++) {
+                        m_preloadedArchive[i_step][i_ptor][i_dat][i_level].resize(preloadTimeHoursSize);
+                        for (int i_hour = 0; i_hour < preloadTimeHoursSize; i_hour++) {
+                            m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] = NULL;
+                        }
+                    }
+                }
             }
         }
     }
@@ -424,61 +446,60 @@ double asMethodCalibrator::GetTimeEndArchive(asParametersScoring &params) const
     return timeEndArchive;
 }
 
-bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step, int i_ptor)
+bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step, int i_ptor, int i_dat)
 {
     if (i_ptor == 0) {
         return false;
     }
 
-    int prev = 0;
+    int prev_ptor = 0;
+    int prev_dat = 0;
     bool share = false;
 
-    for (prev = 0; prev < i_ptor; prev++) {
+    for (prev_ptor = 0; prev_ptor < i_ptor; prev_ptor++) {
         share = true;
 
         if (!params.NeedsPreprocessing(i_step, i_ptor)) {
-            if (!params.GetPredictorDatasetId(i_step, i_ptor).IsSameAs(params.GetPredictorDatasetId(i_step, prev), false))
+            if (!params.GetPredictorDatasetId(i_step, i_ptor).IsSameAs(params.GetPredictorDatasetId(i_step, prev_ptor), false))
                 share = false;
-            if (!params.GetPredictorDataId(i_step, i_ptor).IsSameAs(params.GetPredictorDataId(i_step, prev), false))
-                share = false;
-            if (!params.GetPredictorGridType(i_step, i_ptor).IsSameAs(params.GetPredictorGridType(i_step, prev), false))
+            if (!params.GetPredictorGridType(i_step, i_ptor).IsSameAs(params.GetPredictorGridType(i_step, prev_ptor), false))
                 share = false;
         } else {
-            if (!params.GetPreprocessMethod(i_step, i_ptor).IsSameAs(params.GetPreprocessMethod(i_step, prev), false))
+            if (!params.GetPreprocessMethod(i_step, i_ptor).IsSameAs(params.GetPreprocessMethod(i_step, prev_ptor), false))
                 share = false;
-            if (params.GetPreprocessSize(i_step, i_ptor) != params.GetPreprocessSize(i_step, prev)) {
+            if (params.GetPreprocessSize(i_step, i_ptor) != params.GetPreprocessSize(i_step, prev_ptor)) {
                 share = false;
             } else {
                 int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
 
                 for (int i_prep = 0; i_prep < preprocessSize; i_prep++) {
                     if (!params.GetPreprocessDatasetId(i_step, i_ptor, i_prep).IsSameAs(
-                            params.GetPreprocessDatasetId(i_step, prev, i_prep), false))
+                            params.GetPreprocessDatasetId(i_step, prev_ptor, i_prep), false))
                         share = false;
                     if (!params.GetPreprocessDataId(i_step, i_ptor, i_prep).IsSameAs(
-                            params.GetPreprocessDataId(i_step, prev, i_prep), false))
+                            params.GetPreprocessDataId(i_step, prev_ptor, i_prep), false))
                         share = false;
                 }
             }
         }
 
-        if (params.GetPreloadXmin(i_step, i_ptor) != params.GetPreloadXmin(i_step, prev))
+        if (params.GetPreloadXmin(i_step, i_ptor) != params.GetPreloadXmin(i_step, prev_ptor))
             share = false;
-        if (params.GetPreloadXptsnb(i_step, i_ptor) != params.GetPreloadXptsnb(i_step, prev))
+        if (params.GetPreloadXptsnb(i_step, i_ptor) != params.GetPreloadXptsnb(i_step, prev_ptor))
             share = false;
-        if (params.GetPredictorXstep(i_step, i_ptor) != params.GetPredictorXstep(i_step, prev))
+        if (params.GetPredictorXstep(i_step, i_ptor) != params.GetPredictorXstep(i_step, prev_ptor))
             share = false;
-        if (params.GetPreloadYmin(i_step, i_ptor) != params.GetPreloadYmin(i_step, prev))
+        if (params.GetPreloadYmin(i_step, i_ptor) != params.GetPreloadYmin(i_step, prev_ptor))
             share = false;
-        if (params.GetPreloadYptsnb(i_step, i_ptor) != params.GetPreloadYptsnb(i_step, prev))
+        if (params.GetPreloadYptsnb(i_step, i_ptor) != params.GetPreloadYptsnb(i_step, prev_ptor))
             share = false;
-        if (params.GetPredictorYstep(i_step, i_ptor) != params.GetPredictorYstep(i_step, prev))
+        if (params.GetPredictorYstep(i_step, i_ptor) != params.GetPredictorYstep(i_step, prev_ptor))
             share = false;
-        if (params.GetPredictorFlatAllowed(i_step, i_ptor) != params.GetPredictorFlatAllowed(i_step, prev))
+        if (params.GetPredictorFlatAllowed(i_step, i_ptor) != params.GetPredictorFlatAllowed(i_step, prev_ptor))
             share = false;
 
         VectorFloat levels1 = params.GetPreloadLevels(i_step, i_ptor);
-        VectorFloat levels2 = params.GetPreloadLevels(i_step, prev);
+        VectorFloat levels2 = params.GetPreloadLevels(i_step, prev_ptor);
         if (levels1.size() != levels2.size()) {
             share = false;
         } else {
@@ -489,7 +510,7 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
         }
 
         VectorDouble hours1 = params.GetPreloadTimeHours(i_step, i_ptor);
-        VectorDouble hours2 = params.GetPreloadTimeHours(i_step, prev);
+        VectorDouble hours2 = params.GetPreloadTimeHours(i_step, prev_ptor);
         if (hours1.size() != hours2.size()) {
             share = false;
         } else {
@@ -498,6 +519,22 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
                     share = false;
             }
         }
+
+        bool dataIdFound = false;
+        VectorString preloadDataIds = params.GetPreloadDataIds(i_step, i_ptor);
+        VectorString preloadDataIdsPrev = params.GetPreloadDataIds(i_step, prev_ptor);
+        for (unsigned int i = 0; i < preloadDataIdsPrev.size(); i++) {
+            if(preloadDataIds[i_dat].IsSameAs(preloadDataIdsPrev[i])) {
+                prev_dat = i;
+                dataIdFound = true;
+            }
+        }
+        if (!dataIdFound) {
+            share = false;
+        }
+
+        if (!params.GetPredictorDataId(i_step, i_ptor).IsSameAs(params.GetPredictorDataId(i_step, prev_ptor), false))
+            share = false;
 
         if (share)
             break;
@@ -511,24 +548,22 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
         wxASSERT(preloadLevels.size() > 0);
         wxASSERT(preloadTimeHours.size() > 0);
 
-        m_preloadedArchivePointerCopy[i_step][i_ptor] = true;
-        m_preloadedArchive[i_step][i_ptor].resize(preloadLevels.size());
+        m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat] = true;
 
-        wxASSERT(m_preloadedArchive[i_step].size() > (unsigned) prev);
-        wxASSERT(m_preloadedArchive[i_step][prev].size() == preloadLevels.size());
+        wxASSERT(m_preloadedArchive[i_step].size() > (unsigned) prev_ptor);
+        wxASSERT(m_preloadedArchive[i_step][prev_ptor].size() == params.GetPreloadDataIds(i_step, i_ptor).size());
+        wxASSERT(m_preloadedArchive[i_step][prev_ptor][prev_dat].size() == preloadLevels.size());
 
         // Load data for every level and every hour
         for (unsigned int i_level = 0; i_level < preloadLevels.size(); i_level++) {
-            m_preloadedArchive[i_step][i_ptor][i_level].resize(preloadTimeHours.size());
-            wxASSERT(m_preloadedArchive[i_step][prev][i_level].size() == preloadTimeHours.size());
-
+            wxASSERT(m_preloadedArchive[i_step][prev_ptor][i_dat][i_level].size() == preloadTimeHours.size());
             for (unsigned int i_hour = 0; i_hour < preloadTimeHours.size(); i_hour++) {
                 // Copy pointer
-                m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = m_preloadedArchive[i_step][prev][i_level][i_hour];
+                m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] = m_preloadedArchive[i_step][prev_ptor][prev_dat][i_level][i_hour];
             }
         }
 
-        params.SetPreloadYptsnb(i_step, i_ptor, params.GetPreloadYptsnb(i_step, prev));
+        params.SetPreloadYptsnb(i_step, i_ptor, params.GetPreloadYptsnb(i_step, prev_ptor));
 
         return true;
     }
@@ -536,26 +571,19 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
     return false;
 }
 
-bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &params, int i_step, int i_ptor)
+bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &params, int i_step, int i_ptor, int i_dat)
 {
     asLogMessage(wxString::Format(_("Preloading data for predictor %d of step %d."), i_ptor, i_step));
 
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
 
+    VectorString preloadDataIds = params.GetPreloadDataIds(i_step, i_ptor);
     VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
     VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
+    wxASSERT(preloadDataIds.size() > i_dat);
     wxASSERT(preloadLevels.size() > 0);
     wxASSERT(preloadTimeHours.size() > 0);
-
-    // Resize container and set null pointers
-    m_preloadedArchive[i_step][i_ptor].resize(preloadLevels.size());
-    for (unsigned int i_level = 0; i_level < preloadLevels.size(); i_level++) {
-        m_preloadedArchive[i_step][i_ptor][i_level].resize(preloadTimeHours.size());
-        for (unsigned int i_hour = 0; i_hour < preloadTimeHours.size(); i_hour++) {
-            m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = NULL;
-        }
-    }
 
     // Load data for every level and every hour
     for (unsigned int i_level = 0; i_level < preloadLevels.size(); i_level++) {
@@ -563,7 +591,7 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
             // Loading the dataset information
             asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance(
                     params.GetPredictorDatasetId(i_step, i_ptor),
-                    params.GetPredictorDataId(i_step, i_ptor),
+                    preloadDataIds[i_dat],
                     m_predictorDataDir);
             if (!predictor) {
                 return false;
@@ -627,7 +655,7 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
 
             // Data loading
             asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
-                                          params.GetPredictorDataId(i_step, i_ptor), (int) preloadLevels[i_level],
+                                          preloadDataIds[i_dat], (int) preloadLevels[i_level],
                                           (int) preloadTimeHours[i_hour]));
             try {
                 if (!predictor->Load(area, timeArray)) {
@@ -652,7 +680,7 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
             asLogMessage(_("Data loaded."));
             wxDELETE(area);
 
-            m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = predictor;
+            m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] = predictor;
         }
     }
 
@@ -691,15 +719,6 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
     if (preloadTimeHoursSize == 0) {
         loopOnTimeHours = false;
         preloadTimeHoursSize = 1;
-    }
-
-    // Resize container and set null pointers
-    m_preloadedArchive[i_step][i_ptor].resize(preloadLevelsSize);
-    for (unsigned int i_level = 0; i_level < preloadLevelsSize; i_level++) {
-        m_preloadedArchive[i_step][i_ptor][i_level].resize(preloadTimeHoursSize);
-        for (unsigned int i_hour = 0; i_hour < preloadTimeHoursSize; i_hour++) {
-            m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = NULL;
-        }
     }
 
     asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
@@ -828,16 +847,14 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                     Cleanup(predictorsPreprocess);
                     return false;
                 }
-                m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = predictor;
+                m_preloadedArchive[i_step][i_ptor][0][i_level][i_hour] = predictor;
             } catch (std::bad_alloc &ba) {
-                m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = NULL;
                 wxString msg(ba.what(), wxConvUTF8);
                 asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg));
                 wxDELETE(predictor);
                 Cleanup(predictorsPreprocess);
                 return false;
             } catch (std::exception &e) {
-                m_preloadedArchive[i_step][i_ptor][i_level][i_hour] = NULL;
                 wxString msg(e.what(), wxConvUTF8);
                 asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg));
                 wxDELETE(predictor);
@@ -902,7 +919,15 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
     float level;
     double time;
-    int i_level = 0, i_hour = 0;
+    int i_level = 0, i_hour = 0, i_dat = 0;
+
+    // Get data ID
+    VectorString preloadDataIds = params.GetPreloadDataIds(i_step, i_ptor);
+    for (int i=0; i<preloadDataIds.size(); i++) {
+        if(preloadDataIds[i].IsSameAs(params.GetPredictorDataId(i_step, i_ptor))) {
+            i_dat = i;
+        }
+    }
 
     if (!params.NeedsPreprocessing(i_step, i_ptor)) {
         wxASSERT(preloadLevels.size() > 0);
@@ -965,26 +990,19 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     }
 
     // Get data on the desired domain
-    wxASSERT_MSG((unsigned) i_step < m_preloadedArchive.size(),
-                 wxString::Format("i_step=%d, m_preloadedArchive.size()=%d", i_step,
-                                  (int) m_preloadedArchive.size()));
-    wxASSERT_MSG((unsigned) i_ptor < m_preloadedArchive[i_step].size(),
-                 wxString::Format("i_ptor=%d, m_preloadedArchive[i_step].size()=%d", i_ptor,
-                                  (int) m_preloadedArchive[i_step].size()));
-    wxASSERT_MSG((unsigned) i_level < m_preloadedArchive[i_step][i_ptor].size(),
-                 wxString::Format("i_level=%d, m_preloadedArchive[i_step][i_ptor].size()=%d", i_level,
-                                  (int) m_preloadedArchive[i_step][i_ptor].size()));
-    wxASSERT_MSG((unsigned) i_hour < m_preloadedArchive[i_step][i_ptor][i_level].size(),
-                 wxString::Format("i_hour=%d, m_preloadedArchive[i_step][i_ptor][i_level].size()=%d", i_hour,
-                                  (int) m_preloadedArchive[i_step][i_ptor][i_level].size()));
-    if (m_preloadedArchive[i_step][i_ptor][i_level][i_hour] == NULL) {
+    wxASSERT((unsigned) i_step < m_preloadedArchive.size());
+    wxASSERT((unsigned) i_ptor < m_preloadedArchive[i_step].size());
+    wxASSERT((unsigned) i_dat < m_preloadedArchive[i_step][i_ptor].size());
+    wxASSERT((unsigned) i_level < m_preloadedArchive[i_step][i_ptor][i_dat].size());
+    wxASSERT((unsigned) i_hour < m_preloadedArchive[i_step][i_ptor][i_dat][i_level].size());
+    if (m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] == NULL) {
         asLogError(_("The pointer to preloaded data is null."));
         return false;
     }
     // Copy the data
-    wxASSERT(m_preloadedArchive[i_step][i_ptor][i_level][i_hour]);
+    wxASSERT(m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour]);
     asDataPredictorArchive *desiredPredictor = new asDataPredictorArchive(
-            *m_preloadedArchive[i_step][i_ptor][i_level][i_hour]);
+            *m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour]);
 
     // Area object instantiation
     asGeoAreaCompositeGrid *desiredArea = asGeoAreaCompositeGrid::GetInstance(
@@ -998,8 +1016,8 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
 
     if (!desiredPredictor->ClipToArea(desiredArea)) {
         asLogError(wxString::Format(
-                _("The data could not be extracted (i_step = %d, i_ptor = %d, i_level = %d, i_hour = %d)."),
-                i_step, i_ptor, i_level, i_hour));
+                _("The data could not be extracted (i_step = %d, i_ptor = %d, i_dat = %d, i_level = %d, i_hour = %d)."),
+                i_step, i_ptor, i_dat, i_level, i_hour));
         wxDELETE(desiredArea);
         wxDELETE(desiredPredictor);
         return false;
@@ -1265,10 +1283,12 @@ void asMethodCalibrator::DeletePreloadedData()
 
     for (unsigned int i = 0; i < m_preloadedArchive.size(); i++) {
         for (unsigned int j = 0; j < m_preloadedArchive[i].size(); j++) {
-            if (!m_preloadedArchivePointerCopy[i][j]) {
-                for (unsigned int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
+            for (unsigned int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
+                if (!m_preloadedArchivePointerCopy[i][j][k]) {
                     for (unsigned int l = 0; l < m_preloadedArchive[i][j][k].size(); l++) {
-                        wxDELETE(m_preloadedArchive[i][j][k][l]);
+                        for (unsigned int m = 0; m < m_preloadedArchive[i][j][k].size(); m++) {
+                            wxDELETE(m_preloadedArchive[i][j][k][l][m]);
+                        }
                     }
                 }
             }

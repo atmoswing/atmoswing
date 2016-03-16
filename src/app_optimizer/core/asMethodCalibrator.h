@@ -75,6 +75,10 @@ public:
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
                                  int i_step = 0);
 
+    bool PreloadDataWithoutPreprocessing(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+
+    bool PreloadDataWithPreprocessing(asParametersScoring &params, int i_step, int i_ptor);
+
     void Cleanup(std::vector<asDataPredictorArchive *> predictorsPreprocess);
 
     void Cleanup(std::vector<asDataPredictor *> predictors);
@@ -145,8 +149,6 @@ protected:
     asParametersCalibration m_originalParams;
     bool m_preloaded;
     bool m_validationMode;
-    std::vector<std::vector<std::vector<std::vector<asDataPredictorArchive *> > > > m_preloadedArchive;
-    VVectorBool m_preloadedArchivePointerCopy;
 
     virtual bool Calibrate(asParametersCalibration &params) = 0;
 
@@ -159,11 +161,10 @@ protected:
 
 private:
 
-    bool PointersShared(asParametersScoring &params, int i_step, int i_ptor);
+    std::vector<std::vector<std::vector<std::vector<std::vector<asDataPredictorArchive *> > > > > m_preloadedArchive;
+    std::vector<VVectorBool > m_preloadedArchivePointerCopy;
 
-    bool PreloadDataWithoutPreprocessing(asParametersScoring &params, int i_step, int i_ptor);
-
-    bool PreloadDataWithPreprocessing(asParametersScoring &params, int i_step, int i_ptor);
+    bool PointersShared(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
 
     double GetTimeStartCalibration(asParametersScoring &params) const;
 
@@ -176,8 +177,6 @@ private:
     void InitializePreloadedDataContainer(asParametersScoring &params);
 
     void LoadScoreOrder(asParametersCalibration &params);
-
-    void SetPreloadedContainerNull(asParametersScoring &params, int i_step, int i_ptor);
 
     bool ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
                               int i_ptor);
