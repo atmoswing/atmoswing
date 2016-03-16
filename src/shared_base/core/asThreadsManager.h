@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASTHREADSMANAGER_H
 #define ASTHREADSMANAGER_H
 
@@ -34,7 +34,7 @@
 // Predefinition
 class asThread;
 
-class asThreadsManager: public wxObject
+class asThreadsManager : public wxObject
 {
 public:
     /** Default constructor */
@@ -45,94 +45,67 @@ public:
 
     void Init();
 
-    void OnClose(wxCloseEvent&);
+    void OnClose(wxCloseEvent &);
 
-    /** Add a thread
-     * \param thread New thread
-     */
-    bool AddThread(asThread* thread);
-
+    bool AddThread(asThread *thread);
 
     void Wait(int type);
+
+    bool HasFreeThread(int type);
+
     void WaitForFreeThread(int type);
+
     void SetNull(int id);
+
     bool CleanArray();
+
     void PauseAll();
+
     void ResumeAll();
 
-
-    /** Count the total number of threads
-     * \return The total number of threads
-     */
     int GetTotalThreadsNb();
 
-    /** Count the number of running threads
-     * \return The number of running threads
-     */
     int GetRunningThreadsNb(int type = -1);
 
-    /** Count the number of available threads
-     * \return The number of available threads
-     */
     int GetAvailableThreadsNb();
 
-    /** Access m_cancelled
-     * \return The current value of m_cancelled
-     */
     bool Cancelled()
     {
         wxCriticalSectionLocker lock(m_critSectionManager);
         return m_cancelled;
     }
 
-    /** Set m_cancelled to true
-     */
     void Cancel()
     {
         wxCriticalSectionLocker lock(m_critSectionManager);
         m_cancelled = true;
     }
 
-    /** Get a reference to the critical section of the data access
-     * \return A reference to the critical section of the data access
-     */
-    wxCriticalSection& CritSectionNetCDF()
+    wxCriticalSection &CritSectionNetCDF()
     {
         return m_critSectionNetCDF;
     }
 
-    /** Get a reference to the critical section of the config pointer
-     * \return A reference to the critical section of the config pointer
-     */
-    wxCriticalSection& CritSectionConfig()
+    wxCriticalSection &CritSectionConfig()
     {
         return m_critSectionConfig;
     }
 
-    wxCriticalSection& CritSectionPreloadedData()
+    wxCriticalSection &CritSectionPreloadedData()
     {
         return m_critSectionPreloadedData;
     }
 
-    /** Get a reference to the semaphore
-     * \return A reference to the semaphore
-     */
-    wxSemaphore& SemAllDone()
+    wxSemaphore &SemAllDone()
     {
         return m_semAllDone;
     }
 
-    /** Get the m_waitingUntilAllDone tag
-     * \return The m_waitingUntilAllDone current value
-     */
     bool GetWaitingUntilAllDone()
     {
         return m_waitingUntilAllDone;
     }
 
-    /** Set the m_waitingUntilAllDone tag
-     * \param The new value
-     */
     void SetWaitingUntilAllDone(bool val)
     {
         m_waitingUntilAllDone = val;
@@ -142,7 +115,7 @@ public:
 protected:
 private:
     int m_idCounter;
-    std::vector < asThread* > m_threads; //!< Member variable "m_threads". All the threads currently alive (as soon as the thread terminates, it's removed from the array)
+    std::vector<asThread *> m_threads; //!< Member variable "m_threads". All the threads currently alive (as soon as the thread terminates, it's removed from the array)
     wxCriticalSection m_critSectionManager; //!< Member variable "m_critSectionManager". Critical section.
     wxCriticalSection m_critSectionPreloadedData;
     wxCriticalSection m_critSectionNetCDF;
