@@ -152,14 +152,10 @@ VectorString asFileParameters::BuildVectorString(wxString str)
     wxChar separator = ',';
     while(str.Find(separator)!=wxNOT_FOUND)
     {
-        wxString strbefore = str.BeforeFirst(separator);
-        str = str.AfterFirst(separator);
-        strbefore = strbefore.Trim();
-        strbefore = strbefore.Trim(true);
-        vect.push_back(strbefore);
+        wxString strBefore = str.BeforeFirst(separator).Trim().Trim(false);
+        str = str.AfterFirst(separator).Trim().Trim(false);
+        vect.push_back(strBefore);
     }
-    str = str.Trim();
-    str = str.Trim(true);
     if(!str.IsEmpty())
     {
         vect.push_back(str);
