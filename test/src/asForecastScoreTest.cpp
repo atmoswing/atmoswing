@@ -33,12 +33,10 @@
 #include <asForecastScoreFinal.h>
 #include <asFileAscii.h>
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ProcessCRPSapproxRectangle)
+TEST(ForecastScore, ProcessCRPSapproxRectangle)
 {
 	wxPrintf("Testing forecast scores...\n");
 	
@@ -93,7 +91,7 @@ TEST(ProcessCRPSapproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSexactPrimitive)
+TEST(ForecastScore, ProcessCRPSexactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -146,7 +144,7 @@ TEST(ProcessCRPSexactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSapproxRectangle1983)
+TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -199,7 +197,7 @@ TEST(ProcessCRPSapproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSexactPrimitive1983)
+TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -252,7 +250,7 @@ TEST(ProcessCRPSexactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSapproxRectangle30Analogs1983)
+TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -305,7 +303,7 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSexactPrimitive30Analogs1983)
+TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -358,7 +356,7 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessApproxRectangle)
+TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -412,7 +410,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessExactPrimitive)
+TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -466,7 +464,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessApproxRectangle1983)
+TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -520,7 +518,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessExactPrimitive1983)
+TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -574,7 +572,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
+TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -628,7 +626,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
+TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -682,7 +680,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyApproxRectangle)
+TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -736,7 +734,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyExactPrimitive)
+TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -790,7 +788,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyApproxRectangle1983)
+TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -844,7 +842,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyExactPrimitive1983)
+TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -898,7 +896,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
+TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -952,7 +950,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
+TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -1184,7 +1182,7 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
 
 }
 
-TEST(ProcessPCwithConstantDistribution)
+TEST(ForecastScore, ProcessPCwithConstantDistribution)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1217,7 +1215,7 @@ TEST(ProcessPCwithConstantDistribution)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessPC)
+TEST(ForecastScore, ProcessPC)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1250,7 +1248,7 @@ TEST(ProcessPC)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessTS)
+TEST(ForecastScore, ProcessTS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1283,7 +1281,7 @@ TEST(ProcessTS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessBIAS)
+TEST(ForecastScore, ProcessBIAS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1316,7 +1314,7 @@ TEST(ProcessBIAS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessFARA)
+TEST(ForecastScore, ProcessFARA)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1349,7 +1347,7 @@ TEST(ProcessFARA)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessH)
+TEST(ForecastScore, ProcessH)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1382,7 +1380,7 @@ TEST(ProcessH)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessF)
+TEST(ForecastScore, ProcessF)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1415,7 +1413,7 @@ TEST(ProcessF)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessHSS)
+TEST(ForecastScore, ProcessHSS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1448,7 +1446,7 @@ TEST(ProcessHSS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessPSS)
+TEST(ForecastScore, ProcessPSS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1481,7 +1479,7 @@ TEST(ProcessPSS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessGSS)
+TEST(ForecastScore, ProcessGSS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1514,7 +1512,7 @@ TEST(ProcessGSS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessMAE)
+TEST(ForecastScore, ProcessMAE)
 {
     // Sizes
     int timeLength = 10;
@@ -1564,7 +1562,7 @@ TEST(ProcessMAE)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessRMSE)
+TEST(ForecastScore, ProcessRMSE)
 {
     // Sizes
     int timeLength = 10;
@@ -1614,7 +1612,7 @@ TEST(ProcessRMSE)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessBS)
+TEST(ForecastScore, ProcessBS)
 {
     // Sizes
     int timeLength = 10;
@@ -1665,7 +1663,7 @@ TEST(ProcessBS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessBSS)
+TEST(ForecastScore, ProcessBSS)
 {
     // Sizes
     int timeLength = 10;
@@ -1718,7 +1716,7 @@ TEST(ProcessBSS)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessRankHistogram)
+TEST(ForecastScore, ProcessRankHistogram)
 {
     // Sizes
     int timeLength = 20;
@@ -1767,27 +1765,27 @@ TEST(ProcessRankHistogram)
 
     // Values processed on Excel
     bool isTrue = (results[0]>=1 && results[0]<5); // Contains random value
-    CHECK_EQUAL(true,isTrue);
+    ASSERT_EQ(true,isTrue);
     isTrue = (results[1]>=26 && results[1]<=28); // Contains random value
-    CHECK_EQUAL(true,isTrue);
-    CHECK_EQUAL(29,results[2]);
-    CHECK_EQUAL(24,results[3]);
-    CHECK_EQUAL(24,results[4]);
-    CHECK_EQUAL(31,results[5]);
-    CHECK_EQUAL(15,results[6]);
-    CHECK_EQUAL(16,results[7]);
-    CHECK_EQUAL(24,results[8]);
-    CHECK_EQUAL(24,results[9]);
-    CHECK_EQUAL(29,results[10]);
-    CHECK_EQUAL(18,results[11]);
-    CHECK_EQUAL(25,results[12]);
-    CHECK_EQUAL(14,results[13]);
-    CHECK_EQUAL(24,results[14]);
-    CHECK_EQUAL(15,results[15]);
-    CHECK_EQUAL(28,results[16]);
-    CHECK_EQUAL(16,results[17]);
-    CHECK_EQUAL(20,results[18]);
-    CHECK_EQUAL(24,results[19]);
+    ASSERT_EQ(true,isTrue);
+    ASSERT_EQ(29,results[2]);
+    ASSERT_EQ(24,results[3]);
+    ASSERT_EQ(24,results[4]);
+    ASSERT_EQ(31,results[5]);
+    ASSERT_EQ(15,results[6]);
+    ASSERT_EQ(16,results[7]);
+    ASSERT_EQ(24,results[8]);
+    ASSERT_EQ(24,results[9]);
+    ASSERT_EQ(29,results[10]);
+    ASSERT_EQ(18,results[11]);
+    ASSERT_EQ(25,results[12]);
+    ASSERT_EQ(14,results[13]);
+    ASSERT_EQ(24,results[14]);
+    ASSERT_EQ(15,results[15]);
+    ASSERT_EQ(28,results[16]);
+    ASSERT_EQ(16,results[17]);
+    ASSERT_EQ(20,results[18]);
+    ASSERT_EQ(24,results[19]);
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
     finalScore->SetRanksNb(nanalogs+1);
@@ -1812,7 +1810,7 @@ TEST(ProcessRankHistogram)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessRankHistogramReliability)
+TEST(ForecastScore, ProcessRankHistogramReliability)
 {
     // Sizes
     int timeLength = 20;
@@ -1871,7 +1869,7 @@ TEST(ProcessRankHistogramReliability)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessCRPSreliability)
+TEST(ForecastScore, ProcessCRPSreliability)
 {
     // Sizes
     int timeLength = 15;
@@ -1924,7 +1922,7 @@ TEST(ProcessCRPSreliability)
     wxDELETE(finalScore);
 }
 
-TEST(ProcessCRPSpotential)
+TEST(ForecastScore, ProcessCRPSpotential)
 {
     // Sizes
     int timeLength = 15;
@@ -1977,6 +1975,3 @@ TEST(ProcessCRPSpotential)
     wxDELETE(score);
     wxDELETE(finalScore);
 }
-
-}
-

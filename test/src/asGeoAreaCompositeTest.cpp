@@ -29,12 +29,10 @@
 #include "include_tests.h"
 #include "asGeoAreaComposite.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ConstructorOneArea)
+TEST(GeoAreaCompositeGrid, ConstructorOneArea)
 {
 	wxPrintf("Testing geo area composites...\n");
 	
@@ -49,10 +47,10 @@ TEST(ConstructorOneArea)
     CornerLR.y = 30;
     asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_EQUAL(1, geoarea.GetNbComposites());
+    ASSERT_EQ(1, geoarea.GetNbComposites());
 }
 
-TEST(ConstructorTwoAreas)
+TEST(GeoAreaCompositeGrid, ConstructorTwoAreas)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -10;
@@ -65,10 +63,10 @@ TEST(ConstructorTwoAreas)
     CornerLR.y = 30;
     asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_EQUAL(2, geoarea.GetNbComposites());
+    ASSERT_EQ(2, geoarea.GetNbComposites());
 }
 
-TEST(ConstructorAlternativeOneArea)
+TEST(GeoAreaCompositeGrid, ConstructorAlternativeOneArea)
 {
     double Xmin = 10;
     double Xwidth = 20;
@@ -76,10 +74,10 @@ TEST(ConstructorAlternativeOneArea)
     double Ywidth = 40;
     asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth);
 
-    CHECK_EQUAL(1, geoarea.GetNbComposites());
+    ASSERT_EQ(1, geoarea.GetNbComposites());
 }
 
-TEST(ConstructorAlternativeTwoAreas)
+TEST(GeoAreaCompositeGrid, ConstructorAlternativeTwoAreas)
 {
     double Xmin = -10;
     double Xwidth = 20;
@@ -87,10 +85,10 @@ TEST(ConstructorAlternativeTwoAreas)
     double Ywidth = 40;
     asGeoAreaComposite geoarea(Xmin, Xwidth, Ymin, Ywidth);
 
-    CHECK_EQUAL(2, geoarea.GetNbComposites());
+    ASSERT_EQ(2, geoarea.GetNbComposites());
 }
 
-TEST(CheckConsistency)
+TEST(GeoAreaCompositeGrid, CheckConsistency)
 {
     double Xmin = -5;
     double Xwidth = 20;
@@ -104,7 +102,7 @@ TEST(CheckConsistency)
     CHECK_CLOSE(15, geoarea.GetCornerLR().x, 0.01);
 }
 
-TEST(CheckConsistencyException)
+TEST(GeoAreaCompositeGrid, CheckConsistencyException)
 {
     if(g_unitTestExceptions)
     {
@@ -116,7 +114,7 @@ TEST(CheckConsistencyException)
     }
 }
 
-TEST(IsSquareTrue)
+TEST(GeoAreaCompositeGrid, IsSquareTrue)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -129,10 +127,10 @@ TEST(IsSquareTrue)
     CornerLR.y = 30;
     asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_EQUAL(true, geoarea.IsRectangle());
+    ASSERT_EQ(true, geoarea.IsRectangle());
 }
 
-TEST(IsSquareFalse)
+TEST(GeoAreaCompositeGrid, IsSquareFalse)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -145,10 +143,10 @@ TEST(IsSquareFalse)
     CornerLR.y = 30;
     asGeoAreaComposite geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_EQUAL(false, geoarea.IsRectangle());
+    ASSERT_EQ(false, geoarea.IsRectangle());
 }
 
-TEST(GetBounds)
+TEST(GeoAreaCompositeGrid, GetBounds)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -167,7 +165,7 @@ TEST(GetBounds)
     CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
 }
 
-TEST(GetBoundsSplitted)
+TEST(GeoAreaCompositeGrid, GetBoundsSplitted)
 {
     double Xmin = -10;
     double Xwidth = 20;
@@ -181,7 +179,7 @@ TEST(GetBoundsSplitted)
     CHECK_CLOSE(70, geoarea.GetYmax(), 0.01);
 }
 
-TEST(GetCenter)
+TEST(GeoAreaCompositeGrid, GetCenter)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -199,7 +197,7 @@ TEST(GetCenter)
     CHECK_CLOSE(35, center.y, 0.01);
 }
 
-TEST(GetCenterSplitted)
+TEST(GeoAreaCompositeGrid, GetCenterSplitted)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -40;
@@ -217,7 +215,7 @@ TEST(GetCenterSplitted)
     CHECK_CLOSE(35, center.y, 0.01);
 }
 
-TEST(GetCenterSplittedEdge)
+TEST(GeoAreaCompositeGrid, GetCenterSplittedEdge)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -10;
@@ -235,7 +233,7 @@ TEST(GetCenterSplittedEdge)
     CHECK_CLOSE(35, center.y, 0.01);
 }
 
-TEST(GetCornersSplitted)
+TEST(GeoAreaCompositeGrid, GetCornersSplitted)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -40;
@@ -265,6 +263,4 @@ TEST(GetCornersSplitted)
     CHECK_CLOSE(30, geoarea.GetComposite(1).GetCornerLL().y, 0.01);
     CHECK_CLOSE(360, geoarea.GetComposite(1).GetCornerLR().x, 0.01);
     CHECK_CLOSE(30, geoarea.GetComposite(1).GetCornerLR().y, 0.01);
-}
-
 }

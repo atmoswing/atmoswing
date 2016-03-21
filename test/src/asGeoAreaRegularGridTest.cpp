@@ -29,12 +29,10 @@
 #include "include_tests.h"
 #include "asGeoAreaRegularGrid.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ConstructorLimitsException)
+TEST(GeoAreaRegularGrid, ConstructorLimitsException)
 {
     if(g_unitTestExceptions)
     {
@@ -55,7 +53,7 @@ TEST(ConstructorLimitsException)
     }
 }
 
-TEST(ConstructorAlternativeLimitsException)
+TEST(GeoAreaRegularGrid, ConstructorAlternativeLimitsException)
 {
     if(g_unitTestExceptions)
     {
@@ -68,7 +66,7 @@ TEST(ConstructorAlternativeLimitsException)
     }
 }
 
-TEST(ConstructorStepException)
+TEST(GeoAreaRegularGrid, ConstructorStepException)
 {
     if(g_unitTestExceptions)
     {
@@ -81,7 +79,7 @@ TEST(ConstructorStepException)
     }
 }
 
-TEST(CheckConsistencyException)
+TEST(GeoAreaRegularGrid, CheckConsistencyException)
 {
     if(g_unitTestExceptions)
     {
@@ -94,7 +92,7 @@ TEST(CheckConsistencyException)
     }
 }
 
-TEST(IsRectangleTrue)
+TEST(GeoAreaRegularGrid, IsRectangleTrue)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -108,10 +106,10 @@ TEST(IsRectangleTrue)
     double step = 2.5;
     asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_EQUAL(true, geoarea.IsRectangle());
+    ASSERT_EQ(true, geoarea.IsRectangle());
 }
 
-TEST(IsRectangleFalse)
+TEST(GeoAreaRegularGrid, IsRectangleFalse)
 {
     if(g_unitTestExceptions)
     {
@@ -129,7 +127,7 @@ TEST(IsRectangleFalse)
     }
 }
 
-TEST(GetBounds)
+TEST(GeoAreaRegularGrid, GetBounds)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -149,7 +147,7 @@ TEST(GetBounds)
     CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
 }
 
-TEST(GetCenter)
+TEST(GeoAreaRegularGrid, GetCenter)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -168,7 +166,7 @@ TEST(GetCenter)
     CHECK_CLOSE(35, center.y, 0.01);
 }
 /*
-TEST(IsOnGridTrue)
+TEST(GeoAreaRegularGrid, IsOnGridTrue)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -182,10 +180,10 @@ TEST(IsOnGridTrue)
     double step = 2.5;
     asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_EQUAL(true, geoarea.IsOnGrid(2.5));
+    ASSERT_EQ(true, geoarea.IsOnGrid(2.5));
 }
 
-TEST(IsOnGridTrueTwoAxes)
+TEST(GeoAreaRegularGrid, IsOnGridTrueTwoAxes)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -199,10 +197,10 @@ TEST(IsOnGridTrueTwoAxes)
     double step = 2.5;
     asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_EQUAL(true, geoarea.IsOnGrid(2.5, 5));
+    ASSERT_EQ(true, geoarea.IsOnGrid(2.5, 5));
 }
 
-TEST(IsOnGridFalseStep)
+TEST(GeoAreaRegularGrid, IsOnGridFalseStep)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -216,10 +214,10 @@ TEST(IsOnGridFalseStep)
     double step = 2.5;
     asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_EQUAL(false, geoarea.IsOnGrid(6));
+    ASSERT_EQ(false, geoarea.IsOnGrid(6));
 }
 
-TEST(IsOnGridFalseSecondStep)
+TEST(GeoAreaRegularGrid, IsOnGridFalseSecondStep)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -233,10 +231,10 @@ TEST(IsOnGridFalseSecondStep)
     double step = 2.5;
     asGeoAreaRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_EQUAL(false, geoarea.IsOnGrid(5, 6));
+    ASSERT_EQ(false, geoarea.IsOnGrid(5, 6));
 }
 */
-TEST(GetAxes)
+TEST(GeoAreaRegularGrid, GetAxes)
 {
     double Xmin = 5;
     double Xwidth = 20;
@@ -259,6 +257,4 @@ TEST(GetAxes)
     CHECK_CLOSE(15, uaxis[4], 0.000001);
     CHECK_CLOSE(45, vaxis[0], 0.000001);
     CHECK_CLOSE(47.5, vaxis[1], 0.000001);
-}
-
 }

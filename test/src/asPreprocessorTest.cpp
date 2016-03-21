@@ -34,12 +34,10 @@
 #include "asGeoAreaCompositeRegularGrid.h"
 #include "asTimeArray.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(Gradients)
+TEST(Preprocessor, Gradients)
 {
 	wxPrintf("Testing the preprocessor...\n");
 	
@@ -77,8 +75,8 @@ TEST(Gradients)
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
-    CHECK_EQUAL(5, predictor->GetLonPtsnb());
-    CHECK_EQUAL(3, predictor->GetLatPtsnb());
+    ASSERT_EQ(5, predictor->GetLonPtsnb());
+    ASSERT_EQ(3, predictor->GetLatPtsnb());
     VArray2DFloat arrayData = predictor->GetData();
     CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
 
@@ -173,7 +171,7 @@ TEST(Gradients)
     wxDELETE(predictor);
 }
 
-TEST(GradientsMultithreading)
+TEST(Preprocessor, GradientsMultithreading)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -209,8 +207,8 @@ TEST(GradientsMultithreading)
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
-    CHECK_EQUAL(5, predictor->GetLonPtsnb());
-    CHECK_EQUAL(3, predictor->GetLatPtsnb());
+    ASSERT_EQ(5, predictor->GetLonPtsnb());
+    ASSERT_EQ(3, predictor->GetLatPtsnb());
     VArray2DFloat arrayData = predictor->GetData();
     CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
 
@@ -303,6 +301,4 @@ TEST(GradientsMultithreading)
     */
     wxDELETE(gradients);
     wxDELETE(predictor);
-}
-
 }

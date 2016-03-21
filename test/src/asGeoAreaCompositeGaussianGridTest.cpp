@@ -29,12 +29,10 @@
 #include "include_tests.h"
 #include "asGeoAreaCompositeGrid.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ConstructorAlternativeOneArea)
+TEST(GeoAreaCompositeGaussianGrid, ConstructorAlternativeOneArea)
 {
 	wxPrintf("Testing composite gaussian grids...\n");
 	
@@ -46,13 +44,13 @@ TEST(ConstructorAlternativeOneArea)
     wxString gridType = "GaussianT62";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(1, geoarea->GetNbComposites());
+    ASSERT_EQ(1, geoarea->GetNbComposites());
     CHECK_CLOSE(16.875, geoarea->GetXmax(), 0.001);
     CHECK_CLOSE(37.142, geoarea->GetYmax(), 0.001);
     wxDELETE(geoarea);
 }
 
-TEST(ConstructorAlternativeTwoAreas)
+TEST(GeoAreaCompositeGaussianGrid, ConstructorAlternativeTwoAreas)
 {
     double Xmin = -9.375;
     int Xptsnb = 10;
@@ -62,11 +60,11 @@ TEST(ConstructorAlternativeTwoAreas)
     wxString gridType = "GaussianT62";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(2, geoarea->GetNbComposites());
+    ASSERT_EQ(2, geoarea->GetNbComposites());
     wxDELETE(geoarea);
 }
 
-TEST(CheckConsistency)
+TEST(GeoAreaCompositeGaussianGrid, CheckConsistency)
 {
     double Xmin = -9.375;
     int Xptsnb = 10;
@@ -83,7 +81,7 @@ TEST(CheckConsistency)
     wxDELETE(geoarea);
 }
 
-TEST(GetBoundsSplitted)
+TEST(GeoAreaCompositeGaussianGrid, GetBoundsSplitted)
 {
     double Xmin = -9.375;
     int Xptsnb = 10;
@@ -100,7 +98,7 @@ TEST(GetBoundsSplitted)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeSize)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeSize)
 {
     double Xmin = -15;
     int Xptsnb = 20;
@@ -110,7 +108,7 @@ TEST(GetUYaxisCompositeSize)
     wxString gridType = "GaussianT62";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(2, geoarea->GetNbComposites());
+    ASSERT_EQ(2, geoarea->GetNbComposites());
     CHECK_CLOSE(12, geoarea->GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(9, geoarea->GetXaxisCompositePtsnb(1), 0.01);
     CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(0), 0.01);
@@ -118,7 +116,7 @@ TEST(GetUYaxisCompositeSize)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeSizeAllWest)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeSizeAllWest)
 {
     double Xmin = -15;
     int Xptsnb = 4;
@@ -128,7 +126,7 @@ TEST(GetUYaxisCompositeSizeAllWest)
     wxString gridType = "GaussianT62";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(1, geoarea->GetNbComposites());
+    ASSERT_EQ(1, geoarea->GetNbComposites());
     CHECK_CLOSE(4, geoarea->GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(345, geoarea->GetXmin(), 0.01);
@@ -136,7 +134,7 @@ TEST(GetUYaxisCompositeSizeAllWest)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeSizeEdge)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeSizeEdge)
 {
     double Xmin = -15;
     int Xptsnb = 9;
@@ -146,7 +144,7 @@ TEST(GetUYaxisCompositeSizeEdge)
     wxString gridType = "GaussianT62";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(1, geoarea->GetNbComposites());
+    ASSERT_EQ(1, geoarea->GetNbComposites());
     CHECK_CLOSE(9, geoarea->GetXaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(0), 0.01);
     CHECK_CLOSE(345, geoarea->GetXmin(), 0.01);
@@ -154,7 +152,7 @@ TEST(GetUYaxisCompositeSizeEdge)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeWidth)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeWidth)
 {
     double Xmin = -15;
     int Xptsnb = 20;
@@ -171,7 +169,7 @@ TEST(GetUYaxisCompositeWidth)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisPtsnb)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisPtsnb)
 {
     double Xmin = -15;
     int Xptsnb = 20;
@@ -186,7 +184,7 @@ TEST(GetUYaxisPtsnb)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisWidth)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisWidth)
 {
     double Xmin = -15;
     int Xptsnb = 20;
@@ -201,7 +199,7 @@ TEST(GetUYaxisWidth)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeLimits)
+TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeLimits)
 {
     double Xmin = -15;
     int Xptsnb = 20;
@@ -220,6 +218,4 @@ TEST(GetUYaxisCompositeLimits)
     CHECK_CLOSE(37.142, geoarea->GetYaxisCompositeEnd(0), 0.01);
     CHECK_CLOSE(37.142, geoarea->GetYaxisCompositeEnd(1), 0.01);
     wxDELETE(geoarea);
-}
-
 }

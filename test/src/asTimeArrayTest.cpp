@@ -28,12 +28,10 @@
 #include "include_tests.h"
 #include "asTimeArray.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(BuildArraySimple)
+TEST(TimeArray, BuildArraySimple)
 {
 	wxPrintf("Testing time arrays...\n");
 	
@@ -72,10 +70,10 @@ TEST(BuildArraySimple)
     CHECK_CLOSE(start+(double)1000*6/24, datetimearray(1000), 0.000001);
     CHECK_CLOSE(start+(double)10000*6/24, datetimearray(10000), 0.000001);
 
-    CHECK_EQUAL(4*21550+1,datetimearray.rows());
+    ASSERT_EQ(4*21550+1,datetimearray.rows());
 }
 
-TEST(BuildArraySimpleGeneric)
+TEST(TimeArray, BuildArraySimpleGeneric)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2009,1,1);
@@ -116,10 +114,10 @@ TEST(BuildArraySimpleGeneric)
     CHECK_CLOSE(start+(double)1000*6/24, datetimearray(1000), 0.000001);
     CHECK_CLOSE(start+(double)10000*6/24, datetimearray(10000), 0.000001);
 
-    CHECK_EQUAL(4*21550+1,datetimearray.rows());
+    ASSERT_EQ(4*21550+1,datetimearray.rows());
 }
 
-TEST(BuildArrayDaysIntervalNormal)
+TEST(TimeArray, BuildArrayDaysIntervalNormal)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -144,7 +142,7 @@ TEST(BuildArrayDaysIntervalNormal)
     CHECK_CLOSE(asTime::GetMJD(1951,4,2,6,0), timearray[482], 0.000001);
 }
 
-TEST(BuildArrayDaysIntervalNormalGeneric)
+TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -170,7 +168,7 @@ TEST(BuildArrayDaysIntervalNormalGeneric)
     CHECK_CLOSE(asTime::GetMJD(1951,4,2,6,0), timearray[482], 0.000001);
 }
 
-TEST(BuildArrayDaysIntervalNormalMidday)
+TEST(TimeArray, BuildArrayDaysIntervalNormalMidday)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -193,7 +191,7 @@ TEST(BuildArrayDaysIntervalNormalMidday)
     CHECK_CLOSE(asTime::GetMJD(1951,4,2,18,0), timearray[482], 0.000001);
 }
 
-TEST(BuildArrayDaysIntervalNormalMiddayNotRound)
+TEST(TimeArray, BuildArrayDaysIntervalNormalMiddayNotRound)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -218,7 +216,7 @@ TEST(BuildArrayDaysIntervalNormalMiddayNotRound)
     CHECK_CLOSE(asTime::GetMJD(1951,4,2,16,31), timearray[482], 0.000001);
 }
 
-TEST(BuildArrayDaysIntervalStartSplitted)
+TEST(TimeArray, BuildArrayDaysIntervalStartSplitted)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -244,7 +242,7 @@ TEST(BuildArrayDaysIntervalStartSplitted)
     CHECK_CLOSE(asTime::GetMJD(1951,1,1,0,0), timearray[366+115], 0.000001);
 }
 
-TEST(BuildArrayDaysIntervalEndSplitted)
+TEST(TimeArray, BuildArrayDaysIntervalEndSplitted)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -267,7 +265,7 @@ TEST(BuildArrayDaysIntervalEndSplitted)
     CHECK_CLOSE(asTime::GetMJD(1951,10,2,18,0), timearray[482], 0.000001);
 }
 
-TEST(BuildArrayDaysIntervalExclusionPeriod)
+TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -292,10 +290,10 @@ TEST(BuildArrayDaysIntervalExclusionPeriod)
         }
     }
 
-    CHECK_EQUAL(false,foundyear);
+    ASSERT_EQ(false,foundyear);
 }
 
-TEST(BuildArraySeason)
+TEST(TimeArray, BuildArraySeason)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -317,7 +315,7 @@ TEST(BuildArraySeason)
     CHECK_CLOSE(asTime::GetMJD(1951,6,1,6,0), timearray[369], 0.000001);
 }
 
-TEST(BuildArraySeasonGeneric)
+TEST(TimeArray, BuildArraySeasonGeneric)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -340,7 +338,7 @@ TEST(BuildArraySeasonGeneric)
     CHECK_CLOSE(asTime::GetMJD(1951,6,1,6,0), timearray[369], 0.000001);
 }
 
-TEST(BuildArraySeasonNotRound)
+TEST(TimeArray, BuildArraySeasonNotRound)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -362,7 +360,7 @@ TEST(BuildArraySeasonNotRound)
     CHECK_CLOSE(asTime::GetMJD(1951,6,1,8,32), timearray[369], 0.000001);
 }
 
-TEST(BuildArraySeasonDec)
+TEST(TimeArray, BuildArraySeasonDec)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -381,7 +379,7 @@ TEST(BuildArraySeasonDec)
     CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,0), timearray[2], 0.000001);
 }
 
-TEST(BuildArraySeasonJan)
+TEST(TimeArray, BuildArraySeasonJan)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -400,7 +398,7 @@ TEST(BuildArraySeasonJan)
     CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,0), timearray[2], 0.000001);
 }
 
-TEST(GetFirstDayHour)
+TEST(TimeArray, GetFirstDayHour)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -411,7 +409,7 @@ TEST(GetFirstDayHour)
     CHECK_CLOSE(12.5, timearray.GetFirstDayHour(), 0.000001);
 }
 
-TEST(GetLastDayHour)
+TEST(TimeArray, GetLastDayHour)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -422,7 +420,7 @@ TEST(GetLastDayHour)
     CHECK_CLOSE(18.5, timearray.GetLastDayHour(), 0.000001);
 }
 
-TEST(GetFirstDayYear)
+TEST(TimeArray, GetFirstDayYear)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -430,10 +428,10 @@ TEST(GetFirstDayYear)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_EQUAL(1950, timearray.GetFirstDayYear());
+    ASSERT_EQ(1950, timearray.GetFirstDayYear());
 }
 
-TEST(GetLastDayYear)
+TEST(TimeArray, GetLastDayYear)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -441,10 +439,10 @@ TEST(GetLastDayYear)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_EQUAL(2008, timearray.GetLastDayYear());
+    ASSERT_EQ(2008, timearray.GetLastDayYear());
 }
 
-TEST(GetSize)
+TEST(TimeArray, GetSize)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -452,10 +450,10 @@ TEST(GetSize)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_EQUAL(6, timearray.GetSize());
+    ASSERT_EQ(6, timearray.GetSize());
 }
 
-TEST(OperatorOverloading)
+TEST(TimeArray, OperatorOverloading)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -471,7 +469,7 @@ TEST(OperatorOverloading)
     CHECK_CLOSE(asTime::GetMJD(1950,1,2,18,30), timearray[5], 0.000001);
 }
 
-TEST(GetFirst)
+TEST(TimeArray, GetFirst)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -482,7 +480,7 @@ TEST(GetFirst)
     CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,30), timearray.GetFirst(), 0.000001);
 }
 
-TEST(GetLast)
+TEST(TimeArray, GetLast)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -493,7 +491,7 @@ TEST(GetLast)
     CHECK_CLOSE(asTime::GetMJD(1950,1,2,18,30), timearray.GetLast(), 0.000001);
 }
 
-TEST(GetIndexFirstAfter)
+TEST(TimeArray, GetIndexFirstAfter)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -504,7 +502,7 @@ TEST(GetIndexFirstAfter)
     CHECK_CLOSE(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950,1,1,19,30)), 0.000001);
 }
 
-TEST(GetIndexFirstAfterEqual)
+TEST(TimeArray, GetIndexFirstAfterEqual)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -515,7 +513,7 @@ TEST(GetIndexFirstAfterEqual)
     CHECK_CLOSE(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950,1,1,18,30)), 0.000001);
 }
 
-TEST(GetIndexFirstBefore)
+TEST(TimeArray, GetIndexFirstBefore)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -526,7 +524,7 @@ TEST(GetIndexFirstBefore)
     CHECK_CLOSE(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950,1,2,05,30)), 0.000001);
 }
 
-TEST(GetIndexFirstBeforeEqual)
+TEST(TimeArray, GetIndexFirstBeforeEqual)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -535,5 +533,4 @@ TEST(GetIndexFirstBeforeEqual)
     timearray.Init();
 
     CHECK_CLOSE(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950,1,2,06,30)), 0.000001);
-}
 }

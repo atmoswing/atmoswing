@@ -32,12 +32,10 @@
 #include "asDataPredictandPrecipitation.h"
 #include "asFile.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(GumbelAdjustment)
+TEST(DataPredictandPrecipitation, GumbelAdjustment)
 {
 	wxPrintf("Testing precipitation predictand...\n");
 	
@@ -56,7 +54,7 @@ TEST(GumbelAdjustment)
     success = predictand.BuildPredictandDB(datasetFilePath, dataFileDir, patternFileDir, tmpDir);
 	predictand.SetIsSqrt(false);
 	predictand.SetReturnPeriodNormalization(10);
-    CHECK_EQUAL(true, success);
+    ASSERT_EQ(true, success);
 
     // Checked against Martin Froidevaux
     float P2 = predictand.GetPrecipitationOfReturnPeriod(0, 1, 2);
@@ -115,7 +113,5 @@ TEST(GumbelAdjustment)
     CHECK_CLOSE(2.1209689*72, P100, 0.001);
 
     asRemoveDir(tmpDir);
-
-}
 
 }

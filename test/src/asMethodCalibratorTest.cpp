@@ -38,10 +38,8 @@
 #include "asResultsAnalogsForecastScoreFinal.h"
 #include "asFileAscii.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
 void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
 {
@@ -73,7 +71,7 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
         paramsFilePath.Append(paramsFile);
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -94,22 +92,22 @@ void GrenobleComparison1(const wxString &paramsFile, bool shortVersion)
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-			CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+			ASSERT_EQ(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
 
             // Sharpness and Accuracy
             params.SetForecastScoreName("CRPSsharpnessAR");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             params.SetForecastScoreName("CRPSaccuracyAR");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -271,7 +269,7 @@ TEST(GrenobleComparison1ProcessingMethodCuda)
 }
 #endif
 
-TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -302,7 +300,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebra)
 	wxPrintf( " -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVar)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVar)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -318,7 +316,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVar)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeff)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodMultithreadsWithCoeff)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -334,7 +332,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeff)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVar)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVar)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -350,7 +348,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVar)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1ProcessingMethodInsert)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -365,7 +363,7 @@ TEST(GrenobleComparison1ProcessingMethodInsert)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1ProcessingMethodSplitting)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
@@ -380,7 +378,7 @@ TEST(GrenobleComparison1ProcessingMethodSplitting)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
+TEST(MethodCalibrator, GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -392,7 +390,7 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodMultithreads)
     GrenobleComparison1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVarNoPreprocessing)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVarNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -408,7 +406,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithLinAlgebraNoVarNoPreproc
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVarNoPreprocessing)
+TEST(MethodCalibrator, GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVarNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -424,7 +422,7 @@ TEST(GrenobleComparison1ProcessingMethodMultithreadsWithCoeffNoVarNoPreprocessin
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
+TEST(MethodCalibrator, GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -435,7 +433,7 @@ TEST(GrenobleComparison1CalibrationPeriodProcessingMethodInsert)
     GrenobleComparison1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-TEST(GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
+TEST(MethodCalibrator, GrenobleComparison1CalibrationPeriodProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
@@ -476,7 +474,7 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
         paramsFilePath.Append("/files/");
         paramsFilePath.Append(paramsFile);
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -499,26 +497,26 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
             bool containsNaNs = false;
 
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             step++;
             result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
 
             // Sharpness and Accuracy
             params.SetForecastScoreName("CRPSsharpnessEP");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             params.SetForecastScoreName("CRPSaccuracyEP");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -659,7 +657,7 @@ void GrenobleComparison2(const wxString &paramsFile, bool shortVersion)
     }
 }
 
-TEST(GrenobleComparison2ProcessingMethodMultithreads)
+TEST(MethodCalibrator, GrenobleComparison2ProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -675,7 +673,7 @@ TEST(GrenobleComparison2ProcessingMethodMultithreads)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison2ProcessingMethodInsert)
+TEST(MethodCalibrator, GrenobleComparison2ProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -690,7 +688,7 @@ TEST(GrenobleComparison2ProcessingMethodInsert)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison2ProcessingMethodSplitting)
+TEST(MethodCalibrator, GrenobleComparison2ProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
@@ -705,7 +703,7 @@ TEST(GrenobleComparison2ProcessingMethodSplitting)
 	wxPrintf(" -> took %ld ms to execute\n", sw.Time());
 }
 
-TEST(GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
+TEST(MethodCalibrator, GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -717,7 +715,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodMultithreads)
     GrenobleComparison2("parameters_calibration_R2_calib_period.xml", true);
 }
 
-TEST(GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
+TEST(MethodCalibrator, GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -728,7 +726,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodInsert)
     GrenobleComparison2("parameters_calibration_R2_calib_period.xml", true);
 }
 
-TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
+TEST(MethodCalibrator, GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
@@ -739,7 +737,7 @@ TEST(GrenobleComparison2CalibrationPeriodProcessingMethodSplitting)
     GrenobleComparison2("parameters_calibration_R2_calib_period.xml", true);
 }
 
-TEST(PreloadingSimple)
+TEST(MethodCalibrator, PreloadingSimple)
 {
     if (g_unitTestLongProcessing)
     {
@@ -764,9 +762,9 @@ TEST(PreloadingSimple)
         paramsFilePathStd.Append("/files/parameters_calibration_compare_no_preload.xml");
         paramsFilePathPreload.Append("/files/parameters_calibration_compare_preload.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator1;
@@ -783,11 +781,11 @@ TEST(PreloadingSimple)
             int step = 0;
             bool containsNaNs = false;
             result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
         }
         catch(asException& e)
         {
@@ -800,23 +798,23 @@ TEST(PreloadingSimple)
         Array2DFloat criteriaStd = anaDatesStd.GetAnalogsCriteria();
         Array2DFloat criteriaPreload = anaDatesPreload.GetAnalogsCriteria();
 
-        CHECK_EQUAL(datesStd.cols(),datesPreload.cols());
-        CHECK_EQUAL(datesStd.rows(),datesPreload.rows());
-        CHECK_EQUAL(criteriaStd.cols(),criteriaPreload.cols());
-        CHECK_EQUAL(criteriaStd.rows(),criteriaPreload.rows());
+        ASSERT_EQ(datesStd.cols(),datesPreload.cols());
+        ASSERT_EQ(datesStd.rows(),datesPreload.rows());
+        ASSERT_EQ(criteriaStd.cols(),criteriaPreload.cols());
+        ASSERT_EQ(criteriaStd.rows(),criteriaPreload.rows());
 
         for (int i=0; i<datesStd.rows(); i++)
         {
             for (int j=0; j<datesStd.cols(); j++)
             {
-                CHECK_EQUAL(datesStd.coeff(i,j), datesPreload.coeff(i,j));
-                CHECK_EQUAL(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
+                ASSERT_EQ(datesStd.coeff(i,j), datesPreload.coeff(i,j));
+                ASSERT_EQ(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
             }
         }
     }
 }
 
-TEST(PreloadingWithPreprocessing)
+TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     if (g_unitTestLongProcessing)
     {
@@ -841,9 +839,9 @@ TEST(PreloadingWithPreprocessing)
         paramsFilePathStd.Append("/files/parameters_calibration_compare_preproc_no_preload.xml");
         paramsFilePathPreload.Append("/files/parameters_calibration_compare_preproc_preload.xml");
         result = paramsStd.LoadFromFile(paramsFilePathStd);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
         result = paramsPreload.LoadFromFile(paramsFilePathPreload);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator1;
@@ -860,11 +858,11 @@ TEST(PreloadingWithPreprocessing)
             int step = 0;
             bool containsNaNs = false;
             result = calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
         }
         catch(asException& e)
         {
@@ -877,7 +875,7 @@ TEST(PreloadingWithPreprocessing)
         int targetDatesSize = wxMax(targetDatesStd.cols(),targetDatesStd.rows());
         for (int i=0; i<targetDatesSize; i++)
         {
-            CHECK_EQUAL(targetDatesStd[i],targetDatesPreload[i]);
+            ASSERT_EQ(targetDatesStd[i],targetDatesPreload[i]);
         }
 
         Array2DFloat datesStd = anaDatesStd.GetAnalogsDates();
@@ -885,17 +883,17 @@ TEST(PreloadingWithPreprocessing)
         Array2DFloat criteriaStd = anaDatesStd.GetAnalogsCriteria();
         Array2DFloat criteriaPreload = anaDatesPreload.GetAnalogsCriteria();
 
-        CHECK_EQUAL(datesStd.cols(),datesPreload.cols());
-        CHECK_EQUAL(datesStd.rows(),datesPreload.rows());
-        CHECK_EQUAL(criteriaStd.cols(),criteriaPreload.cols());
-        CHECK_EQUAL(criteriaStd.rows(),criteriaPreload.rows());
+        ASSERT_EQ(datesStd.cols(),datesPreload.cols());
+        ASSERT_EQ(datesStd.rows(),datesPreload.rows());
+        ASSERT_EQ(criteriaStd.cols(),criteriaPreload.cols());
+        ASSERT_EQ(criteriaStd.rows(),criteriaPreload.rows());
 
         for (int i=0; i<datesStd.rows(); i++)
         {
             for (int j=0; j<datesStd.cols(); j++)
             {
-                CHECK_EQUAL(datesStd.coeff(i,j), datesPreload.coeff(i,j));
-                CHECK_EQUAL(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
+                ASSERT_EQ(datesStd.coeff(i,j), datesPreload.coeff(i,j));
+                ASSERT_EQ(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
 
                 break;
             }
@@ -935,7 +933,7 @@ void GrenobleComparison1Preloading()
         paramsFilePath.Append("/files/parameters_calibration_R1_preload.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Force values
         params.SetPredictorXptsnb(0, 0, 9);
@@ -960,22 +958,22 @@ void GrenobleComparison1Preloading()
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
 
             // Sharpness and Accuracy
             params.SetForecastScoreName("CRPSsharpnessAR");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             params.SetForecastScoreName("CRPSaccuracyAR");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -1073,7 +1071,7 @@ void GrenobleComparison1Preloading()
     }
 }
 
-TEST(GrenobleComparison1PreloadingMultithreaded)
+TEST(MethodCalibrator, GrenobleComparison1PreloadingMultithreaded)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -1112,7 +1110,7 @@ void GrenobleComparison1PreloadingSubset()
         paramsFilePath.Append("/files/parameters_calibration_R1_preload.xml");
         asParametersCalibration params;
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Force values
         params.SetPredictorXptsnb(0, 0, 9);
@@ -1138,22 +1136,22 @@ void GrenobleComparison1PreloadingSubset()
             wxASSERT(predictand);
             calibrator.SetPredictandDB(predictand);
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaDates, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
 
             // Sharpness and Accuracy
             params.SetForecastScoreName("CRPSsharpnessAR");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             params.SetForecastScoreName("CRPSaccuracyAR");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -1169,7 +1167,7 @@ void GrenobleComparison1PreloadingSubset()
     }
 }
 
-TEST(GrenobleComparison1PreloadingSubsetMultithreaded)
+TEST(MethodCalibrator, GrenobleComparison1PreloadingSubsetMultithreaded)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -1181,7 +1179,7 @@ TEST(GrenobleComparison1PreloadingSubsetMultithreaded)
     GrenobleComparison1PreloadingSubset();
 }
 
-TEST(SmallerSpatialArea)
+TEST(MethodCalibrator, SmallerSpatialArea)
 {
     if (g_unitTestLongProcessing)
     {
@@ -1212,13 +1210,13 @@ TEST(SmallerSpatialArea)
         paramsFilePathPreprocNoPreload.Append("/files/parameters_calibration_compare_smaller_preproc_no_preload.xml");
         paramsFilePathPreprocPreload.Append("/files/parameters_calibration_compare_smaller_preproc_preload.xml");
         result = paramsNoPreprocNoPreload.LoadFromFile(paramsFilePathNoPreprocNoPreload);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
         result = paramsNoPreprocPreload.LoadFromFile(paramsFilePathNoPreprocPreload);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
         result = paramsPreprocNoPreload.LoadFromFile(paramsFilePathPreprocNoPreload);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
         result = paramsPreprocPreload.LoadFromFile(paramsFilePathPreprocPreload);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Change spatial windows
         paramsNoPreprocNoPreload.SetPredictorXmin(0,0,5);
@@ -1276,17 +1274,17 @@ TEST(SmallerSpatialArea)
             int step = 0;
             bool containsNaNs = false;
             result = calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, paramsNoPreprocNoPreload, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, paramsNoPreprocPreload, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator3.GetAnalogsDates(anaDatesPreprocNoPreload, paramsPreprocNoPreload, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator4.GetAnalogsDates(anaDatesPreprocPreload, paramsPreprocPreload, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
         }
         catch(asException& e)
         {
@@ -1303,30 +1301,30 @@ TEST(SmallerSpatialArea)
         Array2DFloat criteriaPreprocNoPreload = anaDatesPreprocNoPreload.GetAnalogsCriteria();
         Array2DFloat criteriaPreprocPreload = anaDatesPreprocPreload.GetAnalogsCriteria();
 
-        CHECK_EQUAL(datesNoPreprocNoPreload.cols(),datesNoPreprocPreload.cols());
-        CHECK_EQUAL(datesNoPreprocNoPreload.rows(),datesNoPreprocPreload.rows());
-        CHECK_EQUAL(datesNoPreprocNoPreload.cols(),datesPreprocNoPreload.cols());
-        CHECK_EQUAL(datesNoPreprocNoPreload.rows(),datesPreprocNoPreload.rows());
-        CHECK_EQUAL(datesNoPreprocNoPreload.cols(),datesPreprocPreload.cols());
-        CHECK_EQUAL(datesNoPreprocNoPreload.rows(),datesPreprocPreload.rows());
+        ASSERT_EQ(datesNoPreprocNoPreload.cols(),datesNoPreprocPreload.cols());
+        ASSERT_EQ(datesNoPreprocNoPreload.rows(),datesNoPreprocPreload.rows());
+        ASSERT_EQ(datesNoPreprocNoPreload.cols(),datesPreprocNoPreload.cols());
+        ASSERT_EQ(datesNoPreprocNoPreload.rows(),datesPreprocNoPreload.rows());
+        ASSERT_EQ(datesNoPreprocNoPreload.cols(),datesPreprocPreload.cols());
+        ASSERT_EQ(datesNoPreprocNoPreload.rows(),datesPreprocPreload.rows());
 
-        CHECK_EQUAL(criteriaNoPreprocNoPreload.cols(),criteriaNoPreprocPreload.cols());
-        CHECK_EQUAL(criteriaNoPreprocNoPreload.rows(),criteriaNoPreprocPreload.rows());
-        CHECK_EQUAL(criteriaNoPreprocNoPreload.cols(),criteriaPreprocNoPreload.cols());
-        CHECK_EQUAL(criteriaNoPreprocNoPreload.rows(),criteriaPreprocNoPreload.rows());
-        CHECK_EQUAL(criteriaNoPreprocNoPreload.cols(),criteriaPreprocPreload.cols());
-        CHECK_EQUAL(criteriaNoPreprocNoPreload.rows(),criteriaPreprocPreload.rows());
+        ASSERT_EQ(criteriaNoPreprocNoPreload.cols(),criteriaNoPreprocPreload.cols());
+        ASSERT_EQ(criteriaNoPreprocNoPreload.rows(),criteriaNoPreprocPreload.rows());
+        ASSERT_EQ(criteriaNoPreprocNoPreload.cols(),criteriaPreprocNoPreload.cols());
+        ASSERT_EQ(criteriaNoPreprocNoPreload.rows(),criteriaPreprocNoPreload.rows());
+        ASSERT_EQ(criteriaNoPreprocNoPreload.cols(),criteriaPreprocPreload.cols());
+        ASSERT_EQ(criteriaNoPreprocNoPreload.rows(),criteriaPreprocPreload.rows());
 
         for (int i=0; i<datesNoPreprocNoPreload.rows(); i++)
         {
             for (int j=0; j<datesNoPreprocNoPreload.cols(); j++)
             {
-                CHECK_EQUAL(datesNoPreprocNoPreload.coeff(i,j), datesNoPreprocPreload.coeff(i,j));
-                CHECK_EQUAL(criteriaNoPreprocNoPreload.coeff(i,j), criteriaNoPreprocPreload.coeff(i,j));
-                CHECK_EQUAL(datesNoPreprocNoPreload.coeff(i,j), datesPreprocNoPreload.coeff(i,j));
-                CHECK_EQUAL(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocNoPreload.coeff(i,j));
-                CHECK_EQUAL(datesNoPreprocNoPreload.coeff(i,j), datesPreprocPreload.coeff(i,j));
-                CHECK_EQUAL(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocPreload.coeff(i,j));
+                ASSERT_EQ(datesNoPreprocNoPreload.coeff(i,j), datesNoPreprocPreload.coeff(i,j));
+                ASSERT_EQ(criteriaNoPreprocNoPreload.coeff(i,j), criteriaNoPreprocPreload.coeff(i,j));
+                ASSERT_EQ(datesNoPreprocNoPreload.coeff(i,j), datesPreprocNoPreload.coeff(i,j));
+                ASSERT_EQ(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocNoPreload.coeff(i,j));
+                ASSERT_EQ(datesNoPreprocNoPreload.coeff(i,j), datesPreprocPreload.coeff(i,j));
+                ASSERT_EQ(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocPreload.coeff(i,j));
             }
         }
     }
@@ -1361,7 +1359,7 @@ void GrenobleComparison2Preloading()
         wxString paramsFilePath = wxFileName::GetCwd();
         paramsFilePath.Append("/files/parameters_calibration_R2_preload.xml");
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -1383,26 +1381,26 @@ void GrenobleComparison2Preloading()
             int step = 0;
             bool containsNaNs = false;
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             step++;
             result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
 
             // Sharpness and Accuracy
             params.SetForecastScoreName("CRPSsharpnessEP");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             params.SetForecastScoreName("CRPSaccuracyEP");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -1499,7 +1497,7 @@ void GrenobleComparison2Preloading()
     }
 }
 
-TEST(GrenobleComparison2PreloadingProcessingMethodMultithreads)
+TEST(MethodCalibrator, GrenobleComparison2PreloadingProcessingMethodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -1511,7 +1509,7 @@ TEST(GrenobleComparison2PreloadingProcessingMethodMultithreads)
     GrenobleComparison2Preloading();
 }
 
-TEST(GrenobleComparison2PreloadingProcessingMethodInsert)
+TEST(MethodCalibrator, GrenobleComparison2PreloadingProcessingMethodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int)asINSERT);
@@ -1551,7 +1549,7 @@ void GrenobleComparison2SavingIntermediateResults()
         wxString paramsFilePath = wxFileName::GetCwd();
         paramsFilePath.Append("/files/parameters_calibration_R2_calib_period.xml");
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -1573,36 +1571,36 @@ void GrenobleComparison2SavingIntermediateResults()
 
             // Create
             result = calibrator.GetAnalogsDates(anaDates1, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             // Reload
             result = calibrator.GetAnalogsDates(anaDates2, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             step++;
             // Create
             result = calibrator.GetAnalogsSubDates(anaSubDates1, params, anaDates2, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             // Reload
             result = calibrator.GetAnalogsSubDates(anaSubDates2, params, anaDates2, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             // Create
             result = calibrator.GetAnalogsValues(anaValues1, params, anaSubDates2, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             // Reload
             result = calibrator.GetAnalogsValues(anaValues2, params, anaSubDates2, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             // Create
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS1, params, anaValues2, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             // Reload
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS2, params, anaValues2, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             // Create
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS2, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -1697,7 +1695,7 @@ void GrenobleComparison2SavingIntermediateResults()
     }
 }
 
-TEST(GrenobleComparison2SavingIntermediateResults)
+TEST(MethodCalibrator, GrenobleComparison2SavingIntermediateResults)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -1766,7 +1764,7 @@ void GrenobleComparison2MergeByHalfAndMultiply()
         wxString paramsFilePath = wxFileName::GetCwd();
         paramsFilePath.Append("/files/parameters_calibration_R2_calib_period_merge_by_half.xml");
         result = params.LoadFromFile(paramsFilePath);
-        CHECK_EQUAL(true, result);
+        ASSERT_EQ(true, result);
 
         // Proceed to the calculations
         asMethodCalibratorSingle calibrator;
@@ -1788,26 +1786,26 @@ void GrenobleComparison2MergeByHalfAndMultiply()
             int step = 0;
             bool containsNaNs = false;
             result = calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             step++;
             result = calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs);
-            CHECK_EQUAL(true, result);
-            CHECK_EQUAL(false, containsNaNs);
+            ASSERT_EQ(true, result);
+            ASSERT_EQ(false, containsNaNs);
             result = calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             result = calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
 
             // Sharpness and Accuracy
             params.SetForecastScoreName("CRPSsharpnessEP");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
             params.SetForecastScoreName("CRPSaccuracyEP");
             result = calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step);
-            CHECK_EQUAL(true, result);
+            ASSERT_EQ(true, result);
         }
         catch(asException& e)
         {
@@ -1904,7 +1902,7 @@ void GrenobleComparison2MergeByHalfAndMultiply()
     }
 }
 
-TEST(GrenobleComparison2MergeByHalfAndMultiply)
+TEST(MethodCalibrator, GrenobleComparison2MergeByHalfAndMultiply)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -1914,6 +1912,4 @@ TEST(GrenobleComparison2MergeByHalfAndMultiply)
 	wxPrintf("Processing GrenobleComparison2 with MergeByHalfAndMultiply preprocessing\n");
 
     GrenobleComparison2MergeByHalfAndMultiply();
-}
-
 }

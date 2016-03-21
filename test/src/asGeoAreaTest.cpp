@@ -29,12 +29,10 @@
 #include "include_tests.h"
 #include "asGeoArea.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ConstructorLimitsException)
+TEST(GeoArea, ConstructorLimitsException)
 {
 	wxPrintf("Testing geo area management...\n");
 	
@@ -54,7 +52,7 @@ TEST(ConstructorLimitsException)
     }
 }
 
-TEST(ConstructorAlternativeLimitsException)
+TEST(GeoArea, ConstructorAlternativeLimitsException)
 {
     if(g_unitTestExceptions)
     {
@@ -66,7 +64,7 @@ TEST(ConstructorAlternativeLimitsException)
     }
 }
 
-TEST(CheckConsistency)
+TEST(GeoArea, CheckConsistency)
 {
     double Xmin = 10;
     double Xwidth = 10;
@@ -80,7 +78,7 @@ TEST(CheckConsistency)
     CHECK_CLOSE(40, geoarea.GetCornerUR().y, 0.01);
 }
 
-TEST(IsRectangleTrue)
+TEST(GeoArea, IsRectangleTrue)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -93,10 +91,10 @@ TEST(IsRectangleTrue)
     CornerLR.y = 30;
     asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_EQUAL(true, geoarea.IsRectangle());
+    ASSERT_EQ(true, geoarea.IsRectangle());
 }
 
-TEST(IsRectangleFalse)
+TEST(GeoArea, IsRectangleFalse)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -109,10 +107,10 @@ TEST(IsRectangleFalse)
     CornerLR.y = 30;
     asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_EQUAL(false, geoarea.IsRectangle());
+    ASSERT_EQ(false, geoarea.IsRectangle());
 }
 
-TEST(GetBounds)
+TEST(GeoArea, GetBounds)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -131,7 +129,7 @@ TEST(GetBounds)
     CHECK_CLOSE(10, geoarea.GetYwidth(), 0.01);
 }
 
-TEST(GetCenter)
+TEST(GeoArea, GetCenter)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
@@ -149,7 +147,7 @@ TEST(GetCenter)
     CHECK_CLOSE(35, center.y, 0.01);
 }
 
-TEST(NegativeSize)
+TEST(GeoArea, NegativeSize)
 {
     double Xmin = 10;
     double Xwidth = -7;
@@ -162,6 +160,4 @@ TEST(NegativeSize)
     CHECK_CLOSE(46, geoarea.GetYmin(), 0.01);
     CHECK_CLOSE(0, geoarea.GetXwidth(), 0.01);
     CHECK_CLOSE(0, geoarea.GetYwidth(), 0.01);
-}
-
 }

@@ -36,12 +36,10 @@
 #include <asFileAscii.h>
 #include <asTimeArray.h>
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ProcessS1)
+TEST(PredictorCriteria, ProcessS1)
 {
 	wxPrintf("Testing the criteria...\n");
 	
@@ -205,7 +203,7 @@ TEST(ProcessS1)
 
 }
 
-TEST(ProcessS1preprocessed)
+TEST(PredictorCriteria, ProcessS1preprocessed)
 {
     double Xmin = 10;
     double Xwidth = 10;
@@ -258,7 +256,7 @@ TEST(ProcessS1preprocessed)
     int candidatesNb = hgtOriginal.size();
     VectorFloat critS1;
     critS1.resize(candidatesNb);
-    CHECK_EQUAL(true, candidatesNb>1);
+    ASSERT_EQ(true, candidatesNb>1);
 
     // Instantiate the criteria
     asPredictorCriteria* criteria = asPredictorCriteria::GetInstance(_("S1"));
@@ -304,7 +302,7 @@ TEST(ProcessS1preprocessed)
 
 }
 
-TEST(ProcessRSE)
+TEST(PredictorCriteria, ProcessRSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -525,7 +523,7 @@ TEST(ProcessRSE)
 
 }
 
-TEST(ProcessRMSE)
+TEST(PredictorCriteria, ProcessRMSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -762,7 +760,7 @@ TEST(ProcessRMSE)
 
 }
 
-TEST(ProcessDifferences)
+TEST(PredictorCriteria, ProcessDifferences)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
 
@@ -1070,5 +1068,4 @@ TEST(ProcessDifferences)
 
     wxDELETE(criteriaMRDtoMean);
 
-}
 }

@@ -33,12 +33,10 @@
 #include "asGeoAreaCompositeRegularGrid.h"
 #include "asTimeArray.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(LoadEasy)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadEasy)
 {
 	wxPrintf("Testing NCEP R1 v2014 regular archive predictors...\n");
 	
@@ -126,7 +124,7 @@ TEST(LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(LoadComposite)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadComposite)
 {
     double Xmin = -10;
     double Xwidth = 15;
@@ -220,7 +218,7 @@ TEST(LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeft)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderLeft)
 {
     double Xmin = 0;
     double Xwidth = 5;
@@ -286,7 +284,7 @@ TEST(LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderLeftOn720)
 {
     double Xmin = 360;
     double Xwidth = 5;
@@ -352,7 +350,7 @@ TEST(LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRight)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderRight)
 {
     double Xmin = 350;
     double Xwidth = 10;
@@ -424,7 +422,7 @@ TEST(LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLon)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLon)
 {
     double Xmin = -10;
     double Xwidth = 15;
@@ -498,7 +496,7 @@ TEST(LoadCompositeStepLon)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonMoved)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonMoved)
 {
     double Xmin = -7.5;
     double Xwidth = 10;
@@ -553,7 +551,7 @@ TEST(LoadCompositeStepLonMoved)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLat)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonLat)
 {
     double Xmin = -10;
     double Xwidth = 15;
@@ -617,7 +615,7 @@ TEST(LoadCompositeStepLonLat)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLatTime)
+TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonLatTime)
 {
     double Xmin = -10;
     double Xwidth = 15;
@@ -670,7 +668,7 @@ TEST(LoadCompositeStepLonLatTime)
     wxDELETE(predictor);
 }
 
-TEST(SetData)
+TEST(DataPredictorArchiveNcepR1v2014Regular, SetData)
 {
     double Xmin = -10;
     double Xwidth = 15;
@@ -722,6 +720,4 @@ TEST(SetData)
     CHECK_CLOSE(44, predictor->GetData()[4](0,3), 0.0001);
 
     wxDELETE(predictor);
-}
-
 }

@@ -29,12 +29,10 @@
 #include "include_tests.h"
 #include "asGeoAreaCompositeGrid.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ConstructorAlternativeOneArea)
+TEST(GeoAreaCompositeGeneralGrid, ConstructorAlternativeOneArea)
 {
 	wxPrintf("Testing composite grids...\n");
 	
@@ -46,11 +44,11 @@ TEST(ConstructorAlternativeOneArea)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(1, geoarea->GetNbComposites());
+    ASSERT_EQ(1, geoarea->GetNbComposites());
     wxDELETE(geoarea);
 }
 
-TEST(ConstructorAlternativeTwoAreas)
+TEST(GeoAreaCompositeGeneralGrid, ConstructorAlternativeTwoAreas)
 {
     double Xmin = -10;
     int Xptsnb = 13;
@@ -60,11 +58,11 @@ TEST(ConstructorAlternativeTwoAreas)
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_EQUAL(2, geoarea->GetNbComposites());
+    ASSERT_EQ(2, geoarea->GetNbComposites());
     wxDELETE(geoarea);
 }
 
-TEST(CheckConsistency)
+TEST(GeoAreaCompositeGeneralGrid, CheckConsistency)
 {
     double Xmin = -5;
     int Xptsnb = 11;
@@ -81,7 +79,7 @@ TEST(CheckConsistency)
     wxDELETE(geoarea);
 }
 
-TEST(CheckConsistencyException)
+TEST(GeoAreaCompositeGeneralGrid, CheckConsistencyException)
 {
     if(g_unitTestExceptions)
     {
@@ -97,7 +95,7 @@ TEST(CheckConsistencyException)
     }
 }
 
-TEST(GetBoundsSplitted)
+TEST(GeoAreaCompositeGeneralGrid, GetBoundsSplitted)
 {
     double Xmin = -10;
     int Xptsnb = 13;
@@ -114,7 +112,7 @@ TEST(GetBoundsSplitted)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeSize)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSize)
 {
     double Xmin = -40;
     int Xptsnb = 21;
@@ -131,7 +129,7 @@ TEST(GetUYaxisCompositeSize)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeSizeStepLon)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSizeStepLon)
 {
     double Xmin = -40;
     int Xptsnb = 11;
@@ -149,7 +147,7 @@ TEST(GetUYaxisCompositeSizeStepLon)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeSizeStepLonMoved)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSizeStepLonMoved)
 {
     double Xmin = -7.5;
     int Xptsnb = 4;
@@ -167,7 +165,7 @@ TEST(GetUYaxisCompositeSizeStepLonMoved)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeWidthStepLonMoved)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeWidthStepLonMoved)
 {
     double Xmin = -7.5;
     int Xptsnb = 4;
@@ -185,7 +183,7 @@ TEST(GetUYaxisCompositeWidthStepLonMoved)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisPtsnbStepLonMoved)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisPtsnbStepLonMoved)
 {
     double Xmin = -7.5;
     int Xptsnb = 4;
@@ -201,7 +199,7 @@ TEST(GetUYaxisPtsnbStepLonMoved)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisWidthStepLonMoved)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisWidthStepLonMoved)
 {
     double Xmin = -7.5;
     int Xptsnb = 4;
@@ -217,7 +215,7 @@ TEST(GetUYaxisWidthStepLonMoved)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeLimits)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeLimits)
 {
     double Xmin = -10;
     int Xptsnb = 5;
@@ -239,7 +237,7 @@ TEST(GetUYaxisCompositeLimits)
     wxDELETE(geoarea);
 }
 
-TEST(GetUYaxisCompositeLimitsMoved)
+TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeLimitsMoved)
 {
     double Xmin = -7.5;
     int Xptsnb = 4;
@@ -259,6 +257,4 @@ TEST(GetUYaxisCompositeLimitsMoved)
     CHECK_CLOSE(40, geoarea->GetYaxisCompositeEnd(0), 0.01);
     CHECK_CLOSE(40, geoarea->GetYaxisCompositeEnd(1), 0.01);
     wxDELETE(geoarea);
-}
-
 }

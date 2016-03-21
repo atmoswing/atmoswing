@@ -28,9 +28,5 @@
 #include "include_tests.h"
 #include "asGlobEnums.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
-
-}
