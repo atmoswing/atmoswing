@@ -304,9 +304,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 VectorFloat scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadMethodOptimizerGeneticAlgorithms* firstthread = new asThreadMethodOptimizerGeneticAlgorithms(this, newParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
-                int threadType = firstthread->GetType();
-                ThreadsManager().AddThread(firstthread);
+                asThreadMethodOptimizerGeneticAlgorithms* firstThread = new asThreadMethodOptimizerGeneticAlgorithms(this, newParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                int threadType = firstThread->GetType();
+                ThreadsManager().AddThread(firstThread);
 
                 // Wait until done to get the score of the climatology
                 if (scoreClim.size()==0)
@@ -367,7 +367,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     asParametersOptimizationGAs nextParams = GetNextParameters();
                     if (nextParams.GetStepsNb()==0)
                     {
-                        asLogError(wxString::Format(_("The new parameters set is not correcty initialized in the continuous adding (iterator %d/%d)."), m_iterator, m_paramsNb));
+                        asLogError(wxString::Format(_("The new parameters set is not correctly initialized in the continuous adding (iterator %d/%d)."), m_iterator, m_paramsNb));
                         return false;
                     }
 
