@@ -42,6 +42,7 @@ public:
 		wxString DatasetId;
 		wxString DataId;
 		bool Preload;
+		VectorString PreloadDataIds;
 		VectorDouble PreloadTimeHours;
 		VectorFloat PreloadLevels;
 		double PreloadXmin;
@@ -84,7 +85,7 @@ public:
 	virtual ~asParameters();
 
 	bool IsOk();
-	void AddStep();
+	virtual void AddStep();
 	void AddPredictor(); // To the last step
 	void AddPredictor(ParamsStep &step);
 	void AddPredictor(int i_step);
@@ -97,27 +98,27 @@ public:
 
 	void SortLevelsAndTime();
 
-	bool SetSpatialWindowProperties();
+	virtual bool SetSpatialWindowProperties();
 
-	bool SetPreloadingProperties();
+	virtual bool SetPreloadingProperties();
 
-	bool InputsOK();
+	virtual bool InputsOK();
 
 	static VectorInt GetFileStationIds(wxString stationIdsString);
 
 	wxString GetPredictandStationIdsString();
 
-	bool FixTimeLimits();
+	virtual bool FixTimeLimits();
 
 	bool FixWeights();
 
 	bool FixCoordinates();
 
-	wxString Print();
+	virtual wxString Print();
 
 	bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString);
 
-	bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
+	virtual bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
 
 	bool SetPredictandStationIds(wxString val);
 
@@ -331,7 +332,7 @@ public:
 		return m_predictandStationIds;
 	}
 
-	VVectorInt GetPredictandStationIdsVector()
+	virtual VVectorInt GetPredictandStationIdsVector()
 	{
 		VVectorInt vec;
 		vec.push_back(m_predictandStationIds);
@@ -401,6 +402,15 @@ public:
 		m_steps[i_step].Predictors[i_predictor].Preload = val;
 	}
 
+	VectorString GetPreloadDataIds(int i_step, int i_predictor)
+	{
+		return m_steps[i_step].Predictors[i_predictor].PreloadDataIds;
+	}
+
+	bool SetPreloadDataIds(int i_step, int i_predictor, VectorString val);
+
+	bool SetPreloadDataIds(int i_step, int i_predictor, wxString val);
+
 	VectorDouble GetPreloadTimeHours(int i_step, int i_predictor)
 	{
 		return m_steps[i_step].Predictors[i_predictor].PreloadTimeHours;
@@ -459,7 +469,7 @@ public:
 
 	int GetPreprocessSize(int i_step, int i_predictor)
 	{
-		return m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size();
+		return (int) m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size();
 	}
 
 	wxString GetPreprocessMethod(int i_step, int i_predictor)

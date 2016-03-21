@@ -500,6 +500,7 @@ bool asParameters::SetPreloadingProperties()
 			// Set levels and time for preloading
 			if (NeedsPreloading(i_step, i_ptor) && !NeedsPreprocessing(i_step, i_ptor))
 			{
+				if (!SetPreloadDataIds(i_step, i_ptor, GetPredictorDataId(i_step, i_ptor))) return false;
 				if (!SetPreloadLevels(i_step, i_ptor, GetPredictorLevel(i_step, i_ptor))) return false;
 				if (!SetPreloadTimeHours(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor))) return false;
 			}
@@ -532,7 +533,7 @@ bool asParameters::SetPreloadingProperties()
 					preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
 					preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
 				}
-				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+				else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
 				{
 					if (preprocSize != 2)
 					{
@@ -992,6 +993,7 @@ wxString asParameters::Print()
 
 	content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString()));
 	content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
+	content.Append(wxString::Format("ExcludeDays\t%d\t", GetTimeArrayAnalogsExcludeDays()));
 
 	for (int i_step = 0; i_step<GetStepsNb(); i_step++)
 	{
@@ -1123,41 +1125,52 @@ bool asParameters::GetValuesFromString(wxString stringVals)
 			}
 
 			iLeft = stringVals.Find("Xmin");
+			if (iLeft<0) iLeft = stringVals.Find("Umin");
 			iRight = stringVals.Find("Xptsnb");
+			if (iRight<0) iRight = stringVals.Find("Uptsnb");
 			strVal = stringVals.SubString(iLeft + 5, iRight - 2);
 			strVal.ToDouble(&dVal);
 			SetPredictorXmin(i_step, i_ptor, dVal);
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Xptsnb");
+			if (iLeft<0) iLeft = stringVals.Find("Uptsnb");
 			iRight = stringVals.Find("Xstep");
+			if (iRight<0) iRight = stringVals.Find("Ustep");
 			strVal = stringVals.SubString(iLeft + 7, iRight - 2);
 			strVal.ToLong(&lVal);
 			SetPredictorXptsnb(i_step, i_ptor, int(lVal));
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Xstep");
+			if (iLeft<0) iLeft = stringVals.Find("Ustep");
 			iRight = stringVals.Find("Ymin");
+			if (iRight<0) iRight = stringVals.Find("Vmin");
 			strVal = stringVals.SubString(iLeft + 6, iRight - 2);
 			strVal.ToDouble(&dVal);
 			SetPredictorXstep(i_step, i_ptor, dVal);
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Ymin");
+			if (iLeft<0) iLeft = stringVals.Find("Vmin");
 			iRight = stringVals.Find("Yptsnb");
+			if (iRight<0) iRight = stringVals.Find("Vptsnb");
 			strVal = stringVals.SubString(iLeft + 5, iRight - 2);
 			strVal.ToDouble(&dVal);
 			SetPredictorYmin(i_step, i_ptor, dVal);
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Yptsnb");
+			if (iLeft<0) iLeft = stringVals.Find("Vptsnb");
 			iRight = stringVals.Find("Ystep");
+			if (iRight<0) iRight = stringVals.Find("Vstep");
 			strVal = stringVals.SubString(iLeft + 7, iRight - 2);
 			strVal.ToLong(&lVal);
 			SetPredictorYptsnb(i_step, i_ptor, int(lVal));
 			stringVals = stringVals.SubString(iRight, stringVals.Length());
 
 			iLeft = stringVals.Find("Ystep");
+			if (iLeft<0) iLeft = stringVals.Find("Vstep");
 			iRight = stringVals.Find("Weight");
 			strVal = stringVals.SubString(iLeft + 6, iRight - 2);
 			strVal.ToDouble(&dVal);
@@ -1332,6 +1345,42 @@ bool asParameters::SetAnalogsNumber(int i_step, int val)
 		return false;
 	}
 	m_steps[i_step].AnalogsNumber = val;
+	return true;
+}
+
+bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, VectorString val)
+{
+	if (val.size()<1)
+	{
+		asLogError(_("The provided preload data IDs vector is empty."));
+		return false;
+	}
+	else
+	{
+		for (int i = 0; i<(int)val.size(); i++)
+		{
+			if (val[i].IsEmpty())
+			{
+				asLogError(_("There are empty values in the provided preload data IDs vector."));
+				return false;
+			}
+		}
+	}
+	m_steps[i_step].Predictors[i_predictor].PreloadDataIds = val;
+	return true;
+}
+
+bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, wxString val)
+{
+	if (val.IsEmpty())
+	{
+		asLogError(_("The provided preload data id parameter is empty."));
+		return false;
+	}
+
+	m_steps[i_step].Predictors[i_predictor].PreloadDataIds.clear();
+	m_steps[i_step].Predictors[i_predictor].PreloadDataIds.push_back(val);
+
 	return true;
 }
 

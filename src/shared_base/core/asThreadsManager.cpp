@@ -254,6 +254,13 @@ void asThreadsManager::Wait(int type)
     asLogMessage(_("All threads have done."));
 }
 
+bool asThreadsManager::HasFreeThread(int type)
+{
+    if(m_maxThreadsNb<1) Init();
+
+    return m_maxThreadsNb-GetRunningThreadsNb(type)>0;
+}
+
 void asThreadsManager::WaitForFreeThread(int type)
 {
     if(m_maxThreadsNb<1) Init();
