@@ -694,10 +694,10 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             if (nDims==4)
             {
                 indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_level, 0.01f);
-            }
-            if (indexLevel<0) {
-                asLogError(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName));
-                return false;
+                if (indexLevel<0) {
+                    asLogError(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName));
+                    return false;
+                }
             }
 
             // Create the arrays to receive the data
