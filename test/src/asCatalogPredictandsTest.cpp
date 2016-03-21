@@ -31,12 +31,10 @@
 #include "include_tests.h"
 #include "asCatalogPredictands.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(LoadCatalogProp)
+TEST(CatalogPredictand, LoadCatalogProp)
 {
 	wxPrintf("Testing predictand catalogs...\n");
 
@@ -47,34 +45,34 @@ TEST(LoadCatalogProp)
     catalog.Load();
 
     int samestr = catalog.GetSetId().CompareTo(_T("MeteoSwiss-Rhone"));
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
     samestr = catalog.GetName().CompareTo(_T("MeteoSwiss daily rainfall measurements for the Rhone catchment"));
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
     samestr = catalog.GetDescription().CompareTo(_T("Precipitation measurements made by MeteoSwiss at a daily timestep for the Rhone catchment"));
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
     DataParameter paramval = catalog.GetParameter();
     DataParameter paramref = Precipitation;
-    CHECK_EQUAL(paramref,paramval);
+    ASSERT_EQ(paramref,paramval);
     int parameter = catalog.GetParameter();
     int parameterreal = Precipitation;
-    CHECK_EQUAL(parameterreal,parameter);
+    ASSERT_EQ(parameterreal,parameter);
     int unit = catalog.GetUnit();
     int unitreal = mm;
-    CHECK_EQUAL(unitreal,unit);
-    CHECK_EQUAL(0,catalog.GetTimeZoneHours());
+    ASSERT_EQ(unitreal,unit);
+    ASSERT_EQ(0,catalog.GetTimeZoneHours());
     double startreal = asTime::GetMJD(1940,01,01,00,00);
-    CHECK_EQUAL(startreal,catalog.GetStart());
+    ASSERT_EQ(startreal,catalog.GetStart());
     double endreal = asTime::GetMJD(2009,12,31);
-    CHECK_EQUAL(endreal,catalog.GetEnd());
-    CHECK_EQUAL(24,catalog.GetTimeStepHours());
-    CHECK_EQUAL(0,catalog.GetFirstTimeStepHours());
+    ASSERT_EQ(endreal,catalog.GetEnd());
+    ASSERT_EQ(24,catalog.GetTimeStepHours());
+    ASSERT_EQ(0,catalog.GetFirstTimeStepHours());
     VectorString nans = catalog.GetNan();
-    CHECK_EQUAL(true,nans[0].IsSameAs("32767"));
+    ASSERT_EQ(true,nans[0].IsSameAs("32767"));
     samestr = catalog.GetCoordSys().CompareTo(_T("EPSG:3857"));
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
 }
 
-TEST(LoadDataProp)
+TEST(CatalogPredictand, LoadDataProp)
 {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/catalog_precipitation_MCH.xml");
@@ -82,24 +80,22 @@ TEST(LoadDataProp)
     asCatalogPredictands catalog(filepath);
     catalog.Load();
 
-    CHECK_EQUAL(1,catalog.GetStationId(0));
+    ASSERT_EQ(1,catalog.GetStationId(0));
     wxString stationName = wxString(L"G\u00FCtsch ob Andermatt", wxConvUTF8);
     wxString stationNameFile = catalog.GetStationName(0);
     int samestr = stationNameFile.Cmp(stationName);
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
     samestr = catalog.GetStationOfficialId(0).CompareTo(_T("4020"));
-    CHECK_EQUAL(0,samestr);
-    CHECK_EQUAL(690140,catalog.GetStationCoord(0).x);
-    CHECK_EQUAL(167590,catalog.GetStationCoord(0).y);
-    CHECK_EQUAL(2287,catalog.GetStationHeight(0));
+    ASSERT_EQ(0,samestr);
+    ASSERT_EQ(690140,catalog.GetStationCoord(0).x);
+    ASSERT_EQ(167590,catalog.GetStationCoord(0).y);
+    ASSERT_EQ(2287,catalog.GetStationHeight(0));
     samestr = catalog.GetStationFilename(0).CompareTo(_T("CH4020.dat"));
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
     samestr = catalog.GetStationFilepattern(0).CompareTo(_T("MeteoSwiss_Climap"));
-    CHECK_EQUAL(0,samestr);
+    ASSERT_EQ(0,samestr);
     double startreal = asTime::GetMJD(1940,01,01,00,00);
-    CHECK_EQUAL(startreal,catalog.GetStationStart(0));
+    ASSERT_EQ(startreal,catalog.GetStationStart(0));
     double endreal = asTime::GetMJD(2009,12,31,00,00);
-    CHECK_EQUAL(endreal,catalog.GetStationEnd(0));
-}
-
+    ASSERT_EQ(endreal,catalog.GetStationEnd(0));
 }

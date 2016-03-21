@@ -33,12 +33,10 @@
 #include "asGeoAreaCompositeGrid.h"
 #include "asTimeArray.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(LoadEasy)
+TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadEasy)
 {
 	wxPrintf("Testing NCEP R1 v2003 gaussian archive predictors...\n");
 	
@@ -128,7 +126,7 @@ TEST(LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(LoadComposite)
+TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadComposite)
 {
     double Xmin = -7.5;
     int Xptsnb = 7;
@@ -208,7 +206,7 @@ TEST(LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeft)
+TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadBorderLeft)
 {
     double Xmin = 0;
     int Xptsnb = 3;
@@ -276,7 +274,7 @@ TEST(LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720)
+TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadBorderLeftOn720)
 {
     double Xmin = 360;
     int Xptsnb = 3;
@@ -344,7 +342,7 @@ TEST(LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRight)
+TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadBorderRight)
 {
     double Xmin = 352.5;
     int Xptsnb = 5;
@@ -418,7 +416,7 @@ TEST(LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(SetData)
+TEST(DataPredictorArchiveNcepR1v2003Gaussian, SetData)
 {
     double Xmin = -7.5;
     int Xptsnb = 4;
@@ -472,6 +470,4 @@ TEST(SetData)
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
-}
-
 }

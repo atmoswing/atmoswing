@@ -28,19 +28,15 @@
 #include "include_tests.h"
 #include "asException.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(asThrowException)
+TEST(Exception, ThrowException)
 {
 	wxPrintf("Testing exceptions...\n");
 	
     if(g_unitTestExceptions)
     {
-        CHECK_THROW(asThrowException("My exception"),asException);
+        ASSERT_THROW(asThrowException("My exception"),asException);
     }
-}
-
 }

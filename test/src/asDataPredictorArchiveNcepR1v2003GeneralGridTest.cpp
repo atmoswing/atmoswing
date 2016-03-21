@@ -33,12 +33,10 @@
 #include "asGeoAreaCompositeGrid.h"
 #include "asTimeArray.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(LoadEasy)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadEasy)
 {
 	wxPrintf("Testing NCEP R1 v2003 general archive predictors...\n");
 	
@@ -128,7 +126,7 @@ TEST(LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(LoadComposite)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadComposite)
 {
     double Xmin = -10;
     int Xptsnb = 7;
@@ -224,7 +222,7 @@ TEST(LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeft)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadBorderLeft)
 {
     double Xmin = 0;
     int Xptsnb = 3;
@@ -292,7 +290,7 @@ TEST(LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadBorderLeftOn720)
 {
     double Xmin = 360;
     int Xptsnb = 3;
@@ -360,7 +358,7 @@ TEST(LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRight)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadBorderRight)
 {
     double Xmin = 350;
     int Xptsnb = 5;
@@ -434,7 +432,7 @@ TEST(LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLon)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadCompositeStepLon)
 {
     double Xmin = -10;
     int Xptsnb = 7;
@@ -506,7 +504,7 @@ TEST(LoadCompositeStepLon)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonMoved)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadCompositeStepLonMoved)
 {
     double Xmin = -7.5;
     int Xptsnb = 5;
@@ -563,7 +561,7 @@ TEST(LoadCompositeStepLonMoved)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLat)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadCompositeStepLonLat)
 {
     double Xmin = -10;
     int Xptsnb = 4;
@@ -629,7 +627,7 @@ TEST(LoadCompositeStepLonLat)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLatTime)
+TEST(DataPredictorArchiveNcepR1v2003General, LoadCompositeStepLonLatTime)
 {
     double Xmin = -10;
     int Xptsnb = 4;
@@ -684,7 +682,7 @@ TEST(LoadCompositeStepLonLatTime)
     wxDELETE(predictor);
 }
 
-TEST(SetData)
+TEST(DataPredictorArchiveNcepR1v2003General, SetData)
 {
     double Xmin = -10;
     int Xptsnb = 4;
@@ -739,6 +737,4 @@ TEST(SetData)
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
-}
-
 }

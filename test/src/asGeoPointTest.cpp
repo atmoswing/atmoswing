@@ -29,12 +29,10 @@
 #include "include_tests.h"
 #include "asGeoPoint.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(ConstructorDefault)
+TEST(GeoPoint, ConstructorDefault)
 {
 	wxPrintf("Testing geo points management...\n");
 	
@@ -47,7 +45,7 @@ TEST(ConstructorDefault)
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
-TEST(ConstructorOther)
+TEST(GeoPoint, ConstructorOther)
 {
     double x = 7;
     double y = 46;
@@ -57,7 +55,7 @@ TEST(ConstructorOther)
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
-TEST(ConstructorOutBoundsLon)
+TEST(GeoPoint, ConstructorOutBoundsLon)
 {
     double x = -10;
     double y = 46;
@@ -67,7 +65,7 @@ TEST(ConstructorOutBoundsLon)
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
 }
 
-TEST(ConstructorOutBoundsLat)
+TEST(GeoPoint, ConstructorOutBoundsLat)
 {
     double x = 10;
     double y = -100;
@@ -77,7 +75,7 @@ TEST(ConstructorOutBoundsLat)
     CHECK_CLOSE(-80, geopoint.GetY(), 0.001);
 }
 
-TEST(SetCooOutBounds)
+TEST(GeoPoint, SetCooOutBounds)
 {
     asGeoPoint geopoint(0, 0);
     Coo Point;
@@ -87,6 +85,4 @@ TEST(SetCooOutBounds)
 
     CHECK_CLOSE(350, geopoint.GetX(), 0.001);
     CHECK_CLOSE(46, geopoint.GetY(), 0.001);
-}
-
 }

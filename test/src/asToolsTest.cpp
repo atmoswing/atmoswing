@@ -31,312 +31,310 @@
 
 #include "include_tests.h"
 
-#include <UnitTest++.h>
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(IsRoundFloatTrue)
+TEST(Tools, IsRoundFloatTrue)
 {
 	wxPrintf("Testing tools...\n");
 
     float Value = 2;
     bool Result = asTools::IsRound(Value);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
 }
 
-TEST(IsRoundFloatFalse)
+TEST(Tools, IsRoundFloatFalse)
 {
     float Value = 2.0001f;
     bool Result = asTools::IsRound(Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(IsRoundDoubleFalse)
+TEST(Tools, IsRoundDoubleFalse)
 {
     double Value = 2.00000001;
     bool Result = asTools::IsRound(Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(RoundFloatUp)
+TEST(Tools, RoundFloatUp)
 {
     float Value = 2.5;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(3, Result);
+    ASSERT_EQ(3, Result);
 }
 
-TEST(RoundDoubleUp)
+TEST(Tools, RoundDoubleUp)
 {
     double Value = 2.5;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(3, Result);
+    ASSERT_EQ(3, Result);
 }
 
-TEST(RoundFloatDown)
+TEST(Tools, RoundFloatDown)
 {
     float Value = 2.49999f;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(2, Result);
+    ASSERT_EQ(2, Result);
 }
 
-TEST(RoundDoubleDown)
+TEST(Tools, RoundDoubleDown)
 {
     double Value = 2.499999999999;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(2, Result);
+    ASSERT_EQ(2, Result);
 }
 
-TEST(RoundNegativeFloatDown)
+TEST(Tools, RoundNegativeFloatDown)
 {
-    float Value = -2.5;
+    float Value = -2.5f;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(-3, Result);
+    ASSERT_EQ(-3, Result);
 }
 
-TEST(RoundNegativeDoubleDown)
+TEST(Tools, RoundNegativeDoubleDown)
 {
     double Value = -2.5;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(-3, Result);
+    ASSERT_EQ(-3, Result);
 }
 
-TEST(RoundNegativeFloatUp)
+TEST(Tools, RoundNegativeFloatUp)
 {
     float Value = -2.49999f;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(-2, Result);
+    ASSERT_EQ(-2, Result);
 }
 
-TEST(RoundNegativeDoubleUp)
+TEST(Tools, RoundNegativeDoubleUp)
 {
     double Value = -2.499999999999;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(-2, Result);
+    ASSERT_EQ(-2, Result);
 }
 
-TEST(RoundSmallFloatUp)
+TEST(Tools, RoundSmallFloatUp)
 {
     float Value = 0.5;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(RoundSmallDoubleUp)
+TEST(Tools, RoundSmallDoubleUp)
 {
     double Value = 0.5;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(RoundSmallFloatDown)
+TEST(Tools, RoundSmallFloatDown)
 {
     float Value = 0.49999f;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(RoundSmallDoubleDown)
+TEST(Tools, RoundSmallDoubleDown)
 {
     double Value = 0.499999999999;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(RoundSmallNegativeFloatDown)
+TEST(Tools, RoundSmallNegativeFloatDown)
 {
     float Value = -0.5;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(-1, Result);
+    ASSERT_EQ(-1, Result);
 }
 
-TEST(RoundSmallNegativeDoubleDown)
+TEST(Tools, RoundSmallNegativeDoubleDown)
 {
     double Value = -0.5;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(-1, Result);
+    ASSERT_EQ(-1, Result);
 }
 
-TEST(RoundSmallNegativeFloatUp)
+TEST(Tools, RoundSmallNegativeFloatUp)
 {
     float Value = -0.49999f;
     float Result = asTools::Round(Value);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(RoundSmallNegativeDoubleUp)
+TEST(Tools, RoundSmallNegativeDoubleUp)
 {
     double Value = -0.499999999999;
     double Result = asTools::Round(Value);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(IsNaNOne)
+TEST(Tools, IsNaNOne)
 {
     int Value = 1;
     bool Result = asTools::IsNaN((float)Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(IsNaNZero)
+TEST(Tools, IsNaNZero)
 {
     int Value = 0;
     bool Result = asTools::IsNaN((float)Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(IsNaNFloatTrue)
+TEST(Tools, IsNaNFloatTrue)
 {
     float Value = NaNFloat;
     bool Result = asTools::IsNaN(Value);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
 }
 
-TEST(IsNaNDoubleTrue)
+TEST(Tools, IsNaNDoubleTrue)
 {
     double Value = NaNDouble;
     bool Result = asTools::IsNaN(Value);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
 }
 
-TEST(IsInfFloatFalse)
+TEST(Tools, IsInfFloatFalse)
 {
     float Value = -2151;
     bool Result = asTools::IsInf(Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(IsInfDoubleFalse)
+TEST(Tools, IsInfDoubleFalse)
 {
     double Value = -2151;
     bool Result = asTools::IsInf(Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(IsInfLongDoubleFalse)
+TEST(Tools, IsInfLongDoubleFalse)
 {
     long double Value = -2151;
     bool Result = asTools::IsInf(Value);
-    CHECK_EQUAL(false, Result);
+    ASSERT_EQ(false, Result);
 }
 
-TEST(IsInfFloatTrue)
+TEST(Tools, IsInfFloatTrue)
 {
     float Value = InfFloat;
     bool Result = asTools::IsInf(Value);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
 }
 
-TEST(IsInfDoubleTrue)
+TEST(Tools, IsInfDoubleTrue)
 {
     double Value = InfDouble;
     bool Result = asTools::IsInf(Value);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
 }
 
-TEST(IsInfLongDoubleTrue)
+TEST(Tools, IsInfLongDoubleTrue)
 {
     long double Value = InfLongDouble;
     bool Result = asTools::IsInf(Value);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
 }
 
-TEST(CountNotNaNFloat)
+TEST(Tools, CountNotNaNFloat)
 {
     float Array[] = {0.3465f,1.345f,2.76f,3.69f,5.58f,NaNFloat,8.34f,9.75f,10.0f,NaNFloat};
     float* pVectStart = &Array[0];
     float* pVectEnd = &Array[9];
     int Result = asTools::CountNotNaN(pVectStart, pVectEnd);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(CountNotNaNDouble)
+TEST(Tools, CountNotNaNDouble)
 {
     double Array[] = {0.3465,1.345,2.76,3.69,5.58,NaNDouble,8.34,9.75,10,NaNDouble};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     int Result = asTools::CountNotNaN(pVectStart, pVectEnd);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(FindMinInt)
+TEST(Tools, FindMinInt)
 {
     int Array[] = {0,0,-1,1,2,3,5,0,8,9,10,0};
     int Result = asTools::MinArray(&Array[0], &Array[11]);
-    CHECK_EQUAL(-1, Result);
+    ASSERT_EQ(-1, Result);
 }
 
-TEST(FindMinFloat)
+TEST(Tools, FindMinFloat)
 {
     float Array[] = {NaNFloat,NaNFloat,0.3465f,1.345f,2.76f,3.69f,5.58f,NaNFloat,8.34f,9.75f,10.0f,NaNFloat};
     float Result = asTools::MinArray(&Array[0], &Array[11]);
     CHECK_CLOSE(0.3465, Result, 0.0001);
 }
 
-TEST(FindMinDouble)
+TEST(Tools, FindMinDouble)
 {
     double Array[] = {NaNDouble,NaNDouble,0.3465,1.345,2.76,3.69,5.58,NaNDouble,8.34,9.75,10,NaNDouble};
     double Result = asTools::MinArray(&Array[0], &Array[11]);
     CHECK_CLOSE(0.3465, Result, 0.0001);
 }
 
-TEST(FindMaxInt)
+TEST(Tools, FindMaxInt)
 {
     int Array[] = {0,0,-1,1,2,3,5,0,8,9,10,0};
     int Result = asTools::MaxArray(&Array[0], &Array[11]);
-    CHECK_EQUAL(10, Result);
+    ASSERT_EQ(10, Result);
 }
 
-TEST(FindMaxFloat)
+TEST(Tools, FindMaxFloat)
 {
     float Array[] = {NaNFloat,NaNFloat,0.3465f,1.345f,2.76f,3.69f,5.58f,NaNFloat,8.34f,9.75f,10.12f,NaNFloat};
     float Result = asTools::MaxArray(&Array[0], &Array[11]);
     CHECK_CLOSE(10.12, Result, 0.0001);
 }
 
-TEST(FindMaxDouble)
+TEST(Tools, FindMaxDouble)
 {
     double Array[] = {NaNDouble,NaNDouble,0.3465,1.345,2.76,3.69,5.58,NaNDouble,8.34,9.75,10.12,NaNDouble};
     double Result = asTools::MaxArray(&Array[0], &Array[11]);
     CHECK_CLOSE(10.12, Result, 0.0001);
 }
 
-TEST(FindMinStepInt)
+TEST(Tools, FindMinStepInt)
 {
     int Array[] = {0,10,0,1,3,5,0,8,2,9,0,0};
     int Result = asTools::MinArrayStep(&Array[0], &Array[11], 0);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(FindMinStepFloat)
+TEST(Tools, FindMinStepFloat)
 {
     float Array[] = {NaNFloat,10.12f,NaNFloat,1.345f,1.345f,3.69f,5.58f,NaNFloat,8.34f,2.76f,9.75f,0.3465f,NaNFloat};
     float Result = asTools::MinArrayStep(&Array[0], &Array[11], 0.0001f);
     CHECK_CLOSE(0.37, Result, 0.0001);
 }
 
-TEST(FindMinStepDouble)
+TEST(Tools, FindMinStepDouble)
 {
     double Array[] = {NaNDouble,10.12,NaNDouble,1.345,1.345,3.69,5.58,NaNDouble,8.34,2.76,9.75,0.3465,NaNDouble};
     double Result = asTools::MinArrayStep(&Array[0], &Array[11], 0.0001);
     CHECK_CLOSE(0.37, Result, 0.0001);
 }
 
-TEST(ExtractUniqueValuesInt)
+TEST(Tools, ExtractUniqueValuesInt)
 {
     int Array[] = {0,10,0,1,3,5,1,8,2,9,0,9};;
     Array1DInt Result(asTools::ExtractUniqueValues(&Array[0], &Array[11], 0.0001));
-    CHECK_EQUAL(0, Result[0]);
-    CHECK_EQUAL(1, Result[1]);
-    CHECK_EQUAL(2, Result[2]);
-    CHECK_EQUAL(3, Result[3]);
-    CHECK_EQUAL(5, Result[4]);
-    CHECK_EQUAL(8, Result[5]);
-    CHECK_EQUAL(9, Result[6]);
-    CHECK_EQUAL(10, Result[7]);
+    ASSERT_EQ(0, Result[0]);
+    ASSERT_EQ(1, Result[1]);
+    ASSERT_EQ(2, Result[2]);
+    ASSERT_EQ(3, Result[3]);
+    ASSERT_EQ(5, Result[4]);
+    ASSERT_EQ(8, Result[5]);
+    ASSERT_EQ(9, Result[6]);
+    ASSERT_EQ(10, Result[7]);
 }
 
-TEST(ExtractUniqueValuesFloat)
+TEST(Tools, ExtractUniqueValuesFloat)
 {
     float Array[] = {NaNFloat,10.12f,NaNFloat,1.345f,1.345f,3.69f,5.58f,NaNFloat,8.34f,2.76f,9.75f,0.3465f,NaNFloat};
     Array1DFloat Result(asTools::ExtractUniqueValues(&Array[0], &Array[11], 0.0001f));
@@ -350,7 +348,7 @@ TEST(ExtractUniqueValuesFloat)
     CHECK_CLOSE(10.12, Result[7], 0.0001);
 }
 
-TEST(ExtractUniqueValuesDouble)
+TEST(Tools, ExtractUniqueValuesDouble)
 {
     double Array[] = {NaNDouble,10.12,NaNDouble,1.345,1.345,3.69,5.58,NaNDouble,8.34,2.76,9.75,0.3465,NaNDouble};
     Array1DDouble Result(asTools::ExtractUniqueValues(&Array[0], &Array[11], 0.0001));
@@ -364,37 +362,37 @@ TEST(ExtractUniqueValuesDouble)
     CHECK_CLOSE(10.12, Result[7], 0.0001);
 }
 
-TEST(SortedArraySearchIntAscFirst)
+TEST(Tools, SortedArraySearchIntAscFirst)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 0;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntAscMid)
+TEST(Tools, SortedArraySearchIntAscMid)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 8;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(6, Result);
+    ASSERT_EQ(6, Result);
 }
 
-TEST(SortedArraySearchIntAscLast)
+TEST(Tools, SortedArraySearchIntAscLast)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 100;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchIntAscOutofRange)
+TEST(Tools, SortedArraySearchIntAscOutofRange)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
@@ -402,10 +400,10 @@ TEST(SortedArraySearchIntAscOutofRange)
     int targetvalue = 1000;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchIntAscNotFound)
+TEST(Tools, SortedArraySearchIntAscNotFound)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
@@ -413,100 +411,100 @@ TEST(SortedArraySearchIntAscNotFound)
     int targetvalue = 6;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
-    CHECK_EQUAL(notfound, Result);
+    ASSERT_EQ(notfound, Result);
 }
 
-TEST(SortedArraySearchIntAscTolerFirst)
+TEST(Tools, SortedArraySearchIntAscTolerFirst)
 {
     int Array[] = {0,3,4,5,6,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntAscTolerFirstLimit)
+TEST(Tools, SortedArraySearchIntAscTolerFirstLimit)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntAscTolerMid)
+TEST(Tools, SortedArraySearchIntAscTolerMid)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(SortedArraySearchIntAscTolerMidLimit)
+TEST(Tools, SortedArraySearchIntAscTolerMidLimit)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(SortedArraySearchIntAscTolerLast)
+TEST(Tools, SortedArraySearchIntAscTolerLast)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 102;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchIntAscTolerLastLimit)
+TEST(Tools, SortedArraySearchIntAscTolerLastLimit)
 {
     int Array[] = {0,1,2,3,5,7,8,9,10,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 102;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchIntDescFirst)
+TEST(Tools, SortedArraySearchIntDescFirst)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 100;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntDescMid)
+TEST(Tools, SortedArraySearchIntDescMid)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 8;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(3, Result);
+    ASSERT_EQ(3, Result);
 }
 
-TEST(SortedArraySearchIntDescLast)
+TEST(Tools, SortedArraySearchIntDescLast)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 0;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchIntDescOutofRange)
+TEST(Tools, SortedArraySearchIntDescOutofRange)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
@@ -514,10 +512,10 @@ TEST(SortedArraySearchIntDescOutofRange)
     int targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchIntDescNotFound)
+TEST(Tools, SortedArraySearchIntDescNotFound)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
@@ -525,90 +523,90 @@ TEST(SortedArraySearchIntDescNotFound)
     int targetvalue = 6;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
-    CHECK_EQUAL(notfound, Result);
+    ASSERT_EQ(notfound, Result);
 }
 
-TEST(SortedArraySearchIntDescTolerFirst)
+TEST(Tools, SortedArraySearchIntDescTolerFirst)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchIntDescTolerFirstLimit)
+TEST(Tools, SortedArraySearchIntDescTolerFirstLimit)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchIntDescTolerMid)
+TEST(Tools, SortedArraySearchIntDescTolerMid)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(SortedArraySearchIntDescTolerMidLimit)
+TEST(Tools, SortedArraySearchIntDescTolerMidLimit)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(SortedArraySearchIntDescTolerLast)
+TEST(Tools, SortedArraySearchIntDescTolerLast)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 102;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntDescTolerLastLimit)
+TEST(Tools, SortedArraySearchIntDescTolerLastLimit)
 {
     int Array[] = {100,10,9,8,7,5,3,2,1,0};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int targetvalue = 102;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntUniqueVal)
+TEST(Tools, SortedArraySearchIntUniqueVal)
 {
     int Array[] = {9};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[0];
     int targetvalue = 9;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntUniqueValToler)
+TEST(Tools, SortedArraySearchIntUniqueValToler)
 {
     int Array[] = {9};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[0];
     int targetvalue = 8;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntUniqueValOutofRange)
+TEST(Tools, SortedArraySearchIntUniqueValOutofRange)
 {
     int Array[] = {9};
     int* pVectStart = &Array[0];
@@ -616,40 +614,40 @@ TEST(SortedArraySearchIntUniqueValOutofRange)
     int targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchIntArraySameVal)
+TEST(Tools, SortedArraySearchIntArraySameVal)
 {
     int Array[] = {9,9,9,9};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[3];
     int targetvalue = 9;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntArraySameValTolerDown)
+TEST(Tools, SortedArraySearchIntArraySameValTolerDown)
 {
     int Array[] = {9,9,9,9};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[3];
     int targetvalue = 8;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntArraySameValTolerUp)
+TEST(Tools, SortedArraySearchIntArraySameValTolerUp)
 {
     int Array[] = {9,9,9,9};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[3];
     int targetvalue = 10;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchIntArraySameValOutofRange)
+TEST(Tools, SortedArraySearchIntArraySameValOutofRange)
 {
     int Array[] = {9,9,9,9};
     int* pVectStart = &Array[0];
@@ -657,40 +655,40 @@ TEST(SortedArraySearchIntArraySameValOutofRange)
     int targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleAscFirst)
+TEST(Tools, SortedArraySearchDoubleAscFirst)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.354;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleAscMid)
+TEST(Tools, SortedArraySearchDoubleAscMid)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.75;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(5, Result);
+    ASSERT_EQ(5, Result);
 }
 
-TEST(SortedArraySearchDoubleAscLast)
+TEST(Tools, SortedArraySearchDoubleAscLast)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 100;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchDoubleAscOutofRange)
+TEST(Tools, SortedArraySearchDoubleAscOutofRange)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -698,10 +696,10 @@ TEST(SortedArraySearchDoubleAscOutofRange)
     double targetvalue = 1000;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleAscNotFound)
+TEST(Tools, SortedArraySearchDoubleAscNotFound)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -709,30 +707,30 @@ TEST(SortedArraySearchDoubleAscNotFound)
     double targetvalue = 6;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
-    CHECK_EQUAL(notfound, Result);
+    ASSERT_EQ(notfound, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerFirst)
+TEST(Tools, SortedArraySearchDoubleAscTolerFirst)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1.12;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerFirstLimit)
+TEST(Tools, SortedArraySearchDoubleAscTolerFirstLimit)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.354);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerFirstOutLimit)
+TEST(Tools, SortedArraySearchDoubleAscTolerFirstOutLimit)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -740,30 +738,30 @@ TEST(SortedArraySearchDoubleAscTolerFirstOutLimit)
     double targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerMid)
+TEST(Tools, SortedArraySearchDoubleAscTolerMid)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerMidLimit)
+TEST(Tools, SortedArraySearchDoubleAscTolerMidLimit)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 11.45;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerMidLimitOut)
+TEST(Tools, SortedArraySearchDoubleAscTolerMidLimitOut)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -771,30 +769,30 @@ TEST(SortedArraySearchDoubleAscTolerMidLimitOut)
     double targetvalue = 11.45;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.99, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
-    CHECK_EQUAL(notfound, Result);
+    ASSERT_EQ(notfound, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerLast)
+TEST(Tools, SortedArraySearchDoubleAscTolerLast)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 102.21;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerLastLimit)
+TEST(Tools, SortedArraySearchDoubleAscTolerLastLimit)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 101.5;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.5);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchDoubleAscTolerLastOutLimit)
+TEST(Tools, SortedArraySearchDoubleAscTolerLastOutLimit)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -802,40 +800,40 @@ TEST(SortedArraySearchDoubleAscTolerLastOutLimit)
     double targetvalue = 101.5;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.499, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleDescFirst)
+TEST(Tools, SortedArraySearchDoubleDescFirst)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 100;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleDescMid)
+TEST(Tools, SortedArraySearchDoubleDescMid)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.75;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(4, Result);
+    ASSERT_EQ(4, Result);
 }
 
-TEST(SortedArraySearchDoubleDescLast)
+TEST(Tools, SortedArraySearchDoubleDescLast)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.354;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchDoubleDescOutofRange)
+TEST(Tools, SortedArraySearchDoubleDescOutofRange)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -843,10 +841,10 @@ TEST(SortedArraySearchDoubleDescOutofRange)
     double targetvalue = -1.23;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleDescNotFound)
+TEST(Tools, SortedArraySearchDoubleDescNotFound)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -854,30 +852,30 @@ TEST(SortedArraySearchDoubleDescNotFound)
     double targetvalue = 6.2;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
-    CHECK_EQUAL(notfound, Result);
+    ASSERT_EQ(notfound, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerFirst)
+TEST(Tools, SortedArraySearchDoubleDescTolerFirst)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerFirstLimit)
+TEST(Tools, SortedArraySearchDoubleDescTolerFirstLimit)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.354);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerFirstOutLimit)
+TEST(Tools, SortedArraySearchDoubleDescTolerFirstOutLimit)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -885,30 +883,30 @@ TEST(SortedArraySearchDoubleDescTolerFirstOutLimit)
     double targetvalue = -1;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerMid)
+TEST(Tools, SortedArraySearchDoubleDescTolerMid)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 11.23;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerMidLimit)
+TEST(Tools, SortedArraySearchDoubleDescTolerMidLimit)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 11.45;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerMidOutLimit)
+TEST(Tools, SortedArraySearchDoubleDescTolerMidOutLimit)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -916,30 +914,30 @@ TEST(SortedArraySearchDoubleDescTolerMidOutLimit)
     double targetvalue = 11.45;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.999, asHIDE_WARNINGS);
     const int notfound = asNOT_FOUND;
-    CHECK_EQUAL(notfound, Result);
+    ASSERT_EQ(notfound, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerLast)
+TEST(Tools, SortedArraySearchDoubleDescTolerLast)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 102.42;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerLastLimit)
+TEST(Tools, SortedArraySearchDoubleDescTolerLastLimit)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 102.21;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.21);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleDescTolerLastOutLimit)
+TEST(Tools, SortedArraySearchDoubleDescTolerLastOutLimit)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -947,30 +945,30 @@ TEST(SortedArraySearchDoubleDescTolerLastOutLimit)
     double targetvalue = 102.21;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.2, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleUniqueVal)
+TEST(Tools, SortedArraySearchDoubleUniqueVal)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 9.3401;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleUniqueValToler)
+TEST(Tools, SortedArraySearchDoubleUniqueValToler)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 8;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.3401);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleUniqueValOutofRange)
+TEST(Tools, SortedArraySearchDoubleUniqueValOutofRange)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
@@ -978,40 +976,40 @@ TEST(SortedArraySearchDoubleUniqueValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchDoubleArraySameVal)
+TEST(Tools, SortedArraySearchDoubleArraySameVal)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 9.34;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleArraySameValTolerDown)
+TEST(Tools, SortedArraySearchDoubleArraySameValTolerDown)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 8;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.5);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleArraySameValTolerUp)
+TEST(Tools, SortedArraySearchDoubleArraySameValTolerUp)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 10;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchDoubleArraySameValOutofRange)
+TEST(Tools, SortedArraySearchDoubleArraySameValOutofRange)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
@@ -1019,10 +1017,10 @@ TEST(SortedArraySearchDoubleArraySameValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchRoleOfToleranceInSearch)
+TEST(Tools, SortedArraySearchRoleOfToleranceInSearch)
 {
     Array1DDouble values;
     values.resize(94);
@@ -1031,40 +1029,40 @@ TEST(SortedArraySearchRoleOfToleranceInSearch)
     double* pVectEnd = &values[93];
     double targetvalue = 29.523;
     const int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.01);
-    CHECK_EQUAL(62, Result);
+    ASSERT_EQ(62, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleAscFirst)
+TEST(Tools, SortedArraySearchClosestDoubleAscFirst)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.394;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleAscMid)
+TEST(Tools, SortedArraySearchClosestDoubleAscMid)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.55;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(5, Result);
+    ASSERT_EQ(5, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleAscLast)
+TEST(Tools, SortedArraySearchClosestDoubleAscLast)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 99.9;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleAscOutofRange)
+TEST(Tools, SortedArraySearchClosestDoubleAscOutofRange)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -1072,40 +1070,40 @@ TEST(SortedArraySearchClosestDoubleAscOutofRange)
     double targetvalue = 1000;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleDescFirst)
+TEST(Tools, SortedArraySearchClosestDoubleDescFirst)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 100;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleDescMid)
+TEST(Tools, SortedArraySearchClosestDoubleDescMid)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.55;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(4, Result);
+    ASSERT_EQ(4, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleDescLast)
+TEST(Tools, SortedArraySearchClosestDoubleDescLast)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.354;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleDescOutofRange)
+TEST(Tools, SortedArraySearchClosestDoubleDescOutofRange)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -1113,20 +1111,20 @@ TEST(SortedArraySearchClosestDoubleDescOutofRange)
     double targetvalue = -1.23;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleUniqueVal)
+TEST(Tools, SortedArraySearchClosestDoubleUniqueVal)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 9.3401;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleUniqueValOutofRange)
+TEST(Tools, SortedArraySearchClosestDoubleUniqueValOutofRange)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
@@ -1134,20 +1132,20 @@ TEST(SortedArraySearchClosestDoubleUniqueValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleArraySameVal)
+TEST(Tools, SortedArraySearchClosestDoubleArraySameVal)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 9.34;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchClosestDoubleArraySameValOutofRange)
+TEST(Tools, SortedArraySearchClosestDoubleArraySameValOutofRange)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
@@ -1155,50 +1153,50 @@ TEST(SortedArraySearchClosestDoubleArraySameValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleAscFirst)
+TEST(Tools, SortedArraySearchFloorDoubleAscFirst)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 1.394;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleAscMid)
+TEST(Tools, SortedArraySearchFloorDoubleAscMid)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.55;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(4, Result);
+    ASSERT_EQ(4, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleAscLast)
+TEST(Tools, SortedArraySearchFloorDoubleAscLast)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 99.9;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleAscLastExact)
+TEST(Tools, SortedArraySearchFloorDoubleAscLastExact)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 100;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleAscOutofRange)
+TEST(Tools, SortedArraySearchFloorDoubleAscOutofRange)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -1206,50 +1204,50 @@ TEST(SortedArraySearchFloorDoubleAscOutofRange)
     double targetvalue = 1000;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleDescFirst)
+TEST(Tools, SortedArraySearchFloorDoubleDescFirst)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 40.12;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(1, Result);
+    ASSERT_EQ(1, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleDescMid)
+TEST(Tools, SortedArraySearchFloorDoubleDescMid)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.55;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(5, Result);
+    ASSERT_EQ(5, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleDescLast)
+TEST(Tools, SortedArraySearchFloorDoubleDescLast)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.360;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleDescLastExact)
+TEST(Tools, SortedArraySearchFloorDoubleDescLastExact)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.354;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleDescOutofRange)
+TEST(Tools, SortedArraySearchFloorDoubleDescOutofRange)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -1257,20 +1255,20 @@ TEST(SortedArraySearchFloorDoubleDescOutofRange)
     double targetvalue = -1.23;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleUniqueVal)
+TEST(Tools, SortedArraySearchFloorDoubleUniqueVal)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 9.3401;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleUniqueValOutofRange)
+TEST(Tools, SortedArraySearchFloorDoubleUniqueValOutofRange)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
@@ -1278,20 +1276,20 @@ TEST(SortedArraySearchFloorDoubleUniqueValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleArraySameVal)
+TEST(Tools, SortedArraySearchFloorDoubleArraySameVal)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 9.34;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchFloorDoubleArraySameValOutofRange)
+TEST(Tools, SortedArraySearchFloorDoubleArraySameValOutofRange)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
@@ -1299,50 +1297,50 @@ TEST(SortedArraySearchFloorDoubleArraySameValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleAscFirst)
+TEST(Tools, SortedArraySearchCeilDoubleAscFirst)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.354;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleAscMid)
+TEST(Tools, SortedArraySearchCeilDoubleAscMid)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.55;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(5, Result);
+    ASSERT_EQ(5, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleAscLast)
+TEST(Tools, SortedArraySearchCeilDoubleAscLast)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 10.46;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleAscLastExact)
+TEST(Tools, SortedArraySearchCeilDoubleAscLastExact)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 100;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleAscOutofRange)
+TEST(Tools, SortedArraySearchCeilDoubleAscOutofRange)
 {
     double Array[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double* pVectStart = &Array[0];
@@ -1350,50 +1348,50 @@ TEST(SortedArraySearchCeilDoubleAscOutofRange)
     double targetvalue = 1000;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleDescFirst)
+TEST(Tools, SortedArraySearchCeilDoubleDescFirst)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 40.12;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleDescMid)
+TEST(Tools, SortedArraySearchCeilDoubleDescMid)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 5.55;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(4, Result);
+    ASSERT_EQ(4, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleDescLast)
+TEST(Tools, SortedArraySearchCeilDoubleDescLast)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.360;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(8, Result);
+    ASSERT_EQ(8, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleDescLastExact)
+TEST(Tools, SortedArraySearchCeilDoubleDescLastExact)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double targetvalue = 0.354;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(9, Result);
+    ASSERT_EQ(9, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleDescOutofRange)
+TEST(Tools, SortedArraySearchCeilDoubleDescOutofRange)
 {
     double Array[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double* pVectStart = &Array[0];
@@ -1401,20 +1399,20 @@ TEST(SortedArraySearchCeilDoubleDescOutofRange)
     double targetvalue = -1.23;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleUniqueVal)
+TEST(Tools, SortedArraySearchCeilDoubleUniqueVal)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[0];
     double targetvalue = 9.3401;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleUniqueValOutofRange)
+TEST(Tools, SortedArraySearchCeilDoubleUniqueValOutofRange)
 {
     double Array[] = {9.3401};
     double* pVectStart = &Array[0];
@@ -1422,20 +1420,20 @@ TEST(SortedArraySearchCeilDoubleUniqueValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleArraySameVal)
+TEST(Tools, SortedArraySearchCeilDoubleArraySameVal)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[3];
     double targetvalue = 9.34;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    CHECK_EQUAL(0, Result);
+    ASSERT_EQ(0, Result);
 }
 
-TEST(SortedArraySearchCeilDoubleArraySameValOutofRange)
+TEST(Tools, SortedArraySearchCeilDoubleArraySameValOutofRange)
 {
     double Array[] = {9.34,9.34,9.34,9.34};
     double* pVectStart = &Array[0];
@@ -1443,222 +1441,222 @@ TEST(SortedArraySearchCeilDoubleArraySameValOutofRange)
     double targetvalue = 11;
     const int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     const int outofrange = asOUT_OF_RANGE;
-    CHECK_EQUAL(outofrange, Result);
+    ASSERT_EQ(outofrange, Result);
 }
 
-TEST(SortedArrayInsertIntAscFirst)
+TEST(Tools, SortedArrayInsertIntAscFirst)
 {
     int Array[] = {2,3,4,6,9,17,18,20,40,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = 1;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {1,2,3,4,6,9,17,18,20,40};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertIntAscFirstNeg)
+TEST(Tools, SortedArrayInsertIntAscFirstNeg)
 {
     int Array[] = {0,1,4,6,9,17,18,20,40,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = -2;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {-2,0,1,4,6,9,17,18,20,40};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertIntAscMid)
+TEST(Tools, SortedArrayInsertIntAscMid)
 {
     int Array[] = {0,1,4,6,9,17,18,20,40,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = 8;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {0,1,4,6,8,9,17,18,20,40};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertIntAscEnd)
+TEST(Tools, SortedArrayInsertIntAscEnd)
 {
     int Array[] = {0,1,4,6,9,17,18,20,40,100};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = 90;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {0,1,4,6,9,17,18,20,40,90};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertFloatAscMid)
+TEST(Tools, SortedArrayInsertFloatAscMid)
 {
     float Array[] = {0.134631f,1.13613f,4.346f,6.835f,9.1357f,17.23456f,18.2364f,20.75f,40.54f,100.235f};
     float* pVectStart = &Array[0];
     float* pVectEnd = &Array[9];
     float newvalue = 9.105646f;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     float ArrayResults[] = {0.134631f,1.13613f,4.346f,6.835f,9.105646f,9.1357f,17.23456f,18.2364f,20.75f,40.54f};
     CHECK_ARRAY_CLOSE(ArrayResults,Array,10,0.001);
 }
 
-TEST(SortedArrayInsertDoubleAscMid)
+TEST(Tools, SortedArrayInsertDoubleAscMid)
 {
     double Array[] = {0.134631,1.13613,4.346,6.835,9.1357,17.23456,18.2364,20.75,40.54,100.235};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     double newvalue = 9.105646;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     double ArrayResults[] = {0.134631,1.13613,4.346,6.835,9.105646,9.1357,17.23456,18.2364,20.75,40.54};
     CHECK_ARRAY_CLOSE(ArrayResults,Array,10,0.001);
 }
 
-TEST(SortedArrayInsertIntDescFirst)
+TEST(Tools, SortedArrayInsertIntDescFirst)
 {
     int Array[] = {100,40,20,18,17,9,6,4,3,2};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = 101;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {101,100,40,20,18,17,9,6,4,3};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertIntDescMid)
+TEST(Tools, SortedArrayInsertIntDescMid)
 {
     int Array[] = {100,40,20,18,17,9,6,4,3,2};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = 8;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {100,40,20,18,17,9,8,6,4,3};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertIntDescEnd)
+TEST(Tools, SortedArrayInsertIntDescEnd)
 {
     int Array[] = {100,40,20,18,17,9,6,4,3,2};
     int* pVectStart = &Array[0];
     int* pVectEnd = &Array[9];
     int newvalue = 3;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResults[] = {100,40,20,18,17,9,6,4,3,3};
     CHECK_ARRAY_EQUAL(ArrayResults,Array,10);
 }
 
-TEST(SortedArrayInsertFloatDescMid)
+TEST(Tools, SortedArrayInsertFloatDescMid)
 {
     float Array[] = {100.1345f,40.2345f,20.2345f,18.567f,17.2134f,9.67f,6.1346f,4.7135f,3.1f,2.2345f};
     float* pVectStart = &Array[0];
     float* pVectEnd = &Array[9];
     float newvalue = 9.105646f;
     bool Result = asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     float ArrayResults[] = {100.1345f,40.2345f,20.2345f,18.567f,17.2134f,9.67f,9.105646f,6.1346f,4.7135f,3.1f};
     CHECK_ARRAY_CLOSE(ArrayResults,Array,10,0.001);
 }
 
-TEST(SortedArraysInsertIntAscFirst)
+TEST(Tools, SortedArraysInsertIntAscFirst)
 {
     int ArrayRef[] = {2,3,4,6,9,17,18,20,40,100};
     int ArrayOther[] = {1,2,3,4,5,6,7,8,9,10};
     int newvalueRef = 1;
     int newvalueOther = 11;
     bool Result = asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef, newvalueOther);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResultsRef[] = {1,2,3,4,6,9,17,18,20,40};
     int ArrayResultsOther[] = {11,1,2,3,4,5,6,7,8,9};
     CHECK_ARRAY_EQUAL(ArrayResultsRef,ArrayRef,10);
     CHECK_ARRAY_EQUAL(ArrayResultsOther,ArrayOther,10);
 }
 
-TEST(SortedArraysInsertIntAscMid)
+TEST(Tools, SortedArraysInsertIntAscMid)
 {
     int ArrayRef[] = {2,3,4,6,9,17,18,20,40,100};
     int ArrayOther[] = {1,2,3,4,5,6,7,8,9,10};
     int newvalueRef = 11;
     int newvalueOther = 11;
     bool Result = asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef, newvalueOther);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResultsRef[] = {2,3,4,6,9,11,17,18,20,40};
     int ArrayResultsOther[] = {1,2,3,4,5,11,6,7,8,9};
     CHECK_ARRAY_EQUAL(ArrayResultsRef,ArrayRef,10);
     CHECK_ARRAY_EQUAL(ArrayResultsOther,ArrayOther,10);
 }
 
-TEST(SortedArraysInsertIntAscLast)
+TEST(Tools, SortedArraysInsertIntAscLast)
 {
     int ArrayRef[] = {2,3,4,6,9,17,18,20,40,100};
     int ArrayOther[] = {1,2,3,4,5,6,7,8,9,10};
     int newvalueRef = 99;
     int newvalueOther = 11;
     bool Result = asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef, newvalueOther);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     int ArrayResultsRef[] = {2,3,4,6,9,17,18,20,40,99};
     int ArrayResultsOther[] = {1,2,3,4,5,6,7,8,9,11};
     CHECK_ARRAY_EQUAL(ArrayResultsRef,ArrayRef,10);
     CHECK_ARRAY_EQUAL(ArrayResultsOther,ArrayOther,10);
 }
 
-TEST(SortedArraysInsertFloatAscMid)
+TEST(Tools, SortedArraysInsertFloatAscMid)
 {
     float ArrayRef[] = {2.254f,3.345f,4.625f,6.47f,9.7f,17.245f,18.0f,20.67f,40.25f,100.25f};
     float ArrayOther[] = {1.7f,2.4f,3.346f,4.7f,5.1346f,6.715f,7.1346f,8.1357f,9.1346f,10.715f};
     float newvalueRef = 11.175f;
     float newvalueOther = 11.1346f;
     bool Result = asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef, newvalueOther);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     float ArrayResultsRef[] = {2.254f,3.345f,4.625f,6.47f,9.7f,11.175f,17.245f,18.0f,20.67f,40.25f};
     float ArrayResultsOther[] = {1.7f,2.4f,3.346f,4.7f,5.1346f,11.1346f,6.715f,7.1346f,8.1357f,9.1346f};
     CHECK_ARRAY_CLOSE(ArrayResultsRef,ArrayRef,10,0.001);
     CHECK_ARRAY_CLOSE(ArrayResultsOther,ArrayOther,10,0.001);
 }
 
-TEST(SortedArraysInsertDoubleAscMid)
+TEST(Tools, SortedArraysInsertDoubleAscMid)
 {
     double ArrayRef[] = {2.254,3.345,4.625,6.47,9.7,17.245,18,20.67,40.25,100.25};
     double ArrayOther[] = {1.7,2.4,3.346,4.7,5.1346,6.715,7.1346,8.1357,9.1346,10.715};
     double newvalueRef = 11.175;
     double newvalueOther = 11.1346;
     bool Result = asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef, newvalueOther);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     double ArrayResultsRef[] = {2.254,3.345,4.625,6.47,9.7,11.175,17.245,18,20.67,40.25};
     double ArrayResultsOther[] = {1.7,2.4,3.346,4.7,5.1346,11.1346,6.715,7.1346,8.1357,9.1346};
     CHECK_ARRAY_CLOSE(ArrayResultsRef,ArrayRef,10,0.001);
     CHECK_ARRAY_CLOSE(ArrayResultsOther,ArrayOther,10,0.001);
 }
 
-TEST(SortArrayAsc)
+TEST(Tools, SortArrayAsc)
 {
     double ArrayRef[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double Array[] = {9.65,2.7,0.354,100,5.75,1.932,8.2,10.45,5.021,3.56};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     const bool Result = asTools::SortArray(pVectStart, pVectEnd, Asc);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     CHECK_ARRAY_CLOSE(ArrayRef, Array, 10, 0.00001f);
 }
 
-TEST(SortArrayDesc)
+TEST(Tools, SortArrayDesc)
 {
     double ArrayRef[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double Array[] = {9.65,2.7,0.354,100,5.75,1.932,8.2,10.45,5.021,3.56};
     double* pVectStart = &Array[0];
     double* pVectEnd = &Array[9];
     const bool Result = asTools::SortArray(pVectStart, pVectEnd, Desc);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     CHECK_ARRAY_CLOSE(ArrayRef, Array, 10, 0.00001f);
 }
 
-TEST(SortArraysAsc)
+TEST(Tools, SortArraysAsc)
 {
     double ArrayRef[] = {0.354,1.932,2.7,3.56,5.021,5.75,8.2,9.65,10.45,100};
     double Array[] = {9.65,2.7,0.354,100,5.75,1.932,8.2,10.45,5.021,3.56};
@@ -1669,12 +1667,12 @@ TEST(SortArraysAsc)
     double* pVectStartOther = &ArrayOther[0];
     double* pVectEndOther = &ArrayOther[9];
     const bool Result = asTools::SortArrays(pVectStart, pVectEnd, pVectStartOther, pVectEndOther, Asc);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     CHECK_ARRAY_CLOSE(ArrayRef, Array, 10, 0.00001f);
     CHECK_ARRAY_CLOSE(ArrayOtherRef, ArrayOther, 10, 0.00001f);
 }
 
-TEST(SortArraysDesc)
+TEST(Tools, SortArraysDesc)
 {
     double ArrayRef[] = {100,10.45,9.65,8.2,5.75,5.021,3.56,2.7,1.932,0.354};
     double Array[] = {9.65,2.7,0.354,100,5.75,1.932,8.2,10.45,5.021,3.56};
@@ -1685,85 +1683,85 @@ TEST(SortArraysDesc)
     double* pVectStartOther = &ArrayOther[0];
     double* pVectEndOther = &ArrayOther[9];
     const bool Result = asTools::SortArrays(pVectStart, pVectEnd, pVectStartOther, pVectEndOther, Desc);
-    CHECK_EQUAL(true, Result);
+    ASSERT_EQ(true, Result);
     CHECK_ARRAY_CLOSE(ArrayRef, Array, 10, 0.00001f);
     CHECK_ARRAY_CLOSE(ArrayOtherRef, ArrayOther, 10, 0.00001f);
 }
 
-TEST(MeanInt)
+TEST(Tools, MeanInt)
 {
     int Array[] = {36, 8, 4, 6, 9, 56, 234, 45, 2475, 8, 2, 68, 9};
     float result = asTools::Mean(&Array[0],&Array[12]);
     CHECK_CLOSE(227.692308, result, 0.00001);
 }
 
-TEST(MeanFloat)
+TEST(Tools, MeanFloat)
 {
     float Array[] = {36.6348600000f, 8.6544964000f, 4.2346846410f, 6.5284684000f, 9.5498463130f, 56.6546544100f, 234.6549840000f, 45.6876513510f, 2475.6465413513f, 8.8765431894f, 2.7764850000f, 68.1000000000f, 9.6846510000f};
     float result = asTools::Mean(&Array[0],&Array[12]);
     CHECK_CLOSE(228.283374311977, result, 0.0001);
 }
 
-TEST(MeanDouble)
+TEST(Tools, MeanDouble)
 {
     double Array[] = {36.6348600000, 8.6544964000, 4.2346846410, 6.5284684000, 9.5498463130, 56.6546544100, 234.6549840000, 45.6876513510, 2475.6465413513, 8.8765431894, 2.7764850000, 68.1000000000, 9.6846510000};
     double result = asTools::Mean(&Array[0],&Array[12]);
     CHECK_CLOSE(228.283374311977, result, 0.0000000000001);
 }
 
-TEST(SdtDevSampleIntSample)
+TEST(Tools, SdtDevSampleIntSample)
 {
     int Array[] = {6, 113, 78, 35, 23, 56, 23, 2};
     float result = asTools::StDev(&Array[0],&Array[7],asSAMPLE);
     CHECK_CLOSE(38.17254062, result, 0.00001);
 }
 
-TEST(SdtDevSampleIntEntirePop)
+TEST(Tools, SdtDevSampleIntEntirePop)
 {
     int Array[] = {6, 113, 78, 35, 23, 56, 23, 2};
     float result = asTools::StDev(&Array[0],&Array[7],asENTIRE_POPULATION);
     CHECK_CLOSE(35.70714214, result, 0.00001);
 }
 
-TEST(SdtDevSampleFloatSample)
+TEST(Tools, SdtDevSampleFloatSample)
 {
     float Array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
     float result = asTools::StDev(&Array[0],&Array[7],asSAMPLE);
     CHECK_CLOSE(38.05574973, result, 0.00001);
 }
 
-TEST(SdtDevSampleFloatEntirePop)
+TEST(Tools, SdtDevSampleFloatEntirePop)
 {
     float Array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
     float result = asTools::StDev(&Array[0],&Array[7],asENTIRE_POPULATION);
     CHECK_CLOSE(35.59789427, result, 0.00001);
 }
 
-TEST(SdtDevSampleDoubleSample)
+TEST(Tools, SdtDevSampleDoubleSample)
 {
     double Array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
     double result = asTools::StDev(&Array[0],&Array[7],asSAMPLE);
     CHECK_CLOSE(38.05574973, result, 0.00001);
 }
 
-TEST(SdtDevSampleDoubleEntirePop)
+TEST(Tools, SdtDevSampleDoubleEntirePop)
 {
     double Array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
     double result = asTools::StDev(&Array[0],&Array[7],asENTIRE_POPULATION);
     CHECK_CLOSE(35.59789427, result, 0.00001);
 }
 
-TEST(RandomInt)
+TEST(Tools, RandomInt)
 {
     asTools::InitRandom();
     int result1, result2;
     result1 = asTools::Random(0, 10000, 2);
     result2 = asTools::Random(0, 10000, 2);
     bool equality = (result1==result2);
-    CHECK_EQUAL(false, equality);
+    ASSERT_EQ(false, equality);
 }
 
-TEST(RandomFloat)
+TEST(Tools, RandomFloat)
 {
     asTools::InitRandom();
     float result1, result2;
@@ -1776,10 +1774,10 @@ TEST(RandomFloat)
     result2 = asTools::Random(start, end, step);
 
     bool equality = (result1==result2);
-    CHECK_EQUAL(false, equality);
+    ASSERT_EQ(false, equality);
 
-    CHECK_EQUAL(0, std::fmod(result1,step));
-    CHECK_EQUAL(0, std::fmod(result2,step));
+    ASSERT_EQ(0, std::fmod(result1,step));
+    ASSERT_EQ(0, std::fmod(result2,step));
 
     start = 0.5;
     end = 1000;
@@ -1787,11 +1785,11 @@ TEST(RandomFloat)
     result1 = asTools::Random(start, end, step);
     result2 = asTools::Random(start, end, step);
 
-    CHECK_EQUAL(0, std::fmod(result1-start,step));
-    CHECK_EQUAL(0, std::fmod(result2-start,step));
+    ASSERT_EQ(0, std::fmod(result1-start,step));
+    ASSERT_EQ(0, std::fmod(result2-start,step));
 }
 
-TEST(RandomDouble)
+TEST(Tools, RandomDouble)
 {
     asTools::InitRandom();
     double result1, result2;
@@ -1804,10 +1802,10 @@ TEST(RandomDouble)
     result2 = asTools::Random(start, end, step);
 
     bool equality = (result1==result2);
-    CHECK_EQUAL(false, equality);
+    ASSERT_EQ(false, equality);
 
-    CHECK_EQUAL(0, std::fmod(result1,step));
-    CHECK_EQUAL(0, std::fmod(result2,step));
+    ASSERT_EQ(0, std::fmod(result1,step));
+    ASSERT_EQ(0, std::fmod(result2,step));
 
     start = 0.5;
     end = 1000;
@@ -1815,14 +1813,14 @@ TEST(RandomDouble)
     result1 = asTools::Random(start, end, step);
     result2 = asTools::Random(start, end, step);
 
-    CHECK_EQUAL(0, std::fmod(result1-start,step));
-    CHECK_EQUAL(0, std::fmod(result2-start,step));
+    ASSERT_EQ(0, std::fmod(result1-start,step));
+    ASSERT_EQ(0, std::fmod(result2-start,step));
 }
 
 // View resulting file on Matlab:
 // 1. drag'n'drop in the Worskspace
 // 2. figure; hist(data(:,i), 100);
-TEST(RandomUniformDistributionToFile)
+TEST(Tools, RandomUniformDistributionToFile)
 {
     if(g_unitTestRandomDistributions)
     {
@@ -1865,7 +1863,7 @@ TEST(RandomUniformDistributionToFile)
 // View resulting file on Matlab:
 // 1. drag'n'drop in the Worskspace
 // 2. figure; hist(data(:,i), 100);
-TEST(RandomNormalDistributionToFile)
+TEST(Tools, RandomNormalDistributionToFile)
 {
     if(g_unitTestRandomDistributions)
     {
@@ -1902,7 +1900,5 @@ TEST(RandomNormalDistributionToFile)
 
         fileRes.Close();
     }
-
-}
 
 }

@@ -33,12 +33,10 @@
 #include "asGeoAreaCompositeRegularGrid.h"
 #include "asTimeArray.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
-{
 
-TEST(LoadEasySmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
 {
 	wxPrintf("Testing GFS regular realtime predictors...\n");
 	
@@ -70,7 +68,7 @@ TEST(LoadEasySmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -132,7 +130,7 @@ TEST(LoadEasySmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadEasyLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -162,7 +160,7 @@ TEST(LoadEasyLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -224,7 +222,7 @@ TEST(LoadEasyLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -254,7 +252,7 @@ TEST(LoadCompositeSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -280,7 +278,7 @@ TEST(LoadCompositeSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -310,7 +308,7 @@ TEST(LoadCompositeLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -336,7 +334,7 @@ TEST(LoadCompositeLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -366,7 +364,7 @@ TEST(LoadBorderLeftSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -392,7 +390,7 @@ TEST(LoadBorderLeftSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -422,7 +420,7 @@ TEST(LoadBorderLeftLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -448,7 +446,7 @@ TEST(LoadBorderLeftLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720SmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -478,7 +476,7 @@ TEST(LoadBorderLeftOn720SmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -504,7 +502,7 @@ TEST(LoadBorderLeftOn720SmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720LargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -534,7 +532,7 @@ TEST(LoadBorderLeftOn720LargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -560,7 +558,7 @@ TEST(LoadBorderLeftOn720LargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRightSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -590,7 +588,7 @@ TEST(LoadBorderRightSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -616,7 +614,7 @@ TEST(LoadBorderRightSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRightLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -646,7 +644,7 @@ TEST(LoadBorderRightLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -672,7 +670,7 @@ TEST(LoadBorderRightLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -703,7 +701,7 @@ TEST(LoadCompositeStepLonSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -729,7 +727,7 @@ TEST(LoadCompositeStepLonSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -760,7 +758,7 @@ TEST(LoadCompositeStepLonLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -786,7 +784,7 @@ TEST(LoadCompositeStepLonLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLatSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -817,7 +815,7 @@ TEST(LoadCompositeStepLonLatSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -841,7 +839,7 @@ TEST(LoadCompositeStepLonLatSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLatLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -872,7 +870,7 @@ TEST(LoadCompositeStepLonLatLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -896,7 +894,7 @@ TEST(LoadCompositeStepLonLatLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -927,7 +925,7 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -954,7 +952,7 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -985,7 +983,7 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1012,7 +1010,7 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -1043,7 +1041,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1065,7 +1063,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -1096,7 +1094,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1118,7 +1116,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -1149,7 +1147,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1169,7 +1167,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
+TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -1200,7 +1198,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    ASSERT_EQ(true, successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
 /*
@@ -1220,5 +1218,4 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);*/
 
     wxDELETE(predictor);
-}
 }
