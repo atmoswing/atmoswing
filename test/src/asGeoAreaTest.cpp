@@ -26,16 +26,12 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "include_tests.h"
 #include "asGeoArea.h"
-
 #include "gtest/gtest.h"
 
 
 TEST(GeoArea, ConstructorLimitsException)
 {
-	wxPrintf("Testing geo area management...\n");
-	
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -10;
     CornerUL.y = 40;
@@ -46,22 +42,16 @@ TEST(GeoArea, ConstructorLimitsException)
     CornerLR.x = 20;
     CornerLR.y = 30;
 
-    if(g_unitTestExceptions)
-    {
-        CHECK_THROW(asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR), asException);
-    }
+    ASSERT_THROW(asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR), asException);
 }
 
 TEST(GeoArea, ConstructorAlternativeLimitsException)
 {
-    if(g_unitTestExceptions)
-    {
-        double Xmin = -10;
-        double Xwidth = 30;
-        double Ymin = 30;
-        double Ywidth = 10;
-        CHECK_THROW(asGeoArea geoarea(Xmin, Xwidth, Ymin, Ywidth), asException);
-    }
+    double Xmin = -10;
+    double Xwidth = 30;
+    double Ymin = 30;
+    double Ywidth = 10;
+    ASSERT_THROW(asGeoArea geoArea(Xmin, Xwidth, Ymin, Ywidth), asException);
 }
 
 TEST(GeoArea, CheckConsistency)
@@ -70,12 +60,12 @@ TEST(GeoArea, CheckConsistency)
     double Xwidth = 10;
     double Ymin = 30;
     double Ywidth = 10;
-    asGeoArea geoarea(Xmin, Xwidth, Ymin, Ywidth);
+    asGeoArea geoArea(Xmin, Xwidth, Ymin, Ywidth);
 
-    CHECK_CLOSE(30, geoarea.GetCornerLL().y, 0.01);
-    CHECK_CLOSE(30, geoarea.GetCornerLR().y, 0.01);
-    CHECK_CLOSE(40, geoarea.GetCornerUL().y, 0.01);
-    CHECK_CLOSE(40, geoarea.GetCornerUR().y, 0.01);
+    EXPECT_DOUBLE_EQ(30, geoArea.GetCornerLL().y);
+    EXPECT_DOUBLE_EQ(30, geoArea.GetCornerLR().y);
+    EXPECT_DOUBLE_EQ(40, geoArea.GetCornerUL().y);
+    EXPECT_DOUBLE_EQ(40, geoArea.GetCornerUR().y);
 }
 
 TEST(GeoArea, IsRectangleTrue)
@@ -89,9 +79,9 @@ TEST(GeoArea, IsRectangleTrue)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    ASSERT_EQ(true, geoarea.IsRectangle());
+    EXPECT_TRUE(geoArea.IsRectangle());
 }
 
 TEST(GeoArea, IsRectangleFalse)
@@ -105,9 +95,9 @@ TEST(GeoArea, IsRectangleFalse)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    ASSERT_EQ(false, geoarea.IsRectangle());
+    EXPECT_FALSE(geoArea.IsRectangle());
 }
 
 TEST(GeoArea, GetBounds)
@@ -121,12 +111,12 @@ TEST(GeoArea, GetBounds)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
-    CHECK_CLOSE(10, geoarea.GetXwidth(), 0.01);
-    CHECK_CLOSE(10, geoarea.GetYwidth(), 0.01);
+    EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
+    EXPECT_DOUBLE_EQ(10, geoArea.GetXwidth());
+    EXPECT_DOUBLE_EQ(10, geoArea.GetYwidth());
 }
 
 TEST(GeoArea, GetCenter)
@@ -140,11 +130,11 @@ TEST(GeoArea, GetCenter)
     CornerLL.y = 30;
     CornerLR.x = 20;
     CornerLR.y = 30;
-    asGeoArea geoarea(CornerUL, CornerUR, CornerLL, CornerLR);
+    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
 
-    Coo center = geoarea.GetCenter();
-    CHECK_CLOSE(15, center.x, 0.01);
-    CHECK_CLOSE(35, center.y, 0.01);
+    Coo center = geoArea.GetCenter();
+    EXPECT_DOUBLE_EQ(15, center.x);
+    EXPECT_DOUBLE_EQ(35, center.y);
 }
 
 TEST(GeoArea, NegativeSize)
@@ -154,10 +144,10 @@ TEST(GeoArea, NegativeSize)
     double Ymin = 46;
     double Ywidth = -2;
 
-    asGeoArea geoarea(Xmin, Xwidth, Ymin, Ywidth, asNONE, asNONE, asFLAT_ALLOWED);
+    asGeoArea geoArea(Xmin, Xwidth, Ymin, Ywidth, asNONE, asNONE, asFLAT_ALLOWED);
 
-    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
-    CHECK_CLOSE(46, geoarea.GetYmin(), 0.01);
-    CHECK_CLOSE(0, geoarea.GetXwidth(), 0.01);
-    CHECK_CLOSE(0, geoarea.GetYwidth(), 0.01);
+    EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
+    EXPECT_DOUBLE_EQ(46, geoArea.GetYmin());
+    EXPECT_DOUBLE_EQ(0, geoArea.GetXwidth());
+    EXPECT_DOUBLE_EQ(0, geoArea.GetYwidth());
 }

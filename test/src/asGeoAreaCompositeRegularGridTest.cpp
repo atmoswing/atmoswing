@@ -26,30 +26,23 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "include_tests.h"
 #include "asGeoAreaCompositeRegularGrid.h"
-
 #include "gtest/gtest.h"
 
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorStepException)
 {
-	wxPrintf("Testing composite regular grids...\n");
-	
-    if(g_unitTestExceptions)
-    {
-        Coo CornerUL, CornerUR, CornerLL, CornerLR;
-        CornerUL.x = -10;
-        CornerUL.y = 40;
-        CornerUR.x = 20;
-        CornerUR.y = 40;
-        CornerLL.x = -10;
-        CornerLL.y = 30;
-        CornerLR.x = 20;
-        CornerLR.y = 30;
-        double step = 2.6;
-        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
-    }
+    Coo CornerUL, CornerUR, CornerLL, CornerLR;
+    CornerUL.x = -10;
+    CornerUL.y = 40;
+    CornerUR.x = 20;
+    CornerUR.y = 40;
+    CornerLL.x = -10;
+    CornerLL.y = 30;
+    CornerLR.x = 20;
+    CornerLR.y = 30;
+    double step = 2.6;
+    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
 }
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorOneArea)
@@ -64,9 +57,9 @@ TEST(GeoAreaCompositeRegularGrid, ConstructorOneArea)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    ASSERT_EQ(1, geoarea.GetNbComposites());
+    EXPECT_EQ(1, geoArea.GetNbComposites());
 }
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorTwoAreas)
@@ -81,9 +74,9 @@ TEST(GeoAreaCompositeRegularGrid, ConstructorTwoAreas)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    ASSERT_EQ(2, geoarea.GetNbComposites());
+    EXPECT_EQ(2, geoArea.GetNbComposites());
 }
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorAlternativeOneArea)
@@ -93,9 +86,9 @@ TEST(GeoAreaCompositeRegularGrid, ConstructorAlternativeOneArea)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
-    ASSERT_EQ(1, geoarea.GetNbComposites());
+    EXPECT_EQ(1, geoArea.GetNbComposites());
 }
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorAlternativeTwoAreas)
@@ -105,9 +98,9 @@ TEST(GeoAreaCompositeRegularGrid, ConstructorAlternativeTwoAreas)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
-    ASSERT_EQ(2, geoarea.GetNbComposites());
+    EXPECT_EQ(2, geoArea.GetNbComposites());
 }
 
 TEST(GeoAreaCompositeRegularGrid, CheckConsistency)
@@ -117,25 +110,22 @@ TEST(GeoAreaCompositeRegularGrid, CheckConsistency)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
-    CHECK_CLOSE(355, geoarea.GetCornerUL().x, 0.01);
-    CHECK_CLOSE(355, geoarea.GetCornerLL().x, 0.01);
-    CHECK_CLOSE(20, geoarea.GetCornerUR().x, 0.01);
-    CHECK_CLOSE(20, geoarea.GetCornerLR().x, 0.01);
+    EXPECT_DOUBLE_EQ(355, geoArea.GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(355, geoArea.GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(20, geoArea.GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(20, geoArea.GetCornerLR().x);
 }
 
 TEST(GeoAreaCompositeRegularGrid, CheckConsistencyException)
 {
-    if(g_unitTestExceptions)
-    {
-        double Xmin = 10;
-        double Xwidth = 0;
-        double Ymin = 40;
-        double Ywidth = -10;
-        double step = 2.5;
-        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
-    }
+    double Xmin = 10;
+    double Xwidth = 0;
+    double Ymin = 40;
+    double Ywidth = -10;
+    double step = 2.5;
+    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
 }
 
 TEST(GeoAreaCompositeRegularGrid, IsRectangleTrue)
@@ -150,28 +140,23 @@ TEST(GeoAreaCompositeRegularGrid, IsRectangleTrue)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    ASSERT_EQ(true, geoarea.IsRectangle());
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    EXPECT_TRUE(geoArea.IsRectangle());
 }
 
 TEST(GeoAreaCompositeRegularGrid, IsRectangleFalse)
 {
-    if(g_unitTestExceptions)
-    {
-        Coo CornerUL, CornerUR, CornerLL, CornerLR;
-        CornerUL.x = 10;
-        CornerUL.y = 40;
-        CornerUR.x = 20;
-        CornerUR.y = 40;
-        CornerLL.x = 15;
-        CornerLL.y = 30;
-        CornerLR.x = 20;
-        CornerLR.y = 30;
-        double step = 2.5;
-        CHECK_THROW(asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
-    }
-
+    Coo CornerUL, CornerUR, CornerLL, CornerLR;
+    CornerUL.x = 10;
+    CornerUL.y = 40;
+    CornerUR.x = 20;
+    CornerUR.y = 40;
+    CornerLL.x = 15;
+    CornerLL.y = 30;
+    CornerLR.x = 20;
+    CornerLR.y = 30;
+    double step = 2.5;
+    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetBounds)
@@ -186,12 +171,12 @@ TEST(GeoAreaCompositeRegularGrid, GetBounds)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
-    CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
+    EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
+    EXPECT_DOUBLE_EQ(20, geoArea.GetXmax());
+    EXPECT_DOUBLE_EQ(40, geoArea.GetYmax());
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetBoundsSplitted)
@@ -201,12 +186,12 @@ TEST(GeoAreaCompositeRegularGrid, GetBoundsSplitted)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
-    CHECK_CLOSE(0, geoarea.GetXmin(), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYmin(), 0.01);
-    CHECK_CLOSE(360, geoarea.GetXmax(), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
+    EXPECT_DOUBLE_EQ(0, geoArea.GetXmin());
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
+    EXPECT_DOUBLE_EQ(360, geoArea.GetXmax());
+    EXPECT_DOUBLE_EQ(40, geoArea.GetYmax());
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetCenter)
@@ -221,11 +206,11 @@ TEST(GeoAreaCompositeRegularGrid, GetCenter)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    Coo center = geoarea.GetCenter();
-    CHECK_CLOSE(15, center.x, 0.01);
-    CHECK_CLOSE(35, center.y, 0.01);
+    Coo center = geoArea.GetCenter();
+    EXPECT_DOUBLE_EQ(15, center.x);
+    EXPECT_DOUBLE_EQ(35, center.y);
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetCenterSplitted)
@@ -240,11 +225,11 @@ TEST(GeoAreaCompositeRegularGrid, GetCenterSplitted)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    Coo center = geoarea.GetCenter();
-    CHECK_CLOSE(345, center.x, 0.01);
-    CHECK_CLOSE(35, center.y, 0.01);
+    Coo center = geoArea.GetCenter();
+    EXPECT_DOUBLE_EQ(345, center.x);
+    EXPECT_DOUBLE_EQ(35, center.y);
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetCenterSplittedEdge)
@@ -259,11 +244,11 @@ TEST(GeoAreaCompositeRegularGrid, GetCenterSplittedEdge)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    Coo center = geoarea.GetCenter();
-    CHECK_CLOSE(360, center.x, 0.01);
-    CHECK_CLOSE(35, center.y, 0.01);
+    Coo center = geoArea.GetCenter();
+    EXPECT_DOUBLE_EQ(360, center.x);
+    EXPECT_DOUBLE_EQ(35, center.y);
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetCornersSplitted)
@@ -278,25 +263,25 @@ TEST(GeoAreaCompositeRegularGrid, GetCornersSplitted)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    CHECK_CLOSE(0, geoarea.GetComposite(0).GetCornerUL().x, 0.01);
-    CHECK_CLOSE(40, geoarea.GetComposite(0).GetCornerUL().y, 0.01);
-    CHECK_CLOSE(10, geoarea.GetComposite(0).GetCornerUR().x, 0.01);
-    CHECK_CLOSE(40, geoarea.GetComposite(0).GetCornerUR().y, 0.01);
-    CHECK_CLOSE(0, geoarea.GetComposite(0).GetCornerLL().x, 0.01);
-    CHECK_CLOSE(30, geoarea.GetComposite(0).GetCornerLL().y, 0.01);
-    CHECK_CLOSE(10, geoarea.GetComposite(0).GetCornerLR().x, 0.01);
-    CHECK_CLOSE(30, geoarea.GetComposite(0).GetCornerLR().y, 0.01);
+    EXPECT_DOUBLE_EQ(0, geoArea.GetComposite(0).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(0).GetCornerUL().y);
+    EXPECT_DOUBLE_EQ(10, geoArea.GetComposite(0).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(0).GetCornerUR().y);
+    EXPECT_DOUBLE_EQ(0, geoArea.GetComposite(0).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(0).GetCornerLL().y);
+    EXPECT_DOUBLE_EQ(10, geoArea.GetComposite(0).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(0).GetCornerLR().y);
 
-    CHECK_CLOSE(320, geoarea.GetComposite(1).GetCornerUL().x, 0.01);
-    CHECK_CLOSE(40, geoarea.GetComposite(1).GetCornerUL().y, 0.01);
-    CHECK_CLOSE(360, geoarea.GetComposite(1).GetCornerUR().x, 0.01);
-    CHECK_CLOSE(40, geoarea.GetComposite(1).GetCornerUR().y, 0.01);
-    CHECK_CLOSE(320, geoarea.GetComposite(1).GetCornerLL().x, 0.01);
-    CHECK_CLOSE(30, geoarea.GetComposite(1).GetCornerLL().y, 0.01);
-    CHECK_CLOSE(360, geoarea.GetComposite(1).GetCornerLR().x, 0.01);
-    CHECK_CLOSE(30, geoarea.GetComposite(1).GetCornerLR().y, 0.01);
+    EXPECT_DOUBLE_EQ(320, geoArea.GetComposite(1).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(1).GetCornerUL().y);
+    EXPECT_DOUBLE_EQ(360, geoArea.GetComposite(1).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(1).GetCornerUR().y);
+    EXPECT_DOUBLE_EQ(320, geoArea.GetComposite(1).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(1).GetCornerLL().y);
+    EXPECT_DOUBLE_EQ(360, geoArea.GetComposite(1).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(1).GetCornerLR().y);
 }
 /*
 TEST(GeoAreaCompositeRegularGrid, IsOnGridTrue)
@@ -311,9 +296,9 @@ TEST(GeoAreaCompositeRegularGrid, IsOnGridTrue)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    ASSERT_EQ(true, geoarea.IsOnGrid(2.5));
+    EXPECT_TRUE(geoArea.IsOnGrid(2.5));
 }
 
 TEST(GeoAreaCompositeRegularGrid, IsOnGridTrueTwoAxes)
@@ -328,9 +313,9 @@ TEST(GeoAreaCompositeRegularGrid, IsOnGridTrueTwoAxes)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    ASSERT_EQ(true, geoarea.IsOnGrid(2.5, 5));
+    EXPECT_TRUE(geoArea.IsOnGrid(2.5, 5));
 }
 
 TEST(GeoAreaCompositeRegularGrid, IsOnGridFalseStep)
@@ -345,9 +330,9 @@ TEST(GeoAreaCompositeRegularGrid, IsOnGridFalseStep)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    ASSERT_EQ(false, geoarea.IsOnGrid(6));
+    EXPECT_FALSE(geoArea.IsOnGrid(6));
 }
 
 TEST(GeoAreaCompositeRegularGrid, IsOnGridFalseSecondStep)
@@ -362,9 +347,9 @@ TEST(GeoAreaCompositeRegularGrid, IsOnGridFalseSecondStep)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    ASSERT_EQ(false, geoarea.IsOnGrid(5, 6));
+    EXPECT_FALSE(geoArea.IsOnGrid(5, 6));
 }
 */
 TEST(GeoAreaCompositeRegularGrid, GetAxes)
@@ -379,38 +364,38 @@ TEST(GeoAreaCompositeRegularGrid, GetAxes)
     CornerLR.x = 10;
     CornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
     Array1DDouble uaxis0, vaxis0;
-    uaxis0.resize(geoarea.GetXaxisCompositePtsnb(0));
-    vaxis0.resize(geoarea.GetYaxisCompositePtsnb(0));
+    uaxis0.resize(geoArea.GetXaxisCompositePtsnb(0));
+    vaxis0.resize(geoArea.GetYaxisCompositePtsnb(0));
 
-    uaxis0 = geoarea.GetXaxisComposite(0);
-    vaxis0 = geoarea.GetYaxisComposite(0);
+    uaxis0 = geoArea.GetXaxisComposite(0);
+    vaxis0 = geoArea.GetYaxisComposite(0);
 
-    CHECK_CLOSE(0, uaxis0(0), 0.000001);
-    CHECK_CLOSE(2.5, uaxis0(1), 0.000001);
-    CHECK_CLOSE(5, uaxis0(2), 0.000001);
-    CHECK_CLOSE(7.5, uaxis0(3), 0.000001);
-    CHECK_CLOSE(10, uaxis0(4), 0.000001);
-    CHECK_CLOSE(30, vaxis0(0), 0.000001);
-    CHECK_CLOSE(32.5, vaxis0(1), 0.000001);
-    CHECK_CLOSE(40, vaxis0(4), 0.000001);
+    EXPECT_DOUBLE_EQ(0, uaxis0(0));
+    EXPECT_DOUBLE_EQ(2.5, uaxis0(1));
+    EXPECT_DOUBLE_EQ(5, uaxis0(2));
+    EXPECT_DOUBLE_EQ(7.5, uaxis0(3));
+    EXPECT_DOUBLE_EQ(10, uaxis0(4));
+    EXPECT_DOUBLE_EQ(30, vaxis0(0));
+    EXPECT_DOUBLE_EQ(32.5, vaxis0(1));
+    EXPECT_DOUBLE_EQ(40, vaxis0(4));
 
     Array1DDouble uaxis1, vaxis1;
-    uaxis1.resize(geoarea.GetXaxisCompositePtsnb(1));
-    vaxis1.resize(geoarea.GetYaxisCompositePtsnb(1));
+    uaxis1.resize(geoArea.GetXaxisCompositePtsnb(1));
+    vaxis1.resize(geoArea.GetYaxisCompositePtsnb(1));
 
-    uaxis1 = geoarea.GetXaxisComposite(1);
-    vaxis1 = geoarea.GetYaxisComposite(1);
+    uaxis1 = geoArea.GetXaxisComposite(1);
+    vaxis1 = geoArea.GetYaxisComposite(1);
 
-    CHECK_CLOSE(320, uaxis1(0), 0.000001);
-    CHECK_CLOSE(322.5, uaxis1(1), 0.000001);
-    CHECK_CLOSE(325, uaxis1(2), 0.000001);
-    CHECK_CLOSE(360, uaxis1(geoarea.GetXaxisCompositePtsnb(1)-1), 0.000001);
-    CHECK_CLOSE(30, vaxis1(0), 0.000001);
-    CHECK_CLOSE(32.5, vaxis1(1), 0.000001);
-    CHECK_CLOSE(40, vaxis1(4), 0.000001);
+    EXPECT_DOUBLE_EQ(320, uaxis1(0));
+    EXPECT_DOUBLE_EQ(322.5, uaxis1(1));
+    EXPECT_DOUBLE_EQ(325, uaxis1(2));
+    EXPECT_DOUBLE_EQ(360, uaxis1(geoArea.GetXaxisCompositePtsnb(1)-1));
+    EXPECT_DOUBLE_EQ(30, vaxis1(0));
+    EXPECT_DOUBLE_EQ(32.5, vaxis1(1));
+    EXPECT_DOUBLE_EQ(40, vaxis1(4));
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeSize)
@@ -420,12 +405,12 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeSize)
     double Ymin = 30;
     double Ywidth = 10;
     double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
-    CHECK_CLOSE(5, geoarea.GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(17, geoarea.GetXaxisCompositePtsnb(1), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisCompositePtsnb(1), 0.01);
+    EXPECT_EQ(5, geoArea.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(17, geoArea.GetXaxisCompositePtsnb(1));
+    EXPECT_EQ(5, geoArea.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoArea.GetYaxisCompositePtsnb(1));
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeSizeStepLon)
@@ -436,12 +421,12 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeSizeStepLon)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(3, geoarea.GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(9, geoarea.GetXaxisCompositePtsnb(1), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisCompositePtsnb(1), 0.01);
+    EXPECT_EQ(3, geoArea.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(9, geoArea.GetXaxisCompositePtsnb(1));
+    EXPECT_EQ(5, geoArea.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoArea.GetYaxisCompositePtsnb(1));
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeSizeStepLonMoved)
@@ -452,12 +437,12 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeSizeStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(2, geoarea.GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(2, geoarea.GetXaxisCompositePtsnb(1), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisCompositePtsnb(1), 0.01);
+    EXPECT_EQ(2, geoArea.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(2, geoArea.GetXaxisCompositePtsnb(1));
+    EXPECT_EQ(5, geoArea.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoArea.GetYaxisCompositePtsnb(1));
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeWidthStepLonMoved)
@@ -468,12 +453,12 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeWidthStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(7.5, geoarea.GetXaxisCompositeWidth(0), 0.01);
-    CHECK_CLOSE(7.5, geoarea.GetXaxisCompositeWidth(1), 0.01);
-    CHECK_CLOSE(10, geoarea.GetYaxisCompositeWidth(0), 0.01);
-    CHECK_CLOSE(10, geoarea.GetYaxisCompositeWidth(1), 0.01);
+    EXPECT_DOUBLE_EQ(7.5, geoArea.GetXaxisCompositeWidth(0));
+    EXPECT_DOUBLE_EQ(7.5, geoArea.GetXaxisCompositeWidth(1));
+    EXPECT_DOUBLE_EQ(10, geoArea.GetYaxisCompositeWidth(0));
+    EXPECT_DOUBLE_EQ(10, geoArea.GetYaxisCompositeWidth(1));
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisPtsnbStepLonMoved)
@@ -484,10 +469,10 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisPtsnbStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(4, geoarea.GetXaxisPtsnb(), 0.01);
-    CHECK_CLOSE(5, geoarea.GetYaxisPtsnb(), 0.01);
+    EXPECT_EQ(4, geoArea.GetXaxisPtsnb());
+    EXPECT_EQ(5, geoArea.GetYaxisPtsnb());
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisWidthStepLonMoved)
@@ -498,10 +483,10 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisWidthStepLonMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(15, geoarea.GetXaxisWidth(), 0.01);
-    CHECK_CLOSE(10, geoarea.GetYaxisWidth(), 0.01);
+    EXPECT_DOUBLE_EQ(15, geoArea.GetXaxisWidth());
+    EXPECT_DOUBLE_EQ(10, geoArea.GetYaxisWidth());
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeLimits)
@@ -512,16 +497,16 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeLimits)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(0, geoarea.GetXaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(350, geoarea.GetXaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(10, geoarea.GetXaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(360, geoarea.GetXaxisCompositeEnd(1), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYaxisCompositeEnd(1), 0.01);
+    EXPECT_DOUBLE_EQ(0, geoArea.GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(350, geoArea.GetXaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(10, geoArea.GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(360, geoArea.GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(1));
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeLimitsMoved)
@@ -532,14 +517,14 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeLimitsMoved)
     double Ywidth = 10;
     double Xstep = 5;
     double Ystep = 2.5;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
-    CHECK_CLOSE(2.5, geoarea.GetXaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(360-7.5, geoarea.GetXaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(30, geoarea.GetYaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(7.5, geoarea.GetXaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(360-2.5, geoarea.GetXaxisCompositeEnd(1), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYaxisCompositeEnd(1), 0.01);
+    EXPECT_DOUBLE_EQ(2.5, geoArea.GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(360-7.5, geoArea.GetXaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(30, geoArea.GetYaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(7.5, geoArea.GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(360-2.5, geoArea.GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(1));
 }

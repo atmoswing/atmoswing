@@ -26,63 +26,59 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "include_tests.h"
 #include "asGeoPoint.h"
-
 #include "gtest/gtest.h"
 
 
 TEST(GeoPoint, ConstructorDefault)
 {
-	wxPrintf("Testing geo points management...\n");
-	
     Coo Point;
     Point.x = 7;
     Point.y = 46;
-    asGeoPoint geopoint(Point);
+    asGeoPoint geoPoint(Point);
 
-    CHECK_CLOSE(7, geopoint.GetX(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
+    EXPECT_DOUBLE_EQ(7, geoPoint.GetX());
+    EXPECT_DOUBLE_EQ(46, geoPoint.GetY());
 }
 
 TEST(GeoPoint, ConstructorOther)
 {
     double x = 7;
     double y = 46;
-    asGeoPoint geopoint(x, y);
+    asGeoPoint geoPoint(x, y);
 
-    CHECK_CLOSE(7, geopoint.GetX(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
+    EXPECT_DOUBLE_EQ(7, geoPoint.GetX());
+    EXPECT_DOUBLE_EQ(46, geoPoint.GetY());
 }
 
 TEST(GeoPoint, ConstructorOutBoundsLon)
 {
     double x = -10;
     double y = 46;
-    asGeoPoint geopoint(x, y);
+    asGeoPoint geoPoint(x, y);
 
-    CHECK_CLOSE(350, geopoint.GetX(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
+    EXPECT_DOUBLE_EQ(350, geoPoint.GetX());
+    EXPECT_DOUBLE_EQ(46, geoPoint.GetY());
 }
 
 TEST(GeoPoint, ConstructorOutBoundsLat)
 {
     double x = 10;
     double y = -100;
-    asGeoPoint geopoint(x, y);
+    asGeoPoint geoPoint(x, y);
 
-    CHECK_CLOSE(190, geopoint.GetX(), 0.001);
-    CHECK_CLOSE(-80, geopoint.GetY(), 0.001);
+    EXPECT_DOUBLE_EQ(190, geoPoint.GetX());
+    EXPECT_DOUBLE_EQ(-80, geoPoint.GetY());
 }
 
 TEST(GeoPoint, SetCooOutBounds)
 {
-    asGeoPoint geopoint(0, 0);
+    asGeoPoint geoPoint(0, 0);
     Coo Point;
     Point.x = -10;
     Point.y = 46;
-    geopoint.SetCoo(Point);
+    geoPoint.SetCoo(Point);
 
-    CHECK_CLOSE(350, geopoint.GetX(), 0.001);
-    CHECK_CLOSE(46, geopoint.GetY(), 0.001);
+    EXPECT_DOUBLE_EQ(350, geoPoint.GetX());
+    EXPECT_DOUBLE_EQ(46, geoPoint.GetY());
 }

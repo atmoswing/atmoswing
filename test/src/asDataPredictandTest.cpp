@@ -35,7 +35,5 @@
 
 TEST(DataPredictand, GetAnnualMax)
 {
-	wxPrintf("Testing predictand data...\n");
-
     //MatrixFloat& GetAnnualMax(const asDatasetPredictand &currentData);
 }

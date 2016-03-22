@@ -26,26 +26,22 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "include_tests.h"
 #include "asGeoAreaCompositeGrid.h"
-
 #include "gtest/gtest.h"
 
 
 TEST(GeoAreaCompositeGeneralGrid, ConstructorAlternativeOneArea)
 {
-	wxPrintf("Testing composite grids...\n");
-	
     double Xmin = 10;
     int Xptsnb = 5;
     double Ymin = 30;
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    ASSERT_EQ(1, geoarea->GetNbComposites());
-    wxDELETE(geoarea);
+    EXPECT_EQ(1, geoArea->GetNbComposites());
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, ConstructorAlternativeTwoAreas)
@@ -56,10 +52,10 @@ TEST(GeoAreaCompositeGeneralGrid, ConstructorAlternativeTwoAreas)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    ASSERT_EQ(2, geoarea->GetNbComposites());
-    wxDELETE(geoarea);
+    EXPECT_EQ(2, geoArea->GetNbComposites());
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, CheckConsistency)
@@ -70,29 +66,26 @@ TEST(GeoAreaCompositeGeneralGrid, CheckConsistency)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_CLOSE(355, geoarea->GetCornerUL().x, 0.01);
-    CHECK_CLOSE(355, geoarea->GetCornerLL().x, 0.01);
-    CHECK_CLOSE(20, geoarea->GetCornerUR().x, 0.01);
-    CHECK_CLOSE(20, geoarea->GetCornerLR().x, 0.01);
-    wxDELETE(geoarea);
+    EXPECT_DOUBLE_EQ(355, geoArea->GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(355, geoArea->GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(20, geoArea->GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(20, geoArea->GetCornerLR().x);
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, CheckConsistencyException)
 {
-    if(g_unitTestExceptions)
-    {
-        double Xmin = 10;
-        int Xptsnb = 1;
-        double Ymin = 40;
-        int Yptsnb = -5;
-        double step = 2.5;
-        wxString gridType = "Regular";
-        asGeoAreaCompositeGrid* geoarea = NULL;
-        CHECK_THROW(geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step), asException);
-        wxDELETE(geoarea);
-    }
+    double Xmin = 10;
+    int Xptsnb = 1;
+    double Ymin = 40;
+    int Yptsnb = -5;
+    double step = 2.5;
+    wxString gridType = "Regular";
+    asGeoAreaCompositeGrid* geoArea = NULL;
+    ASSERT_THROW(geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step), asException);
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetBoundsSplitted)
@@ -103,13 +96,13 @@ TEST(GeoAreaCompositeGeneralGrid, GetBoundsSplitted)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_CLOSE(0, geoarea->GetXmin(), 0.01);
-    CHECK_CLOSE(30, geoarea->GetYmin(), 0.01);
-    CHECK_CLOSE(360, geoarea->GetXmax(), 0.01);
-    CHECK_CLOSE(40, geoarea->GetYmax(), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_DOUBLE_EQ(0, geoArea->GetXmin());
+    EXPECT_DOUBLE_EQ(30, geoArea->GetYmin());
+    EXPECT_DOUBLE_EQ(360, geoArea->GetXmax());
+    EXPECT_DOUBLE_EQ(40, geoArea->GetYmax());
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSize)
@@ -120,13 +113,13 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSize)
     int Yptsnb = 5;
     double step = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
 
-    CHECK_CLOSE(5, geoarea->GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(17, geoarea->GetXaxisCompositePtsnb(1), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(1), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_EQ(5, geoArea->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(17, geoArea->GetXaxisCompositePtsnb(1));
+    EXPECT_EQ(5, geoArea->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoArea->GetYaxisCompositePtsnb(1));
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSizeStepLon)
@@ -138,13 +131,13 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSizeStepLon)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(3, geoarea->GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(9, geoarea->GetXaxisCompositePtsnb(1), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(1), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_EQ(3, geoArea->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(9, geoArea->GetXaxisCompositePtsnb(1));
+    EXPECT_EQ(5, geoArea->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoArea->GetYaxisCompositePtsnb(1));
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSizeStepLonMoved)
@@ -156,13 +149,13 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeSizeStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(2, geoarea->GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(2, geoarea->GetXaxisCompositePtsnb(1), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisCompositePtsnb(1), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_EQ(2, geoArea->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(2, geoArea->GetXaxisCompositePtsnb(1));
+    EXPECT_EQ(5, geoArea->GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoArea->GetYaxisCompositePtsnb(1));
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeWidthStepLonMoved)
@@ -174,13 +167,13 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeWidthStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(7.5, geoarea->GetXaxisCompositeWidth(0), 0.01);
-    CHECK_CLOSE(7.5, geoarea->GetXaxisCompositeWidth(1), 0.01);
-    CHECK_CLOSE(10, geoarea->GetYaxisCompositeWidth(0), 0.01);
-    CHECK_CLOSE(10, geoarea->GetYaxisCompositeWidth(1), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_DOUBLE_EQ(7.5, geoArea->GetXaxisCompositeWidth(0));
+    EXPECT_DOUBLE_EQ(7.5, geoArea->GetXaxisCompositeWidth(1));
+    EXPECT_DOUBLE_EQ(10, geoArea->GetYaxisCompositeWidth(0));
+    EXPECT_DOUBLE_EQ(10, geoArea->GetYaxisCompositeWidth(1));
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisPtsnbStepLonMoved)
@@ -192,11 +185,11 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisPtsnbStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(4, geoarea->GetXaxisPtsnb(), 0.01);
-    CHECK_CLOSE(5, geoarea->GetYaxisPtsnb(), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_EQ(4, geoArea->GetXaxisPtsnb());
+    EXPECT_EQ(5, geoArea->GetYaxisPtsnb());
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisWidthStepLonMoved)
@@ -208,11 +201,11 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisWidthStepLonMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(15, geoarea->GetXaxisWidth(), 0.01);
-    CHECK_CLOSE(10, geoarea->GetYaxisWidth(), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_DOUBLE_EQ(15, geoArea->GetXaxisWidth());
+    EXPECT_DOUBLE_EQ(10, geoArea->GetYaxisWidth());
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeLimits)
@@ -224,17 +217,17 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeLimits)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(0, geoarea->GetXaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(350, geoarea->GetXaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(30, geoarea->GetYaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(30, geoarea->GetYaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(10, geoarea->GetXaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(360, geoarea->GetXaxisCompositeEnd(1), 0.01);
-    CHECK_CLOSE(40, geoarea->GetYaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(40, geoarea->GetYaxisCompositeEnd(1), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_DOUBLE_EQ(0, geoArea->GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(350, geoArea->GetXaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(30, geoArea->GetYaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(30, geoArea->GetYaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(10, geoArea->GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(360, geoArea->GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(40, geoArea->GetYaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(40, geoArea->GetYaxisCompositeEnd(1));
+    wxDELETE(geoArea);
 }
 
 TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeLimitsMoved)
@@ -246,15 +239,15 @@ TEST(GeoAreaCompositeGeneralGrid, GetUYaxisCompositeLimitsMoved)
     double Xstep = 5;
     double Ystep = 2.5;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
+    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep);
 
-    CHECK_CLOSE(2.5, geoarea->GetXaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(360-7.5, geoarea->GetXaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(30, geoarea->GetYaxisCompositeStart(0), 0.01);
-    CHECK_CLOSE(30, geoarea->GetYaxisCompositeStart(1), 0.01);
-    CHECK_CLOSE(7.5, geoarea->GetXaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(360-2.5, geoarea->GetXaxisCompositeEnd(1), 0.01);
-    CHECK_CLOSE(40, geoarea->GetYaxisCompositeEnd(0), 0.01);
-    CHECK_CLOSE(40, geoarea->GetYaxisCompositeEnd(1), 0.01);
-    wxDELETE(geoarea);
+    EXPECT_DOUBLE_EQ(2.5, geoArea->GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(360-7.5, geoArea->GetXaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(30, geoArea->GetYaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(30, geoArea->GetYaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(7.5, geoArea->GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(360-2.5, geoArea->GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(40, geoArea->GetYaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(40, geoArea->GetYaxisCompositeEnd(1));
+    wxDELETE(geoArea);
 }
