@@ -116,3 +116,111 @@ TEST(Parameters, GenerateSimpleParametersFileCalibration)
     wxString tmpPath = wxFileName::CreateTempFileName("GenerateSimpleParametersFileCalibrationTest");
     EXPECT_TRUE(params.GenerateSimpleParametersFile(tmpPath));
 }
+
+TEST(SortLevelsAndTime)
+{
+    wxString filepath = wxFileName::GetCwd();
+    filepath.Append("/files/parameters_standard_sort_level_time.xml");
+
+    asParameters params;
+    params.LoadFromFile(filepath);
+    int s = 0, p = 0;
+    
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(1000, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(false, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(500, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(24, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(1000, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(false, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(850, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(24, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(false, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(850, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    
+    s++;
+    p = 0;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(850, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(700, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
+
+    // Sort and check
+    params.SortLevelsAndTime();
+
+    p = 0;
+    s = 0;
+    CHECK_EQUAL(false, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(500, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(24, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(false, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(850, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(false, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(850, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(24, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(1000, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(1000, params.GetPredictorLevel(s,p));
+    CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
+    
+    s++;
+    p = 0;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(700, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(850, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(12, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(12, params.GetPredictorTimeHours(s,p));
+    p++;
+    CHECK_EQUAL(true, params.NeedsPreprocessing(s,p));
+    CHECK_EQUAL(1000, params.GetPreprocessLevel(s,p,0));
+    CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
+    CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
+
+}

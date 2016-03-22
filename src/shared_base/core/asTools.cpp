@@ -115,7 +115,7 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
         u2 = ((double)rand() / (double)(RAND_MAX) );
     }
 
-    // Box–Muller transform
+    // Box-Muller transform
     double z0 = sqrt(-2*log(u1))*cos(2*M_PI*u2);
     //double z1 = sqrt(-2*log(u1))*sin(2*M_PI*u2);
 
@@ -1050,7 +1050,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 if (targetvalue>*pArrEnd || targetvalue<*pArrStart)
                 {
                     if (showWarning == asSHOW_WARNINGS){
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1068,7 +1068,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 if (targetvalue>*pArrEnd || targetvalue<*pArrStart)
                 {
                     if (showWarning == asSHOW_WARNINGS){
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1120,7 +1120,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 if (targetvalue<*pArrEnd || targetvalue>*pArrStart)
                 {
                     if (showWarning == asSHOW_WARNINGS){
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1138,7 +1138,7 @@ int asTools::SortedArraySearchT(T* pArrStart, T* pArrEnd, T targetvalue, T toler
                 if (targetvalue<*pArrEnd || targetvalue>*pArrStart)
                 {
                     if (showWarning == asSHOW_WARNINGS){
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1206,7 +1206,7 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         if (targetvalue>*pLast || targetvalue<*pFirst)
         {
             if (showWarning == asSHOW_WARNINGS){
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1254,7 +1254,7 @@ int asTools::SortedArraySearchClosestT(T* pArrStart, T* pArrEnd, T targetvalue, 
         if (targetvalue<*pLast || targetvalue>*pFirst)
         {
             if (showWarning == asSHOW_WARNINGS){
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1353,7 +1353,7 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
         {
             if (showWarning == asSHOW_WARNINGS)
             {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1395,7 +1395,7 @@ int asTools::SortedArraySearchFloorT(T* pArrStart, T* pArrEnd, T targetvalue, in
         if (targetvalue<*pLast || targetvalue>*pFirst)
         {
             if (showWarning == asSHOW_WARNINGS){
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1488,7 +1488,7 @@ int asTools::SortedArraySearchCeilT(T* pArrStart, T* pArrEnd, T targetvalue, int
         if (targetvalue>*pLast || targetvalue<*pFirst)
         {
             if (showWarning == asSHOW_WARNINGS){
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1530,7 +1530,7 @@ int asTools::SortedArraySearchCeilT(T* pArrStart, T* pArrEnd, T targetvalue, int
         if (targetvalue<*pLast || targetvalue>*pFirst)
         {
             if (showWarning == asSHOW_WARNINGS){
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }

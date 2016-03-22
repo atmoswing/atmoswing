@@ -50,7 +50,7 @@ private:
     VArray2DFloat* m_pGradients;
     std::vector < asDataPredictor* > m_pPredictors;
     int m_start;
-    int m_End;
+    int m_end;
 
 };
 
