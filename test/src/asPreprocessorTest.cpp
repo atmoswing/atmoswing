@@ -82,7 +82,7 @@ TEST(Preprocessor, Gradients)
     asDataPredictorArchive* gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
-    VArray2DFloat hgt = gradients->GetData();
+    VArray2DFloat grads = gradients->GetData();
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     176.0	175.0	170.0	162.0	151.0
@@ -100,29 +100,57 @@ TEST(Preprocessor, Gradients)
     7	1
     8	1
     9	-1
-    10	-1
-    11	-5
-    12	-8
-    13	-11
-    14	-5
-    15	-7
-    16	-11
-    17	-18
-    18	-10
-    19	-9
-    20	-11
-    21	-20
+    10 (0)
+    11 (0)
+    12 (0)
+    13 (0)
+    14 (0)
+    15	-1
+    16	-5
+    17	-8
+    18	-11
+    19 (0)
+    20	-5
+    21	-7
+    22	-11
+    23	-18
+    24 (0)
+    25	-10
+    26	-9
+    27	-11
+    28	-20
     */
-    /* Alignement changed
-    EXPECT_DOUBLE_EQ(9, hgt[0](0,0));
-    EXPECT_DOUBLE_EQ(5, hgt[0](0,1));
-    EXPECT_DOUBLE_EQ(-7, hgt[0](0,4));
-    EXPECT_DOUBLE_EQ(8, hgt[0](0,5));
-    EXPECT_DOUBLE_EQ(-1, hgt[0](0,10));
-    EXPECT_DOUBLE_EQ(-5, hgt[0](0,14));
-    EXPECT_DOUBLE_EQ(-18, hgt[0](0,17));
-    EXPECT_DOUBLE_EQ(-20, hgt[0](0,21));
-    */
+
+    EXPECT_DOUBLE_EQ(9, grads[0](0,0));
+    EXPECT_DOUBLE_EQ(5, grads[0](0,1));
+    EXPECT_DOUBLE_EQ(3, grads[0](0,2));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,3));
+    EXPECT_DOUBLE_EQ(-7, grads[0](0,4));
+    EXPECT_DOUBLE_EQ(8, grads[0](0,5));
+    EXPECT_DOUBLE_EQ(3, grads[0](0,6));
+    EXPECT_DOUBLE_EQ(1, grads[0](0,7));
+    EXPECT_DOUBLE_EQ(1, grads[0](0,8));
+    EXPECT_DOUBLE_EQ(-1, grads[0](0,9));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,10));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,11));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,12));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,13));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,14));
+    EXPECT_DOUBLE_EQ(-1, grads[0](0,15));
+    EXPECT_DOUBLE_EQ(-5, grads[0](0,16));
+    EXPECT_DOUBLE_EQ(-8, grads[0](0,17));
+    EXPECT_DOUBLE_EQ(-11, grads[0](0,18));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,19));
+    EXPECT_DOUBLE_EQ(-5, grads[0](0,20));
+    EXPECT_DOUBLE_EQ(-7, grads[0](0,21));
+    EXPECT_DOUBLE_EQ(-11, grads[0](0,22));
+    EXPECT_DOUBLE_EQ(-18, grads[0](0,23));
+    EXPECT_DOUBLE_EQ(0, grads[0](0,24));
+    EXPECT_DOUBLE_EQ(-10, grads[0](0,25));
+    EXPECT_DOUBLE_EQ(-9, grads[0](0,26));
+    EXPECT_DOUBLE_EQ(-11, grads[0](0,27));
+    EXPECT_DOUBLE_EQ(-20, grads[0](0,28));
+
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
     141.0	125.0	115.0	112.0	116.0
@@ -139,29 +167,36 @@ TEST(Preprocessor, Gradients)
     7	24
     8	21
     9	15
-    10	-17
-    11	-6
-    12	4
-    13	12
-    14	-16
-    15	-10
-    16	-3
+    10 (0)
+    11 (0)
+    12 (0)
+    13 (0)
+    14 (0)
+    15	-17
+    16	-6
     17	4
-    18	-11
-    19	-8
-    20	-6
-    21	-2
+    18	12
+    19 (0)
+    20	-16
+    21	-10
+    22	-3
+    23	4
+    24 (0)
+    25	-11
+    26	-8
+    27	-6
+    28	-2
     */
-    /*
-    EXPECT_DOUBLE_EQ(20, hgt[11](0,0));
-    EXPECT_DOUBLE_EQ(21, hgt[11](0,1));
-    EXPECT_DOUBLE_EQ(17, hgt[11](0,5));
-    EXPECT_DOUBLE_EQ(15, hgt[11](0,9));
-    EXPECT_DOUBLE_EQ(-17, hgt[11](0,10));
-    EXPECT_DOUBLE_EQ(12, hgt[11](0,13));
-    EXPECT_DOUBLE_EQ(-16, hgt[11](0,14));
-    EXPECT_DOUBLE_EQ(-2, hgt[11](0,21));
-    */
+
+    EXPECT_DOUBLE_EQ(20, grads[11](0,0));
+    EXPECT_DOUBLE_EQ(21, grads[11](0,1));
+    EXPECT_DOUBLE_EQ(17, grads[11](0,5));
+    EXPECT_DOUBLE_EQ(15, grads[11](0,9));
+    EXPECT_DOUBLE_EQ(-17, grads[11](0,15));
+    EXPECT_DOUBLE_EQ(12, grads[11](0,18));
+    EXPECT_DOUBLE_EQ(-16, grads[11](0,20));
+    EXPECT_DOUBLE_EQ(-2, grads[11](0,28));
+
     wxDELETE(gradients);
     wxDELETE(predictor);
 }
@@ -232,29 +267,36 @@ TEST(Preprocessor, GradientsMultithreading)
     7	1
     8	1
     9	-1
-    10	-1
-    11	-5
-    12	-8
-    13	-11
-    14	-5
-    15	-7
-    16	-11
-    17	-18
-    18	-10
-    19	-9
-    20	-11
-    21	-20
+    10 (0)
+    11 (0)
+    12 (0)
+    13 (0)
+    14 (0)
+    15	-1
+    16	-5
+    17	-8
+    18	-11
+    19 (0)
+    20	-5
+    21	-7
+    22	-11
+    23	-18
+    24 (0)
+    25	-10
+    26	-9
+    27	-11
+    28	-20
     */
-    /*
+
     EXPECT_DOUBLE_EQ(9, hgt[0](0,0));
     EXPECT_DOUBLE_EQ(5, hgt[0](0,1));
     EXPECT_DOUBLE_EQ(-7, hgt[0](0,4));
     EXPECT_DOUBLE_EQ(8, hgt[0](0,5));
-    EXPECT_DOUBLE_EQ(-1, hgt[0](0,10));
-    EXPECT_DOUBLE_EQ(-5, hgt[0](0,14));
-    EXPECT_DOUBLE_EQ(-18, hgt[0](0,17));
-    EXPECT_DOUBLE_EQ(-20, hgt[0](0,21));
-    */
+    EXPECT_DOUBLE_EQ(-1, hgt[0](0,15));
+    EXPECT_DOUBLE_EQ(-5, hgt[0](0,20));
+    EXPECT_DOUBLE_EQ(-18, hgt[0](0,23));
+    EXPECT_DOUBLE_EQ(-20, hgt[0](0,28));
+
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
     141.0	125.0	115.0	112.0	116.0
@@ -271,29 +313,36 @@ TEST(Preprocessor, GradientsMultithreading)
     7	24
     8	21
     9	15
-    10	-17
-    11	-6
-    12	4
-    13	12
-    14	-16
-    15	-10
-    16	-3
+    10 (0)
+    11 (0)
+    12 (0)
+    13 (0)
+    14 (0)
+    15	-17
+    16	-6
     17	4
-    18	-11
-    19	-8
-    20	-6
-    21	-2
+    18	12
+    19 (0)
+    20	-16
+    21	-10
+    22	-3
+    23	4
+    24 (0)
+    25	-11
+    26	-8
+    27	-6
+    28	-2
     */
-    /*
+
     EXPECT_DOUBLE_EQ(20, hgt[11](0,0));
     EXPECT_DOUBLE_EQ(21, hgt[11](0,1));
     EXPECT_DOUBLE_EQ(17, hgt[11](0,5));
     EXPECT_DOUBLE_EQ(15, hgt[11](0,9));
-    EXPECT_DOUBLE_EQ(-17, hgt[11](0,10));
-    EXPECT_DOUBLE_EQ(12, hgt[11](0,13));
-    EXPECT_DOUBLE_EQ(-16, hgt[11](0,14));
-    EXPECT_DOUBLE_EQ(-2, hgt[11](0,21));
-    */
+    EXPECT_DOUBLE_EQ(-17, hgt[11](0,15));
+    EXPECT_DOUBLE_EQ(12, hgt[11](0,18));
+    EXPECT_DOUBLE_EQ(-16, hgt[11](0,20));
+    EXPECT_DOUBLE_EQ(-2, hgt[11](0,28));
+
     wxDELETE(gradients);
     wxDELETE(predictor);
 }

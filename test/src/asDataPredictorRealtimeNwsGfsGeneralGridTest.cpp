@@ -63,8 +63,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -157,8 +156,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -251,8 +249,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeSmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -309,8 +306,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeLargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -367,8 +363,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftSmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -425,8 +420,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftLargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -483,8 +477,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -541,8 +534,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -599,8 +591,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightSmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -657,8 +648,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightLargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -716,8 +706,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -775,8 +764,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -834,8 +822,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -891,8 +878,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -948,8 +934,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmal
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1008,8 +993,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLarg
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1068,8 +1052,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1123,8 +1106,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1178,8 +1160,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1231,8 +1212,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     predictor->SetYaxisStep(1);
 
     // Load
-    bool successLoad = predictor->Load(geoarea, dates);
-    EXPECT_TRUE(successLoad);
+    ASSERT_TRUE(predictor->Load(geoarea, dates));
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
