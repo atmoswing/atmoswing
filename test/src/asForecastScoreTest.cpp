@@ -27,21 +27,14 @@
  */
  
 #include <wx/filename.h>
-
-#include "include_tests.h"
 #include <asForecastScore.h>
 #include <asForecastScoreFinal.h>
 #include <asFileAscii.h>
+#include "gtest/gtest.h"
 
-#include "UnitTest++.h"
 
-namespace
+TEST(ForecastScore, ProcessCRPSapproxRectangle)
 {
-
-TEST(ProcessCRPSapproxRectangle)
-{
-	wxPrintf("Testing forecast scores...\n");
-	
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/forecast_score_01.txt");
@@ -69,12 +62,12 @@ TEST(ProcessCRPSapproxRectangle)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -83,7 +76,7 @@ TEST(ProcessCRPSapproxRectangle)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.00001);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -93,7 +86,7 @@ TEST(ProcessCRPSapproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSexactPrimitive)
+TEST(ForecastScore, ProcessCRPSexactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -122,12 +115,12 @@ TEST(ProcessCRPSexactPrimitive)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -136,7 +129,7 @@ TEST(ProcessCRPSexactPrimitive)
         float target = file.GetFloat();
 
         float precision = wxMax(target/500,(float)0.00002);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -146,7 +139,7 @@ TEST(ProcessCRPSexactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSapproxRectangle1983)
+TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -175,12 +168,12 @@ TEST(ProcessCRPSapproxRectangle1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -189,7 +182,7 @@ TEST(ProcessCRPSapproxRectangle1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.00002);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -199,7 +192,7 @@ TEST(ProcessCRPSapproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSexactPrimitive1983)
+TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -228,12 +221,12 @@ TEST(ProcessCRPSexactPrimitive1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -242,7 +235,7 @@ TEST(ProcessCRPSexactPrimitive1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/100,(float)0.00005);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -252,7 +245,7 @@ TEST(ProcessCRPSexactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSapproxRectangle30Analogs1983)
+TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -281,12 +274,12 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -295,7 +288,7 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.00002);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -305,7 +298,7 @@ TEST(ProcessCRPSapproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSexactPrimitive30Analogs1983)
+TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -334,12 +327,12 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -348,7 +341,7 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/100,(float)0.0001);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -358,7 +351,7 @@ TEST(ProcessCRPSexactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessApproxRectangle)
+TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -387,12 +380,12 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -402,7 +395,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -412,7 +405,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessExactPrimitive)
+TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -441,12 +434,12 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -456,7 +449,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
         float target = file.GetFloat();
 
         float precision = wxMax(target/500,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -466,7 +459,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessApproxRectangle1983)
+TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -495,12 +488,12 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -510,7 +503,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -520,7 +513,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessExactPrimitive1983)
+TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -549,12 +542,12 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -564,7 +557,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/100,(float)0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -574,7 +567,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
+TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -603,12 +596,12 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -618,7 +611,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -628,7 +621,7 @@ TEST(ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
+TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -657,12 +650,12 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -672,7 +665,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/100,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -682,7 +675,7 @@ TEST(ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyApproxRectangle)
+TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -711,12 +704,12 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -726,7 +719,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.0003);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -736,7 +729,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyExactPrimitive)
+TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -765,12 +758,12 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -780,7 +773,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
         float target = file.GetFloat();
 
         float precision = wxMax(target/500,(float)0.0003);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -790,7 +783,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyApproxRectangle1983)
+TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -819,12 +812,12 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -834,7 +827,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.0001);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -844,7 +837,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyExactPrimitive1983)
+TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -873,12 +866,12 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -888,7 +881,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/100,(float)0.00005);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -898,7 +891,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
+TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -927,12 +920,12 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -942,7 +935,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/1000,(float)0.0005);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -952,7 +945,7 @@ TEST(ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
+TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -981,12 +974,12 @@ TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
         file.SkipLines(2);
         for (int i_ana=0; i_ana<nanalogs; i_ana++)
         {
             file.SkipElements(4);
-            ForcastVals[i_ana] = sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
             file.SkipLines(1);
         }
 
@@ -996,7 +989,7 @@ TEST(ProcessCRPSaccuracyExactPrimitive30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target/100,(float)0.001);
-        CHECK_CLOSE(target, result, precision);
+        EXPECT_NEAR(target, result, precision);
 
         // Go to header
         file.SkipLines(1);
@@ -1020,10 +1013,10 @@ void InitConstantDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     // Not forecasted and no event
     for (int i_time=0;i_time<timeLength;i_time++)
     {
-        vecObs[i_time] = asTools::Random(0.0, 0.4999999);
+        vecObs[i_time] = (float)asTools::Random(0.0, 0.4999999);
         for (int i_ana=0;i_ana<nanalogs;i_ana++)
         {
-            singleDay[i_ana] = asTools::Random(0.0, 0.4999999);
+            singleDay[i_ana] = (float)asTools::Random(0.0, 0.4999999);
         }
         asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
         vecForecast.row(i_time) = singleDay;
@@ -1126,10 +1119,10 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     // Not forecasted and no event
     for (int i_time=0;i_time<timeLength;i_time++)
     {
-        vecObs[i_time] = asTools::Random(0.0, 0.5999999);
+        vecObs[i_time] = (float)asTools::Random(0.0, 0.5999999);
         for (int i_ana=0;i_ana<nanalogs;i_ana++)
         {
-            singleDay[i_ana] = asTools::Random(0.0, 0.5999999);
+            singleDay[i_ana] = (float)asTools::Random(0.0, 0.5999999);
         }
         asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
         vecForecast.row(i_time) = singleDay;
@@ -1141,10 +1134,10 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     for (int i=0; i<indicesA.size(); i++)
     {
         int i_time = indicesA[i];
-        vecObs[i_time] = asTools::Random(0.6, 1.0);
+        vecObs[i_time] = (float)asTools::Random(0.6, 1.0);
         for (int i_ana=0;i_ana<20;i_ana++)
         {
-            singleDay[i_ana] = asTools::Random(0.0, 0.5999999);
+            singleDay[i_ana] = (float)asTools::Random(0.0, 0.5999999);
         }
         for (int i_ana=20;i_ana<50;i_ana++)
         {
@@ -1160,14 +1153,14 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     for (int i=0; i<indicesB.size(); i++)
     {
         int i_time = indicesB[i];
-        vecObs[i_time] = asTools::Random(0.0, 0.5999999);
+        vecObs[i_time] = (float)asTools::Random(0.0, 0.5999999);
         for (int i_ana=0;i_ana<20;i_ana++)
         {
-            singleDay[i_ana] = asTools::Random(0.0, 0.5999999);
+            singleDay[i_ana] = (float)asTools::Random(0.0, 0.5999999);
         }
         for (int i_ana=20;i_ana<50;i_ana++)
         {
-            singleDay[i_ana] = asTools::Random(0.6, 1.0);
+            singleDay[i_ana] = (float)asTools::Random(0.6, 1.0);
         }
         asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
         vecForecast.row(i_time) = singleDay;
@@ -1179,12 +1172,12 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     for (int i=0; i<indicesC.size(); i++)
     {
         int i_time = indicesC[i];
-        vecObs[i_time] = asTools::Random(0.6, 1.0);
+        vecObs[i_time] = (float)asTools::Random(0.6, 1.0);
     }
 
 }
 
-TEST(ProcessPCwithConstantDistribution)
+TEST(ForecastScore, ProcessPCwithConstantDistribution)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1203,7 +1196,7 @@ TEST(ProcessPCwithConstantDistribution)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
@@ -1211,13 +1204,13 @@ TEST(ProcessPCwithConstantDistribution)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.936585, scoreVal, 0.000001);
+    EXPECT_NEAR(0.936585, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessPC)
+TEST(ForecastScore, ProcessPC)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1236,7 +1229,7 @@ TEST(ProcessPC)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
@@ -1244,13 +1237,13 @@ TEST(ProcessPC)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.966, scoreVal, 0.001);
+    EXPECT_NEAR(0.966, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessTS)
+TEST(ForecastScore, ProcessTS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1269,7 +1262,7 @@ TEST(ProcessTS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("TS", "Total");
@@ -1277,13 +1270,13 @@ TEST(ProcessTS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.228, scoreVal, 0.001);
+    EXPECT_NEAR(0.228, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessBIAS)
+TEST(ForecastScore, ProcessBIAS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1302,7 +1295,7 @@ TEST(ProcessBIAS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BIAS", "Total");
@@ -1310,13 +1303,13 @@ TEST(ProcessBIAS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(1.96, scoreVal, 0.001);
+    EXPECT_NEAR(1.96, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessFARA)
+TEST(ForecastScore, ProcessFARA)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1335,7 +1328,7 @@ TEST(ProcessFARA)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("FARA", "Total");
@@ -1343,13 +1336,13 @@ TEST(ProcessFARA)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.720, scoreVal, 0.001);
+    EXPECT_NEAR(0.720, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessH)
+TEST(ForecastScore, ProcessH)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1368,7 +1361,7 @@ TEST(ProcessH)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("H", "Total");
@@ -1376,13 +1369,13 @@ TEST(ProcessH)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.549, scoreVal, 0.001);
+    EXPECT_NEAR(0.549, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessF)
+TEST(ForecastScore, ProcessF)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1401,7 +1394,7 @@ TEST(ProcessF)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("F", "Total");
@@ -1409,13 +1402,13 @@ TEST(ProcessF)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.0262, scoreVal, 0.001);
+    EXPECT_NEAR(0.0262, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessHSS)
+TEST(ForecastScore, ProcessHSS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1434,7 +1427,7 @@ TEST(ProcessHSS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("HSS", "Total");
@@ -1442,13 +1435,13 @@ TEST(ProcessHSS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.355, scoreVal, 0.001);
+    EXPECT_NEAR(0.355, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessPSS)
+TEST(ForecastScore, ProcessPSS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1467,7 +1460,7 @@ TEST(ProcessPSS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("PSS", "Total");
@@ -1475,13 +1468,13 @@ TEST(ProcessPSS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.523, scoreVal, 0.001);
+    EXPECT_NEAR(0.523, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessGSS)
+TEST(ForecastScore, ProcessGSS)
 {
     // Create data
     Array2DFloat vecForecast;
@@ -1500,7 +1493,7 @@ TEST(ProcessGSS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("GSS", "Total");
@@ -1508,13 +1501,13 @@ TEST(ProcessGSS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
-    CHECK_CLOSE(0.216, scoreVal, 0.001);
+    EXPECT_NEAR(0.216, scoreVal, 0.001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessMAE)
+TEST(ForecastScore, ProcessMAE)
 {
     // Sizes
     int timeLength = 10;
@@ -1550,7 +1543,7 @@ TEST(ProcessMAE)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("MAE", "Total");
@@ -1558,13 +1551,13 @@ TEST(ProcessMAE)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.311834, scoreVal, 0.000001);
+    EXPECT_NEAR(0.311834, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessRMSE)
+TEST(ForecastScore, ProcessRMSE)
 {
     // Sizes
     int timeLength = 10;
@@ -1600,7 +1593,7 @@ TEST(ProcessRMSE)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RMSE", "Total");
@@ -1608,13 +1601,13 @@ TEST(ProcessRMSE)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.358484, scoreVal, 0.000001);
+    EXPECT_NEAR(0.358484, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessBS)
+TEST(ForecastScore, ProcessBS)
 {
     // Sizes
     int timeLength = 10;
@@ -1651,7 +1644,7 @@ TEST(ProcessBS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BS", "Total");
@@ -1659,13 +1652,13 @@ TEST(ProcessBS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.187771, scoreVal, 0.000001);
+    EXPECT_NEAR(0.187771, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessBSS)
+TEST(ForecastScore, ProcessBSS)
 {
     // Sizes
     int timeLength = 10;
@@ -1704,7 +1697,7 @@ TEST(ProcessBSS)
     {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BSS", "Total");
@@ -1712,13 +1705,13 @@ TEST(ProcessBSS)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    CHECK_CLOSE(0.375521, scoreVal, 0.00001);
+    EXPECT_NEAR(0.375521, scoreVal, 0.00001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessRankHistogram)
+TEST(ForecastScore, ProcessRankHistogram)
 {
     // Sizes
     int timeLength = 20;
@@ -1762,32 +1755,32 @@ TEST(ProcessRankHistogram)
         pseudoDates[i_time] = i_time;
         float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results[i_time] = res;
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     // Values processed on Excel
     bool isTrue = (results[0]>=1 && results[0]<5); // Contains random value
-    CHECK_EQUAL(true,isTrue);
+    EXPECT_EQ(true,isTrue);
     isTrue = (results[1]>=26 && results[1]<=28); // Contains random value
-    CHECK_EQUAL(true,isTrue);
-    CHECK_EQUAL(29,results[2]);
-    CHECK_EQUAL(24,results[3]);
-    CHECK_EQUAL(24,results[4]);
-    CHECK_EQUAL(31,results[5]);
-    CHECK_EQUAL(15,results[6]);
-    CHECK_EQUAL(16,results[7]);
-    CHECK_EQUAL(24,results[8]);
-    CHECK_EQUAL(24,results[9]);
-    CHECK_EQUAL(29,results[10]);
-    CHECK_EQUAL(18,results[11]);
-    CHECK_EQUAL(25,results[12]);
-    CHECK_EQUAL(14,results[13]);
-    CHECK_EQUAL(24,results[14]);
-    CHECK_EQUAL(15,results[15]);
-    CHECK_EQUAL(28,results[16]);
-    CHECK_EQUAL(16,results[17]);
-    CHECK_EQUAL(20,results[18]);
-    CHECK_EQUAL(24,results[19]);
+    EXPECT_EQ(true,isTrue);
+    EXPECT_EQ(29,results[2]);
+    EXPECT_EQ(24,results[3]);
+    EXPECT_EQ(24,results[4]);
+    EXPECT_EQ(31,results[5]);
+    EXPECT_EQ(15,results[6]);
+    EXPECT_EQ(16,results[7]);
+    EXPECT_EQ(24,results[8]);
+    EXPECT_EQ(24,results[9]);
+    EXPECT_EQ(29,results[10]);
+    EXPECT_EQ(18,results[11]);
+    EXPECT_EQ(25,results[12]);
+    EXPECT_EQ(14,results[13]);
+    EXPECT_EQ(24,results[14]);
+    EXPECT_EQ(15,results[15]);
+    EXPECT_EQ(28,results[16]);
+    EXPECT_EQ(16,results[17]);
+    EXPECT_EQ(20,results[18]);
+    EXPECT_EQ(24,results[19]);
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
     finalScore->SetRanksNb(nanalogs+1);
@@ -1795,24 +1788,24 @@ TEST(ProcessRankHistogram)
     Array1DFloat scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
 
     float total=scoreVal.sum();
-    CHECK_CLOSE(100, total, 0.00001);
+    EXPECT_FLOAT_EQ(100, total);
 
     // Values processed on Excel
-    CHECK_CLOSE(5,scoreVal[13],0.00001);
-    CHECK_CLOSE(10,scoreVal[14],0.00001);
-    CHECK_CLOSE(10,scoreVal[15],0.00001);
-    CHECK_CLOSE(5,scoreVal[17],0.00001);
-    CHECK_CLOSE(5,scoreVal[19],0.00001);
-    CHECK_CLOSE(30,scoreVal[23],0.00001);
-    CHECK_CLOSE(5,scoreVal[24],0.00001);
-    CHECK_CLOSE(10,scoreVal[28],0.00001);
-    CHECK_CLOSE(5,scoreVal[30],0.00001);
+    EXPECT_FLOAT_EQ(5,scoreVal[13]);
+    EXPECT_FLOAT_EQ(10,scoreVal[14]);
+    EXPECT_FLOAT_EQ(10,scoreVal[15]);
+    EXPECT_FLOAT_EQ(5,scoreVal[17]);
+    EXPECT_FLOAT_EQ(5,scoreVal[19]);
+    EXPECT_FLOAT_EQ(30,scoreVal[23]);
+    EXPECT_FLOAT_EQ(5,scoreVal[24]);
+    EXPECT_FLOAT_EQ(10,scoreVal[28]);
+    EXPECT_FLOAT_EQ(5,scoreVal[30]);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessRankHistogramReliability)
+TEST(ForecastScore, ProcessRankHistogramReliability)
 {
     // Sizes
     int timeLength = 20;
@@ -1856,7 +1849,7 @@ TEST(ProcessRankHistogramReliability)
         pseudoDates[i_time] = i_time;
         float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results[i_time] = res;
-        CHECK(!asTools::IsNaN(results[i_time]));
+        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogramReliability", "Total");
@@ -1865,13 +1858,13 @@ TEST(ProcessRankHistogramReliability)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Values processed on Excel
-    CHECK_CLOSE(2.3300, scoreVal, 0.0001);
+    EXPECT_FLOAT_EQ(2.3300, scoreVal);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessCRPSreliability)
+TEST(ForecastScore, ProcessCRPSreliability)
 {
     // Sizes
     int timeLength = 15;
@@ -1910,7 +1903,7 @@ TEST(ProcessCRPSreliability)
         pseudoDates[i_time] = i_time;
         Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results.row(i_time) = res;
-        CHECK(!asTools::HasNaN(&res[0], &res[res.size()-1]));
+        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size()-1]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPSreliability", "Total");
@@ -1918,13 +1911,13 @@ TEST(ProcessCRPSreliability)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Final values
-    CHECK_CLOSE(0.6381, scoreVal, 0.0001);
+    EXPECT_NEAR(0.6381, scoreVal, 0.0001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(ProcessCRPSpotential)
+TEST(ForecastScore, ProcessCRPSpotential)
 {
     // Sizes
     int timeLength = 15;
@@ -1963,7 +1956,7 @@ TEST(ProcessCRPSpotential)
         pseudoDates[i_time] = i_time;
         Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results.row(i_time) = res;
-        CHECK(!asTools::HasNaN(&res[0], &res[res.size()-1]));
+        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size()-1]));
     }
 
     asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPSpotential", "Total");
@@ -1972,11 +1965,8 @@ TEST(ProcessCRPSpotential)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Final values
-    CHECK_CLOSE(0.5708, scoreVal, 0.0001);
+    EXPECT_NEAR(0.5708, scoreVal, 0.0001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
-
-}
-

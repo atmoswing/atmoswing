@@ -386,16 +386,11 @@ else (USE_CUDA)
 	unset(CUDA_CUDA_LIBRARY CACHE)
 endif (USE_CUDA)
 
-# UnitTest++
+# Google Test
 if (BUILD_TESTS)
-    include(build/cmake/FindUnitTest++.cmake)
-    include_directories(${UNITTEST++_INCLUDE_DIR})
-    mark_as_advanced(UnitTest++_DIR)
-else (BUILD_TESTS)
-	# unset for wxhgversion
-	unset(UNITTEST++_INCLUDE_DIR CACHE)
-	unset(UNITTEST++_LIBRARY_DEBUG CACHE)
-	unset(UNITTEST++_LIBRARY_RELEASE CACHE)
+    add_subdirectory(test/libs/googletest)
+    include_directories("${gtest_SOURCE_DIR}")
+    include_directories("${gtest_SOURCE_DIR}/include")
 endif (BUILD_TESTS)
 
 # Visual Leak Detector
@@ -678,12 +673,12 @@ if (BUILD_OPTIMIZER)
 endif (BUILD_OPTIMIZER)
 
 if (BUILD_TESTS)
+    target_link_libraries(atmoswing-tests gtest gtest_main)
     target_link_libraries(atmoswing-tests asbase)
     target_link_libraries(atmoswing-tests asprocessing)
     target_link_libraries(atmoswing-tests ${wxWidgets_LIBRARIES})
     target_link_libraries(atmoswing-tests ${NetCDF_LIBRARIES})
     target_link_libraries(atmoswing-tests ${CURL_LIBRARIES})
-    target_link_libraries(atmoswing-tests ${UNITTEST++_LIBRARIES})
     if (BUILD_FORECASTER)
         target_link_libraries(atmoswing-tests ${GDAL_LIBRARIES})
     endif (BUILD_FORECASTER)

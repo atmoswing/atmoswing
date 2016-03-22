@@ -25,57 +25,51 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#include "include_tests.h"
 #include "asTimeArray.h"
+#include "gtest/gtest.h"
 
-#include "UnitTest++.h"
 
-namespace
+TEST(TimeArray, BuildArraySimple)
 {
-
-TEST(BuildArraySimple)
-{
-	wxPrintf("Testing time arrays...\n");
-	
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2009,1,1);
     double timestephours = 6;
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(start, timearray.GetStart(), 0.000001);
-    CHECK_CLOSE(end, timearray.GetEnd(), 0.000001);
-    CHECK_CLOSE(timestephours, timearray.GetTimeStepHours(), 0.000001);
-    CHECK_CLOSE(timestephours/24, timearray.GetTimeStepDays(), 0.000001);
+    EXPECT_DOUBLE_EQ(start, timearray.GetStart());
+    EXPECT_DOUBLE_EQ(end, timearray.GetEnd());
+    EXPECT_DOUBLE_EQ(timestephours, timearray.GetTimeStepHours());
+    EXPECT_DOUBLE_EQ(timestephours/24, timearray.GetTimeStepDays());
 
-    CHECK_CLOSE(start, timearray[0], 0.000001);
-    CHECK_CLOSE(start+(double)1*6/24, timearray[1], 0.000001);
-    CHECK_CLOSE(start+(double)2*6/24, timearray[2], 0.000001);
-    CHECK_CLOSE(start+(double)3*6/24, timearray[3], 0.000001);
-    CHECK_CLOSE(start+(double)4*6/24, timearray[4], 0.000001);
-    CHECK_CLOSE(start+(double)5*6/24, timearray[5], 0.000001);
-    CHECK_CLOSE(start+(double)10*6/24, timearray[10], 0.000001);
-    CHECK_CLOSE(start+(double)100*6/24, timearray[100], 0.000001);
-    CHECK_CLOSE(start+(double)1000*6/24, timearray[1000], 0.000001);
-    CHECK_CLOSE(start+(double)10000*6/24, timearray[10000], 0.000001);
+    EXPECT_DOUBLE_EQ(start, timearray[0]);
+    EXPECT_DOUBLE_EQ(start+(double)1*6/24, timearray[1]);
+    EXPECT_DOUBLE_EQ(start+(double)2*6/24, timearray[2]);
+    EXPECT_DOUBLE_EQ(start+(double)3*6/24, timearray[3]);
+    EXPECT_DOUBLE_EQ(start+(double)4*6/24, timearray[4]);
+    EXPECT_DOUBLE_EQ(start+(double)5*6/24, timearray[5]);
+    EXPECT_DOUBLE_EQ(start+(double)10*6/24, timearray[10]);
+    EXPECT_DOUBLE_EQ(start+(double)100*6/24, timearray[100]);
+    EXPECT_DOUBLE_EQ(start+(double)1000*6/24, timearray[1000]);
+    EXPECT_DOUBLE_EQ(start+(double)10000*6/24, timearray[10000]);
 
     Array1DDouble datetimearray = timearray.GetTimeArray();
 
-    CHECK_CLOSE(start, datetimearray(0), 0.000001);
-    CHECK_CLOSE(start+(double)1*6/24, datetimearray(1), 0.000001);
-    CHECK_CLOSE(start+(double)2*6/24, datetimearray(2), 0.000001);
-    CHECK_CLOSE(start+(double)3*6/24, datetimearray(3), 0.000001);
-    CHECK_CLOSE(start+(double)4*6/24, datetimearray(4), 0.000001);
-    CHECK_CLOSE(start+(double)5*6/24, datetimearray(5), 0.000001);
-    CHECK_CLOSE(start+(double)10*6/24, datetimearray(10), 0.000001);
-    CHECK_CLOSE(start+(double)100*6/24, datetimearray(100), 0.000001);
-    CHECK_CLOSE(start+(double)1000*6/24, datetimearray(1000), 0.000001);
-    CHECK_CLOSE(start+(double)10000*6/24, datetimearray(10000), 0.000001);
+    EXPECT_DOUBLE_EQ(start, datetimearray(0));
+    EXPECT_DOUBLE_EQ(start+(double)1*6/24, datetimearray(1));
+    EXPECT_DOUBLE_EQ(start+(double)2*6/24, datetimearray(2));
+    EXPECT_DOUBLE_EQ(start+(double)3*6/24, datetimearray(3));
+    EXPECT_DOUBLE_EQ(start+(double)4*6/24, datetimearray(4));
+    EXPECT_DOUBLE_EQ(start+(double)5*6/24, datetimearray(5));
+    EXPECT_DOUBLE_EQ(start+(double)10*6/24, datetimearray(10));
+    EXPECT_DOUBLE_EQ(start+(double)100*6/24, datetimearray(100));
+    EXPECT_DOUBLE_EQ(start+(double)1000*6/24, datetimearray(1000));
+    EXPECT_DOUBLE_EQ(start+(double)10000*6/24, datetimearray(10000));
 
-    CHECK_EQUAL(4*21550+1,datetimearray.rows());
+    EXPECT_EQ(4*21550+1,datetimearray.rows());
 }
 
-TEST(BuildArraySimpleGeneric)
+TEST(TimeArray, BuildArraySimpleGeneric)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2009,1,1);
@@ -87,39 +81,39 @@ TEST(BuildArraySimpleGeneric)
     asTimeArray timearray(start, end, timestephours, slctModeString);
     timearray.Init();
 
-    CHECK_CLOSE(start, timearray.GetStart(), 0.000001);
-    CHECK_CLOSE(end, timearray.GetEnd(), 0.000001);
-    CHECK_CLOSE(timestephours, timearray.GetTimeStepHours(), 0.000001);
-    CHECK_CLOSE(timestephours/24, timearray.GetTimeStepDays(), 0.000001);
+    EXPECT_DOUBLE_EQ(start, timearray.GetStart());
+    EXPECT_DOUBLE_EQ(end, timearray.GetEnd());
+    EXPECT_DOUBLE_EQ(timestephours, timearray.GetTimeStepHours());
+    EXPECT_DOUBLE_EQ(timestephours/24, timearray.GetTimeStepDays());
 
-    CHECK_CLOSE(start, timearray[0], 0.000001);
-    CHECK_CLOSE(start+(double)1*6/24, timearray[1], 0.000001);
-    CHECK_CLOSE(start+(double)2*6/24, timearray[2], 0.000001);
-    CHECK_CLOSE(start+(double)3*6/24, timearray[3], 0.000001);
-    CHECK_CLOSE(start+(double)4*6/24, timearray[4], 0.000001);
-    CHECK_CLOSE(start+(double)5*6/24, timearray[5], 0.000001);
-    CHECK_CLOSE(start+(double)10*6/24, timearray[10], 0.000001);
-    CHECK_CLOSE(start+(double)100*6/24, timearray[100], 0.000001);
-    CHECK_CLOSE(start+(double)1000*6/24, timearray[1000], 0.000001);
-    CHECK_CLOSE(start+(double)10000*6/24, timearray[10000], 0.000001);
+    EXPECT_DOUBLE_EQ(start, timearray[0]);
+    EXPECT_DOUBLE_EQ(start+(double)1*6/24, timearray[1]);
+    EXPECT_DOUBLE_EQ(start+(double)2*6/24, timearray[2]);
+    EXPECT_DOUBLE_EQ(start+(double)3*6/24, timearray[3]);
+    EXPECT_DOUBLE_EQ(start+(double)4*6/24, timearray[4]);
+    EXPECT_DOUBLE_EQ(start+(double)5*6/24, timearray[5]);
+    EXPECT_DOUBLE_EQ(start+(double)10*6/24, timearray[10]);
+    EXPECT_DOUBLE_EQ(start+(double)100*6/24, timearray[100]);
+    EXPECT_DOUBLE_EQ(start+(double)1000*6/24, timearray[1000]);
+    EXPECT_DOUBLE_EQ(start+(double)10000*6/24, timearray[10000]);
 
     Array1DDouble datetimearray = timearray.GetTimeArray();
 
-    CHECK_CLOSE(start, datetimearray(0), 0.000001);
-    CHECK_CLOSE(start+(double)1*6/24, datetimearray(1), 0.000001);
-    CHECK_CLOSE(start+(double)2*6/24, datetimearray(2), 0.000001);
-    CHECK_CLOSE(start+(double)3*6/24, datetimearray(3), 0.000001);
-    CHECK_CLOSE(start+(double)4*6/24, datetimearray(4), 0.000001);
-    CHECK_CLOSE(start+(double)5*6/24, datetimearray(5), 0.000001);
-    CHECK_CLOSE(start+(double)10*6/24, datetimearray(10), 0.000001);
-    CHECK_CLOSE(start+(double)100*6/24, datetimearray(100), 0.000001);
-    CHECK_CLOSE(start+(double)1000*6/24, datetimearray(1000), 0.000001);
-    CHECK_CLOSE(start+(double)10000*6/24, datetimearray(10000), 0.000001);
+    EXPECT_DOUBLE_EQ(start, datetimearray(0));
+    EXPECT_DOUBLE_EQ(start+(double)1*6/24, datetimearray(1));
+    EXPECT_DOUBLE_EQ(start+(double)2*6/24, datetimearray(2));
+    EXPECT_DOUBLE_EQ(start+(double)3*6/24, datetimearray(3));
+    EXPECT_DOUBLE_EQ(start+(double)4*6/24, datetimearray(4));
+    EXPECT_DOUBLE_EQ(start+(double)5*6/24, datetimearray(5));
+    EXPECT_DOUBLE_EQ(start+(double)10*6/24, datetimearray(10));
+    EXPECT_DOUBLE_EQ(start+(double)100*6/24, datetimearray(100));
+    EXPECT_DOUBLE_EQ(start+(double)1000*6/24, datetimearray(1000));
+    EXPECT_DOUBLE_EQ(start+(double)10000*6/24, datetimearray(10000));
 
-    CHECK_EQUAL(4*21550+1,datetimearray.rows());
+    EXPECT_EQ(4*21550+1,datetimearray.rows());
 }
 
-TEST(BuildArrayDaysIntervalNormal)
+TEST(TimeArray, BuildArrayDaysIntervalNormal)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -131,20 +125,20 @@ TEST(BuildArrayDaysIntervalNormal)
     asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
-    CHECK_CLOSE(intervaldays*24, timearray.GetIntervalHours(),0.000001);
-    CHECK_CLOSE(intervaldays, timearray.GetIntervalDays(),0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,7,31,0,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,12,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,27,0,0), timearray[100], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,30,18,0), timearray[479], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,31,0,0), timearray[480], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,0,0), timearray[481], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,6,0), timearray[482], 0.000001);
+    EXPECT_DOUBLE_EQ(intervaldays*24, timearray.GetIntervalHours());
+    EXPECT_DOUBLE_EQ(intervaldays, timearray.GetIntervalDays());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,7,31,0,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,12,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,27,0,0), timearray[100]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,30,18,0), timearray[479]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,31,0,0), timearray[480]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,0,0), timearray[481]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,6,0), timearray[482]);
 }
 
-TEST(BuildArrayDaysIntervalNormalGeneric)
+TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -157,20 +151,20 @@ TEST(BuildArrayDaysIntervalNormalGeneric)
     asTimeArray timearray(start, end, timestephours, slctModeString);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
-    CHECK_CLOSE(intervaldays*24, timearray.GetIntervalHours(),0.000001);
-    CHECK_CLOSE(intervaldays, timearray.GetIntervalDays(),0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,7,31,0,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,12,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,27,0,0), timearray[100], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,30,18,0), timearray[479], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,31,0,0), timearray[480], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,0,0), timearray[481], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,6,0), timearray[482], 0.000001);
+    EXPECT_DOUBLE_EQ(intervaldays*24, timearray.GetIntervalHours());
+    EXPECT_DOUBLE_EQ(intervaldays, timearray.GetIntervalDays());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,7,31,0,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,12,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,27,0,0), timearray[100]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,30,18,0), timearray[479]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,31,0,0), timearray[480]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,0,0), timearray[481]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,6,0), timearray[482]);
 }
 
-TEST(BuildArrayDaysIntervalNormalMidday)
+TEST(TimeArray, BuildArrayDaysIntervalNormalMidday)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -182,18 +176,18 @@ TEST(BuildArrayDaysIntervalNormalMidday)
     asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,12,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,7,31,12,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,18,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,3,0,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,27,12,0), timearray[100], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,31,6,0), timearray[479], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,31,12,0), timearray[480], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,12,0), timearray[481], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,18,0), timearray[482], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,12,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,7,31,12,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,18,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,3,0,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,27,12,0), timearray[100]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,31,6,0), timearray[479]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,31,12,0), timearray[480]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,12,0), timearray[481]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,18,0), timearray[482]);
 }
 
-TEST(BuildArrayDaysIntervalNormalMiddayNotRound)
+TEST(TimeArray, BuildArrayDaysIntervalNormalMiddayNotRound)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -205,20 +199,20 @@ TEST(BuildArrayDaysIntervalNormalMiddayNotRound)
     asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
-    CHECK_CLOSE(0, 24*60*asTime::GetMJD(1950,4,2,10,31)-24*60*timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,10,31), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, 24*60*asTime::GetMJD(2008,7,31,10,31)-24*60*timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,7,31,10,31), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,16,31), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,22,31), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,27,10,31), timearray[100], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,31,4,31), timearray[479], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,7,31,10,31), timearray[480], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,10,31), timearray[481], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,4,2,16,31), timearray[482], 0.000001);
+    EXPECT_DOUBLE_EQ(0, 24*60*asTime::GetMJD(1950,4,2,10,31)-24*60*timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,10,31), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, 24*60*asTime::GetMJD(2008,7,31,10,31)-24*60*timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,7,31,10,31), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,16,31), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,22,31), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,27,10,31), timearray[100]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,31,4,31), timearray[479]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,7,31,10,31), timearray[480]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,10,31), timearray[481]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,4,2,16,31), timearray[482]);
 }
 
-TEST(BuildArrayDaysIntervalStartSplitted)
+TEST(TimeArray, BuildArrayDaysIntervalStartSplitted)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -230,21 +224,21 @@ TEST(BuildArrayDaysIntervalStartSplitted)
     asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, asTime::GetMJD(2008,4,1,12,0)-timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,4,1,12,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,26,0,0), timearray[100], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,4,2,12,0), timearray[366], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,12,3,12,0), timearray[367], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,12,3,18,0), timearray[368], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,12,4,0,0), timearray[369], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,12,31,18,0), timearray[366+114], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,1,1,0,0), timearray[366+115], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, asTime::GetMJD(2008,4,1,12,0)-timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,4,1,12,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,12,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,26,0,0), timearray[100]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,4,2,12,0), timearray[366]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,12,3,12,0), timearray[367]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,12,3,18,0), timearray[368]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,12,4,0,0), timearray[369]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,12,31,18,0), timearray[366+114]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,1,1,0,0), timearray[366+115]);
 }
 
-TEST(BuildArrayDaysIntervalEndSplitted)
+TEST(TimeArray, BuildArrayDaysIntervalEndSplitted)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -256,18 +250,18 @@ TEST(BuildArrayDaysIntervalEndSplitted)
     asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,10,2,12,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,12,31,18,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,10,2,18,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,10,3,0,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,10,27,12,0), timearray[100], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,1,30,6,0), timearray[479], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,1,30,12,0), timearray[480], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,10,2,12,0), timearray[481], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,10,2,18,0), timearray[482], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,10,2,12,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,12,31,18,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,10,2,18,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,10,3,0,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,10,27,12,0), timearray[100]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,1,30,6,0), timearray[479]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,1,30,12,0), timearray[480]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,10,2,12,0), timearray[481]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,10,2,18,0), timearray[482]);
 }
 
-TEST(BuildArrayDaysIntervalExclusionPeriod)
+TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -292,10 +286,10 @@ TEST(BuildArrayDaysIntervalExclusionPeriod)
         }
     }
 
-    CHECK_EQUAL(false,foundyear);
+    EXPECT_FALSE(foundyear);
 }
 
-TEST(BuildArraySeason)
+TEST(TimeArray, BuildArraySeason)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -306,18 +300,18 @@ TEST(BuildArraySeason)
     asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, asTime::GetMJD(2008,8,31,18,0)-timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(0, 24*asTime::GetMJD(2008,8,31,18,0)-24*timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,8,31,18,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,12,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,8,31,18,0), timearray[367], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,6,1,0,0), timearray[368], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,6,1,6,0), timearray[369], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, asTime::GetMJD(2008,8,31,18,0)-timearray.GetLast());
+    EXPECT_DOUBLE_EQ(0, 24*asTime::GetMJD(2008,8,31,18,0)-24*timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,8,31,18,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,12,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,8,31,18,0), timearray[367]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,6,1,0,0), timearray[368]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,6,1,6,0), timearray[369]);
 }
 
-TEST(BuildArraySeasonGeneric)
+TEST(TimeArray, BuildArraySeasonGeneric)
 {
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2008,12,31);
@@ -329,18 +323,18 @@ TEST(BuildArraySeasonGeneric)
     asTimeArray timearray(start, end, timestephours, slctModeString);
     timearray.Init(forecastdate, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, asTime::GetMJD(2008,8,31,18,0)-timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(0, 24*asTime::GetMJD(2008,8,31,18,0)-24*timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,8,31,18,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,12,0), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,8,31,18,0), timearray[367], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,6,1,0,0), timearray[368], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,6,1,6,0), timearray[369], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, asTime::GetMJD(2008,8,31,18,0)-timearray.GetLast());
+    EXPECT_DOUBLE_EQ(0, 24*asTime::GetMJD(2008,8,31,18,0)-24*timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,8,31,18,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,12,0), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,8,31,18,0), timearray[367]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,6,1,0,0), timearray[368]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,6,1,6,0), timearray[369]);
 }
 
-TEST(BuildArraySeasonNotRound)
+TEST(TimeArray, BuildArraySeasonNotRound)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -351,18 +345,18 @@ TEST(BuildArraySeasonNotRound)
     asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,2,32), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, asTime::GetMJD(2008,8,31,20,32)-timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(0, 24*asTime::GetMJD(2008,8,31,20,32)-24*timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,8,31,20,32), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,8,32), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,6,1,14,32), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,8,31,20,32), timearray[367], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,6,1,2,32), timearray[368], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1951,6,1,8,32), timearray[369], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,2,32), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, asTime::GetMJD(2008,8,31,20,32)-timearray.GetLast());
+    EXPECT_DOUBLE_EQ(0, 24*asTime::GetMJD(2008,8,31,20,32)-24*timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,8,31,20,32), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,8,32), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,6,1,14,32), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,8,31,20,32), timearray[367]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,6,1,2,32), timearray[368]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951,6,1,8,32), timearray[369]);
 }
 
-TEST(BuildArraySeasonDec)
+TEST(TimeArray, BuildArraySeasonDec)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -373,15 +367,15 @@ TEST(BuildArraySeasonDec)
     asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, asTime::GetMJD(2008,12,31,18,0)-timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(0, 24*asTime::GetMJD(2008,12,31,18,0)-24*timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,12,31,18,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,0), timearray[2], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, asTime::GetMJD(2008,12,31,18,0)-timearray.GetLast());
+    EXPECT_DOUBLE_EQ(0, 24*asTime::GetMJD(2008,12,31,18,0)-24*timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,12,31,18,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,12,0), timearray[2]);
 }
 
-TEST(BuildArraySeasonJan)
+TEST(TimeArray, BuildArraySeasonJan)
 {
     double start = asTime::GetMJD(1950,1,1,0);
     double end = asTime::GetMJD(2008,12,31,18);
@@ -392,15 +386,15 @@ TEST(BuildArraySeasonJan)
     asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,0,0), timearray.GetFirst(), 0.000001);
-    CHECK_CLOSE(0, asTime::GetMJD(2008,12,31,18,0)-timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(0, 24*asTime::GetMJD(2008,12,31,18,0)-24*timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(2008,12,31,18,0), timearray.GetLast(), 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,6,0), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,0), timearray[2], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,0,0), timearray.GetFirst());
+    EXPECT_DOUBLE_EQ(0, asTime::GetMJD(2008,12,31,18,0)-timearray.GetLast());
+    EXPECT_DOUBLE_EQ(0, 24*asTime::GetMJD(2008,12,31,18,0)-24*timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008,12,31,18,0), timearray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,6,0), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,12,0), timearray[2]);
 }
 
-TEST(GetFirstDayHour)
+TEST(TimeArray, GetFirstDayHour)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -408,10 +402,10 @@ TEST(GetFirstDayHour)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(12.5, timearray.GetFirstDayHour(), 0.000001);
+    EXPECT_FLOAT_EQ(12.5, timearray.GetFirstDayHour());
 }
 
-TEST(GetLastDayHour)
+TEST(TimeArray, GetLastDayHour)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -419,10 +413,10 @@ TEST(GetLastDayHour)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(18.5, timearray.GetLastDayHour(), 0.000001);
+    EXPECT_FLOAT_EQ(18.5, timearray.GetLastDayHour());
 }
 
-TEST(GetFirstDayYear)
+TEST(TimeArray, GetFirstDayYear)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -430,10 +424,10 @@ TEST(GetFirstDayYear)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_EQUAL(1950, timearray.GetFirstDayYear());
+    EXPECT_EQ(1950, timearray.GetFirstDayYear());
 }
 
-TEST(GetLastDayYear)
+TEST(TimeArray, GetLastDayYear)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(2008,12,31,18,30);
@@ -441,10 +435,10 @@ TEST(GetLastDayYear)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_EQUAL(2008, timearray.GetLastDayYear());
+    EXPECT_EQ(2008, timearray.GetLastDayYear());
 }
 
-TEST(GetSize)
+TEST(TimeArray, GetSize)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -452,10 +446,10 @@ TEST(GetSize)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_EQUAL(6, timearray.GetSize());
+    EXPECT_EQ(6, timearray.GetSize());
 }
 
-TEST(OperatorOverloading)
+TEST(TimeArray, OperatorOverloading)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -463,15 +457,15 @@ TEST(OperatorOverloading)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,30), timearray[0], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,18,30), timearray[1], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,2,00,30), timearray[2], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,2,06,30), timearray[3], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,2,12,30), timearray[4], 0.000001);
-    CHECK_CLOSE(asTime::GetMJD(1950,1,2,18,30), timearray[5], 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,12,30), timearray[0]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,18,30), timearray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,2,00,30), timearray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,2,06,30), timearray[3]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,2,12,30), timearray[4]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,2,18,30), timearray[5]);
 }
 
-TEST(GetFirst)
+TEST(TimeArray, GetFirst)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -479,10 +473,10 @@ TEST(GetFirst)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(asTime::GetMJD(1950,1,1,12,30), timearray.GetFirst(), 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,1,12,30), timearray.GetFirst());
 }
 
-TEST(GetLast)
+TEST(TimeArray, GetLast)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -490,10 +484,10 @@ TEST(GetLast)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(asTime::GetMJD(1950,1,2,18,30), timearray.GetLast(), 0.000001);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950,1,2,18,30), timearray.GetLast());
 }
 
-TEST(GetIndexFirstAfter)
+TEST(TimeArray, GetIndexFirstAfter)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -501,10 +495,10 @@ TEST(GetIndexFirstAfter)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950,1,1,19,30)), 0.000001);
+    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950,1,1,19,30)));
 }
 
-TEST(GetIndexFirstAfterEqual)
+TEST(TimeArray, GetIndexFirstAfterEqual)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -512,10 +506,10 @@ TEST(GetIndexFirstAfterEqual)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950,1,1,18,30)), 0.000001);
+    EXPECT_DOUBLE_EQ(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950,1,1,18,30)));
 }
 
-TEST(GetIndexFirstBefore)
+TEST(TimeArray, GetIndexFirstBefore)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -523,10 +517,10 @@ TEST(GetIndexFirstBefore)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950,1,2,05,30)), 0.000001);
+    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950,1,2,05,30)));
 }
 
-TEST(GetIndexFirstBeforeEqual)
+TEST(TimeArray, GetIndexFirstBeforeEqual)
 {
     double start = asTime::GetMJD(1950,1,1,12,30);
     double end = asTime::GetMJD(1950,1,2,18,30);
@@ -534,6 +528,5 @@ TEST(GetIndexFirstBeforeEqual)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    CHECK_CLOSE(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950,1,2,06,30)), 0.000001);
-}
+    EXPECT_DOUBLE_EQ(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950,1,2,06,30)));
 }

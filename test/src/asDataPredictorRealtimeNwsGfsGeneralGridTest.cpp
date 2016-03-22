@@ -27,21 +27,14 @@
  */
 
 #include <wx/filename.h>
-
-#include "include_tests.h"
 #include "asDataPredictorRealtime.h"
 #include "asGeoAreaCompositeGrid.h"
 #include "asTimeArray.h"
+#include "gtest/gtest.h"
 
-#include "UnitTest++.h"
 
-namespace
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
 {
-
-TEST(LoadEasySmallFile)
-{
-	wxPrintf("Testing GFS general realtime predictors...\n");
-	
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
@@ -55,7 +48,7 @@ TEST(LoadEasySmallFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -71,7 +64,7 @@ TEST(LoadEasySmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -83,16 +76,16 @@ TEST(LoadEasySmallFile)
     9321	9317	9314	9310	9303	9295
     9336	9329	9325	9320	9315	9308
     */
-    CHECK_CLOSE(9308, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9305, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9301, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9297, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9290, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9285, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9312, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9321, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9336, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9308, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9305, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9297, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9290, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9285, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9312, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9321, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9336, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9308, hgt[0](3,5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -101,16 +94,16 @@ TEST(LoadEasySmallFile)
     9314	9308	9304	9301	9297	9293
     9326	9321	9313	9308	9304	9300
     */
-    CHECK_CLOSE(9302, hgt[1](0,0), 0.5);
-    CHECK_CLOSE(9299, hgt[1](0,1), 0.5);
-    CHECK_CLOSE(9297, hgt[1](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[1](0,3), 0.5);
-    CHECK_CLOSE(9291, hgt[1](0,4), 0.5);
-    CHECK_CLOSE(9289, hgt[1](0,5), 0.5);
-    CHECK_CLOSE(9304, hgt[1](1,0), 0.5);
-    CHECK_CLOSE(9314, hgt[1](2,0), 0.5);
-    CHECK_CLOSE(9326, hgt[1](3,0), 0.5);
-    CHECK_CLOSE(9300, hgt[1](3,5), 0.5);
+    EXPECT_NEAR(9302, hgt[1](0,0), 0.5);
+    EXPECT_NEAR(9299, hgt[1](0,1), 0.5);
+    EXPECT_NEAR(9297, hgt[1](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[1](0,3), 0.5);
+    EXPECT_NEAR(9291, hgt[1](0,4), 0.5);
+    EXPECT_NEAR(9289, hgt[1](0,5), 0.5);
+    EXPECT_NEAR(9304, hgt[1](1,0), 0.5);
+    EXPECT_NEAR(9314, hgt[1](2,0), 0.5);
+    EXPECT_NEAR(9326, hgt[1](3,0), 0.5);
+    EXPECT_NEAR(9300, hgt[1](3,5), 0.5);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -119,22 +112,22 @@ TEST(LoadEasySmallFile)
     9311	9308	9304	9298	9294	9291
     9321	9318	9314	9307	9299	9295
     */
-    CHECK_CLOSE(9299, hgt[2](0,0), 0.5);
-    CHECK_CLOSE(9297, hgt[2](0,1), 0.5);
-    CHECK_CLOSE(9295, hgt[2](0,2), 0.5);
-    CHECK_CLOSE(9293, hgt[2](0,3), 0.5);
-    CHECK_CLOSE(9290, hgt[2](0,4), 0.5);
-    CHECK_CLOSE(9289, hgt[2](0,5), 0.5);
-    CHECK_CLOSE(9303, hgt[2](1,0), 0.5);
-    CHECK_CLOSE(9311, hgt[2](2,0), 0.5);
-    CHECK_CLOSE(9321, hgt[2](3,0), 0.5);
-    CHECK_CLOSE(9295, hgt[2](3,5), 0.5);
+    EXPECT_NEAR(9299, hgt[2](0,0), 0.5);
+    EXPECT_NEAR(9297, hgt[2](0,1), 0.5);
+    EXPECT_NEAR(9295, hgt[2](0,2), 0.5);
+    EXPECT_NEAR(9293, hgt[2](0,3), 0.5);
+    EXPECT_NEAR(9290, hgt[2](0,4), 0.5);
+    EXPECT_NEAR(9289, hgt[2](0,5), 0.5);
+    EXPECT_NEAR(9303, hgt[2](1,0), 0.5);
+    EXPECT_NEAR(9311, hgt[2](2,0), 0.5);
+    EXPECT_NEAR(9321, hgt[2](3,0), 0.5);
+    EXPECT_NEAR(9295, hgt[2](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadEasyLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -149,7 +142,7 @@ TEST(LoadEasyLargeFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -165,7 +158,7 @@ TEST(LoadEasyLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -177,16 +170,16 @@ TEST(LoadEasyLargeFile)
     9321	9317	9314	9310	9303	9295
     9336	9329	9325	9320	9315	9308
     */
-    CHECK_CLOSE(9308, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9305, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9301, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9297, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9290, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9285, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9312, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9321, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9336, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9308, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9305, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9297, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9290, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9285, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9312, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9321, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9336, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9308, hgt[0](3,5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -195,16 +188,16 @@ TEST(LoadEasyLargeFile)
     9314	9308	9304	9301	9297	9293
     9326	9321	9313	9308	9304	9300
     */
-    CHECK_CLOSE(9302, hgt[1](0,0), 0.5);
-    CHECK_CLOSE(9299, hgt[1](0,1), 0.5);
-    CHECK_CLOSE(9297, hgt[1](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[1](0,3), 0.5);
-    CHECK_CLOSE(9291, hgt[1](0,4), 0.5);
-    CHECK_CLOSE(9289, hgt[1](0,5), 0.5);
-    CHECK_CLOSE(9304, hgt[1](1,0), 0.5);
-    CHECK_CLOSE(9314, hgt[1](2,0), 0.5);
-    CHECK_CLOSE(9326, hgt[1](3,0), 0.5);
-    CHECK_CLOSE(9300, hgt[1](3,5), 0.5);
+    EXPECT_NEAR(9302, hgt[1](0,0), 0.5);
+    EXPECT_NEAR(9299, hgt[1](0,1), 0.5);
+    EXPECT_NEAR(9297, hgt[1](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[1](0,3), 0.5);
+    EXPECT_NEAR(9291, hgt[1](0,4), 0.5);
+    EXPECT_NEAR(9289, hgt[1](0,5), 0.5);
+    EXPECT_NEAR(9304, hgt[1](1,0), 0.5);
+    EXPECT_NEAR(9314, hgt[1](2,0), 0.5);
+    EXPECT_NEAR(9326, hgt[1](3,0), 0.5);
+    EXPECT_NEAR(9300, hgt[1](3,5), 0.5);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -213,22 +206,22 @@ TEST(LoadEasyLargeFile)
     9311	9308	9304	9298	9294	9291
     9321	9318	9314	9307	9299	9295
     */
-    CHECK_CLOSE(9299, hgt[2](0,0), 0.5);
-    CHECK_CLOSE(9297, hgt[2](0,1), 0.5);
-    CHECK_CLOSE(9295, hgt[2](0,2), 0.5);
-    CHECK_CLOSE(9293, hgt[2](0,3), 0.5);
-    CHECK_CLOSE(9290, hgt[2](0,4), 0.5);
-    CHECK_CLOSE(9289, hgt[2](0,5), 0.5);
-    CHECK_CLOSE(9303, hgt[2](1,0), 0.5);
-    CHECK_CLOSE(9311, hgt[2](2,0), 0.5);
-    CHECK_CLOSE(9321, hgt[2](3,0), 0.5);
-    CHECK_CLOSE(9295, hgt[2](3,5), 0.5);
+    EXPECT_NEAR(9299, hgt[2](0,0), 0.5);
+    EXPECT_NEAR(9297, hgt[2](0,1), 0.5);
+    EXPECT_NEAR(9295, hgt[2](0,2), 0.5);
+    EXPECT_NEAR(9293, hgt[2](0,3), 0.5);
+    EXPECT_NEAR(9290, hgt[2](0,4), 0.5);
+    EXPECT_NEAR(9289, hgt[2](0,5), 0.5);
+    EXPECT_NEAR(9303, hgt[2](1,0), 0.5);
+    EXPECT_NEAR(9311, hgt[2](2,0), 0.5);
+    EXPECT_NEAR(9321, hgt[2](3,0), 0.5);
+    EXPECT_NEAR(9295, hgt[2](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -243,7 +236,7 @@ TEST(LoadCompositeSmallFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -259,7 +252,7 @@ TEST(LoadCompositeSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -271,22 +264,22 @@ TEST(LoadCompositeSmallFile)
     9451	9436	9421	9402	9379	9364
     9462	9449	9437	9423	9410	9395
     */
-    CHECK_CLOSE(9422, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9402, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9373, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9333, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9291, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9438, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9451, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9462, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9395, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9395, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -301,7 +294,7 @@ TEST(LoadCompositeLargeFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -317,7 +310,7 @@ TEST(LoadCompositeLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -329,22 +322,22 @@ TEST(LoadCompositeLargeFile)
     9451	9436	9421	9402	9379	9364
     9462	9449	9437	9423	9410	9395
     */
-    CHECK_CLOSE(9422, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9402, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9373, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9333, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9291, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9438, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9451, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9462, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9395, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9395, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -359,7 +352,7 @@ TEST(LoadBorderLeftSmallFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -375,7 +368,7 @@ TEST(LoadBorderLeftSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -387,22 +380,22 @@ TEST(LoadBorderLeftSmallFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    CHECK_CLOSE(9333, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9291, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9301, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9308, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9369, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9402, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9423, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -417,7 +410,7 @@ TEST(LoadBorderLeftLargeFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -433,7 +426,7 @@ TEST(LoadBorderLeftLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -445,22 +438,22 @@ TEST(LoadBorderLeftLargeFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    CHECK_CLOSE(9333, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9291, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9301, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9308, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9369, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9402, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9423, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720SmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -475,7 +468,7 @@ TEST(LoadBorderLeftOn720SmallFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -491,7 +484,7 @@ TEST(LoadBorderLeftOn720SmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -503,22 +496,22 @@ TEST(LoadBorderLeftOn720SmallFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    CHECK_CLOSE(9333, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9291, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9301, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9308, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9369, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9402, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9423, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderLeftOn720LargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -533,7 +526,7 @@ TEST(LoadBorderLeftOn720LargeFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -549,7 +542,7 @@ TEST(LoadBorderLeftOn720LargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -561,22 +554,22 @@ TEST(LoadBorderLeftOn720LargeFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    CHECK_CLOSE(9333, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9291, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9301, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9308, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9369, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9402, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9423, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRightSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -591,7 +584,7 @@ TEST(LoadBorderRightSmallFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -607,7 +600,7 @@ TEST(LoadBorderRightSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -619,22 +612,22 @@ TEST(LoadBorderRightSmallFile)
     9475	9465	9451	9436	9421	9402
     9485	9473	9462	9449	9437	9423
     */
-    CHECK_CLOSE(9451, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9438, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9422, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9402, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9373, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9333, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9463, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9475, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9485, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9423, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9451, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9438, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9463, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9475, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9485, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadBorderRightLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -649,7 +642,7 @@ TEST(LoadBorderRightLargeFile)
     double Ymin = 35;
     int Yptsnb = 4;
     double step = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step, level);
 
@@ -665,7 +658,7 @@ TEST(LoadBorderRightLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -677,22 +670,22 @@ TEST(LoadBorderRightLargeFile)
     9475	9465	9451	9436	9421	9402
     9485	9473	9462	9449	9437	9423
     */
-    CHECK_CLOSE(9451, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9438, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9422, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9402, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9373, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9333, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9463, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9475, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9485, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9423, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9451, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9438, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9463, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9475, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9485, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -708,7 +701,7 @@ TEST(LoadCompositeStepLonSmallFile)
     int Yptsnb = 4;
     double Xstep = 2;
     double Ystep = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -724,7 +717,7 @@ TEST(LoadCompositeStepLonSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -736,22 +729,22 @@ TEST(LoadCompositeStepLonSmallFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
-    CHECK_CLOSE(9422, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9373, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9308, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9312, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9438, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9451, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9462, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9360, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -767,7 +760,7 @@ TEST(LoadCompositeStepLonLargeFile)
     int Yptsnb = 4;
     double Xstep = 2;
     double Ystep = 1;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -783,7 +776,7 @@ TEST(LoadCompositeStepLonLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -795,22 +788,22 @@ TEST(LoadCompositeStepLonLargeFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
-    CHECK_CLOSE(9422, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9373, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9295, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9308, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9312, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9438, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9451, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9462, hgt[0](3,0), 0.5);
-    CHECK_CLOSE(9360, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](3,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLatSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -826,7 +819,7 @@ TEST(LoadCompositeStepLonLatSmallFile)
     int Yptsnb = 3;
     double Xstep = 2;
     double Ystep = 3;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -842,7 +835,7 @@ TEST(LoadCompositeStepLonLatSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -853,21 +846,21 @@ TEST(LoadCompositeStepLonLatSmallFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
-    CHECK_CLOSE(9400, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9368, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9314, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9312, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9312, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9422, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9462, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9360, hgt[0](2,5), 0.5);
+    EXPECT_NEAR(9400, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9368, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9314, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](2,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStepLonLatLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -883,7 +876,7 @@ TEST(LoadCompositeStepLonLatLargeFile)
     int Yptsnb = 3;
     double Xstep = 2;
     double Ystep = 3;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -899,7 +892,7 @@ TEST(LoadCompositeStepLonLatLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -910,21 +903,21 @@ TEST(LoadCompositeStepLonLatLargeFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
-    CHECK_CLOSE(9400, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9368, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9314, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9312, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9312, hgt[0](0,5), 0.5);
-    CHECK_CLOSE(9422, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9462, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9360, hgt[0](2,5), 0.5);
+    EXPECT_NEAR(9400, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9368, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9314, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](2,5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -940,7 +933,7 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     int Yptsnb = 3;
     double Xstep = 2.5;
     double Ystep = 2.5;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -956,7 +949,7 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -967,24 +960,24 @@ TEST(LoadCompositeStep25LonLatRoundStartSmallFile)
     9457	7536.6	9351	7444.4	9316
     9485	9455.5	9423	9390	9373
     */
-    CHECK_CLOSE(9431, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9397.5, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9304, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9457, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9420.75, hgt[0](1,1), 0.5);
-    CHECK_CLOSE(9305.5, hgt[0](1,3), 0.5);
-    CHECK_CLOSE(9485, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9455.5, hgt[0](2,1), 0.5);
-    CHECK_CLOSE(9390, hgt[0](2,3), 0.5);
-    CHECK_CLOSE(9373, hgt[0](2,4), 0.5);
+    EXPECT_NEAR(9431, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9457, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1,1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1,3), 0.5);
+    EXPECT_NEAR(9485, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9455.5, hgt[0](2,1), 0.5);
+    EXPECT_NEAR(9390, hgt[0](2,3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](2,4), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -1000,7 +993,7 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     int Yptsnb = 3;
     double Xstep = 2.5;
     double Ystep = 2.5;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -1016,7 +1009,7 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1027,24 +1020,24 @@ TEST(LoadCompositeStep25LonLatRoundStartLargeFile)
     9457	9420.75	9351	9305.5	9316
     9485	9455.5	9423	9390	9373
     */
-    CHECK_CLOSE(9431, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9397.5, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9304, hgt[0](0,4), 0.5);
-    CHECK_CLOSE(9457, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9420.75, hgt[0](1,1), 0.5);
-    CHECK_CLOSE(9305.5, hgt[0](1,3), 0.5);
-    CHECK_CLOSE(9485, hgt[0](2,0), 0.5);
-    CHECK_CLOSE(9455.5, hgt[0](2,1), 0.5);
-    CHECK_CLOSE(9390, hgt[0](2,3), 0.5);
-    CHECK_CLOSE(9373, hgt[0](2,4), 0.5);
+    EXPECT_NEAR(9431, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0,4), 0.5);
+    EXPECT_NEAR(9457, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1,1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1,3), 0.5);
+    EXPECT_NEAR(9485, hgt[0](2,0), 0.5);
+    EXPECT_NEAR(9455.5, hgt[0](2,1), 0.5);
+    EXPECT_NEAR(9390, hgt[0](2,3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](2,4), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -1060,7 +1053,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     int Yptsnb = 2;
     double Xstep = 2.5;
     double Ystep = 2.5;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -1076,7 +1069,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1086,20 +1079,20 @@ TEST(LoadCompositeStep25LonLatIrregularStartSmallFile)
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
-    CHECK_CLOSE(9397.5, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9304, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9420.75, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9351, hgt[0](1,1), 0.5);
-    CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);
-    CHECK_CLOSE(9316, hgt[0](1,3), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
+    EXPECT_NEAR(9316, hgt[0](1,3), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -1115,7 +1108,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     int Yptsnb = 2;
     double Xstep = 2.5;
     double Ystep = 2.5;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -1131,7 +1124,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1141,20 +1134,20 @@ TEST(LoadCompositeStep25LonLatIrregularStartLargeFile)
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
-    CHECK_CLOSE(9397.5, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9304, hgt[0](0,3), 0.5);
-    CHECK_CLOSE(9420.75, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9351, hgt[0](1,1), 0.5);
-    CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);
-    CHECK_CLOSE(9316, hgt[0](1,3), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0,3), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
+    EXPECT_NEAR(9316, hgt[0](1,3), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
@@ -1170,7 +1163,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     int Yptsnb = 2;
     double Xstep = 2.5;
     double Ystep = 2.5;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -1186,7 +1179,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1196,18 +1189,18 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
-    CHECK_CLOSE(9397.5, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9420.75, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9351, hgt[0](1,1), 0.5);
-    CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
 }
 
-TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
+TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
     VectorString filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
@@ -1223,7 +1216,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     int Yptsnb = 2;
     double Xstep = 2.5;
     double Ystep = 2.5;
-    double level = 300;
+    float level = 300;
     wxString gridType = "Regular";
     asGeoAreaCompositeGrid* geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb, Ystep, level);
 
@@ -1239,7 +1232,7 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 
     // Load
     bool successLoad = predictor->Load(geoarea, dates);
-    CHECK_EQUAL(true, successLoad);
+    EXPECT_TRUE(successLoad);
 
     VArray2DFloat hgt = predictor->GetData();
     // hgt[time](lat,lon)
@@ -1249,14 +1242,13 @@ TEST(LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
-    CHECK_CLOSE(9397.5, hgt[0](0,0), 0.5);
-    CHECK_CLOSE(9332, hgt[0](0,1), 0.5);
-    CHECK_CLOSE(9300, hgt[0](0,2), 0.5);
-    CHECK_CLOSE(9420.75, hgt[0](1,0), 0.5);
-    CHECK_CLOSE(9351, hgt[0](1,1), 0.5);
-    CHECK_CLOSE(9305.5, hgt[0](1,2), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
-}
 }

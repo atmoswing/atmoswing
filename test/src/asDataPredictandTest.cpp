@@ -30,16 +30,10 @@
 
 #include "asDataPredictand.h"
 
-#include "UnitTest++.h"
+#include "gtest/gtest.h"
 
-namespace
+
+TEST(DataPredictand, GetAnnualMax)
 {
-
-TEST(GetAnnualMax)
-{
-	wxPrintf("Testing predictand data...\n");
-
     //MatrixFloat& GetAnnualMax(const asDatasetPredictand &currentData);
-}
-
 }

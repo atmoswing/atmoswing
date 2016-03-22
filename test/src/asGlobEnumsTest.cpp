@@ -25,12 +25,6 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#include "include_tests.h"
 #include "asGlobEnums.h"
+#include "gtest/gtest.h"
 
-#include "UnitTest++.h"
-
-namespace
-{
-
-}

@@ -27,22 +27,15 @@
  */
 
 #include "wx/filename.h"
-
-#include "include_tests.h"
 #include "asDataPredictorArchive.h"
 #include "asPreprocessor.h"
 #include "asGeoAreaCompositeRegularGrid.h"
 #include "asTimeArray.h"
+#include "gtest/gtest.h"
 
-#include "UnitTest++.h"
 
-namespace
+TEST(Preprocessor, Gradients)
 {
-
-TEST(Gradients)
-{
-	wxPrintf("Testing the preprocessor...\n");
-	
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
@@ -51,17 +44,17 @@ TEST(Gradients)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
-    CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
-    CHECK_CLOSE(35, geoarea.GetYmin(), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
-    CHECK_CLOSE(5, geoarea.GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(3, geoarea.GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetXstep(), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetYstep(), 0.01);
+    EXPECT_DOUBLE_EQ(10, geoarea.GetXmin());
+    EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
+    EXPECT_DOUBLE_EQ(35, geoarea.GetYmin());
+    EXPECT_DOUBLE_EQ(40, geoarea.GetYmax());
+    EXPECT_DOUBLE_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
+    EXPECT_DOUBLE_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
+    EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
+    EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -77,10 +70,10 @@ TEST(Gradients)
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
-    CHECK_EQUAL(5, predictor->GetLonPtsnb());
-    CHECK_EQUAL(3, predictor->GetLatPtsnb());
+    EXPECT_EQ(5, predictor->GetLonPtsnb());
+    EXPECT_EQ(3, predictor->GetLatPtsnb());
     VArray2DFloat arrayData = predictor->GetData();
-    CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
+    EXPECT_FLOAT_EQ(176.0, arrayData[0](0,0));
 
 	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
@@ -121,14 +114,14 @@ TEST(Gradients)
     21	-20
     */
     /* Alignement changed
-    CHECK_CLOSE(9, hgt[0](0,0), 0.0001);
-    CHECK_CLOSE(5, hgt[0](0,1), 0.0001);
-    CHECK_CLOSE(-7, hgt[0](0,4), 0.0001);
-    CHECK_CLOSE(8, hgt[0](0,5), 0.0001);
-    CHECK_CLOSE(-1, hgt[0](0,10), 0.0001);
-    CHECK_CLOSE(-5, hgt[0](0,14), 0.0001);
-    CHECK_CLOSE(-18, hgt[0](0,17), 0.0001);
-    CHECK_CLOSE(-20, hgt[0](0,21), 0.0001);
+    EXPECT_DOUBLE_EQ(9, hgt[0](0,0));
+    EXPECT_DOUBLE_EQ(5, hgt[0](0,1));
+    EXPECT_DOUBLE_EQ(-7, hgt[0](0,4));
+    EXPECT_DOUBLE_EQ(8, hgt[0](0,5));
+    EXPECT_DOUBLE_EQ(-1, hgt[0](0,10));
+    EXPECT_DOUBLE_EQ(-5, hgt[0](0,14));
+    EXPECT_DOUBLE_EQ(-18, hgt[0](0,17));
+    EXPECT_DOUBLE_EQ(-20, hgt[0](0,21));
     */
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
@@ -160,20 +153,20 @@ TEST(Gradients)
     21	-2
     */
     /*
-    CHECK_CLOSE(20, hgt[11](0,0), 0.0001);
-    CHECK_CLOSE(21, hgt[11](0,1), 0.0001);
-    CHECK_CLOSE(17, hgt[11](0,5), 0.0001);
-    CHECK_CLOSE(15, hgt[11](0,9), 0.0001);
-    CHECK_CLOSE(-17, hgt[11](0,10), 0.0001);
-    CHECK_CLOSE(12, hgt[11](0,13), 0.0001);
-    CHECK_CLOSE(-16, hgt[11](0,14), 0.0001);
-    CHECK_CLOSE(-2, hgt[11](0,21), 0.0001);
+    EXPECT_DOUBLE_EQ(20, hgt[11](0,0));
+    EXPECT_DOUBLE_EQ(21, hgt[11](0,1));
+    EXPECT_DOUBLE_EQ(17, hgt[11](0,5));
+    EXPECT_DOUBLE_EQ(15, hgt[11](0,9));
+    EXPECT_DOUBLE_EQ(-17, hgt[11](0,10));
+    EXPECT_DOUBLE_EQ(12, hgt[11](0,13));
+    EXPECT_DOUBLE_EQ(-16, hgt[11](0,14));
+    EXPECT_DOUBLE_EQ(-2, hgt[11](0,21));
     */
     wxDELETE(gradients);
     wxDELETE(predictor);
 }
 
-TEST(GradientsMultithreading)
+TEST(Preprocessor, GradientsMultithreading)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
@@ -183,17 +176,17 @@ TEST(GradientsMultithreading)
     double Ymin = 35;
     double Ywidth = 5;
     double step = 2.5;
-    double level = 1000;
+    float level = 1000;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    CHECK_CLOSE(10, geoarea.GetXmin(), 0.01);
-    CHECK_CLOSE(20, geoarea.GetXmax(), 0.01);
-    CHECK_CLOSE(35, geoarea.GetYmin(), 0.01);
-    CHECK_CLOSE(40, geoarea.GetYmax(), 0.01);
-    CHECK_CLOSE(5, geoarea.GetXaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(3, geoarea.GetYaxisCompositePtsnb(0), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetXstep(), 0.01);
-    CHECK_CLOSE(2.5, geoarea.GetYstep(), 0.01);
+    EXPECT_DOUBLE_EQ(10, geoarea.GetXmin());
+    EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
+    EXPECT_DOUBLE_EQ(35, geoarea.GetYmin());
+    EXPECT_DOUBLE_EQ(40, geoarea.GetYmax());
+    EXPECT_DOUBLE_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
+    EXPECT_DOUBLE_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
+    EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
+    EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
 
     double start = asTime::GetMJD(1960,1,1,00,00);
     double end = asTime::GetMJD(1960,1,11,00,00);
@@ -209,10 +202,10 @@ TEST(GradientsMultithreading)
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
 
-    CHECK_EQUAL(5, predictor->GetLonPtsnb());
-    CHECK_EQUAL(3, predictor->GetLatPtsnb());
+    EXPECT_EQ(5, predictor->GetLonPtsnb());
+    EXPECT_EQ(3, predictor->GetLatPtsnb());
     VArray2DFloat arrayData = predictor->GetData();
-    CHECK_CLOSE(176.0, arrayData[0](0,0), 0.01);
+    EXPECT_FLOAT_EQ(176.0, arrayData[0](0,0));
 
 	std::vector < asDataPredictorArchive* > vdata;
     vdata.push_back(predictor);
@@ -253,14 +246,14 @@ TEST(GradientsMultithreading)
     21	-20
     */
     /*
-    CHECK_CLOSE(9, hgt[0](0,0), 0.0001);
-    CHECK_CLOSE(5, hgt[0](0,1), 0.0001);
-    CHECK_CLOSE(-7, hgt[0](0,4), 0.0001);
-    CHECK_CLOSE(8, hgt[0](0,5), 0.0001);
-    CHECK_CLOSE(-1, hgt[0](0,10), 0.0001);
-    CHECK_CLOSE(-5, hgt[0](0,14), 0.0001);
-    CHECK_CLOSE(-18, hgt[0](0,17), 0.0001);
-    CHECK_CLOSE(-20, hgt[0](0,21), 0.0001);
+    EXPECT_DOUBLE_EQ(9, hgt[0](0,0));
+    EXPECT_DOUBLE_EQ(5, hgt[0](0,1));
+    EXPECT_DOUBLE_EQ(-7, hgt[0](0,4));
+    EXPECT_DOUBLE_EQ(8, hgt[0](0,5));
+    EXPECT_DOUBLE_EQ(-1, hgt[0](0,10));
+    EXPECT_DOUBLE_EQ(-5, hgt[0](0,14));
+    EXPECT_DOUBLE_EQ(-18, hgt[0](0,17));
+    EXPECT_DOUBLE_EQ(-20, hgt[0](0,21));
     */
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
@@ -292,17 +285,15 @@ TEST(GradientsMultithreading)
     21	-2
     */
     /*
-    CHECK_CLOSE(20, hgt[11](0,0), 0.0001);
-    CHECK_CLOSE(21, hgt[11](0,1), 0.0001);
-    CHECK_CLOSE(17, hgt[11](0,5), 0.0001);
-    CHECK_CLOSE(15, hgt[11](0,9), 0.0001);
-    CHECK_CLOSE(-17, hgt[11](0,10), 0.0001);
-    CHECK_CLOSE(12, hgt[11](0,13), 0.0001);
-    CHECK_CLOSE(-16, hgt[11](0,14), 0.0001);
-    CHECK_CLOSE(-2, hgt[11](0,21), 0.0001);
+    EXPECT_DOUBLE_EQ(20, hgt[11](0,0));
+    EXPECT_DOUBLE_EQ(21, hgt[11](0,1));
+    EXPECT_DOUBLE_EQ(17, hgt[11](0,5));
+    EXPECT_DOUBLE_EQ(15, hgt[11](0,9));
+    EXPECT_DOUBLE_EQ(-17, hgt[11](0,10));
+    EXPECT_DOUBLE_EQ(12, hgt[11](0,13));
+    EXPECT_DOUBLE_EQ(-16, hgt[11](0,14));
+    EXPECT_DOUBLE_EQ(-2, hgt[11](0,21));
     */
     wxDELETE(gradients);
     wxDELETE(predictor);
-}
-
 }
