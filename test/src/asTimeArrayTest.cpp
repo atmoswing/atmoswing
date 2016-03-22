@@ -74,9 +74,6 @@ TEST(TimeArray, BuildArraySimpleGeneric)
     double start = asTime::GetMJD(1950,1,1);
     double end = asTime::GetMJD(2009,1,1);
     double timestephours = 6;
-//    double forecastdate = asTime::GetMJD(0,1,1);;
-//    double intervaldays = 0;
-//    double exclusiondays = 0;
     wxString slctModeString = "Simple";
     asTimeArray timearray(start, end, timestephours, slctModeString);
     timearray.Init();
