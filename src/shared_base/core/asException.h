@@ -136,9 +136,9 @@ public:
     /** Access m_hasChild
      * \return The current value of m_hasChild
      */
-    bool GetHasChild()
+    bool HasChild()
     {
-        return m_hasChild;
+        return m_previous.size()>0;
     }
 
 
@@ -161,7 +161,6 @@ private:
     wxString m_message; //!< Member variable "m_message"
     wxString m_fileName; //!< Member variable "m_fileName"
     int m_lineNum; //!< Member variable "m_lineNum"
-    bool m_hasChild; //!< Member variable "m_isReal"
 };
 
 #endif

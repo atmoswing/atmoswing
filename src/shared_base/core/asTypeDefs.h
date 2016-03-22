@@ -128,9 +128,9 @@ static const float NaNFloat = std::numeric_limits<float>::quiet_NaN();
 static const double NaNDouble = std::numeric_limits<double>::quiet_NaN();
 
 /* Inf (http://msdn.microsoft.com/en-us/library/6hthw3cb%28VS.80%29.aspx) */
-const double InfFloat = std::numeric_limits<float>::infinity();
+const float InfFloat = std::numeric_limits<float>::infinity();
 const double InfDouble = std::numeric_limits<double>::infinity();
-const double InfLongDouble = std::numeric_limits<long double>::infinity();
+const long double InfLongDouble = std::numeric_limits<long double>::infinity();
 
 
 #endif

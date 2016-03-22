@@ -24,148 +24,69 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
 #include "asGlobVars.h"
-#include "include_tests.h"
-#include "UnitTest++.h"
-#include <TestReporterStdout.h>
-#include <wx/app.h>
-#include <wx/filename.h>
+#include "gtest/gtest.h"
 
 #ifndef UNIT_TESTING
-    #define UNIT_TESTING
+#define UNIT_TESTING
 #endif
 
-/*
- * Provide tests names as arguments in order to test specific tests. Otherwise process all tests.
- * Examples:
- * ./atmoswing-tests IsRoundFloatTrue LoadCatalogProp -> test specific tests
- * ./atmoswing-tests quick/short/fast -> test only the fast ones (not the method calibration)
- * ./atmoswing-tests -> test everything
- */
-
-int main( int argc, char** argv )
+int main(int argc, char **argv)
 {
-
-	/*
-    // In order to debug just one test
-    argc=2;
-    char* chars = "GrenobleComparison1ProcessingMethodCuda";
-    argv[1] = chars;
-	*/
+    ::testing::InitGoogleTest(&argc, argv);
 
     // Override some globals
     g_unitTesting = true;
     g_silentMode = true;
     g_guiMode = false;
 
-    // Option to test or not the exception throwing
-    g_unitTestExceptions = false;
-
-    // Test random distribution: write ouput in files
-    g_unitTestRandomDistributions = false;
-
     // Initialize the library because wxApp is not called
     wxInitialize();
 
     // Set the log
-    Log().CreateFile("AtmoSwingUnitTest.log");
-    Log().SetTarget(asLog::Both);
+    Log().CreateFileOnly("AtmoSwingUnitTest.log");
+    Log().SetTarget(asLog::File);
     Log().SetLevel(2);
     Log().DisableMessageBoxOnError();
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetTempDir()+"AtmoSwing.ini",asConfig::GetTempDir()+"AtmoSwing.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
+                                             asConfig::GetTempDir() + "AtmoSwing.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
-	// Check path
-	wxString filepath = wxFileName::GetCwd();
-	wxString filepath1 = filepath;
-    filepath1.Append("/test/files");
-	if (!wxFileName::DirExists(filepath1))
-	{
-		wxString filepath2 = filepath;
-		filepath2.Append("/../test/files");
-		if (wxFileName::DirExists(filepath2))
-		{
-			filepath.Append("/../test");
-			wxSetWorkingDirectory(filepath);
-		}
-		else
-		{
-			wxString filepath3 = filepath;
-			filepath3.Append("/../../test/files");
-			if (wxFileName::DirExists(filepath3))
-			{
-				filepath.Append("/../../test");
-				wxSetWorkingDirectory(filepath);
-			}
-			else
-			{
-				wxPrintf("Cannot find the files directory\n");
-				return 0;
-			}
-		}
-    }
-
-    // Process only the selected tests or all of them is none is selected
-    // from http://stackoverflow.com/questions/3546054/how-do-i-run-a-single-test-with-unittest
-    int result;
-    if( argc > 1 )
-    {
-        // If first arg is quick/short/fast, we only process the fast ones
-        bool shortOnly = false;
-        if(strcmp( "quick", argv[ 1 ] ) == 0) shortOnly = true;
-        if(strcmp( "short", argv[ 1 ] ) == 0) shortOnly = true;
-        if(strcmp( "fast", argv[ 1 ] ) == 0) shortOnly = true;
-        if (shortOnly)
-        {
-            // Option to process time demanding processing
-            g_unitTestLongProcessing = false;
-
-            result = UnitTest::RunAllTests();
-        }
-        else
-        {
-            // If first arg is "suite", we search for suite names instead of test names
-            const bool suite = strcmp( "suite", argv[ 1 ] ) == 0;
-
-            // Walk list of all tests, add those with a name that matches one of the arguments to a new TestList
-            const UnitTest::TestList& allTests( UnitTest::Test::GetTestList() );
-            UnitTest::TestList selectedTests;
-            UnitTest::Test* p = allTests.GetHead();
-            while( p )
-            {
-                for( int i=1 ; i<argc ; ++i )
-                {
-                    if( strcmp( suite ? p->m_details.suiteName
-                                    : p->m_details.testName, argv[ i ] ) == 0 )
-                    {
-                        selectedTests.Add( p );
-                    }
-                }
-                p = p->m_nextTest;
+    // Check path
+    wxString filePath = wxFileName::GetCwd();
+    wxString filePath1 = filePath;
+    filePath1.Append("/test/files");
+    if (!wxFileName::DirExists(filePath1)) {
+        wxString filePath2 = filePath;
+        filePath2.Append("/../test/files");
+        if (wxFileName::DirExists(filePath2)) {
+            filePath.Append("/../test");
+            wxSetWorkingDirectory(filePath);
+        } else {
+            wxString filePath3 = filePath;
+            filePath3.Append("/../../test/files");
+            if (wxFileName::DirExists(filePath3)) {
+                filePath.Append("/../../test");
+                wxSetWorkingDirectory(filePath);
+            } else {
+                wxPrintf("Cannot find the files directory\n");
+                return 0;
             }
-
-            // To close the queue (otherwise it continues on the allTests list)
-            selectedTests.Add( 0 );
-
-            //run selected test(s) only
-            UnitTest::TestReporterStdout reporter;
-            UnitTest::TestRunner runner( reporter );
-            result = runner.RunTestsIf( selectedTests, 0, UnitTest::True(), 0 );
         }
     }
-    else
-    {
-        result = UnitTest::RunAllTests();
-    }
 
+    int resultTest = RUN_ALL_TESTS();
+
+    // Cleanup
     wxUninitialize();
     DeleteThreadsManager();
     DeleteLog();
     delete wxFileConfig::Set((wxFileConfig *) NULL);
 
-    return result;
+    return resultTest;
 }

@@ -26,9 +26,7 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "include_tests.h"
 #include "asGeo.h"
-
 #include "gtest/gtest.h"
 
 
@@ -38,8 +36,7 @@ TEST(Geo, CheckPointWGS84True)
     Coo Point;
     Point.x = 10;
     Point.y = 10;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(true, Result);
+    EXPECT_TRUE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
 }
 
 TEST(Geo, CheckPointWGS84UVMaxTrue)
@@ -48,8 +45,7 @@ TEST(Geo, CheckPointWGS84UVMaxTrue)
     Coo Point;
     Point.x = 360;
     Point.y = 90;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(true, Result);
+    EXPECT_TRUE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
 }
 
 TEST(Geo, CheckPointWGS84UVMinTrue)
@@ -58,8 +54,7 @@ TEST(Geo, CheckPointWGS84UVMinTrue)
     Coo Point;
     Point.x = 0;
     Point.y = -90;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(true, Result);
+    EXPECT_TRUE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
 }
 
 TEST(Geo, CheckPointWGS84UTooHigh)
@@ -68,9 +63,8 @@ TEST(Geo, CheckPointWGS84UTooHigh)
     Coo Point;
     Point.x = 360.1;
     Point.y = 10;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(360.1, Point.x, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
+    EXPECT_DOUBLE_EQ(360.1, Point.x);
 }
 
 TEST(Geo, CheckPointWGS84UTooLow)
@@ -79,9 +73,8 @@ TEST(Geo, CheckPointWGS84UTooLow)
     Coo Point;
     Point.x = -0.1;
     Point.y = 10;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(-0.1, Point.x, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
+    EXPECT_DOUBLE_EQ(-0.1, Point.x);
 }
 
 TEST(Geo, CheckPointWGS84VTooHigh)
@@ -90,9 +83,8 @@ TEST(Geo, CheckPointWGS84VTooHigh)
     Coo Point;
     Point.x = 10;
     Point.y = 90.1;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(90.1, Point.y, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
+    EXPECT_DOUBLE_EQ(90.1, Point.y);
 }
 
 TEST(Geo, CheckPointWGS84VTooLow)
@@ -101,9 +93,8 @@ TEST(Geo, CheckPointWGS84VTooLow)
     Coo Point;
     Point.x = 10;
     Point.y = -90.1;
-    const bool Result = geo.CheckPoint(Point, asEDIT_FORBIDEN);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(-90.1, Point.y, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDEN));
+    EXPECT_DOUBLE_EQ(-90.1, Point.y);
 }
 
 TEST(Geo, CheckPointWGS84UTooHighCorr)
@@ -112,9 +103,8 @@ TEST(Geo, CheckPointWGS84UTooHighCorr)
     Coo Point;
     Point.x = 360.1;
     Point.y = 10;
-    const bool Result = geo.CheckPoint(Point, asEDIT_ALLOWED);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(0.1, Point.x, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
+    EXPECT_FLOAT_EQ(0.1, Point.x);
 }
 
 TEST(Geo, CheckPointWGS84UTooLowCorr)
@@ -123,9 +113,8 @@ TEST(Geo, CheckPointWGS84UTooLowCorr)
     Coo Point;
     Point.x = -0.1;
     Point.y = 10;
-    const bool Result = geo.CheckPoint(Point, asEDIT_ALLOWED);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(359.9, Point.x, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(359.9, Point.x);
 }
 
 TEST(Geo, CheckPointWGS84VTooHighCorr)
@@ -134,9 +123,8 @@ TEST(Geo, CheckPointWGS84VTooHighCorr)
     Coo Point;
     Point.x = 10;
     Point.y = 90.1;
-    const bool Result = geo.CheckPoint(Point, asEDIT_ALLOWED);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(89.9, Point.y, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(89.9, Point.y);
 }
 
 TEST(Geo, CheckPointWGS84VTooLowCorr)
@@ -145,7 +133,6 @@ TEST(Geo, CheckPointWGS84VTooLowCorr)
     Coo Point;
     Point.x = 10;
     Point.y = -90.1;
-    const bool Result = geo.CheckPoint(Point, asEDIT_ALLOWED);
-    ASSERT_EQ(false, Result);
-    CHECK_CLOSE(-89.9, Point.y, 0.000001);
+    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(-89.9, Point.y);
 }

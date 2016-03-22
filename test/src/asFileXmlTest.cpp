@@ -25,16 +25,12 @@
  * Portions Copyright 2015 Pascal Horton, Terranum.
  */
 
-#include "include_tests.h"
 #include "asFileXml.h"
-
 #include "gtest/gtest.h"
 
 
 TEST(FileXml, SaveAndLoadXmlFileWxStyle)
 {
-	wxPrintf("Testing xml files...\n");
-
     wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest1");
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file.xml";
@@ -48,7 +44,7 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
     nodeBuilding->AddAttribute("id", L"R\u00F4tillon");
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
-    ASSERT_EQ(true, stringHopital.size()>0);
+    EXPECT_TRUE(stringHopital.size()>0);
     wxXmlNode * nodeType = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_type");
     wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", stringHopital );
     nodeType->AddChild ( nodeTypeValue );
@@ -75,26 +71,26 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
     wxXmlDocument doc2;
 
     bool success = doc2.Load(filePath);
-    ASSERT_EQ(true, success);
+    EXPECT_TRUE(success);
 
-    ASSERT_EQ("base", doc2.GetRoot()->GetName());
+    EXPECT_EQ("base", doc2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = doc2.GetRoot()->GetChildren();
-    ASSERT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
-    ASSERT_EQ(true, childBuilding->GetAttribute("id").size()>0);
+    EXPECT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
+    EXPECT_TRUE(childBuilding->GetAttribute("id").size()>0);
 
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
-    ASSERT_EQ("building_type", childBuildingType->GetName());
-    ASSERT_EQ(L"h\u00F4pital", childBuildingType->GetNodeContent());
-    ASSERT_EQ(true, childBuildingType->GetNodeContent().size()>0);
+    EXPECT_EQ("building_type", childBuildingType->GetName());
+    EXPECT_EQ(L"h\u00F4pital", childBuildingType->GetNodeContent());
+    EXPECT_TRUE(childBuildingType->GetNodeContent().size()>0);
 
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
-    ASSERT_EQ("building_location", childBuildingLocation->GetName());
-    ASSERT_EQ(L"Z\u00FCrich", childBuildingLocation->GetNodeContent());
+    EXPECT_EQ("building_location", childBuildingLocation->GetName());
+    EXPECT_EQ(L"Z\u00FCrich", childBuildingLocation->GetNodeContent());
 
     wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
-    ASSERT_EQ("building_height", childBuildingHeight->GetName());
-    ASSERT_EQ("40", childBuildingHeight->GetNodeContent());
+    EXPECT_EQ("building_height", childBuildingHeight->GetName());
+    EXPECT_EQ("40", childBuildingHeight->GetNodeContent());
 
     asRemoveDir(tmpDir);
 }
@@ -106,12 +102,12 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file2.xml";
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
-    ASSERT_EQ(true, stringHopital.size()>0);
+    EXPECT_TRUE(stringHopital.size()>0);
 
     // Write
 	asFileXml fileXml(filePath, asFile::Replace);
 	bool success = fileXml.Open();
-	ASSERT_EQ(true, success);
+	EXPECT_TRUE(success);
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
 	nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
@@ -127,26 +123,26 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
     // Read
     asFileXml fileXml2(filePath, asFile::ReadOnly);
     success = fileXml2.Open();
-    ASSERT_EQ(true, success);
+    EXPECT_TRUE(success);
 
-    ASSERT_EQ("atmoswing", fileXml2.GetRoot()->GetName());
+    EXPECT_EQ("atmoswing", fileXml2.GetRoot()->GetName());
 
     wxXmlNode *childBuilding = fileXml2.GetRoot()->GetChildren();
-    ASSERT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
-    ASSERT_EQ(true, childBuilding->GetAttribute("id").size()>0);
+    EXPECT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
+    EXPECT_TRUE(childBuilding->GetAttribute("id").size()>0);
 
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
-    ASSERT_EQ("building_type", childBuildingType->GetName());
-    ASSERT_EQ(stringHopital, childBuildingType->GetNodeContent());
-    ASSERT_EQ(true, childBuildingType->GetNodeContent().size()>0);
+    EXPECT_EQ("building_type", childBuildingType->GetName());
+    EXPECT_EQ(stringHopital, childBuildingType->GetNodeContent());
+    EXPECT_TRUE(childBuildingType->GetNodeContent().size()>0);
 
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
-    ASSERT_EQ("building_location", childBuildingLocation->GetName());
-    ASSERT_EQ(L"Z\u00FCrich", childBuildingLocation->GetNodeContent());
+    EXPECT_EQ("building_location", childBuildingLocation->GetName());
+    EXPECT_EQ(L"Z\u00FCrich", childBuildingLocation->GetNodeContent());
 
     wxXmlNode *childBuildingHeight = childBuildingLocation->GetNext();
-    ASSERT_EQ("building_height", childBuildingHeight->GetName());
-    ASSERT_EQ("40", childBuildingHeight->GetNodeContent());
+    EXPECT_EQ("building_height", childBuildingHeight->GetName());
+    EXPECT_EQ("40", childBuildingHeight->GetNodeContent());
 
     asRemoveDir(tmpDir);
 }
@@ -159,7 +155,7 @@ TEST(FileXml, LoadSimpleXmlFile)
     bool success = asFileXml::Test(filepath);
 
 
-    ASSERT_EQ(true, success);
+    EXPECT_TRUE(success);
 
 
 }
@@ -172,7 +168,7 @@ TEST(FileXml, LoadSimpleXmlFile)
     bool success = asFileXml::Test(filepath);
 
 
-    ASSERT_EQ(false, success);
+    EXPECT_FALSE(success);
 
 
 }
