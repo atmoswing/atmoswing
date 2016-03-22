@@ -89,6 +89,17 @@ public:
 
     static wxString GetString(wxXmlNode *node, const wxString &defaultValue = wxEmptyString);
 
+	bool GetAttributeBool(wxXmlNode *node, const wxString & attribute, bool defaultValue = false, bool raiseWarning = true);
+
+	int GetAttributeInt(wxXmlNode *node, const wxString & attribute);
+
+	float GetAttributeFloat(wxXmlNode *node, const wxString & attribute);
+
+	double GetAttributeDouble(wxXmlNode *node, const wxString & attribute);
+
+	wxString GetAttributeString(wxXmlNode *node, const wxString & attribute);
+
+
 protected:
 private:
     wxXmlDocument m_document;

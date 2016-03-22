@@ -163,20 +163,20 @@ public:
         m_start = val;
     }
 
-    /** Access m_End
-     * \return The current value of m_End
+    /** Access m_end
+     * \return The current value of m_end
      */
     double GetEnd()
     {
-        return m_End;
+        return m_end;
     }
 
-    /** Set m_End
+    /** Set m_end
      * \param val New value to set
      */
     void SetEnd(double val)
     {
-        m_End = val;
+        m_end = val;
     }
 
     /** Access m_timeZoneHours
@@ -520,7 +520,7 @@ private:
     wxString m_name; //!< Member variable "m_name"
     wxString m_description; //!< Member variable "m_description"
     double m_start; //!< Member variable "m_start"
-    double m_End; //!< Member variable "m_End"
+    double m_end; //!< Member variable "m_end"
     float m_timeZoneHours; //!< Member variable "m_timezone" in hours
     double m_timeStepHours; //!< Member variable "m_timeStep" in hours
     double m_firstTimeStepHour; //!< Member variable "m_firstTimeStep" in hours
