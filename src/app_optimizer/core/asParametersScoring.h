@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2014 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASPARAMETERSSCORING_H
 #define ASPARAMETERSSCORING_H
 
@@ -68,7 +68,7 @@ public:
         VectorFloat Weight;
     } ParamsPredictorVect;
 
-    typedef std::vector < ParamsPredictorVect > VectorParamsPredictorsVect;
+    typedef std::vector<ParamsPredictorVect> VectorParamsPredictorsVect;
 
     typedef struct
     {
@@ -76,7 +76,7 @@ public:
         VectorParamsPredictorsVect Predictors;
     } ParamsStepVect;
 
-    typedef std::vector < ParamsStepVect > VectorParamsStepVect;
+    typedef std::vector<ParamsStepVect> VectorParamsStepVect;
 
     typedef struct
     {
@@ -104,7 +104,7 @@ public:
         bool Criteria;
     } ParamsPredictorBool;
 
-    typedef std::vector < ParamsPredictorBool > VectorParamsPredictorsBool;
+    typedef std::vector<ParamsPredictorBool> VectorParamsPredictorsBool;
 
     typedef struct
     {
@@ -112,7 +112,7 @@ public:
         VectorParamsPredictorsBool Predictors;
     } ParamsStepBool;
 
-    typedef std::vector < ParamsStepBool > VectorParamsStepBool;
+    typedef std::vector<ParamsStepBool> VectorParamsStepBool;
 
 
     /** Default constructor */
@@ -125,9 +125,16 @@ public:
 
     bool GenerateSimpleParametersFile(const wxString &filePath);
 
+    bool PreprocessingPropertiesOk();
+
     wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect);
-    
+
     wxString Print();
+
+    virtual int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_preproc)
+    {
+        return 1;
+    }
 
     bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
 
@@ -148,29 +155,17 @@ public:
         return m_calibrationStart;
     }
 
-    bool SetCalibrationStart(double val)
-    {
-        m_calibrationStart = val;
-        return true;
-    }
-
     bool SetCalibrationStart(wxString val)
     {
         m_calibrationStart = asTime::GetTimeFromString(val);
         return true;
     }
-    
+
     double GetCalibrationEnd()
     {
         return m_calibrationEnd;
     }
-    
-    bool SetCalibrationEnd(double val)
-    {
-        m_calibrationEnd = val;
-        return true;
-    }
-    
+
     bool SetCalibrationEnd(wxString val)
     {
         m_calibrationEnd = asTime::GetTimeFromString(val);
@@ -184,17 +179,12 @@ public:
 
     bool SetValidationYearsVector(VectorInt val)
     {
-        if (val.size()<1)
-        {
+        if (val.size() < 1) {
             asLogError(_("The provided validation years vector is empty."));
             return false;
-        }
-        else
-        {
-            for (int i=0; i<(int)val.size(); i++)
-            {
-                if (asTools::IsNaN(val[i]))
-                {
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
                     asLogError(_("There are NaN values in the provided validation years vector."));
                     return false;
                 }
@@ -206,38 +196,7 @@ public:
 
     bool HasValidationPeriod()
     {
-        if (m_validationYears.size()>0) return true;
-        else return false;
-    }
-
-    int GetValidationYearStart()
-    {
-        if (!HasValidationPeriod()) {
-            return NaNInt;
-        }
-
-        int minVal = m_validationYears[0];
-        for (int i=0; i<(int)m_validationYears.size(); i++)
-        {
-            minVal = wxMin(minVal, m_validationYears[i]);
-        }
-
-        return minVal;
-    }
-
-    int GetValidationYearEnd()
-    {
-        if (!HasValidationPeriod()) {
-            return NaNInt;
-        }
-
-        int maxVal = m_validationYears[0];
-        for (int i=0; i<(int)m_validationYears.size(); i++)
-        {
-            maxVal = wxMax(maxVal, m_validationYears[i]);
-        }
-
-        return maxVal;
+        return m_validationYears.size() > 0;
     }
 
     wxString GetForecastScoreName()
@@ -245,10 +204,9 @@ public:
         return m_forecastScore.Name;
     }
 
-    bool SetForecastScoreName(const wxString& val)
+    bool SetForecastScoreName(const wxString &val)
     {
-        if (val.IsEmpty())
-        {
+        if (val.IsEmpty()) {
             asLogError(_("The provided forecast score is null"));
             return false;
         }
@@ -278,7 +236,7 @@ public:
 
     int GetForecastScoreAnalogsNumber()
     {
-        return GetAnalogsNumber(GetStepsNb()-1);
+        return GetAnalogsNumber(GetStepsNb() - 1);
     }
 
     wxString GetForecastScoreTimeArrayMode()
@@ -286,10 +244,9 @@ public:
         return m_forecastScore.TimeArrayMode;
     }
 
-    bool SetForecastScoreTimeArrayMode(const wxString& val)
+    bool SetForecastScoreTimeArrayMode(const wxString &val)
     {
-        if (val.IsEmpty())
-        {
+        if (val.IsEmpty()) {
             asLogError(_("The provided time array mode for the forecast score is null"));
             return false;
         }
@@ -297,66 +254,347 @@ public:
         return true;
     }
 
-    double GetForecastScoreTimeArrayDate()
-    {
-        return m_forecastScore.TimeArrayDate;
-    }
-
-    void SetForecastScoreTimeArrayDate(double val)
-    {
-        m_forecastScore.TimeArrayDate = val;
-    }
-
-    int GetForecastScoreTimeArrayIntervalDays()
-    {
-        return m_forecastScore.TimeArrayIntervalDays;
-    }
-
-    void SetForecastScoreTimeArrayIntervalDays(int val)
-    {
-        m_forecastScore.TimeArrayIntervalDays = val;
-    }
-
     bool ForecastScoreNeedsPostprocessing()
     {
         return m_forecastScore.Postprocess;
     }
 
-    void SetForecastScorePostprocess(bool val)
+    /* Vector elements */
+
+
+    VectorInt GetAnalogsNumberVector(int i_step)
     {
-        m_forecastScore.Postprocess = val;
+        return m_stepsVect[i_step].AnalogsNumber;
     }
 
-    wxString GetForecastScorePostprocessMethod()
+    bool SetAnalogsNumberVector(int i_step, VectorInt val)
     {
-        return m_forecastScore.PostprocessMethod;
-    }
-
-    bool SetForecastScorePostprocessMethod(const wxString& val)
-    {
-        if (val.IsEmpty() && ForecastScoreNeedsPostprocessing())
-        {
-            asLogError(_("The provided value for the postprocessing method is null"));
+        if (val.size() < 1) {
+            asLogError(_("The provided analogs number vector is empty."));
             return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided analogs number vector."));
+                    return false;
+                }
+            }
         }
-        m_forecastScore.PostprocessMethod = val;
+        m_stepsVect[i_step].AnalogsNumber = val;
         return true;
     }
 
-    float GetForecastScorePostprocessDupliExp()
+    bool SetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
     {
-        return m_forecastScore.PostprocessDupliExp;
+        if (val.size() < 1) {
+            asLogError(_("The provided preprocess time (hours) vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
+                    return false;
+                }
+            }
+        }
+
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].clear();
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
+        } else {
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+        }
+
+        return true;
     }
 
-    void SetForecastScorePostprocessDupliExp(float val)
+    VectorDouble GetPredictorXminVector(int i_step, int i_predictor)
     {
-        m_forecastScore.PostprocessDupliExp = val;
+        return m_stepsVect[i_step].Predictors[i_predictor].Xmin;
+    }
+
+    bool SetPredictorXminVector(int i_step, int i_predictor, VectorDouble val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided Xmin vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided Xmin vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Xmin = val;
+        return true;
+    }
+
+    VectorInt GetPredictorXptsnbVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].Xptsnb;
+    }
+
+    bool SetPredictorXptsnbVector(int i_step, int i_predictor, VectorInt val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided Xptsnb vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided Xptsnb vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Xptsnb = val;
+        return true;
+    }
+
+    VectorDouble GetPredictorYminVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].Ymin;
+    }
+
+    bool SetPredictorYminVector(int i_step, int i_predictor, VectorDouble val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided Ymin vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided Ymin vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Ymin = val;
+        return true;
+    }
+
+    VectorInt GetPredictorYptsnbVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].Yptsnb;
+    }
+
+    bool SetPredictorYptsnbVector(int i_step, int i_predictor, VectorInt val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided Yptsnb vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided Yptsnb vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Yptsnb = val;
+        return true;
+    }
+
+    VectorDouble GetPredictorTimeHoursVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].TimeHours;
+    }
+
+    bool SetPredictorTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided predictor time (hours) vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided predictor time (hours) vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].TimeHours = val;
+        return true;
+    }
+
+    VectorFloat GetPredictorWeightVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].Weight;
+    }
+
+    bool SetPredictorWeightVector(int i_step, int i_predictor, VectorFloat val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided predictor weights vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < (int) val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided predictor weights vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Weight = val;
+        return true;
+    }
+
+    VectorString GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset)
+    {
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size() >= (unsigned) (i_dataset + 1)) {
+            return m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset];
+        } else {
+            asLogError(_("Trying to access to an element outside of PreprocessDataId in the parameters object."));
+            VectorString empty;
+            return empty;
+        }
+    }
+
+    bool SetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset, VectorString val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided preprocess data ID vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < val.size(); i++) {
+                if (val[i].IsEmpty()) {
+                    asLogError(_("There are NaN values in the provided preprocess data ID vector."));
+                    return false;
+                }
+            }
+        }
+
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size() >= (unsigned) (i_dataset + 1)) {
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset].clear();
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset] = val;
+        } else {
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
+        }
+
+        return true;
+    }
+
+    VectorFloat GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset)
+    {
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
+            return m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
+        } else {
+            asLogError(_("Trying to access to an element outside of PreprocessLevels in the parameters object."));
+            VectorFloat empty;
+            return empty;
+        }
+    }
+
+    bool SetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset, VectorFloat val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided preprocess levels vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided preprocess levels vector."));
+                    return false;
+                }
+            }
+        }
+
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].clear();
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset] = val;
+        } else {
+            m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
+        }
+
+        return true;
+    }
+
+    VectorDouble GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset)
+    {
+        wxASSERT(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) i_dataset);
+
+        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
+            return m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
+        } else {
+            asLogError(
+                    _("Trying to access to an element outside of PreprocessTimeHours (vect) in the parameters object."));
+            VectorDouble empty;
+            return empty;
+        }
+    }
+
+    VectorString GetPredictorDataIdVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].DataId;
+    }
+
+    bool SetPredictorDataIdVector(int i_step, int i_predictor, VectorString val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided data ID vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < val.size(); i++) {
+                if (val[i].IsEmpty()) {
+                    asLogError(_("There are NaN values in the provided data ID vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].DataId = val;
+        return true;
+    }
+
+    VectorFloat GetPredictorLevelVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].Level;
+    }
+
+    bool SetPredictorLevelVector(int i_step, int i_predictor, VectorFloat val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided predictor levels vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < val.size(); i++) {
+                if (asTools::IsNaN(val[i])) {
+                    asLogError(_("There are NaN values in the provided predictor levels vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Level = val;
+        return true;
+    }
+
+    VectorString GetPredictorCriteriaVector(int i_step, int i_predictor)
+    {
+        return m_stepsVect[i_step].Predictors[i_predictor].Criteria;
+    }
+
+    bool SetPredictorCriteriaVector(int i_step, int i_predictor, VectorString val)
+    {
+        if (val.size() < 1) {
+            asLogError(_("The provided predictor criteria vector is empty."));
+            return false;
+        } else {
+            for (int i = 0; i < val.size(); i++) {
+                if (val[i].IsEmpty()) {
+                    asLogError(_("There are NaN values in the provided predictor criteria vector."));
+                    return false;
+                }
+            }
+        }
+        m_stepsVect[i_step].Predictors[i_predictor].Criteria = val;
+        return true;
     }
 
 protected:
     double m_calibrationStart;
     double m_calibrationEnd;
     VectorInt m_validationYears;
+    VectorParamsStepVect m_stepsVect;
 
 private:
     ParamsForecastScore m_forecastScore;

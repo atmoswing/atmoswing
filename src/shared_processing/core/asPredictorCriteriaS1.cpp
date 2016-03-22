@@ -64,7 +64,6 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
     {
         case (asLIN_ALGEBRA_NOVAR):
         {
-
             dividend = (((refData.topRightCorner(rowsNb,colsNb-1) - refData.topLeftCorner(rowsNb,colsNb-1))
                             -(evalData.topRightCorner(evalData.rows(),evalData.cols()-1) - evalData.topLeftCorner(evalData.rows(),evalData.cols()-1))).abs()).sum()
                         + (((refData.bottomLeftCorner(rowsNb-1,colsNb) - refData.topLeftCorner(rowsNb-1,colsNb))

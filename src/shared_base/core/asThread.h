@@ -55,9 +55,12 @@ public:
     enum Type
     {
         Undefined,
+        PreloadData,
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
-        PreprocessorGradients
+        PreprocessorGradients,
+		MethodOptimizerRandomSet,
+		MethodOptimizerGeneticAlgorithms
     };
 
     /** Default constructor */

@@ -328,6 +328,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     }
 
     // Set properties
+	if (!PreprocessingPropertiesOk()) return false;
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
@@ -361,6 +362,7 @@ bool asParametersCalibration::SetSpatialWindowProperties()
             double Yshift = std::fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
             if (Yshift<0) Yshift += GetPredictorYstep(i_step, i_ptor);
             if(!SetPredictorYshift(i_step, i_ptor, Yshift)) return false;
+
             VectorInt uptsnbs = GetPredictorXptsnbVector(i_step, i_ptor);
             VectorInt vptsnbs = GetPredictorYptsnbVector(i_step, i_ptor);
             if (asTools::MinArray(&uptsnbs[0], &uptsnbs[uptsnbs.size()-1])<=1 || asTools::MinArray(&vptsnbs[0], &vptsnbs[vptsnbs.size()-1])<=1)
@@ -412,6 +414,7 @@ bool asParametersCalibration::SetPreloadingProperties()
             // Set levels and time for preloading
             if (NeedsPreloading(i_step, i_ptor) && !NeedsPreprocessing(i_step, i_ptor))
             {
+                if (!SetPreloadDataIds(i_step, i_ptor, GetPredictorDataIdVector(i_step, i_ptor))) return false;
                 if(!SetPreloadLevels(i_step, i_ptor, GetPredictorLevelVector(i_step, i_ptor))) return false;
                 if(!SetPreloadTimeHours(i_step, i_ptor, GetPredictorTimeHoursVector(i_step, i_ptor))) return false;
             }
@@ -421,56 +424,25 @@ bool asParametersCalibration::SetPreloadingProperties()
                 wxString method = GetPreprocessMethod(i_step, i_ptor);
                 VectorFloat preprocLevels;
                 VectorDouble preprocTimeHours;
-                int preprocSize = GetPreprocessSize(i_step, i_ptor);
-
-                // Check that the data ID is unique
-                for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
-                {
-                    if(GetPreprocessDataIdVector(i_step, i_ptor, i_preproc).size()!=1)
-                    {
-                        asLogError(_("The preprocess DataId must be unique with the preload option."));
-                        return false;
-                    }
-                }
 
                 // Different actions depending on the preprocessing method.
                 if (method.IsSameAs("Gradients"))
                 {
-                    if (preprocSize!=1)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                 }
                 else if (method.IsSameAs("HumidityFlux"))
                 {
-                    if (preprocSize!=4)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                 }
-                else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply"))
+                else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("HumidityIndex"))
                 {
-                    if (preprocSize!=2)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                 }
                 else if (method.IsSameAs("FormerHumidityIndex"))
                 {
-                    if (preprocSize!=4)
-                    {
-                        asLogError(wxString::Format(_("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."), preprocSize));
-                        return false;
-                    }
                     preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                     VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(i_step, i_ptor, 1);
@@ -479,20 +451,6 @@ bool asParametersCalibration::SetPreloadingProperties()
                 else
                 {
                     asLogWarning(wxString::Format(_("The %s preprocessing method is not yet handled with the preload option."), method));
-
-                    for (int i_preproc=0; i_preproc<preprocSize; i_preproc++)
-                    {
-                        if(GetPreprocessLevelVector(i_step, i_ptor, i_preproc).size()!=1)
-                        {
-                            asLogError(_("The preprocess Level option must be unique with with the preload option for unhandled preprocessing method."));
-                            return false;
-                        }
-                        if(GetPreprocessTimeHoursVector(i_step, i_ptor, i_preproc).size()!=1)
-                        {
-                            asLogError(_("The preprocess TimeHours option must be unique with with the preload option for unhandled preprocessing method."));
-                            return false;
-                        }
-                    }
                 }
 
                 if(!SetPreloadLevels(i_step, i_ptor, preprocLevels)) return false;
@@ -819,364 +777,6 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt va
         }
     }
     m_timeArrayAnalogsIntervalDaysVect = val;
-    return true;
-}
-
-bool asParametersCalibration::SetAnalogsNumberVector(int i_step, VectorInt val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided analogs number vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided analogs number vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].AnalogsNumber = val;
-    return true;
-}
-
-VectorString asParametersCalibration::GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset)
-{
-    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset];
-    }
-    else
-    {
-        asLogError(_("Trying to access to an element outside of PreprocessDataId in the parameters object."));
-        VectorString empty;
-        return empty;
-    }
-}
-    
-bool asParametersCalibration::SetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset, VectorString val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided preprocess data ID vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (val[i].IsEmpty())
-            {
-                asLogError(_("There are NaN values in the provided preprocess data ID vector."));
-                return false;
-            }
-        }
-    }
-
-    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size()>=(unsigned)(i_dataset+1))
-    {
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset].clear();
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset] = val;
-    }
-    else
-    {
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
-    }
-
-    return true;
-}
-
-VectorFloat asParametersCalibration::GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset)
-{
-    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
-    }
-    else
-    {
-        asLogError(_("Trying to access to an element outside of PreprocessLevels in the parameters object."));
-        VectorFloat empty;
-        return empty;
-    }
-}
-
-bool asParametersCalibration::SetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset, VectorFloat val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided preprocess levels vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided preprocess levels vector."));
-                return false;
-            }
-        }
-    }
-
-    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size()>=(unsigned)(i_dataset+1))
-    {
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].clear();
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset] = val;
-    }
-    else
-    {
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
-    }
-
-    return true;
-}
-
-VectorDouble asParametersCalibration::GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset)
-{
-    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
-    {
-        return m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
-    }
-    else
-    {
-        asLogError(_("Trying to access to an element outside of PreprocessTimeHours (vect) in the parameters object."));
-        VectorDouble empty;
-        return empty;
-    }
-}
-
-bool asParametersCalibration::SetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided preprocess time (hours) vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
-                return false;
-            }
-        }
-    }
-
-    if(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size()>=(unsigned)(i_dataset+1))
-    {
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].clear();
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
-    }
-    else
-    {
-        m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
-    }
-
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorDataIdVector(int i_step, int i_predictor, VectorString val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided data ID vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (val[i].IsEmpty())
-            {
-                asLogError(_("There are NaN values in the provided data ID vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].DataId = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorLevelVector(int i_step, int i_predictor, VectorFloat val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided predictor levels vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided predictor levels vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Level = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorXminVector(int i_step, int i_predictor, VectorDouble val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided Xmin vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided Xmin vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Xmin = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorXptsnbVector(int i_step, int i_predictor, VectorInt val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided Xptsnb vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided Xptsnb vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Xptsnb = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorYminVector(int i_step, int i_predictor, VectorDouble val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided Ymin vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided Ymin vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Ymin = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorYptsnbVector(int i_step, int i_predictor, VectorInt val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided Yptsnb vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided Yptsnb vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Yptsnb = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided predictor time (hours) vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided predictor time (hours) vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].TimeHours = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorCriteriaVector(int i_step, int i_predictor, VectorString val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided predictor criteria vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (val[i].IsEmpty())
-            {
-                asLogError(_("There are NaN values in the provided predictor criteria vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Criteria = val;
-    return true;
-}
-
-bool asParametersCalibration::SetPredictorWeightVector(int i_step, int i_predictor, VectorFloat val)
-{
-    if (val.size()<1)
-    {
-        asLogError(_("The provided predictor weights vector is empty."));
-        return false;
-    }
-    else
-    {
-        for (int i=0; i<(int)val.size(); i++)
-        {
-            if (asTools::IsNaN(val[i]))
-            {
-                asLogError(_("There are NaN values in the provided predictor weights vector."));
-                return false;
-            }
-        }
-    }
-    m_stepsVect[i_step].Predictors[i_predictor].Weight = val;
     return true;
 }
 

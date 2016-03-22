@@ -152,9 +152,9 @@ VectorString asFileParameters::BuildVectorString(wxString str)
     wxChar separator = ',';
     while(str.Find(separator)!=wxNOT_FOUND)
     {
-        wxString strbefore = str.BeforeFirst(separator);
-        str = str.AfterFirst(separator);
-        vect.push_back(strbefore);
+        wxString strBefore = str.BeforeFirst(separator).Trim().Trim(false);
+        str = str.AfterFirst(separator).Trim().Trim(false);
+        vect.push_back(strBefore);
     }
     if(!str.IsEmpty())
     {
@@ -348,6 +348,8 @@ VectorString asFileParameters::GetVectorString(wxXmlNode *node)
     else if(method.IsSameAs("fixed"))
     {
         wxString value = node->GetChildren()->GetContent();
+        value = value.Trim();
+        value = value.Trim(true);
         vect.push_back(value);
     }
     else if(method.IsSameAs("array"))
