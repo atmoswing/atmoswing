@@ -139,75 +139,7 @@ TEST(GeoAreaRegularGrid, GetCenter)
     EXPECT_DOUBLE_EQ(15, center.x);
     EXPECT_DOUBLE_EQ(35, center.y);
 }
-/*
-TEST(GeoAreaRegularGrid, IsOnGridTrue)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    EXPECT_TRUE(geoArea.IsOnGrid(2.5));
-}
-
-TEST(GeoAreaRegularGrid, IsOnGridTrueTwoAxes)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    EXPECT_TRUE(geoArea.IsOnGrid(2.5, 5));
-}
-
-TEST(GeoAreaRegularGrid, IsOnGridFalseStep)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    EXPECT_FALSE(geoArea.IsOnGrid(6));
-}
-
-TEST(GeoAreaRegularGrid, IsOnGridFalseSecondStep)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    EXPECT_FALSE(geoArea.IsOnGrid(5, 6));
-}
-*/
 TEST(GeoAreaRegularGrid, GetAxes)
 {
     double Xmin = 5;

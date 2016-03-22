@@ -283,75 +283,7 @@ TEST(GeoAreaCompositeRegularGrid, GetCornersSplitted)
     EXPECT_DOUBLE_EQ(360, geoArea.GetComposite(1).GetCornerLR().x);
     EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(1).GetCornerLR().y);
 }
-/*
-TEST(GeoAreaCompositeRegularGrid, IsOnGridTrue)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = -40;
-    CornerUL.y = 40;
-    CornerUR.x = 10;
-    CornerUR.y = 40;
-    CornerLL.x = -40;
-    CornerLL.y = 30;
-    CornerLR.x = 10;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    EXPECT_TRUE(geoArea.IsOnGrid(2.5));
-}
-
-TEST(GeoAreaCompositeRegularGrid, IsOnGridTrueTwoAxes)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = -40;
-    CornerUL.y = 40;
-    CornerUR.x = 10;
-    CornerUR.y = 40;
-    CornerLL.x = -40;
-    CornerLL.y = 30;
-    CornerLR.x = 10;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    EXPECT_TRUE(geoArea.IsOnGrid(2.5, 5));
-}
-
-TEST(GeoAreaCompositeRegularGrid, IsOnGridFalseStep)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = -40;
-    CornerUL.y = 40;
-    CornerUR.x = 10;
-    CornerUR.y = 40;
-    CornerLL.x = -40;
-    CornerLL.y = 30;
-    CornerLR.x = 10;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    EXPECT_FALSE(geoArea.IsOnGrid(6));
-}
-
-TEST(GeoAreaCompositeRegularGrid, IsOnGridFalseSecondStep)
-{
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = -40;
-    CornerUL.y = 40;
-    CornerUR.x = 10;
-    CornerUR.y = 40;
-    CornerLL.x = -40;
-    CornerLL.y = 30;
-    CornerLR.x = 10;
-    CornerLR.y = 30;
-    double step = 2.5;
-    asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
-
-    EXPECT_FALSE(geoArea.IsOnGrid(5, 6));
-}
-*/
 TEST(GeoAreaCompositeRegularGrid, GetAxes)
 {
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
