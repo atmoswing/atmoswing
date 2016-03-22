@@ -44,7 +44,7 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
     nodeBuilding->AddAttribute("id", L"R\u00F4tillon");
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
-    EXPECT_TRUE(stringHopital.size()>0);
+    ASSERT_TRUE(stringHopital.size()>0);
     wxXmlNode * nodeType = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_type");
     wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", stringHopital );
     nodeType->AddChild ( nodeTypeValue );
@@ -70,8 +70,7 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
     // Read
     wxXmlDocument doc2;
 
-    bool success = doc2.Load(filePath);
-    EXPECT_TRUE(success);
+    ASSERT_TRUE(doc2.Load(filePath));
 
     EXPECT_EQ("base", doc2.GetRoot()->GetName());
 
@@ -102,12 +101,11 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file2.xml";
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
-    EXPECT_TRUE(stringHopital.size()>0);
+    ASSERT_TRUE(stringHopital.size()>0);
 
     // Write
 	asFileXml fileXml(filePath, asFile::Replace);
-	bool success = fileXml.Open();
-	EXPECT_TRUE(success);
+	ASSERT_TRUE(fileXml.Open());
 
     wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
 	nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
@@ -122,8 +120,7 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
 
     // Read
     asFileXml fileXml2(filePath, asFile::ReadOnly);
-    success = fileXml2.Open();
-    EXPECT_TRUE(success);
+    ASSERT_TRUE(fileXml2.Open());
 
     EXPECT_EQ("atmoswing", fileXml2.GetRoot()->GetName());
 
@@ -146,30 +143,21 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
 
     asRemoveDir(tmpDir);
 }
-/*
-TEST(FileXml, LoadSimpleXmlFile)
-{
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/file_xml.xml");
-
-    bool success = asFileXml::Test(filepath);
-
-
-    EXPECT_TRUE(success);
-
-
-}
 
 TEST(FileXml, LoadSimpleXmlFile)
 {
-    wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/file_xml_error.xml");
+    wxString filePath = wxFileName::GetCwd();
+    filePath.Append("/files/file_xml.xml");
+    asFileXml fileXml(filePath, asFile::ReadOnly);
 
-    bool success = asFileXml::Test(filepath);
-
-
-    EXPECT_FALSE(success);
-
-
+    EXPECT_TRUE(fileXml.Open());
 }
-*/
+
+TEST(FileXml, LoadSimpleXmlFileWithErrors)
+{
+    wxString filePath = wxFileName::GetCwd();
+    filePath.Append("/files/file_xml_error.xml");
+    asFileXml fileXml(filePath, asFile::ReadOnly);
+
+    EXPECT_FALSE(fileXml.Open());
+}
