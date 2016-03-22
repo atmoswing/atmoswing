@@ -28,7 +28,6 @@
 
 #include "asParameters.h"
 #include "asParametersCalibration.h"
-#include "asParametersForecast.h"
 #include "gtest/gtest.h"
 
 
@@ -111,13 +110,11 @@ TEST(Parameters, GenerateSimpleParametersFileCalibration)
     paramsFilePath.Append("/files/");
     paramsFilePath.Append("parameters_calibration_R1_calib_period.xml");
     asParametersCalibration params;
-    bool result = params.LoadFromFile(paramsFilePath);
-    EXPECT_TRUE(result);
+    EXPECT_TRUE(params.LoadFromFile(paramsFilePath));
 
     // Generate simple file
     wxString tmpPath = wxFileName::CreateTempFileName("GenerateSimpleParametersFileCalibrationTest");
-    result = params.GenerateSimpleParametersFile(tmpPath);
-    CHECK_EQUAL(true, result);
+    EXPECT_TRUE(params.GenerateSimpleParametersFile(tmpPath));
 }
 
 TEST(SortLevelsAndTime)
@@ -226,5 +223,4 @@ TEST(SortLevelsAndTime)
     CHECK_EQUAL(18, params.GetPreprocessTimeHours(s,p,0));
     CHECK_EQUAL(18, params.GetPredictorTimeHours(s,p));
 
-}
 }
