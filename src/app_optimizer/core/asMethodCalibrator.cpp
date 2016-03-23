@@ -322,7 +322,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
     bool parallelDataLoad = false;
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, false);
+    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, true);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Load data once.
