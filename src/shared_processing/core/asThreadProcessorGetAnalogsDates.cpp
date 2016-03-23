@@ -218,7 +218,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                             else
                             {
                                 asLogError(_("Date restriction mode not correctly defined."));
-                                return false;
+                                return (wxThread::ExitCode)1;
                             }
 
                             if (indexSameDate!=asNOT_FOUND && indexSameDate!=asOUT_OF_RANGE)
@@ -289,6 +289,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                     asLogError(_("The date was not found in the array (Analogs Dates fct, multithreaded option). That should not happen."));
                     asLogError(wxString::Format(_("Start: %g, end: %g, desired value: %g."),
                                                 timeArchiveData[i_timeArchStart], timeArchiveData[timeArchiveDataSize-1], dateArrayArchiveSelection[i_dateArch]));
+                    return (wxThread::ExitCode)1;
                 }
             }
 
@@ -307,11 +308,12 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                 asLogError(wxString::Format(_("   Date array start (%.0f), date array end (%.0f), timestep (%.0f), dateTarg (%.0f)."),
                                             timeArchiveData[0], timeArchiveData[timeArchiveDataSize-1], m_params.GetTimeArrayAnalogsTimeStepHours(),
                                             timeTargetSelection[i_timeTarg] ));
+                return (wxThread::ExitCode)1;
             }
         }
     }
 
     m_status = Done;
 
-    return 0;
+    return (wxThread::ExitCode)0;
 }
