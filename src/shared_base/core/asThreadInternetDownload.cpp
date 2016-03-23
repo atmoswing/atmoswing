@@ -96,7 +96,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 {
                     asLogError(_("The directory to save real-time predictors data cannot be created."));
 					wxDELETE(errorbuffer);
-                    return 0;
+                    return (wxThread::ExitCode)1;
                 }
             }
 
@@ -148,7 +148,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                     asLogError(_("Failed downloading file."));
                     asLogError(wxString::Format(_("Curl error message: %s"), errorbuffer));
 					wxDELETE(errorbuffer);
-                    return 0;
+                    return (wxThread::ExitCode)1;
                 }
                 else
                 {
@@ -164,5 +164,5 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
     m_status = Done;
 
-    return 0;
+    return (wxThread::ExitCode)0;
 }

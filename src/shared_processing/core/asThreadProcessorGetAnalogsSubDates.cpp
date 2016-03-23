@@ -201,7 +201,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
             else
             {
                 asLogError(_("The date was not found in the array (Analogs subdates fct). That should not happen."));
-                return 0;
+                return (wxThread::ExitCode)1;
             }
         }
 
@@ -216,10 +216,11 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
         {
             asLogWarning(_("There is not enough available data to satisfy the number of analogs"));
             asLogWarning(wxString::Format(_("Analogs number (%d) > counter (%d)"), analogsNb, counter));
+            return (wxThread::ExitCode)1;
         }
     }
 
     m_status = Done;
 
-    return 0;
+    return (wxThread::ExitCode)0;
 }

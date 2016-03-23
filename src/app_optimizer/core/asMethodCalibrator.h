@@ -186,6 +186,12 @@ private:
 
     bool ExtractDataWithPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
                                       int i_ptor, double timeStartData, double timeEndData);
+
+    bool HasPreloadedData(int i_step, int i_ptor) const;
+
+    bool HasPreloadedData(int i_step, int i_ptor, int i_dat) const;
+
+    bool GetRandomValidData(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
 };
 
 #endif // ASMETHODCALIBRATOR_H
