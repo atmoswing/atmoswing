@@ -68,11 +68,11 @@ m_pFinalAnalogsDates(finalAnalogsDates)
     m_type = asThread::ProcessorGetAnalogsDates;
     m_step = step;
     m_start = start;
-    m_end = end;
+    m_End = end;
     m_pContainsNaNs = containsNaNs;
 
-    wxASSERT_MSG(m_end<timeArrayTargetSelection->GetSize(), _("The given time array end is superior to the time array size."));
-    wxASSERT_MSG(m_end!=timeArrayTargetSelection->GetSize()-2, wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end, (int)timeArrayTargetSelection->GetSize()));
+    wxASSERT_MSG(m_End<timeArrayTargetSelection->GetSize(), _("The given time array end is superior to the time array size."));
+    wxASSERT_MSG(m_End!=timeArrayTargetSelection->GetSize()-2, wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_End, (int)timeArrayTargetSelection->GetSize()));
 
     m_status = Waiting;
 }
@@ -101,7 +101,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     int analogsNb = m_params.GetAnalogsNumber(m_step);
     bool isasc = (m_criteria[0]->GetOrder()==Asc);
 
-    wxASSERT(m_end<timeTargetSelection.size());
+    wxASSERT(m_End<timeTargetSelection.size());
     wxASSERT(timeArchiveDataSize==(int)(m_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetDataSize==(int)(m_pPredictorsTarget)[0]->GetData().size());
 
@@ -117,8 +117,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     int i_timeTargStart = 0;
 
     // Loop through every timestep as target data
-    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_end); i_dateTarg++)
-    for (int i_dateTarg=m_start; i_dateTarg<=m_end; i_dateTarg++)
+    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
+    for (int i_dateTarg=m_start; i_dateTarg<=m_End; i_dateTarg++)
     {
         // Check if the next data is the following. If not, search for it in the array.
         if(timeTargetDataSize>i_timeTargStart+1 && std::abs(timeTargetSelection[i_dateTarg]-timeTargetData[i_timeTargStart+1])<0.01)
@@ -218,7 +218,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                             else
                             {
                                 asLogError(_("Date restriction mode not correctly defined."));
-                                return false;
+                                return (wxThread::ExitCode)1;
                             }
 
                             if (indexSameDate!=asNOT_FOUND && indexSameDate!=asOUT_OF_RANGE)
@@ -289,6 +289,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                     asLogError(_("The date was not found in the array (Analogs Dates fct, multithreaded option). That should not happen."));
                     asLogError(wxString::Format(_("Start: %g, end: %g, desired value: %g."),
                                                 timeArchiveData[i_timeArchStart], timeArchiveData[timeArchiveDataSize-1], dateArrayArchiveSelection[i_dateArch]));
+                    return (wxThread::ExitCode)1;
                 }
             }
 
@@ -307,11 +308,12 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                 asLogError(wxString::Format(_("   Date array start (%.0f), date array end (%.0f), timestep (%.0f), dateTarg (%.0f)."),
                                             timeArchiveData[0], timeArchiveData[timeArchiveDataSize-1], m_params.GetTimeArrayAnalogsTimeStepHours(),
                                             timeTargetSelection[i_timeTarg] ));
+                return (wxThread::ExitCode)1;
             }
         }
     }
 
     m_status = Done;
 
-    return 0;
+    return (wxThread::ExitCode)0;
 }

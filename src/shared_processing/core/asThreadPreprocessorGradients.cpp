@@ -89,5 +89,5 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
 
     m_status = Done;
 
-    return 0;
+    return (wxThread::ExitCode)0;
 }

@@ -697,11 +697,6 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     pConfig->Write("/Processing/Method", (int)asINSERT);
     pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
-    wxString dataFileDir = wxFileName::GetCwd();
-    dataFileDir.Append("/files/");
-    wxString patternFileDir = wxFileName::GetCwd();
-    patternFileDir.Append("/files/");
-
     // Get parameters
     asParametersCalibration paramsStd;
     asParametersCalibration paramsPreload;
@@ -1686,4 +1681,35 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
     pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
 
     Ref2MergeByHalfAndMultiply();
+}
+
+TEST(MethodCalibrator, PrelodingWithLevelCorrection)
+{
+    // Get parameters
+    asParametersCalibration params;
+    wxString paramsFilePath = wxFileName::GetCwd();
+    paramsFilePath.Append("/files/parameters_calibration_preload_multiple_variables.xml");
+    ASSERT_TRUE(params.LoadFromFile(paramsFilePath));
+
+    // Preload data
+    asMethodCalibratorSingle calibrator;
+    wxString dataPredictorFilePath = wxFileName::GetCwd();
+    dataPredictorFilePath.Append("/files/");
+    calibrator.SetPredictorDataDir(dataPredictorFilePath);
+    calibrator.SetPredictandDB(NULL);
+    asResultsAnalogsDates anaDates;
+
+    try
+    {
+        int step = 0;
+        bool containsNaNs = false;
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        EXPECT_TRUE(anaDates.GetAnalogsDatesLength()>0);
+        EXPECT_FALSE(containsNaNs);
+    }
+    catch(asException& e)
+    {
+        wxPrintf( e.GetFullMessage());
+        return;
+    }
 }
