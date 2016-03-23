@@ -322,7 +322,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
     bool parallelDataLoad = false;
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, true);
+    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, false);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Load data once.
@@ -364,7 +364,17 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     return false;
                                 }
                             }
+
+                            if(!HasPreloadedData(i_step, i_ptor, i_dat)) {
+                                asLogError(wxString::Format(_("No data was preloaded for step %d and level %d and variable %d"), i_step, i_ptor, i_dat));
+                                return false;
+                            }
                         }
+                    }
+
+                    if(!HasPreloadedData(i_step, i_ptor)) {
+                        asLogError(wxString::Format(_("No data was preloaded for step %d and level %d"), i_step, i_ptor));
+                        return false;
                     }
                 }
             }
@@ -378,6 +388,32 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
     }
 
     return true;
+}
+
+bool asMethodCalibrator::HasPreloadedData(int i_step, int i_ptor) const
+{
+    for (int i_dat = 0; i_dat < m_preloadedArchive[i_step][i_ptor].size(); i_dat++) {
+        for (int i_level = 0; i_level < m_preloadedArchive[i_step][i_ptor][i_dat].size(); i_level++) {
+            for (int i_hour = 0; i_hour < m_preloadedArchive[i_step][i_ptor][i_dat][i_level].size(); i_hour++) {
+                if (m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] != NULL) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool asMethodCalibrator::HasPreloadedData(int i_step, int i_ptor, int i_dat) const
+{
+    for (int i_level = 0; i_level < m_preloadedArchive[i_step][i_ptor][i_dat].size(); i_level++) {
+        for (int i_hour = 0; i_hour < m_preloadedArchive[i_step][i_ptor][i_dat][i_level].size(); i_hour++) {
+            if (m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] != NULL) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void asMethodCalibrator::InitializePreloadedDataContainer(asParametersScoring &params)
@@ -663,10 +699,12 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
                                           (int) preloadTimeHours[i_hour]));
             try {
                 if (!predictor->Load(area, timeArray)) {
-                    asLogError(_("The data could not be loaded."));
+                    asLogWarning(wxString::Format(_("The data (%s for level %d, at %d h) could not be loaded."),
+                                                  preloadDataIds[i_dat], (int) preloadLevels[i_level],
+                                                  (int) preloadTimeHours[i_hour]));
                     wxDELETE(area);
                     wxDELETE(predictor);
-                    return false;
+                    continue; // The requested data can be missing (e.g. level not available).
                 }
             } catch (std::bad_alloc &ba) {
                 wxString msg(ba.what(), wxConvUTF8);
@@ -1000,8 +1038,17 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     wxASSERT((unsigned) i_level < m_preloadedArchive[i_step][i_ptor][i_dat].size());
     wxASSERT((unsigned) i_hour < m_preloadedArchive[i_step][i_ptor][i_dat][i_level].size());
     if (m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] == NULL) {
-        asLogError(_("The pointer to preloaded data is null."));
-        return false;
+        if(!GetRandomValidData(params, i_step, i_ptor, i_dat)) {
+            asLogError(_("The pointer to preloaded data is null."));
+            return false;
+        }
+
+        level = params.GetPredictorLevel(i_step, i_ptor);
+        time = params.GetPredictorTimeHours(i_step, i_ptor);
+        i_level = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1],
+                                             level);
+        i_hour = asTools::SortedArraySearch(&preloadTimeHours[0],
+                                            &preloadTimeHours[preloadTimeHours.size() - 1], time);
     }
     // Copy the data
     wxASSERT(m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour]);
@@ -1290,7 +1337,7 @@ void asMethodCalibrator::DeletePreloadedData()
             for (unsigned int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
                 if (!m_preloadedArchivePointerCopy[i][j][k]) {
                     for (unsigned int l = 0; l < m_preloadedArchive[i][j][k].size(); l++) {
-                        for (unsigned int m = 0; m < m_preloadedArchive[i][j][k].size(); m++) {
+                        for (unsigned int m = 0; m < m_preloadedArchive[i][j][k][l].size(); m++) {
                             wxDELETE(m_preloadedArchive[i][j][k][l][m]);
                         }
                     }
@@ -1813,3 +1860,30 @@ bool asMethodCalibrator::Validate(const int bestScoreRow)
 
     return true;
 }
+
+bool asMethodCalibrator::GetRandomValidData(asParametersScoring &params, int i_step, int i_ptor, int i_dat)
+{
+    VectorInt levels, hours;
+
+    for (int i_level = 0; i_level < m_preloadedArchive[i_step][i_ptor][i_dat].size(); i_level++) {
+        for (int i_hour = 0; i_hour < m_preloadedArchive[i_step][i_ptor][i_dat][i_level].size(); i_hour++) {
+            if (m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] != NULL) {
+                levels.push_back(i_level);
+                hours.push_back(i_hour);
+            }
+        }
+    }
+
+    wxASSERT(levels.size() == hours.size());
+
+    int randomIndex = asTools::Random(0, levels.size()-1, 1);
+    float newLevel = params.GetPreloadLevels(i_step, i_ptor)[levels[randomIndex]];
+    double newHour = params.GetPreloadTimeHours(i_step, i_ptor)[hours[randomIndex]];
+
+    params.SetPredictorLevel(i_step, i_ptor, newLevel);
+    params.SetPredictorTimeHours(i_step, i_ptor, newHour);
+
+    return true;
+}
+
+
