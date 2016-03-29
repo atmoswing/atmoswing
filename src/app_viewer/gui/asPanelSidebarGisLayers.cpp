@@ -25,21 +25,21 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asPanelSidebarGisLayers.h"
 
-asPanelSidebarGisLayers::asPanelSidebarGisLayers( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style )
-:
-asPanelSidebar( parent, id, pos, size, style )
+asPanelSidebarGisLayers::asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id, const wxPoint &pos,
+                                                 const wxSize &size, long style)
+        : asPanelSidebar(parent, id, pos, size, style)
 {
     m_header->SetLabelText(_("GIS layers"));
 
-   // m_tocCtrl = new vrViewerTOCTree( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxNO_BORDER);
-    m_tocCtrl = new vrViewerTOCList( this, wxID_ANY);
-    m_sizerContent->Add( m_tocCtrl->GetControl(), 1, wxEXPAND, 5 );
+    // m_tocCtrl = new vrViewerTOCTree( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxNO_BORDER);
+    m_tocCtrl = new vrViewerTOCList(this, wxID_ANY);
+    m_sizerContent->Add(m_tocCtrl->GetControl(), 1, wxEXPAND, 5);
 
     Layout();
-    m_sizerContent->Fit( this );
+    m_sizerContent->Fit(this);
 }
 
 asPanelSidebarGisLayers::~asPanelSidebarGisLayers()

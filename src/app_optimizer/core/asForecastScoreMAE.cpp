@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreMAE.h"
 
 asForecastScoreMAE::asForecastScoreMAE()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::MAE;
     m_name = _("Mean absolute error");
@@ -47,24 +46,21 @@ asForecastScoreMAE::~asForecastScoreMAE()
 
 float asForecastScoreMAE::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_quantile));
-    wxASSERT(m_quantile>0);
-    wxASSERT(m_quantile<1);
+    wxASSERT(m_quantile > 0);
+    wxASSERT(m_quantile < 1);
 
     // Create the container to sort the data
     Array1DFloat x(nbElements);
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
-    if(nbForecasts==asNOT_FOUND)
-    {
+    if (nbForecasts == asNOT_FOUND) {
         asLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNFloat;
-    }
-    else if(nbForecasts<=2)
-    {
+    } else if (nbForecasts <= 2) {
         asLogWarning(_("Not enough elements to process the CRPS."));
         return NaNFloat;
     }
@@ -74,7 +70,7 @@ float asForecastScoreMAE::Assess(float ObservedVal, const Array1DFloat &ForcastV
     // Get value for quantile
     float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
 
-    float score = std::abs(ObservedVal-xQuantile);
+    float score = std::abs(ObservedVal - xQuantile);
 
     return score;
 }

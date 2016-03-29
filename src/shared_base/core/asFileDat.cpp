@@ -25,15 +25,14 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asFileDat.h"
 
 #include <asFileXml.h>
 
 
 asFileDat::asFileDat(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFileAscii(FileName, FileMode)
+        : asFileAscii(FileName, FileMode)
 {
 
 }
@@ -76,28 +75,23 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
 
     // Load xml file
     wxString FileName;
-    if (!AlternatePatternDir.IsEmpty())
-    {
+    if (!AlternatePatternDir.IsEmpty()) {
         FileName = AlternatePatternDir + DS + FilePatternName + ".xml";
-    }
-    else
-    {
+    } else {
         ThreadsManager().CritSectionConfig().Enter();
         wxString PatternsDir = wxFileConfig::Get()->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
         ThreadsManager().CritSectionConfig().Leave();
         FileName = PatternsDir + DS + FilePatternName + ".xml";
     }
 
-    asFileXml xmlFile( FileName, asFile::ReadOnly );
-    if(!xmlFile.Open())
-    {
+    asFileXml xmlFile(FileName, asFile::ReadOnly);
+    if (!xmlFile.Open()) {
         asThrowException(_("Cannot open the pattern file."));
     }
-    if(!xmlFile.CheckRootElement())
-    {
+    if (!xmlFile.CheckRootElement()) {
         asThrowException(_("Errors were found in the pattern file."));
     }
-    
+
     // Get data
     long charStart, charEnd;
     wxString charStartStr, charEndStr, attributeStart, attributeEnd;
@@ -110,8 +104,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
         while (nodeParam) {
             if (nodeParam->GetName() == "structure_type") {
                 pattern.StructType = StringToStructType(xmlFile.GetString(nodeParam));
-                switch (pattern.StructType)
-                {
+                switch (pattern.StructType) {
                     case (asFileDat::ConstantWidth):
                         attributeStart = "char_start";
                         attributeEnd = "char_end";
@@ -134,7 +127,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
 
                 wxXmlNode *nodeTime = nodeParam->GetChildren();
                 while (nodeTime) {
-                    
+
                     charStartStr = nodeTime->GetAttribute(attributeStart);
                     charStartStr.ToLong(&charStart);
                     charEndStr = nodeTime->GetAttribute(attributeEnd);
@@ -158,7 +151,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                     } else {
                         xmlFile.UnknownNode(nodeTime);
                     }
-                    
+
                     nodeTime = nodeTime->GetNext();
                 }
             } else if (nodeParam->GetName() == "data") {
@@ -199,13 +192,11 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
 
 asFileDat::FileStructType asFileDat::StringToStructType(const wxString &StructTypeStr)
 {
-    if (StructTypeStr.CmpNoCase("tabs_delimited")==0) {
+    if (StructTypeStr.CmpNoCase("tabs_delimited") == 0) {
         return asFileDat::TabsDelimited;
-    }
-    else if (StructTypeStr.CmpNoCase("constant_width")==0) {
+    } else if (StructTypeStr.CmpNoCase("constant_width") == 0) {
         return asFileDat::ConstantWidth;
-    }
-    else {
+    } else {
         asThrowException(_("The file structure type in unknown"));
     }
 }

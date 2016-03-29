@@ -56,8 +56,8 @@ TEST(Preprocessor, Gradients)
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
 
-    double start = asTime::GetMJD(1960,1,1,00,00);
-    double end = asTime::GetMJD(1960,1,11,00,00);
+    double start = asTime::GetMJD(1960, 1, 1, 00, 00);
+    double end = asTime::GetMJD(1960, 1, 11, 00, 00);
     double timestephours = 6;
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
@@ -65,7 +65,8 @@ TEST(Preprocessor, Gradients)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/");
 
-    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+                                                                            predictorDataDir);
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
@@ -73,13 +74,13 @@ TEST(Preprocessor, Gradients)
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
     VArray2DFloat arrayData = predictor->GetData();
-    EXPECT_FLOAT_EQ(176.0, arrayData[0](0,0));
+    EXPECT_FLOAT_EQ(176.0, arrayData[0](0, 0));
 
-	std::vector < asDataPredictorArchive* > vdata;
+    std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
-    asDataPredictorArchive* gradients = new asDataPredictorArchive(*predictor);
+    asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
     VArray2DFloat grads = gradients->GetData();
@@ -121,35 +122,35 @@ TEST(Preprocessor, Gradients)
     28	-20
     */
 
-    EXPECT_DOUBLE_EQ(9, grads[0](0,0));
-    EXPECT_DOUBLE_EQ(5, grads[0](0,1));
-    EXPECT_DOUBLE_EQ(3, grads[0](0,2));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,3));
-    EXPECT_DOUBLE_EQ(-7, grads[0](0,4));
-    EXPECT_DOUBLE_EQ(8, grads[0](0,5));
-    EXPECT_DOUBLE_EQ(3, grads[0](0,6));
-    EXPECT_DOUBLE_EQ(1, grads[0](0,7));
-    EXPECT_DOUBLE_EQ(1, grads[0](0,8));
-    EXPECT_DOUBLE_EQ(-1, grads[0](0,9));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,10));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,11));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,12));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,13));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,14));
-    EXPECT_DOUBLE_EQ(-1, grads[0](0,15));
-    EXPECT_DOUBLE_EQ(-5, grads[0](0,16));
-    EXPECT_DOUBLE_EQ(-8, grads[0](0,17));
-    EXPECT_DOUBLE_EQ(-11, grads[0](0,18));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,19));
-    EXPECT_DOUBLE_EQ(-5, grads[0](0,20));
-    EXPECT_DOUBLE_EQ(-7, grads[0](0,21));
-    EXPECT_DOUBLE_EQ(-11, grads[0](0,22));
-    EXPECT_DOUBLE_EQ(-18, grads[0](0,23));
-    EXPECT_DOUBLE_EQ(0, grads[0](0,24));
-    EXPECT_DOUBLE_EQ(-10, grads[0](0,25));
-    EXPECT_DOUBLE_EQ(-9, grads[0](0,26));
-    EXPECT_DOUBLE_EQ(-11, grads[0](0,27));
-    EXPECT_DOUBLE_EQ(-20, grads[0](0,28));
+    EXPECT_DOUBLE_EQ(9, grads[0](0, 0));
+    EXPECT_DOUBLE_EQ(5, grads[0](0, 1));
+    EXPECT_DOUBLE_EQ(3, grads[0](0, 2));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 3));
+    EXPECT_DOUBLE_EQ(-7, grads[0](0, 4));
+    EXPECT_DOUBLE_EQ(8, grads[0](0, 5));
+    EXPECT_DOUBLE_EQ(3, grads[0](0, 6));
+    EXPECT_DOUBLE_EQ(1, grads[0](0, 7));
+    EXPECT_DOUBLE_EQ(1, grads[0](0, 8));
+    EXPECT_DOUBLE_EQ(-1, grads[0](0, 9));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 10));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 11));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 12));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 13));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 14));
+    EXPECT_DOUBLE_EQ(-1, grads[0](0, 15));
+    EXPECT_DOUBLE_EQ(-5, grads[0](0, 16));
+    EXPECT_DOUBLE_EQ(-8, grads[0](0, 17));
+    EXPECT_DOUBLE_EQ(-11, grads[0](0, 18));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 19));
+    EXPECT_DOUBLE_EQ(-5, grads[0](0, 20));
+    EXPECT_DOUBLE_EQ(-7, grads[0](0, 21));
+    EXPECT_DOUBLE_EQ(-11, grads[0](0, 22));
+    EXPECT_DOUBLE_EQ(-18, grads[0](0, 23));
+    EXPECT_DOUBLE_EQ(0, grads[0](0, 24));
+    EXPECT_DOUBLE_EQ(-10, grads[0](0, 25));
+    EXPECT_DOUBLE_EQ(-9, grads[0](0, 26));
+    EXPECT_DOUBLE_EQ(-11, grads[0](0, 27));
+    EXPECT_DOUBLE_EQ(-20, grads[0](0, 28));
 
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
@@ -188,14 +189,14 @@ TEST(Preprocessor, Gradients)
     28	-2
     */
 
-    EXPECT_DOUBLE_EQ(20, grads[11](0,0));
-    EXPECT_DOUBLE_EQ(21, grads[11](0,1));
-    EXPECT_DOUBLE_EQ(17, grads[11](0,5));
-    EXPECT_DOUBLE_EQ(15, grads[11](0,9));
-    EXPECT_DOUBLE_EQ(-17, grads[11](0,15));
-    EXPECT_DOUBLE_EQ(12, grads[11](0,18));
-    EXPECT_DOUBLE_EQ(-16, grads[11](0,20));
-    EXPECT_DOUBLE_EQ(-2, grads[11](0,28));
+    EXPECT_DOUBLE_EQ(20, grads[11](0, 0));
+    EXPECT_DOUBLE_EQ(21, grads[11](0, 1));
+    EXPECT_DOUBLE_EQ(17, grads[11](0, 5));
+    EXPECT_DOUBLE_EQ(15, grads[11](0, 9));
+    EXPECT_DOUBLE_EQ(-17, grads[11](0, 15));
+    EXPECT_DOUBLE_EQ(12, grads[11](0, 18));
+    EXPECT_DOUBLE_EQ(-16, grads[11](0, 20));
+    EXPECT_DOUBLE_EQ(-2, grads[11](0, 28));
 
     wxDELETE(gradients);
     wxDELETE(predictor);
@@ -223,8 +224,8 @@ TEST(Preprocessor, GradientsMultithreading)
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
 
-    double start = asTime::GetMJD(1960,1,1,00,00);
-    double end = asTime::GetMJD(1960,1,11,00,00);
+    double start = asTime::GetMJD(1960, 1, 1, 00, 00);
+    double end = asTime::GetMJD(1960, 1, 11, 00, 00);
     double timestephours = 6;
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
@@ -232,7 +233,8 @@ TEST(Preprocessor, GradientsMultithreading)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/");
 
-    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+                                                                            predictorDataDir);
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoarea, timearray);
@@ -240,13 +242,13 @@ TEST(Preprocessor, GradientsMultithreading)
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
     VArray2DFloat arrayData = predictor->GetData();
-    EXPECT_FLOAT_EQ(176.0, arrayData[0](0,0));
+    EXPECT_FLOAT_EQ(176.0, arrayData[0](0, 0));
 
-	std::vector < asDataPredictorArchive* > vdata;
+    std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
-    asDataPredictorArchive* gradients = new asDataPredictorArchive(*predictor);
+    asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
     VArray2DFloat hgt = gradients->GetData();
@@ -288,14 +290,14 @@ TEST(Preprocessor, GradientsMultithreading)
     28	-20
     */
 
-    EXPECT_DOUBLE_EQ(9, hgt[0](0,0));
-    EXPECT_DOUBLE_EQ(5, hgt[0](0,1));
-    EXPECT_DOUBLE_EQ(-7, hgt[0](0,4));
-    EXPECT_DOUBLE_EQ(8, hgt[0](0,5));
-    EXPECT_DOUBLE_EQ(-1, hgt[0](0,15));
-    EXPECT_DOUBLE_EQ(-5, hgt[0](0,20));
-    EXPECT_DOUBLE_EQ(-18, hgt[0](0,23));
-    EXPECT_DOUBLE_EQ(-20, hgt[0](0,28));
+    EXPECT_DOUBLE_EQ(9, hgt[0](0, 0));
+    EXPECT_DOUBLE_EQ(5, hgt[0](0, 1));
+    EXPECT_DOUBLE_EQ(-7, hgt[0](0, 4));
+    EXPECT_DOUBLE_EQ(8, hgt[0](0, 5));
+    EXPECT_DOUBLE_EQ(-1, hgt[0](0, 15));
+    EXPECT_DOUBLE_EQ(-5, hgt[0](0, 20));
+    EXPECT_DOUBLE_EQ(-18, hgt[0](0, 23));
+    EXPECT_DOUBLE_EQ(-20, hgt[0](0, 28));
 
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
@@ -334,14 +336,14 @@ TEST(Preprocessor, GradientsMultithreading)
     28	-2
     */
 
-    EXPECT_DOUBLE_EQ(20, hgt[11](0,0));
-    EXPECT_DOUBLE_EQ(21, hgt[11](0,1));
-    EXPECT_DOUBLE_EQ(17, hgt[11](0,5));
-    EXPECT_DOUBLE_EQ(15, hgt[11](0,9));
-    EXPECT_DOUBLE_EQ(-17, hgt[11](0,15));
-    EXPECT_DOUBLE_EQ(12, hgt[11](0,18));
-    EXPECT_DOUBLE_EQ(-16, hgt[11](0,20));
-    EXPECT_DOUBLE_EQ(-2, hgt[11](0,28));
+    EXPECT_DOUBLE_EQ(20, hgt[11](0, 0));
+    EXPECT_DOUBLE_EQ(21, hgt[11](0, 1));
+    EXPECT_DOUBLE_EQ(17, hgt[11](0, 5));
+    EXPECT_DOUBLE_EQ(15, hgt[11](0, 9));
+    EXPECT_DOUBLE_EQ(-17, hgt[11](0, 15));
+    EXPECT_DOUBLE_EQ(12, hgt[11](0, 18));
+    EXPECT_DOUBLE_EQ(-16, hgt[11](0, 20));
+    EXPECT_DOUBLE_EQ(-2, hgt[11](0, 28));
 
     wxDELETE(gradients);
     wxDELETE(predictor);

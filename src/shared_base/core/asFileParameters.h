@@ -25,26 +25,25 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFILEPARAMETERS_H
 #define ASFILEPARAMETERS_H
 
 #include <asIncludes.h>
 #include <asFileXml.h>
 
-class asFileParameters : public asFileXml
+class asFileParameters
+        : public asFileXml
 {
 public:
-    /** Default constructor */
     asFileParameters(const wxString &FileName, const ListFileMode &FileMode);
 
-    /** Default destructor */
     virtual ~asFileParameters();
 
     virtual bool EditRootElement() = 0;
+
     virtual bool CheckRootElement() = 0;
 
-    
     static VectorInt BuildVectorInt(int min, int max, int step);
 
     static VectorInt BuildVectorInt(wxString str);
@@ -72,6 +71,7 @@ public:
     static VectorInt GetStationIds(wxString stationIdsString);
 
 protected:
+
 private:
 
 };

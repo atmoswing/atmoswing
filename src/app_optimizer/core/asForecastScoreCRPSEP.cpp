@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreCRPSEP.h"
 
 asForecastScoreCRPSEP::asForecastScoreCRPSEP()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::CRPSEP;
     m_name = _("CRPS Exact Primitive");
@@ -47,12 +46,11 @@ asForecastScoreCRPSEP::~asForecastScoreCRPSEP()
 
 float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
 
     // Check the element numbers vs vector length and the observed value
-    if(!CheckInputs(ObservedVal, ForcastVals, nbElements))
-    {
+    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
         asLogWarning(_("The inputs are not conform in the CRPS processing function"));
         return NaNFloat;
     }
@@ -63,13 +61,13 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
-    if(nbForecasts==asNOT_FOUND){
+    if (nbForecasts == asNOT_FOUND) {
         asLogWarning(_("Only NaNs as inputs in the CRPS processing function"));
         return NaNFloat;
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbForecasts-1], Asc);
+    asTools::SortArray(&x[0], &x[nbForecasts - 1], Asc);
 
     float CRPS = 0;
 
@@ -82,99 +80,85 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
     // Indices for the left and right part (according to xObs) of the distribution
     int indLeftStart = 0;
     int indLeftEnd = 0;
-    int indRightStart = nbForecasts-1;
-    int indRightEnd = nbForecasts-1;
+    int indRightStart = nbForecasts - 1;
+    int indRightEnd = nbForecasts - 1;
 
     // Find FxObs, fix xObs and integrate beyond limits
-    if (xObs<=x[0]) // If xObs before the distribution
+    if (xObs <= x[0]) // If xObs before the distribution
     {
         indRightStart = 0;
         FxObs = 0;
-        CRPS += x[indRightStart]-xObs;
-    }
-    else if (xObs>x[nbForecasts-1]) // If xObs after the distribution
+        CRPS += x[indRightStart] - xObs;
+    } else if (xObs > x[nbForecasts - 1]) // If xObs after the distribution
     {
-        indLeftEnd = nbForecasts-1;
+        indLeftEnd = nbForecasts - 1;
         FxObs = 1;
-        CRPS += xObs-x[indLeftEnd];
-    }
-    else // If xObs inside the distribution
+        CRPS += xObs - x[indLeftEnd];
+    } else // If xObs inside the distribution
     {
-        indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts-1], xObs);
-        if((indLeftEnd!=nbForecasts-1) & (indLeftEnd!=asNOT_FOUND) & (indLeftEnd!=asOUT_OF_RANGE))
-        {
-            indRightStart = indLeftEnd+1;
-            if(x(indRightStart)==x(indLeftEnd))
-            {
-                FxObs = (F(indLeftEnd)+F(indRightStart))*0.5;
-            }
-            else
-            {
-                FxObs = F(indLeftEnd)+(F(indRightStart)-F(indLeftEnd))*(xObs-x(indLeftEnd))/(x(indRightStart)-x(indLeftEnd));
+        indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts - 1], xObs);
+        if ((indLeftEnd != nbForecasts - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
+            indRightStart = indLeftEnd + 1;
+            if (x(indRightStart) == x(indLeftEnd)) {
+                FxObs = (F(indLeftEnd) + F(indRightStart)) * 0.5;
+            } else {
+                FxObs = F(indLeftEnd) + (F(indRightStart) - F(indLeftEnd)) * (xObs - x(indLeftEnd)) /
+                                        (x(indRightStart) - x(indLeftEnd));
             }
 
             // Integrate the CRPS around FxObs
             // First part - from x(indLeftEnd) to xobs
-            DF = FxObs-F(indLeftEnd);
-            DVal = xObs-x(indLeftEnd);
-            if (DVal!=0)
-            {
-                float a = DF/DVal;
-                float b = -x(indLeftEnd)*a+F(indLeftEnd);
-                CRPS += (a*a/3)*(xObs*xObs*xObs-x(indLeftEnd)*x(indLeftEnd)*x(indLeftEnd))
-                       + (a*b)*(xObs*xObs-x(indLeftEnd)*x(indLeftEnd))
-                       + (b*b)*(xObs-x(indLeftEnd));
+            DF = FxObs - F(indLeftEnd);
+            DVal = xObs - x(indLeftEnd);
+            if (DVal != 0) {
+                float a = DF / DVal;
+                float b = -x(indLeftEnd) * a + F(indLeftEnd);
+                CRPS += (a * a / 3) * (xObs * xObs * xObs - x(indLeftEnd) * x(indLeftEnd) * x(indLeftEnd)) +
+                        (a * b) * (xObs * xObs - x(indLeftEnd) * x(indLeftEnd)) + (b * b) * (xObs - x(indLeftEnd));
             }
 
             // Second part - from xobs to x(indRightStart)
-            DF = F(indRightStart)-FxObs;
-            DVal = x(indRightStart)-xObs;
-            if (DVal!=0)
-            {
-                float a = -DF/DVal;
-                float b = -xObs*(-a)+FxObs;
-                b = 1-b;
-                CRPS += (a*a/3)*(x(indRightStart)*x(indRightStart)*x(indRightStart)-xObs*xObs*xObs)
-                       + (a*b)*(x(indRightStart)*x(indRightStart)-xObs*xObs)
-                       + (b*b)*(x(indRightStart)-xObs);
+            DF = F(indRightStart) - FxObs;
+            DVal = x(indRightStart) - xObs;
+            if (DVal != 0) {
+                float a = -DF / DVal;
+                float b = -xObs * (-a) + FxObs;
+                b = 1 - b;
+                CRPS += (a * a / 3) * (x(indRightStart) * x(indRightStart) * x(indRightStart) - xObs * xObs * xObs) +
+                        (a * b) * (x(indRightStart) * x(indRightStart) - xObs * xObs) +
+                        (b * b) * (x(indRightStart) - xObs);
             }
         }
     }
 
     // Integrate on the left part
-    for (int i=indLeftStart; i<indLeftEnd; i++)
-    {
-        DF = F(i+1)-F(i);
-        DVal = x(i+1)-x(i);
-        if (DVal!=0)
-        {
+    for (int i = indLeftStart; i < indLeftEnd; i++) {
+        DF = F(i + 1) - F(i);
+        DVal = x(i + 1) - x(i);
+        if (DVal != 0) {
             // Build a line y=ax+b
-            float a = DF/DVal;
-            float b = -x(i)*a+F(i);
+            float a = DF / DVal;
+            float b = -x(i) * a + F(i);
 
             // CRPS after integration with H=0
-            CRPS += (a*a/3)*(x(i+1)*x(i+1)*x(i+1)-x(i)*x(i)*x(i))
-                    + (a*b)*(x(i+1)*x(i+1)-x(i)*x(i))
-                    + (b*b)*(x(i+1)-x(i));
+            CRPS += (a * a / 3) * (x(i + 1) * x(i + 1) * x(i + 1) - x(i) * x(i) * x(i)) +
+                    (a * b) * (x(i + 1) * x(i + 1) - x(i) * x(i)) + (b * b) * (x(i + 1) - x(i));
         }
     }
 
     // Integrate on the right part
-    for (int i=indRightStart; i<indRightEnd; i++)
-    {
-        DF = F(i+1)-F(i);
-        DVal = x(i+1)-x(i);
-        if (DVal!=0)
-        {
+    for (int i = indRightStart; i < indRightEnd; i++) {
+        DF = F(i + 1) - F(i);
+        DVal = x(i + 1) - x(i);
+        if (DVal != 0) {
             // Build a line y=ax+b and switch it (a -> -a & b -> 1-b) to easily integrate
-            float a = -DF/DVal;
-            float b = -x(i)*(-a)+F(i);
-            b = 1-b;
+            float a = -DF / DVal;
+            float b = -x(i) * (-a) + F(i);
+            b = 1 - b;
 
             // CRPS after integration with H=0 as we switched the axis
-            CRPS += (a*a/3)*(x(i+1)*x(i+1)*x(i+1)-x(i)*x(i)*x(i))
-                    + (a*b)*(x(i+1)*x(i+1)-x(i)*x(i))
-                    + (b*b)*(x(i+1)-x(i));
+            CRPS += (a * a / 3) * (x(i + 1) * x(i + 1) * x(i + 1) - x(i) * x(i) * x(i)) +
+                    (a * b) * (x(i + 1) * x(i + 1) - x(i) * x(i)) + (b * b) * (x(i + 1) - x(i));
         }
     }
 

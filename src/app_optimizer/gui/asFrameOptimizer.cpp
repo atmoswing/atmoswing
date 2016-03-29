@@ -41,23 +41,26 @@
 #include "asFrameAbout.h"
 
 
-asFrameOptimizer::asFrameOptimizer( wxWindow* parent )
-:
-asFrameOptimizerVirtual( parent )
+asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
+        : asFrameOptimizerVirtual(parent)
 {
     m_logWindow = NULL;
     m_methodCalibrator = NULL;
 
     // Toolbar
-	m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"), _("Run optimizer now"), NULL);
-	m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel optimization"), _("Cancel current optimization"), NULL);
-	m_toolBar->AddTool( asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL, _("Preferences"), _("Preferences"), NULL );
+    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
+                       _("Run optimizer now"), NULL);
+    m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel optimization"),
+                       _("Cancel current optimization"), NULL);
+    m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
+                       _("Preferences"), _("Preferences"), NULL);
     m_toolBar->Realize();
 
     // Connect events
-    this->Connect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameOptimizer::Launch ) );
-    this->Connect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameOptimizer::Cancel ) );
-	this->Connect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameOptimizer::OpenFramePreferences ) );
+    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
+    this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
+    this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
+                  wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
 
     // Icon
 #ifdef __WXMSW__
@@ -68,9 +71,10 @@ asFrameOptimizerVirtual( parent )
 asFrameOptimizer::~asFrameOptimizer()
 {
     // Disconnect events
-    this->Disconnect( asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameOptimizer::Launch ) );
-    this->Disconnect( asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameOptimizer::Cancel ) );
-	this->Disconnect( asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( asFrameOptimizer::OpenFramePreferences ) );
+    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
+    this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
+    this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
+                     wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
 }
 
 void asFrameOptimizer::OnInit()
@@ -85,27 +89,27 @@ void asFrameOptimizer::Update()
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::OpenFramePreferences( wxCommandEvent& event )
+void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
 {
-    asFramePreferencesOptimizer* frame = new asFramePreferencesOptimizer(this);
+    asFramePreferencesOptimizer *frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFrameAbout( wxCommandEvent& event )
+void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
 {
-    asFrameAbout* frame = new asFrameAbout(this);
+    asFrameAbout *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OnShowLog( wxCommandEvent& event )
+void asFrameOptimizer::OnShowLog(wxCommandEvent &event)
 {
     wxASSERT(m_logWindow);
     m_logWindow->DoShow();
 }
 
-void asFrameOptimizer::OnLogLevel1( wxCommandEvent& event )
+void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event)
 {
     Log().SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
@@ -115,10 +119,11 @@ void asFrameOptimizer::OnLogLevel1( wxCommandEvent& event )
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame) prefFrame->Update();
+    if (prefFrame)
+        prefFrame->Update();
 }
 
-void asFrameOptimizer::OnLogLevel2( wxCommandEvent& event )
+void asFrameOptimizer::OnLogLevel2(wxCommandEvent &event)
 {
     Log().SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
@@ -128,10 +133,11 @@ void asFrameOptimizer::OnLogLevel2( wxCommandEvent& event )
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame) prefFrame->Update();
+    if (prefFrame)
+        prefFrame->Update();
 }
 
-void asFrameOptimizer::OnLogLevel3( wxCommandEvent& event )
+void asFrameOptimizer::OnLogLevel3(wxCommandEvent &event)
 {
     Log().SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
@@ -141,42 +147,41 @@ void asFrameOptimizer::OnLogLevel3( wxCommandEvent& event )
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame) prefFrame->Update();
+    if (prefFrame)
+        prefFrame->Update();
 }
 
 void asFrameOptimizer::DisplayLogLevelMenu()
 {
     // Set log level in the menu
     ThreadsManager().CritSectionConfig().Enter();
-    int logLevel = (int)wxFileConfig::Get()->Read("/General/LogLevel", 2l);
+    int logLevel = (int) wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
-    switch (logLevel)
-    {
-    case 1:
-        m_menuLogLevel->FindItemByPosition(0)->Check(true);
-        Log().SetLevel(1);
-        break;
-    case 2:
-        m_menuLogLevel->FindItemByPosition(1)->Check(true);
-        Log().SetLevel(2);
-        break;
-    case 3:
-        m_menuLogLevel->FindItemByPosition(2)->Check(true);
-        Log().SetLevel(3);
-        break;
-    default:
-        m_menuLogLevel->FindItemByPosition(1)->Check(true);
-        Log().SetLevel(2);
+    switch (logLevel) {
+        case 1:
+            m_menuLogLevel->FindItemByPosition(0)->Check(true);
+            Log().SetLevel(1);
+            break;
+        case 2:
+            m_menuLogLevel->FindItemByPosition(1)->Check(true);
+            Log().SetLevel(2);
+            break;
+        case 3:
+            m_menuLogLevel->FindItemByPosition(2)->Check(true);
+            Log().SetLevel(3);
+            break;
+        default:
+            m_menuLogLevel->FindItemByPosition(1)->Check(true);
+            Log().SetLevel(2);
     }
 }
 
-void asFrameOptimizer::Cancel( wxCommandEvent& event )
+void asFrameOptimizer::Cancel(wxCommandEvent &event)
 {
-    if (m_methodCalibrator)
-    {
+    if (m_methodCalibrator) {
         m_methodCalibrator->Cancel();
     }
 }
@@ -186,14 +191,15 @@ void asFrameOptimizer::LoadOptions()
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
     long MethodSelection = pConfig->Read("/Optimizer/MethodSelection", 0l);
-    m_choiceMethod->SetSelection((int)MethodSelection);
+    m_choiceMethod->SetSelection((int) MethodSelection);
     wxString ParametersFilePath = pConfig->Read("/Optimizer/ParametersFilePath", wxEmptyString);
     m_filePickerParameters->SetPath(ParametersFilePath);
     wxString PredictandDBFilePath = pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString);
     m_filePickerPredictand->SetPath(PredictandDBFilePath);
     wxString PredictorDir = pConfig->Read("/Paths/PredictorDir", wxEmptyString);
     m_dirPickerPredictor->SetPath(PredictorDir);
-    wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
+    wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
+                                                 asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
     m_dirPickerOptimizerResults->SetPath(OptimizerResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
@@ -215,12 +221,12 @@ void asFrameOptimizer::LoadOptions()
     m_textCtrlVarExploStepToExplore->SetValue(VarExploStep);
 }
 
-void asFrameOptimizer::OnSaveDefault( wxCommandEvent& event )
+void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event)
 {
     SaveOptions();
 }
 
-void asFrameOptimizer::SaveOptions( )
+void asFrameOptimizer::SaveOptions()
 {
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -232,7 +238,7 @@ void asFrameOptimizer::SaveOptions( )
     pConfig->Write("/Paths/PredictandDBFilePath", PredictandDBFilePath);
     wxString PredictorDir = m_dirPickerPredictor->GetPath();
     pConfig->Write("/Paths/PredictorDir", PredictorDir);
-	wxString OptimizerResultsDir = m_dirPickerOptimizerResults->GetPath();
+    wxString OptimizerResultsDir = m_dirPickerOptimizerResults->GetPath();
     pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
     pConfig->Write("/Optimizer/ParallelEvaluations", parallelEvaluations);
@@ -253,6 +259,7 @@ void asFrameOptimizer::SaveOptions( )
 
     pConfig->Flush();
 }
+
 /*
 void asFrameOptimizer::OnIdle( wxCommandEvent& event )
 {
@@ -260,16 +267,13 @@ void asFrameOptimizer::OnIdle( wxCommandEvent& event )
     m_staticTextState->SetLabel(state);
 }
 */
-void asFrameOptimizer::Launch( wxCommandEvent& event )
+void asFrameOptimizer::Launch(wxCommandEvent &event)
 {
     SaveOptions();
 
-    try
-    {
-        switch (m_choiceMethod->GetSelection())
-        {
-            case wxNOT_FOUND:
-            {
+    try {
+        switch (m_choiceMethod->GetSelection()) {
+            case wxNOT_FOUND: {
                 asLogError(_("Wrong method selection."));
                 break;
             }
@@ -313,28 +317,22 @@ void asFrameOptimizer::Launch( wxCommandEvent& event )
                 asLogError(_("Chosen method not defined yet."));
         }
 
-        if (m_methodCalibrator)
-        {
+        if (m_methodCalibrator) {
             m_methodCalibrator->SetParamsFilePath(m_filePickerParameters->GetPath());
             m_methodCalibrator->SetPredictandDBFilePath(m_filePickerPredictand->GetPath());
             m_methodCalibrator->SetPredictorDataDir(m_dirPickerPredictor->GetPath());
             m_methodCalibrator->Manager();
         }
-    }
-	catch (std::bad_alloc& ba)
-    {
+    } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
         asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
         asLogError(_("Failed to process the optimization."));
-    }
-    catch(asException& e)
-    {
-		wxString fullMessage = e.GetFullMessage();
-		if (!fullMessage.IsEmpty())
-		{
-			asLogError(fullMessage);
-		}
-		asLogError(_("Failed to process the optimization."));
+    } catch (asException &e) {
+        wxString fullMessage = e.GetFullMessage();
+        if (!fullMessage.IsEmpty()) {
+            asLogError(fullMessage);
+        }
+        asLogError(_("Failed to process the optimization."));
     }
 
     wxDELETE(m_methodCalibrator);

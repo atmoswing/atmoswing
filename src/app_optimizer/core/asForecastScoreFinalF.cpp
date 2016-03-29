@@ -25,19 +25,17 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreFinalF.h"
 
 asForecastScoreFinalF::asForecastScoreFinalF(Period period)
-:
-asForecastScoreFinal(period)
+        : asForecastScoreFinal(period)
 {
 
 }
 
-asForecastScoreFinalF::asForecastScoreFinalF(const wxString& periodString)
-:
-asForecastScoreFinal(periodString)
+asForecastScoreFinalF::asForecastScoreFinalF(const wxString &periodString)
+        : asForecastScoreFinal(periodString)
 {
 
 }
@@ -49,36 +47,24 @@ asForecastScoreFinalF::~asForecastScoreFinalF()
 
 float asForecastScoreFinalF::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
 {
-    wxASSERT(targetDates.rows()>1);
-    wxASSERT(forecastScores.rows()>1);
+    wxASSERT(targetDates.rows() > 1);
+    wxASSERT(forecastScores.rows() > 1);
 
-    int countB=0, countD=0, countTot=0;
+    int countB = 0, countD = 0, countTot = 0;
 
-    switch (m_period)
-    {
-        case (asForecastScoreFinal::Total):
-        {
-            for (int i=0; i<forecastScores.size(); i++)
-            {
+    switch (m_period) {
+        case (asForecastScoreFinal::Total): {
+            for (int i = 0; i < forecastScores.size(); i++) {
                 countTot++;
-                if (forecastScores[i]==1)
-                {
+                if (forecastScores[i] == 1) {
                     //
-                }
-                else if (forecastScores[i]==2)
-                {
+                } else if (forecastScores[i] == 2) {
                     countB++;
-                }
-                else if (forecastScores[i]==3)
-                {
+                } else if (forecastScores[i] == 3) {
                     //
-                }
-                else if (forecastScores[i]==4)
-                {
+                } else if (forecastScores[i] == 4) {
                     countD++;
-                }
-                else
-                {
+                } else {
                     asLogError(wxString::Format(_("The F score (%f) is not an authorized value."), forecastScores[i]));
                     return NaNFloat;
                 }
@@ -86,27 +72,20 @@ float asForecastScoreFinalF::Assess(Array1DFloat &targetDates, Array1DFloat &for
             break;
         }
 
-        default:
-        {
+        default: {
             asThrowException(_("Period not yet implemented in asForecastScoreFinalF."));
         }
     }
 
     float score;
 
-    if (countTot>0)
-    {
-        if (countB+countD>0)
-        {
-            score = static_cast<float>(countB)/static_cast<float>(countB+countD);
-        }
-        else
-        {
+    if (countTot > 0) {
+        if (countB + countD > 0) {
+            score = static_cast<float>(countB) / static_cast<float>(countB + countD);
+        } else {
             score = 0;
         }
-    }
-    else
-    {
+    } else {
         score = NaNFloat;
     }
 

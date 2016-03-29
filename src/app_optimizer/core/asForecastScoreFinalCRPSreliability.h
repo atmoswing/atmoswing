@@ -25,19 +25,20 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
- 
+
 #ifndef ASFORECASTSCOREFINALCRPSRELIABILITY_H
 #define ASFORECASTSCOREFINALCRPSRELIABILITY_H
 
 #include <asIncludes.h>
 #include <asForecastScoreFinal.h>
 
-class asForecastScoreFinalCRPSreliability: public asForecastScoreFinal
+class asForecastScoreFinalCRPSreliability
+        : public asForecastScoreFinal
 {
 public:
     asForecastScoreFinalCRPSreliability(Period period);
 
-    asForecastScoreFinalCRPSreliability(const wxString& periodString);
+    asForecastScoreFinalCRPSreliability(const wxString &periodString);
 
     virtual ~asForecastScoreFinalCRPSreliability();
 
@@ -46,6 +47,7 @@ public:
     float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray);
 
 protected:
+
 private:
 
 };

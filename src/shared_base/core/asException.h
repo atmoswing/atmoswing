@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASEXCEPTION_H
 #define ASEXCEPTION_H
 
@@ -36,10 +36,10 @@
 
 #include <asIncludes.h>
 
-class asException : public std::exception
+class asException
+        : public std::exception
 {
 public:
-
     typedef struct//!< Structure for older exceptions
     {
         wxString Message;
@@ -47,120 +47,62 @@ public:
         int LineNum;
     } PrevExceptions;
 
-    /** Empty constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException();
 
-    /** Default constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException(const wxString &message, const char *filename, unsigned int line);
 
-    /** Alternative constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException(const std::string &message, const char *filename, unsigned int line);
 
-    /** Alternative constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException(const char *message, const char *filename, unsigned int line);
 
-    /** Default constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException(const wxString &message, const char *filename, unsigned int line, asException prevexception);
 
-    /** Alternative constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException(const std::string &message, const char *filename, unsigned int line, asException prevexception);
 
-    /** Alternative constructor
-     * \param message The exception message
-     * \param filename The filename where the exception occured
-     * \param line The line number where the exception occured
-     */
     asException(const char *message, const char *filename, unsigned int line, asException prevexception);
 
-    /** Default destructor
-     *  \link http://www.agapow.net/programming/cpp/looser-throw-specifier
-     */
-    virtual ~asException() throw ();
+    virtual ~asException() throw();
 
-    /** Access m_message
-     * \return The current value of m_message
-     */
     wxString GetMessage()
     {
         return m_message;
     }
 
-    /** Set m_message
-     * \param val New value to set
-     */
     void SetMessage(const wxString &val)
     {
         m_message = val;
     }
 
-    /** Access m_fileName
-     * \return The current value of m_fileName
-     */
     wxString GetFileName()
     {
         return m_fileName;
     }
 
-    /** Access m_lineNum
-     * \return The current value of m_lineNum
-     */
     int GetLineNum()
     {
         return m_lineNum;
     }
 
-    /** Access m_hasChild
-     * \return The current value of m_hasChild
-     */
     bool HasChild()
     {
-        return m_previous.size()>0;
+        return m_previous.size() > 0;
     }
 
-
-    /** The virtual std what() member */
-    virtual const char* what() const throw()
+    virtual const char *what() const throw()
     {
         return m_message.char_str();
 
     }
 
-    /** Get the full error message
-     * \return A wxString with all information whithin
-     */
     wxString GetFullMessage();
 
 protected:
 
 private:
-    std::vector < PrevExceptions* > m_previous; //!< Member variable "m_previous"
-    wxString m_message; //!< Member variable "m_message"
-    wxString m_fileName; //!< Member variable "m_fileName"
-    int m_lineNum; //!< Member variable "m_lineNum"
+    std::vector<PrevExceptions *> m_previous;
+    wxString m_message;
+    wxString m_fileName;
+    int m_lineNum;
 };
 
 #endif

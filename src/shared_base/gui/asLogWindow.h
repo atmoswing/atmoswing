@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASLOGWINDOW_H
 #define ASLOGWINDOW_H
 
@@ -32,10 +32,13 @@
 
 #include "wx/log.h"
 
-class asLogWindow: public wxLogWindow
+class asLogWindow
+        : public wxLogWindow
 {
 public:
-    asLogWindow(wxFrame *parent, const wxString& title = _("AtmoSwing log window"), bool show = true, bool passToOld = false);
+    asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
+                bool passToOld = false);
+
     virtual ~asLogWindow();
 
     virtual void DoShow(bool bShow = true);
@@ -43,7 +46,7 @@ public:
 protected:
 
 private:
-    virtual bool OnFrameClose (wxFrame *frame = NULL);
+    virtual bool OnFrameClose(wxFrame *frame = NULL);
 
 };
 

@@ -24,27 +24,29 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFORECASTSCOREFINALRANKHISTOGRAMRELIABILITY_H
 #define ASFORECASTSCOREFINALRANKHISTOGRAMRELIABILITY_H
 
 #include <asIncludes.h>
 #include <asForecastScoreFinal.h>
 
-class asForecastScoreFinalRankHistogramReliability: public asForecastScoreFinal
+class asForecastScoreFinalRankHistogramReliability
+        : public asForecastScoreFinal
 {
 public:
     asForecastScoreFinalRankHistogramReliability(Period period);
 
-    asForecastScoreFinalRankHistogramReliability(const wxString& periodString);
+    asForecastScoreFinalRankHistogramReliability(const wxString &periodString);
 
     virtual ~asForecastScoreFinalRankHistogramReliability();
 
     float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
-    
+
     float AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize);
 
 protected:
+
 private:
 
 };

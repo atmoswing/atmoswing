@@ -24,18 +24,17 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asLogWindow.h"
 
-asLogWindow::asLogWindow(wxFrame *parent, const wxString& title, bool show, bool passToOld)
-:
-wxLogWindow(parent, title, show, passToOld)
+asLogWindow::asLogWindow(wxFrame *parent, const wxString &title, bool show, bool passToOld)
+        : wxLogWindow(parent, title, show, passToOld)
 {
     // Reduce the font size
-    wxFrame* pFrame = this->GetFrame();
+    wxFrame *pFrame = this->GetFrame();
     wxFont font = pFrame->GetFont();
     font.SetPointSize(8);
-    wxWindow* pLogTxt = pFrame->GetChildren()[0];
+    wxWindow *pLogTxt = pFrame->GetChildren()[0];
     pLogTxt->SetFont(font);
 
 }
@@ -55,7 +54,7 @@ void asLogWindow::DoShow(bool bShow)
     ThreadsManager().CritSectionConfig().Leave();
 }
 
-bool asLogWindow::OnFrameClose (wxFrame *frame)
+bool asLogWindow::OnFrameClose(wxFrame *frame)
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();

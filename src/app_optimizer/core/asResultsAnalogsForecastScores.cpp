@@ -33,8 +33,7 @@
 
 
 asResultsAnalogsForecastScores::asResultsAnalogsForecastScores()
-:
-asResults()
+        : asResults()
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveForecastScores", &m_saveIntermediateResults, false);
@@ -50,39 +49,40 @@ asResultsAnalogsForecastScores::~asResultsAnalogsForecastScores()
 void asResultsAnalogsForecastScores::Init(asParametersScoring &params)
 {
     m_predictandStationIds = params.GetPredictandStationIds();
-    if(m_saveIntermediateResults || m_loadIntermediateResults) BuildFileName(params);
+    if (m_saveIntermediateResults || m_loadIntermediateResults)
+        BuildFileName(params);
 
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
     m_forecastScores.resize(0);
-    m_forecastScores2DArray.resize(0,0);
+    m_forecastScores2DArray.resize(0, 0);
 }
 
 void asResultsAnalogsForecastScores::BuildFileName(asParametersScoring &params)
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
+                                           asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("AnalogsForecastScores_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+    m_filePath.Append(
+            wxString::Format("AnalogsForecastScores_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
     m_filePath.Append(".nc");
 }
 
 bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
-    if(!m_saveIntermediateResults) return false;
+    if (!m_saveIntermediateResults)
+        return false;
     wxString message = _("Saving intermediate file: ") + m_filePath;
     asLogMessage(message);
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -93,8 +93,7 @@ bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath)
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -136,18 +135,18 @@ bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath)
 bool asResultsAnalogsForecastScores::Load(const wxString &AlternateFilePath)
 {
     // If we don't want to save or the file doesn't exist
-    if(!m_loadIntermediateResults) return false;
-    if(!Exists()) return false;
-    if(m_currentStep!=0) return false;
+    if (!m_loadIntermediateResults)
+        return false;
+    if (!Exists())
+        return false;
+    if (m_currentStep != 0)
+        return false;
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -155,8 +154,7 @@ bool asResultsAnalogsForecastScores::Load(const wxString &AlternateFilePath)
 
     // Open the NetCDF file
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::ReadOnly);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -165,9 +163,9 @@ bool asResultsAnalogsForecastScores::Load(const wxString &AlternateFilePath)
     int TimeLength = ncFile.GetDimLength("time");
 
     // Get time and data
-    m_targetDates.resize( TimeLength );
+    m_targetDates.resize(TimeLength);
     ncFile.GetVar("target_dates", &m_targetDates[0]);
-    m_forecastScores.resize( TimeLength );
+    m_forecastScores.resize(TimeLength);
     ncFile.GetVar("forecast_scores", &m_forecastScores[0]);
 
     ncFile.Close();

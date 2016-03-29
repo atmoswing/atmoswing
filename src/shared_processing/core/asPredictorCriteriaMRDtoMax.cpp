@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asPredictorCriteriaMRDtoMax.h"
 
 asPredictorCriteriaMRDtoMax::asPredictorCriteriaMRDtoMax(int linAlgebraMethod)
-:
-asPredictorCriteria(linAlgebraMethod)
+        : asPredictorCriteria(linAlgebraMethod)
 {
     m_criteria = asPredictorCriteria::MRDtoMax;
     m_name = "MRDtoMax";
@@ -46,31 +45,29 @@ asPredictorCriteriaMRDtoMax::~asPredictorCriteriaMRDtoMax()
     //dtor
 }
 
-float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb)
+float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+                                          int colsNb)
 {
-    wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
-    wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
+    wxASSERT_MSG(refData.rows() == evalData.rows(),
+                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
+                                  (int) evalData.rows()));
+    wxASSERT_MSG(refData.cols() == evalData.cols(),
+                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
+                                  (int) evalData.cols()));
 
     float rd = 0;
 
-    switch (m_linAlgebraMethod)
-    {
+    switch (m_linAlgebraMethod) {
         case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
         case (asLIN_ALGEBRA): // Not implemented yet
-        case (asCOEFF_NOVAR):
-        {
-            for (int i=0; i<rowsNb; i++)
-            {
-                for (int j=0; j<colsNb; j++)
-                {
-                    if(wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)))>0)
-                    {
-                        rd += std::abs(evalData(i,j) - refData(i,j))/wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)));
-                    }
-                    else
-                    {
-                        if (std::abs(evalData(i,j) - refData(i,j))!=0)
-                        {
+        case (asCOEFF_NOVAR): {
+            for (int i = 0; i < rowsNb; i++) {
+                for (int j = 0; j < colsNb; j++) {
+                    if (wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j))) > 0) {
+                        rd += std::abs(evalData(i, j) - refData(i, j)) /
+                              wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j)));
+                    } else {
+                        if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
@@ -81,25 +78,18 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
             break;
         }
 
-        case (asCOEFF):
-        {
+        case (asCOEFF): {
             float dividend = 0, divisor = 0;
 
-            for (int i=0; i<rowsNb; i++)
-            {
-                for (int j=0; j<colsNb; j++)
-                {
-                    dividend = std::abs(evalData(i,j) - refData(i,j));
-                    divisor = wxMax(std::abs(evalData(i,j)), std::abs(refData(i,j)));
+            for (int i = 0; i < rowsNb; i++) {
+                for (int j = 0; j < colsNb; j++) {
+                    dividend = std::abs(evalData(i, j) - refData(i, j));
+                    divisor = wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j)));
 
-                    if(divisor>0)
-                    {
-                        rd += dividend/divisor;
-                    }
-                    else
-                    {
-                        if (dividend!=0)
-                        {
+                    if (divisor > 0) {
+                        rd += dividend / divisor;
+                    } else {
+                        if (dividend != 0) {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
@@ -110,13 +100,12 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
             break;
         }
 
-        default:
-        {
+        default: {
             asLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }
 
-    return rd/refData.size();
+    return rd / refData.size();
 
 }

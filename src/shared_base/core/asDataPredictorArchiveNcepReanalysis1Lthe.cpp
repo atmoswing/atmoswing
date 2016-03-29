@@ -34,8 +34,7 @@
 
 
 asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1Lthe(const wxString &dataId)
-:
-asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
+        : asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
@@ -52,7 +51,7 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_timeStepHours = 24;
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(32767);
-    m_nanValues.push_back(936*std::pow(10.f,34.f));
+    m_nanValues.push_back(936 * std::pow(10.f, 34.f));
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_xAxisStep = 2.5;
@@ -64,44 +63,35 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_fileAxisLevelName = "level";
 
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("hgt_500hPa", false))
-    {
+    if (m_dataId.IsSameAs("hgt_500hPa", false)) {
         m_dataParameter = GeopotentialHeight;
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
         m_firstTimeStepHours = 0;
         m_timeStepHours = 24;
-    }
-    else if (m_dataId.IsSameAs("hgt_1000hPa", false))
-    {
+    } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
         m_dataParameter = GeopotentialHeight;
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
         m_firstTimeStepHours = 12;
         m_timeStepHours = 24;
-    }
-    else if (m_dataId.IsSameAs("prwtr", false))
-    {
+    } else if (m_dataId.IsSameAs("prwtr", false)) {
         m_dataParameter = GeopotentialHeight;
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
         m_fileVariableName = "pwa";
         m_unit = m;
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
-    }
-    else if (m_dataId.IsSameAs("rhum", false))
-    {
+    } else if (m_dataId.IsSameAs("rhum", false)) {
         m_dataParameter = GeopotentialHeight;
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
         m_fileVariableName = "rhum";
         m_unit = m;
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
-    }
-    else
-    {
+    } else {
         m_dataParameter = NoDataParameter;
         m_fileNamePattern = wxEmptyString;
         m_fileVariableName = wxEmptyString;
@@ -118,13 +108,17 @@ bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
 {
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (m_directoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 

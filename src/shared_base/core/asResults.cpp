@@ -39,8 +39,8 @@ asResults::asResults()
     m_saveIntermediateResults = false;
     m_loadIntermediateResults = false;
     m_currentStep = 0;
-	m_fileVersionMajor = 1;
-	m_fileVersionMinor = 7;
+    m_fileVersionMajor = 1;
+    m_fileVersionMinor = 7;
     m_dateProcessed = 0;
 }
 
@@ -68,18 +68,13 @@ wxString asResults::GetPredictandStationIdsList()
 {
     wxString id;
 
-    if (m_predictandStationIds.size()==1)
-    {
+    if (m_predictandStationIds.size() == 1) {
         id << m_predictandStationIds[0];
-    }
-    else
-    {
-        for (int i=0; i<(int)m_predictandStationIds.size(); i++)
-        {
+    } else {
+        for (int i = 0; i < (int) m_predictandStationIds.size(); i++) {
             id << m_predictandStationIds[i];
 
-            if (i<(int)m_predictandStationIds.size()-1)
-            {
+            if (i < (int) m_predictandStationIds.size() - 1) {
                 id << ",";
             }
         }

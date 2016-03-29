@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef asThreadViewerLayerManagerZoomOut_H
 #define asThreadViewerLayerManagerZoomOut_H
 
@@ -32,23 +32,23 @@
 #include <asIncludes.h>
 #include "vroomgis.h"
 
-class asThreadViewerLayerManagerZoomOut: public asThread
+class asThreadViewerLayerManagerZoomOut
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager, wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
-    /** Default destructor */
+    asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
+                                      wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
+
     virtual ~asThreadViewerLayerManagerZoomOut();
 
     virtual ExitCode Entry();
 
-
 protected:
+
 private:
     vrViewerLayerManager *m_viewerLayerManager;
     wxCriticalSection *m_critSectionViewerLayerManager;
     vrRealRect m_rect;
-
 };
 
 #endif // asThreadViewerLayerManagerZoomOut_H

@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asPredictorCriteriaRMSEwithNaN.h"
 
 asPredictorCriteriaRMSEwithNaN::asPredictorCriteriaRMSEwithNaN(int linAlgebraMethod)
-:
-asPredictorCriteria(linAlgebraMethod)
+        : asPredictorCriteria(linAlgebraMethod)
 {
     m_criteria = asPredictorCriteria::RMSEwithNaN;
     m_name = "RMSEwithNaN";
@@ -46,36 +45,34 @@ asPredictorCriteriaRMSEwithNaN::~asPredictorCriteriaRMSEwithNaN()
     //dtor
 }
 
-float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb)
+float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+                                             int colsNb)
 {
-    wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
-    wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
+    wxASSERT_MSG(refData.rows() == evalData.rows(),
+                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
+                                  (int) evalData.rows()));
+    wxASSERT_MSG(refData.cols() == evalData.cols(),
+                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
+                                  (int) evalData.cols()));
 
-    wxASSERT(refData.rows()==rowsNb);
-    wxASSERT(refData.cols()==colsNb);
-    wxASSERT(evalData.rows()==rowsNb);
-    wxASSERT(evalData.cols()==colsNb);
+    wxASSERT(refData.rows() == rowsNb);
+    wxASSERT(refData.cols() == colsNb);
+    wxASSERT(evalData.rows() == rowsNb);
+    wxASSERT(evalData.cols() == colsNb);
 
     float mse = 0;
-    float finalsize = (float)refData.size();
+    float finalsize = (float) refData.size();
 
-    switch (m_linAlgebraMethod)
-    {
+    switch (m_linAlgebraMethod) {
         case (asLIN_ALGEBRA_NOVAR):
         case (asLIN_ALGEBRA):
         case (asCOEFF_NOVAR):
-        case (asCOEFF):
-        {
-            for (int i=0; i<rowsNb; i++)
-            {
-                for (int j=0; j<colsNb; j++)
-                {
-                    if (!asTools::IsNaN(evalData(i,j)) && !asTools::IsNaN(refData(i,j)))
-                    {
-                        mse += (evalData(i,j) - refData(i,j)) * (evalData(i,j) - refData(i,j));
-                    }
-                    else
-                    {
+        case (asCOEFF): {
+            for (int i = 0; i < rowsNb; i++) {
+                for (int j = 0; j < colsNb; j++) {
+                    if (!asTools::IsNaN(evalData(i, j)) && !asTools::IsNaN(refData(i, j))) {
+                        mse += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
+                    } else {
                         finalsize--;
                     }
                 }
@@ -84,18 +81,16 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
             break;
         }
 
-        default:
-        {
+        default: {
             asLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }
 
-    wxASSERT(mse>=0);
-    wxASSERT(refData.size()>0);
+    wxASSERT(mse >= 0);
+    wxASSERT(refData.size() > 0);
 
-    if (finalsize==0)
-    {
+    if (finalsize == 0) {
         asLogMessage(_("Only NaNs in the criteria calculation."));
         return NaNFloat;
     }

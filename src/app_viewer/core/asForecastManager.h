@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFORECASTMANAGER_H
 #define ASFORECASTMANAGER_H
 
@@ -36,13 +36,11 @@
 class asForecastManager
 {
 public:
-    /** Default constructor */
-    asForecastManager(wxWindow* parent, asWorkspace* workspace);
+    asForecastManager(wxWindow *parent, asWorkspace *workspace);
 
-    /** Default destructor */
     virtual ~asForecastManager();
 
-	bool HasForecasts();
+    bool HasForecasts();
 
     void ClearArrays();
 
@@ -66,7 +64,7 @@ public:
 
     int GetForecastRowFromLinearIndex(int linearIndex);
 
-    asResultsAnalogsForecastAggregator* GetAggregator()
+    asResultsAnalogsForecastAggregator *GetAggregator()
     {
         return m_aggregator;
     }
@@ -90,33 +88,27 @@ public:
     {
         return m_aggregator->GetPastForecastsNb(methodRow);
     }
-    
+
     int GetPastForecastsNb(int methodRow, int forecastRow)
     {
         return m_aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
-    asResultsAnalogsForecast* GetForecast(int methodRow, int forecastRow)
+    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow)
     {
         return m_aggregator->GetForecast(methodRow, forecastRow);
     }
 
-    asResultsAnalogsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow)
+    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow)
     {
         return m_aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
 
-    /** Access m_leadTimeOrigin
-     * \return The current value of m_leadTimeOrigin
-     */
     double GetLeadTimeOrigin()
     {
         return m_leadTimeOrigin;
     }
 
-    /** Set m_leadTimeOrigin
-     * \param val New value to set
-     */
     void SetLeadTimeOrigin(double val)
     {
         m_leadTimeOrigin = val;
@@ -220,14 +212,15 @@ public:
     wxArrayString GetLeadTimes(int methodRow, int forecastRow)
     {
         return m_aggregator->GetLeadTimes(methodRow, forecastRow);
-    } 
+    }
 
 protected:
+
 private:
-    wxWindow* m_parent;
-    asWorkspace* m_workspace;
-    asResultsAnalogsForecastAggregator* m_aggregator;
-    double m_leadTimeOrigin; //!< Member variable "m_leadTimeOrigin"
+    wxWindow *m_parent;
+    asWorkspace *m_workspace;
+    asResultsAnalogsForecastAggregator *m_aggregator;
+    double m_leadTimeOrigin;
     wxArrayString m_directoriesPastForecasts;
 
 };

@@ -24,20 +24,23 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASPANELSMANAGER_H
 #define ASPANELSMANAGER_H
 
 #include "asIncludes.h"
 
-class asPanelsManager : public wxObject
+class asPanelsManager
+        : public wxObject
 {
 public:
     asPanelsManager();
+
     virtual ~asPanelsManager();
 
-    void LayoutFrame(wxWindow* element);
-    wxWindow* GetTopFrame(wxWindow* element);
+    void LayoutFrame(wxWindow *element);
+
+    wxWindow *GetTopFrame(wxWindow *element);
 
 protected:
 

@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asPanelSidebarCalendar__
 #define __asPanelSidebarCalendar__
 
@@ -34,18 +34,20 @@
 #include "asIncludes.h"
 #include <wx/calctrl.h>
 
-/** Implementing asPanelSidebarCalendar */
-class asPanelSidebarCalendar : public asPanelSidebar
+class asPanelSidebarCalendar
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarCalendar( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                           const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarCalendar();
 
-    void OnSetPresentDate( wxCommandEvent& event );
+    void OnSetPresentDate(wxCommandEvent &event);
+
     void SetPresentDate();
 
-    wxCalendarCtrl* GetCalendar()
+    wxCalendarCtrl *GetCalendar()
     {
         return m_calendarForecastDate;
     }
@@ -64,10 +66,10 @@ public:
     }
 
 private:
-    wxCalendarCtrl* m_calendarForecastDate;
-    wxStaticText* m_staticTextForecastHour;
-    wxTextCtrl* m_textCtrlForecastHour;
-    wxBitmapButton* m_bpButtonNow;
+    wxCalendarCtrl *m_calendarForecastDate;
+    wxStaticText *m_staticTextForecastHour;
+    wxTextCtrl *m_textCtrlForecastHour;
+    wxBitmapButton *m_bpButtonNow;
 };
 
 #endif // __asPanelSidebar__

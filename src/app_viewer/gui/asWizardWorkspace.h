@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asWizardWorkspace__
 #define __asWizardWorkspace__
 
@@ -33,20 +33,28 @@
 
 #include "asIncludes.h"
 
-/** Implementing asWizardWorkspace */
-class asWizardWorkspace : public asWizardWorkspaceVirtual
+class asWizardWorkspace
+        : public asWizardWorkspaceVirtual
 {
 public:
-    /** Constructor */
-    asWizardWorkspace( wxWindow* parent, wxWindowID id = wxID_ANY );
+    asWizardWorkspace(wxWindow *parent, wxWindowID id = wxID_ANY);
+
     ~asWizardWorkspace();
-    
-    wxWizardPage *GetFirstPage() const { return m_pages.Item( 0 ); }
-    wxWizardPage *GetSecondPage() const { return m_pages.Item( 1 ); }
+
+    wxWizardPage *GetFirstPage() const
+    {
+        return m_pages.Item(0);
+    }
+
+    wxWizardPage *GetSecondPage() const
+    {
+        return m_pages.Item(1);
+    }
 
 protected:
-	void OnWizardFinished( wxWizardEvent& event );
-	void OnLoadExistingWorkspace( wxCommandEvent& event );
+    void OnWizardFinished(wxWizardEvent &event);
+
+    void OnLoadExistingWorkspace(wxCommandEvent &event);
 
 private:
     asWorkspace m_workspace;
