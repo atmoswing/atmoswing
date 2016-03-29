@@ -41,7 +41,7 @@ asThreadPreprocessorGradients::asThreadPreprocessorGradients(VArray2DFloat *grad
     m_status = Initializing;
     m_type = asThread::PreprocessorGradients;
     m_start = start;
-    m_End = end;
+    m_end = end;
     m_status = Waiting;
 }
 

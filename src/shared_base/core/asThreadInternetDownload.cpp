@@ -50,10 +50,10 @@ asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, con
     m_proxyUser = proxyUser;
     m_proxyPasswd = proxyPasswd;
     m_start = start;
-    m_End = wxMin(end, (int) m_fileNames.size() - 1);
+    m_end = wxMin(end, (int) m_fileNames.size() - 1);
 
-    wxASSERT((unsigned) m_End < urls.size());
-    wxASSERT((unsigned) m_End < fileNames.size());
+    wxASSERT((unsigned) m_end < urls.size());
+    wxASSERT((unsigned) m_end < fileNames.size());
 
     m_status = Waiting;
 }
@@ -84,7 +84,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         // Maximum time in seconds that we allow the connection to the server to take. This only limits the connection phase.
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 20);
 
-        for (int i_file = m_start; i_file <= m_End; i_file++) {
+        for (int i_file = m_start; i_file <= m_end; i_file++) {
             wxString fileName = m_fileNames[i_file];
             wxString filePath = m_destinationDir + DS + fileName;
             wxString url = m_urls[i_file];
