@@ -322,7 +322,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
     bool parallelDataLoad = false;
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, false);
+    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, true);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Load data once.
@@ -364,17 +364,7 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
                                     return false;
                                 }
                             }
-
-                            if(!HasPreloadedData(i_step, i_ptor, i_dat)) {
-                                asLogError(wxString::Format(_("No data was preloaded for step %d and level %d and variable %d"), i_step, i_ptor, i_dat));
-                                return false;
-                            }
                         }
-                    }
-
-                    if(!HasPreloadedData(i_step, i_ptor)) {
-                        asLogError(wxString::Format(_("No data was preloaded for step %d and level %d"), i_step, i_ptor));
-                        return false;
                     }
                 }
             }
@@ -384,6 +374,26 @@ bool asMethodCalibrator::PreloadData(asParametersScoring &params)
             // Wait until all done
             ThreadsManager().Wait(asThread::PreloadData);
             asLogMessage(_("Data preloaded with threads."));
+        }
+
+        // Check if data were preloaded.
+        for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
+            for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
+                if (params.NeedsPreloading(i_step, i_ptor)) {
+                    if (!params.NeedsPreprocessing(i_step, i_ptor)) {
+                        for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
+                            if(!HasPreloadedData(i_step, i_ptor, i_dat)) {
+                                asLogError(wxString::Format(_("No data was preloaded for step %d and level %d and variable %d"), i_step, i_ptor, i_dat));
+                                return false;
+                            }
+                        }
+                    }
+                    if(!HasPreloadedData(i_step, i_ptor)) {
+                        asLogError(wxString::Format(_("No data was preloaded for step %d and level %d"), i_step, i_ptor));
+                        return false;
+                    }
+                }
+            }
         }
     }
 

@@ -673,6 +673,8 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
                 if(indexStartLon<0)
                 {
                     asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, axisDataLon[0], (int)axisDataLon.size(), axisDataLon[axisDataLon.size()-1]));
+                    ncFile.Close();
+                    ThreadsManager().CritSectionNetCDF().Leave();
                     return false;
                 }
                 wxASSERT_MSG(indexStartLon>=0, wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", axisDataLon[0], (int)axisDataLon.size(), axisDataLon[axisDataLon.size()-1], lonMin));
@@ -695,7 +697,16 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
             {
                 indexLevel = asTools::SortedArraySearch(&axisDataLevel[0], &axisDataLevel[axisDataLevel.size()-1], m_level, 0.01f);
                 if (indexLevel<0) {
-                    asLogError(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName));
+                    asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName));
+                    ncFile.Close();
+                    ThreadsManager().CritSectionNetCDF().Leave();
+                    return false;
+                }
+            } else {
+                if (m_level > 0) {
+                    asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName));
+                    ncFile.Close();
+                    ThreadsManager().CritSectionNetCDF().Leave();
                     return false;
                 }
             }
