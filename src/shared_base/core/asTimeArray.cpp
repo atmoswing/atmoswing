@@ -126,7 +126,7 @@ asTimeArray::asTimeArray(VectorDouble &timeArray)
     m_mode = Custom;
     m_timeStepDays = timeArray[1] - timeArray[0];
     m_start = timeArray[0];
-    m_End = timeArray[timeArray.size() - 1];
+    m_end = timeArray[timeArray.size() - 1];
     m_intervalDays = 0;
     m_exclusionDays = 0;
     m_timeArray.resize(timeArray.size());
@@ -146,7 +146,7 @@ asTimeArray::asTimeArray(Array1DDouble &timeArray)
     m_mode = Custom;
     m_timeStepDays = timeArray[1] - timeArray[0];
     m_start = timeArray[0];
-    m_End = timeArray[timeArray.size() - 1];
+    m_end = timeArray[timeArray.size() - 1];
     m_intervalDays = 0;
     m_exclusionDays = 0;
     m_timeArray = timeArray;
@@ -385,12 +385,12 @@ bool asTimeArray::BuildArraySimple()
 {
     // Check the timestep integrity
     wxCHECK(m_timeStepDays > 0, false);
-    wxASSERT_MSG(fmod((m_End - m_start), m_timeStepDays) == 0,
-                 wxString::Format("start=%f, end=%f, timestepdays=%f", m_start, m_End, m_timeStepDays));
-    wxCHECK(fmod((m_End - m_start), m_timeStepDays) == 0, false);
+    wxASSERT_MSG(fmod((m_end - m_start), m_timeStepDays) == 0,
+                 wxString::Format("start=%f, end=%f, timestepdays=%f", m_start, m_end, m_timeStepDays));
+    wxCHECK(fmod((m_end - m_start), m_timeStepDays) == 0, false);
 
     // Get the time serie length for allocation.
-    size_t length = 1 + (m_End - m_start) / m_timeStepDays;
+    size_t length = 1 + (m_end - m_start) / m_timeStepDays;
     m_timeArray.resize(length);
 
     // Build array
@@ -420,16 +420,16 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
 {
     // Check the timestep integrity
     wxASSERT(m_timeStepDays > 0);
-    wxASSERT(fmod((m_End - m_start), m_timeStepDays) == 0);
+    wxASSERT(fmod((m_end - m_start), m_timeStepDays) == 0);
     wxCHECK(m_timeStepDays > 0, false);
-    wxCHECK(fmod((m_End - m_start), m_timeStepDays) == 0, false);
-    wxASSERT(m_End > m_start);
+    wxCHECK(fmod((m_end - m_start), m_timeStepDays) == 0, false);
+    wxASSERT(m_end > m_start);
     wxASSERT(m_start > 0);
-    wxASSERT(m_End > 0);
+    wxASSERT(m_end > 0);
 
     // The period to exclude
-    double excludestart = forecastDate - m_ExclusionDays;
-    double excludeend = forecastDate + m_ExclusionDays;
+    double excludestart = forecastDate - m_exclusionDays;
+    double excludeend = forecastDate + m_exclusionDays;
 
     // Get the structure of the forecast date
     TimeStruct forecastDateStruct = GetTimeStruct(forecastDate);
@@ -472,7 +472,7 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
         }
 
         for (double thisTimeStep = currentStart; thisTimeStep <= currentEnd; thisTimeStep += m_timeStepDays) {
-            if (thisTimeStep >= m_start && thisTimeStep <= m_End) {
+            if (thisTimeStep >= m_start && thisTimeStep <= m_end) {
                 if (thisTimeStep < excludestart || thisTimeStep > excludeend) {
                     wxASSERT(counter < totLength);
 
@@ -504,16 +504,16 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
 {
     // Check the timestep integrity
     wxCHECK(m_timeStepDays > 0, false);
-    wxCHECK(fmod((m_End - m_start), m_timeStepDays) < 0.000001, false);
+    wxCHECK(fmod((m_end - m_start), m_timeStepDays) < 0.000001, false);
 
     // The period to exclude
     double excludestart, excludeend;
-    if (m_ExclusionDays == 0) {
+    if (m_exclusionDays == 0) {
         excludestart = 0;
         excludeend = 0;
     } else {
-        excludestart = forecastdate - m_ExclusionDays;
-        excludeend = forecastdate + m_ExclusionDays;
+        excludestart = forecastdate - m_exclusionDays;
+        excludeend = forecastdate + m_exclusionDays;
     }
 
     // Get the season
@@ -602,14 +602,14 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     double startlastyear = GetMJD(startlastyearstruct);
     double endlastyear = GetMJD(endlastyearstruct);
 
-    if (startlastyear > m_End) {
+    if (startlastyear > m_end) {
         startlastyear = SubtractYear(startlastyear);
         endlastyearstruct.month = GetSeasonEnd(forecastseason, endstruct.year - 1).month;
         endlastyearstruct.day = GetSeasonEnd(forecastseason, endstruct.year - 1).day;
         endlastyear = GetMJD(endlastyearstruct);
     }
 
-    if (endlastyear > m_End) {
+    if (endlastyear > m_end) {
         endlastyear = m_end;
     }
 
@@ -790,7 +790,7 @@ int asTimeArray::GetIndexFirstAfter(double date)
 {
     wxASSERT(m_initialized);
 
-    if (date > m_End) {
+    if (date > m_end) {
         asLogWarning(_("Trying to get a date outside of the time array."));
         return NaNDouble;
     }

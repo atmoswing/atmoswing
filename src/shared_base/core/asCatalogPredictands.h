@@ -357,7 +357,7 @@ private:
     wxString m_name;
     wxString m_description;
     double m_start;
-    double m_End;
+    double m_end;
     float m_timeZoneHours;
     double m_timeStepHours;
     double m_firstTimeStepHour;

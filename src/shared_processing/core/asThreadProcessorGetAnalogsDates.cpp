@@ -68,10 +68,10 @@ asThreadProcessorGetAnalogsDates::asThreadProcessorGetAnalogsDates(std::vector<a
     m_end = end;
     m_pContainsNaNs = containsNaNs;
 
-    wxASSERT_MSG(m_End < timeArrayTargetSelection->GetSize(),
+    wxASSERT_MSG(m_end < timeArrayTargetSelection->GetSize(),
                  _("The given time array end is superior to the time array size."));
-    wxASSERT_MSG(m_End != timeArrayTargetSelection->GetSize() - 2,
-                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_End,
+    wxASSERT_MSG(m_end != timeArrayTargetSelection->GetSize() - 2,
+                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
                                   (int) timeArrayTargetSelection->GetSize()));
 
     m_status = Waiting;
@@ -101,7 +101,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     int analogsNb = m_params.GetAnalogsNumber(m_step);
     bool isasc = (m_criteria[0]->GetOrder() == Asc);
 
-    wxASSERT(m_End < timeTargetSelection.size());
+    wxASSERT(m_end < timeTargetSelection.size());
     wxASSERT(timeArchiveDataSize == (int) (m_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetDataSize == (int) (m_pPredictorsTarget)[0]->GetData().size());
 
@@ -120,8 +120,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     int i_timeTargStart = 0;
 
     // Loop through every timestep as target data
-    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
-    for (int i_dateTarg = m_start; i_dateTarg <= m_End; i_dateTarg++) {
+    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_end); i_dateTarg++)
+    for (int i_dateTarg = m_start; i_dateTarg <= m_end; i_dateTarg++) {
         // Check if the next data is the following. If not, search for it in the array.
         if (timeTargetDataSize > i_timeTargStart + 1 &&
             std::abs(timeTargetSelection[i_dateTarg] - timeTargetData[i_timeTargStart + 1]) < 0.01) {

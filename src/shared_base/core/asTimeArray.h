@@ -153,7 +153,7 @@ public:
     double GetLastDayHour()
     {
         double fractpart, intpart;
-        fractpart = modf(m_End, &intpart);
+        fractpart = modf(m_end, &intpart);
         return fractpart * 24;
     }
 
@@ -179,7 +179,7 @@ public:
 
     double GetExclusionHours()
     {
-        return m_ExclusionDays * 24;
+        return m_exclusionDays * 24;
     }
 
     double GetExclusionDays()
@@ -232,10 +232,10 @@ private:
     Mode m_mode;
     Array1DDouble m_timeArray;
     double m_start;
-    double m_End;
+    double m_end;
     double m_timeStepDays;
     double m_intervalDays;
-    double m_ExclusionDays;
+    double m_exclusionDays;
     VectorInt m_forbiddenYears;
 
 };

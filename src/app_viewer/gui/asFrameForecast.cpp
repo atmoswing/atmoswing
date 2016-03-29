@@ -1627,7 +1627,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
     vrDisplayToolMessage *msg = (vrDisplayToolMessage *) event.GetClientData();
     wxASSERT(msg);
 
-    if (msg->m_EvtType == vrEVT_TOOL_ZOOM) {
+    if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
         // Get rectangle
         vrCoordinate *coord = m_viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
@@ -1648,7 +1648,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
 #else
         m_viewerLayerManager->Zoom(fittedRect);
 #endif
-    } else if (msg->m_EvtType == vrEVT_TOOL_ZOOMOUT) {
+    } else if (msg->m_evtType == vrEVT_TOOL_ZOOMOUT) {
         // Get rectangle
         vrCoordinate *coord = m_viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
@@ -1669,7 +1669,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
 #else
         m_viewerLayerManager->ZoomOut(fittedRect);
 #endif
-    } else if (msg->m_EvtType == vrEVT_TOOL_SELECT) {
+    } else if (msg->m_evtType == vrEVT_TOOL_SELECT) {
         // If no forecast open
         if (m_forecastManager->GetMethodsNb() == 0) {
             wxDELETE(msg);
@@ -1753,7 +1753,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
             ReloadViewerLayerManager();
         }
 
-    } else if (msg->m_EvtType == vrEVT_TOOL_PAN) {
+    } else if (msg->m_evtType == vrEVT_TOOL_PAN) {
         // Get rectangle
         vrCoordinate *coord = m_viewerLayerManager->GetDisplay()->GetCoordinate();
         wxASSERT(coord);
