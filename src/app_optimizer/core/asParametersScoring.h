@@ -34,7 +34,8 @@
 
 class asFileParameters;
 
-class asParametersScoring : public asParameters
+class asParametersScoring
+        : public asParameters
 {
 public:
 
@@ -115,10 +116,8 @@ public:
     typedef std::vector<ParamsStepBool> VectorParamsStepBool;
 
 
-    /** Default constructor */
     asParametersScoring();
 
-    /** Default destructor */
     virtual ~asParametersScoring();
 
     void AddPredictorVect(ParamsStepVect &step);
@@ -260,7 +259,6 @@ public:
     }
 
     /* Vector elements */
-
 
     VectorInt GetAnalogsNumberVector(int i_step)
     {

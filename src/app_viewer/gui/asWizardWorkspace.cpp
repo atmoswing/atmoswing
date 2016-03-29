@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asWizardWorkspace.h"
 
 #include <wx/statline.h>
@@ -32,11 +32,10 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 
-asWizardWorkspace::asWizardWorkspace( wxWindow* parent, wxWindowID id )
-:
-asWizardWorkspaceVirtual( parent, id )
+asWizardWorkspace::asWizardWorkspace(wxWindow *parent, wxWindowID id)
+        : asWizardWorkspaceVirtual(parent, id)
 {
-    
+
 }
 
 asWizardWorkspace::~asWizardWorkspace()
@@ -44,7 +43,7 @@ asWizardWorkspace::~asWizardWorkspace()
 
 }
 
-void asWizardWorkspace::OnWizardFinished( wxWizardEvent& event )
+void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
 {
     wxString filePath = m_filePickerWorkspaceFile->GetPath();
     m_workspace.SetFilePath(filePath);
@@ -55,8 +54,7 @@ void asWizardWorkspace::OnWizardFinished( wxWizardEvent& event )
     wxString baseMapPath = wxEmptyString;
     wxString wmsDir = wxStandardPaths::Get().GetDataDir();
     wmsDir = wmsDir + DS + "data" + DS + "wms" + DS + "basemaps" + DS;
-    switch (baseMapSlct)
-    {
+    switch (baseMapSlct) {
         case 0: // Custom layers
 
             break;
@@ -80,8 +78,7 @@ void asWizardWorkspace::OnWizardFinished( wxWizardEvent& event )
             break;
     }
 
-    if (!baseMapPath.IsEmpty())
-    {
+    if (!baseMapPath.IsEmpty()) {
         m_workspace.AddLayer();
         m_workspace.SetLayerPath(0, baseMapPath);
         m_workspace.SetLayerTransparency(0, 0);
@@ -90,17 +87,16 @@ void asWizardWorkspace::OnWizardFinished( wxWizardEvent& event )
     }
 
     m_workspace.Save();
-    
-    if (!filePath.IsEmpty())
-    {
+
+    if (!filePath.IsEmpty()) {
         wxConfigBase *pConfig = wxFileConfig::Get();
         pConfig->Write("/Workspace/LastOpened", filePath);
     }
 }
 
-void asWizardWorkspace::OnLoadExistingWorkspace( wxCommandEvent& event )
+void asWizardWorkspace::OnLoadExistingWorkspace(wxCommandEvent &event)
 {
-    wxCommandEvent eventOpen (asEVT_ACTION_OPEN_WORKSPACE);
+    wxCommandEvent eventOpen(asEVT_ACTION_OPEN_WORKSPACE);
     GetParent()->ProcessWindowEvent(eventOpen);
     Close();
 }

@@ -24,16 +24,16 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asThreadViewerLayerManagerReload.h"
 
 #include <asTimeArray.h>
 #include <asThreadsManager.h>
 
 
-asThreadViewerLayerManagerReload::asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager, wxCriticalSection *critSectionViewerLayerManager)
-:
-asThread()
+asThreadViewerLayerManagerReload::asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager,
+                                                                   wxCriticalSection *critSectionViewerLayerManager)
+        : asThread()
 {
     m_status = Initializing;
 
@@ -58,5 +58,5 @@ wxThread::ExitCode asThreadViewerLayerManagerReload::Entry()
     m_viewerLayerManager->Reload();
     m_critSectionViewerLayerManager->Leave();
 
-    return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode) 0;
 }

@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asPanelSidebarGisLayers__
 #define __asPanelSidebarGisLayers__
 
@@ -34,24 +34,22 @@
 #include "asIncludes.h"
 #include "vroomgis.h"
 
-/** Implementing asPanelSidebarGisLayers */
-class asPanelSidebarGisLayers : public asPanelSidebar
+class asPanelSidebarGisLayers
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarGisLayers( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                            const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarGisLayers();
 
-    vrViewerTOCList* GetTocCtrl()
+    vrViewerTOCList *GetTocCtrl()
     {
         return m_tocCtrl;
     }
 
 private:
-    // vroomgis
     vrViewerTOCList *m_tocCtrl;
-
-    //void OnPaint( wxCommandEvent& event );
 };
 
 #endif // __asPanelSidebarGisLayers__

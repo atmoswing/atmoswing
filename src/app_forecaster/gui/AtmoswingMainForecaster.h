@@ -29,21 +29,24 @@
 #ifndef AtmoswingMAINFORECATSER_H
 #define AtmoswingMAINFORECATSER_H
 
-//#include "version.h"
 #include "asIncludes.h"
 #include "AtmoswingAppForecaster.h"
 #include "asFrameMain.h"
 
 
-class AtmoswingFrameForecaster: public asFrameMain
+class AtmoswingFrameForecaster
+        : public asFrameMain
 {
 public:
     AtmoswingFrameForecaster(wxFrame *frame);
+
     ~AtmoswingFrameForecaster();
+
 private:
-    virtual void OnClose(wxCloseEvent& event);
-    virtual void OnQuit(wxCommandEvent& event);
-    void ProcessTest();
+    virtual void OnClose(wxCloseEvent &event);
+
+    virtual void OnQuit(wxCommandEvent &event);
+
     void SetDefaultOptions();
 };
 

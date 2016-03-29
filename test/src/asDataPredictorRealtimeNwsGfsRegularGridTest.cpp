@@ -40,7 +40,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 10;
@@ -51,7 +51,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -74,16 +74,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
     9321	9317	9314	9310	9303	9295
     9336	9329	9325	9320	9315	9308
     */
-    EXPECT_NEAR(9308, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9305, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9297, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9290, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9285, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9312, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9321, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9336, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9308, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9305, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9297, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9285, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9312, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9336, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9308, hgt[0](3, 5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -92,16 +92,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
     9314	9308	9304	9301	9297	9293
     9326	9321	9313	9308	9304	9300
     */
-    EXPECT_NEAR(9302, hgt[1](0,0), 0.5);
-    EXPECT_NEAR(9299, hgt[1](0,1), 0.5);
-    EXPECT_NEAR(9297, hgt[1](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[1](0,3), 0.5);
-    EXPECT_NEAR(9291, hgt[1](0,4), 0.5);
-    EXPECT_NEAR(9289, hgt[1](0,5), 0.5);
-    EXPECT_NEAR(9304, hgt[1](1,0), 0.5);
-    EXPECT_NEAR(9314, hgt[1](2,0), 0.5);
-    EXPECT_NEAR(9326, hgt[1](3,0), 0.5);
-    EXPECT_NEAR(9300, hgt[1](3,5), 0.5);
+    EXPECT_NEAR(9302, hgt[1](0, 0), 0.5);
+    EXPECT_NEAR(9299, hgt[1](0, 1), 0.5);
+    EXPECT_NEAR(9297, hgt[1](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[1](0, 3), 0.5);
+    EXPECT_NEAR(9291, hgt[1](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[1](0, 5), 0.5);
+    EXPECT_NEAR(9304, hgt[1](1, 0), 0.5);
+    EXPECT_NEAR(9314, hgt[1](2, 0), 0.5);
+    EXPECT_NEAR(9326, hgt[1](3, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[1](3, 5), 0.5);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -110,16 +110,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
     9311	9308	9304	9298	9294	9291
     9321	9318	9314	9307	9299	9295
     */
-    EXPECT_NEAR(9299, hgt[2](0,0), 0.5);
-    EXPECT_NEAR(9297, hgt[2](0,1), 0.5);
-    EXPECT_NEAR(9295, hgt[2](0,2), 0.5);
-    EXPECT_NEAR(9293, hgt[2](0,3), 0.5);
-    EXPECT_NEAR(9290, hgt[2](0,4), 0.5);
-    EXPECT_NEAR(9289, hgt[2](0,5), 0.5);
-    EXPECT_NEAR(9303, hgt[2](1,0), 0.5);
-    EXPECT_NEAR(9311, hgt[2](2,0), 0.5);
-    EXPECT_NEAR(9321, hgt[2](3,0), 0.5);
-    EXPECT_NEAR(9295, hgt[2](3,5), 0.5);
+    EXPECT_NEAR(9299, hgt[2](0, 0), 0.5);
+    EXPECT_NEAR(9297, hgt[2](0, 1), 0.5);
+    EXPECT_NEAR(9295, hgt[2](0, 2), 0.5);
+    EXPECT_NEAR(9293, hgt[2](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[2](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[2](0, 5), 0.5);
+    EXPECT_NEAR(9303, hgt[2](1, 0), 0.5);
+    EXPECT_NEAR(9311, hgt[2](2, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[2](3, 0), 0.5);
+    EXPECT_NEAR(9295, hgt[2](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -131,7 +131,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 10;
@@ -142,7 +142,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -165,16 +165,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
     9321	9317	9314	9310	9303	9295
     9336	9329	9325	9320	9315	9308
     */
-    EXPECT_NEAR(9308, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9305, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9297, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9290, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9285, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9312, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9321, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9336, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9308, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9305, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9297, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9285, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9312, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9336, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9308, hgt[0](3, 5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -183,16 +183,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
     9314	9308	9304	9301	9297	9293
     9326	9321	9313	9308	9304	9300
     */
-    EXPECT_NEAR(9302, hgt[1](0,0), 0.5);
-    EXPECT_NEAR(9299, hgt[1](0,1), 0.5);
-    EXPECT_NEAR(9297, hgt[1](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[1](0,3), 0.5);
-    EXPECT_NEAR(9291, hgt[1](0,4), 0.5);
-    EXPECT_NEAR(9289, hgt[1](0,5), 0.5);
-    EXPECT_NEAR(9304, hgt[1](1,0), 0.5);
-    EXPECT_NEAR(9314, hgt[1](2,0), 0.5);
-    EXPECT_NEAR(9326, hgt[1](3,0), 0.5);
-    EXPECT_NEAR(9300, hgt[1](3,5), 0.5);
+    EXPECT_NEAR(9302, hgt[1](0, 0), 0.5);
+    EXPECT_NEAR(9299, hgt[1](0, 1), 0.5);
+    EXPECT_NEAR(9297, hgt[1](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[1](0, 3), 0.5);
+    EXPECT_NEAR(9291, hgt[1](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[1](0, 5), 0.5);
+    EXPECT_NEAR(9304, hgt[1](1, 0), 0.5);
+    EXPECT_NEAR(9314, hgt[1](2, 0), 0.5);
+    EXPECT_NEAR(9326, hgt[1](3, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[1](3, 5), 0.5);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -201,16 +201,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
     9311	9308	9304	9298	9294	9291
     9321	9318	9314	9307	9299	9295
     */
-    EXPECT_NEAR(9299, hgt[2](0,0), 0.5);
-    EXPECT_NEAR(9297, hgt[2](0,1), 0.5);
-    EXPECT_NEAR(9295, hgt[2](0,2), 0.5);
-    EXPECT_NEAR(9293, hgt[2](0,3), 0.5);
-    EXPECT_NEAR(9290, hgt[2](0,4), 0.5);
-    EXPECT_NEAR(9289, hgt[2](0,5), 0.5);
-    EXPECT_NEAR(9303, hgt[2](1,0), 0.5);
-    EXPECT_NEAR(9311, hgt[2](2,0), 0.5);
-    EXPECT_NEAR(9321, hgt[2](3,0), 0.5);
-    EXPECT_NEAR(9295, hgt[2](3,5), 0.5);
+    EXPECT_NEAR(9299, hgt[2](0, 0), 0.5);
+    EXPECT_NEAR(9297, hgt[2](0, 1), 0.5);
+    EXPECT_NEAR(9295, hgt[2](0, 2), 0.5);
+    EXPECT_NEAR(9293, hgt[2](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[2](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[2](0, 5), 0.5);
+    EXPECT_NEAR(9303, hgt[2](1, 0), 0.5);
+    EXPECT_NEAR(9311, hgt[2](2, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[2](3, 0), 0.5);
+    EXPECT_NEAR(9295, hgt[2](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -222,7 +222,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -3;
@@ -233,7 +233,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -256,16 +256,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
     9451	9436	9421	9402	9379	9364
     9462	9449	9437	9423	9410	9395
     */
-    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9395, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9395, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -277,7 +277,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -3;
@@ -288,7 +288,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -311,16 +311,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
     9451	9436	9421	9402	9379	9364
     9462	9449	9437	9423	9410	9395
     */
-    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9395, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9395, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -332,7 +332,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 0;
@@ -343,7 +343,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -366,16 +366,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -387,7 +387,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 0;
@@ -398,7 +398,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -421,16 +421,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -442,7 +442,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 360;
@@ -453,7 +453,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -476,16 +476,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -497,7 +497,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 360;
@@ -508,7 +508,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -531,16 +531,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -552,7 +552,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 355;
@@ -563,7 +563,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -586,16 +586,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
     9475	9465	9451	9436	9421	9402
     9485	9473	9462	9449	9437	9423
     */
-    EXPECT_NEAR(9451, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9438, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9422, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9463, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9475, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9485, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9451, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9438, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9463, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9475, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9485, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -607,7 +607,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = 355;
@@ -618,7 +618,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -641,16 +641,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
     9475	9465	9451	9436	9421	9402
     9485	9473	9462	9449	9437	9423
     */
-    EXPECT_NEAR(9451, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9438, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9422, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9463, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9475, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9485, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9451, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9438, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9402, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9333, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9463, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9475, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9485, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -662,7 +662,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -3;
@@ -674,7 +674,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -697,16 +697,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -718,7 +718,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -3;
@@ -730,7 +730,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -753,16 +753,16 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9422, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3,0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](3,5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9308, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](3, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -774,7 +774,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -3;
@@ -786,7 +786,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -808,15 +808,15 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9400, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9368, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9314, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9422, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](2,5), 0.5);
+    EXPECT_NEAR(9400, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9368, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9314, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](2, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -828,7 +828,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -3;
@@ -840,7 +840,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -862,15 +862,15 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9400, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9368, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9314, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0,5), 0.5);
-    EXPECT_NEAR(9422, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](2,5), 0.5);
+    EXPECT_NEAR(9400, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9368, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9314, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0](2, 5), 0.5);
 
     wxDELETE(predictor);
 }
@@ -882,7 +882,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmal
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -5;
@@ -894,7 +894,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmal
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -916,18 +916,18 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmal
     9457	7536.6	9351	7444.4	9316
     9485	9455.5	9423	9390	9373
     */
-    EXPECT_NEAR(9431, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9397.5, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9457, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1,1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1,3), 0.5);
-    EXPECT_NEAR(9485, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9455.5, hgt[0](2,1), 0.5);
-    EXPECT_NEAR(9390, hgt[0](2,3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](2,4), 0.5);
+    EXPECT_NEAR(9431, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9457, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1, 3), 0.5);
+    EXPECT_NEAR(9485, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9455.5, hgt[0](2, 1), 0.5);
+    EXPECT_NEAR(9390, hgt[0](2, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](2, 4), 0.5);
 
     wxDELETE(predictor);
 }
@@ -939,7 +939,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLarg
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -5;
@@ -951,7 +951,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLarg
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -973,18 +973,18 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLarg
     9457	9420.75	9351	9305.5	9316
     9485	9455.5	9423	9390	9373
     */
-    EXPECT_NEAR(9431, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9397.5, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0,4), 0.5);
-    EXPECT_NEAR(9457, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1,1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1,3), 0.5);
-    EXPECT_NEAR(9485, hgt[0](2,0), 0.5);
-    EXPECT_NEAR(9455.5, hgt[0](2,1), 0.5);
-    EXPECT_NEAR(9390, hgt[0](2,3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](2,4), 0.5);
+    EXPECT_NEAR(9431, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0, 4), 0.5);
+    EXPECT_NEAR(9457, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1, 3), 0.5);
+    EXPECT_NEAR(9485, hgt[0](2, 0), 0.5);
+    EXPECT_NEAR(9455.5, hgt[0](2, 1), 0.5);
+    EXPECT_NEAR(9390, hgt[0](2, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0](2, 4), 0.5);
 
     wxDELETE(predictor);
 }
@@ -996,7 +996,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -2.5;
@@ -1008,7 +1008,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1029,14 +1029,14 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
-    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
-    EXPECT_NEAR(9316, hgt[0](1,3), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
+    EXPECT_NEAR(9316, hgt[0](1, 3), 0.5);
 
     wxDELETE(predictor);
 }
@@ -1048,7 +1048,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -2.5;
@@ -1060,7 +1060,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1081,14 +1081,14 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
-    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0,3), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
-    EXPECT_NEAR(9316, hgt[0](1,3), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9304, hgt[0](0, 3), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
+    EXPECT_NEAR(9316, hgt[0](1, 3), 0.5);
 
     wxDELETE(predictor);
 }
@@ -1100,7 +1100,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -2.5;
@@ -1112,7 +1112,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1133,12 +1133,12 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
-    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
 
     wxDELETE(predictor);
 }
@@ -1150,7 +1150,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
-    asTimeArray dates(asTime::GetMJD(2011,4,11,12,00), asTime::GetMJD(2011,4,12,00,00), 6, "Simple");
+    asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
     double Xmin = -2.5;
@@ -1162,7 +1162,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     float level = 300;
     asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
 
-    asDataPredictorRealtime* predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
+    asDataPredictorRealtime *predictor = asDataPredictorRealtime::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
 
     // Create file names
@@ -1183,12 +1183,12 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
-    EXPECT_NEAR(9397.5, hgt[0](0,0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0,1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0,2), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1,0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1,1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1,2), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
 
     wxDELETE(predictor);
 }

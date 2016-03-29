@@ -28,8 +28,7 @@
 #include "asFileWorkspace.h"
 
 asFileWorkspace::asFileWorkspace(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFileXml(FileName, FileMode)
+        : asFileXml(FileName, FileMode)
 {
     // FindAndOpen() processed by asFileXml
 }
@@ -41,20 +40,24 @@ asFileWorkspace::~asFileWorkspace()
 
 bool asFileWorkspace::EditRootElement()
 {
-    if (!GetRoot()) return false;
+    if (!GetRoot())
+        return false;
     GetRoot()->AddAttribute("target", "viewer");
     return true;
 }
 
 bool asFileWorkspace::CheckRootElement()
 {
-    if (!GetRoot()) return false;
-    if (!IsAnAtmoSwingFile()) return false;
-    if (!FileVersionIsOrAbove(1.0)) return false;
+    if (!GetRoot())
+        return false;
+    if (!IsAnAtmoSwingFile())
+        return false;
+    if (!FileVersionIsOrAbove(1.0))
+        return false;
 
-    if (!GetRoot()->GetAttribute("target").IsSameAs("viewer", false))
-    {
-        asLogError(wxString::Format(_("The file %s is not a parameters file for the Viewer."), m_fileName.GetFullName()));
+    if (!GetRoot()->GetAttribute("target").IsSameAs("viewer", false)) {
+        asLogError(
+                wxString::Format(_("The file %s is not a parameters file for the Viewer."), m_fileName.GetFullName()));
         return false;
     }
     return true;

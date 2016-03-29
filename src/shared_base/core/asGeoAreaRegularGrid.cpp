@@ -25,27 +25,30 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asGeoAreaRegularGrid.h"
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height, int flatAllowed)
-:
-asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
+                                           const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height,
+                                           int flatAllowed)
+        : asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
-    if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
+    if (!IsOnGrid(Xstep, Ystep))
+        asThrowException(_("The given area does not match a grid."));
 
-    m_xstep = Xstep;
-    m_ystep = Ystep;
+    m_xStep = Xstep;
+    m_yStep = Ystep;
 }
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level, float Height, int flatAllowed)
-:
-asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
+asGeoAreaRegularGrid::asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth,
+                                           double Ystep, float Level, float Height, int flatAllowed)
+        : asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
-    if(!IsOnGrid(Xstep, Ystep)) asThrowException(_("The given area does not match a grid."));
+    if (!IsOnGrid(Xstep, Ystep))
+        asThrowException(_("The given area does not match a grid."));
 
-    m_xstep = Xstep;
-    m_ystep = Ystep;
+    m_xStep = Xstep;
+    m_yStep = Ystep;
 }
 
 asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
@@ -56,13 +59,13 @@ asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
 int asGeoAreaRegularGrid::GetXaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(std::abs((GetXmax()-GetXmin())/m_xstep)+1.0);
+    return asTools::Round(std::abs((GetXmax() - GetXmin()) / m_xStep) + 1.0);
 }
 
 int asGeoAreaRegularGrid::GetYaxisPtsnb()
 {
     // Get axis size
-    return asTools::Round(std::abs((GetYmax()-GetYmin())/m_xstep)+1.0);
+    return asTools::Round(std::abs((GetYmax() - GetYmin()) / m_xStep) + 1.0);
 }
 
 Array1DDouble asGeoAreaRegularGrid::GetXaxis()
@@ -73,11 +76,10 @@ Array1DDouble asGeoAreaRegularGrid::GetXaxis()
 
     // Build array
     double Xmin = GetXmin();
-    for (int i=0; i<ptsnb; i++)
-    {
-        Xaxis(i) = Xmin+i*m_xstep;
+    for (int i = 0; i < ptsnb; i++) {
+        Xaxis(i) = Xmin + i * m_xStep;
     }
-    wxASSERT(Xaxis(ptsnb-1)==GetXmax());
+    wxASSERT(Xaxis(ptsnb - 1) == GetXmax());
 
     return Xaxis;
 }
@@ -90,31 +92,36 @@ Array1DDouble asGeoAreaRegularGrid::GetYaxis()
 
     // Build array
     double vmin = GetYmin();
-    for (int i=0; i<ptsnb; i++)
-    {
-        Yaxis(i) = vmin+i*m_ystep;
+    for (int i = 0; i < ptsnb; i++) {
+        Yaxis(i) = vmin + i * m_yStep;
     }
-    wxASSERT(Yaxis(ptsnb-1)==GetYmax());
+    wxASSERT(Yaxis(ptsnb - 1) == GetYmax());
 
     return Yaxis;
 }
 
 bool asGeoAreaRegularGrid::IsOnGrid(double step)
 {
-    if (!IsRectangle()) return false;
+    if (!IsRectangle())
+        return false;
 
-	if (std::abs(std::fmod(m_cornerUL.x - m_cornerUR.x, step))>0.0000001) return false;
-    if (std::abs(std::fmod(m_cornerUL.y-m_cornerLL.y,step))>0.0000001) return false;
+    if (std::abs(std::fmod(m_cornerUL.x - m_cornerUR.x, step)) > 0.0000001)
+        return false;
+    if (std::abs(std::fmod(m_cornerUL.y - m_cornerLL.y, step)) > 0.0000001)
+        return false;
 
     return true;
 }
 
 bool asGeoAreaRegularGrid::IsOnGrid(double stepX, double stepY)
 {
-    if (!IsRectangle()) return false;
+    if (!IsRectangle())
+        return false;
 
-    if (std::abs(std::fmod(m_cornerUL.x-m_cornerUR.x,stepX))>0.0000001) return false;
-    if (std::abs(std::fmod(m_cornerUL.y-m_cornerLL.y,stepY))>0.0000001) return false;
+    if (std::abs(std::fmod(m_cornerUL.x - m_cornerUR.x, stepX)) > 0.0000001)
+        return false;
+    if (std::abs(std::fmod(m_cornerUL.y - m_cornerLL.y, stepY)) > 0.0000001)
+        return false;
 
     return true;
 }

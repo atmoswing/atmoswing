@@ -34,8 +34,7 @@
 
 
 asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxString &dataId)
-:
-asDataPredictorRealtime(dataId)
+        : asDataPredictorRealtime(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
@@ -64,57 +63,42 @@ asDataPredictorRealtime(dataId)
     m_fileExtension = "grib2";
 
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("hgt", false))
-    {
+    if (m_dataId.IsSameAs("hgt", false)) {
         m_dataParameter = GeopotentialHeight;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "HGT";
         m_unit = m;
-    }
-    else if (m_dataId.IsSameAs("air", false))
-    {
+    } else if (m_dataId.IsSameAs("air", false)) {
         m_dataParameter = AirTemperature;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "TEMP";
         m_unit = degK;
-    }
-    else if (m_dataId.IsSameAs("omega", false))
-    {
+    } else if (m_dataId.IsSameAs("omega", false)) {
         m_dataParameter = Omega;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "VVEL";
         m_unit = PascalsPerSec;
-    }
-    else if (m_dataId.IsSameAs("rhum", false))
-    {
+    } else if (m_dataId.IsSameAs("rhum", false)) {
         m_dataParameter = RelativeHumidity;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "RH";
         m_unit = percent;
-    }
-    else if (m_dataId.IsSameAs("uwnd", false))
-    {
+    } else if (m_dataId.IsSameAs("uwnd", false)) {
         m_dataParameter = Uwind;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "UGRD";
         m_unit = mPerSec;
-    }
-    else if (m_dataId.IsSameAs("vwnd", false))
-    {
+    } else if (m_dataId.IsSameAs("vwnd", false)) {
         m_dataParameter = Vwind;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "VGRD";
         m_unit = mPerSec;
-    }
-    else if (m_dataId.IsSameAs("surf_prwtr", false))
-    {
+    } else if (m_dataId.IsSameAs("surf_prwtr", false)) {
         m_dataParameter = PrecipitableWater;
         m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
         m_fileVariableName = "PWAT";
         m_unit = mm;
-    }
-    else
-    {
+    } else {
         m_dataParameter = NoDataParameter;
         m_commandDownload = wxEmptyString;
         m_fileVariableName = wxEmptyString;
@@ -131,7 +115,9 @@ bool asDataPredictorRealtimeGfsForecast::Init()
 {
     // Check data ID
     if (m_commandDownload.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 
@@ -173,22 +159,21 @@ VectorString asDataPredictorRealtimeGfsForecast::GetDataIdDescriptionList()
     return list;
 }
 
-bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                                          VVArray2DFloat &compositeData)
 {
     // File path
     VectorString filePaths = GetFileNames();
-    wxASSERT(filePaths.size()>=(unsigned)timeArray.GetSize());
+    wxASSERT(filePaths.size() >= (unsigned) timeArray.GetSize());
 
     // Load files
-    for (int i_file=0; i_file<timeArray.GetSize(); i_file++)
-    {
+    for (int i_file = 0; i_file < timeArray.GetSize(); i_file++) {
         // Extract file path
         wxString filePath = wxEmptyString;
 
         // Check if the volume is present
         wxFileName fileName(filePaths[i_file]);
-        if (!fileName.HasVolume() && !m_predictorsRealtimeDirectory.IsEmpty())
-        {
+        if (!fileName.HasVolume() && !m_predictorsRealtimeDirectory.IsEmpty()) {
             filePath = m_predictorsRealtimeDirectory;
             filePath.Append(DS);
         }
@@ -196,8 +181,7 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
         // Open the Grib2 file
         asFileGrib2 g2File(filePath, asFileGrib2::ReadOnly);
-        if(!g2File.Open())
-        {
+        if (!g2File.Open()) {
             return false;
         }
 
@@ -205,7 +189,8 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         float dataAddOffset = g2File.GetOffset();
         float dataScaleFactor = g2File.GetScale();
         bool scalingNeeded = true;
-        if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
+        if (dataAddOffset == 0 && dataScaleFactor == 1)
+            scalingNeeded = false;
 
         // Get full axes from the grib file
         Array1DFloat axisDataLon, axisDataLat;
@@ -217,15 +202,13 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
         // Adjust axes if necessary
         dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
 
-        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
-        {
+        for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
             // Check if necessary to load the data of lon=360 (so lon=0)
             bool load360 = false;
 
             int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
             int indexLengthTimeArray = 1; // For 1 file
-            if (dataArea)
-            {
+            if (dataArea) {
                 // Get the spatial extent
                 float lonMin = dataArea->GetXaxisCompositeStart(i_area);
                 float lonMax = dataArea->GetXaxisCompositeEnd(i_area);
@@ -236,15 +219,12 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                 indexLengthLon = dataArea->GetXaxisCompositePtsnb(i_area);
                 indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
-                if(lonMax==360)
-                {
+                if (lonMax == 360) {
                     // Correction if the lon 360° is required (doesn't exist)
                     load360 = true;
-                    for (int i_check = 0; i_check<dataArea->GetNbComposites(); i_check++)
-                    {
+                    for (int i_check = 0; i_check < dataArea->GetNbComposites(); i_check++) {
                         // If so, already loaded in another composite
-                        if(dataArea->GetComposite(i_check).GetXmin() == 0)
-                        {
+                        if (dataArea->GetComposite(i_check).GetXmin() == 0) {
                             load360 = false;
                         }
                     }
@@ -252,26 +232,27 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
                 }
 
                 // Get the spatial indices of the desired data
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin, 0.0001f, asHIDE_WARNINGS);
-                if(indexStartLon==asOUT_OF_RANGE)
-                {
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength - 1], lonMin,
+                                                           0.0001f, asHIDE_WARNINGS);
+                if (indexStartLon == asOUT_OF_RANGE) {
                     // If not found, try with negative angles
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin-360, 0.0001f, asHIDE_WARNINGS);
+                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength - 1],
+                                                               lonMin - 360, 0.0001f, asHIDE_WARNINGS);
                 }
-                if(indexStartLon==asOUT_OF_RANGE)
-                {
+                if (indexStartLon == asOUT_OF_RANGE) {
                     // If not found, try with angles above 360°
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], lonMin+360, 0.0001f);
+                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength - 1],
+                                                               lonMin + 360, 0.0001f);
                 }
-                wxASSERT(indexStartLon>=0);
-                int indexStartLat1 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLatLength-1], latMinStart, 0.0001f);
-                int indexStartLat2 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLatLength-1], latMinEnd, 0.0001f);
-                wxASSERT(indexStartLat1>=0);
-                wxASSERT(indexStartLat2>=0);
+                wxASSERT(indexStartLon >= 0);
+                int indexStartLat1 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLatLength - 1],
+                                                                latMinStart, 0.0001f);
+                int indexStartLat2 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLatLength - 1],
+                                                                latMinEnd, 0.0001f);
+                wxASSERT(indexStartLat1 >= 0);
+                wxASSERT(indexStartLat2 >= 0);
                 indexStartLat = wxMin(indexStartLat1, indexStartLat2);
-            }
-            else
-            {
+            } else {
                 indexStartLon = 0;
                 indexStartLat = 0;
                 indexLengthLon = m_lonPtsnb;
@@ -283,12 +264,12 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
             // Resize the arrays to store the new data
             int totLength = indexLengthTimeArray * indexLengthLat * indexLengthLon;
-            wxASSERT(totLength>0);
+            wxASSERT(totLength > 0);
             data.resize(totLength);
 
             // Get the indices for data
-            int indexStartData[] = {0,0};
-            int indexCountData[] = {0,0};
+            int indexStartData[] = {0, 0};
+            int indexCountData[] = {0, 0};
 
             // Set the indices for data
             indexStartData[0] = indexStartLon;
@@ -300,18 +281,18 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
             g2File.GetVarArray(m_fileVariableName, indexStartData, indexCountData, m_level, &data[0]);
 
             // Load data at lon = 360°
-            if(load360)
-            {
+            if (load360) {
                 // Resize the arrays to store the new data
                 int totlength360 = indexLengthLat;
                 data360.resize(totlength360);
 
                 // Set the indices
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], 360, 0.0001f, asHIDE_WARNINGS);
-                if(indexStartLon==asOUT_OF_RANGE)
-                {
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength - 1], 360,
+                                                           0.0001f, asHIDE_WARNINGS);
+                if (indexStartLon == asOUT_OF_RANGE) {
                     // If not found, try with negative angles
-                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength-1], 0, 0.0001f);
+                    indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLonLength - 1], 0,
+                                                               0.0001f);
                 }
                 indexStartData[0] = indexStartLon;
                 indexCountData[0] = 1;
@@ -322,43 +303,31 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
 
             // Containers for results
             Array2DFloat latlonData;
-            if(load360)
-            {
-                latlonData = Array2DFloat(indexLengthLat,indexLengthLon+1);
-            }
-            else
-            {
-                latlonData = Array2DFloat(indexLengthLat,indexLengthLon);
+            if (load360) {
+                latlonData = Array2DFloat(indexLengthLat, indexLengthLon + 1);
+            } else {
+                latlonData = Array2DFloat(indexLengthLat, indexLengthLon);
             }
 
             int ind = 0;
 
             // Loop to extract the data from the array
-            for (int i_lat=0; i_lat<indexLengthLat; i_lat++)
-            {
-                for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
-                {
+            for (int i_lat = 0; i_lat < indexLengthLat; i_lat++) {
+                for (int i_lon = 0; i_lon < indexLengthLon; i_lon++) {
                     ind = i_lon + i_lat * indexLengthLon;
-                    if (scalingNeeded)
-                    {
-                        latlonData(i_lat,i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
-                    }
-                    else
-                    {
-                        latlonData(i_lat,i_lon) = data[ind];
+                    if (scalingNeeded) {
+                        latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    } else {
+                        latlonData(i_lat, i_lon) = data[ind];
                     }
                 }
 
-                if(load360)
-                {
+                if (load360) {
                     ind = i_lat;
-                    if (scalingNeeded)
-                    {
-                        latlonData(i_lat,indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
-                    }
-                    else
-                    {
-                        latlonData(i_lat,indexLengthLon) = data360[ind];
+                    if (scalingNeeded) {
+                        latlonData(i_lat, indexLengthLon) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    } else {
+                        latlonData(i_lat, indexLengthLon) = data360[ind];
                     }
                 }
             }

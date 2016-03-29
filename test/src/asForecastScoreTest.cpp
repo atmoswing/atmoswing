@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include <wx/filename.h>
 #include <asForecastScore.h>
 #include <asForecastScoreFinal.h>
@@ -53,21 +53,19 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -75,7 +73,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.00001);
+        float precision = wxMax(target / 1000, (float) 0.00001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -106,21 +104,19 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSEP");
+    asForecastScore *score = asForecastScore::GetInstance("CRPSEP");
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -128,7 +124,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/500,(float)0.00002);
+        float precision = wxMax(target / 500, (float) 0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -159,21 +155,19 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSAR");
+    asForecastScore *score = asForecastScore::GetInstance("CRPSAR");
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -181,7 +175,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.00002);
+        float precision = wxMax(target / 1000, (float) 0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -212,21 +206,19 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -234,7 +226,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/100,(float)0.00005);
+        float precision = wxMax(target / 100, (float) 0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -265,21 +257,19 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -287,7 +277,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.00002);
+        float precision = wxMax(target / 1000, (float) 0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -318,21 +308,19 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -340,7 +328,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/100,(float)0.0001);
+        float precision = wxMax(target / 100, (float) 0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -371,21 +359,19 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -394,7 +380,8 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target / 1000,
+                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -425,21 +412,19 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSsharpnessEP");
+    asForecastScore *score = asForecastScore::GetInstance("CRPSsharpnessEP");
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -448,7 +433,8 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/500,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target / 500,
+                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -479,21 +465,19 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSsharpnessAR");
+    asForecastScore *score = asForecastScore::GetInstance("CRPSsharpnessAR");
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -502,7 +486,8 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target / 1000,
+                                (float) 0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -533,21 +518,19 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -556,7 +539,8 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/100,(float)0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target / 100,
+                                (float) 0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -587,21 +571,19 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -610,7 +592,8 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target / 1000,
+                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -641,21 +624,19 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -664,7 +645,8 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
         file.SkipElements(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/100,(float)0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+        float precision = wxMax(target / 100,
+                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -695,21 +677,19 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -718,7 +698,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.0003);
+        float precision = wxMax(target / 1000, (float) 0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -749,21 +729,19 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSaccuracyEP");
+    asForecastScore *score = asForecastScore::GetInstance("CRPSaccuracyEP");
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -772,7 +750,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/500,(float)0.0003);
+        float precision = wxMax(target / 500, (float) 0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -803,21 +781,19 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSaccuracyAR");
+    asForecastScore *score = asForecastScore::GetInstance("CRPSaccuracyAR");
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -826,7 +802,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.0001);
+        float precision = wxMax(target / 1000, (float) 0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -857,21 +833,19 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -880,7 +854,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/100,(float)0.00005);
+        float precision = wxMax(target / 100, (float) 0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -911,21 +885,19 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -934,7 +906,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/1000,(float)0.0005);
+        float precision = wxMax(target / 1000, (float) 0.0005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -965,21 +937,19 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
+    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float)sqrt(file.GetFloat()/P10);
+        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -988,7 +958,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target/100,(float)0.001);
+        float precision = wxMax(target / 100, (float) 0.001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -1011,14 +981,12 @@ void InitConstantDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    for (int i_time=0;i_time<timeLength;i_time++)
-    {
-        vecObs[i_time] = (float)asTools::Random(0.0, 0.4999999);
-        for (int i_ana=0;i_ana<nanalogs;i_ana++)
-        {
-            singleDay[i_ana] = (float)asTools::Random(0.0, 0.4999999);
+    for (int i_time = 0; i_time < timeLength; i_time++) {
+        vecObs[i_time] = (float) asTools::Random(0.0, 0.4999999);
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            singleDay[i_ana] = (float) asTools::Random(0.0, 0.4999999);
         }
-        asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
         vecForecast.row(i_time) = singleDay;
     }
 
@@ -1117,62 +1085,56 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    for (int i_time=0;i_time<timeLength;i_time++)
-    {
-        vecObs[i_time] = (float)asTools::Random(0.0, 0.5999999);
-        for (int i_ana=0;i_ana<nanalogs;i_ana++)
-        {
-            singleDay[i_ana] = (float)asTools::Random(0.0, 0.5999999);
+    for (int i_time = 0; i_time < timeLength; i_time++) {
+        vecObs[i_time] = (float) asTools::Random(0.0, 0.5999999);
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            singleDay[i_ana] = (float) asTools::Random(0.0, 0.5999999);
         }
-        asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
         vecForecast.row(i_time) = singleDay;
     }
 
     // Add 28 events forecasted and observed
     Array1DInt indicesA(28);
-    indicesA << 11,21,31,41,51,161,171,181,191,301,311,321,1131,1141,1151,1161,1171,1681,1691,1701,1711,1721,2231,2241,2251,2261,2271,2281;
-    for (int i=0; i<indicesA.size(); i++)
-    {
+    indicesA <<
+    11, 21, 31, 41, 51, 161, 171, 181, 191, 301, 311, 321, 1131, 1141, 1151, 1161, 1171, 1681, 1691, 1701, 1711, 1721, 2231, 2241, 2251, 2261, 2271, 2281;
+    for (int i = 0; i < indicesA.size(); i++) {
         int i_time = indicesA[i];
-        vecObs[i_time] = (float)asTools::Random(0.6, 1.0);
-        for (int i_ana=0;i_ana<20;i_ana++)
-        {
-            singleDay[i_ana] = (float)asTools::Random(0.0, 0.5999999);
+        vecObs[i_time] = (float) asTools::Random(0.6, 1.0);
+        for (int i_ana = 0; i_ana < 20; i_ana++) {
+            singleDay[i_ana] = (float) asTools::Random(0.0, 0.5999999);
         }
-        for (int i_ana=20;i_ana<50;i_ana++)
-        {
+        for (int i_ana = 20; i_ana < 50; i_ana++) {
             singleDay[i_ana] = asTools::Random(0.6, 1.0);
         }
-        asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
         vecForecast.row(i_time) = singleDay;
     }
 
     // Add 17 events forecasted but not observed
     Array1DInt indicesB(72);
-    indicesB << 12,22,32,42,52,62,72,82,92,102,112,122,132,142,152,162,372,382,392,402,412,422,432,442,452,462,472,482,492,502,512,522,832,842,852,862,872,882,892,902,912,922,932,942,952,962,972,982,1492,1502,1512,1522,1532,1542,1552,1562,1572,1582,1592,1602,1612,1622,2132,2142,2152,2162,2172,2182,2192,2202,2212,2222;
-    for (int i=0; i<indicesB.size(); i++)
-    {
+    indicesB <<
+    12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 142, 152, 162, 372, 382, 392, 402, 412, 422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 832, 842, 852, 862, 872, 882, 892, 902, 912, 922, 932, 942, 952, 962, 972, 982, 1492, 1502, 1512, 1522, 1532, 1542, 1552, 1562, 1572, 1582, 1592, 1602, 1612, 1622, 2132, 2142, 2152, 2162, 2172, 2182, 2192, 2202, 2212, 2222;
+    for (int i = 0; i < indicesB.size(); i++) {
         int i_time = indicesB[i];
-        vecObs[i_time] = (float)asTools::Random(0.0, 0.5999999);
-        for (int i_ana=0;i_ana<20;i_ana++)
-        {
-            singleDay[i_ana] = (float)asTools::Random(0.0, 0.5999999);
+        vecObs[i_time] = (float) asTools::Random(0.0, 0.5999999);
+        for (int i_ana = 0; i_ana < 20; i_ana++) {
+            singleDay[i_ana] = (float) asTools::Random(0.0, 0.5999999);
         }
-        for (int i_ana=20;i_ana<50;i_ana++)
-        {
-            singleDay[i_ana] = (float)asTools::Random(0.6, 1.0);
+        for (int i_ana = 20; i_ana < 50; i_ana++) {
+            singleDay[i_ana] = (float) asTools::Random(0.6, 1.0);
         }
-        asTools::SortArray(&singleDay[0],&singleDay[nanalogs-1],Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
         vecForecast.row(i_time) = singleDay;
     }
 
     // Add 9 events not forecasted but observed
     Array1DInt indicesC(23);
-    indicesC << 13,23,33,43,53,63,73,83,93,103,113,223,233,243,653,663,673,1183,1193,1203,1213,1223,1233;
-    for (int i=0; i<indicesC.size(); i++)
-    {
+    indicesC <<
+    13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 223, 233, 243, 653, 663, 673, 1183, 1193, 1203, 1213, 1223, 1233;
+    for (int i = 0; i < indicesC.size(); i++) {
         int i_time = indicesC[i];
-        vecObs[i_time] = (float)asTools::Random(0.6, 1.0);
+        vecObs[i_time] = (float) asTools::Random(0.6, 1.0);
     }
 
 }
@@ -1185,22 +1147,21 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
     InitConstantDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("PC");
+    asForecastScore *score = asForecastScore::GetInstance("PC");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.5f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1218,22 +1179,21 @@ TEST(ForecastScore, ProcessPC)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("PC");
+    asForecastScore *score = asForecastScore::GetInstance("PC");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1251,22 +1211,21 @@ TEST(ForecastScore, ProcessTS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("TS");
+    asForecastScore *score = asForecastScore::GetInstance("TS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("TS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("TS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1284,22 +1243,21 @@ TEST(ForecastScore, ProcessBIAS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("BIAS");
+    asForecastScore *score = asForecastScore::GetInstance("BIAS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BIAS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BIAS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1317,22 +1275,21 @@ TEST(ForecastScore, ProcessFARA)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("FARA");
+    asForecastScore *score = asForecastScore::GetInstance("FARA");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("FARA", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("FARA", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1350,22 +1307,21 @@ TEST(ForecastScore, ProcessH)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("H");
+    asForecastScore *score = asForecastScore::GetInstance("H");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("H", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("H", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1383,22 +1339,21 @@ TEST(ForecastScore, ProcessF)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("F");
+    asForecastScore *score = asForecastScore::GetInstance("F");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("F", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("F", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1416,22 +1371,21 @@ TEST(ForecastScore, ProcessHSS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("HSS");
+    asForecastScore *score = asForecastScore::GetInstance("HSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("HSS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("HSS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1449,22 +1403,21 @@ TEST(ForecastScore, ProcessPSS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("PSS");
+    asForecastScore *score = asForecastScore::GetInstance("PSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("PSS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PSS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1482,22 +1435,21 @@ TEST(ForecastScore, ProcessGSS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("GSS");
+    asForecastScore *score = asForecastScore::GetInstance("GSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("GSS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("GSS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value according to Wilks (2006), p.268
@@ -1519,35 +1471,44 @@ TEST(ForecastScore, ProcessMAE)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0) << 0.02f,0.092646306f,0.139052338f,0.197637696f,0.229360704f,0.259909806f,0.298701546f,0.390238317f,0.407640012f,0.452575894f,0.512074354f,0.512345829f,0.58075933f,0.647425783f,0.654962539f,0.686593503f,0.729810476f,0.755282455f,0.799893526f,0.827401513f;
-    vecForecast.row(1) << 0.02f,0.058561017f,0.127939716f,0.171685632f,0.265536249f,0.286160135f,0.315265848f,0.373659704f,0.3741501f,0.458286985f,0.506647511f,0.52196153f,0.610837661f,0.648162317f,0.651138364f,0.742684806f,0.80394142f,0.827924274f,0.88050801f,0.883691337f;
-    vecForecast.row(2) << 0.02f,0.057409007f,0.124060844f,0.12989179f,0.194506231f,0.238944812f,0.262222184f,0.274957116f,0.276758707f,0.299777457f,0.308798466f,0.335768931f,0.407246414f,0.482673721f,0.530500548f,0.552122915f,0.636896541f,0.703442086f,0.756793177f,0.801346686f;
-    vecForecast.row(3) << 0.02f,0.092411597f,0.117131378f,0.15816281f,0.215819448f,0.24559958f,0.250436984f,0.315896104f,0.357809806f,0.41176128f,0.428890994f,0.502444147f,0.510156521f,0.531216004f,0.627005158f,0.679551953f,0.719490245f,0.752477718f,0.758531907f,0.842848077f;
-    vecForecast.row(4) << 0.02f,0.025565194f,0.124927271f,0.163237889f,0.182254672f,0.183216729f,0.229018135f,0.309541163f,0.397108137f,0.464487554f,0.545250143f,0.62989469f,0.727740022f,0.739352757f,0.820597597f,0.914068845f,0.956546342f,0.996502564f,1.024902501f,1.038549464f;
-    vecForecast.row(5) << 0.02f,0.083376876f,0.140626298f,0.206117695f,0.218892839f,0.234828446f,0.328446981f,0.370601439f,0.417945902f,0.452067833f,0.525719917f,0.612793799f,0.648267108f,0.692725339f,0.694307008f,0.696266998f,0.794462364f,0.861882906f,0.910444299f,0.98822941f;
-    vecForecast.row(6) << 0.02f,0.064229562f,0.09309693f,0.126129382f,0.22445095f,0.252971047f,0.348992863f,0.42909501f,0.519460404f,0.550894836f,0.643772657f,0.670622479f,0.688459436f,0.761704166f,0.843085811f,0.942577325f,1.001365175f,1.013441683f,1.041955139f,1.058193308f;
-    vecForecast.row(7) << 0.02f,0.026738614f,0.095937412f,0.142691197f,0.215824523f,0.265994552f,0.320279392f,0.416087902f,0.432058177f,0.449941177f,0.466638011f,0.491397644f,0.569040335f,0.614604226f,0.657455658f,0.754066417f,0.826451172f,0.899028592f,0.964815104f,1.012976654f;
-    vecForecast.row(8) << 0.02f,0.085296508f,0.183380599f,0.243443873f,0.273040713f,0.273055653f,0.325655881f,0.370962958f,0.376225608f,0.458607287f,0.486447729f,0.580692959f,0.596512866f,0.615277217f,0.702622102f,0.789096489f,0.794578027f,0.824465809f,0.907287888f,0.953155395f;
-    vecForecast.row(9) << 0.02f,0.064684235f,0.094707249f,0.131646633f,0.173289652f,0.216579839f,0.241963985f,0.313384425f,0.321065805f,0.361266365f,0.364172913f,0.367698584f,0.438098064f,0.523397878f,0.590133347f,0.661338069f,0.733570663f,0.8022949f,0.821953293f,0.886632874f;
+    vecForecast.row(0) <<
+    0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) <<
+    0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) <<
+    0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) <<
+    0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) <<
+    0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) <<
+    0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) <<
+    0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) <<
+    0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) <<
+    0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) <<
+    0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("MAE");
+    asForecastScore *score = asForecastScore::GetInstance("MAE");
     score->SetQuantile(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("MAE", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("MAE", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
@@ -1569,35 +1530,44 @@ TEST(ForecastScore, ProcessRMSE)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0) << 0.02f,0.092646306f,0.139052338f,0.197637696f,0.229360704f,0.259909806f,0.298701546f,0.390238317f,0.407640012f,0.452575894f,0.512074354f,0.512345829f,0.58075933f,0.647425783f,0.654962539f,0.686593503f,0.729810476f,0.755282455f,0.799893526f,0.827401513f;
-    vecForecast.row(1) << 0.02f,0.058561017f,0.127939716f,0.171685632f,0.265536249f,0.286160135f,0.315265848f,0.373659704f,0.3741501f,0.458286985f,0.506647511f,0.52196153f,0.610837661f,0.648162317f,0.651138364f,0.742684806f,0.80394142f,0.827924274f,0.88050801f,0.883691337f;
-    vecForecast.row(2) << 0.02f,0.057409007f,0.124060844f,0.12989179f,0.194506231f,0.238944812f,0.262222184f,0.274957116f,0.276758707f,0.299777457f,0.308798466f,0.335768931f,0.407246414f,0.482673721f,0.530500548f,0.552122915f,0.636896541f,0.703442086f,0.756793177f,0.801346686f;
-    vecForecast.row(3) << 0.02f,0.092411597f,0.117131378f,0.15816281f,0.215819448f,0.24559958f,0.250436984f,0.315896104f,0.357809806f,0.41176128f,0.428890994f,0.502444147f,0.510156521f,0.531216004f,0.627005158f,0.679551953f,0.719490245f,0.752477718f,0.758531907f,0.842848077f;
-    vecForecast.row(4) << 0.02f,0.025565194f,0.124927271f,0.163237889f,0.182254672f,0.183216729f,0.229018135f,0.309541163f,0.397108137f,0.464487554f,0.545250143f,0.62989469f,0.727740022f,0.739352757f,0.820597597f,0.914068845f,0.956546342f,0.996502564f,1.024902501f,1.038549464f;
-    vecForecast.row(5) << 0.02f,0.083376876f,0.140626298f,0.206117695f,0.218892839f,0.234828446f,0.328446981f,0.370601439f,0.417945902f,0.452067833f,0.525719917f,0.612793799f,0.648267108f,0.692725339f,0.694307008f,0.696266998f,0.794462364f,0.861882906f,0.910444299f,0.98822941f;
-    vecForecast.row(6) << 0.02f,0.064229562f,0.09309693f,0.126129382f,0.22445095f,0.252971047f,0.348992863f,0.42909501f,0.519460404f,0.550894836f,0.643772657f,0.670622479f,0.688459436f,0.761704166f,0.843085811f,0.942577325f,1.001365175f,1.013441683f,1.041955139f,1.058193308f;
-    vecForecast.row(7) << 0.02f,0.026738614f,0.095937412f,0.142691197f,0.215824523f,0.265994552f,0.320279392f,0.416087902f,0.432058177f,0.449941177f,0.466638011f,0.491397644f,0.569040335f,0.614604226f,0.657455658f,0.754066417f,0.826451172f,0.899028592f,0.964815104f,1.012976654f;
-    vecForecast.row(8) << 0.02f,0.085296508f,0.183380599f,0.243443873f,0.273040713f,0.273055653f,0.325655881f,0.370962958f,0.376225608f,0.458607287f,0.486447729f,0.580692959f,0.596512866f,0.615277217f,0.702622102f,0.789096489f,0.794578027f,0.824465809f,0.907287888f,0.953155395f;
-    vecForecast.row(9) << 0.02f,0.064684235f,0.094707249f,0.131646633f,0.173289652f,0.216579839f,0.241963985f,0.313384425f,0.321065805f,0.361266365f,0.364172913f,0.367698584f,0.438098064f,0.523397878f,0.590133347f,0.661338069f,0.733570663f,0.8022949f,0.821953293f,0.886632874f;
+    vecForecast.row(0) <<
+    0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) <<
+    0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) <<
+    0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) <<
+    0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) <<
+    0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) <<
+    0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) <<
+    0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) <<
+    0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) <<
+    0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) <<
+    0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("RMSE");
+    asForecastScore *score = asForecastScore::GetInstance("RMSE");
     score->SetQuantile(0.6f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RMSE", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RMSE", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
@@ -1619,36 +1589,45 @@ TEST(ForecastScore, ProcessBS)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0) << 0.02f,0.092646306f,0.139052338f,0.197637696f,0.229360704f,0.259909806f,0.298701546f,0.390238317f,0.407640012f,0.452575894f,0.512074354f,0.512345829f,0.58075933f,0.647425783f,0.654962539f,0.686593503f,0.729810476f,0.755282455f,0.799893526f,0.827401513f;
-    vecForecast.row(1) << 0.02f,0.058561017f,0.127939716f,0.171685632f,0.265536249f,0.286160135f,0.315265848f,0.373659704f,0.3741501f,0.458286985f,0.506647511f,0.52196153f,0.610837661f,0.648162317f,0.651138364f,0.742684806f,0.80394142f,0.827924274f,0.88050801f,0.883691337f;
-    vecForecast.row(2) << 0.02f,0.057409007f,0.124060844f,0.12989179f,0.194506231f,0.238944812f,0.262222184f,0.274957116f,0.276758707f,0.299777457f,0.308798466f,0.335768931f,0.407246414f,0.482673721f,0.530500548f,0.552122915f,0.636896541f,0.703442086f,0.756793177f,0.801346686f;
-    vecForecast.row(3) << 0.02f,0.092411597f,0.117131378f,0.15816281f,0.215819448f,0.24559958f,0.250436984f,0.315896104f,0.357809806f,0.41176128f,0.428890994f,0.502444147f,0.510156521f,0.531216004f,0.627005158f,0.679551953f,0.719490245f,0.752477718f,0.758531907f,0.842848077f;
-    vecForecast.row(4) << 0.02f,0.025565194f,0.124927271f,0.163237889f,0.182254672f,0.183216729f,0.229018135f,0.309541163f,0.397108137f,0.464487554f,0.545250143f,0.62989469f,0.727740022f,0.739352757f,0.820597597f,0.914068845f,0.956546342f,0.996502564f,1.024902501f,1.038549464f;
-    vecForecast.row(5) << 0.02f,0.083376876f,0.140626298f,0.206117695f,0.218892839f,0.234828446f,0.328446981f,0.370601439f,0.417945902f,0.452067833f,0.525719917f,0.612793799f,0.648267108f,0.692725339f,0.694307008f,0.696266998f,0.794462364f,0.861882906f,0.910444299f,0.98822941f;
-    vecForecast.row(6) << 0.02f,0.064229562f,0.09309693f,0.126129382f,0.22445095f,0.252971047f,0.348992863f,0.42909501f,0.519460404f,0.550894836f,0.643772657f,0.670622479f,0.688459436f,0.761704166f,0.843085811f,0.942577325f,1.001365175f,1.013441683f,1.041955139f,1.058193308f;
-    vecForecast.row(7) << 0.02f,0.026738614f,0.095937412f,0.142691197f,0.215824523f,0.265994552f,0.320279392f,0.416087902f,0.432058177f,0.449941177f,0.466638011f,0.491397644f,0.569040335f,0.614604226f,0.657455658f,0.754066417f,0.826451172f,0.899028592f,0.964815104f,1.012976654f;
-    vecForecast.row(8) << 0.02f,0.085296508f,0.183380599f,0.243443873f,0.273040713f,0.273055653f,0.325655881f,0.370962958f,0.376225608f,0.458607287f,0.486447729f,0.580692959f,0.596512866f,0.615277217f,0.702622102f,0.789096489f,0.794578027f,0.824465809f,0.907287888f,0.953155395f;
-    vecForecast.row(9) << 0.02f,0.064684235f,0.094707249f,0.131646633f,0.173289652f,0.216579839f,0.241963985f,0.313384425f,0.321065805f,0.361266365f,0.364172913f,0.367698584f,0.438098064f,0.523397878f,0.590133347f,0.661338069f,0.733570663f,0.8022949f,0.821953293f,0.886632874f;
+    vecForecast.row(0) <<
+    0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) <<
+    0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) <<
+    0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) <<
+    0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) <<
+    0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) <<
+    0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) <<
+    0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) <<
+    0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) <<
+    0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) <<
+    0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("BS");
+    asForecastScore *score = asForecastScore::GetInstance("BS");
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
@@ -1670,38 +1649,47 @@ TEST(ForecastScore, ProcessBSS)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0) << 0.02f,0.092646306f,0.139052338f,0.197637696f,0.229360704f,0.259909806f,0.298701546f,0.390238317f,0.407640012f,0.452575894f,0.512074354f,0.512345829f,0.58075933f,0.647425783f,0.654962539f,0.686593503f,0.729810476f,0.755282455f,0.799893526f,0.827401513f;
-    vecForecast.row(1) << 0.02f,0.058561017f,0.127939716f,0.171685632f,0.265536249f,0.286160135f,0.315265848f,0.373659704f,0.3741501f,0.458286985f,0.506647511f,0.52196153f,0.610837661f,0.648162317f,0.651138364f,0.742684806f,0.80394142f,0.827924274f,0.88050801f,0.883691337f;
-    vecForecast.row(2) << 0.02f,0.057409007f,0.124060844f,0.12989179f,0.194506231f,0.238944812f,0.262222184f,0.274957116f,0.276758707f,0.299777457f,0.308798466f,0.335768931f,0.407246414f,0.482673721f,0.530500548f,0.552122915f,0.636896541f,0.703442086f,0.756793177f,0.801346686f;
-    vecForecast.row(3) << 0.02f,0.092411597f,0.117131378f,0.15816281f,0.215819448f,0.24559958f,0.250436984f,0.315896104f,0.357809806f,0.41176128f,0.428890994f,0.502444147f,0.510156521f,0.531216004f,0.627005158f,0.679551953f,0.719490245f,0.752477718f,0.758531907f,0.842848077f;
-    vecForecast.row(4) << 0.02f,0.025565194f,0.124927271f,0.163237889f,0.182254672f,0.183216729f,0.229018135f,0.309541163f,0.397108137f,0.464487554f,0.545250143f,0.62989469f,0.727740022f,0.739352757f,0.820597597f,0.914068845f,0.956546342f,0.996502564f,1.024902501f,1.038549464f;
-    vecForecast.row(5) << 0.02f,0.083376876f,0.140626298f,0.206117695f,0.218892839f,0.234828446f,0.328446981f,0.370601439f,0.417945902f,0.452067833f,0.525719917f,0.612793799f,0.648267108f,0.692725339f,0.694307008f,0.696266998f,0.794462364f,0.861882906f,0.910444299f,0.98822941f;
-    vecForecast.row(6) << 0.02f,0.064229562f,0.09309693f,0.126129382f,0.22445095f,0.252971047f,0.348992863f,0.42909501f,0.519460404f,0.550894836f,0.643772657f,0.670622479f,0.688459436f,0.761704166f,0.843085811f,0.942577325f,1.001365175f,1.013441683f,1.041955139f,1.058193308f;
-    vecForecast.row(7) << 0.02f,0.026738614f,0.095937412f,0.142691197f,0.215824523f,0.265994552f,0.320279392f,0.416087902f,0.432058177f,0.449941177f,0.466638011f,0.491397644f,0.569040335f,0.614604226f,0.657455658f,0.754066417f,0.826451172f,0.899028592f,0.964815104f,1.012976654f;
-    vecForecast.row(8) << 0.02f,0.085296508f,0.183380599f,0.243443873f,0.273040713f,0.273055653f,0.325655881f,0.370962958f,0.376225608f,0.458607287f,0.486447729f,0.580692959f,0.596512866f,0.615277217f,0.702622102f,0.789096489f,0.794578027f,0.824465809f,0.907287888f,0.953155395f;
-    vecForecast.row(9) << 0.02f,0.064684235f,0.094707249f,0.131646633f,0.173289652f,0.216579839f,0.241963985f,0.313384425f,0.321065805f,0.361266365f,0.364172913f,0.367698584f,0.438098064f,0.523397878f,0.590133347f,0.661338069f,0.733570663f,0.8022949f,0.821953293f,0.886632874f;
+    vecForecast.row(0) <<
+    0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) <<
+    0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) <<
+    0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) <<
+    0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) <<
+    0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) <<
+    0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) <<
+    0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) <<
+    0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) <<
+    0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) <<
+    0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("BSS");
+    asForecastScore *score = asForecastScore::GetInstance("BSS");
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
-    score->ProcessScoreClimatology(vecObs,vecObs);
+    score->ProcessScoreClimatology(vecObs, vecObs);
 
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("BSS", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BSS", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
@@ -1721,37 +1709,57 @@ TEST(ForecastScore, ProcessRankHistogram)
     Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
     Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
 
-    vecForecast.row(0) << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
-    vecForecast.row(1) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
-    vecForecast.row(2) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
-    vecForecast.row(3) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
-    vecForecast.row(4) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
-    vecForecast.row(5) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
-    vecForecast.row(6) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
-    vecForecast.row(7) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
-    vecForecast.row(8) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
-    vecForecast.row(9) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
-    vecForecast.row(10) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
-    vecForecast.row(11) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
-    vecForecast.row(12) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
-    vecForecast.row(13) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
-    vecForecast.row(14) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
-    vecForecast.row(15) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
-    vecForecast.row(16) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
-    vecForecast.row(17) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
-    vecForecast.row(18) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
-    vecForecast.row(19) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
+    vecForecast.row(0) <<
+    0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
+    vecForecast.row(1) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
+    vecForecast.row(2) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
+    vecForecast.row(3) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
+    vecForecast.row(4) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
+    vecForecast.row(5) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
+    vecForecast.row(6) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
+    vecForecast.row(7) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
+    vecForecast.row(8) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
+    vecForecast.row(9) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
+    vecForecast.row(10) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
+    vecForecast.row(11) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
+    vecForecast.row(12) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
+    vecForecast.row(13) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
+    vecForecast.row(14) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
+    vecForecast.row(15) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
+    vecForecast.row(16) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
+    vecForecast.row(17) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
+    vecForecast.row(18) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
+    vecForecast.row(19) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
 
-    vecObs << 0.0f, 6.3f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
+    vecObs <<
+    0.0f, 6.3f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("RankHistogram");
-    
+    asForecastScore *score = asForecastScore::GetInstance("RankHistogram");
+
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results[i_time] = res;
@@ -1759,47 +1767,47 @@ TEST(ForecastScore, ProcessRankHistogram)
     }
 
     // Values processed on Excel
-    bool isTrue = (results[0]>=1 && results[0]<5); // Contains random value
-    EXPECT_EQ(true,isTrue);
-    isTrue = (results[1]>=26 && results[1]<=28); // Contains random value
-    EXPECT_EQ(true,isTrue);
-    EXPECT_EQ(29,results[2]);
-    EXPECT_EQ(24,results[3]);
-    EXPECT_EQ(24,results[4]);
-    EXPECT_EQ(31,results[5]);
-    EXPECT_EQ(15,results[6]);
-    EXPECT_EQ(16,results[7]);
-    EXPECT_EQ(24,results[8]);
-    EXPECT_EQ(24,results[9]);
-    EXPECT_EQ(29,results[10]);
-    EXPECT_EQ(18,results[11]);
-    EXPECT_EQ(25,results[12]);
-    EXPECT_EQ(14,results[13]);
-    EXPECT_EQ(24,results[14]);
-    EXPECT_EQ(15,results[15]);
-    EXPECT_EQ(28,results[16]);
-    EXPECT_EQ(16,results[17]);
-    EXPECT_EQ(20,results[18]);
-    EXPECT_EQ(24,results[19]);
+    bool isTrue = (results[0] >= 1 && results[0] < 5); // Contains random value
+    EXPECT_EQ(true, isTrue);
+    isTrue = (results[1] >= 26 && results[1] <= 28); // Contains random value
+    EXPECT_EQ(true, isTrue);
+    EXPECT_EQ(29, results[2]);
+    EXPECT_EQ(24, results[3]);
+    EXPECT_EQ(24, results[4]);
+    EXPECT_EQ(31, results[5]);
+    EXPECT_EQ(15, results[6]);
+    EXPECT_EQ(16, results[7]);
+    EXPECT_EQ(24, results[8]);
+    EXPECT_EQ(24, results[9]);
+    EXPECT_EQ(29, results[10]);
+    EXPECT_EQ(18, results[11]);
+    EXPECT_EQ(25, results[12]);
+    EXPECT_EQ(14, results[13]);
+    EXPECT_EQ(24, results[14]);
+    EXPECT_EQ(15, results[15]);
+    EXPECT_EQ(28, results[16]);
+    EXPECT_EQ(16, results[17]);
+    EXPECT_EQ(20, results[18]);
+    EXPECT_EQ(24, results[19]);
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
-    finalScore->SetRanksNb(nanalogs+1);
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
+    finalScore->SetRanksNb(nanalogs + 1);
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     Array1DFloat scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
 
-    float total=scoreVal.sum();
+    float total = scoreVal.sum();
     EXPECT_FLOAT_EQ(100, total);
 
     // Values processed on Excel
-    EXPECT_FLOAT_EQ(5,scoreVal[13]);
-    EXPECT_FLOAT_EQ(10,scoreVal[14]);
-    EXPECT_FLOAT_EQ(10,scoreVal[15]);
-    EXPECT_FLOAT_EQ(5,scoreVal[17]);
-    EXPECT_FLOAT_EQ(5,scoreVal[19]);
-    EXPECT_FLOAT_EQ(30,scoreVal[23]);
-    EXPECT_FLOAT_EQ(5,scoreVal[24]);
-    EXPECT_FLOAT_EQ(10,scoreVal[28]);
-    EXPECT_FLOAT_EQ(5,scoreVal[30]);
+    EXPECT_FLOAT_EQ(5, scoreVal[13]);
+    EXPECT_FLOAT_EQ(10, scoreVal[14]);
+    EXPECT_FLOAT_EQ(10, scoreVal[15]);
+    EXPECT_FLOAT_EQ(5, scoreVal[17]);
+    EXPECT_FLOAT_EQ(5, scoreVal[19]);
+    EXPECT_FLOAT_EQ(30, scoreVal[23]);
+    EXPECT_FLOAT_EQ(5, scoreVal[24]);
+    EXPECT_FLOAT_EQ(10, scoreVal[28]);
+    EXPECT_FLOAT_EQ(5, scoreVal[30]);
 
     wxDELETE(score);
     wxDELETE(finalScore);
@@ -1815,46 +1823,66 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
     Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
     Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
 
-    vecForecast.row(0) << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
-    vecForecast.row(1) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
-    vecForecast.row(2) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
-    vecForecast.row(3) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
-    vecForecast.row(4) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
-    vecForecast.row(5) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
-    vecForecast.row(6) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
-    vecForecast.row(7) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
-    vecForecast.row(8) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
-    vecForecast.row(9) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
-    vecForecast.row(10) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
-    vecForecast.row(11) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
-    vecForecast.row(12) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
-    vecForecast.row(13) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
-    vecForecast.row(14) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
-    vecForecast.row(15) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
-    vecForecast.row(16) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
-    vecForecast.row(17) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
-    vecForecast.row(18) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
-    vecForecast.row(19) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
+    vecForecast.row(0) <<
+    0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
+    vecForecast.row(1) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
+    vecForecast.row(2) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
+    vecForecast.row(3) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
+    vecForecast.row(4) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
+    vecForecast.row(5) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
+    vecForecast.row(6) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
+    vecForecast.row(7) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
+    vecForecast.row(8) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
+    vecForecast.row(9) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
+    vecForecast.row(10) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
+    vecForecast.row(11) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
+    vecForecast.row(12) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
+    vecForecast.row(13) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
+    vecForecast.row(14) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
+    vecForecast.row(15) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
+    vecForecast.row(16) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
+    vecForecast.row(17) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
+    vecForecast.row(18) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
+    vecForecast.row(19) <<
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
 
-    vecObs << 0.3f, 6.4f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
+    vecObs <<
+    0.3f, 6.4f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("RankHistogramReliability");
-    
+    asForecastScore *score = asForecastScore::GetInstance("RankHistogramReliability");
+
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results[i_time] = res;
         EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("RankHistogramReliability", "Total");
-    finalScore->SetRanksNb(nanalogs+1);
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RankHistogramReliability", "Total");
+    finalScore->SetRanksNb(nanalogs + 1);
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Values processed on Excel
@@ -1874,40 +1902,54 @@ TEST(ForecastScore, ProcessCRPSreliability)
     Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
     Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
 
-    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
-    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
-    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
-    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
-    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
-    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
-    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
-    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
-    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
-    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
-    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
-    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
-    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
-    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
-    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+    vecForecast.row(0) <<
+    1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) <<
+    -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) <<
+    5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) <<
+    6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) <<
+    7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) <<
+    1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) <<
+    -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) <<
+    -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) <<
+    -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) <<
+    -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) <<
+    -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) <<
+    -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) <<
+    -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) <<
+    -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) <<
+    6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
 
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSreliability");
-    
-    Array2DFloat results = Array2DFloat::Zero(vecObs.size(),3*(nanalogs+1));
+    asForecastScore *score = asForecastScore::GetInstance("CRPSreliability");
+
+    Array2DFloat results = Array2DFloat::Zero(vecObs.size(), 3 * (nanalogs + 1));
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results.row(i_time) = res;
-        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size()-1]));
+        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPSreliability", "Total");
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("CRPSreliability", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Final values
@@ -1927,41 +1969,55 @@ TEST(ForecastScore, ProcessCRPSpotential)
     Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
     Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
 
-    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
-    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
-    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
-    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
-    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
-    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
-    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
-    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
-    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
-    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
-    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
-    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
-    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
-    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
-    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+    vecForecast.row(0) <<
+    1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) <<
+    -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) <<
+    5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) <<
+    6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) <<
+    7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) <<
+    1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) <<
+    -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) <<
+    -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) <<
+    -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) <<
+    -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) <<
+    -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) <<
+    -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) <<
+    -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) <<
+    -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) <<
+    6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
 
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
     // Instantiate the score
-    asForecastScore* score = asForecastScore::GetInstance("CRPSpotential");
-    
-    Array2DFloat results = Array2DFloat::Zero(vecObs.size(),3*(nanalogs+1));
+    asForecastScore *score = asForecastScore::GetInstance("CRPSpotential");
+
+    Array2DFloat results = Array2DFloat::Zero(vecObs.size(), 3 * (nanalogs + 1));
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time=0;i_time<vecObs.size();i_time++)
-    {
+    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
         pseudoDates[i_time] = i_time;
         Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
         results.row(i_time) = res;
-        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size()-1]));
+        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 
-    asForecastScoreFinal* finalScore = asForecastScoreFinal::GetInstance("CRPSpotential", "Total");
-    finalScore->SetRanksNb(nanalogs+1);
-    asTimeArray emptyTimeArray = asTimeArray(0,1,1,asTimeArray::Simple);
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("CRPSpotential", "Total");
+    finalScore->SetRanksNb(nanalogs + 1);
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Final values

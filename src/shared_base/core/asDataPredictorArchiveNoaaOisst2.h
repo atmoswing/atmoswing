@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTORARCHIVENOAAOISST2_H
 #define ASDATAPREDICTORARCHIVENOAAOISST2_H
 
@@ -34,27 +34,24 @@
 
 class asGeoArea;
 
-class asDataPredictorArchiveNoaaOisst2: public asDataPredictorArchive
+class asDataPredictorArchiveNoaaOisst2
+        : public asDataPredictorArchive
 {
 public:
-
-    /** Default constructor */
     asDataPredictorArchiveNoaaOisst2(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictorArchiveNoaaOisst2();
 
     bool Init();
 
     static VectorString GetDataIdList();
-    
+
     static VectorString GetDataIdDescriptionList();
 
-
 protected:
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                  VVArray2DFloat &compositeData);
 
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
-    
 private:
 
 };

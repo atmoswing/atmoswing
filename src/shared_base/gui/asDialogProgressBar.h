@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASDIALOGPROGRESSBAR_H
 #define ASDIALOGPROGRESSBAR_H
 
@@ -32,19 +32,22 @@
 
 #include "wx/progdlg.h"
 
-class asDialogProgressBar: public wxObject
+class asDialogProgressBar
+        : public wxObject
 {
 public:
     asDialogProgressBar(const wxString &DialogMessage, int ValueMax);
+
     virtual ~asDialogProgressBar();
 
     void Destroy();
+
     bool Update(int Value, const wxString &Message = wxEmptyString);
 
 protected:
 
 private:
-    wxProgressDialog* m_progressBar;
+    wxProgressDialog *m_progressBar;
     bool m_initiated;
     int m_steps;
     int m_delayUpdate;

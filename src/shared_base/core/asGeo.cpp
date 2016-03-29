@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asGeo.h"
 
 asGeo::asGeo()
@@ -50,36 +50,28 @@ void asGeo::InitBounds()
 bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
 {
     // We always consider WGS84 for the predictors
-    if(Point.y<m_axisYmin)
-    {
-        if (ChangesAllowed == asEDIT_ALLOWED)
-        {
+    if (Point.y < m_axisYmin) {
+        if (ChangesAllowed == asEDIT_ALLOWED) {
             Point.y = m_axisYmin + (m_axisYmin - Point.y);
             Point.x = Point.x + 180;
         }
         return false;
     }
-    if(Point.y>m_axisYmax)
-    {
-        if (ChangesAllowed == asEDIT_ALLOWED)
-        {
+    if (Point.y > m_axisYmax) {
+        if (ChangesAllowed == asEDIT_ALLOWED) {
             Point.y = m_axisYmax + (m_axisYmax - Point.y);
             Point.x = Point.x + 180;
         }
         return false;
     }
-    if(Point.x<m_axisXmin)
-    {
-        if (ChangesAllowed == asEDIT_ALLOWED)
-        {
+    if (Point.x < m_axisXmin) {
+        if (ChangesAllowed == asEDIT_ALLOWED) {
             Point.x += m_axisXmax;
         }
         return false;
     }
-    if(Point.x>m_axisXmax)
-    {
-        if (ChangesAllowed == asEDIT_ALLOWED)
-        {
+    if (Point.x > m_axisXmax) {
+        if (ChangesAllowed == asEDIT_ALLOWED) {
             Point.x -= m_axisXmax;
         }
         return false;

@@ -25,32 +25,22 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASPREDICTORCRITERIARMSEwithNaN_H
 #define ASPREDICTORCRITERIARMSEwithNaN_H
 
 #include <asIncludes.h>
 #include <asPredictorCriteria.h>
 
-class asPredictorCriteriaRMSEwithNaN: public asPredictorCriteria
+class asPredictorCriteriaRMSEwithNaN
+        : public asPredictorCriteria
 {
 public:
+    asPredictorCriteriaRMSEwithNaN(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
 
-    /** Default constructor
-     * \param criteria The chosen criteria
-     */
-    asPredictorCriteriaRMSEwithNaN(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
-
-    /** Default destructor */
     ~asPredictorCriteriaRMSEwithNaN();
 
-    /** Process the Criteria
-     * \param refData The target day
-     * \param evalData The day to assess
-     * \return The Criteria
-     */
     float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb);
-
 
 protected:
 

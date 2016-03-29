@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef AtmoswingAPPOptimizer_H
 #define AtmoswingAPPOptimizer_H
 
@@ -36,26 +36,35 @@
 #include <asIncludes.h>
 
 #if wxUSE_GUI
-class AtmoswingAppOptimizer : public wxApp
+
+class AtmoswingAppOptimizer
+        : public wxApp
 #else
-class AtmoswingAppOptimizer : public wxAppConsole
+    class AtmoswingAppOptimizer : public wxAppConsole
 #endif
 {
 public:
-    //AtmoswingAppOptimizer();
-    virtual ~AtmoswingAppOptimizer(){};
+    virtual ~AtmoswingAppOptimizer()
+    {
+    };
+
     virtual bool OnInit();
+
     virtual int OnRun();
+
     virtual int OnExit();
     void CleanUp();
     virtual void OnInitCmdLine(wxCmdLineParser& parser);
     wxString GetLocalPath();
     bool InitLog();
     bool InitForCmdLineOnly();
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
-    bool CommonInit();
+
+    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+
     virtual bool OnExceptionInMainLoop();
+
     virtual void OnFatalException();
+
     virtual void OnUnhandledException();
 
 private:

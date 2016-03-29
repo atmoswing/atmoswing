@@ -31,19 +31,17 @@
 #include <asIncludes.h>
 #include <asResultsAnalogsForecast.h>
 
-class asResultsAnalogsForecastAggregator: public wxObject
+class asResultsAnalogsForecastAggregator
+        : public wxObject
 {
 public:
-
-    /** Default constructor */
     asResultsAnalogsForecastAggregator();
 
-    /** Default destructor */
     virtual ~asResultsAnalogsForecastAggregator();
 
-    bool Add(asResultsAnalogsForecast* forecast);
+    bool Add(asResultsAnalogsForecast *forecast);
 
-	bool AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast* forecast);
+    bool AddPastForecast(int methodRow, int forecastRow, asResultsAnalogsForecast *forecast);
 
     void ClearArrays();
 
@@ -54,17 +52,17 @@ public:
     int GetPastMethodsNb();
 
     int GetPastForecastsNb(int methodRow);
-    
+
     int GetPastForecastsNb(int methodRow, int forecastRow);
 
-    asResultsAnalogsForecast* GetForecast(int methodRow, int forecastRow);
+    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow);
 
-    asResultsAnalogsForecast* GetPastForecast(int methodRow, int forecastRow, int leadtimeRow);
+    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow);
 
     wxString GetForecastName(int methodRow, int forecastRow);
 
     wxString GetMethodName(int methodRow);
-    
+
     VectorString GetAllMethodIds();
 
     VectorString GetAllMethodNames();
@@ -78,15 +76,15 @@ public:
     wxString GetFilePath(int methodRow, int forecastRow);
 
     wxArrayString GetFilePathsWxArray();
-    
+
     Array1DFloat GetTargetDates(int methodRow);
 
     Array1DFloat GetTargetDates(int methodRow, int forecastRow);
 
     Array1DFloat GetFullTargetDates();
-    
+
     int GetForecastRowSpecificForStationId(int methodRow, int stationId);
-    
+
     int GetForecastRowSpecificForStationRow(int methodRow, int stationRow);
 
     wxArrayString GetStationNames(int methodRow, int forecastRow);
@@ -112,8 +110,8 @@ public:
 protected:
 
 private:
-    std::vector <std::vector <asResultsAnalogsForecast*> > m_forecasts;
-    std::vector <std::vector <std::vector <asResultsAnalogsForecast*> > > m_pastForecasts;
+    std::vector<std::vector<asResultsAnalogsForecast *> > m_forecasts;
+    std::vector<std::vector<std::vector<asResultsAnalogsForecast *> > > m_pastForecasts;
 
 };
 

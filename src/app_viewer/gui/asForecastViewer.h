@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFORECASTVIEWER_H
 #define ASFORECASTVIEWER_H
 
@@ -34,28 +34,41 @@
 
 
 class asForecastManager;
+
 class asFrameForecast;
 
 class asForecastViewer
 {
 public:
-    /** Default constructor */
-    asForecastViewer(asFrameForecast* parent, asForecastManager *forecastManager, vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager);
-    /** Default destructor */
+    asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager, vrLayerManager *layerManager,
+                     vrViewerLayerManager *viewerLayerManager);
+
     virtual ~asForecastViewer();
 
     wxArrayString GetForecastDisplayStringArray();
+
     wxArrayString GetQuantilesStringArray();
+
     void FixForecastSelection();
-	void ResetForecastSelection();
+
+    void ResetForecastSelection();
+
     void SetForecast(int methodRow, int forecastRow);
+
     wxString GetStationName(int i_stat);
+
     float GetSelectedTargetDate();
+
     void SetForecastDisplay(int i);
+
     void SetQuantile(int i);
+
     void LoadPastForecast();
+
     void Redraw();
-    void ChangeLeadTime( int val );
+
+    void ChangeLeadTime(int val);
+
     void SetLeadTimeDate(float date);
 
     int GetMethodSelection()
@@ -78,25 +91,16 @@ public:
         return m_quantileSelection;
     }
 
-    /** Access the maximum value of the current layer
-     * \return The current maximum value
-     */
     float GetLayerMaxValue()
     {
         return m_layerMaxValue;
     }
 
-    /** Access the value of m_leadTimeIndex
-     * \return The current value of m_leadTimeIndex
-     */
     int GetLeadTimeIndex()
     {
         return m_leadTimeIndex;
     }
 
-    /** Access the value of m_leadTimeDate
-     * \return The current value of m_leadTimeDate
-     */
     float GetLeadTimeDate()
     {
         return m_leadTimeDate;
@@ -109,8 +113,8 @@ private:
     float m_leadTimeDate;
     float m_layerMaxValue;
     bool m_opened;
-    asFrameForecast* m_parent;
-    asForecastManager* m_forecastManager;
+    asFrameForecast *m_parent;
+    asForecastManager *m_forecastManager;
     vrLayerManager *m_layerManager;
     vrViewerLayerManager *m_viewerLayerManager;
     wxArrayString m_displayForecast;

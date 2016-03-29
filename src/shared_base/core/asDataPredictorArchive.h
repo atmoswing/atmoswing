@@ -25,35 +25,29 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTORARCHIVE_H
 #define ASDATAPREDICTORARCHIVE_H
 
 #include <asIncludes.h>
 #include <asDataPredictor.h>
 
-class asDataPredictorArchive: public asDataPredictor
+class asDataPredictorArchive
+        : public asDataPredictor
 {
 public:
-
-    /** Default constructor
-     * \param dataId The predictor data id
-     */
     asDataPredictorArchive(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictorArchive();
 
-    static asDataPredictorArchive* GetInstance(const wxString &datasetId, const wxString &dataId, const wxString &directory = wxEmptyString);
-    
+    static asDataPredictorArchive *GetInstance(const wxString &datasetId, const wxString &dataId,
+                                               const wxString &directory = wxEmptyString);
+
     virtual bool Init();
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
-    
-    /** Access m_originalProviderStart
-     * \return The current value of m_originalProviderStart
-     */
-    int GetOriginalProviderStart()
+
+    double GetOriginalProviderStart()
     {
         return m_originalProviderStart;
     }
@@ -69,10 +63,6 @@ protected:
     wxString m_subFolder;
     wxString m_fileNamePattern;
 
-    /** Method to check the time array compatibility with the data
-     * \param timeArray The time array to check
-     * \return True if compatible with the data
-     */
     virtual bool CheckTimeArray(asTimeArray &timeArray);
 
 private:

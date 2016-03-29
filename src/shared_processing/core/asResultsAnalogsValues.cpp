@@ -32,8 +32,7 @@
 
 
 asResultsAnalogsValues::asResultsAnalogsValues()
-:
-asResults()
+        : asResults()
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveAnalogValues", &m_saveIntermediateResults, false);
@@ -49,13 +48,14 @@ asResultsAnalogsValues::~asResultsAnalogsValues()
 void asResultsAnalogsValues::Init(asParameters &params)
 {
     m_predictandStationIds = params.GetPredictandStationIds();
-    if(m_saveIntermediateResults || m_loadIntermediateResults) BuildFileName();
+    if (m_saveIntermediateResults || m_loadIntermediateResults)
+        BuildFileName();
 
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
     m_targetValuesNorm.resize(0);
     m_targetValuesGross.resize(0);
-    m_analogsCriteria.resize(0,0);
+    m_analogsCriteria.resize(0, 0);
     m_analogsValuesNorm.resize(0);
     m_analogsValuesGross.resize(0);
 }
@@ -63,7 +63,8 @@ void asResultsAnalogsValues::Init(asParameters &params)
 void asResultsAnalogsValues::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
+                                           asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
     m_filePath.Append(wxString::Format("AnalogsValues_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
@@ -73,18 +74,16 @@ void asResultsAnalogsValues::BuildFileName()
 bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
-    if(!m_saveIntermediateResults) return false;
+    if (!m_saveIntermediateResults)
+        return false;
     wxString message = _("Saving intermediate file: ") + m_filePath;
     asLogMessage(message);
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -97,8 +96,7 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -164,27 +162,22 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
     int ind = 0;
 
     // Fill the criteria data
-    for (unsigned int i_time=0; i_time<Ntime; i_time++)
-    {
-        for (unsigned int i_analog=0; i_analog<Nanalogs;i_analog++)
-        {
+    for (unsigned int i_time = 0; i_time < Ntime; i_time++) {
+        for (unsigned int i_analog = 0; i_analog < Nanalogs; i_analog++) {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            analogsCriteria[ind] = m_analogsCriteria(i_time,i_analog);
+            analogsCriteria[ind] = m_analogsCriteria(i_time, i_analog);
         }
     }
 
     // Fill the values data
-    for (unsigned int i_st=0; i_st<Nstations; i_st++)
-    {
-        for (unsigned int i_time=0; i_time<Ntime; i_time++)
-        {
-            for (unsigned int i_analog=0; i_analog<Nanalogs;i_analog++)
-            {
+    for (unsigned int i_st = 0; i_st < Nstations; i_st++) {
+        for (unsigned int i_time = 0; i_time < Ntime; i_time++) {
+            for (unsigned int i_analog = 0; i_analog < Nanalogs; i_analog++) {
                 ind = i_analog;
                 ind += i_time * Nanalogs;
-                analogsValuesNorm[ind] = m_analogsValuesNorm[i_st](i_time,i_analog);
-                analogsValuesGross[ind] = m_analogsValuesGross[i_st](i_time,i_analog);
+                analogsValuesNorm[ind] = m_analogsValuesNorm[i_st](i_time, i_analog);
+                analogsValuesGross[ind] = m_analogsValuesGross[i_st](i_time, i_analog);
             }
         }
     }
@@ -209,18 +202,18 @@ bool asResultsAnalogsValues::Save(const wxString &AlternateFilePath)
 bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
 {
     // If we don't want to save or the file doesn't exist
-    if(!m_loadIntermediateResults) return false;
-    if(!Exists()) return false;
-    if(m_currentStep!=0) return false;
+    if (!m_loadIntermediateResults)
+        return false;
+    if (!Exists())
+        return false;
+    if (m_currentStep != 0)
+        return false;
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -228,8 +221,7 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
 
     // Open the NetCDF file
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::ReadOnly);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -240,7 +232,7 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     size_t Nanalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_targetDates.resize( Ntime );
+    m_targetDates.resize(Ntime);
     ncFile.GetVar("target_dates", &m_targetDates[0]);
 
     // Create vectors for matrices data
@@ -268,32 +260,27 @@ bool asResultsAnalogsValues::Load(const wxString &AlternateFilePath)
     ncFile.GetVarArray("analog_values_gross", startSTA, countSTA, &analogsValuesGross[0]);
 
     // Set data into the matrices
-    m_analogsCriteria.resize( Ntime, Nanalogs );
+    m_analogsCriteria.resize(Ntime, Nanalogs);
     int ind = 0;
-    for (size_t i_time=0; i_time<Ntime; i_time++)
-    {
-        for (int i_analog=0; i_analog<(int)Nanalogs;i_analog++)
-        {
+    for (size_t i_time = 0; i_time < Ntime; i_time++) {
+        for (int i_analog = 0; i_analog < (int) Nanalogs; i_analog++) {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            m_analogsCriteria(i_time,i_analog) = analogsCriteria[ind];
+            m_analogsCriteria(i_time, i_analog) = analogsCriteria[ind];
         }
     }
-    
-    for (size_t i_st=0; i_st<Nstations; i_st++)
-    {
-        Array2DFloat analogsValuesNormStation( Ntime, Nanalogs );
-        Array2DFloat analogsValuesGrossStation( Ntime, Nanalogs );
+
+    for (size_t i_st = 0; i_st < Nstations; i_st++) {
+        Array2DFloat analogsValuesNormStation(Ntime, Nanalogs);
+        Array2DFloat analogsValuesGrossStation(Ntime, Nanalogs);
         int ind = 0;
-        for (int i_time=0; i_time<(int)Ntime; i_time++)
-        {
-            for (int i_analog=0; i_analog<(int)Nanalogs;i_analog++)
-            {
+        for (int i_time = 0; i_time < (int) Ntime; i_time++) {
+            for (int i_analog = 0; i_analog < (int) Nanalogs; i_analog++) {
                 ind = i_analog;
                 ind += i_time * Nanalogs;
-                m_analogsCriteria(i_time,i_analog) = analogsCriteria[ind];
-                analogsValuesNormStation(i_time,i_analog) = analogsValuesNorm[ind];
-                analogsValuesGrossStation(i_time,i_analog) = analogsValuesGross[ind];
+                m_analogsCriteria(i_time, i_analog) = analogsCriteria[ind];
+                analogsValuesNormStation(i_time, i_analog) = analogsValuesNorm[ind];
+                analogsValuesGrossStation(i_time, i_analog) = analogsValuesGross[ind];
             }
         }
         m_analogsValuesNorm.push_back(analogsValuesNormStation);

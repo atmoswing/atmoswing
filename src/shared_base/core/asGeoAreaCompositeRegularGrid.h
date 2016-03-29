@@ -25,143 +25,66 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef asGeoAreaCompositeRegularGrid_H
 #define asGeoAreaCompositeRegularGrid_H
 
 #include <asIncludes.h>
 #include <asGeoAreaCompositeGrid.h>
 
-class asGeoAreaCompositeRegularGrid: public asGeoAreaCompositeGrid
+class asGeoAreaCompositeRegularGrid
+        : public asGeoAreaCompositeGrid
 {
 public:
+    asGeoAreaCompositeRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
+                                  double Xstep, double Ystep, float Level = asNONE, float Height = asNONE,
+                                  int flatAllowed = asFLAT_FORBIDDEN);
 
-    /** Default constructor
-     * \param coosys The coordinate system
-     * \param CornerUL The coordinates of the upper left corner
-     * \param CornerUR The coordinates of the upper right corner
-     * \param CornerLL The coordinates of the lower left corner
-     * \param CornerLR The coordinates of the lower right corner
-     * \param Xstep The step according to the X axis
-     * \param Ystep The step according to the v axis
-     * \param Level The height in hPa
-     * \param Height The height in m
-     * \param flatAllowed Allows the area to have a dimension that is null
-     */
-    asGeoAreaCompositeRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep,
+                                  float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    /** Alternative constructor
-     * \param coosys The coordinate system
-     * \param Xmin The left border
-     * \param Xwidth The size on X axis
-     * \param Xstep The step according to the X axis
-     * \param Ymin The left border
-     * \param Ywidth The size on Y axis
-     * \param Ystep The step according to the v axis
-     * \param Level The height in hPa
-     * \param Height The height in m
-     * \param flatAllowed Allows the area to have a dimension that is null
-     */
-    asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
-
-    /** Default destructor */
     virtual ~asGeoAreaCompositeRegularGrid();
-
 
     bool GridsOverlay(asGeoAreaCompositeGrid *otherarea);
 
-
-    /** Access m_xstep
-     * \return The current value of m_xstep
-     */
     double GetXstep()
     {
-        return m_xstep;
+        return m_xStep;
     }
 
-    /** Access m_ystep
-     * \return The current value of m_ystep
-     */
     double GetYstep()
     {
-        return m_ystep;
+        return m_yStep;
     }
 
-    /** Get the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The axis built on the boundaries and the step
-     */
     Array1DDouble GetXaxisComposite(int compositeNb);
 
-    /** Get the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The axis built on the boundaries and the step
-     */
     Array1DDouble GetYaxisComposite(int compositeNb);
 
-    /** Get the size of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The size of the axis
-     */
     int GetXaxisCompositePtsnb(int compositeNb);
 
-    /** Get the size of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The size of the axis
-     */
     int GetYaxisCompositePtsnb(int compositeNb);
 
-    /** Get the width of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The width of the axis
-     */
     double GetXaxisCompositeWidth(int compositeNb);
 
-    /** Get the width of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The width of the axis
-     */
     double GetYaxisCompositeWidth(int compositeNb);
 
-    /** Get the start value of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The start value of the axis
-     */
     double GetXaxisCompositeStart(int compositeNb);
 
-    /** Get the start value of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The start value of the axis
-     */
     double GetYaxisCompositeStart(int compositeNb);
 
-    /** Get the last value of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The last value of the axis
-     */
     double GetXaxisCompositeEnd(int compositeNb);
 
-    /** Get the last value of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The last value of the axis
-     */
     double GetYaxisCompositeEnd(int compositeNb);
-
 
 protected:
 
 private:
-    double m_xstep; //!< Member variable "m_xstep"
-    double m_ystep; //!< Member variable "m_ystep"
+    double m_xStep;
+    double m_yStep;
 
-    /** Tells if the area is a straight square compatible with the given step or not
-     * \return True if the area is a straight square compatible with the given step
-     */
     bool IsOnGrid(double step);
 
-    /** Tells if the area is a straight square compatible with the given steps or not
-     * \return True if the area is a straight square compatible with the given steps
-     */
     bool IsOnGrid(double stepX, double stepY);
 };
 

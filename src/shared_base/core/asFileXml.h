@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFILEXML_H
 #define ASFILEXML_H
 
@@ -35,43 +35,39 @@
 #include <asFile.h>
 
 
-class asFileXml : public asFile
+class asFileXml
+        : public asFile
 {
 public:
-    /** Default constructor */
     asFileXml(const wxString &FileName, const ListFileMode &FileMode);
 
-    /** Default destructor */
     virtual ~asFileXml();
 
-    /** Open file */
     virtual bool Open();
 
-    /** Close file */
     virtual bool Close();
 
-    /** Save file */
     bool Save();
 
-    wxXmlNode * GetRoot()
+    wxXmlNode *GetRoot()
     {
         wxASSERT(m_document.GetRoot());
         return m_document.GetRoot();
     }
-    
-    void AddChild(wxXmlNode* node);
 
-    bool CheckRootElement();
+    void AddChild(wxXmlNode *node);
 
-    wxXmlNode * CreateNodeWithValue(const wxString &name, const bool &content);
+    virtual bool CheckRootElement();
 
-    wxXmlNode * CreateNodeWithValue(const wxString &name, const int &content);
+    wxXmlNode *CreateNodeWithValue(const wxString &name, const bool &content);
 
-    wxXmlNode * CreateNodeWithValue(const wxString &name, const float &content);
+    wxXmlNode *CreateNodeWithValue(const wxString &name, const int &content);
 
-    wxXmlNode * CreateNodeWithValue(const wxString &name, const double &content);
+    wxXmlNode *CreateNodeWithValue(const wxString &name, const float &content);
 
-    wxXmlNode * CreateNodeWithValue(const wxString &name, const wxString &content);
+    wxXmlNode *CreateNodeWithValue(const wxString &name, const double &content);
+
+    wxXmlNode *CreateNodeWithValue(const wxString &name, const wxString &content);
 
     bool IsAnAtmoSwingFile();
 
@@ -101,6 +97,7 @@ public:
 
 
 protected:
+
 private:
     wxXmlDocument m_document;
 

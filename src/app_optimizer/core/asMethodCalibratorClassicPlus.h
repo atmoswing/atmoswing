@@ -25,21 +25,23 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASMETHODCALIBRATORCLASSICPLUS_H
 #define ASMETHODCALIBRATORCLASSICPLUS_H
 
 #include <asMethodCalibrator.h>
 
 
-class asMethodCalibratorClassicPlus: public asMethodCalibrator
+class asMethodCalibratorClassicPlus
+        : public asMethodCalibrator
 {
 public:
     asMethodCalibratorClassicPlus();
+
     virtual ~asMethodCalibratorClassicPlus();
 
 protected:
-	virtual bool Calibrate(asParametersCalibration &params);
+    virtual bool Calibrate(asParametersCalibration &params);
 
 private:
 

@@ -29,7 +29,7 @@
 #include "asGlobVarsForecaster.h"
 
 #if wxUSE_GUI
-    wxColour g_linuxBgColour = wxColour(242,241,240);
+wxColour g_linuxBgColour = wxColour(242, 241, 240);
 #endif
 
 wxString g_cmdFilename = wxEmptyString;

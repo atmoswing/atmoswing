@@ -34,16 +34,14 @@
 #include <asParametersScoring.h>
 
 
-class asResultsParametersArray: public asResults
+class asResultsParametersArray
+        : public asResults
 {
 public:
     asResultsParametersArray();
 
     virtual ~asResultsParametersArray();
 
-    /** Init
-     * \param fileTag A tag to add to the file name
-     */
     void Init(const wxString &fileTag);
 
     void Add(asParametersScoring params, float scoreCalib);
@@ -67,36 +65,32 @@ public:
 
     asParametersScoring GetParameter(int i)
     {
-        wxASSERT(i<(int)m_parameters.size());
+        wxASSERT(i < (int) m_parameters.size());
         return m_parameters[i];
     }
 
     float GetScoreCalib(int i)
     {
-        wxASSERT(i<(int)m_scoresCalib.size());
+        wxASSERT(i < (int) m_scoresCalib.size());
         return m_scoresCalib[i];
     }
 
     float GetScoreValid(int i)
     {
-        wxASSERT(i<(int)m_scoresValid.size());
+        wxASSERT(i < (int) m_scoresValid.size());
         return m_scoresValid[i];
     }
 
 protected:
-
-    /** Build the result file path
-     * \param fileTag A resulting file tag
-     */
     void BuildFileName(const wxString &fileTag);
 
 private:
-    std::vector <asParametersScoring> m_parameters;
+    std::vector<asParametersScoring> m_parameters;
     VectorFloat m_scoresCalib;
     VectorFloat m_scoresValid;
-    std::vector <asParametersScoring> m_parametersForScoreOnArray;
-    std::vector <Array1DFloat> m_scoresCalibForScoreOnArray;
-    std::vector <Array1DFloat> m_scoresValidForScoreOnArray;
+    std::vector<asParametersScoring> m_parametersForScoreOnArray;
+    std::vector<Array1DFloat> m_scoresCalibForScoreOnArray;
+    std::vector<Array1DFloat> m_scoresValidForScoreOnArray;
 };
 
 #endif // ASRESULTSPARAMETERSARRAY_H

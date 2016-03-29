@@ -32,11 +32,10 @@
 
 
 asResultsAnalogsDates::asResultsAnalogsDates()
-:
-asResults()
+        : asResults()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase* pConfig = wxFileConfig::Get();
+    wxConfigBase *pConfig = wxFileConfig::Get();
     bool saveAnalogDatesStep1;
     pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
     bool saveAnalogDatesStep2;
@@ -47,8 +46,8 @@ asResults()
     pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", &saveAnalogDatesStep4, false);
     bool saveAnalogDatesAllSteps;
     pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
-    if (saveAnalogDatesStep1 || saveAnalogDatesStep2 || saveAnalogDatesStep3 || saveAnalogDatesStep4 || saveAnalogDatesAllSteps)
-    {
+    if (saveAnalogDatesStep1 || saveAnalogDatesStep2 || saveAnalogDatesStep3 || saveAnalogDatesStep4 ||
+        saveAnalogDatesAllSteps) {
         m_saveIntermediateResults = true;
     }
     bool loadAnalogDatesStep1;
@@ -61,8 +60,8 @@ asResults()
     pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", &loadAnalogDatesStep4, false);
     bool loadAnalogDatesAllSteps;
     pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
-    if (loadAnalogDatesStep1 || loadAnalogDatesStep2 || loadAnalogDatesStep3 || loadAnalogDatesStep4 || loadAnalogDatesAllSteps)
-    {
+    if (loadAnalogDatesStep1 || loadAnalogDatesStep2 || loadAnalogDatesStep3 || loadAnalogDatesStep4 ||
+        loadAnalogDatesAllSteps) {
         m_loadIntermediateResults = true;
     }
     ThreadsManager().CritSectionConfig().Leave();
@@ -76,18 +75,20 @@ asResultsAnalogsDates::~asResultsAnalogsDates()
 void asResultsAnalogsDates::Init(asParameters &params)
 {
     m_predictandStationIds = params.GetPredictandStationIds();
-    if(m_saveIntermediateResults || m_loadIntermediateResults) BuildFileName();
+    if (m_saveIntermediateResults || m_loadIntermediateResults)
+        BuildFileName();
 
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
-    m_analogsCriteria.resize(0,0);
-    m_analogsDates.resize(0,0);
+    m_analogsCriteria.resize(0, 0);
+    m_analogsDates.resize(0, 0);
 }
 
 void asResultsAnalogsDates::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
+                                           asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
     m_filePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
@@ -97,15 +98,12 @@ void asResultsAnalogsDates::BuildFileName()
 bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
-    if(!m_saveIntermediateResults)
-    {
+    if (!m_saveIntermediateResults) {
         return false;
-    }
-    else
-    {
+    } else {
         // Check if the current step is concerned
         ThreadsManager().CritSectionConfig().Enter();
-        wxConfigBase* pConfig = wxFileConfig::Get();
+        wxConfigBase *pConfig = wxFileConfig::Get();
         bool saveAnalogDatesStep1;
         pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
         bool saveAnalogDatesStep2;
@@ -118,32 +116,29 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
         pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
         ThreadsManager().CritSectionConfig().Leave();
 
-        if (!saveAnalogDatesAllSteps)
-        {
-            switch (m_currentStep)
-            {
-                case 0:
-                {
-                    if (!saveAnalogDatesStep1) return false;
+        if (!saveAnalogDatesAllSteps) {
+            switch (m_currentStep) {
+                case 0: {
+                    if (!saveAnalogDatesStep1)
+                        return false;
                     break;
                 }
-                case 1:
-                {
-                    if (!saveAnalogDatesStep2) return false;
+                case 1: {
+                    if (!saveAnalogDatesStep2)
+                        return false;
                     break;
                 }
-                case 2:
-                {
-                    if (!saveAnalogDatesStep3) return false;
+                case 2: {
+                    if (!saveAnalogDatesStep3)
+                        return false;
                     break;
                 }
-                case 3:
-                {
-                    if (!saveAnalogDatesStep4) return false;
+                case 3: {
+                    if (!saveAnalogDatesStep4)
+                        return false;
                     break;
                 }
-                default:
-                {
+                default: {
                     return false;
                 }
             }
@@ -154,12 +149,9 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -171,8 +163,7 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -213,14 +204,12 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
     VectorFloat analogsDates(totLength);
     int ind = 0;
 
-    for (unsigned int i_time=0; i_time<Ntime; i_time++)
-    {
-        for (unsigned int i_analog=0; i_analog<Nanalogs;i_analog++)
-        {
+    for (unsigned int i_time = 0; i_time < Ntime; i_time++) {
+        for (unsigned int i_analog = 0; i_analog < Nanalogs; i_analog++) {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            analogsCriteria[ind] = m_analogsCriteria(i_time,i_analog);
-            analogsDates[ind] = m_analogsDates(i_time,i_analog);
+            analogsCriteria[ind] = m_analogsCriteria(i_time, i_analog);
+            analogsDates[ind] = m_analogsDates(i_time, i_analog);
         }
     }
 
@@ -239,15 +228,12 @@ bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
 bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
 {
     // If we don't want to load, skip
-    if(!m_loadIntermediateResults)
-    {
+    if (!m_loadIntermediateResults) {
         return false;
-    }
-    else
-    {
+    } else {
         // Check if the current step is concerned
         ThreadsManager().CritSectionConfig().Enter();
-        wxConfigBase* pConfig = wxFileConfig::Get();
+        wxConfigBase *pConfig = wxFileConfig::Get();
         bool loadAnalogDatesStep1;
         pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
         bool loadAnalogDatesStep2;
@@ -260,105 +246,76 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
         pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
         ThreadsManager().CritSectionConfig().Leave();
 
-        if (!loadAnalogDatesAllSteps)
-        {
-            switch (m_currentStep)
-            {
-                case 0:
-                {
-                    if (!loadAnalogDatesStep1)
-                    {
-                        if (!loadAnalogDatesStep2)
-                        {
-                            if (!loadAnalogDatesStep3)
-                            {
-                                if (!loadAnalogDatesStep4)
-                                {
+        if (!loadAnalogDatesAllSteps) {
+            switch (m_currentStep) {
+                case 0: {
+                    if (!loadAnalogDatesStep1) {
+                        if (!loadAnalogDatesStep2) {
+                            if (!loadAnalogDatesStep3) {
+                                if (!loadAnalogDatesStep4) {
                                     return false;
-                                }
-                                else
-                                {
+                                } else {
                                     m_currentStep = 3;
                                     BuildFileName();
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 m_currentStep = 2;
                                 BuildFileName();
                             }
-                        }
-                        else
-                        {
+                        } else {
                             m_currentStep = 1;
                             BuildFileName();
                         }
                     }
                     break;
                 }
-                case 1:
-                {
-                    if (!loadAnalogDatesStep2)
-                    {
-                        if (!loadAnalogDatesStep3)
-                        {
-                            if (!loadAnalogDatesStep4)
-                            {
+                case 1: {
+                    if (!loadAnalogDatesStep2) {
+                        if (!loadAnalogDatesStep3) {
+                            if (!loadAnalogDatesStep4) {
                                 return false;
-                            }
-                            else
-                            {
+                            } else {
                                 m_currentStep = 3;
                                 BuildFileName();
                             }
-                        }
-                        else
-                        {
+                        } else {
                             m_currentStep = 2;
                             BuildFileName();
                         }
                     }
                     break;
                 }
-                case 2:
-                {
-                    if (!loadAnalogDatesStep3)
-                    {
-                        if (!loadAnalogDatesStep4)
-                        {
+                case 2: {
+                    if (!loadAnalogDatesStep3) {
+                        if (!loadAnalogDatesStep4) {
                             return false;
-                        }
-                        else
-                        {
+                        } else {
                             m_currentStep = 3;
                             BuildFileName();
                         }
                     }
                     break;
                 }
-                case 3:
-                {
-                    if (!loadAnalogDatesStep4) return false;
+                case 3: {
+                    if (!loadAnalogDatesStep4)
+                        return false;
                     break;
                 }
-                default:
-                {
+                default: {
                     return false;
                 }
             }
         }
     }
 
-    if(!Exists()) return false;
+    if (!Exists())
+        return false;
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -366,8 +323,7 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
 
     // Open the NetCDF file
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::ReadOnly);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -377,12 +333,11 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     int Nanalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_targetDates.resize( Ntime );
+    m_targetDates.resize(Ntime);
     ncFile.GetVar("target_dates", &m_targetDates[0]);
 
     // Check last value
-    if(m_targetDates[m_targetDates.size()-1]<m_targetDates[0])
-    {
+    if (m_targetDates[m_targetDates.size() - 1] < m_targetDates[0]) {
         asLogError(_("The target date array is not consistent in the temp file (last value makes no sense)."));
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -394,23 +349,21 @@ bool asResultsAnalogsDates::Load(const wxString &AlternateFilePath)
     VectorFloat analogsDates(totLength);
 
     // Get data
-    size_t IndexStart[2] = {0,0};
+    size_t IndexStart[2] = {0, 0};
     size_t IndexCount[2] = {size_t(Ntime), size_t(Nanalogs)};
     ncFile.GetVarArray("analog_dates", IndexStart, IndexCount, &analogsDates[0]);
     ncFile.GetVarArray("analog_criteria", IndexStart, IndexCount, &analogsCriteria[0]);
 
     // Set data into the matrices
-    m_analogsDates.resize( Ntime, Nanalogs );
-    m_analogsCriteria.resize( Ntime, Nanalogs );
+    m_analogsDates.resize(Ntime, Nanalogs);
+    m_analogsCriteria.resize(Ntime, Nanalogs);
     int ind = 0;
-    for (int i_time=0; i_time<Ntime; i_time++)
-    {
-        for (int i_analog=0; i_analog<Nanalogs;i_analog++)
-        {
+    for (int i_time = 0; i_time < Ntime; i_time++) {
+        for (int i_analog = 0; i_analog < Nanalogs; i_analog++) {
             ind = i_analog;
             ind += i_time * Nanalogs;
-            m_analogsCriteria(i_time,i_analog) = analogsCriteria[ind];
-            m_analogsDates(i_time,i_analog) = analogsDates[ind];
+            m_analogsCriteria(i_time, i_analog) = analogsCriteria[ind];
+            m_analogsDates(i_time, i_analog) = analogsDates[ind];
         }
     }
 

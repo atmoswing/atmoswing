@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASLOG_H
 #define ASLOG_H
 
@@ -35,20 +35,17 @@
 
 class wxFFile;
 
-class asLog: public wxObject
+class asLog
+        : public wxObject
 {
 public:
-    enum LogTarget //!< Enumaration of log targets options
+    enum LogTarget
     {
-        File,
-        Screen,
-        Both
+        File, Screen, Both
     };
 
-    /** Default constructor */
     asLog();
 
-    /** Default destructor */
     virtual ~asLog();
 
     bool CreateFile(const wxString &fileName);
@@ -71,7 +68,7 @@ public:
 
     void Warning(const wxString &msg);
 
-    void Message(const wxString &msg, bool force=false);
+    void Message(const wxString &msg, bool force = false);
 
     void State(const wxString &msg);
 
@@ -120,10 +117,10 @@ public:
 
 protected:
 private:
-    wxFFile *m_logFile; //!< Member variable "m_logFile".
-    wxLogChain *m_logChain; //!< Member variable "m_logChain".
-    wxCriticalSection m_critSectionLog; //!< Member variable "m_critSectionLog". Critical section.
-    int m_level; //!< Member variable "m_level". 1: only errors, 2: errors & warnings, 3: all logs.
+    wxFFile *m_logFile;
+    wxLogChain *m_logChain;
+    wxCriticalSection m_critSectionLog;
+    int m_level;
     int m_target;
     bool m_active;
     bool m_messageBoxOnError;

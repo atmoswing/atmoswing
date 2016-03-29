@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTANDPRECIPITATION_H
 #define ASDATAPREDICTANDPRECIPITATION_H
 
@@ -33,17 +33,22 @@
 #include <asDataPredictand.h>
 
 
-class asDataPredictandPrecipitation: public asDataPredictand
+class asDataPredictandPrecipitation
+        : public asDataPredictand
 {
 public:
-    asDataPredictandPrecipitation(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
+    asDataPredictandPrecipitation(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
+                                  DataSpatialAggregation dataSpatialAggregation);
+
     virtual ~asDataPredictandPrecipitation();
 
     virtual bool Load(const wxString &filePath);
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
+                                   const wxString &AlternatePatternDir = wxEmptyString,
+                                   const wxString &AlternateDestinationDir = wxEmptyString);
 
     virtual Array1DFloat GetReferenceAxis()
     {
@@ -71,7 +76,7 @@ public:
     {
         return m_returnPeriodNormalization;
     }
-    
+
     void SetIsSqrt(bool val)
     {
         m_isSqrt = val;
@@ -86,7 +91,6 @@ public:
 protected:
 
 private:
-
     float m_returnPeriodNormalization;
     bool m_isSqrt;
     // Vector (dim = return periods)
@@ -98,20 +102,11 @@ private:
     // Matrix with other axes
     Array2DFloat m_dailyPrecipitationsForReturnPeriods;
 
-    /** Initialize the containers
-     * \return True on success
-     */
     bool InitContainers();
 
-    /** Process a Gumbel adjustemnt by means of the moments method
-     * \return True on success
-     * \link http://echo2.epfl.ch/e-drologie/chapitres/annexes/AnalFrequ_rep.html#moments
-     */
     bool MakeGumbelAdjustment();
 
     bool BuildDataNormalized();
-
-    bool BuildDailyRPV10();
 
     bool BuildDailyPrecipitationsForAllReturnPeriods();
 

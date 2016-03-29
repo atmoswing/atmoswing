@@ -29,8 +29,7 @@
 #include "asFileParametersCalibration.h"
 
 asFileParametersCalibration::asFileParametersCalibration(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFileParameters(FileName, FileMode)
+        : asFileParameters(FileName, FileMode)
 {
     // FindAndOpen() processed by asFileXml
 }
@@ -42,20 +41,24 @@ asFileParametersCalibration::~asFileParametersCalibration()
 
 bool asFileParametersCalibration::EditRootElement()
 {
-    if (!GetRoot()) return false;
+    if (!GetRoot())
+        return false;
     GetRoot()->AddAttribute("target", "calibrator");
     return true;
 }
 
 bool asFileParametersCalibration::CheckRootElement()
 {
-    if (!GetRoot()) return false;
-    if (!IsAnAtmoSwingFile()) return false;
-    if (!FileVersionIsOrAbove(1.0)) return false;
+    if (!GetRoot())
+        return false;
+    if (!IsAnAtmoSwingFile())
+        return false;
+    if (!FileVersionIsOrAbove(1.0))
+        return false;
 
-    if (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false))
-    {
-        asLogError(wxString::Format(_("The file %s is not a parameters file for the Optimizer in calibration mode."), m_fileName.GetFullName()));
+    if (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false)) {
+        asLogError(wxString::Format(_("The file %s is not a parameters file for the Optimizer in calibration mode."),
+                                    m_fileName.GetFullName()));
         return false;
     }
     return true;

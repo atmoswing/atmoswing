@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef _VRLAYERVECTORSFCSTDOTS_H_
 #define _VRLAYERVECTORSFCSTDOTS_H_
 
@@ -33,7 +33,9 @@
 #include "wx/wxprec.h"
 // Include wxWidgets' headers
 #ifndef WX_PRECOMP
+
 #include <wx/wx.h>
+
 #endif
 
 
@@ -41,22 +43,25 @@
 #include "vrlayervector.h"
 
 class vrRender;
+
 class vrLabel;
 
 //For dealing with GIS data stored into Fcst projects.
-class vrLayerVectorFcstDots : public vrLayerVectorOGR
+class vrLayerVectorFcstDots
+        : public vrLayerVectorOGR
 {
 public:
     vrLayerVectorFcstDots();
+
     virtual ~vrLayerVectorFcstDots();
 
-    virtual long AddFeature(OGRGeometry * geometry, void * data = NULL);
+    virtual long AddFeature(OGRGeometry *geometry, void *data = NULL);
 
     void SetMaxValue(double val)
     {
-        if (val<0.1)
-        {
-            asLogWarning(_("The given maximum value for the vrLayerVectorFcstDots class was too small, so it has been increased."));
+        if (val < 0.1) {
+            asLogWarning(
+                    _("The given maximum value for the vrLayerVectorFcstDots class was too small, so it has been increased."));
             val = 0.1;
         }
         m_valueMax = val;
@@ -70,13 +75,15 @@ public:
 protected:
     double m_valueMax;
 
-    virtual void _DrawPoint(wxDC * dc, OGRFeature * feature, OGRGeometry * geometry, const wxRect2DDouble & coord, const vrRender * render,  vrLabel * label, double pxsize);
+    virtual void _DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometry *geometry, const wxRect2DDouble &coord,
+                            const vrRender *render, vrLabel *label, double pxsize);
 
-    void _CreatePath(wxGraphicsPath & path, const wxPoint & center);
+    void _CreatePath(wxGraphicsPath &path, const wxPoint &center);
 
-    void _Paint(wxGraphicsContext * gdc, wxGraphicsPath & path, double value);
+    void _Paint(wxGraphicsContext *gdc, wxGraphicsPath &path, double value);
 
-    void _AddLabel(wxGraphicsContext * gdc, const wxPoint & center, double value);
+    void _AddLabel(wxGraphicsContext *gdc, const wxPoint &center, double value);
 };
+
 #endif
 

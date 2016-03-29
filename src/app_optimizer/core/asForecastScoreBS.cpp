@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreBS.h"
 
 asForecastScoreBS::asForecastScoreBS()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::BS;
     m_name = _("Brier score");
@@ -47,8 +46,8 @@ asForecastScoreBS::~asForecastScoreBS()
 
 float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_threshold));
 
     // Create the container to sort the data
@@ -56,19 +55,16 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
-    if(nbForecasts==asNOT_FOUND)
-    {
+    if (nbForecasts == asNOT_FOUND) {
         asLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
         return NaNFloat;
-    }
-    else if(nbForecasts<=2)
-    {
+    } else if (nbForecasts <= 2) {
         asLogWarning(_("Not enough elements to process the Brier score."));
         return NaNFloat;
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbForecasts-1], Asc);
+    asTools::SortArray(&x[0], &x[nbForecasts - 1], Asc);
 
     float score = NaNFloat;
 
@@ -77,39 +73,29 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
 
     // Search probability
     float probaOccurrence;
-    if (m_threshold<x[0])
-    {
+    if (m_threshold < x[0]) {
         probaOccurrence = 1;
-    }
-    else if (m_threshold>x[nbForecasts-1])
-    {
+    } else if (m_threshold > x[nbForecasts - 1]) {
         probaOccurrence = 0;
-    }
-    else
-    {
-        int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts-1], m_threshold);
-        while (x[ind]<=m_threshold)
-        {
+    } else {
+        int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts - 1], m_threshold);
+        while (x[ind] <= m_threshold) {
             ind++;
         }
 
-        if(m_threshold>x[ind-1])
-        {
-            probaOccurrence = F(ind-1)+(F(ind)-F(ind-1))*(m_threshold-x(ind-1))/(x(ind)-x(ind-1));
-        }
-        else
-        {
-            probaOccurrence = F[ind-1];
+        if (m_threshold > x[ind - 1]) {
+            probaOccurrence = F(ind - 1) + (F(ind) - F(ind - 1)) * (m_threshold - x(ind - 1)) / (x(ind) - x(ind - 1));
+        } else {
+            probaOccurrence = F[ind - 1];
         }
     }
 
     float probaObservedVal = 0;
-    if (ObservedVal>=m_threshold)
-    {
+    if (ObservedVal >= m_threshold) {
         probaObservedVal = 1;
     }
 
-    score = (probaOccurrence-probaObservedVal)*(probaOccurrence-probaObservedVal);
+    score = (probaOccurrence - probaObservedVal) * (probaOccurrence - probaObservedVal);
 
     return score;
 }
