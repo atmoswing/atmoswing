@@ -1685,11 +1685,23 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
 
 TEST(MethodCalibrator, PrelodingWithLevelCorrection)
 {
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/General/ParallelDataLoad", false); // In order to avoid warning messages
+
     // Get parameters
     asParametersCalibration params;
     wxString paramsFilePath = wxFileName::GetCwd();
     paramsFilePath.Append("/files/parameters_calibration_preload_multiple_variables.xml");
     ASSERT_TRUE(params.LoadFromFile(paramsFilePath));
+
+    // Check original parameters
+    EXPECT_EQ(params.GetPredictorLevel(0,0), 0);
+    EXPECT_EQ(params.GetPredictorTimeHours(0,0), 6);
+    EXPECT_EQ(params.GetPredictorLevel(0,1), 0);
+    EXPECT_EQ(params.GetPredictorTimeHours(0,1), 6);
 
     // Preload data
     asMethodCalibratorSingle calibrator;
@@ -1712,4 +1724,10 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
         wxPrintf( e.GetFullMessage());
         return;
     }
+
+    // Check corrected parameters
+    EXPECT_TRUE(params.GetPredictorLevel(0,0) > 0);
+    EXPECT_EQ(params.GetPredictorTimeHours(0,0), 24);
+    EXPECT_EQ(params.GetPredictorLevel(0,1), 0);
+    EXPECT_TRUE(params.GetPredictorTimeHours(0,1) > 6);
 }

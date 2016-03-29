@@ -175,11 +175,15 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     if(timeArray.GetFirst()<valFirstTime)
     {
         asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()), asTime::GetStringTime(valFirstTime)));
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
     if(timeArray.GetLast()>valLastTime)
     {
         asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()), asTime::GetStringTime(valLastTime)));
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
 
