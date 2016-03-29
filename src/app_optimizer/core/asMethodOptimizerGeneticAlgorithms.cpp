@@ -226,7 +226,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     results_best_individual.Init(wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_generations;
     results_generations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = pConfig->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    wxString resultsXmlFilePath = pConfig->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
 
@@ -534,7 +534,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Print stats
     ThreadsManager().CritSectionConfig().Enter();
-    wxString statsFilePath = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
+    wxString statsFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     statsFilePath.Append(wxString::Format("/Optimizer/%s_stats.txt", time.c_str()));
     asFileAscii stats(statsFilePath, asFile::New);
@@ -546,8 +546,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 {
     if (g_resumePreviousRun)
     {
-        wxString resultsDir = wxFileConfig::Get()->Read("/Paths/CalibrationResultsDir", asConfig::GetDefaultUserWorkingDir());
-        resultsDir.Append("/Calibration");
+        wxString resultsDir = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
 
         wxDir dir(resultsDir);
         if ( !dir.IsOpened() )
