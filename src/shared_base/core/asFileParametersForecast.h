@@ -25,25 +25,27 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFILEPARAMETERSFORECAST_H
 #define ASFILEPARAMETERSFORECAST_H
 
 #include <asIncludes.h>
 #include <asFileParameters.h>
 
-class asFileParametersForecast : public asFileParameters
+class asFileParametersForecast
+        : public asFileParameters
 {
 public:
-    /** Default constructor */
     asFileParametersForecast(const wxString &FileName, const ListFileMode &FileMode = asFile::Replace);
-    /** Default destructor */
+
     virtual ~asFileParametersForecast();
 
     bool EditRootElement();
+
     bool CheckRootElement();
 
 protected:
+
 private:
 };
 

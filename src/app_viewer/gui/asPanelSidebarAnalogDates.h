@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef __asPanelSidebarAnalogDates__
 #define __asPanelSidebarAnalogDates__
 
@@ -33,20 +33,21 @@
 #include "asIncludes.h"
 #include <wx/listctrl.h>
 
-/** Implementing asPanelSidebarAnalogDates */
-class asPanelSidebarAnalogDates : public asPanelSidebar
+class asPanelSidebarAnalogDates
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarAnalogDates( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAnalogDates(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                              const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarAnalogDates();
 
     void SetChoices(Array1DFloat &arrayDate, Array1DFloat &arrayCriteria);
 
 private:
-    wxListCtrl* m_listCtrl;
+    wxListCtrl *m_listCtrl;
 
-    void OnDateSelection( wxListEvent& event );
+    void OnDateSelection(wxListEvent &event);
 
 };
 

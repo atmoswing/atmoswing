@@ -34,14 +34,12 @@
 
 class asGeoArea;
 
-class asDataPredictorArchiveNoaaOisst2Terranum: public asDataPredictorArchive
+class asDataPredictorArchiveNoaaOisst2Terranum
+        : public asDataPredictorArchive
 {
 public:
-
-    /** Default constructor */
     asDataPredictorArchiveNoaaOisst2Terranum(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictorArchiveNoaaOisst2Terranum();
 
     bool Init();
@@ -50,10 +48,9 @@ public:
 
     static VectorString GetDataIdDescriptionList();
 
-
 protected:
-
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                  VVArray2DFloat &compositeData);
 
 private:
 

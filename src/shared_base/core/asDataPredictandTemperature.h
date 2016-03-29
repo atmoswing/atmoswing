@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTANDTEMPERATURE_H
 #define ASDATAPREDICTANDTEMPERATURE_H
 
@@ -33,26 +33,26 @@
 #include <asDataPredictand.h>
 
 
-class asDataPredictandTemperature: public asDataPredictand
+class asDataPredictandTemperature
+        : public asDataPredictand
 {
 public:
-    asDataPredictandTemperature(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
+    asDataPredictandTemperature(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
+                                DataSpatialAggregation dataSpatialAggregation);
+
     virtual ~asDataPredictandTemperature();
 
     virtual bool Load(const wxString &filePath);
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
-
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
+                                   const wxString &AlternatePatternDir = wxEmptyString,
+                                   const wxString &AlternateDestinationDir = wxEmptyString);
 
 protected:
 
 private:
-    
-    /** Initialize the containers
-     * \return True on success
-     */
     bool InitContainers();
 
 };

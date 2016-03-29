@@ -24,19 +24,20 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFORECASTSCOREFINALRANKHISTOGRAM_H
 #define ASFORECASTSCOREFINALRANKHISTOGRAM_H
 
 #include <asIncludes.h>
 #include <asForecastScoreFinal.h>
 
-class asForecastScoreFinalRankHistogram: public asForecastScoreFinal
+class asForecastScoreFinalRankHistogram
+        : public asForecastScoreFinal
 {
 public:
     asForecastScoreFinalRankHistogram(Period period);
 
-    asForecastScoreFinalRankHistogram(const wxString& periodString);
+    asForecastScoreFinalRankHistogram(const wxString &periodString);
 
     virtual ~asForecastScoreFinalRankHistogram();
 
@@ -45,6 +46,7 @@ public:
     Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
 
 protected:
+
 private:
 
 };

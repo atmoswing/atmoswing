@@ -25,45 +25,43 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asPanelForecast.h"
 
 #include "asPanelsManagerForecasts.h"
 
-asPanelForecast::asPanelForecast( wxWindow* parent )
-:
-asPanelForecastVirtual( parent )
+asPanelForecast::asPanelForecast(wxWindow *parent)
+        : asPanelForecastVirtual(parent)
 {
     m_parentFrame = NULL;
     m_panelsManager = NULL;
 
     // Led
-    m_led = new awxLed( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0 );
-	m_led->SetState( awxLED_OFF );
-	m_sizerHeader->Insert( 0, m_led, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+    m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
+    m_led->SetState(awxLED_OFF);
+    m_sizerHeader->Insert(0, m_led, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
     // Set the buttons bitmaps
     m_bpButtonClose->SetBitmapLabel(*_img_close);
 
     // Fix the color of the file/dir pickers
     wxColour col = parent->GetParent()->GetBackgroundColour();
-    if (col.IsOk())
-    {
+    if (col.IsOk()) {
         SetBackgroundColour(col);
     }
 
-    #if defined(__WXMSW__)
-        SetWindowStyleFlag(wxRAISED_BORDER);
-    #elif defined(__WXMAC__)
-        SetWindowStyleFlag(wxRAISED_BORDER);
-    #elif defined(__UNIX__)
-        SetWindowStyleFlag(wxSIMPLE_BORDER);
-    #else
-        SetWindowStyleFlag(wxRAISED_BORDER);
-    #endif
+#if defined(__WXMSW__)
+    SetWindowStyleFlag(wxRAISED_BORDER);
+#elif defined(__WXMAC__)
+    SetWindowStyleFlag(wxRAISED_BORDER);
+#elif defined(__UNIX__)
+    SetWindowStyleFlag(wxSIMPLE_BORDER);
+#else
+    SetWindowStyleFlag(wxRAISED_BORDER);
+#endif
 }
 
-void asPanelForecast::ClosePanel( wxCommandEvent& event )
+void asPanelForecast::ClosePanel(wxCommandEvent &event)
 {
     m_panelsManager->RemovePanel(this);
 }
@@ -74,7 +72,7 @@ bool asPanelForecast::Layout()
     return true;
 }
 
-void asPanelForecast::ChangeForecastName( wxCommandEvent& event )
+void asPanelForecast::ChangeForecastName(wxCommandEvent &event)
 {
     //
 }

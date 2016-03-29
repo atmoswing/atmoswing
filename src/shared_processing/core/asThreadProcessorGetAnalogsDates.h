@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASTHREADPROCESSORGETANALOGSDATES_H
 #define ASTHREADPROCESSORGETANALOGSDATES_H
 
@@ -34,47 +34,39 @@
 #include <asIncludes.h>
 
 class asDataPredictor;
+
 class asPredictorCriteria;
+
 class asTimeArray;
 
 
-class asThreadProcessorGetAnalogsDates: public asThread
+class asThreadProcessorGetAnalogsDates
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadProcessorGetAnalogsDates(std::vector < asDataPredictor* > predictorsArchive,
-                                     std::vector < asDataPredictor* > predictorsTarget,
-                                     asTimeArray* timeArrayArchiveData,
-                                     asTimeArray* timeArrayArchiveSelection,
-                                     asTimeArray* timeArrayTargetData,
-                                     asTimeArray* timeArrayTargetSelection,
-                                     std::vector < asPredictorCriteria* > criteria,
-                                     asParameters &params,
-                                     int step,
-                                     VpArray2DFloat &vRefData,
-                                     VpArray2DFloat &vEvalData,
-                                     Array1DInt &vRowsNb,
-                                     Array1DInt &vColsNb,
-                                     int start,
-                                     int end,
-                                     Array2DFloat* finalAnalogsCriteria,
-                                     Array2DFloat* finalAnalogsDates,
-                                     bool* containsNaNs);
-    /** Default destructor */
+    asThreadProcessorGetAnalogsDates(std::vector<asDataPredictor *> predictorsArchive,
+                                     std::vector<asDataPredictor *> predictorsTarget, asTimeArray *timeArrayArchiveData,
+                                     asTimeArray *timeArrayArchiveSelection, asTimeArray *timeArrayTargetData,
+                                     asTimeArray *timeArrayTargetSelection, std::vector<asPredictorCriteria *> criteria,
+                                     asParameters &params, int step, VpArray2DFloat &vRefData,
+                                     VpArray2DFloat &vEvalData, Array1DInt &vRowsNb, Array1DInt &vColsNb, int start,
+                                     int end, Array2DFloat *finalAnalogsCriteria, Array2DFloat *finalAnalogsDates,
+                                     bool *containsNaNs);
+
     virtual ~asThreadProcessorGetAnalogsDates();
 
     virtual ExitCode Entry();
 
-
 protected:
+
 private:
-    std::vector < asDataPredictor* > m_pPredictorsArchive;
-    std::vector < asDataPredictor* > m_pPredictorsTarget;
-    asTimeArray* m_pTimeArrayArchiveData;
-    asTimeArray* m_pTimeArrayArchiveSelection;
-    asTimeArray* m_pTimeArrayTargetData;
-    asTimeArray* m_pTimeArrayTargetSelection;
-    std::vector < asPredictorCriteria* > m_criteria;
+    std::vector<asDataPredictor *> m_pPredictorsArchive;
+    std::vector<asDataPredictor *> m_pPredictorsTarget;
+    asTimeArray *m_pTimeArrayArchiveData;
+    asTimeArray *m_pTimeArrayArchiveSelection;
+    asTimeArray *m_pTimeArrayTargetData;
+    asTimeArray *m_pTimeArrayTargetSelection;
+    std::vector<asPredictorCriteria *> m_criteria;
     asParameters m_params;
     int m_step;
     VpArray2DFloat m_vTargData;
@@ -83,9 +75,9 @@ private:
     Array1DInt m_vColsNb;
     int m_start;
     int m_end;
-    Array2DFloat* m_pFinalAnalogsCriteria;
-    Array2DFloat* m_pFinalAnalogsDates;
-    bool* m_pContainsNaNs;
+    Array2DFloat *m_pFinalAnalogsCriteria;
+    Array2DFloat *m_pFinalAnalogsDates;
+    bool *m_pContainsNaNs;
 
 };
 

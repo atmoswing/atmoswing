@@ -24,12 +24,11 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asException.h"
 
 asException::asException()
-:
-std::exception()
+        : std::exception()
 {
     m_message = wxEmptyString;
     m_fileName = wxEmptyString;
@@ -133,7 +132,7 @@ asException::asException(const char *message, const char *filename, unsigned int
 }
 
 // TODO (phorton#5#): Is it alright ?
-asException::~asException() throw ()
+asException::~asException() throw()
 {
     //dtor
 }
@@ -142,12 +141,10 @@ wxString asException::GetFullMessage()
 {
     wxString fullmessage;
 
-    if (HasChild())
-    {
+    if (HasChild()) {
         int prevnb = m_previous.size();
 
-        for (int i=0; i<prevnb; i++)
-        {
+        for (int i = 0; i < prevnb; i++) {
             int prevlinenum;
             wxString prevmessage;
             wxString prevfilename;
@@ -155,13 +152,13 @@ wxString asException::GetFullMessage()
             prevlinenum = m_previous[i]->LineNum;
             prevmessage = m_previous[i]->Message;
             prevfilename = m_previous[i]->FileName;
-            prevmessage.Replace("\n"," // ");
+            prevmessage.Replace("\n", " // ");
             prevfilename = prevfilename.AfterLast('/');
             prevfilename = prevfilename.AfterLast('\\');
 
-            if(!prevmessage.IsEmpty() && !prevfilename.IsEmpty())
-            {
-                fullmessage.Append( wxString::Format(_("%s\n    File: %s\n    Line: %d\n\n"), prevmessage, prevfilename, prevlinenum) );
+            if (!prevmessage.IsEmpty() && !prevfilename.IsEmpty()) {
+                fullmessage.Append(wxString::Format(_("%s\n    File: %s\n    Line: %d\n\n"), prevmessage, prevfilename,
+                                                    prevlinenum));
             }
         }
     }
@@ -169,11 +166,12 @@ wxString asException::GetFullMessage()
     int currlinenum = m_lineNum;
     wxString currmessage = m_message;
     wxString currfilename = m_fileName;
-    currmessage.Replace("\n"," // ");
+    currmessage.Replace("\n", " // ");
     currfilename = currfilename.AfterLast('/');
     currfilename = currfilename.AfterLast('\\');
 
-    fullmessage.Append( wxString::Format(_("%s\n    File: %s\n    Line: %d\n\n"), currmessage, currfilename, currlinenum) );
+    fullmessage.Append(
+            wxString::Format(_("%s\n    File: %s\n    Line: %d\n\n"), currmessage, currfilename, currlinenum));
 
     return fullmessage;
 }

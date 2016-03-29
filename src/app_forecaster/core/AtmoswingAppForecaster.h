@@ -36,19 +36,25 @@
 #include <asIncludes.h>
 
 #if wxUSE_GUI
-class AtmoswingAppForecaster : public wxApp
+
+class AtmoswingAppForecaster
+        : public wxApp
 #else
-class AtmoswingAppForecaster : public wxAppConsole
+    class AtmoswingAppForecaster : public wxAppConsole
 #endif
 {
 public:
     virtual bool OnInit();
+
     virtual int OnRun();
+
     virtual int OnExit();
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+
+    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+
     bool InitForCmdLineOnly(long logLevel);
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
-    bool CommonInit();
+
+    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
 
 private:
     bool m_doConfig;
@@ -56,9 +62,10 @@ private:
     bool m_doForecastPast;
     double m_forecastDate;
     int m_forecastPastDays;
-    #if wxUSE_GUI
-        wxSingleInstanceChecker* m_singleInstanceChecker;
-    #endif
+#if wxUSE_GUI
+    wxSingleInstanceChecker *m_singleInstanceChecker;
+#endif
+
 };
 
 DECLARE_APP(AtmoswingAppForecaster);

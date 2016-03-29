@@ -24,13 +24,13 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include <asThreadsManagerGlobalFunctions.h>
 
 // Thread manager
-asThreadsManager* g_pThreadsManager = new asThreadsManager();
+asThreadsManager *g_pThreadsManager = new asThreadsManager();
 
-asThreadsManager& ThreadsManager()
+asThreadsManager &ThreadsManager()
 {
     return *g_pThreadsManager;
 }

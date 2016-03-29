@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASMETHODFORECASTING_H
 #define ASMETHODFORECASTING_H
 
@@ -39,12 +39,15 @@
 #include <asResultsAnalogsForecastAggregator.h>
 
 class asResultsAnalogsDates;
+
 class asResultsAnalogsForecast;
 
-class asMethodForecasting: public asMethodStandard
+class asMethodForecasting
+        : public asMethodStandard
 {
 public:
-    asMethodForecasting(asBatchForecasts* batchForecasts, wxWindow* parent = NULL);
+    asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = NULL);
+
     virtual ~asMethodForecasting();
 
     void ClearForecasts();
@@ -53,25 +56,16 @@ public:
 
     bool Forecast(asParametersForecast &params);
 
-    /** Access m_forecastDate
-     * \return The current value of m_forecastDate
-     */
     double GetForecastDate()
     {
         return m_forecastDate;
     }
 
-    /** Set m_forecastDate
-     * \param val New value to set
-     */
     void SetForecastDate(double val)
     {
         m_forecastDate = val;
     }
 
-    /** Get m_resultsFilePaths
-     * \return The current value of m_resultsFilePaths
-     */
     VectorString GetResultsFilePaths()
     {
         return m_resultsFilePaths;
@@ -79,25 +73,29 @@ public:
 
 protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int i_step, bool &forecastDateChanged);
+
     bool GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step);
-    bool GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params, asResultsAnalogsForecast &resultsPrev, int i_step);
+
+    bool GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params,
+                            asResultsAnalogsForecast &resultsPrev, int i_step);
+
     bool GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step);
-    
+
     void DeletePreprocessData();
+
     void Cleanup();
 
-
 private:
-    asBatchForecasts* m_batchForecasts;
+    asBatchForecasts *m_batchForecasts;
     double m_forecastDate;
     asResultsAnalogsForecastAggregator m_aggregator;
     VectorString m_resultsFilePaths;
-    wxWindow* m_parent;
-    std::vector < asDataPredictorArchive* > m_storagePredictorsArchivePreprocess;
-	std::vector < asDataPredictorRealtime* > m_storagePredictorsRealtimePreprocess;
-    std::vector < asDataPredictor* > m_storagePredictorsArchive;
-	std::vector < asDataPredictor* > m_storagePredictorsRealtime;
-    std::vector < asPredictorCriteria* > m_storageCriteria;
+    wxWindow *m_parent;
+    std::vector<asDataPredictorArchive *> m_storagePredictorsArchivePreprocess;
+    std::vector<asDataPredictorRealtime *> m_storagePredictorsRealtimePreprocess;
+    std::vector<asDataPredictor *> m_storagePredictorsArchive;
+    std::vector<asDataPredictor *> m_storagePredictorsRealtime;
+    std::vector<asPredictorCriteria *> m_storageCriteria;
 };
 
 #endif // ASMETHODFORECASTING_H

@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef __asPanelSidebarStationsList__
 #define __asPanelSidebarStationsList__
 
@@ -32,25 +32,26 @@
 
 #include "asIncludes.h"
 
-/** Implementing asPanelSidebarStationsList */
-class asPanelSidebarStationsList : public asPanelSidebar
+class asPanelSidebarStationsList
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarStationsList( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarStationsList(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                               const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarStationsList();
 
     void SetChoices(wxArrayString &arrayStation);
 
-    wxChoice* GetChoiceCtrl()
+    wxChoice *GetChoiceCtrl()
     {
         return m_choiceStationSelection;
     }
 
 private:
-    wxChoice* m_choiceStationSelection;
+    wxChoice *m_choiceStationSelection;
 
-    void OnStationSelection( wxCommandEvent& event );
+    void OnStationSelection(wxCommandEvent &event);
 
 };
 

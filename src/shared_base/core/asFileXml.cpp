@@ -30,8 +30,7 @@
 
 
 asFileXml::asFileXml(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFile(FileName, FileMode)
+        : asFile(FileName, FileMode)
 {
 
 }
@@ -43,20 +42,19 @@ asFileXml::~asFileXml()
 
 bool asFileXml::Open()
 {
-    if (!Find()) return false;
+    if (!Find())
+        return false;
 
-    if ((Exists()) & (m_fileMode!=asFile::Replace))
-    {
-        if(!m_document.Load(m_fileName.GetFullPath())) {
+    if ((Exists()) & (m_fileMode != asFile::Replace)) {
+        if (!m_document.Load(m_fileName.GetFullPath())) {
             asLogError(wxString::Format(_("Couldn't open the xml file %s"), m_fileName.GetFullPath()));
             return false;
         }
     }
 
     // If new, set declaration and the root element
-    if ( (m_fileMode==asFile::New) | (m_fileMode==asFile::Replace) )
-    {
-        wxXmlNode * nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE ,"atmoswing");
+    if ((m_fileMode == asFile::New) | (m_fileMode == asFile::Replace)) {
+        wxXmlNode *nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE, "atmoswing");
         nodeBase->AddAttribute("version", "1.0"); // AtmoSwing file version
         m_document.SetRoot(nodeBase);
     }
@@ -81,21 +79,24 @@ bool asFileXml::Save()
     return true;
 }
 
-void asFileXml::AddChild(wxXmlNode* node)
+void asFileXml::AddChild(wxXmlNode *node)
 {
     GetRoot()->AddChild(node);
 }
 
 bool asFileXml::CheckRootElement()
 {
-    if (!GetRoot()) return false;
-    if (!IsAnAtmoSwingFile()) return false;
-    if (!FileVersionIsOrAbove(1.0)) return false;
+    if (!GetRoot())
+        return false;
+    if (!IsAnAtmoSwingFile())
+        return false;
+    if (!FileVersionIsOrAbove(1.0))
+        return false;
 
     return true;
 }
 
-wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const bool &content)
+wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const bool &content)
 {
     wxString value;
     value << content;
@@ -103,7 +104,7 @@ wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const bool &con
     return CreateNodeWithValue(name, value);
 }
 
-wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const int &content)
+wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const int &content)
 {
     wxString value;
     value << content;
@@ -111,7 +112,7 @@ wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const int &cont
     return CreateNodeWithValue(name, value);
 }
 
-wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const float &content)
+wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const float &content)
 {
     wxString value;
     value << content;
@@ -119,7 +120,7 @@ wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const float &co
     return CreateNodeWithValue(name, value);
 }
 
-wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const double &content)
+wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const double &content)
 {
     wxString value;
     value << content;
@@ -127,26 +128,28 @@ wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const double &c
     return CreateNodeWithValue(name, value);
 }
 
-wxXmlNode * asFileXml::CreateNodeWithValue(const wxString &name, const wxString &content)
+wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const wxString &content)
 {
-    wxXmlNode * node = new wxXmlNode(wxXML_ELEMENT_NODE, name );
-    wxXmlNode * nodeValue = new wxXmlNode(wxXML_TEXT_NODE, name, content );
-    node->AddChild (nodeValue );
+    wxXmlNode *node = new wxXmlNode(wxXML_ELEMENT_NODE, name);
+    wxXmlNode *nodeValue = new wxXmlNode(wxXML_TEXT_NODE, name, content);
+    node->AddChild(nodeValue);
 
     return node;
 }
 
 bool asFileXml::IsAnAtmoSwingFile()
 {
-    if (!GetRoot()) return false;
-    if (GetRoot()->GetName().IsSameAs("AtmoSwingFile", false))
-    {
-        asLogError(wxString::Format(_("The file %s is for an old version of AtmoSwing and is no longer supported (root: %s)."), m_fileName.GetFullName(), GetRoot()->GetName()));
+    if (!GetRoot())
+        return false;
+    if (GetRoot()->GetName().IsSameAs("AtmoSwingFile", false)) {
+        asLogError(wxString::Format(
+                _("The file %s is for an old version of AtmoSwing and is no longer supported (root: %s)."),
+                m_fileName.GetFullName(), GetRoot()->GetName()));
         return false;
     }
-    if (!GetRoot()->GetName().IsSameAs("atmoswing", false))
-    {
-        asLogError(wxString::Format(_("The file %s is not an AtmoSwing file (root: %s)."), m_fileName.GetFullName(), GetRoot()->GetName()));
+    if (!GetRoot()->GetName().IsSameAs("atmoswing", false)) {
+        asLogError(wxString::Format(_("The file %s is not an AtmoSwing file (root: %s)."), m_fileName.GetFullName(),
+                                    GetRoot()->GetName()));
         return false;
     }
     return true;
@@ -154,12 +157,12 @@ bool asFileXml::IsAnAtmoSwingFile()
 
 bool asFileXml::FileVersionIsOrAbove(const float version)
 {
-    if (!GetRoot()) return false;
+    if (!GetRoot())
+        return false;
     wxString fileVersionStr = GetRoot()->GetAttribute("version");
     double fileVersion;
 
-    if(!fileVersionStr.ToDouble(&fileVersion) || (float)fileVersion<version)
-    {
+    if (!fileVersionStr.ToDouble(&fileVersion) || (float) fileVersion < version) {
         asLogError(wxString::Format(_("The file version of %s is no longer supported."), m_fileName.GetFullName()));
         return false;
     }
@@ -173,8 +176,7 @@ void asFileXml::UnknownNode(wxXmlNode *node)
 
 bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
 {
-    if (!node->GetChildren())
-    {
+    if (!node->GetChildren()) {
         asLogWarning(_("The node is empty in the xml file."));
         return defaultValue;
     }
@@ -182,40 +184,29 @@ bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
     wxString valueStr = node->GetChildren()->GetContent();
     if (valueStr.IsSameAs("true", false)) {
         return true;
-    }
-    else if (valueStr.IsSameAs("false", false)) {
+    } else if (valueStr.IsSameAs("false", false)) {
         return false;
-    }
-    else if (valueStr.IsSameAs("T", false)) {
+    } else if (valueStr.IsSameAs("T", false)) {
         return true;
-    }
-    else if (valueStr.IsSameAs("F", false)) {
+    } else if (valueStr.IsSameAs("F", false)) {
         return false;
-    }
-    else if (valueStr.IsSameAs("1", false)) {
+    } else if (valueStr.IsSameAs("1", false)) {
         return true;
-    }
-    else if (valueStr.IsSameAs("0", false)) {
+    } else if (valueStr.IsSameAs("0", false)) {
         return false;
-    }
-    else if (valueStr.IsSameAs("yes", false)) {
+    } else if (valueStr.IsSameAs("yes", false)) {
         return true;
-    }
-    else if (valueStr.IsSameAs("no", false)) {
+    } else if (valueStr.IsSameAs("no", false)) {
         return false;
-    }
-    else if (valueStr.IsSameAs("y", false)) {
+    } else if (valueStr.IsSameAs("y", false)) {
         return true;
-    }
-    else if (valueStr.IsSameAs("n", false)) {
+    } else if (valueStr.IsSameAs("n", false)) {
         return false;
-    }
-    else if (valueStr.IsEmpty()) {
+    } else if (valueStr.IsEmpty()) {
         return defaultValue;
-    }
-    else
-    {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
+    } else {
+        asLogError(
+                wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
 
     return false;
@@ -223,8 +214,7 @@ bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)
 
 int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
 {
-    if (!node->GetChildren())
-    {
+    if (!node->GetChildren()) {
         asLogWarning(_("The node is empty in the xml file."));
         return defaultValue;
     }
@@ -234,16 +224,16 @@ int asFileXml::GetInt(wxXmlNode *node, const int defaultValue)
     if (valueStr.IsEmpty()) {
         return defaultValue;
     }
-    if(!valueStr.ToLong(&value)) {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
+    if (!valueStr.ToLong(&value)) {
+        asLogError(
+                wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
-    return (int)value;
+    return (int) value;
 }
 
 float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
 {
-    if (!node->GetChildren())
-    {
+    if (!node->GetChildren()) {
         asLogWarning(_("The node is empty in the xml file."));
         return defaultValue;
     }
@@ -253,16 +243,16 @@ float asFileXml::GetFloat(wxXmlNode *node, const float defaultValue)
     if (valueStr.IsEmpty()) {
         return defaultValue;
     }
-    if(!valueStr.ToDouble(&value)) {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
+    if (!valueStr.ToDouble(&value)) {
+        asLogError(
+                wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
-    return (float)value;
+    return (float) value;
 }
 
 double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
 {
-    if (!node->GetChildren())
-    {
+    if (!node->GetChildren()) {
         asLogWarning(_("The node is empty in the xml file."));
         return defaultValue;
     }
@@ -272,16 +262,16 @@ double asFileXml::GetDouble(wxXmlNode *node, const double defaultValue)
     if (valueStr.IsEmpty()) {
         return defaultValue;
     }
-    if(!valueStr.ToDouble(&value)) {
-        asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
+    if (!valueStr.ToDouble(&value)) {
+        asLogError(
+                wxString::Format(_("Failed at converting the value of the element %s (XML file)."), node->GetName()));
     }
     return value;
 }
 
 wxString asFileXml::GetString(wxXmlNode *node, const wxString &defaultValue)
 {
-    if (!node->GetChildren())
-    {
+    if (!node->GetChildren()) {
         asLogWarning(_("The node is empty in the xml file."));
         return wxEmptyString;
     }

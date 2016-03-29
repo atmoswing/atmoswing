@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFILEBATCHFORECASTS_H
 #define ASFILEBATCHFORECASTS_H
 
@@ -33,19 +33,17 @@
 #include <asFileXml.h>
 
 
-class asFileBatchForecasts : public asFileXml
+class asFileBatchForecasts
+        : public asFileXml
 {
 public:
-    /** Default constructor */
     asFileBatchForecasts(const wxString &FileName, const ListFileMode &FileMode);
 
-    /** Default destructor */
     virtual ~asFileBatchForecasts();
 
     virtual bool EditRootElement();
 
     virtual bool CheckRootElement();
-
 
 protected:
 

@@ -34,14 +34,12 @@
 
 class asGeoArea;
 
-class asDataPredictorArchiveNcepReanalysis1Lthe: public asDataPredictorArchiveNcepReanalysis1Terranum
+class asDataPredictorArchiveNcepReanalysis1Lthe
+        : public asDataPredictorArchiveNcepReanalysis1Terranum
 {
 public:
-
-    /** Default constructor */
     asDataPredictorArchiveNcepReanalysis1Lthe(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictorArchiveNcepReanalysis1Lthe();
 
     virtual bool Init();
@@ -49,7 +47,6 @@ public:
     static VectorString GetDataIdList();
 
     static VectorString GetDataIdDescriptionList();
-
 
 protected:
 

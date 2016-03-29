@@ -24,13 +24,16 @@
 /*
  * Portions Copyright 2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef _INIT_IMG_H_
 #define _INIT_IMG_H_ 1
 
 #include <wx/wxprec.h>
+
 #ifndef WX_PRECOMP
-#	include <wx/wx.h>
+
+#include <wx/wx.h>
+
 #endif
 
 #include "img_logo.h"
@@ -39,6 +42,7 @@
 #include "img_treectrl.h"
 
 extern void initialize_images(double ppiScaling);
+
 extern void cleanup_images(void);
 
 #endif /* _INIT_IMG_H_ */

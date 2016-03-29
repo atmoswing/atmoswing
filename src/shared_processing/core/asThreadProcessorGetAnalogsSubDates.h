@@ -34,45 +34,38 @@
 #include <asIncludes.h>
 
 class asDataPredictor;
+
 class asPredictorCriteria;
+
 class asTimeArray;
 
 
-class asThreadProcessorGetAnalogsSubDates: public asThread
+class asThreadProcessorGetAnalogsSubDates
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadProcessorGetAnalogsSubDates(std::vector < asDataPredictor* > predictorsArchive,
-                                        std::vector < asDataPredictor* > predictorsTarget,
-                                        asTimeArray* timeArrayArchiveData,
-                                        asTimeArray* timeArrayTargetData,
-                                        Array1DFloat* timeTargetSelection,
-                                        std::vector < asPredictorCriteria* > criteria,
-                                        asParameters &params,
-                                        int step,
-                                        VpArray2DFloat &vRefData,
-                                        VpArray2DFloat &vEvalData,
-                                        Array1DInt &vRowsNb,
-                                        Array1DInt &vColsNb,
-                                        int start, int end,
-                                        Array2DFloat* finalAnalogsCriteria,
-                                        Array2DFloat* finalAnalogsDates,
-                                        Array2DFloat* previousAnalogsDates,
-                                        bool* containsNaNs);
-    /** Default destructor */
+    asThreadProcessorGetAnalogsSubDates(std::vector<asDataPredictor *> predictorsArchive,
+                                        std::vector<asDataPredictor *> predictorsTarget,
+                                        asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayTargetData,
+                                        Array1DFloat *timeTargetSelection, std::vector<asPredictorCriteria *> criteria,
+                                        asParameters &params, int step, VpArray2DFloat &vRefData,
+                                        VpArray2DFloat &vEvalData, Array1DInt &vRowsNb, Array1DInt &vColsNb, int start,
+                                        int end, Array2DFloat *finalAnalogsCriteria, Array2DFloat *finalAnalogsDates,
+                                        Array2DFloat *previousAnalogsDates, bool *containsNaNs);
+
     virtual ~asThreadProcessorGetAnalogsSubDates();
 
     virtual ExitCode Entry();
 
-
 protected:
+
 private:
-    std::vector < asDataPredictor* > m_pPredictorsArchive;
-    std::vector < asDataPredictor* > m_pPredictorsTarget;
-    asTimeArray* m_pTimeArrayArchiveData;
-    asTimeArray* m_pTimeArrayTargetData;
-    Array1DFloat* m_pTimeTargetSelection;
-    std::vector < asPredictorCriteria* > m_criteria;
+    std::vector<asDataPredictor *> m_pPredictorsArchive;
+    std::vector<asDataPredictor *> m_pPredictorsTarget;
+    asTimeArray *m_pTimeArrayArchiveData;
+    asTimeArray *m_pTimeArrayTargetData;
+    Array1DFloat *m_pTimeTargetSelection;
+    std::vector<asPredictorCriteria *> m_criteria;
     asParameters m_params;
     int m_step;
     VpArray2DFloat m_vTargData;
@@ -81,10 +74,10 @@ private:
     Array1DInt m_vColsNb;
     int m_start;
     int m_end;
-    Array2DFloat* m_pFinalAnalogsCriteria;
-    Array2DFloat* m_pFinalAnalogsDates;
-    Array2DFloat* m_pPreviousAnalogsDates;
-    bool* m_pContainsNaNs;
+    Array2DFloat *m_pFinalAnalogsCriteria;
+    Array2DFloat *m_pFinalAnalogsDates;
+    Array2DFloat *m_pPreviousAnalogsDates;
+    bool *m_pContainsNaNs;
 
 };
 

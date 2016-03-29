@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2014 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASPARAMETERSCALIBRATION_H
 #define ASPARAMETERSCALIBRATION_H
 
@@ -35,18 +35,20 @@
 class asFileParametersCalibration;
 
 
-class asParametersCalibration : public asParametersScoring
+class asParametersCalibration
+        : public asParametersScoring
 {
 public:
 
     asParametersCalibration();
+
     virtual ~asParametersCalibration();
 
     void AddStep();
 
     bool LoadFromFile(const wxString &filePath);
-    
-	virtual bool SetSpatialWindowProperties();
+
+    virtual bool SetSpatialWindowProperties();
 
     virtual bool SetPreloadingProperties();
 
@@ -56,10 +58,10 @@ public:
 
     void InitValues();
 
-	int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_prep)
-	{
-		return (int) GetPreprocessDataIdVector(i_step, i_ptor, i_prep).size();
-	}
+    int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_prep)
+    {
+        return (int) GetPreprocessDataIdVector(i_step, i_ptor, i_prep).size();
+    }
 
     VVectorInt GetPredictandStationIdsVector()
     {

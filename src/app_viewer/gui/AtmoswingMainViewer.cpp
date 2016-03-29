@@ -52,14 +52,14 @@
 
 
 AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
-    : asFrameForecast(frame)
+        : asFrameForecast(frame)
 {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
     // Config file
-	wxConfigBase *pConfig = wxFileConfig::Get();
+    wxConfigBase *pConfig = wxFileConfig::Get();
 
     // Create log window and file
     bool displayLogWindow;
@@ -83,7 +83,7 @@ void AtmoswingFrameViewer::OnQuit(wxCommandEvent &event)
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnShowLog( wxCommandEvent& event )
+void AtmoswingFrameViewer::OnShowLog(wxCommandEvent &event)
 {
     wxASSERT(m_logWindow);
     m_logWindow->Show();

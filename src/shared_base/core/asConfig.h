@@ -25,71 +25,42 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASCONFIG_H
 #define ASCONFIG_H
 
 #include <asIncludes.h>
 #include "wx/fileconf.h"        // wxFileConfig
 
-class asConfig : public wxObject
+class asConfig
+        : public wxObject
 {
-    public:
-        /** Default constructor */
-        asConfig();
-        /** Destructor */
-        virtual ~asConfig();
+public:
+    asConfig();
 
-        /** Get log directory
-        * \return The full path
-        */
-        static wxString GetLogDir();
+    virtual ~asConfig();
 
-        /** Get temp directory
-        * \return The full path
-        */
-        static wxString GetTempDir();
+    static wxString GetLogDir();
 
-        /** Get temp directory
-        * \param prefix Prefix to use for the temporary file name construction
-        * \return The full path
-        * \note From wxFileName::CreateTempFileName. Change to avoid file auto creation.
-        */
-        static wxString CreateTempFileName(const wxString& prefix);
+    static wxString GetTempDir();
 
-        /** Get common data directory
-        * \return The full path
-        */
-        static wxString GetDataDir();
+    static wxString CreateTempFileName(const wxString &prefix);
 
-        /** Get the install directory
-        * \return The full path
-        */
-        static wxString GetSoftDir();
+    static wxString GetDataDir();
 
-        /** Get root data directory of user
-        * \return The full path
-        */
-        static wxString GetUserDataDir();
+    static wxString GetSoftDir();
 
-        /** Get documents directory of user
-        * \return The full path
-        */
-        static wxString GetDocumentsDir();
+    static wxString GetUserDataDir();
 
-        /** Get default user working directory (in the user data directory)
-         * \return The full path
-         */
-        static wxString GetDefaultUserWorkingDir();
+    static wxString GetDocumentsDir();
 
-        /** Get default directory for user config (in the user data directory)
-         * \return The full path
-         */
-        static wxString GetDefaultUserConfigDir();
+    static wxString GetDefaultUserWorkingDir();
 
-    protected:
+    static wxString GetDefaultUserConfigDir();
 
-    private:
+protected:
+
+private:
 
 };
 

@@ -34,24 +34,24 @@
 class asDataPredictor;
 
 
-class asThreadPreprocessorGradients: public asThread
+class asThreadPreprocessorGradients
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadPreprocessorGradients(VArray2DFloat* gradients, std::vector < asDataPredictor* > predictors, int start, int end);
-    /** Default destructor */
+    asThreadPreprocessorGradients(VArray2DFloat *gradients, std::vector<asDataPredictor *> predictors, int start,
+                                  int end);
+
     virtual ~asThreadPreprocessorGradients();
 
     virtual ExitCode Entry();
 
-
 protected:
-private:
-    VArray2DFloat* m_pGradients;
-    std::vector < asDataPredictor* > m_pPredictors;
-    int m_start;
-    int m_end;
 
+private:
+    VArray2DFloat *m_pGradients;
+    std::vector<asDataPredictor *> m_pPredictors;
+    int m_start;
+    int m_End;
 };
 
 #endif // asThreadPreprocessorGradients_H

@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asInternet.h"
 
 #include <asThreadInternetDownload.h>
@@ -56,11 +56,11 @@ void asInternet::Cleanup()
 
 size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stream)
 {
-    struct HttpFile *out = (struct HttpFile *)stream;
-    if(!out->stream) {
+    struct HttpFile *out = (struct HttpFile *) stream;
+    if (!out->stream) {
         // Open file for writing
         out->stream = fopen(out->filename, "wb");
-        if(!out->stream)
+        if (!out->stream)
             return 1; // failure, can't open file to write
     }
     return fwrite(buffer, size, nmemb, out->stream);
@@ -83,10 +83,9 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
     long parallelRequests = 5;
     pConfig->Read("/Internet/ParallelRequestsNb", &parallelRequests, 5l);
 
-	parallelRequests = 1;
+    parallelRequests = 1;
 
-    if(parallelRequests>1)
-    {
+    if (parallelRequests > 1) {
         // Disable message box
         g_pLog->DisableMessageBoxOnError();
 
@@ -95,17 +94,19 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Create threads
         int end = -1;
-        parallelRequests = wxMin(parallelRequests, (int)fileNames.size());
+        parallelRequests = wxMin(parallelRequests, (int) fileNames.size());
         int threadType = -1;
-        for (int i_threads=0; i_threads<parallelRequests; i_threads++)
-        {
-            int start = end+1;
-            end = ceil(((float)(i_threads+1)*(float)(fileNames.size()-1)/(float)parallelRequests));
-            wxASSERT(fileNames.size()>0);
-            wxASSERT(end>=start);
-            wxASSERT_MSG((unsigned)end<fileNames.size(), wxString::Format("Size of fileNames = %d, desired end = %d", (int)fileNames.size(), end));
+        for (int i_threads = 0; i_threads < parallelRequests; i_threads++) {
+            int start = end + 1;
+            end = ceil(((float) (i_threads + 1) * (float) (fileNames.size() - 1) / (float) parallelRequests));
+            wxASSERT(fileNames.size() > 0);
+            wxASSERT(end >= start);
+            wxASSERT_MSG((unsigned) end < fileNames.size(),
+                         wxString::Format("Size of fileNames = %d, desired end = %d", (int) fileNames.size(), end));
 
-            asThreadInternetDownload* thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress, proxyPort, proxyUser, proxyPasswd, start, end);
+            asThreadInternetDownload *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy,
+                                                                            proxyAddress, proxyPort, proxyUser,
+                                                                            proxyPasswd, start, end);
             threadType = thread->GetType();
             ThreadsManager().AddThread(thread);
         }
@@ -115,43 +116,39 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Enable message box and flush the logs
 #if wxUSE_GUI
-		g_pLog->EnableMessageBoxOnError();
-		g_pLog->Flush();
-		wxTheApp->Yield();
+        g_pLog->EnableMessageBoxOnError();
+        g_pLog->Flush();
+        wxTheApp->Yield();
 #else
-		g_pLog->Flush();
-		wxTheApp->Yield();
+        g_pLog->Flush();
+        wxTheApp->Yield();
 #endif
 
         // Check the files
-        for (unsigned int i_file=0; i_file<fileNames.size(); i_file++)
-        {
+        for (unsigned int i_file = 0; i_file < fileNames.size(); i_file++) {
             wxString fileName = fileNames[i_file];
             wxString filePath = destinationDir + DS + fileName;
-            if(!wxFileName::FileExists(filePath))
-            {
+            if (!wxFileName::FileExists(filePath)) {
                 return asFAILED;
             }
         }
-    }
-    else
-    {
+    } else {
         // Initialize
         CURL *curl;
         CURLcode res;
         curl = curl_easy_init();
 
         // Do the job
-        if(curl) {
-            #if wxUSE_GUI
-                // The progress bar
-                wxString dialogmessage = _("Downloading predictors.\n");
-                asDialogProgressBar ProgressBar(dialogmessage, urls.size());
-            #endif
+        if (curl) {
+#if wxUSE_GUI
+            // The progress bar
+            wxString dialogmessage = _("Downloading predictors.\n");
+            asDialogProgressBar ProgressBar(dialogmessage, urls.size());
+#endif
 
             // Set a buffer for the error messages
-            char* errorbuffer = new char[CURL_ERROR_SIZE];
-            curl_easy_setopt(curl, CURLOPT_ERRORBUFFER,  errorbuffer);
+            char *errorbuffer = new char[CURL_ERROR_SIZE];
+            curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
             // Some servers don't like requests that are made without a user-agent field, so we provide one
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
             // Fail if the HTTP code returned is equal to or larger than 400
@@ -161,8 +158,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
             // Set a timeout period (in seconds) on the amount of time that the server is allowed to take in order to generate a response message for a command before the session is considered hung.
             curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 10);
 
-            for (unsigned int i_file=0; i_file<urls.size(); i_file++)
-            {
+            for (unsigned int i_file = 0; i_file < urls.size(); i_file++) {
                 wxString fileName = fileNames[i_file];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[i_file];
@@ -170,38 +166,34 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
-                if (!currentFilePath.DirExists())
-                {
-                    if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
-                    {
+                if (!currentFilePath.DirExists()) {
+                    if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                         asLogError(_("The directory to save real-time predictors data cannot be created."));
                         wxDELETE(errorbuffer);
                         return asFAILED;
                     }
                 }
 
-                #if wxUSE_GUI
-                    // Update the progress bar
-                    wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName) + wxString::Format(_("Downloading: %d / %d files"), i_file+1, (int)urls.size());
-                    if(!ProgressBar.Update(i_file, updatedialogmessage))
-                    {
-                        asLogMessage(_("The download has been canceled by the user."));
-                        wxDELETE(errorbuffer);
-                        return asCANCELLED;
-                    }
-                #endif
+#if wxUSE_GUI
+                // Update the progress bar
+                wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName) +
+                                               wxString::Format(_("Downloading: %d / %d files"), i_file + 1,
+                                                                (int) urls.size());
+                if (!ProgressBar.Update(i_file, updatedialogmessage)) {
+                    asLogMessage(_("The download has been canceled by the user."));
+                    wxDELETE(errorbuffer);
+                    return asCANCELLED;
+                }
+#endif
 
                 // Download only if not already done
-                if(!wxFileName::FileExists(filePath))
-                {
+                if (!wxFileName::FileExists(filePath)) {
                     // Instantiate the file structure
-                    struct HttpFile file={
-                        filePath.mb_str(), // Name to store the file as if succesful
-                        NULL
-                    };
+                    struct HttpFile file = {filePath.mb_str(), // Name to store the file as if succesful
+                                            NULL};
 
                     // Define the URL
-                    wxCharBuffer buffer=url.ToUTF8();
+                    wxCharBuffer buffer = url.ToUTF8();
                     curl_easy_setopt(curl, CURLOPT_URL, buffer.data());
                     // Define our callback to get called when there's data to be written
                     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFile);
@@ -209,19 +201,15 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
 
                     // If a proxy is used
-                    if (usesProxy)
-                    {
-                        if (!proxyAddress.IsEmpty())
-                        {
+                    if (usesProxy) {
+                        if (!proxyAddress.IsEmpty()) {
                             wxCharBuffer proxyAddressBuffer = proxyAddress.ToUTF8();
                             curl_easy_setopt(curl, CURLOPT_PROXY, proxyAddressBuffer.data());
                         }
-                        if (proxyPort>0)
-                        {
+                        if (proxyPort > 0) {
                             curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
                         }
-                        if (!proxyUser.IsEmpty())
-                        {
+                        if (!proxyUser.IsEmpty()) {
                             wxString proxyLogin = proxyUser + ":" + proxyPasswd;
                             wxCharBuffer proxyLoginBuffer = proxyLogin.ToUTF8();
                             curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, proxyLoginBuffer.data());
@@ -232,25 +220,25 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                     res = curl_easy_perform(curl);
 
                     // Close the local file
-                    if(file.stream) fclose(file.stream);
+                    if (file.stream)
+                        fclose(file.stream);
 
                     // Log in case of failure
-                    if(CURLE_OK != res) {
+                    if (CURLE_OK != res) {
                         asLogWarning(wxString::Format(_("Failed downloading file. Curl error code: %d"), int(res)));
                         asLogWarning(wxString::Format(_("Curl error message: %s"), errorbuffer));
                         wxDELETE(errorbuffer);
                         return asFAILED;
-                    }
-                    else
-                    {
-                        asLogMessage(wxString::Format(_("File %d/%d downloaded successfully."), i_file+1, (int)urls.size()));
+                    } else {
+                        asLogMessage(wxString::Format(_("File %d/%d downloaded successfully."), i_file + 1,
+                                                      (int) urls.size()));
                     }
                 }
             }
 
-            #if wxUSE_GUI
-                ProgressBar.Destroy();
-            #endif
+#if wxUSE_GUI
+            ProgressBar.Destroy();
+#endif
 
             // Always cleanup
             curl_easy_cleanup(curl);

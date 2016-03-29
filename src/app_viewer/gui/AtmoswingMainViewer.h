@@ -29,23 +29,26 @@
 #ifndef ATMOSWINGMAINVIEWER_H
 #define ATMOSWINGMAINVIEWER_H
 
-//#include "version.h"
 #include "asIncludes.h"
 #include "AtmoswingAppViewer.h"
 #include "asFrameForecast.h"
 
-
-class AtmoswingFrameViewer: public asFrameForecast
+class AtmoswingFrameViewer
+        : public asFrameForecast
 {
 public:
     AtmoswingFrameViewer(wxFrame *frame);
+
     ~AtmoswingFrameViewer();
+
 private:
     asLogWindow *m_logWindow;
-    virtual void OnClose(wxCloseEvent& event);
-    virtual void OnQuit(wxCommandEvent& event);
-    void OnShowLog( wxCommandEvent& event );
-    void ProcessTest();
+
+    virtual void OnClose(wxCloseEvent &event);
+
+    virtual void OnQuit(wxCommandEvent &event);
+
+    void OnShowLog(wxCommandEvent &event);
 };
 
 #endif // ATMOSWINGMAINVIEWER_H

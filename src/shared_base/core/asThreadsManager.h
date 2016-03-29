@@ -31,16 +31,14 @@
 
 #include <asIncludes.h>
 
-// Predefinition
 class asThread;
 
-class asThreadsManager : public wxObject
+class asThreadsManager
+        : public wxObject
 {
 public:
-    /** Default constructor */
     asThreadsManager();
 
-    /** Default destructor */
     virtual ~asThreadsManager();
 
     void Init();
@@ -111,17 +109,17 @@ public:
         m_waitingUntilAllDone = val;
     }
 
-
 protected:
+
 private:
     int m_idCounter;
-    std::vector<asThread *> m_threads; //!< Member variable "m_threads". All the threads currently alive (as soon as the thread terminates, it's removed from the array)
-    wxCriticalSection m_critSectionManager; //!< Member variable "m_critSectionManager". Critical section.
+    std::vector<asThread *> m_threads;
+    wxCriticalSection m_critSectionManager;
     wxCriticalSection m_critSectionPreloadedData;
     wxCriticalSection m_critSectionNetCDF;
     wxCriticalSection m_critSectionConfig;
-    wxSemaphore m_semAllDone; //!< Member variable "m_semAllDone". Semaphore used to wait for the threads to exit.
-    bool m_waitingUntilAllDone; //!< Member variable "m_waitingUntilAllDone". The last exiting thread should post to m_semAllDone if this is true.
+    wxSemaphore m_semAllDone;
+    bool m_waitingUntilAllDone;
     bool m_cancelled;
     int m_maxThreadsNb;
     long m_priority;

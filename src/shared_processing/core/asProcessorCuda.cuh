@@ -34,32 +34,29 @@
 
 #include <vector>
 
-#if USE_THRUST==0
-    struct cudaPredictorsDataPropStruct {
-        int ptorsNb;
-        int rowsNb[STRUCT_MAX_SIZE];
-        int colsNb[STRUCT_MAX_SIZE];
-        int ptsNb[STRUCT_MAX_SIZE];
-        int totPtsNb;
-        int indexStart[STRUCT_MAX_SIZE];
-        float weights[STRUCT_MAX_SIZE];
-    };
+#if USE_THRUST == 0
+struct cudaPredictorsDataPropStruct
+{
+    int ptorsNb;
+    int rowsNb[STRUCT_MAX_SIZE];
+    int colsNb[STRUCT_MAX_SIZE];
+    int ptsNb[STRUCT_MAX_SIZE];
+    int totPtsNb;
+    int indexStart[STRUCT_MAX_SIZE];
+    float weights[STRUCT_MAX_SIZE];
+};
 #endif
 
 class asProcessorCuda
 {
 public:
-
-    static bool ProcessCriteria(std::vector < std::vector < float* > > &data,
-                                std::vector < int > &indicesTarg,
-                                std::vector < std::vector < int > > &indicesArch,
-                                std::vector < std::vector < float > > &resultingCriteria,
-                                std::vector < int > &lengths,
-                                std::vector < int > &colsNb,
-                                std::vector < int > &rowsNb,
-                                std::vector < float > &weights);
+    static bool ProcessCriteria(std::vector<std::vector<float *> > &data, std::vector<int> &indicesTarg,
+                                std::vector<std::vector<int> > &indicesArch,
+                                std::vector<std::vector<float> > &resultingCriteria, std::vector<int> &lengths,
+                                std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights);
 
 protected:
+
 private:
 };
 

@@ -25,14 +25,13 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreCRPSaccuracyAR.h"
 #include "asForecastScoreCRPSAR.h"
 #include "asForecastScoreCRPSsharpnessAR.h"
 
 asForecastScoreCRPSaccuracyAR::asForecastScoreCRPSaccuracyAR()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::CRPSaccuracyAR;
     m_name = _("CRPS Accuracy Approx Rectangle");
@@ -49,18 +48,19 @@ asForecastScoreCRPSaccuracyAR::~asForecastScoreCRPSaccuracyAR()
 
 float asForecastScoreCRPSaccuracyAR::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
 
     asForecastScoreCRPSAR scoreCRPSAR = asForecastScoreCRPSAR();
     float CRPS = scoreCRPSAR.Assess(ObservedVal, ForcastVals, nbElements);
     asForecastScoreCRPSsharpnessAR scoreCRPSsharpnessAR = asForecastScoreCRPSsharpnessAR();
     float CRPSsharpness = scoreCRPSsharpnessAR.Assess(ObservedVal, ForcastVals, nbElements);
 
-    return CRPS-CRPSsharpness;
+    return CRPS - CRPSsharpness;
 }
 
-bool asForecastScoreCRPSaccuracyAR::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSaccuracyAR::ProcessScoreClimatology(const Array1DFloat &refVals,
+                                                            const Array1DFloat &climatologyData)
 {
     return true;
 }

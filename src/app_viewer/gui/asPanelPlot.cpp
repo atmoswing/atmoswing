@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asPanelPlot.h"
 #include "asIncludes.h"
 #include "wx/plotctrl/plotctrl.h"
@@ -73,33 +73,32 @@ BEGIN_EVENT_TABLE(asPanelPlot, wxPanel)
 END_EVENT_TABLE()
 
 
-asPanelPlot::asPanelPlot( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) 
-: 
-wxPanel( parent, id, pos, size, style )
+asPanelPlot::asPanelPlot(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
+        : wxPanel(parent, id, pos, size, style)
 {
-    wxBoxSizer* bSizer;
-	bSizer = new wxBoxSizer( wxVERTICAL );
-	
-	m_plotCtrl = new wxPlotCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
-	m_plotCtrl->SetScrollOnThumbRelease( false );
-	m_plotCtrl->SetDrawSymbols( false );
-	m_plotCtrl->SetDrawLines( true );
-	m_plotCtrl->SetDrawSpline( false );
-	m_plotCtrl->SetDrawGrid( true );
-	m_plotCtrl->SetAreaMouseFunction( wxPLOTCTRL_MOUSE_PAN );
-	m_plotCtrl->SetAreaMouseMarker( wxPLOTCTRL_MARKER_RECT );
-	m_plotCtrl->SetCrossHairCursor( false );
-	m_plotCtrl->SetShowXAxis( true );
-	m_plotCtrl->SetShowXAxisLabel( true );
-	m_plotCtrl->SetXAxisLabel( _("X Axis") );
-	m_plotCtrl->SetShowYAxis( true );
-	m_plotCtrl->SetShowYAxisLabel( true );
-	m_plotCtrl->SetYAxisLabel( _("Y Axis") );
-	m_plotCtrl->SetShowPlotTitle( false );
-	m_plotCtrl->SetPlotTitle( _("Title") );
-	m_plotCtrl->SetShowKey( true );
-	m_plotCtrl->SetKeyPosition( wxPoint( 100,100 ) );
-    
+    wxBoxSizer *bSizer;
+    bSizer = new wxBoxSizer(wxVERTICAL);
+
+    m_plotCtrl = new wxPlotCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+    m_plotCtrl->SetScrollOnThumbRelease(false);
+    m_plotCtrl->SetDrawSymbols(false);
+    m_plotCtrl->SetDrawLines(true);
+    m_plotCtrl->SetDrawSpline(false);
+    m_plotCtrl->SetDrawGrid(true);
+    m_plotCtrl->SetAreaMouseFunction(wxPLOTCTRL_MOUSE_PAN);
+    m_plotCtrl->SetAreaMouseMarker(wxPLOTCTRL_MARKER_RECT);
+    m_plotCtrl->SetCrossHairCursor(false);
+    m_plotCtrl->SetShowXAxis(true);
+    m_plotCtrl->SetShowXAxisLabel(true);
+    m_plotCtrl->SetXAxisLabel(_("X Axis"));
+    m_plotCtrl->SetShowYAxis(true);
+    m_plotCtrl->SetShowYAxisLabel(true);
+    m_plotCtrl->SetYAxisLabel(_("Y Axis"));
+    m_plotCtrl->SetShowPlotTitle(false);
+    m_plotCtrl->SetPlotTitle(_("Title"));
+    m_plotCtrl->SetShowKey(true);
+    m_plotCtrl->SetKeyPosition(wxPoint(100, 100));
+
     m_plotCtrl->SetScrollOnThumbRelease(false);
     m_plotCtrl->SetCrossHairCursor(false);
     m_plotCtrl->SetDrawSymbols(false);
@@ -112,126 +111,76 @@ wxPanel( parent, id, pos, size, style )
     m_plotCtrl->SetShowYAxisLabel(true);
     m_plotCtrl->SetShowPlotTitle(false);
     m_plotCtrl->SetShowKey(true);
-	
-	bSizer->Add( m_plotCtrl, 1, wxEXPAND, 5 );
-	
-	this->SetSizer( bSizer );
-	this->Layout();
-	bSizer->Fit( this );
+
+    bSizer->Add(m_plotCtrl, 1, wxEXPAND, 5);
+
+    this->SetSizer(bSizer);
+    this->Layout();
+    bSizer->Fit(this);
 }
 
-void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent& event)
+void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent &event)
 {
     // Check that the pointer is set
-    if (!m_plotCtrl) return;
+    if (!m_plotCtrl)
+        return;
 
     // Get event type
     wxEventType eventType = event.GetEventType();
 
     // Process according to event
-    if (eventType == wxEVT_PLOTCTRL_ADD_CURVE)
-    {
+    if (eventType == wxEVT_PLOTCTRL_ADD_CURVE) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_DELETING_CURVE)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_DELETING_CURVE) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_DELETED_CURVE)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_DELETED_CURVE) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGING)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGING) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_CURVE_SEL_CHANGED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_MOUSE_MOTION)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_MOUSE_MOTION) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_CLICKED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_CLICKED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_DOUBLECLICKED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_DOUBLECLICKED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_POINT_CLICKED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_POINT_CLICKED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_POINT_DOUBLECLICKED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_POINT_DOUBLECLICKED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATING)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATING) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CHANGING)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CHANGING) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_AREA_SEL_CREATED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGING)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGING) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_VIEW_CHANGED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGING)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGING) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGED) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_ERROR)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_ERROR) {
         asLogError(event.GetString());
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_END_TITLE_EDIT)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_END_TITLE_EDIT) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_BEGIN_X_LABEL_EDIT) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_END_X_LABEL_EDIT)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_END_X_LABEL_EDIT) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_END_Y_LABEL_EDIT)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_END_Y_LABEL_EDIT) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGING) {
         event.Skip();
-    }
-    else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED)
-    {
+    } else if (eventType == wxEVT_PLOTCTRL_MOUSE_FUNC_CHANGED) {
         event.Skip();
     }
 
@@ -255,20 +204,17 @@ void asPanelPlot::PrintPreview()
 void asPanelPlot::ExportSVG()
 {
     wxFileDialog dialog(this, wxT("Save SVG file as"), wxEmptyString, "AtmoSwing_timeseries",
-        wxT("SVG vector picture files (*.svg)|*.svg"),
-        wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+                        wxT("SVG vector picture files (*.svg)|*.svg"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
-    if (dialog.ShowModal() == wxID_OK)
-    {
+    if (dialog.ShowModal() == wxID_OK) {
         double dpi = 72;
 
-        wxSVGFileDC svgDC (dialog.GetPath(), 600, 400, dpi);
+        wxSVGFileDC svgDC(dialog.GetPath(), 600, 400, dpi);
         wxRect rect(0, 0, 600, 400);
 
-        GetPlotCtrl()->DrawWholePlot( &svgDC, rect, dpi );
+        GetPlotCtrl()->DrawWholePlot(&svgDC, rect, dpi);
 
-        if(!svgDC.IsOk())
-        {
+        if (!svgDC.IsOk()) {
             asLogError(_("The svg DC is not OK."));
             return;
         }

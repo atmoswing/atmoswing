@@ -35,9 +35,13 @@
 #endif //__BORLANDC__
 
 #include "AtmoswingAppOptimizer.h"
+
 #if wxUSE_GUI
+
 #include "AtmoswingMainOptimizer.h"
+
 #endif
+
 #include "asMethodCalibratorClassicPlus.h"
 #include "asMethodCalibratorClassicPlusVarExplo.h"
 #include "asMethodOptimizerRandomSet.h"
@@ -54,8 +58,11 @@ IMPLEMENT_APP(AtmoswingAppOptimizer);
 #include <asFileAscii.h>
 #include <asMethodCalibratorSingle.h>
 #include <asMethodCalibratorClassic.h>
+
 #if wxUSE_GUI
+
 #include "images.h"
+
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
@@ -126,8 +133,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                                  "\n \t\t\t\t prompt: command prompt"
                                  "\n \t\t\t\t both: command prompt and file (default)" },
 
-    { wxCMD_LINE_NONE }
-};
+                                                   {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppOptimizer::OnInit()
 {
@@ -160,45 +166,42 @@ bool AtmoswingAppOptimizer::OnInit()
 #if wxUSE_GUI
 
     // Set PPI
-		wxMemoryDC dcTestPpi;
-		wxSize ppiDC = dcTestPpi.GetPPI();
-		g_ppiScaleDc = double(ppiDC.x) / 96.0;
+    wxMemoryDC dcTestPpi;
+    wxSize ppiDC = dcTestPpi.GetPPI();
+    g_ppiScaleDc = double(ppiDC.x) / 96.0;
 
-	    m_singleInstanceChecker = NULL;
-        if (g_guiMode)
-        {
-            // Check that it is the unique instance
-            bool multipleInstances = false;
+    m_singleInstanceChecker = NULL;
+    if (g_guiMode) {
+        // Check that it is the unique instance
+        bool multipleInstances = false;
 
-            wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
+        wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
 
-            if (!multipleInstances)
-            {
-                const wxString instanceName = wxString::Format(wxT("atmoswing-calibrator-%s"),wxGetUserId());
-                m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-                if ( m_singleInstanceChecker->IsAnotherRunning() )
-                {
-                    wxMessageBox(_("Program already running, aborting."));
-                    return false;
-                }
+        if (!multipleInstances) {
+            const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"), wxGetUserId());
+            m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+            if (m_singleInstanceChecker->IsAnotherRunning()) {
+                wxMessageBox(_("Program already running, aborting."));
+                return false;
             }
-
-            // Following for GUI only
-            wxInitAllImageHandlers();
-
-            // Initialize images
-			initialize_images(g_ppiScaleDc);
-
-            // Create frame
-            AtmoswingFrameOptimizer* frame = new AtmoswingFrameOptimizer(0L);
-            frame->OnInit();
-
-            #ifdef __WXMSW__
-                frame->SetIcon(wxICON(myicon)); // To Set App Icon
-            #endif
-            frame->Show();
-            SetTopWindow(frame);
         }
+
+        // Following for GUI only
+        wxInitAllImageHandlers();
+
+        // Initialize images
+        initialize_images(g_ppiScaleDc);
+
+        // Create frame
+        AtmoswingFrameOptimizer *frame = new AtmoswingFrameOptimizer(0L);
+        frame->OnInit();
+
+#ifdef __WXMSW__
+        frame->SetIcon(wxICON(myicon)); // To Set App Icon
+#endif
+        frame->Show();
+        SetTopWindow(frame);
+    }
 #endif
 
     return true;
@@ -208,8 +211,7 @@ wxString AtmoswingAppOptimizer::GetLocalPath()
 {
     // Prepare local path
     wxString localPath = wxFileName::GetCwd() + DS;
-    if (g_runNb > 0)
-    {
+    if (g_runNb > 0) {
         localPath.Append("runs");
         localPath.Append(DS);
         localPath.Append(wxString::Format("%d", g_runNb));
@@ -238,9 +240,7 @@ bool AtmoswingAppOptimizer::InitLog()
         }
 
         Log().CreateFileOnlyAtPath(fullPath);
-    }
-    else
-    {
+    } else {
         Log().CreateFileOnly("AtmoSwingOptimizer.log");
     }
 
@@ -257,6 +257,9 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
 
     Log().DisableMessageBoxOnError();
 
+    if (g_local)
+    {
+        wxString dirData = wxFileName::GetCwd()+DS+"data"+DS;
     // Warn the user if reloading previous results
     if (g_resumePreviousRun)
     {
@@ -272,6 +275,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
 
     {
         wxString dirData = wxFileName::GetCwd()+DS+"data"+DS;
+    if (g_local) {
+        wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
@@ -285,8 +290,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath()+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
-        pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
-        pConfig->Write("/Processing/LinAlgebra", (long)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
+        pConfig->Write("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
         if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1)>1) {
@@ -360,17 +365,17 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     return true;
 }
 
-void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser& parser)
+void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser)
 {
     wxAppConsole::OnInitCmdLine(parser);
 
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
-    parser.SetDesc (g_cmdLineDesc);
+    parser.SetDesc(g_cmdLineDesc);
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
-    parser.SetSwitchChars (wxT("-"));
+    parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
+bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
 
@@ -379,27 +384,22 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
      */
 
     // Check if the user asked for command-line help
-    if (parser.Found("help"))
-    {
+    if (parser.Found("help")) {
         parser.Usage();
         return false;
     }
 
     // Check if the user asked for the version
-    if (parser.Found("version"))
-    {
-        wxMessageOutput* msgOut = wxMessageOutput::Get();
-        if ( msgOut )
-        {
+    if (parser.Found("version")) {
+        wxMessageOutput *msgOut = wxMessageOutput::Get();
+        if (msgOut) {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing version %s, %s", g_version, (const wxChar*) date);
+            msg.Printf("AtmoSwing version %s, %s", g_version, (const wxChar *) date);
 
-            msgOut->Printf( msg );
-        }
-        else
-        {
-            wxFAIL_MSG( _("No wxMessageOutput object?") );
+            msgOut->Printf(msg);
+        } else {
+            wxFAIL_MSG(_("No wxMessageOutput object?"));
         }
 
         return false; // We don't want to continue
@@ -408,19 +408,16 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
     // Check for a run number
     wxString runNbStr = wxEmptyString;
     long runNb = 0;
-    if (parser.Found("run-number", & runNbStr))
-    {
+    if (parser.Found("run-number", &runNbStr)) {
         runNbStr.ToLong(&runNb);
-        g_runNb = (int)runNb;
+        g_runNb = (int) runNb;
     }
 
     // Local mode
-    if (parser.Found("local"))
-    {
+    if (parser.Found("local")) {
         g_local = true;
         wxString localPath = wxFileName::GetCwd() + DS;
-        if (g_runNb>0)
-        {
+        if (g_runNb > 0) {
             localPath.Append("runs");
             localPath.Append(DS);
             localPath.Append(wxString::Format("%d", g_runNb));
@@ -454,80 +451,61 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
         }
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,iniPath,iniPath,wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
-    }
-    else
-    {
+    } else {
         // Create user directory
         wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
-        userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
+        userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingOptimizer.ini",asConfig::GetUserDataDir()+"AtmoSwingOptimizer.ini",wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString,
+                                                 asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
+                                                 asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
+                                                 wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
-    if (parser.Found("log-level", & logLevelStr))
-    {
+    if (parser.Found("log-level", &logLevelStr)) {
         long logLevel = -1;
         logLevelStr.ToLong(&logLevel);
 
         // Check and apply
-        if (logLevel==0)
-        {
+        if (logLevel == 0) {
             Log().SetLevel(0);
-        }
-        else if (logLevel==1)
-        {
+        } else if (logLevel == 1) {
             Log().SetLevel(1);
-        }
-        else if (logLevel==2)
-        {
+        } else if (logLevel == 2) {
             Log().SetLevel(2);
-        }
-        else if (logLevel==3)
-        {
+        } else if (logLevel == 3) {
             Log().SetLevel(3);
-        }
-        else
-        {
+        } else {
             Log().SetLevel(2);
         }
-    }
-    else
-    {
+    } else {
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log().SetLevel((int)logLevel);
+        Log().SetLevel((int) logLevel);
     }
 
     // Check for the log target option
     wxString logTargetStr = wxEmptyString;
-    if (parser.Found("log-target", & logTargetStr))
-    {
+    if (parser.Found("log-target", &logTargetStr)) {
         // Check and apply
-        if (logTargetStr.IsSameAs("file", false))
-        {
+        if (logTargetStr.IsSameAs("file", false)) {
             Log().SetTarget(asLog::File);
-        }
-        else if (logTargetStr.IsSameAs("screen", false))
-        {
+        } else if (logTargetStr.IsSameAs("screen", false)) {
             Log().SetTarget(asLog::Screen);
-        }
-        else if (logTargetStr.IsSameAs("both", false))
-        {
+        } else if (logTargetStr.IsSameAs("both", false)) {
             Log().SetTarget(asLog::Both);
-        }
-        else
-        {
+        } else {
             Log().SetTarget(asLog::Both);
 
-            wxMessageOutput* msgOut = wxMessageOutput::Get();
-            if ( msgOut )
-            {
-                msgOut->Printf( _("The given log target (%s) does not correspond to any possible option."), logTargetStr );
+            wxMessageOutput *msgOut = wxMessageOutput::Get();
+            if (msgOut) {
+                msgOut->Printf(_("The given log target (%s) does not correspond to any possible option."),
+                               logTargetStr);
             }
         }
     }
@@ -537,8 +515,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
     }
 
     // Check if the user asked for the silent mode
-    if (parser.Found("silent"))
-    {
+    if (parser.Found("silent")) {
         Log().SetTarget(asLog::File);
     }
 
@@ -547,21 +524,17 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
 
     // Check for a calibration params file
     wxString threadsNb = wxEmptyString;
-    if (parser.Found("threads-nb", & threadsNb))
-    {
+    if (parser.Found("threads-nb", &threadsNb)) {
         wxFileConfig::Get()->Write("/Processing/MaxThreadNb", threadsNb);
     }
 
     // Check for a calibration params file
-    if (parser.Found("file-parameters", & m_calibParamsFile))
-    {
-        if (g_local)
-        {
+    if (parser.Found("file-parameters", &m_calibParamsFile)) {
+        if (g_local) {
             m_calibParamsFile = wxFileName::GetCwd() + DS + m_calibParamsFile;
         }
 
-        if (!wxFileName::FileExists(m_calibParamsFile))
-        {
+        if (!wxFileName::FileExists(m_calibParamsFile)) {
             asLogError(wxString::Format(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile));
             return false;
         }
@@ -575,23 +548,19 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
             m_predictandDB = wxFileName::GetCwd() + DS + m_predictandDB;
         }
 
-        if (!wxFileName::FileExists(m_predictandDB))
-        {
+        if (!wxFileName::FileExists(m_predictandDB)) {
             asLogError(wxString::Format(_("The given predictand DB (%s) couldn't be found."), m_predictandDB));
             return false;
         }
     }
 
     // Check for a predictors directory
-    if (parser.Found("dir-predictors", & m_predictorsDir))
-    {
-        if (g_local)
-        {
+    if (parser.Found("dir-predictors", &m_predictorsDir)) {
+        if (g_local) {
             m_predictorsDir = wxFileName::GetCwd() + DS + m_predictorsDir;
         }
 
-        if (!wxFileName::DirExists(m_predictorsDir))
-        {
+        if (!wxFileName::DirExists(m_predictorsDir)) {
             asLogError(wxString::Format(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir));
             return false;
         }
@@ -604,29 +573,24 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
     wxString option = wxEmptyString;
 
     // Classic+ calibration
-    if (parser.Found("cp-resizing-iteration", & option))
-    {
+    if (parser.Found("cp-resizing-iteration", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ResizingIterations", option);
     }
 
-    if (parser.Found("cp-lat-step", & option))
-    {
+    if (parser.Found("cp-lat-step", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLatPertinenceMap", option);
     }
 
-    if (parser.Found("cp-lon-step", & option))
-    {
+    if (parser.Found("cp-lon-step", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLonPertinenceMap", option);
     }
 
-    if (parser.Found("cp-proceed-sequentially", & option))
-    {
+    if (parser.Found("cp-proceed-sequentially", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ProceedSequentially", option);
     }
 
     // Variables exploration
-    if (parser.Found("ve-step", & option))
-    {
+    if (parser.Found("ve-step", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/VariablesExplo/Step", option);
     }
 
@@ -803,8 +767,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser& parser)
     }
 
     // Skip validation option
-    if (parser.Found("skip-valid", & option))
-    {
+    if (parser.Found("skip-valid", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/SkipValidation", option);
     }
 
@@ -849,48 +812,38 @@ int AtmoswingAppOptimizer::OnRun()
             return 1001;
         }
 
-        if (m_predictandDB.IsEmpty())
-        {
+        if (m_predictandDB.IsEmpty()) {
             asLogError(_("The predictand DB is not given."));
             return 1002;
         }
 
-        if (m_predictorsDir.IsEmpty())
-        {
+        if (m_predictorsDir.IsEmpty()) {
             asLogError(_("The predictors directory is not given."));
             return 1003;
         }
 
-        wxMessageOutput* msgOut = wxMessageOutput::Get();
+        wxMessageOutput *msgOut = wxMessageOutput::Get();
 
-        try
-        {
-            if (m_calibMethod.IsSameAs("single", false))
-            {
+        try {
+            if (m_calibMethod.IsSameAs("single", false)) {
                 asMethodCalibratorSingle calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
-            }
-            else if (m_calibMethod.IsSameAs("classic", false))
-            {
+            } else if (m_calibMethod.IsSameAs("classic", false)) {
                 asMethodCalibratorClassic calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
-            }
-            else if (m_calibMethod.IsSameAs("classicp", false))
-            {
+            } else if (m_calibMethod.IsSameAs("classicp", false)) {
                 asMethodCalibratorClassicPlus calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
-            }
-            else if (m_calibMethod.IsSameAs("varexplocp", false))
-            {
+            } else if (m_calibMethod.IsSameAs("varexplocp", false)) {
                 asMethodCalibratorClassicPlusVarExplo calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
@@ -922,12 +875,9 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
-            }
-            else
-            {
-                if ( msgOut )
-                {
-                    msgOut->Printf( "Wrong calibration method selection (%s).", m_calibMethod );
+            } else {
+                if (msgOut) {
+                    msgOut->Printf("Wrong calibration method selection (%s).", m_calibMethod);
                 }
             }
         }
@@ -936,12 +886,9 @@ int AtmoswingAppOptimizer::OnRun()
             wxString msg(ba.what(), wxConvUTF8);
             asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
             return 1011;
-        }
-        catch(asException& e)
-        {
+        } catch (asException &e) {
             wxString fullMessage = e.GetFullMessage();
-            if (!fullMessage.IsEmpty())
-            {
+            if (!fullMessage.IsEmpty()) {
                 asLogError(fullMessage);
             }
             asLogError(_("Failed to process the calibration."));
