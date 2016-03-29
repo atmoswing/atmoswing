@@ -995,7 +995,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
                                             &preloadTimeHours[preloadTimeHours.size() - 1], time);
 
         // Force gradients preprocessing anyway.
-        if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
+        if (!params.GetPredictorCriteriaVector(i_step, i_ptor).size()>0 && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
             doPreprocessGradients = true;
             params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
         } else if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1grads")) {
@@ -1895,5 +1895,3 @@ bool asMethodCalibrator::GetRandomValidData(asParametersScoring &params, int i_s
 
     return true;
 }
-
-
