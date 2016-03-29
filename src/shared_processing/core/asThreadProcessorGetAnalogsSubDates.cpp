@@ -69,11 +69,11 @@ m_pPreviousAnalogsDates(previousAnalogsDates)
     m_type = asThread::ProcessorGetAnalogsDates;
     m_step = step;
     m_start = start;
-    m_End = end;
+    m_end = end;
     m_pContainsNaNs = containsNaNs;
 
-    wxASSERT_MSG(m_End<m_pTimeTargetSelection->size(), _("The given time array end is superior to the time array size."));
-    wxASSERT_MSG(m_End!=m_pTimeTargetSelection->size()-2, wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_End, (int)m_pTimeTargetSelection->size()));
+    wxASSERT_MSG(m_end<m_pTimeTargetSelection->size(), _("The given time array end is superior to the time array size."));
+    wxASSERT_MSG(m_end!=m_pTimeTargetSelection->size()-2, wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end, (int)m_pTimeTargetSelection->size()));
 
     m_status = Waiting;
 }
@@ -100,7 +100,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     int analogsNb = m_params.GetAnalogsNumber(m_step);
     bool isasc = (m_criteria[0]->GetOrder()==Asc);
 
-    wxASSERT(m_End<m_pTimeTargetSelection->size());
+    wxASSERT(m_end<m_pTimeTargetSelection->size());
     wxASSERT(timeArchiveDataSize==(int)(m_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetDataSize==(int)(m_pPredictorsTarget)[0]->GetData().size());
 
@@ -110,8 +110,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     Array1DFloat DateArrayOneDay(analogsNb);
 
     // Loop through every timestep as target data
-    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_End); i_dateTarg++)
-    for (int i_dateTarg=m_start; i_dateTarg<=m_End; i_dateTarg++)
+    // Former, but disabled: for (int i_dateTarg=m_start; !ThreadsManager().Cancelled() && (i_dateTarg<=m_end); i_dateTarg++)
+    for (int i_dateTarg=m_start; i_dateTarg<=m_end; i_dateTarg++)
     {
         int i_timeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize-1], (double)m_pTimeTargetSelection->coeff(i_dateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(i_dateTarg)>0);

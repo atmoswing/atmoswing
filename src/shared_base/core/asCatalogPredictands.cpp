@@ -49,7 +49,7 @@ wxObject()
     m_firstTimeStepHour = 0;
     m_dataPath = wxEmptyString;
     m_start = 0;
-    m_End = 0;
+    m_end = 0;
 
     // Get the xml file path
     if (m_catalogFilePath.IsEmpty())
@@ -100,7 +100,7 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "start") {
                     m_start = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "end") {
-                    m_End = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
+                    m_end = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "first_time_step") {
                     m_firstTimeStepHour = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "path") {

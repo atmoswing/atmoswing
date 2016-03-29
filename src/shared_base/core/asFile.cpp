@@ -47,7 +47,7 @@ asFile::asFile(const wxString &FileName, const ListFileMode &FileMode)
 {
     m_fileName = wxFileName( FileName );
     m_fileMode = FileMode;
-    m_Exists = false;
+    m_exists = false;
     m_opened = false;
 }
 
@@ -78,7 +78,7 @@ bool asFile::Find()
             {
                 pickfile = true;
             } else {
-                m_Exists = true;
+                m_exists = true;
                 if (!wxFileName::IsFileReadable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
@@ -101,7 +101,7 @@ bool asFile::Find()
                     }
                 }
             } else {
-                m_Exists = true;
+                m_exists = true;
                 if (!wxFileName::IsFileWritable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
@@ -124,7 +124,7 @@ bool asFile::Find()
                     }
                 }
             } else {
-                m_Exists = true;
+                m_exists = true;
                 if (!wxFileName::IsFileWritable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
@@ -147,7 +147,7 @@ bool asFile::Find()
                     }
                 }
             } else {
-                m_Exists = true;
+                m_exists = true;
                 warnoverwrite = true;
             }
             break;
@@ -157,7 +157,7 @@ bool asFile::Find()
             {
                 pickfile = true;
             } else {
-                m_Exists = true;
+                m_exists = true;
                 if (!wxFileName::IsFileWritable(m_fileName.GetFullPath()))
                 {
                     warnmodecomp = true;
@@ -224,7 +224,7 @@ bool asFile::Find()
             asLogError(wxString::Format(_("The directory %s could not be created."),m_fileName.GetPath()));
             return false;
         }
-        m_Exists = true;
+        m_exists = true;
     }
 
     if (warnmodecomp)
