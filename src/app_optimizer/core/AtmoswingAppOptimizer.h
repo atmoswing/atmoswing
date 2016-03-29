@@ -53,9 +53,10 @@ public:
     virtual int OnRun();
 
     virtual int OnExit();
-
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
-
+    void CleanUp();
+    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+    wxString GetLocalPath();
+    bool InitLog();
     bool InitForCmdLineOnly();
 
     virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
@@ -70,10 +71,12 @@ private:
     wxString m_calibParamsFile;
     wxString m_predictandDB;
     wxString m_predictorsDir;
+    VectorInt m_predictandStationIds;
     wxString m_calibMethod;
-#if wxUSE_GUI
-    wxSingleInstanceChecker *m_singleInstanceChecker;
-#endif
+    bool m_forceQuit;
+    #if wxUSE_GUI
+        wxSingleInstanceChecker* m_singleInstanceChecker;
+    #endif
 };
 
 DECLARE_APP(AtmoswingAppOptimizer);
