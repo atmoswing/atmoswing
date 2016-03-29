@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asPanelSidebarForecasts__
 #define __asPanelSidebarForecasts__
 
@@ -37,15 +37,18 @@
 #include "asListBoxQuantiles.h"
 #include "asForecastManager.h"
 
-/** Implementing asPanelSidebarForecasts */
-class asPanelSidebarForecasts : public asPanelSidebar
+class asPanelSidebarForecasts
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarForecasts( wxWindow* parent, asForecastManager* forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
+                            const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+                            long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarForecasts();
 
     void ClearForecasts();
+
     void Update();
 
     asListBoxForecasts *GetForecastsCtrl()

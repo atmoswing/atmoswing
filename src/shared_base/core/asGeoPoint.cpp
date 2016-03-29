@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asGeoPoint.h"
 
 asGeoPoint::asGeoPoint(const Coo &Point, float Level, float Height)
-:
-asGeo()
+        : asGeo()
 {
     // Set the members
     m_point = Point;
@@ -44,8 +43,7 @@ asGeo()
 }
 
 asGeoPoint::asGeoPoint(double x, double y, float Level, float Height)
-:
-asGeo()
+        : asGeo()
 {
     // Set the members
     m_point.x = x;

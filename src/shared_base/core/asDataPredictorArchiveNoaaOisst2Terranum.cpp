@@ -34,8 +34,7 @@
 
 
 asDataPredictorArchiveNoaaOisst2Terranum::asDataPredictorArchiveNoaaOisst2Terranum(const wxString &dataId)
-:
-asDataPredictorArchive(dataId)
+        : asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
@@ -52,7 +51,7 @@ asDataPredictorArchive(dataId)
     m_timeStepHours = 24;
     m_firstTimeStepHours = 12;
     m_nanValues.push_back(32767);
-    m_nanValues.push_back(936*std::pow(10.f,34.f));
+    m_nanValues.push_back(936 * std::pow(10.f, 34.f));
     m_xAxisShift = 0.125;
     m_yAxisShift = 0.125;
     m_xAxisStep = 1;
@@ -63,22 +62,17 @@ asDataPredictorArchive(dataId)
     m_fileAxisTimeName = "time";
 
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("sst", false))
-    {
+    if (m_dataId.IsSameAs("sst", false)) {
         m_dataParameter = SeaSurfaceTemperature;
         m_fileNamePattern = "sst_1deg.nc";
         m_fileVariableName = "sst";
         m_unit = degC;
-    }
-    else if (m_dataId.IsSameAs("sst_anom", false))
-    {
+    } else if (m_dataId.IsSameAs("sst_anom", false)) {
         m_dataParameter = SeaSurfaceTemperatureAnomaly;
         m_fileNamePattern = "sst_anom_1deg.nc";
         m_fileVariableName = "anom";
         m_unit = degC;
-    }
-    else
-    {
+    } else {
         m_dataParameter = NoDataParameter;
         m_fileVariableName = wxEmptyString;
         m_unit = NoDataUnit;
@@ -94,13 +88,17 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::Init()
 {
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (m_directoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 
@@ -130,7 +128,8 @@ VectorString asDataPredictorArchiveNoaaOisst2Terranum::GetDataIdDescriptionList(
     return list;
 }
 
-bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea,
+                                                                asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     // Build the file path
     wxString fileFullPath = m_directoryPath + m_fileNamePattern;
@@ -138,19 +137,21 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
     asFileNetcdf ncFile(fileFullPath, asFileNetcdf::ReadOnly);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
 
     // Get some attributes
     float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
-    if (asTools::IsNaN(dataAddOffset)) dataAddOffset = 0;
+    if (asTools::IsNaN(dataAddOffset))
+        dataAddOffset = 0;
     float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
-    if (asTools::IsNaN(dataScaleFactor)) dataScaleFactor = 1;
+    if (asTools::IsNaN(dataScaleFactor))
+        dataScaleFactor = 1;
     bool scalingNeeded = true;
-    if (dataAddOffset==0 && dataScaleFactor==1) scalingNeeded = false;
+    if (dataAddOffset == 0 && dataScaleFactor == 1)
+        scalingNeeded = false;
 
     // Get full axes from the netcdf file
     Array1DFloat axisDataLon(ncFile.GetVarLength(m_fileAxisLonName));
@@ -158,30 +159,30 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     Array1DFloat axisDataLat(ncFile.GetVarLength(m_fileAxisLatName));
     ncFile.GetVar(m_fileAxisLatName, &axisDataLat[0]);
     Array1DFloat axisDataLevel;
-    
+
     // Adjust axes if necessary
     dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);
-        
+
     // Time array takes ages to load !! Avoid if possible. Get the first value of the time array.
     size_t axisDataTimeLength = ncFile.GetVarLength(m_fileAxisTimeName);
     double valFirstTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, 0);
-    valFirstTime = (valFirstTime/24.0); // hours to days
-    valFirstTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
-    double valLastTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, axisDataTimeLength-1);
-    valLastTime = (valLastTime/24.0); // hours to days
-    valLastTime += asTime::GetMJD(1,1,1); // to MJD: add a negative time span
+    valFirstTime = (valFirstTime / 24.0); // hours to days
+    valFirstTime += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+    double valLastTime = ncFile.GetVarOneDouble(m_fileAxisTimeName, axisDataTimeLength - 1);
+    valLastTime = (valLastTime / 24.0); // hours to days
+    valLastTime += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
 
     // Check requested time array
-    if(timeArray.GetFirst()<valFirstTime)
-    {
-        asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetFirst()), asTime::GetStringTime(valFirstTime)));
+    if (timeArray.GetFirst() < valFirstTime) {
+        asLogError(wxString::Format(_("The requested data starts before (%s) the actual dataset (%s)"),
+                                    asTime::GetStringTime(timeArray.GetFirst()), asTime::GetStringTime(valFirstTime)));
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
-    if(timeArray.GetLast()>valLastTime)
-    {
-        asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"), asTime::GetStringTime(timeArray.GetLast()), asTime::GetStringTime(valLastTime)));
+    if (timeArray.GetLast() > valLastTime) {
+        asLogError(wxString::Format(_("The requested data ends after (%s) the actual dataset (%s)"),
+                                    asTime::GetStringTime(timeArray.GetLast()), asTime::GetStringTime(valLastTime)));
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -194,20 +195,18 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     // Get the time length
     double timeArrayIndexStart = timeArray.GetIndexFirstAfter(timeStart);
     double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(timeEnd);
-    int indexLengthTime = timeArrayIndexEnd-timeArrayIndexStart+1;
+    int indexLengthTime = timeArrayIndexEnd - timeArrayIndexStart + 1;
     int indexLengthTimeArray = indexLengthTime;
 
     // Correct the time start and end
     size_t indexStartTime = 0;
     int cutStart = timeArrayIndexStart;
     int cutEnd = 0;
-    while (valFirstTime<timeArray[timeArrayIndexStart])
-    {
-        valFirstTime += m_timeStepHours/24.0;
+    while (valFirstTime < timeArray[timeArrayIndexStart]) {
+        valFirstTime += m_timeStepHours / 24.0;
         indexStartTime++;
     }
-    if (indexStartTime+indexLengthTime>axisDataTimeLength)
-    {
+    if (indexStartTime + indexLengthTime > axisDataTimeLength) {
         indexLengthTime--;
         cutEnd++;
     }
@@ -217,11 +216,9 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     VectorInt vectIndexLengthLon;
     VVectorShort vectData;
 
-    for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
-    {
+    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
         int indexStartLon, indexStartLat, indexLengthLon, indexLengthLat;
-        if (dataArea)
-        {
+        if (dataArea) {
             // Get the spatial extent
             float lonMin = dataArea->GetXaxisCompositeStart(i_area);
             float latMinStart = dataArea->GetYaxisCompositeStart(i_area);
@@ -232,32 +229,39 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
             indexLengthLat = dataArea->GetYaxisCompositePtsnb(i_area);
 
             // Get the spatial indices of the desired data
-            indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin, 0.01f);
-            if(indexStartLon==asOUT_OF_RANGE)
-            {
+            indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size() - 1], lonMin,
+                                                       0.01f);
+            if (indexStartLon == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin-360, 0.01f);
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size() - 1],
+                                                           lonMin - 360, 0.01f);
             }
-            if(indexStartLon==asOUT_OF_RANGE)
-            {
+            if (indexStartLon == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
-                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size()-1], lonMin+360, 0.01f);
+                indexStartLon = asTools::SortedArraySearch(&axisDataLon[0], &axisDataLon[axisDataLon.size() - 1],
+                                                           lonMin + 360, 0.01f);
             }
-            if(indexStartLon<0)
-            {
-                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin, axisDataLon[0], (int)axisDataLon.size(), axisDataLon[axisDataLon.size()-1]));
+            if (indexStartLon < 0) {
+                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ",
+                                            lonMin, axisDataLon[0], (int) axisDataLon.size(),
+                                            axisDataLon[axisDataLon.size() - 1]));
                 return false;
             }
-            wxASSERT_MSG(indexStartLon>=0, wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", axisDataLon[0], (int)axisDataLon.size(), axisDataLon[axisDataLon.size()-1], lonMin));
+            wxASSERT_MSG(indexStartLon >= 0,
+                         wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", axisDataLon[0],
+                                          (int) axisDataLon.size(), axisDataLon[axisDataLon.size() - 1], lonMin));
 
-            int indexStartLat1 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLat.size()-1], latMinStart, 0.01f);
-            int indexStartLat2 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLat.size()-1], latMinEnd, 0.01f);
-            wxASSERT_MSG(indexStartLat1>=0, wxString::Format("Looking for %g in %g to %g", latMinStart, axisDataLat[0], axisDataLat[axisDataLat.size()-1]));
-            wxASSERT_MSG(indexStartLat2>=0, wxString::Format("Looking for %g in %g to %g", latMinEnd, axisDataLat[0], axisDataLat[axisDataLat.size()-1]));
+            int indexStartLat1 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLat.size() - 1],
+                                                            latMinStart, 0.01f);
+            int indexStartLat2 = asTools::SortedArraySearch(&axisDataLat[0], &axisDataLat[axisDataLat.size() - 1],
+                                                            latMinEnd, 0.01f);
+            wxASSERT_MSG(indexStartLat1 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinStart, axisDataLat[0],
+                                          axisDataLat[axisDataLat.size() - 1]));
+            wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, axisDataLat[0],
+                                                               axisDataLat[axisDataLat.size() - 1]));
             indexStartLat = wxMin(indexStartLat1, indexStartLat2);
-        }
-        else
-        {
+        } else {
             indexStartLon = 0;
             indexStartLat = 0;
             indexLengthLon = m_lonPtsnb;
@@ -269,18 +273,15 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
 
         // Resize the arrays to store the new data
         int totLength = indexLengthTimeArray * indexLengthLat * indexLengthLon;
-        wxASSERT(totLength>0);
+        wxASSERT(totLength > 0);
         data.resize(totLength);
 
         // Fill empty begining with NaNs
         int indexBegining = 0;
-        if(cutStart>0)
-        {
-            int latlonlength = indexLengthLat*indexLengthLon;
-            for (int i_empty=0; i_empty<cutStart; i_empty++)
-            {
-                for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                {
+        if (cutStart > 0) {
+            int latlonlength = indexLengthLat * indexLengthLon;
+            for (int i_empty = 0; i_empty < cutStart; i_empty++) {
+                for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
                     data[indexBegining] = NaNFloat;
                     indexBegining++;
                 }
@@ -289,13 +290,10 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
 
         // Fill empty end with NaNs
         int indexEnd = indexLengthTime * indexLengthLat * indexLengthLon - 1;
-        if(cutEnd>0)
-        {
-            int latlonlength = indexLengthLat*indexLengthLon;
-            for (int i_empty=0; i_empty<cutEnd; i_empty++)
-            {
-                for (int i_emptylatlon=0; i_emptylatlon<latlonlength; i_emptylatlon++)
-                {
+        if (cutEnd > 0) {
+            int latlonlength = indexLengthLat * indexLengthLon;
+            for (int i_empty = 0; i_empty < cutEnd; i_empty++) {
+                for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
                     indexEnd++;
                     data[indexEnd] = NaNFloat;
                 }
@@ -303,15 +301,15 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
         }
 
         // Get the indices for data
-        size_t indexStartData[3] = {0,0,0};
+        size_t indexStartData[3] = {0, 0, 0};
         indexStartData[0] = indexStartTime;
         indexStartData[1] = indexStartLat;
         indexStartData[2] = indexStartLon;
-        size_t indexCountData[3] = {0,0,0};
+        size_t indexCountData[3] = {0, 0, 0};
         indexCountData[0] = indexLengthTime;
         indexCountData[1] = indexLengthLat;
         indexCountData[2] = indexLengthLon;
-        ptrdiff_t indexStrideData[3] = {0,0,0};
+        ptrdiff_t indexStrideData[3] = {0, 0, 0};
         indexStrideData[0] = m_timeIndexStep;
         indexStrideData[1] = m_latIndexStep;
         indexStrideData[2] = m_lonIndexStep;
@@ -330,11 +328,9 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     ThreadsManager().CritSectionNetCDF().Leave();
 
     // Allocate space into compositeData if not already done
-    if (compositeData[0].capacity()==0)
-    {
+    if (compositeData[0].capacity() == 0) {
         int totSize = 0;
-        for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
-        {
+        for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
             int indexLengthLat = vectIndexLengthLat[i_area];
             int indexLengthLon = vectIndexLengthLon[i_area];
             totSize += m_time.size() * indexLengthLat * indexLengthLon;
@@ -343,8 +339,7 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     }
 
     // Transfer data
-    for (int i_area = 0; i_area<(int)compositeData.size(); i_area++)
-    {
+    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
         // Extract data
         int indexLengthLat = vectIndexLengthLat[i_area];
         int indexLengthLon = vectIndexLengthLon[i_area];
@@ -352,38 +347,29 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
 
         // Loop to extract the data from the array
         int ind = 0;
-        for (int i_time=0; i_time<indexLengthTimeArray; i_time++)
-        {
-            Array2DFloat latlonData(indexLengthLat,indexLengthLon);
-            for (int i_lat=0; i_lat<indexLengthLat; i_lat++)
-            {
-                for (int i_lon=0; i_lon<indexLengthLon; i_lon++)
-                {
+        for (int i_time = 0; i_time < indexLengthTimeArray; i_time++) {
+            Array2DFloat latlonData(indexLengthLat, indexLengthLon);
+            for (int i_lat = 0; i_lat < indexLengthLat; i_lat++) {
+                for (int i_lon = 0; i_lon < indexLengthLon; i_lon++) {
                     ind = i_lon;
                     ind += i_lat * indexLengthLon;
                     ind += i_time * indexLengthLon * indexLengthLat;
 
-                    if (scalingNeeded)
-                    {
-                        latlonData(i_lat,i_lon) = (float)data[ind] * dataScaleFactor + dataAddOffset;
-                    }
-                    else
-                    {
-                        latlonData(i_lat,i_lon) = (float)data[ind];
+                    if (scalingNeeded) {
+                        latlonData(i_lat, i_lon) = (float) data[ind] * dataScaleFactor + dataAddOffset;
+                    } else {
+                        latlonData(i_lat, i_lon) = (float) data[ind];
                     }
 
                     // Check if not NaN
                     bool notNan = true;
-                    for (size_t i_nan=0; i_nan<m_nanValues.size(); i_nan++)
-                    {
-                        if ((float)data[ind]==m_nanValues[i_nan] || latlonData(i_lat,i_lon)==m_nanValues[i_nan])
-                        {
+                    for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
+                        if ((float) data[ind] == m_nanValues[i_nan] || latlonData(i_lat, i_lon) == m_nanValues[i_nan]) {
                             notNan = false;
                         }
                     }
-                    if (!notNan)
-                    {
-                        latlonData(i_lat,i_lon) = NaNFloat;
+                    if (!notNan) {
+                        latlonData(i_lat, i_lon) = NaNFloat;
                     }
                 }
             }

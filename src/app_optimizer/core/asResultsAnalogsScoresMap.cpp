@@ -34,8 +34,7 @@
 
 
 asResultsAnalogsScoresMap::asResultsAnalogsScoresMap()
-:
-asResults()
+        : asResults()
 {
     m_scores.reserve(100);
     m_lon.reserve(100);
@@ -66,7 +65,8 @@ void asResultsAnalogsScoresMap::Init(asParametersScoring &params)
 void asResultsAnalogsScoresMap::BuildFileName(asParametersScoring &params)
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir", asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
+                                           asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
     m_filePath.Append("RelevanceMap");
@@ -77,12 +77,15 @@ void asResultsAnalogsScoresMap::BuildFileName(asParametersScoring &params)
 
 bool asResultsAnalogsScoresMap::Add(asParametersScoring &params, float score)
 {
-    if(!params.GetPredictorGridType(0,0).IsSameAs("Regular", false)) asThrowException(_("asResultsAnalogsScoresMap::Add is not ready to use on unregular grids"));
+    if (!params.GetPredictorGridType(0, 0).IsSameAs("Regular", false))
+        asThrowException(_("asResultsAnalogsScoresMap::Add is not ready to use on unregular grids"));
 
     m_scores.push_back(score);
-    m_lon.push_back((params.GetPredictorXmin(0,0)+(params.GetPredictorXptsnb(0,0)-1)*params.GetPredictorXstep(0,0)/2.0));
-    m_lat.push_back((params.GetPredictorYmin(0,0)+(params.GetPredictorYptsnb(0,0)-1)*params.GetPredictorYstep(0,0)/2.0));
-    m_level.push_back(params.GetPredictorLevel(0,0));
+    m_lon.push_back((params.GetPredictorXmin(0, 0) +
+                     (params.GetPredictorXptsnb(0, 0) - 1) * params.GetPredictorXstep(0, 0) / 2.0));
+    m_lat.push_back((params.GetPredictorYmin(0, 0) +
+                     (params.GetPredictorYptsnb(0, 0) - 1) * params.GetPredictorYstep(0, 0) / 2.0));
+    m_level.push_back(params.GetPredictorLevel(0, 0));
 
     return true;
 }
@@ -90,9 +93,9 @@ bool asResultsAnalogsScoresMap::Add(asParametersScoring &params, float score)
 bool asResultsAnalogsScoresMap::MakeMap()
 {
 
-    Array1DFloat levels(asTools::ExtractUniqueValues(&m_level[0], &m_level[m_level.size()-1], 0.0001f));
-    Array1DFloat lons(asTools::ExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size()-1], 0.0001f));
-    Array1DFloat lats(asTools::ExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size()-1], 0.0001f));
+    Array1DFloat levels(asTools::ExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
+    Array1DFloat lons(asTools::ExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
+    Array1DFloat lats(asTools::ExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
 
     m_mapLevel = levels;
     m_mapLon = lons;
@@ -100,16 +103,15 @@ bool asResultsAnalogsScoresMap::MakeMap()
 
     Array2DFloat tmpLatLon = Array2DFloat::Constant(m_mapLat.size(), m_mapLon.size(), NaNFloat);
 
-    for (int i_level=0; i_level<=m_mapLevel.size(); i_level++)
-    {
+    for (int i_level = 0; i_level <= m_mapLevel.size(); i_level++) {
         m_mapScores.push_back(tmpLatLon);
     }
 
-    for (unsigned int i=0; i<m_scores.size(); i++)
-    {
-        int indexLon = asTools::SortedArraySearch(&m_mapLon[0], &m_mapLon[m_mapLon.size()-1], m_lon[i], 0.0001f);
-        int indexLat = asTools::SortedArraySearch(&m_mapLat[0], &m_mapLat[m_mapLat.size()-1], m_lat[i], 0.0001f);
-        int indexLevel = asTools::SortedArraySearch(&m_mapLevel[0], &m_mapLevel[m_mapLevel.size()-1], m_level[i], 0.0001f);
+    for (unsigned int i = 0; i < m_scores.size(); i++) {
+        int indexLon = asTools::SortedArraySearch(&m_mapLon[0], &m_mapLon[m_mapLon.size() - 1], m_lon[i], 0.0001f);
+        int indexLat = asTools::SortedArraySearch(&m_mapLat[0], &m_mapLat[m_mapLat.size() - 1], m_lat[i], 0.0001f);
+        int indexLevel = asTools::SortedArraySearch(&m_mapLevel[0], &m_mapLevel[m_mapLevel.size() - 1], m_level[i],
+                                                    0.0001f);
 
         m_mapScores[indexLevel](indexLat, indexLon) = m_scores[i];
     }
@@ -124,12 +126,9 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
 
     // Get the file path
     wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty())
-    {
+    if (AlternateFilePath.IsEmpty()) {
         ResultsFile = m_filePath;
-    }
-    else
-    {
+    } else {
         ResultsFile = AlternateFilePath;
     }
 
@@ -142,8 +141,7 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }
@@ -172,7 +170,7 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
     ncFile.DefVar("lon", NC_FLOAT, 1, DimNamesLon);
 
     // Put global attributes
-    ncFile.PutAtt("Conventions","COARDS");
+    ncFile.PutAtt("Conventions", "COARDS");
     wxString title = params.GetForecastScoreName() + " of the analog method";
     ncFile.PutAtt("title", title);
 
@@ -197,22 +195,19 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxSt
     VectorFloat scores(Nlevel * Nlat * Nlon);
     int ind = 0;
 
-    for (unsigned int i_level=0; i_level<Nlevel; i_level++)
-    {
-        for (unsigned int i_lat=0; i_lat<Nlat; i_lat++)
-        {
-            for (unsigned int i_lon=0; i_lon<Nlon; i_lon++)
-            {
+    for (unsigned int i_level = 0; i_level < Nlevel; i_level++) {
+        for (unsigned int i_lat = 0; i_lat < Nlat; i_lat++) {
+            for (unsigned int i_lon = 0; i_lon < Nlon; i_lon++) {
                 ind = i_lon;
                 ind += i_lat * Nlon;
                 ind += i_level * Nlon * Nlat;
-                scores[ind] = m_mapScores[i_level](i_lat,i_lon);
+                scores[ind] = m_mapScores[i_level](i_lat, i_lon);
             }
         }
     }
 
     // Write data
-//    int Leveldata = 850;
+    //    int Leveldata = 850;
     ncFile.PutVarArray("lon", startLon, countLon, &m_mapLon(0));
     ncFile.PutVarArray("lat", startLat, countLat, &m_mapLat(0));
     ncFile.PutVarArray("level", startLevel, countLevel, &m_mapLevel(0));

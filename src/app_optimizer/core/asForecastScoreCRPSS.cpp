@@ -25,17 +25,17 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreCRPSS.h"
 #include "asForecastScoreCRPSAR.h"
 
 asForecastScoreCRPSS::asForecastScoreCRPSS()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::CRPSS;
     m_name = _("CRPS Skill Score");
-    m_fullName = _("Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method");
+    m_fullName = _(
+            "Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method");
     m_order = Desc;
     m_scaleBest = 1;
     m_scaleWorst = NaNFloat;
@@ -49,49 +49,46 @@ asForecastScoreCRPSS::~asForecastScoreCRPSS()
 
 float asForecastScoreCRPSS::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
 
-    wxASSERT(m_scoreClimatology!=0);
+    wxASSERT(m_scoreClimatology != 0);
 
     // First process the CRPS and then the skill score
     asForecastScoreCRPSAR scoreCRPS = asForecastScoreCRPSAR();
     scoreCRPS.SetThreshold(GetThreshold());
     scoreCRPS.SetQuantile(GetQuantile());
     float score = scoreCRPS.Assess(ObservedVal, ForcastVals, nbElements);
-    float skillScore = (score-m_scoreClimatology) / ((float)0-m_scoreClimatology);
+    float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
     return skillScore;
 }
 
 bool asForecastScoreCRPSS::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
 {
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size()-1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size()-1]));
+    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
+    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
 
     // Containers for final results
     Array1DFloat scoresClimatology(refVals.size());
 
     // Set the original score and process
-    asForecastScore* forecastScore = asForecastScore::GetInstance(asForecastScore::CRPSAR);
+    asForecastScore *forecastScore = asForecastScore::GetInstance(asForecastScore::CRPSAR);
     forecastScore->SetThreshold(GetThreshold());
     forecastScore->SetQuantile(GetQuantile());
 
-    for (int i_reftime=0; i_reftime<refVals.size(); i_reftime++)
-    {
-        if (!asTools::IsNaN(refVals(i_reftime)))
-        {
-            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData, climatologyData.size());
-        }
-        else
-        {
+    for (int i_reftime = 0; i_reftime < refVals.size(); i_reftime++) {
+        if (!asTools::IsNaN(refVals(i_reftime))) {
+            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData,
+                                                                 climatologyData.size());
+        } else {
             scoresClimatology(i_reftime) = NaNFloat;
         }
     }
 
     wxDELETE(forecastScore);
 
-    m_scoreClimatology = asTools::Mean(&scoresClimatology[0],&scoresClimatology[scoresClimatology.size()-1]);
+    m_scoreClimatology = asTools::Mean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
     asLogMessage(wxString::Format(_("Score of the climatology: %g."), m_scoreClimatology));
 

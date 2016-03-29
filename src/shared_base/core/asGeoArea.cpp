@@ -25,12 +25,12 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asGeoArea.h"
 
-asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level, float Height, int flatAllowed)
-:
-asGeo()
+asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level,
+                     float Height, int flatAllowed)
+        : asGeo()
 {
     // Set the members
     m_cornerUL = CornerUL;
@@ -48,28 +48,24 @@ asGeo()
 }
 
 asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
-:
-asGeo()
+        : asGeo()
 {
-    if (flatAllowed==asFLAT_ALLOWED)
-    {
+    if (flatAllowed == asFLAT_ALLOWED) {
         Ywidth = wxMax(Ywidth, 0.0);
         Xwidth = wxMax(Xwidth, 0.0);
-    }
-    else
-    {
-        wxASSERT(Ywidth>0);
-        wxASSERT(Xwidth>0);
+    } else {
+        wxASSERT(Ywidth > 0);
+        wxASSERT(Xwidth > 0);
     }
 
     // Set the members
     m_cornerUL.x = Xmin;
-    m_cornerUL.y = Ymin+Ywidth;
-    m_cornerUR.x = Xmin+Xwidth;
-    m_cornerUR.y = Ymin+Ywidth;
+    m_cornerUL.y = Ymin + Ywidth;
+    m_cornerUR.x = Xmin + Xwidth;
+    m_cornerUR.y = Ymin + Ywidth;
     m_cornerLL.x = Xmin;
     m_cornerLL.y = Ymin;
-    m_cornerLR.x = Xmin+Xwidth;
+    m_cornerLR.x = Xmin + Xwidth;
     m_cornerLR.y = Ymin;
     m_level = Level;
     m_height = Height;
@@ -82,8 +78,7 @@ asGeo()
 }
 
 asGeoArea::asGeoArea(float Level, float Height)
-:
-asGeo()
+        : asGeo()
 {
     // Set the members
     m_cornerUL.x = 0;
@@ -106,25 +101,22 @@ asGeoArea::~asGeoArea()
 
 void asGeoArea::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
 {
-    if (flatAllowed==asFLAT_ALLOWED)
-    {
+    if (flatAllowed == asFLAT_ALLOWED) {
         Ywidth = wxMax(Ywidth, 0.0);
         Xwidth = wxMax(Xwidth, 0.0);
-    }
-    else
-    {
-        wxASSERT(Ywidth>0);
-        wxASSERT(Xwidth>0);
+    } else {
+        wxASSERT(Ywidth > 0);
+        wxASSERT(Xwidth > 0);
     }
 
     // Set the members
     m_cornerUL.x = Xmin;
-    m_cornerUL.y = Ymin+Ywidth;
-    m_cornerUR.x = Xmin+Xwidth;
-    m_cornerUR.y = Ymin+Ywidth;
+    m_cornerUL.y = Ymin + Ywidth;
+    m_cornerUR.x = Xmin + Xwidth;
+    m_cornerUR.y = Ymin + Ywidth;
     m_cornerLL.x = Xmin;
     m_cornerLL.y = Ymin;
-    m_cornerLR.x = Xmin+Xwidth;
+    m_cornerLR.x = Xmin + Xwidth;
     m_cornerLR.y = Ymin;
     m_flatAllowed = flatAllowed;
 
@@ -137,14 +129,16 @@ void asGeoArea::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth,
 void asGeoArea::Init()
 {
     InitBounds();
-    if (!DoCheckPoints()) asThrowException(_("Use asGeoAreaComposite in this case."));
-    if (!CheckConsistency()) asThrowException(_("Unable to build a consistent area with the given coordinates."));
+    if (!DoCheckPoints())
+        asThrowException(_("Use asGeoAreaComposite in this case."));
+    if (!CheckConsistency())
+        asThrowException(_("Unable to build a consistent area with the given coordinates."));
 }
 
 bool asGeoArea::DoCheckPoints()
 {
-    if (!CheckPoint(m_cornerUL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDEN) || !CheckPoint(m_cornerLL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDEN))
-    {
+    if (!CheckPoint(m_cornerUL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDEN) ||
+        !CheckPoint(m_cornerLL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDEN)) {
         return false;
     }
     return true;
@@ -154,37 +148,32 @@ bool asGeoArea::CheckConsistency()
 {
     Coo cootmp;
 
-    if (m_flatAllowed == asFLAT_FORBIDDEN)
-    {
-        if ((m_cornerUL.x == m_cornerUR.x) || (m_cornerLL.x == m_cornerLR.x) || (m_cornerLL.y == m_cornerUL.y) || (m_cornerLR.y == m_cornerUR.y))
-        {
+    if (m_flatAllowed == asFLAT_FORBIDDEN) {
+        if ((m_cornerUL.x == m_cornerUR.x) || (m_cornerLL.x == m_cornerLR.x) || (m_cornerLL.y == m_cornerUL.y) ||
+            (m_cornerLR.y == m_cornerUR.y)) {
             return false;
         }
     }
 
-    if (m_cornerUL.x > m_cornerUR.x)
-    {
+    if (m_cornerUL.x > m_cornerUR.x) {
         cootmp = m_cornerUR;
         m_cornerUR = m_cornerUL;
         m_cornerUL = cootmp;
     }
 
-    if (m_cornerLL.x > m_cornerLR.x)
-    {
+    if (m_cornerLL.x > m_cornerLR.x) {
         cootmp = m_cornerLR;
         m_cornerLR = m_cornerLL;
         m_cornerLL = cootmp;
     }
 
-    if (m_cornerLL.y > m_cornerUL.y)
-    {
+    if (m_cornerLL.y > m_cornerUL.y) {
         cootmp = m_cornerUL;
         m_cornerUL = m_cornerLL;
         m_cornerLL = cootmp;
     }
 
-    if (m_cornerLR.y > m_cornerUR.y)
-    {
+    if (m_cornerLR.y > m_cornerUR.y) {
         cootmp = m_cornerUR;
         m_cornerUR = m_cornerLR;
         m_cornerLR = cootmp;
@@ -205,7 +194,7 @@ double asGeoArea::GetXmax()
 
 double asGeoArea::GetXwidth()
 {
-    return std::abs(m_cornerUR.x-m_cornerUL.x);
+    return std::abs(m_cornerUR.x - m_cornerUL.x);
 }
 
 double asGeoArea::GetYmin()
@@ -220,22 +209,22 @@ double asGeoArea::GetYmax()
 
 double asGeoArea::GetYwidth()
 {
-    return std::abs(m_cornerUR.y-m_cornerLR.y);
+    return std::abs(m_cornerUR.y - m_cornerLR.y);
 }
 
 Coo asGeoArea::GetCenter()
 {
     Coo center;
-    center.x = GetXmin() + (GetXmax()-GetXmin())/2;
-    center.y = GetYmin() + (GetYmax()-GetYmin())/2;
+    center.x = GetXmin() + (GetXmax() - GetXmin()) / 2;
+    center.y = GetYmin() + (GetYmax() - GetYmin()) / 2;
     return center;
 }
 
 bool asGeoArea::IsRectangle()
 {
     // Check that the area is a square
-    if ((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) | (m_cornerLL.y != m_cornerLR.y))
-    {
+    if ((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |
+        (m_cornerLL.y != m_cornerLR.y)) {
         return false;
     }
     return true;

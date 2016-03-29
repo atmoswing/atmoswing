@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asPanelsManager.h"
 
 asPanelsManager::asPanelsManager()
@@ -37,26 +37,24 @@ asPanelsManager::~asPanelsManager()
 
 }
 
-void asPanelsManager::LayoutFrame(wxWindow* element)
+void asPanelsManager::LayoutFrame(wxWindow *element)
 {
-     // Get parent frame for layout
-    wxWindow* Parent = element;
-    wxWindow* SearchParent = Parent;
-    while (SearchParent)
-    {
+    // Get parent frame for layout
+    wxWindow *Parent = element;
+    wxWindow *SearchParent = Parent;
+    while (SearchParent) {
         Parent = SearchParent;
         SearchParent = Parent->GetParent();
     }
     Parent->Layout();
 }
 
-wxWindow* asPanelsManager::GetTopFrame(wxWindow* element)
+wxWindow *asPanelsManager::GetTopFrame(wxWindow *element)
 {
-     // Get parent frame for layout
-    wxWindow* Parent = element;
-    wxWindow* SearchParent = Parent;
-    while (SearchParent)
-    {
+    // Get parent frame for layout
+    wxWindow *Parent = element;
+    wxWindow *SearchParent = Parent;
+    while (SearchParent) {
         Parent = SearchParent;
         SearchParent = Parent->GetParent();
     }

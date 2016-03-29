@@ -60,7 +60,7 @@
 
 
 AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
-    : asFrameOptimizer(frame)
+        : asFrameOptimizer(frame)
 {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
@@ -80,37 +80,42 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->Read("/MainFrame/x", 50),
-        y = pConfig->Read("/MainFrame/y", 50),
-        w = pConfig->Read("/MainFrame/w", minWidth),
-        h = pConfig->Read("/MainFrame/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50), y = pConfig->Read("/MainFrame/y", 50), w = pConfig->Read("/MainFrame/w",
+                                                                                                        minWidth), h = pConfig->Read(
+            "/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
-    if (x<screen.x-10) x = screen.x;
-    if (x>screen.width) x = screen.x;
-    if (y<screen.y-10) y = screen.y;
-    if (y>screen.height) y = screen.y;
-    if (w+x>screen.width) w = screen.width-x;
-    if (w<minWidth) w = minWidth;
-    if (w+x>screen.width) x = screen.width-w;
-    if (h+y>screen.height) h = screen.height-y;
-    if (h<minHeight) h = minHeight;
-    if (h+y>screen.height) y = screen.height-h;
+    if (x < screen.x - 10)
+        x = screen.x;
+    if (x > screen.width)
+        x = screen.x;
+    if (y < screen.y - 10)
+        y = screen.y;
+    if (y > screen.height)
+        y = screen.y;
+    if (w + x > screen.width)
+        w = screen.width - x;
+    if (w < minWidth)
+        w = minWidth;
+    if (w + x > screen.width)
+        x = screen.width - w;
+    if (h + y > screen.height)
+        h = screen.height - y;
+    if (h < minHeight)
+        h = minHeight;
+    if (h + y > screen.height)
+        y = screen.height - h;
     Move(x, y);
     SetClientSize(w, h);
     Fit();
 
     // Get the GUI mode -> silent or not
     long guiOptions = pConfig->Read("/General/GuiOptions", 0l);
-    if (guiOptions==0l)
-    {
+    if (guiOptions == 0l) {
         g_silentMode = true;
-    }
-    else
-    {
+    } else {
         g_silentMode = false;
         g_verboseMode = false;
-        if (guiOptions==2l)
-        {
+        if (guiOptions == 2l) {
             g_verboseMode = true;
         }
     }
@@ -140,9 +145,11 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
     wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir", asConfig::GetTempDir() + "AtmoSwing");
+    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir",
+                                                    asConfig::GetTempDir() + "AtmoSwing");
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString CalibrationResultsDir = pConfig->Read("/Paths/OptimizerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
+    wxString CalibrationResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
+                                                   asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
     pConfig->Write("/Paths/OptimizerResultsDir", CalibrationResultsDir);
     wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
@@ -152,18 +159,18 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads==-1) maxThreads = 2;
+    if (maxThreads == -1)
+        maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
     wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
     pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
-    long defaultMethod = (long)asMULTITHREADS;
+    long defaultMethod = (long) asMULTITHREADS;
     long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
-    if (!allowMultithreading)
-    {
-        ProcessingMethod = (long)asINSERT;
+    if (!allowMultithreading) {
+        ProcessingMethod = (long) asINSERT;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
-    long defaultLinAlgebra = (long)asLIN_ALGEBRA_NOVAR;
+    long defaultLinAlgebra = (long) asLIN_ALGEBRA_NOVAR;
     long ProcessingLinAlgebra = pConfig->Read("/Processing/LinAlgebra", defaultLinAlgebra);
     pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
@@ -174,7 +181,7 @@ AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer()
 {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    if ( pConfig == NULL )
+    if (pConfig == NULL)
         return;
 
     // Save the frame position

@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef asThreadViewerLayerManagerReload_H
 #define asThreadViewerLayerManagerReload_H
 
@@ -32,18 +32,19 @@
 #include <asIncludes.h>
 #include "vroomgis.h"
 
-class asThreadViewerLayerManagerReload: public asThread
+class asThreadViewerLayerManagerReload
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager, wxCriticalSection *critSectionViewerLayerManager);
-    /** Default destructor */
+    asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager,
+                                     wxCriticalSection *critSectionViewerLayerManager);
+
     virtual ~asThreadViewerLayerManagerReload();
 
     virtual ExitCode Entry();
 
-
 protected:
+
 private:
     vrViewerLayerManager *m_viewerLayerManager;
     wxCriticalSection *m_critSectionViewerLayerManager;

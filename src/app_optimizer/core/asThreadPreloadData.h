@@ -5,19 +5,19 @@
 #include <asIncludes.h>
 #include "asMethodCalibrator.h"
 
-class asThreadPreloadData: public asThread
+class asThreadPreloadData
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadPreloadData(asMethodCalibrator* optimizer, asParametersScoring &params, int i_step, int i_ptor, int i_dat);
-    /** Default destructor */
+    asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+
     virtual ~asThreadPreloadData();
 
     ExitCode Entry();
 
 protected:
 private:
-    asMethodCalibrator* m_optimizer;
+    asMethodCalibrator *m_optimizer;
     asParametersScoring m_params;
     int m_iStep;
     int m_iProt;

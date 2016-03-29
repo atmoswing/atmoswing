@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTORREALTIMEGFSFORECAST_H
 #define ASDATAPREDICTORREALTIMEGFSFORECAST_H
 
@@ -34,26 +34,23 @@
 
 class asGeoArea;
 
-class asDataPredictorRealtimeGfsForecast: public asDataPredictorRealtime
+class asDataPredictorRealtimeGfsForecast
+        : public asDataPredictorRealtime
 {
 public:
-
-    /** Default constructor */
     asDataPredictorRealtimeGfsForecast(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictorRealtimeGfsForecast();
 
     bool Init();
 
     static VectorString GetDataIdList();
-    
+
     static VectorString GetDataIdDescriptionList();
 
-
 protected:
-
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                  VVArray2DFloat &compositeData);
 
 private:
 

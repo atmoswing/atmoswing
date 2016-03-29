@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASLOGGLOBALFUNCTIONS_H
 #define ASLOGGLOBALFUNCTIONS_H
 
@@ -34,19 +34,32 @@
 class asLog;
 
 // Global log functions
-extern asLog* g_pLog;
-asLog& Log();
+extern asLog *g_pLog;
+
+asLog &Log();
+
 void DeleteLog();
+
 void asLogError(const wxString &msg);
-void asLogError(const wxChar* msg);
+
+void asLogError(const wxChar *msg);
+
 void asLogWarning(const wxString &msg);
-void asLogWarning(const wxChar* msg);
+
+void asLogWarning(const wxChar *msg);
+
 void asLogMessage(const wxString &msg);
-void asLogMessage(const wxChar* msg);
+
+void asLogMessage(const wxChar *msg);
+
 void asLogMessageImportant(const wxString &msg);
-void asLogMessageImportant(const wxChar* msg);
+
+void asLogMessageImportant(const wxChar *msg);
+
 void asLogState(const wxString &msg);
-void asLogState(const wxChar* msg);
+
+void asLogState(const wxChar *msg);
+
 wxString asGetState();
 
 #endif // ASLOGGLOBALFUNCTIONS_H

@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFORECASTSCOREFINAL_H
 #define ASFORECASTSCOREFINAL_H
 
@@ -33,7 +33,8 @@
 
 #include <asTimeArray.h>
 
-class asForecastScoreFinal: public wxObject
+class asForecastScoreFinal
+        : public wxObject
 {
 public:
 
@@ -49,14 +50,14 @@ public:
 
     asForecastScoreFinal(Period period);
 
-    asForecastScoreFinal(const wxString& periodString);
+    asForecastScoreFinal(const wxString &periodString);
 
     virtual ~asForecastScoreFinal();
 
-    static asForecastScoreFinal* GetInstance(const wxString& scoreString, const wxString& periodString);
+    static asForecastScoreFinal *GetInstance(const wxString &scoreString, const wxString &periodString);
 
     virtual float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) = 0;
-    
+
     virtual float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray);
 
     virtual Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
@@ -88,7 +89,6 @@ protected:
     int m_ranksNb;
 
 private:
-
 
 };
 

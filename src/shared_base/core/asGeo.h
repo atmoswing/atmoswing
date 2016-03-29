@@ -25,25 +25,20 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASGEO_H
 #define ASGEO_H
 
 #include <asIncludes.h>
 
-class asGeo: public wxObject
+class asGeo
+        : public wxObject
 {
 public:
-
-    /** Default constructor */
     asGeo();
 
-    /** Default destructor */
     virtual ~asGeo();
 
-    /** Check the point coordinates
-     * \param Point The point to check
-     */
     bool CheckPoint(Coo &Point, int ChangesAllowed = asEDIT_FORBIDEN);
 
     double GetAxisXmin()
@@ -67,12 +62,11 @@ public:
     }
 
 protected:
-    double m_axisXmin; //!< Member variable "m_axisXmin"
-    double m_axisXmax; //!< Member variable "m_axisXmax"
-    double m_axisYmin; //!< Member variable "m_axisYmin"
-    double m_axisYmax; //!< Member variable "m_axisYmax"
+    double m_axisXmin;
+    double m_axisXmax;
+    double m_axisYmin;
+    double m_axisYmax;
 
-    /** Initialization */
     void InitBounds();
 
 private:

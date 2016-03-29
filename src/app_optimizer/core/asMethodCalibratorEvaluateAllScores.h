@@ -25,21 +25,23 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASMETHODCALIBRATOREVALUATEALLSCORES_H
 #define ASMETHODCALIBRATOREVALUATEALLSCORES_H
 
 #include <asMethodCalibrator.h>
 
 
-class asMethodCalibratorEvaluateAllScores: public asMethodCalibrator
+class asMethodCalibratorEvaluateAllScores
+        : public asMethodCalibrator
 {
 public:
     asMethodCalibratorEvaluateAllScores();
+
     virtual ~asMethodCalibratorEvaluateAllScores();
 
 protected:
-	virtual bool Calibrate(asParametersCalibration &params);
+    virtual bool Calibrate(asParametersCalibration &params);
 
 private:
 

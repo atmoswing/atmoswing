@@ -25,61 +25,56 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTOR_H
 #define ASDATAPREDICTOR_H
 
 #include <asIncludes.h>
 
 class asTimeArray;
+
 class asGeo;
+
 class asGeoAreaCompositeGrid;
 
 
-class asDataPredictor: public wxObject
+class asDataPredictor
+        : public wxObject
 {
 public:
-
-    /** Default constructor */
     asDataPredictor(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictor();
-    
+
     virtual bool Init() = 0;
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
+
     bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
+
     bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
+
     bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
+
     bool LoadFullArea(double date, float level);
 
     bool Inline();
-    
-    /** Set m_data: data[time](lat,lon)
-     * \return The new value of m_data
-     */
+
     bool SetData(VArray2DFloat &val);
 
-    /** Access m_data: data[time](lat,lon)
-     * \return The current value of m_data
-     */
-    VArray2DFloat& GetData()
+    VArray2DFloat &GetData()
     {
-        wxASSERT((int)m_data.size()==(int)m_time.size());
-        wxASSERT(m_data.size()>1);
-        wxASSERT(m_data[0].cols()>0);
-        wxASSERT(m_data[0].rows()>0);
-        wxASSERT(m_data[1].cols()>0);
-        wxASSERT(m_data[1].rows()>0);
+        wxASSERT((int) m_data.size() == (int) m_time.size());
+        wxASSERT(m_data.size() > 1);
+        wxASSERT(m_data[0].cols() > 0);
+        wxASSERT(m_data[0].rows() > 0);
+        wxASSERT(m_data[1].cols() > 0);
+        wxASSERT(m_data[1].rows() > 0);
 
         return m_data;
     }
 
-    /** Access m_time
-     * \return The current value of m_time
-     */
-    Array1DDouble& GetTime()
+    Array1DDouble &GetTime()
     {
         return m_time;
     }
@@ -96,8 +91,7 @@ public:
 
     void SetDirectoryPath(wxString directoryPath)
     {
-        if ( (directoryPath.Last()!='/') && (directoryPath.Last()!='\\') )
-        {
+        if ((directoryPath.Last() != '/') && (directoryPath.Last() != '\\')) {
             directoryPath.Append('/');
         }
 
@@ -109,137 +103,86 @@ public:
         return m_directoryPath;
     }
 
-    /** Access the size of the time array
-     * \return The current value of m_sizeTime
-     */
     int GetTimeSize()
     {
-        return (int)m_time.size();
+        return (int) m_time.size();
     }
 
-    /** Access m_sizeLat
-     * \return The current value of m_sizeLat
-     */
     int GetLatPtsnb()
     {
         return m_latPtsnb;
     }
 
-    /** Access m_sizeLon
-     * \return The current value of m_sizeLon
-     */
     int GetLonPtsnb()
     {
         return m_lonPtsnb;
     }
 
-    /** Access the first value of the time array
-     * \return The first value of the time array
-     */
     double GetTimeStart()
     {
         return m_time[0];
     }
 
-    /** Access the last value of the time array
-     * \return The last value of the time array
-     */
     double GetTimeEnd()
     {
-        return m_time[m_time.size()-1];
+        return m_time[m_time.size() - 1];
     }
 
-    /** Access m_isPreprocessed
-     * \return The current value of m_isPreprocessed
-     */
     bool IsPreprocessed()
     {
         return m_isPreprocessed;
     }
 
-    /** Access m_isPreprocessed
-     * \return The current value of m_isPreprocessed
-     */
     bool GetIsPreprocessed()
     {
         return m_isPreprocessed;
     }
 
-    /** Set m_isPreprocessed
-     * \param The new value of m_isPreprocessed
-     */
     void SetIsPreprocessed(bool val)
     {
         m_isPreprocessed = val;
     }
 
-    /** Access m_canBeClipped
-     * \return The current value of m_canBeClipped
-     */
     bool CanBeClipped()
     {
         return m_canBeClipped;
     }
 
-    /** Set m_canBeClipped
-     * \param The new value of m_canBeClipped
-     */
     void SetCanBeClipped(bool val)
     {
         m_canBeClipped = val;
     }
 
-    /** Access m_preprocessMethod
-     * \return The current value of m_preprocessMethod
-     */
     wxString GetPreprocessMethod()
     {
         return m_preprocessMethod;
     }
 
-    /** Set m_preprocessMethod
-     * \param The new value of m_preprocessMethod
-     */
     void SetPreprocessMethod(wxString val)
     {
         m_preprocessMethod = val;
     }
 
-    /** Access m_finalProviderWebsite
-     * \return The current value of m_finalProviderWebsite
-     */
     wxString GetFinalProviderWebsite()
     {
         return m_finalProviderWebsite;
     }
 
-    /** Access m_finalProviderFTP
-     * \return The current value of m_finalProviderFTP
-     */
     wxString GetFinalProviderFTP()
     {
         return m_finalProviderFTP;
     }
 
-    /** Access m_dataId
-     * \return The current value of m_dataId
-     */
     wxString GetDataId()
     {
         return m_dataId;
     }
 
-    /** Access m_datasetName
-     * \return The current value of m_datasetName
-     */
     wxString GetDatasetName()
     {
         return m_datasetName;
     }
 
-    /** Access m_xAxisStep
-     * \return The current value of m_xAxisStep
-     */
     double GetXaxisStep()
     {
         return m_xAxisStep;
@@ -247,20 +190,14 @@ public:
 
     void SetXaxisStep(const double val)
     {
-        m_xAxisStep = val;
+        m_xAxisStep = (float) val;
     }
 
-    /** Access m_xAxisShift
-     * \return The current value of m_xAxisShift
-     */
     double GetXaxisShift()
     {
         return m_xAxisShift;
     }
 
-    /** Access m_yAxisStep
-     * \return The current value of m_yAxisStep
-     */
     double GetYaxisStep()
     {
         return m_yAxisStep;
@@ -268,12 +205,9 @@ public:
 
     void SetYaxisStep(const double val)
     {
-        m_yAxisStep = val;
+        m_yAxisStep = (float) val;
     }
 
-    /** Access m_yAxisShift
-     * \return The current value of m_yAxisShift
-     */
     double GetYaxisShift()
     {
         return m_yAxisShift;
@@ -304,9 +238,9 @@ protected:
     float m_level;
     Array1DDouble m_time;
     VArray2DFloat m_data;
-    int m_latPtsnb; 
-    int m_lonPtsnb; 
-    size_t m_latIndexStep; 
+    int m_latPtsnb;
+    int m_lonPtsnb;
+    size_t m_latIndexStep;
     size_t m_lonIndexStep;
     size_t m_timeIndexStep;
     Array1DFloat m_axisLat;
@@ -319,39 +253,26 @@ protected:
     wxString m_fileAxisTimeName;
     wxString m_fileAxisLevelName;
     wxString m_fileExtension;
-        
-    /** Method to check the time array compatibility with the data
-     * \param timeArray The time array to check
-     * \return True if compatible with the data
-     */
+
     virtual bool CheckTimeArray(asTimeArray &timeArray)
     {
         return false;
     }
 
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *& dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData)
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                  VVArray2DFloat &compositeData)
     {
         return false;
     }
 
-    /** Method to merge data composites
-     * \param compositeData The composite data to merge
-     * \param area The corresponding composite area
-     * \return True if succeeded
-     */
     bool MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area);
 
-    /** Method to interpolate data on a different grid
-     * \param dataArea The composite grids area corresponding to the data
-     * \param desiredArea The desired composite grids area
-     * \return True if succeeded
-     */
     bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
 
-    asGeoAreaCompositeGrid* CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
+    asGeoAreaCompositeGrid *CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
 
-    asGeoAreaCompositeGrid* AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon, Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
-
+    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon,
+                                       Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
 
 private:
 

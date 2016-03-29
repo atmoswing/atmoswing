@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASLISTBOXFORECASTS_H
 #define ASLISTBOXFORECASTS_H
 
@@ -37,7 +37,8 @@
 class asForecastViewer;
 
 
-class asForecastTreeItemData : public wxTreeItemData
+class asForecastTreeItemData
+        : public wxTreeItemData
 {
 public:
     asForecastTreeItemData(int methodRow, int forecastRow);
@@ -46,12 +47,12 @@ public:
 
     bool IsAggregator()
     {
-        return (m_forecastRow<0);
+        return (m_forecastRow < 0);
     }
 
-    int GetMethodRow() 
-    { 
-        return m_methodRow; 
+    int GetMethodRow()
+    {
+        return m_methodRow;
     }
 
     void SetMethodRow(int methodRow)
@@ -59,9 +60,9 @@ public:
         m_methodRow = methodRow;
     }
 
-    int GetForecastRow() 
-    { 
-        return m_forecastRow; 
+    int GetForecastRow()
+    {
+        return m_forecastRow;
     }
 
     void SetForecastRow(int forecastRow)
@@ -75,19 +76,20 @@ private:
 };
 
 
-class asMessageForecastChoice : public wxObject
+class asMessageForecastChoice
+        : public wxObject
 {
 public:
     asMessageForecastChoice(int methodRow, int forecastRow);
 
     bool IsAggregator()
     {
-        return (m_forecastRow<0);
+        return (m_forecastRow < 0);
     }
 
-    int GetMethodRow() 
-    { 
-        return m_methodRow; 
+    int GetMethodRow()
+    {
+        return m_methodRow;
     }
 
     void SetMethodRow(int methodRow)
@@ -95,9 +97,9 @@ public:
         m_methodRow = methodRow;
     }
 
-    int GetForecastRow() 
-    { 
-        return m_forecastRow; 
+    int GetForecastRow()
+    {
+        return m_forecastRow;
     }
 
     void SetForecastRow(int forecastRow)
@@ -111,7 +113,8 @@ private:
 };
 
 
-class asListBoxForecasts : public wxTreeCtrl
+class asListBoxForecasts
+        : public wxTreeCtrl
 {
 public:
     enum
@@ -123,23 +126,30 @@ public:
         TreeCtrlIcon_Other
     };
 
-    asListBoxForecasts(wxWindow *parent, asForecastManager* forecastManager, wxWindowID id=wxID_ANY, const wxPoint &pos=wxDefaultPosition, const wxSize &size=wxDefaultSize);
+    asListBoxForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
+                       const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+
     virtual ~asListBoxForecasts();
+
     void CreateImageList();
+
     void Update();
+
     void Clear();
+
     void SetSelection(int methodRow, int forecastRow);
+
     void SelectFirst();
 
 protected:
 
 private:
     bool m_skipSlctChangeEvent;
-    asForecastManager* m_forecastManager;
+    asForecastManager *m_forecastManager;
 
-    void OnForecastSlctChange( wxTreeEvent& event );
+    void OnForecastSlctChange(wxTreeEvent &event);
 
-    DECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE();
 };
 
 

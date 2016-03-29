@@ -25,21 +25,22 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asFrameAbout__
 #define __asFrameAbout__
 
 #include "AtmoswingSharedGui.h"
 
 
-class asFrameAbout : public asFrameAboutVirtual
+class asFrameAbout
+        : public asFrameAboutVirtual
 {
-    public:
-        /** Constructor */
-        asFrameAbout( wxWindow* parent );
-        static wxString GetLicense();
+public:
+    asFrameAbout(wxWindow *parent);
 
-    protected:
+    static wxString GetLicense();
+
+protected:
 };
 
 #endif // __asFrameAbout__

@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asFrameOptimizer__
 #define __asFrameOptimizer__
 
@@ -34,36 +34,45 @@
 #include "asMethodCalibrator.h"
 #include "asLogWindow.h"
 
-
-/** Implementing asFrameOptimizerVirtual */
-class asFrameOptimizer : public asFrameOptimizerVirtual
+class asFrameOptimizer
+        : public asFrameOptimizerVirtual
 {
 public:
-    /** Constructor */
-    asFrameOptimizer( wxWindow* parent );
-    ~asFrameOptimizer();
-    void OnInit();
+    asFrameOptimizer(wxWindow *parent);
 
+    ~asFrameOptimizer();
+
+    void OnInit();
 
 protected:
     asLogWindow *m_logWindow;
     asMethodCalibrator *m_methodCalibrator;
 
-    // Handlers for asFrameOptimizerVirtual events.
     void Update();
-    void OnSaveDefault( wxCommandEvent& event );
-    void Launch( wxCommandEvent& event );
+
+    void OnSaveDefault(wxCommandEvent &event);
+
+    void Launch(wxCommandEvent &event);
+
     void LoadOptions();
+
     void SaveOptions();
-    void OpenFramePreferences( wxCommandEvent& event );
-    void OpenFrameAbout( wxCommandEvent& event );
-    void OnShowLog( wxCommandEvent& event );
-    void OnLogLevel1( wxCommandEvent& event );
-    void OnLogLevel2( wxCommandEvent& event );
-    void OnLogLevel3( wxCommandEvent& event );
+
+    void OpenFramePreferences(wxCommandEvent &event);
+
+    void OpenFrameAbout(wxCommandEvent &event);
+
+    void OnShowLog(wxCommandEvent &event);
+
+    void OnLogLevel1(wxCommandEvent &event);
+
+    void OnLogLevel2(wxCommandEvent &event);
+
+    void OnLogLevel3(wxCommandEvent &event);
+
     void DisplayLogLevelMenu();
-    void Cancel( wxCommandEvent& event );
-//    void OnIdle( wxCommandEvent& event );
+
+    void Cancel(wxCommandEvent &event);
 
 };
 

@@ -31,11 +31,11 @@
 bool g_local = false;
 int g_runNb = 0;
 #ifdef DISTRIBUTION_VERSION
-    bool g_distributionVersion = true;
+bool g_distributionVersion = true;
 #else
-    bool g_distributionVersion = false;
+bool g_distributionVersion = false;
 #endif
 #if wxUSE_GUI
-wxColour g_linuxBgColour = wxColour(242,241,240);
+wxColour g_linuxBgColour = wxColour(242, 241, 240);
 #endif
 

@@ -25,25 +25,27 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFORECASTSCOREFINALGSS_H
 #define ASFORECASTSCOREFINALGSS_H
 
 #include <asIncludes.h>
 #include <asForecastScoreFinal.h>
 
-class asForecastScoreFinalGSS: public asForecastScoreFinal
+class asForecastScoreFinalGSS
+        : public asForecastScoreFinal
 {
 public:
     asForecastScoreFinalGSS(Period period);
 
-    asForecastScoreFinalGSS(const wxString& periodString);
+    asForecastScoreFinalGSS(const wxString &periodString);
 
     virtual ~asForecastScoreFinalGSS();
 
     float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
 
 protected:
+
 private:
 
 };

@@ -33,8 +33,7 @@
 
 
 asDataPredictorArchiveEcmwfEra40::asDataPredictorArchiveEcmwfEra40(const wxString &dataId)
-:
-asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
+        : asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
@@ -64,8 +63,7 @@ asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
     m_yAxisStep = 2.5;
 
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("hgt", false))
-    {
+    if (m_dataId.IsSameAs("hgt", false)) {
         m_dataParameter = GeopotentialHeight;
         m_fileNamePattern = "ECMWF_ERA40_hgt.nc";
         m_fileVariableName = "z";
@@ -393,13 +391,17 @@ bool asDataPredictorArchiveEcmwfEra40::Init()
 {
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (m_directoryPath.IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName));
+        asLogError(
+                wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
+                                 m_dataId, m_datasetName));
         return false;
     }
 
@@ -414,44 +416,44 @@ VectorString asDataPredictorArchiveEcmwfEra40::GetDataIdList()
     VectorString list;
 
     list.push_back("z"); // Geopotential Height
-   /* list.push_back("air"); // Air Temperature
-    list.push_back("omega"); // Omega (Vertical Velocity)
-    list.push_back("rhum"); // Relative Humidity
-    list.push_back("shum"); // Specific Humidity
-    list.push_back("uwnd"); // U-Wind
-    list.push_back("vwnd"); // V-Wind
-    list.push_back("surf_air"); // Air Temperature at sigma level 995
-    list.push_back("surf_lftx"); // Surface lifted index
-    list.push_back("surf_lftx4"); // Best (4-layer) lifted index
-    list.push_back("surf_omega"); // Omega (Vertical Velocity)
-    list.push_back("surf_pottmp"); // Potential Temperature at sigma level 995
-    list.push_back("surf_prwtr"); // Precipitable Water
-    list.push_back("surf_pres"); // Pressure
-    list.push_back("surf_rhum"); // Relative Humidity at sigma level 995
-    list.push_back("surf_slp"); // Sea Level Pressure" enable="1
-    list.push_back("surf_uwnd"); // U-Wind at sigma level 995
-    list.push_back("surf_vwnd"); // V-Wind at sigma level 995
-    list.push_back("flux_air2m"); // Air Temperature 2m
-    list.push_back("flux_pevpr"); // Potential evaporation rate
-    list.push_back("flux_shum2m"); // Specific humidity at 2m
-    list.push_back("flux_sktmp"); // Skin Temperature
-    list.push_back("flux_tmp0-10"); // Temperature of 0-10cm layer
-    list.push_back("flux_tmp10-200"); // Temperature of 10-200cm layer
-    list.push_back("flux_tmp300"); // Temperature at 300cm
-    list.push_back("flux_uwnd10m"); // U-wind at 10m
-    list.push_back("flux_vwnd10m"); // V-wind at 10m
-    list.push_back("flux_cprat"); // Convective precipitation rate
-    list.push_back("flux_dlwrf"); // Downward longwave radiation flux
-    list.push_back("flux_dswrf"); // Downward solar radiation flux
-    list.push_back("flux_gflux"); // Ground heat flux
-    list.push_back("flux_lhtfl"); // Latent heat net flux
-    list.push_back("flux_nbdsf"); // Near IR beam downward solar flux
-    list.push_back("flux_nddsf"); // Near IR diffuse downward solar flux
-    list.push_back("flux_nlwrs"); // Net longwave radiation
-    list.push_back("flux_nswrs"); // Net shortwave radiation
-    list.push_back("flux_prate"); // Precipitation rate
-    list.push_back("flux_shtfl"); // Sensible heat net flux
-    */
+    /* list.push_back("air"); // Air Temperature
+     list.push_back("omega"); // Omega (Vertical Velocity)
+     list.push_back("rhum"); // Relative Humidity
+     list.push_back("shum"); // Specific Humidity
+     list.push_back("uwnd"); // U-Wind
+     list.push_back("vwnd"); // V-Wind
+     list.push_back("surf_air"); // Air Temperature at sigma level 995
+     list.push_back("surf_lftx"); // Surface lifted index
+     list.push_back("surf_lftx4"); // Best (4-layer) lifted index
+     list.push_back("surf_omega"); // Omega (Vertical Velocity)
+     list.push_back("surf_pottmp"); // Potential Temperature at sigma level 995
+     list.push_back("surf_prwtr"); // Precipitable Water
+     list.push_back("surf_pres"); // Pressure
+     list.push_back("surf_rhum"); // Relative Humidity at sigma level 995
+     list.push_back("surf_slp"); // Sea Level Pressure" enable="1
+     list.push_back("surf_uwnd"); // U-Wind at sigma level 995
+     list.push_back("surf_vwnd"); // V-Wind at sigma level 995
+     list.push_back("flux_air2m"); // Air Temperature 2m
+     list.push_back("flux_pevpr"); // Potential evaporation rate
+     list.push_back("flux_shum2m"); // Specific humidity at 2m
+     list.push_back("flux_sktmp"); // Skin Temperature
+     list.push_back("flux_tmp0-10"); // Temperature of 0-10cm layer
+     list.push_back("flux_tmp10-200"); // Temperature of 10-200cm layer
+     list.push_back("flux_tmp300"); // Temperature at 300cm
+     list.push_back("flux_uwnd10m"); // U-wind at 10m
+     list.push_back("flux_vwnd10m"); // V-wind at 10m
+     list.push_back("flux_cprat"); // Convective precipitation rate
+     list.push_back("flux_dlwrf"); // Downward longwave radiation flux
+     list.push_back("flux_dswrf"); // Downward solar radiation flux
+     list.push_back("flux_gflux"); // Ground heat flux
+     list.push_back("flux_lhtfl"); // Latent heat net flux
+     list.push_back("flux_nbdsf"); // Near IR beam downward solar flux
+     list.push_back("flux_nddsf"); // Near IR diffuse downward solar flux
+     list.push_back("flux_nlwrs"); // Net longwave radiation
+     list.push_back("flux_nswrs"); // Net shortwave radiation
+     list.push_back("flux_prate"); // Precipitation rate
+     list.push_back("flux_shtfl"); // Sensible heat net flux
+     */
     return list;
 }
 

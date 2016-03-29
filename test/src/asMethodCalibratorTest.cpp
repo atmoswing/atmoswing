@@ -41,7 +41,7 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -74,8 +74,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
@@ -94,10 +93,8 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
         params.SetForecastScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -115,13 +112,10 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     int nbtests = 0;
-    if (!shortVersion)
-    {
+    if (!shortVersion) {
         resultFilePath.Append("/files/forecast_score_04.txt");
         nbtests = 43;
-    }
-    else
-    {
+    } else {
         resultFilePath.Append("/files/forecast_score_06.txt");
         nbtests = 20;
     }
@@ -135,8 +129,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -144,28 +137,24 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         int day = file.GetInt();
         int month = file.GetInt();
         int year = file.GetInt();
-        float fileTargetDate = (float)asTime::GetMJD(year, month, day);
-        float fileTargetValue = (float)sqrt(file.GetFloat()/P10);
+        float fileTargetDate = (float) asTime::GetMJD(year, month, day);
+        float fileTargetValue = (float) sqrt(file.GetFloat() / P10);
 
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
-            if(year>0)
-            {
-                fileAnalogsDates[i_ana] = (float)asTime::GetMJD(year, month, day);
-            }
-            else
-            {
+            if (year > 0) {
+                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+            } else {
                 fileAnalogsDates[i_ana] = 0;
             }
-            fileAnalogsValues[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
             fileAnalogsCriteria[i_ana] = file.GetFloat();
 
             file.SkipLines(1);
@@ -173,28 +162,26 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
 
         float fileForecastScoreCRPS = 0, fileForecastScoreCRPSaccuracy = 0, fileForecastScoreCRPSsharpness = 0;
 
-        if (!shortVersion)
-        {
+        if (!shortVersion) {
             file.SkipLines(2);
             fileForecastScoreCRPS = file.GetFloat();
             fileForecastScoreCRPSaccuracy = file.GetFloat();
             fileForecastScoreCRPSsharpness = file.GetFloat();
             file.SkipLines(1);
-        }
-        else
-        {
+        } else {
             file.SkipLines(3);
         }
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
+        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
+                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                                              fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
-            if (fileAnalogsDates[i_ana]>0) // If we have the data
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            if (fileAnalogsDates[i_ana] > 0) // If we have the data
             {
                 EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
                 EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
@@ -203,17 +190,16 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         }
 
         // The CRPS tolerence is huge, as it is not processed with the same P10 !
-        if (!shortVersion)
-        {
+        if (!shortVersion) {
             EXPECT_NEAR(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.1);
             EXPECT_NEAR(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.1);
             EXPECT_NEAR(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.1);
         }
     }
 
-    if (!shortVersion)
-    {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsForecastScoreCRPS[0],&resultsForecastScoreCRPS[resultsForecastScoreCRPS.size()-1]), scoreFinal);
+    if (!shortVersion) {
+        EXPECT_FLOAT_EQ(asTools::Mean(&resultsForecastScoreCRPS[0],
+                                      &resultsForecastScoreCRPS[resultsForecastScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -252,8 +238,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebra)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
 
     // Reset intermediate results option
     pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
@@ -277,8 +263,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebraNoVar)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -287,8 +273,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithCoeff)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -297,8 +283,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithCoeffNoVar)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -306,8 +292,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithCoeffNoVar)
 TEST(MethodCalibrator, Ref1Insert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -315,8 +301,8 @@ TEST(MethodCalibrator, Ref1Insert)
 TEST(MethodCalibrator, Ref1Splitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -325,8 +311,8 @@ TEST(MethodCalibrator, Ref1CalibPeriodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -335,8 +321,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebraNoVarNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
 }
@@ -345,8 +331,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithCoeffNoVarNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
 
     Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
 }
@@ -354,8 +340,8 @@ TEST(MethodCalibrator, Ref1MultithreadsWithCoeffNoVarNoPreprocessing)
 TEST(MethodCalibrator, Ref1CalibPeriodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -363,8 +349,8 @@ TEST(MethodCalibrator, Ref1CalibPeriodInsert)
 TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -372,7 +358,7 @@ TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
 void Ref2(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -411,8 +397,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
 
@@ -430,10 +415,8 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
         params.SetForecastScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -448,21 +431,17 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     Array1DFloat resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
 
     float scoreFinal = 0;
-    if(!shortVersion)
-    {
+    if (!shortVersion) {
         scoreFinal = anaScoreFinal.GetForecastScore();
     }
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     int nbtests = 0;
-    if(!shortVersion)
-    {
+    if (!shortVersion) {
         resultFilePath.Append("/files/forecast_score_05.txt");
         nbtests = 30;
-    }
-    else
-    {
+    } else {
         resultFilePath.Append("/files/forecast_score_07.txt");
         nbtests = 4;
     }
@@ -476,8 +455,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -485,28 +463,24 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         int day = file.GetInt();
         int month = file.GetInt();
         int year = file.GetInt();
-        float fileTargetDate = (float)asTime::GetMJD(year, month, day);
-        float fileTargetValue = (float)sqrt(file.GetFloat()/P10);
+        float fileTargetDate = (float) asTime::GetMJD(year, month, day);
+        float fileTargetValue = (float) sqrt(file.GetFloat() / P10);
 
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
-            if(year>0)
-            {
-                fileAnalogsDates[i_ana] = (float)asTime::GetMJD(year, month, day);
-            }
-            else
-            {
+            if (year > 0) {
+                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+            } else {
                 fileAnalogsDates[i_ana] = 0;
             }
-            fileAnalogsValues[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
             fileAnalogsCriteria[i_ana] = file.GetFloat();
 
@@ -515,42 +489,39 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
 
         float fileForecastScoreCRPS = 0, fileForecastScoreCRPSaccuracy = 0, fileForecastScoreCRPSsharpness = 0;
 
-        if (!shortVersion)
-        {
+        if (!shortVersion) {
             file.SkipLines(2);
             fileForecastScoreCRPS = file.GetFloat();
             fileForecastScoreCRPSaccuracy = file.GetFloat();
             fileForecastScoreCRPSsharpness = file.GetFloat();
             file.SkipLines(1);
-        }
-        else
-        {
+        } else {
             file.SkipLines(3);
         }
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
+        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
+                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                                              fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
-            if(fileAnalogsDates[i_ana]>0)
-            {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            if (fileAnalogsDates[i_ana] > 0) {
                 EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
                 EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
                 EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
 
-                if (std::abs(fileAnalogsDates[i_ana]-resultsAnalogsDates(rowTargetDate, i_ana))>0.0001)
-                {
-                    wxPrintf(("Date is %s and should be %s.\n"), asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, i_ana)), asTime::GetStringTime(fileAnalogsDates[i_ana]));
+                if (std::abs(fileAnalogsDates[i_ana] - resultsAnalogsDates(rowTargetDate, i_ana)) > 0.0001) {
+                    wxPrintf(("Date is %s and should be %s.\n"),
+                             asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, i_ana)),
+                             asTime::GetStringTime(fileAnalogsDates[i_ana]));
                 }
             }
         }
 
-        if (!shortVersion)
-        {
+        if (!shortVersion) {
             // The CRPS tolerence is huge, as it is not processed with the same P10 !
             EXPECT_NEAR(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.1);
             EXPECT_NEAR(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.1);
@@ -558,9 +529,9 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         }
     }
 
-    if (!shortVersion)
-    {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsForecastScoreCRPS[0],&resultsForecastScoreCRPS[resultsForecastScoreCRPS.size()-1]), scoreFinal);
+    if (!shortVersion) {
+        EXPECT_FLOAT_EQ(asTools::Mean(&resultsForecastScoreCRPS[0],
+                                      &resultsForecastScoreCRPS[resultsForecastScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -573,8 +544,8 @@ TEST(MethodCalibrator, Ref2Multithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -582,8 +553,8 @@ TEST(MethodCalibrator, Ref2Multithreads)
 TEST(MethodCalibrator, Ref2Insert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -591,8 +562,8 @@ TEST(MethodCalibrator, Ref2Insert)
 TEST(MethodCalibrator, Ref2Splitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -601,8 +572,8 @@ TEST(MethodCalibrator, Ref2CalibPeriodMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -610,8 +581,8 @@ TEST(MethodCalibrator, Ref2CalibPeriodMultithreads)
 TEST(MethodCalibrator, Ref2CalibPeriodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -619,8 +590,8 @@ TEST(MethodCalibrator, Ref2CalibPeriodInsert)
 TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -628,8 +599,8 @@ TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
 TEST(MethodCalibrator, PreloadingSimple)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     wxString dataFileDir = wxFileName::GetCwd();
     dataFileDir.Append("/files/");
@@ -656,18 +627,15 @@ TEST(MethodCalibrator, PreloadingSimple)
     asResultsAnalogsDates anaDatesStd;
     asResultsAnalogsDates anaDatesPreload;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -676,17 +644,15 @@ TEST(MethodCalibrator, PreloadingSimple)
     Array2DFloat criteriaStd = anaDatesStd.GetAnalogsCriteria();
     Array2DFloat criteriaPreload = anaDatesPreload.GetAnalogsCriteria();
 
-    EXPECT_EQ(datesStd.cols(),datesPreload.cols());
-    EXPECT_EQ(datesStd.rows(),datesPreload.rows());
-    EXPECT_EQ(criteriaStd.cols(),criteriaPreload.cols());
-    EXPECT_EQ(criteriaStd.rows(),criteriaPreload.rows());
+    EXPECT_EQ(datesStd.cols(), datesPreload.cols());
+    EXPECT_EQ(datesStd.rows(), datesPreload.rows());
+    EXPECT_EQ(criteriaStd.cols(), criteriaPreload.cols());
+    EXPECT_EQ(criteriaStd.rows(), criteriaPreload.rows());
 
-    for (int i=0; i<datesStd.rows(); i++)
-    {
-        for (int j=0; j<datesStd.cols(); j++)
-        {
-            EXPECT_EQ(datesStd.coeff(i,j), datesPreload.coeff(i,j));
-            EXPECT_EQ(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
+    for (int i = 0; i < datesStd.rows(); i++) {
+        for (int j = 0; j < datesStd.cols(); j++) {
+            EXPECT_EQ(datesStd.coeff(i, j), datesPreload.coeff(i, j));
+            EXPECT_EQ(criteriaStd.coeff(i, j), criteriaPreload.coeff(i, j));
         }
     }
 }
@@ -694,8 +660,8 @@ TEST(MethodCalibrator, PreloadingSimple)
 TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     // Get parameters
     asParametersCalibration paramsStd;
@@ -717,27 +683,23 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     asResultsAnalogsDates anaDatesStd;
     asResultsAnalogsDates anaDatesPreload;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
     Array1DFloat targetDatesStd = anaDatesStd.GetTargetDates();
     Array1DFloat targetDatesPreload = anaDatesPreload.GetTargetDates();
-    int targetDatesSize = (int)wxMax(targetDatesStd.cols(),targetDatesStd.rows());
-    for (int i=0; i<targetDatesSize; i++)
-    {
-        EXPECT_EQ(targetDatesStd[i],targetDatesPreload[i]);
+    int targetDatesSize = (int) wxMax(targetDatesStd.cols(), targetDatesStd.rows());
+    for (int i = 0; i < targetDatesSize; i++) {
+        EXPECT_EQ(targetDatesStd[i], targetDatesPreload[i]);
     }
 
     Array2DFloat datesStd = anaDatesStd.GetAnalogsDates();
@@ -745,17 +707,15 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     Array2DFloat criteriaStd = anaDatesStd.GetAnalogsCriteria();
     Array2DFloat criteriaPreload = anaDatesPreload.GetAnalogsCriteria();
 
-    EXPECT_EQ(datesStd.cols(),datesPreload.cols());
-    EXPECT_EQ(datesStd.rows(),datesPreload.rows());
-    EXPECT_EQ(criteriaStd.cols(),criteriaPreload.cols());
-    EXPECT_EQ(criteriaStd.rows(),criteriaPreload.rows());
+    EXPECT_EQ(datesStd.cols(), datesPreload.cols());
+    EXPECT_EQ(datesStd.rows(), datesPreload.rows());
+    EXPECT_EQ(criteriaStd.cols(), criteriaPreload.cols());
+    EXPECT_EQ(criteriaStd.rows(), criteriaPreload.rows());
 
-    for (int i=0; i<datesStd.rows(); i++)
-    {
-        for (int j=0; j<datesStd.cols(); j++)
-        {
-            EXPECT_EQ(datesStd.coeff(i,j), datesPreload.coeff(i,j));
-            EXPECT_EQ(criteriaStd.coeff(i,j), criteriaPreload.coeff(i,j));
+    for (int i = 0; i < datesStd.rows(); i++) {
+        for (int j = 0; j < datesStd.cols(); j++) {
+            EXPECT_EQ(datesStd.coeff(i, j), datesPreload.coeff(i, j));
+            EXPECT_EQ(criteriaStd.coeff(i, j), criteriaPreload.coeff(i, j));
 
             break;
         }
@@ -768,7 +728,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 void Ref1Preloading()
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -804,8 +764,7 @@ void Ref1Preloading()
     asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         bool containsNaNs = false;
         int step = 0;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
@@ -824,10 +783,8 @@ void Ref1Preloading()
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
         params.SetForecastScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -858,8 +815,7 @@ void Ref1Preloading()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -867,28 +823,24 @@ void Ref1Preloading()
         int day = file.GetInt();
         int month = file.GetInt();
         int year = file.GetInt();
-        float fileTargetDate = (float)asTime::GetMJD(year, month, day);
-        float fileTargetValue = (float)sqrt(file.GetFloat()/P10);
+        float fileTargetDate = (float) asTime::GetMJD(year, month, day);
+        float fileTargetValue = (float) sqrt(file.GetFloat() / P10);
 
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
-            if(year>0)
-            {
-                fileAnalogsDates[i_ana] = (float)asTime::GetMJD(year, month, day);
-            }
-            else
-            {
+            if (year > 0) {
+                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+            } else {
                 fileAnalogsDates[i_ana] = 0;
             }
-            fileAnalogsValues[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
             fileAnalogsCriteria[i_ana] = file.GetFloat();
 
             file.SkipLines(1);
@@ -897,14 +849,15 @@ void Ref1Preloading()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
+        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
+                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                                              fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
-            if (fileAnalogsDates[i_ana]>0) // If we have the data
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            if (fileAnalogsDates[i_ana] > 0) // If we have the data
             {
                 EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
                 EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
@@ -924,8 +877,8 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1Preloading();
 }
@@ -933,7 +886,7 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
 void Ref1PreloadingSubset()
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -968,8 +921,7 @@ void Ref1PreloadingSubset()
     asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
@@ -988,10 +940,8 @@ void Ref1PreloadingSubset()
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
         params.SetForecastScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -1006,8 +956,8 @@ TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1PreloadingSubset();
 }
@@ -1015,8 +965,8 @@ TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded)
 TEST(MethodCalibrator, SmallerSpatialArea)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     wxString dataFileDir = wxFileName::GetCwd();
     dataFileDir.Append("/files/");
@@ -1042,41 +992,41 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     ASSERT_TRUE(paramsPreprocPreload.LoadFromFile(paramsFilePathPreprocPreload));
 
     // Change spatial windows
-    paramsNoPreprocNoPreload.SetPredictorXmin(0,0,5);
-    paramsNoPreprocNoPreload.SetPredictorXmin(0,1,5);
-    paramsNoPreprocNoPreload.SetPredictorXptsnb(0,0,3);
-    paramsNoPreprocNoPreload.SetPredictorXptsnb(0,1,3);
-    paramsNoPreprocNoPreload.SetPredictorYmin(0,0,42.5);
-    paramsNoPreprocNoPreload.SetPredictorYmin(0,1,42.5);
-    paramsNoPreprocNoPreload.SetPredictorYptsnb(0,0,3);
-    paramsNoPreprocNoPreload.SetPredictorYptsnb(0,1,3);
+    paramsNoPreprocNoPreload.SetPredictorXmin(0, 0, 5);
+    paramsNoPreprocNoPreload.SetPredictorXmin(0, 1, 5);
+    paramsNoPreprocNoPreload.SetPredictorXptsnb(0, 0, 3);
+    paramsNoPreprocNoPreload.SetPredictorXptsnb(0, 1, 3);
+    paramsNoPreprocNoPreload.SetPredictorYmin(0, 0, 42.5);
+    paramsNoPreprocNoPreload.SetPredictorYmin(0, 1, 42.5);
+    paramsNoPreprocNoPreload.SetPredictorYptsnb(0, 0, 3);
+    paramsNoPreprocNoPreload.SetPredictorYptsnb(0, 1, 3);
 
-    paramsNoPreprocPreload.SetPredictorXmin(0,0,5);
-    paramsNoPreprocPreload.SetPredictorXmin(0,1,5);
-    paramsNoPreprocPreload.SetPredictorXptsnb(0,0,3);
-    paramsNoPreprocPreload.SetPredictorXptsnb(0,1,3);
-    paramsNoPreprocPreload.SetPredictorYmin(0,0,42.5);
-    paramsNoPreprocPreload.SetPredictorYmin(0,1,42.5);
-    paramsNoPreprocPreload.SetPredictorYptsnb(0,0,3);
-    paramsNoPreprocPreload.SetPredictorYptsnb(0,1,3);
+    paramsNoPreprocPreload.SetPredictorXmin(0, 0, 5);
+    paramsNoPreprocPreload.SetPredictorXmin(0, 1, 5);
+    paramsNoPreprocPreload.SetPredictorXptsnb(0, 0, 3);
+    paramsNoPreprocPreload.SetPredictorXptsnb(0, 1, 3);
+    paramsNoPreprocPreload.SetPredictorYmin(0, 0, 42.5);
+    paramsNoPreprocPreload.SetPredictorYmin(0, 1, 42.5);
+    paramsNoPreprocPreload.SetPredictorYptsnb(0, 0, 3);
+    paramsNoPreprocPreload.SetPredictorYptsnb(0, 1, 3);
 
-    paramsPreprocNoPreload.SetPredictorXmin(0,0,5);
-    paramsPreprocNoPreload.SetPredictorXmin(0,1,5);
-    paramsPreprocNoPreload.SetPredictorXptsnb(0,0,3);
-    paramsPreprocNoPreload.SetPredictorXptsnb(0,1,3);
-    paramsPreprocNoPreload.SetPredictorYmin(0,0,42.5);
-    paramsPreprocNoPreload.SetPredictorYmin(0,1,42.5);
-    paramsPreprocNoPreload.SetPredictorYptsnb(0,0,3);
-    paramsPreprocNoPreload.SetPredictorYptsnb(0,1,3);
+    paramsPreprocNoPreload.SetPredictorXmin(0, 0, 5);
+    paramsPreprocNoPreload.SetPredictorXmin(0, 1, 5);
+    paramsPreprocNoPreload.SetPredictorXptsnb(0, 0, 3);
+    paramsPreprocNoPreload.SetPredictorXptsnb(0, 1, 3);
+    paramsPreprocNoPreload.SetPredictorYmin(0, 0, 42.5);
+    paramsPreprocNoPreload.SetPredictorYmin(0, 1, 42.5);
+    paramsPreprocNoPreload.SetPredictorYptsnb(0, 0, 3);
+    paramsPreprocNoPreload.SetPredictorYptsnb(0, 1, 3);
 
-    paramsPreprocPreload.SetPredictorXmin(0,0,5);
-    paramsPreprocPreload.SetPredictorXmin(0,1,5);
-    paramsPreprocPreload.SetPredictorXptsnb(0,0,3);
-    paramsPreprocPreload.SetPredictorXptsnb(0,1,3);
-    paramsPreprocPreload.SetPredictorYmin(0,0,42.5);
-    paramsPreprocPreload.SetPredictorYmin(0,1,42.5);
-    paramsPreprocPreload.SetPredictorYptsnb(0,0,3);
-    paramsPreprocPreload.SetPredictorYptsnb(0,1,3);
+    paramsPreprocPreload.SetPredictorXmin(0, 0, 5);
+    paramsPreprocPreload.SetPredictorXmin(0, 1, 5);
+    paramsPreprocPreload.SetPredictorXptsnb(0, 0, 3);
+    paramsPreprocPreload.SetPredictorXptsnb(0, 1, 3);
+    paramsPreprocPreload.SetPredictorYmin(0, 0, 42.5);
+    paramsPreprocPreload.SetPredictorYmin(0, 1, 42.5);
+    paramsPreprocPreload.SetPredictorYptsnb(0, 0, 3);
+    paramsPreprocPreload.SetPredictorYptsnb(0, 1, 3);
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
@@ -1092,11 +1042,11 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     asResultsAnalogsDates anaDatesPreprocNoPreload;
     asResultsAnalogsDates anaDatesPreprocPreload;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, paramsNoPreprocNoPreload, step, containsNaNs));
+        ASSERT_TRUE(
+                calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, paramsNoPreprocNoPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, paramsNoPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
@@ -1104,10 +1054,8 @@ TEST(MethodCalibrator, SmallerSpatialArea)
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator4.GetAnalogsDates(anaDatesPreprocPreload, paramsPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -1120,30 +1068,28 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     Array2DFloat criteriaPreprocNoPreload = anaDatesPreprocNoPreload.GetAnalogsCriteria();
     Array2DFloat criteriaPreprocPreload = anaDatesPreprocPreload.GetAnalogsCriteria();
 
-    EXPECT_EQ(datesNoPreprocNoPreload.cols(),datesNoPreprocPreload.cols());
-    EXPECT_EQ(datesNoPreprocNoPreload.rows(),datesNoPreprocPreload.rows());
-    EXPECT_EQ(datesNoPreprocNoPreload.cols(),datesPreprocNoPreload.cols());
-    EXPECT_EQ(datesNoPreprocNoPreload.rows(),datesPreprocNoPreload.rows());
-    EXPECT_EQ(datesNoPreprocNoPreload.cols(),datesPreprocPreload.cols());
-    EXPECT_EQ(datesNoPreprocNoPreload.rows(),datesPreprocPreload.rows());
+    EXPECT_EQ(datesNoPreprocNoPreload.cols(), datesNoPreprocPreload.cols());
+    EXPECT_EQ(datesNoPreprocNoPreload.rows(), datesNoPreprocPreload.rows());
+    EXPECT_EQ(datesNoPreprocNoPreload.cols(), datesPreprocNoPreload.cols());
+    EXPECT_EQ(datesNoPreprocNoPreload.rows(), datesPreprocNoPreload.rows());
+    EXPECT_EQ(datesNoPreprocNoPreload.cols(), datesPreprocPreload.cols());
+    EXPECT_EQ(datesNoPreprocNoPreload.rows(), datesPreprocPreload.rows());
 
-    EXPECT_EQ(criteriaNoPreprocNoPreload.cols(),criteriaNoPreprocPreload.cols());
-    EXPECT_EQ(criteriaNoPreprocNoPreload.rows(),criteriaNoPreprocPreload.rows());
-    EXPECT_EQ(criteriaNoPreprocNoPreload.cols(),criteriaPreprocNoPreload.cols());
-    EXPECT_EQ(criteriaNoPreprocNoPreload.rows(),criteriaPreprocNoPreload.rows());
-    EXPECT_EQ(criteriaNoPreprocNoPreload.cols(),criteriaPreprocPreload.cols());
-    EXPECT_EQ(criteriaNoPreprocNoPreload.rows(),criteriaPreprocPreload.rows());
+    EXPECT_EQ(criteriaNoPreprocNoPreload.cols(), criteriaNoPreprocPreload.cols());
+    EXPECT_EQ(criteriaNoPreprocNoPreload.rows(), criteriaNoPreprocPreload.rows());
+    EXPECT_EQ(criteriaNoPreprocNoPreload.cols(), criteriaPreprocNoPreload.cols());
+    EXPECT_EQ(criteriaNoPreprocNoPreload.rows(), criteriaPreprocNoPreload.rows());
+    EXPECT_EQ(criteriaNoPreprocNoPreload.cols(), criteriaPreprocPreload.cols());
+    EXPECT_EQ(criteriaNoPreprocNoPreload.rows(), criteriaPreprocPreload.rows());
 
-    for (int i=0; i<datesNoPreprocNoPreload.rows(); i++)
-    {
-        for (int j=0; j<datesNoPreprocNoPreload.cols(); j++)
-        {
-            EXPECT_EQ(datesNoPreprocNoPreload.coeff(i,j), datesNoPreprocPreload.coeff(i,j));
-            EXPECT_EQ(criteriaNoPreprocNoPreload.coeff(i,j), criteriaNoPreprocPreload.coeff(i,j));
-            EXPECT_EQ(datesNoPreprocNoPreload.coeff(i,j), datesPreprocNoPreload.coeff(i,j));
-            EXPECT_EQ(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocNoPreload.coeff(i,j));
-            EXPECT_EQ(datesNoPreprocNoPreload.coeff(i,j), datesPreprocPreload.coeff(i,j));
-            EXPECT_EQ(criteriaNoPreprocNoPreload.coeff(i,j), criteriaPreprocPreload.coeff(i,j));
+    for (int i = 0; i < datesNoPreprocNoPreload.rows(); i++) {
+        for (int j = 0; j < datesNoPreprocNoPreload.cols(); j++) {
+            EXPECT_EQ(datesNoPreprocNoPreload.coeff(i, j), datesNoPreprocPreload.coeff(i, j));
+            EXPECT_EQ(criteriaNoPreprocNoPreload.coeff(i, j), criteriaNoPreprocPreload.coeff(i, j));
+            EXPECT_EQ(datesNoPreprocNoPreload.coeff(i, j), datesPreprocNoPreload.coeff(i, j));
+            EXPECT_EQ(criteriaNoPreprocNoPreload.coeff(i, j), criteriaPreprocNoPreload.coeff(i, j));
+            EXPECT_EQ(datesNoPreprocNoPreload.coeff(i, j), datesPreprocPreload.coeff(i, j));
+            EXPECT_EQ(criteriaNoPreprocNoPreload.coeff(i, j), criteriaPreprocPreload.coeff(i, j));
         }
     }
 }
@@ -1151,7 +1097,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 void Ref2Preloading()
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1189,8 +1135,7 @@ void Ref2Preloading()
     asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
@@ -1207,10 +1152,8 @@ void Ref2Preloading()
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
         params.SetForecastScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -1240,8 +1183,7 @@ void Ref2Preloading()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -1250,27 +1192,23 @@ void Ref2Preloading()
         int month = file.GetInt();
         int year = file.GetInt();
         float fileTargetDate = asTime::GetMJD(year, month, day);
-        float fileTargetValue = sqrt(file.GetFloat()/P10);
+        float fileTargetValue = sqrt(file.GetFloat() / P10);
 
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
-            if(year>0)
-            {
+            if (year > 0) {
                 fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
-            }
-            else
-            {
+            } else {
                 fileAnalogsDates[i_ana] = 0;
             }
-            fileAnalogsValues[i_ana] = sqrt(file.GetFloat()/P10);
+            fileAnalogsValues[i_ana] = sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
             fileAnalogsCriteria[i_ana] = file.GetFloat();
 
@@ -1280,15 +1218,15 @@ void Ref2Preloading()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
+        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
+                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                                              fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
-            if(fileAnalogsDates[i_ana]>0)
-            {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            if (fileAnalogsDates[i_ana] > 0) {
                 EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
                 EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
                 EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
@@ -1306,8 +1244,8 @@ TEST(MethodCalibrator, Ref2PreloadingMultithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
 
     Ref2Preloading();
 }
@@ -1315,8 +1253,8 @@ TEST(MethodCalibrator, Ref2PreloadingMultithreads)
 TEST(MethodCalibrator, Ref2PreloadingInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int)asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
 
     Ref2Preloading();
 }
@@ -1324,7 +1262,7 @@ TEST(MethodCalibrator, Ref2PreloadingInsert)
 void Ref2SavingIntermediateResults()
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1360,8 +1298,7 @@ void Ref2SavingIntermediateResults()
     asResultsAnalogsForecastScores anaScoresCRPS1, anaScoresCRPS2;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
 
@@ -1388,10 +1325,8 @@ void Ref2SavingIntermediateResults()
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS2, params, anaValues2, step));
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS2, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -1419,8 +1354,7 @@ void Ref2SavingIntermediateResults()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -1429,27 +1363,23 @@ void Ref2SavingIntermediateResults()
         int month = file.GetInt();
         int year = file.GetInt();
         float fileTargetDate = asTime::GetMJD(year, month, day);
-        float fileTargetValue = sqrt(file.GetFloat()/P10);
+        float fileTargetValue = sqrt(file.GetFloat() / P10);
 
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
-            if(year>0)
-            {
+            if (year > 0) {
                 fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
-            }
-            else
-            {
+            } else {
                 fileAnalogsDates[i_ana] = 0;
             }
-            fileAnalogsValues[i_ana] = sqrt(file.GetFloat()/P10);
+            fileAnalogsValues[i_ana] = sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
             fileAnalogsCriteria[i_ana] = file.GetFloat();
 
@@ -1459,15 +1389,15 @@ void Ref2SavingIntermediateResults()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
+        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
+                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                                              fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
-            if(fileAnalogsDates[i_ana]>0)
-            {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            if (fileAnalogsDates[i_ana] > 0) {
                 EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
                 EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
                 EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
@@ -1485,8 +1415,8 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
 
     pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", true);
     pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", true);
@@ -1522,7 +1452,7 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 void Ref2MergeByHalfAndMultiply()
 {
     // Create predictand database
-    asDataPredictandPrecipitation* predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1560,8 +1490,7 @@ void Ref2MergeByHalfAndMultiply()
     asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
@@ -1578,10 +1507,8 @@ void Ref2MergeByHalfAndMultiply()
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
         params.SetForecastScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
@@ -1611,8 +1538,7 @@ void Ref2MergeByHalfAndMultiply()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test=0;i_test<nbtests;i_test++)
-    {
+    for (int i_test = 0; i_test < nbtests; i_test++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -1620,28 +1546,24 @@ void Ref2MergeByHalfAndMultiply()
         int day = file.GetInt();
         int month = file.GetInt();
         int year = file.GetInt();
-        float fileTargetDate = (float)asTime::GetMJD(year, month, day);
-        float fileTargetValue = (float)sqrt(file.GetFloat()/P10);
+        float fileTargetDate = (float) asTime::GetMJD(year, month, day);
+        float fileTargetValue = (float) sqrt(file.GetFloat() / P10);
 
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
-            if(year>0)
-            {
-                fileAnalogsDates[i_ana] = (float)asTime::GetMJD(year, month, day);
-            }
-            else
-            {
+            if (year > 0) {
+                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+            } else {
                 fileAnalogsDates[i_ana] = 0;
             }
-            fileAnalogsValues[i_ana] = (float)sqrt(file.GetFloat()/P10);
+            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
             fileAnalogsCriteria[i_ana] = file.GetFloat();
 
@@ -1651,15 +1573,15 @@ void Ref2MergeByHalfAndMultiply()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows()-1], fileTargetDate);
+        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
+                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                                              fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana=0; i_ana<nanalogs; i_ana++)
-        {
-            if(fileAnalogsDates[i_ana]>0)
-            {
+        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+            if (fileAnalogsDates[i_ana] > 0) {
                 EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
                 EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
                 EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
@@ -1677,8 +1599,8 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2MergeByHalfAndMultiply();
 }
@@ -1687,8 +1609,8 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
     pConfig->Write("/General/ParallelDataLoad", false); // In order to avoid warning messages
 
     // Get parameters
@@ -1698,10 +1620,10 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     ASSERT_TRUE(params.LoadFromFile(paramsFilePath));
 
     // Check original parameters
-    EXPECT_EQ(params.GetPredictorLevel(0,0), 0);
-    EXPECT_EQ(params.GetPredictorTimeHours(0,0), 6);
-    EXPECT_EQ(params.GetPredictorLevel(0,1), 0);
-    EXPECT_EQ(params.GetPredictorTimeHours(0,1), 6);
+    EXPECT_EQ(params.GetPredictorLevel(0, 0), 0);
+    EXPECT_EQ(params.GetPredictorTimeHours(0, 0), 6);
+    EXPECT_EQ(params.GetPredictorLevel(0, 1), 0);
+    EXPECT_EQ(params.GetPredictorTimeHours(0, 1), 6);
 
     // Preload data
     asMethodCalibratorSingle calibrator;
@@ -1711,23 +1633,20 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     calibrator.SetPredictandDB(NULL);
     asResultsAnalogsDates anaDates;
 
-    try
-    {
+    try {
         int step = 0;
         bool containsNaNs = false;
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
-        EXPECT_TRUE(anaDates.GetAnalogsDatesLength()>0);
+        EXPECT_TRUE(anaDates.GetAnalogsDatesLength() > 0);
         EXPECT_FALSE(containsNaNs);
-    }
-    catch(asException& e)
-    {
-        wxPrintf( e.GetFullMessage());
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
         return;
     }
 
     // Check corrected parameters
-    EXPECT_TRUE(params.GetPredictorLevel(0,0) > 0);
-    EXPECT_EQ(params.GetPredictorTimeHours(0,0), 24);
-    EXPECT_EQ(params.GetPredictorLevel(0,1), 0);
-    EXPECT_TRUE(params.GetPredictorTimeHours(0,1) > 6);
+    EXPECT_TRUE(params.GetPredictorLevel(0, 0) > 0);
+    EXPECT_EQ(params.GetPredictorTimeHours(0, 0), 24);
+    EXPECT_EQ(params.GetPredictorLevel(0, 1), 0);
+    EXPECT_TRUE(params.GetPredictorTimeHours(0, 1) > 6);
 }

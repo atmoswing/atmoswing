@@ -29,8 +29,7 @@
 #include "asForecastScoreCRPSHersbachDecomp.h"
 
 asForecastScoreCRPSHersbachDecomp::asForecastScoreCRPSHersbachDecomp()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::CRPSHersbachDecomp;
     m_name = _("CRPS Hersbach decomposition");
@@ -52,14 +51,14 @@ float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const Array1D
     return NaNFloat;
 }
 
-Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals,
+                                                              int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
 
     // Check the element numbers vs vector length and the observed value
-    if(!CheckInputs(ObservedVal, ForcastVals, nbElements))
-    {
+    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
         asLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
         return Array2DFloat();
     }
@@ -68,78 +67,70 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
     Array1DFloat x = ForcastVals;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asTools::HasNaN(&x[0], &x[nbElements-1]) || asTools::IsNaN(ObservedVal)) {
+    if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(ObservedVal)) {
         asLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
         return Array2DFloat();
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbElements-1], Asc);
+    asTools::SortArray(&x[0], &x[nbElements - 1], Asc);
 
     // Containers
-    int binsNbs = nbElements+1;
+    int binsNbs = nbElements + 1;
     Array1DFloat alpha = Array1DFloat::Zero(binsNbs);
     Array1DFloat beta = Array1DFloat::Zero(binsNbs);
     Array1DFloat g = Array1DFloat::Zero(binsNbs);
 
     // Predictive sampling completed by 0 and N+1 elements
-    int binsNbsExtra = nbElements+2;
+    int binsNbsExtra = nbElements + 2;
     Array1DFloat z = Array1DFloat::Zero(binsNbsExtra);
     z[0] = x[0];
-    z.segment(1,nbElements) = x;
-    z[binsNbsExtra-1] = x[nbElements-1];
+    z.segment(1, nbElements) = x;
+    z[binsNbsExtra - 1] = x[nbElements - 1];
 
     if (ObservedVal < z[0]) {
         z[0] = ObservedVal;
     }
 
-    if (ObservedVal > z[binsNbsExtra-1]) {
-        z[binsNbsExtra-1] = ObservedVal;
+    if (ObservedVal > z[binsNbsExtra - 1]) {
+        z[binsNbsExtra - 1] = ObservedVal;
     }
 
     // Loop on bins (Hersbach, Eq 26)
-    for (int k=0; k<binsNbs; k++)
-    {
-        g[k] = z[k+1]-z[k];
-        if ( ObservedVal > z(k+1) )
-        {
+    for (int k = 0; k < binsNbs; k++) {
+        g[k] = z[k + 1] - z[k];
+        if (ObservedVal > z(k + 1)) {
             alpha[k] = g[k];
             beta[k] = 0;
-        }
-        else if ((ObservedVal<=z[k+1]) && (ObservedVal>=z[k]))
-        {
+        } else if ((ObservedVal <= z[k + 1]) && (ObservedVal >= z[k])) {
             alpha[k] = ObservedVal - z[k];
-            beta[k] = z[k+1] - ObservedVal;
-        }
-        else
-        {
+            beta[k] = z[k + 1] - ObservedVal;
+        } else {
             alpha[k] = 0;
             beta[k] = g[k];
         }
     }
 
     // Outliers cases (Hersbach, Eq 27)
-    if (ObservedVal == z[0])
-    {
+    if (ObservedVal == z[0]) {
         alpha = Array1DFloat::Zero(binsNbs);
         beta[0] = z[1] - ObservedVal;
-    }
-    else if (ObservedVal == z[binsNbsExtra-1])
-    {
-        alpha[binsNbs-1] = ObservedVal - z[binsNbs-1];
+    } else if (ObservedVal == z[binsNbsExtra - 1]) {
+        alpha[binsNbs - 1] = ObservedVal - z[binsNbs - 1];
         beta = Array1DFloat::Zero(binsNbs);
     }
 
     // Concatenate the results
-    Array1DFloat result(3*binsNbs);
-    result.segment(0,binsNbs) = alpha;
-    result.segment(binsNbs,binsNbs) = beta;
-    result.segment(2*binsNbs,binsNbs) = g;
+    Array1DFloat result(3 * binsNbs);
+    result.segment(0, binsNbs) = alpha;
+    result.segment(binsNbs, binsNbs) = beta;
+    result.segment(2 * binsNbs, binsNbs) = g;
 
     return result;
 }
 
-bool asForecastScoreCRPSHersbachDecomp::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSHersbachDecomp::ProcessScoreClimatology(const Array1DFloat &refVals,
+                                                                const Array1DFloat &climatologyData)
 {
     return true;
 }

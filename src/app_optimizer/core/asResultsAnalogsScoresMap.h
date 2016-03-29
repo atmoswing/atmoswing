@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASRESULTSANALOGSSCORESMAP_H
 #define ASRESULTSANALOGSSCORESMAP_H
 
@@ -33,58 +33,38 @@
 #include <asResults.h>
 
 class asParametersCalibration;
+
 class asParametersScoring;
 
 
-class asResultsAnalogsScoresMap: public asResults
+class asResultsAnalogsScoresMap
+        : public asResults
 {
 public:
-
-    /** Default constructor */
     asResultsAnalogsScoresMap();
 
-    /** Default destructor */
     virtual ~asResultsAnalogsScoresMap();
 
-    /** Init
-     * \param params The parameters structure
-     */
     void Init(asParametersScoring &params);
 
-    /** Add data
-     * \param params The parameters structure
-     * \param score The score value
-     * \return True on success
-     */
     bool Add(asParametersScoring &params, float score);
 
-    /** Make the map on data basis
-     * \return True on success
-     */
     bool MakeMap();
 
-    /** Save the result file
-     * \param AlternateFilePath An optional file path
-     * \return True on success
-     */
     bool Save(asParametersCalibration &params, const wxString &AlternateFilePath = wxEmptyString);
 
 protected:
-
-    /** Build the result file path
-     * \param params The parameters structure
-     */
     void BuildFileName(asParametersScoring &params);
 
 private:
     Array1DFloat m_mapLon;
     Array1DFloat m_mapLat;
     Array1DFloat m_mapLevel;
-    VArray2DFloat m_mapScores; //!< Member variable "m_scores"
-    VectorFloat m_scores; //!< Member variable "m_scores".
-    VectorFloat m_lon; //!< Member variable "m_lon".
-    VectorFloat m_lat; //!< Member variable "m_lat".
-    VectorFloat m_level; //!< Member variable "m_level".
+    VArray2DFloat m_mapScores;
+    VectorFloat m_scores;
+    VectorFloat m_lon;
+    VectorFloat m_lat;
+    VectorFloat m_level;
 };
 
 #endif // ASRESULTSANALOGSSCORESMAP_H

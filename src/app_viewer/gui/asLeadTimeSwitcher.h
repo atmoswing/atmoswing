@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __ASLEADTIMESWITCHER__
 #define __ASLEADTIMESWITCHER__
 
@@ -35,39 +35,52 @@
 #include <wx/panel.h>
 #include <wx/overlay.h>
 
-
-/** Implementing asLeadTimeSwitcher */
-class asLeadTimeSwitcher : public wxPanel
+class asLeadTimeSwitcher
+        : public wxPanel
 {
 public:
-    /** Constructor */
-    asLeadTimeSwitcher( wxWindow* parent, asWorkspace* workspace, asForecastManager* forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
+                       wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                       const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asLeadTimeSwitcher();
-    
-    void Draw( Array1DFloat &dates );
+
+    void Draw(Array1DFloat &dates);
+
     void SetLeadTime(int leadTime);
-    void SetParent( wxWindow* parent );
+
+    void SetParent(wxWindow *parent);
 
 private:
     int m_cellWidth;
     int m_leadTime;
-    asForecastManager* m_forecastManager;
-    asWorkspace* m_workspace;
+    asForecastManager *m_forecastManager;
+    asWorkspace *m_workspace;
     wxBitmap *m_bmp;
     wxOverlay m_overlay;
-    wxGraphicsContext* m_gdc;
-    wxWindow* m_parent;
-    void OnLeadTimeSlctChange( wxMouseEvent& event );
+    wxGraphicsContext *m_gdc;
+    wxWindow *m_parent;
+
+    void OnLeadTimeSlctChange(wxMouseEvent &event);
+
     void SetBitmap(wxBitmap *bmp);
+
     void SetLeadTimeMarker(int leadTime);
-    wxBitmap* GetBitmap();
+
+    wxBitmap *GetBitmap();
+
     void CreatePath(wxGraphicsPath &path, int i_col);
-    void CreatePathRing(wxGraphicsPath & path, const wxPoint & center, double scale, int segmentsTotNb, int segmentNb);
-    void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
-    void CreateDatesText( wxGraphicsContext *gc, const wxPoint& start, int i_col, const wxString &label);
-    void CreatePathMarker(wxGraphicsPath & path, int i_col);
-    void OnPaint( wxPaintEvent &event );
-    
+
+    void CreatePathRing(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);
+
+    void FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value);
+
+    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int i_col, const wxString &label);
+
+    void CreatePathMarker(wxGraphicsPath &path, int i_col);
+
+    void OnPaint(wxPaintEvent &event);
+
 };
 
 #endif // __ASLEADTIMESWITCHER__

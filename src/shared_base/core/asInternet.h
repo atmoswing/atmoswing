@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASINTERNET_H
 #define ASINTERNET_H
 
@@ -37,23 +37,26 @@ class asInternet
 {
 public:
     asInternet();
+
     virtual ~asInternet();
 
     static void Init();
+
     static void Cleanup();
 
     int Download(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir);
-
 
 protected:
 
 private:
     friend class asThreadInternetDownload;
-    /** File structure for cURL */
-    struct HttpFile {
+
+    struct HttpFile
+    {
         const char *filename;
         FILE *stream;
     };
+
     static size_t WriteFile(void *buffer, size_t size, size_t nmemb, void *stream);
 
 };
