@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asPredictorCriteriaRMSE.h"
 
 asPredictorCriteriaRMSE::asPredictorCriteriaRMSE(int linAlgebraMethod)
-:
-asPredictorCriteria(linAlgebraMethod)
+        : asPredictorCriteria(linAlgebraMethod)
 {
     m_criteria = asPredictorCriteria::RMSE;
     m_name = "RMSE";
@@ -48,47 +47,45 @@ asPredictorCriteriaRMSE::~asPredictorCriteriaRMSE()
 
 float asPredictorCriteriaRMSE::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb)
 {
-    wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
-    wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
+    wxASSERT_MSG(refData.rows() == evalData.rows(),
+                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
+                                  (int) evalData.rows()));
+    wxASSERT_MSG(refData.cols() == evalData.cols(),
+                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
+                                  (int) evalData.cols()));
 
-    wxASSERT(refData.rows()==rowsNb);
-    wxASSERT(refData.cols()==colsNb);
-    wxASSERT(evalData.rows()==rowsNb);
-    wxASSERT(evalData.cols()==colsNb);
+    wxASSERT(refData.rows() == rowsNb);
+    wxASSERT(refData.cols() == colsNb);
+    wxASSERT(evalData.rows() == rowsNb);
+    wxASSERT(evalData.cols() == colsNb);
 
     float mse = 0;
 
-    switch (m_linAlgebraMethod)
-    {
+    switch (m_linAlgebraMethod) {
         case (asLIN_ALGEBRA_NOVAR):
-        case (asLIN_ALGEBRA):
-        {
-            mse += (evalData-refData).pow(2).sum();
+        case (asLIN_ALGEBRA): {
+            mse += (evalData - refData).pow(2).sum();
             break;
         }
 
         case (asCOEFF_NOVAR):
-        case (asCOEFF):
-        {
-            for (int i=0; i<rowsNb; i++)
-            {
-                for (int j=0; j<colsNb; j++)
-                {
-                    mse += (evalData(i,j) - refData(i,j)) * (evalData(i,j) - refData(i,j));
+        case (asCOEFF): {
+            for (int i = 0; i < rowsNb; i++) {
+                for (int j = 0; j < colsNb; j++) {
+                    mse += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
                 }
             }
 
             break;
         }
 
-        default:
-        {
+        default: {
             asLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }
 
-    mse /= (float)refData.size(); // Can be NaN
+    mse /= (float) refData.size(); // Can be NaN
 
     return sqrt(mse);
 }

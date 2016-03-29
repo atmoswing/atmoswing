@@ -35,20 +35,24 @@
 #include <wx/socket.h>
 #include <asIncludes.h>
 
-// Forward declaration
 class asThreadsManager;
 
-class AtmoswingAppViewer : public wxApp
+class AtmoswingAppViewer
+        : public wxApp
 {
 public:
     virtual bool OnInit();
+
     virtual int OnExit();
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+
+    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+
     bool InitForCmdLineOnly(long logLevel);
-    virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
+
+    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
 
 private:
-    wxSingleInstanceChecker* m_singleInstanceChecker;
+    wxSingleInstanceChecker *m_singleInstanceChecker;
 };
 
 DECLARE_APP(AtmoswingAppViewer);

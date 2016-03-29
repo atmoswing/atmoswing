@@ -25,13 +25,16 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASGLOBENUMS_H_INCLUDED
 #define ASGLOBENUMS_H_INCLUDED
 
 #include "wx/wxprec.h"
+
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+
+#include "wx/wx.h"
+
 #endif
 
 //---------------------------------
@@ -40,8 +43,7 @@
 
 enum
 {
-    asSHOW_WARNINGS,
-    asHIDE_WARNINGS
+    asSHOW_WARNINGS, asHIDE_WARNINGS
 };
 
 enum
@@ -58,38 +60,32 @@ enum
 
 enum
 {
-    asEDIT_FORBIDEN,
-    asEDIT_ALLOWED
+    asEDIT_FORBIDEN, asEDIT_ALLOWED
 };
 
 enum
 {
-    asFLAT_FORBIDDEN,
-    asFLAT_ALLOWED
+    asFLAT_FORBIDDEN, asFLAT_ALLOWED
 };
 
 enum
 {
-    asUSE_NORMAL_METHOD,
-    asUSE_ALTERNATE_METHOD
+    asUSE_NORMAL_METHOD, asUSE_ALTERNATE_METHOD
 };
 
 enum
 {
-    asUTM,
-    asLOCAL
+    asUTM, asLOCAL
 };
 
 enum
 {
-    asSERIE_BEGINNING,
-    asSERIE_END
+    asSERIE_BEGINNING, asSERIE_END
 };
 
 enum
 {
-    asSAMPLE,
-    asENTIRE_POPULATION
+    asSAMPLE, asENTIRE_POPULATION
 };
 
 enum
@@ -103,48 +99,45 @@ enum
 // Processor methods
 enum
 {
-    asMULTITHREADS = 0,
-    asINSERT = 1,
-    asFULL_ARRAY = 2,
-    asCUDA = 3,
+    asMULTITHREADS = 0, asINSERT = 1, asFULL_ARRAY = 2, asCUDA = 3,
 };
 
 // Windows ID
 #if wxUSE_GUI
-    enum
-    {
-        asWINDOW_MAIN = 101,
-        asWINDOW_PREFERENCES,
-        asWINDOW_PREDICTANDDB,
-        asWINDOW_PLOTS_TIMESERIES,
-        asWINDOW_PLOTS_DISTRIBUTIONS,
-        asWINDOW_GRID_ANALOGS,
-        asWINDOW_PREDICTORS
-    };
+enum
+{
+    asWINDOW_MAIN = 101,
+    asWINDOW_PREFERENCES,
+    asWINDOW_PREDICTANDDB,
+    asWINDOW_PLOTS_TIMESERIES,
+    asWINDOW_PLOTS_DISTRIBUTIONS,
+    asWINDOW_GRID_ANALOGS,
+    asWINDOW_PREDICTORS
+};
 
-    // Menus & Controls ID
-    enum
-    {
-        asID_PREFERENCES = wxID_HIGHEST+1,
-        asID_OPEN,
-        asID_RUN,
-        asID_RUN_PREVIOUS,
-        asID_CANCEL,
-        asID_DB_OPTIONS,
-        asID_DB_CREATE,
-        asID_PRINT,
-        asID_SELECT,
-        asID_ZOOM_IN,
-        asID_ZOOM_OUT,
-        asID_ZOOM_FIT,
-        asID_PAN,
-        asID_CROSS_MARKER,
-        asID_FRAME_VIEWER,
-        asID_FRAME_FORECASTER,
-        asID_FRAME_DOTS,
-        asID_FRAME_PLOTS,
-        asID_FRAME_GRID,
-    };
+// Menus & Controls ID
+enum
+{
+    asID_PREFERENCES = wxID_HIGHEST + 1,
+    asID_OPEN,
+    asID_RUN,
+    asID_RUN_PREVIOUS,
+    asID_CANCEL,
+    asID_DB_OPTIONS,
+    asID_DB_CREATE,
+    asID_PRINT,
+    asID_SELECT,
+    asID_ZOOM_IN,
+    asID_ZOOM_OUT,
+    asID_ZOOM_FIT,
+    asID_PAN,
+    asID_CROSS_MARKER,
+    asID_FRAME_VIEWER,
+    asID_FRAME_FORECASTER,
+    asID_FRAME_DOTS,
+    asID_FRAME_PLOTS,
+    asID_FRAME_GRID,
+};
 #endif
 
 
@@ -201,49 +194,22 @@ enum DataParameter
 
 enum DataUnit
 {
-    nb,
-    mm,
-    m,
-    km,
-    percent,
-    degC,
-    degK,
-    Pascals,
-    PascalsPerSec,
-    kgPerKg,
-    mPerSec,
-    WPerm2,
-    kgPerm2Pers,
-    NoDataUnit
+    nb, mm, m, km, percent, degC, degK, Pascals, PascalsPerSec, kgPerKg, mPerSec, WPerm2, kgPerm2Pers, NoDataUnit
 };
 
 enum DataTemporalResolution
 {
-    Daily,
-    SixHourly,
-    Hourly,
-    SixHourlyMovingDailyTemporalWindow,
-    TwoDays,
-    ThreeDays,
-    Weekly,
-    NoDataTemporalResolution
+    Daily, SixHourly, Hourly, SixHourlyMovingDailyTemporalWindow, TwoDays, ThreeDays, Weekly, NoDataTemporalResolution
 };
 
 enum DataSpatialAggregation
 {
-    Station,
-    Groupment,
-    Catchment,
-    NoDataSpatialAggregation
+    Station, Groupment, Catchment, NoDataSpatialAggregation
 };
 
 enum FileTimeLength
 {
-    Year,
-    Hour,
-    Total,
-    Instantaneous,
-    NoFileLength
+    Year, Hour, Total, Instantaneous, NoFileLength
 };
 
 enum TimeFormat
@@ -268,28 +234,26 @@ enum TimeFormat
 
 #include <asIncludes.h>
 
-class asGlobEnums: public wxObject
+class asGlobEnums
+        : public wxObject
 {
 public:
-    
-    static FileTimeLength StringToFileLengthEnum(const wxString &LengthStr);
 
+    static FileTimeLength StringToFileLengthEnum(const wxString &LengthStr);
 
     static DataParameter StringToDataParameterEnum(const wxString &ParameterStr);
 
     static wxString DataParameterEnumToString(DataParameter dataParameter);
 
-
     static DataUnit StringToDataUnitEnum(const wxString &UnitStr);
 
     static DataTemporalResolution StringToDataTemporalResolutionEnum(const wxString &TemporalResolution);
-    
+
     static wxString DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution);
 
     static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
-    
-    static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
 
+    static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
 
 protected:
 

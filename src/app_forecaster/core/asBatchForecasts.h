@@ -24,33 +24,36 @@
 /*
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASBATCHFORECASTS_H
 #define ASBATCHFORECASTS_H
 
 #include <asIncludes.h>
 #include <asFileBatchForecasts.h>
 
-class asBatchForecasts : public wxObject
+class asBatchForecasts
+        : public wxObject
 {
 public:
-    /** Default constructor */
     asBatchForecasts();
 
-    /** Default destructor */
     virtual ~asBatchForecasts();
 
     bool Load(const wxString &filePath);
+
     bool Save();
+
     int GetForecastsNb();
+
     void ClearForecasts();
+
     void AddForecast();;
 
     wxString GetFilePath()
     {
         return m_filePath;
     }
-    
+
     void SetFilePath(const wxString &path)
     {
         m_filePath = path;
@@ -82,7 +85,7 @@ public:
     {
         return m_forecastsOutputDirectory;
     }
-    
+
     void SetForecastsOutputDirectory(const wxString &val)
     {
         m_forecastsOutputDirectory = val;
@@ -102,7 +105,7 @@ public:
     {
         return m_parametersFileDirectory;
     }
-    
+
     void SetParametersFileDirectory(const wxString &val)
     {
         m_parametersFileDirectory = val;
@@ -112,7 +115,7 @@ public:
     {
         return m_predictorsArchiveDirectory;
     }
-    
+
     void SetPredictorsArchiveDirectory(const wxString &val)
     {
         m_predictorsArchiveDirectory = val;
@@ -122,7 +125,7 @@ public:
     {
         return m_predictorsRealtimeDirectory;
     }
-    
+
     void SetPredictorsRealtimeDirectory(const wxString &val)
     {
         m_predictorsRealtimeDirectory = val;
@@ -132,7 +135,7 @@ public:
     {
         return m_predictandDBDirectory;
     }
-    
+
     void SetPredictandDBDirectory(const wxString &val)
     {
         m_predictandDBDirectory = val;
@@ -140,17 +143,18 @@ public:
 
     wxString GetForecastFileName(int i)
     {
-        wxASSERT((int)m_forecastFileNames.size()>i);
+        wxASSERT((int) m_forecastFileNames.size() > i);
         return m_forecastFileNames[i];
     }
 
     void SetForecastFileName(int i, const wxString &val)
     {
-        wxASSERT((int)m_forecastFileNames.size()>i);
+        wxASSERT((int) m_forecastFileNames.size() > i);
         m_forecastFileNames[i] = val;
     }
 
 protected:
+
 private:
     bool m_hasChanged;
     bool m_exportSyntheticXml;

@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef asThreadInternetDownload_H
 #define asThreadInternetDownload_H
 
@@ -33,18 +33,20 @@
 #include <asIncludes.h>
 #include <asInternet.h>
 
-class asThreadInternetDownload: public asThread
+class asThreadInternetDownload
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir, bool usesProxy, const wxString &proxyAddress, const long proxyPort, const wxString &proxyUser, const wxString &proxyPasswd, int start, int end);
-    /** Default destructor */
+    asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir,
+                             bool usesProxy, const wxString &proxyAddress, const long proxyPort,
+                             const wxString &proxyUser, const wxString &proxyPasswd, int start, int end);
+
     virtual ~asThreadInternetDownload();
 
     virtual ExitCode Entry();
 
-
 protected:
+
 private:
     VectorString m_urls;
     VectorString m_fileNames;

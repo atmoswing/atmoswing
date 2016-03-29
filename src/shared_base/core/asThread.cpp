@@ -24,13 +24,12 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asThread.h"
 
 
 asThread::asThread()
-:
-wxThread(wxTHREAD_DETACHED)
+        : wxThread(wxTHREAD_DETACHED)
 {
     m_status = Creating;
     m_type = Undefined;
@@ -56,13 +55,11 @@ void asThread::OnExit()
     ThreadsManager().SetNull(id);
 
     // Check if the list is empty
-    if ( ThreadsManager().GetRunningThreadsNb()==0 )
-    {
+    if (ThreadsManager().GetRunningThreadsNb() == 0) {
         // Signal the threads manager that there are no more threads left
-        if ( ThreadsManager().GetWaitingUntilAllDone() )
-        {
+        if (ThreadsManager().GetWaitingUntilAllDone()) {
             ThreadsManager().SetWaitingUntilAllDone(false);
-//            ThreadsManager().SemAllDone().Post();
+            //            ThreadsManager().SemAllDone().Post();
         }
     }
 

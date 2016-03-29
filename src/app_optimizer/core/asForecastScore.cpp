@@ -56,314 +56,223 @@ asForecastScore::asForecastScore()
     m_scaleWorst = NaNFloat;
 }
 
-asForecastScore* asForecastScore::GetInstance(Score scoreEnum)
+asForecastScore *asForecastScore::GetInstance(Score scoreEnum)
 {
-    switch (scoreEnum)
-    {
-        case (CRPSS):
-        {
-            asForecastScore* score = new asForecastScoreCRPSS();
+    switch (scoreEnum) {
+        case (CRPSS): {
+            asForecastScore *score = new asForecastScoreCRPSS();
             return score;
         }
-        case (CRPSAR):
-        {
-            asForecastScore* score = new asForecastScoreCRPSAR();
+        case (CRPSAR): {
+            asForecastScore *score = new asForecastScoreCRPSAR();
             return score;
         }
-        case (CRPSEP):
-        {
-            asForecastScore* score = new asForecastScoreCRPSEP();
+        case (CRPSEP): {
+            asForecastScore *score = new asForecastScoreCRPSEP();
             return score;
         }
-        case (CRPSaccuracyAR):
-        {
-            asForecastScore* score = new asForecastScoreCRPSaccuracyAR();
+        case (CRPSaccuracyAR): {
+            asForecastScore *score = new asForecastScoreCRPSaccuracyAR();
             return score;
         }
-        case (CRPSaccuracyEP):
-        {
-            asForecastScore* score = new asForecastScoreCRPSaccuracyEP();
+        case (CRPSaccuracyEP): {
+            asForecastScore *score = new asForecastScoreCRPSaccuracyEP();
             return score;
         }
-        case (CRPSsharpnessAR):
-        {
-            asForecastScore* score = new asForecastScoreCRPSsharpnessAR();
+        case (CRPSsharpnessAR): {
+            asForecastScore *score = new asForecastScoreCRPSsharpnessAR();
             return score;
         }
-        case (CRPSsharpnessEP):
-        {
-            asForecastScore* score = new asForecastScoreCRPSsharpnessEP();
+        case (CRPSsharpnessEP): {
+            asForecastScore *score = new asForecastScoreCRPSsharpnessEP();
             return score;
         }
-        case (CRPSreliability):
-        {
-            asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+        case (CRPSreliability): {
+            asForecastScore *score = new asForecastScoreCRPSHersbachDecomp();
             return score;
         }
-        case (CRPSpotential):
-        {
-            asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+        case (CRPSpotential): {
+            asForecastScore *score = new asForecastScoreCRPSHersbachDecomp();
             return score;
         }
-        case (CRPSHersbachDecomp):
-        {
-            asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+        case (CRPSHersbachDecomp): {
+            asForecastScore *score = new asForecastScoreCRPSHersbachDecomp();
             return score;
         }
-        case (DF0):
-        {
-            asForecastScore* score = new asForecastScoreDF0();
+        case (DF0): {
+            asForecastScore *score = new asForecastScoreDF0();
             return score;
         }
-        case (PC):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (PC): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (TS):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (TS): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (BIAS):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (BIAS): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (FARA):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (FARA): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (H):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (H): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (F):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (F): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (HSS):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (HSS): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (PSS):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (PSS): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (GSS):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (GSS): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (ContingencyTable):
-        {
-            asForecastScore* score = new asForecastScoreContingencyTable();
+        case (ContingencyTable): {
+            asForecastScore *score = new asForecastScoreContingencyTable();
             return score;
         }
-        case (MAE):
-        {
-            asForecastScore* score = new asForecastScoreMAE();
+        case (MAE): {
+            asForecastScore *score = new asForecastScoreMAE();
             return score;
         }
-        case (RMSE):
-        {
-            asForecastScore* score = new asForecastScoreRMSE();
+        case (RMSE): {
+            asForecastScore *score = new asForecastScoreRMSE();
             return score;
         }
-        case (BS):
-        {
-            asForecastScore* score = new asForecastScoreBS();
+        case (BS): {
+            asForecastScore *score = new asForecastScoreBS();
             return score;
         }
-        case (BSS):
-        {
-            asForecastScore* score = new asForecastScoreBSS();
+        case (BSS): {
+            asForecastScore *score = new asForecastScoreBSS();
             return score;
         }
-        case (SEEPS):
-        {
-            asForecastScore* score = new asForecastScoreSEEPS();
+        case (SEEPS): {
+            asForecastScore *score = new asForecastScoreSEEPS();
             return score;
         }
-        case (RankHistogram):
-        {
-            asForecastScore* score = new asForecastScoreRankHistogram();
+        case (RankHistogram): {
+            asForecastScore *score = new asForecastScoreRankHistogram();
             return score;
         }
-        case (RankHistogramReliability):
-        {
-            asForecastScore* score = new asForecastScoreRankHistogram();
+        case (RankHistogramReliability): {
+            asForecastScore *score = new asForecastScoreRankHistogram();
             return score;
         }
-        default:
-        {
+        default: {
             asLogError(_("The forecast score was not correctly set (undefined)."));
             return NULL;
         }
     }
 }
 
-asForecastScore* asForecastScore::GetInstance(const wxString& scoreString)
+asForecastScore *asForecastScore::GetInstance(const wxString &scoreString)
 {
-    if (scoreString.CmpNoCase("CRPSSkillScore")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSS();
+    if (scoreString.CmpNoCase("CRPSSkillScore") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSS();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSS")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSS();
+    } else if (scoreString.CmpNoCase("CRPSS") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSS();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPS")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSAR();
+    } else if (scoreString.CmpNoCase("CRPS") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSAR();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSAR")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSAR();
+    } else if (scoreString.CmpNoCase("CRPSAR") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSAR();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSEP")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSEP();
+    } else if (scoreString.CmpNoCase("CRPSEP") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSEP();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSaccuracy")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSaccuracyAR();
+    } else if (scoreString.CmpNoCase("CRPSaccuracy") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSaccuracyAR();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSaccuracyAR")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSaccuracyAR();
+    } else if (scoreString.CmpNoCase("CRPSaccuracyAR") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSaccuracyAR();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSaccuracyEP")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSaccuracyEP();
+    } else if (scoreString.CmpNoCase("CRPSaccuracyEP") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSaccuracyEP();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSsharpness")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSsharpnessAR();
+    } else if (scoreString.CmpNoCase("CRPSsharpness") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSsharpnessAR();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSsharpnessAR")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSsharpnessAR();
+    } else if (scoreString.CmpNoCase("CRPSsharpnessAR") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSsharpnessAR();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSsharpnessEP")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSsharpnessEP();
+    } else if (scoreString.CmpNoCase("CRPSsharpnessEP") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSsharpnessEP();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSreliability")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+    } else if (scoreString.CmpNoCase("CRPSreliability") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSHersbachDecomp();
         return score;
-    }
-    else if (scoreString.CmpNoCase("CRPSpotential")==0)
-    {
-        asForecastScore* score = new asForecastScoreCRPSHersbachDecomp();
+    } else if (scoreString.CmpNoCase("CRPSpotential") == 0) {
+        asForecastScore *score = new asForecastScoreCRPSHersbachDecomp();
         return score;
-    }
-    else if (scoreString.CmpNoCase("DF0")==0)
-    {
-        asForecastScore* score = new asForecastScoreDF0();
+    } else if (scoreString.CmpNoCase("DF0") == 0) {
+        asForecastScore *score = new asForecastScoreDF0();
         return score;
-    }
-    else if (scoreString.CmpNoCase("PC")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("PC") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("TS")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("TS") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("BIAS")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("BIAS") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("FARA")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("FARA") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("H")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("H") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("F")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("F") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("HSS")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("HSS") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("PSS")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("PSS") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("GSS")==0)
-    {
-        asForecastScore* score = new asForecastScoreContingencyTable();
+    } else if (scoreString.CmpNoCase("GSS") == 0) {
+        asForecastScore *score = new asForecastScoreContingencyTable();
         return score;
-    }
-    else if (scoreString.CmpNoCase("MAE")==0)
-    {
-        asForecastScore* score = new asForecastScoreMAE();
+    } else if (scoreString.CmpNoCase("MAE") == 0) {
+        asForecastScore *score = new asForecastScoreMAE();
         return score;
-    }
-    else if (scoreString.CmpNoCase("RMSE")==0)
-    {
-        asForecastScore* score = new asForecastScoreRMSE();
+    } else if (scoreString.CmpNoCase("RMSE") == 0) {
+        asForecastScore *score = new asForecastScoreRMSE();
         return score;
-    }
-    else if (scoreString.CmpNoCase("BS")==0)
-    {
-        asForecastScore* score = new asForecastScoreBS();
+    } else if (scoreString.CmpNoCase("BS") == 0) {
+        asForecastScore *score = new asForecastScoreBS();
         return score;
-    }
-    else if (scoreString.CmpNoCase("BSS")==0)
-    {
-        asForecastScore* score = new asForecastScoreBSS();
+    } else if (scoreString.CmpNoCase("BSS") == 0) {
+        asForecastScore *score = new asForecastScoreBSS();
         return score;
-    }
-    else if (scoreString.CmpNoCase("SEEPS")==0)
-    {
-        asForecastScore* score = new asForecastScoreSEEPS();
+    } else if (scoreString.CmpNoCase("SEEPS") == 0) {
+        asForecastScore *score = new asForecastScoreSEEPS();
         return score;
-    }
-    else if (scoreString.CmpNoCase("RankHistogram")==0)
-    {
-        asForecastScore* score = new asForecastScoreRankHistogram();
+    } else if (scoreString.CmpNoCase("RankHistogram") == 0) {
+        asForecastScore *score = new asForecastScoreRankHistogram();
         return score;
-    }
-    else if (scoreString.CmpNoCase("RankHistogramReliability")==0)
-    {
-        asForecastScore* score = new asForecastScoreRankHistogram();
+    } else if (scoreString.CmpNoCase("RankHistogramReliability") == 0) {
+        asForecastScore *score = new asForecastScoreRankHistogram();
         return score;
-    }
-    else
-    {
-		asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString));
-        asForecastScore* score = new asForecastScoreCRPSAR();
+    } else {
+        asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString));
+        asForecastScore *score = new asForecastScoreCRPSAR();
         return score;
     }
 }
@@ -383,17 +292,16 @@ Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloa
 bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
     // Check the element numbers vs vector length
-    wxASSERT_MSG(ForcastVals.rows()>=nbElements, _("The required elements number is above the vector length in the score calculation."));
-    wxASSERT(nbElements>1);
-    if (ForcastVals.rows()<nbElements)
-    {
+    wxASSERT_MSG(ForcastVals.rows() >= nbElements,
+                 _("The required elements number is above the vector length in the score calculation."));
+    wxASSERT(nbElements > 1);
+    if (ForcastVals.rows() < nbElements) {
         asLogError(_("The required elements number is above the vector length in the score calculation."));
         return false;
     }
 
     // Check that the observed value is not a NaN
-    if (asTools::IsNaN(ObservedVal))
-    {
+    if (asTools::IsNaN(ObservedVal)) {
         asLogWarning(_("The observed value is a NaN for the CRPS score calculation."));
         return false;
     }
@@ -406,33 +314,28 @@ int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &Fo
     // Remove the NaNs and copy content
     int nbForecasts = 0, nbNans = 0;
     int i_val = 0;
-    while (nbForecasts<nbElements)
-    {
+    while (nbForecasts < nbElements) {
         // Add a check to not overflow the array
-        if(i_val>=nbElements)
-        {
-            if(i_val==ForcastVals.rows())
-            {
+        if (i_val >= nbElements) {
+            if (i_val == ForcastVals.rows()) {
                 asLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
-                asLogWarning(wxString::Format(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements, nbForecasts, nbNans));
+                asLogWarning(
+                        wxString::Format(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements,
+                                         nbForecasts, nbNans));
                 break;
             }
         }
 
-        if (!asTools::IsNaN(ForcastVals[i_val]))
-        {
+        if (!asTools::IsNaN(ForcastVals[i_val])) {
             ForcastValsSorted(nbForecasts) = ForcastVals[i_val];
             nbForecasts++;
-        }
-        else
-        {
+        } else {
             nbNans++;
         }
         i_val++;
     }
 
-    if (nbForecasts<1)
-    {
+    if (nbForecasts < 1) {
         asLogError(_("Not enough data to perform the score calculation."));
         return asNOT_FOUND;
     }

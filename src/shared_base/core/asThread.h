@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASTHREAD_H
 #define ASTHREAD_H
 
@@ -32,26 +32,15 @@
 
 #include <asIncludes.h>
 
-class asThread: public wxThread
+class asThread
+        : public wxThread
 {
 public:
-
-    //!< The thread status
     enum Status
     {
-        Creating,
-        Initializing,
-        Waiting,
-        Working,
-        Done,
-        Exiting,
-        Canceling,
-        Canceled,
-        Pause,
-        Error
+        Creating, Initializing, Waiting, Working, Done, Exiting, Canceling, Canceled, Pause, Error
     };
 
-    //!< Possible thread types
     enum Type
     {
         Undefined,
@@ -59,14 +48,12 @@ public:
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
         PreprocessorGradients,
-		MethodOptimizerRandomSet,
-		MethodOptimizerGeneticAlgorithms
+        MethodOptimizerRandomSet,
+        MethodOptimizerGeneticAlgorithms
     };
 
-    /** Default constructor */
     asThread();
 
-    /** Default destructor */
     virtual ~asThread();
 
     virtual ExitCode Entry();
@@ -100,17 +87,17 @@ public:
 
     bool IsDone()
     {
-        return m_status==Done;
+        return m_status == Done;
     }
 
     bool IsRunning()
     {
-        return m_status==Working;
+        return m_status == Working;
     }
 
     bool IsEnding()
     {
-        return m_status==Exiting;
+        return m_status == Exiting;
     }
 
 protected:

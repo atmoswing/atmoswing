@@ -25,19 +25,17 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
- 
+
 #include "asForecastScoreFinalCRPSpotential.h"
 
 asForecastScoreFinalCRPSpotential::asForecastScoreFinalCRPSpotential(Period period)
-:
-asForecastScoreFinal(period)
+        : asForecastScoreFinal(period)
 {
     m_has2DArrayArgument = true;
 }
 
-asForecastScoreFinalCRPSpotential::asForecastScoreFinalCRPSpotential(const wxString& periodString)
-:
-asForecastScoreFinal(periodString)
+asForecastScoreFinalCRPSpotential::asForecastScoreFinalCRPSpotential(const wxString &periodString)
+        : asForecastScoreFinal(periodString)
 {
     m_has2DArrayArgument = true;
 }
@@ -47,44 +45,44 @@ asForecastScoreFinalCRPSpotential::~asForecastScoreFinalCRPSpotential()
     //dtor
 }
 
-float asForecastScoreFinalCRPSpotential::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
+float asForecastScoreFinalCRPSpotential::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores,
+                                                asTimeArray &timeArray)
 {
     asLogError(_("The CRPS score needs a 2D array as input !"));
     return NaNFloat;
 }
 
 
-float asForecastScoreFinalCRPSpotential::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray)
+float asForecastScoreFinalCRPSpotential::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores,
+                                                asTimeArray &timeArray)
 {
-    wxASSERT(targetDates.rows()>1);
-    wxASSERT(forecastScores.rows()>1);
-    wxASSERT(forecastScores.cols()>1);
+    wxASSERT(targetDates.rows() > 1);
+    wxASSERT(forecastScores.rows() > 1);
+    wxASSERT(forecastScores.cols() > 1);
 
     // Process average on every column
     Array1DFloat means = forecastScores.colwise().mean();
 
     // Extract corresponding arrays
-    int binsNbs = means.size()/3;
-    Array1DFloat alpha = means.segment(0,binsNbs);
-    Array1DFloat beta = means.segment(binsNbs,binsNbs);
-    Array1DFloat g = means.segment(2*binsNbs,binsNbs);
+    int binsNbs = means.size() / 3;
+    Array1DFloat alpha = means.segment(0, binsNbs);
+    Array1DFloat beta = means.segment(binsNbs, binsNbs);
+    Array1DFloat g = means.segment(2 * binsNbs, binsNbs);
 
     // Compute o (coefficent-wise operations)
-    Array1DFloat o = beta / (alpha+beta);
-    wxASSERT(o.size()==alpha.size());
+    Array1DFloat o = beta / (alpha + beta);
+    wxASSERT(o.size() == alpha.size());
 
     // Create the p array (coefficent-wise operations)
-    Array1DFloat p = Array1DFloat::LinSpaced(binsNbs, 0, binsNbs-1);
-    p = p/(binsNbs-1);
+    Array1DFloat p = Array1DFloat::LinSpaced(binsNbs, 0, binsNbs - 1);
+    p = p / (binsNbs - 1);
 
     // Compute CRPS potential
     float potential = 0;
 
-    for (int i=0; i<binsNbs; i++)
-    {
-        if (!asTools::IsNaN(g[i]) && !asTools::IsInf(g[i]) && !asTools::IsNaN(o[i]) && !asTools::IsInf(o[i]))
-        {
-            potential += g[i]*o[i]*(1-o[i]);
+    for (int i = 0; i < binsNbs; i++) {
+        if (!asTools::IsNaN(g[i]) && !asTools::IsInf(g[i]) && !asTools::IsNaN(o[i]) && !asTools::IsInf(o[i])) {
+            potential += g[i] * o[i] * (1 - o[i]);
         }
     }
 

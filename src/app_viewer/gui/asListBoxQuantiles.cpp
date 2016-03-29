@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asListBoxQuantiles.h"
 
 #include "asIncludes.h"
@@ -39,9 +39,9 @@ END_EVENT_TABLE()
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, wxCommandEvent);
 
 
-asListBoxQuantiles::asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, int n, const wxString choices[], long style)
-:
-wxListBox(parent, id, pos, size, n, choices, style)
+asListBoxQuantiles::asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, int n,
+                                       const wxString choices[], long style)
+        : wxListBox(parent, id, pos, size, n, choices, style)
 {
     //ctor
 }
@@ -51,9 +51,9 @@ asListBoxQuantiles::~asListBoxQuantiles()
     //dtor
 }
 
-void asListBoxQuantiles::OnQuantileSlctChange( wxCommandEvent & event )
+void asListBoxQuantiles::OnQuantileSlctChange(wxCommandEvent &event)
 {
-    wxCommandEvent eventSlct (asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED);
+    wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED);
     eventSlct.SetInt(event.GetInt());
     GetParent()->ProcessWindowEvent(eventSlct);
 }

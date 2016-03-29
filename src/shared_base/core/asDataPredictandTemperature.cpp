@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asDataPredictandTemperature.h"
 
 #include "wx/fileconf.h"
@@ -35,9 +35,10 @@
 #include <asCatalogPredictands.h>
 
 
-asDataPredictandTemperature::asDataPredictandTemperature(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation)
-:
-asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
+asDataPredictandTemperature::asDataPredictandTemperature(DataParameter dataParameter,
+                                                         DataTemporalResolution dataTemporalResolution,
+                                                         DataSpatialAggregation dataSpatialAggregation)
+        : asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
     m_hasNormalizedData = false;
@@ -51,7 +52,8 @@ asDataPredictandTemperature::~asDataPredictandTemperature()
 
 bool asDataPredictandTemperature::InitContainers()
 {
-    if (!InitBaseContainers()) return false;
+    if (!InitBaseContainers())
+        return false;
     return true;
 }
 
@@ -60,13 +62,10 @@ bool asDataPredictandTemperature::Load(const wxString &filePath)
     // Open the NetCDF file
     asLogMessage(wxString::Format(_("Opening the file %s"), filePath));
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
-    if(!ncFile.Open())
-    {
+    if (!ncFile.Open()) {
         asLogError(wxString::Format(_("Couldn't open file %s"), filePath));
         return false;
-    }
-    else
-    {
+    } else {
         asLogMessage(_("File successfully opened"));
     }
 
@@ -86,11 +85,12 @@ bool asDataPredictandTemperature::Save(const wxString &AlternateDestinationDir)
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
-    if(!ncFile.Open()) return false;
+    if (!ncFile.Open())
+        return false;
 
     // Set common definitions
     SetCommonDefinitions(ncFile);
-    
+
     // End definitions: leave define mode
     ncFile.EndDef();
 
@@ -103,29 +103,35 @@ bool asDataPredictandTemperature::Save(const wxString &AlternateDestinationDir)
     return true;
 }
 
-bool asDataPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir, const wxString &AlternatePatternDir, const wxString &AlternateDestinationDir)
+bool asDataPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
+                                                    const wxString &AlternatePatternDir,
+                                                    const wxString &AlternateDestinationDir)
 {
-    if(!g_unitTesting) asLogMessage(_("Building the predictand DB."));
+    if (!g_unitTesting)
+        asLogMessage(_("Building the predictand DB."));
 
     // Initialize the members
-    if(!InitMembers(catalogFilePath)) return false;
+    if (!InitMembers(catalogFilePath))
+        return false;
 
     // Resize matrices
-    if(!InitContainers()) return false;
+    if (!InitContainers())
+        return false;
 
     // Load data from files
-    if(!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir)) return false;
+    if (!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir))
+        return false;
 
     Save(AlternateDestinationDir);
 
-    if(!g_unitTesting) asLogMessage(_("Predictand DB saved."));
+    if (!g_unitTesting)
+        asLogMessage(_("Predictand DB saved."));
 
-    #if wxUSE_GUI
-        if (!g_silentMode)
-        {
-            wxMessageBox(_("Predictand DB saved."));
-        }
-    #endif
+#if wxUSE_GUI
+    if (!g_silentMode) {
+        wxMessageBox(_("Predictand DB saved."));
+    }
+#endif
 
     return true;
 }

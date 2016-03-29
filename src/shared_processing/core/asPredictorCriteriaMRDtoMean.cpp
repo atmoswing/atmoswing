@@ -25,12 +25,11 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asPredictorCriteriaMRDtoMean.h"
 
 asPredictorCriteriaMRDtoMean::asPredictorCriteriaMRDtoMean(int linAlgebraMethod)
-:
-asPredictorCriteria(linAlgebraMethod)
+        : asPredictorCriteria(linAlgebraMethod)
 {
     m_criteria = asPredictorCriteria::MRDtoMean;
     m_name = "MRDtoMean";
@@ -46,31 +45,29 @@ asPredictorCriteriaMRDtoMean::~asPredictorCriteriaMRDtoMean()
     //dtor
 }
 
-float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb)
+float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+                                           int colsNb)
 {
-    wxASSERT_MSG(refData.rows()==evalData.rows(), wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int)refData.rows(), (int)evalData.rows()));
-    wxASSERT_MSG(refData.cols()==evalData.cols(), wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int)refData.cols(), (int)evalData.cols()));
+    wxASSERT_MSG(refData.rows() == evalData.rows(),
+                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
+                                  (int) evalData.rows()));
+    wxASSERT_MSG(refData.cols() == evalData.cols(),
+                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
+                                  (int) evalData.cols()));
 
     float rd = 0;
 
-    switch (m_linAlgebraMethod)
-    {
+    switch (m_linAlgebraMethod) {
         case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
         case (asLIN_ALGEBRA): // Not implemented yet
-        case (asCOEFF_NOVAR):
-        {
-            for (int i=0; i<rowsNb; i++)
-            {
-                for (int j=0; j<colsNb; j++)
-                {
-                    if(std::abs(evalData(i,j)+refData(i,j))>0)
-                    {
-                        rd += std::abs(evalData(i,j) - refData(i,j)) / (std::abs(evalData(i,j) + refData(i,j))*0.5);
-                    }
-                    else
-                    {
-                        if (std::abs(evalData(i,j) - refData(i,j))!=0)
-                        {
+        case (asCOEFF_NOVAR): {
+            for (int i = 0; i < rowsNb; i++) {
+                for (int j = 0; j < colsNb; j++) {
+                    if (std::abs(evalData(i, j) + refData(i, j)) > 0) {
+                        rd += std::abs(evalData(i, j) - refData(i, j)) /
+                              (std::abs(evalData(i, j) + refData(i, j)) * 0.5);
+                    } else {
+                        if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
@@ -81,26 +78,19 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             break;
         }
 
-        case (asCOEFF):
-        {
+        case (asCOEFF): {
             float dividend = 0, divisor = 0;
 
             // Faster in the order cols then rows than the opposite
-            for (int i=0; i<rowsNb; i++)
-            {
-                for (int j=0; j<colsNb; j++)
-                {
-                    dividend = std::abs(evalData(i,j) - refData(i,j));
-                    divisor = std::abs(evalData(i,j) + refData(i,j))*0.5;
+            for (int i = 0; i < rowsNb; i++) {
+                for (int j = 0; j < colsNb; j++) {
+                    dividend = std::abs(evalData(i, j) - refData(i, j));
+                    divisor = std::abs(evalData(i, j) + refData(i, j)) * 0.5;
 
-                    if(divisor>0)
-                    {
-                        rd += dividend/divisor;
-                    }
-                    else
-                    {
-                        if (dividend!=0)
-                        {
+                    if (divisor > 0) {
+                        rd += dividend / divisor;
+                    } else {
+                        if (dividend != 0) {
                             asLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
@@ -111,12 +101,11 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             break;
         }
 
-        default:
-        {
+        default: {
             asLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }
 
-    return rd/refData.size();
+    return rd / refData.size();
 }

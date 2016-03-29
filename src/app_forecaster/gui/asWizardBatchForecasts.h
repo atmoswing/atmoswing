@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asWizardBatchForecasts__
 #define __asWizardBatchForecasts__
 
@@ -33,23 +33,31 @@
 
 #include "asIncludes.h"
 
-/** Implementing asWizardBatchForecasts */
-class asWizardBatchForecasts : public asWizardBatchForecastsVirtual
+class asWizardBatchForecasts
+        : public asWizardBatchForecastsVirtual
 {
 public:
-    /** Constructor */
-    asWizardBatchForecasts( wxWindow* parent, asBatchForecasts* batchForecasts, wxWindowID id = wxID_ANY );
+    asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id = wxID_ANY);
+
     ~asWizardBatchForecasts();
-    
-    wxWizardPage *GetFirstPage() const { return m_pages.Item( 0 ); }
-    wxWizardPage *GetSecondPage() const { return m_pages.Item( 1 ); }
+
+    wxWizardPage *GetFirstPage() const
+    {
+        return m_pages.Item(0);
+    }
+
+    wxWizardPage *GetSecondPage() const
+    {
+        return m_pages.Item(1);
+    }
 
 protected:
-	void OnWizardFinished( wxWizardEvent& event );
-	void OnLoadExistingBatchForecasts( wxCommandEvent& event );
+    void OnWizardFinished(wxWizardEvent &event);
+
+    void OnLoadExistingBatchForecasts(wxCommandEvent &event);
 
 private:
-    asBatchForecasts* m_batchForecasts;
+    asBatchForecasts *m_batchForecasts;
 };
 
 #endif // __asWizardBatchForecasts__

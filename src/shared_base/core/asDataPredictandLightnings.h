@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTANDLIGHTNINGS_H
 #define ASDATAPREDICTANDLIGHTNINGS_H
 
@@ -33,26 +33,26 @@
 #include <asDataPredictand.h>
 
 
-class asDataPredictandLightnings: public asDataPredictand
+class asDataPredictandLightnings
+        : public asDataPredictand
 {
 public:
-    asDataPredictandLightnings(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution, DataSpatialAggregation dataSpatialAggregation);
+    asDataPredictandLightnings(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
+                               DataSpatialAggregation dataSpatialAggregation);
+
     virtual ~asDataPredictandLightnings();
 
     virtual bool Load(const wxString &filePath);
 
     virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString, const wxString &AlternatePatternDir = wxEmptyString, const wxString &AlternateDestinationDir = wxEmptyString);
-
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
+                                   const wxString &AlternatePatternDir = wxEmptyString,
+                                   const wxString &AlternateDestinationDir = wxEmptyString);
 
 protected:
 
 private:
-    
-    /** Initialize the containers
-     * \return True on success
-     */
     bool InitContainers();
 };
 

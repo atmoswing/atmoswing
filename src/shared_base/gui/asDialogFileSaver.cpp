@@ -24,15 +24,13 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asDialogFileSaver.h"
 
-asDialogFileSaver::asDialogFileSaver( wxWindow* parent, const wxString &description )
-:
-asDialogFileSaverVirtual( parent )
+asDialogFileSaver::asDialogFileSaver(wxWindow *parent, const wxString &description)
+        : asDialogFileSaverVirtual(parent)
 {
-    if(!description.IsEmpty())
-    {
+    if (!description.IsEmpty()) {
         m_staticTextDescription->SetLabelText(description);
     }
 }

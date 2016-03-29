@@ -32,629 +32,634 @@
 #include "asIncludes.h"
 
 
-class asParameters : public wxObject
+class asParameters
+        : public wxObject
 {
 public:
+    typedef struct
+    {
+        wxString DatasetId;
+        wxString DataId;
+        bool Preload;
+        VectorString PreloadDataIds;
+        VectorDouble PreloadTimeHours;
+        VectorFloat PreloadLevels;
+        double PreloadXmin;
+        int PreloadXptsnb;
+        double PreloadYmin;
+        int PreloadYptsnb;
+        bool Preprocess;
+        wxString PreprocessMethod;
+        VectorString PreprocessDatasetIds;
+        VectorString PreprocessDataIds;
+        VectorFloat PreprocessLevels;
+        VectorDouble PreprocessTimeHours;
+        float Level;
+        wxString GridType;
+        double Xmin;
+        int Xptsnb;
+        double Xstep;
+        double Xshift;
+        double Ymin;
+        int Yptsnb;
+        double Ystep;
+        double Yshift;
+        int FlatAllowed;
+        double TimeHours;
+        wxString Criteria;
+        float Weight;
+    } ParamsPredictor;
 
-	// Structures
-	typedef struct
-	{
-		wxString DatasetId;
-		wxString DataId;
-		bool Preload;
-		VectorString PreloadDataIds;
-		VectorDouble PreloadTimeHours;
-		VectorFloat PreloadLevels;
-		double PreloadXmin;
-		int PreloadXptsnb;
-		double PreloadYmin;
-		int PreloadYptsnb;
-		bool Preprocess;
-		wxString PreprocessMethod;
-		VectorString PreprocessDatasetIds;
-		VectorString PreprocessDataIds;
-		VectorFloat PreprocessLevels;
-		VectorDouble PreprocessTimeHours;
-		float Level;
-		wxString GridType;
-		double Xmin;
-		int Xptsnb;
-		double Xstep;
-		double Xshift;
-		double Ymin;
-		int Yptsnb;
-		double Ystep;
-		double Yshift;
-		int FlatAllowed;
-		double TimeHours;
-		wxString Criteria;
-		float Weight;
-	} ParamsPredictor;
-
-	typedef std::vector < ParamsPredictor > VectorParamsPredictors;
-
-	typedef struct
-	{
-		int AnalogsNumber;
-		VectorParamsPredictors Predictors;
-	} ParamsStep;
-
-	typedef std::vector < ParamsStep > VectorParamsStep;
-
-	asParameters();
-	virtual ~asParameters();
-
-	bool IsOk();
-	virtual void AddStep();
-	void AddPredictor(); // To the last step
-	void AddPredictor(ParamsStep &step);
-	void AddPredictor(int i_step);
-
-	void SetSizes();
-
-	virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
-
-	bool FixAnalogsNb();
-
-	void SortLevelsAndTime();
-
-	virtual bool SetSpatialWindowProperties();
-
-	virtual bool SetPreloadingProperties();
-
-	virtual bool InputsOK();
-
-	static VectorInt GetFileStationIds(wxString stationIdsString);
-
-	wxString GetPredictandStationIdsString();
-
-	virtual bool FixTimeLimits();
-
-	bool FixWeights();
-
-	bool FixCoordinates();
-
-	virtual wxString Print();
-
-	bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString);
-
-	virtual bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
-
-	bool SetPredictandStationIds(wxString val);
-
-	VectorParamsPredictors GetVectorParamsPredictors(int i_step)
-	{
-		wxASSERT(i_step<GetStepsNb());
-		return m_steps[i_step].Predictors;
-	}
-
-	void SetVectorParamsPredictors(int i_step, VectorParamsPredictors ptors)
-	{
-		wxASSERT(i_step<GetStepsNb());
-		m_steps[i_step].Predictors = ptors;
-	}
-
-	wxString GetMethodId()
-	{
-		return m_methodId;
-	}
-
-	void SetMethodId(const wxString& val)
-	{
-		m_methodId = val;
-	}
-
-	wxString GetMethodIdDisplay()
-	{
-		return m_methodIdDisplay;
-	}
-
-	void SetMethodIdDisplay(const wxString& val)
-	{
-		m_methodIdDisplay = val;
-	}
-
-	wxString GetSpecificTag()
-	{
-		return m_specificTag;
-	}
-
-	void SetSpecificTag(const wxString& val)
-	{
-		m_specificTag = val;
-	}
-
-	wxString GetSpecificTagDisplay()
-	{
-		return m_specificTagDisplay;
-	}
-
-	void SetSpecificTagDisplay(const wxString& val)
-	{
-		m_specificTagDisplay = val;
-	}
-
-	wxString GetDescription()
-	{
-		return m_description;
-	}
-
-	void SetDescription(const wxString& val)
-	{
-		m_description = val;
-	}
-
-	wxString GetDateProcessed()
-	{
-		return m_dateProcessed;
-	}
-
-	void SetDateProcessed(const wxString& val)
-	{
-		m_dateProcessed = val;
-	}
-
-	bool SetArchiveYearStart(int val)
-	{
-		m_archiveStart = asTime::GetMJD(val, 1, 1);
-		return true;
-	}
-
-	bool SetArchiveYearEnd(int val)
-	{
-		m_archiveEnd = asTime::GetMJD(val, 12, 31);
-		return true;
-	}
-
-	double GetArchiveStart()
-	{
-		return m_archiveStart;
-	}
-
-	bool SetArchiveStart(double val)
-	{
-		m_archiveStart = val;
-		return true;
-	}
-
-	bool SetArchiveStart(wxString val)
-	{
-		m_archiveStart = asTime::GetTimeFromString(val);
-		return true;
-	}
-
-	double GetArchiveEnd()
-	{
-		return m_archiveEnd;
-	}
-
-	bool SetArchiveEnd(double val)
-	{
-		m_archiveEnd = val;
-		return true;
-	}
-
-	bool SetArchiveEnd(wxString val)
-	{
-		m_archiveEnd = asTime::GetTimeFromString(val);
-		return true;
-	}
-
-	double GetTimeMinHours()
-	{
-		return m_timeMinHours;
-	}
-
-	double GetTimeMaxHours()
-	{
-		return m_timeMaxHours;
-	}
-
-	int GetTimeShiftDays()
-	{
-		int shift = 0;
-		if (m_timeMinHours<0) {
-			shift = floor(m_timeMinHours / 24.0);
-		}
-		return shift;
-	}
-
-	int GetTimeSpanDays()
-	{
-		return ceil(m_timeMaxHours / 24.0) + std::abs(GetTimeShiftDays());
-	}
-
-	double GetTimeArrayTargetTimeStepHours()
-	{
-		return m_timeArrayTargetTimeStepHours;
-	}
-
-	bool SetTimeArrayTargetTimeStepHours(double val);
-
-	double GetTimeArrayAnalogsTimeStepHours()
-	{
-		return m_timeArrayAnalogsTimeStepHours;
-	}
-
-	bool SetTimeArrayAnalogsTimeStepHours(double val);
-
-	wxString GetTimeArrayTargetMode()
-	{
-		return m_timeArrayTargetMode;
-	}
-
-	bool SetTimeArrayTargetMode(const wxString& val);
-
-	wxString GetTimeArrayTargetPredictandSerieName()
-	{
-		return m_timeArrayTargetPredictandSerieName;
-	}
-
-	bool SetTimeArrayTargetPredictandSerieName(const wxString& val);
-
-	float GetTimeArrayTargetPredictandMinThreshold()
-	{
-		return m_timeArrayTargetPredictandMinThreshold;
-	}
-
-	bool SetTimeArrayTargetPredictandMinThreshold(float val);
-
-	float GetTimeArrayTargetPredictandMaxThreshold()
-	{
-		return m_timeArrayTargetPredictandMaxThreshold;
-	}
-
-	bool SetTimeArrayTargetPredictandMaxThreshold(float val);
-
-	wxString GetTimeArrayAnalogsMode()
-	{
-		return m_timeArrayAnalogsMode;
-	}
-
-	bool SetTimeArrayAnalogsMode(const wxString& val);
-
-	int GetTimeArrayAnalogsExcludeDays()
-	{
-		return m_timeArrayAnalogsExcludeDays;
-	}
-
-	bool SetTimeArrayAnalogsExcludeDays(int val);
-
-	int GetTimeArrayAnalogsIntervalDays()
-	{
-		return m_timeArrayAnalogsIntervalDays;
-	}
-
-	bool SetTimeArrayAnalogsIntervalDays(int val);
-
-	VectorInt GetPredictandStationIds()
-	{
-		return m_predictandStationIds;
-	}
-
-	virtual VVectorInt GetPredictandStationIdsVector()
-	{
-		VVectorInt vec;
-		vec.push_back(m_predictandStationIds);
-		return vec;
-	}
-
-	bool SetPredictandStationIds(VectorInt val);
-
-	wxString GePredictandtDatasetId()
-	{
-		return m_predictandDatasetId;
-	}
-
-	bool SetPredictandDatasetId(const wxString &val);
-
-	DataParameter GetPredictandParameter()
-	{
-		return m_predictandParameter;
-	}
-
-	void SetPredictandParameter(DataParameter val)
-	{
-		m_predictandParameter = val;
-	}
-
-	DataTemporalResolution GetPredictandTemporalResolution()
-	{
-		return m_predictandTemporalResolution;
-	}
-
-	void SetPredictandTemporalResolution(DataTemporalResolution val)
-	{
-		m_predictandTemporalResolution = val;
-	}
-
-	DataSpatialAggregation GetPredictandSpatialAggregation()
-	{
-		return m_predictandSpatialAggregation;
-	}
-
-	void SetPredictandSpatialAggregation(DataSpatialAggregation val)
-	{
-		m_predictandSpatialAggregation = val;
-	}
-
-	double GetPredictandTimeHours()
-	{
-		return m_predictandTimeHours;
-	}
-
-	bool SetPredictandTimeHours(double val);
-
-	int GetAnalogsNumber(int i_step)
-	{
-		return m_steps[i_step].AnalogsNumber;
-	}
-
-	bool SetAnalogsNumber(int i_step, int val);
-
-	bool NeedsPreloading(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Preload;
-	}
-
-	void SetPreload(int i_step, int i_predictor, bool val)
-	{
-		m_steps[i_step].Predictors[i_predictor].Preload = val;
-	}
-
-	VectorString GetPreloadDataIds(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadDataIds;
-	}
-
-	bool SetPreloadDataIds(int i_step, int i_predictor, VectorString val);
-
-	bool SetPreloadDataIds(int i_step, int i_predictor, wxString val);
-
-	VectorDouble GetPreloadTimeHours(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadTimeHours;
-	}
-
-	bool SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val);
-
-	bool SetPreloadTimeHours(int i_step, int i_predictor, double val);
-
-	VectorFloat GetPreloadLevels(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadLevels;
-	}
-
-	bool SetPreloadLevels(int i_step, int i_predictor, VectorFloat val);
-
-	bool SetPreloadLevels(int i_step, int i_predictor, float val);
-
-	double GetPreloadXmin(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadXmin;
-	}
-
-	bool SetPreloadXmin(int i_step, int i_predictor, double val);
+    typedef std::vector<ParamsPredictor> VectorParamsPredictors;
 
-	int GetPreloadXptsnb(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadXptsnb;
-	}
-
-	bool SetPreloadXptsnb(int i_step, int i_predictor, int val);
+    typedef struct
+    {
+        int AnalogsNumber;
+        VectorParamsPredictors Predictors;
+    } ParamsStep;
 
-	double GetPreloadYmin(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadYmin;
-	}
+    typedef std::vector<ParamsStep> VectorParamsStep;
 
-	bool SetPreloadYmin(int i_step, int i_predictor, double val);
+    asParameters();
 
-	int GetPreloadYptsnb(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreloadYptsnb;
-	}
+    virtual ~asParameters();
 
-	bool SetPreloadYptsnb(int i_step, int i_predictor, int val);
+    bool IsOk();
 
-	bool NeedsPreprocessing(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Preprocess;
-	}
+    virtual void AddStep();
 
-	void SetPreprocess(int i_step, int i_predictor, bool val)
-	{
-		m_steps[i_step].Predictors[i_predictor].Preprocess = val;
-	}
+    void AddPredictor(); // To the last step
 
-	int GetPreprocessSize(int i_step, int i_predictor)
-	{
-		return (int) m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size();
-	}
+    void AddPredictor(ParamsStep &step);
 
-	wxString GetPreprocessMethod(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].PreprocessMethod;
-	}
+    void AddPredictor(int i_step);
 
-	bool SetPreprocessMethod(int i_step, int i_predictor, const wxString& val);
+    void SetSizes();
 
-	wxString GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset);
+    virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
+
+    bool FixAnalogsNb();
 
-	bool SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString& val);
+    void SortLevelsAndTime();
+
+    virtual bool SetSpatialWindowProperties();
+
+    virtual bool SetPreloadingProperties();
+
+    virtual bool InputsOK();
+
+    static VectorInt GetFileStationIds(wxString stationIdsString);
+
+    wxString GetPredictandStationIdsString();
+
+    virtual bool FixTimeLimits();
+
+    bool FixWeights();
+
+    bool FixCoordinates();
+
+    virtual wxString Print();
+
+    bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString);
+
+    virtual bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
+
+    bool SetPredictandStationIds(wxString val);
+
+    VectorParamsPredictors GetVectorParamsPredictors(int i_step)
+    {
+        wxASSERT(i_step < GetStepsNb());
+        return m_steps[i_step].Predictors;
+    }
+
+    void SetVectorParamsPredictors(int i_step, VectorParamsPredictors ptors)
+    {
+        wxASSERT(i_step < GetStepsNb());
+        m_steps[i_step].Predictors = ptors;
+    }
+
+    wxString GetMethodId()
+    {
+        return m_methodId;
+    }
+
+    void SetMethodId(const wxString &val)
+    {
+        m_methodId = val;
+    }
+
+    wxString GetMethodIdDisplay()
+    {
+        return m_methodIdDisplay;
+    }
+
+    void SetMethodIdDisplay(const wxString &val)
+    {
+        m_methodIdDisplay = val;
+    }
+
+    wxString GetSpecificTag()
+    {
+        return m_specificTag;
+    }
+
+    void SetSpecificTag(const wxString &val)
+    {
+        m_specificTag = val;
+    }
+
+    wxString GetSpecificTagDisplay()
+    {
+        return m_specificTagDisplay;
+    }
+
+    void SetSpecificTagDisplay(const wxString &val)
+    {
+        m_specificTagDisplay = val;
+    }
+
+    wxString GetDescription()
+    {
+        return m_description;
+    }
+
+    void SetDescription(const wxString &val)
+    {
+        m_description = val;
+    }
+
+    wxString GetDateProcessed()
+    {
+        return m_dateProcessed;
+    }
+
+    void SetDateProcessed(const wxString &val)
+    {
+        m_dateProcessed = val;
+    }
+
+    bool SetArchiveYearStart(int val)
+    {
+        m_archiveStart = asTime::GetMJD(val, 1, 1);
+        return true;
+    }
+
+    bool SetArchiveYearEnd(int val)
+    {
+        m_archiveEnd = asTime::GetMJD(val, 12, 31);
+        return true;
+    }
+
+    double GetArchiveStart()
+    {
+        return m_archiveStart;
+    }
+
+    bool SetArchiveStart(double val)
+    {
+        m_archiveStart = val;
+        return true;
+    }
+
+    bool SetArchiveStart(wxString val)
+    {
+        m_archiveStart = asTime::GetTimeFromString(val);
+        return true;
+    }
+
+    double GetArchiveEnd()
+    {
+        return m_archiveEnd;
+    }
+
+    bool SetArchiveEnd(double val)
+    {
+        m_archiveEnd = val;
+        return true;
+    }
+
+    bool SetArchiveEnd(wxString val)
+    {
+        m_archiveEnd = asTime::GetTimeFromString(val);
+        return true;
+    }
+
+    double GetTimeMinHours()
+    {
+        return m_timeMinHours;
+    }
+
+    double GetTimeMaxHours()
+    {
+        return m_timeMaxHours;
+    }
+
+    int GetTimeShiftDays()
+    {
+        int shift = 0;
+        if (m_timeMinHours < 0) {
+            shift = (int) floor(m_timeMinHours / 24.0);
+        }
+        return shift;
+    }
+
+    int GetTimeSpanDays()
+    {
+        return ceil(m_timeMaxHours / 24.0) + std::abs(GetTimeShiftDays());
+    }
+
+    double GetTimeArrayTargetTimeStepHours()
+    {
+        return m_timeArrayTargetTimeStepHours;
+    }
+
+    bool SetTimeArrayTargetTimeStepHours(double val);
+
+    double GetTimeArrayAnalogsTimeStepHours()
+    {
+        return m_timeArrayAnalogsTimeStepHours;
+    }
+
+    bool SetTimeArrayAnalogsTimeStepHours(double val);
+
+    wxString GetTimeArrayTargetMode()
+    {
+        return m_timeArrayTargetMode;
+    }
+
+    bool SetTimeArrayTargetMode(const wxString &val);
+
+    wxString GetTimeArrayTargetPredictandSerieName()
+    {
+        return m_timeArrayTargetPredictandSerieName;
+    }
+
+    bool SetTimeArrayTargetPredictandSerieName(const wxString &val);
+
+    float GetTimeArrayTargetPredictandMinThreshold()
+    {
+        return m_timeArrayTargetPredictandMinThreshold;
+    }
+
+    bool SetTimeArrayTargetPredictandMinThreshold(float val);
+
+    float GetTimeArrayTargetPredictandMaxThreshold()
+    {
+        return m_timeArrayTargetPredictandMaxThreshold;
+    }
+
+    bool SetTimeArrayTargetPredictandMaxThreshold(float val);
+
+    wxString GetTimeArrayAnalogsMode()
+    {
+        return m_timeArrayAnalogsMode;
+    }
+
+    bool SetTimeArrayAnalogsMode(const wxString &val);
+
+    int GetTimeArrayAnalogsExcludeDays()
+    {
+        return m_timeArrayAnalogsExcludeDays;
+    }
+
+    bool SetTimeArrayAnalogsExcludeDays(int val);
+
+    int GetTimeArrayAnalogsIntervalDays()
+    {
+        return m_timeArrayAnalogsIntervalDays;
+    }
+
+    bool SetTimeArrayAnalogsIntervalDays(int val);
+
+    VectorInt GetPredictandStationIds()
+    {
+        return m_predictandStationIds;
+    }
+
+    virtual VVectorInt GetPredictandStationIdsVector()
+    {
+        VVectorInt vec;
+        vec.push_back(m_predictandStationIds);
+        return vec;
+    }
+
+    bool SetPredictandStationIds(VectorInt val);
+
+    wxString GePredictandtDatasetId()
+    {
+        return m_predictandDatasetId;
+    }
+
+    bool SetPredictandDatasetId(const wxString &val);
+
+    DataParameter GetPredictandParameter()
+    {
+        return m_predictandParameter;
+    }
+
+    void SetPredictandParameter(DataParameter val)
+    {
+        m_predictandParameter = val;
+    }
+
+    DataTemporalResolution GetPredictandTemporalResolution()
+    {
+        return m_predictandTemporalResolution;
+    }
+
+    void SetPredictandTemporalResolution(DataTemporalResolution val)
+    {
+        m_predictandTemporalResolution = val;
+    }
+
+    DataSpatialAggregation GetPredictandSpatialAggregation()
+    {
+        return m_predictandSpatialAggregation;
+    }
+
+    void SetPredictandSpatialAggregation(DataSpatialAggregation val)
+    {
+        m_predictandSpatialAggregation = val;
+    }
+
+    double GetPredictandTimeHours()
+    {
+        return m_predictandTimeHours;
+    }
+
+    bool SetPredictandTimeHours(double val);
+
+    int GetAnalogsNumber(int i_step)
+    {
+        return m_steps[i_step].AnalogsNumber;
+    }
+
+    bool SetAnalogsNumber(int i_step, int val);
+
+    bool NeedsPreloading(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Preload;
+    }
+
+    void SetPreload(int i_step, int i_predictor, bool val)
+    {
+        m_steps[i_step].Predictors[i_predictor].Preload = val;
+    }
+
+    VectorString GetPreloadDataIds(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadDataIds;
+    }
+
+    bool SetPreloadDataIds(int i_step, int i_predictor, VectorString val);
+
+    bool SetPreloadDataIds(int i_step, int i_predictor, wxString val);
+
+    VectorDouble GetPreloadTimeHours(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadTimeHours;
+    }
+
+    bool SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val);
+
+    bool SetPreloadTimeHours(int i_step, int i_predictor, double val);
+
+    VectorFloat GetPreloadLevels(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadLevels;
+    }
 
-	wxString GetPreprocessDataId(int i_step, int i_predictor, int i_dataset);
+    bool SetPreloadLevels(int i_step, int i_predictor, VectorFloat val);
+
+    bool SetPreloadLevels(int i_step, int i_predictor, float val);
 
-	bool SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString& val);
+    double GetPreloadXmin(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadXmin;
+    }
+
+    bool SetPreloadXmin(int i_step, int i_predictor, double val);
 
-	float GetPreprocessLevel(int i_step, int i_predictor, int i_dataset);
+    int GetPreloadXptsnb(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadXptsnb;
+    }
 
-	bool SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val);
+    bool SetPreloadXptsnb(int i_step, int i_predictor, int val);
 
-	double GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset);
+    double GetPreloadYmin(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadYmin;
+    }
 
-	bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val);
+    bool SetPreloadYmin(int i_step, int i_predictor, double val);
 
-	wxString GetPredictorDatasetId(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].DatasetId;
-	}
+    int GetPreloadYptsnb(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreloadYptsnb;
+    }
 
-	bool SetPredictorDatasetId(int i_step, int i_predictor, const wxString& val);
+    bool SetPreloadYptsnb(int i_step, int i_predictor, int val);
 
-	wxString GetPredictorDataId(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].DataId;
-	}
+    bool NeedsPreprocessing(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Preprocess;
+    }
 
-	bool SetPredictorDataId(int i_step, int i_predictor, wxString val);
+    void SetPreprocess(int i_step, int i_predictor, bool val)
+    {
+        m_steps[i_step].Predictors[i_predictor].Preprocess = val;
+    }
 
-	float GetPredictorLevel(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Level;
-	}
+    virtual int GetPreprocessSize(int i_step, int i_predictor)
+    {
+        return (int) m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size();
+    }
 
-	bool SetPredictorLevel(int i_step, int i_predictor, float val);
+    wxString GetPreprocessMethod(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].PreprocessMethod;
+    }
 
-	wxString GetPredictorGridType(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].GridType;
-	}
+    bool SetPreprocessMethod(int i_step, int i_predictor, const wxString &val);
 
-	bool SetPredictorGridType(int i_step, int i_predictor, wxString val);
+    wxString GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset);
 
-	double GetPredictorXmin(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Xmin;
-	}
+    bool SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString &val);
 
-	bool SetPredictorXmin(int i_step, int i_predictor, double val);
+    wxString GetPreprocessDataId(int i_step, int i_predictor, int i_dataset);
 
-	int GetPredictorXptsnb(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Xptsnb;
-	}
+    bool SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString &val);
 
-	bool SetPredictorXptsnb(int i_step, int i_predictor, int val);
+    float GetPreprocessLevel(int i_step, int i_predictor, int i_dataset);
 
-	double GetPredictorXstep(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Xstep;
-	}
+    bool SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val);
 
-	bool SetPredictorXstep(int i_step, int i_predictor, double val);
+    double GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset);
 
-	double GetPredictorXshift(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Xshift;
-	}
+    bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val);
 
-	bool SetPredictorXshift(int i_step, int i_predictor, double val);
+    wxString GetPredictorDatasetId(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].DatasetId;
+    }
 
-	double GetPredictorYmin(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Ymin;
-	}
+    bool SetPredictorDatasetId(int i_step, int i_predictor, const wxString &val);
 
-	bool SetPredictorYmin(int i_step, int i_predictor, double val);
+    wxString GetPredictorDataId(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].DataId;
+    }
 
-	int GetPredictorYptsnb(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Yptsnb;
-	}
+    bool SetPredictorDataId(int i_step, int i_predictor, wxString val);
 
-	bool SetPredictorYptsnb(int i_step, int i_predictor, int val);
+    float GetPredictorLevel(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Level;
+    }
 
-	double GetPredictorYstep(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Ystep;
-	}
+    bool SetPredictorLevel(int i_step, int i_predictor, float val);
 
-	bool SetPredictorYstep(int i_step, int i_predictor, double val);
+    wxString GetPredictorGridType(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].GridType;
+    }
 
-	double GetPredictorYshift(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Yshift;
-	}
+    bool SetPredictorGridType(int i_step, int i_predictor, wxString val);
 
-	bool SetPredictorYshift(int i_step, int i_predictor, double val);
+    double GetPredictorXmin(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Xmin;
+    }
 
-	int GetPredictorFlatAllowed(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].FlatAllowed;
-	}
+    bool SetPredictorXmin(int i_step, int i_predictor, double val);
 
-	bool SetPredictorFlatAllowed(int i_step, int i_predictor, int val);
+    int GetPredictorXptsnb(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Xptsnb;
+    }
 
-	double GetPredictorTimeHours(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].TimeHours;
-	}
+    bool SetPredictorXptsnb(int i_step, int i_predictor, int val);
 
-	bool SetPredictorTimeHours(int i_step, int i_predictor, double val);
+    double GetPredictorXstep(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Xstep;
+    }
 
-	wxString GetPredictorCriteria(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Criteria;
-	}
+    bool SetPredictorXstep(int i_step, int i_predictor, double val);
 
-	bool SetPredictorCriteria(int i_step, int i_predictor, const wxString& val);
+    double GetPredictorXshift(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Xshift;
+    }
 
-	float GetPredictorWeight(int i_step, int i_predictor)
-	{
-		return m_steps[i_step].Predictors[i_predictor].Weight;
-	}
+    bool SetPredictorXshift(int i_step, int i_predictor, double val);
 
-	bool SetPredictorWeight(int i_step, int i_predictor, float val);
+    double GetPredictorYmin(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Ymin;
+    }
 
-	int GetStepsNb()
-	{
-		return m_stepsNb;
-	}
+    bool SetPredictorYmin(int i_step, int i_predictor, double val);
 
-	VectorInt GetVectorPredictorsNb()
-	{
-		return m_predictorsNb;
-	}
+    int GetPredictorYptsnb(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Yptsnb;
+    }
 
-	int GetPredictorsNb(int i_step)
-	{
-		wxASSERT_MSG((unsigned)i_step<m_predictorsNb.size(), wxString::Format(_("Trying to access element %d of m_predictorsNb of size %d."), i_step + 1, (int)m_predictorsNb.size()));
-		return m_predictorsNb[i_step];
-	}
+    bool SetPredictorYptsnb(int i_step, int i_predictor, int val);
 
+    double GetPredictorYstep(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Ystep;
+    }
+
+    bool SetPredictorYstep(int i_step, int i_predictor, double val);
+
+    double GetPredictorYshift(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Yshift;
+    }
+
+    bool SetPredictorYshift(int i_step, int i_predictor, double val);
+
+    int GetPredictorFlatAllowed(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].FlatAllowed;
+    }
+
+    bool SetPredictorFlatAllowed(int i_step, int i_predictor, int val);
+
+    double GetPredictorTimeHours(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].TimeHours;
+    }
+
+    bool SetPredictorTimeHours(int i_step, int i_predictor, double val);
+
+    wxString GetPredictorCriteria(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Criteria;
+    }
+
+    bool SetPredictorCriteria(int i_step, int i_predictor, const wxString &val);
+
+    float GetPredictorWeight(int i_step, int i_predictor)
+    {
+        return m_steps[i_step].Predictors[i_predictor].Weight;
+    }
+
+    bool SetPredictorWeight(int i_step, int i_predictor, float val);
+
+    int GetStepsNb()
+    {
+        return m_stepsNb;
+    }
+
+    VectorInt GetVectorPredictorsNb()
+    {
+        return m_predictorsNb;
+    }
+
+    int GetPredictorsNb(int i_step)
+    {
+        wxASSERT_MSG((unsigned) i_step < m_predictorsNb.size(),
+                     wxString::Format(_("Trying to access element %d of m_predictorsNb of size %d."), i_step + 1,
+                                      (int) m_predictorsNb.size()));
+        return m_predictorsNb[i_step];
+    }
 
 protected:
-	wxString m_methodId;
-	wxString m_methodIdDisplay;
-	wxString m_specificTag;
-	wxString m_specificTagDisplay;
-	wxString m_description;
-	double m_archiveStart;
-	double m_archiveEnd;
-	int m_timeArrayAnalogsIntervalDays;
-	VectorInt m_predictandStationIds;
-	double m_timeMinHours;
-	double m_timeMaxHours;
+    wxString m_methodId;
+    wxString m_methodIdDisplay;
+    wxString m_specificTag;
+    wxString m_specificTagDisplay;
+    wxString m_description;
+    double m_archiveStart;
+    double m_archiveEnd;
+    int m_timeArrayAnalogsIntervalDays;
+    VectorInt m_predictandStationIds;
+    double m_timeMinHours;
+    double m_timeMaxHours;
 
 private:
-	VectorParamsStep m_steps; // Set as private to force use of setters.
-	VectorInt m_predictorsNb;
-	int m_stepsNb;
-	wxString m_dateProcessed;
-	wxString m_timeArrayTargetMode;
-	double m_timeArrayTargetTimeStepHours;
-	wxString m_timeArrayTargetPredictandSerieName;
-	float m_timeArrayTargetPredictandMinThreshold;
-	float m_timeArrayTargetPredictandMaxThreshold;
-	wxString m_timeArrayAnalogsMode;
-	double m_timeArrayAnalogsTimeStepHours;
-	int m_timeArrayAnalogsExcludeDays;
-	DataParameter m_predictandParameter;
-	DataTemporalResolution m_predictandTemporalResolution;
-	DataSpatialAggregation m_predictandSpatialAggregation;
-	wxString m_predictandDatasetId;
-	double m_predictandTimeHours;
+    VectorParamsStep m_steps; // Set as private to force use of setters.
+    VectorInt m_predictorsNb;
+    int m_stepsNb;
+    wxString m_dateProcessed;
+    wxString m_timeArrayTargetMode;
+    double m_timeArrayTargetTimeStepHours;
+    wxString m_timeArrayTargetPredictandSerieName;
+    float m_timeArrayTargetPredictandMinThreshold;
+    float m_timeArrayTargetPredictandMaxThreshold;
+    wxString m_timeArrayAnalogsMode;
+    double m_timeArrayAnalogsTimeStepHours;
+    int m_timeArrayAnalogsExcludeDays;
+    DataParameter m_predictandParameter;
+    DataTemporalResolution m_predictandTemporalResolution;
+    DataSpatialAggregation m_predictandSpatialAggregation;
+    wxString m_predictandDatasetId;
+    double m_predictandTimeHours;
 
 };
 

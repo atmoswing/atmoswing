@@ -38,30 +38,30 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
     // Write
     wxXmlDocument doc;
 
-    wxXmlNode * nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE ,"base");
+    wxXmlNode *nodeBase = new wxXmlNode(wxXML_ELEMENT_NODE, "base");
 
-    wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
+    wxXmlNode *nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
     nodeBuilding->AddAttribute("id", L"R\u00F4tillon");
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
-    ASSERT_TRUE(stringHopital.size()>0);
-    wxXmlNode * nodeType = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_type");
-    wxXmlNode * nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_type", stringHopital );
-    nodeType->AddChild ( nodeTypeValue );
+    ASSERT_TRUE(stringHopital.size() > 0);
+    wxXmlNode *nodeType = new wxXmlNode(wxXML_ELEMENT_NODE, "building_type");
+    wxXmlNode *nodeTypeValue = new wxXmlNode(wxXML_TEXT_NODE, "building_type", stringHopital);
+    nodeType->AddChild(nodeTypeValue);
 
-    wxXmlNode * nodeLocation = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_location" );
-    wxXmlNode * nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_location", L"Z\u00FCrich" );
-    nodeLocation->AddChild (nodeLocationValue );
+    wxXmlNode *nodeLocation = new wxXmlNode(wxXML_ELEMENT_NODE, "building_location");
+    wxXmlNode *nodeLocationValue = new wxXmlNode(wxXML_TEXT_NODE, "building_location", L"Z\u00FCrich");
+    nodeLocation->AddChild(nodeLocationValue);
 
-    wxXmlNode * nodeHeight = new wxXmlNode(wxXML_ELEMENT_NODE ,"building_height" );
-    wxXmlNode * nodeHeightValue = new wxXmlNode(wxXML_TEXT_NODE ,"building_height", "40" );
-    nodeHeight->AddChild ( nodeHeightValue );
+    wxXmlNode *nodeHeight = new wxXmlNode(wxXML_ELEMENT_NODE, "building_height");
+    wxXmlNode *nodeHeightValue = new wxXmlNode(wxXML_TEXT_NODE, "building_height", "40");
+    nodeHeight->AddChild(nodeHeightValue);
 
     nodeBuilding->AddChild(nodeType);
     nodeBuilding->AddChild(nodeLocation);
     nodeBuilding->AddChild(nodeHeight);
 
-    nodeBase->AddChild ( nodeBuilding );
+    nodeBase->AddChild(nodeBuilding);
 
     doc.SetRoot(nodeBase);
 
@@ -76,12 +76,12 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
 
     wxXmlNode *childBuilding = doc2.GetRoot()->GetChildren();
     EXPECT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
-    EXPECT_TRUE(childBuilding->GetAttribute("id").size()>0);
+    EXPECT_TRUE(childBuilding->GetAttribute("id").size() > 0);
 
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
     EXPECT_EQ("building_type", childBuildingType->GetName());
     EXPECT_EQ(L"h\u00F4pital", childBuildingType->GetNodeContent());
-    EXPECT_TRUE(childBuildingType->GetNodeContent().size()>0);
+    EXPECT_TRUE(childBuildingType->GetNodeContent().size() > 0);
 
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
     EXPECT_EQ("building_location", childBuildingLocation->GetName());
@@ -101,17 +101,17 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file2.xml";
 
     wxString stringHopital(L"h\u00F4pital", wxConvUTF8);
-    ASSERT_TRUE(stringHopital.size()>0);
+    ASSERT_TRUE(stringHopital.size() > 0);
 
     // Write
-	asFileXml fileXml(filePath, asFile::Replace);
-	ASSERT_TRUE(fileXml.Open());
+    asFileXml fileXml(filePath, asFile::Replace);
+    ASSERT_TRUE(fileXml.Open());
 
-    wxXmlNode * nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE ,"building" );
-	nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
+    wxXmlNode *nodeBuilding = new wxXmlNode(wxXML_ELEMENT_NODE, "building");
+    nodeBuilding->AddAttribute("id", wxString(L"R\u00F4tillon", wxConvUTF8));
 
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_type", stringHopital));
-	nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", wxString(L"Z\u00FCrich", wxConvUTF8)));
+    nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_location", wxString(L"Z\u00FCrich", wxConvUTF8)));
     nodeBuilding->AddChild(fileXml.CreateNodeWithValue("building_height", 40));
 
     fileXml.AddChild(nodeBuilding);
@@ -126,12 +126,12 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
 
     wxXmlNode *childBuilding = fileXml2.GetRoot()->GetChildren();
     EXPECT_EQ(L"R\u00F4tillon", childBuilding->GetAttribute("id"));
-    EXPECT_TRUE(childBuilding->GetAttribute("id").size()>0);
+    EXPECT_TRUE(childBuilding->GetAttribute("id").size() > 0);
 
     wxXmlNode *childBuildingType = childBuilding->GetChildren();
     EXPECT_EQ("building_type", childBuildingType->GetName());
     EXPECT_EQ(stringHopital, childBuildingType->GetNodeContent());
-    EXPECT_TRUE(childBuildingType->GetNodeContent().size()>0);
+    EXPECT_TRUE(childBuildingType->GetNodeContent().size() > 0);
 
     wxXmlNode *childBuildingLocation = childBuildingType->GetNext();
     EXPECT_EQ("building_location", childBuildingLocation->GetName());

@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASVERSION_H
 #define ASVERSION_H
 
@@ -39,7 +39,9 @@ class asVersion
 {
 public:
     asVersion();
+
     virtual ~asVersion();
+
     static wxString GetFullString();
 
 

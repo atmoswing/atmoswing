@@ -58,34 +58,30 @@ TEST(PredictorCriteria, ProcessS1)
     file.SkipLines(9);
 
     // Get target data Z1000
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefZ1000(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefZ1000(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(137, RefZ1000(0,0));
-    EXPECT_FLOAT_EQ(89, RefZ1000(1,2));
-    EXPECT_FLOAT_EQ(137, RefZ1000(4,8));
+    EXPECT_FLOAT_EQ(137, RefZ1000(0, 0));
+    EXPECT_FLOAT_EQ(89, RefZ1000(1, 2));
+    EXPECT_FLOAT_EQ(137, RefZ1000(4, 8));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data Z500
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefZ500(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefZ500(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(5426, RefZ500(0,0));
-    EXPECT_FLOAT_EQ(5721, RefZ500(4,8));
+    EXPECT_FLOAT_EQ(5426, RefZ500(0, 0));
+    EXPECT_FLOAT_EQ(5721, RefZ500(4, 8));
 
     // Vectors for candidates results
     int candidatesNb = 10;
@@ -129,71 +125,66 @@ TEST(PredictorCriteria, ProcessS1)
     critS1[9] = 61.8f;
 
     // Instantiate the criteria
-    asPredictorCriteria* criteria = asPredictorCriteria::GetInstance(_("S1"));
+    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("S1"));
 
     // Loop on every candidate
-    for (int i_cand=0; i_cand<candidatesNb; i_cand++)
-    {
+    for (int i_cand = 0; i_cand < candidatesNb; i_cand++) {
         // Skip coasent
         file.SkipLines(6);
 
         // Get candidate data Z1000
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandZ1000(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandZ1000(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkZ1000[i_cand], CandZ1000(4,8));
+        EXPECT_FLOAT_EQ(checkZ1000[i_cand], CandZ1000(4, 8));
 
         // Skip coasent
         file.SkipLines(3);
 
         // Get candidate data Z500
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandZ500(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandZ500(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkZ500[i_cand], CandZ500(4,8));
+        EXPECT_FLOAT_EQ(checkZ500[i_cand], CandZ500(4, 8));
 
         // Process S1 and check the results
         float resZ1000, resZ500, res;
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
-        res = (resZ500+resZ1000)/2;
+        res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
-        res = (resZ500+resZ1000)/2;
+        res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
-        res = (resZ500+resZ1000)/2;
+        res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
-        res = (resZ500+resZ1000)/2;
+        res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[i_cand], res, 0.05);
     }
-    
+
     wxDELETE(criteria);
 
 }
@@ -208,8 +199,8 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     float level = 1000;
     asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
 
-    double start = asTime::GetMJD(1960,1,1,00,00);
-    double end = asTime::GetMJD(1960,1,11,00,00);
+    double start = asTime::GetMJD(1960, 1, 1, 00, 00);
+    double end = asTime::GetMJD(1960, 1, 11, 00, 00);
     double timestephours = 6;
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
@@ -217,16 +208,17 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/");
 
-    asDataPredictorArchive* predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt", predictorDataDir);
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+                                                                            predictorDataDir);
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
     predictor->Load(&geoArea, timearray);
-	std::vector < asDataPredictorArchive* > vdata;
+    std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
-    asDataPredictorArchive* gradients = new asDataPredictorArchive(*predictor);
+    asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     VArray2DFloat hgtPreproc = gradients->GetData();
 
@@ -251,15 +243,14 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     int candidatesNb = hgtOriginal.size();
     VectorFloat critS1;
     critS1.resize(candidatesNb);
-    EXPECT_TRUE(candidatesNb>1);
+    EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asPredictorCriteria* criteria = asPredictorCriteria::GetInstance(_("S1"));
-    asPredictorCriteria* criteriaGrads = asPredictorCriteria::GetInstance(_("S1grads"));
+    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("S1"));
+    asPredictorCriteria *criteriaGrads = asPredictorCriteria::GetInstance(_("S1grads"));
 
     // Loop on every candidate
-    for (int i_cand=1; i_cand<candidatesNb; i_cand++)
-    {
+    for (int i_cand = 1; i_cand < candidatesNb; i_cand++) {
         float S1Original, S1Preproc;
 
         // Get candidate data
@@ -269,22 +260,22 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
         // Process the score
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         EXPECT_FLOAT_EQ(S1Original, S1Preproc);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         EXPECT_FLOAT_EQ(S1Original, S1Preproc);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         EXPECT_FLOAT_EQ(S1Original, S1Preproc);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
         EXPECT_FLOAT_EQ(S1Original, S1Preproc);
@@ -309,85 +300,75 @@ TEST(PredictorCriteria, ProcessRSE)
     int lons = 2;
     int lats = 2;
     Array2DFloat RefPRWTR, CandPRWTR;
-    RefPRWTR.resize(lats, 2*lons);
-    CandPRWTR.resize(lats, 2*lons);
+    RefPRWTR.resize(lats, 2 * lons);
+    CandPRWTR.resize(lats, 2 * lons);
     Array2DFloat RefRHUM850, CandRHUM850;
-    RefRHUM850.resize(lats, 2*lons);
-    CandRHUM850.resize(lats, 2*lons);
+    RefRHUM850.resize(lats, 2 * lons);
+    CandRHUM850.resize(lats, 2 * lons);
     Array2DFloat RefMulti, CandMulti;
-    RefMulti.resize(lats, 2*lons);
-    CandMulti.resize(lats, 2*lons);
+    RefMulti.resize(lats, 2 * lons);
+    CandMulti.resize(lats, 2 * lons);
 
     // Skip the header
     file.SkipLines(9);
 
     // Get target data PRWTR12h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefPRWTR(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefPRWTR(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6, RefPRWTR(0,0));
-    EXPECT_FLOAT_EQ(20.4, RefPRWTR(1,1));
+    EXPECT_FLOAT_EQ(13.6, RefPRWTR(0, 0));
+    EXPECT_FLOAT_EQ(20.4, RefPRWTR(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data PRWTR24h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefPRWTR(i_lat,i_lon+lons) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefPRWTR(i_lat, i_lon + lons) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3, RefPRWTR(0,2));
-    EXPECT_FLOAT_EQ(18.1, RefPRWTR(1,3));
+    EXPECT_FLOAT_EQ(13.3, RefPRWTR(0, 2));
+    EXPECT_FLOAT_EQ(18.1, RefPRWTR(1, 3));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data RHUM85012h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefRHUM850(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefRHUM850(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(82, RefRHUM850(0,0));
-    EXPECT_FLOAT_EQ(100, RefRHUM850(1,1));
+    EXPECT_FLOAT_EQ(82, RefRHUM850(0, 0));
+    EXPECT_FLOAT_EQ(100, RefRHUM850(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data RHUM85024h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefRHUM850(i_lat,i_lon+lons) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefRHUM850(i_lat, i_lon + lons) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(100, RefRHUM850(0,2));
-    EXPECT_FLOAT_EQ(96, RefRHUM850(1,3));
+    EXPECT_FLOAT_EQ(100, RefRHUM850(0, 2));
+    EXPECT_FLOAT_EQ(96, RefRHUM850(1, 3));
 
     // Process to the multiplication
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<2*lons; i_lon++)
-        {
-            RefMulti(i_lat,i_lon) = RefPRWTR(i_lat,i_lon) * RefRHUM850(i_lat,i_lon);
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < 2 * lons; i_lon++) {
+            RefMulti(i_lat, i_lon) = RefPRWTR(i_lat, i_lon) * RefRHUM850(i_lat, i_lon);
         }
     }
 
@@ -424,35 +405,30 @@ TEST(PredictorCriteria, ProcessRSE)
     critRMSE[6] = 1791.5f;
 
     // Instantiate the criteria
-    asPredictorCriteria* criteria = asPredictorCriteria::GetInstance(asPredictorCriteria::RSE);
+    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(asPredictorCriteria::RSE);
 
     // Loop on every candidate
-    for (int i_cand=0; i_cand<candidatesNb; i_cand++)
-    {
+    for (int i_cand = 0; i_cand < candidatesNb; i_cand++) {
         // Skip coasent
         file.SkipLines(6);
 
         // Get candidate data PRWTR12h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandPRWTR(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandPRWTR(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkPRWTR[i_cand], CandPRWTR(1,1));
+        EXPECT_FLOAT_EQ(checkPRWTR[i_cand], CandPRWTR(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
 
         // Get candidate data PRWTR24h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandPRWTR(i_lat,i_lon+lons) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandPRWTR(i_lat, i_lon + lons) = file.GetFloat();
             }
         }
 
@@ -460,35 +436,29 @@ TEST(PredictorCriteria, ProcessRSE)
         file.SkipLines(3);
 
         // Get candidate data RHUM85012h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandRHUM850(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandRHUM850(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkRHUM850[i_cand], CandRHUM850(1,1));
+        EXPECT_FLOAT_EQ(checkRHUM850[i_cand], CandRHUM850(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
 
         // Get candidate data RHUM85024h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandRHUM850(i_lat,i_lon+lons) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandRHUM850(i_lat, i_lon + lons) = file.GetFloat();
             }
         }
 
         // Process to the multiplication
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<2*lons; i_lon++)
-            {
-                CandMulti(i_lat,i_lon) = CandPRWTR(i_lat,i_lon) * CandRHUM850(i_lat,i_lon);
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < 2 * lons; i_lon++) {
+                CandMulti(i_lat, i_lon) = CandPRWTR(i_lat, i_lon) * CandRHUM850(i_lat, i_lon);
             }
         }
 
@@ -497,19 +467,19 @@ TEST(PredictorCriteria, ProcessRSE)
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
     }
@@ -549,73 +519,63 @@ TEST(PredictorCriteria, ProcessRMSE)
     file.SkipLines(9);
 
     // Get target data PRWTR12h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefPRWTR12h(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefPRWTR12h(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6, RefPRWTR12h(0,0));
-    EXPECT_FLOAT_EQ(20.4, RefPRWTR12h(1,1));
+    EXPECT_FLOAT_EQ(13.6, RefPRWTR12h(0, 0));
+    EXPECT_FLOAT_EQ(20.4, RefPRWTR12h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data PRWTR24h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefPRWTR24h(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefPRWTR24h(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3, RefPRWTR24h(0,0));
-    EXPECT_FLOAT_EQ(18.1, RefPRWTR24h(1,1));
+    EXPECT_FLOAT_EQ(13.3, RefPRWTR24h(0, 0));
+    EXPECT_FLOAT_EQ(18.1, RefPRWTR24h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data RHUM85012h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefRHUM85012h(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefRHUM85012h(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(82, RefRHUM85012h(0,0));
-    EXPECT_FLOAT_EQ(100, RefRHUM85012h(1,1));
+    EXPECT_FLOAT_EQ(82, RefRHUM85012h(0, 0));
+    EXPECT_FLOAT_EQ(100, RefRHUM85012h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
 
     // Get target data RHUM85024h
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefRHUM85024h(i_lat,i_lon) = file.GetFloat();
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefRHUM85024h(i_lat, i_lon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(100, RefRHUM85024h(0,0));
-    EXPECT_FLOAT_EQ(96, RefRHUM85024h(1,1));
+    EXPECT_FLOAT_EQ(100, RefRHUM85024h(0, 0));
+    EXPECT_FLOAT_EQ(96, RefRHUM85024h(1, 1));
 
     // Process to the multiplication
-    for (int i_lat=0; i_lat<lats; i_lat++)
-    {
-        for (int i_lon=0; i_lon<lons; i_lon++)
-        {
-            RefMulti12h(i_lat,i_lon) = RefPRWTR12h(i_lat,i_lon) * RefRHUM85012h(i_lat,i_lon);
-            RefMulti24h(i_lat,i_lon) = RefPRWTR24h(i_lat,i_lon) * RefRHUM85024h(i_lat,i_lon);
+    for (int i_lat = 0; i_lat < lats; i_lat++) {
+        for (int i_lon = 0; i_lon < lons; i_lon++) {
+            RefMulti12h(i_lat, i_lon) = RefPRWTR12h(i_lat, i_lon) * RefRHUM85012h(i_lat, i_lon);
+            RefMulti24h(i_lat, i_lon) = RefPRWTR24h(i_lat, i_lon) * RefRHUM85024h(i_lat, i_lon);
         }
     }
 
@@ -652,35 +612,30 @@ TEST(PredictorCriteria, ProcessRMSE)
     critRMSE[6] = 632.32f;
 
     // Instantiate the criteria
-    asPredictorCriteria* criteria = asPredictorCriteria::GetInstance(_("RMSE"));
+    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("RMSE"));
 
     // Loop on every candidate
-    for (int i_cand=0; i_cand<candidatesNb; i_cand++)
-    {
+    for (int i_cand = 0; i_cand < candidatesNb; i_cand++) {
         // Skip coasent
         file.SkipLines(6);
 
         // Get candidate data PRWTR12h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandPRWTR12h(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandPRWTR12h(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkPRWTR12h[i_cand], CandPRWTR12h(1,1));
+        EXPECT_FLOAT_EQ(checkPRWTR12h[i_cand], CandPRWTR12h(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
 
         // Get candidate data PRWTR24h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandPRWTR24h(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandPRWTR24h(i_lat, i_lon) = file.GetFloat();
             }
         }
 
@@ -688,36 +643,30 @@ TEST(PredictorCriteria, ProcessRMSE)
         file.SkipLines(3);
 
         // Get candidate data RHUM85012h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandRHUM85012h(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandRHUM85012h(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkRHUM85012h[i_cand], CandRHUM85012h(1,1));
+        EXPECT_FLOAT_EQ(checkRHUM85012h[i_cand], CandRHUM85012h(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
 
         // Get candidate data RHUM85024h
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandRHUM85024h(i_lat,i_lon) = file.GetFloat();
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandRHUM85024h(i_lat, i_lon) = file.GetFloat();
             }
         }
 
         // Process to the multiplication
-        for (int i_lat=0; i_lat<lats; i_lat++)
-        {
-            for (int i_lon=0; i_lon<lons; i_lon++)
-            {
-                CandMulti12h(i_lat,i_lon) = CandPRWTR12h(i_lat,i_lon) * CandRHUM85012h(i_lat,i_lon);
-                CandMulti24h(i_lat,i_lon) = CandPRWTR24h(i_lat,i_lon) * CandRHUM85024h(i_lat,i_lon);
+        for (int i_lat = 0; i_lat < lats; i_lat++) {
+            for (int i_lon = 0; i_lon < lons; i_lon++) {
+                CandMulti12h(i_lat, i_lon) = CandPRWTR12h(i_lat, i_lon) * CandRHUM85012h(i_lat, i_lon);
+                CandMulti24h(i_lat, i_lon) = CandPRWTR24h(i_lat, i_lon) * CandRHUM85024h(i_lat, i_lon);
             }
         }
 
@@ -726,28 +675,28 @@ TEST(PredictorCriteria, ProcessRMSE)
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h+res24h)/2;
+        res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h+res24h)/2;
+        res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h+res24h)/2;
+        res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h+res24h)/2;
+        res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
     }
 
@@ -761,119 +710,119 @@ TEST(PredictorCriteria, ProcessDifferences)
 
     VArray2DFloat RefData;
     Array2DFloat Datatmp;
-    Datatmp.resize(2,2);
+    Datatmp.resize(2, 2);
 
-    Datatmp(0,0) = 12;
-    Datatmp(0,1) = 23;
-    Datatmp(1,0) = 42;
-    Datatmp(1,1) = 25;
+    Datatmp(0, 0) = 12;
+    Datatmp(0, 1) = 23;
+    Datatmp(1, 0) = 42;
+    Datatmp(1, 1) = 25;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 547;
-    Datatmp(0,1) = 2364;
-    Datatmp(1,0) = 2672;
-    Datatmp(1,1) = 3256;
+    Datatmp(0, 0) = 547;
+    Datatmp(0, 1) = 2364;
+    Datatmp(1, 0) = 2672;
+    Datatmp(1, 1) = 3256;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 5;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 5;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 456;
-    Datatmp(0,1) = 456;
-    Datatmp(1,0) = 45;
-    Datatmp(1,1) = 7;
+    Datatmp(0, 0) = 456;
+    Datatmp(0, 1) = 456;
+    Datatmp(1, 0) = 45;
+    Datatmp(1, 1) = 7;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = -324;
-    Datatmp(0,1) = -345;
-    Datatmp(1,0) = -23;
-    Datatmp(1,1) = -26;
+    Datatmp(0, 0) = -324;
+    Datatmp(0, 1) = -345;
+    Datatmp(1, 0) = -23;
+    Datatmp(1, 1) = -26;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = -34;
-    Datatmp(0,1) = -45;
-    Datatmp(1,0) = 456;
-    Datatmp(1,1) = 3;
+    Datatmp(0, 0) = -34;
+    Datatmp(0, 1) = -45;
+    Datatmp(1, 0) = 456;
+    Datatmp(1, 1) = 3;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = 4;
-    Datatmp(0,1) = 456;
-    Datatmp(1,0) = 4;
-    Datatmp(1,1) = 783;
+    Datatmp(0, 0) = 4;
+    Datatmp(0, 1) = 456;
+    Datatmp(1, 0) = 4;
+    Datatmp(1, 1) = 783;
     RefData.push_back(Datatmp);
-    Datatmp(0,0) = -345;
-    Datatmp(0,1) = -325;
-    Datatmp(1,0) = -27;
-    Datatmp(1,1) = -475;
+    Datatmp(0, 0) = -345;
+    Datatmp(0, 1) = -325;
+    Datatmp(1, 0) = -27;
+    Datatmp(1, 1) = -475;
     RefData.push_back(Datatmp);
 
     VArray2DFloat CandData;
-    Datatmp(0,0) = 634;
-    Datatmp(0,1) = 234;
-    Datatmp(1,0) = 3465;
-    Datatmp(1,1) = 534;
+    Datatmp(0, 0) = 634;
+    Datatmp(0, 1) = 234;
+    Datatmp(1, 0) = 3465;
+    Datatmp(1, 1) = 534;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 7;
-    Datatmp(0,1) = 3;
-    Datatmp(1,0) = 35;
-    Datatmp(1,1) = 4;
+    Datatmp(0, 0) = 7;
+    Datatmp(0, 1) = 3;
+    Datatmp(1, 0) = 35;
+    Datatmp(1, 1) = 4;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 54;
-    Datatmp(0,1) = 56;
-    Datatmp(1,0) = 4;
-    Datatmp(1,1) = 74;
+    Datatmp(0, 0) = 54;
+    Datatmp(0, 1) = 56;
+    Datatmp(1, 0) = 4;
+    Datatmp(1, 1) = 74;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 4;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 4;
+    Datatmp(1, 1) = 0;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 34;
-    Datatmp(0,1) = 2;
-    Datatmp(1,0) = 235;
-    Datatmp(1,1) = 6;
+    Datatmp(0, 0) = 34;
+    Datatmp(0, 1) = 2;
+    Datatmp(1, 0) = 235;
+    Datatmp(1, 1) = 6;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = 0;
-    Datatmp(0,1) = 0;
-    Datatmp(1,0) = 0;
-    Datatmp(1,1) = 0;
+    Datatmp(0, 0) = 0;
+    Datatmp(0, 1) = 0;
+    Datatmp(1, 0) = 0;
+    Datatmp(1, 1) = 0;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = -637;
-    Datatmp(0,1) = -6;
-    Datatmp(1,0) = -67;
-    Datatmp(1,1) = 567;
+    Datatmp(0, 0) = -637;
+    Datatmp(0, 1) = -6;
+    Datatmp(1, 0) = -67;
+    Datatmp(1, 1) = 567;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = -37;
-    Datatmp(0,1) = -65;
-    Datatmp(1,0) = -4;
-    Datatmp(1,1) = -1;
+    Datatmp(0, 0) = -37;
+    Datatmp(0, 1) = -65;
+    Datatmp(1, 0) = -4;
+    Datatmp(1, 1) = -1;
     CandData.push_back(Datatmp);
-    Datatmp(0,0) = -867;
-    Datatmp(0,1) = -568;
-    Datatmp(1,0) = -43;
-    Datatmp(1,1) = -348;
+    Datatmp(0, 0) = -867;
+    Datatmp(0, 1) = -568;
+    Datatmp(1, 0) = -43;
+    Datatmp(1, 1) = -348;
     CandData.push_back(Datatmp);
 
     // SAD
@@ -892,21 +841,20 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 1354;
     Results[10] = 908;
 
-    asPredictorCriteria* criteriaSAD = asPredictorCriteria::GetInstance(asPredictorCriteria::SAD);
+    asPredictorCriteria *criteriaSAD = asPredictorCriteria::GetInstance(asPredictorCriteria::SAD);
 
     float res;
-    for (int i=0;i<11;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 0; i < 11; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
     }
@@ -927,20 +875,19 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 338.5;
     Results[10] = 227;
 
-    asPredictorCriteria* criteriaMD = asPredictorCriteria::GetInstance(asPredictorCriteria::MD);
+    asPredictorCriteria *criteriaMD = asPredictorCriteria::GetInstance(asPredictorCriteria::MD);
 
-    for (int i=0;i<11;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 0; i < 11; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
     }
@@ -961,36 +908,34 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 1.3130f;
     Results[10] = 0.4173f;
 
-    asPredictorCriteria* criteriaMRDtoMax = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMax);
+    asPredictorCriteria *criteriaMRDtoMax = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMax);
 
-    for (int i=0;i<4;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 0; i < 4; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
     }
 
-    for (int i=5;i<11;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 5; i < 11; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
     }
@@ -1011,52 +956,49 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = NaNFloat;
     Results[10] = 0.543f;
 
-    asPredictorCriteria* criteriaMRDtoMean = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMean);
+    asPredictorCriteria *criteriaMRDtoMean = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMean);
 
-    for (int i=0;i<4;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 0; i < 4; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
     }
 
-    for (int i=5;i<9;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 5; i < 9; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
     }
 
-    for (int i=10;i<11;i++)
-    {
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF);
+    for (int i = 10; i < 11; i++) {
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asCOEFF_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int)asLIN_ALGEBRA_NOVAR);
+        pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
     }

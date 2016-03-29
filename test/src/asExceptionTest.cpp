@@ -31,5 +31,5 @@
 
 TEST(Exception, ThrowException)
 {
-    ASSERT_THROW(asThrowException("My exception"),asException);
+    ASSERT_THROW(asThrowException("My exception"), asException);
 }

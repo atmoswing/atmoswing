@@ -25,33 +25,35 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef asGeoAreaCompositeGrid_H
 #define asGeoAreaCompositeGrid_H
 
 #include <asIncludes.h>
 #include <asGeoAreaComposite.h>
 
-class asGeoAreaCompositeGrid: public asGeoAreaComposite // Abstract class
+class asGeoAreaCompositeGrid
+        : public asGeoAreaComposite // Abstract class
 {
 public:
     enum GridType //!< Define available parameters sets (for the GUI)
     {
-        Regular,
-        GaussianT62
+        Regular, GaussianT62
     };
 
-    asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
+                           float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE,
+                           float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     asGeoAreaCompositeGrid(float Level = asNONE, float Height = asNONE);
 
-
-    static asGeoAreaCompositeGrid* GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep, double Ymin, int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    static asGeoAreaCompositeGrid *GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep, double Ymin,
+                                               int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE,
+                                               int flatAllowed = asFLAT_FORBIDDEN);
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) = 0;
-
 
     GridType GetGridType()
     {
@@ -60,8 +62,7 @@ public:
 
     wxString GetGridTypeString()
     {
-        switch (m_gridType)
-        {
+        switch (m_gridType) {
             case (Regular):
                 return "Regular";
             case (GaussianT62):
@@ -72,92 +73,40 @@ public:
     }
 
     virtual double GetXstep() = 0;
+
     virtual double GetYstep() = 0;
 
-    /** Get the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The axis built on the boundaries and the step
-     */
     virtual Array1DDouble GetXaxisComposite(int compositeNb) = 0;
 
-    /** Get the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The axis built on the boundaries and the step
-     */
     virtual Array1DDouble GetYaxisComposite(int compositeNb) = 0;
 
-    /** Get the size of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The size of the axis
-     */
     virtual int GetXaxisCompositePtsnb(int compositeNb) = 0;
 
-    /** Get the size of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The size of the axis
-     */
     virtual int GetYaxisCompositePtsnb(int compositeNb) = 0;
 
-    /** Get the width of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The width of the axis
-     */
     virtual double GetXaxisCompositeWidth(int compositeNb) = 0;
 
-    /** Get the width of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The width of the axis
-     */
     virtual double GetYaxisCompositeWidth(int compositeNb) = 0;
 
-    /** Get the start value of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The start value of the axis
-     */
     virtual double GetXaxisCompositeStart(int compositeNb) = 0;
 
-    /** Get the start value of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The start value of the axis
-     */
     virtual double GetYaxisCompositeStart(int compositeNb) = 0;
 
-    /** Get the last value of the X axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The last value of the axis
-     */
     virtual double GetXaxisCompositeEnd(int compositeNb) = 0;
 
-    /** Get the last value of the Y axis for the given composite
-     * \param compositeNb The desired composite
-     * \return The last value of the axis
-     */
     virtual double GetYaxisCompositeEnd(int compositeNb) = 0;
 
-    /** Get the total size of the X axis
-     * \return The total size of the axis
-     */
     int GetXaxisPtsnb();
 
-    /** Get the total size of the Y axis
-     * \return The total size of the axis
-     */
     int GetYaxisPtsnb();
 
-    /** Get the total width of the X axis
-     * \return The total width of the axis
-     */
     double GetXaxisWidth();
 
-    /** Get the total width of the Y axis
-     * \return The total width of the axis
-     */
     double GetYaxisWidth();
 
     Array1DDouble GetXaxis();
 
     Array1DDouble GetYaxis();
-
 
 protected:
     GridType m_gridType;

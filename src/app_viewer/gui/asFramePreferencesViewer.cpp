@@ -31,21 +31,20 @@
 #include "wx/fileconf.h"
 #include "wx/thread.h"
 
-asFramePreferencesViewer::asFramePreferencesViewer( wxWindow* parent, asWorkspace* workspace, wxWindowID id )
-:
-asFramePreferencesViewerVirtual( parent, id )
+asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
+        : asFramePreferencesViewerVirtual(parent, id)
 {
     m_workspace = workspace;
     LoadPreferences();
     Fit();
 
-        // Icon
+    // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
 #endif
 }
 
-void asFramePreferencesViewer::CloseFrame( wxCommandEvent& event )
+void asFramePreferencesViewer::CloseFrame(wxCommandEvent &event)
 {
     Close();
 }
@@ -62,8 +61,7 @@ void asFramePreferencesViewer::LoadPreferences()
 
     // Fix the color of the file/dir pickers
     wxColour col = m_notebookBase->GetThemeBackgroundColour();
-    if (col.IsOk())
-    {
+    if (col.IsOk()) {
         m_dirPickerForecastResults->SetBackgroundColour(col);
     }
 
@@ -82,8 +80,7 @@ void asFramePreferencesViewer::LoadPreferences()
 
     // Alarms panel
     int alarmsReturnPeriod = m_workspace->GetAlarmsPanelReturnPeriod();
-    switch (alarmsReturnPeriod)
-    {
+    switch (alarmsReturnPeriod) {
         case 2:
             m_choiceAlarmsReturnPeriod->SetSelection(0);
             break;
@@ -115,7 +112,7 @@ void asFramePreferencesViewer::LoadPreferences()
     // Log
     long defaultLogLevelViewer = 1; // = selection +1
     long logLevelViewer = pConfig->Read("/General/LogLevel", defaultLogLevelViewer);
-    m_radioBoxLogLevel->SetSelection((int)logLevelViewer-1);
+    m_radioBoxLogLevel->SetSelection((int) logLevelViewer - 1);
     bool displayLogWindowViewer;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindowViewer, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
@@ -141,17 +138,17 @@ void asFramePreferencesViewer::LoadPreferences()
     bool multiViewer;
     pConfig->Read("/General/MultiInstances", &multiViewer, false);
     m_checkBoxMultiInstancesViewer->SetValue(multiViewer);
-    
+
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
     m_staticTextUserDir->SetLabel(userpath);
     wxString logpathViewer = asConfig::GetLogDir();
     logpathViewer.Append("AtmoSwingForecaster.log");
     m_staticTextLogFile->SetLabel(logpathViewer);
-    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir()+"AtmoSwingViewer.ini");
+    m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingViewer.ini");
 }
 
-void asFramePreferencesViewer::SavePreferences( )
+void asFramePreferencesViewer::SavePreferences()
 {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
@@ -159,7 +156,7 @@ void asFramePreferencesViewer::SavePreferences( )
     /*
      * Workspace
      */
-    
+
     // Directories
     wxString forecastResultsDir = m_dirPickerForecastResults->GetPath();
     m_workspace->SetForecastsDirectory(forecastResultsDir);
@@ -173,12 +170,11 @@ void asFramePreferencesViewer::SavePreferences( )
     long pastDaysNbLong;
     pastDaysNb.ToLong(&pastDaysNbLong);
     m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
-    
+
     // Alarms panel
     int alarmsReturnPeriod;
     int alarmsReturnPeriodSlct = m_choiceAlarmsReturnPeriod->GetSelection();
-    switch (alarmsReturnPeriodSlct)
-    {
+    switch (alarmsReturnPeriodSlct) {
         case 0:
             alarmsReturnPeriod = 2;
             break;
@@ -204,9 +200,9 @@ void asFramePreferencesViewer::SavePreferences( )
     wxString alarmsQuantile = m_textCtrlAlarmsQuantile->GetValue();
     double alarmsQuantileVal;
     alarmsQuantile.ToDouble(&alarmsQuantileVal);
-    if (alarmsQuantileVal>1)
+    if (alarmsQuantileVal > 1)
         alarmsQuantileVal = 0.9;
-    if (alarmsQuantileVal<0)
+    if (alarmsQuantileVal < 0)
         alarmsQuantileVal = 0.9;
     m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
 
@@ -215,8 +211,8 @@ void asFramePreferencesViewer::SavePreferences( )
      */
 
     // Log
-    long logLevelViewer = (long)m_radioBoxLogLevel->GetSelection();
-    pConfig->Write("/General/LogLevel", logLevelViewer+1); // = selection +1
+    long logLevelViewer = (long) m_radioBoxLogLevel->GetSelection();
+    pConfig->Write("/General/LogLevel", logLevelViewer + 1); // = selection +1
     bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 
@@ -246,13 +242,13 @@ void asFramePreferencesViewer::SavePreferences( )
     m_workspace->Save();
 }
 
-void asFramePreferencesViewer::SaveAndClose( wxCommandEvent& event )
+void asFramePreferencesViewer::SaveAndClose(wxCommandEvent &event)
 {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesViewer::ApplyChanges( wxCommandEvent& event )
+void asFramePreferencesViewer::ApplyChanges(wxCommandEvent &event)
 {
     SavePreferences();
 }

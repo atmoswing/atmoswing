@@ -25,32 +25,22 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASPREDICTORCRITERIAMRDtoMean_H
 #define ASPREDICTORCRITERIAMRDtoMean_H
 
 #include <asIncludes.h>
 #include <asPredictorCriteria.h>
 
-class asPredictorCriteriaMRDtoMean: public asPredictorCriteria
+class asPredictorCriteriaMRDtoMean
+        : public asPredictorCriteria
 {
 public:
+    asPredictorCriteriaMRDtoMean(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
 
-    /** Default constructor
-     * \param criteria The chosen criteria
-     */
-    asPredictorCriteriaMRDtoMean(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
-
-    /** Default destructor */
     ~asPredictorCriteriaMRDtoMean();
 
-    /** Process the Criteria
-     * \param refData The target day
-     * \param evalData The day to assess
-     * \return The Criteria
-     */
     float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb);
-
 
 protected:
 

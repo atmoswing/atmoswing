@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASDATAPREDICTORARCHIVEECMWFERA40_H
 #define ASDATAPREDICTORARCHIVEECMWFERA40_H
 
@@ -33,25 +33,22 @@
 
 class asGeoArea;
 
-class asDataPredictorArchiveEcmwfEra40: public asDataPredictorArchiveNcepReanalysis1Terranum
+class asDataPredictorArchiveEcmwfEra40
+        : public asDataPredictorArchiveNcepReanalysis1Terranum
 {
 public:
-
-    /** Default constructor */
     asDataPredictorArchiveEcmwfEra40(const wxString &dataId);
 
-    /** Default destructor */
     virtual ~asDataPredictorArchiveEcmwfEra40();
 
     bool Init();
 
     static VectorString GetDataIdList();
-    
+
     static VectorString GetDataIdDescriptionList();
 
-
 protected:
-    
+
 private:
 
 };

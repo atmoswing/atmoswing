@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asResultsParametersArray.h"
 
 #include "wx/fileconf.h"
@@ -34,8 +34,7 @@
 
 
 asResultsParametersArray::asResultsParametersArray()
-:
-asResults()
+        : asResults()
 {
 
 }
@@ -97,7 +96,8 @@ bool asResultsParametersArray::Print()
 {
     // Create a file
     asFileAscii fileRes(m_filePath, asFileAscii::Replace);
-    if(!fileRes.Open()) return false;
+    if (!fileRes.Open())
+        return false;
 
     wxString header;
     header = _("Optimization processed ") + asTime::GetStringTime(asTime::NowMJD(asLOCAL));
@@ -106,26 +106,22 @@ bool asResultsParametersArray::Print()
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (unsigned int i_param=0; i_param<m_parameters.size(); i_param++)
-    {
+    for (unsigned int i_param = 0; i_param < m_parameters.size(); i_param++) {
         content.Append(m_parameters[i_param].Print());
         content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[i_param]));
         content.Append(wxString::Format("Valid\t%e", m_scoresValid[i_param]));
         content.Append("\n");
     }
-    
+
     // Write every parameter for scores on array one after the other
-    for (unsigned int i_param=0; i_param<m_parametersForScoreOnArray.size(); i_param++)
-    {
+    for (unsigned int i_param = 0; i_param < m_parametersForScoreOnArray.size(); i_param++) {
         content.Append(m_parametersForScoreOnArray[i_param].Print());
         content.Append("Calib\t");
-        for (unsigned int i_row=0; i_row<m_scoresCalibForScoreOnArray[i_param].size(); i_row++)
-        {
+        for (unsigned int i_row = 0; i_row < m_scoresCalibForScoreOnArray[i_param].size(); i_row++) {
             content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[i_param][i_row]));
         }
         content.Append("Valid\t");
-        for (unsigned int i_row=0; i_row<m_scoresValidForScoreOnArray[i_param].size(); i_row++)
-        {
+        for (unsigned int i_row = 0; i_row < m_scoresValidForScoreOnArray[i_param].size(); i_row++) {
             content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[i_param][i_row]));
         }
         content.Append("\n");
@@ -155,13 +151,13 @@ bool asResultsParametersArray::AppendContent()
 {
     // Create a file
     asFileAscii fileRes(m_filePath, asFileAscii::Append);
-    if(!fileRes.Open()) return false;
+    if (!fileRes.Open())
+        return false;
 
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (unsigned int i_param=0; i_param<m_parameters.size(); i_param++)
-    {
+    for (unsigned int i_param = 0; i_param < m_parameters.size(); i_param++) {
         content.Append(wxString::Format("Param(%d)\t", i_param));
         content.Append(m_parameters[i_param].Print());
         content.Append(wxString::Format("Score calib\t%e\t", m_scoresCalib[i_param]));

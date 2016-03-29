@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asPanelSidebarCaptionForecastDots__
 #define __asPanelSidebarCaptionForecastDots__
 
@@ -34,40 +34,52 @@
 #include "asIncludes.h"
 #include <wx/graphics.h>
 
-/** Implementing asPanelSidebarCaptionForecastDotsDrawing */
-class asPanelSidebarCaptionForecastDotsDrawing : public wxPanel
+class asPanelSidebarCaptionForecastDotsDrawing
+        : public wxPanel
 {
 public:
-    /** Constructor */
-    asPanelSidebarCaptionForecastDotsDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarCaptionForecastDotsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
+                                             const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+                                             long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarCaptionForecastDotsDrawing();
 
-    void DrawColorbar( double maxval );
+    void DrawColorbar(double maxval);
 
 private:
     wxBitmap *m_bmpColorbar;
-    wxGraphicsContext* m_gdc;
-    void SetBitmapColorbar(wxBitmap * bmp);
-    void CreateColorbarPath( wxGraphicsPath & path );
-    void CreateColorbarText( wxGraphicsContext * gc, wxGraphicsPath & path, double valmax);
-    void CreateColorbarOtherClasses(wxGraphicsContext * gc, wxGraphicsPath & path );
-    void FillColorbar(wxGraphicsContext * gdc, wxGraphicsPath & path );
-    void OnPaint( wxPaintEvent & event );
+    wxGraphicsContext *m_gdc;
+
+    void SetBitmapColorbar(wxBitmap *bmp);
+
+    void CreateColorbarPath(wxGraphicsPath &path);
+
+    void CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path, double valmax);
+
+    void CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path);
+
+    void FillColorbar(wxGraphicsContext *gdc, wxGraphicsPath &path);
+
+    void OnPaint(wxPaintEvent &event);
 };
 
-/** Implementing asPanelSidebarCaptionForecastDots */
-class asPanelSidebarCaptionForecastDots : public asPanelSidebar
+
+class asPanelSidebarCaptionForecastDots
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarCaptionForecastDots( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarCaptionForecastDots(wxWindow *parent, wxWindowID id = wxID_ANY,
+                                      const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+                                      long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarCaptionForecastDots();
 
     void SetColorbarMax(double maxval);
 
 private:
     asPanelSidebarCaptionForecastDotsDrawing *m_panelDrawing;
-    void OnPaint( wxPaintEvent & event );
+
+    void OnPaint(wxPaintEvent &event);
 };
 
 #endif // __asPanelSidebarCaptionForecastDots__

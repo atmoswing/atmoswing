@@ -38,7 +38,8 @@ TEST(GeoAreaCompositeGaussianGrid, ConstructorAlternativeOneArea)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_EQ(1, geoArea->GetNbComposites());
     EXPECT_DOUBLE_EQ(16.875, geoArea->GetXmax());
@@ -54,7 +55,8 @@ TEST(GeoAreaCompositeGaussianGrid, ConstructorAlternativeTwoAreas)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_EQ(2, geoArea->GetNbComposites());
     wxDELETE(geoArea);
@@ -68,7 +70,8 @@ TEST(GeoAreaCompositeGaussianGrid, CheckConsistency)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_DOUBLE_EQ(350.625, geoArea->GetCornerUL().x);
     EXPECT_DOUBLE_EQ(350.625, geoArea->GetCornerLL().x);
@@ -85,7 +88,8 @@ TEST(GeoAreaCompositeGaussianGrid, GetBoundsSplitted)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_DOUBLE_EQ(0, geoArea->GetXmin());
     EXPECT_DOUBLE_EQ(29.523, geoArea->GetYmin());
@@ -102,7 +106,8 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeSize)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_EQ(2, geoArea->GetNbComposites());
     EXPECT_EQ(12, geoArea->GetXaxisCompositePtsnb(0));
@@ -120,7 +125,8 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeSizeAllWest)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_EQ(1, geoArea->GetNbComposites());
     EXPECT_EQ(4, geoArea->GetXaxisCompositePtsnb(0));
@@ -138,7 +144,8 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeSizeEdge)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_EQ(1, geoArea->GetNbComposites());
     EXPECT_EQ(9, geoArea->GetXaxisCompositePtsnb(0));
@@ -156,12 +163,13 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeWidth)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_DOUBLE_EQ(20.625, geoArea->GetXaxisCompositeWidth(0));
     EXPECT_DOUBLE_EQ(15, geoArea->GetXaxisCompositeWidth(1));
-    EXPECT_DOUBLE_EQ(37.142-29.523, geoArea->GetYaxisCompositeWidth(0));
-    EXPECT_DOUBLE_EQ(37.142-29.523, geoArea->GetYaxisCompositeWidth(1));
+    EXPECT_DOUBLE_EQ(37.142 - 29.523, geoArea->GetYaxisCompositeWidth(0));
+    EXPECT_DOUBLE_EQ(37.142 - 29.523, geoArea->GetYaxisCompositeWidth(1));
     wxDELETE(geoArea);
 }
 
@@ -173,7 +181,8 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisPtsnb)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_EQ(20, geoArea->GetXaxisPtsnb());
     EXPECT_EQ(5, geoArea->GetYaxisPtsnb());
@@ -188,10 +197,11 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisWidth)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_DOUBLE_EQ(35.625, geoArea->GetXaxisWidth());
-    EXPECT_DOUBLE_EQ(37.142-29.523, geoArea->GetYaxisWidth());
+    EXPECT_DOUBLE_EQ(37.142 - 29.523, geoArea->GetYaxisWidth());
     wxDELETE(geoArea);
 }
 
@@ -203,7 +213,8 @@ TEST(GeoAreaCompositeGaussianGrid, GetUYaxisCompositeLimits)
     int Yptsnb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid* geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb, step);
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
 
     EXPECT_DOUBLE_EQ(0, geoArea->GetXaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(345, geoArea->GetXaxisCompositeStart(1));

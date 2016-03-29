@@ -25,99 +25,52 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef asGeoAreaRegularGrid_H
 #define asGeoAreaRegularGrid_H
 
 #include <asIncludes.h>
 #include <asGeoArea.h>
 
-class asGeoAreaRegularGrid: public asGeoArea
+class asGeoAreaRegularGrid
+        : public asGeoArea
 {
 public:
+    asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
+                         double Xstep, double Ystep, float Level = asNONE, float Height = asNONE,
+                         int flatAllowed = asFLAT_ALLOWED);
 
-    /** Default constructor
-     * \param coosys The coordinate system
-     * \param CornerUL The coordinates of the upper left corner
-     * \param CornerUR The coordinates of the upper right corner
-     * \param CornerLL The coordinates of the lower left corner
-     * \param CornerLR The coordinates of the lower right corner
-     * \param Xstep The step according to the X axis
-     * \param Ystep The step according to the v axis
-     * \param Level The height in hPa
-     * \param Height The height in m
-     * \param flatAllowed Allows the area to have a dimension that is null
-     */
-    asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, double Xstep, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep,
+                         float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    /** Alternative constructor
-     * \param coosys The coordinate system
-     * \param Xmin The left border
-     * \param Xwidth The size on X axis
-     * \param Xstep The step according to the X axis
-     * \param Ymin The left border
-     * \param Ywidth The size on Y axis
-     * \param Ystep The step according to the v axis
-     * \param Level The height in hPa
-     * \param Height The height in m
-     * \param flatAllowed Allows the area to have a dimension that is null
-     */
-    asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep, float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
-
-    /** Default destructor */
     virtual ~asGeoAreaRegularGrid();
 
-    /** Access m_xstep
-     * \return The current value of m_xstep
-     */
     double GetXstep()
     {
-        return m_xstep;
+        return m_xStep;
     }
 
-    /** Access m_ystep
-     * \return The current value of m_ystep
-     */
     double GetYstep()
     {
-        return m_ystep;
+        return m_yStep;
     }
 
-    /** Get the size of the X axis
-     * \return The size of the X axis
-     */
     int GetXaxisPtsnb();
 
-    /** Get the size of the Y axis
-     * \return The size of the Y axis
-     */
     int GetYaxisPtsnb();
 
-    /** Get the X axis
-     * \return The axis built on the boundaries and the step
-     */
     Array1DDouble GetXaxis();
 
-    /** Get the Y axis
-     * \param step The step of the desired axis
-     * \return The axis built on the boundaries and the step
-     */
     Array1DDouble GetYaxis();
 
 protected:
 
 private:
-    double m_xstep; //!< Member variable "m_xstep"
-    double m_ystep; //!< Member variable "m_ystep"
+    double m_xStep;
+    double m_yStep;
 
-    /** Tells if the area is a straight square compatible with the given step or not
-     * \return True if the area is a straight square compatible with the given step
-     */
     bool IsOnGrid(double step);
 
-    /** Tells if the area is a straight square compatible with the given steps or not
-     * \return True if the area is a straight square compatible with the given steps
-     */
     bool IsOnGrid(double stepX, double stepY);
 };
 

@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASTHREADSMANAGERGLOBALFUNCTIONS_H
 #define ASTHREADSMANAGERGLOBALFUNCTIONS_H
 
@@ -32,9 +32,10 @@
 
 class asThreadsManager;
 
-// Threads manager
-extern asThreadsManager* g_pThreadsManager;
-asThreadsManager& ThreadsManager();
+extern asThreadsManager *g_pThreadsManager;
+
+asThreadsManager &ThreadsManager();
+
 void DeleteThreadsManager();
 
 #endif // ASTHREADSMANAGERGLOBALFUNCTIONS_H

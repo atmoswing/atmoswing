@@ -42,7 +42,8 @@ TEST(GeoAreaCompositeRegularGrid, ConstructorStepException)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.6;
-    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step),
+                 asException);
 }
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorOneArea)
@@ -156,7 +157,8 @@ TEST(GeoAreaCompositeRegularGrid, IsRectangleFalse)
     CornerLR.x = 20;
     CornerLR.y = 30;
     double step = 2.5;
-    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+    ASSERT_THROW(asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step),
+                 asException);
 }
 
 TEST(GeoAreaCompositeRegularGrid, GetBounds)
@@ -324,7 +326,7 @@ TEST(GeoAreaCompositeRegularGrid, GetAxes)
     EXPECT_DOUBLE_EQ(320, uaxis1(0));
     EXPECT_DOUBLE_EQ(322.5, uaxis1(1));
     EXPECT_DOUBLE_EQ(325, uaxis1(2));
-    EXPECT_DOUBLE_EQ(360, uaxis1(geoArea.GetXaxisCompositePtsnb(1)-1));
+    EXPECT_DOUBLE_EQ(360, uaxis1(geoArea.GetXaxisCompositePtsnb(1) - 1));
     EXPECT_DOUBLE_EQ(30, vaxis1(0));
     EXPECT_DOUBLE_EQ(32.5, vaxis1(1));
     EXPECT_DOUBLE_EQ(40, vaxis1(4));
@@ -452,11 +454,11 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeLimitsMoved)
     asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep);
 
     EXPECT_DOUBLE_EQ(2.5, geoArea.GetXaxisCompositeStart(0));
-    EXPECT_DOUBLE_EQ(360-7.5, geoArea.GetXaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(360 - 7.5, geoArea.GetXaxisCompositeStart(1));
     EXPECT_DOUBLE_EQ(30, geoArea.GetYaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(30, geoArea.GetYaxisCompositeStart(1));
     EXPECT_DOUBLE_EQ(7.5, geoArea.GetXaxisCompositeEnd(0));
-    EXPECT_DOUBLE_EQ(360-2.5, geoArea.GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(360 - 2.5, geoArea.GetXaxisCompositeEnd(1));
     EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(0));
     EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(1));
 }

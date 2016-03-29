@@ -25,131 +25,86 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASRESULTSANALOGSDATES_H
 #define ASRESULTSANALOGSDATES_H
 
 #include <asIncludes.h>
 #include <asResults.h>
 
-class asResultsAnalogsDates: public asResults
+class asResultsAnalogsDates
+        : public asResults
 {
 public:
-
-    /** Default constructor */
     asResultsAnalogsDates();
 
-    /** Default destructor */
     virtual ~asResultsAnalogsDates();
 
-    /** Init
-     * \param params The parameters structure
-     */
     void Init(asParameters &params);
 
-    /** Access m_targetDates
-     * \return The whole array m_targetDates
-     */
     Array1DFloat &GetTargetDates()
     {
         return m_targetDates;
     }
 
-    /** Set m_targetDates
-     * \param refDates The new array to set
-     */
     void SetTargetDates(Array1DDouble &refDates)
     {
         m_targetDates.resize(refDates.rows());
-        for (int i=0; i<refDates.size(); i++)
-        {
-            m_targetDates[i] = (float)refDates[i];
-            wxASSERT_MSG(m_targetDates[i]>1,_("The target time array has unconsistent values"));
+        for (int i = 0; i < refDates.size(); i++) {
+            m_targetDates[i] = (float) refDates[i];
+            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
         }
     }
 
-    /** Set m_targetDates
-     * \param refDates The new array to set
-     */
     void SetTargetDates(Array1DFloat &refDates)
     {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    /** Access m_analogCriteria
-     * \return The whole array m_analogCriteria
-     */
     Array2DFloat &GetAnalogsCriteria()
     {
         return m_analogsCriteria;
     }
 
-    /** Set m_analogCriteria
-     * \param analogCriteria The new array to set
-     */
     void SetAnalogsCriteria(Array2DFloat &analogsCriteria)
     {
         m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
         m_analogsCriteria = analogsCriteria;
     }
 
-    /** Access m_analogDates
-     * \return The whole array m_analogDates
-     */
     Array2DFloat &GetAnalogsDates()
     {
         return m_analogsDates;
     }
 
-    /** Set m_analogDates
-     * \param analogDates The new array to set
-     */
     void SetAnalogsDates(Array2DFloat &analogsDates)
     {
         m_analogsDates.resize(analogsDates.rows(), analogsDates.cols());
         m_analogsDates = analogsDates;
     }
 
-    /** Get the length of the target time dimension
-     * \return The length of the target time
-     */
     int GetTargetDatesLength()
     {
-        return m_targetDates.size();
+        return (int) m_targetDates.size();
     }
 
-    /** Get the length of the analogs dimension
-     * \return The length of the analogs
-     */
     int GetAnalogsDatesLength()
     {
-        return m_analogsDates.cols();
+        return (int) m_analogsDates.cols();
     }
 
-    /** Save the result file
-     * \param AlternateFilePath An optional file path
-     * \return True on success
-     */
     bool Save(const wxString &AlternateFilePath = wxEmptyString);
 
-    /** Load the result file
-     * \param AlternateFilePath An optional file path
-     * \return True on success
-     */
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
 protected:
-
-    /** Build the result file path
-     * \param params The parameters structure
-     */
     void BuildFileName();
 
 private:
-    Array1DFloat m_targetDates; //!< Member variable "m_targetDates"
-    Array2DFloat m_analogsCriteria; //!< Member variable "m_analogCriteria"
-    Array2DFloat m_analogsDates; //!< Member variable "m_analogDates"
+    Array1DFloat m_targetDates;
+    Array2DFloat m_analogsCriteria;
+    Array2DFloat m_analogsDates;
 
 };
 
