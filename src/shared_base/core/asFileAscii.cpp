@@ -24,12 +24,11 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asFileAscii.h"
 
 asFileAscii::asFileAscii(const wxString &FileName, const ListFileMode &FileMode)
-:
-asFile(FileName, FileMode)
+        : asFile(FileName, FileMode)
 {
 
 }
@@ -41,32 +40,33 @@ asFileAscii::~asFileAscii()
 
 bool asFileAscii::Open()
 {
-    if (!Find()) return false;
+    if (!Find())
+        return false;
 
-    switch (m_fileMode)
-    {
+    switch (m_fileMode) {
         case (ReadOnly):
-			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::in);
+            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::in);
             break;
 
         case (Write):
-			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
+            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
             break;
 
         case (Replace):
-			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::trunc | std::fstream::out);
+            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::trunc | std::fstream::out);
             break;
 
         case (New):
-			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
+            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::out);
             break;
 
         case (Append):
-			m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::app | std::fstream::out);
+            m_file.open(m_fileName.GetFullPath().mb_str(), std::fstream::app | std::fstream::out);
             break;
     }
 
-    if (!m_file.is_open()) return false;
+    if (!m_file.is_open())
+        return false;
 
     m_opened = true;
 
@@ -88,10 +88,12 @@ void asFileAscii::AddLineContent(const wxString &LineContent)
     wxString LineContentCopy = LineContent;
     LineContentCopy.Append("\n");
 
-    m_file <<  LineContentCopy.mb_str();
+    m_file << LineContentCopy.mb_str();
 
     // Check the state flags
-    if (m_file.fail()) asThrowException(wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+    if (m_file.fail())
+        asThrowException(
+                wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
 }
 
 const wxString asFileAscii::GetLineContent()
@@ -100,14 +102,16 @@ const wxString asFileAscii::GetLineContent()
 
     std::string tmpLineContent;
 
-    if(!m_file.eof())
-    {
-         getline (m_file, tmpLineContent);
+    if (!m_file.eof()) {
+        getline(m_file, tmpLineContent);
 
-         // Check the state flags
-         if ((!m_file.eof()) && (m_file.fail())) asThrowException(wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+        // Check the state flags
+        if ((!m_file.eof()) && (m_file.fail()))
+            asThrowException(
+                    wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
     } else {
-        asThrowException(wxString::Format(_("You are trying to read a line after the end of the file %s"), m_fileName.GetFullPath()));
+        asThrowException(wxString::Format(_("You are trying to read a line after the end of the file %s"),
+                                          m_fileName.GetFullPath()));
     }
 
     wxString LineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);
@@ -122,13 +126,14 @@ const wxString asFileAscii::GetFullContent()
     std::string tmpContent;
     std::string apptmpContent;
 
-    while (! m_file.eof() )
-    {
-        getline (m_file, tmpContent);
+    while (!m_file.eof()) {
+        getline(m_file, tmpContent);
         apptmpContent.append(tmpContent);
 
         // Check the state flags
-        if ((!m_file.eof()) && (m_file.fail())) asThrowException(wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
+        if ((!m_file.eof()) && (m_file.fail()))
+            asThrowException(
+                    wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
     }
 
     wxString Content(apptmpContent.c_str(), wxConvUTF8);
@@ -143,14 +148,15 @@ const wxString asFileAscii::GetFullContentWhithoutReturns()
     std::string tmpContent;
     std::string apptmpContent;
 
-    while (! m_file.eof() )
-    {
-        getline (m_file, tmpContent);
+    while (!m_file.eof()) {
+        getline(m_file, tmpContent);
         apptmpContent.append(tmpContent);
     }
 
     // Check the state flags
-    if ((!m_file.eof()) && (m_file.fail())) asThrowException(wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
+    if ((!m_file.eof()) && (m_file.fail()))
+        asThrowException(
+                wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
 
     wxString Content(apptmpContent.c_str(), wxConvUTF8);
 
@@ -188,14 +194,10 @@ bool asFileAscii::SkipLines(int linesNb)
 {
     wxASSERT(m_opened);
 
-    for(int i_line=0; i_line<linesNb; i_line++)
-    {
-        if (! m_file.eof() )
-        {
+    for (int i_line = 0; i_line < linesNb; i_line++) {
+        if (!m_file.eof()) {
             GetLineContent();
-        }
-        else
-        {
+        } else {
             asLogError(_("Reached the end of the file while skipping lines."));
             return false;
         }
@@ -210,14 +212,10 @@ bool asFileAscii::SkipElements(int elementNb)
 
     float tmp;
 
-    for(int i_el=0; i_el<elementNb; i_el++)
-    {
-        if (! m_file.eof() )
-        {
+    for (int i_el = 0; i_el < elementNb; i_el++) {
+        if (!m_file.eof()) {
             m_file >> tmp;
-        }
-        else
-        {
+        } else {
             asLogError(_("Reached the end of the file while skipping lines."));
             return false;
         }

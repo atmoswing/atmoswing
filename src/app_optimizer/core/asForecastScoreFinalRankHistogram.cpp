@@ -24,19 +24,17 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreFinalRankHistogram.h"
 
 asForecastScoreFinalRankHistogram::asForecastScoreFinalRankHistogram(Period period)
-:
-asForecastScoreFinal(period)
+        : asForecastScoreFinal(period)
 {
     m_singleValue = false;
 }
 
-asForecastScoreFinalRankHistogram::asForecastScoreFinalRankHistogram(const wxString& periodString)
-:
-asForecastScoreFinal(periodString)
+asForecastScoreFinalRankHistogram::asForecastScoreFinalRankHistogram(const wxString &periodString)
+        : asForecastScoreFinal(periodString)
 {
     m_singleValue = false;
 }
@@ -46,38 +44,36 @@ asForecastScoreFinalRankHistogram::~asForecastScoreFinalRankHistogram()
     //dtor
 }
 
-float asForecastScoreFinalRankHistogram::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
+float asForecastScoreFinalRankHistogram::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores,
+                                                asTimeArray &timeArray)
 {
     asLogError(_("The rank histogram cannot provide a single score value !"));
     return NaNFloat;
 }
 
-Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray)
+Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores,
+                                                              asTimeArray &timeArray)
 {
-    wxASSERT(targetDates.rows()>1);
-    wxASSERT(forecastScores.rows()>1);
-    wxASSERT(m_ranksNb>1);
+    wxASSERT(targetDates.rows() > 1);
+    wxASSERT(forecastScores.rows() > 1);
+    wxASSERT(m_ranksNb > 1);
 
     Array1DInt histogram = Array1DInt::Zero(m_ranksNb);
     int countTot = 0;
 
-    switch (m_period)
-    {
-        case (asForecastScoreFinal::Total):
-        {
-            for (int i=0; i<forecastScores.size(); i++)
-            {
+    switch (m_period) {
+        case (asForecastScoreFinal::Total): {
+            for (int i = 0; i < forecastScores.size(); i++) {
                 countTot++;
 
-                int rank = (int)asTools::Round(forecastScores[i]);
-                wxASSERT(rank<=m_ranksNb);
-                histogram[rank-1]++;
+                int rank = (int) asTools::Round(forecastScores[i]);
+                wxASSERT(rank <= m_ranksNb);
+                histogram[rank - 1]++;
             }
             break;
         }
 
-        default:
-        {
+        default: {
             asThrowException(_("Period not yet implemented in asForecastScoreFinalRankHistogram."));
         }
     }
@@ -85,9 +81,8 @@ Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targ
     // Process percentages
     Array1DFloat histogramPercent = Array1DFloat::Zero(m_ranksNb);
 
-    for (int i=0; i<m_ranksNb; i++)
-    {
-        histogramPercent[i] = float(100*histogram[i])/float(countTot);
+    for (int i = 0; i < m_ranksNb; i++) {
+        histogramPercent[i] = float(100 * histogram[i]) / float(countTot);
     }
 
     return histogramPercent;

@@ -24,26 +24,27 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFILEWORKSPACE_H
 #define ASFILEWORKSPACE_H
 
 #include <asIncludes.h>
 #include <asFileXml.h>
 
-class asFileWorkspace : public asFileXml
+class asFileWorkspace
+        : public asFileXml
 {
 public:
-    /** Default constructor */
     asFileWorkspace(const wxString &FileName, const ListFileMode &FileMode = asFile::Replace);
 
-    /** Default destructor */
     virtual ~asFileWorkspace();
 
     bool EditRootElement();
+
     bool CheckRootElement();
 
 protected:
+
 private:
 };
 

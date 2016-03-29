@@ -50,7 +50,8 @@
 #include <asForecastScore.h>
 
 
-class asMethodCalibrator : public asMethodStandard
+class asMethodCalibrator
+        : public asMethodStandard
 {
 public:
     asMethodCalibrator();
@@ -137,7 +138,6 @@ public:
     }
 
 protected:
-
     VectorFloat m_scoresCalib;
     VectorFloat m_scoresCalibTemp;
     Order m_scoreOrder;
@@ -159,9 +159,8 @@ protected:
     VArray1DFloat GetClimatologyData(asParametersScoring &params);
 
 private:
-
     std::vector<std::vector<std::vector<std::vector<std::vector<asDataPredictorArchive *> > > > > m_preloadedArchive;
-    std::vector<VVectorBool > m_preloadedArchivePointerCopy;
+    std::vector<VVectorBool> m_preloadedArchivePointerCopy;
 
     bool PointersShared(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
 
@@ -180,11 +179,11 @@ private:
     bool ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
                               int i_ptor);
 
-    bool ExtractDataWithoutPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
-                                      int i_ptor, double timeStartData, double timeEndData);
+    bool ExtractDataWithoutPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
+                                         int i_step, int i_ptor, double timeStartData, double timeEndData);
 
-    bool ExtractDataWithPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
-                                      int i_ptor, double timeStartData, double timeEndData);
+    bool ExtractDataWithPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
+                                      int i_step, int i_ptor, double timeStartData, double timeEndData);
 
     bool HasPreloadedData(int i_step, int i_ptor) const;
 

@@ -35,15 +35,19 @@
 #include "asFrameOptimizer.h"
 
 
-class AtmoswingFrameOptimizer: public asFrameOptimizer
+class AtmoswingFrameOptimizer
+        : public asFrameOptimizer
 {
 public:
     AtmoswingFrameOptimizer(wxFrame *frame);
+
     ~AtmoswingFrameOptimizer();
+
 private:
-    virtual void OnClose(wxCloseEvent& event);
-    virtual void OnQuit(wxCommandEvent& event);
-    void ProcessTest();
+    virtual void OnClose(wxCloseEvent &event);
+
+    virtual void OnQuit(wxCommandEvent &event);
+
     void SetDefaultOptions();
 };
 

@@ -33,24 +33,25 @@
 class asParametersScoring;
 
 
-class asPostprocessor: public wxObject
+class asPostprocessor
+        : public wxObject
 {
 public:
-
     enum Postprocesses //!< Enumaration of integrated postprocesses
     {
         DuplicationOnCriteria, // Duplication of the analog days based on the criteria
         DuplicationOnCriteriaExponent // Duplication of the analog days based on the criteria with an exponent
     };
-/*
-    static Array1DFloat Postprocess(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params);
+    /*
+        static Array1DFloat Postprocess(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params);
 
 
-    static Array1DFloat PostprocessDuplicationOnCriteria(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria);
-    static Array1DFloat PostprocessDuplicationOnCriteriaExponent(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params);
-*/
+        static Array1DFloat PostprocessDuplicationOnCriteria(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria);
+        static Array1DFloat PostprocessDuplicationOnCriteriaExponent(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params);
+    */
 
 protected:
+
 private:
 };
 

@@ -25,34 +25,23 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asGlobEnums.h"
 
 
 FileTimeLength asGlobEnums::StringToFileLengthEnum(const wxString &LengthStr)
 {
-    if ( (LengthStr.CmpNoCase("T")==0) | (LengthStr.CmpNoCase("Total")==0) )
-    {
+    if ((LengthStr.CmpNoCase("T") == 0) | (LengthStr.CmpNoCase("Total") == 0)) {
         return Total;
-    }
-    else if ( (LengthStr.CmpNoCase("Y")==0) | (LengthStr.CmpNoCase("Year")==0) )
-    {
+    } else if ((LengthStr.CmpNoCase("Y") == 0) | (LengthStr.CmpNoCase("Year") == 0)) {
         return Year;
-    }
-    else if ( (LengthStr.CmpNoCase("H")==0) | (LengthStr.CmpNoCase("Hour")==0) )
-    {
+    } else if ((LengthStr.CmpNoCase("H") == 0) | (LengthStr.CmpNoCase("Hour") == 0)) {
         return Hour;
-    }
-    else if ( (LengthStr.CmpNoCase("I")==0) | (LengthStr.CmpNoCase("Instantaneous")==0) )
-    {
+    } else if ((LengthStr.CmpNoCase("I") == 0) | (LengthStr.CmpNoCase("Instantaneous") == 0)) {
         return Instantaneous;
-    }
-    else if (LengthStr.IsEmpty())
-    {
+    } else if (LengthStr.IsEmpty()) {
         return NoFileLength;
-    }
-    else
-    {
+    } else {
         asLogError(wxString::Format(_("The Length enumeration (%s) entry doesn't exists"), LengthStr));
     }
     return NoFileLength;
@@ -60,120 +49,63 @@ FileTimeLength asGlobEnums::StringToFileLengthEnum(const wxString &LengthStr)
 
 DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterStr)
 {
-    if (ParameterStr.CmpNoCase("Precipitation")==0)
-    {
+    if (ParameterStr.CmpNoCase("Precipitation") == 0) {
         return Precipitation;
-    }
-    else if (ParameterStr.CmpNoCase("AirTemperature")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("AirTemperature") == 0) {
         return AirTemperature;
-    }
-    else if (ParameterStr.CmpNoCase("GeopotentialHeight")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("GeopotentialHeight") == 0) {
         return GeopotentialHeight;
-    }
-    else if (ParameterStr.CmpNoCase("PrecipitableWater")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("PrecipitableWater") == 0) {
         return PrecipitableWater;
-    }
-    else if (ParameterStr.CmpNoCase("RelativeHumidity")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("RelativeHumidity") == 0) {
         return RelativeHumidity;
-    }
-    else if (ParameterStr.CmpNoCase("SpecificHumidity")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SpecificHumidity") == 0) {
         return SpecificHumidity;
-    }
-    else if (ParameterStr.CmpNoCase("Omega")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("Omega") == 0) {
         return Omega;
-    }
-    else if (ParameterStr.CmpNoCase("Wind")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
-    }
-    else if (ParameterStr.CmpNoCase("Uwind")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("Uwind") == 0) {
         return Uwind;
-    }
-    else if (ParameterStr.CmpNoCase("Vwind")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("Vwind") == 0) {
         return Vwind;
-    }
-    else if (ParameterStr.CmpNoCase("SurfaceLiftedIndex")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SurfaceLiftedIndex") == 0) {
         return SurfaceLiftedIndex;
-    }
-    else if (ParameterStr.CmpNoCase("PotentialTemperature")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("PotentialTemperature") == 0) {
         return PotentialTemperature;
-    }
-    else if (ParameterStr.CmpNoCase("Pressure")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("Pressure") == 0) {
         return Pressure;
-    }
-    else if (ParameterStr.CmpNoCase("PotentialEvaporation")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("PotentialEvaporation") == 0) {
         return PotentialEvaporation;
-    }
-    else if (ParameterStr.CmpNoCase("SurfaceTemperature")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SurfaceTemperature") == 0) {
         return SurfaceTemperature;
-    }
-    else if (ParameterStr.CmpNoCase("ConvectivePrecipitation")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("ConvectivePrecipitation") == 0) {
         return ConvectivePrecipitation;
-    }
-    else if (ParameterStr.CmpNoCase("LongwaveRadiation")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("LongwaveRadiation") == 0) {
         return LongwaveRadiation;
-    }
-    else if (ParameterStr.CmpNoCase("ShortwaveRadiation")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("ShortwaveRadiation") == 0) {
         return ShortwaveRadiation;
-    }
-    else if (ParameterStr.CmpNoCase("SolarRadiation")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SolarRadiation") == 0) {
         return SolarRadiation;
-    }
-    else if (ParameterStr.CmpNoCase("GroundHeatFlux")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("GroundHeatFlux") == 0) {
         return GroundHeatFlux;
-    }
-    else if (ParameterStr.CmpNoCase("LatentHeatFlux")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("LatentHeatFlux") == 0) {
         return LatentHeatFlux;
-    }
-    else if (ParameterStr.CmpNoCase("NearIRFlux")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("NearIRFlux") == 0) {
         return NearIRFlux;
-    }
-    else if (ParameterStr.CmpNoCase("SensibleHeatFlux")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SensibleHeatFlux") == 0) {
         return SensibleHeatFlux;
-    }
-    else if (ParameterStr.CmpNoCase("Lightnings")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("Lightnings") == 0) {
         return Lightnings;
-    }
-    else if (ParameterStr.CmpNoCase("SeaSurfaceTemperature")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SeaSurfaceTemperature") == 0) {
         return SeaSurfaceTemperature;
-    }
-    else if (ParameterStr.CmpNoCase("SST")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SST") == 0) {
         return SeaSurfaceTemperature;
-    }
-    else if (ParameterStr.CmpNoCase("SeaSurfaceTemperatureAnomaly")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SeaSurfaceTemperatureAnomaly") == 0) {
         return SeaSurfaceTemperatureAnomaly;
-    }
-    else if (ParameterStr.CmpNoCase("SSTAnomaly")==0)
-    {
+    } else if (ParameterStr.CmpNoCase("SSTAnomaly") == 0) {
         return SeaSurfaceTemperatureAnomaly;
-    }
-    else
-    {
+    } else {
         asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
     }
     return NoDataParameter;
@@ -181,62 +113,61 @@ DataParameter asGlobEnums::StringToDataParameterEnum(const wxString &ParameterSt
 
 wxString asGlobEnums::DataParameterEnumToString(DataParameter dataParameter)
 {
-    switch (dataParameter)
-    {
-        case(Precipitation):
+    switch (dataParameter) {
+        case (Precipitation):
             return "Precipitation";
-        case(AirTemperature):
+        case (AirTemperature):
             return "AirTemperature";
-        case(GeopotentialHeight):
+        case (GeopotentialHeight):
             return "GeopotentialHeight";
-        case(PrecipitableWater):
+        case (PrecipitableWater):
             return "PrecipitableWater";
-        case(RelativeHumidity):
+        case (RelativeHumidity):
             return "RelativeHumidity";
-        case(SpecificHumidity):
+        case (SpecificHumidity):
             return "SpecificHumidity";
-        case(Omega):
+        case (Omega):
             return "Omega";
-        case(Wind):
+        case (Wind):
             return "Wind";
-        case(Uwind):
+        case (Uwind):
             return "Uwind";
-        case(Vwind):
+        case (Vwind):
             return "Vwind";
-        case(SurfaceLiftedIndex):
+        case (SurfaceLiftedIndex):
             return "SurfaceLiftedIndex";
-        case(PotentialTemperature):
+        case (PotentialTemperature):
             return "PotentialTemperature";
-        case(Pressure):
+        case (Pressure):
             return "Pressure";
-        case(PotentialEvaporation):
+        case (PotentialEvaporation):
             return "PotentialEvaporation";
-        case(SurfaceTemperature):
+        case (SurfaceTemperature):
             return "SurfaceTemperature";
-        case(ConvectivePrecipitation):
+        case (ConvectivePrecipitation):
             return "ConvectivePrecipitation";
-        case(LongwaveRadiation):
+        case (LongwaveRadiation):
             return "LongwaveRadiation";
-        case(ShortwaveRadiation):
+        case (ShortwaveRadiation):
             return "ShortwaveRadiation";
-        case(SolarRadiation):
+        case (SolarRadiation):
             return "SolarRadiation";
-        case(GroundHeatFlux):
+        case (GroundHeatFlux):
             return "GroundHeatFlux";
-        case(LatentHeatFlux):
+        case (LatentHeatFlux):
             return "LatentHeatFlux";
-        case(NearIRFlux):
+        case (NearIRFlux):
             return "NearIRFlux";
-        case(SensibleHeatFlux):
+        case (SensibleHeatFlux):
             return "SensibleHeatFlux";
-        case(Lightnings):
+        case (Lightnings):
             return "Lightnings";
-        case(SeaSurfaceTemperature):
+        case (SeaSurfaceTemperature):
             return "SeaSurfaceTemperature";
-        case(SeaSurfaceTemperatureAnomaly):
+        case (SeaSurfaceTemperatureAnomaly):
             return "SeaSurfaceTemperatureAnomaly";
         default:
-        asLogError(_("The given data parameter type in unknown."));
+            asLogError(_("The given data parameter type in unknown."));
     }
     return wxEmptyString;
 }
@@ -244,88 +175,47 @@ wxString asGlobEnums::DataParameterEnumToString(DataParameter dataParameter)
 DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
 {
 
-    if (UnitStr.CmpNoCase("nb")==0)
-    {
+    if (UnitStr.CmpNoCase("nb") == 0) {
         return nb;
-    }
-    else if (UnitStr.CmpNoCase("number")==0)
-    {
+    } else if (UnitStr.CmpNoCase("number") == 0) {
         return nb;
-    }
-    else if (UnitStr.CmpNoCase("mm")==0)
-    {
+    } else if (UnitStr.CmpNoCase("mm") == 0) {
         return mm;
-    }
-    else if (UnitStr.CmpNoCase("m")==0)
-    {
+    } else if (UnitStr.CmpNoCase("m") == 0) {
         return m;
-    }
-    else if (UnitStr.CmpNoCase("km")==0)
-    {
+    } else if (UnitStr.CmpNoCase("km") == 0) {
         return km;
-    }
-    else if (UnitStr.CmpNoCase("percent")==0)
-    {
+    } else if (UnitStr.CmpNoCase("percent") == 0) {
         return percent;
-    }
-    else if (UnitStr.CmpNoCase("%")==0)
-    {
+    } else if (UnitStr.CmpNoCase("%") == 0) {
         return percent;
-    }
-    else if (UnitStr.CmpNoCase("degC")==0)
-    {
+    } else if (UnitStr.CmpNoCase("degC") == 0) {
         return degC;
-    }
-    else if (UnitStr.CmpNoCase("degK")==0)
-    {
+    } else if (UnitStr.CmpNoCase("degK") == 0) {
         return degK;
-    }
-    else if (UnitStr.CmpNoCase("Pascals")==0)
-    {
+    } else if (UnitStr.CmpNoCase("Pascals") == 0) {
         return Pascals;
-    }
-    else if (UnitStr.CmpNoCase("PascalsPerSec")==0)
-    {
+    } else if (UnitStr.CmpNoCase("PascalsPerSec") == 0) {
         return PascalsPerSec;
-    }
-    else if (UnitStr.CmpNoCase("Pascals/s")==0)
-    {
+    } else if (UnitStr.CmpNoCase("Pascals/s") == 0) {
         return PascalsPerSec;
-    }
-    else if (UnitStr.CmpNoCase("kgPerKg")==0)
-    {
+    } else if (UnitStr.CmpNoCase("kgPerKg") == 0) {
         return kgPerKg;
-    }
-    else if (UnitStr.CmpNoCase("kg/kg")==0)
-    {
+    } else if (UnitStr.CmpNoCase("kg/kg") == 0) {
         return kgPerKg;
-    }
-    else if (UnitStr.CmpNoCase("mPerSec")==0)
-    {
+    } else if (UnitStr.CmpNoCase("mPerSec") == 0) {
         return mPerSec;
-    }
-    else if (UnitStr.CmpNoCase("m/s")==0)
-    {
+    } else if (UnitStr.CmpNoCase("m/s") == 0) {
         return mPerSec;
-    }
-    else if (UnitStr.CmpNoCase("WPerm2")==0)
-    {
+    } else if (UnitStr.CmpNoCase("WPerm2") == 0) {
         return WPerm2;
-    }
-    else if (UnitStr.CmpNoCase("W/m2")==0)
-    {
+    } else if (UnitStr.CmpNoCase("W/m2") == 0) {
         return WPerm2;
-    }
-    else if (UnitStr.CmpNoCase("kgPerm2Pers")==0)
-    {
+    } else if (UnitStr.CmpNoCase("kgPerm2Pers") == 0) {
         return kgPerm2Pers;
-    }
-    else if (UnitStr.CmpNoCase("kg/m2/s")==0)
-    {
+    } else if (UnitStr.CmpNoCase("kg/m2/s") == 0) {
         return kgPerm2Pers;
-    }
-    else
-    {
+    } else {
         asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
     }
     return NoDataUnit;
@@ -334,89 +224,60 @@ DataUnit asGlobEnums::StringToDataUnitEnum(const wxString &UnitStr)
 DataTemporalResolution asGlobEnums::StringToDataTemporalResolutionEnum(const wxString &TemporalResolution)
 {
 
-    if (TemporalResolution.CmpNoCase("Daily")==0)
-    {
+    if (TemporalResolution.CmpNoCase("Daily") == 0) {
         return Daily;
-    }
-    else if (TemporalResolution.CmpNoCase("1 day")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("1 day") == 0) {
         return Daily;
-    }
-    else if (TemporalResolution.CmpNoCase("SixHourly")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("SixHourly") == 0) {
         return SixHourly;
-    }
-    else if (TemporalResolution.CmpNoCase("6 hours")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("6 hours") == 0) {
         return SixHourly;
-    }
-    else if (TemporalResolution.CmpNoCase("Hourly")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("Hourly") == 0) {
         return Hourly;
-    }
-    else if (TemporalResolution.CmpNoCase("1 hour")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("1 hour") == 0) {
         return Hourly;
-    }
-    else if (TemporalResolution.CmpNoCase("SixHourlyMovingDailyTemporalWindow")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("SixHourlyMovingDailyTemporalWindow") == 0) {
         return SixHourlyMovingDailyTemporalWindow;
-    }
-    else if (TemporalResolution.CmpNoCase("MovingTemporalWindow")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("MovingTemporalWindow") == 0) {
         return SixHourlyMovingDailyTemporalWindow;
-    }
-    else if (TemporalResolution.CmpNoCase("TwoDays")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("TwoDays") == 0) {
         return TwoDays;
-    }
-    else if (TemporalResolution.CmpNoCase("2 days")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("2 days") == 0) {
         return TwoDays;
-    }
-    else if (TemporalResolution.CmpNoCase("ThreeDays")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("ThreeDays") == 0) {
         return ThreeDays;
-    }
-    else if (TemporalResolution.CmpNoCase("3 days")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("3 days") == 0) {
         return ThreeDays;
-    }
-    else if (TemporalResolution.CmpNoCase("Weekly")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("Weekly") == 0) {
         return Weekly;
-    }
-    else if (TemporalResolution.CmpNoCase("1 week")==0)
-    {
+    } else if (TemporalResolution.CmpNoCase("1 week") == 0) {
         return Weekly;
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"), TemporalResolution));
+    } else {
+        asLogError(wxString::Format(_("The TemporalResolution enumeration (%s) entry doesn't exists"),
+                                    TemporalResolution));
     }
     return NoDataTemporalResolution;
 }
 
 wxString asGlobEnums::DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution)
 {
-    switch (dataTemporalResolution)
-    {
-        case(Daily):
+    switch (dataTemporalResolution) {
+        case (Daily):
             return "Daily";
-        case(SixHourly):
+        case (SixHourly):
             return "SixHourly";
-        case(Hourly):
+        case (Hourly):
             return "Hourly";
-        case(SixHourlyMovingDailyTemporalWindow):
+        case (SixHourlyMovingDailyTemporalWindow):
             return "SixHourlyMovingDailyTemporalWindow";
-        case(TwoDays):
+        case (TwoDays):
             return "TwoDays";
-        case(ThreeDays):
+        case (ThreeDays):
             return "ThreeDays";
-        case(Weekly):
+        case (Weekly):
             return "Weekly";
         default:
-        asLogError(_("The given data temporal resolution type in unknown."));
+            asLogError(_("The given data temporal resolution type in unknown."));
     }
     return wxEmptyString;
 }
@@ -424,37 +285,30 @@ wxString asGlobEnums::DataTemporalResolutionEnumToString(DataTemporalResolution 
 DataSpatialAggregation asGlobEnums::StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation)
 {
 
-    if (SpatialAggregation.CmpNoCase("Station")==0)
-    {
+    if (SpatialAggregation.CmpNoCase("Station") == 0) {
         return Station;
-    }
-    else if (SpatialAggregation.CmpNoCase("Groupment")==0)
-    {
+    } else if (SpatialAggregation.CmpNoCase("Groupment") == 0) {
         return Groupment;
-    }
-    else if (SpatialAggregation.CmpNoCase("Catchment")==0)
-    {
+    } else if (SpatialAggregation.CmpNoCase("Catchment") == 0) {
         return Catchment;
-    }
-    else
-    {
-        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"), SpatialAggregation));
+    } else {
+        asLogError(wxString::Format(_("The SpatialAggregation enumeration (%s) entry doesn't exists"),
+                                    SpatialAggregation));
     }
     return NoDataSpatialAggregation;
 }
 
 wxString asGlobEnums::DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation)
 {
-    switch (dataSpatialAggregation)
-    {
-        case(Station):
+    switch (dataSpatialAggregation) {
+        case (Station):
             return "Station";
-        case(Groupment):
+        case (Groupment):
             return "Groupment";
-        case(Catchment):
+        case (Catchment):
             return "Catchment";
         default:
-        asLogError(_("The given data spatial aggregation type in unknown."));
+            asLogError(_("The given data spatial aggregation type in unknown."));
     }
     return wxEmptyString;
 }

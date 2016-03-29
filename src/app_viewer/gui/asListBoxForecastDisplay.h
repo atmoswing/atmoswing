@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASLISTBOXFORECASTDISPLAY_H
 #define ASLISTBOXFORECASTDISPLAY_H
 
@@ -32,10 +32,14 @@
 
 class asForecastViewer;
 
-class asListBoxForecastDisplay : public wxListBox
+class asListBoxForecastDisplay
+        : public wxListBox
 {
 public:
-    asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL, long style = 0);
+    asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
+                             const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL,
+                             long style = 0);
+
     virtual ~asListBoxForecastDisplay();
 
     void SetStringArray(wxArrayString options)
@@ -47,9 +51,9 @@ public:
 protected:
 
 private:
-    void OnForecastDisplaySlctChange( wxCommandEvent & event );
+    void OnForecastDisplaySlctChange(wxCommandEvent &event);
 
-    DECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE();
 };
 
 #endif // ASLISTBOXFORECASTDISPLAY_H

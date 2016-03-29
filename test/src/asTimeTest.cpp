@@ -238,7 +238,7 @@ TEST(Time, GetTimeStructOther)
 TEST(Time, GetYearNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetYear( Mjd, asUSE_NORMAL_METHOD );
+    int Result = asTime::GetYear(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, Result);
 }
@@ -246,7 +246,7 @@ TEST(Time, GetYearNormal_20101104_103245)
 TEST(Time, GetYearAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetYear( Mjd, asUSE_ALTERNATE_METHOD );
+    int Result = asTime::GetYear(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, Result);
 }
@@ -254,7 +254,7 @@ TEST(Time, GetYearAlternate_20101104_103245)
 TEST(Time, GetMonthNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetMonth( Mjd, asUSE_NORMAL_METHOD );
+    int Result = asTime::GetMonth(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(11, Result);
 }
@@ -262,7 +262,7 @@ TEST(Time, GetMonthNormal_20101104_103245)
 TEST(Time, GetMonthAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetMonth( Mjd, asUSE_ALTERNATE_METHOD );
+    int Result = asTime::GetMonth(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(11, Result);
 }
@@ -270,7 +270,7 @@ TEST(Time, GetMonthAlternate_20101104_103245)
 TEST(Time, GetDayNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetDay( Mjd, asUSE_NORMAL_METHOD );
+    int Result = asTime::GetDay(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(4, Result);
 }
@@ -278,7 +278,7 @@ TEST(Time, GetDayNormal_20101104_103245)
 TEST(Time, GetDayAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetDay( Mjd, asUSE_ALTERNATE_METHOD );
+    int Result = asTime::GetDay(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(4, Result);
 }
@@ -286,7 +286,7 @@ TEST(Time, GetDayAlternate_20101104_103245)
 TEST(Time, GetHourNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetHour( Mjd, asUSE_NORMAL_METHOD );
+    int Result = asTime::GetHour(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(10, Result);
 }
@@ -294,7 +294,7 @@ TEST(Time, GetHourNormal_20101104_103245)
 TEST(Time, GetHourAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetHour( Mjd, asUSE_ALTERNATE_METHOD );
+    int Result = asTime::GetHour(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(10, Result);
 }
@@ -302,7 +302,7 @@ TEST(Time, GetHourAlternate_20101104_103245)
 TEST(Time, GetMinuteNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetMinute( Mjd, asUSE_NORMAL_METHOD );
+    int Result = asTime::GetMinute(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(32, Result);
 }
@@ -310,7 +310,7 @@ TEST(Time, GetMinuteNormal_20101104_103245)
 TEST(Time, GetMinuteAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetMinute( Mjd, asUSE_ALTERNATE_METHOD );
+    int Result = asTime::GetMinute(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(32, Result);
 }
@@ -318,7 +318,7 @@ TEST(Time, GetMinuteAlternate_20101104_103245)
 TEST(Time, GetSecondNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetSecond( Mjd, asUSE_NORMAL_METHOD );
+    int Result = asTime::GetSecond(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(45, Result);
 }
@@ -326,7 +326,7 @@ TEST(Time, GetSecondNormal_20101104_103245)
 TEST(Time, GetSecondAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    int Result = asTime::GetSecond( Mjd, asUSE_ALTERNATE_METHOD );
+    int Result = asTime::GetSecond(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(45, Result);
 }
@@ -336,7 +336,7 @@ TEST(Time, NowLocalMJD)
     double mjd = asTime::NowMJD(asLOCAL);
     wxString datestr = asTime::GetStringTime(mjd);
 
-	wxPrintf("Local time is %s\n", datestr);
+    wxPrintf("Local time is %s\n", datestr);
 }
 
 TEST(Time, NowLocalTimeStruct)
@@ -344,7 +344,7 @@ TEST(Time, NowLocalTimeStruct)
     TimeStruct date = asTime::NowTimeStruct(asLOCAL);
     wxString datestr = asTime::GetStringTime(date);
 
-	wxPrintf("Local time is %s\n", datestr);
+    wxPrintf("Local time is %s\n", datestr);
 }
 
 TEST(Time, NowMJD)
@@ -352,7 +352,7 @@ TEST(Time, NowMJD)
     double mjd = asTime::NowMJD(asUTM);
     wxString datestr = asTime::GetStringTime(mjd);
 
-	wxPrintf("UTM time is %s\n", datestr);
+    wxPrintf("UTM time is %s\n", datestr);
 }
 
 TEST(Time, NowTimeStruct)
@@ -360,7 +360,7 @@ TEST(Time, NowTimeStruct)
     TimeStruct date = asTime::NowTimeStruct(asUTM);
     wxString datestr = asTime::GetStringTime(date);
 
-	wxPrintf("UTM time is %s\n", datestr);
+    wxPrintf("UTM time is %s\n", datestr);
 }
 
 TEST(Time, GetStringDateMJD)
@@ -439,7 +439,7 @@ TEST(Time, GetStringTimeTimeStruct)
 TEST(Time, GetTimeFromStringFormatDDMMYYYY)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007", DDMMYYYY);
-    double mjd = asTime::GetMJD(2007,11,23);
+    double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -447,7 +447,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYY)
 TEST(Time, GetTimeFromStringFormatDDMMYYYYSlashes)
 {
     double conversion = asTime::GetTimeFromString("23/11/2007", DDMMYYYY);
-    double mjd = asTime::GetMJD(2007,11,23);
+    double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -460,7 +460,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYException)
 TEST(Time, GetTimeFromStringFormatYYYYMMDD)
 {
     double conversion = asTime::GetTimeFromString("2007.11.23", YYYYMMDD);
-    double mjd = asTime::GetMJD(2007,11,23);
+    double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -473,7 +473,7 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDException)
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmm)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007 13:05", DDMMYYYYhhmm);
-    double mjd = asTime::GetMJD(2007,11,23,13,5);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -486,7 +486,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmException)
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmm)
 {
     double conversion = asTime::GetTimeFromString("2007.11.23 13:05", YYYYMMDDhhmm);
-    double mjd = asTime::GetMJD(2007,11,23,13,5);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -499,7 +499,7 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmException)
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmss)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007 13:05:01", DDMMYYYYhhmmss);
-    double mjd = asTime::GetMJD(2007,11,23,13,5,1);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -512,7 +512,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmssException)
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmss)
 {
     double conversion = asTime::GetTimeFromString("2007.11.23 13:05:01", YYYYMMDDhhmmss);
-    double mjd = asTime::GetMJD(2007,11,23,13,5,1);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -532,7 +532,7 @@ TEST(Time, GetTimeFromStringFormatnowplushours)
     double conversion = asTime::GetTimeFromString("+2", nowplushours);
     wxString datestr = asTime::GetStringTime(conversion);
 
-	wxPrintf("UTM time +2 hours is %s\n", datestr);
+    wxPrintf("UTM time +2 hours is %s\n", datestr);
 }
 
 TEST(Time, GetTimeFromStringFormatnowplushoursException)
@@ -550,7 +550,7 @@ TEST(Time, GetTimeFromStringFormatnowminushours)
     double conversion = asTime::GetTimeFromString("-2", nowminushours);
     wxString datestr = asTime::GetStringTime(conversion);
 
-	wxPrintf("UTM time -2 hours is %s\n", datestr);
+    wxPrintf("UTM time -2 hours is %s\n", datestr);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursException)
@@ -576,7 +576,7 @@ TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignNo)
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYY)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007", guess);
-    double mjd = asTime::GetMJD(2007,11,23);
+    double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -584,7 +584,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYY)
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYSlashes)
 {
     double conversion = asTime::GetTimeFromString("23/11/2007", guess);
-    double mjd = asTime::GetMJD(2007,11,23);
+    double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -597,7 +597,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYException)
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDD)
 {
     double conversion = asTime::GetTimeFromString("2007.11.23", guess);
-    double mjd = asTime::GetMJD(2007,11,23);
+    double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -610,7 +610,7 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDException)
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmm)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007 13:05", guess);
-    double mjd = asTime::GetMJD(2007,11,23,13,5);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -623,7 +623,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmException)
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmm)
 {
     double conversion = asTime::GetTimeFromString("2007.11.23 13:05", guess);
-    double mjd = asTime::GetMJD(2007,11,23,13,5);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -636,7 +636,7 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmException)
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmss)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007 13:05:01", guess);
-    double mjd = asTime::GetMJD(2007,11,23,13,5,1);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -649,7 +649,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmssException)
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmss)
 {
     double conversion = asTime::GetTimeFromString("2007.11.23 13:05:01", guess);
-    double mjd = asTime::GetMJD(2007,11,23,13,5,1);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
 }
@@ -669,7 +669,7 @@ TEST(Time, GetTimeFromStringFormatautonowplushours)
     double conversion = asTime::GetTimeFromString("+2", guess);
     wxString datestr = asTime::GetStringTime(conversion);
 
-	wxPrintf("UTM time +2 hours is %s\n", datestr);
+    wxPrintf("UTM time +2 hours is %s\n", datestr);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowplushoursException)
@@ -687,7 +687,7 @@ TEST(Time, GetTimeFromStringFormatautonowminushours)
     double conversion = asTime::GetTimeFromString("-2", guess);
     wxString datestr = asTime::GetStringTime(conversion);
 
-	wxPrintf("UTM time -2 hours is %s\n", datestr);
+    wxPrintf("UTM time -2 hours is %s\n", datestr);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursException)
@@ -712,108 +712,108 @@ TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignPlusText)
 
 TEST(Time, AddYear1972)
 {
-    double mjd = asTime::GetMJD(1972,11,23,13,5);
+    double mjd = asTime::GetMJD(1972, 11, 23, 13, 5);
     mjd = asTime::AddYear(mjd);
-    double mjdafter = asTime::GetMJD(1973,11,23,13,5);
+    double mjdafter = asTime::GetMJD(1973, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, AddYear1972Leap)
 {
-    double mjd = asTime::GetMJD(1972,2,23,13,5);
+    double mjd = asTime::GetMJD(1972, 2, 23, 13, 5);
     mjd = asTime::AddYear(mjd);
-    double mjdafter = asTime::GetMJD(1973,2,23,13,5);
+    double mjdafter = asTime::GetMJD(1973, 2, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, AddYear1900)
 {
-    double mjd = asTime::GetMJD(1900,2,23,13,5);
+    double mjd = asTime::GetMJD(1900, 2, 23, 13, 5);
     mjd = asTime::AddYear(mjd);
-    double mjdafter = asTime::GetMJD(1901,2,23,13,5);
+    double mjdafter = asTime::GetMJD(1901, 2, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, AddYear2000)
 {
-    double mjd = asTime::GetMJD(2000,11,23,13,5);
+    double mjd = asTime::GetMJD(2000, 11, 23, 13, 5);
     mjd = asTime::AddYear(mjd);
-    double mjdafter = asTime::GetMJD(2001,11,23,13,5);
+    double mjdafter = asTime::GetMJD(2001, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, AddYear2000Leap)
 {
-    double mjd = asTime::GetMJD(2000,2,23,13,5);
+    double mjd = asTime::GetMJD(2000, 2, 23, 13, 5);
     mjd = asTime::AddYear(mjd);
-    double mjdafter = asTime::GetMJD(2001,2,23,13,5);
+    double mjdafter = asTime::GetMJD(2001, 2, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear1972Leap)
 {
-    double mjd = asTime::GetMJD(1972,11,23,13,5);
+    double mjd = asTime::GetMJD(1972, 11, 23, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1971,11,23,13,5);
+    double mjdafter = asTime::GetMJD(1971, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear1972)
 {
-    double mjd = asTime::GetMJD(1972,2,23,13,5);
+    double mjd = asTime::GetMJD(1972, 2, 23, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1971,2,23,13,5);
+    double mjdafter = asTime::GetMJD(1971, 2, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear1900)
 {
-    double mjd = asTime::GetMJD(1900,11,23,13,5);
+    double mjd = asTime::GetMJD(1900, 11, 23, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1899,11,23,13,5);
+    double mjdafter = asTime::GetMJD(1899, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear2000Leap)
 {
-    double mjd = asTime::GetMJD(2000,11,23,13,5);
+    double mjd = asTime::GetMJD(2000, 11, 23, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1999,11,23,13,5);
+    double mjdafter = asTime::GetMJD(1999, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear2000)
 {
-    double mjd = asTime::GetMJD(2000,2,23,13,5);
+    double mjd = asTime::GetMJD(2000, 2, 23, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1999,2,23,13,5);
+    double mjdafter = asTime::GetMJD(1999, 2, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear2000Feb28)
 {
-    double mjd = asTime::GetMJD(2000,2,28,13,5);
+    double mjd = asTime::GetMJD(2000, 2, 28, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1999,2,28,13,5);
+    double mjdafter = asTime::GetMJD(1999, 2, 28, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }
 
 TEST(Time, SubtractYear2000Feb29)
 {
-    double mjd = asTime::GetMJD(2000,2,29,13,5);
+    double mjd = asTime::GetMJD(2000, 2, 29, 13, 5);
     mjd = asTime::SubtractYear(mjd);
-    double mjdafter = asTime::GetMJD(1999,2,28,13,5);
+    double mjdafter = asTime::GetMJD(1999, 2, 28, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjdafter, mjd);
 }

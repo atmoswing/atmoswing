@@ -25,13 +25,12 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asForecastScoreBSS.h"
 #include "asForecastScoreBS.h"
 
 asForecastScoreBSS::asForecastScoreBSS()
-:
-asForecastScore()
+        : asForecastScore()
 {
     m_score = asForecastScore::BSS;
     m_name = _("BS Skill Score");
@@ -49,49 +48,46 @@ asForecastScoreBSS::~asForecastScoreBSS()
 
 float asForecastScoreBSS::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
 {
-    wxASSERT(ForcastVals.size()>1);
-    wxASSERT(nbElements>0);
+    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(nbElements > 0);
 
-    wxASSERT(m_scoreClimatology!=0);
+    wxASSERT(m_scoreClimatology != 0);
 
     // First process the BS and then the skill score
     asForecastScoreBS scoreBS = asForecastScoreBS();
     scoreBS.SetThreshold(GetThreshold());
     scoreBS.SetQuantile(GetQuantile());
     float score = scoreBS.Assess(ObservedVal, ForcastVals, nbElements);
-    float skillScore = (score-m_scoreClimatology) / ((float)0-m_scoreClimatology);
+    float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
     return skillScore;
 }
 
 bool asForecastScoreBSS::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
 {
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size()-1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size()-1]));
+    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
+    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
 
     // Containers for final results
     Array1DFloat scoresClimatology(refVals.size());
 
     // Set the original score and process
-    asForecastScore* forecastScore = asForecastScore::GetInstance(asForecastScore::BS);
+    asForecastScore *forecastScore = asForecastScore::GetInstance(asForecastScore::BS);
     forecastScore->SetThreshold(GetThreshold());
     forecastScore->SetQuantile(GetQuantile());
 
-    for (int i_reftime=0; i_reftime<refVals.size(); i_reftime++)
-    {
-        if (!asTools::IsNaN(refVals(i_reftime)))
-        {
-            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData, climatologyData.size());
-        }
-        else
-        {
+    for (int i_reftime = 0; i_reftime < refVals.size(); i_reftime++) {
+        if (!asTools::IsNaN(refVals(i_reftime))) {
+            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData,
+                                                                 climatologyData.size());
+        } else {
             scoresClimatology(i_reftime) = NaNFloat;
         }
     }
 
     wxDELETE(forecastScore);
 
-    m_scoreClimatology = asTools::Mean(&scoresClimatology[0],&scoresClimatology[scoresClimatology.size()-1]);
+    m_scoreClimatology = asTools::Mean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
     asLogMessage(wxString::Format(_("Score of the climatology: %g."), m_scoreClimatology));
 

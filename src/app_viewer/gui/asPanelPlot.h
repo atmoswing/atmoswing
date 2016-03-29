@@ -24,42 +24,41 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef __asPanelPlot__
 #define __asPanelPlot__
-
 
 #include "asIncludes.h"
 #include "AtmoswingViewerGui.h"
 #include <wx/plotctrl/plotctrl.h>
 
-
-/** Implementing asPanelPlot */
-class asPanelPlot : public wxPanel
+class asPanelPlot
+        : public wxPanel
 {
 public:
-    /** Constructor */
-    asPanelPlot( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL );
+    asPanelPlot(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL);
 
     void Print();
+
     void PrintPreview();
+
     void ExportSVG();
 
-    wxPlotCtrl* GetPlotCtrl()
+    wxPlotCtrl *GetPlotCtrl()
     {
         wxASSERT(m_plotCtrl);
         return m_plotCtrl;
     }
 
 protected:
-    wxPlotCtrl* m_plotCtrl;
+    wxPlotCtrl *m_plotCtrl;
 
 private:
-    void OnPlotCtrl(wxPlotCtrlEvent& event);
+    void OnPlotCtrl(wxPlotCtrlEvent &event);
 
-    DECLARE_EVENT_TABLE()
+DECLARE_EVENT_TABLE()
 
 };
-
 
 #endif // __asPanelPlot__

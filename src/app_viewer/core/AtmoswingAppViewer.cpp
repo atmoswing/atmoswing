@@ -48,39 +48,40 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include "images.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-{
-    { wxCMD_LINE_SWITCH, "h", "help", "This help text" },
-    { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
-    { wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
-                                "\n \t\t\t\t 0: minimum"
-                                "\n \t\t\t\t 1: errors"
-                                "\n \t\t\t\t 2: warnings"
-                                "\n \t\t\t\t 3: verbose" },
-    { wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-    { wxCMD_LINE_NONE }
-};
+        {{wxCMD_LINE_SWITCH, "h", "help",      "This help text"},
+        {wxCMD_LINE_SWITCH, "v", "version",   "Show version number and quit"},
+        {wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
+                                 "\n \t\t\t\t 0: minimum"
+                                 "\n \t\t\t\t 1: errors"
+                                 "\n \t\t\t\t 2: warnings"
+                                 "\n \t\t\t\t 3: verbose"},
+        {wxCMD_LINE_PARAM, NULL, NULL,        "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+        {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppViewer::OnInit()
 {
-    #if _DEBUG
-    	#ifdef __WXMSW__
-            _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-        #endif
-    #endif
+#if _DEBUG
+#ifdef __WXMSW__
+    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
+#endif
 
-	// Set PPI
-	wxMemoryDC dcTestPpi;
-	wxSize ppiDC = dcTestPpi.GetPPI();
-	g_ppiScaleDc = double(ppiDC.x) / 96.0;
+    // Set PPI
+    wxMemoryDC dcTestPpi;
+    wxSize ppiDC = dcTestPpi.GetPPI();
+    g_ppiScaleDc = double(ppiDC.x) / 96.0;
 
     // Set application name and create user directory
     wxString appName = "AtmoSwing viewer";
     wxApp::SetAppName(appName);
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
-    userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
+    userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing",wxEmptyString,asConfig::GetUserDataDir()+"AtmoSwingViewer.ini",asConfig::GetUserDataDir()+"AtmoSwingViewer.ini",wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString,
+                                             asConfig::GetUserDataDir() + "AtmoSwingViewer.ini",
+                                             asConfig::GetUserDataDir() + "AtmoSwingViewer.ini",
+                                             wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
@@ -88,12 +89,10 @@ bool AtmoswingAppViewer::OnInit()
     bool multipleInstances;
     pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
-    if (!multipleInstances)
-    {
-        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"),wxGetUserId());
+    if (!multipleInstances) {
+        const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-        if ( m_singleInstanceChecker->IsAnotherRunning() )
-        {
+        if (m_singleInstanceChecker->IsAnotherRunning()) {
             //asLogError(_("Program already running, aborting."));
             wxMessageBox(_("Program already running, aborting."));
             return false;
@@ -103,7 +102,7 @@ bool AtmoswingAppViewer::OnInit()
     wxInitAllImageHandlers();
 
     // Initialize images
-	initialize_images(g_ppiScaleDc);
+    initialize_images(g_ppiScaleDc);
     vroomgis_initialize_images();
 
     // Init cURL
@@ -114,7 +113,7 @@ bool AtmoswingAppViewer::OnInit()
         return false;
 
     // Create frame
-    AtmoswingFrameViewer* frame = new AtmoswingFrameViewer(0L);
+    AtmoswingFrameViewer *frame = new AtmoswingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__
@@ -132,50 +131,44 @@ bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
     g_silentMode = true;
 
     // Set log level
-    if (logLevel<0)
-    {
+    if (logLevel < 0) {
         logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     }
     Log().CreateFile("AtmoSwingViewer.log");
-    Log().SetLevel((int)logLevel);
+    Log().SetLevel((int) logLevel);
 
     return true;
 }
 
-void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser& parser)
+void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser &parser)
 {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
-    parser.SetDesc (g_cmdLineDesc);
+    parser.SetDesc(g_cmdLineDesc);
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
-    parser.SetSwitchChars (wxT("-"));
+    parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
+bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
 {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
 
     // Check if the user asked for command-line help
-    if (parser.Found("h"))
-    {
+    if (parser.Found("h")) {
         parser.Usage();
         return false;
     }
 
     // Check if the user asked for the version
-    if (parser.Found("v"))
-    {
-        wxMessageOutput* msgOut = wxMessageOutput::Get();
-        if ( msgOut )
-        {
+    if (parser.Found("v")) {
+        wxMessageOutput *msgOut = wxMessageOutput::Get();
+        if (msgOut) {
             wxString msg;
             wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar*) date);
+            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar *) date);
 
-            msgOut->Printf( wxT("%s"), msg );
-        }
-        else
-        {
-            wxFAIL_MSG( _("No wxMessageOutput object?") );
+            msgOut->Printf(wxT("%s"), msg);
+        } else {
+            wxFAIL_MSG(_("No wxMessageOutput object?"));
         }
 
         return false;
@@ -184,32 +177,23 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
     long logLevel = -1;
-    if (parser.Found("l", & logLevelStr))
-    {
+    if (parser.Found("l", &logLevelStr)) {
         logLevelStr.ToLong(&logLevel);
 
         // Check and apply
-        if (logLevel==0)
-        {
+        if (logLevel == 0) {
             Log().SetLevel(0);
-        }
-        else if (logLevel==1)
-        {
+        } else if (logLevel == 1) {
             Log().SetLevel(1);
-        }
-        else if (logLevel==2)
-        {
+        } else if (logLevel == 2) {
             Log().SetLevel(2);
-        }
-        else
-        {
+        } else {
             Log().SetLevel(3);
         }
     }
 
     // Check for input files
-    if (parser.GetParamCount()>0)
-    {
+    if (parser.GetParamCount() > 0) {
         InitForCmdLineOnly(logLevel);
 
         g_cmdFilename = parser.GetParam(0);
@@ -217,7 +201,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser& parser)
         // Under Windows when invoking via a document in Explorer, we are passed th short form.
         // So normalize and make the long form.
         wxFileName fName(g_cmdFilename);
-        fName.Normalize(wxPATH_NORM_LONG|wxPATH_NORM_DOTS|wxPATH_NORM_TILDE|wxPATH_NORM_ABSOLUTE);
+        fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
         g_cmdFilename = fName.GetFullPath();
 
         return true;
@@ -243,7 +227,7 @@ int AtmoswingAppViewer::OnExit()
 
     // Cleanup images
     vroomgis_clear_images();
-	cleanup_images();
+    cleanup_images();
 
     return 1;
 }

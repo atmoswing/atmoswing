@@ -25,32 +25,22 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASPREDICTORCRITERIAS1_H
 #define ASPREDICTORCRITERIAS1_H
 
 #include <asIncludes.h>
 #include <asPredictorCriteria.h>
 
-class asPredictorCriteriaS1: public asPredictorCriteria
+class asPredictorCriteriaS1
+        : public asPredictorCriteria
 {
 public:
+    asPredictorCriteriaS1(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
 
-    /** Default constructor
-     * \param criteria The chosen criteria
-     */
-    asPredictorCriteriaS1(int linAlgebraMethod=asLIN_ALGEBRA_NOVAR);
-
-    /** Default destructor */
     ~asPredictorCriteriaS1();
 
-    /** Process the Criteria
-     * \param refData The target day
-     * \param evalData The day to assess
-     * \return The Criteria
-     */
     float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb);
-
 
 protected:
 

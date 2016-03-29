@@ -24,7 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #ifndef ASFILE_H
 #define ASFILE_H
 
@@ -32,47 +32,37 @@
 
 bool asRemoveDir(const wxString &Path);
 
-class asFile: public wxObject
+class asFile
+        : public wxObject
 {
 public:
-
-    //!< The file access mode
     enum ListFileMode
     {
-        ReadOnly,    // file exists, open read-only
-        Write,        // file exists, open for writing
-        Replace,    // create new file, even if already exists
-        New,        // create new file, even if already exists
-        Append        // add content to an already existing file
+        ReadOnly, // file exists, open read-only
+        Write,    // file exists, open for writing
+        Replace,  // create new file, even if already exists
+        New,      // create new file, even if already exists
+        Append    // add content to an already existing file
     };
 
-    /** Default constructor */
     asFile(const wxString &FileName, const ListFileMode &FileMode = asFile::ReadOnly);
 
-    /** Default destructor */
     virtual ~asFile();
 
-    /** Check if the file exists */
     static bool Exists(const wxString &FilePath);
 
-    /** Check for the file existance */
     bool Find();
 
-    /** Trigger the close file */
     bool DoClose();
 
-    /** Open file */
     virtual bool Open();
 
-    /** Close file */
     virtual bool Close();
 
-    /** Close file */
     bool Exists()
     {
         return m_Exists;
     }
-
 
 protected:
     ListFileMode m_fileMode;

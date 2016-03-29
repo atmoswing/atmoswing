@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASFILEDAT_H
 #define ASFILEDAT_H
 
@@ -33,11 +33,10 @@
 #include <asFileAscii.h>
 
 
-class asFileDat : public asFileAscii
+class asFileDat
+        : public asFileAscii
 {
 public:
-
-    //!< Structure for pattern information
     struct Pattern
     {
         wxString Id;
@@ -59,42 +58,22 @@ public:
         int DataEnd;
     };
 
-    /** Default constructor
-     * \param FileName The file path
-     * \param FileMode The file access mode according to asFileAscii::FileMode
-     */
     asFileDat(const wxString &FileName, const ListFileMode &FileMode);
 
-    /** Default destructor */
     virtual ~asFileDat();
 
-    /** Close file */
     bool Close();
 
-    /** Load a dat file pattern defined in an xml file
-     * \param FilePattern The pattern name
-     * \return The file pattern
-     */
     static Pattern GetPattern(const wxString &FilePatternName, const wxString &AlternatePatternDir = wxEmptyString);
 
-    /** Get the dat file pattern max width as defined in the xml file
-     * \param Pattern The pattern
-     * \return The max width
-     */
     static int GetPatternLineMaxCharWidth(const Pattern &Pattern);
 
-
 protected:
-private:
 
+private:
     static void InitPattern(Pattern &pattern);
 
-    /** Convert a string to a StructType enum value
-     * \param StructTypeChar The string corresponding to a StructType enum value
-     * \return The StructType enum value
-     */
     static FileStructType StringToStructType(const wxString &StructTypeStr);
-
 };
 
 #endif // ASFILEDAT_H

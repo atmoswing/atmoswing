@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASLISTBOXQUANTILES_H
 #define ASLISTBOXQUANTILES_H
 
@@ -33,10 +33,13 @@
 
 class asForecastViewer;
 
-class asListBoxQuantiles : public wxListBox
+class asListBoxQuantiles
+        : public wxListBox
 {
 public:
-    asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL, long style = 0);
+    asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
+                       const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL, long style = 0);
+
     virtual ~asListBoxQuantiles();
 
     void SetStringArray(wxArrayString options)
@@ -48,9 +51,9 @@ public:
 protected:
 
 private:
-    void OnQuantileSlctChange( wxCommandEvent & event );
+    void OnQuantileSlctChange(wxCommandEvent &event);
 
-    DECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE();
 };
 
 #endif // ASLISTBOXQUANTILES_H

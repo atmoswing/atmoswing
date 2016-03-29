@@ -24,37 +24,41 @@
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASWORKSPACE_H
 #define ASWORKSPACE_H
 
 #include <asIncludes.h>
 #include <asFileWorkspace.h>
+
 #if wxUSE_GUI
-    #include <wx/colour.h>
-    #include <wx/brush.h>
+#include <wx/colour.h>
+#include <wx/brush.h>
 #endif
 
-class asWorkspace : public wxObject
+class asWorkspace
+        : public wxObject
 {
 public:
-    /** Default constructor */
     asWorkspace();
 
-    /** Default destructor */
     virtual ~asWorkspace();
 
     bool Load(const wxString &filePath);
+
     bool Save();
+
     int GetLayersNb();
+
     void ClearLayers();
+
     void AddLayer();
 
     wxString GetFilePath()
     {
         return m_filePath;
     }
-    
+
     void SetFilePath(wxString &path)
     {
         m_filePath = path;
@@ -69,7 +73,7 @@ public:
     {
         return m_forecastsDirectory;
     }
-    
+
     void SetForecastsDirectory(wxString val)
     {
         m_forecastsDirectory = val;
@@ -77,65 +81,65 @@ public:
 
     wxString GetLayerPath(int i)
     {
-        wxASSERT((int)m_layerPaths.size()>i);
+        wxASSERT((int) m_layerPaths.size() > i);
         return m_layerPaths[i];
     }
-    
+
     void SetLayerPath(int i, const wxString &val)
     {
-        wxASSERT((int)m_layerPaths.size()>i);
+        wxASSERT((int) m_layerPaths.size() > i);
         m_layerPaths[i] = val;
     }
 
     wxString GetLayerType(int i)
     {
-        wxASSERT((int)m_layerTypes.size()>i);
+        wxASSERT((int) m_layerTypes.size() > i);
         return m_layerTypes[i];
     }
-    
+
     void SetLayerType(int i, const wxString &val)
     {
-        wxASSERT((int)m_layerTypes.size()>i);
+        wxASSERT((int) m_layerTypes.size() > i);
         m_layerTypes[i] = val;
     }
 
     int GetLayerTransparency(int i)
     {
-        wxASSERT((int)m_layerTransparencies.size()>i);
+        wxASSERT((int) m_layerTransparencies.size() > i);
         return m_layerTransparencies[i];
     }
 
     void SetLayerTransparency(int i, int val)
     {
-        wxASSERT((int)m_layerTransparencies.size()>i);
+        wxASSERT((int) m_layerTransparencies.size() > i);
         m_layerTransparencies[i] = val;
     }
 
     bool GetLayerVisibility(int i)
     {
-        wxASSERT((int)m_layerVisibilities.size()>i);
+        wxASSERT((int) m_layerVisibilities.size() > i);
         return m_layerVisibilities[i];
     }
 
     void SetLayerVisibility(int i, bool val)
     {
-        wxASSERT((int)m_layerVisibilities.size()>i);
+        wxASSERT((int) m_layerVisibilities.size() > i);
         m_layerVisibilities[i] = val;
     }
 
     int GetLayerLineWidth(int i)
     {
-        wxASSERT((int)m_layerLineWidths.size()>i);
+        wxASSERT((int) m_layerLineWidths.size() > i);
         return m_layerLineWidths[i];
     }
 
     void SetLayerLineWidth(int i, int val)
     {
-        wxASSERT((int)m_layerLineWidths.size()>i);
+        wxASSERT((int) m_layerLineWidths.size() > i);
         m_layerLineWidths[i] = val;
     }
 
-    #if wxUSE_GUI
+#if wxUSE_GUI
 
     wxColour GetLayerLineColor(int i)
     {
@@ -173,13 +177,13 @@ public:
         m_layerBrushStyles[i] = val;
     }
 
-    #endif
+#endif
 
     double GetColorbarMaxValue()
     {
         return m_colorbarMaxValue;
     }
-    
+
     void SetColorbarMaxValue(double val)
     {
         m_colorbarMaxValue = val;
@@ -199,7 +203,7 @@ public:
     {
         return m_alarmsPanelReturnPeriod;
     }
-    
+
     void SetAlarmsPanelReturnPeriod(int val)
     {
         m_alarmsPanelReturnPeriod = val;
@@ -209,7 +213,7 @@ public:
     {
         return m_alarmsPanelQuantile;
     }
-    
+
     void SetAlarmsPanelQuantile(float val)
     {
         m_alarmsPanelQuantile = val;
@@ -225,8 +229,8 @@ public:
         m_hasChanged = val;
     }
 
-
 protected:
+
 private:
     bool m_hasChanged;
     wxString m_filePath;
@@ -237,11 +241,11 @@ private:
     VectorInt m_layerTransparencies;
     VectorBool m_layerVisibilities;
     VectorInt m_layerLineWidths;
-    #if wxUSE_GUI
-        std::vector < wxColour > m_layerLineColors;
-		std::vector < wxColour > m_layerFillColors;
-		std::vector < wxBrushStyle > m_layerBrushStyles;
-    #endif
+#if wxUSE_GUI
+    std::vector < wxColour > m_layerLineColors;
+    std::vector < wxColour > m_layerFillColors;
+    std::vector < wxBrushStyle > m_layerBrushStyles;
+#endif
     double m_colorbarMaxValue;
     int m_timeSeriesPlotPastDaysNb;
     int m_alarmsPanelReturnPeriod;

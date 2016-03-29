@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asCatalogPredictands.h"
 
 #include "wx/fileconf.h"
@@ -35,8 +35,7 @@
 
 
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
-:
-wxObject()
+        : wxObject()
 {
     m_catalogFilePath = filePath;
 
@@ -52,8 +51,7 @@ wxObject()
     m_End = 0;
 
     // Get the xml file path
-    if (m_catalogFilePath.IsEmpty())
-    {
+    if (m_catalogFilePath.IsEmpty()) {
         asLogError(_("No path was given for the predictand catalog."));
     }
 
@@ -69,10 +67,12 @@ asCatalogPredictands::~asCatalogPredictands()
 bool asCatalogPredictands::Load()
 {
     // Load xml file
-    asFileXml xmlFile( m_catalogFilePath, asFile::ReadOnly );
-    if(!xmlFile.Open()) return false;
+    asFileXml xmlFile(m_catalogFilePath, asFile::ReadOnly);
+    if (!xmlFile.Open())
+        return false;
 
-    if(!xmlFile.CheckRootElement()) return false;
+    if (!xmlFile.CheckRootElement())
+        return false;
 
     // Get data
     wxXmlNode *nodeDataset = xmlFile.GetRoot()->GetChildren();
@@ -140,7 +140,7 @@ bool asCatalogPredictands::Load()
                                     wxString heightStr = xmlFile.GetString(nodeDetail);
                                     double height;
                                     heightStr.ToDouble(&height);
-                                    station.Height = (float)height;
+                                    station.Height = (float) height;
                                 } else if (nodeDetail->GetName() == "file_name") {
                                     station.Filename = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "file_pattern") {
@@ -179,8 +179,7 @@ bool asCatalogPredictands::Load()
     }
 
     // Get the timestep
-    switch (m_temporalResolution)
-    {
+    switch (m_temporalResolution) {
         case (Daily):
             m_timeStepHours = 24.0;
             break;
@@ -206,7 +205,7 @@ bool asCatalogPredictands::Load()
             wxFAIL;
             m_timeStepHours = 0;
     }
-    
+
     xmlFile.Close();
 
     return true;

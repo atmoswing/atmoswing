@@ -24,16 +24,17 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asThreadViewerLayerManagerZoomOut.h"
 
 #include <asTimeArray.h>
 #include <asThreadsManager.h>
 
 
-asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager, wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect)
-:
-asThread()
+asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
+                                                                     wxCriticalSection *critSectionViewerLayerManager,
+                                                                     const vrRealRect &fittedRect)
+        : asThread()
 {
     m_status = Initializing;
 
@@ -59,5 +60,5 @@ wxThread::ExitCode asThreadViewerLayerManagerZoomOut::Entry()
     m_viewerLayerManager->ZoomOut(m_rect);
     m_critSectionViewerLayerManager->Leave();
 
-    return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode) 0;
 }

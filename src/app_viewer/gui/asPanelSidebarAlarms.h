@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef __asPanelSidebarAlarms__
 #define __asPanelSidebarAlarms__
 
@@ -36,52 +36,67 @@
 #include "asWorkspace.h"
 #include <wx/graphics.h>
 
-class asPanelSidebarAlarms; // predefinition
+class asPanelSidebarAlarms;
 
-/** Implementing asPanelSidebarAlarmsDrawing */
-class asPanelSidebarAlarmsDrawing : public wxPanel
+class asPanelSidebarAlarmsDrawing
+        : public wxPanel
 {
 public:
-    /** Constructor */
-    asPanelSidebarAlarmsDrawing( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                                const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarAlarmsDrawing();
-    
-    void DrawAlarms( Array1DFloat &dates, const VectorString &forecasts, Array2DFloat &values );
-    void SetParent( asPanelSidebarAlarms* parent );
+
+    void DrawAlarms(Array1DFloat &dates, const VectorString &forecasts, Array2DFloat &values);
+
+    void SetParent(asPanelSidebarAlarms *parent);
 
 private:
     wxBitmap *m_bmpAlarms;
-    wxGraphicsContext* m_gdc;
-    asPanelSidebarAlarms* m_parent;
+    wxGraphicsContext *m_gdc;
+    asPanelSidebarAlarms *m_parent;
+
     void SetBitmapAlarms(wxBitmap *bmp);
-    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols, int rows);
-    void FillPath( wxGraphicsContext *gc, wxGraphicsPath & path, float value );
-    void CreateDatesText( wxGraphicsContext *gc, const wxPoint& start, int cellWitdh, int i_col, const wxString &label);
-    void CreateNbText( wxGraphicsContext *gc, const wxPoint& start, int cellHeight, int i_row, const wxString &label);
-    void OnPaint( wxPaintEvent &event );
+
+    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols,
+                    int rows);
+
+    void FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value);
+
+    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int i_col, const wxString &label);
+
+    void CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int i_row, const wxString &label);
+
+    void OnPaint(wxPaintEvent &event);
 };
 
-/** Implementing asPanelSidebarAlarms */
-class asPanelSidebarAlarms : public asPanelSidebar
+
+class asPanelSidebarAlarms
+        : public asPanelSidebar
 {
 public:
-    /** Constructor */
-    asPanelSidebarAlarms( wxWindow* parent, asWorkspace* workspace, asForecastManager * forecastManager, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    asPanelSidebarAlarms(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
+                         wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                         const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
     ~asPanelSidebarAlarms();
 
-    void SetData( Array1DFloat &dates, Array2DFloat &values );
+    void SetData(Array1DFloat &dates, Array2DFloat &values);
+
     void Update();
+
     int GetMode()
     {
         return m_mode;
     }
 
 private:
-    asWorkspace* m_workspace;
-    asForecastManager* m_forecastManager;
+    asWorkspace *m_workspace;
+    asForecastManager *m_forecastManager;
     asPanelSidebarAlarmsDrawing *m_panelDrawing;
     int m_mode;
-    void OnPaint( wxPaintEvent &event );
+
+    void OnPaint(wxPaintEvent &event);
 };
 
 #endif // __asPanelSidebar__

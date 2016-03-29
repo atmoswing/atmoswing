@@ -25,16 +25,19 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #include "asThreadInternetDownload.h"
 
 #include <asTimeArray.h>
 #include <asThreadsManager.h>
 
 
-asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir, bool usesProxy, const wxString &proxyAddress, const long proxyPort, const wxString &proxyUser, const wxString &proxyPasswd, int start, int end)
-:
-asThread()
+asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames,
+                                                   const wxString &destinationDir, bool usesProxy,
+                                                   const wxString &proxyAddress, const long proxyPort,
+                                                   const wxString &proxyUser, const wxString &proxyPasswd, int start,
+                                                   int end)
+        : asThread()
 {
     m_status = Initializing;
 
@@ -47,10 +50,10 @@ asThread()
     m_proxyUser = proxyUser;
     m_proxyPasswd = proxyPasswd;
     m_start = start;
-    m_End = wxMin(end, (int)m_fileNames.size()-1);
+    m_End = wxMin(end, (int) m_fileNames.size() - 1);
 
-    wxASSERT((unsigned)m_End<urls.size());
-    wxASSERT((unsigned)m_End<fileNames.size());
+    wxASSERT((unsigned) m_End < urls.size());
+    wxASSERT((unsigned) m_End < fileNames.size());
 
     m_status = Waiting;
 }
@@ -70,10 +73,10 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
     curl = curl_easy_init();
 
     // Do the job
-    if(curl) {
+    if (curl) {
         // Set a buffer for the error messages
-        char* errorbuffer = new char[CURL_ERROR_SIZE];
-        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER,  errorbuffer);
+        char *errorbuffer = new char[CURL_ERROR_SIZE];
+        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
         // Fail if the HTTP code returned is equal to or larger than 400
@@ -81,8 +84,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         // Maximum time in seconds that we allow the connection to the server to take. This only limits the connection phase.
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 20);
 
-        for (int i_file=m_start; i_file<=m_End; i_file++)
-        {
+        for (int i_file = m_start; i_file <= m_End; i_file++) {
             wxString fileName = m_fileNames[i_file];
             wxString filePath = m_destinationDir + DS + fileName;
             wxString url = m_urls[i_file];
@@ -90,27 +92,22 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
             // Use of a wxFileName object to create the directory.
             wxFileName currentFilePath = wxFileName(filePath);
-            if (!currentFilePath.DirExists())
-            {
-                if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL ))
-                {
+            if (!currentFilePath.DirExists()) {
+                if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                     asLogError(_("The directory to save real-time predictors data cannot be created."));
-					wxDELETE(errorbuffer);
-                    return (wxThread::ExitCode)1;
+                    wxDELETE(errorbuffer);
+                    return (wxThread::ExitCode) 1;
                 }
             }
 
             // Download only if not already done
-            if(!wxFileName::FileExists(filePath))
-            {
+            if (!wxFileName::FileExists(filePath)) {
                 // Instantiate the file structure
-                struct asInternet::HttpFile file={
-                    filePath.mb_str(), // Name to store the file as if succesful
-                    NULL
-                };
+                struct asInternet::HttpFile file = {filePath.mb_str(), // Name to store the file as if succesful
+                                                    NULL};
 
                 // Define the URL
-                wxCharBuffer buffer=url.ToUTF8();
+                wxCharBuffer buffer = url.ToUTF8();
                 curl_easy_setopt(curl, CURLOPT_URL, buffer.data());
                 // Define our callback to get called when there's data to be written
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, asInternet::WriteFile);
@@ -118,19 +115,15 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
 
                 // If a proxy is used
-                if (m_usesProxy)
-                {
-                    if (!m_proxyAddress.IsEmpty())
-                    {
+                if (m_usesProxy) {
+                    if (!m_proxyAddress.IsEmpty()) {
                         wxCharBuffer proxyAddressBuffer = m_proxyAddress.ToUTF8();
                         curl_easy_setopt(curl, CURLOPT_PROXY, proxyAddressBuffer.data());
                     }
-                    if (m_proxyPort>0)
-                    {
+                    if (m_proxyPort > 0) {
                         curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
-                    if (!m_proxyUser.IsEmpty())
-                    {
+                    if (!m_proxyUser.IsEmpty()) {
                         wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
                         wxCharBuffer proxyLoginBuffer = proxyLogin.ToUTF8();
                         curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, proxyLoginBuffer.data());
@@ -141,17 +134,16 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 res = curl_easy_perform(curl);
 
                 // Close the local file
-                if(file.stream) fclose(file.stream);
+                if (file.stream)
+                    fclose(file.stream);
 
                 // Log in case of failure
-                if(CURLE_OK != res) {
+                if (CURLE_OK != res) {
                     asLogError(_("Failed downloading file."));
                     asLogError(wxString::Format(_("Curl error message: %s"), errorbuffer));
-					wxDELETE(errorbuffer);
-                    return (wxThread::ExitCode)1;
-                }
-                else
-                {
+                    wxDELETE(errorbuffer);
+                    return (wxThread::ExitCode) 1;
+                } else {
                     asLogMessage(wxString::Format(_("File %s downloaded successfully."), fileName));
                 }
             }
@@ -164,5 +156,5 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
     m_status = Done;
 
-    return (wxThread::ExitCode)0;
+    return (wxThread::ExitCode) 0;
 }

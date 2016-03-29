@@ -24,12 +24,13 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
- 
+
 #include "asLogGlobalFunctions.h"
 
 // Global log functions
-asLog* g_pLog = new asLog();
-asLog& Log()
+asLog *g_pLog = new asLog();
+
+asLog &Log()
 {
     return *g_pLog;
 }
@@ -39,7 +40,7 @@ void asLogError(const wxString &msg)
     g_pLog->Error(msg);
 }
 
-void asLogError(const wxChar* msg)
+void asLogError(const wxChar *msg)
 {
     g_pLog->Error(msg);
 }
@@ -49,7 +50,7 @@ void asLogWarning(const wxString &msg)
     g_pLog->Warning(msg);
 }
 
-void asLogWarning(const wxChar* msg)
+void asLogWarning(const wxChar *msg)
 {
     g_pLog->Warning(msg);
 }
@@ -59,7 +60,7 @@ void asLogMessage(const wxString &msg)
     g_pLog->Message(msg);
 }
 
-void asLogMessage(const wxChar* msg)
+void asLogMessage(const wxChar *msg)
 {
     g_pLog->Message(msg);
 }
@@ -69,7 +70,7 @@ void asLogMessageImportant(const wxString &msg)
     g_pLog->Message(msg, true);
 }
 
-void asLogMessageImportant(const wxChar* msg)
+void asLogMessageImportant(const wxChar *msg)
 {
     g_pLog->Message(msg, true);
 }
@@ -79,7 +80,7 @@ void asLogState(const wxString &msg)
     g_pLog->State(msg);
 }
 
-void asLogState(const wxChar* msg)
+void asLogState(const wxChar *msg)
 {
     g_pLog->State(msg);
 }

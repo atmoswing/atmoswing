@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
- 
+
 #ifndef ASPANELSMANAGERFORECASTS_H
 #define ASPANELSMANAGERFORECASTS_H
 
@@ -35,27 +35,36 @@
 
 class asPanelForecast;
 
-class asPanelsManagerForecasts : public asPanelsManager
+class asPanelsManagerForecasts
+        : public asPanelsManager
 {
 public:
     asPanelsManagerForecasts();
+
     virtual ~asPanelsManagerForecasts();
 
-    void AddPanel(asPanelForecast* panel);
-    void RemovePanel(asPanelForecast* panel);
+    void AddPanel(asPanelForecast *panel);
+
+    void RemovePanel(asPanelForecast *panel);
+
     void Clear();
 
-    asPanelForecast* GetPanel( int i );
+    asPanelForecast *GetPanel(int i);
+
     int GetPanelsNb();
 
-    void SetForecastLedRunning( int num );
-    void SetForecastLedError( int num );
-    void SetForecastLedDone( int num );
-    void SetForecastLedOff( int num );
+    void SetForecastLedRunning(int num);
+
+    void SetForecastLedError(int num);
+
+    void SetForecastLedDone(int num);
+
+    void SetForecastLedOff(int num);
+
     void SetForecastsAllLedsOff();
 
 protected:
-    std::vector <asPanelForecast*> m_arrayPanels;
+    std::vector<asPanelForecast *> m_arrayPanels;
 
 private:
 
