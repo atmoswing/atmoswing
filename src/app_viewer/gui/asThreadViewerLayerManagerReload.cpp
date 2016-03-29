@@ -58,5 +58,5 @@ wxThread::ExitCode asThreadViewerLayerManagerReload::Entry()
     m_viewerLayerManager->Reload();
     m_critSectionViewerLayerManager->Leave();
 
-    return 0;
+    return (wxThread::ExitCode)0;
 }

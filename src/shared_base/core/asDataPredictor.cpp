@@ -122,7 +122,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         VVArray2DFloat compositeData(compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData))
         {
-            asLogError(_("Extracting data from files failed."));
+            asLogWarning(_("Extracting data from files failed."));
             wxDELETE(dataArea);
             return false;
         }

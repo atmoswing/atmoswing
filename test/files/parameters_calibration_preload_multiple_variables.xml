@@ -37,7 +37,7 @@
       <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
       <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
-      <time method="array">12, 24</time>
+      <time method="array">6, 12, 24</time>
       <spatial_window>
         <x_min>5</x_min>
         <x_points_nb>2</x_points_nb>
@@ -51,9 +51,9 @@
     <predictor>
       <preload>1</preload>
       <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
-      <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
+      <data_id method="array">prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
-      <time method="array">12, 24</time>
+      <time method="array">6, 12, 24</time>
       <spatial_window>
         <x_min>5</x_min>
         <x_points_nb>2</x_points_nb>

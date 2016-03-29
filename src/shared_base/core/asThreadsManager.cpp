@@ -44,7 +44,9 @@ asThreadsManager::asThreadsManager()
 
 asThreadsManager::~asThreadsManager()
 {
-
+    if (GetRunningThreadsNb() > 0) {
+        CleanArray();
+    }
 }
 
 void asThreadsManager::Init()
@@ -62,12 +64,7 @@ void asThreadsManager::Init()
 
 void asThreadsManager::OnClose(wxCloseEvent&)
 {
-    // Check if we have any threads running first
-    int count = GetRunningThreadsNb();
-
-    // Delete
-    if ( count )
-    {
+    if (GetRunningThreadsNb() > 0) {
         CleanArray();
     }
 }
