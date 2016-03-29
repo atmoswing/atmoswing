@@ -57,7 +57,7 @@ private:
     wxString m_proxyUser;
     wxString m_proxyPasswd;
     int m_start;
-    int m_End;
+    int m_end;
 
 };
 
