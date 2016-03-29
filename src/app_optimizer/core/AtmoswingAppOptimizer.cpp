@@ -282,7 +282,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
         pConfig->Write("/Paths/IntermediateResultsDir", GetLocalPath()+"temp");
-        pConfig->Write("/Paths/CalibrationResultsDir", GetLocalPath()+"results");
+        pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath()+"results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
         pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
