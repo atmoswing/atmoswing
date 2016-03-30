@@ -257,9 +257,6 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
 
     Log().DisableMessageBoxOnError();
 
-    if (g_local)
-    {
-        wxString dirData = wxFileName::GetCwd()+DS+"data"+DS;
     // Warn the user if reloading previous results
     if (g_resumePreviousRun)
     {
@@ -267,14 +264,6 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         printf("Warning: An existing directory was found for the run number %d\n", g_runNb);
     }
 
-    if (g_local)
-    {
-        asLogWarning(wxString::Format(_("An existing directory was found for the run number %d"), g_runNb));
-        printf("Warning: An existing directory was found for the run number %d\n", g_runNb);
-    }
-
-    {
-        wxString dirData = wxFileName::GetCwd()+DS+"data"+DS;
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
