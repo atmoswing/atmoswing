@@ -343,9 +343,7 @@ else (BUILD_FORECASTER OR BUILD_VIEWER)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # Eigen
-mark_as_advanced(CLEAR EIGEN3_INCLUDE_DIR)
-find_package(Eigen3 3.0.0 REQUIRED)
-include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories("src/shared_base/libs/eigen")
 
 # vroomgis
 if (BUILD_VIEWER)
