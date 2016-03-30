@@ -52,9 +52,7 @@ asDataPredictandTemperature::~asDataPredictandTemperature()
 
 bool asDataPredictandTemperature::InitContainers()
 {
-    if (!InitBaseContainers())
-        return false;
-    return true;
+    return InitBaseContainers();
 }
 
 bool asDataPredictandTemperature::Load(const wxString &filePath)

@@ -342,13 +342,13 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
 
             for (int past = 0;
                  past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); past++) {
-                asResultsAnalogsForecast *forecast = m_forecastManager->GetPastForecast(m_selectedMethod,
+                asResultsAnalogsForecast *pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
                                                                                         m_selectedForecast, past);
-                Array1DFloat dates = forecast->GetTargetDates();
-                wxString currentLine = asTime::GetStringTime(forecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
+                Array1DFloat dates = pastForecast->GetTargetDates();
+                wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
 
-                for (int i_leadtime = 0; i_leadtime < forecast->GetTargetDatesLength(); i_leadtime++) {
-                    Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_selectedStation);
+                for (int i_leadtime = 0; i_leadtime < pastForecast->GetTargetDatesLength(); i_leadtime++) {
+                    Array1DFloat analogs = pastForecast->GetAnalogsValuesGross(i_leadtime, m_selectedStation);
                     float pcVal = asTools::GetValueForQuantile(analogs, pcAll[i_pc]);
 
                     if (i_leadtime == 0) {

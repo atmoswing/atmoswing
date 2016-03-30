@@ -43,8 +43,6 @@ class asForecastTreeItemData
 public:
     asForecastTreeItemData(int methodRow, int forecastRow);
 
-    void ShowInfo(wxTreeCtrl *tree);
-
     bool IsAggregator()
     {
         return (m_forecastRow < 0);

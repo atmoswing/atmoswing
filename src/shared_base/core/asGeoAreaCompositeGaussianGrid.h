@@ -38,7 +38,6 @@ class asGeoAreaCompositeGaussianGrid
 {
 public:
     asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                                   double Xstep, double Ystep,
                                    asGeoAreaGaussianGrid::GaussianGridType type = asGeoAreaGaussianGrid::T62,
                                    float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 

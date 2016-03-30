@@ -29,8 +29,7 @@
 #include "asGeoAreaCompositeGaussianGrid.h"
 
 asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR,
-                                                               const Coo &CornerLL, const Coo &CornerLR, double Xstep,
-                                                               double Ystep,
+                                                               const Coo &CornerLL, const Coo &CornerLR,
                                                                asGeoAreaGaussianGrid::GaussianGridType type,
                                                                float Level, float Height, int flatAllowed)
         : asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
@@ -137,10 +136,9 @@ bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *othera
     if (otherarea->GetGridType() != GetGridType())
         return false;
     asGeoAreaCompositeGaussianGrid *otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid *>(otherarea));
-    if (otherareaGaussian->GetGaussianGridType() != GetGaussianGridType())
-        return false;
 
-    return true;
+    return otherareaGaussian->GetGaussianGridType() == GetGaussianGridType();
+
 }
 
 Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)

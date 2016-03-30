@@ -133,19 +133,15 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
 bool asTools::IsRound(float value)
 {
     float valueround = Round(value);
-    if (std::abs(value - valueround) < 0.000001) {
-        return true;
-    }
-    return false;
+
+    return std::abs(value - valueround) < 0.000001;
 }
 
 bool asTools::IsRound(double value)
 {
     double valueround = Round(value);
-    if (std::abs(value - valueround) < 0.000000000001) {
-        return true;
-    }
-    return false;
+
+    return std::abs(value - valueround) < 0.000000000001;
 }
 
 float asTools::Round(float value)
@@ -412,11 +408,10 @@ bool asTools::HasNaN(const double *pArrStart, const double *pArrEnd)
 int asTools::MinArray(int *pArrStart, int *pArrEnd)
 {
     int min;
-    int i = 0;
 
-    min = *(pArrStart + i);
+    min = *(pArrStart);
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) < min) {
             min = *(pArrStart + i);
         }
@@ -436,7 +431,7 @@ float asTools::MinArray(float *pArrStart, float *pArrEnd)
     }
     min = *(pArrStart + i);
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (!asTools::IsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) < min) {
                 min = *(pArrStart + i);
@@ -458,7 +453,7 @@ double asTools::MinArray(double *pArrStart, double *pArrEnd)
     }
     min = *(pArrStart + i);
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (!asTools::IsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) < min) {
                 min = *(pArrStart + i);
@@ -478,7 +473,7 @@ int asTools::MinArrayIndex(int *pArrStart, int *pArrEnd)
     min = *(pArrStart + i);
     index = 0;
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) < min) {
             min = *(pArrStart + i);
             index = i;
@@ -497,7 +492,7 @@ int asTools::MinArrayIndex(float *pArrStart, float *pArrEnd)
     min = *(pArrStart + i);
     index = 0;
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) < min) {
             min = *(pArrStart + i);
             index = i;
@@ -516,7 +511,7 @@ int asTools::MinArrayIndex(double *pArrStart, double *pArrEnd)
     min = *(pArrStart + i);
     index = 0;
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) < min) {
             min = *(pArrStart + i);
             index = i;
@@ -533,7 +528,7 @@ int asTools::MaxArray(int *pArrStart, int *pArrEnd)
 
     max = *(pArrStart + i);
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) > max) {
             max = *(pArrStart + i);
         }
@@ -553,7 +548,7 @@ float asTools::MaxArray(float *pArrStart, float *pArrEnd)
     }
     max = *(pArrStart + i);
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (!asTools::IsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) > max) {
                 max = *(pArrStart + i);
@@ -575,7 +570,7 @@ double asTools::MaxArray(double *pArrStart, double *pArrEnd)
     }
     max = *(pArrStart + i);
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (!asTools::IsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) > max) {
                 max = *(pArrStart + i);
@@ -595,7 +590,7 @@ int asTools::MaxArrayIndex(int *pArrStart, int *pArrEnd)
     max = *(pArrStart + i);
     index = 0;
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) > max) {
             max = *(pArrStart + i);
             index = i;
@@ -614,7 +609,7 @@ int asTools::MaxArrayIndex(float *pArrStart, float *pArrEnd)
     max = *(pArrStart + i);
     index = 0;
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) > max) {
             max = *(pArrStart + i);
             index = i;
@@ -633,7 +628,7 @@ int asTools::MaxArrayIndex(double *pArrStart, double *pArrEnd)
     max = *(pArrStart + i);
     index = 0;
 
-    for (i = i; i <= pArrEnd - pArrStart; i++) {
+    for (; i <= pArrEnd - pArrStart; i++) {
         if (*(pArrStart + i) > max) {
             max = *(pArrStart + i);
             index = i;
@@ -667,7 +662,7 @@ int asTools::MinArrayStep(int *pArrStart, int *pArrEnd, int tolerance)
 
     int minstep = copyData[i] - copyData[i - 1];
 
-    for (i = i; i < copyData.size(); i++) {
+    for (; i < copyData.size(); i++) {
         int currentval = std::abs(copyData[i] - copyData[i - 1]);
         if ((currentval < minstep) & (currentval > tolerance)) {
             minstep = currentval;
@@ -708,7 +703,7 @@ float asTools::MinArrayStep(float *pArrStart, float *pArrEnd, float tolerance)
 
     float minstep = copyData[i] - copyData[i - 1];
 
-    for (i = i; i < copyData.size(); i++) {
+    for (; i < copyData.size(); i++) {
         float currentval = std::abs(copyData[i] - copyData[i - 1]);
         if ((currentval < minstep) & (currentval > tolerance)) {
             minstep = currentval;
@@ -749,7 +744,7 @@ double asTools::MinArrayStep(double *pArrStart, double *pArrEnd, double toleranc
 
     double minstep = copyData[i] - copyData[i - 1];
 
-    for (i = i; i < copyData.size(); i++) {
+    for (; i < copyData.size(); i++) {
         double currentval = std::abs(copyData[i] - copyData[i - 1]);
         if ((currentval < minstep) & (currentval > tolerance)) {
             minstep = currentval;
@@ -899,7 +894,7 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
     wxASSERT(pArrEnd);
 
     T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
-    int vlength = pArrEnd - pArrStart;
+    int vlength;
 
     // Initialize first and last variables.
     pFirst = pArrStart;
@@ -1057,8 +1052,7 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
     wxASSERT(pArrEnd);
 
     T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
-    int vlength = pArrEnd - pArrStart;
-    int IndexMid = asNOT_FOUND;
+    int vlength, IndexMid;
 
     // Initialize first and last variables.
     pFirst = pArrStart;
@@ -1178,7 +1172,7 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
     wxASSERT(pArrEnd);
 
     T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
-    int vlength = pArrEnd - pArrStart;
+    int vlength;
 
     // Initialize first and last variables.
     pFirst = pArrStart;
@@ -1289,7 +1283,7 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
     wxASSERT(pArrEnd);
 
     T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
-    int vlength = pArrEnd - pArrStart;
+    int vlength;
 
     // Initialize first and last variables.
     pFirst = pArrStart;

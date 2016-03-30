@@ -79,9 +79,7 @@ WX_DEFINE_OBJARRAY(wxArrayRect2DDouble);
 WX_DEFINE_OBJARRAY(wxArrayPlotCurve);
 
 #include "hand.xpm"
-#include
-
- "grab.xpm"
+#include "grab.xpm"
 
 static wxCursor s_handCursor;
 static wxCursor s_grabCursor;

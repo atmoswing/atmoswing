@@ -402,9 +402,6 @@ void asFrameForecast::Init()
         asWizardWorkspace wizard(this);
         wizard.RunWizard(wizard.GetFirstPage());
 
-        // Open last workspace
-        wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString workspaceFilePath = wxEmptyString;
         pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
 
         if (!workspaceFilePath.IsEmpty()) {
@@ -1178,7 +1175,10 @@ void asFrameForecast::OpenForecastsFromTmpList()
     wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
-    filePaths.Open();
+    if(!filePaths.Open()) {
+        asLogWarning(_("List of the forecasts not found."));
+        return;
+    }
     while (!filePaths.EndOfFile()) {
         wxString path = filePaths.GetLineContent();
 
@@ -1363,8 +1363,8 @@ void asFrameForecast::SwitchForecast(double increment)
     // Identify the corresponding forecasts
     wxArrayString accurateFiles;
     for (int i = 0; i < (int) files.GetCount(); i++) {
-        wxFileName fileName(files[i]);
-        wxString fileDate = fileName.GetFullName().SubString(0, 9);
+        wxFileName fileNameCheck(files[i]);
+        wxString fileDate = fileNameCheck.GetFullName().SubString(0, 9);
 
         if (fileDate.IsSameAs(prefixFileName)) {
             accurateFiles.Add(files[i]);
@@ -1754,7 +1754,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
 
         wxPoint movedPos = msg->m_position;
         wxPoint2DDouble movedRealPt;
-        if (coord->ConvertFromPixels(movedPos, movedRealPt) == false) {
+        if (!coord->ConvertFromPixels(movedPos, movedRealPt)) {
             asLogError(
                     wxString::Format(_("Error converting point : %d, %d to real coordinate"), movedPos.x, movedPos.y));
             wxDELETE(msg);

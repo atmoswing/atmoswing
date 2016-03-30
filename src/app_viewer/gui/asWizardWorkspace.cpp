@@ -76,6 +76,8 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
         case 6: // Satellite imagery from VirtualEarth
             baseMapPath = wmsDir + "VirtualEarth.xml";
             break;
+        default:
+            asLogError(_("Incorrect base map selection."));
     }
 
     if (!baseMapPath.IsEmpty()) {

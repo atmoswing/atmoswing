@@ -125,7 +125,6 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
 void AtmoswingFrameOptimizer::SetDefaultOptions()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString pathSep = wxFileName::GetPathSeparator();
 
     // General
     long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
@@ -141,7 +140,6 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
 
     // Paths
-    wxString dirConfig = asConfig::GetDataDir() + "config" + DS;
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
     wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);

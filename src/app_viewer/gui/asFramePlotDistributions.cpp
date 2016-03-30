@@ -298,9 +298,8 @@ bool asFramePlotDistributions::Plot()
         return false;
     if (!PlotPredictands())
         return false;
-    if (!PlotCriteria())
-        return false;
-    return true;
+
+    return PlotCriteria();
 }
 
 bool asFramePlotDistributions::PlotPredictands()

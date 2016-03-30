@@ -85,7 +85,7 @@ float asForecastScoreFinalGSS::Assess(Array1DFloat &targetDates, Array1DFloat &f
         float b = (float) countB;
         float c = (float) countC;
         float d = (float) countD;
-        float aref = 1;
+        float aref;
         if ((a + b + c + d) > 0) {
             aref = (a + b) * (a + c) / (a + b + c + d);
         } else {
