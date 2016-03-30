@@ -376,6 +376,8 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetTargetDates(int methodRow)
 {
     double firstDate = 9999999999, lastDate = 0;
 
+    wxASSERT(methodRow >= 0);
+
     for (unsigned int forecastRow = 0; forecastRow < m_forecasts[methodRow].size(); forecastRow++) {
         Array1DFloat fcastDates = m_forecasts[methodRow][forecastRow]->GetTargetDates();
         if (fcastDates[0] < firstDate) {

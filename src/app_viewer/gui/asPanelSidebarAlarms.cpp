@@ -211,7 +211,7 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorSt
                 }
 
                 wxGraphicsPath path = gc->CreatePath();
-                CreatePath(path, startGrid, cellWitdh, cellHeight, i_leadtime, i_forecast, cols, rows);
+                CreatePath(path, startGrid, cellWitdh, cellHeight, i_leadtime, i_forecast);
                 float value = values(i_forecast, i_leadtime);
                 FillPath(gc, path, value);
             }
