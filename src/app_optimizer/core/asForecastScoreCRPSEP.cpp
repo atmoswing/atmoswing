@@ -74,7 +74,6 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
     // Cumulative frequency
     Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
 
-    float FxObs = 0;
     float DF, DVal;
 
     // Indices for the left and right part (according to xObs) of the distribution
@@ -87,18 +86,17 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
     if (xObs <= x[0]) // If xObs before the distribution
     {
         indRightStart = 0;
-        FxObs = 0;
         CRPS += x[indRightStart] - xObs;
     } else if (xObs > x[nbForecasts - 1]) // If xObs after the distribution
     {
         indLeftEnd = nbForecasts - 1;
-        FxObs = 1;
         CRPS += xObs - x[indLeftEnd];
     } else // If xObs inside the distribution
     {
         indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts - 1], xObs);
         if ((indLeftEnd != nbForecasts - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
             indRightStart = indLeftEnd + 1;
+            float FxObs;
             if (x(indRightStart) == x(indLeftEnd)) {
                 FxObs = (F(indLeftEnd) + F(indRightStart)) * 0.5;
             } else {

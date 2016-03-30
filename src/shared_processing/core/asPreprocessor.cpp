@@ -462,7 +462,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
     // Create container
     VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
-    float wind = NaNFloat;
+    float wind;
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
         multi[i_time].fill(1);
@@ -509,7 +509,7 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predicto
     // Create container
     VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
 
-    float wind = NaNFloat;
+    float wind;
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
         multi[i_time].fill(1);

@@ -137,11 +137,8 @@ void asGeoArea::Init()
 
 bool asGeoArea::DoCheckPoints()
 {
-    if (!CheckPoint(m_cornerUL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDEN) ||
-        !CheckPoint(m_cornerLL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDEN)) {
-        return false;
-    }
-    return true;
+    return !(!CheckPoint(m_cornerUL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDEN) ||
+             !CheckPoint(m_cornerLL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDEN));
 }
 
 bool asGeoArea::CheckConsistency()
@@ -223,9 +220,6 @@ Coo asGeoArea::GetCenter()
 bool asGeoArea::IsRectangle()
 {
     // Check that the area is a square
-    if ((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |
-        (m_cornerLL.y != m_cornerLR.y)) {
-        return false;
-    }
-    return true;
+    return !((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |
+             (m_cornerLL.y != m_cornerLR.y));
 }

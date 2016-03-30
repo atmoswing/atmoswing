@@ -145,11 +145,7 @@ void asFramePreferencesForecaster::LoadPreferences()
     bool responsive;
     pConfig->Read("/General/Responsive", &responsive, true);
     m_checkBoxResponsiveness->SetValue(responsive);
-    if (responsive) {
-        g_responsive = true;
-    } else {
-        g_responsive = false;
-    }
+    g_responsive = responsive;
     bool multiForecaster;
     pConfig->Read("/General/MultiInstances", &multiForecaster, false);
     m_checkBoxMultiInstancesForecaster->SetValue(multiForecaster);
@@ -267,11 +263,7 @@ void asFramePreferencesForecaster::SavePreferences()
     // Advanced options
     bool responsive = m_checkBoxResponsiveness->GetValue();
     pConfig->Write("/General/Responsive", responsive);
-    if (responsive) {
-        g_responsive = true;
-    } else {
-        g_responsive = false;
-    }
+    g_responsive = responsive;
 
     bool multiForecaster = m_checkBoxMultiInstancesForecaster->GetValue();
     pConfig->Write("/General/MultiInstances", multiForecaster);

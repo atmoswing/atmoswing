@@ -1205,7 +1205,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                                                             &timeTargetSelection[timeTargetSelectionLength - 1],
                                                             timeEndTarg);
     int targTimeLength = 0;
-    bool ignoreTargetValues = true;
+    bool ignoreTargetValues;
     if (indexTargDatesStart == asNOT_FOUND || indexTargDatesStart == asOUT_OF_RANGE ||
         indexTargDatesEnd == asNOT_FOUND || indexTargDatesEnd == asOUT_OF_RANGE) {
         // In case of real forecasting

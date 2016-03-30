@@ -79,7 +79,6 @@ void asFramePreferencesOptimizer::LoadPreferences()
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
 
     // Paths
-    wxString dirConfig = asConfig::GetDataDir() + "config" + DS;
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
     wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     m_dirPickerPredictandDB->SetPath(PredictandDBDir);
@@ -107,11 +106,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
     bool responsive;
     pConfig->Read("/General/Responsive", &responsive, true);
     m_checkBoxResponsiveness->SetValue(responsive);
-    if (responsive) {
-        g_responsive = true;
-    } else {
-        g_responsive = false;
-    }
+    g_responsive = responsive;
 
     // Multithreading
     bool allowMultithreading;
@@ -197,11 +192,7 @@ void asFramePreferencesOptimizer::SavePreferences()
     // Advanced options
     bool responsive = m_checkBoxResponsiveness->GetValue();
     pConfig->Write("/General/Responsive", responsive);
-    if (responsive) {
-        g_responsive = true;
-    } else {
-        g_responsive = false;
-    }
+    g_responsive = responsive;
 
     // Multithreading
     bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();

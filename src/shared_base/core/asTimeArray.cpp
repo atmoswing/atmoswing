@@ -311,7 +311,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
             break;
         }
         case SeasonDJF: {
-            double forecastdate = 51544; //01.01.2000
+            forecastdate = 51544; //01.01.2000
             if (!BuildArraySeasons(forecastdate)) {
                 asLogError(_("Time array creation failed"));
                 return false;
@@ -319,7 +319,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
             break;
         }
         case SeasonMAM: {
-            double forecastdate = 51635; //01.04.2000
+            forecastdate = 51635; //01.04.2000
             if (!BuildArraySeasons(forecastdate)) {
                 asLogError(_("Time array creation failed"));
                 return false;
@@ -327,7 +327,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
             break;
         }
         case SeasonJJA: {
-            double forecastdate = 51726; //01.07.2000
+            forecastdate = 51726; //01.07.2000
             if (!BuildArraySeasons(forecastdate)) {
                 asLogError(_("Time array creation failed"));
                 return false;
@@ -335,7 +335,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
             break;
         }
         case SeasonSON: {
-            double forecastdate = 51818; //01.10.2000
+            forecastdate = 51818; //01.10.2000
             if (!BuildArraySeasons(forecastdate)) {
                 asLogError(_("Time array creation failed"));
                 return false;
@@ -925,10 +925,8 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
 
 bool asTimeArray::HasForbiddenYears()
 {
-    if (m_forbiddenYears.size() == 0)
-        return false;
+    return m_forbiddenYears.size() != 0;
 
-    return true;
 }
 
 bool asTimeArray::IsYearForbidden(int year)
@@ -939,9 +937,6 @@ bool asTimeArray::IsYearForbidden(int year)
     int index = asTools::SortedArraySearch(&m_forbiddenYears[0], &m_forbiddenYears[m_forbiddenYears.size() - 1], year,
                                            0, asHIDE_WARNINGS);
 
-    if (index != asOUT_OF_RANGE && index != asNOT_FOUND) {
-        return true;
-    }
+    return index != asOUT_OF_RANGE && index != asNOT_FOUND;
 
-    return false;
 }
