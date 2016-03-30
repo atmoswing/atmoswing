@@ -152,7 +152,5 @@ void asBatchForecasts::AddForecast()
 
 bool asBatchForecasts::HasExports()
 {
-    if (m_exportSyntheticXml)
-        return true;
-    return false;
+    return m_exportSyntheticXml;
 }

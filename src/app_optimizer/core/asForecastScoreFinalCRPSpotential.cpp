@@ -45,14 +45,6 @@ asForecastScoreFinalCRPSpotential::~asForecastScoreFinalCRPSpotential()
     //dtor
 }
 
-float asForecastScoreFinalCRPSpotential::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores,
-                                                asTimeArray &timeArray)
-{
-    asLogError(_("The CRPS score needs a 2D array as input !"));
-    return NaNFloat;
-}
-
-
 float asForecastScoreFinalCRPSpotential::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores,
                                                 asTimeArray &timeArray)
 {

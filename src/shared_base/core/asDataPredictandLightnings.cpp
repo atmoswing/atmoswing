@@ -52,9 +52,7 @@ asDataPredictandLightnings::~asDataPredictandLightnings()
 
 bool asDataPredictandLightnings::InitContainers()
 {
-    if (!InitBaseContainers())
-        return false;
-    return true;
+    return InitBaseContainers();
 }
 
 bool asDataPredictandLightnings::Load(const wxString &filePath)

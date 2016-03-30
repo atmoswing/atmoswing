@@ -38,10 +38,8 @@ bool asRemoveDir(const wxString &Path)
         f = wxFindNextFile();
     }
 
-    if (!wxRmdir(Path))
-        return false;
+    return wxRmdir(Path);
 
-    return true;
 }
 
 asFile::asFile(const wxString &FileName, const ListFileMode &FileMode)

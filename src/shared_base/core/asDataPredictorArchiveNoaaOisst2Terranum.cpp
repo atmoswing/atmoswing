@@ -158,7 +158,6 @@ bool asDataPredictorArchiveNoaaOisst2Terranum::ExtractFromFiles(asGeoAreaComposi
     ncFile.GetVar(m_fileAxisLonName, &axisDataLon[0]);
     Array1DFloat axisDataLat(ncFile.GetVarLength(m_fileAxisLatName));
     ncFile.GetVar(m_fileAxisLatName, &axisDataLat[0]);
-    Array1DFloat axisDataLevel;
 
     // Adjust axes if necessary
     dataArea = AdjustAxes(dataArea, axisDataLon, axisDataLat, compositeData);

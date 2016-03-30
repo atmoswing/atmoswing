@@ -254,7 +254,7 @@ void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent &event)
 }
 
 void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath &path, const wxPoint &start, int cellWitdh, int cellHeight,
-                                             int i_col, int i_row, int cols, int rows)
+                                             int i_col, int i_row)
 {
     double startPointX = (double) start.x + i_col * cellWitdh;
 
@@ -301,7 +301,6 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
             }
             break;
         }
-
         case (2): {
             if (value == 1) // Green
             {
@@ -316,6 +315,9 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
                 colour.Set(150, 150, 150);
             }
             break;
+        }
+        default: {
+            asLogError(_("Incorrect mode for the alarm panel."));
         }
     }
 

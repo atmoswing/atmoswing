@@ -634,11 +634,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 bool asTime::IsLeapYear(int year)
 {
     // Leap year if divisable by 4 and not by 100 or divisable by 400
-    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
-        return true; // leap
-    } else {
-        return false; // no leap
-    }
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
 double asTime::GetMJD(int year, int month, int day, int hour, int minute, int second, int method)
@@ -670,7 +666,6 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
 
             break;
         }
-
         case (asUSE_ALTERNATE_METHOD): {
             // Adjust BC years
             if (year < 0)
@@ -681,6 +676,9 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
                   3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L;
 
             break;
+        }
+        default: {
+            asLogError(_("Incorrect method."));
         }
     }
 
@@ -804,6 +802,9 @@ TimeStruct asTime::GetTimeStruct(double mjd, int method)
                 date.year -= 1;
 
             break;
+
+        default:
+            asLogError(_("Incorrect method."));
     }
 
     return date;
