@@ -129,7 +129,7 @@ void asLog::Flush()
         m_logFile->Flush();
     }
 #else
-    if(m_logFile) {
+    if (m_logFile) {
         m_logFile->Flush();
     }
 #endif

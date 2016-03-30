@@ -226,8 +226,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     m_data[i] = datMerged;
                 }
 
-                m_axisLon = Array1DFloat::Ones(Xlength)*NaNFloat;
-                m_axisLat = Array1DFloat::Ones(2*Ylength)*NaNFloat;
+                m_axisLon = Array1DFloat::Ones(Xlength) * NaNFloat;
+                m_axisLat = Array1DFloat::Ones(2 * Ylength) * NaNFloat;
                 m_latPtsnb = m_axisLat.size();
                 m_lonPtsnb = m_axisLon.size();
 
@@ -255,16 +255,15 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     m_data[i] = datMerged;
                 }
 
-				m_axisLon = Array1DFloat::Ones(Xlength)*NaNFloat;
-                m_axisLat = Array1DFloat::Ones(2*Ylength)*NaNFloat;
+                m_axisLon = Array1DFloat::Ones(Xlength) * NaNFloat;
+                m_axisLat = Array1DFloat::Ones(2 * Ylength) * NaNFloat;
                 m_latPtsnb = m_axisLat.size();
                 m_lonPtsnb = m_axisLon.size();
 
                 return true;
 
-            }
-            else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") || method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux"))
-            {
+            } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
+                       method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux")) {
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != m_axisLat.size()) {
@@ -280,8 +279,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     m_data[i] = originalData[i].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
                 }
 
-				m_axisLon = Array1DFloat::Ones(Xlength)*NaNFloat;
-                m_axisLat = Array1DFloat::Ones(Ylength)*NaNFloat;
+                m_axisLon = Array1DFloat::Ones(Xlength) * NaNFloat;
+                m_axisLat = Array1DFloat::Ones(Ylength) * NaNFloat;
                 m_latPtsnb = m_axisLat.size();
                 m_lonPtsnb = m_axisLon.size();
 

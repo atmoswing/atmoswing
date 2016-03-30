@@ -2,13 +2,15 @@
 
 #include "asFileAscii.h"
 #include <asThreadMethodOptimizerRandomSet.h>
+
 #ifndef UNIT_TESTING
-    #include <AtmoswingAppOptimizer.h>
+
+#include <AtmoswingAppOptimizer.h>
+
 #endif
 
 asMethodOptimizerRandomSet::asMethodOptimizerRandomSet()
-:
-asMethodOptimizer()
+        : asMethodOptimizer()
 {
 
 }
@@ -32,9 +34,9 @@ bool asMethodOptimizerRandomSet::Manager()
 
     // Load parameters
     asParametersOptimization params;
-    if (!params.LoadFromFile(m_paramsFilePath)) return false;
-    if (m_predictandStationIds.size()>0)
-    {
+    if (!params.LoadFromFile(m_paramsFilePath))
+        return false;
+    if (m_predictandStationIds.size() > 0) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
     InitParameters(params);
@@ -47,68 +49,75 @@ bool asMethodOptimizerRandomSet::Manager()
     VectorInt stationId = m_originalParams.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
-    results_all.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+    results_all.Init(
+            wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best;
-    results_best.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
+    results_best.Init(
+            wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir",
+                                                            asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(),
+                                               GetPredictandStationIdsList(stationId).c_str()));
 
     // Preload data
-    if (!PreloadData(params))
-    {
+    if (!PreloadData(params)) {
         asLogError(_("Could not preload the data."));
         return false;
     }
 
     // Get a forecast score object to extract the score order
-    asForecastScore* forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
+    asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
     Order scoreOrder = forecastScore->GetOrder();
     wxDELETE(forecastScore);
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
     asLogMessage(_("Loading the Predictand DB."));
-    if(!LoadPredictandDB(m_predictandDBFilePath)) return false;
+    if (!LoadPredictandDB(m_predictandDBFilePath))
+        return false;
     asLogMessage(_("Predictand DB loaded."));
 
     // Watch
     wxStopWatch sw;
 
     // Optimizer
-    while(!IsOver())
-    {
+    while (!IsOver()) {
         // Get a parameters set
         params = GetNextParameters();
 
-        if(!SkipNext() && !IsOver())
-        {
-            if(parallelEvaluations)
-            {
-                #ifndef UNIT_TESTING
-                    if (g_responsive) wxGetApp().Yield();
-                #endif
-                if (m_cancel) return false;
+        if (!SkipNext() && !IsOver()) {
+            if (parallelEvaluations) {
+#ifndef UNIT_TESTING
+                if (g_responsive)
+                    wxGetApp().Yield();
+#endif
+                if (m_cancel)
+                    return false;
 
                 bool enableMessageBox = false;
-                if (Log().IsMessageBoxOnErrorEnabled()) enableMessageBox = true;
+                if (Log().IsMessageBoxOnErrorEnabled())
+                    enableMessageBox = true;
                 Log().DisableMessageBoxOnError();
 
                 VectorFloat scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadMethodOptimizerRandomSet* firstthread = new asThreadMethodOptimizerRandomSet(this, params, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                asThreadMethodOptimizerRandomSet *firstthread = new asThreadMethodOptimizerRandomSet(this, params,
+                                                                                                     &m_scoresCalib[m_iterator],
+                                                                                                     &m_scoreClimatology);
                 int threadType = firstthread->GetType();
                 ThreadsManager().AddThread(firstthread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim.size()==0)
-                {
+                if (scoreClim.size() == 0) {
                     ThreadsManager().Wait(threadType);
 
-                    #ifndef UNIT_TESTING
-                        if (g_responsive) wxGetApp().Yield();
-                    #endif
-                    if (m_cancel) return false;
+#ifndef UNIT_TESTING
+                    if (g_responsive)
+                        wxGetApp().Yield();
+#endif
+                    if (m_cancel)
+                        return false;
                 }
 
                 // Increment iterator
@@ -116,31 +125,33 @@ bool asMethodOptimizerRandomSet::Manager()
 
                 // Get available threads nb
                 int threadsNb = ThreadsManager().GetAvailableThreadsNb();
-                threadsNb = wxMin(threadsNb, m_paramsNb-m_iterator);
+                threadsNb = wxMin(threadsNb, m_paramsNb - m_iterator);
 
                 // Fill up the thread array
-                for (int i_thread=0; i_thread<threadsNb; i_thread++)
-                {
+                for (int i_thread = 0; i_thread < threadsNb; i_thread++) {
                     // Get a parameters set
                     params = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadMethodOptimizerRandomSet* thread = new asThreadMethodOptimizerRandomSet(this, params, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, params,
+                                                                                                    &m_scoresCalib[m_iterator],
+                                                                                                    &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
-                    wxASSERT(m_scoresCalib.size()<=(unsigned)m_paramsNb);
+                    wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
 
                     // Increment iterator
                     IncrementIterator();
                 }
 
                 // Continue adding when threads become available
-                while (m_iterator<m_paramsNb)
-                {
-                    #ifndef UNIT_TESTING
-                        if (g_responsive) wxGetApp().Yield();
-                    #endif
-                    if (m_cancel) return false;
+                while (m_iterator < m_paramsNb) {
+#ifndef UNIT_TESTING
+                    if (g_responsive)
+                        wxGetApp().Yield();
+#endif
+                    if (m_cancel)
+                        return false;
 
                     ThreadsManager().WaitForFreeThread(threadType);
 
@@ -148,10 +159,12 @@ bool asMethodOptimizerRandomSet::Manager()
                     params = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadMethodOptimizerRandomSet* thread = new asThreadMethodOptimizerRandomSet(this, params, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, params,
+                                                                                                    &m_scoresCalib[m_iterator],
+                                                                                                    &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
-                    wxASSERT(m_scoresCalib.size()<=(unsigned)m_paramsNb);
+                    wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
 
                     // Increment iterator
                     IncrementIterator();
@@ -162,25 +175,26 @@ bool asMethodOptimizerRandomSet::Manager()
 
                 // Check results
                 bool checkOK = true;
-                for (unsigned int i_check=0; i_check<m_scoresCalib.size(); i_check++)
-                {
-                    if (asTools::IsNaN(m_scoresCalib[i_check]))
-                    {
-                        asLogError(wxString::Format(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)i_check+1, (int)m_scoresCalib.size()));
+                for (unsigned int i_check = 0; i_check < m_scoresCalib.size(); i_check++) {
+                    if (asTools::IsNaN(m_scoresCalib[i_check])) {
+                        asLogError(wxString::Format(_("NaN found in the scores (element %d on %d in m_scoresCalib)."),
+                                                    (int) i_check + 1, (int) m_scoresCalib.size()));
                         checkOK = false;
                     }
                 }
 
-                if (!checkOK) return false;
+                if (!checkOK)
+                    return false;
 
-                if (enableMessageBox) Log().EnableMessageBoxOnError();
-            }
-            else
-            {
-                #ifndef UNIT_TESTING
-                    if (g_responsive) wxGetApp().Yield();
-                #endif
-                if (m_cancel) return false;
+                if (enableMessageBox)
+                    Log().EnableMessageBoxOnError();
+            } else {
+#ifndef UNIT_TESTING
+                if (g_responsive)
+                    wxGetApp().Yield();
+#endif
+                if (m_cancel)
+                    return false;
 
                 // Create results objects
                 asResultsAnalogsDates anaDates;
@@ -191,42 +205,40 @@ bool asMethodOptimizerRandomSet::Manager()
 
                 // Process every step one after the other
                 int stepsNb = params.GetStepsNb();
-                for (int i_step=0; i_step<stepsNb; i_step++)
-                {
+                for (int i_step = 0; i_step < stepsNb; i_step++) {
                     bool containsNaNs = false;
-                    if (i_step==0)
-                    {
-                        if(!GetAnalogsDates(anaDates, params, i_step, containsNaNs)) return false;
+                    if (i_step == 0) {
+                        if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+                            return false;
+                        anaDatesPrevious = anaDates;
+                    } else {
+                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+                            return false;
                         anaDatesPrevious = anaDates;
                     }
-                    else
-                    {
-                        if(!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs)) return false;
-                        anaDatesPrevious = anaDates;
-                    }
-                    if (containsNaNs)
-                    {
+                    if (containsNaNs) {
                         asLogError(_("The dates selection contains NaNs"));
                         return false;
                     }
                 }
-                if(!GetAnalogsValues(anaValues, params, anaDates, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb-1)) return false;
-                if(!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb-1)) return false;
+                if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+                    return false;
+                if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                    return false;
+                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                    return false;
 
                 // Store the result
-                if(((m_optimizerStage==asINITIALIZATION) | (m_optimizerStage==asREASSESSMENT)) && m_iterator<m_paramsNb)
-                {
+                if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) &&
+                    m_iterator < m_paramsNb) {
                     m_scoresCalib[m_iterator] = anaScoreFinal.GetForecastScore();
-                }
-                else
-                {
+                } else {
                     m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
                 }
-                wxASSERT(m_scoresCalib.size()<=(unsigned)m_paramsNb);
+                wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
 
                 // Save all tested parameters in a text file
-                results_all.Add(params,anaScoreFinal.GetForecastScore());
+                results_all.Add(params, anaScoreFinal.GetForecastScore());
 
                 // Increment iterator
                 IncrementIterator();
@@ -240,11 +252,14 @@ bool asMethodOptimizerRandomSet::Manager()
 
     // Print parameters in a text file
     SetBestParameters(results_best);
-    if(!results_best.Print()) return false;
-    if(!results_all.Print()) return false;
+    if (!results_best.Print())
+        return false;
+    if (!results_all.Print())
+        return false;
 
     // Generate xml file with the best parameters set
-    if(!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
+    if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath))
+        return false;
 
     // Delete preloaded data
     DeletePreloadedData();
@@ -264,8 +279,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
 
     // Create the corresponding number of parameters
     m_scoresCalib.resize(m_paramsNb);
-    for (int i_var=0; i_var<m_paramsNb; i_var++)
-    {
+    for (int i_var = 0; i_var < m_paramsNb; i_var++) {
         asParametersOptimization paramsCopy;
         paramsCopy = params;
         paramsCopy.InitRandomValues();
@@ -278,13 +292,11 @@ asParametersOptimization asMethodOptimizerRandomSet::GetNextParameters()
     asParametersOptimization params;
     m_skipNext = false;
 
-    if(((m_optimizerStage==asINITIALIZATION) | (m_optimizerStage==asREASSESSMENT)) && m_iterator<m_paramsNb)
-    {
+    if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) && m_iterator < m_paramsNb) {
         params = m_parameters[m_iterator];
-    }
-    else
-    {
-        if(!Optimize(params)) asLogError(_("The parameters could not be optimized"));
+    } else {
+        if (!Optimize(params))
+            asLogError(_("The parameters could not be optimized"));
     }
 
     return params;
