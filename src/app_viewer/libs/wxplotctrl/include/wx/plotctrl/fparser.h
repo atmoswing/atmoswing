@@ -19,16 +19,17 @@
 #define ONCE_wxFPARSER_H_
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-    #pragma interface "fparser.h"
+#pragma interface "fparser.h"
 #endif
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+#pragma hdrstop
 #endif
 
 #include "wx/plotctrl/plotdefs.h"
 
 class WXDLLIMPEXP_FWD_CORE wxString;
+
 class FunctionParser;
 
 //-----------------------------------------------------------------------------
@@ -62,65 +63,94 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser
 public:
     enum ParseErrorType
     {
-        SYNTAX_ERROR=0, MISM_PARENTH, MISSING_PARENTH, EMPTY_PARENTH,
-        EXPECT_OPERATOR, OUT_OF_MEMORY, UNEXPECTED_ERROR, INVALID_VARS,
-        ILL_PARAMS_AMOUNT, PREMATURE_EOS, EXPECT_PARENTH_FUNC,
+        SYNTAX_ERROR = 0,
+        MISM_PARENTH,
+        MISSING_PARENTH,
+        EMPTY_PARENTH,
+        EXPECT_OPERATOR,
+        OUT_OF_MEMORY,
+        UNEXPECTED_ERROR,
+        INVALID_VARS,
+        ILL_PARAMS_AMOUNT,
+        PREMATURE_EOS,
+        EXPECT_PARENTH_FUNC,
         FP_NO_ERROR
     };
 
     wxFunctionParser();
+
     // Copy constructor and assignment operator (implemented using the
     // copy-on-write technique for efficiency):
-    wxFunctionParser(const wxFunctionParser&);
+    wxFunctionParser(const wxFunctionParser &);
+
     virtual ~wxFunctionParser();
 
     // Parse the function string and a comma delimited list of the variables
     // in the function. func = "sin(x) + 2*t*x", vars = "x,t"
-    int Parse(const wxString& Function, const wxString& Vars,
-              bool useDegrees = false);
+    int Parse(const wxString &Function, const wxString &Vars, bool useDegrees = false);
 
     // Get a readable error message if error after a call to parse or empty string
     wxString ErrorMsg() const;
+
     // Get the wxFunctionParser::ParseErrorType error id
     ParseErrorType GetParseErrorType() const;
 
     // Evaluate the function (must have called Parse first) where vars is an
     //  array of the variable values to use.
-    double Eval(const double* Vars);
+    double Eval(const double *Vars);
+
     // Not really sure - some sort of error flag?
     int EvalError() const;
 
     // Add a constant to the function parser
-    bool AddConstant(const wxString& name, double value);
+    bool AddConstant(const wxString &name, double value);
 
     // Function type that can be added to the parser
-    typedef double (*FunctionPtr)(const double*);
+    typedef double (*FunctionPtr)(const double *);
+
     // Add a function to the parser
-    bool AddFunction(const wxString& name,
-                     FunctionPtr, unsigned paramsAmount);
-    bool AddFunction(const wxString& name, wxFunctionParser&);
+    bool AddFunction(const wxString &name, FunctionPtr, unsigned paramsAmount);
+
+    bool AddFunction(const wxString &name, wxFunctionParser &);
 
     // Try to optimize the parser, use after sucessful call to Parse
     void Optimize();
 
     // Ok is true after a sucessful call to Parse
-    bool Ok() const { return m_ok; }
+    bool Ok() const
+    {
+        return m_ok;
+    }
+
     // Get the number of comma delimited variables sent to Parse
     int GetNumberVariables() const;
+
     // Get the function string sent to Parse
-    wxString GetFunctionString() const { return m_function; }
+    wxString GetFunctionString() const
+    {
+        return m_function;
+    }
+
     // Get the variable string sent to Parse
-    wxString GetVariableString() const { return m_variables; }
+    wxString GetVariableString() const
+    {
+        return m_variables;
+    }
+
     // Get one of the variable names from the string sent to Parse
     wxString GetVariableName(size_t n) const;
+
     // Was this parsed using degrees
     bool GetUseDegrees() const;
 
     // operators
-    wxFunctionParser& operator=(const wxFunctionParser&);
+    wxFunctionParser &operator=(const wxFunctionParser &);
 
     // implementation
-    FunctionParser* GetFunctionParser() const { return m_functionParser; }
+    FunctionParser *GetFunctionParser() const
+    {
+        return m_functionParser;
+    }
 
 protected:
     FunctionParser *m_functionParser;
