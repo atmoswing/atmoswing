@@ -1,3 +1,3 @@
-44a325c0a4a81c110c8e8f362336943f07d3fafc src/app_viewer/libs/vroomgis
-71a98dc66bdeff23204dd28049b507b718c4bf36 src/shared_base/libs/wxhgversion
+7c6ddf9da2b2d1499db7e0661b4d41ba1d86ba84 src/app_viewer/libs/vroomgis
+e7fdfcdef92f00cae4190395a219d5415e1b90ba src/shared_base/libs/wxhgversion
 d225acc90bc3a8c420a9bcd1f033033c1ccd7fe0 test/libs/googletest
