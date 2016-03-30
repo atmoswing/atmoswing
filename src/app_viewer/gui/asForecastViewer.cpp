@@ -146,6 +146,10 @@ float asForecastViewer::GetSelectedTargetDate()
 {
     Array1DFloat targetDates;
 
+    if (m_methodSelection < 0) {
+        m_methodSelection = 0;
+    }
+
     if (m_forecastSelection > 0) {
         targetDates = m_forecastManager->GetTargetDates(m_methodSelection, m_forecastSelection);
     } else {
