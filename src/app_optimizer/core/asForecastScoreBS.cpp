@@ -66,8 +66,6 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
     // Sort the forcast array
     asTools::SortArray(&x[0], &x[nbForecasts - 1], Asc);
 
-    float score = NaNFloat;
-
     // Cumulative frequency
     Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
 
@@ -95,9 +93,7 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
         probaObservedVal = 1;
     }
 
-    score = (probaOccurrence - probaObservedVal) * (probaOccurrence - probaObservedVal);
-
-    return score;
+    return (probaOccurrence - probaObservedVal) * (probaOccurrence - probaObservedVal);
 }
 
 bool asForecastScoreBS::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)

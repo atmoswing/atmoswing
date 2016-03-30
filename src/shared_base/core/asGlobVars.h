@@ -38,11 +38,11 @@ extern bool g_unitTesting;
 extern bool g_guiMode;
 
 // Constants
-const extern double g_cst_Euler;
-const extern double g_cst_Pi;
+extern const double g_cst_Euler;
+extern const double g_cst_Pi;
 
 // Useful variables
-const extern wxString DS;
+extern const wxString DS;
 extern double g_ppiScaleDc;
 
 #endif // ASGLOBVARS_H_INCLUDED

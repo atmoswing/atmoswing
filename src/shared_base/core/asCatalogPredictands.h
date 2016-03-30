@@ -36,29 +36,6 @@ class asCatalogPredictands
         : public wxObject
 {
 public:
-
-    //!< Structure for datasets IDs
-    struct DatasetIdList
-    {
-        VectorString Id;
-        VectorString Name;
-        VectorString Description;
-    };
-
-    //!< Structure for data IDs
-    struct DataIdListStr
-    {
-        VectorString Id;
-        VectorString Name;
-    };
-
-    //!< Structure for data IDs
-    struct DataIdListInt
-    {
-        VectorInt Id;
-        VectorString Name;
-    };
-
     //!< Structure for data information
     struct DataStruct
     {

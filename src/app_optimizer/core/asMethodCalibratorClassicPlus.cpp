@@ -490,7 +490,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
                                     ytmp = wxMax(wxMin(ytmp, predictorYminUpperLimit), predictorYminLowerLimit);
                                     xtmp = params.GetPredictorXmin(i_step, i_ptor) -
                                            multipleFactor * predictorXminIteration;
-                                    xtmp = wxMax(wxMin(ytmp, predictorXminUpperLimit), predictorXminLowerLimit);
+                                    xtmp = wxMax(wxMin(xtmp, predictorXminUpperLimit), predictorXminLowerLimit);
                                     params.SetPredictorYmin(i_step, i_ptor, ytmp);
                                     params.SetPredictorXmin(i_step, i_ptor, xtmp);
                                     break;

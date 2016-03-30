@@ -146,6 +146,10 @@ float asForecastViewer::GetSelectedTargetDate()
 {
     Array1DFloat targetDates;
 
+    if (m_methodSelection < 0) {
+        m_methodSelection = 0;
+    }
+
     if (m_forecastSelection > 0) {
         targetDates = m_forecastManager->GetTargetDates(m_methodSelection, m_forecastSelection);
     } else {
@@ -295,14 +299,14 @@ void asForecastViewer::Redraw()
         // Create the layers
         vrLayerVectorFcstRing *layerSpecific = new vrLayerVectorFcstRing();
         vrLayerVectorFcstRing *layerOther = new vrLayerVectorFcstRing();
-        if (layerSpecific->Create(memoryLayerNameSpecific, wkbPoint) == false) {
+        if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
             wxDELETE(layerOther);
             return;
         }
-        if (layerOther->Create(memoryLayerNameOther, wkbPoint) == false) {
+        if (!layerOther->Create(memoryLayerNameOther, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
@@ -459,14 +463,14 @@ void asForecastViewer::Redraw()
         // Create the layer
         vrLayerVectorFcstDots *layerSpecific = new vrLayerVectorFcstDots();
         vrLayerVectorFcstDots *layerOther = new vrLayerVectorFcstDots();
-        if (layerSpecific->Create(memoryLayerNameSpecific, wkbPoint) == false) {
+        if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);
             wxDELETE(layerOther);
             return;
         }
-        if (layerOther->Create(memoryLayerNameOther, wkbPoint) == false) {
+        if (!layerOther->Create(memoryLayerNameOther, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
             wxDELETE(layerSpecific);

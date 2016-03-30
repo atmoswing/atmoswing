@@ -58,8 +58,7 @@ private:
 
     void SetBitmapAlarms(wxBitmap *bmp);
 
-    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row, int cols,
-                    int rows);
+    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row);
 
     void FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value);
 
