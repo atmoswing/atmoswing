@@ -244,11 +244,8 @@ Coo asGeoAreaComposite::GetCenter()
 bool asGeoAreaComposite::IsRectangle()
 {
     // Check that the area is a square
-    if ((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |
-        (m_cornerLL.y != m_cornerLR.y)) {
-        return false;
-    }
-    return true;
+    return !((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |
+             (m_cornerLL.y != m_cornerLR.y));
 }
 
 void asGeoAreaComposite::CreateComposites()

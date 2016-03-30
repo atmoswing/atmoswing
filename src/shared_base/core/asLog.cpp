@@ -96,11 +96,7 @@ bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
 
 bool asLog::IsVerbose()
 {
-    if (m_level >= 3) {
-        return true;
-    } else {
-        return false;
-    }
+    return m_level >= 3;
 }
 
 void asLog::SetLogNull()

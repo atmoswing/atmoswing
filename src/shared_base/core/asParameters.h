@@ -84,8 +84,6 @@ public:
 
     virtual ~asParameters();
 
-    bool IsOk();
-
     virtual void AddStep();
 
     void AddPredictor(); // To the last step

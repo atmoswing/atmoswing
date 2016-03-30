@@ -627,7 +627,7 @@ int asFileNetcdf::GetAttId(const wxString &AttName, const wxString &VarName)
     }
 
     if (id == asNOT_FOUND)
-        asLogMessage(wxString::Format(_("The desired attribute doesn't exist: %s"), AttName));
+        asLogError(wxString::Format(_("The desired attribute doesn't exist: %s"), AttName));
 
     return id;
 }
@@ -638,10 +638,6 @@ short asFileNetcdf::GetAttShort(const wxString &AttName, const wxString &VarName
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
@@ -693,10 +689,6 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
         int attid = GetAttId(AttName);
@@ -747,10 +739,6 @@ float asFileNetcdf::GetAttFloat(const wxString &AttName, const wxString &VarName
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
         int attid = GetAttId(AttName);
@@ -800,10 +788,6 @@ double asFileNetcdf::GetAttDouble(const wxString &AttName, const wxString &VarNa
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
@@ -857,10 +841,6 @@ char asFileNetcdf::GetAttChar(const wxString &AttName, const wxString &VarName)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
         int attid = GetAttId(AttName);
@@ -908,10 +888,6 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Check if global attribute or variable attribute
     if (VarName.IsEmpty()) { // Global attribute
@@ -1028,10 +1004,6 @@ void asFileNetcdf::GetVar(const wxString &VarName, short *pValue)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1056,10 +1028,6 @@ void asFileNetcdf::GetVar(const wxString &VarName, int *pValue)
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1086,10 +1054,6 @@ void asFileNetcdf::GetVar(const wxString &VarName, float *pValue)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1115,10 +1079,6 @@ void asFileNetcdf::GetVar(const wxString &VarName, double *pValue)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1143,10 +1103,6 @@ void asFileNetcdf::GetVar(const wxString &VarName, wxString *pValue, const size_
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1181,10 +1137,6 @@ short asFileNetcdf::GetVarOneShort(const wxString &VarName, size_t ArrIndex)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1212,10 +1164,6 @@ int asFileNetcdf::GetVarOneInt(const wxString &VarName, size_t ArrIndex)
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1245,10 +1193,6 @@ float asFileNetcdf::GetVarOneFloat(const wxString &VarName, size_t ArrIndex)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1276,10 +1220,6 @@ double asFileNetcdf::GetVarOneDouble(const wxString &VarName, size_t ArrIndex)
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1309,10 +1249,6 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1349,10 +1285,6 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1387,10 +1319,6 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1427,10 +1355,6 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1465,10 +1389,6 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1506,10 +1426,6 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1546,10 +1462,6 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
-
     // Get the variable value
     int varid = GetVarId(VarName);
     if (varid == asNOT_FOUND)
@@ -1585,10 +1497,6 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
 
     // Check that the file is not in define mode
     CheckDefModeClosed();
-
-    // Check that the structure already exists
-    if (sizeof(m_struct) == 0)
-        ParseStruct();
 
     // Get the variable value
     int varid = GetVarId(VarName);
@@ -1886,8 +1794,7 @@ bool asFileNetcdf::ParseStruct()
         if (m_status)
             HandleErrorNetcdf();
         m_struct.Vars[VarId].Id = VarId;
-        wxString tmpName(VarNameChar, wxConvUTF8);
-        m_struct.Vars[VarId].Name = tmpName;
+        m_struct.Vars[VarId].Name = wxString(VarNameChar, wxConvUTF8);
         m_struct.Vars[VarId].Length = 0;
 
         m_struct.Vars[VarId].NDimIds.resize(m_struct.Vars[VarId].NDims);
@@ -1912,8 +1819,7 @@ bool asFileNetcdf::ParseStruct()
             if (m_status)
                 HandleErrorNetcdf();
             m_struct.Vars[VarId].Atts[AttId].Id = AttId;
-            wxString tmpName(AttNameChar, wxConvUTF8);
-            m_struct.Vars[VarId].Atts[AttId].Name = tmpName;
+            m_struct.Vars[VarId].Atts[AttId].Name = wxString(AttNameChar, wxConvUTF8);
 
             // Get the attribute type and length
             m_status = nc_inq_att(m_fileId, VarId, AttNameChar, &m_struct.Vars[VarId].Atts[AttId].Type,

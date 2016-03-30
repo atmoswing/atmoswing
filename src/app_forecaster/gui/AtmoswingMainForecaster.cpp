@@ -124,7 +124,6 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
 void AtmoswingFrameForecaster::SetDefaultOptions()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString pathSep = wxFileName::GetPathSeparator();
 
     // General
     long guiOptions = pConfig->Read("/General/GuiOptions", 1l);

@@ -110,7 +110,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
 
         // Ensure intersecting display
         wxRect2DDouble pathRect = path.GetBox();
-        if (pathRect.Intersects(extWndRect) == false) {
+        if (!pathRect.Intersects(extWndRect)) {
             return;
         }
         if (pathRect.GetSize().x < 1 && pathRect.GetSize().y < 1) {
@@ -119,7 +119,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
 
         // Set the defaut pen
         gc->SetPen(defaultPen);
-        if (IsFeatureSelected(feature->GetFID()) == true) {
+        if (IsFeatureSelected(feature->GetFID())) {
             gc->SetPen(selPen);
         }
 
@@ -134,7 +134,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
             _CreatePath(path, point, leadTimeSize, i_leadtime);
 
             // Get value to set color
-            double value = feature->GetFieldAsDouble(i_leadtime + 3);
+            value = feature->GetFieldAsDouble(i_leadtime + 3);
             _Paint(gc, path, value);
 
         }

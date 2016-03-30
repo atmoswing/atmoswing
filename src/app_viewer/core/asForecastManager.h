@@ -54,8 +54,6 @@ public:
 
     void LoadPastForecast(int methodRow);
 
-    void UpdateAlarms();
-
     void AddDirectoryPastForecasts(const wxString &dir);
 
     int GetLinearIndex(int methodRow, int forecastRow);

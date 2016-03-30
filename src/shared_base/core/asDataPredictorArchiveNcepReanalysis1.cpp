@@ -764,25 +764,25 @@ bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFiles(asGeoAreaCompositeG
                 }
 
                 // Fill empty begining with NaNs
-                int indexBegining = 0;
+                int indexBegining360 = 0;
                 if (cutStart > 0) {
                     int latlonlength = indexLengthLat * indexLengthLon;
                     for (int i_empty = 0; i_empty < cutStart; i_empty++) {
                         for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                            data360[indexBegining] = NaNFloat;
-                            indexBegining++;
+                            data360[indexBegining360] = NaNFloat;
+                            indexBegining360++;
                         }
                     }
                 }
 
                 // Fill empty end with NaNs
-                int indexEnd = (indexLengthTime - 1) * (indexLengthLat - 1) * (indexLengthLon - 1);
+                int indexEnd360 = (indexLengthTime - 1) * (indexLengthLat - 1) * (indexLengthLon - 1);
                 if (cutEnd > 0) {
                     int latlonlength = indexLengthLat * indexLengthLon;
                     for (int i_empty = 0; i_empty < cutEnd; i_empty++) {
                         for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                            indexEnd++;
-                            data360[indexEnd] = NaNFloat;
+                            indexEnd360++;
+                            data360[indexEnd360] = NaNFloat;
                         }
                     }
                 }

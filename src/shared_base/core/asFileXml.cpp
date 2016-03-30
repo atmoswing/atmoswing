@@ -90,10 +90,9 @@ bool asFileXml::CheckRootElement()
         return false;
     if (!IsAnAtmoSwingFile())
         return false;
-    if (!FileVersionIsOrAbove(1.0))
-        return false;
 
-    return true;
+    return FileVersionIsOrAbove(1.0);
+
 }
 
 wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const bool &content)

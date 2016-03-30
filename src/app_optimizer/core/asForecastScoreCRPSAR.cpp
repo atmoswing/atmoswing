@@ -84,17 +84,15 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
     int indRightEnd = nbForecasts - 1;
 
     // Find FxObs, fix xObs and integrate beyond limits
-    float FxObs, xObsCorr = xObs;
+    float xObsCorr = xObs;
     if (xObs <= x[0]) // If xObs before the distribution
     {
         indRightStart = 0;
-        FxObs = 0;
         xObsCorr = x[indRightStart];
         CRPS += (xObsCorr - xObs);
     } else if (xObs > x[nbForecasts - 1]) // If xObs after the distribution
     {
         indLeftEnd = nbForecasts - 1;
-        FxObs = 1;
         xObsCorr = x[indLeftEnd];
         CRPS += (xObs - xObsCorr);
     } else // If xObs inside the distribution
@@ -102,6 +100,7 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
         indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts - 1], xObs);
         if ((indLeftEnd != nbForecasts - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
             indRightStart = indLeftEnd + 1;
+            float FxObs;
             if (x(indRightStart) == x(indLeftEnd)) {
                 FxObs = (F(indLeftEnd) + F(indRightStart)) * 0.5;
             } else {

@@ -59,9 +59,7 @@ asDataPredictandPrecipitation::~asDataPredictandPrecipitation()
 
 bool asDataPredictandPrecipitation::InitContainers()
 {
-    if (!InitBaseContainers())
-        return false;
-    return true;
+    return InitBaseContainers();
 }
 
 bool asDataPredictandPrecipitation::Load(const wxString &filePath)
