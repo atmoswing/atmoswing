@@ -15,15 +15,15 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  * 
- * The Original Software is AtmoSwing.
- * The Original Software was developed at the University of Lausanne.
+ * The Original Software is AtmoSwing. The Initial Developer of the 
+ * Original Software is Pascal Horton of the University of Lausanne. 
  * All Rights Reserved.
  * 
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2008-2013 University of Lausanne.
+ * Portions Copyright 2013 Pascal Horton, Terr@num.
  */
 
 #ifdef WX_PRECOMP
@@ -76,7 +76,7 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
-    Log().CreateFile("AtmoswingOptimizer.log");
+    Log().CreateFile("AtmoSwingOptimizer.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
@@ -148,9 +148,8 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir",
                                                     asConfig::GetTempDir() + "AtmoSwing");
     pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
-    wxString CalibrationResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
-                                                   asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Calibration");
-    pConfig->Write("/Paths/OptimizerResultsDir", CalibrationResultsDir);
+    wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
+    pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
     wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
 
