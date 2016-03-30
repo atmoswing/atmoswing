@@ -57,37 +57,31 @@
 #include "vrlayervector.h"
 
 
-BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
-                                           EVT_CLOSE(asFrameForecast::OnClose) EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
-                                           EVT_KEY_UP(asFrameForecast::OnKeyUp)
-                                           EVT_MENU(wxID_EXIT, asFrameForecast::OnQuit)
-                                           EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
-                                           EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
-                                           EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
-                                           EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
-                                           EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)
-                                           EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
-                                           EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
-                                           EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
-                                           EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_WORKSPACE,
-                                                       asFrameForecast::OnOpenWorkspace)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED,
-                                                       asFrameForecast::OnStationSelection)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED,
-                                                       asFrameForecast::OnChangeLeadTime)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR,
-                                                       asFrameForecast::OnForecastClear)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED,
-                                                       asFrameForecast::OnForecastNewAdded)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED,
-                                                       asFrameForecast::OnForecastRatioSelectionChange)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECTION_CHANGED,
-                                                       asFrameForecast::OnForecastForecastSelectionChange)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECT_FIRST,
-                                                       asFrameForecast::OnForecastForecastSelectFirst)
-                                           EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED,
-                                                       asFrameForecast::OnForecastQuantileSelectionChange) END_EVENT_TABLE()
+BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
+    EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
+    EVT_CLOSE(asFrameForecast::OnClose)
+    EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
+    EVT_KEY_UP(asFrameForecast::OnKeyUp)
+    EVT_MENU(wxID_EXIT, asFrameForecast::OnQuit)
+    EVT_MENU (asID_SELECT, asFrameForecast::OnToolSelect)
+    EVT_MENU (asID_ZOOM_IN, asFrameForecast::OnToolZoomIn)
+    EVT_MENU (asID_ZOOM_OUT, asFrameForecast::OnToolZoomOut)
+    EVT_MENU (asID_ZOOM_FIT, asFrameForecast::OnToolZoomToFit)
+    EVT_MENU (asID_PAN, asFrameForecast::OnToolPan)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOM, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_ZOOMOUT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_SELECT, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, vrEVT_TOOL_PAN, asFrameForecast::OnToolAction)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_OPEN_WORKSPACE, asFrameForecast::OnOpenWorkspace)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_STATION_SELECTION_CHANGED, asFrameForecast::OnStationSelection)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, asFrameForecast::OnChangeLeadTime)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_CLEAR, asFrameForecast::OnForecastClear)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_NEW_ADDED, asFrameForecast::OnForecastNewAdded)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED, asFrameForecast::OnForecastRatioSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECTION_CHANGED, asFrameForecast::OnForecastForecastSelectionChange)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_SELECT_FIRST, asFrameForecast::OnForecastForecastSelectFirst)
+    EVT_COMMAND(wxID_ANY, asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, asFrameForecast::OnForecastQuantileSelectionChange)
+END_EVENT_TABLE()
 
 
 /* vroomDropFiles */
