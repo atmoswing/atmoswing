@@ -40,7 +40,9 @@
 class AtmoswingAppOptimizer
         : public wxApp
 #else
-    class AtmoswingAppOptimizer : public wxAppConsole
+
+class AtmoswingAppOptimizer
+        : public wxAppConsole
 #endif
 {
 public:
@@ -53,10 +55,15 @@ public:
     virtual int OnRun();
 
     virtual int OnExit();
+
     void CleanUp();
-    virtual void OnInitCmdLine(wxCmdLineParser& parser);
+
+    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+
     wxString GetLocalPath();
+
     bool InitLog();
+
     bool InitForCmdLineOnly();
 
     virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
@@ -74,9 +81,9 @@ private:
     VectorInt m_predictandStationIds;
     wxString m_calibMethod;
     bool m_forceQuit;
-    #if wxUSE_GUI
-        wxSingleInstanceChecker* m_singleInstanceChecker;
-    #endif
+#if wxUSE_GUI
+    wxSingleInstanceChecker* m_singleInstanceChecker;
+#endif
 };
 
 DECLARE_APP(AtmoswingAppOptimizer);

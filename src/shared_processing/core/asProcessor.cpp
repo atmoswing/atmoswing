@@ -194,8 +194,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             ThreadsManager().Wait(threadType);
 
             // Enable message box and flush logs
-            if (enableMessageBox) Log().EnableMessageBoxOnError();
-            if (!parallelEvaluations) Log().Flush();
+            if (enableMessageBox)
+                Log().EnableMessageBoxOnError();
+            if (!parallelEvaluations)
+                Log().Flush();
 
             for (unsigned int i_threads = 0; i_threads < vContainsNaNs.size(); i_threads++) {
                 if (*vContainsNaNs[i_threads]) {
@@ -949,8 +951,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
             ThreadsManager().Wait(threadType);
 
             // Enable message box and flush logs
-            if (enableMessageBox) Log().EnableMessageBoxOnError();
-            if (!parallelEvaluations) Log().Flush();
+            if (enableMessageBox)
+                Log().EnableMessageBoxOnError();
+            if (!parallelEvaluations)
+                Log().Flush();
 
             for (unsigned int i_threads = 0; i_threads < vContainsNaNs.size() - 1; i_threads++) {
                 if (*vContainsNaNs[i_threads]) {

@@ -6,10 +6,12 @@
 #include <asParametersOptimization.h>
 
 
-class asMethodOptimizer: public asMethodCalibrator
+class asMethodOptimizer
+        : public asMethodCalibrator
 {
 public:
     asMethodOptimizer();
+
     virtual ~asMethodOptimizer();
 
     virtual bool Manager() = 0;
@@ -19,7 +21,6 @@ public:
         m_predictandStationIds = val;
     }
 
-
 protected:
     VectorInt m_predictandStationIds;
     bool m_isOver;
@@ -28,24 +29,20 @@ protected:
     int m_paramsNb;
     int m_iterator;
 
+    virtual bool Calibrate(asParametersCalibration &params)
+    {
+        asLogError(_("asMethodOptimizer do optimize, not calibrate..."));
+        return false;
+    }
 
-//	virtual void InitParameters(asParametersOptimization &params) = 0;
-//	virtual asParametersOptimization GetNextParameters() = 0;
-//	virtual bool Optimize(asParametersOptimization &params) = 0;
-	virtual bool Calibrate(asParametersCalibration &params)
-	{
-	    asLogError(_("asMethodOptimizer do optimize, not calibrate..."));
-	    return false;
-	}
+    bool Validate(asParametersOptimization *params);
 
-	bool Validate(asParametersOptimization* params);
-
-	void IncrementIterator()
+    void IncrementIterator()
     {
         m_iterator++;
     }
 
-	bool IsOver()
+    bool IsOver()
     {
         return m_isOver;
     }
