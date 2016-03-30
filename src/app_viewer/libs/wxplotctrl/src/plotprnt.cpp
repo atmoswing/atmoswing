@@ -9,19 +9,21 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-    #pragma implementation "plotprnt.h"
+#pragma implementation "plotprnt.h"
 #endif
 
 // For compilers that support precompilation, includes "wx.h".
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+#pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-    #include "wx/msgdlg.h"
-    #include "wx/dcmemory.h"
+
+#include "wx/msgdlg.h"
+#include "wx/dcmemory.h"
+
 #endif // WX_PRECOMP
 
 #include "wx/module.h"
@@ -42,8 +44,7 @@ bool wxPlotPrintout::s_wxPlotPagesetupdata_static = false;
 
 wxPrintData *wxPlotPrintout::GetPrintData(bool create_on_demand)
 {
-    if (create_on_demand && (s_wxPlotPrintData == NULL))
-    {
+    if (create_on_demand && (s_wxPlotPrintData == NULL)) {
         wxPrintData *printData = new wxPrintData;
         printData->SetPaperId(wxPAPER_A4_ROTATED);
         SetPrintData(printData, false);
@@ -51,10 +52,10 @@ wxPrintData *wxPlotPrintout::GetPrintData(bool create_on_demand)
 
     return s_wxPlotPrintData;
 }
+
 wxPageSetupData *wxPlotPrintout::GetPageSetupData(bool create_on_demand)
 {
-    if (create_on_demand && (s_wxPlotPageSetupData == NULL))
-    {
+    if (create_on_demand && (s_wxPlotPageSetupData == NULL)) {
         wxPageSetupData *pageSetupData = new wxPageSetupData;
         pageSetupData->SetPaperSize(wxPAPER_LETTER);
         pageSetupData->SetMarginTopLeft(wxPoint(20, 20));
@@ -65,10 +66,17 @@ wxPageSetupData *wxPlotPrintout::GetPageSetupData(bool create_on_demand)
     return s_wxPlotPageSetupData;
 }
 
-bool wxPlotPrintout::GetPrintDataStatic()     { return s_wxPlotPrintdata_static; }
-bool wxPlotPrintout::GetPageSetupDataStatic() { return s_wxPlotPagesetupdata_static; }
+bool wxPlotPrintout::GetPrintDataStatic()
+{
+    return s_wxPlotPrintdata_static;
+}
 
-void wxPlotPrintout::SetPrintData( wxPrintData *printData, bool is_static )
+bool wxPlotPrintout::GetPageSetupDataStatic()
+{
+    return s_wxPlotPagesetupdata_static;
+}
+
+void wxPlotPrintout::SetPrintData(wxPrintData *printData, bool is_static)
 {
     if (s_wxPlotPrintData && !s_wxPlotPrintdata_static)
         delete s_wxPlotPrintData;
@@ -76,7 +84,8 @@ void wxPlotPrintout::SetPrintData( wxPrintData *printData, bool is_static )
     s_wxPlotPrintData = printData;
     s_wxPlotPrintdata_static = is_static;
 }
-void wxPlotPrintout::SetPageSetupData( wxPageSetupData *pageSetupData, bool is_static )
+
+void wxPlotPrintout::SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static)
 {
     if (s_wxPlotPageSetupData && !s_wxPlotPagesetupdata_static)
         delete s_wxPlotPageSetupData;
@@ -86,8 +95,9 @@ void wxPlotPrintout::SetPageSetupData( wxPageSetupData *pageSetupData, bool is_s
 }
 
 
-wxPlotPrintout::wxPlotPrintout( wxPlotCtrl* plotCtrl, const wxString &title )
-               : wxPrintout(title), m_plotCtrl(plotCtrl)
+wxPlotPrintout::wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title)
+        : wxPrintout(title),
+          m_plotCtrl(plotCtrl)
 {
     wxASSERT_MSG(m_plotCtrl != NULL, wxT("NULL wxPlotCtrl for printing"));
 }
@@ -105,27 +115,28 @@ bool wxPlotPrintout::OnPrintPage(int page_n)
     wxDC *dc = GetDC();
     wxCHECK_MSG(dc && m_plotCtrl, false, wxT("Invalid dc or plotctrl"));
 
-    if (page_n != 1) return false;
+    if (page_n != 1)
+        return false;
 
     // Get the whole size of the page in mm
     wxSize pageMMSize;
     GetPageSizeMM(&pageMMSize.x, &pageMMSize.y);
 
     // Get the ppi of the screen and printer
-    wxSize ppiScr,ppiPrn;
-    GetPPIScreen( &ppiScr.x, &ppiScr.y);
+    wxSize ppiScr, ppiPrn;
+    GetPPIScreen(&ppiScr.x, &ppiScr.y);
     GetPPIPrinter(&ppiPrn.x, &ppiPrn.y);
 
-    float ppi_scale_x = float(ppiPrn.x)/float(ppiScr.x);
-    float ppi_scale_y = float(ppiPrn.y)/float(ppiScr.y);
+    float ppi_scale_x = float(ppiPrn.x) / float(ppiScr.x);
+    float ppi_scale_y = float(ppiPrn.y) / float(ppiScr.y);
 
     // Get the size of DC in pixels and the number of pixels in the page
     wxSize dcSize, pagePixSize;
     dc->GetSize(&dcSize.x, &dcSize.y);
     GetPageSizePixels(&pagePixSize.x, &pagePixSize.y);
 
-    float dc_pagepix_scale_x = float(dcSize.x)/float(pagePixSize.x);
-    float dc_pagepix_scale_y = float(dcSize.y)/float(pagePixSize.y);
+    float dc_pagepix_scale_x = float(dcSize.x) / float(pagePixSize.x);
+    float dc_pagepix_scale_y = float(dcSize.y) / float(pagePixSize.y);
 
     // the actual ppi using the size of the dc or page in pixels
     //wxSize pixelSize = IsPreview() ? dcSize : pagePixSize;
@@ -144,38 +155,38 @@ bool wxPlotPrintout::OnPrintPage(int page_n)
     // Adjust the page size for the pixels / mm scaling factor
     //wxSize paperSize = GetPageSetupData(true)->GetPaperSize();
     wxSize page = pageMMSize;
-    page.x      = int(page.x * ppmm_x);
-    page.y      = int(page.y * ppmm_y);
-    wxRect pageRect  = wxRect(0, 0, page.x, page.y);
+    page.x = int(page.x * ppmm_x);
+    page.y = int(page.y * ppmm_y);
+    wxRect pageRect = wxRect(0, 0, page.x, page.y);
 
     // get margins informations and convert to printer pixels
-    wxPoint topLeft     = GetPageSetupData(true)->GetMarginTopLeft();
+    wxPoint topLeft = GetPageSetupData(true)->GetMarginTopLeft();
     wxPoint bottomRight = GetPageSetupData(true)->GetMarginBottomRight();
 
-    int top    = int(topLeft.y     * ppmm_y);
+    int top = int(topLeft.y * ppmm_y);
     int bottom = int(bottomRight.y * ppmm_y);
-    int left   = int(topLeft.x     * ppmm_x);
-    int right  = int(bottomRight.x * ppmm_x);
-    wxRect printRect = wxRect(left, top, page.x-(left+right), page.y-(top+bottom));
+    int left = int(topLeft.x * ppmm_x);
+    int right = int(bottomRight.x * ppmm_x);
+    wxRect printRect = wxRect(left, top, page.x - (left + right), page.y - (top + bottom));
     // printRect is the unscaled rect, suitable if you set the dc scale
     //  which we don't because it doesn't scale the fonts
     //dc->SetUserScale(dc_scale_x, dc_scale_y);
 
-    wxRect rect(int(printRect.x*dc_scale_x),     int(printRect.y*dc_scale_x),
-                int(printRect.width*dc_scale_y), int(printRect.height*dc_scale_y));
+    wxRect rect(int(printRect.x * dc_scale_x), int(printRect.y * dc_scale_x), int(printRect.width * dc_scale_y),
+                int(printRect.height * dc_scale_y));
     double dpi = ppiScr.x;
 
     //set dpi of the drawwholeplot function
-    if (IsPreview())
-    {
+    if (IsPreview()) {
         //dpi is the (screen dpi) * (percent of screen used by preview)
-        dpi = double(ppiScr.x) * dc_pagepix_scale_x; //((double)pagePixSize.x / rect.width); //((double)rect.width / dcSize.x);
+        dpi = double(ppiScr.x) *
+              dc_pagepix_scale_x; //((double)pagePixSize.x / rect.width); //((double)rect.width / dcSize.x);
     }
 
     // Overwrite the dpi (PH)
     //dpi = 600;
 
-    m_plotCtrl->DrawWholePlot( dc, rect, dpi );
+    m_plotCtrl->DrawWholePlot(dc, rect, dpi);
 
     return true;
 }
@@ -185,9 +196,8 @@ bool wxPlotPrintout::ShowPrintDialog()
     wxCHECK_MSG(GetPlotCtrl(), false, wxT("Invalid plot window"));
     wxPrintDialogData printDialogData(*wxPlotPrintout::GetPrintData(true));
 
-    wxPrinter printer(& printDialogData);
-    if (!printer.Print(GetPlotCtrl(), this, true))
-    {
+    wxPrinter printer(&printDialogData);
+    if (!printer.Print(GetPlotCtrl(), this, true)) {
         if (wxPrinter::GetLastError() == wxPRINTER_ERROR)
             wxMessageBox(_("There was a problem printing.\nPerhaps your printer is not setup correctly?"),
                          _("Printing"), wxOK, GetPlotCtrl());
@@ -198,16 +208,15 @@ bool wxPlotPrintout::ShowPrintDialog()
 
     return wxPrinter::GetLastError() == wxPRINTER_NO_ERROR;
 }
-bool wxPlotPrintout::ShowPrintPreviewDialog(const wxString& frameTitle)
+
+bool wxPlotPrintout::ShowPrintPreviewDialog(const wxString &frameTitle)
 {
     wxCHECK_MSG(GetPlotCtrl(), false, wxT("Invalid plot window"));
     // Pass two printout objects: for preview, and possible printing.
     wxPrintDialogData printDialogData(*wxPlotPrintout::GetPrintData(true));
     wxPrintPreview *preview = new wxPrintPreview(new wxPlotPrintout(GetPlotCtrl(), GetTitle()),
-                                                 new wxPlotPrintout(GetPlotCtrl(), GetTitle()),
-                                                 &printDialogData);
-    if (!preview->Ok())
-    {
+                                                 new wxPlotPrintout(GetPlotCtrl(), GetTitle()), &printDialogData);
+    if (!preview->Ok()) {
         delete preview;
         wxMessageBox(_("There was a problem previewing.\nPerhaps your printer is not setup correctly?"),
                      _("Previewing"), wxOK, GetPlotCtrl());
@@ -215,41 +224,39 @@ bool wxPlotPrintout::ShowPrintPreviewDialog(const wxString& frameTitle)
     }
 
     wxRect r(wxGetClientDisplayRect());
-    r.width  = wxMin(r.width,  600);
+    r.width = wxMin(r.width, 600);
     r.height = wxMin(r.height, 650);
-    wxPreviewFrame *frame = new wxPreviewFrame(preview, GetPlotCtrl(),
-                                               frameTitle,
-                                               wxDefaultPosition, r.GetSize());
+    wxPreviewFrame *frame = new wxPreviewFrame(preview, GetPlotCtrl(), frameTitle, wxDefaultPosition, r.GetSize());
     frame->Centre(wxBOTH);
     frame->Initialize();
     frame->Show(true);
     return true;
 }
+
 bool wxPlotPrintout::ShowPrintSetupDialog()
 {
     wxCHECK_MSG(GetPlotCtrl(), false, wxT("Invalid plot window"));
     wxPrintDialogData printDialogData(*wxPlotPrintout::GetPrintData(true));
-    wxPrintDialog printerDialog(GetPlotCtrl(), & printDialogData);
-#if !wxCHECK_VERSION(2,7,0)
+    wxPrintDialog printerDialog(GetPlotCtrl(), &printDialogData);
+#if !wxCHECK_VERSION(2, 7, 0)
     printerDialog.GetPrintDialogData().SetSetupDialog(true);
 #endif //!wxCHECK_VERSION(2,7,0)
 
-    if (printerDialog.ShowModal() != wxID_CANCEL)
-    {
+    if (printerDialog.ShowModal() != wxID_CANCEL) {
         *wxPlotPrintout::GetPrintData(true) = printerDialog.GetPrintDialogData().GetPrintData();
         return true;
     }
 
     return false;
 }
+
 bool wxPlotPrintout::ShowPrintPageSetupDialog()
 {
     wxCHECK_MSG(GetPlotCtrl(), false, wxT("Invalid plot window"));
     *wxPlotPrintout::GetPageSetupData(true) = *wxPlotPrintout::GetPrintData();
     wxPageSetupDialog pageSetupDialog(GetPlotCtrl(), wxPlotPrintout::GetPageSetupData());
 
-    if (pageSetupDialog.ShowModal() != wxID_CANCEL)
-    {
+    if (pageSetupDialog.ShowModal() != wxID_CANCEL) {
         *wxPlotPrintout::GetPrintData(true) = pageSetupDialog.GetPageSetupData().GetPrintData();
         *wxPlotPrintout::GetPageSetupData(true) = pageSetupDialog.GetPageSetupData();
         return true;
@@ -262,15 +269,22 @@ bool wxPlotPrintout::ShowPrintPageSetupDialog()
 // wxPlotCtrlModule - setup anything after init and delete before closing
 //-----------------------------------------------------------------------------
 
-class wxPlotCtrlModule : public wxModule
+class wxPlotCtrlModule
+        : public wxModule
 {
 DECLARE_DYNAMIC_CLASS(wxPlotCtrlModule)
+
 public:
-    wxPlotCtrlModule() : wxModule() {}
+    wxPlotCtrlModule()
+            : wxModule()
+    {
+    }
+
     bool OnInit()
     {
         return true;
     }
+
     void OnExit()
     {
         wxPlotPrintout::SetPrintData(NULL, false);
