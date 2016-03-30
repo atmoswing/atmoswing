@@ -64,7 +64,7 @@ public:
         BS, // Brier score
         BSS, // Brier skill score
         SEEPS, // Stable equitable error in probability space
-                RankHistogram, // The Verification Rank Histogram (Talagrand Diagram)
+        RankHistogram, // The Verification Rank Histogram (Talagrand Diagram)
         RankHistogramReliability // Reliability of the Verification Rank Histogram (Talagrand Diagram)
     };
 
