@@ -224,15 +224,12 @@ wxString AtmoswingAppOptimizer::GetLocalPath()
 bool AtmoswingAppOptimizer::InitLog()
 {
 
-    if (g_local)
-    {
+    if (g_local) {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingOptimizer.log");
-        if (g_resumePreviousRun)
-        {
+        if (g_resumePreviousRun) {
             int increment = 1;
-            while (wxFileName::Exists(fullPath))
-            {
+            while (wxFileName::Exists(fullPath)) {
                 increment++;
                 fullPath = GetLocalPath();
                 fullPath.Append(wxString::Format("AtmoSwingOptimizer-%d.log", increment));
@@ -258,8 +255,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     Log().DisableMessageBoxOnError();
 
     // Warn the user if reloading previous results
-    if (g_resumePreviousRun)
-    {
+    if (g_resumePreviousRun) {
         asLogWarning(wxString::Format(_("An existing directory was found for the run number %d"), g_runNb));
         printf("Warning: An existing directory was found for the run number %d\n", g_runNb);
     }
@@ -275,15 +271,15 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/General/Responsive", false);
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
-        pConfig->Write("/Paths/IntermediateResultsDir", GetLocalPath()+"temp");
-        pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath()+"results");
+        pConfig->Write("/Paths/IntermediateResultsDir", GetLocalPath() + "temp");
+        pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
-        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1)>1) {
+        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
             pConfig->Write("/Optimizer/ParallelEvaluations", true);
         }
 
@@ -292,18 +288,18 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     }
 
     // Check that the config files correspond if reloading data
-    if (g_resumePreviousRun)
-    {
+    if (g_resumePreviousRun) {
         wxConfigBase *pConfigNow = wxFileConfig::Get();
         wxString refIniPath = GetLocalPath();
         refIniPath.Append("AtmoSwing.ini");
-        wxFileConfig *pConfigRef = new wxFileConfig("AtmoSwing",wxEmptyString,refIniPath,refIniPath,wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfigRef = new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath,
+                                                    wxCONFIG_USE_LOCAL_FILE);
 
         // Check that the number of groups are identical.
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
-        if (groupsNb != pConfigRef->GetNumberOfGroups(true))
-        {
-            asLogError(wxString::Format(_("The number of groups (%d) differ from the previous config file (%d)."), groupsNb, int(pConfigRef->GetNumberOfGroups())));
+        if (groupsNb != pConfigRef->GetNumberOfGroups(true)) {
+            asLogError(wxString::Format(_("The number of groups (%d) differ from the previous config file (%d)."),
+                                        groupsNb, int(pConfigRef->GetNumberOfGroups())));
             m_forceQuit = true;
         }
 
@@ -314,38 +310,32 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         wxString subGroupName;
         long subGroupIndex;
 
-        if (pConfigNow->GetFirstGroup(subGroupName, subGroupIndex))
-        {
-            do
-            {
+        if (pConfigNow->GetFirstGroup(subGroupName, subGroupIndex)) {
+            do {
                 pConfigNow->SetPath(subGroupName);
                 pConfigRef->SetPath(subGroupName);
 
                 wxString entryName;
                 long entryIndex;
 
-                if (pConfigNow->GetFirstEntry(entryName, entryIndex))
-                {
-                    do
-                    {
+                if (pConfigNow->GetFirstEntry(entryName, entryIndex)) {
+                    do {
                         wxString valRef, valNow;
                         pConfigNow->Read(entryName, &valNow);
                         pConfigRef->Read(entryName, &valRef);
 
-                        if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef))
-                        {
-                            asLogError(wxString::Format(_("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
-                                                        entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str()));
+                        if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef)) {
+                            asLogError(wxString::Format(
+                                    _("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
+                                    entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str()));
                             m_forceQuit = true;
                         }
-                    }
-                    while (pConfigNow->GetNextEntry(entryName, entryIndex));
+                    } while (pConfigNow->GetNextEntry(entryName, entryIndex));
                 }
 
                 pConfigNow->SetPath("..");
                 pConfigRef->SetPath("..");
-            }
-            while (pConfigNow->GetNextGroup(subGroupName, subGroupIndex));
+            } while (pConfigNow->GetNextGroup(subGroupName, subGroupIndex));
         }
 
         wxDELETE(pConfigRef);
@@ -413,26 +403,21 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
             localPath.Append(DS);
 
             // Check if path already exists
-            if (wxFileName::Exists(localPath))
-            {
+            if (wxFileName::Exists(localPath)) {
                 g_resumePreviousRun = true;
-            }
-            else
-            {
+            } else {
                 // Create directory
                 wxFileName userDir = wxFileName::DirName(localPath);
-                userDir.Mkdir(wxS_DIR_DEFAULT,wxPATH_MKDIR_FULL);
+                userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
             }
         }
 
         // Create local ini file
         wxString iniPath = localPath;
         iniPath.Append("AtmoSwing.ini");
-        if (g_resumePreviousRun)
-        {
+        if (g_resumePreviousRun) {
             int increment = 1;
-            while (wxFileName::Exists(iniPath))
-            {
+            while (wxFileName::Exists(iniPath)) {
                 increment++;
                 iniPath = localPath;
                 iniPath.Append(wxString::Format("AtmoSwing-%d.ini", increment));
@@ -497,9 +482,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
                                logTargetStr);
             }
         }
-    }
-    else
-    {
+    } else {
         Log().SetTarget(asLog::Both);
     }
 
@@ -530,10 +513,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     }
 
     // Check for a calibration predictand DB
-    if (parser.Found("predictand-db", & m_predictandDB))
-    {
-        if (g_local)
-        {
+    if (parser.Found("predictand-db", &m_predictandDB)) {
+        if (g_local) {
             m_predictandDB = wxFileName::GetCwd() + DS + m_predictandDB;
         }
 
@@ -584,174 +565,140 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     }
 
     // Monte Carlo
-    if (parser.Found("mc-runs-nb", & option))
-    {
+    if (parser.Found("mc-runs-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/MonteCarlo/RandomNb", option);
     }
 
     // Genetic algorithms
-    if (parser.Found("ga-ope-nat-sel", & option))
-    {
+    if (parser.Found("ga-ope-nat-sel", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", option);
     }
 
-    if (parser.Found("ga-ope-coup-sel", & option))
-    {
+    if (parser.Found("ga-ope-coup-sel", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", option);
     }
 
-    if (parser.Found("ga-ope-cross", & option))
-    {
+    if (parser.Found("ga-ope-cross", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", option);
     }
 
-    if (parser.Found("ga-ope-mut", & option))
-    {
+    if (parser.Found("ga-ope-mut", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", option);
     }
 
-    if (parser.Found("ga-pop-size", & option))
-    {
+    if (parser.Found("ga-pop-size", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/PopulationSize", option);
     }
 
-    if (parser.Found("ga-conv-steps", & option))
-    {
+    if (parser.Found("ga-conv-steps", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", option);
     }
 
-    if (parser.Found("ga-interm-gen", & option))
-    {
+    if (parser.Found("ga-interm-gen", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", option);
     }
 
-    if (parser.Found("ga-nat-sel-tour-p", & option))
-    {
+    if (parser.Found("ga-nat-sel-tour-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
     }
 
-    if (parser.Found("ga-coup-sel-tour-nb", & option))
-    {
+    if (parser.Found("ga-coup-sel-tour-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
     }
 
-    if (parser.Found("ga-cross-mult-pt-nb", & option))
-    {
+    if (parser.Found("ga-cross-mult-pt-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb", option);
     }
 
-    if (parser.Found("ga-cross-blen-pt-nb", & option))
-    {
+    if (parser.Found("ga-cross-blen-pt-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb", option);
     }
 
-    if (parser.Found("ga-cross-blen-share-b", & option))
-    {
+    if (parser.Found("ga-cross-blen-share-b", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingShareBeta", option);
     }
 
-    if (parser.Found("ga-cross-lin-pt-nb", & option))
-    {
+    if (parser.Found("ga-cross-lin-pt-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverLinearPointsNb", option);
     }
 
-    if (parser.Found("ga-cross-heur-pt-nb", & option))
-    {
+    if (parser.Found("ga-cross-heur-pt-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb", option);
     }
 
-    if (parser.Found("ga-cross-heur-share-b", & option))
-    {
+    if (parser.Found("ga-cross-heur-share-b", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicShareBeta", option);
     }
 
-    if (parser.Found("ga-cross-bin-pt-nb", & option))
-    {
+    if (parser.Found("ga-cross-bin-pt-nb", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", option);
     }
 
-    if (parser.Found("ga-cross-bin-share-b", & option))
-    {
+    if (parser.Found("ga-cross-bin-share-b", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", option);
     }
 
-    if (parser.Found("ga-mut-unif-cst-p", & option))
-    {
+    if (parser.Found("ga-mut-unif-cst-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", option);
     }
 
-    if (parser.Found("ga-mut-norm-cst-p", & option))
-    {
+    if (parser.Found("ga-mut-norm-cst-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", option);
     }
 
-    if (parser.Found("ga-mut-norm-cst-dev", & option))
-    {
+    if (parser.Found("ga-mut-norm-cst-dev", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", option);
     }
 
-    if (parser.Found("ga-mut-unif-var-gens", & option))
-    {
+    if (parser.Found("ga-mut-unif-var-gens", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", option);
     }
 
-    if (parser.Found("ga-mut-unif-var-p-strt", & option))
-    {
+    if (parser.Found("ga-mut-unif-var-p-strt", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", option);
     }
 
-    if (parser.Found("ga-mut-unif-var-p-end", & option))
-    {
+    if (parser.Found("ga-mut-unif-var-p-end", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", option);
     }
 
-    if (parser.Found("ga-mut-norm-var-gens-p", & option))
-    {
+    if (parser.Found("ga-mut-norm-var-gens-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", option);
     }
 
-    if (parser.Found("ga-mut-norm-var-gens-d", & option))
-    {
+    if (parser.Found("ga-mut-norm-var-gens-d", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", option);
     }
 
-    if (parser.Found("ga-mut-norm-var-p-strt", & option))
-    {
+    if (parser.Found("ga-mut-norm-var-p-strt", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", option);
     }
 
-    if (parser.Found("ga-mut-norm-var-p-end", & option))
-    {
+    if (parser.Found("ga-mut-norm-var-p-end", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", option);
     }
 
-    if (parser.Found("ga-mut-norm-var-d-strt", & option))
-    {
+    if (parser.Found("ga-mut-norm-var-d-strt", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", option);
     }
 
-    if (parser.Found("ga-mut-norm-var-d-end", & option))
-    {
+    if (parser.Found("ga-mut-norm-var-d-end", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", option);
     }
 
-    if (parser.Found("ga-mut-non-uni-p", & option))
-    {
+    if (parser.Found("ga-mut-non-uni-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", option);
     }
 
-    if (parser.Found("ga-mut-non-uni-gens", & option))
-    {
+    if (parser.Found("ga-mut-non-uni-gens", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", option);
     }
 
-    if (parser.Found("ga-mut-non-uni-min-r", & option))
-    {
+    if (parser.Found("ga-mut-non-uni-min-r", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", option);
     }
 
-    if (parser.Found("ga-mut-multi-scale-p", & option))
-    {
+    if (parser.Found("ga-mut-multi-scale-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", option);
     }
 
@@ -762,8 +709,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Station ID
     wxString stationIdStr = wxEmptyString;
-    if (parser.Found("station-id", &stationIdStr))
-    {
+    if (parser.Found("station-id", &stationIdStr)) {
         m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
     }
 
@@ -772,8 +718,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
      */
 
     // Check for a calibration method option
-    if (parser.Found("calibration-method", & m_calibMethod))
-    {
+    if (parser.Found("calibration-method", &m_calibMethod)) {
         if (!InitForCmdLineOnly()) {
             asLogError(_("Initialization for command-line interface failed."));
             return false;
@@ -787,16 +732,13 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
 int AtmoswingAppOptimizer::OnRun()
 {
-    if (m_forceQuit)
-    {
+    if (m_forceQuit) {
         asLogError(_("The calibration will not be processed."));
         return 0;
     }
 
-    if (!g_guiMode)
-    {
-        if (m_calibParamsFile.IsEmpty())
-        {
+    if (!g_guiMode) {
+        if (m_calibParamsFile.IsEmpty()) {
             asLogError(_("The parameters file is not given."));
             return 1001;
         }
@@ -838,27 +780,21 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
-            }
-            else if (m_calibMethod.IsSameAs("montecarlo", false))
-            {
+            } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
                 asMethodOptimizerRandomSet optimizer;
                 optimizer.SetParamsFilePath(m_calibParamsFile);
                 optimizer.SetPredictandDBFilePath(m_predictandDB);
                 optimizer.SetPredictandStationIds(m_predictandStationIds);
                 optimizer.SetPredictorDataDir(m_predictorsDir);
                 optimizer.Manager();
-            }
-            else if (m_calibMethod.IsSameAs("ga", false))
-            {
+            } else if (m_calibMethod.IsSameAs("ga", false)) {
                 asMethodOptimizerGeneticAlgorithms optimizer;
                 optimizer.SetParamsFilePath(m_calibParamsFile);
                 optimizer.SetPredictandDBFilePath(m_predictandDB);
                 optimizer.SetPredictandStationIds(m_predictandStationIds);
                 optimizer.SetPredictorDataDir(m_predictorsDir);
                 optimizer.Manager();
-            }
-            else if (m_calibMethod.IsSameAs("evalscores", false))
-            {
+            } else if (m_calibMethod.IsSameAs("evalscores", false)) {
                 asMethodCalibratorEvaluateAllScores calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
@@ -869,9 +805,7 @@ int AtmoswingAppOptimizer::OnRun()
                     msgOut->Printf("Wrong calibration method selection (%s).", m_calibMethod);
                 }
             }
-        }
-        catch (std::bad_alloc& ba)
-        {
+        } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);
             asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
             return 1011;
@@ -903,7 +837,7 @@ void AtmoswingAppOptimizer::CleanUp()
 {
 #if wxUSE_GUI
     // Instance checker
-		wxDELETE(m_singleInstanceChecker);
+        wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)
@@ -915,7 +849,7 @@ void AtmoswingAppOptimizer::CleanUp()
 
 #if wxUSE_GUI
     // Delete images
-		cleanup_images();
+        cleanup_images();
 #endif
 
     // CleanUp

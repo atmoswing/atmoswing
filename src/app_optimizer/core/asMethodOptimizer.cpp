@@ -9,8 +9,7 @@
 #include <asDataPredictand.h>
 
 asMethodOptimizer::asMethodOptimizer()
-:
-asMethodCalibrator()
+        : asMethodCalibrator()
 {
     m_iterator = 0;
     m_optimizerStage = asINITIALIZATION;
@@ -27,10 +26,9 @@ asMethodOptimizer::~asMethodOptimizer()
     //dtor
 }
 
-bool asMethodOptimizer::Validate(asParametersOptimization* params)
+bool asMethodOptimizer::Validate(asParametersOptimization *params)
 {
-    if (!params->HasValidationPeriod())
-    {
+    if (!params->HasValidationPeriod()) {
         asLogWarning("The parameters have no validation period !");
         return false;
     }
@@ -45,27 +43,27 @@ bool asMethodOptimizer::Validate(asParametersOptimization* params)
 
     // Process every step one after the other
     int stepsNb = params->GetStepsNb();
-    for (int i_step=0; i_step<stepsNb; i_step++)
-    {
+    for (int i_step = 0; i_step < stepsNb; i_step++) {
         bool containsNaNs = false;
-        if (i_step==0)
-        {
-            if(!GetAnalogsDates(anaDates, *params, i_step, containsNaNs)) return false;
-        }
-        else
-        {
+        if (i_step == 0) {
+            if (!GetAnalogsDates(anaDates, *params, i_step, containsNaNs))
+                return false;
+        } else {
             anaDatesPrevious = anaDates;
-            if(!GetAnalogsSubDates(anaDates, *params, anaDatesPrevious, i_step, containsNaNs)) return false;
+            if (!GetAnalogsSubDates(anaDates, *params, anaDatesPrevious, i_step, containsNaNs))
+                return false;
         }
-        if (containsNaNs)
-        {
+        if (containsNaNs) {
             asLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }
-    if(!GetAnalogsValues(anaValues, *params, anaDates, stepsNb-1)) return false;
-    if(!GetAnalogsForecastScores(anaScores, *params, anaValues, stepsNb-1)) return false;
-    if(!GetAnalogsForecastScoreFinal(anaScoreFinal, *params, anaScores, stepsNb-1)) return false;
+    if (!GetAnalogsValues(anaValues, *params, anaDates, stepsNb - 1))
+        return false;
+    if (!GetAnalogsForecastScores(anaScores, *params, anaValues, stepsNb - 1))
+        return false;
+    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, *params, anaScores, stepsNb - 1))
+        return false;
 
     m_scoreValid = anaScoreFinal.GetForecastScore();
 
