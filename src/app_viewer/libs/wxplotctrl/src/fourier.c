@@ -45,36 +45,34 @@
 // #define IsPowerOfTwo(x) (((x)<2) || ((x)&((x)-1)) ? false : true)
 
 // returns 1 if the numver is a power of two else 0
-int IsPowerOfTwo ( unsigned x )
+int IsPowerOfTwo(unsigned x)
 {
-    if ( x < 2 )
+    if (x < 2)
         return 0;
 
-    if ( x & (x-1) )        // Thanks to 'byang' for this cute trick!
+    if (x & (x - 1))        // Thanks to 'byang' for this cute trick!
         return 0;
 
     return 1;
 }
 
 // returns the number of bits needed
-unsigned NumberOfBitsNeeded ( unsigned PowerOfTwo )
+unsigned NumberOfBitsNeeded(unsigned PowerOfTwo)
 {
     unsigned i;
 
-    for ( i=0; ; i++ )
-    {
-        if ( PowerOfTwo & (1 << i) )
+    for (i = 0; ; i++) {
+        if (PowerOfTwo & (1 << i))
             return i;
     }
 
 }
 
-unsigned ReverseBits ( unsigned index, unsigned NumBits )
+unsigned ReverseBits(unsigned index, unsigned NumBits)
 {
     unsigned i, rev;
 
-    for ( i=rev=0; i < NumBits; i++ )
-    {
+    for (i = rev = 0; i < NumBits; i++) {
         rev = (rev << 1) | (index & 1);
         index >>= 1;
     }
@@ -82,14 +80,14 @@ unsigned ReverseBits ( unsigned index, unsigned NumBits )
     return rev;
 }
 
-double Index_to_frequency ( unsigned NumSamples, unsigned Index )
+double Index_to_frequency(unsigned NumSamples, unsigned Index)
 {
-    if ( Index >= NumSamples )
+    if (Index >= NumSamples)
         return 0.0;
-    else if ( Index <= NumSamples/2 )
-        return (double)Index / (double)NumSamples;
+    else if (Index <= NumSamples / 2)
+        return (double) Index / (double) NumSamples;
 
-    return -(double)(NumSamples-Index) / (double)NumSamples;
+    return -(double) (NumSamples - Index) / (double) NumSamples;
 }
 
 
@@ -117,23 +115,17 @@ double Index_to_frequency ( unsigned NumSamples, unsigned Index )
 
 #define CHECKPOINTERDOUBLE(p)  if (CheckPointerDouble(p,#p) == 0) return 0;
 
-static int CheckPointerDouble ( void *p, char *name )
+static int CheckPointerDouble(void *p, char *name)
 {
-    if ( p == NULL )
-    {
-        fprintf ( stderr, "Error in fft_double():  %s == NULL\n", name );
+    if (p == NULL) {
+        fprintf(stderr, "Error in fft_double():  %s == NULL\n", name);
         return 0;
     }
     return 1;
 }
 
-int fft_double (
-    unsigned  NumSamples,
-    int       InverseTransform,
-    double   *RealIn,
-    double   *ImagIn,
-    double   *RealOut,
-    double   *ImagOut )
+int fft_double(unsigned NumSamples, int InverseTransform, double *RealIn, double *ImagIn, double *RealOut,
+               double *ImagOut)
 {
     unsigned NumBits;    /* Number of bits needed to store indices */
     unsigned i, j, k, n;
@@ -142,32 +134,27 @@ int fft_double (
     double angle_numerator = -2.0 * DDC_PI; // this is - to match matlab
     double tr, ti;     /* temp real, temp imaginary */
 
-    if ( !IsPowerOfTwo(NumSamples) || (NumSamples < 2) )
-    {
-        fprintf (
-            stderr,
-            "Error in fft():  NumSamples=%u is not power of two\n",
-            NumSamples );
+    if (!IsPowerOfTwo(NumSamples) || (NumSamples < 2)) {
+        fprintf(stderr, "Error in fft():  NumSamples=%u is not power of two\n", NumSamples);
 
         return 0;
     }
 
-    if ( InverseTransform )
+    if (InverseTransform)
         angle_numerator = -angle_numerator;
 
-    CHECKPOINTERDOUBLE ( RealIn );
-    CHECKPOINTERDOUBLE ( RealOut );
-    CHECKPOINTERDOUBLE ( ImagOut );
+    CHECKPOINTERDOUBLE (RealIn);
+    CHECKPOINTERDOUBLE (RealOut);
+    CHECKPOINTERDOUBLE (ImagOut);
 
-    NumBits = NumberOfBitsNeeded ( NumSamples );
+    NumBits = NumberOfBitsNeeded(NumSamples);
 
     /*
     **   Do simultaneous data copy and bit-reversal ordering into outputs...
     */
 
-    for ( i=0; i < NumSamples; i++ )
-    {
-        j = ReverseBits ( i, NumBits );
+    for (i = 0; i < NumSamples; i++) {
+        j = ReverseBits(i, NumBits);
         RealOut[j] = RealIn[i];
         ImagOut[j] = (ImagIn == NULL) ? 0.0 : ImagIn[i];
     }
@@ -177,38 +164,35 @@ int fft_double (
     */
 
     BlockEnd = 1;
-    for ( BlockSize = 2; BlockSize <= NumSamples; BlockSize <<= 1 )
-    {
-        double delta_angle = angle_numerator / (double)BlockSize;
-        double sm2 = sin ( -2 * delta_angle );
-        double sm1 = sin ( -delta_angle );
-        double cm2 = cos ( -2 * delta_angle );
-        double cm1 = cos ( -delta_angle );
+    for (BlockSize = 2; BlockSize <= NumSamples; BlockSize <<= 1) {
+        double delta_angle = angle_numerator / (double) BlockSize;
+        double sm2 = sin(-2 * delta_angle);
+        double sm1 = sin(-delta_angle);
+        double cm2 = cos(-2 * delta_angle);
+        double cm1 = cos(-delta_angle);
         double w = 2 * cm1;
         /* double ar[3], ai[3]; replaced array with fixed vals below - labenski */
         double ar0, ar1, ar2, ai0, ai1, ai2;
 
-        for ( i=0; i < NumSamples; i += BlockSize )
-        {
+        for (i = 0; i < NumSamples; i += BlockSize) {
             ar2 = cm2;
             ar1 = cm1;
 
             ai2 = sm2;
             ai1 = sm1;
 
-            for ( j=i, n=0; n < BlockEnd; j++, n++ )
-            {
-                ar0 = w*ar1 - ar2;
+            for (j = i, n = 0; n < BlockEnd; j++, n++) {
+                ar0 = w * ar1 - ar2;
                 ar2 = ar1;
                 ar1 = ar0;
 
-                ai0 = w*ai1 - ai2;
+                ai0 = w * ai1 - ai2;
                 ai2 = ai1;
                 ai1 = ai0;
 
                 k = j + BlockEnd;
-                tr = ar0*RealOut[k] - ai0*ImagOut[k];
-                ti = ar0*ImagOut[k] + ai0*RealOut[k];
+                tr = ar0 * RealOut[k] - ai0 * ImagOut[k];
+                ti = ar0 * ImagOut[k] + ai0 * RealOut[k];
 
                 RealOut[k] = RealOut[j] - tr;
                 ImagOut[k] = ImagOut[j] - ti;
@@ -225,12 +209,10 @@ int fft_double (
     **   Need to normalize if inverse transform...
     */
 
-    if ( InverseTransform )
-    {
-        double denom = (double)NumSamples;
+    if (InverseTransform) {
+        double denom = (double) NumSamples;
 
-        for ( i=0; i < NumSamples; i++ )
-        {
+        for (i = 0; i < NumSamples; i++) {
             RealOut[i] /= denom;
             ImagOut[i] /= denom;
         }
@@ -264,23 +246,16 @@ int fft_double (
 
 #define CHECKPOINTERFLOAT(p)  if (CheckPointerFloat(p,#p) == 0) return 0;
 
-static int CheckPointerFloat ( void *p, char *name )
+static int CheckPointerFloat(void *p, char *name)
 {
-    if ( p == NULL )
-    {
-        fprintf ( stderr, "Error in fft_float():  %s == NULL\n", name );
+    if (p == NULL) {
+        fprintf(stderr, "Error in fft_float():  %s == NULL\n", name);
         return 0;
     }
     return 1;
 }
 
-int fft_float (
-    unsigned  NumSamples,
-    int       InverseTransform,
-    float    *RealIn,
-    float    *ImagIn,
-    float    *RealOut,
-    float    *ImagOut )
+int fft_float(unsigned NumSamples, int InverseTransform, float *RealIn, float *ImagIn, float *RealOut, float *ImagOut)
 {
     unsigned NumBits;    /* Number of bits needed to store indices */
     unsigned i, j, k, n;
@@ -289,34 +264,29 @@ int fft_float (
     double angle_numerator = -2.0 * DDC_PI; // this is - to match matlab
     double tr, ti;     /* temp real, temp imaginary */
 
-    if ( !IsPowerOfTwo(NumSamples) || (NumSamples < 2) )
-    {
-        fprintf (
-            stderr,
-            "Error in fft():  NumSamples=%u is not power of two\n",
-            NumSamples );
+    if (!IsPowerOfTwo(NumSamples) || (NumSamples < 2)) {
+        fprintf(stderr, "Error in fft():  NumSamples=%u is not power of two\n", NumSamples);
 
         return 0;
     }
 
-    if ( InverseTransform )
+    if (InverseTransform)
         angle_numerator = -angle_numerator;
 
-    CHECKPOINTERFLOAT ( RealIn );
-    CHECKPOINTERFLOAT ( RealOut );
-    CHECKPOINTERFLOAT ( ImagOut );
+    CHECKPOINTERFLOAT (RealIn);
+    CHECKPOINTERFLOAT (RealOut);
+    CHECKPOINTERFLOAT (ImagOut);
 
-    NumBits = NumberOfBitsNeeded ( NumSamples );
+    NumBits = NumberOfBitsNeeded(NumSamples);
 
     /*
     **   Do simultaneous data copy and bit-reversal ordering into outputs...
     */
 
-    for ( i=0; i < NumSamples; i++ )
-    {
-        j = ReverseBits ( i, NumBits );
+    for (i = 0; i < NumSamples; i++) {
+        j = ReverseBits(i, NumBits);
         RealOut[j] = RealIn[i];
-        ImagOut[j] = (ImagIn == NULL) ? (float)0.0 : ImagIn[i];
+        ImagOut[j] = (ImagIn == NULL) ? (float) 0.0 : ImagIn[i];
     }
 
     /*
@@ -324,45 +294,42 @@ int fft_float (
     */
 
     BlockEnd = 1;
-    for ( BlockSize = 2; BlockSize <= NumSamples; BlockSize <<= 1 )
-    {
-        double delta_angle = angle_numerator / (double)BlockSize;
-        double sm2 = sin ( -2 * delta_angle );
-        double sm1 = sin ( -delta_angle );
-        double cm2 = cos ( -2 * delta_angle );
-        double cm1 = cos ( -delta_angle );
+    for (BlockSize = 2; BlockSize <= NumSamples; BlockSize <<= 1) {
+        double delta_angle = angle_numerator / (double) BlockSize;
+        double sm2 = sin(-2 * delta_angle);
+        double sm1 = sin(-delta_angle);
+        double cm2 = cos(-2 * delta_angle);
+        double cm1 = cos(-delta_angle);
         double w = 2 * cm1;
         /* double ar[3], ai[3]; replaced array with fixed vals below - labenski */
         double ar0, ar1, ar2, ai0, ai1, ai2;
         /* double temp; */
 
-        for ( i=0; i < NumSamples; i += BlockSize )
-        {
+        for (i = 0; i < NumSamples; i += BlockSize) {
             ar2 = cm2;
             ar1 = cm1;
 
             ai2 = sm2;
             ai1 = sm1;
 
-            for ( j=i, n=0; n < BlockEnd; j++, n++ )
-            {
-                ar0 = w*ar1 - ar2;
+            for (j = i, n = 0; n < BlockEnd; j++, n++) {
+                ar0 = w * ar1 - ar2;
                 ar2 = ar1;
                 ar1 = ar0;
 
-                ai0 = w*ai1 - ai2;
+                ai0 = w * ai1 - ai2;
                 ai2 = ai1;
                 ai1 = ai0;
 
                 k = j + BlockEnd;
-                tr = ar0*RealOut[k] - ai0*ImagOut[k];
-                ti = ar0*ImagOut[k] + ai0*RealOut[k];
+                tr = ar0 * RealOut[k] - ai0 * ImagOut[k];
+                ti = ar0 * ImagOut[k] + ai0 * RealOut[k];
 
-                RealOut[k] = (float)(RealOut[j] - tr);
-                ImagOut[k] = (float)(ImagOut[j] - ti);
+                RealOut[k] = (float) (RealOut[j] - tr);
+                ImagOut[k] = (float) (ImagOut[j] - ti);
 
-                RealOut[j] += (float)tr;
-                ImagOut[j] += (float)ti;
+                RealOut[j] += (float) tr;
+                ImagOut[j] += (float) ti;
             }
         }
 
@@ -373,12 +340,10 @@ int fft_float (
     **   Need to normalize if inverse transform...
     */
 
-    if ( InverseTransform )
-    {
-        float denom = (float)NumSamples;
+    if (InverseTransform) {
+        float denom = (float) NumSamples;
 
-        for ( i=0; i < NumSamples; i++ )
-        {
+        for (i = 0; i < NumSamples; i++) {
             RealOut[i] /= denom;
             ImagOut[i] /= denom;
         }

@@ -10,32 +10,32 @@
 #define __LED_H
 
 #ifndef WX_PRECOMP
+
 #include "wx/wx.h"
+
 #endif
 
-enum awxLedState {
-    awxLED_OFF = 0,
-    awxLED_ON,
-    awxLED_BLINK
+enum awxLedState
+{
+    awxLED_OFF = 0, awxLED_ON, awxLED_BLINK
 };
 
-enum awxLedColour {
-    awxLED_LUCID = 0,
-    awxLED_RED,
-    awxLED_GREEN,
-    awxLED_YELLOW
+enum awxLedColour
+{
+    awxLED_LUCID = 0, awxLED_RED, awxLED_GREEN, awxLED_YELLOW
 };
 
 class BlinkTimer;
 
-class awxLed : public wxWindow
+class awxLed
+        : public wxWindow
 {
 protected:
     // bitmap for double buffering
-    wxBitmap* m_bitmap;
+    wxBitmap *m_bitmap;
     wxBitmap m_icons[2];
     awxLedState m_state;
-    BlinkTimer* m_timer;
+    BlinkTimer *m_timer;
     int m_blink;
     int m_x;
     int m_y;
@@ -48,59 +48,84 @@ protected:
 protected:
     // protected member functions
     void DrawOnBitmap();
+
 public:
-    awxLed(wxWindow* parent,
-        wxWindowID id,
-        const wxPoint& pos = wxPoint(0,0),
-        const wxSize& size = wxSize(16,16),
-        // red LED is default
-        awxLedColour color = awxLED_RED,
-        long style = 0, int timerInterval = 500 );
+    awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxPoint(0, 0), const wxSize &size = wxSize(16, 16),
+            // red LED is default
+           awxLedColour color = awxLED_RED, long style = 0, int timerInterval = 500);
+
     ~awxLed();
+
     void Blink();
-    void OnErase(wxEraseEvent& ) {
-       Redraw();
+
+    void OnErase(wxEraseEvent &)
+    {
+        Redraw();
     };
-    void OnPaint(wxPaintEvent& ) {
-       wxPaintDC dc(this);
-       dc.DrawBitmap(*m_bitmap,0,0,false);
+
+    void OnPaint(wxPaintEvent &)
+    {
+        wxPaintDC dc(this);
+        dc.DrawBitmap(*m_bitmap, 0, 0, false);
     };
-    void OnSizeEvent(wxSizeEvent& event) {
-       wxSize size = event.GetSize();
-       m_x = (size.GetX() - m_icons[0].GetWidth()) >> 1;
-       m_y = (size.GetY() - m_icons[0].GetHeight()) >> 1;
-       if(m_x < 0) m_x = 0;
-       if(m_y < 0) m_y = 0;
-       DrawOnBitmap();
+
+    void OnSizeEvent(wxSizeEvent &event)
+    {
+        wxSize size = event.GetSize();
+        m_x = (size.GetX() - m_icons[0].GetWidth()) >> 1;
+        m_y = (size.GetY() - m_icons[0].GetHeight()) >> 1;
+        if (m_x < 0)
+            m_x = 0;
+        if (m_y < 0)
+            m_y = 0;
+        DrawOnBitmap();
     };
-    void Redraw() {
-       wxClientDC dc(this);
-       DrawOnBitmap();
-       dc.DrawBitmap(*m_bitmap,0,0,false);
+
+    void Redraw()
+    {
+        wxClientDC dc(this);
+        DrawOnBitmap();
+        dc.DrawBitmap(*m_bitmap, 0, 0, false);
     };
-    void SetTimerInterval( unsigned int timerInterval );
+
+    void SetTimerInterval(unsigned int timerInterval);
+
     unsigned int GetTimerInterval();
+
     void SetColour(awxLedColour colour);
+
     void SetState(awxLedState state);
-    void SetOn( awxLedColour colour, awxLedState state = awxLED_ON );
-    void SetOff( awxLedColour colour, awxLedState state = awxLED_ON );
-    void TurnOn( bool on = true );
+
+    void SetOn(awxLedColour colour, awxLedState state = awxLED_ON);
+
+    void SetOff(awxLedColour colour, awxLedState state = awxLED_ON);
+
+    void TurnOn(bool on = true);
+
     void TurnOff();
+
     void Toggle();
+
     bool IsOn();
-    DECLARE_EVENT_TABLE()
+
+DECLARE_EVENT_TABLE()
 };
 
-class BlinkTimer : public wxTimer
+class BlinkTimer
+        : public wxTimer
 {
 protected:
-    awxLed* m_led;
+    awxLed *m_led;
 public:
-    BlinkTimer(awxLed *led) : wxTimer() {
-       m_led = led;
+    BlinkTimer(awxLed *led)
+            : wxTimer()
+    {
+        m_led = led;
     };
-    void Notify() {
-       m_led->Blink();
+
+    void Notify()
+    {
+        m_led->Blink();
     };
 };
 

@@ -56,10 +56,10 @@
 
 ---------------------------------------------------------------------------*/
 
-#define DECLARE_QUICK_SELECT( name, elem_type )                             \
+#define DECLARE_QUICK_SELECT(name, elem_type)                             \
     elem_type name( elem_type *arr, int n, elem_type &median );
 
-#define DEFINE_QUICK_SELECT( name, elem_type )                              \
+#define DEFINE_QUICK_SELECT(name, elem_type)                              \
     elem_type name( elem_type *arr, int n, elem_type &median )              \
     IMPLEMENT_QUICK_SELECT( elem_type, arr, n, median )
 
@@ -139,10 +139,10 @@
 
 ---------------------------------------------------------------------------*/
 
-#define DECLARE_WIRTHS_MEDIAN( name, elem_type )                \
+#define DECLARE_WIRTHS_MEDIAN(name, elem_type)                \
     elem_type name( elem_type *arr, int n, elem_type &median );
 
-#define DEFINE_WIRTHS_MEDIAN( name, elem_type )                 \
+#define DEFINE_WIRTHS_MEDIAN(name, elem_type)                 \
     elem_type name( elem_type *arr, int n, elem_type &median )  \
     WIRTHS_MEDIAN( elem_type, arr, n, median )
 
@@ -150,10 +150,10 @@
     IMPLEMENT_WIRTHS_KTH_SMALLEST(elem_type, arr, n, (((n)&1)?((n)/2):(((n)/2)-1)), median)
 
 
-#define DECLARE_WIRTHS_KTH_SMALLEST( name, elem_type )          \
+#define DECLARE_WIRTHS_KTH_SMALLEST(name, elem_type)          \
     elem_type name( elem_type *arr, int n, elem_type &median );
 
-#define DEFINE_WIRTHS_KTH_SMALLEST( name, elem_type )           \
+#define DEFINE_WIRTHS_KTH_SMALLEST(name, elem_type)           \
     elem_type name( elem_type *arr, int n, elem_type &median )  \
     IMPLEMENT_WIRTHS_MEDIAN( elem_type, arr, n, median )
 
@@ -194,14 +194,14 @@
 
 ---------------------------------------------------------------------------*/
 
-#define DECLARE_TORBEN_MEDIAN( name, elem_type )                \
+#define DECLARE_TORBEN_MEDIAN(name, elem_type)                \
     elem_type name( elem_type *arr, int n, elem_type &median );
 
-#define DEFINE_TORBEN_MEDIAN( name, elem_type )                 \
+#define DEFINE_TORBEN_MEDIAN(name, elem_type)                 \
     elem_type name( elem_type *arr, int n, elem_type &median )  \
     IMPLEMENT_TORBEN_MEDIAN( elem_type, arr, n, median )
 
-#define IMPLEMENT_TORBEN_MEDIAN( elem_type, arr, n )                      \
+#define IMPLEMENT_TORBEN_MEDIAN(elem_type, arr, n)                      \
 {                                                               \
     int i, less, greater, equal;                                \
     elem_type  min, max, guess, maxltguess, mingtguess;         \
@@ -252,14 +252,14 @@
 #define PIXEL_QSORT_STACK_SIZE 50
 #define PIXEL_QSORT_THRESHOLD 7
 
-#define DECLARE_PIXEL_QSORT( name, elem_type )                              \
+#define DECLARE_PIXEL_QSORT(name, elem_type)                              \
     void name( elem_type *arr, int n );
 
-#define DEFINE_PIXEL_QSORT( name, elem_type )                               \
+#define DEFINE_PIXEL_QSORT(name, elem_type)                               \
     void name( elem_type *arr, int n )                                      \
     IMPLEMENT_PIXEL_QSORT( name, elem_type )
 
-#define IMPLEMENT_PIXEL_QSORT( elem_type, arr, n )                          \
+#define IMPLEMENT_PIXEL_QSORT(elem_type, arr, n)                          \
 {                                                                           \
     int i, ir=n, j, k, l=1, j_stack=0;                                      \
     int *i_stack ;                                                          \
@@ -338,14 +338,14 @@
 #define PIXEL_QSORT2_STACK_SIZE 50
 #define PIXEL_QSORT2_THRESHOLD 7
 
-#define DECLARE_PIXEL_QSORT2( name, elem_type )                             \
+#define DECLARE_PIXEL_QSORT2(name, elem_type)                             \
     void name( elem_type *arr, elem_type *arr2, int n );
 
-#define DEFINE_PIXEL_QSORT2( name, elem_type )                              \
+#define DEFINE_PIXEL_QSORT2(name, elem_type)                              \
     void name( elem_type *arr, elem_type *arr2, int n )                     \
     IMPLEMENT_PIXEL_QSORT2( name, elem_type )
 
-#define IMPLEMENT_PIXEL_QSORT2( elem_type, arr, arr2, n )                   \
+#define IMPLEMENT_PIXEL_QSORT2(elem_type, arr, arr2, n)                   \
 {                                                                           \
     int i, ir=n, j, k, l=1, j_stack=0;                                      \
     int *i_stack ;                                                          \
