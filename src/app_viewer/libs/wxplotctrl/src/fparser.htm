@@ -2,8 +2,8 @@
 <html>
 <head>
 
-  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-  <title>fparser.htm</title>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>fparser.htm</title>
 
 
 </head>
@@ -1234,246 +1234,239 @@ F2, etc).<br>
 <a name="funcstring"></a>
 =============================================================================<b><br>
 
-&nbsp; - The function string<br>
+    &nbsp; - The function string<br>
 
-=============================================================================<br>
-<br>
+    =============================================================================<br>
+    <br>
 
-&nbsp; The function string understood by the class is very similar
-to the C-syntax.<br>
+    &nbsp; The function string understood by the class is very similar
+    to the C-syntax.<br>
 
-&nbsp; Arithmetic float expressions can be created from float
-literals, variables<br>
+    &nbsp; Arithmetic float expressions can be created from float
+    literals, variables<br>
 
-or functions using the following operators in this order of precedence:<br>
-<br>
+    or functions using the following operators in this order of precedence:<br>
+    <br>
 
-&nbsp;&nbsp;
-()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-expressions in parentheses first<br>
+    &nbsp;&nbsp;
+    ()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    expressions in parentheses first<br>
 
-&nbsp;&nbsp;
-A^B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-exponentiation (A raised to the power B)<br>
+    &nbsp;&nbsp;
+    A^B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    exponentiation (A raised to the power B)<br>
 
-&nbsp;&nbsp;
--A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-unary minus<br>
+    &nbsp;&nbsp;
+    -A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    unary minus<br>
 
-&nbsp;&nbsp;
-!A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-unary logical not (result is 1 if int(A) is 0, else 0)<br>
+    &nbsp;&nbsp;
+    !A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    unary logical not (result is 1 if int(A) is 0, else 0)<br>
 
-&nbsp;&nbsp; A*B&nbsp; A/B&nbsp; A%B&nbsp;
-multiplication, division and modulo<br>
+    &nbsp;&nbsp; A*B&nbsp; A/B&nbsp; A%B&nbsp;
+    multiplication, division and modulo<br>
 
-&nbsp;&nbsp; A+B&nbsp;
-A-B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-addition and subtraction<br>
+    &nbsp;&nbsp; A+B&nbsp;
+    A-B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    addition and subtraction<br>
 
-&nbsp;&nbsp; A=B&nbsp; A!=B&nbsp; A&lt;B&nbsp;
-A&lt;=B&nbsp; A&gt;B&nbsp; A&gt;=B<br>
+    &nbsp;&nbsp; A=B&nbsp; A!=B&nbsp; A&lt;B&nbsp;
+    A&lt;=B&nbsp; A&gt;B&nbsp; A&gt;=B<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-comparison between A and B (result is either 0 or 1)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    comparison between A and B (result is either 0 or 1)<br>
 
-&nbsp;&nbsp;
-A&amp;B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-result is 1 if int(A) and int(B) differ from 0, else 0<br>
+    &nbsp;&nbsp;
+    A&amp;B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    result is 1 if int(A) and int(B) differ from 0, else 0<br>
 
-&nbsp;&nbsp;
-A|B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-result is 1 if int(A) or int(B) differ from 0, else 0<br>
-<br>
+    &nbsp;&nbsp;
+    A|B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    result is 1 if int(A) or int(B) differ from 0, else 0<br>
+    <br>
 
-&nbsp;&nbsp;&nbsp; Since the unary minus has higher
-precedence than any other operator, for<br>
+    &nbsp;&nbsp;&nbsp; Since the unary minus has higher
+    precedence than any other operator, for<br>
 
-&nbsp; example the following expression is valid: x*-y<br>
-<br>
+    &nbsp; example the following expression is valid: x*-y<br>
+    <br>
 
-&nbsp;&nbsp;&nbsp; The comparison operators use an epsilon
-value, so expressions which may<br>
+    &nbsp;&nbsp;&nbsp; The comparison operators use an epsilon
+    value, so expressions which may<br>
 
-&nbsp; differ in very least-significant digits should work
-correctly. For example,<br>
+    &nbsp; differ in very least-significant digits should work
+    correctly. For example,<br>
 
-&nbsp; "0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1 = 1" should always
-return 1, and<br>
+    &nbsp; "0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1 = 1" should always
+    return 1, and<br>
 
-&nbsp; the same comparison done with "&gt;" or "&lt;"
-should always return 0.<br>
+    &nbsp; the same comparison done with "&gt;" or "&lt;"
+    should always return 0.<br>
 
-&nbsp; (The epsilon value can be configured in the fpconfig.hh
-file.)<br>
+    &nbsp; (The epsilon value can be configured in the fpconfig.hh
+    file.)<br>
 
-&nbsp; Without epsilon this comparison probably returns the wrong
-value.<br>
-<br>
+    &nbsp; Without epsilon this comparison probably returns the wrong
+    value.<br>
+    <br>
 
-&nbsp; The class supports these functions:<br>
-<br>
+    &nbsp; The class supports these functions:<br>
+    <br>
 
-&nbsp; abs(A)&nbsp;&nbsp;&nbsp; : Absolute value of A.
-If A is negative, returns -A otherwise<br>
+    &nbsp; abs(A)&nbsp;&nbsp;&nbsp; : Absolute value of A.
+    If A is negative, returns -A otherwise<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-returns A.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    returns A.<br>
 
-&nbsp; acos(A)&nbsp;&nbsp; : Arc-cosine of A. Returns the
-angle, measured in radians,<br>
+    &nbsp; acos(A)&nbsp;&nbsp; : Arc-cosine of A. Returns the
+    angle, measured in radians,<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-whose cosine is A.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    whose cosine is A.<br>
 
-&nbsp; acosh(A)&nbsp; : Same as acos() but for hyperbolic
-cosine.<br>
+    &nbsp; acosh(A)&nbsp; : Same as acos() but for hyperbolic
+    cosine.<br>
 
-&nbsp; asin(A)&nbsp;&nbsp; : Arc-sine of A. Returns the
-angle, measured in radians, whose<br>
+    &nbsp; asin(A)&nbsp;&nbsp; : Arc-sine of A. Returns the
+    angle, measured in radians, whose<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-sine is A.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    sine is A.<br>
 
-&nbsp; asinh(A)&nbsp; : Same as asin() but for hyperbolic sine.<br>
+    &nbsp; asinh(A)&nbsp; : Same as asin() but for hyperbolic sine.<br>
 
-&nbsp; atan(A)&nbsp;&nbsp; : Arc-tangent of (A). Returns
-the angle, measured in radians,<br>
+    &nbsp; atan(A)&nbsp;&nbsp; : Arc-tangent of (A). Returns
+    the angle, measured in radians,<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-whose tangent is (A).<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    whose tangent is (A).<br>
 
-&nbsp; atan2(A,B): Arc-tangent of A/B. The two main differences to
-atan() is<br>
+    &nbsp; atan2(A,B): Arc-tangent of A/B. The two main differences to
+    atan() is<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-that it will return the right angle depending on the signs of<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    that it will return the right angle depending on the signs of<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-A and B (atan() can only return values betwen -pi/2 and pi/2),<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    A and B (atan() can only return values betwen -pi/2 and pi/2),<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-and that the return value of pi/2 and -pi/2 are possible.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    and that the return value of pi/2 and -pi/2 are possible.<br>
 
-&nbsp; atanh(A)&nbsp; : Same as atan() but for hyperbolic
-tangent.<br>
+    &nbsp; atanh(A)&nbsp; : Same as atan() but for hyperbolic
+    tangent.<br>
 
-&nbsp; ceil(A)&nbsp;&nbsp; : Ceiling of A. Returns the
-smallest integer greater than A.<br>
+    &nbsp; ceil(A)&nbsp;&nbsp; : Ceiling of A. Returns the
+    smallest integer greater than A.<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Rounds up to the next higher integer.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Rounds up to the next higher integer.<br>
 
-&nbsp; cos(A)&nbsp;&nbsp;&nbsp; : Cosine of A. Returns
-the cosine of the angle A, where A is<br>
+    &nbsp; cos(A)&nbsp;&nbsp;&nbsp; : Cosine of A. Returns
+    the cosine of the angle A, where A is<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-measured in radians.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    measured in radians.<br>
 
-&nbsp; cosh(A)&nbsp;&nbsp; : Same as cos() but for
-hyperbolic cosine.<br>
+    &nbsp; cosh(A)&nbsp;&nbsp; : Same as cos() but for
+    hyperbolic cosine.<br>
 
-&nbsp; cot(A)&nbsp;&nbsp;&nbsp; : Cotangent of A
-(equivalent to 1/tan(A)).<br>
+    &nbsp; cot(A)&nbsp;&nbsp;&nbsp; : Cotangent of A
+    (equivalent to 1/tan(A)).<br>
 
-&nbsp; csc(A)&nbsp;&nbsp;&nbsp; : Cosecant of A
-(equivalent to 1/sin(A)).<br>
+    &nbsp; csc(A)&nbsp;&nbsp;&nbsp; : Cosecant of A
+    (equivalent to 1/sin(A)).<br>
 
-&nbsp; eval(...) : This a recursive call to the function to be
-evaluated. The<br>
+    &nbsp; eval(...) : This a recursive call to the function to be
+    evaluated. The<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-number of parameters must be the same as the number of parameters<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    number of parameters must be the same as the number of parameters<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-taken by the function. Must be called inside if() to avoid<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    taken by the function. Must be called inside if() to avoid<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-infinite recursion.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    infinite recursion.<br>
 
-&nbsp; exp(A)&nbsp;&nbsp;&nbsp; : Exponential of A.
-Returns the value of e raised to the power<br>
+    &nbsp; exp(A)&nbsp;&nbsp;&nbsp; : Exponential of A.
+    Returns the value of e raised to the power<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-A where e is the base of the natural logarithm, i.e. the<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    A where e is the base of the natural logarithm, i.e. the<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-non-repeating value approximately equal to 2.71828182846.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    non-repeating value approximately equal to 2.71828182846.<br>
 
-&nbsp; floor(A)&nbsp; : Floor of A. Returns the largest integer
-less than A. Rounds<br>
+    &nbsp; floor(A)&nbsp; : Floor of A. Returns the largest integer
+    less than A. Rounds<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-down to the next lower integer.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    down to the next lower integer.<br>
 
-&nbsp; if(A,B,C) : If int(A) differs from 0, the return value of
-this function is B,<br>
+    &nbsp; if(A,B,C) : If int(A) differs from 0, the return value of
+    this function is B,<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-else C. Only the parameter which needs to be evaluated is<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    else C. Only the parameter which needs to be evaluated is<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-evaluated, the other parameter is skipped; this makes it safe to<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    evaluated, the other parameter is skipped; this makes it safe to<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-use eval() in them.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    use eval() in them.<br>
 
-&nbsp; int(A)&nbsp;&nbsp;&nbsp; : Rounds A to the
-closest integer. 0.5 is rounded to 1.<br>
+    &nbsp; int(A)&nbsp;&nbsp;&nbsp; : Rounds A to the
+    closest integer. 0.5 is rounded to 1.<br>
 
-&nbsp; log(A)&nbsp;&nbsp;&nbsp; : Natural (base e)
-logarithm of A.<br>
+    &nbsp; log(A)&nbsp;&nbsp;&nbsp; : Natural (base e)
+    logarithm of A.<br>
 
-&nbsp; log10(A)&nbsp; : Base 10 logarithm of A.<br>
+    &nbsp; log10(A)&nbsp; : Base 10 logarithm of A.<br>
 
-&nbsp; max(A,B)&nbsp; : If A&gt;B, the result is A, else B.<br>
+    &nbsp; max(A,B)&nbsp; : If A&gt;B, the result is A, else B.<br>
 
-&nbsp; min(A,B)&nbsp; : If A&lt;B, the result is A, else B.<br>
+    &nbsp; min(A,B)&nbsp; : If A&lt;B, the result is A, else B.<br>
 
-&nbsp; sec(A)&nbsp;&nbsp;&nbsp; : Secant of A
-(equivalent to 1/cos(A)).<br>
+    &nbsp; sec(A)&nbsp;&nbsp;&nbsp; : Secant of A
+    (equivalent to 1/cos(A)).<br>
 
-&nbsp; sin(A)&nbsp;&nbsp;&nbsp; : Sine of A. Returns
-the sine of the angle A, where A is<br>
+    &nbsp; sin(A)&nbsp;&nbsp;&nbsp; : Sine of A. Returns
+    the sine of the angle A, where A is<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-measured in radians.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    measured in radians.<br>
 
-&nbsp; sinh(A)&nbsp;&nbsp; : Same as sin() but for
-hyperbolic sine.<br>
+    &nbsp; sinh(A)&nbsp;&nbsp; : Same as sin() but for
+    hyperbolic sine.<br>
 
-&nbsp; sqrt(A)&nbsp;&nbsp; : Square root of A. Returns the
-value whose square is A.<br>
+    &nbsp; sqrt(A)&nbsp;&nbsp; : Square root of A. Returns the
+    value whose square is A.<br>
 
-&nbsp; tan(A)&nbsp;&nbsp;&nbsp; : Tangent of A. Returns
-the tangent of the angle A, where A<br>
+    &nbsp; tan(A)&nbsp;&nbsp;&nbsp; : Tangent of A. Returns
+    the tangent of the angle A, where A<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-is measured in radians.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    is measured in radians.<br>
 
-&nbsp; tanh(A)&nbsp;&nbsp; : Same as tan() but for
-hyperbolic tangent.<br>
-<br>
-<br>
+    &nbsp; tanh(A)&nbsp;&nbsp; : Same as tan() but for
+    hyperbolic tangent.<br>
+    <br>
+    <br>
 
-&nbsp; Examples of function string understood by the class:<br>
-<br>
+    &nbsp; Examples of function string understood by the class:<br>
+    <br>
 
-&nbsp; "1+2"<br>
+    &nbsp; "1+2"<br>
 
-&nbsp; "x-1"<br>
+    &nbsp; "x-1"<br>
 
-&nbsp; "-sin(sqrt(x^2+y^2))"<br>
+    &nbsp; "-sin(sqrt(x^2+y^2))"<br>
 
-&nbsp; "sqrt(XCoord*XCoord + YCoord*YCoord)"<br>
+    &nbsp; "sqrt(XCoord*XCoord + YCoord*YCoord)"<br>
 </b>
-
-
-
-
-
-
-
 
 
 <br>
