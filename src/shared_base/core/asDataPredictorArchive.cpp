@@ -157,18 +157,9 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     if (YstartIndexReal == 0 && XstartIndex == 0 && Ylength == m_axisLat.size() && Xlength == m_axisLon.size()) {
         if (IsPreprocessed()) {
             if (m_data[0].cols() == m_axisLon.size() && m_data[0].rows() == 2 * m_axisLat.size()) {
+                // Nothing to do
+                return true;
             } else {
-
-					Array1DFloat newAxisLat(2*Ylength);
-					for (int i=0; i<2*Ylength; i++)
-					{
-						newAxisLat[i] = NaNFloat;
-					}
-					m_axisLat = newAxisLat;
-
-					m_latPtsnb = m_axisLat.size();
-					m_lonPtsnb = m_axisLon.size();
-				}
                 // Clear axes
                 Array1DFloat newAxisLon(Xlength);
                 for (int i = 0; i < Xlength; i++) {
@@ -176,11 +167,15 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 }
                 m_axisLon = newAxisLon;
 
+                Array1DFloat newAxisLat(2 * Ylength);
+                for (int i = 0; i < 2 * Ylength; i++) {
+                    newAxisLat[i] = NaNFloat;
+                }
+                m_axisLat = newAxisLat;
 
-					m_latPtsnb = m_axisLat.size();
-					m_lonPtsnb = m_axisLon.size();
-				}
-			}
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
+            }
         } else {
             // Nothing to do
             return true;
