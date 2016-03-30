@@ -27,6 +27,7 @@
  */
 
 #include <wx/filename.h>
+#include <wx/dir.h>
 #include "asDataPredictandPrecipitation.h"
 #include "asProcessor.h"
 #include "asMethodCalibratorSingle.h"
@@ -1413,10 +1414,14 @@ void Ref2SavingIntermediateResults()
 
 TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 {
+    wxString tmpDir = asConfig::GetTempDir() + "IntermediateResults";
+
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
     pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
+
+    pConfig->Write("/Paths/IntermediateResultsDir", tmpDir);
 
     pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", true);
     pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", true);
@@ -1447,6 +1452,8 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
     pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
     pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
     pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
+
+    EXPECT_TRUE(wxDir::Remove(tmpDir, wxPATH_RMDIR_RECURSIVE));
 }
 
 void Ref2MergeByHalfAndMultiply()
