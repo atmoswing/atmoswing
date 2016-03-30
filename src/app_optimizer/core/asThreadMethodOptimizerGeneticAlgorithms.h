@@ -6,22 +6,24 @@
 #include <asMethodOptimizerGeneticAlgorithms.h>
 #include <asIncludes.h>
 
-class asThreadMethodOptimizerGeneticAlgorithms: public asThread
+class asThreadMethodOptimizerGeneticAlgorithms
+        : public asThread
 {
 public:
-    /** Default constructor */
-    asThreadMethodOptimizerGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms* optimizer, const asParametersOptimization &params, float *finalScoreCalib, VectorFloat *scoreClimatology);
-    /** Default destructor */
+    asThreadMethodOptimizerGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
+                                             const asParametersOptimization &params, float *finalScoreCalib,
+                                             VectorFloat *scoreClimatology);
+
     virtual ~asThreadMethodOptimizerGeneticAlgorithms();
 
     ExitCode Entry();
 
 protected:
 private:
-    asMethodOptimizerGeneticAlgorithms* m_optimizer;
+    asMethodOptimizerGeneticAlgorithms *m_optimizer;
     asParametersOptimization m_params;
-    float* m_finalScoreCalib;
-    VectorFloat* m_scoreClimatology;
+    float *m_finalScoreCalib;
+    VectorFloat *m_scoreClimatology;
 };
 
 #endif // ASTHREADMETHODOPTIMIZERGENETICALGORITHMS_H

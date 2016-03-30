@@ -4,18 +4,20 @@
 #include <asIncludes.h>
 #include <asFileParameters.h>
 
-class asFileParametersOptimization : public asFileParameters
+class asFileParametersOptimization
+        : public asFileParameters
 {
 public:
-    /** Default constructor */
     asFileParametersOptimization(const wxString &FileName, const ListFileMode &FileMode = asFile::Replace);
-    /** Default destructor */
+
     virtual ~asFileParametersOptimization();
 
-	bool EditRootElement();
-	bool CheckRootElement();
+    bool EditRootElement();
+
+    bool CheckRootElement();
 
 protected:
+
 private:
 };
 

@@ -183,8 +183,7 @@ void asFrameOptimizer::DisplayLogLevelMenu()
 
 void asFrameOptimizer::Cancel(wxCommandEvent &event)
 {
-    if (m_methodOptimizer)
-    {
+    if (m_methodOptimizer) {
         m_methodOptimizer->Cancel();
     }
 }
@@ -276,78 +275,101 @@ void asFrameOptimizer::LoadOptions()
 
     // Genetic algorithms
     long NaturalSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 1l);
-    m_ChoiceGAsNaturalSelectionOperator->SetSelection((int)NaturalSelectionOperator);
+    m_ChoiceGAsNaturalSelectionOperator->SetSelection((int) NaturalSelectionOperator);
     long CouplesSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 3l);
-    m_ChoiceGAsCouplesSelectionOperator->SetSelection((int)CouplesSelectionOperator);
+    m_ChoiceGAsCouplesSelectionOperator->SetSelection((int) CouplesSelectionOperator);
     long CrossoverOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverOperator", 1l);
-    m_ChoiceGAsCrossoverOperator->SetSelection((int)CrossoverOperator);
+    m_ChoiceGAsCrossoverOperator->SetSelection((int) CrossoverOperator);
     long MutationOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationOperator", 0l);
-    m_ChoiceGAsMutationOperator->SetSelection((int)MutationOperator);
+    m_ChoiceGAsMutationOperator->SetSelection((int) MutationOperator);
     wxString GAsRunNumbers = pConfig->Read("/Optimizer/GeneticAlgorithms/NbRuns", "20");
     m_TextCtrlGAsRunNumbers->SetValue(GAsRunNumbers);
     wxString GAsPopulationSize = pConfig->Read("/Optimizer/GeneticAlgorithms/PopulationSize", "50");
     m_TextCtrlGAsPopulationSize->SetValue(GAsPopulationSize);
     wxString GAsConvergenceStepsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", "20");
     m_TextCtrlGAsConvergenceNb->SetValue(GAsConvergenceStepsNb);
-    wxString GAsRatioIntermediateGeneration = pConfig->Read("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", "0.5");
+    wxString GAsRatioIntermediateGeneration = pConfig->Read("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration",
+                                                            "0.5");
     m_TextCtrlGAsRatioIntermGen->SetValue(GAsRatioIntermediateGeneration);
     bool GAsAllowElitismForTheBest;
     pConfig->Read("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", &GAsAllowElitismForTheBest, true);
     m_CheckBoxGAsAllowElitism->SetValue(GAsAllowElitismForTheBest);
-    wxString GAsNaturalSelectionTournamentProbability = pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", "0.9");
+    wxString GAsNaturalSelectionTournamentProbability = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", "0.9");
     m_TextCtrlGAsNaturalSlctTournamentProb->SetValue(GAsNaturalSelectionTournamentProbability);
-    wxString GAsCouplesSelectionTournamentNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", "3");
+    wxString GAsCouplesSelectionTournamentNb = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", "3");
     m_TextCtrlGAsCouplesSlctTournamentNb->SetValue(GAsCouplesSelectionTournamentNb);
-    wxString GAsCrossoverMultiplePointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb", "3");
+    wxString GAsCrossoverMultiplePointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb",
+                                                          "3");
     m_TextCtrlGAsCrossoverMultipleNbPts->SetValue(GAsCrossoverMultiplePointsNb);
-    wxString GAsCrossoverBlendingPointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb", "2");
+    wxString GAsCrossoverBlendingPointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb",
+                                                          "2");
     m_TextCtrlGAsCrossoverBlendingNbPts->SetValue(GAsCrossoverBlendingPointsNb);
     bool GAsCrossoverBlendingShareBeta;
     pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBlendingShareBeta", &GAsCrossoverBlendingShareBeta, true);
     m_CheckBoxGAsCrossoverBlendingShareBeta->SetValue(GAsCrossoverBlendingShareBeta);
     wxString GAsCrossoverLinearPointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverLinearPointsNb", "2");
     m_TextCtrlGAsCrossoverLinearNbPts->SetValue(GAsCrossoverLinearPointsNb);
-    wxString GAsCrossoverHeuristicPointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb", "2");
+    wxString GAsCrossoverHeuristicPointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb",
+                                                           "2");
     m_TextCtrlGAsCrossoverHeuristicNbPts->SetValue(GAsCrossoverHeuristicPointsNb);
     bool GAsCrossoverHeuristicShareBeta;
     pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverHeuristicShareBeta", &GAsCrossoverHeuristicShareBeta, true);
     m_CheckBoxGAsCrossoverHeuristicShareBeta->SetValue(GAsCrossoverHeuristicShareBeta);
-    wxString GAsCrossoverBinaryLikePointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", "2");
+    wxString GAsCrossoverBinaryLikePointsNb = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb",
+                                                            "2");
     m_TextCtrlGAsCrossoverBinLikeNbPts->SetValue(GAsCrossoverBinaryLikePointsNb);
     bool GAsCrossoverBinaryLikeShareBeta;
     pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", &GAsCrossoverBinaryLikeShareBeta, true);
     m_CheckBoxGAsCrossoverBinLikeShareBeta->SetValue(GAsCrossoverBinaryLikeShareBeta);
-    wxString GAsMutationsUniformConstantProbability = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", "0.2");
+    wxString GAsMutationsUniformConstantProbability = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", "0.2");
     m_TextCtrlGAsMutationsUniformCstProb->SetValue(GAsMutationsUniformConstantProbability);
-    wxString GAsMutationsNormalConstantProbability = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", "0.2");
+    wxString GAsMutationsNormalConstantProbability = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", "0.2");
     m_TextCtrlGAsMutationsNormalCstProb->SetValue(GAsMutationsNormalConstantProbability);
-    wxString GAsMutationsNormalConstantStdDevRatioRange = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", "0.10");
+    wxString GAsMutationsNormalConstantStdDevRatioRange = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", "0.10");
     m_TextCtrlGAsMutationsNormalCstStdDev->SetValue(GAsMutationsNormalConstantStdDevRatioRange);
-    wxString GAsMutationsUniformVariableMaxGensNbVar = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", "50");
+    wxString GAsMutationsUniformVariableMaxGensNbVar = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", "50");
     m_TextCtrlGAsMutationsUniformVarMaxGensNb->SetValue(GAsMutationsUniformVariableMaxGensNbVar);
-    wxString GAsMutationsUniformVariableProbabilityStart = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", "0.5");
+    wxString GAsMutationsUniformVariableProbabilityStart = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", "0.5");
     m_TextCtrlGAsMutationsUniformVarProbStart->SetValue(GAsMutationsUniformVariableProbabilityStart);
-    wxString GAsMutationsUniformVariableProbabilityEnd = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", "0.01");
+    wxString GAsMutationsUniformVariableProbabilityEnd = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", "0.01");
     m_TextCtrlGAsMutationsUniformVarProbEnd->SetValue(GAsMutationsUniformVariableProbabilityEnd);
-    wxString GAsMutationsNormalVariableMaxGensNbVarProb = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", "50");
+    wxString GAsMutationsNormalVariableMaxGensNbVarProb = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", "50");
     m_TextCtrlGAsMutationsNormalVarMaxGensNbProb->SetValue(GAsMutationsNormalVariableMaxGensNbVarProb);
-    wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", "50");
+    wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", "50");
     m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetValue(GAsMutationsNormalVariableMaxGensNbVarStdDev);
-    wxString GAsMutationsNormalVariableProbabilityStart = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", "0.5");
+    wxString GAsMutationsNormalVariableProbabilityStart = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", "0.5");
     m_TextCtrlGAsMutationsNormalVarProbStart->SetValue(GAsMutationsNormalVariableProbabilityStart);
-    wxString GAsMutationsNormalVariableProbabilityEnd = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", "0.05");
+    wxString GAsMutationsNormalVariableProbabilityEnd = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", "0.05");
     m_TextCtrlGAsMutationsNormalVarProbEnd->SetValue(GAsMutationsNormalVariableProbabilityEnd);
-    wxString GAsMutationsNormalVariableStdDevStart = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", "0.5");
+    wxString GAsMutationsNormalVariableStdDevStart = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", "0.5");
     m_TextCtrlGAsMutationsNormalVarStdDevStart->SetValue(GAsMutationsNormalVariableStdDevStart);
-    wxString GAsMutationsNormalVariableStdDevEnd = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", "0.01");
+    wxString GAsMutationsNormalVariableStdDevEnd = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", "0.01");
     m_TextCtrlGAsMutationsNormalVarStdDevEnd->SetValue(GAsMutationsNormalVariableStdDevEnd);
-    wxString GAsMutationsNonUniformProb = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", "0.2");
+    wxString GAsMutationsNonUniformProb = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability",
+                                                        "0.2");
     m_TextCtrlGAsMutationsNonUniformProb->SetValue(GAsMutationsNonUniformProb);
-    wxString GAsMutationsNonUniformMaxGensNbVar = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", "50");
+    wxString GAsMutationsNonUniformMaxGensNbVar = pConfig->Read(
+            "/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", "50");
     m_TextCtrlGAsMutationsNonUniformGensNb->SetValue(GAsMutationsNonUniformMaxGensNbVar);
-    wxString GAsMutationsNonUniformMinRate = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", "0.20");
+    wxString GAsMutationsNonUniformMinRate = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate",
+                                                           "0.20");
     m_TextCtrlGAsMutationsNonUniformMinRate->SetValue(GAsMutationsNonUniformMinRate);
-    wxString GAsMutationsMultiScaleProb = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", "0.20");
+    wxString GAsMutationsMultiScaleProb = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability",
+                                                        "0.20");
     m_TextCtrlGAsMutationsMultiScaleProb->SetValue(GAsMutationsMultiScaleProb);
 }
 
@@ -443,7 +465,8 @@ void asFrameOptimizer::SaveOptions()
     bool GAsAllowElitismForTheBest = m_CheckBoxGAsAllowElitism->GetValue();
     pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", GAsAllowElitismForTheBest);
     wxString GAsNaturalSelectionTournamentProbability = m_TextCtrlGAsNaturalSlctTournamentProb->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", GAsNaturalSelectionTournamentProbability);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability",
+                   GAsNaturalSelectionTournamentProbability);
     wxString GAsCouplesSelectionTournamentNb = m_TextCtrlGAsCouplesSlctTournamentNb->GetValue();
     pConfig->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", GAsCouplesSelectionTournamentNb);
     wxString GAsCrossoverMultiplePointsNb = m_TextCtrlGAsCrossoverMultipleNbPts->GetValue();
@@ -463,29 +486,41 @@ void asFrameOptimizer::SaveOptions()
     bool GAsCrossoverBinaryLikeShareBeta = m_CheckBoxGAsCrossoverBinLikeShareBeta->GetValue();
     pConfig->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", GAsCrossoverBinaryLikeShareBeta);
     wxString GAsMutationsUniformConstantProbability = m_TextCtrlGAsMutationsUniformCstProb->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", GAsMutationsUniformConstantProbability);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability",
+                   GAsMutationsUniformConstantProbability);
     wxString GAsMutationsNormalConstantProbability = m_TextCtrlGAsMutationsNormalCstProb->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", GAsMutationsNormalConstantProbability);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability",
+                   GAsMutationsNormalConstantProbability);
     wxString GAsMutationsNormalConstantStdDevRatioRange = m_TextCtrlGAsMutationsNormalCstStdDev->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", GAsMutationsNormalConstantStdDevRatioRange);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange",
+                   GAsMutationsNormalConstantStdDevRatioRange);
     wxString GAsMutationsUniformVariableMaxGensNbVar = m_TextCtrlGAsMutationsUniformVarMaxGensNb->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", GAsMutationsUniformVariableMaxGensNbVar);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar",
+                   GAsMutationsUniformVariableMaxGensNbVar);
     wxString GAsMutationsUniformVariableProbabilityStart = m_TextCtrlGAsMutationsUniformVarProbStart->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", GAsMutationsUniformVariableProbabilityStart);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart",
+                   GAsMutationsUniformVariableProbabilityStart);
     wxString GAsMutationsUniformVariableProbabilityEnd = m_TextCtrlGAsMutationsUniformVarProbEnd->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", GAsMutationsUniformVariableProbabilityEnd);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd",
+                   GAsMutationsUniformVariableProbabilityEnd);
     wxString GAsMutationsNormalVariableMaxGensNbVarProb = m_TextCtrlGAsMutationsNormalVarMaxGensNbProb->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", GAsMutationsNormalVariableMaxGensNbVarProb);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb",
+                   GAsMutationsNormalVariableMaxGensNbVarProb);
     wxString GAsMutationsNormalVariableMaxGensNbVarStdDev = m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", GAsMutationsNormalVariableMaxGensNbVarStdDev);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev",
+                   GAsMutationsNormalVariableMaxGensNbVarStdDev);
     wxString GAsMutationsNormalVariableProbabilityStart = m_TextCtrlGAsMutationsNormalVarProbStart->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", GAsMutationsNormalVariableProbabilityStart);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart",
+                   GAsMutationsNormalVariableProbabilityStart);
     wxString GAsMutationsNormalVariableProbabilityEnd = m_TextCtrlGAsMutationsNormalVarProbEnd->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", GAsMutationsNormalVariableProbabilityEnd);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd",
+                   GAsMutationsNormalVariableProbabilityEnd);
     wxString GAsMutationsNormalVariableStdDevStart = m_TextCtrlGAsMutationsNormalVarStdDevStart->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", GAsMutationsNormalVariableStdDevStart);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart",
+                   GAsMutationsNormalVariableStdDevStart);
     wxString GAsMutationsNormalVariableStdDevEnd = m_TextCtrlGAsMutationsNormalVarStdDevEnd->GetValue();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", GAsMutationsNormalVariableStdDevEnd);
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd",
+                   GAsMutationsNormalVariableStdDevEnd);
     wxString GAsMutationsNonUniformProb = m_TextCtrlGAsMutationsNonUniformProb->GetValue();
     pConfig->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", GAsMutationsNonUniformProb);
     wxString GAsMutationsNonUniformMaxGensNbVar = m_TextCtrlGAsMutationsNonUniformGensNb->GetValue();
@@ -565,8 +600,7 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
                 asLogError(_("Chosen method not defined yet."));
         }
 
-        if (m_methodOptimizer)
-        {
+        if (m_methodOptimizer) {
             m_methodOptimizer->SetParamsFilePath(m_filePickerParameters->GetPath());
             m_methodOptimizer->SetPredictandDBFilePath(m_filePickerPredictand->GetPath());
             m_methodOptimizer->SetPredictorDataDir(m_dirPickerPredictor->GetPath());

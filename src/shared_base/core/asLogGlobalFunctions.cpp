@@ -92,9 +92,9 @@ wxString asGetState()
 
 void DeleteLog()
 {
-	if (g_pLog) {
-		g_pLog->Flush();
-	}
+    if (g_pLog) {
+        g_pLog->Flush();
+    }
     wxDELETE(g_pLog);
     delete wxLog::SetActiveTarget(NULL);
 }
