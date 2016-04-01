@@ -452,6 +452,7 @@ void asMethodCalibrator::InitializePreloadedDataContainer(asParametersScoring &p
                 unsigned long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
                 unsigned long preloadTimeHoursSize = wxMax(preloadTimeHours.size(), 1);
 
+                m_preloadedArchivePointerCopy[i_step][i_ptor].resize(preloadDataIdsSize);
                 m_preloadedArchive[i_step][i_ptor].resize(preloadDataIdsSize);
 
                 for (int i_dat = 0; i_dat < preloadDataIdsSize; i_dat++) {
@@ -852,9 +853,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
 
                 asGeo geo;
                 double Ymax = params.GetPreloadYmin(i_step, i_ptor) + params.GetPredictorYstep(i_step, i_ptor) *
-                                                                      (double) (
-                                                                              params.GetPreloadYptsnb(i_step, i_ptor) -
-                                                                              1);
+                                                                      double(params.GetPreloadYptsnb(i_step, i_ptor) - 1);
                 if (Ymax > geo.GetAxisYmax()) {
                     double diff = Ymax - geo.GetAxisYmax();
                     int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(i_step, i_ptor));
@@ -1004,8 +1003,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
         i_hour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
 
         // Force gradients preprocessing anyway.
-        if (!params.GetPredictorCriteriaVector(i_step, i_ptor).size() > 0 &&
-            params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
+        if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
             doPreprocessGradients = true;
             params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
         } else if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1grads")) {
