@@ -17,7 +17,7 @@ public:
 protected:
     virtual void InitParameters(asParametersOptimization &params);
 
-    virtual asParametersOptimization GetNextParameters();
+    virtual asParametersOptimization *GetNextParameters();
 
     virtual bool Optimize(asParametersOptimization &params);
 

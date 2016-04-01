@@ -11,7 +11,7 @@ class asThreadMethodOptimizerGeneticAlgorithms
 {
 public:
     asThreadMethodOptimizerGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
-                                             const asParametersOptimization &params, float *finalScoreCalib,
+                                             asParametersOptimization *params, float *finalScoreCalib,
                                              VectorFloat *scoreClimatology);
 
     virtual ~asThreadMethodOptimizerGeneticAlgorithms();
@@ -21,7 +21,7 @@ public:
 protected:
 private:
     asMethodOptimizerGeneticAlgorithms *m_optimizer;
-    asParametersOptimization m_params;
+    asParametersOptimization *m_params;
     float *m_finalScoreCalib;
     VectorFloat *m_scoreClimatology;
 };

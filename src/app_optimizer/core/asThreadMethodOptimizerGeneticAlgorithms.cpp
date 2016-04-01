@@ -3,18 +3,17 @@
 #include "asMethodCalibratorSingle.h"
 
 asThreadMethodOptimizerGeneticAlgorithms::asThreadMethodOptimizerGeneticAlgorithms(
-        asMethodOptimizerGeneticAlgorithms *optimizer, const asParametersOptimization &params, float *finalScoreCalib,
+        asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params, float *finalScoreCalib,
         VectorFloat *scoreClimatology)
-        : asThread()
+        : asThread(),
+          m_optimizer(optimizer),
+          m_params(params),
+          m_finalScoreCalib(finalScoreCalib),
+          m_scoreClimatology(scoreClimatology)
 {
     m_status = Initializing;
 
     m_type = asThread::MethodOptimizerGeneticAlgorithms;
-
-    m_optimizer = optimizer; // copy
-    m_params = params;
-    m_scoreClimatology = scoreClimatology;
-    m_finalScoreCalib = finalScoreCalib;
 
     m_status = Waiting;
 }
@@ -44,7 +43,7 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
     }
 
     // Process every step one after the other
-    int stepsNb = m_params.GetStepsNb();
+    int stepsNb = m_params->GetStepsNb();
 
     if (stepsNb == 0) {
         asLogError(_("The number of processing steps is null in asThreadMethodOptimizerGeneticAlgorithms."));
@@ -54,13 +53,13 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
     for (int i_step = 0; i_step < stepsNb; i_step++) {
         bool containsNaNs = false;
         if (i_step == 0) {
-            if (!m_optimizer->GetAnalogsDates(anaDates, m_params, i_step, containsNaNs)) {
+            if (!m_optimizer->GetAnalogsDates(anaDates, *m_params, i_step, containsNaNs)) {
                 asLogError(_("Failed processing the analogs dates"));
                 return NULL;
             }
             anaDatesPrevious = anaDates;
         } else {
-            if (!m_optimizer->GetAnalogsSubDates(anaDates, m_params, anaDatesPrevious, i_step, containsNaNs)) {
+            if (!m_optimizer->GetAnalogsSubDates(anaDates, *m_params, anaDatesPrevious, i_step, containsNaNs)) {
                 asLogError(_("Failed processing the analogs sub dates"));
                 return NULL;
             }
@@ -76,15 +75,15 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
             return NULL;
         }
     }
-    if (!m_optimizer->GetAnalogsValues(anaValues, m_params, anaDates, stepsNb - 1)) {
+    if (!m_optimizer->GetAnalogsValues(anaValues, *m_params, anaDates, stepsNb - 1)) {
         asLogError(_("Failed processing the analogs values"));
         return NULL;
     }
-    if (!m_optimizer->GetAnalogsForecastScores(anaScores, m_params, anaValues, stepsNb - 1)) {
+    if (!m_optimizer->GetAnalogsForecastScores(anaScores, *m_params, anaValues, stepsNb - 1)) {
         asLogError(_("Failed processing the forecast scores"));
         return NULL;
     }
-    if (!m_optimizer->GetAnalogsForecastScoreFinal(anaScoreFinal, m_params, anaScores, stepsNb - 1)) {
+    if (!m_optimizer->GetAnalogsForecastScoreFinal(anaScoreFinal, *m_params, anaScores, stepsNb - 1)) {
         asLogError(_("Failed processing the final score"));
         return NULL;
     }

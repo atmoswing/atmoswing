@@ -266,11 +266,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Optimizer
     while (!IsOver()) {
         // Get a parameters set
-        asParametersOptimizationGAs newParams = GetNextParameters();
+        asParametersOptimizationGAs *newParams = GetNextParameters();
 
         if (!SkipNext() && !IsOver()) {
             // Check on the parameters set
-            if (newParams.GetStepsNb() == 0) {
+            wxASSERT(newParams);
+            if (newParams->GetStepsNb() == 0) {
                 asLogError(_("The new parameters set is not correcty initialized."));
                 return false;
             }
@@ -319,8 +320,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 // Fill up the thread array
                 for (int i_thread = 0; i_thread < threadsNb; i_thread++) {
                     // Get a parameters set
-                    asParametersOptimizationGAs nextParams = GetNextParameters();
-                    if (nextParams.GetStepsNb() == 0) {
+                    asParametersOptimizationGAs *nextParams = GetNextParameters();
+                    wxASSERT(nextParams);
+                    if (nextParams->GetStepsNb() == 0) {
                         asLogError(wxString::Format(
                                 _("The new parameters set is not correcty initialized in the thread array filling (iterator %d/%d)."),
                                 m_iterator, m_paramsNb));
@@ -354,8 +356,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     ThreadsManager().WaitForFreeThread(threadType);
 
                     // Get a parameters set
-                    asParametersOptimizationGAs nextParams = GetNextParameters();
-                    if (nextParams.GetStepsNb() == 0) {
+                    asParametersOptimizationGAs *nextParams = GetNextParameters();
+                    wxASSERT(nextParams);
+                    if (nextParams->GetStepsNb() == 0) {
                         asLogError(wxString::Format(
                                 _("The new parameters set is not correctly initialized in the continuous adding (iterator %d/%d)."),
                                 m_iterator, m_paramsNb));
@@ -410,15 +413,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
                 // Process every step one after the other
-                int stepsNb = newParams.GetStepsNb();
+                int stepsNb = newParams->GetStepsNb();
                 for (int i_step = 0; i_step < stepsNb; i_step++) {
                     bool containsNaNs = false;
                     if (i_step == 0) {
-                        if (!GetAnalogsDates(anaDates, newParams, i_step, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, *newParams, i_step, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, newParams, anaDatesPrevious, i_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, *newParams, anaDatesPrevious, i_step, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -427,11 +430,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                         return false;
                     }
                 }
-                if (!GetAnalogsValues(anaValues, newParams, anaDates, stepsNb - 1))
+                if (!GetAnalogsValues(anaValues, *newParams, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, newParams, anaValues, stepsNb - 1))
+                if (!GetAnalogsForecastScores(anaScores, *newParams, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, newParams, anaScores, stepsNb - 1))
+                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, *newParams, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result
@@ -772,32 +775,32 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
     m_scoreValid = NaNFloat;
 }
 
-asParametersOptimizationGAs asMethodOptimizerGeneticAlgorithms::GetNextParameters()
+asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParameters()
 {
-    asParametersOptimizationGAs params;
+    asParametersOptimizationGAs *params = NULL;
     m_skipNext = false;
 
     if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) && m_iterator < m_paramsNb) {
         if (asTools::IsNaN(m_scoresCalib[m_iterator])) {
-            params = m_parameters[m_iterator];
+            params = &m_parameters[m_iterator];
             m_assessmentCounter++;
         } else {
             while (!asTools::IsNaN(m_scoresCalib[m_iterator])) {
                 m_iterator++;
                 if (m_iterator == m_paramsNb) {
                     m_optimizerStage = asCHECK_CONVERGENCE;
-                    if (!Optimize(params))
+                    if (!Optimize())
                         asLogError(_("The parameters could not be optimized"));
                     return params;
                 }
             }
-            params = m_parameters[m_iterator];
+            params = &m_parameters[m_iterator];
             m_assessmentCounter++;
         }
     } else if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) &&
                m_iterator == m_paramsNb) {
         m_optimizerStage = asCHECK_CONVERGENCE;
-        if (!Optimize(params))
+        if (!Optimize())
             asLogError(_("The parameters could not be optimized"));
     } else {
         wxLogError(_("This should not happen (in GetNextParameters)..."));
@@ -806,7 +809,7 @@ asParametersOptimizationGAs asMethodOptimizerGeneticAlgorithms::GetNextParameter
     return params;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::Optimize(asParametersOptimizationGAs &params)
+bool asMethodOptimizerGeneticAlgorithms::Optimize()
 {
     if (m_optimizerStage == asCHECK_CONVERGENCE) {
         // Different operators consider that the scores are sorted !
