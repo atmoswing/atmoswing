@@ -226,18 +226,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     m_data[i] = datMerged;
                 }
 
-                Array1DFloat newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
-                    newAxisLon[i] = NaNFloat;
-                }
-                m_axisLon = newAxisLon;
-
-                Array1DFloat newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
-                    newAxisLat[i] = NaNFloat;
-                }
-                m_axisLat = newAxisLat;
-
+                m_axisLon = Array1DFloat::Ones(Xlength) * NaNFloat;
+                m_axisLat = Array1DFloat::Ones(2 * Ylength) * NaNFloat;
                 m_latPtsnb = m_axisLat.size();
                 m_lonPtsnb = m_axisLon.size();
 
@@ -265,25 +255,15 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     m_data[i] = datMerged;
                 }
 
-                Array1DFloat newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
-                    newAxisLon[i] = NaNFloat;
-                }
-                m_axisLon = newAxisLon;
-
-                Array1DFloat newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
-                    newAxisLat[i] = NaNFloat;
-                }
-                m_axisLat = newAxisLat;
-
+                m_axisLon = Array1DFloat::Ones(Xlength) * NaNFloat;
+                m_axisLat = Array1DFloat::Ones(2 * Ylength) * NaNFloat;
                 m_latPtsnb = m_axisLat.size();
                 m_lonPtsnb = m_axisLon.size();
 
                 return true;
 
             } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
-                       method.IsSameAs("HumidityFlux")) {
+                       method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux")) {
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != m_axisLat.size()) {
@@ -299,18 +279,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                     m_data[i] = originalData[i].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
                 }
 
-                Array1DFloat newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
-                    newAxisLon[i] = NaNFloat;
-                }
-                m_axisLon = newAxisLon;
-
-                Array1DFloat newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
-                    newAxisLat[i] = NaNFloat;
-                }
-                m_axisLat = newAxisLat;
-
+                m_axisLon = Array1DFloat::Ones(Xlength) * NaNFloat;
+                m_axisLat = Array1DFloat::Ones(Ylength) * NaNFloat;
                 m_latPtsnb = m_axisLat.size();
                 m_lonPtsnb = m_axisLon.size();
 

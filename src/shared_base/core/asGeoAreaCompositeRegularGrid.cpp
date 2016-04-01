@@ -37,8 +37,7 @@ asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &CornerUL
     m_xStep = Xstep;
     m_yStep = Ystep;
 
-    if (!IsOnGrid(Xstep, Ystep))
-        asThrowException(_("The given area does not match a grid."));
+    if(!IsOnGrid(Xstep, Ystep)) asThrowException(wxString::Format(_("The given area does not match a grid (Xstep = %f, Ystep = %f)."), Xstep, Ystep));
 }
 
 asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin,
@@ -50,8 +49,7 @@ asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double Xmin, double
     m_xStep = Xstep;
     m_yStep = Ystep;
 
-    if (!IsOnGrid(Xstep, Ystep))
-        asThrowException(_("The given area does not match a grid."));
+    if(!IsOnGrid(Xstep, Ystep)) asThrowException(wxString::Format(_("The given area does not match a grid (Xstep = %f, Ystep = %f)."), Xstep, Ystep));
 }
 
 asGeoAreaCompositeRegularGrid::~asGeoAreaCompositeRegularGrid()
