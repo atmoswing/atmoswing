@@ -123,6 +123,7 @@ typedef std::vector<std::vector<std::vector<Array2DDouble *> > > VVVpArray2DDoub
 //---------------------------------
 
 /* NaN (http://www.cplusplus.com/reference/limits/numeric_limits/) */
+static const short NaNShort = std::numeric_limits<short>::max();
 static const int NaNInt = std::numeric_limits<int>::max();
 static const float NaNFloat = std::numeric_limits<float>::quiet_NaN();
 static const double NaNDouble = std::numeric_limits<double>::quiet_NaN();
