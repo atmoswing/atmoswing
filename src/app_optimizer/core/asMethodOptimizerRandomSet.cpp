@@ -83,7 +83,7 @@ bool asMethodOptimizerRandomSet::Manager()
     // Optimizer
     while (!IsOver()) {
         // Get a parameters set
-        params = GetNextParameters();
+        asParametersOptimization *nextParams = GetNextParameters();
 
         if (!SkipNext() && !IsOver()) {
             if (parallelEvaluations) {
@@ -102,11 +102,11 @@ bool asMethodOptimizerRandomSet::Manager()
                 VectorFloat scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadMethodOptimizerRandomSet *firstthread = new asThreadMethodOptimizerRandomSet(this, params,
+                asThreadMethodOptimizerRandomSet *firstThread = new asThreadMethodOptimizerRandomSet(this, nextParams,
                                                                                                      &m_scoresCalib[m_iterator],
                                                                                                      &m_scoreClimatology);
-                int threadType = firstthread->GetType();
-                ThreadsManager().AddThread(firstthread);
+                int threadType = firstThread->GetType();
+                ThreadsManager().AddThread(firstThread);
 
                 // Wait until done to get the score of the climatology
                 if (scoreClim.size() == 0) {
@@ -130,10 +130,10 @@ bool asMethodOptimizerRandomSet::Manager()
                 // Fill up the thread array
                 for (int i_thread = 0; i_thread < threadsNb; i_thread++) {
                     // Get a parameters set
-                    params = GetNextParameters();
+                    nextParams = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, params,
+                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, nextParams,
                                                                                                     &m_scoresCalib[m_iterator],
                                                                                                     &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
@@ -156,10 +156,10 @@ bool asMethodOptimizerRandomSet::Manager()
                     ThreadsManager().WaitForFreeThread(threadType);
 
                     // Get a parameters set
-                    params = GetNextParameters();
+                    nextParams = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, params,
+                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, nextParams,
                                                                                                     &m_scoresCalib[m_iterator],
                                                                                                     &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
@@ -287,15 +287,15 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
     }
 }
 
-asParametersOptimization asMethodOptimizerRandomSet::GetNextParameters()
+asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
 {
-    asParametersOptimization params;
+    asParametersOptimization *params = NULL;
     m_skipNext = false;
 
     if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) && m_iterator < m_paramsNb) {
-        params = m_parameters[m_iterator];
+        params = &m_parameters[m_iterator];
     } else {
-        if (!Optimize(params))
+        if (!Optimize(*params))
             asLogError(_("The parameters could not be optimized"));
     }
 

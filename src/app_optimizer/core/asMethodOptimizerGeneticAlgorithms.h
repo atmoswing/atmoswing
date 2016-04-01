@@ -84,9 +84,9 @@ private:
 
     void InitParameters(asParametersOptimizationGAs &params);
 
-    asParametersOptimizationGAs GetNextParameters();
+    asParametersOptimizationGAs *GetNextParameters();
 
-    bool Optimize(asParametersOptimizationGAs &params);
+    bool Optimize();
 
     bool CheckConvergence(bool &stop);
 

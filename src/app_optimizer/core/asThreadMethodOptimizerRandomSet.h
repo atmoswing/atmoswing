@@ -10,8 +10,8 @@ class asThreadMethodOptimizerRandomSet
         : public asThread
 {
 public:
-    asThreadMethodOptimizerRandomSet(const asMethodOptimizerRandomSet *optimizer,
-                                     const asParametersOptimization &params, float *finalScoreCalib,
+    asThreadMethodOptimizerRandomSet(asMethodOptimizerRandomSet *optimizer,
+                                     asParametersOptimization *params, float *finalScoreCalib,
                                      VectorFloat *scoreClimatology);
 
     virtual ~asThreadMethodOptimizerRandomSet();
@@ -20,8 +20,8 @@ public:
 
 protected:
 private:
-    asMethodOptimizerRandomSet m_optimizer;
-    asParametersOptimization m_params;
+    asMethodOptimizerRandomSet *m_optimizer;
+    asParametersOptimization *m_params;
     float *m_finalScoreCalib;
     VectorFloat *m_scoreClimatology;
 };
