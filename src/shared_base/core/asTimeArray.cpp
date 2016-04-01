@@ -789,7 +789,7 @@ int asTimeArray::GetIndexFirstAfter(double date)
 
     if (date > m_end) {
         asLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNDouble;
+        return NaNInt;
     }
 
     int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date);
@@ -806,7 +806,7 @@ int asTimeArray::GetIndexFirstBefore(double date)
 
     if (date < m_start) {
         asLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNDouble;
+        return NaNInt;
     }
 
     int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
