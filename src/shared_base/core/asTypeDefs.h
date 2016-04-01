@@ -70,7 +70,6 @@ typedef std::vector<VectorShort> VVectorShort;
 typedef std::vector<VectorInt> VVectorInt;
 typedef std::vector<VectorFloat> VVectorFloat;
 typedef std::vector<VectorDouble> VVectorDouble;
-typedef std::vector<VectorStdString> VVectorStdString;
 typedef std::vector<VectorString> VVectorString;
 
 
@@ -86,14 +85,6 @@ typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> M
 
 // Arrays are used for element-wise calculations. It is often the case here.
 typedef Eigen::Array<int, Eigen::Dynamic, 1> Array1DInt;
-typedef Eigen::Array<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Array2DInt;
-typedef std::vector<Array1DInt> VArray1DInt;
-typedef std::vector<Array2DInt> VArray2DInt;
-typedef std::vector<Array2DInt *> VpArray2DInt;
-typedef std::vector<std::vector<Array2DInt> > VVArray2DInt;
-typedef std::vector<std::vector<Array2DInt *> > VVpArray2DInt;
-typedef std::vector<std::vector<std::vector<Array2DInt> > > VVVArray2DInt;
-typedef std::vector<std::vector<std::vector<Array2DInt *> > > VVVpArray2DInt;
 
 typedef Eigen::Array<float, Eigen::Dynamic, 1> Array1DFloat;
 typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Array2DFloat;
@@ -101,20 +92,8 @@ typedef std::vector<Array1DFloat> VArray1DFloat;
 typedef std::vector<Array2DFloat> VArray2DFloat;
 typedef std::vector<Array2DFloat *> VpArray2DFloat;
 typedef std::vector<std::vector<Array2DFloat> > VVArray2DFloat;
-typedef std::vector<std::vector<Array2DFloat *> > VVpArray2DFloat;
-typedef std::vector<std::vector<std::vector<Array2DFloat> > > VVVArray2DFloat;
-typedef std::vector<std::vector<std::vector<Array2DFloat *> > > VVVpArray2DFloat;
 
 typedef Eigen::Array<double, Eigen::Dynamic, 1> Array1DDouble;
-typedef Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Array2DDouble;
-typedef std::vector<Array1DDouble> VArray1DDouble;
-typedef std::vector<Array2DDouble> VArray2DDouble;
-typedef std::vector<Array2DDouble *> VpArray2DDouble;
-typedef std::vector<std::vector<Array2DDouble> > VVArray2DDouble;
-typedef std::vector<std::vector<Array2DDouble *> > VVpArray2DDouble;
-typedef std::vector<std::vector<std::vector<Array2DDouble> > > VVVArray2DDouble;
-typedef std::vector<std::vector<std::vector<Array2DDouble *> > > VVVpArray2DDouble;
-
 
 
 
@@ -123,6 +102,7 @@ typedef std::vector<std::vector<std::vector<Array2DDouble *> > > VVVpArray2DDoub
 //---------------------------------
 
 /* NaN (http://www.cplusplus.com/reference/limits/numeric_limits/) */
+static const short NaNShort = std::numeric_limits<short>::max();
 static const int NaNInt = std::numeric_limits<int>::max();
 static const float NaNFloat = std::numeric_limits<float>::quiet_NaN();
 static const double NaNDouble = std::numeric_limits<double>::quiet_NaN();
