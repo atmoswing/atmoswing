@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Jun  5 2014)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -21,12 +21,12 @@
 #include <wx/filepicker.h>
 #include <wx/checkbox.h>
 #include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/textctrl.h>
-#include <wx/statbox.h>
 #include <wx/notebook.h>
 #include <wx/button.h>
 #include <wx/menu.h>
@@ -61,6 +61,25 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxStaticText* m_staticTextOptimizerResultsDir;
 		wxDirPickerCtrl* m_dirPickerOptimizerResults;
 		wxCheckBox* m_checkBoxParallelEvaluations;
+		wxStaticText* m_staticTextSaveAnalogDates;
+		wxCheckBox* m_checkBoxSaveAnalogDatesStep1;
+		wxCheckBox* m_checkBoxSaveAnalogDatesStep2;
+		wxCheckBox* m_checkBoxSaveAnalogDatesStep3;
+		wxCheckBox* m_checkBoxSaveAnalogDatesStep4;
+		wxCheckBox* m_checkBoxSaveAnalogDatesAllSteps;
+		wxCheckBox* m_checkBoxSaveAnalogValues;
+		wxCheckBox* m_checkBoxSaveForecastScores;
+		wxCheckBox* m_checkBoxSaveFinalForecastScore;
+		wxStaticText* m_staticText60;
+		wxStaticText* m_staticTextLoadAnalogDates;
+		wxCheckBox* m_checkBoxLoadAnalogDatesStep1;
+		wxCheckBox* m_checkBoxLoadAnalogDatesStep2;
+		wxCheckBox* m_checkBoxLoadAnalogDatesStep3;
+		wxCheckBox* m_checkBoxLoadAnalogDatesStep4;
+		wxCheckBox* m_checkBoxLoadAnalogDatesAllSteps;
+		wxCheckBox* m_checkBoxLoadAnalogValues;
+		wxCheckBox* m_checkBoxLoadForecastScores;
+		wxStaticText* m_staticText61;
 		wxStaticText* m_staticTextStateLabel;
 		wxStaticText* m_staticTextState;
 		wxPanel* m_panelOptions;
@@ -77,17 +96,91 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxCheckBox* m_checkBoxClassicPlusResize;
 		wxStaticText* m_staticText66;
 		wxStaticText* m_staticText67;
-		wxStaticText* m_staticTextMonteCarloRandomNb;
-		wxTextCtrl* m_textCtrlMonteCarloRandomNb;
-		wxStaticText* m_staticTextVarExploStepToExplore;
-		wxTextCtrl* m_textCtrlVarExploStepToExplore;
-		wxButton* m_buttonSaveDefault;
-		wxMenuBar* m_menuBar;
-		wxMenu* m_menuOptions;
-		wxMenu* m_menuLog;
-		wxMenu* m_menuLogLevel;
-		wxMenu* m_menuHelp;
-		wxToolBar* m_toolBar;
+		wxStaticText* m_StaticTextMonteCarloRandomNb;
+		wxTextCtrl* m_TextCtrlMonteCarloRandomNb;
+		wxStaticText* m_StaticTextVarExploStepToExplore;
+		wxTextCtrl* m_TextCtrlVarExploStepToExplore;
+		wxPanel* m_PanelGeneticAlgoritms;
+		wxStaticText* m_StaticTextGAsNaturalSelectionOperator;
+		wxChoice* m_ChoiceGAsNaturalSelectionOperator;
+		wxStaticText* m_StaticTextGAsCouplesSelectionOperator;
+		wxChoice* m_ChoiceGAsCouplesSelectionOperator;
+		wxStaticText* m_StaticTextGAsCrossoverOperator;
+		wxChoice* m_ChoiceGAsCrossoverOperator;
+		wxStaticText* m_StaticTextGAsMutationOperator;
+		wxChoice* m_ChoiceGAsMutationOperator;
+		wxStaticText* m_StaticTextGAsRunNumbers;
+		wxTextCtrl* m_TextCtrlGAsRunNumbers;
+		wxStaticText* m_StaticTextGAsPopulationSize;
+		wxTextCtrl* m_TextCtrlGAsPopulationSize;
+		wxStaticText* m_StaticTextGAsConvergenceNb;
+		wxTextCtrl* m_TextCtrlGAsConvergenceNb;
+		wxStaticText* m_StaticTextGAsRatioIntermGen;
+		wxTextCtrl* m_TextCtrlGAsRatioIntermGen;
+		wxCheckBox* m_CheckBoxGAsAllowElitism;
+		wxNotebook* m_NotebookGAoptions;
+		wxPanel* m_PanelSelections;
+		wxStaticText* m_StaticTextGAsNaturalSlctTournamentProb;
+		wxTextCtrl* m_TextCtrlGAsNaturalSlctTournamentProb;
+		wxStaticText* m_StaticTextGAsCouplesSlctTournamentNb;
+		wxTextCtrl* m_TextCtrlGAsCouplesSlctTournamentNb;
+		wxPanel* m_PanelCrossover;
+		wxStaticText* m_StaticTextGAsCrossoverMultipleNbPts;
+		wxTextCtrl* m_TextCtrlGAsCrossoverMultipleNbPts;
+		wxStaticText* m_StaticTextGAsCrossoverBlendingNbPts;
+		wxTextCtrl* m_TextCtrlGAsCrossoverBlendingNbPts;
+		wxStaticText* m_StaticTextGAsCrossoverBlendingShareBeta;
+		wxCheckBox* m_CheckBoxGAsCrossoverBlendingShareBeta;
+		wxStaticText* m_StaticTextGAsCrossoverLinearNbPts;
+		wxTextCtrl* m_TextCtrlGAsCrossoverLinearNbPts;
+		wxStaticText* m_StaticTextGAsCrossoverHeuristicNbPts;
+		wxTextCtrl* m_TextCtrlGAsCrossoverHeuristicNbPts;
+		wxStaticText* m_StaticTextGAsCrossoverHeuristicShareBeta;
+		wxCheckBox* m_CheckBoxGAsCrossoverHeuristicShareBeta;
+		wxStaticText* m_StaticTextGAsCrossoverBinLikeNbPts;
+		wxTextCtrl* m_TextCtrlGAsCrossoverBinLikeNbPts;
+		wxStaticText* m_StaticTextGAsCrossoverBinLikeShareBeta;
+		wxCheckBox* m_CheckBoxGAsCrossoverBinLikeShareBeta;
+		wxPanel* m_PanelMutation;
+		wxStaticText* m_StaticTextGAsMutationsUniformCstProb;
+		wxTextCtrl* m_TextCtrlGAsMutationsUniformCstProb;
+		wxStaticText* m_StaticTextGAsMutationsNormalCstProb;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalCstProb;
+		wxStaticText* m_StaticTextGAsMutationsNormalCstStdDev;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalCstStdDev;
+		wxStaticText* m_StaticTextGAsMutationsUniformVarMaxGensNb;
+		wxTextCtrl* m_TextCtrlGAsMutationsUniformVarMaxGensNb;
+		wxStaticText* m_StaticTextGAsMutationsUniformVarProbStart;
+		wxTextCtrl* m_TextCtrlGAsMutationsUniformVarProbStart;
+		wxStaticText* m_StaticTextGAsMutationsUniformVarProbEnd;
+		wxTextCtrl* m_TextCtrlGAsMutationsUniformVarProbEnd;
+		wxStaticText* m_StaticTextGAsMutationsMultiScaleProb;
+		wxTextCtrl* m_TextCtrlGAsMutationsMultiScaleProb;
+		wxStaticText* m_StaticTextGAsMutationsNormalVarMaxGensNbProb;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalVarMaxGensNbProb;
+		wxStaticText* m_StaticTextGAsMutationsNormalVarMaxGensNbStdDev;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev;
+		wxStaticText* m_StaticTextGAsMutationsNormalVarProbStart;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalVarProbStart;
+		wxStaticText* m_StaticTextGAsMutationsNormalVarProbEnd;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalVarProbEnd;
+		wxStaticText* m_StaticTextGAsMutationsNormalVarStdDevStart;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalVarStdDevStart;
+		wxStaticText* m_StaticTextGAsMutationsNormalVarStdDevEnd;
+		wxTextCtrl* m_TextCtrlGAsMutationsNormalVarStdDevEnd;
+		wxStaticText* m_StaticTextGAsMutationsNonUniformProb;
+		wxTextCtrl* m_TextCtrlGAsMutationsNonUniformProb;
+		wxStaticText* m_StaticTextGAsMutationsNonUniformGensNb;
+		wxTextCtrl* m_TextCtrlGAsMutationsNonUniformGensNb;
+		wxStaticText* m_StaticTextGAsMutationsNonUniformMinRate;
+		wxTextCtrl* m_TextCtrlGAsMutationsNonUniformMinRate;
+		wxButton* m_ButtonSaveDefault;
+		wxMenuBar* m_MenuBar;
+		wxMenu* m_MenuOptions;
+		wxMenu* m_MenuLog;
+		wxMenu* m_MenuLogLevel;
+		wxMenu* m_MenuHelp;
+		wxToolBar* m_ToolBar;
 		wxStatusBar* m_statusBar1;
 		
 		// Virtual event handlers, overide them in your derived class
