@@ -719,9 +719,9 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
 
     // Get data
     Array1DFloat predictandData;
-    if (serieName.IsSameAs("data_normalized") || serieName.IsSameAs("DataNormalized")) {
+    if (serieName.IsSameAs("DataNormalized")) {
         predictandData = predictand.GetDataNormalizedStation(stationId);
-    } else if (serieName.IsSameAs("data_gross") || serieName.IsSameAs("DataGross")) {
+    } else if (serieName.IsSameAs("DataGross")) {
         predictandData = predictand.GetDataGrossStation(stationId);
     } else {
         asLogError(_("The predictand serie is not correctly defined in the time array construction."));
