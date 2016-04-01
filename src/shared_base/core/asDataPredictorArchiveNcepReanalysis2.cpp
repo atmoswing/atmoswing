@@ -389,7 +389,7 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeG
                 int latlonlength = indexLengthLat * indexLengthLon;
                 for (int i_empty = 0; i_empty < cutStart; i_empty++) {
                     for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                        data[indexBegining] = NaNFloat;
+                        data[indexBegining] = NaNShort;
                         indexBegining++;
                     }
                 }
@@ -402,7 +402,7 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeG
                 for (int i_empty = 0; i_empty < cutEnd; i_empty++) {
                     for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
                         indexEnd++;
-                        data[indexEnd] = NaNFloat;
+                        data[indexEnd] = NaNShort;
                     }
                 }
             }
@@ -481,7 +481,7 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeG
                     int latlonlength = indexLengthLat * indexLengthLon;
                     for (int i_empty = 0; i_empty < cutStart; i_empty++) {
                         for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                            data360[indexBegining360] = NaNFloat;
+                            data360[indexBegining360] = NaNShort;
                             indexBegining360++;
                         }
                     }
@@ -494,7 +494,7 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeG
                     for (int i_empty = 0; i_empty < cutEnd; i_empty++) {
                         for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
                             indexEnd360++;
-                            data360[indexEnd360] = NaNFloat;
+                            data360[indexEnd360] = NaNShort;
                         }
                     }
                 }
