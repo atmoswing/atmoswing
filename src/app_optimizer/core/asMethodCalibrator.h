@@ -137,6 +137,11 @@ public:
         m_scoreClimatology = val;
     }
 
+    bool IsPointerCopy(int i_step, int i_ptor, int i_dat)
+    {
+        return m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat];
+    }
+
 protected:
     VectorFloat m_scoresCalib;
     VectorFloat m_scoresCalibTemp;

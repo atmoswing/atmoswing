@@ -1651,6 +1651,16 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     EXPECT_EQ(params.GetPredictorTimeHours(0, 0), 24);
     EXPECT_EQ(params.GetPredictorLevel(0, 1), 0);
     EXPECT_TRUE(params.GetPredictorTimeHours(0, 1) > 6);
+
+    // Check pointer sharing
+    EXPECT_FALSE(calibrator.IsPointerCopy(0, 0, 1));
+    EXPECT_TRUE(calibrator.IsPointerCopy(0, 1, 0));
+    EXPECT_TRUE(calibrator.IsPointerCopy(0, 1, 1));
+    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 0));
+    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 1));
+    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 2));
+    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 3));
+
 }
 
 TEST(MethodCalibrator, NormalizedS1Criteria)
