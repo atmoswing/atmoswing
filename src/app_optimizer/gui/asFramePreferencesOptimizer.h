@@ -45,7 +45,7 @@ protected:
 
     void LoadPreferences();
 
-    void SavePreferences();
+    void SavePreferences() const;
 
     void SaveAndClose(wxCommandEvent &event);
 

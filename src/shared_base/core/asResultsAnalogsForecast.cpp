@@ -119,7 +119,7 @@ void asResultsAnalogsForecast::BuildFileName()
     m_filePath.Append(filename);
 }
 
-bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath)
+bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
 {
     wxASSERT(!m_filePath.IsEmpty());
     wxASSERT(m_targetDates.size() > 0);
@@ -602,7 +602,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     return true;
 }
 
-wxArrayString asResultsAnalogsForecast::GetStationNamesWxArrayString()
+wxArrayString asResultsAnalogsForecast::GetStationNamesWxArrayString() const
 {
     wxArrayString stationsNames;
     for (unsigned int i = 0; i < m_stationNames.size(); i++) {
@@ -611,7 +611,7 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesWxArrayString()
     return stationsNames;
 }
 
-wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
+wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString() const
 {
     wxArrayString stationsNames;
     for (unsigned int i = 0; i < m_stationNames.size(); i++) {
@@ -626,7 +626,7 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
     return stationsNames;
 }
 
-wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat)
+wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat) const
 {
     wxString stationName;
     if (!asTools::IsNaN(m_stationHeights[i_stat]) && m_stationHeights[i_stat] != 0) {
@@ -637,7 +637,7 @@ wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat)
     return stationName;
 }
 
-wxString asResultsAnalogsForecast::GetPredictandStationIdsString()
+wxString asResultsAnalogsForecast::GetPredictandStationIdsString() const
 {
     wxString Ids;
 
@@ -663,7 +663,7 @@ void asResultsAnalogsForecast::SetPredictandStationIds(wxString val)
     }
 }
 
-bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherForecast)
+bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherForecast) const
 {
     bool compatible = true;
 
@@ -723,7 +723,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherF
     return true;
 }
 
-bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast *otherForecast)
+bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast *otherForecast) const
 {
     if (!IsCompatibleWith(otherForecast))
         return false;
@@ -781,7 +781,7 @@ bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast *otherForecast)
     return true;
 }
 
-bool asResultsAnalogsForecast::IsSpecificForStationId(int stationId)
+bool asResultsAnalogsForecast::IsSpecificForStationId(int stationId) const
 {
     for (int i = 0; i < (int) m_predictandStationIds.size(); i++) {
         if (m_predictandStationIds[i] == stationId) {
@@ -791,7 +791,7 @@ bool asResultsAnalogsForecast::IsSpecificForStationId(int stationId)
     return false;
 }
 
-int asResultsAnalogsForecast::GetStationRowFromId(int stationId)
+int asResultsAnalogsForecast::GetStationRowFromId(int stationId) const
 {
     for (int i = 0; i < m_stationIds.size(); i++) {
         if (m_stationIds[i] == stationId) {

@@ -47,7 +47,7 @@ bool asFileBatchForecasts::EditRootElement()
     return true;
 }
 
-bool asFileBatchForecasts::CheckRootElement()
+bool asFileBatchForecasts::CheckRootElement() const
 {
     if (!GetRoot())
         return false;

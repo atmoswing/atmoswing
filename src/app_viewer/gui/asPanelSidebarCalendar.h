@@ -47,17 +47,17 @@ public:
 
     void SetPresentDate();
 
-    wxCalendarCtrl *GetCalendar()
+    wxCalendarCtrl *GetCalendar() const
     {
         return m_calendarForecastDate;
     }
 
-    wxDateTime GetDate()
+    wxDateTime GetDate() const
     {
         return m_calendarForecastDate->GetDate();
     }
 
-    double GetHour()
+    double GetHour() const
     {
         wxString forecastHourStr = m_textCtrlForecastHour->GetValue();
         double forecastHour = 0;

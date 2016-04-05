@@ -156,22 +156,22 @@ public:
 
     size_t GetVarLength(const wxString &VarName);
 
-    int GetFileId()
+    int GetFileId() const
     {
         return m_fileId;
     }
 
-    int GetNVars()
+    int GetNVars() const
     {
         return m_struct.NVars;
     }
 
-    int GetNDims()
+    int GetNDims() const
     {
         return m_struct.NDims;
     }
 
-    int GetNGlobAtts()
+    int GetNGlobAtts() const
     {
         return m_struct.NAtts;
     }
@@ -236,7 +236,7 @@ private:
 
     bool ParseStruct();
 
-    size_t GetVarLength(int &varid);
+    size_t GetVarLength(int &varid) const;
 
 };
 

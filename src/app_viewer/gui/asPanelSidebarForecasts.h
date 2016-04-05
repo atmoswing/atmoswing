@@ -51,17 +51,17 @@ public:
 
     void Update();
 
-    asListBoxForecasts *GetForecastsCtrl()
+    asListBoxForecasts *GetForecastsCtrl() const
     {
         return m_forecastsCtrl;
     }
 
-    asListBoxQuantiles *GetQuantilesCtrl()
+    asListBoxQuantiles *GetQuantilesCtrl() const
     {
         return m_quantilesCtrl;
     }
 
-    asListBoxForecastDisplay *GetForecastDisplayCtrl()
+    asListBoxForecastDisplay *GetForecastDisplayCtrl() const
     {
         return m_forecastDisplayCtrl;
     }

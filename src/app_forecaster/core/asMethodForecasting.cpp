@@ -936,8 +936,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             }
 
             // Fix the criteria if S1
-            if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
+            wxString method = params.GetPreprocessMethod(i_step, i_ptor);
+            if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
                 params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
+            } else if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1")) {
+                params.SetPredictorCriteria(i_step, i_ptor, "NS1grads");
             }
 
             // Instanciate an archive predictor object
@@ -985,6 +988,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
+        if(criterion->NeedsDataRange()) {
+            wxASSERT(m_storagePredictorsArchive.size()>i_ptor);
+            wxASSERT(m_storagePredictorsArchive[i_ptor]);
+            criterion->SetDataRange(m_storagePredictorsArchive[i_ptor]);
+        }
         m_storageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 
@@ -1404,8 +1412,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             }
 
             // Fix the criteria if S1
-            if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
+            wxString method = params.GetPreprocessMethod(i_step, i_ptor);
+            if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
                 params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
+            } else if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1")) {
+                params.SetPredictorCriteria(i_step, i_ptor, "NS1grads");
             }
 
             // Instanciate an archive predictor object
@@ -1452,6 +1463,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
+        if(criterion->NeedsDataRange()) {
+            wxASSERT(m_storagePredictorsArchive.size()>i_ptor);
+            wxASSERT(m_storagePredictorsArchive[i_ptor]);
+            criterion->SetDataRange(m_storagePredictorsArchive[i_ptor]);
+        }
         m_storageCriteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
 

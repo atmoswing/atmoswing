@@ -45,14 +45,14 @@ asForecastScoreCRPSHersbachDecomp::~asForecastScoreCRPSHersbachDecomp()
     //dtor
 }
 
-float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
     asLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
     return NaNFloat;
 }
 
 Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals,
-                                                              int nbElements)
+                                                              int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);

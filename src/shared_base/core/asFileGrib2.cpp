@@ -108,7 +108,7 @@ bool asFileGrib2::GDALOpenDataset()
     return true;
 }
 
-double asFileGrib2::GetXCellSize()
+double asFileGrib2::GetXCellSize() const
 {
     double adfGeoTransform[6];
     if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
@@ -118,7 +118,7 @@ double asFileGrib2::GetXCellSize()
     return NaNDouble;
 }
 
-double asFileGrib2::GetYCellSize()
+double asFileGrib2::GetYCellSize() const
 {
     double adfGeoTransform[6];
     if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
@@ -128,7 +128,7 @@ double asFileGrib2::GetYCellSize()
     return NaNDouble;
 }
 
-double asFileGrib2::GetXOrigin()
+double asFileGrib2::GetXOrigin() const
 {
     double adfGeoTransform[6];
     if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
@@ -138,7 +138,7 @@ double asFileGrib2::GetXOrigin()
     return NaNDouble;
 }
 
-double asFileGrib2::GetYOrigin()
+double asFileGrib2::GetYOrigin() const
 {
     double adfGeoTransform[6];
     if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
@@ -153,7 +153,7 @@ double asFileGrib2::GetYOrigin()
     return NaNDouble;
 }
 
-double asFileGrib2::GetRotation()
+double asFileGrib2::GetRotation() const
 {
     wxASSERT(m_opened);
 
@@ -175,7 +175,7 @@ void asFileGrib2::SetBand(int i)
     }
 }
 
-double asFileGrib2::GetBandEstimatedMax()
+double asFileGrib2::GetBandEstimatedMax() const
 {
     wxASSERT(m_opened);
 
@@ -192,7 +192,7 @@ double asFileGrib2::GetBandEstimatedMax()
     return NaNDouble;
 }
 
-double asFileGrib2::GetBandEstimatedMin()
+double asFileGrib2::GetBandEstimatedMin() const
 {
     wxASSERT(m_opened);
 
@@ -209,7 +209,7 @@ double asFileGrib2::GetBandEstimatedMin()
     return NaNDouble;
 }
 
-wxString asFileGrib2::GetBandDescription()
+wxString asFileGrib2::GetBandDescription() const
 {
     wxASSERT(m_opened);
     wxASSERT(m_ptorBand);
@@ -289,7 +289,7 @@ void asFileGrib2::ParseVarsLevels()
 
 }
 
-int asFileGrib2::FindBand(const wxString &VarName, float Level)
+int asFileGrib2::FindBand(const wxString &VarName, float Level) const
 {
     wxASSERT(m_opened);
 
@@ -305,7 +305,7 @@ int asFileGrib2::FindBand(const wxString &VarName, float Level)
     return asNOT_FOUND;
 }
 
-bool asFileGrib2::GetXaxis(Array1DFloat &uaxis)
+bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
 {
     wxASSERT(m_opened);
 
@@ -316,7 +316,7 @@ bool asFileGrib2::GetXaxis(Array1DFloat &uaxis)
     return true;
 }
 
-bool asFileGrib2::GetYaxis(Array1DFloat &vaxis)
+bool asFileGrib2::GetYaxis(Array1DFloat &vaxis) const
 {
     wxASSERT(m_opened);
 

@@ -303,7 +303,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
+wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds) const
 {
     wxString id;
 
@@ -594,9 +594,6 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
             share = false;
         }
 
-        if (!params.GetPredictorDataId(i_step, i_ptor).IsSameAs(params.GetPredictorDataId(i_step, prev_ptor), false))
-            share = false;
-
         if (share)
             break;
     }
@@ -612,7 +609,7 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
         m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat] = true;
 
         wxASSERT(m_preloadedArchive[i_step].size() > (unsigned) prev_ptor);
-        wxASSERT(m_preloadedArchive[i_step][prev_ptor].size() == params.GetPreloadDataIds(i_step, i_ptor).size());
+        wxASSERT(m_preloadedArchive[i_step][prev_ptor].size() > (unsigned) prev_dat);
         wxASSERT(m_preloadedArchive[i_step][prev_ptor][prev_dat].size() == preloadLevels.size());
 
         // Load data for every level and every hour
@@ -930,6 +927,8 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
     // Fix the criteria if S1
     if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
         params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
+    } else if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1")) {
+        params.SetPredictorCriteria(i_step, i_ptor, "NS1grads");
     }
 
     return true;
@@ -1007,6 +1006,11 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
             doPreprocessGradients = true;
             params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
         } else if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1grads")) {
+            doPreprocessGradients = true;
+        } else if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1")) {
+            doPreprocessGradients = true;
+            params.SetPredictorCriteria(i_step, i_ptor, "NS1grads");
+        } else if (params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1grads")) {
             doPreprocessGradients = true;
         }
     } else {
@@ -1236,6 +1240,9 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
     if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients") &&
         params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1")) {
         params.SetPredictorCriteria(i_step, i_ptor, "S1grads");
+    } else if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients") &&
+               params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1")) {
+        params.SetPredictorCriteria(i_step, i_ptor, "NS1grads");
     }
 
     asDataPredictorArchive *predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
@@ -1489,12 +1496,17 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         return false;
     }
 
-    // Create the score objects
+    // Create the criterion
     std::vector<asPredictorCriteria *> criteria;
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
         // Instantiate a score object
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
+        if(criterion->NeedsDataRange()) {
+            wxASSERT(predictors.size()>i_ptor);
+            wxASSERT(predictors[i_ptor]);
+            criterion->SetDataRange(predictors[i_ptor]);
+        }
         criteria.push_back(criterion);
     }
 
@@ -1578,9 +1590,13 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
         asLogMessage(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
+        if(criterion->NeedsDataRange()) {
+            wxASSERT(predictors.size()>i_ptor);
+            wxASSERT(predictors[i_ptor]);
+            criterion->SetDataRange(predictors[i_ptor]);
+        }
         criteria.push_back(criterion);
         asLogMessage(_("Criterion object created."));
-
     }
 
     // Inline the data when possible

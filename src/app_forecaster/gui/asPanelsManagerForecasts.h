@@ -49,9 +49,9 @@ public:
 
     void Clear();
 
-    asPanelForecast *GetPanel(int i);
+    asPanelForecast *GetPanel(int i) const;
 
-    int GetPanelsNb();
+    int GetPanelsNb() const;
 
     void SetForecastLedRunning(int num);
 

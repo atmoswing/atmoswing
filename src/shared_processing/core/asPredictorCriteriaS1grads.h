@@ -40,7 +40,7 @@ public:
 
     ~asPredictorCriteriaS1grads();
 
-    float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb);
+    float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const;
 
 protected:
 

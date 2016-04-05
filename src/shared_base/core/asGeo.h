@@ -41,22 +41,22 @@ public:
 
     bool CheckPoint(Coo &Point, int ChangesAllowed = asEDIT_FORBIDEN);
 
-    double GetAxisXmin()
+    double GetAxisXmin() const
     {
         return m_axisXmin;
     }
 
-    double GetAxisXmax()
+    double GetAxisXmax() const
     {
         return m_axisXmax;
     }
 
-    double GetAxisYmin()
+    double GetAxisYmin() const
     {
         return m_axisYmin;
     }
 
-    double GetAxisYmax()
+    double GetAxisYmax() const
     {
         return m_axisYmax;
     }

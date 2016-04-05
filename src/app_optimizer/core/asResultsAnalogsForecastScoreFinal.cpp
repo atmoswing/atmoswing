@@ -73,7 +73,7 @@ void asResultsAnalogsForecastScoreFinal::BuildFileName(asParametersScoring &para
     m_filePath.Append(".nc");
 }
 
-bool asResultsAnalogsForecastScoreFinal::Save(const wxString &AlternateFilePath)
+bool asResultsAnalogsForecastScoreFinal::Save(const wxString &AlternateFilePath) const
 {
     // If we don't want to save, skip
     if (!m_saveIntermediateResults)

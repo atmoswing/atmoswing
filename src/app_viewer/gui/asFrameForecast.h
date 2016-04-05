@@ -98,7 +98,7 @@ public:
 
     bool OpenForecast(const wxArrayString &names);
 
-    vrLayerManager *GetLayerManager()
+    vrLayerManager *GetLayerManager() const
     {
         return m_layerManager;
     }
@@ -108,7 +108,7 @@ public:
         m_layerManager = layerManager;
     }
 
-    vrViewerLayerManager *GetViewerLayerManager()
+    vrViewerLayerManager *GetViewerLayerManager() const
     {
         return m_viewerLayerManager;
     }
@@ -118,7 +118,7 @@ public:
         m_viewerLayerManager = viewerLayerManager;
     }
 
-    vrViewerDisplay *GetViewerDisplay()
+    vrViewerDisplay *GetViewerDisplay() const
     {
         return m_displayCtrl;
     }
@@ -128,7 +128,7 @@ public:
         m_displayCtrl = viewerDisplay;
     }
 
-    asForecastManager *GetForecastManager()
+    asForecastManager *GetForecastManager() const
     {
         return m_forecastManager;
     }
@@ -138,7 +138,7 @@ public:
         m_forecastManager = forecastManager;
     }
 
-    asForecastViewer *GetForecastViewer()
+    asForecastViewer *GetForecastViewer() const
     {
         return m_forecastViewer;
     }
@@ -148,7 +148,7 @@ public:
         m_forecastViewer = forecastViewer;
     }
 
-    asWorkspace *GetWorkspace()
+    asWorkspace *GetWorkspace() const
     {
         return &m_workspace;
     }
@@ -173,6 +173,10 @@ private:
     asLeadTimeSwitcher *m_leadTimeSwitcher;
     asWorkspace m_workspace;
     bool m_launchedPresentForecast;
+
+#if defined (__WIN32__)
+    wxCriticalSection m_critSectionViewerLayerManager;
+#endif
 
     void OpenForecastsFromTmpList();
 
@@ -287,10 +291,6 @@ private:
     void UpdatePanelAnalogDates();
 
     void UpdatePanelStationsList();
-
-#if defined (__WIN32__)
-    wxCriticalSection m_critSectionViewerLayerManager;
-#endif
 
     virtual void OnRightClick(wxMouseEvent &event)
     {

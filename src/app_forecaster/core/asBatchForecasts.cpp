@@ -102,7 +102,7 @@ bool asBatchForecasts::Load(const wxString &filePath)
     return true;
 }
 
-bool asBatchForecasts::Save()
+bool asBatchForecasts::Save() const
 {
     // Open the file
     asFileBatchForecasts fileBatch(m_filePath, asFile::Replace);
@@ -133,7 +133,7 @@ bool asBatchForecasts::Save()
     return true;
 }
 
-int asBatchForecasts::GetForecastsNb()
+int asBatchForecasts::GetForecastsNb() const
 {
     int forecastsNb = (int) m_forecastFileNames.size();
     return forecastsNb;
@@ -150,7 +150,7 @@ void asBatchForecasts::AddForecast()
     m_forecastFileNames.resize(nb);
 }
 
-bool asBatchForecasts::HasExports()
+bool asBatchForecasts::HasExports() const
 {
     return m_exportSyntheticXml;
 }

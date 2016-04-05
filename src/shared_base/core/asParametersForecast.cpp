@@ -334,9 +334,6 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
-    // Set sizes
-    SetSizes();
-
     // Check inputs and init parameters
     if (!InputsOK())
         return false;
@@ -352,7 +349,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     return true;
 }
 
-bool asParametersForecast::InputsOK()
+bool asParametersForecast::InputsOK() const
 {
     // Time properties
     if (GetLeadTimeDaysVector().size() == 0) {
@@ -579,7 +576,7 @@ bool asParametersForecast::SetPredictorRealtimeDataId(int i_step, int i_predicto
     return true;
 }
 
-wxString asParametersForecast::GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset)
+wxString asParametersForecast::GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size() >=
         (unsigned) (i_dataset + 1)) {
@@ -609,7 +606,7 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int i_step, int i_predi
     return true;
 }
 
-wxString asParametersForecast::GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset)
+wxString asParametersForecast::GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size() >= (unsigned) (i_dataset + 1)) {
         return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset];
@@ -636,7 +633,7 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int i_step, int i_predicto
     return true;
 }
 
-wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset)
+wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size() >=
         (unsigned) (i_dataset + 1)) {
@@ -666,7 +663,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int i_step, int i_pred
     return true;
 }
 
-wxString asParametersForecast::GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset)
+wxString asParametersForecast::GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size() >=
         (unsigned) (i_dataset + 1)) {

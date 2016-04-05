@@ -42,7 +42,7 @@ public:
 
     virtual bool EditRootElement() = 0;
 
-    virtual bool CheckRootElement() = 0;
+    virtual bool CheckRootElement() const = 0;
 
     static VectorInt BuildVectorInt(int min, int max, int step);
 

@@ -69,7 +69,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
 }
 
 
-bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
+bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath) const
 {
     asLogMessage(_("Generating parameters file."));
 
@@ -323,7 +323,7 @@ bool asParametersScoring::PreprocessingPropertiesOk()
     return true;
 }
 
-wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect)
+wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect) const
 {
     wxString Ids;
 
@@ -354,7 +354,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &pr
     return Ids;
 }
 
-wxString asParametersScoring::Print()
+wxString asParametersScoring::Print() const
 {
     // Create content string
     wxString content = asParameters::Print();

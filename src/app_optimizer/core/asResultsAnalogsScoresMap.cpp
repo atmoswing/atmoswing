@@ -121,7 +121,7 @@ bool asResultsAnalogsScoresMap::MakeMap()
 
 bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxString &AlternateFilePath)
 {
-    // Build the map (spatilize the data)
+    // Build the map (spatialize the data)
     MakeMap();
 
     // Get the file path

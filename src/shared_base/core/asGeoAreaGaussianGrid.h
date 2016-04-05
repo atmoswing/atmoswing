@@ -50,13 +50,13 @@ public:
 
     virtual ~asGeoAreaGaussianGrid();
 
-    int GetXaxisPtsnb();
+    int GetXaxisPtsnb() const;
 
-    int GetYaxisPtsnb();
+    int GetYaxisPtsnb() const;
 
-    Array1DDouble GetXaxis();
+    Array1DDouble GetXaxis() const;
 
-    Array1DDouble GetYaxis();
+    Array1DDouble GetYaxis() const;
 
 protected:
 
@@ -64,9 +64,9 @@ private:
     Array1DDouble m_fullAxisX;
     Array1DDouble m_fullAxisY;
 
-    bool IsOnGrid(const Coo &point);
+    bool IsOnGrid(const Coo &point) const;
 
-    bool IsOnGrid(double Xcoord, double Ycoord);
+    bool IsOnGrid(double Xcoord, double Ycoord) const;
 
 };
 

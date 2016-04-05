@@ -47,42 +47,42 @@ public:
 
     virtual ~asGeoAreaCompositeGaussianGrid();
 
-    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea);
+    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const;
 
-    asGeoAreaGaussianGrid::GaussianGridType GetGaussianGridType()
+    asGeoAreaGaussianGrid::GaussianGridType GetGaussianGridType() const
     {
         return m_gaussianGridType;
     }
 
-    double GetXstep()
+    double GetXstep() const
     {
         return 0.0;
     }
 
-    double GetYstep()
+    double GetYstep() const
     {
         return 0.0;
     }
 
-    Array1DDouble GetXaxisComposite(int compositeNb);
+    Array1DDouble GetXaxisComposite(int compositeNb) const;
 
-    Array1DDouble GetYaxisComposite(int compositeNb);
+    Array1DDouble GetYaxisComposite(int compositeNb) const;
 
-    int GetXaxisCompositePtsnb(int compositeNb);
+    int GetXaxisCompositePtsnb(int compositeNb) const;
 
-    int GetYaxisCompositePtsnb(int compositeNb);
+    int GetYaxisCompositePtsnb(int compositeNb) const;
 
-    double GetXaxisCompositeWidth(int compositeNb);
+    double GetXaxisCompositeWidth(int compositeNb) const;
 
-    double GetYaxisCompositeWidth(int compositeNb);
+    double GetYaxisCompositeWidth(int compositeNb) const;
 
-    double GetXaxisCompositeStart(int compositeNb);
+    double GetXaxisCompositeStart(int compositeNb) const;
 
-    double GetYaxisCompositeStart(int compositeNb);
+    double GetYaxisCompositeStart(int compositeNb) const;
 
-    double GetXaxisCompositeEnd(int compositeNb);
+    double GetXaxisCompositeEnd(int compositeNb) const;
 
-    double GetYaxisCompositeEnd(int compositeNb);
+    double GetYaxisCompositeEnd(int compositeNb) const;
 
 protected:
 
@@ -91,9 +91,9 @@ private:
     Array1DDouble m_fullAxisX;
     Array1DDouble m_fullAxisY;
 
-    bool IsOnGrid(const Coo &point);
+    bool IsOnGrid(const Coo &point) const;
 
-    bool IsOnGrid(double Xcoord, double Ycoord);
+    bool IsOnGrid(double Xcoord, double Ycoord) const;
 };
 
 #endif // asGeoAreaCompositeGaussianGrid_H

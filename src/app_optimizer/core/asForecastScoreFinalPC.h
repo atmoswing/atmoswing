@@ -42,7 +42,7 @@ public:
 
     virtual ~asForecastScoreFinalPC();
 
-    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
+    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
 
 protected:
 

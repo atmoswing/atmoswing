@@ -115,22 +115,21 @@ public:
 
     typedef std::vector<ParamsStepBool> VectorParamsStepBool;
 
-
     asParametersScoring();
 
     virtual ~asParametersScoring();
 
     void AddPredictorVect(ParamsStepVect &step);
 
-    bool GenerateSimpleParametersFile(const wxString &filePath);
+    bool GenerateSimpleParametersFile(const wxString &filePath) const;
 
     bool PreprocessingPropertiesOk();
 
-    wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect);
+    wxString GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect) const;
 
-    wxString Print();
+    wxString Print() const;
 
-    virtual int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_preproc)
+    virtual int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_preproc) const
     {
         return 1;
     }
@@ -149,7 +148,7 @@ public:
         return true;
     }
 
-    double GetCalibrationStart()
+    double GetCalibrationStart() const
     {
         return m_calibrationStart;
     }
@@ -160,7 +159,7 @@ public:
         return true;
     }
 
-    double GetCalibrationEnd()
+    double GetCalibrationEnd() const
     {
         return m_calibrationEnd;
     }
@@ -171,7 +170,7 @@ public:
         return true;
     }
 
-    VectorInt GetValidationYearsVector()
+    VectorInt GetValidationYearsVector() const
     {
         return m_validationYears;
     }
@@ -193,12 +192,12 @@ public:
         return true;
     }
 
-    bool HasValidationPeriod()
+    bool HasValidationPeriod() const
     {
         return m_validationYears.size() > 0;
     }
 
-    wxString GetForecastScoreName()
+    wxString GetForecastScoreName() const
     {
         return m_forecastScore.Name;
     }
@@ -213,7 +212,7 @@ public:
         return true;
     }
 
-    float GetForecastScoreThreshold()
+    float GetForecastScoreThreshold() const
     {
         return m_forecastScore.Threshold;
     }
@@ -223,7 +222,7 @@ public:
         m_forecastScore.Threshold = val;
     }
 
-    float GetForecastScoreQuantile()
+    float GetForecastScoreQuantile() const
     {
         return m_forecastScore.Quantile;
     }
@@ -233,12 +232,12 @@ public:
         m_forecastScore.Quantile = val;
     }
 
-    int GetForecastScoreAnalogsNumber()
+    int GetForecastScoreAnalogsNumber() const
     {
         return GetAnalogsNumber(GetStepsNb() - 1);
     }
 
-    wxString GetForecastScoreTimeArrayMode()
+    wxString GetForecastScoreTimeArrayMode() const
     {
         return m_forecastScore.TimeArrayMode;
     }
@@ -253,14 +252,14 @@ public:
         return true;
     }
 
-    bool ForecastScoreNeedsPostprocessing()
+    bool ForecastScoreNeedsPostprocessing() const
     {
         return m_forecastScore.Postprocess;
     }
 
     /* Vector elements */
 
-    VectorInt GetAnalogsNumberVector(int i_step)
+    VectorInt GetAnalogsNumberVector(int i_step) const
     {
         return m_stepsVect[i_step].AnalogsNumber;
     }
@@ -306,7 +305,7 @@ public:
         return true;
     }
 
-    VectorDouble GetPredictorXminVector(int i_step, int i_predictor)
+    VectorDouble GetPredictorXminVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Xmin;
     }
@@ -328,7 +327,7 @@ public:
         return true;
     }
 
-    VectorInt GetPredictorXptsnbVector(int i_step, int i_predictor)
+    VectorInt GetPredictorXptsnbVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Xptsnb;
     }
@@ -350,7 +349,7 @@ public:
         return true;
     }
 
-    VectorDouble GetPredictorYminVector(int i_step, int i_predictor)
+    VectorDouble GetPredictorYminVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Ymin;
     }
@@ -372,7 +371,7 @@ public:
         return true;
     }
 
-    VectorInt GetPredictorYptsnbVector(int i_step, int i_predictor)
+    VectorInt GetPredictorYptsnbVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Yptsnb;
     }
@@ -394,7 +393,7 @@ public:
         return true;
     }
 
-    VectorDouble GetPredictorTimeHoursVector(int i_step, int i_predictor)
+    VectorDouble GetPredictorTimeHoursVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].TimeHours;
     }
@@ -416,7 +415,7 @@ public:
         return true;
     }
 
-    VectorFloat GetPredictorWeightVector(int i_step, int i_predictor)
+    VectorFloat GetPredictorWeightVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Weight;
     }
@@ -438,7 +437,7 @@ public:
         return true;
     }
 
-    VectorString GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset)
+    VectorString GetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset) const
     {
         if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId.size() >= (unsigned) (i_dataset + 1)) {
             return m_stepsVect[i_step].Predictors[i_predictor].PreprocessDataId[i_dataset];
@@ -473,7 +472,7 @@ public:
         return true;
     }
 
-    VectorFloat GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset)
+    VectorFloat GetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset) const
     {
         if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
             return m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
@@ -508,7 +507,7 @@ public:
         return true;
     }
 
-    VectorDouble GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset)
+    VectorDouble GetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset) const
     {
         wxASSERT(m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) i_dataset);
 
@@ -522,7 +521,7 @@ public:
         }
     }
 
-    VectorString GetPredictorDataIdVector(int i_step, int i_predictor)
+    VectorString GetPredictorDataIdVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].DataId;
     }
@@ -544,7 +543,7 @@ public:
         return true;
     }
 
-    VectorFloat GetPredictorLevelVector(int i_step, int i_predictor)
+    VectorFloat GetPredictorLevelVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Level;
     }
@@ -566,7 +565,7 @@ public:
         return true;
     }
 
-    VectorString GetPredictorCriteriaVector(int i_step, int i_predictor)
+    VectorString GetPredictorCriteriaVector(int i_step, int i_predictor) const
     {
         return m_stepsVect[i_step].Predictors[i_predictor].Criteria;
     }

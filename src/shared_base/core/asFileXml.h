@@ -49,7 +49,7 @@ public:
 
     bool Save();
 
-    wxXmlNode *GetRoot()
+    wxXmlNode *GetRoot() const
     {
         wxASSERT(m_document.GetRoot());
         return m_document.GetRoot();
@@ -57,7 +57,7 @@ public:
 
     void AddChild(wxXmlNode *node);
 
-    virtual bool CheckRootElement();
+    virtual bool CheckRootElement() const;
 
     wxXmlNode *CreateNodeWithValue(const wxString &name, const bool &content);
 
@@ -69,9 +69,9 @@ public:
 
     wxXmlNode *CreateNodeWithValue(const wxString &name, const wxString &content);
 
-    bool IsAnAtmoSwingFile();
+    bool IsAnAtmoSwingFile() const;
 
-    bool FileVersionIsOrAbove(const float version);
+    bool FileVersionIsOrAbove(const float version) const;
 
     void UnknownNode(wxXmlNode *node);
 

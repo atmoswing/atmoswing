@@ -39,9 +39,9 @@ public:
 
     virtual ~asFileWorkspace();
 
-    bool EditRootElement();
+    bool EditRootElement() const;
 
-    bool CheckRootElement();
+    bool CheckRootElement() const;
 
 protected:
 
