@@ -150,7 +150,7 @@ asDataPredictand *asDataPredictand::GetInstance(const wxString &filePath)
     return db;
 }
 
-wxString asDataPredictand::GetDBFilePathSaving(const wxString &destinationDir)
+wxString asDataPredictand::GetDBFilePathSaving(const wxString &destinationDir) const
 {
     wxString dataParameterStr = asGlobEnums::DataParameterEnumToString(m_dataParameter);
     wxString dataTemporalResolutionStr = asGlobEnums::DataTemporalResolutionEnumToString(m_dataTemporalResolution);
@@ -303,7 +303,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     return true;
 }
 
-void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
+void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
 {
     // Define dimensions. Time is the unlimited dimension.
     ncFile.DefDim("stations", m_stationsNb);
@@ -382,7 +382,7 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile)
 
 }
 
-bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile)
+bool asDataPredictand::SaveCommonData(asFileNetcdf &ncFile) const
 {
     // Provide sizes for variables
     size_t startTime[] = {0};
@@ -697,7 +697,7 @@ float asDataPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData
     return (float) dataGross;
 }
 
-Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax)
+Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
 {
     // Flag to check the need of aggregation (timeStepDays>m_timeStepDays)
     bool aggregate = false;
@@ -818,7 +818,7 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax)
     return maxMatrix;
 }
 
-int asDataPredictand::GetStationIndex(int stationId)
+int asDataPredictand::GetStationIndex(int stationId) const
 {
     return asTools::SortedArraySearch(&m_stationIds[0], &m_stationIds[m_stationsNb - 1], stationId);
 }

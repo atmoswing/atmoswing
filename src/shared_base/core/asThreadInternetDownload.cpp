@@ -39,8 +39,6 @@ asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, con
                                                    int end)
         : asThread()
 {
-    m_status = Initializing;
-
     m_urls = urls;
     m_fileNames = fileNames;
     m_destinationDir = destinationDir;
@@ -54,8 +52,6 @@ asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, con
 
     wxASSERT((unsigned) m_end < urls.size());
     wxASSERT((unsigned) m_end < fileNames.size());
-
-    m_status = Waiting;
 }
 
 asThreadInternetDownload::~asThreadInternetDownload()
@@ -65,8 +61,6 @@ asThreadInternetDownload::~asThreadInternetDownload()
 
 wxThread::ExitCode asThreadInternetDownload::Entry()
 {
-    m_status = Working;
-
     // Initialize
     CURL *curl;
     CURLcode res;
@@ -153,8 +147,6 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         curl_easy_cleanup(curl);
         wxDELETE(errorbuffer);
     }
-
-    m_status = Done;
 
     return (wxThread::ExitCode) 0;
 }

@@ -2,7 +2,7 @@
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
  * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").
+ * Common Development and Distribution License (const The "License").
  * You may not use this file except in compliance with the License.
  *
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
@@ -33,7 +33,7 @@ void asTools::InitRandom()
     srand(time(NULL));
 }
 
-int asTools::Random(int min, int max, int step)
+int asTools::Random(const int min, const int max, const int step)
 {
     // Initialize random seed
     double norm = ((double) rand() / (double) (RAND_MAX));
@@ -62,12 +62,12 @@ int asTools::Random(int min, int max, int step)
     return intval;
 }
 
-float asTools::Random(float min, float max, float step)
+float asTools::Random(const float min, const float max, const float step)
 {
     return (float) asTools::Random((double) min, (double) max, (double) step);
 }
 
-double asTools::Random(double min, double max, double step)
+double asTools::Random(const double min, const double max, const double step)
 {
     // Initialize random seed
     double norm = ((double) rand() / (double) (RAND_MAX));
@@ -91,17 +91,17 @@ double asTools::Random(double min, double max, double step)
     return val;
 }
 
-int asTools::RandomNormalDistribution(int mean, int stDev, int step)
+int asTools::RandomNormalDistribution(const int mean, const int stDev, const int step)
 {
     return (int) asTools::RandomNormalDistribution((double) mean, (double) stDev, (double) step);
 }
 
-float asTools::RandomNormalDistribution(float mean, float stDev, float step)
+float asTools::RandomNormalDistribution(const float mean, const float stDev, const float step)
 {
     return (float) asTools::RandomNormalDistribution((double) mean, (double) stDev, (double) step);
 }
 
-double asTools::RandomNormalDistribution(double mean, double stDev, double step)
+double asTools::RandomNormalDistribution(const double mean, const double stDev, const double step)
 {
     // Initialize random seed
     double u1 = ((double) rand() / (double) (RAND_MAX));
@@ -130,21 +130,30 @@ double asTools::RandomNormalDistribution(double mean, double stDev, double step)
     return z0;
 }
 
-bool asTools::IsRound(float value)
+bool asTools::IsRound(const float value)
 {
     float valueround = Round(value);
 
     return std::abs(value - valueround) < 0.000001;
 }
 
-bool asTools::IsRound(double value)
+bool asTools::IsRound(const double value)
 {
     double valueround = Round(value);
 
     return std::abs(value - valueround) < 0.000000000001;
 }
 
-float asTools::Round(float value)
+float asTools::Round(const float value)
+{
+    if (value > 0) {
+        return (float) floor(value + 0.5);
+    } else {
+        return (float) ceil(value - 0.5);
+    }
+}
+
+double asTools::Round(const double value)
 {
     if (value > 0) {
         return floor(value + 0.5);
@@ -153,27 +162,18 @@ float asTools::Round(float value)
     }
 }
 
-double asTools::Round(double value)
-{
-    if (value > 0) {
-        return floor(value + 0.5);
-    } else {
-        return ceil(value - 0.5);
-    }
-}
-
-float asTools::Mean(int *pArrStart, int *pArrEnd)
+float asTools::Mean(const int *pArrStart, const int *pArrEnd)
 {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        // Dones't check for NaNs, as there are no NaN for intergers
+        // Does not check for NaNs, as there are no NaN for integers
         sum += (float) *(pArrStart + i);
         nb++;
     }
     return sum / nb;
 }
 
-float asTools::Mean(float *pArrStart, float *pArrEnd)
+float asTools::Mean(const float *pArrStart, const float *pArrEnd)
 {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -185,7 +185,7 @@ float asTools::Mean(float *pArrStart, float *pArrEnd)
     return sum / nb;
 }
 
-double asTools::Mean(double *pArrStart, double *pArrEnd)
+double asTools::Mean(const double *pArrStart, const double *pArrEnd)
 {
     double sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -197,7 +197,7 @@ double asTools::Mean(double *pArrStart, double *pArrEnd)
     return sum / nb;
 }
 
-float asTools::StDev(int *pArrStart, int *pArrEnd, int sample)
+float asTools::StDev(const int *pArrStart, const int *pArrEnd, const int sample)
 {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -208,15 +208,15 @@ float asTools::StDev(int *pArrStart, int *pArrEnd, int sample)
     }
 
     if (sample == asSAMPLE) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNFloat;
     }
 }
 
-float asTools::StDev(float *pArrStart, float *pArrEnd, int sample)
+float asTools::StDev(const float *pArrStart, const float *pArrEnd, const int sample)
 {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -228,15 +228,15 @@ float asTools::StDev(float *pArrStart, float *pArrEnd, int sample)
     }
 
     if (sample == asSAMPLE) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNFloat;
     }
 }
 
-double asTools::StDev(double *pArrStart, double *pArrEnd, int sample)
+double asTools::StDev(const double *pArrStart, const double *pArrEnd, const int sample)
 {
     double sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -256,13 +256,13 @@ double asTools::StDev(double *pArrStart, double *pArrEnd, int sample)
     }
 }
 
-Array1DFloat asTools::GetCumulativeFrequency(int size)
+Array1DFloat asTools::GetCumulativeFrequency(const int size)
 {
     Array1DFloat F(size);
 
     // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
     // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
-    // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
+    // Bontron used a=0.375, b=0.25, That are optimal for a normal distribution
     float irep = 0.44f;
     float nrep = 0.12f;
 
@@ -280,22 +280,24 @@ Array1DFloat asTools::GetCumulativeFrequency(int size)
     return F;
 }
 
-float asTools::GetValueForQuantile(Array1DFloat &values, float quantile)
+float asTools::GetValueForQuantile(const Array1DFloat &values, const float quantile)
 {
     float value = NaNFloat;
     int size = values.size();
 
+    Array1DFloat valuesCopy = values;
+
     // Sort the forcast array
-    asTools::SortArray(&values[0], &values[size - 1], Asc);
+    asTools::SortArray(&valuesCopy[0], &valuesCopy[size - 1], Asc);
 
     // Cumulative frequency
     Array1DFloat F = asTools::GetCumulativeFrequency(size);
 
     // Check limits
     if (quantile <= F[0])
-        return values[0];
+        return valuesCopy[0];
     if (quantile >= F[size - 1])
-        return values[size - 1];
+        return valuesCopy[size - 1];
 
     // Indices for the left and right part (according to xObs)
     int indLeft = asTools::SortedArraySearchFloor(&F[0], &F[size - 1], quantile);
@@ -305,41 +307,41 @@ float asTools::GetValueForQuantile(Array1DFloat &values, float quantile)
     wxASSERT(indLeft <= indRight);
 
     if (indLeft == indRight) {
-        value = values[indLeft];
+        value = valuesCopy[indLeft];
     } else {
-        value = values(indLeft) +
-                (values(indRight) - values(indLeft)) * (quantile - F(indLeft)) / (F(indRight) - F(indLeft));
+        value = valuesCopy(indLeft) +
+                (valuesCopy(indRight) - valuesCopy(indLeft)) * (quantile - F(indLeft)) / (F(indRight) - F(indLeft));
     }
 
     return value;
 }
 
-bool asTools::IsNaN(int value)
+bool asTools::IsNaN(const int value)
 {
     return value == NaNInt;
 }
 
-bool asTools::IsNaN(float value)
+bool asTools::IsNaN(const float value)
 {
     return value != value;
 }
 
-bool asTools::IsNaN(double value)
+bool asTools::IsNaN(const double value)
 {
     return value != value;
 }
 
-bool asTools::IsInf(float value)
+bool asTools::IsInf(const float value)
 {
     return value == InfFloat;
 }
 
-bool asTools::IsInf(double value)
+bool asTools::IsInf(const double value)
 {
     return value == InfDouble;
 }
 
-bool asTools::IsInf(long double value)
+bool asTools::IsInf(const long double value)
 {
     return value == InfLongDouble;
 }
@@ -405,7 +407,7 @@ bool asTools::HasNaN(const double *pArrStart, const double *pArrEnd)
     return false;
 }
 
-int asTools::MinArray(int *pArrStart, int *pArrEnd)
+int asTools::MinArray(const int *pArrStart, const int *pArrEnd)
 {
     int min;
 
@@ -420,7 +422,7 @@ int asTools::MinArray(int *pArrStart, int *pArrEnd)
     return min;
 }
 
-float asTools::MinArray(float *pArrStart, float *pArrEnd)
+float asTools::MinArray(const float *pArrStart, const float *pArrEnd)
 {
     float min;
     int i = 0;
@@ -442,7 +444,7 @@ float asTools::MinArray(float *pArrStart, float *pArrEnd)
     return min;
 }
 
-double asTools::MinArray(double *pArrStart, double *pArrEnd)
+double asTools::MinArray(const double *pArrStart, const double *pArrEnd)
 {
     double min;
     int i = 0;
@@ -464,7 +466,7 @@ double asTools::MinArray(double *pArrStart, double *pArrEnd)
     return min;
 }
 
-int asTools::MinArrayIndex(int *pArrStart, int *pArrEnd)
+int asTools::MinArrayIndex(const int *pArrStart, const int *pArrEnd)
 {
     int min;
     int index;
@@ -483,7 +485,7 @@ int asTools::MinArrayIndex(int *pArrStart, int *pArrEnd)
     return index;
 }
 
-int asTools::MinArrayIndex(float *pArrStart, float *pArrEnd)
+int asTools::MinArrayIndex(const float *pArrStart, const float *pArrEnd)
 {
     float min;
     int index;
@@ -502,7 +504,7 @@ int asTools::MinArrayIndex(float *pArrStart, float *pArrEnd)
     return index;
 }
 
-int asTools::MinArrayIndex(double *pArrStart, double *pArrEnd)
+int asTools::MinArrayIndex(const double *pArrStart, const double *pArrEnd)
 {
     double min;
     int index;
@@ -521,7 +523,7 @@ int asTools::MinArrayIndex(double *pArrStart, double *pArrEnd)
     return index;
 }
 
-int asTools::MaxArray(int *pArrStart, int *pArrEnd)
+int asTools::MaxArray(const int *pArrStart, const int *pArrEnd)
 {
     int max;
     int i = 0;
@@ -537,7 +539,7 @@ int asTools::MaxArray(int *pArrStart, int *pArrEnd)
     return max;
 }
 
-float asTools::MaxArray(float *pArrStart, float *pArrEnd)
+float asTools::MaxArray(const float *pArrStart, const float *pArrEnd)
 {
     float max;
     int i = 0;
@@ -559,7 +561,7 @@ float asTools::MaxArray(float *pArrStart, float *pArrEnd)
     return max;
 }
 
-double asTools::MaxArray(double *pArrStart, double *pArrEnd)
+double asTools::MaxArray(const double *pArrStart, const double *pArrEnd)
 {
     double max;
     int i = 0;
@@ -581,7 +583,7 @@ double asTools::MaxArray(double *pArrStart, double *pArrEnd)
     return max;
 }
 
-int asTools::MaxArrayIndex(int *pArrStart, int *pArrEnd)
+int asTools::MaxArrayIndex(const int *pArrStart, const int *pArrEnd)
 {
     int max;
     int index;
@@ -600,7 +602,7 @@ int asTools::MaxArrayIndex(int *pArrStart, int *pArrEnd)
     return index;
 }
 
-int asTools::MaxArrayIndex(float *pArrStart, float *pArrEnd)
+int asTools::MaxArrayIndex(const float *pArrStart, const float *pArrEnd)
 {
     float max;
     int index;
@@ -619,7 +621,7 @@ int asTools::MaxArrayIndex(float *pArrStart, float *pArrEnd)
     return index;
 }
 
-int asTools::MaxArrayIndex(double *pArrStart, double *pArrEnd)
+int asTools::MaxArrayIndex(const double *pArrStart, const double *pArrEnd)
 {
     double max;
     int index;
@@ -638,7 +640,7 @@ int asTools::MaxArrayIndex(double *pArrStart, double *pArrEnd)
     return index;
 }
 
-int asTools::MinArrayStep(int *pArrStart, int *pArrEnd, int tolerance)
+int asTools::MinArrayStep(const int *pArrStart, const int *pArrEnd, const int tolerance)
 {
     // Copy data to not alter original array
     Array1DInt copyData(pArrEnd - pArrStart + 1);
@@ -672,7 +674,7 @@ int asTools::MinArrayStep(int *pArrStart, int *pArrEnd, int tolerance)
     return minstep;
 }
 
-float asTools::MinArrayStep(float *pArrStart, float *pArrEnd, float tolerance)
+float asTools::MinArrayStep(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
     int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
@@ -713,7 +715,7 @@ float asTools::MinArrayStep(float *pArrStart, float *pArrEnd, float tolerance)
     return minstep;
 }
 
-double asTools::MinArrayStep(double *pArrStart, double *pArrEnd, double tolerance)
+double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
     int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
@@ -754,7 +756,7 @@ double asTools::MinArrayStep(double *pArrStart, double *pArrEnd, double toleranc
     return minstep;
 }
 
-Array1DInt asTools::ExtractUniqueValues(int *pArrStart, int *pArrEnd, int tolerance)
+Array1DInt asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance)
 {
     int j = 0;
 
@@ -791,7 +793,7 @@ Array1DInt asTools::ExtractUniqueValues(int *pArrStart, int *pArrEnd, int tolera
     return resultArray;
 }
 
-Array1DFloat asTools::ExtractUniqueValues(float *pArrStart, float *pArrEnd, float tolerance)
+Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
     int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
@@ -831,7 +833,7 @@ Array1DFloat asTools::ExtractUniqueValues(float *pArrStart, float *pArrEnd, floa
     return resultArray;
 }
 
-Array1DDouble asTools::ExtractUniqueValues(double *pArrStart, double *pArrEnd, double tolerance)
+Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
     int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
@@ -871,24 +873,24 @@ Array1DDouble asTools::ExtractUniqueValues(double *pArrStart, double *pArrEnd, d
     return resultArray;
 }
 
-int asTools::SortedArraySearch(int *pArrStart, int *pArrEnd, int targetvalue, int tolerance, int showWarning)
+int asTools::SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int tolerance, const int showWarning)
 {
     return SortedArraySearchT<int>(pArrStart, pArrEnd, targetvalue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearch(float *pArrStart, float *pArrEnd, float targetvalue, float tolerance, int showWarning)
+int asTools::SortedArraySearch(const float *pArrStart, const float *pArrEnd, const float targetvalue, const float tolerance, const int showWarning)
 {
     return SortedArraySearchT<float>(pArrStart, pArrEnd, targetvalue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearch(double *pArrStart, double *pArrEnd, double targetvalue, double tolerance,
+int asTools::SortedArraySearch(const double *pArrStart, const double *pArrEnd, const double targetvalue, const double tolerance,
                                int showWarning)
 {
     return SortedArraySearchT<double>(pArrStart, pArrEnd, targetvalue, tolerance, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T tolerance, int showWarning)
+int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const T tolerance, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -897,14 +899,14 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = pArrStart;
-    pLast = pArrEnd;
+    pFirst = (T *) pArrStart;
+    pLast = (T *) pArrEnd;
 
     // Check array order
     if (*pLast > *pFirst) {
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue - tolerance > *pMid) {
                 pFirst = pMid + 1;
@@ -912,21 +914,21 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                return pMid - pArrStart;
+                return int(pMid - pArrStart);
             }
         }
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = pArrStart;
+            pLast = (T *) pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = pArrEnd;
+            pLast = (T *) pArrEnd;
         }
 
         // If the value was not found, return closest value inside tolerance
         if (std::abs(targetvalue - *pLast) <= std::abs(targetvalue - *(pLast + 1))) {
             if (std::abs(targetvalue - *pLast) <= tolerance) {
-                return pLast - pArrStart;
+                return int(pLast - pArrStart);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
@@ -942,7 +944,7 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
             }
         } else {
             if (std::abs(targetvalue - *(pLast + 1)) <= tolerance) {
-                return pLast - pArrStart + 1;
+                return int(pLast - pArrStart + 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
@@ -960,7 +962,7 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
     } else if (*pLast < *pFirst) {
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue - tolerance > *pMid) {
                 pLast = pMid - 1;
@@ -968,21 +970,21 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return pMid - pArrStart;
+                return int(pMid - pArrStart);
             }
         }
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = pArrStart;
+            pFirst = (T *) pArrStart;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = pArrEnd;
+            pFirst = (T *) pArrEnd;
         }
 
         // If the value was not found, return closest value inside tolerance
         if (std::abs(targetvalue - *pFirst) <= std::abs(targetvalue - *(pFirst - 1))) {
             if (std::abs(targetvalue - *pFirst) <= tolerance) {
-                return pFirst - pArrStart;
+                return int(pFirst - pArrStart);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
@@ -998,7 +1000,7 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
             }
         } else {
             if (std::abs(targetvalue - *(pLast + 1)) <= tolerance) {
-                return pFirst - pArrStart - 1;
+                return int(pFirst - pArrStart - 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
@@ -1030,23 +1032,23 @@ int asTools::SortedArraySearchT(T *pArrStart, T *pArrEnd, T targetvalue, T toler
     }
 }
 
-int asTools::SortedArraySearchClosest(int *pArrStart, int *pArrEnd, int targetvalue, int showWarning)
+int asTools::SortedArraySearchClosest(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int showWarning)
 {
     return SortedArraySearchClosestT<int>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
-int asTools::SortedArraySearchClosest(float *pArrStart, float *pArrEnd, float targetvalue, int showWarning)
+int asTools::SortedArraySearchClosest(const float *pArrStart, const float *pArrEnd, const float targetvalue, const int showWarning)
 {
     return SortedArraySearchClosestT<float>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
-int asTools::SortedArraySearchClosest(double *pArrStart, double *pArrEnd, double targetvalue, int showWarning)
+int asTools::SortedArraySearchClosest(const double *pArrStart, const double *pArrEnd, const double targetvalue, const int showWarning)
 {
     return SortedArraySearchClosestT<double>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, int showWarning)
+int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1055,8 +1057,8 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
     int vlength, IndexMid;
 
     // Initialize first and last variables.
-    pFirst = pArrStart;
-    pLast = pArrEnd;
+    pFirst = (T *) pArrStart;
+    pLast = (T *) pArrEnd;
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1070,7 +1072,7 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue > *pMid) {
                 pFirst = pMid + 1;
@@ -1078,23 +1080,23 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                IndexMid = pMid - pArrStart;
-                return IndexMid;
+                IndexMid = (int) (pMid - pArrStart);
+                return (int) IndexMid;
             }
         }
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = pArrStart;
+            pLast = (T *) pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = pArrEnd;
+            pLast = (T *) pArrEnd;
         }
 
         // If the value was not found, return closest value
         if (std::abs(targetvalue - *pLast) <= std::abs(targetvalue - *(pLast + 1))) {
-            return pLast - pArrStart;
+            return int(pLast - pArrStart);
         } else {
-            return pLast - pArrStart + 1;
+            return int(pLast - pArrStart + 1);
         }
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
@@ -1107,7 +1109,7 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue > *pMid) {
                 pLast = pMid - 1;
@@ -1115,23 +1117,23 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                IndexMid = pMid - pArrStart;
-                return IndexMid;
+                IndexMid = (int) (pMid - pArrStart);
+                return (int) IndexMid;
             }
         }
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = pArrStart;
+            pFirst = (T *) pArrStart;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = pArrEnd;
+            pFirst = (T *) pArrEnd;
         }
 
         // If the value was not found, return closest value
         if (std::abs(targetvalue - *pFirst) <= std::abs(targetvalue - *(pFirst - 1))) {
-            return pFirst - pArrStart;
+            return int(pFirst - pArrStart);
         } else {
-            return pFirst - pArrStart - 1;
+            return int(pFirst - pArrStart - 1);
         }
     } else {
         if (pLast - pFirst == 0) {
@@ -1150,23 +1152,23 @@ int asTools::SortedArraySearchClosestT(T *pArrStart, T *pArrEnd, T targetvalue, 
     }
 }
 
-int asTools::SortedArraySearchFloor(int *pArrStart, int *pArrEnd, int targetvalue, int showWarning)
+int asTools::SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int showWarning)
 {
     return SortedArraySearchFloorT<int>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
-int asTools::SortedArraySearchFloor(float *pArrStart, float *pArrEnd, float targetvalue, int showWarning)
+int asTools::SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetvalue, const int showWarning)
 {
     return SortedArraySearchFloorT<float>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
-int asTools::SortedArraySearchFloor(double *pArrStart, double *pArrEnd, double targetvalue, int showWarning)
+int asTools::SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetvalue, const int showWarning)
 {
     return SortedArraySearchFloorT<double>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, int showWarning)
+int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1175,8 +1177,8 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = pArrStart;
-    pLast = pArrEnd;
+    pFirst = (T *) pArrStart;
+    pLast = (T *) pArrEnd;
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1190,7 +1192,7 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue > *pMid) {
                 pFirst = pMid + 1;
@@ -1198,19 +1200,19 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                return pMid - pArrStart;
+                return int(pMid - pArrStart);
             }
         }
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = pArrStart;
+            pLast = (T *) pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = pArrEnd;
+            pLast = (T *) pArrEnd;
         }
 
         // If the value was not found, return floor value
-        return pLast - pArrStart;
+        return int(pLast - pArrStart);
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
@@ -1222,7 +1224,7 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue > *pMid) {
                 pLast = pMid - 1;
@@ -1230,19 +1232,19 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return pMid - pArrStart;
+                return int(pMid - pArrStart);
             }
         }
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = pArrStart;
+            pFirst = (T *) pArrStart;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = pArrEnd;
+            pFirst = (T *) pArrEnd;
         }
 
         // If the value was not found, return floor value
-        return pFirst - pArrStart;
+        return int(pFirst - pArrStart);
     } else {
         if (pLast - pFirst == 0) {
             if (*pFirst == targetvalue) {
@@ -1261,23 +1263,23 @@ int asTools::SortedArraySearchFloorT(T *pArrStart, T *pArrEnd, T targetvalue, in
 }
 
 
-int asTools::SortedArraySearchCeil(int *pArrStart, int *pArrEnd, int targetvalue, int showWarning)
+int asTools::SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int showWarning)
 {
     return SortedArraySearchCeilT<int>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
-int asTools::SortedArraySearchCeil(float *pArrStart, float *pArrEnd, float targetvalue, int showWarning)
+int asTools::SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetvalue, const int showWarning)
 {
     return SortedArraySearchCeilT<float>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
-int asTools::SortedArraySearchCeil(double *pArrStart, double *pArrEnd, double targetvalue, int showWarning)
+int asTools::SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetvalue, const int showWarning)
 {
     return SortedArraySearchCeilT<double>(pArrStart, pArrEnd, targetvalue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int showWarning)
+int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1286,8 +1288,8 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
     int vlength;
 
     // Initialize first and last variables.
-    pFirst = pArrStart;
-    pLast = pArrEnd;
+    pFirst = (T *) pArrStart;
+    pLast = (T *) pArrEnd;
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1301,7 +1303,7 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue > *pMid) {
                 pFirst = pMid + 1;
@@ -1309,19 +1311,19 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                return pMid - pArrStart;
+                return int(pMid - pArrStart);
             }
         }
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = pArrStart;
+            pLast = (T *) pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = pArrEnd;
+            pLast = (T *) pArrEnd;
         }
 
         // If the value was not found, return ceil value
-        return pLast - pArrStart + 1;
+        return int(pLast - pArrStart + 1);
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
@@ -1333,7 +1335,7 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = pLast - pFirst;
+            vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetvalue > *pMid) {
                 pLast = pMid - 1;
@@ -1341,19 +1343,19 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return pMid - pArrStart;
+                return int(pMid - pArrStart);
             }
         }
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = pArrStart;
+            pFirst = (T *) pArrStart;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = pArrEnd;
+            pFirst = (T *) pArrEnd;
         }
 
         // If the value was not found, return ceil value
-        return pFirst - pArrStart - 1;
+        return int(pFirst - pArrStart - 1);
     } else {
         if (pLast - pFirst == 0) {
             if (*pFirst == targetvalue) {
@@ -1371,23 +1373,23 @@ int asTools::SortedArraySearchCeilT(T *pArrStart, T *pArrEnd, T targetvalue, int
     }
 }
 
-bool asTools::SortedArrayInsert(int *pArrStart, int *pArrEnd, Order order, int val)
+bool asTools::SortedArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val)
 {
     return SortedArrayInsert<int>(pArrStart, pArrEnd, order, val);
 }
 
-bool asTools::SortedArrayInsert(float *pArrStart, float *pArrEnd, Order order, float val)
+bool asTools::SortedArrayInsert(float *pArrStart, float *pArrEnd, const Order order, const float val)
 {
     return SortedArrayInsert<float>(pArrStart, pArrEnd, order, val);
 }
 
-bool asTools::SortedArrayInsert(double *pArrStart, double *pArrEnd, Order order, double val)
+bool asTools::SortedArrayInsert(double *pArrStart, double *pArrEnd, const Order order, const double val)
 {
     return SortedArrayInsert<double>(pArrStart, pArrEnd, order, val);
 }
 
 template<class T>
-bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, Order order, T val)
+bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, const T val)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1433,26 +1435,26 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, Order order, T val)
 }
 
 bool asTools::SortedArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd,
-                                 Order order, int valRef, int valOther)
+                                 const Order order, const int valRef, const int valOther)
 {
     return SortedArraysInsert<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
 bool asTools::SortedArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
-                                 Order order, float valRef, float valOther)
+                                 const Order order, const float valRef, const float valOther)
 {
     return SortedArraysInsert<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
 bool asTools::SortedArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
-                                 Order order, double valRef, double valOther)
+                                 const Order order, const double valRef, const double valOther)
 {
     return SortedArraysInsert<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
 template<class T>
-bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order,
-                                 T valRef, T valOther)
+bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order,
+                                 const T valRef, const T valOther)
 {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
@@ -1460,8 +1462,8 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     wxASSERT(pArrOtherEnd);
 
     // Check the other array length
-    int vlength = pArrRefEnd - pArrRefStart;
-    int ovlength = pArrOtherEnd - pArrOtherStart;
+    int vlength = (int) (pArrRefEnd - pArrRefStart);
+    int ovlength = (int) (pArrOtherEnd - pArrOtherStart);
 
     if (vlength != ovlength) {
         asLogError(_("The dimension of the two arrays are not equal."));
@@ -1500,7 +1502,7 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     }
 
     // Swap next elements
-    for (int i = vlength - 1; i >= i_next; i--) // Minus 1 becuase we overwrite the last element by the previous one
+    for (int i = vlength - 1; i >= i_next; i--) // Minus 1 because we overwrite the last element by the previous one
     {
         pArrRefStart[i + 1] = pArrRefStart[i];
         pArrOtherStart[i + 1] = pArrOtherStart[i];
@@ -1513,29 +1515,29 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     return true;
 }
 
-bool asTools::SortArray(int *pArrRefStart, int *pArrRefEnd, Order order)
+bool asTools::SortArray(int *pArrRefStart, int *pArrRefEnd, const Order order)
 {
     return SortArrayT<int>(pArrRefStart, pArrRefEnd, order);
 }
 
-bool asTools::SortArray(float *pArrRefStart, float *pArrRefEnd, Order order)
+bool asTools::SortArray(float *pArrRefStart, float *pArrRefEnd, const Order order)
 {
     return SortArrayT<float>(pArrRefStart, pArrRefEnd, order);
 }
 
-bool asTools::SortArray(double *pArrRefStart, double *pArrRefEnd, Order order)
+bool asTools::SortArray(double *pArrRefStart, double *pArrRefEnd, const Order order)
 {
     return SortArrayT<double>(pArrRefStart, pArrRefEnd, order);
 }
 
 template<class T>
-bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, Order order)
+bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
 {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
 
     // Check the array length
-    int vlength = pArrRefEnd - pArrRefStart;
+    int vlength = (int) (pArrRefEnd - pArrRefStart);
 
     if (vlength > 0) {
         int low = 0, high = vlength;
@@ -1550,7 +1552,7 @@ bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, Order order)
     return true;
 }
 
-bool asTools::SortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order)
+bool asTools::SortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order)
 {
     return SortArraysT<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
@@ -1568,7 +1570,7 @@ bool asTools::SortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrO
 }
 
 template<class T>
-bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order)
+bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order)
 {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
@@ -1576,8 +1578,8 @@ bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *
     wxASSERT(pArrOtherEnd);
 
     // Check the other array length
-    int vlength = pArrRefEnd - pArrRefStart;
-    int ovlength = pArrOtherEnd - pArrOtherStart;
+    int vlength = (int) (pArrRefEnd - pArrRefStart);
+    int ovlength = (int) (pArrOtherEnd - pArrOtherStart);
 
     if (vlength > 0 && vlength == ovlength) {
         int low = 0, high = vlength;
@@ -1596,7 +1598,7 @@ bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *
 }
 
 template<class T>
-void asTools::QuickSort(T *pArr, int low, int high, Order order)
+void asTools::QuickSort(T *pArr, const int low, const int high, const Order order)
 {
     int L, R;
     T pivot, tmp;
@@ -1604,7 +1606,7 @@ void asTools::QuickSort(T *pArr, int low, int high, Order order)
     R = high;
     L = low;
 
-    pivot = pArr[((int) ((low + high) / 2))];
+    pivot = pArr[(low + high) / 2];
 
     do {
 
@@ -1649,7 +1651,7 @@ void asTools::QuickSort(T *pArr, int low, int high, Order order)
 }
 
 template<class T>
-void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, int low, int high, Order order)
+void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, const Order order)
 {
     int L, R;
     T pivot, tmp;
@@ -1657,7 +1659,7 @@ void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, int low, int high, Order 
     R = high;
     L = low;
 
-    pivot = pArrRef[((int) ((low + high) / 2))];
+    pivot = pArrRef[(low + high) / 2];
 
     do {
 

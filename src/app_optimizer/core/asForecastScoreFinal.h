@@ -56,23 +56,18 @@ public:
 
     static asForecastScoreFinal *GetInstance(const wxString &scoreString, const wxString &periodString);
 
-    virtual float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) = 0;
+    virtual float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const = 0;
 
-    virtual float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray);
+    virtual float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray) const;
 
-    virtual Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
+    virtual Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
 
-    Period GetPeriod()
-    {
-        return m_period;
-    }
-
-    bool SingleValue()
+    bool SingleValue() const
     {
         return m_singleValue;
     }
 
-    bool Has2DArrayArgument()
+    bool Has2DArrayArgument() const
     {
         return m_has2DArrayArgument;
     }

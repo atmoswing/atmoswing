@@ -41,7 +41,7 @@ public:
 
     void ReducePanel();
 
-    bool IsReduced()
+    bool IsReduced() const
     {
         return !m_sizerMain->IsShown(m_sizerContent);
     }

@@ -45,19 +45,15 @@ public:
 
     virtual ~asForecastViewer();
 
-    wxArrayString GetForecastDisplayStringArray();
-
-    wxArrayString GetQuantilesStringArray();
-
     void FixForecastSelection();
 
     void ResetForecastSelection();
 
     void SetForecast(int methodRow, int forecastRow);
 
-    wxString GetStationName(int i_stat);
+    wxString GetStationName(int i_stat) const;
 
-    float GetSelectedTargetDate();
+    float GetSelectedTargetDate() const;
 
     void SetForecastDisplay(int i);
 
@@ -71,37 +67,47 @@ public:
 
     void SetLeadTimeDate(float date);
 
-    int GetMethodSelection()
+    wxArrayString GetForecastDisplayStringArray() const
+    {
+        return m_displayForecast;
+    }
+
+    wxArrayString GetQuantilesStringArray() const
+    {
+        return m_displayQuantiles;
+    }
+
+    int GetMethodSelection() const
     {
         return m_methodSelection;
     }
 
-    int GetForecastSelection()
+    int GetForecastSelection() const
     {
         return m_forecastSelection;
     }
 
-    int GetForecastDisplaySelection()
+    int GetForecastDisplaySelection() const
     {
         return m_forecastDisplaySelection;
     }
 
-    int GetQuantileSelection()
+    int GetQuantileSelection() const
     {
         return m_quantileSelection;
     }
 
-    float GetLayerMaxValue()
+    float GetLayerMaxValue() const
     {
         return m_layerMaxValue;
     }
 
-    int GetLeadTimeIndex()
+    int GetLeadTimeIndex() const
     {
         return m_leadTimeIndex;
     }
 
-    float GetLeadTimeDate()
+    float GetLeadTimeDate() const
     {
         return m_leadTimeDate;
     }

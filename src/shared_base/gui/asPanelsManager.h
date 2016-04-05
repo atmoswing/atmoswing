@@ -40,7 +40,7 @@ public:
 
     void LayoutFrame(wxWindow *element);
 
-    wxWindow *GetTopFrame(wxWindow *element);
+    wxWindow *GetTopFrame(wxWindow *element) const;
 
 protected:
 

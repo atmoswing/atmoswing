@@ -45,37 +45,37 @@ public:
 
     virtual ~asGeoAreaCompositeRegularGrid();
 
-    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea);
+    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const;
 
-    double GetXstep()
+    double GetXstep() const
     {
         return m_xStep;
     }
 
-    double GetYstep()
+    double GetYstep() const
     {
         return m_yStep;
     }
 
-    Array1DDouble GetXaxisComposite(int compositeNb);
+    Array1DDouble GetXaxisComposite(int compositeNb) const;
 
-    Array1DDouble GetYaxisComposite(int compositeNb);
+    Array1DDouble GetYaxisComposite(int compositeNb) const;
 
-    int GetXaxisCompositePtsnb(int compositeNb);
+    int GetXaxisCompositePtsnb(int compositeNb) const;
 
-    int GetYaxisCompositePtsnb(int compositeNb);
+    int GetYaxisCompositePtsnb(int compositeNb) const;
 
-    double GetXaxisCompositeWidth(int compositeNb);
+    double GetXaxisCompositeWidth(int compositeNb) const;
 
-    double GetYaxisCompositeWidth(int compositeNb);
+    double GetYaxisCompositeWidth(int compositeNb) const;
 
-    double GetXaxisCompositeStart(int compositeNb);
+    double GetXaxisCompositeStart(int compositeNb) const;
 
-    double GetYaxisCompositeStart(int compositeNb);
+    double GetYaxisCompositeStart(int compositeNb) const;
 
-    double GetXaxisCompositeEnd(int compositeNb);
+    double GetXaxisCompositeEnd(int compositeNb) const;
 
-    double GetYaxisCompositeEnd(int compositeNb);
+    double GetYaxisCompositeEnd(int compositeNb) const;
 
 protected:
 
@@ -83,9 +83,9 @@ private:
     double m_xStep;
     double m_yStep;
 
-    bool IsOnGrid(double step);
+    bool IsOnGrid(double step) const;
 
-    bool IsOnGrid(double stepX, double stepY);
+    bool IsOnGrid(double stepX, double stepY) const;
 };
 
 #endif // asGeoAreaCompositeRegularGrid_H

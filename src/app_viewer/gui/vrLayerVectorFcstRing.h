@@ -66,7 +66,7 @@ public:
         m_valueMax = val;
     }
 
-    double GetMaxValue()
+    double GetMaxValue() const
     {
         return m_valueMax;
     }

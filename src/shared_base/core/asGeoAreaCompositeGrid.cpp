@@ -80,7 +80,7 @@ asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(float Level, float Height)
     m_gridType = Regular;
 }
 
-int asGeoAreaCompositeGrid::GetXaxisPtsnb()
+int asGeoAreaCompositeGrid::GetXaxisPtsnb() const
 {
     int ptsLon = 0;
 
@@ -103,7 +103,7 @@ int asGeoAreaCompositeGrid::GetXaxisPtsnb()
     return ptsLon;
 }
 
-int asGeoAreaCompositeGrid::GetYaxisPtsnb()
+int asGeoAreaCompositeGrid::GetYaxisPtsnb() const
 {
     int ptsLat = 0;
 
@@ -126,7 +126,7 @@ int asGeoAreaCompositeGrid::GetYaxisPtsnb()
     return ptsLat;
 }
 
-double asGeoAreaCompositeGrid::GetXaxisWidth()
+double asGeoAreaCompositeGrid::GetXaxisWidth() const
 {
     double widthLon = 0;
 
@@ -145,7 +145,7 @@ double asGeoAreaCompositeGrid::GetXaxisWidth()
     return widthLon;
 }
 
-double asGeoAreaCompositeGrid::GetYaxisWidth()
+double asGeoAreaCompositeGrid::GetYaxisWidth() const
 {
     double widthLat = 0;
 
@@ -164,7 +164,7 @@ double asGeoAreaCompositeGrid::GetYaxisWidth()
     return widthLat;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
+Array1DDouble asGeoAreaCompositeGrid::GetXaxis() const
 {
     Array1DDouble Xaxis;
 
@@ -201,7 +201,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
+Array1DDouble asGeoAreaCompositeGrid::GetYaxis() const
 {
     Array1DDouble Yaxis;
 

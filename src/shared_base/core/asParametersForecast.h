@@ -71,11 +71,11 @@ public:
 
     bool LoadFromFile(const wxString &filePath);
 
-    bool InputsOK();
+    bool InputsOK() const;
 
     void InitValues();
 
-    wxString GetPredictandDatabase()
+    wxString GetPredictandDatabase() const
     {
         return m_predictandDatabase;
     }
@@ -85,93 +85,87 @@ public:
         m_predictandDatabase = val;
     }
 
-    int GetLeadTimeNb()
+    int GetLeadTimeNb() const
     {
         return (int) m_leadTimeDaysVect.size();
     }
 
     bool SetLeadTimeDaysVector(VectorInt val);
 
-    VectorInt GetLeadTimeDaysVector()
+    VectorInt GetLeadTimeDaysVector() const
     {
         return m_leadTimeDaysVect;
     }
 
-    int GetLeadTimeDays(int i_leadtime)
+    int GetLeadTimeDays(int i_leadtime) const
     {
         return m_leadTimeDaysVect[i_leadtime];
     }
 
-    int GetLeadTimeHours(int i_leadtime)
+    int GetLeadTimeHours(int i_leadtime) const
     {
         return (int) (m_leadTimeDaysVect[i_leadtime] * 24.0);
     }
 
     bool SetAnalogsNumberLeadTimeVector(int i_step, VectorInt val);
 
-    VectorInt GetAnalogsNumberLeadTimeVector(int i_step)
+    VectorInt GetAnalogsNumberLeadTimeVector(int i_step) const
     {
         return m_stepsForecast[i_step].AnalogsNumberLeadTime;
     }
 
-    int GetAnalogsNumberLeadTime(int i_step, int i_leadtime)
+    int GetAnalogsNumberLeadTime(int i_step, int i_leadtime) const
     {
         wxASSERT((int) m_stepsForecast[i_step].AnalogsNumberLeadTime.size() > i_leadtime);
         return m_stepsForecast[i_step].AnalogsNumberLeadTime[i_leadtime];
     }
 
-    int GetAnalogsNumberLeadTimeLastStep(int i_leadtime)
-    {
-        wxASSERT((int) m_stepsForecast[m_stepsForecast.size() - 1].AnalogsNumberLeadTime.size() > i_leadtime);
-        return m_stepsForecast[m_stepsForecast.size() - 1].AnalogsNumberLeadTime[i_leadtime];
-    }
-
-    wxString GetPredictorArchiveDatasetId(int i_step, int i_predictor)
+    wxString GetPredictorArchiveDatasetId(int i_step, int i_predictor) const
     {
         return m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId;
     }
 
     bool SetPredictorArchiveDatasetId(int i_step, int i_predictor, const wxString &val);
 
-    wxString GetPredictorArchiveDataId(int i_step, int i_predictor)
+    wxString GetPredictorArchiveDataId(int i_step, int i_predictor) const
     {
         return m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDataId;
     }
 
     bool SetPredictorArchiveDataId(int i_step, int i_predictor, const wxString &val);
 
-    wxString GetPredictorRealtimeDatasetId(int i_step, int i_predictor)
+    wxString GetPredictorRealtimeDatasetId(int i_step, int i_predictor) const
     {
         return m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId;
     }
 
     bool SetPredictorRealtimeDatasetId(int i_step, int i_predictor, const wxString &val);
 
-    wxString GetPredictorRealtimeDataId(int i_step, int i_predictor)
+    wxString GetPredictorRealtimeDataId(int i_step, int i_predictor) const
     {
         return m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDataId;
     }
 
     bool SetPredictorRealtimeDataId(int i_step, int i_predictor, const wxString &val);
 
-    int GetPreprocessSize(int i_step, int i_predictor)
+    int GetPreprocessSize(int i_step, int i_predictor) const
     {
         return (int) m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size();
     }
 
-    wxString GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset);
+    wxString GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset) const;
 
     bool SetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset, const wxString &val);
 
-    wxString GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset);
+    wxString GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset) const;
 
     bool SetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset, const wxString &val);
 
-    wxString GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset);
+    wxString GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset) const;
 
     bool SetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset, const wxString &val);
 
-    wxString GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset);
+    wxString GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset) const;
 
     bool SetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset, const wxString &val);
 

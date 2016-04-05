@@ -41,7 +41,7 @@ asPredictorCriteriaNS1grads::~asPredictorCriteriaNS1grads()
 }
 
 float asPredictorCriteriaNS1grads::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
-                                         int colsNb)
+                                         int colsNb) const
 {
     return asPredictorCriteriaS1grads::Assess(refData, evalData, rowsNb, colsNb) / m_scaleWorst;
 }

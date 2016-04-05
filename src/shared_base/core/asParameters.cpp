@@ -51,7 +51,6 @@ asParameters::asParameters()
     m_predictandTemporalResolution = (DataTemporalResolution) 0;
     m_predictandSpatialAggregation = (DataSpatialAggregation) 0;
     m_predictandDatasetId = wxEmptyString;
-    m_stepsNb = 0;
     m_timeArrayTargetPredictandMinThreshold = 0;
     m_timeArrayTargetPredictandMaxThreshold = 0;
 }
@@ -68,7 +67,6 @@ void asParameters::AddStep()
     step.AnalogsNumber = 0;
 
     m_steps.push_back(step);
-    SetSizes();
 }
 
 void asParameters::AddPredictor()
@@ -104,7 +102,6 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.Weight = 1;
 
     step.Predictors.push_back(predictor);
-    SetSizes();
 }
 
 void asParameters::AddPredictor(int i_step)
@@ -136,16 +133,6 @@ void asParameters::AddPredictor(int i_step)
     predictor.Weight = 1;
 
     m_steps[i_step].Predictors.push_back(predictor);
-    SetSizes();
-}
-
-void asParameters::SetSizes()
-{
-    m_stepsNb = m_steps.size();
-    m_predictorsNb.resize(m_stepsNb);
-    for (int i = 0; i < m_stepsNb; i++) {
-        m_predictorsNb[i] = m_steps[i].Predictors.size();
-    }
 }
 
 bool asParameters::LoadFromFile(const wxString &filePath)
@@ -408,9 +395,6 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
-    // Set sizes
-    SetSizes();
-
     // Check inputs and init parameters
     if (!InputsOK())
         return false;
@@ -556,7 +540,7 @@ bool asParameters::SetPreloadingProperties()
     return true;
 }
 
-bool asParameters::InputsOK()
+bool asParameters::InputsOK() const
 {
     // Time properties
     if (GetArchiveStart() <= 0) {
@@ -815,7 +799,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     return ids;
 }
 
-wxString asParameters::GetPredictandStationIdsString()
+wxString asParameters::GetPredictandStationIdsString() const
 {
     wxString Ids;
 
@@ -840,11 +824,9 @@ wxString asParameters::GetPredictandStationIdsString()
 
 bool asParameters::FixTimeLimits()
 {
-    SetSizes();
-
     double minHour = 1000.0, maxHour = -1000.0;
-    for (int i = 0; i < m_stepsNb; i++) {
-        for (int j = 0; j < m_predictorsNb[i]; j++) {
+    for (int i = 0; i < GetStepsNb(); i++) {
+        for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 double minHourPredictor = 1000.0, maxHourPredictor = -1000.0;
 
@@ -870,15 +852,15 @@ bool asParameters::FixTimeLimits()
 
 bool asParameters::FixWeights()
 {
-    for (int i = 0; i < m_stepsNb; i++) {
+    for (int i = 0; i < GetStepsNb(); i++) {
         // Sum the weights
         float totWeight = 0;
-        for (int j = 0; j < m_predictorsNb[i]; j++) {
+        for (int j = 0; j < GetPredictorsNb(i); j++) {
             totWeight += m_steps[i].Predictors[j].Weight;
         }
 
         // Correct to set the total to 1
-        for (int j = 0; j < m_predictorsNb[i]; j++) {
+        for (int j = 0; j < GetPredictorsNb(i); j++) {
             m_steps[i].Predictors[j].Weight /= totWeight;
         }
     }
@@ -888,8 +870,8 @@ bool asParameters::FixWeights()
 
 bool asParameters::FixCoordinates()
 {
-    for (int i = 0; i < m_stepsNb; i++) {
-        for (int j = 0; j < m_predictorsNb[i]; j++) {
+    for (int i = 0; i < GetStepsNb(); i++) {
+        for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (m_steps[i].Predictors[j].GridType.IsSameAs("regular", false)) {
 
                 // Check that the coordinates are a multiple of the steps
@@ -937,7 +919,7 @@ bool asParameters::FixCoordinates()
     return true;
 }
 
-wxString asParameters::Print()
+wxString asParameters::Print() const
 {
     // Create content string
     wxString content = wxEmptyString;
@@ -984,7 +966,7 @@ wxString asParameters::Print()
     return content;
 }
 
-bool asParameters::PrintAndSaveTemp(const wxString &filePath)
+bool asParameters::PrintAndSaveTemp(const wxString &filePath) const
 {
     wxString saveFilePath;
 
@@ -1011,7 +993,7 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath)
 
 bool asParameters::GetValuesFromString(wxString stringVals)
 {
-    int iLeft, iRight;
+    size_t iLeft, iRight;
     wxString strVal;
     double dVal;
     long lVal;
@@ -1422,7 +1404,7 @@ bool asParameters::SetPreprocessMethod(int i_step, int i_predictor, const wxStri
     return true;
 }
 
-wxString asParameters::GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset)
+wxString asParameters::GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_steps[i_step].Predictors[i_predictor].PreprocessDatasetIds.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].Predictors[i_predictor].PreprocessDatasetIds[i_dataset];
@@ -1449,7 +1431,7 @@ bool asParameters::SetPreprocessDatasetId(int i_step, int i_predictor, int i_dat
     return true;
 }
 
-wxString asParameters::GetPreprocessDataId(int i_step, int i_predictor, int i_dataset)
+wxString asParameters::GetPreprocessDataId(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_steps[i_step].Predictors[i_predictor].PreprocessDataIds.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].Predictors[i_predictor].PreprocessDataIds[i_dataset];
@@ -1476,7 +1458,7 @@ bool asParameters::SetPreprocessDataId(int i_step, int i_predictor, int i_datase
     return true;
 }
 
-float asParameters::GetPreprocessLevel(int i_step, int i_predictor, int i_dataset)
+float asParameters::GetPreprocessLevel(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_steps[i_step].Predictors[i_predictor].PreprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset];
@@ -1503,7 +1485,7 @@ bool asParameters::SetPreprocessLevel(int i_step, int i_predictor, int i_dataset
     return true;
 }
 
-double asParameters::GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset)
+double asParameters::GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset) const
 {
     if (m_steps[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];

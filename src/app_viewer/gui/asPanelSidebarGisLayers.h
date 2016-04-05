@@ -43,7 +43,7 @@ public:
 
     ~asPanelSidebarGisLayers();
 
-    vrViewerTOCList *GetTocCtrl()
+    vrViewerTOCList *GetTocCtrl() const
     {
         return m_tocCtrl;
     }

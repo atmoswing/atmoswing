@@ -47,7 +47,7 @@ bool asFileParametersCalibration::EditRootElement()
     return true;
 }
 
-bool asFileParametersCalibration::CheckRootElement()
+bool asFileParametersCalibration::CheckRootElement() const
 {
     if (!GetRoot())
         return false;

@@ -44,7 +44,7 @@ public:
 
     virtual bool Load(const wxString &filePath);
 
-    virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
+    virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString) const;
 
     virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
                                    const wxString &AlternatePatternDir = wxEmptyString,

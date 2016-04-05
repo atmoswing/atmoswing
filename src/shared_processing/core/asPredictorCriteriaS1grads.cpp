@@ -46,7 +46,7 @@ asPredictorCriteriaS1grads::~asPredictorCriteriaS1grads()
 }
 
 float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
-                                         int colsNb)
+                                         int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),

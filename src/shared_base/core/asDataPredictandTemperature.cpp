@@ -76,7 +76,7 @@ bool asDataPredictandTemperature::Load(const wxString &filePath)
     return true;
 }
 
-bool asDataPredictandTemperature::Save(const wxString &AlternateDestinationDir)
+bool asDataPredictandTemperature::Save(const wxString &AlternateDestinationDir) const
 {
     // Get the file path
     wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);

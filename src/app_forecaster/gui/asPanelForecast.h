@@ -43,7 +43,7 @@ public:
 
     virtual bool Layout();
 
-    awxLed *GetLed()
+    awxLed *GetLed() const
     {
         return m_led;
     }
@@ -53,7 +53,7 @@ public:
         m_panelsManager = panelManager;
     }
 
-    wxString GetParametersFileName()
+    wxString GetParametersFileName() const
     {
         return m_textCtrlParametersFileName->GetValue();
     }

@@ -89,14 +89,14 @@ void asFrameOptimizer::Update()
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
+void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event) const
 {
     asFramePreferencesOptimizer *frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
+void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event) const
 {
     asFrameAbout *frame = new asFrameAbout(this);
     frame->Fit();
@@ -221,12 +221,12 @@ void asFrameOptimizer::LoadOptions()
     m_textCtrlVarExploStepToExplore->SetValue(VarExploStep);
 }
 
-void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event)
+void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event) const
 {
     SaveOptions();
 }
 
-void asFrameOptimizer::SaveOptions()
+void asFrameOptimizer::SaveOptions() const
 {
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();

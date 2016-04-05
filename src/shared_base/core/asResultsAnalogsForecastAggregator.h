@@ -45,67 +45,67 @@ public:
 
     void ClearArrays();
 
-    int GetMethodsNb();
+    int GetMethodsNb() const;
 
-    int GetForecastsNb(int methodRow);
+    int GetForecastsNb(int methodRow) const;
 
-    int GetPastMethodsNb();
+    int GetPastMethodsNb() const;
 
-    int GetPastForecastsNb(int methodRow);
+    int GetPastForecastsNb(int methodRow) const;
 
-    int GetPastForecastsNb(int methodRow, int forecastRow);
+    int GetPastForecastsNb(int methodRow, int forecastRow) const;
 
-    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow);
+    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow) const;
 
-    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow);
+    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const;
 
-    wxString GetForecastName(int methodRow, int forecastRow);
+    wxString GetForecastName(int methodRow, int forecastRow) const;
 
-    wxString GetMethodName(int methodRow);
+    wxString GetMethodName(int methodRow) const;
 
-    VectorString GetAllMethodIds();
+    VectorString GetAllMethodIds() const;
 
-    VectorString GetAllMethodNames();
+    VectorString GetAllMethodNames() const;
 
-    VectorString GetAllForecastNames();
+    VectorString GetAllForecastNames() const;
 
-    wxArrayString GetAllForecastNamesWxArray();
+    wxArrayString GetAllForecastNamesWxArray() const;
 
-    VectorString GetFilePaths();
+    VectorString GetFilePaths() const;
 
-    wxString GetFilePath(int methodRow, int forecastRow);
+    wxString GetFilePath(int methodRow, int forecastRow) const;
 
-    wxArrayString GetFilePathsWxArray();
+    wxArrayString GetFilePathsWxArray() const;
 
-    Array1DFloat GetTargetDates(int methodRow);
+    Array1DFloat GetTargetDates(int methodRow) const;
 
-    Array1DFloat GetTargetDates(int methodRow, int forecastRow);
+    Array1DFloat GetTargetDates(int methodRow, int forecastRow) const;
 
-    Array1DFloat GetFullTargetDates();
+    Array1DFloat GetFullTargetDates() const;
 
-    int GetForecastRowSpecificForStationId(int methodRow, int stationId);
+    int GetForecastRowSpecificForStationId(int methodRow, int stationId) const;
 
-    int GetForecastRowSpecificForStationRow(int methodRow, int stationRow);
+    int GetForecastRowSpecificForStationRow(int methodRow, int stationRow) const;
 
-    wxArrayString GetStationNames(int methodRow, int forecastRow);
+    wxArrayString GetStationNames(int methodRow, int forecastRow) const;
 
-    wxString GetStationName(int methodRow, int forecastRow, int stationRow);
+    wxString GetStationName(int methodRow, int forecastRow, int stationRow) const;
 
-    wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow);
+    wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow) const;
 
-    wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow);
+    wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const;
 
-    int GetLeadTimeLength(int methodRow, int forecastRow);
+    int GetLeadTimeLength(int methodRow, int forecastRow) const;
 
-    int GetLeadTimeLengthMax();
+    int GetLeadTimeLengthMax() const;
 
-    wxArrayString GetLeadTimes(int methodRow, int forecastRow);
+    wxArrayString GetLeadTimes(int methodRow, int forecastRow) const;
 
-    Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float quantileThreshold);
+    Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
 
-    Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float quantileThreshold);
+    Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float quantileThreshold) const;
 
-    bool ExportSyntheticXml(const wxString &dirPath);
+    bool ExportSyntheticXml(const wxString &dirPath) const;
 
 protected:
 

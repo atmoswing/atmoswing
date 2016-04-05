@@ -43,7 +43,7 @@ public:
 
     void SetChoices(wxArrayString &arrayStation);
 
-    wxChoice *GetChoiceCtrl()
+    wxChoice *GetChoiceCtrl() const
     {
         return m_choiceStationSelection;
     }

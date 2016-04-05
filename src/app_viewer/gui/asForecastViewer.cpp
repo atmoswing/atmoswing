@@ -105,16 +105,6 @@ asForecastViewer::~asForecastViewer()
     pConfig->Write("/ForecastViewer/QuantileSelection", m_quantileSelection);
 }
 
-wxArrayString asForecastViewer::GetForecastDisplayStringArray()
-{
-    return m_displayForecast;
-}
-
-wxArrayString asForecastViewer::GetQuantilesStringArray()
-{
-    return m_displayQuantiles;
-}
-
 void asForecastViewer::FixForecastSelection()
 {
     if (m_methodSelection < 0) {
@@ -137,12 +127,12 @@ void asForecastViewer::SetForecast(int methodRow, int forecastRow)
     Redraw();
 }
 
-wxString asForecastViewer::GetStationName(int i_stat)
+wxString asForecastViewer::GetStationName(int i_stat) const
 {
     return m_forecastManager->GetStationName(m_methodSelection, m_forecastSelection, i_stat);
 }
 
-float asForecastViewer::GetSelectedTargetDate()
+float asForecastViewer::GetSelectedTargetDate() const
 {
     Array1DFloat targetDates;
 

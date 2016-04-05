@@ -41,9 +41,9 @@ public:
 
     virtual ~asForecastScoreFinalRankHistogramReliability();
 
-    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray);
+    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
 
-    float AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize);
+    float AssessOnBootstrap(Array1DFloat &histogramPercent, int forecastScoresSize) const;
 
 protected:
 

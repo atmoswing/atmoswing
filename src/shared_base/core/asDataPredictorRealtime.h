@@ -61,7 +61,7 @@ public:
         m_restrictDownloads = val;
     }
 
-    double GetForecastLeadTimeStart()
+    double GetForecastLeadTimeStart() const
     {
         return m_forecastLeadTimeStart;
     }
@@ -71,7 +71,7 @@ public:
         m_forecastLeadTimeStart = val;
     }
 
-    double GetForecastLeadTimeEnd()
+    double GetForecastLeadTimeEnd() const
     {
         return m_forecastLeadTimeEnd;
     }
@@ -81,7 +81,7 @@ public:
         m_forecastLeadTimeEnd = val;
     }
 
-    double GetForecastLeadTimeStep()
+    double GetForecastLeadTimeStep() const
     {
         return m_forecastLeadTimeStep;
     }
@@ -91,7 +91,7 @@ public:
         m_forecastLeadTimeStep = val;
     }
 
-    double GetRunHourStart()
+    double GetRunHourStart() const
     {
         return m_runHourStart;
     }
@@ -101,7 +101,7 @@ public:
         m_runHourStart = val;
     }
 
-    double GetRunUpdate()
+    double GetRunUpdate() const
     {
         return m_runUpdate;
     }
@@ -111,12 +111,12 @@ public:
         m_runUpdate = val;
     }
 
-    double GetRunDateInUse()
+    double GetRunDateInUse() const
     {
         return m_runDateInUse;
     }
 
-    wxString GetCommandDownload()
+    wxString GetCommandDownload() const
     {
         return m_commandDownload;
     }
@@ -126,18 +126,18 @@ public:
         m_commandDownload = val;
     }
 
-    int GetUlrsNb()
+    int GetUlrsNb() const
     {
         int urlsNb = (int) m_urls.size();
         return urlsNb;
     }
 
-    VectorString GetUrls()
+    VectorString GetUrls() const
     {
         return m_urls;
     }
 
-    wxString GetUrl(int i)
+    wxString GetUrl(int i) const
     {
         wxASSERT(m_fileNames.size() == m_urls.size());
         if ((unsigned) i >= m_urls.size())
@@ -150,7 +150,7 @@ public:
         m_urls = val;
     }
 
-    VectorString GetFileNames()
+    VectorString GetFileNames() const
     {
         return m_fileNames;
     }
@@ -160,7 +160,7 @@ public:
         m_fileNames = val;
     }
 
-    wxString GetFileName(int i)
+    wxString GetFileName(int i) const
     {
         wxASSERT(m_fileNames.size() == m_urls.size());
         if ((unsigned) i >= m_fileNames.size())
@@ -168,7 +168,7 @@ public:
         return m_fileNames[i];
     }
 
-    int GetDatesNb()
+    int GetDatesNb() const
     {
         wxASSERT(m_dataDates.size() == m_urls.size());
         wxASSERT(m_dataDates.size() == m_fileNames.size());
@@ -176,12 +176,12 @@ public:
         return datesNb;
     }
 
-    VectorDouble GetDataDates()
+    VectorDouble GetDataDates() const
     {
         return m_dataDates;
     }
 
-    double GetDataDate(int i)
+    double GetDataDate(int i) const
     {
         wxASSERT(m_dataDates.size() == m_urls.size());
         wxASSERT(m_dataDates.size() == m_fileNames.size());
@@ -190,14 +190,14 @@ public:
         return m_dataDates[i];
     }
 
-    double GetLastDataDate()
+    double GetLastDataDate() const
     {
         wxASSERT(m_dataDates.size() == m_urls.size());
         wxASSERT(m_dataDates.size() == m_fileNames.size());
         return m_dataDates[m_dataDates.size() - 1];
     }
 
-    wxString GetPredictorsRealtimeDirectory()
+    wxString GetPredictorsRealtimeDirectory() const
     {
         return m_predictorsRealtimeDirectory;
     }
@@ -223,7 +223,7 @@ protected:
     VectorString m_urls;
     VectorDouble m_dataDates;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray);
+    virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
 private:
 

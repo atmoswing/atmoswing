@@ -44,7 +44,7 @@ public:
 
     void Init(asParametersScoring &params);
 
-    float GetForecastScore()
+    float GetForecastScore() const
     {
         return m_forecastScore;
     }
@@ -54,7 +54,7 @@ public:
         m_forecastScore = val;
     }
 
-    Array1DFloat GetForecastScoreArray()
+    Array1DFloat GetForecastScoreArray() const
     {
         return m_forecastScoreArray;
     }
@@ -71,7 +71,7 @@ public:
         m_hasSingleValue = false;
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
 
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
