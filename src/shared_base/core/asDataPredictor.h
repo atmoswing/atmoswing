@@ -62,6 +62,10 @@ public:
 
     bool SetData(VArray2DFloat &val);
 
+    float GetMinValue() const;
+
+    float GetMaxValue() const;
+
     VArray2DFloat &GetData()
     {
         wxASSERT((int) m_data.size() == (int) m_time.size());
@@ -273,8 +277,6 @@ protected:
 
     asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon,
                                        Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
-
-private:
 
 };
 

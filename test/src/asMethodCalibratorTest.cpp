@@ -717,12 +717,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
         for (int j = 0; j < datesStd.cols(); j++) {
             EXPECT_EQ(datesStd.coeff(i, j), datesPreload.coeff(i, j));
             EXPECT_EQ(criteriaStd.coeff(i, j), criteriaPreload.coeff(i, j));
-
-            break;
         }
-
-
-        break;
     }
 }
 
@@ -1656,4 +1651,130 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     EXPECT_EQ(params.GetPredictorTimeHours(0, 0), 24);
     EXPECT_EQ(params.GetPredictorLevel(0, 1), 0);
     EXPECT_TRUE(params.GetPredictorTimeHours(0, 1) > 6);
+}
+
+TEST(MethodCalibrator, NormalizedS1Criteria)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
+
+    // Get parameters
+    asParametersCalibration paramsStd;
+    asParametersCalibration paramsNorm;
+    wxString paramsFilePath = wxFileName::GetCwd();
+    paramsFilePath.Append("/files/parameters_calibration_normalized_S1_criteria.xml");
+    ASSERT_TRUE(paramsStd.LoadFromFile(paramsFilePath));
+    ASSERT_TRUE(paramsNorm.LoadFromFile(paramsFilePath));
+    paramsStd.SetPredictorCriteria(0, 0, "S1");
+    ASSERT_TRUE(paramsStd.GetPredictorCriteria(0, 0).IsSameAs("S1"));
+
+    // Proceed to the calculations
+    asMethodCalibratorSingle calibrator1;
+    wxString dataPredictorFilePath = wxFileName::GetCwd();
+    dataPredictorFilePath.Append("/files/");
+    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    calibrator1.SetPredictandDB(NULL);
+    asMethodCalibratorSingle calibrator2 = calibrator1;
+    asResultsAnalogsDates anaDatesStd;
+    asResultsAnalogsDates anaDatesNorm;
+
+    try {
+        int step = 0;
+        bool containsNaNs = false;
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, paramsNorm, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
+        return;
+    }
+
+    Array1DFloat targetDatesStd = anaDatesStd.GetTargetDates();
+    Array1DFloat targetDatesPreload = anaDatesNorm.GetTargetDates();
+    int targetDatesSize = (int) wxMax(targetDatesStd.cols(), targetDatesStd.rows());
+    for (int i = 0; i < targetDatesSize; i++) {
+        EXPECT_EQ(targetDatesStd[i], targetDatesPreload[i]);
+    }
+
+    Array2DFloat datesStd = anaDatesStd.GetAnalogsDates();
+    Array2DFloat datesNorm = anaDatesNorm.GetAnalogsDates();
+    Array2DFloat criteriaStd = anaDatesStd.GetAnalogsCriteria();
+    Array2DFloat criteriaNorm = anaDatesNorm.GetAnalogsCriteria();
+
+    EXPECT_EQ(datesStd.cols(), datesNorm.cols());
+    EXPECT_EQ(datesStd.rows(), datesNorm.rows());
+    EXPECT_EQ(criteriaStd.cols(), criteriaNorm.cols());
+    EXPECT_EQ(criteriaStd.rows(), criteriaNorm.rows());
+
+    for (int i = 0; i < datesStd.rows(); i++) {
+        for (int j = 0; j < datesStd.cols(); j++) {
+            EXPECT_EQ(datesStd.coeff(i, j), datesNorm.coeff(i, j));
+            EXPECT_NE(criteriaStd.coeff(i, j), criteriaNorm.coeff(i, j));
+        }
+    }
+}
+
+TEST(MethodCalibrator, NormalizedRMSECriteria)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
+
+    // Get parameters
+    asParametersCalibration paramsStd;
+    asParametersCalibration paramsNorm;
+    wxString paramsFilePath = wxFileName::GetCwd();
+    paramsFilePath.Append("/files/parameters_calibration_normalized_RMSE_criteria.xml");
+    ASSERT_TRUE(paramsStd.LoadFromFile(paramsFilePath));
+    ASSERT_TRUE(paramsNorm.LoadFromFile(paramsFilePath));
+    paramsStd.SetPredictorCriteria(0, 0, "RMSE");
+    ASSERT_TRUE(paramsStd.GetPredictorCriteria(0, 0).IsSameAs("RMSE"));
+
+    // Proceed to the calculations
+    asMethodCalibratorSingle calibrator1;
+    wxString dataPredictorFilePath = wxFileName::GetCwd();
+    dataPredictorFilePath.Append("/files/");
+    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    calibrator1.SetPredictandDB(NULL);
+    asMethodCalibratorSingle calibrator2 = calibrator1;
+    asResultsAnalogsDates anaDatesStd;
+    asResultsAnalogsDates anaDatesNorm;
+
+    try {
+        int step = 0;
+        bool containsNaNs = false;
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, paramsNorm, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
+        return;
+    }
+
+    Array1DFloat targetDatesStd = anaDatesStd.GetTargetDates();
+    Array1DFloat targetDatesPreload = anaDatesNorm.GetTargetDates();
+    int targetDatesSize = (int) wxMax(targetDatesStd.cols(), targetDatesStd.rows());
+    for (int i = 0; i < targetDatesSize; i++) {
+        EXPECT_EQ(targetDatesStd[i], targetDatesPreload[i]);
+    }
+
+    Array2DFloat datesStd = anaDatesStd.GetAnalogsDates();
+    Array2DFloat datesNorm = anaDatesNorm.GetAnalogsDates();
+    Array2DFloat criteriaStd = anaDatesStd.GetAnalogsCriteria();
+    Array2DFloat criteriaNorm = anaDatesNorm.GetAnalogsCriteria();
+
+    EXPECT_EQ(datesStd.cols(), datesNorm.cols());
+    EXPECT_EQ(datesStd.rows(), datesNorm.rows());
+    EXPECT_EQ(criteriaStd.cols(), criteriaNorm.cols());
+    EXPECT_EQ(criteriaStd.rows(), criteriaNorm.rows());
+
+    for (int i = 0; i < datesStd.rows(); i++) {
+        for (int j = 0; j < datesStd.cols(); j++) {
+            EXPECT_EQ(datesStd.coeff(i, j), datesNorm.coeff(i, j));
+            EXPECT_NE(criteriaStd.coeff(i, j), criteriaNorm.coeff(i, j));
+        }
+    }
 }
