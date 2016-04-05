@@ -80,12 +80,12 @@ float asPredictorCriteriaRMSE::Assess(const Array2DFloat &refData, const Array2D
         }
 
         default: {
-            asLogError(_("The calculation method was not correcty set"));
+            asLogError(_("The calculation method was not correctly set"));
             return NaNFloat;
         }
     }
 
     mse /= (float) refData.size(); // Can be NaN
 
-    return sqrt(mse);
+    return (float) sqrt(mse);
 }

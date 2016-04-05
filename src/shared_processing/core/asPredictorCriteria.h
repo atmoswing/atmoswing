@@ -31,19 +31,26 @@
 #include <asIncludes.h>
 
 
+class asDataPredictor;
+
 class asPredictorCriteria
         : public wxObject
 {
 public:
     enum Criteria
     {
-        Undefined, S1, // Teweles-Wobus
+        Undefined,
+        S1, // Teweles-Wobus
+        NS1, // Normalized Teweles-Wobus
         S1grads, // Teweles-Wobus on gradients
+        NS1grads, // Normalized Teweles-Wobus on gradients
         SAD, // Sum of absolute differences
         MD, // Mean difference
+        NMD, // Normalized Mean difference
         MRDtoMax, // Mean Relative difference to the max value
         MRDtoMean, // Mean Relative difference to the mean value
         RMSE, // Root mean square error
+        NRMSE, // Normalized Root mean square error (min-max approach)
         RMSEwithNaN, // Root mean square error with NaNs management
         RMSEonMeanWithNaN, // Root Mean Square Error on the mean value of the grid, with NaNs management
         RSE // Root square error (According to Bontron. Should not be used !)
@@ -59,6 +66,15 @@ public:
 
     virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) = 0;
 
+    bool NeedsDataRange()
+    {
+        return m_needsDataRange;
+    }
+
+    void SetDataRange(const asDataPredictor *data);
+
+    void SetDataRange(float minValue, float maxValue);
+
     Criteria GetType()
     {
         return m_criteria;
@@ -69,59 +85,14 @@ public:
         return m_name;
     }
 
-    void SetName(const wxString &val)
-    {
-        m_name = val;
-    }
-
     wxString GetFullName()
     {
         return m_fullName;
     }
 
-    void SetFullName(const wxString &val)
-    {
-        m_fullName = val;
-    }
-
     Order GetOrder()
     {
         return m_order;
-    }
-
-    void SetOrder(const Order val)
-    {
-        m_order = val;
-    }
-
-    float GetScaleBest()
-    {
-        return m_scaleBest;
-    }
-
-    void SetScaleBest(float val)
-    {
-        m_scaleBest = val;
-    }
-
-    float GetScaleWorst()
-    {
-        return m_scaleWorst;
-    }
-
-    void SetScaleWorst(float val)
-    {
-        m_scaleWorst = val;
-    }
-
-    int GetLinAlgebraMethod()
-    {
-        return m_linAlgebraMethod;
-    }
-
-    void SetLinAlgebraMethod(int val)
-    {
-        m_linAlgebraMethod = val;
     }
 
     bool CanUseInline()
@@ -134,6 +105,9 @@ protected:
     wxString m_name;
     wxString m_fullName;
     Order m_order;
+    bool m_needsDataRange;
+    float m_dataMin;
+    float m_dataMax;
     float m_scaleBest;
     float m_scaleWorst;
     int m_linAlgebraMethod;
