@@ -87,7 +87,7 @@ int asDataPredictorRealtime::Download()
     return internet.Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDirectory);
 }
 
-bool asDataPredictorRealtime::CheckTimeArray(asTimeArray &timeArray)
+bool asDataPredictorRealtime::CheckTimeArray(asTimeArray &timeArray) const
 {
     return true;
 }

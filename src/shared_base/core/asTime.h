@@ -116,8 +116,7 @@ protected:
     static TimeStruct GetSeasonEnd(Season season, int year);
 
     static Season GetSeason(int month);
-
-private:
+    
 };
 
 #endif

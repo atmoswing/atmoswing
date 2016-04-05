@@ -45,14 +45,14 @@ asForecastScoreFinalRankHistogram::~asForecastScoreFinalRankHistogram()
 }
 
 float asForecastScoreFinalRankHistogram::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores,
-                                                asTimeArray &timeArray)
+                                                asTimeArray &timeArray) const
 {
     asLogError(_("The rank histogram cannot provide a single score value !"));
     return NaNFloat;
 }
 
 Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores,
-                                                              asTimeArray &timeArray)
+                                                              asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);

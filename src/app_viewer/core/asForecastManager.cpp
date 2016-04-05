@@ -44,7 +44,7 @@ asForecastManager::~asForecastManager()
     wxDELETE(m_aggregator);
 }
 
-bool asForecastManager::HasForecasts()
+bool asForecastManager::HasForecasts() const
 {
     return (m_aggregator->GetMethodsNb() > 0);
 }
@@ -54,7 +54,7 @@ void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
     m_directoriesPastForecasts.Add(dir);
 }
 
-int asForecastManager::GetLinearIndex(int methodRow, int forecastRow)
+int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const
 {
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
@@ -70,7 +70,7 @@ int asForecastManager::GetLinearIndex(int methodRow, int forecastRow)
     return 0;
 }
 
-int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex)
+int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const
 {
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
@@ -86,7 +86,7 @@ int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex)
     return 0;
 }
 
-int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex)
+int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const
 {
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {

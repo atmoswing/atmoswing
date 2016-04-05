@@ -44,35 +44,35 @@ public:
 
     virtual bool Load(const wxString &filePath);
 
-    virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString);
+    virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString) const;
 
     virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
                                    const wxString &AlternatePatternDir = wxEmptyString,
                                    const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual Array1DFloat GetReferenceAxis()
+    virtual Array1DFloat GetReferenceAxis() const
     {
         return m_returnPeriods;
     }
 
-    virtual float GetReferenceValue(int i_station, double duration, float reference)
+    virtual float GetReferenceValue(int i_station, double duration, float reference) const
     {
         return GetPrecipitationOfReturnPeriod(i_station, duration, reference);
     }
 
-    virtual Array2DFloat GetReferenceValuesArray()
+    virtual Array2DFloat GetReferenceValuesArray() const
     {
         return m_dailyPrecipitationsForReturnPeriods;
     }
 
-    float GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod);
+    float GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod) const;
 
     void SetReturnPeriodNormalization(float val)
     {
         m_returnPeriodNormalization = val;
     }
 
-    float GetReturnPeriodNormalization()
+    float GetReturnPeriodNormalization() const
     {
         return m_returnPeriodNormalization;
     }
@@ -82,7 +82,7 @@ public:
         m_isSqrt = val;
     }
 
-    bool IsSqrt()
+    bool IsSqrt() const
     {
         return m_isSqrt;
     }

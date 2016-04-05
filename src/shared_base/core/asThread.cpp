@@ -31,9 +31,7 @@
 asThread::asThread()
         : wxThread(wxTHREAD_DETACHED)
 {
-    m_status = Creating;
     m_type = Undefined;
-    m_id = 0;
 }
 
 asThread::~asThread()
@@ -48,10 +46,8 @@ wxThread::ExitCode asThread::Entry()
 
 void asThread::OnExit()
 {
-    m_status = Exiting;
-
     // Set pointer to null.
-    int id = GetId();
+    wxThreadIdType id = GetId();
     ThreadsManager().SetNull(id);
 
     // Check if the list is empty

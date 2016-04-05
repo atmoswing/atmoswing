@@ -88,13 +88,13 @@ void asPanelsManagerForecasts::Clear()
     m_arrayPanels.clear();
 }
 
-asPanelForecast *asPanelsManagerForecasts::GetPanel(int i)
+asPanelForecast *asPanelsManagerForecasts::GetPanel(int i) const
 {
     wxASSERT(i < (int) m_arrayPanels.size());
     return m_arrayPanels[i];
 }
 
-int asPanelsManagerForecasts::GetPanelsNb()
+int asPanelsManagerForecasts::GetPanelsNb() const
 {
     int nb = (int) m_arrayPanels.size();
     return nb;

@@ -179,37 +179,37 @@ bool asGeoArea::CheckConsistency()
     return true;
 }
 
-double asGeoArea::GetXmin()
+double asGeoArea::GetXmin() const
 {
     return wxMin(wxMin(m_cornerUL.x, m_cornerLL.x), wxMin(m_cornerUR.x, m_cornerLR.x));
 }
 
-double asGeoArea::GetXmax()
+double asGeoArea::GetXmax() const
 {
     return wxMax(wxMax(m_cornerUL.x, m_cornerLL.x), wxMax(m_cornerUR.x, m_cornerLR.x));
 }
 
-double asGeoArea::GetXwidth()
+double asGeoArea::GetXwidth() const
 {
     return std::abs(m_cornerUR.x - m_cornerUL.x);
 }
 
-double asGeoArea::GetYmin()
+double asGeoArea::GetYmin() const
 {
     return wxMin(wxMin(m_cornerUL.y, m_cornerLL.y), wxMin(m_cornerUR.y, m_cornerLR.y));
 }
 
-double asGeoArea::GetYmax()
+double asGeoArea::GetYmax() const
 {
     return wxMax(wxMax(m_cornerUL.y, m_cornerLL.y), wxMax(m_cornerUR.y, m_cornerLR.y));
 }
 
-double asGeoArea::GetYwidth()
+double asGeoArea::GetYwidth() const
 {
     return std::abs(m_cornerUR.y - m_cornerLR.y);
 }
 
-Coo asGeoArea::GetCenter()
+Coo asGeoArea::GetCenter() const
 {
     Coo center;
     center.x = GetXmin() + (GetXmax() - GetXmin()) / 2;
@@ -217,7 +217,7 @@ Coo asGeoArea::GetCenter()
     return center;
 }
 
-bool asGeoArea::IsRectangle()
+bool asGeoArea::IsRectangle() const
 {
     // Check that the area is a square
     return !((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |

@@ -95,7 +95,7 @@ void asResultsAnalogsDates::BuildFileName()
     m_filePath.Append(".nc");
 }
 
-bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath)
+bool asResultsAnalogsDates::Save(const wxString &AlternateFilePath) const
 {
     // If we don't want to save, skip
     if (!m_saveIntermediateResults) {

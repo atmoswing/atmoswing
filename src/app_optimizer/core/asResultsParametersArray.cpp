@@ -92,7 +92,7 @@ void asResultsParametersArray::Clear()
     m_scoresValid.resize(0);
 }
 
-bool asResultsParametersArray::Print()
+bool asResultsParametersArray::Print() const
 {
     // Create a file
     asFileAscii fileRes(m_filePath, asFileAscii::Replace);
@@ -134,7 +134,7 @@ bool asResultsParametersArray::Print()
     return true;
 }
 
-void asResultsParametersArray::CreateFile()
+void asResultsParametersArray::CreateFile() const
 {
     // Create a file
     asFileAscii fileRes(m_filePath, asFileAscii::Replace);
@@ -147,7 +147,7 @@ void asResultsParametersArray::CreateFile()
     fileRes.Close();
 }
 
-bool asResultsParametersArray::AppendContent()
+bool asResultsParametersArray::AppendContent() const
 {
     // Create a file
     asFileAscii fileRes(m_filePath, asFileAscii::Append);

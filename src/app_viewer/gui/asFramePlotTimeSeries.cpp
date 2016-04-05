@@ -223,7 +223,7 @@ void asFramePlotTimeSeries::OnTocSelectionChange(wxCommandEvent &event)
     Plot();
 }
 
-void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
+void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event) const
 {
     wxString stationName = m_forecastManager->GetStationName(m_selectedMethod, m_selectedForecast, m_selectedStation);
     wxString forecastName = m_forecastManager->GetForecastName(m_selectedMethod, m_selectedForecast);
@@ -373,7 +373,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
     }
 }
 
-void asFramePlotTimeSeries::OnExportSVG(wxCommandEvent &event)
+void asFramePlotTimeSeries::OnExportSVG(wxCommandEvent &event) const
 {
     m_panelPlot->ExportSVG();
 }

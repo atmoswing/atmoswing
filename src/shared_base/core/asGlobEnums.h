@@ -255,10 +255,6 @@ public:
 
     static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
 
-protected:
-
-private:
-
 };
 
 #endif // ASGLOBENUMS_H_INCLUDED

@@ -47,19 +47,9 @@ public:
 
     void Cancel();
 
-    wxString GetParamsFilePath()
-    {
-        return m_paramsFilePath;
-    }
-
     void SetParamsFilePath(const wxString &val)
     {
         m_paramsFilePath = val;
-    }
-
-    wxString GetPredictandDBFilePath()
-    {
-        return m_predictandDBFilePath;
     }
 
     void SetPredictandDBFilePath(const wxString &val)
@@ -67,19 +57,9 @@ public:
         m_predictandDBFilePath = val;
     }
 
-    asDataPredictand *GetPredictandDB()
-    {
-        return m_predictandDB;
-    }
-
     void SetPredictandDB(asDataPredictand *pDB)
     {
         m_predictandDB = pDB;
-    }
-
-    wxString GetPredictorDataDir()
-    {
-        return m_predictorDataDir;
     }
 
     void SetPredictorDataDir(const wxString &val)

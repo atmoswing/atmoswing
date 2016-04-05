@@ -78,75 +78,30 @@ public:
 
     virtual bool ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData) = 0;
 
-    virtual float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) = 0;
+    virtual float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const = 0;
 
-    virtual Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements);
+    virtual Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const;
 
-    bool CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements);
+    bool CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const;
 
-    int CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements);
+    int CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements) const;
 
-    Score GetScore()
-    {
-        return m_score;
-    }
-
-    void SetScore(Score val)
-    {
-        m_score = val;
-    }
-
-    wxString GetName()
+    wxString GetName() const
     {
         return m_name;
     }
 
-    void SetName(const wxString &val)
-    {
-        m_name = val;
-    }
-
-    wxString GetFullName()
+    wxString GetFullName() const
     {
         return m_fullName;
     }
 
-    void SetFullName(const wxString &val)
-    {
-        m_fullName = val;
-    }
-
-    Order GetOrder()
+    Order GetOrder() const
     {
         return m_order;
     }
 
-    void SetOrder(Order val)
-    {
-        m_order = val;
-    }
-
-    float GetScaleBest()
-    {
-        return m_scaleBest;
-    }
-
-    void SetScaleBest(float val)
-    {
-        m_scaleBest = val;
-    }
-
-    float GetScaleWorst()
-    {
-        return m_scaleWorst;
-    }
-
-    void SetScaleWorst(float val)
-    {
-        m_scaleWorst = val;
-    }
-
-    float GetScoreClimatology()
+    float GetScoreClimatology() const
     {
         return m_scoreClimatology;
     }
@@ -156,7 +111,7 @@ public:
         m_scoreClimatology = val;
     }
 
-    float GetThreshold()
+    float GetThreshold() const
     {
         return m_threshold;
     }
@@ -166,7 +121,7 @@ public:
         m_threshold = val;
     }
 
-    float GetQuantile()
+    float GetQuantile() const
     {
         return m_quantile;
     }
@@ -176,12 +131,12 @@ public:
         m_quantile = val;
     }
 
-    bool UsesClimatology()
+    bool UsesClimatology() const
     {
         return m_usesClimatology;
     }
 
-    bool SingleValue()
+    bool SingleValue() const
     {
         return m_singleValue;
     }

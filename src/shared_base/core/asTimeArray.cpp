@@ -783,7 +783,7 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     return true;
 }
 
-int asTimeArray::GetIndexFirstAfter(double date)
+int asTimeArray::GetIndexFirstAfter(double date) const
 {
     wxASSERT(m_initialized);
 
@@ -800,7 +800,7 @@ int asTimeArray::GetIndexFirstAfter(double date)
     return index;
 }
 
-int asTimeArray::GetIndexFirstBefore(double date)
+int asTimeArray::GetIndexFirstBefore(double date) const
 {
     wxASSERT(m_initialized);
 
@@ -923,13 +923,13 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
     return true;
 }
 
-bool asTimeArray::HasForbiddenYears()
+bool asTimeArray::HasForbiddenYears() const
 {
     return m_forbiddenYears.size() != 0;
 
 }
 
-bool asTimeArray::IsYearForbidden(int year)
+bool asTimeArray::IsYearForbidden(int year) const
 {
     if (m_forbiddenYears.size() == 0)
         return false;

@@ -44,7 +44,7 @@ asForecastScoreDF0::~asForecastScoreDF0()
     //dtor
 }
 
-float asForecastScoreDF0::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+float asForecastScoreDF0::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);

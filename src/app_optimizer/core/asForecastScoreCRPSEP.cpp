@@ -44,7 +44,7 @@ asForecastScoreCRPSEP::~asForecastScoreCRPSEP()
     //dtor
 }
 
-float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);

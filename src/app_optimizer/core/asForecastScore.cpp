@@ -282,14 +282,14 @@ asForecastScore::~asForecastScore()
     //dtor
 }
 
-Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements)
+Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const
 {
     asLogError(_("This asForecastScore class has no AssessOnArrays method implemented !"));
 
     return Array1DFloat();
 }
 
-bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
     // Check the element numbers vs vector length
     wxASSERT_MSG(ForcastVals.rows() >= nbElements,
@@ -309,7 +309,7 @@ bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &Forcast
     return true;
 }
 
-int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements)
+int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements) const
 {
     // Remove the NaNs and copy content
     int nbForecasts = 0, nbNans = 0;

@@ -104,7 +104,7 @@ asGeoAreaGaussianGrid::~asGeoAreaGaussianGrid()
     //dtor
 }
 
-int asGeoAreaGaussianGrid::GetXaxisPtsnb()
+int asGeoAreaGaussianGrid::GetXaxisPtsnb() const
 {
     double Xmin = GetXmin();
     int XminIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
@@ -115,7 +115,7 @@ int asGeoAreaGaussianGrid::GetXaxisPtsnb()
     return std::abs(XmaxIndex - XminIndex) + 1;
 }
 
-int asGeoAreaGaussianGrid::GetYaxisPtsnb()
+int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
 {
     double Ymin = GetYmin();
     int YminIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);
@@ -126,7 +126,7 @@ int asGeoAreaGaussianGrid::GetYaxisPtsnb()
     return std::abs(YmaxIndex - YminIndex) + 1;
 }
 
-Array1DDouble asGeoAreaGaussianGrid::GetXaxis()
+Array1DDouble asGeoAreaGaussianGrid::GetXaxis() const
 {
     double Xmin = GetXmin();
     int XminIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
@@ -136,7 +136,7 @@ Array1DDouble asGeoAreaGaussianGrid::GetXaxis()
     return m_fullAxisX.segment(XminIndex, XmaxIndex - XminIndex + 1);
 }
 
-Array1DDouble asGeoAreaGaussianGrid::GetYaxis()
+Array1DDouble asGeoAreaGaussianGrid::GetYaxis() const
 {
     double Ymin = GetYmin();
     int YminIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);
@@ -146,7 +146,7 @@ Array1DDouble asGeoAreaGaussianGrid::GetYaxis()
     return m_fullAxisY.segment(YminIndex, YmaxIndex - YminIndex + 1);
 }
 
-bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point)
+bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point) const
 {
     if (!IsRectangle())
         return false;
@@ -162,7 +162,7 @@ bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point)
     return true;
 }
 
-bool asGeoAreaGaussianGrid::IsOnGrid(double Xcoord, double Ycoord)
+bool asGeoAreaGaussianGrid::IsOnGrid(double Xcoord, double Ycoord) const
 {
     int foundU = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xcoord, 0.01);
     if ((foundU == asNOT_FOUND) || (foundU == asOUT_OF_RANGE))

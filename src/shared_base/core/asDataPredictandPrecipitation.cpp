@@ -108,7 +108,7 @@ bool asDataPredictandPrecipitation::Load(const wxString &filePath)
     return true;
 }
 
-bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir)
+bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir) const
 {
     // Get the file path
     wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);
@@ -334,7 +334,7 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
     return true;
 }
 
-float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod)
+float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod) const
 {
     float F = 1 - (1 / returnPeriod); // Probability of not overtaking
     float u = -log(-log(F)); // Gumbel variable

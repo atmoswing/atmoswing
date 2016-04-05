@@ -84,7 +84,7 @@ void asFileXml::AddChild(wxXmlNode *node)
     GetRoot()->AddChild(node);
 }
 
-bool asFileXml::CheckRootElement()
+bool asFileXml::CheckRootElement() const
 {
     if (!GetRoot())
         return false;
@@ -136,7 +136,7 @@ wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const wxString &
     return node;
 }
 
-bool asFileXml::IsAnAtmoSwingFile()
+bool asFileXml::IsAnAtmoSwingFile() const
 {
     if (!GetRoot())
         return false;
@@ -154,7 +154,7 @@ bool asFileXml::IsAnAtmoSwingFile()
     return true;
 }
 
-bool asFileXml::FileVersionIsOrAbove(const float version)
+bool asFileXml::FileVersionIsOrAbove(const float version) const
 {
     if (!GetRoot())
         return false;

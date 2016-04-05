@@ -45,7 +45,7 @@ public:
 
     void ExportSVG();
 
-    wxPlotCtrl *GetPlotCtrl()
+    wxPlotCtrl *GetPlotCtrl() const
     {
         wxASSERT(m_plotCtrl);
         return m_plotCtrl;

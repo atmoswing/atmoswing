@@ -113,7 +113,7 @@ public:
         m_analogsValuesNorm = analogsValues;
     }
 
-    VArray2DFloat GetAnalogsValuesNorm()
+    VArray2DFloat GetAnalogsValuesNorm() const
     {
         return m_analogsValuesNorm;
     }
@@ -123,7 +123,7 @@ public:
         m_analogsValuesNorm = analogsValuesNorm;
     }
 
-    VArray2DFloat GetAnalogsValuesGross()
+    VArray2DFloat GetAnalogsValuesGross() const
     {
         return m_analogsValuesGross;
     }
@@ -133,12 +133,12 @@ public:
         m_analogsValuesGross = analogsValuesGross;
     }
 
-    int GetTargetDatesLength()
+    int GetTargetDatesLength() const
     {
         return m_targetDates.size();
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
 
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 

@@ -224,7 +224,7 @@ bool asFileAscii::SkipElements(int elementNb)
     return true;
 }
 
-bool asFileAscii::EndOfFile()
+bool asFileAscii::EndOfFile() const
 {
     wxASSERT(m_opened);
 

@@ -149,7 +149,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
     m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini");
 }
 
-void asFramePreferencesOptimizer::SavePreferences()
+void asFramePreferencesOptimizer::SavePreferences() const
 {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();

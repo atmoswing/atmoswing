@@ -49,7 +49,7 @@ void asPanelsManager::LayoutFrame(wxWindow *element)
     Parent->Layout();
 }
 
-wxWindow *asPanelsManager::GetTopFrame(wxWindow *element)
+wxWindow *asPanelsManager::GetTopFrame(wxWindow *element) const
 {
     // Get parent frame for layout
     wxWindow *Parent = element;

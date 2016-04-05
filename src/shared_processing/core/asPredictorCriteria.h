@@ -64,9 +64,9 @@ public:
 
     virtual ~asPredictorCriteria();
 
-    virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) = 0;
+    virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const = 0;
 
-    bool NeedsDataRange()
+    bool NeedsDataRange() const
     {
         return m_needsDataRange;
     }
@@ -75,27 +75,27 @@ public:
 
     void SetDataRange(float minValue, float maxValue);
 
-    Criteria GetType()
+    Criteria GetType() const
     {
         return m_criteria;
     }
 
-    wxString GetName()
+    wxString GetName() const
     {
         return m_name;
     }
 
-    wxString GetFullName()
+    wxString GetFullName() const
     {
         return m_fullName;
     }
 
-    Order GetOrder()
+    Order GetOrder() const
     {
         return m_order;
     }
 
-    bool CanUseInline()
+    bool CanUseInline() const
     {
         return m_canUseInline;
     }

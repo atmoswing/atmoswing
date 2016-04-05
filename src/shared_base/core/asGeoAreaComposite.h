@@ -48,27 +48,27 @@ public:
 
     void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    Coo GetCornerUL()
+    Coo GetCornerUL() const
     {
         return m_cornerUL;
     }
 
-    Coo GetCornerUR()
+    Coo GetCornerUR() const
     {
         return m_cornerUR;
     }
 
-    Coo GetCornerLL()
+    Coo GetCornerLL() const
     {
         return m_cornerLL;
     }
 
-    Coo GetCornerLR()
+    Coo GetCornerLR() const
     {
         return m_cornerLR;
     }
 
-    double GetLevel()
+    double GetLevel() const
     {
         return m_level;
     }
@@ -78,64 +78,64 @@ public:
         m_level = val;
     }
 
-    double GetAbsoluteXmin()
+    double GetAbsoluteXmin() const
     {
         return m_absoluteXmin;
     }
 
-    double GetAbsoluteXmax()
+    double GetAbsoluteXmax() const
     {
         return m_absoluteXmax;
     }
 
-    double GetAbsoluteYmin()
+    double GetAbsoluteYmin() const
     {
         return m_absoluteYmin;
     }
 
-    double GetAbsoluteYmax()
+    double GetAbsoluteYmax() const
     {
         return m_absoluteYmax;
     }
 
-    double GetAbsoluteXwidth()
+    double GetAbsoluteXwidth() const
     {
         return std::abs(m_absoluteXmax - m_absoluteXmin);
     }
 
-    double GetAbsoluteYwidth()
+    double GetAbsoluteYwidth() const
     {
         return std::abs(m_absoluteYmax - m_absoluteYmin);
     }
 
-    double GetXmin();
+    double GetXmin() const;
 
-    double GetXmax();
+    double GetXmax() const;
 
-    double GetYmin();
+    double GetYmin() const;
 
-    double GetYmax();
+    double GetYmax() const;
 
-    Coo GetCenter();
+    Coo GetCenter() const;
 
-    int GetNbComposites()
+    int GetNbComposites() const
     {
         return m_nbComposites;
     }
 
-    std::vector<asGeoArea> GetComposites()
+    std::vector<asGeoArea> GetComposites() const
     {
         return m_composites;
     }
 
-    asGeoArea GetComposite(int Id)
+    asGeoArea GetComposite(int Id) const
     {
         if (Id >= m_nbComposites)
             asThrowException(_("The composite area doesn't exist."));
         return m_composites[Id];
     }
 
-    bool IsRectangle();
+    bool IsRectangle() const;
 
 protected:
     void CreateComposites();

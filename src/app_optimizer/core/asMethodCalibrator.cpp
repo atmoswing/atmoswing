@@ -303,7 +303,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds)
+wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds) const
 {
     wxString id;
 
