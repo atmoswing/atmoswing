@@ -594,9 +594,6 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
             share = false;
         }
 
-        if (!params.GetPredictorDataId(i_step, i_ptor).IsSameAs(params.GetPredictorDataId(i_step, prev_ptor), false))
-            share = false;
-
         if (share)
             break;
     }
@@ -612,7 +609,7 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
         m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat] = true;
 
         wxASSERT(m_preloadedArchive[i_step].size() > (unsigned) prev_ptor);
-        wxASSERT(m_preloadedArchive[i_step][prev_ptor].size() == params.GetPreloadDataIds(i_step, i_ptor).size());
+        wxASSERT(m_preloadedArchive[i_step][prev_ptor].size() > (unsigned) prev_dat);
         wxASSERT(m_preloadedArchive[i_step][prev_ptor][prev_dat].size() == preloadLevels.size());
 
         // Load data for every level and every hour
