@@ -48,7 +48,7 @@ public:
 
     void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    Coo GetCornerUL()
+    Coo GetCornerUL() const
     {
         return m_cornerUL;
     }
@@ -59,7 +59,7 @@ public:
         Init();
     }
 
-    Coo GetCornerUR()
+    Coo GetCornerUR() const
     {
         return m_cornerUR;
     }
@@ -70,7 +70,7 @@ public:
         Init();
     }
 
-    Coo GetCornerLL()
+    Coo GetCornerLL() const
     {
         return m_cornerLL;
     }
@@ -81,7 +81,7 @@ public:
         Init();
     }
 
-    Coo GetCornerLR()
+    Coo GetCornerLR() const
     {
         return m_cornerLR;
     }
@@ -92,7 +92,7 @@ public:
         Init();
     }
 
-    double GetLevel()
+    double GetLevel() const
     {
         return m_level;
     }
@@ -102,21 +102,21 @@ public:
         m_level = val;
     }
 
-    double GetXmin();
+    double GetXmin() const;
 
-    double GetXmax();
+    double GetXmax() const;
 
-    double GetXwidth();
+    double GetXwidth() const;
 
-    double GetYmin();
+    double GetYmin() const;
 
-    double GetYmax();
+    double GetYmax() const;
 
-    double GetYwidth();
+    double GetYwidth() const;
 
-    Coo GetCenter();
+    Coo GetCenter() const;
 
-    bool IsRectangle();
+    bool IsRectangle() const;
 
 protected:
     Coo m_cornerUL;

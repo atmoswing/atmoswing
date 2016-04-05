@@ -53,14 +53,14 @@ public:
                                                int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE,
                                                int flatAllowed = asFLAT_FORBIDDEN);
 
-    virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) = 0;
+    virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 
-    GridType GetGridType()
+    GridType GetGridType() const
     {
         return m_gridType;
     }
 
-    wxString GetGridTypeString()
+    wxString GetGridTypeString() const
     {
         switch (m_gridType) {
             case (Regular):
@@ -72,41 +72,41 @@ public:
         }
     }
 
-    virtual double GetXstep() = 0;
+    virtual double GetXstep() const = 0;
 
-    virtual double GetYstep() = 0;
+    virtual double GetYstep() const = 0;
 
-    virtual Array1DDouble GetXaxisComposite(int compositeNb) = 0;
+    virtual Array1DDouble GetXaxisComposite(int compositeNb) const = 0;
 
-    virtual Array1DDouble GetYaxisComposite(int compositeNb) = 0;
+    virtual Array1DDouble GetYaxisComposite(int compositeNb) const = 0;
 
-    virtual int GetXaxisCompositePtsnb(int compositeNb) = 0;
+    virtual int GetXaxisCompositePtsnb(int compositeNb)  const= 0;
 
-    virtual int GetYaxisCompositePtsnb(int compositeNb) = 0;
+    virtual int GetYaxisCompositePtsnb(int compositeNb) const = 0;
 
-    virtual double GetXaxisCompositeWidth(int compositeNb) = 0;
+    virtual double GetXaxisCompositeWidth(int compositeNb) const = 0;
 
-    virtual double GetYaxisCompositeWidth(int compositeNb) = 0;
+    virtual double GetYaxisCompositeWidth(int compositeNb) const = 0;
 
-    virtual double GetXaxisCompositeStart(int compositeNb) = 0;
+    virtual double GetXaxisCompositeStart(int compositeNb) const = 0;
 
-    virtual double GetYaxisCompositeStart(int compositeNb) = 0;
+    virtual double GetYaxisCompositeStart(int compositeNb) const = 0;
 
-    virtual double GetXaxisCompositeEnd(int compositeNb) = 0;
+    virtual double GetXaxisCompositeEnd(int compositeNb) const = 0;
 
-    virtual double GetYaxisCompositeEnd(int compositeNb) = 0;
+    virtual double GetYaxisCompositeEnd(int compositeNb) const = 0;
 
-    int GetXaxisPtsnb();
+    int GetXaxisPtsnb() const;
 
-    int GetYaxisPtsnb();
+    int GetYaxisPtsnb() const;
 
-    double GetXaxisWidth();
+    double GetXaxisWidth() const;
 
-    double GetYaxisWidth();
+    double GetYaxisWidth() const;
 
-    Array1DDouble GetXaxis();
+    Array1DDouble GetXaxis() const;
 
-    Array1DDouble GetYaxis();
+    Array1DDouble GetYaxis() const;
 
 protected:
     GridType m_gridType;

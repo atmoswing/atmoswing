@@ -38,11 +38,9 @@ asThreadPreprocessorGradients::asThreadPreprocessorGradients(VArray2DFloat *grad
           m_pGradients(gradients),
           m_pPredictors(predictors)
 {
-    m_status = Initializing;
     m_type = asThread::PreprocessorGradients;
     m_start = start;
     m_end = end;
-    m_status = Waiting;
 }
 
 asThreadPreprocessorGradients::~asThreadPreprocessorGradients()
@@ -52,8 +50,6 @@ asThreadPreprocessorGradients::~asThreadPreprocessorGradients()
 
 wxThread::ExitCode asThreadPreprocessorGradients::Entry()
 {
-    m_status = Working;
-
     int rowsNb = m_pPredictors[0]->GetLatPtsnb();
     int colsNb = m_pPredictors[0]->GetLonPtsnb();
     int timeSize = m_pPredictors[0]->GetTimeSize();
@@ -84,8 +80,6 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
 
         (*m_pGradients)[i_time] = tmpgrad.transpose();
     }
-
-    m_status = Done;
 
     return (wxThread::ExitCode) 0;
 }

@@ -389,9 +389,6 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
-    // Set sizes
-    SetSizes();
-
     // Check inputs and init parameters
     if (!InputsOK())
         return false;
@@ -522,7 +519,7 @@ bool asParametersCalibration::SetPreloadingProperties()
     return true;
 }
 
-bool asParametersCalibration::InputsOK()
+bool asParametersCalibration::InputsOK() const
 {
     // Time properties
     if (GetArchiveStart() <= 0) {
@@ -711,8 +708,6 @@ bool asParametersCalibration::InputsOK()
 
 bool asParametersCalibration::FixTimeLimits()
 {
-    SetSizes();
-
     double minHour = 200.0, maxHour = -50.0;
     for (int i = 0; i < GetStepsNb(); i++) {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
@@ -740,25 +735,19 @@ void asParametersCalibration::InitValues()
     wxASSERT(m_timeArrayAnalogsIntervalDaysVect.size() > 0);
     wxASSERT(m_forecastScoreVect.Name.size() > 0);
     wxASSERT(m_forecastScoreVect.TimeArrayMode.size() > 0);
-    //wxASSERT(m_forecastScoreVect.TimeArrayDate.size()>0);
-    //wxASSERT(m_forecastScoreVect.TimeArrayIntervalDays.size()>0);
-    //wxASSERT(m_forecastScoreVect.PostprocessDupliExp.size()>0);
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];
     m_timeArrayAnalogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
     SetForecastScoreName(m_forecastScoreVect.Name[0]);
     SetForecastScoreTimeArrayMode(m_forecastScoreVect.TimeArrayMode[0]);
-    //SetForecastScoreTimeArrayDate(m_forecastScoreVect.TimeArrayDate[0]);
-    //SetForecastScoreTimeArrayIntervalDays(m_forecastScoreVect.TimeArrayIntervalDays[0]);
-    //SetForecastScorePostprocessDupliExp(m_forecastScoreVect.PostprocessDupliExp[0]);
 
     for (int i = 0; i < GetStepsNb(); i++) {
         SetAnalogsNumber(i, m_stepsVect[i].AnalogsNumber[0]);
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
-                int subDataNb = m_stepsVect[i].Predictors[j].PreprocessDataId.size();
+                unsigned long subDataNb = m_stepsVect[i].Predictors[j].PreprocessDataId.size();
                 wxASSERT(subDataNb > 0);
                 for (int k = 0; k < subDataNb; k++) {
                     wxASSERT(m_stepsVect[i].Predictors[j].PreprocessDataId.size() > 0);
@@ -875,71 +864,11 @@ bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(VectorString v
     return true;
 }
 
-bool asParametersCalibration::SetForecastScoreTimeArrayDateVector(VectorDouble val)
-{
-    m_forecastScoreVect.TimeArrayDate = val;
-    return true;
-}
-
-bool asParametersCalibration::SetForecastScoreTimeArrayIntervalDaysVector(VectorInt val)
-{
-    m_forecastScoreVect.TimeArrayIntervalDays = val;
-    return true;
-}
-
-bool asParametersCalibration::SetForecastScorePostprocessDupliExpVector(VectorFloat val)
-{
-    if (val.size() < 1 && ForecastScoreNeedsPostprocessing()) {
-        asLogError(_("The provided 'PostprocessDupliExp' vector is empty."));
-        return false;
-    } else if (ForecastScoreNeedsPostprocessing()) {
-        for (int i = 0; i < (int) val.size(); i++) {
-            if (asTools::IsNaN(val[i])) {
-                asLogError(_("There are NaN values in the provided 'PostprocessDupliExp' vector."));
-                return false;
-            }
-        }
-    }
-    m_forecastScoreVect.PostprocessDupliExp = val;
-    return true;
-}
-
-int asParametersCalibration::GetTimeArrayAnalogsIntervalDaysLowerLimit()
-{
-    int lastrow = m_timeArrayAnalogsIntervalDaysVect.size() - 1;
-    wxASSERT(lastrow >= 0);
-    int val = asTools::MinArray(&m_timeArrayAnalogsIntervalDaysVect[0], &m_timeArrayAnalogsIntervalDaysVect[lastrow]);
-    return val;
-}
-
-int asParametersCalibration::GetAnalogsNumberLowerLimit(int i_step)
-{
-    int lastrow = m_stepsVect[i_step].AnalogsNumber.size() - 1;
-    wxASSERT(lastrow >= 0);
-    int val = asTools::MinArray(&m_stepsVect[i_step].AnalogsNumber[0], &m_stepsVect[i_step].AnalogsNumber[lastrow]);
-    return val;
-}
-
-float asParametersCalibration::GetPreprocessLevelLowerLimit(int i_step, int i_predictor, int i_dataset)
-{
-    wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
-        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size() - 1;
-        wxASSERT(lastrow >= 0);
-        float val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],
-                                      &m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
-        return val;
-    } else {
-        asLogError(_("Trying to access to an element outside of PreprocessLevels in the parameters object."));
-        return NaNFloat;
-    }
-}
-
-double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset)
+double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
     if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
-        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size() - 1;
+        unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size() - 1;
         wxASSERT(lastrow >= 0);
         double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],
                                        &m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
@@ -951,138 +880,61 @@ double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int i_step, int
     }
 }
 
-float asParametersCalibration::GetPredictorLevelLowerLimit(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorXminLowerLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Level.size() - 1;
-    wxASSERT(lastrow >= 0);
-    float val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Level[0],
-                                  &m_stepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
-    return val;
-}
-
-double asParametersCalibration::GetPredictorXminLowerLimit(int i_step, int i_predictor)
-{
-    wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Xmin[0],
                                    &m_stepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorXptsnbLowerLimit(int i_step, int i_predictor)
+int asParametersCalibration::GetPredictorXptsnbLowerLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[0],
                                 &m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorYminLowerLimit(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorYminLowerLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Ymin[0],
                                    &m_stepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorYptsnbLowerLimit(int i_step, int i_predictor)
+int asParametersCalibration::GetPredictorYptsnbLowerLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[0],
                                 &m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].TimeHours[0],
                                    &m_stepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
     return val;
 }
 
-float asParametersCalibration::GetPredictorWeightLowerLimit(int i_step, int i_predictor)
-{
-    wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Weight.size() - 1;
-    wxASSERT(lastrow >= 0);
-    float val = asTools::MinArray(&m_stepsVect[i_step].Predictors[i_predictor].Weight[0],
-                                  &m_stepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
-    return val;
-}
-
-double asParametersCalibration::GetForecastScoreTimeArrayDateLowerLimit()
-{
-    int lastrow = m_forecastScoreVect.TimeArrayDate.size() - 1;
-    wxASSERT(lastrow >= 0);
-    double val = asTools::MinArray(&m_forecastScoreVect.TimeArrayDate[0], &m_forecastScoreVect.TimeArrayDate[lastrow]);
-    return val;
-}
-
-int asParametersCalibration::GetForecastScoreTimeArrayIntervalDaysLowerLimit()
-{
-    int lastrow = m_forecastScoreVect.TimeArrayIntervalDays.size() - 1;
-    wxASSERT(lastrow >= 0);
-    int val = asTools::MinArray(&m_forecastScoreVect.TimeArrayIntervalDays[0],
-                                &m_forecastScoreVect.TimeArrayIntervalDays[lastrow]);
-    return val;
-}
-
-float asParametersCalibration::GetForecastScorePostprocessDupliExpLowerLimit()
-{
-    int lastrow = m_forecastScoreVect.PostprocessDupliExp.size() - 1;
-    wxASSERT(lastrow >= 0);
-    float val = asTools::MinArray(&m_forecastScoreVect.PostprocessDupliExp[0],
-                                  &m_forecastScoreVect.PostprocessDupliExp[lastrow]);
-    return val;
-}
-
-int asParametersCalibration::GetTimeArrayAnalogsIntervalDaysUpperLimit()
-{
-    int lastrow = m_timeArrayAnalogsIntervalDaysVect.size() - 1;
-    wxASSERT(lastrow >= 0);
-    int val = asTools::MaxArray(&m_timeArrayAnalogsIntervalDaysVect[0], &m_timeArrayAnalogsIntervalDaysVect[lastrow]);
-    return val;
-}
-
-int asParametersCalibration::GetAnalogsNumberUpperLimit(int i_step)
-{
-    int lastrow = m_stepsVect[i_step].AnalogsNumber.size() - 1;
-    wxASSERT(lastrow >= 0);
-    int val = asTools::MaxArray(&m_stepsVect[i_step].AnalogsNumber[0], &m_stepsVect[i_step].AnalogsNumber[lastrow]);
-    return val;
-}
-
-float asParametersCalibration::GetPreprocessLevelUpperLimit(int i_step, int i_predictor, int i_dataset)
-{
-    wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
-        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset].size() - 1;
-        wxASSERT(lastrow >= 0);
-        float val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][0],
-                                      &m_stepsVect[i_step].Predictors[i_predictor].PreprocessLevels[i_dataset][lastrow]);
-        return val;
-    } else {
-        asLogError(_("Trying to access to an element outside of PreprocessLevels in the parameters object."));
-        return NaNFloat;
-    }
-}
-
-double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset)
+double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
     if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
-        int lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size() - 1;
+        unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size() - 1;
         wxASSERT(lastrow >= 0);
         double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0],
                                        &m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][lastrow]);
@@ -1094,144 +946,67 @@ double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int i_step, int
     }
 }
 
-float asParametersCalibration::GetPredictorLevelUpperLimit(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorXminUpperLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Level.size() - 1;
-    wxASSERT(lastrow >= 0);
-    float val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Level[0],
-                                  &m_stepsVect[i_step].Predictors[i_predictor].Level[lastrow]);
-    return val;
-}
-
-double asParametersCalibration::GetPredictorXminUpperLimit(int i_step, int i_predictor)
-{
-    wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Xmin[0],
                                    &m_stepsVect[i_step].Predictors[i_predictor].Xmin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorXptsnbUpperLimit(int i_step, int i_predictor)
+int asParametersCalibration::GetPredictorXptsnbUpperLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[0],
                                 &m_stepsVect[i_step].Predictors[i_predictor].Xptsnb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorYminUpperLimit(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorYminUpperLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Ymin[0],
                                    &m_stepsVect[i_step].Predictors[i_predictor].Ymin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorYptsnbUpperLimit(int i_step, int i_predictor)
+int asParametersCalibration::GetPredictorYptsnbUpperLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[0],
                                 &m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor) const
 {
     wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size() - 1;
+    unsigned long lastrow = m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].TimeHours[0],
                                    &m_stepsVect[i_step].Predictors[i_predictor].TimeHours[lastrow]);
     return val;
 }
 
-float asParametersCalibration::GetPredictorWeightUpperLimit(int i_step, int i_predictor)
-{
-    wxASSERT((int) m_stepsVect[i_step].Predictors.size() > i_predictor);
-    int lastrow = m_stepsVect[i_step].Predictors[i_predictor].Weight.size() - 1;
-    wxASSERT(lastrow >= 0);
-    float val = asTools::MaxArray(&m_stepsVect[i_step].Predictors[i_predictor].Weight[0],
-                                  &m_stepsVect[i_step].Predictors[i_predictor].Weight[lastrow]);
-    return val;
-}
-
-double asParametersCalibration::GetForecastScoreTimeArrayDateUpperLimit()
-{
-    int lastrow = m_forecastScoreVect.TimeArrayDate.size() - 1;
-    wxASSERT(lastrow >= 0);
-    double val = asTools::MaxArray(&m_forecastScoreVect.TimeArrayDate[0], &m_forecastScoreVect.TimeArrayDate[lastrow]);
-    return val;
-}
-
-int asParametersCalibration::GetForecastScoreTimeArrayIntervalDaysUpperLimit()
-{
-    int lastrow = m_forecastScoreVect.TimeArrayIntervalDays.size() - 1;
-    wxASSERT(lastrow >= 0);
-    int val = asTools::MaxArray(&m_forecastScoreVect.TimeArrayIntervalDays[0],
-                                &m_forecastScoreVect.TimeArrayIntervalDays[lastrow]);
-    return val;
-}
-
-float asParametersCalibration::GetForecastScorePostprocessDupliExpUpperLimit()
-{
-    int lastrow = m_forecastScoreVect.PostprocessDupliExp.size() - 1;
-    wxASSERT(lastrow >= 0);
-    float val = asTools::MaxArray(&m_forecastScoreVect.PostprocessDupliExp[0],
-                                  &m_forecastScoreVect.PostprocessDupliExp[lastrow]);
-    return val;
-}
-
-int asParametersCalibration::GetTimeArrayAnalogsIntervalDaysIteration()
-{
-    if (m_timeArrayAnalogsIntervalDaysVect.size() < 2)
-        return 0;
-    int val = m_timeArrayAnalogsIntervalDaysVect[1] - m_timeArrayAnalogsIntervalDaysVect[0];
-    return val;
-}
-
-int asParametersCalibration::GetAnalogsNumberIteration(int i_step)
-{
-    if (m_stepsVect[i_step].AnalogsNumber.size() < 2)
-        return 0;
-    int val = m_stepsVect[i_step].AnalogsNumber[1] - m_stepsVect[i_step].AnalogsNumber[0];
-    return val;
-}
-
-double asParametersCalibration::GetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset)
-{
-    if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
-        if (m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset].size() < 2)
-            return 0;
-        double val = m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][1] -
-                     m_stepsVect[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset][0];
-        return val;
-    } else {
-        asLogError(
-                _("Trying to access to an element outside of PreprocessTimeHours (iteration) in the parameters object."));
-        return NaNDouble;
-    }
-}
-
-double asParametersCalibration::GetPredictorXminIteration(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorXminIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() < 2)
         return 0;
-    int row = floor((float) m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() / 2.0);
+    int row = (int) floor((float) m_stepsVect[i_step].Predictors[i_predictor].Xmin.size() / 2.0);
     double val = m_stepsVect[i_step].Predictors[i_predictor].Xmin[row] -
                  m_stepsVect[i_step].Predictors[i_predictor].Xmin[row - 1];
     return val;
 }
 
-int asParametersCalibration::GetPredictorXptsnbIteration(int i_step, int i_predictor)
+int asParametersCalibration::GetPredictorXptsnbIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].Predictors[i_predictor].Xptsnb.size() < 2)
         return 0;
@@ -1240,63 +1015,21 @@ int asParametersCalibration::GetPredictorXptsnbIteration(int i_step, int i_predi
     return val;
 }
 
-double asParametersCalibration::GetPredictorYminIteration(int i_step, int i_predictor)
+double asParametersCalibration::GetPredictorYminIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() < 2)
         return 0;
-    int row = floor((float) m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() / 2.0);
+    int row = (int) floor((float) m_stepsVect[i_step].Predictors[i_predictor].Ymin.size() / 2.0);
     double val = m_stepsVect[i_step].Predictors[i_predictor].Ymin[row] -
                  m_stepsVect[i_step].Predictors[i_predictor].Ymin[row - 1];
     return val;
 }
 
-int asParametersCalibration::GetPredictorYptsnbIteration(int i_step, int i_predictor)
+int asParametersCalibration::GetPredictorYptsnbIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].Predictors[i_predictor].Yptsnb.size() < 2)
         return 0;
     int val = m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[1] -
               m_stepsVect[i_step].Predictors[i_predictor].Yptsnb[0];
-    return val;
-}
-
-double asParametersCalibration::GetPredictorTimeHoursIteration(int i_step, int i_predictor)
-{
-    if (m_stepsVect[i_step].Predictors[i_predictor].TimeHours.size() < 2)
-        return 0;
-    double val = m_stepsVect[i_step].Predictors[i_predictor].TimeHours[1] -
-                 m_stepsVect[i_step].Predictors[i_predictor].TimeHours[0];
-    return val;
-}
-
-float asParametersCalibration::GetPredictorWeightIteration(int i_step, int i_predictor)
-{
-    if (m_stepsVect[i_step].Predictors[i_predictor].Weight.size() < 2)
-        return 0;
-    float val = m_stepsVect[i_step].Predictors[i_predictor].Weight[1] -
-                m_stepsVect[i_step].Predictors[i_predictor].Weight[0];
-    return val;
-}
-
-double asParametersCalibration::GetForecastScoreTimeArrayDateIteration()
-{
-    if (m_forecastScoreVect.TimeArrayDate.size() < 2)
-        return 0;
-    double val = m_forecastScoreVect.TimeArrayDate[1] - m_forecastScoreVect.TimeArrayDate[0];
-    return val;
-}
-
-int asParametersCalibration::GetForecastScoreTimeArrayIntervalDaysIteration()
-{
-    if (m_forecastScoreVect.TimeArrayIntervalDays.size() < 2)
-        return 0;
-    int val = m_forecastScoreVect.TimeArrayIntervalDays[1] - m_forecastScoreVect.TimeArrayIntervalDays[0];
-    return val;
-}
-
-float asParametersCalibration::GetForecastScorePostprocessDupliExpIteration()
-{
-    if (m_forecastScoreVect.PostprocessDupliExp.size() < 2)
-        return 0;
-    float val = m_forecastScoreVect.PostprocessDupliExp[1] - m_forecastScoreVect.PostprocessDupliExp[0];
     return val;
 }

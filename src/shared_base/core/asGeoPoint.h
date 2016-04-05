@@ -53,17 +53,17 @@ public:
         Init();
     }
 
-    double GetX()
+    double GetX() const
     {
         return m_point.x;
     }
 
-    double GetY()
+    double GetY() const
     {
         return m_point.y;
     }
 
-    float GetLevel()
+    float GetLevel() const
     {
         return m_level;
     }

@@ -43,9 +43,9 @@ public:
 
     virtual ~asResults();
 
-    wxString GetPredictandStationIdsList();
+    wxString GetPredictandStationIdsList() const;
 
-    int GetCurrentStep()
+    int GetCurrentStep() const
     {
         return m_currentStep;
     }
@@ -55,7 +55,7 @@ public:
         m_currentStep = val;
     }
 
-    double GetDateProcessed()
+    double GetDateProcessed() const
     {
         return m_dateProcessed;
     }
@@ -65,7 +65,7 @@ public:
         m_dateProcessed = val;
     }
 
-    wxString GetFilePath()
+    wxString GetFilePath() const
     {
         return m_filePath;
     }
@@ -75,9 +75,9 @@ public:
         m_filePath = val;
     }
 
-    bool Exists();
+    bool Exists() const;
 
-    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
 
     virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
@@ -91,35 +91,35 @@ protected:
     bool m_saveIntermediateResults;
     bool m_loadIntermediateResults;
 
-    bool DefTargetDatesAttributes(asFileNetcdf &ncFile);
+    bool DefTargetDatesAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefStationIdsAttributes(asFileNetcdf &ncFile);
+    bool DefStationIdsAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefStationOfficialIdsAttributes(asFileNetcdf &ncFile);
+    bool DefStationOfficialIdsAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsNbAttributes(asFileNetcdf &ncFile);
+    bool DefAnalogsNbAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefTargetValuesNormAttributes(asFileNetcdf &ncFile);
+    bool DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefTargetValuesGrossAttributes(asFileNetcdf &ncFile);
+    bool DefTargetValuesGrossAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile);
+    bool DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsDatesAttributes(asFileNetcdf &ncFile);
+    bool DefAnalogsDatesAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile);
+    bool DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile);
+    bool DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile);
+    bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefForecastScoresAttributes(asFileNetcdf &ncFile);
+    bool DefForecastScoresAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefForecastScoreFinalAttributes(asFileNetcdf &ncFile);
+    bool DefForecastScoreFinalAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefLevelAttributes(asFileNetcdf &ncFile);
+    bool DefLevelAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefScoresMapAttributes(asFileNetcdf &ncFile);
+    bool DefScoresMapAttributes(asFileNetcdf &ncFile) const;
 
 private:
 

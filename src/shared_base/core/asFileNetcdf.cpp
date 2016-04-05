@@ -1890,7 +1890,7 @@ bool asFileNetcdf::ParseStruct()
     return true;
 }
 
-size_t asFileNetcdf::GetVarLength(int &varid)
+size_t asFileNetcdf::GetVarLength(int &varid) const
 {
     wxASSERT(m_opened);
 

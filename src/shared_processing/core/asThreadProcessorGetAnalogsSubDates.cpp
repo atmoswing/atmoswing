@@ -56,7 +56,6 @@ asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(
           m_pFinalAnalogsDates(finalAnalogsDates),
           m_pPreviousAnalogsDates(previousAnalogsDates)
 {
-    m_status = Initializing;
     m_type = asThread::ProcessorGetAnalogsDates;
     m_step = step;
     m_start = start;
@@ -68,8 +67,6 @@ asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(
     wxASSERT_MSG(m_end != m_pTimeTargetSelection->size() - 2,
                  wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
                                   (int) m_pTimeTargetSelection->size()));
-
-    m_status = Waiting;
 }
 
 asThreadProcessorGetAnalogsSubDates::~asThreadProcessorGetAnalogsSubDates()
@@ -79,8 +76,6 @@ asThreadProcessorGetAnalogsSubDates::~asThreadProcessorGetAnalogsSubDates()
 
 wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 {
-    m_status = Working;
-
     // Extract time arrays
     Array1DDouble timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
     Array1DDouble timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
@@ -202,8 +197,6 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
             return (wxThread::ExitCode) 1;
         }
     }
-
-    m_status = Done;
 
     return (wxThread::ExitCode) 0;
 }

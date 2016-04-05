@@ -56,7 +56,7 @@ public:
 
     bool Forecast(asParametersForecast &params);
 
-    double GetForecastDate()
+    double GetForecastDate() const
     {
         return m_forecastDate;
     }
@@ -66,7 +66,7 @@ public:
         m_forecastDate = val;
     }
 
-    VectorString GetResultsFilePaths()
+    VectorString GetResultsFilePaths() const
     {
         return m_resultsFilePaths;
     }

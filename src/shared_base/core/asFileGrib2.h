@@ -50,36 +50,36 @@ public:
     bool GetVarArray(const wxString &VarName, const int IndexStart[], const int IndexCount[], float level,
                      float *pValue);
 
-    bool GetXaxis(Array1DFloat &uaxis);
+    bool GetXaxis(Array1DFloat &uaxis) const;
 
-    bool GetYaxis(Array1DFloat &vaxis);
+    bool GetYaxis(Array1DFloat &vaxis) const;
 
-    int GetXcellsNb()
+    int GetXcellsNb() const
     {
         return m_ptorDataset->GetRasterXSize();
     }
 
-    int GetYcellsNb()
+    int GetYcellsNb() const
     {
         return m_ptorDataset->GetRasterYSize();
     }
 
-    int GetXPtsnb()
+    int GetXPtsnb() const
     {
         return m_ptorBand->GetXSize();
     }
 
-    int GetYPtsnb()
+    int GetYPtsnb() const
     {
         return m_ptorBand->GetYSize();
     }
 
-    int GetBandsNb()
+    int GetBandsNb() const
     {
         return m_ptorDataset->GetRasterCount();
     }
 
-    double GetNaNValue()
+    double GetNaNValue() const
     {
         int success;
         double val = m_ptorBand->GetNoDataValue(&success);
@@ -88,27 +88,27 @@ public:
         return val;
     }
 
-    double GetXCellSize();
+    double GetXCellSize() const;
 
-    double GetYCellSize();
+    double GetYCellSize() const;
 
-    double GetXOrigin();
+    double GetXOrigin() const;
 
-    double GetYOrigin();
+    double GetYOrigin() const;
 
-    double GetRotation();
+    double GetRotation() const;
 
-    int FindBand(const wxString &VarName, float Level);
+    int FindBand(const wxString &VarName, float Level) const;
 
     void SetBand(int i);
 
-    double GetBandEstimatedMax();
+    double GetBandEstimatedMax() const;
 
-    double GetBandEstimatedMin();
+    double GetBandEstimatedMin() const;
 
-    wxString GetBandDescription();
+    wxString GetBandDescription() const;
 
-    double GetOffset()
+    double GetOffset() const
     {
         int offsetSuccess;
         double offset = m_ptorBand->GetOffset(&offsetSuccess);
@@ -119,7 +119,7 @@ public:
         return offset;
     }
 
-    double GetScale()
+    double GetScale() const
     {
         int scaleSuccess;
         double scale = m_ptorBand->GetScale(&scaleSuccess);

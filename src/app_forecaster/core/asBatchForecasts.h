@@ -41,15 +41,15 @@ public:
 
     bool Load(const wxString &filePath);
 
-    bool Save();
+    bool Save() const;
 
-    int GetForecastsNb();
+    int GetForecastsNb() const;
 
     void ClearForecasts();
 
     void AddForecast();;
 
-    wxString GetFilePath()
+    wxString GetFilePath() const
     {
         return m_filePath;
     }
@@ -59,14 +59,14 @@ public:
         m_filePath = path;
     }
 
-    bool HasChanged()
+    bool HasChanged() const
     {
         return m_hasChanged;
     }
 
-    bool HasExports();
+    bool HasExports() const;
 
-    bool ExportSyntheticXml()
+    bool ExportSyntheticXml() const
     {
         return m_exportSyntheticXml;
     }
@@ -81,7 +81,7 @@ public:
         m_hasChanged = val;
     }
 
-    wxString GetForecastsOutputDirectory()
+    wxString GetForecastsOutputDirectory() const
     {
         return m_forecastsOutputDirectory;
     }
@@ -91,7 +91,7 @@ public:
         m_forecastsOutputDirectory = val;
     }
 
-    wxString GetExportsOutputDirectory()
+    wxString GetExportsOutputDirectory() const
     {
         return m_exportsOutputDirectory;
     }
@@ -101,7 +101,7 @@ public:
         m_exportsOutputDirectory = val;
     }
 
-    wxString GetParametersFileDirectory()
+    wxString GetParametersFileDirectory() const
     {
         return m_parametersFileDirectory;
     }
@@ -111,7 +111,7 @@ public:
         m_parametersFileDirectory = val;
     }
 
-    wxString GetPredictorsArchiveDirectory()
+    wxString GetPredictorsArchiveDirectory() const
     {
         return m_predictorsArchiveDirectory;
     }
@@ -121,7 +121,7 @@ public:
         m_predictorsArchiveDirectory = val;
     }
 
-    wxString GetPredictorsRealtimeDirectory()
+    wxString GetPredictorsRealtimeDirectory() const
     {
         return m_predictorsRealtimeDirectory;
     }
@@ -131,7 +131,7 @@ public:
         m_predictorsRealtimeDirectory = val;
     }
 
-    wxString GetPredictandDBDirectory()
+    wxString GetPredictandDBDirectory() const
     {
         return m_predictandDBDirectory;
     }
@@ -141,7 +141,7 @@ public:
         m_predictandDBDirectory = val;
     }
 
-    wxString GetForecastFileName(int i)
+    wxString GetForecastFileName(int i) const
     {
         wxASSERT((int) m_forecastFileNames.size() > i);
         return m_forecastFileNames[i];

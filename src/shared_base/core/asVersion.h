@@ -44,8 +44,8 @@ public:
 
     static wxString GetFullString();
 
-
 protected:
+
 private:
 };
 

@@ -72,7 +72,7 @@ public:
 
     void State(const wxString &msg);
 
-    bool IsMessageBoxOnErrorEnabled()
+    bool IsMessageBoxOnErrorEnabled() const
     {
         return m_messageBoxOnError;
     }

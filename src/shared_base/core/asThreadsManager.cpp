@@ -73,9 +73,7 @@ void asThreadsManager::OnClose(wxCloseEvent &)
 // Safety to manage by caller
 int asThreadsManager::GetTotalThreadsNb()
 {
-    int size = m_threads.size();
-
-    return size;
+    return (int) m_threads.size();
 }
 
 // Safe: Critical section defined within
@@ -87,10 +85,7 @@ int asThreadsManager::GetRunningThreadsNb(int type)
 
     for (unsigned int i_threads = 0; i_threads < m_threads.size(); i_threads++) {
         if (m_threads[i_threads] != NULL) {
-            if ((m_threads[i_threads]->GetStatus() != asThread::Done) &
-                (m_threads[i_threads]->GetStatus() != asThread::Exiting) &
-                (m_threads[i_threads]->GetStatus() != asThread::Canceled) &
-                (m_threads[i_threads]->GetStatus() != asThread::Error)) {
+            if (m_threads[i_threads]->IsRunning()) {
                 if (type == -1) {
                     counter++;
                 } else {
@@ -145,12 +140,7 @@ bool asThreadsManager::AddThread(asThread *thread)
     }
 
     // Set the thread Id
-    m_critSectionManager.Enter();
-    wxASSERT(m_idCounter >= 0);
-    m_idCounter++;
-    thread->SetId(m_idCounter);
     wxASSERT(thread->GetId() >= 1);
-    m_critSectionManager.Leave();
 
     // Check the number of threads currently running
     if (GetAvailableThreadsNb() < 1) {
@@ -160,7 +150,7 @@ bool asThreadsManager::AddThread(asThread *thread)
     // Set priority
     if (m_priority < 0)
         Init();
-    thread->SetPriority((int) m_priority);
+    thread->SetPriority(m_priority);
 
     // Add to array
     m_critSectionManager.Enter();
@@ -182,13 +172,13 @@ bool asThreadsManager::AddThread(asThread *thread)
     return true;
 }
 
-void asThreadsManager::SetNull(int id)
+void asThreadsManager::SetNull(wxThreadIdType id)
 {
     m_critSectionManager.Enter();
 
     for (unsigned int i_threads = 0; i_threads < m_threads.size(); i_threads++) {
         if (m_threads[i_threads] != NULL) {
-            int thisid = m_threads[i_threads]->GetId();
+            wxThreadIdType thisid = m_threads[i_threads]->GetId();
 
             if (thisid == id) {
                 m_threads[i_threads] = NULL;

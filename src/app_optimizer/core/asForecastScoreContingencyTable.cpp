@@ -44,7 +44,7 @@ asForecastScoreContingencyTable::~asForecastScoreContingencyTable()
     //dtor
 }
 
-float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);

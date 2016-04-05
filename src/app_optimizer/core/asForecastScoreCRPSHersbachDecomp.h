@@ -40,9 +40,9 @@ public:
 
     ~asForecastScoreCRPSHersbachDecomp();
 
-    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements);
+    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const;
 
-    Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements);
+    Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const;
 
     bool ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData);
 

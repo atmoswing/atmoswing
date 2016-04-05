@@ -178,7 +178,7 @@ bool asGeoAreaComposite::CheckConsistency()
     return true;
 }
 
-double asGeoAreaComposite::GetXmin()
+double asGeoAreaComposite::GetXmin() const
 {
     double RealXmin = InfDouble;
     for (int i_area = 0; i_area < m_nbComposites; i_area++) {
@@ -187,7 +187,7 @@ double asGeoAreaComposite::GetXmin()
     return RealXmin;
 }
 
-double asGeoAreaComposite::GetXmax()
+double asGeoAreaComposite::GetXmax() const
 {
     double RealXmax = -InfDouble;
     for (int i_area = 0; i_area < m_nbComposites; i_area++) {
@@ -196,7 +196,7 @@ double asGeoAreaComposite::GetXmax()
     return RealXmax;
 }
 
-double asGeoAreaComposite::GetYmin()
+double asGeoAreaComposite::GetYmin() const
 {
     double RealYmin = InfDouble;
     for (int i_area = 0; i_area < m_nbComposites; i_area++) {
@@ -205,7 +205,7 @@ double asGeoAreaComposite::GetYmin()
     return RealYmin;
 }
 
-double asGeoAreaComposite::GetYmax()
+double asGeoAreaComposite::GetYmax() const
 {
     double RealYmax = -InfDouble;
     for (int i_area = 0; i_area < m_nbComposites; i_area++) {
@@ -214,7 +214,7 @@ double asGeoAreaComposite::GetYmax()
     return RealYmax;
 }
 
-Coo asGeoAreaComposite::GetCenter()
+Coo asGeoAreaComposite::GetCenter() const
 {
     Coo center;
 
@@ -241,7 +241,7 @@ Coo asGeoAreaComposite::GetCenter()
     return center;
 }
 
-bool asGeoAreaComposite::IsRectangle()
+bool asGeoAreaComposite::IsRectangle() const
 {
     // Check that the area is a square
     return !((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |

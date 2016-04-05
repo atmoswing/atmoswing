@@ -52,30 +52,30 @@ public:
 
     void Clear();
 
-    bool Print();
+    bool Print() const;
 
-    void CreateFile();
+    void CreateFile() const;
 
-    bool AppendContent();
+    bool AppendContent() const;
 
-    int GetCount()
+    int GetCount() const
     {
         return int(m_parameters.size());
     }
 
-    asParametersScoring GetParameter(int i)
+    asParametersScoring GetParameter(int i) const
     {
         wxASSERT(i < (int) m_parameters.size());
         return m_parameters[i];
     }
 
-    float GetScoreCalib(int i)
+    float GetScoreCalib(int i) const
     {
         wxASSERT(i < (int) m_scoresCalib.size());
         return m_scoresCalib[i];
     }
 
-    float GetScoreValid(int i)
+    float GetScoreValid(int i) const
     {
         wxASSERT(i < (int) m_scoresValid.size());
         return m_scoresValid[i];

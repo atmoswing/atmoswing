@@ -46,7 +46,7 @@ asForecastScoreCRPSaccuracyAR::~asForecastScoreCRPSaccuracyAR()
     //dtor
 }
 
-float asForecastScoreCRPSaccuracyAR::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements)
+float asForecastScoreCRPSaccuracyAR::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);

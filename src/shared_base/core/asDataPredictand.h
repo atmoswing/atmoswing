@@ -55,37 +55,37 @@ public:
 
     virtual bool Load(const wxString &AlternateFilePath = wxEmptyString) = 0;
 
-    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) = 0;
+    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) const = 0;
 
     virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
                                    const wxString &AlternatePatternDir = wxEmptyString,
                                    const wxString &AlternateDestinationDir = wxEmptyString) = 0;
 
-    virtual Array1DFloat GetReferenceAxis()
+    virtual Array1DFloat GetReferenceAxis() const
     {
         Array1DFloat nodata(1);
         nodata << NaNFloat;
         return nodata;
     }
 
-    virtual float GetReferenceValue(int i_station, double duration, float reference)
+    virtual float GetReferenceValue(int i_station, double duration, float reference) const
     {
         return NaNFloat;
     }
 
-    virtual Array2DFloat GetReferenceValuesArray()
+    virtual Array2DFloat GetReferenceValuesArray() const
     {
         Array1DFloat nodata(1);
         nodata << NaNFloat;
         return nodata;
     }
 
-    wxString GetDatasetId()
+    wxString GetDatasetId() const
     {
         return m_datasetId;
     }
 
-    DataParameter GetDataParameter()
+    DataParameter GetDataParameter() const
     {
         return m_dataParameter;
     }
@@ -95,7 +95,7 @@ public:
         m_dataParameter = val;
     }
 
-    DataTemporalResolution GetDataTemporalResolution()
+    DataTemporalResolution GetDataTemporalResolution() const
     {
         return m_dataTemporalResolution;
     }
@@ -105,7 +105,7 @@ public:
         m_dataTemporalResolution = val;
     }
 
-    DataSpatialAggregation GetDataSpatialAggregation()
+    DataSpatialAggregation GetDataSpatialAggregation() const
     {
         return m_dataSpatialAggregation;
     }
@@ -115,32 +115,32 @@ public:
         m_dataSpatialAggregation = val;
     }
 
-    bool HasNormalizedData()
+    bool HasNormalizedData() const
     {
         return m_hasNormalizedData;
     }
 
-    bool HasReferenceValues()
+    bool HasReferenceValues() const
     {
         return m_hasReferenceValues;
     }
 
-    double GetTimeStepDays()
+    double GetTimeStepDays() const
     {
         return m_timeStepDays;
     }
 
-    double GetTimeStepHours()
+    double GetTimeStepHours() const
     {
         return m_timeStepDays * 24;
     }
 
-    int GetStationsNb()
+    int GetStationsNb() const
     {
         return m_stationsNb;
     }
 
-    int GetTimeLength()
+    int GetTimeLength() const
     {
         return m_timeLength;
     }
@@ -180,7 +180,7 @@ public:
         return m_dataGross;
     }
 
-    Array1DFloat GetDataGrossStation(int predictandStationId)
+    Array1DFloat GetDataGrossStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         return m_dataGross.col(indexStation);
@@ -195,7 +195,7 @@ public:
         }
     }
 
-    Array1DFloat GetDataNormalizedStation(int predictandStationId)
+    Array1DFloat GetDataNormalizedStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         if (m_hasNormalizedData) {
@@ -210,7 +210,7 @@ public:
         return m_time;
     }
 
-    int GetStationIndex(int stationId);
+    int GetStationIndex(int stationId) const;
 
 protected:
     // Single value
@@ -242,7 +242,7 @@ protected:
     Array1DDouble m_stationStarts;
     Array1DDouble m_stationEnds;
 
-    wxString GetDBFilePathSaving(const wxString &destinationDir);
+    wxString GetDBFilePathSaving(const wxString &destinationDir) const;
 
     bool InitMembers(const wxString &catalogFilePath);
 
@@ -250,14 +250,14 @@ protected:
 
     bool LoadCommonData(asFileNetcdf &ncFile);
 
-    void SetCommonDefinitions(asFileNetcdf &ncFile);
+    void SetCommonDefinitions(asFileNetcdf &ncFile) const;
 
-    bool SaveCommonData(asFileNetcdf &ncFile);
+    bool SaveCommonData(asFileNetcdf &ncFile) const;
 
     bool ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
                    const wxString &AlternatePatternDir = wxEmptyString);
 
-    Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10);
+    Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10) const;
 
     bool SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex);
 

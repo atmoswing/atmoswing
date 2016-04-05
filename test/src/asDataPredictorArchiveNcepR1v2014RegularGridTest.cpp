@@ -120,6 +120,37 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadEasy)
     wxDELETE(predictor);
 }
 
+TEST(DataPredictorArchiveNcepR1v2014Regular, GetMinMaxValues)
+{
+    double Xmin = 10;
+    double Xwidth = 10;
+    double Ymin = 35;
+    double Ywidth = 5;
+    double step = 2.5;
+    float level = 1000;
+    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+
+    double start = asTime::GetMJD(1960, 1, 1, 00, 00);
+    double end = asTime::GetMJD(1960, 1, 11, 00, 00);
+    double timestephours = 6;
+    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    timearray.Init();
+
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/");
+
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+                                                                            predictorDataDir);
+
+    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
+    predictor->Load(&geoarea, timearray);
+
+    EXPECT_FLOAT_EQ(-3, predictor->GetMinValue());
+    EXPECT_FLOAT_EQ(199, predictor->GetMaxValue());
+
+    wxDELETE(predictor);
+}
+
 TEST(DataPredictorArchiveNcepR1v2014Regular, LoadComposite)
 {
     double Xmin = -10;

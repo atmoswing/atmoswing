@@ -39,7 +39,7 @@ public:
 
     ~asForecastScoreRankHistogram();
 
-    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements);
+    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const;
 
     bool ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData);
 

@@ -112,7 +112,7 @@ public:
 
     bool SetBestParameters(asResultsParametersArray &results);
 
-    wxString GetPredictandStationIdsList(VectorInt &stationIds);
+    wxString GetPredictandStationIdsList(VectorInt &stationIds) const;
 
     bool Manager();
 
@@ -128,7 +128,7 @@ public:
         m_scoreOrder = val;
     }
 
-    VectorFloat GetScoreClimatology()
+    VectorFloat GetScoreClimatology() const
     {
         return m_scoreClimatology;
     }
@@ -136,6 +136,11 @@ public:
     void SetScoreClimatology(VectorFloat val)
     {
         m_scoreClimatology = val;
+    }
+
+    bool IsPointerCopy(int i_step, int i_ptor, int i_dat) const
+    {
+        return m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat];
     }
 
 protected:

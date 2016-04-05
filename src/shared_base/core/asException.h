@@ -63,27 +63,22 @@ public:
 
     virtual ~asException() throw();
 
-    wxString GetMessage()
+    wxString GetMessage() const
     {
         return m_message;
     }
 
-    void SetMessage(const wxString &val)
-    {
-        m_message = val;
-    }
-
-    wxString GetFileName()
+    wxString GetFileName() const
     {
         return m_fileName;
     }
 
-    int GetLineNum()
+    int GetLineNum() const
     {
         return m_lineNum;
     }
 
-    bool HasChild()
+    bool HasChild() const
     {
         return m_previous.size() > 0;
     }
@@ -94,7 +89,7 @@ public:
 
     }
 
-    wxString GetFullMessage();
+    wxString GetFullMessage() const;
 
 protected:
 

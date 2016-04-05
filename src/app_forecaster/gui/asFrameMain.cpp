@@ -303,35 +303,35 @@ void asFrameMain::Update()
     DisplayLogLevelMenu();
 }
 
-void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event)
+void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event) const
 {
     asFramePredictandDB *frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OnConfigureDirectories(wxCommandEvent &event)
+void asFrameMain::OnConfigureDirectories(wxCommandEvent &event) const
 {
     asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OpenFramePreferences(wxCommandEvent &event)
+void asFrameMain::OpenFramePreferences(wxCommandEvent &event) const
 {
     asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OpenFrameAbout(wxCommandEvent &event)
+void asFrameMain::OpenFrameAbout(wxCommandEvent &event) const
 {
     asFrameAbout *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OnShowLog(wxCommandEvent &event)
+void asFrameMain::OnShowLog(wxCommandEvent &event) const
 {
     wxASSERT(m_logWindow);
     m_logWindow->DoShow();
@@ -528,7 +528,7 @@ void asFrameMain::SetPresentDate()
     m_textCtrlForecastHour->SetValue(hourStr);
 }
 
-double asFrameMain::GetForecastDate()
+double asFrameMain::GetForecastDate() const
 {
     // Date
     wxDateTime forecastDateWx = m_calendarForecastDate->GetDate();

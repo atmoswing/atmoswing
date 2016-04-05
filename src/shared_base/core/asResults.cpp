@@ -54,17 +54,17 @@ bool asResults::Load(const wxString &AlternateFilePath)
     return false;
 }
 
-bool asResults::Save(const wxString &AlternateFilePath)
+bool asResults::Save(const wxString &AlternateFilePath) const
 {
     return false;
 }
 
-bool asResults::Exists()
+bool asResults::Exists() const
 {
     return asFile::Exists(m_filePath);
 }
 
-wxString asResults::GetPredictandStationIdsList()
+wxString asResults::GetPredictandStationIdsList() const
 {
     wxString id;
 
@@ -83,7 +83,7 @@ wxString asResults::GetPredictandStationIdsList()
     return id;
 }
 
-bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile)
+bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Target dates", "target_dates");
     ncFile.PutAtt("var_desc", "Date of the day to forecast", "target_dates");
@@ -91,49 +91,49 @@ bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile)
     return true;
 }
 
-bool asResults::DefStationIdsAttributes(asFileNetcdf &ncFile)
+bool asResults::DefStationIdsAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Stations IDs", "station_ids");
     ncFile.PutAtt("var_desc", "The stations IDs", "station_ids");
     return true;
 }
 
-bool asResults::DefStationOfficialIdsAttributes(asFileNetcdf &ncFile)
+bool asResults::DefStationOfficialIdsAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Stations official IDs", "station_official_ids");
     ncFile.PutAtt("var_desc", "The stations official IDs", "station_official_ids");
     return true;
 }
 
-bool asResults::DefAnalogsNbAttributes(asFileNetcdf &ncFile)
+bool asResults::DefAnalogsNbAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Analogs number", "analogs_nb");
     ncFile.PutAtt("var_desc", "Analogs number for the lead times", "analogs_nb");
     return true;
 }
 
-bool asResults::DefTargetValuesNormAttributes(asFileNetcdf &ncFile)
+bool asResults::DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Target predictand normalized values", "target_values_norm");
     ncFile.PutAtt("var_desc", "Observed predictand values in a nomalized form", "target_values_norm");
     return true;
 }
 
-bool asResults::DefTargetValuesGrossAttributes(asFileNetcdf &ncFile)
+bool asResults::DefTargetValuesGrossAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Target predictand gross values", "target_values_gross");
     ncFile.PutAtt("var_desc", "Observed predictand values in the original form", "target_values_gross");
     return true;
 }
 
-bool asResults::DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile)
+bool asResults::DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Analogs criteria", "analog_criteria");
     ncFile.PutAtt("var_desc", "Criteria matching the dates from the analog method", "analog_criteria");
     return true;
 }
 
-bool asResults::DefAnalogsDatesAttributes(asFileNetcdf &ncFile)
+bool asResults::DefAnalogsDatesAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Analogs dates", "analog_dates");
     ncFile.PutAtt("var_desc", "Analogs dates from the analog method", "analog_dates");
@@ -141,49 +141,49 @@ bool asResults::DefAnalogsDatesAttributes(asFileNetcdf &ncFile)
     return true;
 }
 
-bool asResults::DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile)
+bool asResults::DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Analogs predictand normalized values", "analog_values_norm");
     ncFile.PutAtt("var_desc", "Predictand values (normalized) from the analog method", "analog_values_norm");
     return true;
 }
 
-bool asResults::DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile)
+bool asResults::DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Analogs predictand gross values", "analog_values_gross");
     ncFile.PutAtt("var_desc", "Predictand values (original) from the analog method", "analog_values_gross");
     return true;
 }
 
-bool asResults::DefAnalogsValuesAttributes(asFileNetcdf &ncFile)
+bool asResults::DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Analogs predictand values", "analog_values");
     ncFile.PutAtt("var_desc", "Predictand values (original) from the analog method", "analog_values");
     return true;
 }
 
-bool asResults::DefForecastScoresAttributes(asFileNetcdf &ncFile)
+bool asResults::DefForecastScoresAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Forecast scores", "forecast_scores");
     ncFile.PutAtt("var_desc", "Scores of the forecast resulting from the analog method", "forecast_scores");
     return true;
 }
 
-bool asResults::DefForecastScoreFinalAttributes(asFileNetcdf &ncFile)
+bool asResults::DefForecastScoreFinalAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Final score", "forecast_score");
     ncFile.PutAtt("var_desc", "Final score of the method", "forecast_score");
     return true;
 }
 
-bool asResults::DefLevelAttributes(asFileNetcdf &ncFile)
+bool asResults::DefLevelAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Level", "level");
     ncFile.PutAtt("units", "millibar", "level");
     return true;
 }
 
-bool asResults::DefScoresMapAttributes(asFileNetcdf &ncFile)
+bool asResults::DefScoresMapAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Forecast score", "forecast_scores");
     ncFile.PutAtt("var_desc", "Map of the forecast scores", "forecast_scores");
