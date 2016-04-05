@@ -46,15 +46,15 @@ public:
 
     bool Load(const wxString &filePath);
 
-    bool Save();
+    bool Save() const;
 
-    int GetLayersNb();
+    int GetLayersNb() const;
 
     void ClearLayers();
 
     void AddLayer();
 
-    wxString GetFilePath()
+    wxString GetFilePath() const
     {
         return m_filePath;
     }
@@ -64,12 +64,12 @@ public:
         m_filePath = path;
     }
 
-    wxString GetCoordinateSys()
+    wxString GetCoordinateSys() const
     {
         return m_coordinateSys;
     }
 
-    wxString GetForecastsDirectory()
+    wxString GetForecastsDirectory() const
     {
         return m_forecastsDirectory;
     }
@@ -79,7 +79,7 @@ public:
         m_forecastsDirectory = val;
     }
 
-    wxString GetLayerPath(int i)
+    wxString GetLayerPath(int i) const
     {
         wxASSERT((int) m_layerPaths.size() > i);
         return m_layerPaths[i];
@@ -91,7 +91,7 @@ public:
         m_layerPaths[i] = val;
     }
 
-    wxString GetLayerType(int i)
+    wxString GetLayerType(int i) const
     {
         wxASSERT((int) m_layerTypes.size() > i);
         return m_layerTypes[i];
@@ -103,7 +103,7 @@ public:
         m_layerTypes[i] = val;
     }
 
-    int GetLayerTransparency(int i)
+    int GetLayerTransparency(int i) const
     {
         wxASSERT((int) m_layerTransparencies.size() > i);
         return m_layerTransparencies[i];
@@ -115,7 +115,7 @@ public:
         m_layerTransparencies[i] = val;
     }
 
-    bool GetLayerVisibility(int i)
+    bool GetLayerVisibility(int i) const
     {
         wxASSERT((int) m_layerVisibilities.size() > i);
         return m_layerVisibilities[i];
@@ -127,7 +127,7 @@ public:
         m_layerVisibilities[i] = val;
     }
 
-    int GetLayerLineWidth(int i)
+    int GetLayerLineWidth(int i) const
     {
         wxASSERT((int) m_layerLineWidths.size() > i);
         return m_layerLineWidths[i];
@@ -141,7 +141,7 @@ public:
 
 #if wxUSE_GUI
 
-    wxColour GetLayerLineColor(int i)
+    wxColour GetLayerLineColor(int i) const
     {
         wxASSERT((int)m_layerLineColors.size()>i);
         return m_layerLineColors[i];
@@ -153,7 +153,7 @@ public:
         m_layerLineColors[i] = val;
     }
 
-    wxColour GetLayerFillColor(int i)
+    wxColour GetLayerFillColor(int i) const
     {
         wxASSERT((int)m_layerFillColors.size()>i);
         return m_layerFillColors[i];
@@ -165,7 +165,7 @@ public:
         m_layerFillColors[i] = val;
     }
     
-    wxBrushStyle GetLayerBrushStyle(int i)
+    wxBrushStyle GetLayerBrushStyle(int i) const
     {
         wxASSERT((int)m_layerBrushStyles.size()>i);
         return m_layerBrushStyles[i];
@@ -179,7 +179,7 @@ public:
 
 #endif
 
-    double GetColorbarMaxValue()
+    double GetColorbarMaxValue() const
     {
         return m_colorbarMaxValue;
     }
@@ -189,7 +189,7 @@ public:
         m_colorbarMaxValue = val;
     }
 
-    int GetTimeSeriesPlotPastDaysNb()
+    int GetTimeSeriesPlotPastDaysNb() const
     {
         return m_timeSeriesPlotPastDaysNb;
     }
@@ -199,7 +199,7 @@ public:
         m_timeSeriesPlotPastDaysNb = val;
     }
 
-    int GetAlarmsPanelReturnPeriod()
+    int GetAlarmsPanelReturnPeriod() const
     {
         return m_alarmsPanelReturnPeriod;
     }
@@ -209,7 +209,7 @@ public:
         m_alarmsPanelReturnPeriod = val;
     }
 
-    float GetAlarmsPanelQuantile()
+    float GetAlarmsPanelQuantile() const
     {
         return m_alarmsPanelQuantile;
     }
@@ -219,7 +219,7 @@ public:
         m_alarmsPanelQuantile = val;
     }
 
-    bool HasChanged()
+    bool HasChanged() const
     {
         return m_hasChanged;
     }

@@ -95,11 +95,11 @@ public:
     bool BuildArrayPredictandThresholds(asDataPredictand &predictand, const wxString &serieName, int stationId,
                                         float minThreshold, float maxThreshold);
 
-    bool HasForbiddenYears();
+    bool HasForbiddenYears() const;
 
-    bool IsYearForbidden(int year);
+    bool IsYearForbidden(int year) const;
 
-    VectorInt GetForbiddenYears()
+    VectorInt GetForbiddenYears() const
     {
         return m_forbiddenYears;
     }
@@ -113,76 +113,76 @@ public:
 
     bool KeepOnlyYears(const VectorInt &years);
 
-    Mode GetMode()
+    Mode GetMode() const
     {
         return m_mode;
     }
 
-    bool IsSimpleMode()
+    bool IsSimpleMode() const
     {
         return (m_mode == Simple) || (m_mode == SingleDay);
     }
 
-    double GetStart()
+    double GetStart() const
     {
         return m_start;
     }
 
-    int GetFirstDayYear()
+    int GetFirstDayYear() const
     {
         return GetYear(m_start);
     }
 
-    double GetFirstDayHour()
+    double GetFirstDayHour() const
     {
         double fractpart, intpart;
         fractpart = modf(m_start, &intpart);
         return fractpart * 24;
     }
 
-    double GetEnd()
+    double GetEnd() const
     {
         return m_end;
     }
 
-    int GetLastDayYear()
+    int GetLastDayYear() const
     {
         return GetYear(m_end);
     }
 
-    double GetLastDayHour()
+    double GetLastDayHour() const
     {
         double fractpart, intpart;
         fractpart = modf(m_end, &intpart);
         return fractpart * 24;
     }
 
-    double GetTimeStepHours()
+    double GetTimeStepHours() const
     {
         return m_timeStepDays * 24;
     }
 
-    double GetTimeStepDays()
+    double GetTimeStepDays() const
     {
         return m_timeStepDays;
     }
 
-    double GetIntervalHours()
+    double GetIntervalHours() const
     {
         return m_intervalDays * 24;
     }
 
-    double GetIntervalDays()
+    double GetIntervalDays() const
     {
         return m_intervalDays;
     }
 
-    double GetExclusionHours()
+    double GetExclusionHours() const
     {
         return m_exclusionDays * 24;
     }
 
-    double GetExclusionDays()
+    double GetExclusionDays() const
     {
         return m_exclusionDays;
     }
@@ -192,38 +192,26 @@ public:
         return m_timeArray;
     }
 
-    int GetSize()
+    int GetSize() const
     {
         return (int) m_timeArray.size();
     }
 
-    double GetFirst()
+    double GetFirst() const
     {
         wxASSERT(m_initialized);
         return m_timeArray(0);
     }
 
-    double GetLast()
+    double GetLast() const
     {
         wxASSERT(m_initialized);
         return m_timeArray(m_timeArray.rows() - 1);
     }
 
-    double *GetPointerStart()
-    {
-        wxASSERT(m_initialized);
-        return &m_timeArray(0);
-    }
+    int GetIndexFirstAfter(double date) const;
 
-    double *GetPointerEnd()
-    {
-        wxASSERT(m_initialized);
-        return &m_timeArray(GetSize() - 1);
-    }
-
-    int GetIndexFirstAfter(double date);
-
-    int GetIndexFirstBefore(double date);
+    int GetIndexFirstBefore(double date) const;
 
 protected:
 

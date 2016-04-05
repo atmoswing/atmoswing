@@ -145,7 +145,7 @@ bool asWorkspace::Load(const wxString &filePath)
     return true;
 }
 
-bool asWorkspace::Save()
+bool asWorkspace::Save() const
 {
     // Open the file
     asFileWorkspace fileWorkspace(m_filePath, asFile::Replace);
@@ -191,7 +191,7 @@ bool asWorkspace::Save()
     return true;
 }
 
-int asWorkspace::GetLayersNb()
+int asWorkspace::GetLayersNb() const
 {
     int layersNb = (int) m_layerPaths.size();
     return layersNb;

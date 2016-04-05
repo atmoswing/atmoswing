@@ -62,6 +62,10 @@ public:
 
     bool SetData(VArray2DFloat &val);
 
+    float GetMinValue() const;
+
+    float GetMaxValue() const;
+
     VArray2DFloat &GetData()
     {
         wxASSERT((int) m_data.size() == (int) m_time.size());
@@ -79,12 +83,12 @@ public:
         return m_time;
     }
 
-    Array1DFloat GetAxisLon()
+    Array1DFloat GetAxisLon() const
     {
         return m_axisLon;
     }
 
-    Array1DFloat GetAxisLat()
+    Array1DFloat GetAxisLat() const
     {
         return m_axisLat;
     }
@@ -98,42 +102,42 @@ public:
         m_directoryPath = directoryPath;
     }
 
-    wxString GetDirectoryPath()
+    wxString GetDirectoryPath() const
     {
         return m_directoryPath;
     }
 
-    int GetTimeSize()
+    int GetTimeSize() const
     {
         return (int) m_time.size();
     }
 
-    int GetLatPtsnb()
+    int GetLatPtsnb() const
     {
         return m_latPtsnb;
     }
 
-    int GetLonPtsnb()
+    int GetLonPtsnb() const
     {
         return m_lonPtsnb;
     }
 
-    double GetTimeStart()
+    double GetTimeStart() const
     {
         return m_time[0];
     }
 
-    double GetTimeEnd()
+    double GetTimeEnd() const
     {
         return m_time[m_time.size() - 1];
     }
 
-    bool IsPreprocessed()
+    bool IsPreprocessed() const
     {
         return m_isPreprocessed;
     }
 
-    bool GetIsPreprocessed()
+    bool GetIsPreprocessed() const
     {
         return m_isPreprocessed;
     }
@@ -143,7 +147,7 @@ public:
         m_isPreprocessed = val;
     }
 
-    bool CanBeClipped()
+    bool CanBeClipped() const
     {
         return m_canBeClipped;
     }
@@ -153,7 +157,7 @@ public:
         m_canBeClipped = val;
     }
 
-    wxString GetPreprocessMethod()
+    wxString GetPreprocessMethod() const
     {
         return m_preprocessMethod;
     }
@@ -163,27 +167,27 @@ public:
         m_preprocessMethod = val;
     }
 
-    wxString GetFinalProviderWebsite()
+    wxString GetFinalProviderWebsite() const
     {
         return m_finalProviderWebsite;
     }
 
-    wxString GetFinalProviderFTP()
+    wxString GetFinalProviderFTP() const
     {
         return m_finalProviderFTP;
     }
 
-    wxString GetDataId()
+    wxString GetDataId() const
     {
         return m_dataId;
     }
 
-    wxString GetDatasetName()
+    wxString GetDatasetName() const
     {
         return m_datasetName;
     }
 
-    double GetXaxisStep()
+    double GetXaxisStep() const
     {
         return m_xAxisStep;
     }
@@ -193,12 +197,12 @@ public:
         m_xAxisStep = (float) val;
     }
 
-    double GetXaxisShift()
+    double GetXaxisShift() const
     {
         return m_xAxisShift;
     }
 
-    double GetYaxisStep()
+    double GetYaxisStep() const
     {
         return m_yAxisStep;
     }
@@ -208,7 +212,7 @@ public:
         m_yAxisStep = (float) val;
     }
 
-    double GetYaxisShift()
+    double GetYaxisShift() const
     {
         return m_yAxisShift;
     }
@@ -254,7 +258,7 @@ protected:
     wxString m_fileAxisLevelName;
     wxString m_fileExtension;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray)
+    virtual bool CheckTimeArray(asTimeArray &timeArray) const
     {
         return false;
     }
@@ -273,8 +277,6 @@ protected:
 
     asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon,
                                        Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
-
-private:
 
 };
 

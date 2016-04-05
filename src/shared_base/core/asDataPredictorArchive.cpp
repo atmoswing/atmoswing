@@ -316,7 +316,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     return true;
 }
 
-bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray)
+bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray) const
 {
     if (!timeArray.IsSimpleMode()) {
         asLogError(_("The data loading only accepts time arrays in simple mode."));

@@ -181,13 +181,13 @@ asForecastScoreFinal::~asForecastScoreFinal()
 }
 
 Array1DFloat asForecastScoreFinal::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores,
-                                                 asTimeArray &timeArray)
+                                                 asTimeArray &timeArray) const
 {
     asLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
     return Array1DFloat();
 }
 
-float asForecastScoreFinal::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray)
+float asForecastScoreFinal::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray) const
 {
     asLogError(_("This asForecastScoreFinal class has no Assess method implemented with a 2D array as argument !"));
     return NaNFloat;

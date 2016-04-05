@@ -45,7 +45,7 @@ asPredictorCriteriaMD::~asPredictorCriteriaMD()
     //dtor
 }
 
-float asPredictorCriteriaMD::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb)
+float asPredictorCriteriaMD::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),

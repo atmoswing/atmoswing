@@ -688,3 +688,33 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
 
     return true;
 }
+
+float asDataPredictor::GetMinValue() const
+{
+    float minValue = m_data[0](0, 0);
+    float tmpValue;
+
+    for (int i = 0; i < m_data.size(); ++i) {
+        tmpValue = m_data[i].minCoeff();
+        if (tmpValue < minValue) {
+            minValue = tmpValue;
+        }
+    }
+
+    return minValue;
+}
+
+float asDataPredictor::GetMaxValue() const
+{
+    float maxValue = m_data[0](0, 0);
+    float tmpValue;
+
+    for (int i = 0; i < m_data.size(); ++i) {
+        tmpValue = m_data[i].maxCoeff();
+        if (tmpValue > maxValue) {
+            maxValue = tmpValue;
+        }
+    }
+
+    return maxValue;
+}

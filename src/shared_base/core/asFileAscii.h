@@ -69,7 +69,7 @@ public:
 
     bool SkipElements(int elementNb);
 
-    bool EndOfFile();
+    bool EndOfFile() const;
 
 protected:
 

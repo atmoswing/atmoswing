@@ -56,19 +56,19 @@ asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
     //dtor
 }
 
-int asGeoAreaRegularGrid::GetXaxisPtsnb()
+int asGeoAreaRegularGrid::GetXaxisPtsnb() const
 {
     // Get axis size
     return asTools::Round(std::abs((GetXmax() - GetXmin()) / m_xStep) + 1.0);
 }
 
-int asGeoAreaRegularGrid::GetYaxisPtsnb()
+int asGeoAreaRegularGrid::GetYaxisPtsnb() const
 {
     // Get axis size
     return asTools::Round(std::abs((GetYmax() - GetYmin()) / m_xStep) + 1.0);
 }
 
-Array1DDouble asGeoAreaRegularGrid::GetXaxis()
+Array1DDouble asGeoAreaRegularGrid::GetXaxis() const
 {
     // Get axis size
     int ptsnb = GetXaxisPtsnb();
@@ -84,7 +84,7 @@ Array1DDouble asGeoAreaRegularGrid::GetXaxis()
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaRegularGrid::GetYaxis()
+Array1DDouble asGeoAreaRegularGrid::GetYaxis() const
 {
     // Get axis size
     int ptsnb = GetYaxisPtsnb();
@@ -100,7 +100,7 @@ Array1DDouble asGeoAreaRegularGrid::GetYaxis()
     return Yaxis;
 }
 
-bool asGeoAreaRegularGrid::IsOnGrid(double step)
+bool asGeoAreaRegularGrid::IsOnGrid(double step) const
 {
     if (!IsRectangle())
         return false;
@@ -113,7 +113,7 @@ bool asGeoAreaRegularGrid::IsOnGrid(double step)
     return true;
 }
 
-bool asGeoAreaRegularGrid::IsOnGrid(double stepX, double stepY)
+bool asGeoAreaRegularGrid::IsOnGrid(double stepX, double stepY) const
 {
     if (!IsRectangle())
         return false;

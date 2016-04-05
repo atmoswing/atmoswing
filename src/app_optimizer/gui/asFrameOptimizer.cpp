@@ -15,15 +15,15 @@
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
  *
- * The Original Software is AtmoSwing. The Initial Developer of the
- * Original Software is Pascal Horton of the University of Lausanne.
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
  *
  */
 
 /*
- * Portions Copyright 2008-2013 University of Lausanne.
- * Portions Copyright 2013 Pascal Horton, Terr@num.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
 #include "asFrameOptimizer.h"
@@ -91,14 +91,14 @@ void asFrameOptimizer::Update()
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
+void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event) const
 {
     asFramePreferencesOptimizer *frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
+void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event) const
 {
     asFrameAbout *frame = new asFrameAbout(this);
     frame->Fit();
@@ -373,12 +373,12 @@ void asFrameOptimizer::LoadOptions()
     m_TextCtrlGAsMutationsMultiScaleProb->SetValue(GAsMutationsMultiScaleProb);
 }
 
-void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event)
+void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event) const
 {
     SaveOptions();
 }
 
-void asFrameOptimizer::SaveOptions()
+void asFrameOptimizer::SaveOptions() const
 {
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();

@@ -76,7 +76,7 @@ bool asDataPredictandLightnings::Load(const wxString &filePath)
     return true;
 }
 
-bool asDataPredictandLightnings::Save(const wxString &AlternateDestinationDir)
+bool asDataPredictandLightnings::Save(const wxString &AlternateDestinationDir) const
 {
     // Get the file path
     wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);

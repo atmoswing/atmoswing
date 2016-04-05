@@ -157,36 +157,36 @@ void asResultsAnalogsForecastAggregator::ClearArrays()
     m_pastForecasts.clear();
 }
 
-int asResultsAnalogsForecastAggregator::GetMethodsNb()
+int asResultsAnalogsForecastAggregator::GetMethodsNb() const
 {
     return (int) m_forecasts.size();
 }
 
-int asResultsAnalogsForecastAggregator::GetForecastsNb(int methodRow)
+int asResultsAnalogsForecastAggregator::GetForecastsNb(int methodRow) const
 {
     wxASSERT((int) m_forecasts.size() > methodRow);
     return (int) m_forecasts[methodRow].size();
 }
 
-int asResultsAnalogsForecastAggregator::GetPastMethodsNb()
+int asResultsAnalogsForecastAggregator::GetPastMethodsNb() const
 {
     return (int) m_pastForecasts.size();
 }
 
-int asResultsAnalogsForecastAggregator::GetPastForecastsNb(int methodRow)
+int asResultsAnalogsForecastAggregator::GetPastForecastsNb(int methodRow) const
 {
     wxASSERT((int) m_pastForecasts.size() > methodRow);
     return (int) m_pastForecasts[methodRow].size();
 }
 
-int asResultsAnalogsForecastAggregator::GetPastForecastsNb(int methodRow, int forecastRow)
+int asResultsAnalogsForecastAggregator::GetPastForecastsNb(int methodRow, int forecastRow) const
 {
     wxASSERT(m_pastForecasts.size() > (unsigned) methodRow);
     wxASSERT(m_pastForecasts[methodRow].size() > (unsigned) forecastRow);
     return (int) m_pastForecasts[methodRow][forecastRow].size();
 }
 
-asResultsAnalogsForecast *asResultsAnalogsForecastAggregator::GetForecast(int methodRow, int forecastRow)
+asResultsAnalogsForecast *asResultsAnalogsForecastAggregator::GetForecast(int methodRow, int forecastRow) const
 {
     wxASSERT(m_forecasts.size() > (unsigned) methodRow);
     wxASSERT(m_forecasts[methodRow].size() > (unsigned) forecastRow);
@@ -194,14 +194,14 @@ asResultsAnalogsForecast *asResultsAnalogsForecastAggregator::GetForecast(int me
 }
 
 asResultsAnalogsForecast *asResultsAnalogsForecastAggregator::GetPastForecast(int methodRow, int forecastRow,
-                                                                              int leadtimeRow)
+                                                                              int leadtimeRow) const
 {
     wxASSERT(m_pastForecasts.size() > (unsigned) methodRow);
     wxASSERT(m_pastForecasts[methodRow].size() > (unsigned) forecastRow);
     return m_pastForecasts[methodRow][forecastRow][leadtimeRow];
 }
 
-wxString asResultsAnalogsForecastAggregator::GetForecastName(int methodRow, int forecastRow)
+wxString asResultsAnalogsForecastAggregator::GetForecastName(int methodRow, int forecastRow) const
 {
     wxString name = wxEmptyString;
 
@@ -228,7 +228,7 @@ wxString asResultsAnalogsForecastAggregator::GetForecastName(int methodRow, int 
     return name;
 }
 
-wxString asResultsAnalogsForecastAggregator::GetMethodName(int methodRow)
+wxString asResultsAnalogsForecastAggregator::GetMethodName(int methodRow) const
 {
     wxString name = wxEmptyString;
 
@@ -250,7 +250,7 @@ wxString asResultsAnalogsForecastAggregator::GetMethodName(int methodRow)
     return name;
 }
 
-VectorString asResultsAnalogsForecastAggregator::GetAllMethodIds()
+VectorString asResultsAnalogsForecastAggregator::GetAllMethodIds() const
 {
     VectorString methodsIds;
 
@@ -262,7 +262,7 @@ VectorString asResultsAnalogsForecastAggregator::GetAllMethodIds()
     return methodsIds;
 }
 
-VectorString asResultsAnalogsForecastAggregator::GetAllMethodNames()
+VectorString asResultsAnalogsForecastAggregator::GetAllMethodNames() const
 {
     VectorString names;
 
@@ -281,7 +281,7 @@ VectorString asResultsAnalogsForecastAggregator::GetAllMethodNames()
     return names;
 }
 
-VectorString asResultsAnalogsForecastAggregator::GetAllForecastNames()
+VectorString asResultsAnalogsForecastAggregator::GetAllForecastNames() const
 {
     VectorString names;
 
@@ -309,7 +309,7 @@ VectorString asResultsAnalogsForecastAggregator::GetAllForecastNames()
     return names;
 }
 
-wxArrayString asResultsAnalogsForecastAggregator::GetAllForecastNamesWxArray()
+wxArrayString asResultsAnalogsForecastAggregator::GetAllForecastNamesWxArray() const
 {
     wxArrayString names;
 
@@ -337,7 +337,7 @@ wxArrayString asResultsAnalogsForecastAggregator::GetAllForecastNamesWxArray()
     return names;
 }
 
-VectorString asResultsAnalogsForecastAggregator::GetFilePaths()
+VectorString asResultsAnalogsForecastAggregator::GetFilePaths() const
 {
     VectorString files;
 
@@ -350,7 +350,7 @@ VectorString asResultsAnalogsForecastAggregator::GetFilePaths()
     return files;
 }
 
-wxString asResultsAnalogsForecastAggregator::GetFilePath(int methodRow, int forecastRow)
+wxString asResultsAnalogsForecastAggregator::GetFilePath(int methodRow, int forecastRow) const
 {
     if (forecastRow < 0) {
         forecastRow = 0;
@@ -359,7 +359,7 @@ wxString asResultsAnalogsForecastAggregator::GetFilePath(int methodRow, int fore
     return m_forecasts[methodRow][forecastRow]->GetFilePath();
 }
 
-wxArrayString asResultsAnalogsForecastAggregator::GetFilePathsWxArray()
+wxArrayString asResultsAnalogsForecastAggregator::GetFilePathsWxArray() const
 {
     wxArrayString files;
 
@@ -372,7 +372,7 @@ wxArrayString asResultsAnalogsForecastAggregator::GetFilePathsWxArray()
     return files;
 }
 
-Array1DFloat asResultsAnalogsForecastAggregator::GetTargetDates(int methodRow)
+Array1DFloat asResultsAnalogsForecastAggregator::GetTargetDates(int methodRow) const
 {
     double firstDate = 9999999999, lastDate = 0;
 
@@ -394,12 +394,12 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetTargetDates(int methodRow)
     return dates;
 }
 
-Array1DFloat asResultsAnalogsForecastAggregator::GetTargetDates(int methodRow, int forecastRow)
+Array1DFloat asResultsAnalogsForecastAggregator::GetTargetDates(int methodRow, int forecastRow) const
 {
     return m_forecasts[methodRow][forecastRow]->GetTargetDates();
 }
 
-Array1DFloat asResultsAnalogsForecastAggregator::GetFullTargetDates()
+Array1DFloat asResultsAnalogsForecastAggregator::GetFullTargetDates() const
 {
     double firstDate = 9999999999, lastDate = 0;
 
@@ -421,7 +421,7 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetFullTargetDates()
     return dates;
 }
 
-int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationId(int methodRow, int stationId)
+int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationId(int methodRow, int stationId) const
 {
     if (GetForecastsNb(methodRow) == 1)
         return 0;
@@ -439,7 +439,7 @@ int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationId(int m
     return 0;
 }
 
-int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationRow(int methodRow, int stationRow)
+int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationRow(int methodRow, int stationRow) const
 {
     if (GetForecastsNb(methodRow) == 1)
         return 0;
@@ -458,7 +458,7 @@ int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationRow(int 
     return 0;
 }
 
-wxArrayString asResultsAnalogsForecastAggregator::GetStationNames(int methodRow, int forecastRow)
+wxArrayString asResultsAnalogsForecastAggregator::GetStationNames(int methodRow, int forecastRow) const
 {
     wxArrayString stationNames;
 
@@ -473,7 +473,7 @@ wxArrayString asResultsAnalogsForecastAggregator::GetStationNames(int methodRow,
     return stationNames;
 }
 
-wxString asResultsAnalogsForecastAggregator::GetStationName(int methodRow, int forecastRow, int stationRow)
+wxString asResultsAnalogsForecastAggregator::GetStationName(int methodRow, int forecastRow, int stationRow) const
 {
     wxString stationName;
 
@@ -488,7 +488,7 @@ wxString asResultsAnalogsForecastAggregator::GetStationName(int methodRow, int f
     return stationName;
 }
 
-wxArrayString asResultsAnalogsForecastAggregator::GetStationNamesWithHeights(int methodRow, int forecastRow)
+wxArrayString asResultsAnalogsForecastAggregator::GetStationNamesWithHeights(int methodRow, int forecastRow) const
 {
     wxArrayString stationNames;
 
@@ -503,7 +503,7 @@ wxArrayString asResultsAnalogsForecastAggregator::GetStationNamesWithHeights(int
     return stationNames;
 }
 
-wxString asResultsAnalogsForecastAggregator::GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow)
+wxString asResultsAnalogsForecastAggregator::GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const
 {
     wxString stationName;
 
@@ -518,7 +518,7 @@ wxString asResultsAnalogsForecastAggregator::GetStationNameWithHeight(int method
     return stationName;
 }
 
-int asResultsAnalogsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRow)
+int asResultsAnalogsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRow) const
 {
     if (m_forecasts.size() == 0)
         return 0;
@@ -533,7 +533,7 @@ int asResultsAnalogsForecastAggregator::GetLeadTimeLength(int methodRow, int for
     return length;
 }
 
-int asResultsAnalogsForecastAggregator::GetLeadTimeLengthMax()
+int asResultsAnalogsForecastAggregator::GetLeadTimeLengthMax() const
 {
     if (m_forecasts.size() == 0)
         return 0;
@@ -549,7 +549,7 @@ int asResultsAnalogsForecastAggregator::GetLeadTimeLengthMax()
     return length;
 }
 
-wxArrayString asResultsAnalogsForecastAggregator::GetLeadTimes(int methodRow, int forecastRow)
+wxArrayString asResultsAnalogsForecastAggregator::GetLeadTimes(int methodRow, int forecastRow) const
 {
     wxArrayString leadTimes;
 
@@ -569,7 +569,7 @@ wxArrayString asResultsAnalogsForecastAggregator::GetLeadTimes(int methodRow, in
 }
 
 Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat &dates, int methodRow,
-                                                                    int returnPeriodRef, float quantileThreshold)
+                                                                    int returnPeriodRef, float quantileThreshold) const
 {
     wxASSERT(returnPeriodRef >= 2);
     wxASSERT(quantileThreshold > 0);
@@ -672,7 +672,7 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
 }
 
 Array1DFloat asResultsAnalogsForecastAggregator::GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef,
-                                                                     float quantileThreshold)
+                                                                     float quantileThreshold) const
 {
     Array2DFloat allMax(dates.size(), m_forecasts.size());
 
@@ -686,7 +686,7 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetOverallMaxValues(Array1DFloa
     return values;
 }
 
-bool asResultsAnalogsForecastAggregator::ExportSyntheticXml(const wxString &dirPath)
+bool asResultsAnalogsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) const
 {
     // Quantile values
     Array1DFloat quantiles(3);

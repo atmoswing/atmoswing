@@ -84,17 +84,17 @@ public:
         m_analogsDates = analogsDates;
     }
 
-    int GetTargetDatesLength()
+    int GetTargetDatesLength() const
     {
         return (int) m_targetDates.size();
     }
 
-    int GetAnalogsDatesLength()
+    int GetAnalogsDatesLength() const
     {
         return (int) m_analogsDates.cols();
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
 
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 

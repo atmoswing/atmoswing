@@ -4,8 +4,6 @@ asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParame
                                          int i_ptor, int i_dat)
         : asThread()
 {
-    m_status = Initializing;
-
     m_type = asThread::PreloadData;
 
     m_optimizer = optimizer; // copy pointer
@@ -13,8 +11,6 @@ asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParame
     m_iStep = i_step;
     m_iProt = i_ptor;
     m_iDat = i_dat;
-
-    m_status = Waiting;
 }
 
 asThreadPreloadData::~asThreadPreloadData()
@@ -24,8 +20,6 @@ asThreadPreloadData::~asThreadPreloadData()
 
 wxThread::ExitCode asThreadPreloadData::Entry()
 {
-    m_status = Working;
-
     if (!m_params.NeedsPreprocessing(m_iStep, m_iProt)) {
         if (!m_optimizer->PreloadDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
             return (wxThread::ExitCode) 1;
@@ -35,8 +29,6 @@ wxThread::ExitCode asThreadPreloadData::Entry()
             return (wxThread::ExitCode) 1;
         }
     }
-
-    m_status = Done;
 
     return (wxThread::ExitCode) 0;
 }

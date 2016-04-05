@@ -47,7 +47,7 @@ public:
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
-    double GetOriginalProviderStart()
+    double GetOriginalProviderStart() const
     {
         return m_originalProviderStart;
     }
@@ -63,7 +63,7 @@ protected:
     wxString m_subFolder;
     wxString m_fileNamePattern;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray);
+    virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
 private:
 

@@ -50,17 +50,17 @@ protected:
 
     void Update();
 
-    void OnSaveDefault(wxCommandEvent &event);
+    void OnSaveDefault(wxCommandEvent &event) const;
 
     void Launch(wxCommandEvent &event);
 
     void LoadOptions();
 
-    void SaveOptions();
+    void SaveOptions() const;
 
-    void OpenFramePreferences(wxCommandEvent &event);
+    void OpenFramePreferences(wxCommandEvent &event) const;
 
-    void OpenFrameAbout(wxCommandEvent &event);
+    void OpenFrameAbout(wxCommandEvent &event) const;
 
     void OnShowLog(wxCommandEvent &event);
 

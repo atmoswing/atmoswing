@@ -40,7 +40,7 @@ public:
 
     virtual ~asForecastManager();
 
-    bool HasForecasts();
+    bool HasForecasts() const;
 
     void ClearArrays();
 
@@ -56,53 +56,53 @@ public:
 
     void AddDirectoryPastForecasts(const wxString &dir);
 
-    int GetLinearIndex(int methodRow, int forecastRow);
+    int GetLinearIndex(int methodRow, int forecastRow) const;
 
-    int GetMethodRowFromLinearIndex(int linearIndex);
+    int GetMethodRowFromLinearIndex(int linearIndex) const;
 
-    int GetForecastRowFromLinearIndex(int linearIndex);
+    int GetForecastRowFromLinearIndex(int linearIndex) const;
 
-    asResultsAnalogsForecastAggregator *GetAggregator()
+    asResultsAnalogsForecastAggregator *GetAggregator() const
     {
         return m_aggregator;
     }
 
-    int GetMethodsNb()
+    int GetMethodsNb() const
     {
         return m_aggregator->GetMethodsNb();
     }
 
-    int GetForecastsNb(int methodRow)
+    int GetForecastsNb(int methodRow) const
     {
         return m_aggregator->GetForecastsNb(methodRow);
     }
 
-    int GetPastMethodsNb()
+    int GetPastMethodsNb() const
     {
         return m_aggregator->GetPastMethodsNb();
     }
 
-    int GetPastForecastsNb(int methodRow)
+    int GetPastForecastsNb(int methodRow) const
     {
         return m_aggregator->GetPastForecastsNb(methodRow);
     }
 
-    int GetPastForecastsNb(int methodRow, int forecastRow)
+    int GetPastForecastsNb(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
-    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow)
+    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetForecast(methodRow, forecastRow);
     }
 
-    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow)
+    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const
     {
         return m_aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
 
-    double GetLeadTimeOrigin()
+    double GetLeadTimeOrigin() const
     {
         return m_leadTimeOrigin;
     }
@@ -112,102 +112,102 @@ public:
         m_leadTimeOrigin = val;
     }
 
-    wxString GetForecastName(int methodRow, int forecastRow)
+    wxString GetForecastName(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetForecastName(methodRow, forecastRow);
     }
 
-    wxString GetMethodName(int methodRow)
+    wxString GetMethodName(int methodRow) const
     {
         return m_aggregator->GetMethodName(methodRow);
     }
 
-    VectorString GetAllMethodNames()
+    VectorString GetAllMethodNames() const
     {
         return m_aggregator->GetAllMethodNames();
     }
 
-    VectorString GetAllForecastNames()
+    VectorString GetAllForecastNames() const
     {
         return m_aggregator->GetAllForecastNames();
     }
 
-    wxArrayString GetAllForecastNamesWxArray()
+    wxArrayString GetAllForecastNamesWxArray() const
     {
         return m_aggregator->GetAllForecastNamesWxArray();
     }
 
-    VectorString GetFilePaths()
+    VectorString GetFilePaths() const
     {
         return m_aggregator->GetFilePaths();
     }
 
-    wxString GetFilePath(int methodRow, int forecastRow)
+    wxString GetFilePath(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetFilePath(methodRow, forecastRow);
     }
 
-    wxArrayString GetFilePathsWxArray()
+    wxArrayString GetFilePathsWxArray() const
     {
         return m_aggregator->GetFilePathsWxArray();
     }
 
-    Array1DFloat GetTargetDates(int methodRow)
+    Array1DFloat GetTargetDates(int methodRow) const
     {
         return m_aggregator->GetTargetDates(methodRow);
     }
 
-    Array1DFloat GetTargetDates(int methodRow, int forecastRow)
+    Array1DFloat GetTargetDates(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetTargetDates(methodRow, forecastRow);
     }
 
-    Array1DFloat GetFullTargetDates()
+    Array1DFloat GetFullTargetDates() const
     {
         return m_aggregator->GetFullTargetDates();
     }
 
-    int GetForecastRowSpecificForStationId(int methodRow, int stationId)
+    int GetForecastRowSpecificForStationId(int methodRow, int stationId) const
     {
         return m_aggregator->GetForecastRowSpecificForStationId(methodRow, stationId);
     }
 
-    int GetForecastRowSpecificForStationRow(int methodRow, int stationRow)
+    int GetForecastRowSpecificForStationRow(int methodRow, int stationRow) const
     {
         return m_aggregator->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
-    wxArrayString GetStationNames(int methodRow, int forecastRow)
+    wxArrayString GetStationNames(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetStationNames(methodRow, forecastRow);
     }
 
-    wxString GetStationName(int methodRow, int forecastRow, int stationRow)
+    wxString GetStationName(int methodRow, int forecastRow, int stationRow) const
     {
         return m_aggregator->GetStationName(methodRow, forecastRow, stationRow);
     }
 
-    wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow)
+    wxArrayString GetStationNamesWithHeights(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetStationNamesWithHeights(methodRow, forecastRow);
     }
 
-    wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow)
+    wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const
     {
         return m_aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
     }
 
-    int GetLeadTimeLength(int methodRow, int forecastRow)
+    int GetLeadTimeLength(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetLeadTimeLength(methodRow, forecastRow);
     }
 
-    int GetLeadTimeLengthMax()
+    int GetLeadTimeLengthMax() const
     {
         return m_aggregator->GetLeadTimeLengthMax();
     }
 
-    wxArrayString GetLeadTimes(int methodRow, int forecastRow)
+    wxArrayString GetLeadTimes(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetLeadTimes(methodRow, forecastRow);
     }

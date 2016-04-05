@@ -47,7 +47,7 @@ bool asFileParametersStandard::EditRootElement()
     return true;
 }
 
-bool asFileParametersStandard::CheckRootElement()
+bool asFileParametersStandard::CheckRootElement() const
 {
     if (!GetRoot())
         return false;

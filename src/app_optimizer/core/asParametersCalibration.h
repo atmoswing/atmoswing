@@ -52,145 +52,91 @@ public:
 
     virtual bool SetPreloadingProperties();
 
-    bool InputsOK();
+    bool InputsOK() const;
 
     bool FixTimeLimits();
 
     void InitValues();
 
-    int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_prep)
+    int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_prep) const
     {
         return (int) GetPreprocessDataIdVector(i_step, i_ptor, i_prep).size();
     }
 
-    VVectorInt GetPredictandStationIdsVector()
+    VVectorInt GetPredictandStationIdsVector() const
     {
         return m_predictandStationIdsVect;
     }
 
     bool SetPredictandStationIdsVector(VVectorInt val);
 
-    VectorInt GetTimeArrayAnalogsIntervalDaysVector()
+    VectorInt GetTimeArrayAnalogsIntervalDaysVector() const
     {
         return m_timeArrayAnalogsIntervalDaysVect;
     }
 
     bool SetTimeArrayAnalogsIntervalDaysVector(VectorInt val);
 
-    VectorString GetForecastScoreNameVector()
+    VectorString GetForecastScoreNameVector() const
     {
         return m_forecastScoreVect.Name;
     }
 
     bool SetForecastScoreNameVector(VectorString val);
 
-    VectorString GetForecastScoreTimeArrayModeVector()
+    VectorString GetForecastScoreTimeArrayModeVector() const
     {
         return m_forecastScoreVect.TimeArrayMode;
     }
 
     bool SetForecastScoreTimeArrayModeVector(VectorString val);
 
-    VectorDouble GetForecastScoreTimeArrayDateVector()
+    VectorDouble GetForecastScoreTimeArrayDateVector() const
     {
         return m_forecastScoreVect.TimeArrayDate;
     }
 
-    bool SetForecastScoreTimeArrayDateVector(VectorDouble val);
-
-    VectorInt GetForecastScoreTimeArrayIntervalDaysVector()
+    VectorInt GetForecastScoreTimeArrayIntervalDaysVector() const
     {
         return m_forecastScoreVect.TimeArrayIntervalDays;
     }
 
-    bool SetForecastScoreTimeArrayIntervalDaysVector(VectorInt val);
-
-    VectorFloat GetForecastScorePostprocessDupliExpVector()
+    VectorFloat GetForecastScorePostprocessDupliExpVector() const
     {
         return m_forecastScoreVect.PostprocessDupliExp;
     }
 
-    bool SetForecastScorePostprocessDupliExpVector(VectorFloat val);
+    double GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset) const;
 
-    int GetTimeArrayAnalogsIntervalDaysLowerLimit();
+    double GetPredictorXminLowerLimit(int i_step, int i_predictor) const;
 
-    int GetAnalogsNumberLowerLimit(int i_step);
+    int GetPredictorXptsnbLowerLimit(int i_step, int i_predictor) const;
 
-    float GetPreprocessLevelLowerLimit(int i_step, int i_predictor, int i_dataset);
+    double GetPredictorYminLowerLimit(int i_step, int i_predictor) const;
 
-    double GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset);
+    int GetPredictorYptsnbLowerLimit(int i_step, int i_predictor) const;
 
-    float GetPredictorLevelLowerLimit(int i_step, int i_predictor);
+    double GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor) const;
 
-    double GetPredictorXminLowerLimit(int i_step, int i_predictor);
+    double GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset) const;
 
-    int GetPredictorXptsnbLowerLimit(int i_step, int i_predictor);
+    double GetPredictorXminUpperLimit(int i_step, int i_predictor) const;
 
-    double GetPredictorYminLowerLimit(int i_step, int i_predictor);
+    int GetPredictorXptsnbUpperLimit(int i_step, int i_predictor) const;
 
-    int GetPredictorYptsnbLowerLimit(int i_step, int i_predictor);
+    double GetPredictorYminUpperLimit(int i_step, int i_predictor) const;
 
-    double GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor);
+    int GetPredictorYptsnbUpperLimit(int i_step, int i_predictor) const;
 
-    float GetPredictorWeightLowerLimit(int i_step, int i_predictor);
+    double GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor) const;
 
-    double GetForecastScoreTimeArrayDateLowerLimit();
+    double GetPredictorXminIteration(int i_step, int i_predictor) const;
 
-    int GetForecastScoreTimeArrayIntervalDaysLowerLimit();
+    int GetPredictorXptsnbIteration(int i_step, int i_predictor) const;
 
-    float GetForecastScorePostprocessDupliExpLowerLimit();
+    double GetPredictorYminIteration(int i_step, int i_predictor) const;
 
-    int GetTimeArrayAnalogsIntervalDaysUpperLimit();
-
-    int GetAnalogsNumberUpperLimit(int i_step);
-
-    float GetPreprocessLevelUpperLimit(int i_step, int i_predictor, int i_dataset);
-
-    double GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset);
-
-    float GetPredictorLevelUpperLimit(int i_step, int i_predictor);
-
-    double GetPredictorXminUpperLimit(int i_step, int i_predictor);
-
-    int GetPredictorXptsnbUpperLimit(int i_step, int i_predictor);
-
-    double GetPredictorYminUpperLimit(int i_step, int i_predictor);
-
-    int GetPredictorYptsnbUpperLimit(int i_step, int i_predictor);
-
-    double GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor);
-
-    float GetPredictorWeightUpperLimit(int i_step, int i_predictor);
-
-    double GetForecastScoreTimeArrayDateUpperLimit();
-
-    int GetForecastScoreTimeArrayIntervalDaysUpperLimit();
-
-    float GetForecastScorePostprocessDupliExpUpperLimit();
-
-    int GetTimeArrayAnalogsIntervalDaysIteration();
-
-    int GetAnalogsNumberIteration(int i_step);
-
-    double GetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset);
-
-    double GetPredictorXminIteration(int i_step, int i_predictor);
-
-    int GetPredictorXptsnbIteration(int i_step, int i_predictor);
-
-    double GetPredictorYminIteration(int i_step, int i_predictor);
-
-    int GetPredictorYptsnbIteration(int i_step, int i_predictor);
-
-    double GetPredictorTimeHoursIteration(int i_step, int i_predictor);
-
-    float GetPredictorWeightIteration(int i_step, int i_predictor);
-
-    double GetForecastScoreTimeArrayDateIteration();
-
-    int GetForecastScoreTimeArrayIntervalDaysIteration();
-
-    float GetForecastScorePostprocessDupliExpIteration();
+    int GetPredictorYptsnbIteration(int i_step, int i_predictor) const;
 
 protected:
 

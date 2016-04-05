@@ -43,15 +43,15 @@ public:
 
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
-    bool IsCompatibleWith(asResultsAnalogsForecast *otherForecast);
+    bool IsCompatibleWith(asResultsAnalogsForecast *otherForecast) const;
 
-    bool IsSameAs(asResultsAnalogsForecast *otherForecast);
+    bool IsSameAs(asResultsAnalogsForecast *otherForecast) const;
 
-    bool IsSpecificForStationId(int stationId);
+    bool IsSpecificForStationId(int stationId) const;
 
-    int GetStationRowFromId(int stationId);
+    int GetStationRowFromId(int stationId) const;
 
-    wxString GetForecastsDirectory()
+    wxString GetForecastsDirectory() const
     {
         return m_forecastsDirectory;
     }
@@ -61,7 +61,7 @@ public:
         m_forecastsDirectory = val;
     }
 
-    wxString GetPredictandDatasetId()
+    wxString GetPredictandDatasetId() const
     {
         return m_predictandDatasetId;
     }
@@ -71,7 +71,7 @@ public:
         m_predictandDatasetId = val;
     }
 
-    wxString GetPredictandDatabase()
+    wxString GetPredictandDatabase() const
     {
         return m_predictandDatabase;
     }
@@ -81,7 +81,7 @@ public:
         m_predictandDatabase = val;
     }
 
-    VectorInt GetPredictandStationIds()
+    VectorInt GetPredictandStationIds() const
     {
         return m_predictandStationIds;
     }
@@ -93,7 +93,7 @@ public:
 
     void SetPredictandStationIds(wxString val);
 
-    DataParameter GetPredictandParameter()
+    DataParameter GetPredictandParameter() const
     {
         return m_predictandParameter;
     }
@@ -103,7 +103,7 @@ public:
         m_predictandParameter = val;
     }
 
-    DataTemporalResolution GetPredictandTemporalResolution()
+    DataTemporalResolution GetPredictandTemporalResolution() const
     {
         return m_predictandTemporalResolution;
     }
@@ -113,7 +113,7 @@ public:
         m_predictandTemporalResolution = val;
     }
 
-    DataSpatialAggregation GetPredictandSpatialAggregation()
+    DataSpatialAggregation GetPredictandSpatialAggregation() const
     {
         return m_predictandSpatialAggregation;
     }
@@ -123,12 +123,12 @@ public:
         m_predictandSpatialAggregation = val;
     }
 
-    bool HasReferenceValues()
+    bool HasReferenceValues() const
     {
         return m_hasReferenceValues;
     }
 
-    wxString GetMethodId()
+    wxString GetMethodId() const
     {
         return m_methodId;
     }
@@ -138,7 +138,7 @@ public:
         m_methodId = val;
     }
 
-    wxString GetMethodIdDisplay()
+    wxString GetMethodIdDisplay() const
     {
         return m_methodIdDisplay;
     }
@@ -148,7 +148,7 @@ public:
         m_methodIdDisplay = val;
     }
 
-    wxString GetSpecificTag()
+    wxString GetSpecificTag() const
     {
         return m_specificTag;
     }
@@ -158,7 +158,7 @@ public:
         m_specificTag = val;
     }
 
-    wxString GetSpecificTagDisplay()
+    wxString GetSpecificTagDisplay() const
     {
         return m_specificTagDisplay;
     }
@@ -168,7 +168,7 @@ public:
         m_specificTagDisplay = val;
     }
 
-    wxString GetDescription()
+    wxString GetDescription() const
     {
         return m_description;
     }
@@ -178,7 +178,7 @@ public:
         m_description = val;
     }
 
-    double GetLeadTimeOrigin()
+    double GetLeadTimeOrigin() const
     {
         return m_leadTimeOrigin;
     }
@@ -189,42 +189,42 @@ public:
         return leadTimeStr;
     }
 
-    int GetStationsNb()
+    int GetStationsNb() const
     {
         return (int) m_stationIds.size();
     }
 
-    Array1DInt GetStationIds()
+    Array1DInt GetStationIds() const
     {
         return m_stationIds;
     }
 
-    wxString GetStationOfficialId(int i)
+    wxString GetStationOfficialId(int i) const
     {
         wxASSERT(i >= 0);
         wxASSERT((unsigned) i < m_stationOfficialIds.size());
         return m_stationOfficialIds[i];
     }
 
-    wxString GetStationName(int i)
+    wxString GetStationName(int i) const
     {
         wxASSERT(i >= 0);
         wxASSERT((unsigned) i < m_stationNames.size());
         return m_stationNames[i];
     }
 
-    wxArrayString GetStationNamesWxArrayString();
+    wxArrayString GetStationNamesWxArrayString() const;
 
-    wxArrayString GetStationNamesAndHeightsWxArrayString();
+    wxArrayString GetStationNamesAndHeightsWxArrayString() const;
 
-    wxString GetStationNameAndHeight(int i_stat);
+    wxString GetStationNameAndHeight(int i_stat) const;
 
     void SetStationNames(VectorString &stationsNames)
     {
         m_stationNames = stationsNames;
     }
 
-    int GetStationId(int i)
+    int GetStationId(int i) const
     {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationIds.size());
@@ -241,7 +241,7 @@ public:
         m_stationOfficialIds = stationsOfficialIds;
     }
 
-    float GetStationHeight(int i)
+    float GetStationHeight(int i) const
     {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationHeights.size());
@@ -253,12 +253,12 @@ public:
         m_stationHeights = stationsHeights;
     }
 
-    Array1DDouble GetStationXCoords()
+    Array1DDouble GetStationXCoords() const
     {
         return m_stationXCoords;
     }
 
-    double GetStationXCoord(int i)
+    double GetStationXCoord(int i) const
     {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationXCoords.size());
@@ -270,12 +270,12 @@ public:
         m_stationXCoords = stationsXCoords;
     }
 
-    Array1DDouble GetStationYCoords()
+    Array1DDouble GetStationYCoords() const
     {
         return m_stationYCoords;
     }
 
-    double GetStationYCoord(int i)
+    double GetStationYCoord(int i) const
     {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationYCoords.size());
@@ -287,7 +287,7 @@ public:
         m_stationYCoords = stationsYCoords;
     }
 
-    Array1DFloat GetReferenceAxis()
+    Array1DFloat GetReferenceAxis() const
     {
         return m_referenceAxis;
     }
@@ -298,7 +298,7 @@ public:
         m_hasReferenceValues = true;
     }
 
-    float GetReferenceValue(int i_stat, int i_ref)
+    float GetReferenceValue(int i_stat, int i_ref) const
     {
         if (!m_hasReferenceValues) {
             asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
@@ -312,7 +312,7 @@ public:
         return m_referenceValues(i_stat, i_ref);
     }
 
-    Array2DFloat GetReferenceValues()
+    Array2DFloat GetReferenceValues() const
     {
         if (!m_hasReferenceValues) {
             asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
@@ -328,7 +328,7 @@ public:
         m_referenceValues = referenceValues;
     }
 
-    int GetTargetDatesLength()
+    int GetTargetDatesLength() const
     {
         return (int) m_targetDates.size();
     }
@@ -376,7 +376,7 @@ public:
         return m_analogsValuesGross[i_leadtime];
     }
 
-    Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station)
+    Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station) const
     {
         wxASSERT(m_analogsValuesGross.size() > i_leadtime);
         wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
@@ -402,13 +402,13 @@ public:
         }
     }
 
-    int GetAnalogsDatesLength(int i)
+    int GetAnalogsDatesLength(int i) const
     {
         wxASSERT(m_analogsDates.size() > (unsigned) i);
         return (int) m_analogsDates[i].size();
     }
 
-    int GetAnalogsNumber(int i)
+    int GetAnalogsNumber(int i) const
     {
         wxASSERT(m_analogsDates.size() > (unsigned) i);
         return (int) m_analogsDates[i].size();
@@ -431,11 +431,11 @@ public:
         }
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
 
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
-    wxString GetPredictandStationIdsString();
+    wxString GetPredictandStationIdsString() const;
 
 protected:
     void BuildFileName();

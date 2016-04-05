@@ -94,12 +94,7 @@ public:
         m_forecastScores2DArray = forecastScores;
     }
 
-    int GetTargetDatesLength()
-    {
-        return (int) m_targetDates.size();
-    }
-
-    bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
 
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 

@@ -42,7 +42,7 @@ public:
 
     bool EditRootElement();
 
-    bool CheckRootElement();
+    virtual bool CheckRootElement() const;
 
 protected:
 

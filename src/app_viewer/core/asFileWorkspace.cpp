@@ -38,7 +38,7 @@ asFileWorkspace::~asFileWorkspace()
     //dtor
 }
 
-bool asFileWorkspace::EditRootElement()
+bool asFileWorkspace::EditRootElement() const
 {
     if (!GetRoot())
         return false;
@@ -46,7 +46,7 @@ bool asFileWorkspace::EditRootElement()
     return true;
 }
 
-bool asFileWorkspace::CheckRootElement()
+bool asFileWorkspace::CheckRootElement() const
 {
     if (!GetRoot())
         return false;

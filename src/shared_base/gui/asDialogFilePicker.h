@@ -37,7 +37,7 @@ class asDialogFilePicker
 public:
     asDialogFilePicker(wxWindow *parent, const wxString &description);
 
-    wxString GetPath()
+    wxString GetPath() const
     {
         return m_filePicker->GetPath();
     }

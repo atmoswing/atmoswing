@@ -137,7 +137,7 @@ asException::~asException() throw()
     //dtor
 }
 
-wxString asException::GetFullMessage()
+wxString asException::GetFullMessage() const
 {
     wxString fullmessage;
 

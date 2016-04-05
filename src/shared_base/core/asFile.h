@@ -59,7 +59,7 @@ public:
 
     virtual bool Close();
 
-    bool Exists()
+    bool Exists() const
     {
         return m_exists;
     }

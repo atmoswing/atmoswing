@@ -53,7 +53,7 @@ public:
 
     void WaitForFreeThread(int type);
 
-    void SetNull(int id);
+    void SetNull(wxThreadIdType id);
 
     bool CleanArray();
 
@@ -122,7 +122,7 @@ private:
     bool m_waitingUntilAllDone;
     bool m_cancelled;
     int m_maxThreadsNb;
-    long m_priority;
+    unsigned int m_priority;
 };
 
 #endif // ASTHREADSMANAGER_H

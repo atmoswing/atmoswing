@@ -27,15 +27,20 @@
 
 #include "asPredictorCriteria.h"
 #include "asPredictorCriteriaMD.h"
+#include "asPredictorCriteriaNMD.h"
 #include "asPredictorCriteriaMRDtoMax.h"
 #include "asPredictorCriteriaMRDtoMean.h"
 #include "asPredictorCriteriaRMSE.h"
+#include "asPredictorCriteriaNRMSE.h"
 #include "asPredictorCriteriaRMSEwithNaN.h"
 #include "asPredictorCriteriaRMSEonMeanWithNaN.h"
 #include "asPredictorCriteriaRSE.h"
 #include "asPredictorCriteriaS1.h"
+#include "asPredictorCriteriaNS1.h"
 #include "asPredictorCriteriaS1grads.h"
+#include "asPredictorCriteriaNS1grads.h"
 #include "asPredictorCriteriaSAD.h"
+#include "asDataPredictor.h"
 
 
 asPredictorCriteria::asPredictorCriteria(int linAlgebraMethod)
@@ -45,6 +50,9 @@ asPredictorCriteria::asPredictorCriteria(int linAlgebraMethod)
     m_criteria = Undefined;
     m_scaleBest = NaNFloat;
     m_scaleWorst = NaNFloat;
+    m_dataMin = NaNFloat;
+    m_dataMax = NaNFloat;
+    m_needsDataRange = false;
 }
 
 asPredictorCriteria::~asPredictorCriteria()
@@ -59,8 +67,16 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(Criteria criteriaEnum, int
             asPredictorCriteria *criteria = new asPredictorCriteriaS1(linAlgebraMethod);
             return criteria;
         }
+        case (NS1): {
+            asPredictorCriteria *criteria = new asPredictorCriteriaNS1(linAlgebraMethod);
+            return criteria;
+        }
         case (S1grads): {
             asPredictorCriteria *criteria = new asPredictorCriteriaS1grads(linAlgebraMethod);
+            return criteria;
+        }
+        case (NS1grads): {
+            asPredictorCriteria *criteria = new asPredictorCriteriaNS1grads(linAlgebraMethod);
             return criteria;
         }
         case (SAD): {
@@ -69,6 +85,10 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(Criteria criteriaEnum, int
         }
         case (MD): {
             asPredictorCriteria *criteria = new asPredictorCriteriaMD(linAlgebraMethod);
+            return criteria;
+        }
+        case (NMD): {
+            asPredictorCriteria *criteria = new asPredictorCriteriaNMD(linAlgebraMethod);
             return criteria;
         }
         case (MRDtoMax): {
@@ -81,6 +101,10 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(Criteria criteriaEnum, int
         }
         case (RMSE): {
             asPredictorCriteria *criteria = new asPredictorCriteriaRMSE(linAlgebraMethod);
+            return criteria;
+        }
+        case (NRMSE): {
+            asPredictorCriteria *criteria = new asPredictorCriteriaNRMSE(linAlgebraMethod);
             return criteria;
         }
         case (RMSEwithNaN): {
@@ -108,14 +132,23 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(const wxString &criteriaSt
     if (criteriaString.CmpNoCase("S1") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaS1(linAlgebraMethod);
         return criteria;
+    } else if (criteriaString.CmpNoCase("NS1") == 0) {
+        asPredictorCriteria *criteria = new asPredictorCriteriaNS1(linAlgebraMethod);
+        return criteria;
     } else if (criteriaString.CmpNoCase("S1grads") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaS1grads(linAlgebraMethod);
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NS1grads") == 0) {
+        asPredictorCriteria *criteria = new asPredictorCriteriaNS1grads(linAlgebraMethod);
         return criteria;
     } else if (criteriaString.CmpNoCase("SAD") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaSAD(linAlgebraMethod);
         return criteria;
     } else if (criteriaString.CmpNoCase("MD") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaMD(linAlgebraMethod);
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NMD") == 0) {
+        asPredictorCriteria *criteria = new asPredictorCriteriaNMD(linAlgebraMethod);
         return criteria;
     } else if (criteriaString.CmpNoCase("MRDtoMax") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaMRDtoMax(linAlgebraMethod);
@@ -125,6 +158,9 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(const wxString &criteriaSt
         return criteria;
     } else if (criteriaString.CmpNoCase("RMSE") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaRMSE(linAlgebraMethod);
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NRMSE") == 0) {
+        asPredictorCriteria *criteria = new asPredictorCriteriaNRMSE(linAlgebraMethod);
         return criteria;
     } else if (criteriaString.CmpNoCase("RMSEwithNaN") == 0) {
         asPredictorCriteria *criteria = new asPredictorCriteriaRMSEwithNaN(linAlgebraMethod);
@@ -142,3 +178,14 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(const wxString &criteriaSt
     }
 }
 
+void asPredictorCriteria::SetDataRange(const asDataPredictor *data)
+{
+    m_dataMin = data->GetMinValue();
+    m_dataMax = data->GetMaxValue();
+}
+
+void asPredictorCriteria::SetDataRange(float minValue, float maxValue)
+{
+    m_dataMin = minValue;
+    m_dataMax = maxValue;
+}

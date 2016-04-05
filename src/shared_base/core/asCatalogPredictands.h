@@ -56,272 +56,122 @@ public:
 
     bool Load();
 
-    wxString GetCatalogFilePath()
-    {
-        return m_catalogFilePath;
-    }
-
-    void SetCatalogFilePath(const wxString &val)
-    {
-        m_catalogFilePath = val;
-    }
-
-    wxString GetSetId()
+    wxString GetSetId() const
     {
         return m_setId;
     }
 
-    void SetSetId(const wxString &val)
-    {
-        m_setId = val;
-    }
-
-    wxString GetName()
+    wxString GetName() const
     {
         return m_name;
     }
 
-    void SetName(const wxString &val)
-    {
-        m_name = val;
-    }
-
-    wxString GetDescription()
+    wxString GetDescription() const
     {
         return m_description;
     }
 
-    void SetDescription(const wxString &val)
-    {
-        m_description = val;
-    }
-
-    double GetStart()
+    double GetStart() const
     {
         return m_start;
     }
 
-    void SetStart(double val)
-    {
-        m_start = val;
-    }
-
-    double GetEnd()
+    double GetEnd() const
     {
         return m_end;
     }
 
-    void SetEnd(double val)
-    {
-        m_end = val;
-    }
-
-    float GetTimeZoneHours()
+    float GetTimeZoneHours() const
     {
         return m_timeZoneHours;
     }
 
-    void SetTimeZone(float val)
-    {
-        m_timeZoneHours = val;
-    }
-
-    double GetTimeStepMinutes()
-    {
-        return m_timeStepHours * 60;
-    }
-
-    void SetTimeStepMinutes(double val)
-    {
-        m_timeStepHours = val / 60;
-    }
-
-    double GetTimeStepHours()
+    double GetTimeStepHours() const
     {
         return m_timeStepHours;
     }
 
-    void SetTimeStepHours(double val)
-    {
-        m_timeStepHours = val;
-    }
-
-    double GetTimeStepDays()
+    double GetTimeStepDays() const
     {
         return m_timeStepHours / 24;
     }
 
-    void SetTimeStepDays(double val)
-    {
-        m_timeStepHours = val * 24;
-    }
-
-    double GetFirstTimeStepMinutes()
-    {
-        return m_firstTimeStepHour * 60;
-    }
-
-    void SetFirstTimeStepMinutes(double val)
-    {
-        m_firstTimeStepHour = val / 60;
-    }
-
-    double GetFirstTimeStepHours()
+    double GetFirstTimeStepHours() const
     {
         return m_firstTimeStepHour;
     }
 
-    void SetFirstTimeStepHours(double val)
-    {
-        m_firstTimeStepHour = val;
-    }
-
-    wxString GetDataPath()
+    wxString GetDataPath() const
     {
         return m_dataPath;
     }
 
-    void SetDataPath(const wxString &val)
-    {
-        m_dataPath = val;
-    }
-
-    VectorString GetNan()
+    VectorString GetNan() const
     {
         return m_nan;
     }
 
-    void SetNan(const VectorString &val)
-    {
-        m_nan = val;
-    }
-
-    wxString GetCoordSys()
+    wxString GetCoordSys() const
     {
         return m_coordSys;
     }
 
-    void SetCoordSys(wxString val)
-    {
-        m_coordSys = val;
-    }
-
-    DataStruct GetStationInfo(int index)
-    {
-        return m_stations[index];
-    }
-
-    DataParameter GetParameter()
+    DataParameter GetParameter() const
     {
         return m_parameter;
     }
 
-    void SetParameter(DataParameter val)
-    {
-        m_parameter = val;
-    }
-
-    DataUnit GetUnit()
+    DataUnit GetUnit() const
     {
         return m_unit;
     }
 
-    void SetUnit(DataUnit val)
-    {
-        m_unit = val;
-    }
-
-    int GetStationId(int index)
+    int GetStationId(int index) const
     {
         return m_stations[index].Id;
     }
 
-    void SetStationId(int index, int val)
-    {
-        m_stations[index].Id = val;
-    }
-
-    wxString GetStationOfficialId(int index)
+    wxString GetStationOfficialId(int index) const
     {
         return m_stations[index].OfficialId;
     }
 
-    void SetStationOfficialId(int index, const wxString &val)
-    {
-        m_stations[index].OfficialId = val;
-    }
-
-    wxString GetStationName(int index)
+    wxString GetStationName(int index) const
     {
         return m_stations[index].Name;
     }
 
-    void SetStationName(int index, const wxString &val)
-    {
-        m_stations[index].Name = val;
-    }
-
-    wxString GetStationFilename(int index)
+    wxString GetStationFilename(int index) const
     {
         return m_stations[index].Filename;
     }
 
-    void SetStationFilename(int index, const wxString &val)
-    {
-        m_stations[index].Filename = val;
-    }
-
-    wxString GetStationFilepattern(int index)
+    wxString GetStationFilepattern(int index) const
     {
         return m_stations[index].Filepattern;
     }
 
-    void SetStationFilepattern(int index, const wxString &val)
-    {
-        m_stations[index].Filepattern = val;
-    }
-
-    double GetStationStart(int index)
+    double GetStationStart(int index) const
     {
         return m_stations[index].Start;
     }
 
-    void SetStationStart(int index, double val)
-    {
-        m_stations[index].Start = val;
-    }
-
-    double GetStationEnd(int index)
+    double GetStationEnd(int index) const
     {
         return m_stations[index].End;
     }
 
-    void SetStationEnd(int index, double val)
-    {
-        m_stations[index].End = val;
-    }
-
-    Coo GetStationCoord(int index)
+    Coo GetStationCoord(int index) const
     {
         return m_stations[index].Coord;
     }
 
-    void SetStationCoord(int index, const Coo &val)
-    {
-        m_stations[index].Coord = val;
-    }
-
-    float GetStationHeight(int index)
+    float GetStationHeight(int index) const
     {
         return m_stations[index].Height;
     }
 
-    void SetStationHeight(int index, float val)
-    {
-        m_stations[index].Height = val;
-    }
-
-    int GetStationsNb()
+    int GetStationsNb() const
     {
         return int(m_stations.size());
     }
