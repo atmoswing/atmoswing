@@ -42,12 +42,12 @@ protected:
         m_iterator++;
     }
 
-    bool IsOver()
+    bool IsOver() const
     {
         return m_isOver;
     }
 
-    bool SkipNext()
+    bool SkipNext() const
     {
         return m_skipNext;
     }

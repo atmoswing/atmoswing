@@ -830,7 +830,7 @@ bool asMethodOptimizerGeneticAlgorithms::Optimize()
             return false;
         if (!Mating())
             return false;
-        if (!Mutatation())
+        if (!Mutation())
             return false;
 
         m_iterator = 0;
@@ -1802,7 +1802,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
     return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::Mutatation()
+bool asMethodOptimizerGeneticAlgorithms::Mutation()
 {
     // NB: The parameters and scores are already sorted !
 

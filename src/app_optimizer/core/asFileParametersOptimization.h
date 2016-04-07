@@ -14,7 +14,7 @@ public:
 
     bool EditRootElement();
 
-    bool CheckRootElement();
+    bool CheckRootElement() const;
 
 protected:
 

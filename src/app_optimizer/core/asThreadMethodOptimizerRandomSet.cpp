@@ -12,11 +12,7 @@ asThreadMethodOptimizerRandomSet::asThreadMethodOptimizerRandomSet(asMethodOptim
           m_finalScoreCalib(finalScoreCalib),
           m_scoreClimatology(scoreClimatology)
 {
-    m_status = Initializing;
-
     m_type = asThread::MethodOptimizerRandomSet;
-
-    m_status = Waiting;
 }
 
 asThreadMethodOptimizerRandomSet::~asThreadMethodOptimizerRandomSet()
@@ -26,8 +22,6 @@ asThreadMethodOptimizerRandomSet::~asThreadMethodOptimizerRandomSet()
 
 wxThread::ExitCode asThreadMethodOptimizerRandomSet::Entry()
 {
-    m_status = Working;
-
     // Create results objects. Needs to be in a critical section because of access to the config pointer.
     asResultsAnalogsDates anaDates;
     asResultsAnalogsDates anaDatesPrevious;
@@ -80,8 +74,6 @@ wxThread::ExitCode asThreadMethodOptimizerRandomSet::Entry()
     if (m_scoreClimatology->size() == 0) {
         *m_scoreClimatology = m_optimizer->GetScoreClimatology();
     }
-
-    m_status = Done;
 
     return 0;
 }
