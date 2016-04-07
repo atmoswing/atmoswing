@@ -323,82 +323,100 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds) 
 
 bool asMethodCalibrator::PreloadData(asParametersScoring &params)
 {
+    if (!m_preloaded) {
+        // Set preload to true here, so cleanup is made in case of exceptions.
+        m_preloaded = true;
+
+        InitializePreloadedDataContainer(params);
+
+        if (!ProceedToDataPreloading(params))
+            return false;
+
+        if (!CheckDataIsPreloaded(params))
+            return false;
+    }
+
+    return true;
+}
+
+bool asMethodCalibrator::ProceedToDataPreloading(asParametersScoring &params)
+{
     bool parallelDataLoad = false;
     ThreadsManager().CritSectionConfig().Enter();
     wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, true);
     ThreadsManager().CritSectionConfig().Leave();
 
-    // Load data once.
-    if (!m_preloaded) {
-        // Set preload to true here, so cleanup is made in case of exceptions.
-        m_preloaded = true;
+    if (parallelDataLoad) {
+        asLogMessage(_("Preloading data with threads."));
+    }
 
-        if (parallelDataLoad) {
-            asLogMessage(_("Preloading data with threads."));
-        }
+    for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
+        for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
+            if (params.NeedsPreloading(i_step, i_ptor)) {
 
-        // Resize container
-        InitializePreloadedDataContainer(params);
-
-        for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
-            for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-                if (params.NeedsPreloading(i_step, i_ptor)) {
-
-                    if (params.NeedsPreprocessing(i_step, i_ptor)) {
-                        if (PointersShared(params, i_step, i_ptor, 0)) {
+                if (params.NeedsPreprocessing(i_step, i_ptor)) {
+                    if (PointersShared(params, i_step, i_ptor, 0)) {
+                        continue;
+                    }
+                    if (!PreloadDataWithPreprocessing(params, i_step, i_ptor)) {
+                        return false;
+                    }
+                } else {
+                    for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
+                        if (PointersShared(params, i_step, i_ptor, i_dat)) {
                             continue;
                         }
-                        if (!PreloadDataWithPreprocessing(params, i_step, i_ptor)) {
-                            return false;
-                        }
-                    } else {
-                        for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
-                            if (PointersShared(params, i_step, i_ptor, i_dat)) {
-                                continue;
+                        if (parallelDataLoad) {
+                            asThreadPreloadData *thread = new asThreadPreloadData(this, params, i_step, i_ptor,
+                                                                                  i_dat);
+                            if (!ThreadsManager().HasFreeThread(thread->GetType())) {
+                                ThreadsManager().WaitForFreeThread(thread->GetType());
                             }
-                            if (parallelDataLoad) {
-                                asThreadPreloadData *thread = new asThreadPreloadData(this, params, i_step, i_ptor,
-                                                                                      i_dat);
-                                if (!ThreadsManager().HasFreeThread(thread->GetType())) {
-                                    ThreadsManager().WaitForFreeThread(thread->GetType());
-                                }
-                                ThreadsManager().AddThread(thread);
-                            } else {
-                                if (!PreloadDataWithoutPreprocessing(params, i_step, i_ptor, i_dat)) {
-                                    return false;
-                                }
+                            ThreadsManager().AddThread(thread);
+                        } else {
+                            if (!PreloadDataWithoutPreprocessing(params, i_step, i_ptor, i_dat)) {
+                                return false;
                             }
                         }
                     }
                 }
             }
-        }
 
-        if (parallelDataLoad) {
-            // Wait until all done
-            ThreadsManager().Wait(asThread::PreloadData);
-            asLogMessage(_("Data preloaded with threads."));
+            if (parallelDataLoad) {
+                // Wait until all done in order to have non null pointers to copy.
+                ThreadsManager().Wait(asThread::PreloadData);
+            }
         }
+    }
 
-        // Check if data were preloaded.
-        for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
-            for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-                if (params.NeedsPreloading(i_step, i_ptor)) {
-                    if (!params.NeedsPreprocessing(i_step, i_ptor)) {
-                        for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
-                            if (!HasPreloadedData(i_step, i_ptor, i_dat)) {
-                                asLogError(wxString::Format(
-                                        _("No data was preloaded for step %d and level %d and variable %d"), i_step,
-                                        i_ptor, i_dat));
-                                return false;
-                            }
+    if (parallelDataLoad) {
+        // Wait until all done
+        ThreadsManager().Wait(asThread::PreloadData);
+        asLogMessage(_("Data preloaded with threads."));
+    }
+
+    return true;
+}
+
+bool asMethodCalibrator::CheckDataIsPreloaded(const asParametersScoring &params) const
+{
+    for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
+        for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
+            if (params.NeedsPreloading(i_step, i_ptor)) {
+                if (!params.NeedsPreprocessing(i_step, i_ptor)) {
+                    for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
+                        if (!HasPreloadedData(i_step, i_ptor, i_dat)) {
+                            asLogError(wxString::Format(
+                                    _("No data was preloaded for step %d, predictor %d and variable '%s' (num %d)."),
+                                    i_step, i_ptor, params.GetPredictorDataIdVector(i_step, i_ptor)[i_dat], i_dat));
+                            return false;
                         }
                     }
-                    if (!HasPreloadedData(i_step, i_ptor)) {
-                        asLogError(
-                                wxString::Format(_("No data was preloaded for step %d and level %d"), i_step, i_ptor));
-                        return false;
-                    }
+                }
+                if (!HasPreloadedData(i_step, i_ptor)) {
+                    asLogError(
+                            wxString::Format(_("No data was preloaded for step %d and predictor %d."), i_step, i_ptor));
+                    return false;
                 }
             }
         }
@@ -418,6 +436,7 @@ bool asMethodCalibrator::HasPreloadedData(int i_step, int i_ptor) const
             }
         }
     }
+
     return false;
 }
 
@@ -430,6 +449,7 @@ bool asMethodCalibrator::HasPreloadedData(int i_step, int i_ptor, int i_dat) con
             }
         }
     }
+
     return false;
 }
 
