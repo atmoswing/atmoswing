@@ -389,14 +389,10 @@ int AtmoswingAppForecaster::OnRun()
             wxString batchFilePath = wxEmptyString;
             pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
 
-            if(!batchFilePath.IsEmpty())
-            {
-                if (batchForecasts.Load(batchFilePath))
-                {
+            if (!batchFilePath.IsEmpty()) {
+                if (batchForecasts.Load(batchFilePath)) {
                     std::cout << _("An existing batch file was found and has been loaded.\n");
-                }
-                else
-                {
+                } else {
                     batchFilePath = wxEmptyString;
                 }
             }
@@ -409,21 +405,18 @@ int AtmoswingAppForecaster::OnRun()
             std::cout << _("Please provide a path to save the batch file.\n");
             std::cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath() << "\n";
             std::cout << _("New value: ");
-            std::getline (std::cin, stdinVal);
+            std::getline(std::cin, stdinVal);
             wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty())
-            {
+            if (!wxinVal.IsEmpty()) {
                 batchForecasts.SetFilePath(wxinVal);
             }
             std::cout << "\n";
 
             // Check if exists and load
-            if (wxFile::Exists(batchForecasts.GetFilePath()))
-            {
+            if (wxFile::Exists(batchForecasts.GetFilePath())) {
                 std::cout << _("The batch file exists and will be loaded.\n");
 
-                if (batchForecasts.Load(batchForecasts.GetFilePath()))
-                {
+                if (batchForecasts.Load(batchForecasts.GetFilePath())) {
                     std::cout << _("Failed opening the batch file.\n");
                 }
             }
@@ -432,10 +425,9 @@ int AtmoswingAppForecaster::OnRun()
             std::cout << _("Please provide a directory to save the forecasts.\n");
             std::cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory() << "\n";
             std::cout << _("New value: ");
-            std::getline (std::cin, stdinVal);
+            std::getline(std::cin, stdinVal);
             wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty())
-            {
+            if (!wxinVal.IsEmpty()) {
                 batchForecasts.SetForecastsOutputDirectory(wxinVal);
             }
             std::cout << "\n";
@@ -445,31 +437,23 @@ int AtmoswingAppForecaster::OnRun()
             wxString currVal;
             if (batchForecasts.ExportSyntheticXml()) {
                 currVal = "Y";
-            }
-            else {
+            } else {
                 currVal = "N";
             }
             std::cout << _("Current value (enter to keep): ") << currVal << "\n";
             bool acceptValue = false;
-            while (!acceptValue)
-            {
+            while (!acceptValue) {
                 std::cout << _("New value (Y/N): ");
-                std::getline (std::cin, stdinVal);
+                std::getline(std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (!wxinVal.IsEmpty())
-                {
-                    if (wxinVal.IsSameAs("Y", false))
-                    {
+                if (!wxinVal.IsEmpty()) {
+                    if (wxinVal.IsSameAs("Y", false)) {
                         batchForecasts.SetExportSyntheticXml(true);
                         acceptValue = true;
-                    }
-                    else if (wxinVal.IsSameAs("N", false))
-                    {
+                    } else if (wxinVal.IsSameAs("N", false)) {
                         batchForecasts.SetExportSyntheticXml(false);
                         acceptValue = true;
-                    }
-                    else
-                    {
+                    } else {
                         std::cout << _("The provided value is not allowed. Please enter Y or N.\n");
                     }
                 }
@@ -477,15 +461,13 @@ int AtmoswingAppForecaster::OnRun()
             std::cout << "\n";
 
             // Directory to save the exports
-            if (batchForecasts.HasExports())
-            {
+            if (batchForecasts.HasExports()) {
                 std::cout << _("Please provide a directory to save the exports.\n");
                 std::cout << _("Current value (enter to keep): ") << batchForecasts.GetExportsOutputDirectory() << "\n";
                 std::cout << _("New value: ");
-                std::getline (std::cin, stdinVal);
+                std::getline(std::cin, stdinVal);
                 wxinVal = wxString(stdinVal);
-                if (!wxinVal.IsEmpty())
-                {
+                if (!wxinVal.IsEmpty()) {
                     batchForecasts.SetExportsOutputDirectory(wxinVal);
                 }
                 std::cout << "\n";
@@ -495,10 +477,9 @@ int AtmoswingAppForecaster::OnRun()
             std::cout << _("Please provide the directory containing the parameters files.\n");
             std::cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory() << "\n";
             std::cout << _("New value: ");
-            std::getline (std::cin, stdinVal);
+            std::getline(std::cin, stdinVal);
             wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty())
-            {
+            if (!wxinVal.IsEmpty()) {
                 batchForecasts.SetParametersFileDirectory(wxinVal);
             }
             std::cout << "\n";
@@ -507,22 +488,21 @@ int AtmoswingAppForecaster::OnRun()
             std::cout << _("Please provide the directory containing the archive predictors.\n");
             std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory() << "\n";
             std::cout << _("New value: ");
-            std::getline (std::cin, stdinVal);
+            std::getline(std::cin, stdinVal);
             wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty())
-            {
+            if (!wxinVal.IsEmpty()) {
                 batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
             }
             std::cout << "\n";
 
             // Directory to save the downloaded predictors
             std::cout << _("Please provide a directory to save the downloaded predictors.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() << "\n";
+            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() <<
+            "\n";
             std::cout << _("New value: ");
-            getline (std::cin, stdinVal);
+            getline(std::cin, stdinVal);
             wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty())
-            {
+            if (!wxinVal.IsEmpty()) {
                 batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
             }
             std::cout << "\n";
@@ -531,10 +511,9 @@ int AtmoswingAppForecaster::OnRun()
             std::cout << _("Please provide the directory containing the predictand database.\n");
             std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory() << "\n";
             std::cout << _("New value: ");
-            std::getline (std::cin, stdinVal);
+            std::getline(std::cin, stdinVal);
             wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty())
-            {
+            if (!wxinVal.IsEmpty()) {
                 batchForecasts.SetPredictandDBDirectory(wxinVal);
             }
             std::cout << "\n";
@@ -545,9 +524,9 @@ int AtmoswingAppForecaster::OnRun()
             pConfig->Write("/BatchForecasts/LastOpened", batchForecasts.GetFilePath());
 
             // Check if any forecast exist
-            if(batchForecasts.GetForecastsNb()==0)
-            {
-                std::cout << _("Warning: there is no forecast listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
+            if (batchForecasts.GetForecastsNb() == 0) {
+                std::cout <<
+                _("Warning: there is no forecast listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
             }
 
 #endif
