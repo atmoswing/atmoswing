@@ -115,7 +115,7 @@ double asTools::RandomNormalDistribution(const double mean, const double stDev, 
         u2 = ((double) rand() / (double) (RAND_MAX));
     }
 
-    // Box–Muller transform
+    // Box-Muller transform
     double z0 = sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
     //double z1 = sqrt(-2*log(u1))*sin(2*M_PI*u2);
 
@@ -262,7 +262,7 @@ Array1DFloat asTools::GetCumulativeFrequency(const int size)
 
     // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
     // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
-    // Bontron used a=0.375, b=0.25, That are optimal for a normal distribution
+    // Bontron used a=0.375, b=0.25, that are optimal for a normal distribution
     float irep = 0.44f;
     float nrep = 0.12f;
 
@@ -933,7 +933,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -949,7 +949,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -989,7 +989,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1005,7 +1005,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(_("The value is out of the array range."));
+                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1065,7 +1065,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         // Check that the value is whithin the array
         if (targetvalue > *pLast || targetvalue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1102,7 +1102,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1185,7 +1185,7 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         // Check that the value is whithin the array
         if (targetvalue > *pLast || targetvalue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1217,7 +1217,7 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1296,7 +1296,7 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         // Check that the value is whithin the array
         if (targetvalue > *pLast || targetvalue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
@@ -1328,7 +1328,7 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(_("The value is out of the array range."));
+                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
             }
             return asOUT_OF_RANGE;
         }
