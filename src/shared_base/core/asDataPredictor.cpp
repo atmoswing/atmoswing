@@ -70,8 +70,8 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     wxASSERT(m_time.size() > 0);
     wxASSERT((int) m_time.size() == (int) val.size());
 
-    m_latPtsnb = val[0].rows();
-    m_lonPtsnb = val[0].cols();
+    m_latPtsnb = (int) val[0].rows();
+    m_lonPtsnb = (int) val[0].cols();
     m_data.clear();
     m_data = val;
 
