@@ -19,7 +19,7 @@ bool asFileParametersOptimization::EditRootElement()
     return true;
 }
 
-bool asFileParametersOptimization::CheckRootElement()
+bool asFileParametersOptimization::CheckRootElement() const
 {
     if (!GetRoot())
         return false;

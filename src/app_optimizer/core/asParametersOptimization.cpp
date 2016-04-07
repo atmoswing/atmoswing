@@ -711,9 +711,6 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
-    // Set sizes
-    SetSizes();
-
     // Check inputs and init parameters
     InitRandomValues();
     if (!InputsOK())
@@ -1192,8 +1189,6 @@ bool asParametersOptimization::IsInRange()
 
 bool asParametersOptimization::FixTimeLimits()
 {
-    SetSizes();
-
     double minHour = 200.0, maxHour = -50.0;
     for (int i = 0; i < GetStepsNb(); i++) {
         for (int j = 0; j < GetPredictorsNb(i); j++) {

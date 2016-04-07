@@ -98,7 +98,7 @@ private:
 
     bool Mating();
 
-    bool Mutatation();
+    bool Mutation();
 
 };
 

@@ -11,11 +11,7 @@ asThreadMethodOptimizerGeneticAlgorithms::asThreadMethodOptimizerGeneticAlgorith
           m_finalScoreCalib(finalScoreCalib),
           m_scoreClimatology(scoreClimatology)
 {
-    m_status = Initializing;
-
     m_type = asThread::MethodOptimizerGeneticAlgorithms;
-
-    m_status = Waiting;
 }
 
 asThreadMethodOptimizerGeneticAlgorithms::~asThreadMethodOptimizerGeneticAlgorithms()
@@ -25,8 +21,6 @@ asThreadMethodOptimizerGeneticAlgorithms::~asThreadMethodOptimizerGeneticAlgorit
 
 wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
 {
-    m_status = Working;
-
     // Create results objects. Needs to be in a critical section because of access to the config pointer.
     asResultsAnalogsDates anaDates;
     asResultsAnalogsDates anaDatesPrevious;
@@ -92,8 +86,6 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
     if (m_scoreClimatology->size() == 0) {
         *m_scoreClimatology = m_optimizer->GetScoreClimatology();
     }
-
-    m_status = Done;
 
     return 0;
 }
