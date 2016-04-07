@@ -2,7 +2,7 @@
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
  * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (const The "License").
+ * Common Development and Distribution License (the "License").
  * You may not use this file except in compliance with the License.
  *
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
