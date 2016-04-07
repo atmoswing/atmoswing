@@ -196,6 +196,10 @@ private:
     bool HasPreloadedData(int i_step, int i_ptor, int i_dat) const;
 
     bool GetRandomValidData(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+
+    bool CheckDataIsPreloaded(const asParametersScoring &params) const;
+
+    bool ProceedToDataPreloading(asParametersScoring &params);
 };
 
 #endif // ASMETHODCALIBRATOR_H
