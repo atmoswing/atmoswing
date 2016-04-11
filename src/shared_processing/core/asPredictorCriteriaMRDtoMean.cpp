@@ -107,5 +107,5 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
         }
     }
 
-    return rd / refData.size();
+    return rd / (float) refData.size();
 }

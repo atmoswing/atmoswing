@@ -106,6 +106,6 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
         }
     }
 
-    return rd / refData.size();
+    return rd / (float) refData.size();
 
 }
