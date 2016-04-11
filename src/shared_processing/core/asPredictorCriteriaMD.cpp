@@ -80,6 +80,6 @@ float asPredictorCriteriaMD::Assess(const Array2DFloat &refData, const Array2DFl
         }
     }
 
-    return rescriteria / refData.size();
+    return rescriteria / (float) refData.size();
 
 }
