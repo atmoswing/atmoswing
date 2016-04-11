@@ -1,0 +1,54 @@
+AtmoSwing
+
+Copyright (C) 2007-2013, University of Lausanne, Switzerland.
+
+
+***************************
+LICENSE
+***************************
+
+This source code is covered by the Common Development and Distribution License Version 1.0 (CDDL-1.0), which can be found in the accompanying license.txt file, or online at http://opensource.org/licenses/CDDL-1.0.
+
+Notice pursuant to section 9 of the Common Development and Distribution License (CDDL): For Covered Software in this distribution, this License shall be governed by the laws of Switzerland. Legal venue shall be Lausanne, Switzerland.
+
+
+***************************
+THIRD PARTY SOFTWARE
+***************************
+
+This software includes third party software :
+
+Eigen
+  Homepage: http://eigen.tuxfamily.org
+  Code repository: https://bitbucket.org/eigen/eigen
+  Licence: Mozilla Public License Version 2.0 (http://www.mozilla.org/MPL/2.0/)
+
+Vroomgis
+  Code repository: https://bitbucket.org/lucsch/vroomgis/
+  Licence: Common Development and Distribution License Version 1.0 (CDDL-1.0)
+
+wxMathPlot
+  Homepage: http://wxmathplot.sourceforge.net/
+  Code repository: http://sourceforge.net/projects/wxmathplot/files/
+  Licence: wxWindows License (http://www.wxwidgets.org/about/licence3.txt)
+
+wxPlotCtrl
+  Homepage: http://wxcode.sourceforge.net/showcomp.php?name=wxPlotCtrl
+  Code repository: http://sourceforge.net/projects/wxcode/files/Components/wxPlotCtrl/
+  Licence: wxWindows License (http://www.wxwidgets.org/about/licence3.txt)
+
+wxThings
+  Homepage: http://wxcode.sourceforge.net/showcomp.php?name=wxThings
+  Code repository: http://sourceforge.net/projects/wxcode/files/Components/wxThings/
+  Licence: wxWindows License (http://www.wxwidgets.org/about/licence3.txt)
+
+awxLED
+  Homepage: https://iftools.com/opensource/awx.en.php
+  Licence: (not specified)
+
+TiCPP
+  Homepage: http://code.google.com/p/ticpp/
+  Code repository: http://code.google.com/p/ticpp/source/browse/
+  Licence: ZLib license (http://www.zlib.net/zlib_license.html) 
+           or MIT License (http://opensource.org/licenses/mit-license.php)
+
