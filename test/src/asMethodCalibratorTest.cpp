@@ -1634,12 +1634,16 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     calibrator.SetPredictorDataDir(dataPredictorFilePath);
     calibrator.SetPredictandDB(NULL);
     asResultsAnalogsDates anaDates;
+    asResultsAnalogsDates anaSubDates;
 
     try {
         int step = 0;
         bool containsNaNs = false;
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
         EXPECT_TRUE(anaDates.GetAnalogsDatesLength() > 0);
+        EXPECT_FALSE(containsNaNs);
+        step++;
+        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
@@ -1660,6 +1664,16 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 1));
     EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 2));
     EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 3));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 0));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 1));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 2));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 3));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 1, 0));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 1, 1));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 0));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 1));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 2));
+    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 3));
 
 }
 
