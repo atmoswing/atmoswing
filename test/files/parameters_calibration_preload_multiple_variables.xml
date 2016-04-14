@@ -81,6 +81,57 @@
       <criteria>RMSE</criteria>
     </predictor>
   </analog_dates>
+  <analog_dates>
+    <analogs_number>30</analogs_number>
+    <predictor>
+      <preload>1</preload>
+      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
+      <level method="array">0, 500, 850, 1000</level>
+      <time method="array">6, 12, 24</time>
+      <spatial_window>
+        <x_min>5</x_min>
+        <x_points_nb>2</x_points_nb>
+        <x_step>2.5</x_step>
+        <y_min>45</y_min>
+        <y_points_nb>2</y_points_nb>
+        <y_step>2.5</y_step>
+      </spatial_window>
+      <criteria>RMSE</criteria>
+    </predictor>
+    <predictor>
+      <preload>1</preload>
+      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <data_id method="array">prwtr, rhum</data_id>
+      <level method="array">0, 500, 850, 1000</level>
+      <time method="array">6, 12, 24</time>
+      <spatial_window>
+        <x_min>5</x_min>
+        <x_points_nb>2</x_points_nb>
+        <x_step>2.5</x_step>
+        <y_min>45</y_min>
+        <y_points_nb>2</y_points_nb>
+        <y_step>2.5</y_step>
+      </spatial_window>
+      <criteria>RMSE</criteria>
+    </predictor>
+    <predictor>
+      <preload>1</preload>
+      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
+      <level method="array">0, 500, 850, 1000</level>
+      <time method="array">6, 12, 24</time>
+      <spatial_window>
+        <x_min>5</x_min>
+        <x_points_nb>2</x_points_nb>
+        <x_step>2.5</x_step>
+        <y_min>45</y_min>
+        <y_points_nb>2</y_points_nb>
+        <y_step>2.5</y_step>
+      </spatial_window>
+      <criteria>RMSE</criteria>
+    </predictor>
+  </analog_dates>
   <analog_values>
     <predictand>
       <station_id>1</station_id>
