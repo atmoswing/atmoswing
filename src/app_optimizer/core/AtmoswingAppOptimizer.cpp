@@ -274,11 +274,14 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Paths/IntermediateResultsDir", GetLocalPath() + "temp");
         pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
-        pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+        pConfig->Write("/Processing/AllowMultithreading", true);
+        if (m_calibMethod.IsSameAs("ga", false)) {
+            pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
+            pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+        }
         if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
             pConfig->Write("/Optimizer/ParallelEvaluations", true);
         }
