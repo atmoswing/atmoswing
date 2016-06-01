@@ -22,17 +22,17 @@
  */
 
 /*
- * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#include "asDataPredictorArchiveEcmwfEra40.h"
+#include "asDataPredictorArchiveEcmwfEraInterim.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asFileNetcdf.h>
 
 
-asDataPredictorArchiveEcmwfEra40::asDataPredictorArchiveEcmwfEra40(const wxString &dataId)
+asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(const wxString &dataId)
         : asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
 {
     // Set the basic properties.
@@ -41,7 +41,7 @@ asDataPredictorArchiveEcmwfEra40::asDataPredictorArchiveEcmwfEra40(const wxStrin
     m_datasetId = "ECMWF_ERA-40";
     m_originalProvider = "ECMWF";
     m_finalProvider = "ECMWF";
-    m_finalProviderWebsite = "http://apps.ecmwf.int/datasets/data/era40_daily/";
+    m_finalProviderWebsite = "";
     m_finalProviderFTP = wxEmptyString;
     m_datasetName = "ERA-40";
     m_originalProviderStart = asTime::GetMJD(1957, 9, 1);
@@ -382,12 +382,12 @@ asDataPredictorArchiveEcmwfEra40::asDataPredictorArchiveEcmwfEra40(const wxStrin
 
 }
 
-asDataPredictorArchiveEcmwfEra40::~asDataPredictorArchiveEcmwfEra40()
+asDataPredictorArchiveEcmwfEraInterim::~asDataPredictorArchiveEcmwfEraInterim()
 {
 
 }
 
-bool asDataPredictorArchiveEcmwfEra40::Init()
+bool asDataPredictorArchiveEcmwfEraInterim::Init()
 {
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
@@ -411,7 +411,7 @@ bool asDataPredictorArchiveEcmwfEra40::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfEra40::GetDataIdList()
+VectorString asDataPredictorArchiveEcmwfEraInterim::GetDataIdList()
 {
     VectorString list;
 
@@ -457,7 +457,7 @@ VectorString asDataPredictorArchiveEcmwfEra40::GetDataIdList()
     return list;
 }
 
-VectorString asDataPredictorArchiveEcmwfEra40::GetDataIdDescriptionList()
+VectorString asDataPredictorArchiveEcmwfEraInterim::GetDataIdDescriptionList()
 {
     VectorString list;
 
