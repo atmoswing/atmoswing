@@ -44,10 +44,6 @@ public:
 
     virtual bool Init();
 
-    static VectorString GetDataIdList();
-
-    static VectorString GetDataIdDescriptionList();
-
 protected:
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                   VVArray2DFloat &compositeData);

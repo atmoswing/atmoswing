@@ -127,28 +127,3 @@ bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
 
     return true;
 }
-
-VectorString asDataPredictorArchiveNcepReanalysis1Lthe::GetDataIdList()
-{
-    VectorString list;
-
-    list.push_back("hgt_500hPa_24h"); // Geopotential Height at 500 hPa & 24 h
-    list.push_back("hgt_1000hPa_12h"); // Geopotential Height at 1000 hPa & 12 h
-    list.push_back("prwtr_12h"); // Precipitable Water at 12 h
-    list.push_back("rhum_12h"); // Relative Humidity at 12 h
-
-    return list;
-}
-
-VectorString asDataPredictorArchiveNcepReanalysis1Lthe::GetDataIdDescriptionList()
-{
-    VectorString list;
-
-    list.push_back("Geopotential Height at 500 hPa & 24 h");
-    list.push_back("Geopotential Height at 1000 hPa & 12 h");
-    list.push_back("Precipitable Water at 12 h");
-    list.push_back("Relative Humidity at 12 h");
-
-    return list;
-}
-

@@ -107,26 +107,6 @@ bool asDataPredictorArchiveNoaaOisst2::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNoaaOisst2::GetDataIdList()
-{
-    VectorString list;
-
-    list.push_back("sst"); // Sea surface temperature
-    list.push_back("sst_anom"); // Anomaly
-
-    return list;
-}
-
-VectorString asDataPredictorArchiveNoaaOisst2::GetDataIdDescriptionList()
-{
-    VectorString list;
-
-    list.push_back("Sea surface temperature");
-    list.push_back("Sea surface temperature anomaly");
-
-    return list;
-}
-
 bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                                         VVArray2DFloat &compositeData)
 {

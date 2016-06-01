@@ -148,38 +148,6 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepReanalysis2::GetDataIdList()
-{
-    VectorString list;
-
-    list.push_back("hgt"); // Geopotential Height
-    list.push_back("air"); // Air Temperature
-    list.push_back("omega"); // Omega (Vertical Velocity)
-    list.push_back("rhum"); // Relative Humidity
-    list.push_back("shum"); // Specific Humidity
-    list.push_back("uwnd"); // U-Wind
-    list.push_back("vwnd"); // V-Wind
-    list.push_back("surf_prwtr"); // Precipitable Water
-
-    return list;
-}
-
-VectorString asDataPredictorArchiveNcepReanalysis2::GetDataIdDescriptionList()
-{
-    VectorString list;
-
-    list.push_back("Geopotential Height");
-    list.push_back("Air Temperature");
-    list.push_back("Omega (Vertical Velocity)");
-    list.push_back("Relative Humidity");
-    list.push_back("Specific Humidity");
-    list.push_back("U-Wind");
-    list.push_back("V-Wind");
-    list.push_back("Precipitable Water");
-
-    return list;
-}
-
 bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                                              VVArray2DFloat &compositeData)
 {
