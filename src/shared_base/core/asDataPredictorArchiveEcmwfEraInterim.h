@@ -43,10 +43,6 @@ public:
 
     bool Init();
 
-    static VectorString GetDataIdList();
-
-    static VectorString GetDataIdDescriptionList();
-
 protected:
 
 private:
