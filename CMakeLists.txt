@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 
 #### PROJECT
@@ -386,6 +386,11 @@ endif (USE_CUDA)
 
 # Google Test
 if (BUILD_TESTS)
+    set(BUILD_GTEST ON CACHE BOOL "" FORCE)
+    set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+    if(MINGW)
+        set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
+    endif(MINGW)
     add_subdirectory(test/libs/googletest)
     include_directories("${gtest_SOURCE_DIR}")
     include_directories("${gtest_SOURCE_DIR}/include")
