@@ -45,7 +45,7 @@ public:
         S1grads, // Teweles-Wobus on gradients
         NS1grads, // Normalized Teweles-Wobus on gradients
         SAD, // Sum of absolute differences
-        MD, // Mean difference
+        MD, // Mean absolute difference
         NMD, // Normalized Mean difference
         MRDtoMax, // Mean Relative difference to the max value
         MRDtoMean, // Mean Relative difference to the mean value
