@@ -93,32 +93,32 @@ public:
 
     void SetPredictandStationIds(wxString val);
 
-    DataParameter GetPredictandParameter() const
+    asDataPredictand::Parameter GetPredictandParameter() const
     {
         return m_predictandParameter;
     }
 
-    void SetPredictandParameter(DataParameter val)
+    void SetPredictandParameter(asDataPredictand::Parameter val)
     {
         m_predictandParameter = val;
     }
 
-    DataTemporalResolution GetPredictandTemporalResolution() const
+    asDataPredictand::TemporalResolution GetPredictandTemporalResolution() const
     {
         return m_predictandTemporalResolution;
     }
 
-    void SetPredictandTemporalResolution(DataTemporalResolution val)
+    void SetPredictandTemporalResolution(asDataPredictand::TemporalResolution val)
     {
         m_predictandTemporalResolution = val;
     }
 
-    DataSpatialAggregation GetPredictandSpatialAggregation() const
+    asDataPredictand::SpatialAggregation GetPredictandSpatialAggregation() const
     {
         return m_predictandSpatialAggregation;
     }
 
-    void SetPredictandSpatialAggregation(DataSpatialAggregation val)
+    void SetPredictandSpatialAggregation(asDataPredictand::SpatialAggregation val)
     {
         m_predictandSpatialAggregation = val;
     }
@@ -446,9 +446,9 @@ private:
     wxString m_specificTag;
     wxString m_specificTagDisplay;
     wxString m_description;
-    DataParameter m_predictandParameter;
-    DataTemporalResolution m_predictandTemporalResolution;
-    DataSpatialAggregation m_predictandSpatialAggregation;
+    asDataPredictand::Parameter m_predictandParameter;
+    asDataPredictand::TemporalResolution m_predictandTemporalResolution;
+    asDataPredictand::SpatialAggregation m_predictandSpatialAggregation;
     wxString m_predictandDatasetId;
     wxString m_predictandDatabase;
     VectorInt m_predictandStationIds;

@@ -88,13 +88,13 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "description") {
                     m_description = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "parameter") {
-                    m_parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetString(nodeProp));
+                    m_parameter = asDataPredictand::StringToParameterEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
-                    m_unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetString(nodeProp));
+                    m_unit = asDataPredictand::StringToUnitEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "temporal_resolution") {
-                    m_temporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(xmlFile.GetString(nodeProp));
+                    m_temporalResolution = asDataPredictand::StringToTemporalResolutionEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "spatial_aggregation") {
-                    m_spatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(xmlFile.GetString(nodeProp));
+                    m_spatialAggregation = asDataPredictand::StringToSpatialAggregationEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "time_zone") {
                     m_timeZoneHours = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
@@ -180,25 +180,25 @@ bool asCatalogPredictands::Load()
 
     // Get the timestep
     switch (m_temporalResolution) {
-        case (Daily):
+        case (asDataPredictand::Daily):
             m_timeStepHours = 24.0;
             break;
-        case (SixHourly):
+        case (asDataPredictand::SixHourly):
             m_timeStepHours = 6.0;
             break;
-        case (Hourly):
+        case (asDataPredictand::Hourly):
             m_timeStepHours = 1.0;
             break;
-        case (SixHourlyMovingDailyTemporalWindow):
+        case (asDataPredictand::SixHourlyMovingDailyTemporalWindow):
             m_timeStepHours = 6.0;
             break;
-        case (TwoDays):
+        case (asDataPredictand::TwoDays):
             m_timeStepHours = 48.0;
             break;
-        case (ThreeDays):
+        case (asDataPredictand::ThreeDays):
             m_timeStepHours = 72.0;
             break;
-        case (Weekly):
+        case (asDataPredictand::Weekly):
             m_timeStepHours = 168.0;
             break;
         default:

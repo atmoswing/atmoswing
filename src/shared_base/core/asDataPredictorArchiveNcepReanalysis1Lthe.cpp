@@ -92,10 +92,10 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
     } else {
-        m_dataParameter = NoDataParameter;
+        m_dataParameter = NoParameter;
         m_fileNamePattern = wxEmptyString;
         m_fileVariableName = wxEmptyString;
-        m_unit = NoDataUnit;
+        m_unit = NoUnit;
     }
 }
 

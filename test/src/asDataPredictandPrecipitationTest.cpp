@@ -34,7 +34,7 @@
 
 TEST(DataPredictandPrecipitation, GumbelAdjustment)
 {
-    asDataPredictandPrecipitation predictand(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation predictand(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString datasetFilePath = wxFileName::GetCwd();
     datasetFilePath.Append("/files/catalog_precipitation_somewhere.xml");

@@ -111,11 +111,11 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
         m_fileVariableName = "pr_wtr";
         m_unit = mm;
     } else {
-        m_dataParameter = NoDataParameter;
+        m_dataParameter = NoParameter;
         m_subFolder = wxEmptyString;
         m_fileNamePattern = wxEmptyString;
         m_fileVariableName = wxEmptyString;
-        m_unit = NoDataUnit;
+        m_unit = NoUnit;
     }
 }
 

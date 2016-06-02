@@ -62,6 +62,17 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     m_xAxisStep = 2.5;
     m_yAxisStep = 2.5;
 
+
+
+/*
+    Potential temparature
+    Potential vorticity
+    Pressure levels
+    Surface
+*/
+
+
+
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt", false)) {
         m_dataParameter = GeopotentialHeight;
@@ -72,14 +83,14 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     /*
     else if (m_dataId.IsSameAs("air", false))
     {
-        m_dataParameter = AirTemperature;
+        m_parameter = AirTemperature;
         m_fileNamePattern = "air.%d.nc";
         m_fileVariableName = "air";
         m_unit = degK;
     }
     else if (m_dataId.IsSameAs("omega", false))
     {
-        m_dataParameter = Omega;
+        m_parameter = Omega;
         m_subFolder = "pressure";
         m_fileNamePattern = "omega.%d.nc";
         m_fileVariableName = "omega";
@@ -87,7 +98,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("rhum", false))
     {
-        m_dataParameter = RelativeHumidity;
+        m_parameter = RelativeHumidity;
         m_subFolder = "pressure";
         m_fileNamePattern = "rhum.%d.nc";
         m_fileVariableName = "rhum";
@@ -95,7 +106,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("shum", false))
     {
-        m_dataParameter = SpecificHumidity;
+        m_parameter = SpecificHumidity;
         m_subFolder = "pressure";
         m_fileNamePattern = "shum.%d.nc";
         m_fileVariableName = "shum";
@@ -103,7 +114,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("uwnd", false))
     {
-        m_dataParameter = Uwind;
+        m_parameter = Uwind;
         m_subFolder = "pressure";
         m_fileNamePattern = "uwnd.%d.nc";
         m_fileVariableName = "uwnd";
@@ -111,7 +122,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("vwnd", false))
     {
-        m_dataParameter = Vwind;
+        m_parameter = Vwind;
         m_subFolder = "pressure";
         m_fileNamePattern = "vwnd.%d.nc";
         m_fileVariableName = "vwnd";
@@ -119,7 +130,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_air", false))
     {
-        m_dataParameter = AirTemperature;
+        m_parameter = AirTemperature;
         m_subFolder = "surface";
         m_fileNamePattern = "air.sig995.%d.nc";
         m_fileVariableName = "air";
@@ -127,7 +138,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_lftx", false))
     {
-        m_dataParameter = SurfaceLiftedIndex;
+        m_parameter = SurfaceLiftedIndex;
         m_subFolder = "surface";
         m_fileNamePattern = "lftx.sfc.%d.nc";
         m_fileVariableName = "lftx";
@@ -135,7 +146,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_lftx4", false))
     {
-        m_dataParameter = SurfaceLiftedIndex;
+        m_parameter = SurfaceLiftedIndex;
         m_subFolder = "surface";
         m_fileNamePattern = "lftx4.sfc.%d.nc";
         m_fileVariableName = "lftx4";
@@ -143,7 +154,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_omega", false))
     {
-        m_dataParameter = Omega;
+        m_parameter = Omega;
         m_subFolder = "surface";
         m_fileNamePattern = "omega.sig995.%d.nc";
         m_fileVariableName = "omega";
@@ -151,7 +162,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_pottmp", false))
     {
-        m_dataParameter = PotentialTemperature;
+        m_parameter = PotentialTemperature;
         m_subFolder = "surface";
         m_fileNamePattern = "pottmp.sig995.%d.nc";
         m_fileVariableName = "pottmp";
@@ -159,7 +170,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_prwtr", false))
     {
-        m_dataParameter = PrecipitableWater;
+        m_parameter = PrecipitableWater;
         m_subFolder = "surface";
         m_fileNamePattern = "pr_wtr.eatm.%d.nc";
         m_fileVariableName = "pr_wtr";
@@ -167,7 +178,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_pres", false))
     {
-        m_dataParameter = Pressure;
+        m_parameter = Pressure;
         m_subFolder = "surface";
         m_fileNamePattern = "pres.sfc.%d.nc";
         m_fileVariableName = "pres";
@@ -175,7 +186,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_rhum", false))
     {
-        m_dataParameter = RelativeHumidity;
+        m_parameter = RelativeHumidity;
         m_subFolder = "surface";
         m_fileNamePattern = "rhum.sig995.%d.nc";
         m_fileVariableName = "rhum";
@@ -183,7 +194,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_slp", false))
     {
-        m_dataParameter = Pressure;
+        m_parameter = Pressure;
         m_subFolder = "surface";
         m_fileNamePattern = "slp.%d.nc";
         m_fileVariableName = "slp";
@@ -191,7 +202,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_uwnd", false))
     {
-        m_dataParameter = Uwind;
+        m_parameter = Uwind;
         m_subFolder = "surface";
         m_fileNamePattern = "uwnd.sig995.%d.nc";
         m_fileVariableName = "uwnd";
@@ -199,7 +210,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     }
     else if (m_dataId.IsSameAs("surf_vwnd", false))
     {
-        m_dataParameter = Vwind;
+        m_parameter = Vwind;
         m_subFolder = "surface";
         m_fileNamePattern = "vwnd.sig995.%d.nc";
         m_fileVariableName = "vwnd";
@@ -212,7 +223,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
 
         if (m_dataId.IsSameAs("flux_air2m", false))
         {
-            m_dataParameter = AirTemperature;
+            m_parameter = AirTemperature;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "air.2m.gauss.%d.nc";
             m_fileVariableName = "air";
@@ -220,7 +231,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_pevpr", false))
         {
-            m_dataParameter = PotentialEvaporation;
+            m_parameter = PotentialEvaporation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "pevpr.sfc.gauss.%d.nc";
             m_fileVariableName = "pevpr";
@@ -228,7 +239,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_shum2m", false))
         {
-            m_dataParameter = SpecificHumidity;
+            m_parameter = SpecificHumidity;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "shum.2m.gauss.%d.nc";
             m_fileVariableName = "shum";
@@ -236,7 +247,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_sktmp", false))
         {
-            m_dataParameter = SurfaceTemperature;
+            m_parameter = SurfaceTemperature;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "skt.sfc.gauss.%d.nc";
             m_fileVariableName = "skt";
@@ -244,7 +255,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_tmp0-10", false))
         {
-            m_dataParameter = SurfaceTemperature;
+            m_parameter = SurfaceTemperature;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "tmp.0-10cm.gauss.%d.nc";
             m_fileVariableName = "tmp";
@@ -252,7 +263,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_tmp10-200", false))
         {
-            m_dataParameter = SurfaceTemperature;
+            m_parameter = SurfaceTemperature;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "tmp.10-200cm.gauss.%d.nc";
             m_fileVariableName = "tmp";
@@ -260,7 +271,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_tmp300", false))
         {
-            m_dataParameter = SurfaceTemperature;
+            m_parameter = SurfaceTemperature;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "tmp.300cm.gauss.%d.nc";
             m_fileVariableName = "tmp";
@@ -268,7 +279,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_uwnd10m", false))
         {
-            m_dataParameter = Uwind;
+            m_parameter = Uwind;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "uwnd.10m.gauss.%d.nc";
             m_fileVariableName = "uwnd";
@@ -276,7 +287,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_vwnd10m", false))
         {
-            m_dataParameter = Vwind;
+            m_parameter = Vwind;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "vwnd.10m.gauss.%d.nc";
             m_fileVariableName = "vwnd";
@@ -284,7 +295,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_cprat", false))
         {
-            m_dataParameter = ConvectivePrecipitation;
+            m_parameter = ConvectivePrecipitation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "cprat.sfc.gauss.%d.nc";
             m_fileVariableName = "cprat";
@@ -292,7 +303,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_dlwrf", false))
         {
-            m_dataParameter = LongwaveRadiation;
+            m_parameter = LongwaveRadiation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "dlwrf.sfc.gauss.%d.nc";
             m_fileVariableName = "dlwrf";
@@ -300,7 +311,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_dswrf", false))
         {
-            m_dataParameter = SolarRadiation;
+            m_parameter = SolarRadiation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "dswrf.sfc.gauss.%d.nc";
             m_fileVariableName = "dswrf";
@@ -308,7 +319,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_gflux", false))
         {
-            m_dataParameter = GroundHeatFlux;
+            m_parameter = GroundHeatFlux;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "gflux.sfc.gauss.%d.nc";
             m_fileVariableName = "gflux";
@@ -316,7 +327,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_lhtfl", false))
         {
-            m_dataParameter = LatentHeatFlux;
+            m_parameter = LatentHeatFlux;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "lhtfl.sfc.gauss.%d.nc";
             m_fileVariableName = "lhtfl";
@@ -324,7 +335,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_nbdsf", false))
         {
-            m_dataParameter = NearIRFlux;
+            m_parameter = NearIRFlux;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "nbdsf.sfc.gauss.%d.nc";
             m_fileVariableName = "nbdsf";
@@ -332,7 +343,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_nddsf", false))
         {
-            m_dataParameter = NearIRFlux;
+            m_parameter = NearIRFlux;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "nddsf.sfc.gauss.%d.nc";
             m_fileVariableName = "nddsf";
@@ -340,7 +351,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_nlwrs", false))
         {
-            m_dataParameter = LongwaveRadiation;
+            m_parameter = LongwaveRadiation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "nlwrs.sfc.gauss.%d.nc";
             m_fileVariableName = "nlwrs";
@@ -348,7 +359,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_nswrs", false))
         {
-            m_dataParameter = ShortwaveRadiation;
+            m_parameter = ShortwaveRadiation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "nswrs.sfc.gauss.%d.nc";
             m_fileVariableName = "nswrs";
@@ -356,7 +367,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_prate", false))
         {
-            m_dataParameter = Precipitation;
+            m_parameter = Precipitation;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "prate.sfc.gauss.%d.nc";
             m_fileVariableName = "prate";
@@ -364,7 +375,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else if (m_dataId.IsSameAs("flux_shtfl", false))
         {
-            m_dataParameter = SensibleHeatFlux;
+            m_parameter = SensibleHeatFlux;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "shtfl.sfc.gauss.%d.nc";
             m_fileVariableName = "shtfl";
@@ -372,7 +383,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
         }
         else
         {
-            m_dataParameter = NoDataParameter;
+            m_parameter = NoDataParameter;
             m_subFolder = wxEmptyString;
             m_fileNamePattern = wxEmptyString;
             m_fileVariableName = wxEmptyString;

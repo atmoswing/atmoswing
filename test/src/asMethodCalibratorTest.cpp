@@ -42,7 +42,7 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -359,7 +359,7 @@ TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
 void Ref2(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -724,7 +724,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 void Ref1Preloading()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -882,7 +882,7 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
 void Ref1PreloadingSubset()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1093,7 +1093,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 void Ref2Preloading()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1258,7 +1258,7 @@ TEST(MethodCalibrator, Ref2PreloadingInsert)
 void Ref2SavingIntermediateResults()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1454,7 +1454,7 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 void Ref2MergeByHalfAndMultiply()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(Precipitation, Daily, Station);
+    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
