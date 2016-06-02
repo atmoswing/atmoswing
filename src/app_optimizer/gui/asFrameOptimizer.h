@@ -58,9 +58,9 @@ protected:
 
     void SaveOptions() const;
 
-    void OpenFramePreferences(wxCommandEvent &event) const;
+    void OpenFramePreferences(wxCommandEvent &event);
 
-    void OpenFrameAbout(wxCommandEvent &event) const;
+    void OpenFrameAbout(wxCommandEvent &event);
 
     void OnShowLog(wxCommandEvent &event);
 

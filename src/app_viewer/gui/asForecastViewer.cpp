@@ -132,7 +132,7 @@ wxString asForecastViewer::GetStationName(int i_stat) const
     return m_forecastManager->GetStationName(m_methodSelection, m_forecastSelection, i_stat);
 }
 
-float asForecastViewer::GetSelectedTargetDate() const
+float asForecastViewer::GetSelectedTargetDate()
 {
     Array1DFloat targetDates;
 

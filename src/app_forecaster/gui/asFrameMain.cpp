@@ -303,35 +303,35 @@ void asFrameMain::Update()
     DisplayLogLevelMenu();
 }
 
-void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event) const
+void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event)
 {
     asFramePredictandDB *frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OnConfigureDirectories(wxCommandEvent &event) const
+void asFrameMain::OnConfigureDirectories(wxCommandEvent &event)
 {
     asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OpenFramePreferences(wxCommandEvent &event) const
+void asFrameMain::OpenFramePreferences(wxCommandEvent &event)
 {
     asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OpenFrameAbout(wxCommandEvent &event) const
+void asFrameMain::OpenFrameAbout(wxCommandEvent &event)
 {
     asFrameAbout *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameMain::OnShowLog(wxCommandEvent &event) const
+void asFrameMain::OnShowLog(wxCommandEvent &event)
 {
     wxASSERT(m_logWindow);
     m_logWindow->DoShow();

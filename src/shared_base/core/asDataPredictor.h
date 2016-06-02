@@ -42,9 +42,50 @@ class asDataPredictor
         : public wxObject
 {
 public:
+    enum Parameter
+    {
+        AirTemperature,
+        GeopotentialHeight,
+        PrecipitableWater,
+        PrecipitationRate,
+        RelativeHumidity,
+        SpecificHumidity,
+        Omega,
+        Wind,
+        Uwind,
+        Vwind,
+        SurfaceLiftedIndex,
+        PotentialTemperature,
+        Pressure,
+        PotentialEvaporation,
+        SurfaceTemperature,
+        ConvectivePrecipitation,
+        LongwaveRadiation,
+        ShortwaveRadiation,
+        SolarRadiation,
+        GroundHeatFlux,
+        LatentHeatFlux,
+        NearIRFlux,
+        SensibleHeatFlux,
+        SeaSurfaceTemperature,
+        SeaSurfaceTemperatureAnomaly,
+        NoParameter
+    };
+
+    enum Unit
+    {
+        nb, mm, m, km, percent, degC, degK, Pascals, PascalsPerSec, kgPerKg, mPerSec, WPerm2, kgPerm2Pers, NoUnit
+    };
+
     asDataPredictor(const wxString &dataId);
 
     virtual ~asDataPredictor();
+
+    static Parameter StringToParameterEnum(const wxString &ParameterStr);
+
+    static wxString ParameterEnumToString(Parameter dataParameter);
+
+    static Unit StringToUnitEnum(const wxString &UnitStr);
 
     virtual bool Init() = 0;
 
@@ -232,9 +273,9 @@ protected:
     double m_timeStepHours;
     double m_firstTimeStepHours;
     VectorDouble m_nanValues;
-    DataParameter m_dataParameter;
+    Parameter m_dataParameter;
     wxString m_fileVariableName;
-    DataUnit m_unit;
+    Unit m_unit;
     float m_xAxisStep;
     float m_yAxisStep;
     float m_xAxisShift;

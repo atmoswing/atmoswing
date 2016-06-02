@@ -80,11 +80,6 @@ enum
 
 enum
 {
-    asSERIE_BEGINNING, asSERIE_END
-};
-
-enum
-{
     asSAMPLE, asENTIRE_POPULATION
 };
 
@@ -161,57 +156,6 @@ enum Season
     NoSeason
 };
 
-enum DataParameter
-{
-    Precipitation,
-    AirTemperature,
-    GeopotentialHeight,
-    PrecipitableWater,
-    RelativeHumidity,
-    SpecificHumidity,
-    Omega,
-    Wind,
-    Uwind,
-    Vwind,
-    SurfaceLiftedIndex,
-    PotentialTemperature,
-    Pressure,
-    PotentialEvaporation,
-    SurfaceTemperature,
-    ConvectivePrecipitation,
-    LongwaveRadiation,
-    ShortwaveRadiation,
-    SolarRadiation,
-    GroundHeatFlux,
-    LatentHeatFlux,
-    NearIRFlux,
-    SensibleHeatFlux,
-    Lightnings,
-    SeaSurfaceTemperature,
-    SeaSurfaceTemperatureAnomaly,
-    NoDataParameter
-};
-
-enum DataUnit
-{
-    nb, mm, m, km, percent, degC, degK, Pascals, PascalsPerSec, kgPerKg, mPerSec, WPerm2, kgPerm2Pers, NoDataUnit
-};
-
-enum DataTemporalResolution
-{
-    Daily, SixHourly, Hourly, SixHourlyMovingDailyTemporalWindow, TwoDays, ThreeDays, Weekly, NoDataTemporalResolution
-};
-
-enum DataSpatialAggregation
-{
-    Station, Groupment, Catchment, NoDataSpatialAggregation
-};
-
-enum FileTimeLength
-{
-    Year, Hour, Total, Instantaneous, NoFileLength
-};
-
 enum TimeFormat
 {
     classic,
@@ -229,32 +173,6 @@ enum TimeFormat
     nowminushours,
     concentrate,
     guess
-};
-
-
-#include <asIncludes.h>
-
-class asGlobEnums
-        : public wxObject
-{
-public:
-
-    static FileTimeLength StringToFileLengthEnum(const wxString &LengthStr);
-
-    static DataParameter StringToDataParameterEnum(const wxString &ParameterStr);
-
-    static wxString DataParameterEnumToString(DataParameter dataParameter);
-
-    static DataUnit StringToDataUnitEnum(const wxString &UnitStr);
-
-    static DataTemporalResolution StringToDataTemporalResolutionEnum(const wxString &TemporalResolution);
-
-    static wxString DataTemporalResolutionEnumToString(DataTemporalResolution dataTemporalResolution);
-
-    static DataSpatialAggregation StringToDataSpatialAggregationEnum(const wxString &SpatialAggregation);
-
-    static wxString DataSpatialAggregationEnumToString(DataSpatialAggregation dataSpatialAggregation);
-
 };
 
 #endif // ASGLOBENUMS_H_INCLUDED

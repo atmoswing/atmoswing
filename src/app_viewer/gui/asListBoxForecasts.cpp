@@ -105,16 +105,16 @@ void asListBoxForecasts::Update()
 
         int image;
         switch (forecastFirst->GetPredictandParameter()) {
-            case Precipitation:
+            case asDataPredictand::Precipitation:
                 image = asListBoxForecasts::TreeCtrlIcon_Precipitation;
                 break;
-            case AirTemperature:
+            case asDataPredictand::AirTemperature:
                 image = asListBoxForecasts::TreeCtrlIcon_Temperature;
                 break;
-            case Lightnings:
+            case asDataPredictand::Lightnings:
                 image = asListBoxForecasts::TreeCtrlIcon_Lightnings;
                 break;
-            case Wind:
+            case asDataPredictand::Wind:
                 image = asListBoxForecasts::TreeCtrlIcon_Wind;
                 break;
             default:

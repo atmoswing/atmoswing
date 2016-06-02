@@ -47,9 +47,9 @@ asParameters::asParameters()
     m_timeArrayAnalogsExcludeDays = 0;
     m_timeArrayAnalogsIntervalDays = 0;
     m_predictandTimeHours = 0;
-    m_predictandParameter = (DataParameter) 0;
-    m_predictandTemporalResolution = (DataTemporalResolution) 0;
-    m_predictandSpatialAggregation = (DataSpatialAggregation) 0;
+    m_predictandParameter = (asDataPredictand::Parameter) 0;
+    m_predictandTemporalResolution = (asDataPredictand::TemporalResolution) 0;
+    m_predictandSpatialAggregation = (asDataPredictand::SpatialAggregation) 0;
     m_predictandDatasetId = wxEmptyString;
     m_timeArrayTargetPredictandMinThreshold = 0;
     m_timeArrayTargetPredictandMaxThreshold = 0;

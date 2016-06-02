@@ -71,9 +71,9 @@ asDataPredictorArchiveNoaaOisst2::asDataPredictorArchiveNoaaOisst2(const wxStrin
         m_fileVariableName = "anom";
         m_unit = degC;
     } else {
-        m_dataParameter = NoDataParameter;
+        m_dataParameter = NoParameter;
         m_fileVariableName = wxEmptyString;
-        m_unit = NoDataUnit;
+        m_unit = NoUnit;
     }
 
 }

@@ -37,12 +37,12 @@
 #include <asDataPredictandTemperature.h>
 
 
-asDataPredictand::asDataPredictand(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
-                                   DataSpatialAggregation dataSpatialAggregation)
+asDataPredictand::asDataPredictand(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                                   SpatialAggregation dataSpatialAggregation)
 {
-    m_dataParameter = dataParameter;
-    m_dataTemporalResolution = dataTemporalResolution;
-    m_dataSpatialAggregation = dataSpatialAggregation;
+    m_parameter = dataParameter;
+    m_temporalResolution = dataTemporalResolution;
+    m_spatialAggregation = dataSpatialAggregation;
     m_fileVersion = 1.4f;
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
@@ -60,53 +60,198 @@ asDataPredictand::~asDataPredictand()
     //dtor
 }
 
-asDataPredictand *asDataPredictand::GetInstance(const wxString &dataParameterStr,
-                                                const wxString &dataTemporalResolutionStr,
-                                                const wxString &dataSpatialAggregationStr)
+asDataPredictand::Parameter asDataPredictand::StringToParameterEnum(const wxString &parameterStr)
 {
-    DataParameter dataParameter = asGlobEnums::StringToDataParameterEnum(dataParameterStr);
-    DataTemporalResolution dataTemporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(
-            dataTemporalResolutionStr);
-    DataSpatialAggregation dataSpatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(
-            dataSpatialAggregationStr);
+    if (parameterStr.CmpNoCase("Precipitation") == 0) {
+        return Precipitation;
+    } else if (parameterStr.CmpNoCase("AirTemperature") == 0) {
+        return AirTemperature;
+    } else if (parameterStr.CmpNoCase("Lightnings") == 0) {
+        return Lightnings;
+    } else if (parameterStr.CmpNoCase("Wind") == 0) {
+        return Wind;
+    } else {
+        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), parameterStr));
+    }
+    return NoParameter;
+}
 
-    if (dataParameter == NoDataParameter) {
+wxString asDataPredictand::ParameterEnumToString(asDataPredictand::Parameter parameter)
+{
+    switch (parameter) {
+        case (Precipitation):
+            return "Precipitation";
+        case (AirTemperature):
+            return "AirTemperature";
+        case (Lightnings):
+            return "Lightnings";
+        case (Wind):
+            return "Wind";
+        default:
+            asLogError(_("The given data parameter type in unknown."));
+    }
+    return wxEmptyString;
+}
+
+asDataPredictand::Unit asDataPredictand::StringToUnitEnum(const wxString &unitStr)
+{
+
+    if (unitStr.CmpNoCase("nb") == 0) {
+        return nb;
+    } else if (unitStr.CmpNoCase("number") == 0) {
+        return nb;
+    } else if (unitStr.CmpNoCase("mm") == 0) {
+        return mm;
+    } else if (unitStr.CmpNoCase("m") == 0) {
+        return m;
+    } else if (unitStr.CmpNoCase("percent") == 0) {
+        return percent;
+    } else if (unitStr.CmpNoCase("%") == 0) {
+        return percent;
+    } else if (unitStr.CmpNoCase("degC") == 0) {
+        return degC;
+    } else if (unitStr.CmpNoCase("degK") == 0) {
+        return degK;
+    } else {
+        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), unitStr));
+    }
+    return NoUnit;
+}
+
+asDataPredictand::TemporalResolution asDataPredictand::StringToTemporalResolutionEnum(const wxString &temporalResolution)
+{
+
+    if (temporalResolution.CmpNoCase("Daily") == 0) {
+        return Daily;
+    } else if (temporalResolution.CmpNoCase("1 day") == 0) {
+        return Daily;
+    } else if (temporalResolution.CmpNoCase("SixHourly") == 0) {
+        return SixHourly;
+    } else if (temporalResolution.CmpNoCase("6 hours") == 0) {
+        return SixHourly;
+    } else if (temporalResolution.CmpNoCase("Hourly") == 0) {
+        return Hourly;
+    } else if (temporalResolution.CmpNoCase("1 hour") == 0) {
+        return Hourly;
+    } else if (temporalResolution.CmpNoCase("SixHourlyMovingDailyTemporalWindow") == 0) {
+        return SixHourlyMovingDailyTemporalWindow;
+    } else if (temporalResolution.CmpNoCase("MovingTemporalWindow") == 0) {
+        return SixHourlyMovingDailyTemporalWindow;
+    } else if (temporalResolution.CmpNoCase("TwoDays") == 0) {
+        return TwoDays;
+    } else if (temporalResolution.CmpNoCase("2 days") == 0) {
+        return TwoDays;
+    } else if (temporalResolution.CmpNoCase("ThreeDays") == 0) {
+        return ThreeDays;
+    } else if (temporalResolution.CmpNoCase("3 days") == 0) {
+        return ThreeDays;
+    } else if (temporalResolution.CmpNoCase("Weekly") == 0) {
+        return Weekly;
+    } else if (temporalResolution.CmpNoCase("1 week") == 0) {
+        return Weekly;
+    } else {
+        asLogError(wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"),
+                                    temporalResolution));
+    }
+    return NoTemporalResolution;
+}
+
+wxString asDataPredictand::TemporalResolutionEnumToString(asDataPredictand::TemporalResolution temporalResolution)
+{
+    switch (temporalResolution) {
+        case (Daily):
+            return "Daily";
+        case (SixHourly):
+            return "SixHourly";
+        case (Hourly):
+            return "Hourly";
+        case (SixHourlyMovingDailyTemporalWindow):
+            return "SixHourlyMovingDailyTemporalWindow";
+        case (TwoDays):
+            return "TwoDays";
+        case (ThreeDays):
+            return "ThreeDays";
+        case (Weekly):
+            return "Weekly";
+        default:
+            asLogError(_("The given data temporal resolution type in unknown."));
+    }
+    return wxEmptyString;
+}
+
+asDataPredictand::SpatialAggregation asDataPredictand::StringToSpatialAggregationEnum(const wxString &spatialAggregation)
+{
+
+    if (spatialAggregation.CmpNoCase("Station") == 0) {
+        return Station;
+    } else if (spatialAggregation.CmpNoCase("Groupment") == 0) {
+        return Groupment;
+    } else if (spatialAggregation.CmpNoCase("Catchment") == 0) {
+        return Catchment;
+    } else {
+        asLogError(wxString::Format(_("The spatialAggregation enumeration (%s) entry doesn't exists"),
+                                    spatialAggregation));
+    }
+    return NoSpatialAggregation;
+}
+
+wxString asDataPredictand::SpatialAggregationEnumToString(asDataPredictand::SpatialAggregation spatialAggregation)
+{
+    switch (spatialAggregation) {
+        case (Station):
+            return "Station";
+        case (Groupment):
+            return "Groupment";
+        case (Catchment):
+            return "Catchment";
+        default:
+            asLogError(_("The given data spatial aggregation type in unknown."));
+    }
+    return wxEmptyString;
+}
+
+asDataPredictand *asDataPredictand::GetInstance(const wxString &parameterStr,
+                                                const wxString &temporalResolutionStr,
+                                                const wxString &spatialAggregationStr)
+{
+    Parameter parameter = StringToParameterEnum(parameterStr);
+    TemporalResolution temporalResolution = StringToTemporalResolutionEnum(temporalResolutionStr);
+    SpatialAggregation spatialAggregation = StringToSpatialAggregationEnum(spatialAggregationStr);
+
+    if (parameter == NoParameter) {
         asLogError(_("The given data parameter is unknown. Cannot get an instance of the predictand DB."));
         return NULL;
     }
 
-    if (dataTemporalResolution == NoDataTemporalResolution) {
+    if (temporalResolution == NoTemporalResolution) {
         asLogError(_("The given data temporal resolution is unknown. Cannot get an instance of the predictand DB."));
         return NULL;
     }
 
-    if (dataSpatialAggregation == NoDataSpatialAggregation) {
+    if (spatialAggregation == NoSpatialAggregation) {
         asLogError(_("The given data spatial aggregation is unknown. Cannot get an instance of the predictand DB."));
         return NULL;
     }
 
-    asDataPredictand *db = asDataPredictand::GetInstance(dataParameter, dataTemporalResolution, dataSpatialAggregation);
+    asDataPredictand *db = asDataPredictand::GetInstance(parameter, temporalResolution, spatialAggregation);
     return db;
 }
 
-asDataPredictand *asDataPredictand::GetInstance(DataParameter dataParameter,
-                                                DataTemporalResolution dataTemporalResolution,
-                                                DataSpatialAggregation dataSpatialAggregation)
+asDataPredictand *asDataPredictand::GetInstance(Parameter parameter,
+                                                TemporalResolution temporalResolution,
+                                                SpatialAggregation spatialAggregation)
 {
-    switch (dataParameter) {
+    switch (parameter) {
         case (Precipitation): {
-            asDataPredictand *db = new asDataPredictandPrecipitation(dataParameter, dataTemporalResolution,
-                                                                     dataSpatialAggregation);
+            asDataPredictand *db = new asDataPredictandPrecipitation(parameter, temporalResolution, spatialAggregation);
             return db;
         }
         case (AirTemperature): {
-            asDataPredictand *db = new asDataPredictandTemperature(dataParameter, dataTemporalResolution,
-                                                                   dataSpatialAggregation);
+            asDataPredictand *db = new asDataPredictandTemperature(parameter, temporalResolution, spatialAggregation);
             return db;
         }
         case (Lightnings): {
-            asDataPredictand *db = new asDataPredictandLightnings(dataParameter, dataTemporalResolution,
-                                                                  dataSpatialAggregation);
+            asDataPredictand *db = new asDataPredictandLightnings(parameter, temporalResolution, spatialAggregation);
             return db;
         }
         default:
@@ -136,10 +281,10 @@ asDataPredictand *asDataPredictand::GetInstance(const wxString &filePath)
     }
 
     // Get basic information
-    DataParameter dataParameter = (DataParameter) ncFile.GetAttInt("data_parameter");
-    DataTemporalResolution dataTemporalResolution = (DataTemporalResolution) ncFile.GetAttInt(
+    Parameter dataParameter = (Parameter) ncFile.GetAttInt("data_parameter");
+    TemporalResolution dataTemporalResolution = (TemporalResolution) ncFile.GetAttInt(
             "data_temporal_resolution");
-    DataSpatialAggregation dataSpatialAggregation = (DataSpatialAggregation) ncFile.GetAttInt(
+    SpatialAggregation dataSpatialAggregation = (SpatialAggregation) ncFile.GetAttInt(
             "data_spatial_aggregation");
 
     // Close the netCDF file
@@ -152,9 +297,9 @@ asDataPredictand *asDataPredictand::GetInstance(const wxString &filePath)
 
 wxString asDataPredictand::GetDBFilePathSaving(const wxString &destinationDir) const
 {
-    wxString dataParameterStr = asGlobEnums::DataParameterEnumToString(m_dataParameter);
-    wxString dataTemporalResolutionStr = asGlobEnums::DataTemporalResolutionEnumToString(m_dataTemporalResolution);
-    wxString dataSpatialAggregationStr = asGlobEnums::DataSpatialAggregationEnumToString(m_dataSpatialAggregation);
+    wxString dataParameterStr = ParameterEnumToString(m_parameter);
+    wxString dataTemporalResolutionStr = asDataPredictand::TemporalResolutionEnumToString(m_temporalResolution);
+    wxString dataSpatialAggregationStr = asDataPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
     wxString fileName =
             dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_datasetId;
 
@@ -240,9 +385,9 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     }
 
     // Get global attributes
-    m_dataParameter = (DataParameter) ncFile.GetAttInt("data_parameter");
-    m_dataTemporalResolution = (DataTemporalResolution) ncFile.GetAttInt("data_temporal_resolution");
-    m_dataSpatialAggregation = (DataSpatialAggregation) ncFile.GetAttInt("data_spatial_aggregation");
+    m_parameter = (Parameter) ncFile.GetAttInt("data_parameter");
+    m_temporalResolution = (TemporalResolution) ncFile.GetAttInt("data_temporal_resolution");
+    m_spatialAggregation = (SpatialAggregation) ncFile.GetAttInt("data_spatial_aggregation");
     m_datasetId = ncFile.GetAttString("dataset_id");
 
     // Get time
@@ -320,11 +465,11 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
 
     // Put general attributes
     ncFile.PutAtt("version", &m_fileVersion);
-    int dataParameter = (int) m_dataParameter;
+    int dataParameter = (int) m_parameter;
     ncFile.PutAtt("data_parameter", &dataParameter);
-    int dataTemporalResolution = (int) m_dataTemporalResolution;
+    int dataTemporalResolution = (int) m_temporalResolution;
     ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
-    int dataSpatialAggregation = (int) m_dataSpatialAggregation;
+    int dataSpatialAggregation = (int) m_spatialAggregation;
     ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
     ncFile.PutAtt("dataset_id", m_datasetId);
 

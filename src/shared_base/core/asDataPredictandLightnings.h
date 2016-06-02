@@ -37,8 +37,8 @@ class asDataPredictandLightnings
         : public asDataPredictand
 {
 public:
-    asDataPredictandLightnings(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
-                               DataSpatialAggregation dataSpatialAggregation);
+    asDataPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                               SpatialAggregation dataSpatialAggregation);
 
     virtual ~asDataPredictandLightnings();
 

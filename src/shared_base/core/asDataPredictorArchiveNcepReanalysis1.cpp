@@ -285,7 +285,7 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
             m_fileVariableName = "nswrs";
             m_unit = WPerm2;
         } else if (m_dataId.IsSameAs("flux_prate", false)) {
-            m_dataParameter = Precipitation;
+            m_dataParameter = PrecipitationRate;
             m_subFolder = "surface_gauss";
             m_fileNamePattern = "prate.sfc.gauss.%d.nc";
             m_fileVariableName = "prate";
@@ -297,11 +297,11 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
             m_fileVariableName = "shtfl";
             m_unit = WPerm2;
         } else {
-            m_dataParameter = NoDataParameter;
+            m_dataParameter = NoParameter;
             m_subFolder = wxEmptyString;
             m_fileNamePattern = wxEmptyString;
             m_fileVariableName = wxEmptyString;
-            m_unit = NoDataUnit;
+            m_unit = NoUnit;
         }
     }
 

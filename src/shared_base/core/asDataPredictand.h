@@ -40,16 +40,54 @@ class asDataPredictand
         : public wxObject
 {
 public:
-    asDataPredictand(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
-                     DataSpatialAggregation dataAggregation);
+    enum Parameter
+    {
+        Precipitation,
+        AirTemperature,
+        Lightnings,
+        Wind,
+        NoParameter
+    };
+
+    enum Unit
+    {
+        nb, mm, m, percent, degC, degK, NoUnit
+    };
+
+    enum TemporalResolution
+    {
+        Daily, SixHourly, Hourly, SixHourlyMovingDailyTemporalWindow, TwoDays, ThreeDays, Weekly, NoTemporalResolution
+    };
+
+    enum SpatialAggregation
+    {
+        Station, Groupment, Catchment, NoSpatialAggregation
+    };
+
+    asDataPredictand(Parameter parameter, TemporalResolution temporalResolution,
+                     SpatialAggregation spatialAggregation);
 
     virtual ~asDataPredictand();
 
-    static asDataPredictand *GetInstance(const wxString &dataParameterStr, const wxString &dataTemporalResolutionStr,
-                                         const wxString &dataSpatialAggregationStr);
+    static Parameter StringToParameterEnum(const wxString &parameterStr);
 
-    static asDataPredictand *GetInstance(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
-                                         DataSpatialAggregation dataSpatialAggregation);
+    static wxString ParameterEnumToString(Parameter parameter);
+
+    static Unit StringToUnitEnum(const wxString &unitStr);
+
+    static TemporalResolution StringToTemporalResolutionEnum(const wxString &temporalResolution);
+
+    static wxString TemporalResolutionEnumToString(TemporalResolution temporalResolution);
+
+    static SpatialAggregation StringToSpatialAggregationEnum(const wxString &spatialAggregation);
+
+    static wxString SpatialAggregationEnumToString(SpatialAggregation spatialAggregation);
+
+    static asDataPredictand *GetInstance(const wxString &parameterStr, const wxString &temporalResolutionStr,
+                                         const wxString &spatialAggregationStr);
+
+    static asDataPredictand *GetInstance(Parameter parameter, TemporalResolution temporalResolution,
+                                         SpatialAggregation spatialAggregation);
 
     static asDataPredictand *GetInstance(const wxString &filePath);
 
@@ -85,34 +123,34 @@ public:
         return m_datasetId;
     }
 
-    DataParameter GetDataParameter() const
+    Parameter GetDataParameter() const
     {
-        return m_dataParameter;
+        return m_parameter;
     }
 
-    void SetDataParameter(DataParameter val)
+    void SetDataParameter(Parameter val)
     {
-        m_dataParameter = val;
+        m_parameter = val;
     }
 
-    DataTemporalResolution GetDataTemporalResolution() const
+    TemporalResolution GetDataTemporalResolution() const
     {
-        return m_dataTemporalResolution;
+        return m_temporalResolution;
     }
 
-    void SetDataTemporalResolution(DataTemporalResolution val)
+    void SetDataTemporalResolution(TemporalResolution val)
     {
-        m_dataTemporalResolution = val;
+        m_temporalResolution = val;
     }
 
-    DataSpatialAggregation GetDataSpatialAggregation() const
+    SpatialAggregation GetDataSpatialAggregation() const
     {
-        return m_dataSpatialAggregation;
+        return m_spatialAggregation;
     }
 
-    void SetDataSpatialAggregation(DataSpatialAggregation val)
+    void SetDataSpatialAggregation(SpatialAggregation val)
     {
-        m_dataSpatialAggregation = val;
+        m_spatialAggregation = val;
     }
 
     bool HasNormalizedData() const
@@ -215,9 +253,9 @@ public:
 protected:
     // Single value
     float m_fileVersion;
-    DataParameter m_dataParameter;
-    DataTemporalResolution m_dataTemporalResolution;
-    DataSpatialAggregation m_dataSpatialAggregation;
+    Parameter m_parameter;
+    TemporalResolution m_temporalResolution;
+    SpatialAggregation m_spatialAggregation;
     wxString m_datasetId;
     double m_timeStepDays;
     int m_timeLength;

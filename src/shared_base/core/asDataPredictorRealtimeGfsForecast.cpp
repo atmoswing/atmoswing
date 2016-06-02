@@ -99,10 +99,10 @@ asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxS
         m_fileVariableName = "PWAT";
         m_unit = mm;
     } else {
-        m_dataParameter = NoDataParameter;
+        m_dataParameter = NoParameter;
         m_commandDownload = wxEmptyString;
         m_fileVariableName = wxEmptyString;
-        m_unit = NoDataUnit;
+        m_unit = NoUnit;
     }
 }
 

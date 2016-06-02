@@ -89,14 +89,14 @@ void asFrameOptimizer::Update()
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event) const
+void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
 {
     asFramePreferencesOptimizer *frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event) const
+void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
 {
     asFrameAbout *frame = new asFrameAbout(this);
     frame->Fit();
