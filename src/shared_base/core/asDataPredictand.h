@@ -45,23 +45,22 @@ public:
         Precipitation,
         AirTemperature,
         Lightnings,
-        Wind,
-        NoParameter
+        Wind
     };
 
     enum Unit
     {
-        nb, mm, m, percent, degC, degK, NoUnit
+        nb, mm, m, percent, degC, degK
     };
 
     enum TemporalResolution
     {
-        Daily, SixHourly, Hourly, SixHourlyMovingDailyTemporalWindow, TwoDays, ThreeDays, Weekly, NoTemporalResolution
+        Daily, SixHourly, Hourly, SixHourlyMovingDailyTemporalWindow, TwoDays, ThreeDays, Weekly
     };
 
     enum SpatialAggregation
     {
-        Station, Groupment, Catchment, NoSpatialAggregation
+        Station, Groupment, Catchment
     };
 
     asDataPredictand(Parameter parameter, TemporalResolution temporalResolution,

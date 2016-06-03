@@ -41,9 +41,6 @@ asDataPredictorArchiveNoaaOisst2::asDataPredictorArchiveNoaaOisst2(const wxStrin
     m_dataId = dataId;
     m_datasetId = "NOAA_OISST_v2";
     m_originalProvider = "NOAA";
-    m_finalProvider = "NOAA";
-    m_finalProviderWebsite = "http://www.esrl.noaa.gov/psd/data/gridded/data.noaa.oisst.v2.html";
-    m_finalProviderFTP = "ftp://eclipse.ncdc.noaa.gov/pub/OI-daily-v2";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
     m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
     m_originalProviderEnd = NaNDouble;
@@ -63,17 +60,17 @@ asDataPredictorArchiveNoaaOisst2::asDataPredictorArchiveNoaaOisst2(const wxStrin
 
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("sst", false)) {
-        m_dataParameter = SeaSurfaceTemperature;
+        m_parameter = SeaSurfaceTemperature;
+        m_parameterName = "Sea Surface Temperature";
         m_fileVariableName = "sst";
         m_unit = degC;
     } else if (m_dataId.IsSameAs("sst_anom", false)) {
-        m_dataParameter = SeaSurfaceTemperatureAnomaly;
+        m_parameter = SeaSurfaceTemperatureAnomaly;
+        m_parameterName = "Sea Surface Temperature Anomaly";
         m_fileVariableName = "anom";
         m_unit = degC;
     } else {
-        m_dataParameter = NoParameter;
-        m_fileVariableName = wxEmptyString;
-        m_unit = NoUnit;
+        asThrowException(_("No parameter identified for the provided level type"));
     }
 
 }
