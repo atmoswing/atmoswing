@@ -59,7 +59,10 @@ public:
         Pressure,
         PotentialEvaporation,
         SurfaceTemperature,
-        ConvectivePrecipitation,
+        SoilMoisture,
+        SnowWaterEquivalent,
+        ConvectivePrecipitationRate,
+        CloudCover,
         LongwaveRadiation,
         ShortwaveRadiation,
         SolarRadiation,
@@ -67,27 +70,47 @@ public:
         LatentHeatFlux,
         NearIRFlux,
         SensibleHeatFlux,
+        MomentumFlux,
+        GravityWaveStress,
         SeaSurfaceTemperature,
-        SeaSurfaceTemperatureAnomaly,
-        NoParameter
+        SeaSurfaceTemperatureAnomaly
     };
 
     enum Unit
     {
-        nb, mm, m, km, percent, degC, degK, Pascals, PascalsPerSec, kgPerKg, mPerSec, WPerm2, kgPerm2Pers, NoUnit
+        nb, mm, m, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2
+    };
+
+    enum Level
+    {
+        Any,
+        PressureLevel,
+        Surface,
+        SurfaceFlux,
+        OtherFlux,
+        Tropopause,
+        PotentialTemperatureLevel,
+        PotentialVorticityLevel,
+        ModelLevel
     };
 
     asDataPredictor(const wxString &dataId);
 
     virtual ~asDataPredictor();
 
-    static Parameter StringToParameterEnum(const wxString &ParameterStr);
+    static Parameter StringToParameterEnum(const wxString &parameterStr);
 
-    static wxString ParameterEnumToString(Parameter dataParameter);
+    static wxString ParameterEnumToString(Parameter parameter);
 
-    static Unit StringToUnitEnum(const wxString &UnitStr);
+    static Unit StringToUnitEnum(const wxString &unitStr);
+
+    static Level StringToLevelEnum(const wxString &levelStr);
+
+    static wxString LevelEnumToString(Level level);
 
     virtual bool Init() = 0;
+
+    void CheckLevelTypeIsDefined();
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
 
@@ -208,16 +231,6 @@ public:
         m_preprocessMethod = val;
     }
 
-    wxString GetFinalProviderWebsite() const
-    {
-        return m_finalProviderWebsite;
-    }
-
-    wxString GetFinalProviderFTP() const
-    {
-        return m_finalProviderFTP;
-    }
-
     wxString GetDataId() const
     {
         return m_dataId;
@@ -265,15 +278,15 @@ protected:
     wxString m_dataId;
     wxString m_datasetId;
     wxString m_originalProvider;
-    wxString m_finalProvider;
-    wxString m_finalProviderWebsite;
-    wxString m_finalProviderFTP;
+    wxString m_transformedBy;
     wxString m_datasetName;
     double m_timeZoneHours;
     double m_timeStepHours;
     double m_firstTimeStepHours;
     VectorDouble m_nanValues;
-    Parameter m_dataParameter;
+    Parameter m_parameter;
+    wxString m_parameterName;
+    Level m_levelType;
     wxString m_fileVariableName;
     Unit m_unit;
     float m_xAxisStep;

@@ -37,6 +37,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_dataId = dataId;
     m_level = 0;
     m_isPreprocessed = false;
+    m_transformedBy = wxEmptyString;
     m_canBeClipped = true;
     m_latPtsnb = 0;
     m_lonPtsnb = 0;
@@ -58,6 +59,15 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileAxisTimeName = wxEmptyString;
     m_fileAxisLevelName = wxEmptyString;
     m_fileExtension = wxEmptyString;
+
+    if(!dataId.Contains('/')) {
+        wxString levelType = dataId.BeforeFirst('/');
+        m_levelType = StringToLevelEnum(levelType);
+    } else {
+        asLogMessage(wxString::Format(_("The data ID (%s) does not contain the level type"), dataId));
+        m_levelType = Any;
+    }
+
 }
 
 asDataPredictor::~asDataPredictor()
@@ -97,8 +107,14 @@ asDataPredictor::Parameter asDataPredictor::StringToParameterEnum(const wxString
         return PotentialEvaporation;
     } else if (ParameterStr.CmpNoCase("SurfaceTemperature") == 0) {
         return SurfaceTemperature;
-    } else if (ParameterStr.CmpNoCase("ConvectivePrecipitation") == 0) {
-        return ConvectivePrecipitation;
+    } else if (ParameterStr.CmpNoCase("ConvectivePrecipitationRate") == 0) {
+        return ConvectivePrecipitationRate;
+    } else if (ParameterStr.CmpNoCase("CloudCover") == 0) {
+        return CloudCover;
+    } else if (ParameterStr.CmpNoCase("SoilMoisture") == 0) {
+        return SoilMoisture;
+    } else if (ParameterStr.CmpNoCase("SnowWaterEquivalent") == 0) {
+        return SnowWaterEquivalent;
     } else if (ParameterStr.CmpNoCase("LongwaveRadiation") == 0) {
         return LongwaveRadiation;
     } else if (ParameterStr.CmpNoCase("ShortwaveRadiation") == 0) {
@@ -113,6 +129,10 @@ asDataPredictor::Parameter asDataPredictor::StringToParameterEnum(const wxString
         return NearIRFlux;
     } else if (ParameterStr.CmpNoCase("SensibleHeatFlux") == 0) {
         return SensibleHeatFlux;
+    } else if (ParameterStr.CmpNoCase("MomentumFlux") == 0) {
+        return MomentumFlux;
+    } else if (ParameterStr.CmpNoCase("GravityWaveStress") == 0) {
+        return GravityWaveStress;
     } else if (ParameterStr.CmpNoCase("SeaSurfaceTemperature") == 0) {
         return SeaSurfaceTemperature;
     } else if (ParameterStr.CmpNoCase("SST") == 0) {
@@ -122,9 +142,9 @@ asDataPredictor::Parameter asDataPredictor::StringToParameterEnum(const wxString
     } else if (ParameterStr.CmpNoCase("SSTAnomaly") == 0) {
         return SeaSurfaceTemperatureAnomaly;
     } else {
-        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
+        asThrowException(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
     }
-    return NoParameter;
+    return GeopotentialHeight;
 }
 
 wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataParameter)
@@ -160,8 +180,14 @@ wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataP
             return "PotentialEvaporation";
         case (SurfaceTemperature):
             return "SurfaceTemperature";
-        case (ConvectivePrecipitation):
-            return "ConvectivePrecipitation";
+        case (ConvectivePrecipitationRate):
+            return "ConvectivePrecipitationRate";
+        case (CloudCover):
+            return "CloudCover";
+        case (SoilMoisture):
+            return "SoilMoisture";
+        case (SnowWaterEquivalent):
+            return "SnowWaterEquivalent";
         case (LongwaveRadiation):
             return "LongwaveRadiation";
         case (ShortwaveRadiation):
@@ -176,6 +202,10 @@ wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataP
             return "NearIRFlux";
         case (SensibleHeatFlux):
             return "SensibleHeatFlux";
+        case (MomentumFlux):
+            return "MomentumFlux";
+        case (GravityWaveStress):
+            return "GravityWaveStress";
         case (SeaSurfaceTemperature):
             return "SeaSurfaceTemperature";
         case (SeaSurfaceTemperatureAnomaly):
@@ -201,38 +231,95 @@ asDataPredictor::Unit asDataPredictor::StringToUnitEnum(const wxString &UnitStr)
         return km;
     } else if (UnitStr.CmpNoCase("percent") == 0) {
         return percent;
+    } else if (UnitStr.CmpNoCase("fraction") == 0) {
+        return fraction;
     } else if (UnitStr.CmpNoCase("%") == 0) {
         return percent;
     } else if (UnitStr.CmpNoCase("degC") == 0) {
         return degC;
     } else if (UnitStr.CmpNoCase("degK") == 0) {
         return degK;
-    } else if (UnitStr.CmpNoCase("Pascals") == 0) {
-        return Pascals;
-    } else if (UnitStr.CmpNoCase("PascalsPerSec") == 0) {
-        return PascalsPerSec;
-    } else if (UnitStr.CmpNoCase("Pascals/s") == 0) {
-        return PascalsPerSec;
-    } else if (UnitStr.CmpNoCase("kgPerKg") == 0) {
-        return kgPerKg;
+    } else if (UnitStr.CmpNoCase("Pa") == 0) {
+        return Pa;
+    } else if (UnitStr.CmpNoCase("Pa_s") == 0) {
+        return Pa_s;
+    } else if (UnitStr.CmpNoCase("Pa/s") == 0) {
+        return Pa_s;
+    } else if (UnitStr.CmpNoCase("kg_kg") == 0) {
+        return kg_kg;
     } else if (UnitStr.CmpNoCase("kg/kg") == 0) {
-        return kgPerKg;
-    } else if (UnitStr.CmpNoCase("mPerSec") == 0) {
-        return mPerSec;
+        return kg_kg;
+    } else if (UnitStr.CmpNoCase("m_s") == 0) {
+        return m_s;
     } else if (UnitStr.CmpNoCase("m/s") == 0) {
-        return mPerSec;
-    } else if (UnitStr.CmpNoCase("WPerm2") == 0) {
-        return WPerm2;
+        return m_s;
+    } else if (UnitStr.CmpNoCase("W_m2") == 0) {
+        return W_m2;
     } else if (UnitStr.CmpNoCase("W/m2") == 0) {
-        return WPerm2;
-    } else if (UnitStr.CmpNoCase("kgPerm2Pers") == 0) {
-        return kgPerm2Pers;
+        return W_m2;
+    } else if (UnitStr.CmpNoCase("kg_m2") == 0) {
+        return kg_m2;
+    } else if (UnitStr.CmpNoCase("kg/m2") == 0) {
+        return kg_m2;
+    } else if (UnitStr.CmpNoCase("kg_m2_s") == 0) {
+        return kg_m2_s;
     } else if (UnitStr.CmpNoCase("kg/m2/s") == 0) {
-        return kgPerm2Pers;
+        return kg_m2_s;
+    } else if (UnitStr.CmpNoCase("N/m2") == 0) {
+        return N_m2;
     } else {
-        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
+        asThrowException(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
     }
-    return NoUnit;
+    return m;
+}
+
+asDataPredictor::Level asDataPredictor::StringToLevelEnum(const wxString &levelStr)
+{
+    if (levelStr.CmpNoCase("PressureLevel") == 0 || levelStr.CmpNoCase("press") == 0 || levelStr.CmpNoCase("pl") == 0) {
+        return PressureLevel;
+    } else if (levelStr.CmpNoCase("Surface") == 0 || levelStr.CmpNoCase("surf") == 0 || levelStr.CmpNoCase("sfc") == 0) {
+        return Surface;
+    } else if (levelStr.CmpNoCase("SurfaceFlux") == 0 || levelStr.CmpNoCase("flux") == 0) {
+        return SurfaceFlux;
+    } else if (levelStr.CmpNoCase("OtherFlux") == 0 || levelStr.CmpNoCase("oflux") == 0) {
+        return OtherFlux;
+    } else if (levelStr.CmpNoCase("Tropopause") == 0 || levelStr.CmpNoCase("tropo") == 0) {
+        return Tropopause;
+    } else if (levelStr.CmpNoCase("PotentialTemperatureLevel") == 0 || levelStr.CmpNoCase("pott") == 0 || levelStr.CmpNoCase("pt") == 0) {
+        return PotentialTemperatureLevel;
+    } else if (levelStr.CmpNoCase("PotentialVorticityLevel") == 0 || levelStr.CmpNoCase("pv") == 0) {
+        return PotentialVorticityLevel;
+    } else if (levelStr.CmpNoCase("ModelLevel") == 0 || levelStr.CmpNoCase("model") == 0 || levelStr.CmpNoCase("ml") == 0) {
+        return ModelLevel;
+    } else {
+        asThrowException(wxString::Format(_("The Level enumeration (%s) entry doesn't exists"), levelStr));
+    }
+    return PressureLevel;
+}
+
+wxString asDataPredictor::LevelEnumToString(Level level)
+{
+    switch (level) {
+        case (PressureLevel):
+            return "PressureLevel";
+        case (Surface):
+            return "Surface";
+        case (SurfaceFlux):
+            return "SurfaceFlux";
+        case (OtherFlux):
+            return "OtherFlux";
+        case (Tropopause):
+            return "Tropopause";
+        case (PotentialTemperatureLevel):
+            return "PotentialTemperatureLevel";
+        case (PotentialVorticityLevel):
+            return "PotentialVorticityLevel";
+        case (ModelLevel):
+            return "ModelLevel";
+        default:
+            asLogError(_("The given data level type in unknown."));
+    }
+    return wxEmptyString;
 }
 
 bool asDataPredictor::SetData(VArray2DFloat &val)
@@ -888,3 +975,12 @@ float asDataPredictor::GetMaxValue() const
 
     return maxValue;
 }
+
+void asDataPredictor::CheckLevelTypeIsDefined()
+{
+    if(m_levelType == Any) {
+        asThrowException(_("The type of level must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
+    }
+}
+
+

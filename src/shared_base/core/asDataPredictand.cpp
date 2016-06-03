@@ -71,9 +71,9 @@ asDataPredictand::Parameter asDataPredictand::StringToParameterEnum(const wxStri
     } else if (parameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
     } else {
-        asLogError(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), parameterStr));
+        asThrowException(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), parameterStr));
     }
-    return NoParameter;
+    return Precipitation;
 }
 
 wxString asDataPredictand::ParameterEnumToString(asDataPredictand::Parameter parameter)
@@ -113,9 +113,9 @@ asDataPredictand::Unit asDataPredictand::StringToUnitEnum(const wxString &unitSt
     } else if (unitStr.CmpNoCase("degK") == 0) {
         return degK;
     } else {
-        asLogError(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), unitStr));
+        asThrowException(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), unitStr));
     }
-    return NoUnit;
+    return mm;
 }
 
 asDataPredictand::TemporalResolution asDataPredictand::StringToTemporalResolutionEnum(const wxString &temporalResolution)
@@ -150,10 +150,10 @@ asDataPredictand::TemporalResolution asDataPredictand::StringToTemporalResolutio
     } else if (temporalResolution.CmpNoCase("1 week") == 0) {
         return Weekly;
     } else {
-        asLogError(wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"),
+        asThrowException(wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"),
                                     temporalResolution));
     }
-    return NoTemporalResolution;
+    return Daily;
 }
 
 wxString asDataPredictand::TemporalResolutionEnumToString(asDataPredictand::TemporalResolution temporalResolution)
@@ -189,10 +189,10 @@ asDataPredictand::SpatialAggregation asDataPredictand::StringToSpatialAggregatio
     } else if (spatialAggregation.CmpNoCase("Catchment") == 0) {
         return Catchment;
     } else {
-        asLogError(wxString::Format(_("The spatialAggregation enumeration (%s) entry doesn't exists"),
+        asThrowException(wxString::Format(_("The spatialAggregation enumeration (%s) entry doesn't exists"),
                                     spatialAggregation));
     }
-    return NoSpatialAggregation;
+    return Station;
 }
 
 wxString asDataPredictand::SpatialAggregationEnumToString(asDataPredictand::SpatialAggregation spatialAggregation)
@@ -217,21 +217,6 @@ asDataPredictand *asDataPredictand::GetInstance(const wxString &parameterStr,
     Parameter parameter = StringToParameterEnum(parameterStr);
     TemporalResolution temporalResolution = StringToTemporalResolutionEnum(temporalResolutionStr);
     SpatialAggregation spatialAggregation = StringToSpatialAggregationEnum(spatialAggregationStr);
-
-    if (parameter == NoParameter) {
-        asLogError(_("The given data parameter is unknown. Cannot get an instance of the predictand DB."));
-        return NULL;
-    }
-
-    if (temporalResolution == NoTemporalResolution) {
-        asLogError(_("The given data temporal resolution is unknown. Cannot get an instance of the predictand DB."));
-        return NULL;
-    }
-
-    if (spatialAggregation == NoSpatialAggregation) {
-        asLogError(_("The given data spatial aggregation is unknown. Cannot get an instance of the predictand DB."));
-        return NULL;
-    }
 
     asDataPredictand *db = asDataPredictand::GetInstance(parameter, temporalResolution, spatialAggregation);
     return db;

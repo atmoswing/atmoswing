@@ -32,11 +32,11 @@
 #include <asGeoAreaCompositeGrid.h>
 #include <asFileNetcdf.h>
 #include <asDataPredictorArchiveNcepReanalysis1.h>
-#include <asDataPredictorArchiveNcepReanalysis1Terranum.h>
+#include <asDataPredictorArchiveNcepReanalysis1Subset.h>
 #include <asDataPredictorArchiveNcepReanalysis1Lthe.h>
 #include <asDataPredictorArchiveNcepReanalysis2.h>
 #include <asDataPredictorArchiveNoaaOisst2.h>
-#include <asDataPredictorArchiveNoaaOisst2Terranum.h>
+#include <asDataPredictorArchiveNoaaOisst2Subset.h>
 
 
 asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
@@ -58,16 +58,16 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
 
     if (datasetId.IsSameAs("NCEP_Reanalysis_v1", false)) {
         predictor = new asDataPredictorArchiveNcepReanalysis1(dataId);
-    } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_terranum", false)) {
-        predictor = new asDataPredictorArchiveNcepReanalysis1Terranum(dataId);
+    } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_subset", false)) {
+        predictor = new asDataPredictorArchiveNcepReanalysis1Subset(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_lthe", false)) {
         predictor = new asDataPredictorArchiveNcepReanalysis1Lthe(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
         predictor = new asDataPredictorArchiveNcepReanalysis2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
         predictor = new asDataPredictorArchiveNoaaOisst2(dataId);
-    } else if (datasetId.IsSameAs("NOAA_OISST_v2_terranum", false)) {
-        predictor = new asDataPredictorArchiveNoaaOisst2Terranum(dataId);
+    } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {
+        predictor = new asDataPredictorArchiveNoaaOisst2Subset(dataId);
     } else {
         asLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return NULL;

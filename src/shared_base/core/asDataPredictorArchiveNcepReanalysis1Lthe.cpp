@@ -34,16 +34,14 @@
 
 
 asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1Lthe(const wxString &dataId)
-        : asDataPredictorArchiveNcepReanalysis1Terranum(dataId)
+        : asDataPredictorArchiveNcepReanalysis1Subset(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
     m_dataId = dataId;
     m_datasetId = "NCEP_Reanalysis_v1_lthe";
     m_originalProvider = "NCEP/NCAR";
-    m_finalProvider = "LTHE";
-    m_finalProviderWebsite = "http://www.lthe.fr";
-    m_finalProviderFTP = wxEmptyString;
+    m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
     m_originalProviderEnd = NaNDouble;
@@ -64,38 +62,39 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
 
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt_500hPa", false)) {
-        m_dataParameter = GeopotentialHeight;
+        m_parameter = GeopotentialHeight;
+        m_parameterName = "Geopotential Height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
         m_firstTimeStepHours = 0;
         m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
-        m_dataParameter = GeopotentialHeight;
+        m_parameter = GeopotentialHeight;
+        m_parameterName = "Geopotential Height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
         m_firstTimeStepHours = 12;
         m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("prwtr", false)) {
-        m_dataParameter = GeopotentialHeight;
+        m_parameter = PrecipitableWater;
+        m_parameterName = "Precipitable water";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
         m_fileVariableName = "pwa";
-        m_unit = m;
+        m_unit = mm;
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
     } else if (m_dataId.IsSameAs("rhum", false)) {
-        m_dataParameter = GeopotentialHeight;
+        m_parameter = RelativeHumidity;
+        m_parameterName = "Relative Humidity";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
         m_fileVariableName = "rhum";
-        m_unit = m;
+        m_unit = percent;
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
     } else {
-        m_dataParameter = NoParameter;
-        m_fileNamePattern = wxEmptyString;
-        m_fileVariableName = wxEmptyString;
-        m_unit = NoUnit;
+        asThrowException(_("No parameter identified for the provided level type"));
     }
 }
 
