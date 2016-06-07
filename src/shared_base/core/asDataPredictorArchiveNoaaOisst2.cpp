@@ -38,7 +38,6 @@ asDataPredictorArchiveNoaaOisst2::asDataPredictorArchiveNoaaOisst2(const wxStrin
 {
     // Set the basic properties.
     m_initialized = false;
-    m_dataId = dataId;
     m_datasetId = "NOAA_OISST_v2";
     m_originalProvider = "NOAA";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
@@ -91,7 +90,7 @@ bool asDataPredictorArchiveNoaaOisst2::Init()
     }
 
     // Check directory is set
-    if (m_directoryPath.IsEmpty()) {
+    if (GetDirectoryPath().IsEmpty()) {
         asLogError(
                 wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
                                  m_dataId, m_datasetName));
@@ -120,7 +119,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFiles(asGeoAreaCompositeGrid *
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
         wxString fileName = wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
                                              asTime::GetMonth(date), asTime::GetDay(date));
-        wxString fileFullPath = m_directoryPath + fileName;
+        wxString fileFullPath = GetFullDirectoryPath() + fileName;
 
 #if wxUSE_GUI
         // Update the progress bar

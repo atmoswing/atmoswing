@@ -38,7 +38,6 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
 {
     // Set the basic properties.
     m_initialized = false;
-    m_dataId = dataId;
     m_datasetId = "NCEP_Reanalysis_v1_lthe";
     m_originalProvider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
@@ -114,7 +113,7 @@ bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
     }
 
     // Check directory is set
-    if (m_directoryPath.IsEmpty()) {
+    if (GetDirectoryPath().IsEmpty()) {
         asLogError(
                 wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
                                  m_dataId, m_datasetName));

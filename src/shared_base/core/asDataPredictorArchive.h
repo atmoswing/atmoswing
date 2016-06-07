@@ -60,7 +60,6 @@ public:
 protected:
     double m_originalProviderStart;
     double m_originalProviderEnd;
-    wxString m_subFolder;
     wxString m_fileNamePattern;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;

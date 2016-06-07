@@ -359,13 +359,13 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/");
+    predictorDataDir.Append("/files/data-ncep/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
-    predictor->Load(&geoArea, timearray);
+    ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
@@ -458,13 +458,13 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/");
+    predictorDataDir.Append("/files/data-ncep/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
     predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
-    predictor->Load(&geoArea, timearray);
+    ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
