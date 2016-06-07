@@ -217,10 +217,8 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     Array2DFloat dat1 = originalData[i].block(YstartIndexReal, XstartIndex, Ylength - 1, Xlength);
-                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength,
-                                                              Xlength - 1);
-                    Array2DFloat datMerged = Array2DFloat::Zero(2 * Ylength,
-                                                                Xlength); // Needs to be 0-filled for further simplification.
+                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength, Xlength - 1);
+                    Array2DFloat datMerged = Array2DFloat::Zero(2 * Ylength, Xlength); // Needs to be 0-filled for further simplification.
                     datMerged.block(0, 0, Ylength - 1, Xlength) = dat1;
                     datMerged.block(Ylength, 0, Ylength, Xlength - 1) = dat2;
                     m_data[i] = datMerged;
@@ -257,8 +255,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     Array2DFloat dat1 = originalData[i].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
-                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength,
-                                                              Xlength);
+                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength, Xlength);
                     Array2DFloat datMerged(2 * Ylength, Xlength);
                     datMerged.block(0, 0, Ylength, Xlength) = dat1;
                     datMerged.block(Ylength, 0, Ylength, Xlength) = dat2;

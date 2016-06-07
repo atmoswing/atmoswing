@@ -36,6 +36,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
 {
     m_dataId = dataId;
     m_level = 0;
+    m_subFolder = wxEmptyString;
     m_isPreprocessed = false;
     m_transformedBy = wxEmptyString;
     m_canBeClipped = true;
@@ -60,9 +61,10 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileAxisLevelName = wxEmptyString;
     m_fileExtension = wxEmptyString;
 
-    if(!dataId.Contains('/')) {
+    if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
         m_levelType = StringToLevelEnum(levelType);
+        m_dataId = dataId.AfterFirst('/');
     } else {
         asLogMessage(wxString::Format(_("The data ID (%s) does not contain the level type"), dataId));
         m_levelType = Any;
@@ -268,7 +270,7 @@ asDataPredictor::Level asDataPredictor::StringToLevelEnum(const wxString &levelS
     } else {
         asThrowException(wxString::Format(_("The Level enumeration (%s) entry doesn't exists"), levelStr));
     }
-    return PressureLevel;
+    return Any;
 }
 
 wxString asDataPredictor::LevelEnumToString(Level level)

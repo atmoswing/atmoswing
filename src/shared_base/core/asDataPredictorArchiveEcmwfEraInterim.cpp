@@ -37,7 +37,6 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
 {
     // Set the basic properties.
     m_initialized = false;
-    m_dataId = dataId;
     m_datasetId = "ECMWF_ERA-40";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA-40";
@@ -126,7 +125,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     }
 
     // Check directory is set
-    if (m_directoryPath.IsEmpty()) {
+    if (GetDirectoryPath().IsEmpty()) {
         asLogError(
                 wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
                                  m_dataId, m_datasetName));

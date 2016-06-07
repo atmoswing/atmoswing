@@ -152,8 +152,8 @@ public:
 
     void SetDirectoryPath(wxString directoryPath)
     {
-        if ((directoryPath.Last() != '/') && (directoryPath.Last() != '\\')) {
-            directoryPath.Append('/');
+        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
+            directoryPath.Append(wxFileName::GetPathSeparators());
         }
 
         m_directoryPath = directoryPath;
@@ -161,7 +161,27 @@ public:
 
     wxString GetDirectoryPath() const
     {
-        return m_directoryPath;
+        wxString directoryPath = m_directoryPath;
+        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
+            directoryPath.Append(wxFileName::GetPathSeparators());
+        }
+
+        return directoryPath;
+    }
+
+    wxString GetFullDirectoryPath() const
+    {
+        wxString directoryPath = m_directoryPath;
+        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
+            directoryPath.Append(wxFileName::GetPathSeparators());
+        }
+
+        directoryPath += m_subFolder;
+        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
+            directoryPath.Append(wxFileName::GetPathSeparators());
+        }
+
+        return directoryPath;
     }
 
     int GetTimeSize() const
@@ -265,9 +285,9 @@ public:
     }
 
 protected:
-    wxString m_directoryPath;
     bool m_initialized;
     bool m_axesChecked;
+    wxString m_subFolder;
     wxString m_dataId;
     wxString m_datasetId;
     wxString m_originalProvider;
@@ -325,6 +345,8 @@ protected:
     asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon,
                                        Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
 
+private:
+    wxString m_directoryPath;
 };
 
 #endif // ASDATAPREDICTOR_H

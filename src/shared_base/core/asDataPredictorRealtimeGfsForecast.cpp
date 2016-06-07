@@ -38,7 +38,6 @@ asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxS
 {
     // Set the basic properties.
     m_initialized = false;
-    m_dataId = dataId;
     m_datasetId = "NWS_GFS_Forecast";
     m_originalProvider = "NWS";
     m_transformedBy = wxEmptyString;

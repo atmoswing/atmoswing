@@ -38,7 +38,6 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
 {
     // Set the basic properties.
     m_initialized = false;
-    m_dataId = dataId;
     m_datasetId = "NCEP_Reanalysis_v2";
     m_originalProvider = "NCEP/DOE";
     m_datasetName = "Reanalysis 2";
@@ -327,7 +326,7 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
     }
 
     // Check directory is set
-    if (m_directoryPath.IsEmpty()) {
+    if (GetDirectoryPath().IsEmpty()) {
         asLogError(
                 wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
                                  m_dataId, m_datasetName));
@@ -354,7 +353,7 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFiles(asGeoAreaCompositeG
     // Loop through the files
     for (int i_year = yearFirst; i_year <= yearLast; i_year++) {
         // Build the file path
-        wxString fileFullPath = m_directoryPath + wxString::Format(m_fileNamePattern, i_year);
+        wxString fileFullPath = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, i_year);
 
 #if wxUSE_GUI
         // Update the progress bar

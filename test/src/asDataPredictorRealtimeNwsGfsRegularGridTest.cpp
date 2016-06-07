@@ -36,9 +36,9 @@
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -127,9 +127,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -218,9 +218,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -273,9 +273,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -328,9 +328,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -383,9 +383,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -438,9 +438,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -493,9 +493,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -548,9 +548,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -603,9 +603,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -658,9 +658,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -714,9 +714,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -770,9 +770,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -824,9 +824,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -878,9 +878,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -935,9 +935,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmal
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -992,9 +992,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLarg
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -1044,9 +1044,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -1096,9 +1096,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
@@ -1146,9 +1146,9 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
     VectorString filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_12h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_18h_L.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/NWS_GFS_Forecast_hgt_24h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_12h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_18h_L.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws/NWS_GFS_Forecast_hgt_24h_L.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();

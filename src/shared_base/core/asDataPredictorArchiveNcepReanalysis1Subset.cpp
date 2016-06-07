@@ -38,7 +38,6 @@ asDataPredictorArchiveNcepReanalysis1Subset::asDataPredictorArchiveNcepReanalysi
 {
     // Set the basic properties.
     m_initialized = false;
-    m_dataId = dataId;
     m_datasetId = "NCEP_Reanalysis_v1_terranum";
     m_originalProvider = "NCEP/NCAR";
     m_transformedBy = "Pascal Horton";
@@ -130,7 +129,7 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Init()
     }
 
     // Check directory is set
-    if (m_directoryPath.IsEmpty()) {
+    if (GetDirectoryPath().IsEmpty()) {
         asLogError(
                 wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
                                  m_dataId, m_datasetName));
@@ -148,7 +147,7 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::ExtractFromFiles(asGeoAreaComp
                                                                      VVArray2DFloat &compositeData)
 {
     // Build the file path
-    wxString fileFullPath = m_directoryPath + m_fileNamePattern;
+    wxString fileFullPath = GetFullDirectoryPath() + m_fileNamePattern;
 
     // Open the NetCDF 
     ThreadsManager().CritSectionNetCDF().Enter();
