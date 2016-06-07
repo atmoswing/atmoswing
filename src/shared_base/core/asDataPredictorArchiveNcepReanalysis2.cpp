@@ -128,7 +128,7 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
             break;
 
         case SurfaceFlux:
-            m_subFolder = "surface_gauss";
+            m_subFolder = "gaussian_grid";
             m_xAxisStep = NaNFloat;
             m_yAxisStep = NaNFloat;
             if (m_dataId.IsSameAs("air2m", false)) {
@@ -156,7 +156,7 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
                 m_fileVariableName = "tmin";
                 m_unit = degK;
             } else if (m_dataId.IsSameAs("sktmp", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Skin Temperature";
                 m_fileNamePattern = "skt.sfc.gauss.%d.nc";
                 m_fileVariableName = "skt";
@@ -174,13 +174,13 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
                 m_fileVariableName = "soilw";
                 m_unit = fraction;
             } else if (m_dataId.IsSameAs("tmp0-10", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Temperature of 0-10cm layer";
                 m_fileNamePattern = "tmp.0-10cm.gauss.%d.nc";
                 m_fileVariableName = "tmp";
                 m_unit = degK;
             } else if (m_dataId.IsSameAs("tmp10-200", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Temperature of 10-200cm layer";
                 m_fileNamePattern = "tmp.10-200cm.gauss.%d.nc";
                 m_fileVariableName = "tmp";
@@ -204,31 +204,31 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
                 m_fileVariableName = "weasd";
                 m_unit = kg_m2;
             } else if (m_dataId.IsSameAs("cprat", false)) {
-                m_parameter = ConvectivePrecipitationRate;
+                m_parameter = PrecipitationRate;
                 m_parameterName = "Convective precipitation rate";
                 m_fileNamePattern = "cprat.sfc.gauss.%d.nc";
                 m_fileVariableName = "cprat";
                 m_unit = kg_m2_s;
             } else if (m_dataId.IsSameAs("dlwrf", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Downward longwave radiation flux";
                 m_fileNamePattern = "dlwrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "dlwrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("dswrf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Downward solar radiation flux";
                 m_fileNamePattern = "dswrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "dswrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("gflux", false)) {
-                m_parameter = GroundHeatFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Ground heat flux";
                 m_fileNamePattern = "gflux.sfc.gauss.%d.nc";
                 m_fileVariableName = "gflux";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("lhtfl", false)) {
-                m_parameter = LatentHeatFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Latent heat net flux";
                 m_fileNamePattern = "lhtfl.sfc.gauss.%d.nc";
                 m_fileVariableName = "lhtfl";
@@ -246,7 +246,7 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
                 m_fileVariableName = "prate";
                 m_unit = kg_m2_s;
             } else if (m_dataId.IsSameAs("shtfl", false)) {
-                m_parameter = SensibleHeatFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Sensible heat net flux";
                 m_fileNamePattern = "shtfl.sfc.gauss.%d.nc";
                 m_fileVariableName = "shtfl";
@@ -270,13 +270,13 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
                 m_fileVariableName = "ugwd";
                 m_unit = N_m2;
             } else if (m_dataId.IsSameAs("ulwrf", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Upward Longwave Radiation Flux";
                 m_fileNamePattern = "ulwrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "ulwrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("uswrf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Upward Solar Radiation Flux";
                 m_fileNamePattern = "uswrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "uswrf";

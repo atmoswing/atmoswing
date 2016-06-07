@@ -105,30 +105,16 @@ asDataPredictor::Parameter asDataPredictor::StringToParameterEnum(const wxString
         return Pressure;
     } else if (ParameterStr.CmpNoCase("PotentialEvaporation") == 0) {
         return PotentialEvaporation;
-    } else if (ParameterStr.CmpNoCase("SurfaceTemperature") == 0) {
-        return SurfaceTemperature;
-    } else if (ParameterStr.CmpNoCase("ConvectivePrecipitationRate") == 0) {
-        return ConvectivePrecipitationRate;
+    } else if (ParameterStr.CmpNoCase("SoilTemperature") == 0) {
+        return SoilTemperature;
     } else if (ParameterStr.CmpNoCase("CloudCover") == 0) {
         return CloudCover;
     } else if (ParameterStr.CmpNoCase("SoilMoisture") == 0) {
         return SoilMoisture;
     } else if (ParameterStr.CmpNoCase("SnowWaterEquivalent") == 0) {
         return SnowWaterEquivalent;
-    } else if (ParameterStr.CmpNoCase("LongwaveRadiation") == 0) {
-        return LongwaveRadiation;
-    } else if (ParameterStr.CmpNoCase("ShortwaveRadiation") == 0) {
-        return ShortwaveRadiation;
-    } else if (ParameterStr.CmpNoCase("SolarRadiation") == 0) {
-        return SolarRadiation;
-    } else if (ParameterStr.CmpNoCase("GroundHeatFlux") == 0) {
-        return GroundHeatFlux;
-    } else if (ParameterStr.CmpNoCase("LatentHeatFlux") == 0) {
-        return LatentHeatFlux;
-    } else if (ParameterStr.CmpNoCase("NearIRFlux") == 0) {
-        return NearIRFlux;
-    } else if (ParameterStr.CmpNoCase("SensibleHeatFlux") == 0) {
-        return SensibleHeatFlux;
+    } else if (ParameterStr.CmpNoCase("Radiation") == 0) {
+        return Radiation;
     } else if (ParameterStr.CmpNoCase("MomentumFlux") == 0) {
         return MomentumFlux;
     } else if (ParameterStr.CmpNoCase("GravityWaveStress") == 0) {
@@ -178,30 +164,16 @@ wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataP
             return "Pressure";
         case (PotentialEvaporation):
             return "PotentialEvaporation";
-        case (SurfaceTemperature):
-            return "SurfaceTemperature";
-        case (ConvectivePrecipitationRate):
-            return "ConvectivePrecipitationRate";
+        case (SoilTemperature):
+            return "SoilTemperature";
         case (CloudCover):
             return "CloudCover";
         case (SoilMoisture):
             return "SoilMoisture";
         case (SnowWaterEquivalent):
             return "SnowWaterEquivalent";
-        case (LongwaveRadiation):
-            return "LongwaveRadiation";
-        case (ShortwaveRadiation):
-            return "ShortwaveRadiation";
-        case (SolarRadiation):
-            return "SolarRadiation";
-        case (GroundHeatFlux):
-            return "GroundHeatFlux";
-        case (LatentHeatFlux):
-            return "LatentHeatFlux";
-        case (NearIRFlux):
-            return "NearIRFlux";
-        case (SensibleHeatFlux):
-            return "SensibleHeatFlux";
+        case (Radiation):
+            return "Radiation";
         case (MomentumFlux):
             return "MomentumFlux";
         case (GravityWaveStress):
@@ -265,6 +237,8 @@ asDataPredictor::Unit asDataPredictor::StringToUnitEnum(const wxString &UnitStr)
         return kg_m2_s;
     } else if (UnitStr.CmpNoCase("kg/m2/s") == 0) {
         return kg_m2_s;
+    } else if (UnitStr.CmpNoCase("N_m2") == 0) {
+        return N_m2;
     } else if (UnitStr.CmpNoCase("N/m2") == 0) {
         return N_m2;
     } else {
