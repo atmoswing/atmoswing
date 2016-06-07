@@ -276,6 +276,8 @@ asDataPredictor::Level asDataPredictor::StringToLevelEnum(const wxString &levelS
 wxString asDataPredictor::LevelEnumToString(Level level)
 {
     switch (level) {
+        case (Any):
+            return "Any";
         case (PressureLevel):
             return "PressureLevel";
         case (Surface):

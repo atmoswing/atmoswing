@@ -93,7 +93,8 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
     } else {
-        asThrowException(_("No parameter identified for the provided level type"));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                          m_dataId, LevelEnumToString(m_levelType)));
     }
 }
 
