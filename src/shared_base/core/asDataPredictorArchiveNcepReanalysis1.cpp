@@ -215,25 +215,25 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "soilw";
                 m_unit = fraction;
             } else if (m_dataId.IsSameAs("sktmp", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Skin Temperature";
                 m_fileNamePattern = "skt.sfc.gauss.%d.nc";
                 m_fileVariableName = "skt";
                 m_unit = degK;
             } else if (m_dataId.IsSameAs("tmp0-10", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Temperature of 0-10cm layer";
                 m_fileNamePattern = "tmp.0-10cm.gauss.%d.nc";
                 m_fileVariableName = "tmp";
                 m_unit = degK;
             } else if (m_dataId.IsSameAs("tmp10-200", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Temperature of 10-200cm layer";
                 m_fileNamePattern = "tmp.10-200cm.gauss.%d.nc";
                 m_fileVariableName = "tmp";
                 m_unit = degK;
             } else if (m_dataId.IsSameAs("tmp300", false)) {
-                m_parameter = SurfaceTemperature;
+                m_parameter = SoilTemperature;
                 m_parameterName = "Temperature at 300cm";
                 m_fileNamePattern = "tmp.300cm.gauss.%d.nc";
                 m_fileVariableName = "tmp";
@@ -269,79 +269,79 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "tmin";
                 m_unit = degK;
             } else if (m_dataId.IsSameAs("cfnlf", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Cloud forcing net longwave flux";
                 m_fileNamePattern = "cfnlf.sfc.gauss.%d.nc";
                 m_fileVariableName = "cfnlf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("cfnsf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Cloud forcing net solar flux";
                 m_fileNamePattern = "cfnsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "cfnsf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("cprat", false)) {
-                m_parameter = ConvectivePrecipitationRate;
+                m_parameter = PrecipitationRate;
                 m_parameterName = "Convective precipitation rate";
                 m_fileNamePattern = "cprat.sfc.gauss.%d.nc";
                 m_fileVariableName = "cprat";
                 m_unit = kg_m2_s;
             } else if (m_dataId.IsSameAs("csdlf", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Clear sky downward longwave flux";
                 m_fileNamePattern = "csdlf.sfc.gauss.%d.nc";
                 m_fileVariableName = "csdlf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("csdsf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Clear sky downward solar flux\t";
                 m_fileNamePattern = "csdsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "csdsf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("dlwrf", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Downward longwave radiation flux";
                 m_fileNamePattern = "dlwrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "dlwrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("dswrf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Downward solar radiation flux";
                 m_fileNamePattern = "dswrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "dswrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("gflux", false)) {
-                m_parameter = GroundHeatFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Ground heat flux";
                 m_fileNamePattern = "gflux.sfc.gauss.%d.nc";
                 m_fileVariableName = "gflux";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("lhtfl", false)) {
-                m_parameter = LatentHeatFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Latent heat net flux";
                 m_fileNamePattern = "lhtfl.sfc.gauss.%d.nc";
                 m_fileVariableName = "lhtfl";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("nbdsf", false)) {
-                m_parameter = NearIRFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Near IR beam downward solar flux";
                 m_fileNamePattern = "nbdsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "nbdsf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("nddsf", false)) {
-                m_parameter = NearIRFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Near IR diffuse downward solar flux";
                 m_fileNamePattern = "nddsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "nddsf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("nlwrs", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Net longwave radiation";
                 m_fileNamePattern = "nlwrs.sfc.gauss.%d.nc";
                 m_fileVariableName = "nlwrs";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("nswrs", false)) {
-                m_parameter = ShortwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Net shortwave radiation";
                 m_fileNamePattern = "nswrs.sfc.gauss.%d.nc";
                 m_fileVariableName = "nswrs";
@@ -353,7 +353,7 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "prate";
                 m_unit = kg_m2_s;
             } else if (m_dataId.IsSameAs("shtfl", false)) {
-                m_parameter = SensibleHeatFlux;
+                m_parameter = Radiation;
                 m_parameterName = "Sensible heat net flux";
                 m_fileNamePattern = "shtfl.sfc.gauss.%d.nc";
                 m_fileVariableName = "shtfl";
@@ -371,25 +371,25 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "ugwd";
                 m_unit = N_m2;
             } else if (m_dataId.IsSameAs("ulwrf", false)) {
-                m_parameter = LongwaveRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Upward Longwave Radiation Flux";
                 m_fileNamePattern = "ulwrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "ulwrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("uswrf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Upward Solar Radiation Flux";
                 m_fileNamePattern = "uswrf.sfc.gauss.%d.nc";
                 m_fileVariableName = "uswrf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("vbdsf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Visible Beam Downward Solar Flux";
                 m_fileNamePattern = "vbdsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "vbdsf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("vddsf", false)) {
-                m_parameter = SolarRadiation;
+                m_parameter = Radiation;
                 m_parameterName = "Visible Diffuse Downward Solar Flux";
                 m_fileNamePattern = "vddsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "vddsf";
