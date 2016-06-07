@@ -94,6 +94,8 @@ private:
     bool IsOnGrid(const Coo &point) const;
 
     bool IsOnGrid(double Xcoord, double Ycoord) const;
+
+    void BuildGaussianGrid();
 };
 
 #endif // asGeoAreaCompositeGaussianGrid_H
