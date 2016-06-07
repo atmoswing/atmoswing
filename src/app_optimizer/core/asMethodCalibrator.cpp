@@ -957,32 +957,49 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
 bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
                                   double timeStartData, double timeEndData)
 {
-    // Loop through every predictor
-    for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-        if (!PreloadData(params)) {
-            asLogError(_("Could not preload the data."));
-            return false;
-        }
-
-        if (params.NeedsPreloading(i_step, i_ptor)) {
-            if (!ExtractPreloadedData(predictors, params, i_step, i_ptor)) {
+    try {
+        // Loop through every predictor
+        for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
+            if (!PreloadData(params)) {
+                asLogError(_("Could not preload the data."));
                 return false;
             }
-        } else {
-            asLogMessage(_("Loading data."));
 
-            if (!params.NeedsPreprocessing(i_step, i_ptor)) {
-                if (!ExtractDataWithoutPreprocessing(predictors, params, i_step, i_ptor, timeStartData, timeEndData)) {
+            if (params.NeedsPreloading(i_step, i_ptor)) {
+                if (!ExtractPreloadedData(predictors, params, i_step, i_ptor)) {
                     return false;
                 }
             } else {
-                if (!ExtractDataWithPreprocessing(predictors, params, i_step, i_ptor, timeStartData, timeEndData)) {
-                    return false;
-                }
-            }
+                asLogMessage(_("Loading data."));
 
-            asLogMessage(_("Data loaded"));
+                if (!params.NeedsPreprocessing(i_step, i_ptor)) {
+                    if (!ExtractDataWithoutPreprocessing(predictors, params, i_step, i_ptor, timeStartData, timeEndData)) {
+                        return false;
+                    }
+                } else {
+                    if (!ExtractDataWithPreprocessing(predictors, params, i_step, i_ptor, timeStartData, timeEndData)) {
+                        return false;
+                    }
+                }
+
+                asLogMessage(_("Data loaded"));
+            }
         }
+    } catch (std::bad_alloc &ba) {
+        wxString msg(ba.what(), wxConvUTF8);
+        asLogError(wxString::Format(_("Bad allocation in the data loading: %s"), msg));
+        return false;
+    } catch (asException &e) {
+        wxString fullMessage = e.GetFullMessage();
+        if (!fullMessage.IsEmpty()) {
+            asLogError(fullMessage);
+        }
+        asLogError(_("Failed to load data."));
+        return false;
+    } catch (std::exception &e) {
+        wxString msg(e.what(), wxConvUTF8);
+        asLogError(wxString::Format(_("Exception in the data loading: %s"), msg));
+        return false;
     }
 
     return true;

@@ -67,7 +67,8 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
                 m_fileVariableName = "z";
                 m_unit = m;
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             m_fileNamePattern = m_fileVariableName + ".%d.nc";
             break;
@@ -79,7 +80,8 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             if (m_dataId.IsSameAs("xxxx", false)) {
 
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             break;
 
@@ -90,7 +92,8 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             if (m_dataId.IsSameAs("xxxx", false)) {
 
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             break;
 
@@ -101,7 +104,8 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             if (m_dataId.IsSameAs("xxxx", false)) {
 
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             break;
 

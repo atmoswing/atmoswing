@@ -72,7 +72,8 @@ asDataPredictorArchiveNoaaOisst2Subset::asDataPredictorArchiveNoaaOisst2Subset(c
         m_fileVariableName = "anom";
         m_unit = degC;
     } else {
-        asThrowException(_("No parameter identified for the provided level type"));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                          m_dataId, LevelEnumToString(m_levelType)));
     }
 }
 

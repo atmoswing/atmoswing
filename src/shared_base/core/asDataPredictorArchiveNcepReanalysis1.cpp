@@ -99,7 +99,8 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "vwnd";
                 m_unit = m_s;
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             m_fileNamePattern = m_fileVariableName + ".%d.nc";
             break;
@@ -175,7 +176,8 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "vwnd";
                 m_unit = m_s;
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             break;
 
@@ -412,7 +414,8 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_fileVariableName = "vgwd";
                 m_unit = N_m2;
             } else {
-                asThrowException(_("No parameter identified for the provided level type"));
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_levelType)));
             }
             break;
         default: asThrowException(_("Level type not implemented for this reanalysis dataset."));
