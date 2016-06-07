@@ -294,9 +294,15 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("csdsf", false)) {
                 m_parameter = Radiation;
-                m_parameterName = "Clear sky downward solar flux\t";
+                m_parameterName = "Clear sky downward solar flux";
                 m_fileNamePattern = "csdsf.sfc.gauss.%d.nc";
                 m_fileVariableName = "csdsf";
+                m_unit = W_m2;
+            } else if (m_dataId.IsSameAs("csusf", false)) {
+                m_parameter = Radiation;
+                m_parameterName = "Clear sky upward solar flux at surface";
+                m_fileNamePattern = "csusf.sfc.gauss.%d.nc";
+                m_fileVariableName = "csusf";
                 m_unit = W_m2;
             } else if (m_dataId.IsSameAs("dlwrf", false)) {
                 m_parameter = Radiation;
