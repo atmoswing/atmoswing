@@ -35,12 +35,12 @@ asFileNetcdf::asFileNetcdf(const wxString &FileName, const ListFileMode &FileMod
 {
     m_fileId = 0;
     m_status = 0;
-    m_struct.NDims = 0;
-    m_struct.NUDims = 0;
-    m_struct.NVars = 0;
-    m_struct.NAtts = 0;
-    m_struct.UDimId = 0;
-    m_struct.Format = Classic;
+    m_struct.nDims = 0;
+    m_struct.nUDims = 0;
+    m_struct.nVars = 0;
+    m_struct.nAtts = 0;
+    m_struct.uDimId = 0;
+    m_struct.format = Classic;
     m_defineMode = false;
 }
 
@@ -565,9 +565,9 @@ int asFileNetcdf::GetDimId(const wxString &DimName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_dim = 0; i_dim < m_struct.NDims; i_dim++) {
-        if (m_struct.Dims[i_dim].Name.IsSameAs(DimName)) {
-            id = m_struct.Dims[i_dim].Id;
+    for (int i_dim = 0; i_dim < m_struct.nDims; i_dim++) {
+        if (m_struct.dims[i_dim].name.IsSameAs(DimName)) {
+            id = m_struct.dims[i_dim].id;
         }
     }
 
@@ -587,9 +587,9 @@ int asFileNetcdf::GetVarId(const wxString &VarName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_var = 0; i_var < m_struct.NVars; i_var++) {
-        if (m_struct.Vars[i_var].Name.IsSameAs(VarName)) {
-            id = m_struct.Vars[i_var].Id;
+    for (int i_var = 0; i_var < m_struct.nVars; i_var++) {
+        if (m_struct.vars[i_var].name.IsSameAs(VarName)) {
+            id = m_struct.vars[i_var].id;
         }
     }
 
@@ -610,18 +610,18 @@ int asFileNetcdf::GetAttId(const wxString &AttName, const wxString &VarName)
 
     // Get the attribute id
     if (VarName.IsEmpty()) { // Global attribute
-        for (int i_att = 0; i_att < m_struct.NAtts; i_att++) {
-            if (m_struct.Atts[i_att].Name.IsSameAs(AttName)) {
-                id = m_struct.Atts[i_att].Id;
+        for (int i_att = 0; i_att < m_struct.nAtts; i_att++) {
+            if (m_struct.atts[i_att].name.IsSameAs(AttName)) {
+                id = m_struct.atts[i_att].id;
             }
         }
     } else { // Variable attribute
         int varid = GetVarId(VarName);
         if (varid == asNOT_FOUND)
             return asNOT_FOUND;
-        for (int i_att = 0; i_att < m_struct.Vars[varid].NAtts; i_att++) {
-            if (m_struct.Vars[varid].Atts[i_att].Name.IsSameAs(AttName)) {
-                id = m_struct.Vars[varid].Atts[i_att].Id;
+        for (int i_att = 0; i_att < m_struct.vars[varid].nAtts; i_att++) {
+            if (m_struct.vars[varid].atts[i_att].name.IsSameAs(AttName)) {
+                id = m_struct.vars[varid].atts[i_att].id;
             }
         }
     }
@@ -644,11 +644,11 @@ short asFileNetcdf::GetAttShort(const wxString &AttName, const wxString &VarName
         int attid = GetAttId(AttName);
         if (attid == asNOT_FOUND)
             asThrowException(_("Cannot find the desired attribute in the netCDF file."));
-        nc_type nctype = m_struct.Atts[attid].Type;
+        nc_type nctype = m_struct.atts[attid].type;
 
         // Check the given type
         if (nctype == NC_INT) {
-            return (short) *(int *) m_struct.Atts[attid].pValue;
+            return (short) *(int *) m_struct.atts[attid].pValue;
         } else if (nctype != NC_SHORT) {
             asThrowException(
                     wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -656,7 +656,7 @@ short asFileNetcdf::GetAttShort(const wxString &AttName, const wxString &VarName
         }
 
         // Get value
-        return *(short *) m_struct.Atts[attid].pValue;
+        return *(short *) m_struct.atts[attid].pValue;
 
     } else { // Variable attribute
         int varid = GetVarId(VarName);
@@ -665,11 +665,11 @@ short asFileNetcdf::GetAttShort(const wxString &AttName, const wxString &VarName
         int attid = GetAttId(AttName, VarName);
         if (attid == asNOT_FOUND)
             asThrowException(_("Cannot find the desired attribute in the netCDF file."));
-        nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
+        nc_type nctype = m_struct.vars[varid].atts[attid].type;
 
         // Check the given type
         if (nctype == NC_INT) {
-            return (short) *(int *) m_struct.Vars[varid].Atts[attid].pValue;
+            return (short) *(int *) m_struct.vars[varid].atts[attid].pValue;
         } else if (nctype != NC_SHORT) {
             asThrowException(
                     wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -677,7 +677,7 @@ short asFileNetcdf::GetAttShort(const wxString &AttName, const wxString &VarName
         }
 
         // Get value
-        return *(short *) m_struct.Vars[varid].Atts[attid].pValue;
+        return *(short *) m_struct.vars[varid].atts[attid].pValue;
     }
 
 }
@@ -694,11 +694,11 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
         int attid = GetAttId(AttName);
         if (attid == asNOT_FOUND)
             return NaNInt;
-        nc_type nctype = m_struct.Atts[attid].Type;
+        nc_type nctype = m_struct.atts[attid].type;
 
         // Check the given type
         if (nctype == NC_SHORT) {
-            return (int) *(short *) m_struct.Atts[attid].pValue;
+            return (int) *(short *) m_struct.atts[attid].pValue;
         } else if (nctype != NC_INT) {
             asThrowException(
                     wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -706,7 +706,7 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
         }
 
         // Get value
-        return *(int *) m_struct.Atts[attid].pValue;
+        return *(int *) m_struct.atts[attid].pValue;
 
     } else { // Variable attribute
         int varid = GetVarId(VarName);
@@ -715,11 +715,11 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
         int attid = GetAttId(AttName, VarName);
         if (attid == asNOT_FOUND)
             return NaNInt;
-        nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
+        nc_type nctype = m_struct.vars[varid].atts[attid].type;
 
         // Check the given type
         if (nctype == NC_SHORT) {
-            return (int) *(short *) m_struct.Vars[varid].Atts[attid].pValue;
+            return (int) *(short *) m_struct.vars[varid].atts[attid].pValue;
         } else if (nctype != NC_INT) {
             asThrowException(
                     wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -727,7 +727,7 @@ int asFileNetcdf::GetAttInt(const wxString &AttName, const wxString &VarName)
         }
 
         // Get value
-        return *(int *) m_struct.Vars[varid].Atts[attid].pValue;
+        return *(int *) m_struct.vars[varid].atts[attid].pValue;
     }
 
 }
@@ -744,11 +744,11 @@ float asFileNetcdf::GetAttFloat(const wxString &AttName, const wxString &VarName
         int attid = GetAttId(AttName);
         if (attid == asNOT_FOUND)
             return NaNFloat;
-        nc_type nctype = m_struct.Atts[attid].Type;
+        nc_type nctype = m_struct.atts[attid].type;
 
         // Check the given type
         if (nctype == NC_DOUBLE) {
-            return (float) *(double *) m_struct.Atts[attid].pValue;
+            return (float) *(double *) m_struct.atts[attid].pValue;
         } else if (nctype != NC_FLOAT) {
             asThrowException(
                     wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -756,7 +756,7 @@ float asFileNetcdf::GetAttFloat(const wxString &AttName, const wxString &VarName
         }
 
         // Get value
-        return *(float *) m_struct.Atts[attid].pValue;
+        return *(float *) m_struct.atts[attid].pValue;
 
     } else { // Variable attribute
         int varid = GetVarId(VarName);
@@ -765,11 +765,11 @@ float asFileNetcdf::GetAttFloat(const wxString &AttName, const wxString &VarName
         int attid = GetAttId(AttName, VarName);
         if (attid == asNOT_FOUND)
             return NaNFloat;
-        nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
+        nc_type nctype = m_struct.vars[varid].atts[attid].type;
 
         // Check the given type
         if (nctype == NC_DOUBLE) {
-            return (float) *(double *) m_struct.Vars[varid].Atts[attid].pValue;
+            return (float) *(double *) m_struct.vars[varid].atts[attid].pValue;
         } else if (nctype != NC_FLOAT) {
             asThrowException(
                     wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -777,7 +777,7 @@ float asFileNetcdf::GetAttFloat(const wxString &AttName, const wxString &VarName
         }
 
         // Get value
-        return *(float *) m_struct.Vars[varid].Atts[attid].pValue;
+        return *(float *) m_struct.vars[varid].atts[attid].pValue;
     }
 
 }
@@ -794,11 +794,11 @@ double asFileNetcdf::GetAttDouble(const wxString &AttName, const wxString &VarNa
         int attid = GetAttId(AttName);
         if (attid == asNOT_FOUND)
             return NaNDouble;
-        nc_type nctype = m_struct.Atts[attid].Type;
+        nc_type nctype = m_struct.atts[attid].type;
 
         // Check the given type
         if (nctype == NC_FLOAT) {
-            return (double) *(float *) m_struct.Atts[attid].pValue;
+            return (double) *(float *) m_struct.atts[attid].pValue;
         } else if (nctype != NC_DOUBLE) {
             asThrowException(
                     wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -806,7 +806,7 @@ double asFileNetcdf::GetAttDouble(const wxString &AttName, const wxString &VarNa
         }
 
         // Get value
-        return *(double *) m_struct.Atts[attid].pValue;
+        return *(double *) m_struct.atts[attid].pValue;
 
     } else { // Variable attribute
         int varid = GetVarId(VarName);
@@ -815,11 +815,11 @@ double asFileNetcdf::GetAttDouble(const wxString &AttName, const wxString &VarNa
         int attid = GetAttId(AttName, VarName);
         if (attid == asNOT_FOUND)
             return NaNDouble;
-        nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
+        nc_type nctype = m_struct.vars[varid].atts[attid].type;
 
         // Check the given type
         if (nctype == NC_FLOAT) {
-            return (double) *(float *) m_struct.Vars[varid].Atts[attid].pValue;
+            return (double) *(float *) m_struct.vars[varid].atts[attid].pValue;
         } else if (nctype != NC_DOUBLE) {
             asThrowException(
                     wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
@@ -827,7 +827,7 @@ double asFileNetcdf::GetAttDouble(const wxString &AttName, const wxString &VarNa
         }
 
         // Get value
-        return *(double *) m_struct.Vars[varid].Atts[attid].pValue;
+        return *(double *) m_struct.vars[varid].atts[attid].pValue;
     }
 
 }
@@ -846,7 +846,7 @@ char asFileNetcdf::GetAttChar(const wxString &AttName, const wxString &VarName)
         int attid = GetAttId(AttName);
         if (attid == asNOT_FOUND)
             asThrowException(_("Cannot find the desired attribute in the netCDF file."));
-        nc_type nctype = m_struct.Atts[attid].Type;
+        nc_type nctype = m_struct.atts[attid].type;
 
         // Check the given type
         if (nctype != NC_CHAR)
@@ -855,7 +855,7 @@ char asFileNetcdf::GetAttChar(const wxString &AttName, const wxString &VarName)
                                      AttName, (int) nctype, (int) NC_CHAR));
 
         // Get value
-        val = *(char *) m_struct.Atts[attid].pValue;
+        val = *(char *) m_struct.atts[attid].pValue;
 
     } else { // Variable attribute
         int varid = GetVarId(VarName);
@@ -864,7 +864,7 @@ char asFileNetcdf::GetAttChar(const wxString &AttName, const wxString &VarName)
         int attid = GetAttId(AttName, VarName);
         if (attid == asNOT_FOUND)
             asThrowException(_("Cannot find the desired attribute in the netCDF file."));
-        nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
+        nc_type nctype = m_struct.vars[varid].atts[attid].type;
 
         // Check the given type
         if (nctype != NC_CHAR)
@@ -873,7 +873,7 @@ char asFileNetcdf::GetAttChar(const wxString &AttName, const wxString &VarName)
                                      VarName, AttName, (int) nctype, (int) NC_CHAR));
 
         // Get value
-        val = *(char *) m_struct.Vars[varid].Atts[attid].pValue;
+        val = *(char *) m_struct.vars[varid].atts[attid].pValue;
     }
 
     return val;
@@ -896,11 +896,11 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
             return wxEmptyString;
 
         // Allocate
-        len = m_struct.Atts[attid].Length;
+        len = m_struct.atts[attid].length;
         char *text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
-        nc_type nctype = m_struct.Atts[attid].Type;
+        nc_type nctype = m_struct.atts[attid].type;
         if (nctype != NC_CHAR) {
             wxDELETE(text);
             asThrowException(
@@ -931,11 +931,11 @@ wxString asFileNetcdf::GetAttString(const wxString &AttName, const wxString &Var
             return wxEmptyString;
 
         // Allocate
-        len = m_struct.Vars[varid].Atts[attid].Length;
+        len = m_struct.vars[varid].atts[attid].length;
         char *text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
-        nc_type nctype = m_struct.Vars[varid].Atts[attid].Type;
+        nc_type nctype = m_struct.vars[varid].atts[attid].type;
         if (nctype != NC_CHAR) {
             wxDELETE(text);
             asThrowException(
@@ -974,7 +974,7 @@ size_t asFileNetcdf::GetDimLength(const wxString &DimName)
         return 0;
 
     // Get the variable length
-    len = m_struct.Dims[dimid].Length;
+    len = m_struct.dims[dimid].length;
 
     return len;
 }
@@ -992,7 +992,7 @@ size_t asFileNetcdf::GetVarLength(const wxString &VarName)
         return 0;
 
     // Get the variable length
-    len = m_struct.Vars[varid].Length;
+    len = m_struct.vars[varid].length;
 
     return len;
 }
@@ -1010,7 +1010,7 @@ void asFileNetcdf::GetVar(const wxString &VarName, short *pValue)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_SHORT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1035,7 +1035,7 @@ void asFileNetcdf::GetVar(const wxString &VarName, int *pValue)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_INT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1060,7 +1060,7 @@ void asFileNetcdf::GetVar(const wxString &VarName, float *pValue)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_FLOAT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1085,7 +1085,7 @@ void asFileNetcdf::GetVar(const wxString &VarName, double *pValue)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_DOUBLE)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1110,7 +1110,7 @@ void asFileNetcdf::GetVar(const wxString &VarName, wxString *pValue, const size_
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_STRING)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1143,7 +1143,7 @@ short asFileNetcdf::GetVarOneShort(const wxString &VarName, size_t ArrIndex)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_SHORT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1171,7 +1171,7 @@ int asFileNetcdf::GetVarOneInt(const wxString &VarName, size_t ArrIndex)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_INT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1199,7 +1199,7 @@ float asFileNetcdf::GetVarOneFloat(const wxString &VarName, size_t ArrIndex)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_FLOAT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1227,7 +1227,7 @@ double asFileNetcdf::GetVarOneDouble(const wxString &VarName, size_t ArrIndex)
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_DOUBLE)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1256,7 +1256,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_SHORT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1265,7 +1265,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     // Get value
     m_status = nc_get_vara_short(m_fileId, varid, IndexStart, IndexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1291,7 +1291,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_INT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1300,7 +1300,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     // Get value
     m_status = nc_get_vara_int(m_fileId, varid, IndexStart, IndexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1326,7 +1326,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_FLOAT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1335,7 +1335,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     // Get value
     m_status = nc_get_vara_float(m_fileId, varid, IndexStart, IndexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1361,7 +1361,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_DOUBLE)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1370,7 +1370,7 @@ void asFileNetcdf::GetVarArray(const wxString &VarName, const size_t IndexStart[
     // Get value
     m_status = nc_get_vara_double(m_fileId, varid, IndexStart, IndexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1396,7 +1396,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_SHORT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1405,7 +1405,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     // Get value
     m_status = nc_get_vars_short(m_fileId, varid, IndexStart, IndexCount, IndexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1432,7 +1432,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_INT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1441,7 +1441,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     // Get value
     m_status = nc_get_vars_int(m_fileId, varid, IndexStart, IndexCount, IndexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1468,7 +1468,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type. Allow the short type here.
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_FLOAT)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1477,7 +1477,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     // Get value
     m_status = nc_get_vars_float(m_fileId, varid, IndexStart, IndexCount, IndexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1504,7 +1504,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
         asThrowException(_("Cannot get the desired variable from the netCDF file."));
 
     // Check the given type
-    nc_type nctype = m_struct.Vars[varid].Type;
+    nc_type nctype = m_struct.vars[varid].type;
     if (nctype != NC_DOUBLE)
         asThrowException(
                 wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), VarName,
@@ -1513,7 +1513,7 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
     // Get value
     m_status = nc_get_vars_double(m_fileId, varid, IndexStart, IndexCount, IndexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.Vars[varid].NDims;
+        int arrSize = m_struct.vars[varid].nDims;
         wxString data = wxEmptyString;
         for (int i = 0; i < arrSize; i++) {
             data.Append(wxString::Format("IndexStart[%d]=%d ", i, (int) IndexStart[i]));
@@ -1528,110 +1528,110 @@ void asFileNetcdf::GetVarSample(const wxString &VarName, const size_t IndexStart
 
 void asFileNetcdf::ClearStruct()
 {
-    for (unsigned int i_var = 0; i_var < m_struct.Vars.size(); i_var++) {
-        for (unsigned int i_att = 0; i_att < m_struct.Vars[i_var].Atts.size(); i_att++) {
-            if (m_struct.Vars[i_var].Atts[i_att].pValue != NULL) {
-                nc_type nctype = m_struct.Vars[i_var].Atts[i_att].Type;
+    for (unsigned int i_var = 0; i_var < m_struct.vars.size(); i_var++) {
+        for (unsigned int i_att = 0; i_att < m_struct.vars[i_var].atts.size(); i_att++) {
+            if (m_struct.vars[i_var].atts[i_att].pValue != NULL) {
+                nc_type nctype = m_struct.vars[i_var].atts[i_att].type;
 
                 // Cleanup from http://stackoverflow.com/questions/206257/freeing-memory-allocated-to-an-array-of-void-pointers
                 switch (nctype) {
                     case NC_CHAR: // NC_CHAR - ISO/ASCII character
                     {
-                        delete static_cast<char *>( m_struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<char *>( m_struct.vars[i_var].atts[i_att].pValue);
                         break;
                     }
 
                     case NC_SHORT: // NC_SHORT - signed 2 byte integer
                     {
-                        delete static_cast<short *>( m_struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<short *>( m_struct.vars[i_var].atts[i_att].pValue);
                         break;
                     }
 
                     case NC_INT: // NC_INT - signed 4 byte integer
                     {
-                        delete static_cast<int32_t *>( m_struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<int32_t *>( m_struct.vars[i_var].atts[i_att].pValue);
                         break;
                     }
 
                     case NC_INT64: // NC_INT64 - signed 8 byte integer
                     {
-                        delete static_cast<int64_t *>( m_struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<int64_t *>( m_struct.vars[i_var].atts[i_att].pValue);
                         break;
                     }
 
                     case NC_FLOAT: // NC_FLOAT - single precision floating point number
                     {
-                        delete static_cast<float *>( m_struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<float *>( m_struct.vars[i_var].atts[i_att].pValue);
                         break;
                     }
 
                     case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                     {
-                        delete static_cast<double *>( m_struct.Vars[i_var].Atts[i_att].pValue);
+                        delete static_cast<double *>( m_struct.vars[i_var].atts[i_att].pValue);
                         break;
                     }
 
                     default:
                         asThrowException(wxString::Format(
                                 _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                                nctype, m_struct.Vars[i_var].Atts[i_att].Name));
+                                nctype, m_struct.vars[i_var].atts[i_att].name));
                         break;
                 }
 
-                m_struct.Vars[i_var].Atts[i_att].pValue = NULL;
+                m_struct.vars[i_var].atts[i_att].pValue = NULL;
             }
         }
     }
 
-    for (unsigned int i_att = 0; i_att < m_struct.Atts.size(); i_att++) {
-        if (m_struct.Atts[i_att].pValue != NULL) {
-            nc_type nctype = m_struct.Atts[i_att].Type;
+    for (unsigned int i_att = 0; i_att < m_struct.atts.size(); i_att++) {
+        if (m_struct.atts[i_att].pValue != NULL) {
+            nc_type nctype = m_struct.atts[i_att].type;
 
             switch (nctype) {
                 case NC_CHAR: // NC_CHAR - ISO/ASCII character
                 {
-                    delete static_cast<char *>( m_struct.Atts[i_att].pValue);
+                    delete static_cast<char *>( m_struct.atts[i_att].pValue);
                     break;
                 }
 
                 case NC_SHORT: // NC_SHORT - signed 2 byte integer
                 {
-                    delete static_cast<short *>( m_struct.Atts[i_att].pValue);
+                    delete static_cast<short *>( m_struct.atts[i_att].pValue);
                     break;
                 }
 
                 case NC_INT: // NC_INT - signed 4 byte integer
                 {
-                    delete static_cast<int32_t *>( m_struct.Atts[i_att].pValue);
+                    delete static_cast<int32_t *>( m_struct.atts[i_att].pValue);
                     break;
                 }
 
                 case NC_INT64: // NC_INT64 - signed 8 byte integer
                 {
-                    delete static_cast<int64_t *>( m_struct.Atts[i_att].pValue);
+                    delete static_cast<int64_t *>( m_struct.atts[i_att].pValue);
                     break;
                 }
 
                 case NC_FLOAT: // NC_FLOAT - single precision floating point number
                 {
-                    delete static_cast<float *>( m_struct.Atts[i_att].pValue);
+                    delete static_cast<float *>( m_struct.atts[i_att].pValue);
                     break;
                 }
 
                 case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                 {
-                    delete static_cast<double *>( m_struct.Atts[i_att].pValue);
+                    delete static_cast<double *>( m_struct.atts[i_att].pValue);
                     break;
                 }
 
                 default:
                     asThrowException(wxString::Format(
                             _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                            nctype, m_struct.Atts[i_att].Name));
+                            nctype, m_struct.atts[i_att].name));
                     break;
             }
 
-            m_struct.Atts[i_att].pValue = NULL;
+            m_struct.atts[i_att].pValue = NULL;
         }
     }
 }
@@ -1649,7 +1649,7 @@ bool asFileNetcdf::ParseStruct()
     CheckDefModeClosed();
 
     // Inquire about the NetCDF Dataset
-    m_status = nc_inq(m_fileId, &m_struct.NDims, &m_struct.NVars, &m_struct.NAtts, &m_struct.UDimId);
+    m_status = nc_inq(m_fileId, &m_struct.nDims, &m_struct.nVars, &m_struct.nAtts, &m_struct.uDimId);
     if (m_status)
         HandleErrorNetcdf();
 
@@ -1659,16 +1659,16 @@ bool asFileNetcdf::ParseStruct()
         HandleErrorNetcdf();
     switch (Format) {
         case (NC_FORMAT_CLASSIC):
-            m_struct.Format = Classic;
+            m_struct.format = Classic;
             break;
         case (NC_FORMAT_64BIT):
-            m_struct.Format = Format64bit;
+            m_struct.format = Format64bit;
             break;
         case (NC_FORMAT_NETCDF4):
-            m_struct.Format = Netcdf4;
+            m_struct.format = Netcdf4;
             break;
         case (NC_FORMAT_NETCDF4_CLASSIC):
-            m_struct.Format = Netcdf4Classic;
+            m_struct.format = Netcdf4Classic;
             break;
         default:
             asLogError(_("The NetCDF format is unknown"));
@@ -1676,108 +1676,108 @@ bool asFileNetcdf::ParseStruct()
     }
 
     // Create arrays to store the dimensions information
-    m_struct.Dims.resize(m_struct.NDims);
+    m_struct.dims.resize(m_struct.nDims);
 
     // Inquire about the dimensions
-    for (DimId = 0; DimId < m_struct.NDims; DimId++) {
-        m_status = nc_inq_dim(m_fileId, DimId, DimNameChar, &m_struct.Dims[DimId].Length);
+    for (DimId = 0; DimId < m_struct.nDims; DimId++) {
+        m_status = nc_inq_dim(m_fileId, DimId, DimNameChar, &m_struct.dims[DimId].length);
         if (m_status)
             HandleErrorNetcdf();
-        m_struct.Dims[DimId].Id = DimId;
+        m_struct.dims[DimId].id = DimId;
         wxString tmpName(DimNameChar, wxConvUTF8);
-        m_struct.Dims[DimId].Name = tmpName;
+        m_struct.dims[DimId].name = tmpName;
     }
 
     // FIXME (phorton#1#): Cannot get the Netcdf4 functions ??
     // Find all unlimited dimensions
-    /*    if(m_status = nc_inq_unlimdims(m_fileId, &m_struct.NUDims, NULL)) HandleErrorNetcdf();
-        m_struct.UDimsIds.resize(m_struct.NUDims);
-        if(m_status = nc_inq_unlimdims(m_fileId, &m_struct.NUDims, UnlimDimIds)) HandleErrorNetcdf();
-        for (int i=0; i<m_struct.NUDims; i++)
+    /*    if(m_status = nc_inq_unlimdims(m_fileId, &m_struct.nUDims, NULL)) HandleErrorNetcdf();
+        m_struct.uDimsIds.resize(m_struct.nUDims);
+        if(m_status = nc_inq_unlimdims(m_fileId, &m_struct.nUDims, UnlimDimIds)) HandleErrorNetcdf();
+        for (int i=0; i<m_struct.nUDims; i++)
         {
-            m_struct.UDimsIds[i] = UnlimDimIds[i];
+            m_struct.uDimsIds[i] = UnlimDimIds[i];
         }*/
 
     // Find 1 unlimited dimension
-    m_struct.UDimsIds.resize(1);
+    m_struct.uDimsIds.resize(1);
     m_status = nc_inq_unlimdim(m_fileId, UnlimDimIds);
     if (m_status)
         HandleErrorNetcdf();
-    m_struct.UDimsIds[0] = UnlimDimIds[0];
+    m_struct.uDimsIds[0] = UnlimDimIds[0];
 
     // Resize array to store the global attributes
-    m_struct.Atts.resize(m_struct.NAtts);
+    m_struct.atts.resize(m_struct.nAtts);
 
     // Get the global attributes
-    for (AttId = 0; AttId < m_struct.NAtts; AttId++) {
+    for (AttId = 0; AttId < m_struct.nAtts; AttId++) {
         // Get the attribute name
         m_status = nc_inq_attname(m_fileId, NC_GLOBAL, AttId, AttNameChar);
         if (m_status)
             HandleErrorNetcdf();
-        m_struct.Atts[AttId].Id = AttId;
+        m_struct.atts[AttId].id = AttId;
         wxString tmpName(AttNameChar, wxConvUTF8);
-        m_struct.Atts[AttId].Name = tmpName;
+        m_struct.atts[AttId].name = tmpName;
 
         // Get the attribute type and length
-        m_status = nc_inq_att(m_fileId, NC_GLOBAL, AttNameChar, &m_struct.Atts[AttId].Type,
-                              &m_struct.Atts[AttId].Length);
+        m_status = nc_inq_att(m_fileId, NC_GLOBAL, AttNameChar, &m_struct.atts[AttId].type,
+                              &m_struct.atts[AttId].length);
         if (m_status)
             HandleErrorNetcdf();
-        size_t len = m_struct.Atts[AttId].Length;
+        size_t len = m_struct.atts[AttId].length;
 
         // Only store simple attributes
         if (len > 1) {
-            m_struct.Atts[AttId].pValue = NULL;
+            m_struct.atts[AttId].pValue = NULL;
         } else {
-            nc_type nctype = m_struct.Atts[AttId].Type;
+            nc_type nctype = m_struct.atts[AttId].type;
 
             switch (nctype) {
                 case NC_CHAR: // NC_CHAR - ISO/ASCII character
                 {
-                    m_struct.Atts[AttId].pValue = new char();
+                    m_struct.atts[AttId].pValue = new char();
                     break;
                 }
 
                 case NC_SHORT: // NC_SHORT - signed 2 byte integer
                 {
-                    m_struct.Atts[AttId].pValue = new short();
+                    m_struct.atts[AttId].pValue = new short();
                     break;
                 }
 
                 case NC_INT: // NC_INT - signed 4 byte integer
                 {
-                    m_struct.Atts[AttId].pValue = new int32_t();
+                    m_struct.atts[AttId].pValue = new int32_t();
                     break;
                 }
 
                 case NC_INT64: // NC_INT64 - signed 8 byte integer
                 {
-                    m_struct.Atts[AttId].pValue = new int64_t();
+                    m_struct.atts[AttId].pValue = new int64_t();
                     break;
                 }
 
                 case NC_FLOAT: // NC_FLOAT - single precision floating point number
                 {
-                    m_struct.Atts[AttId].pValue = new float();
+                    m_struct.atts[AttId].pValue = new float();
                     break;
                 }
 
                 case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                 {
-                    m_struct.Atts[AttId].pValue = new double();
+                    m_struct.atts[AttId].pValue = new double();
                     break;
                 }
 
                 default:
                     asLogError(wxString::Format(
                             _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                            nctype, m_struct.Atts[AttId].Name));
+                            nctype, m_struct.atts[AttId].name));
                     return false;
                     break;
             }
 
             // Get the attribute value
-            m_status = nc_get_att(m_fileId, NC_GLOBAL, AttNameChar, m_struct.Atts[AttId].pValue);
+            m_status = nc_get_att(m_fileId, NC_GLOBAL, AttNameChar, m_struct.atts[AttId].pValue);
             if (m_status)
                 HandleErrorNetcdf();
 
@@ -1785,101 +1785,101 @@ bool asFileNetcdf::ParseStruct()
     }
 
     // Resize arrays to store the variables information
-    m_struct.Vars.resize(m_struct.NVars);
+    m_struct.vars.resize(m_struct.nVars);
 
     // Get information about the variables and get limited variables (1D)
-    for (VarId = 0; VarId < m_struct.NVars; VarId++) {
-        m_status = nc_inq_var(m_fileId, VarId, VarNameChar, &m_struct.Vars[VarId].Type, &m_struct.Vars[VarId].NDims,
-                              DimIds, &m_struct.Vars[VarId].NAtts);
+    for (VarId = 0; VarId < m_struct.nVars; VarId++) {
+        m_status = nc_inq_var(m_fileId, VarId, VarNameChar, &m_struct.vars[VarId].type, &m_struct.vars[VarId].nDims,
+                              DimIds, &m_struct.vars[VarId].nAtts);
         if (m_status)
             HandleErrorNetcdf();
-        m_struct.Vars[VarId].Id = VarId;
-        m_struct.Vars[VarId].Name = wxString(VarNameChar, wxConvUTF8);
-        m_struct.Vars[VarId].Length = 0;
+        m_struct.vars[VarId].id = VarId;
+        m_struct.vars[VarId].name = wxString(VarNameChar, wxConvUTF8);
+        m_struct.vars[VarId].length = 0;
 
-        m_struct.Vars[VarId].NDimIds.resize(m_struct.Vars[VarId].NDims);
-        for (int j = 0; j < m_struct.Vars[VarId].NDims; j++) {
-            m_struct.Vars[VarId].NDimIds[j] = DimIds[j];
+        m_struct.vars[VarId].nDimIds.resize(m_struct.vars[VarId].nDims);
+        for (int j = 0; j < m_struct.vars[VarId].nDims; j++) {
+            m_struct.vars[VarId].nDimIds[j] = DimIds[j];
         }
 
         // Find the corresponding dimension to get its length
-        for (DimId = 0; DimId < m_struct.NDims; DimId++) {
-            if (m_struct.Vars[VarId].Name.IsSameAs(m_struct.Dims[DimId].Name)) {
-                m_struct.Vars[VarId].Length = m_struct.Dims[DimId].Length;
+        for (DimId = 0; DimId < m_struct.nDims; DimId++) {
+            if (m_struct.vars[VarId].name.IsSameAs(m_struct.dims[DimId].name)) {
+                m_struct.vars[VarId].length = m_struct.dims[DimId].length;
             }
         }
 
         // Resize array to store the attributes information
-        m_struct.Vars[VarId].Atts.resize(m_struct.Vars[VarId].NAtts);
+        m_struct.vars[VarId].atts.resize(m_struct.vars[VarId].nAtts);
 
         // Get the attributes information
-        for (AttId = 0; AttId < m_struct.Vars[VarId].NAtts; AttId++) {
+        for (AttId = 0; AttId < m_struct.vars[VarId].nAtts; AttId++) {
             // Get the attribute name
             m_status = nc_inq_attname(m_fileId, VarId, AttId, AttNameChar);
             if (m_status)
                 HandleErrorNetcdf();
-            m_struct.Vars[VarId].Atts[AttId].Id = AttId;
-            m_struct.Vars[VarId].Atts[AttId].Name = wxString(AttNameChar, wxConvUTF8);
+            m_struct.vars[VarId].atts[AttId].id = AttId;
+            m_struct.vars[VarId].atts[AttId].name = wxString(AttNameChar, wxConvUTF8);
 
             // Get the attribute type and length
-            m_status = nc_inq_att(m_fileId, VarId, AttNameChar, &m_struct.Vars[VarId].Atts[AttId].Type,
-                                  &m_struct.Vars[VarId].Atts[AttId].Length);
+            m_status = nc_inq_att(m_fileId, VarId, AttNameChar, &m_struct.vars[VarId].atts[AttId].type,
+                                  &m_struct.vars[VarId].atts[AttId].length);
             if (m_status)
                 HandleErrorNetcdf();
-            size_t len = m_struct.Vars[VarId].Atts[AttId].Length;
+            size_t len = m_struct.vars[VarId].atts[AttId].length;
             // Only store simple attributes
             if (len > 1) {
-                m_struct.Vars[VarId].Atts[AttId].pValue = NULL;
+                m_struct.vars[VarId].atts[AttId].pValue = NULL;
             } else {
-                nc_type nctype = m_struct.Vars[VarId].Atts[AttId].Type;
+                nc_type nctype = m_struct.vars[VarId].atts[AttId].type;
 
                 switch (nctype) {
                     case NC_CHAR: // NC_CHAR - ISO/ASCII character
                     {
-                        m_struct.Vars[VarId].Atts[AttId].pValue = new char();
+                        m_struct.vars[VarId].atts[AttId].pValue = new char();
                         break;
                     }
 
                     case NC_SHORT: // NC_SHORT - signed 2 byte integer
                     {
-                        m_struct.Vars[VarId].Atts[AttId].pValue = new short();
+                        m_struct.vars[VarId].atts[AttId].pValue = new short();
                         break;
                     }
 
                     case NC_INT: // NC_INT - signed 4 byte integer
                     {
-                        m_struct.Vars[VarId].Atts[AttId].pValue = new int32_t();
+                        m_struct.vars[VarId].atts[AttId].pValue = new int32_t();
                         break;
                     }
 
                     case NC_INT64: // NC_INT64 - signed 8 byte integer
                     {
-                        m_struct.Vars[VarId].Atts[AttId].pValue = new int64_t();
+                        m_struct.vars[VarId].atts[AttId].pValue = new int64_t();
                         break;
                     }
 
                     case NC_FLOAT: // NC_FLOAT - single precision floating point number
                     {
-                        m_struct.Vars[VarId].Atts[AttId].pValue = new float();
+                        m_struct.vars[VarId].atts[AttId].pValue = new float();
                         break;
                     }
 
                     case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                     {
-                        m_struct.Vars[VarId].Atts[AttId].pValue = new double();
+                        m_struct.vars[VarId].atts[AttId].pValue = new double();
                         break;
                     }
 
                     default:
                         asLogError(wxString::Format(
                                 _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                                nctype, m_struct.Vars[VarId].Atts[AttId].Name));
+                                nctype, m_struct.vars[VarId].atts[AttId].name));
                         return false;
                         break;
                 }
 
                 // Get the attribute value
-                m_status = nc_get_att(m_fileId, VarId, AttNameChar, m_struct.Vars[VarId].Atts[AttId].pValue);
+                m_status = nc_get_att(m_fileId, VarId, AttNameChar, m_struct.vars[VarId].atts[AttId].pValue);
                 if (m_status)
                     HandleErrorNetcdf();
 
@@ -1898,7 +1898,7 @@ size_t asFileNetcdf::GetVarLength(int &varid) const
     size_t len = 0;
 
     // Get the variable length
-    len = m_struct.Vars[varid].Length;
+    len = m_struct.vars[varid].length;
 
     return len;
 }

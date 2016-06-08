@@ -163,68 +163,68 @@ public:
 
     int GetNVars() const
     {
-        return m_struct.NVars;
+        return m_struct.nVars;
     }
 
     int GetNDims() const
     {
-        return m_struct.NDims;
+        return m_struct.nDims;
     }
 
     int GetNGlobAtts() const
     {
-        return m_struct.NAtts;
+        return m_struct.nAtts;
     }
 
 protected:
 
 private:
-    struct ncDimStruct
+    struct NcDimStruct
     {
-        int Id;
-        wxString Name;
-        size_t Length;
+        int id;
+        wxString name;
+        size_t length;
     };
 
-    struct ncAttStruct
+    struct NcAttStruct
     {
-        int Id;
-        wxString Name;
-        nc_type Type;
-        size_t Length;
+        int id;
+        wxString name;
+        nc_type type;
+        size_t length;
         void *pValue;
     };
 
-    struct ncVarStruct
+    struct NcVarStruct
     {
-        int Id;
-        wxString Name;
-        size_t Length;
-        nc_type Type;
-        int NDims;
-        VectorInt NDimIds;
-        int NAtts;
-        std::vector<struct ncAttStruct> Atts;
+        int id;
+        wxString name;
+        size_t length;
+        nc_type type;
+        int nDims;
+        VectorInt nDimIds;
+        int nAtts;
+        std::vector<struct NcAttStruct> atts;
     };
 
-    struct ncStruct
+    struct NcStruct
     {
-        int NDims;
-        int NUDims;
-        int NVars;
-        int NAtts;
-        int UDimId;
-        VectorInt UDimsIds;
-        asFileNetcdf::Format Format;
-        std::vector<struct ncDimStruct> Dims;
-        std::vector<struct ncVarStruct> Vars;
-        std::vector<struct ncAttStruct> Atts;
+        int nDims;
+        int nUDims;
+        int nVars;
+        int nAtts;
+        int uDimId;
+        VectorInt uDimsIds;
+        asFileNetcdf::Format format;
+        std::vector<struct NcDimStruct> dims;
+        std::vector<struct NcVarStruct> vars;
+        std::vector<struct NcAttStruct> atts;
     };
 
     int m_fileId;
     int m_status;
     bool m_defineMode;
-    struct ncStruct m_struct;
+    struct NcStruct m_struct;
 
     void HandleErrorNetcdf();
 

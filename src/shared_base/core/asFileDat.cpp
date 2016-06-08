@@ -51,20 +51,20 @@ bool asFileDat::Close()
 
 void asFileDat::InitPattern(asFileDat::Pattern &pattern)
 {
-    pattern.HeaderLines = 0;
-    pattern.ParseTime = false;
-    pattern.TimeYearBegin = 0;
-    pattern.TimeYearEnd = 0;
-    pattern.TimeMonthBegin = 0;
-    pattern.TimeMonthEnd = 0;
-    pattern.TimeDayBegin = 0;
-    pattern.TimeDayEnd = 0;
-    pattern.TimeHourBegin = 0;
-    pattern.TimeHourEnd = 0;
-    pattern.TimeMinuteBegin = 0;
-    pattern.TimeMinuteEnd = 0;
-    pattern.DataBegin = 0;
-    pattern.DataEnd = 0;
+    pattern.headerLines = 0;
+    pattern.parseTime = false;
+    pattern.timeYearBegin = 0;
+    pattern.timeYearEnd = 0;
+    pattern.timeMonthBegin = 0;
+    pattern.timeMonthEnd = 0;
+    pattern.timeDayBegin = 0;
+    pattern.timeDayEnd = 0;
+    pattern.timeHourBegin = 0;
+    pattern.timeHourEnd = 0;
+    pattern.timeMinuteBegin = 0;
+    pattern.timeMinuteEnd = 0;
+    pattern.dataBegin = 0;
+    pattern.dataEnd = 0;
 }
 
 asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const wxString &AlternatePatternDir)
@@ -97,14 +97,14 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
     wxString charStartStr, charEndStr, attributeStart, attributeEnd;
     wxXmlNode *node = xmlFile.GetRoot()->GetChildren();
     if (node->GetName() == "pattern") {
-        pattern.Id = node->GetAttribute("id");
-        pattern.Name = node->GetAttribute("name");
+        pattern.id = node->GetAttribute("id");
+        pattern.name = node->GetAttribute("name");
 
         wxXmlNode *nodeParam = node->GetChildren();
         while (nodeParam) {
             if (nodeParam->GetName() == "structure_type") {
-                pattern.StructType = StringToStructType(xmlFile.GetString(nodeParam));
-                switch (pattern.StructType) {
+                pattern.structType = StringToStructType(xmlFile.GetString(nodeParam));
+                switch (pattern.structType) {
                     case (asFileDat::ConstantWidth):
                         attributeStart = "char_start";
                         attributeEnd = "char_end";
@@ -117,9 +117,9 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                         asThrowException(_("The file structure type in unknown"));
                 }
             } else if (nodeParam->GetName() == "header_lines") {
-                pattern.HeaderLines = xmlFile.GetInt(nodeParam);
+                pattern.headerLines = xmlFile.GetInt(nodeParam);
             } else if (nodeParam->GetName() == "parse_time") {
-                pattern.ParseTime = xmlFile.GetBool(nodeParam);
+                pattern.parseTime = xmlFile.GetBool(nodeParam);
             } else if (nodeParam->GetName() == "time") {
                 if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
                     asThrowException(_("The file structure type in undefined"));
@@ -134,20 +134,20 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                     charEndStr.ToLong(&charEnd);
 
                     if (nodeTime->GetName() == "year") {
-                        pattern.TimeYearBegin = charStart;
-                        pattern.TimeYearEnd = charEnd;
+                        pattern.timeYearBegin = charStart;
+                        pattern.timeYearEnd = charEnd;
                     } else if (nodeTime->GetName() == "month") {
-                        pattern.TimeMonthBegin = charStart;
-                        pattern.TimeMonthEnd = charEnd;
+                        pattern.timeMonthBegin = charStart;
+                        pattern.timeMonthEnd = charEnd;
                     } else if (nodeTime->GetName() == "day") {
-                        pattern.TimeDayBegin = charStart;
-                        pattern.TimeDayEnd = charEnd;
+                        pattern.timeDayBegin = charStart;
+                        pattern.timeDayEnd = charEnd;
                     } else if (nodeTime->GetName() == "hour") {
-                        pattern.TimeHourBegin = charStart;
-                        pattern.TimeHourEnd = charEnd;
+                        pattern.timeHourBegin = charStart;
+                        pattern.timeHourEnd = charEnd;
                     } else if (nodeTime->GetName() == "minute") {
-                        pattern.TimeMinuteBegin = charStart;
-                        pattern.TimeMinuteEnd = charEnd;
+                        pattern.timeMinuteBegin = charStart;
+                        pattern.timeMinuteEnd = charEnd;
                     } else {
                         xmlFile.UnknownNode(nodeTime);
                     }
@@ -168,8 +168,8 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                     charEndStr.ToLong(&charEnd);
 
                     if (nodeData->GetName() == "value") {
-                        pattern.DataBegin = charStart;
-                        pattern.DataEnd = charEnd;
+                        pattern.dataBegin = charStart;
+                        pattern.dataEnd = charEnd;
                     } else {
                         xmlFile.UnknownNode(nodeData);
                     }
@@ -205,12 +205,12 @@ int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &Pattern)
 {
     int maxwidth = 0;
 
-    maxwidth = wxMax(maxwidth, Pattern.TimeYearEnd);
-    maxwidth = wxMax(maxwidth, Pattern.TimeMonthEnd);
-    maxwidth = wxMax(maxwidth, Pattern.TimeDayEnd);
-    maxwidth = wxMax(maxwidth, Pattern.TimeHourEnd);
-    maxwidth = wxMax(maxwidth, Pattern.TimeMinuteEnd);
-    maxwidth = wxMax(maxwidth, Pattern.DataEnd);
+    maxwidth = wxMax(maxwidth, Pattern.timeYearEnd);
+    maxwidth = wxMax(maxwidth, Pattern.timeMonthEnd);
+    maxwidth = wxMax(maxwidth, Pattern.timeDayEnd);
+    maxwidth = wxMax(maxwidth, Pattern.timeHourEnd);
+    maxwidth = wxMax(maxwidth, Pattern.timeMinuteEnd);
+    maxwidth = wxMax(maxwidth, Pattern.dataEnd);
 
     return maxwidth;
 }
