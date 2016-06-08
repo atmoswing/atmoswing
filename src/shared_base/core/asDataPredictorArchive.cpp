@@ -90,6 +90,527 @@ bool asDataPredictorArchive::Init()
     return false;
 }
 
+bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                              VVArray2DFloat &compositeData)
+{
+    VectorString filesList = GetListOfFiles(timeArray);
+
+    if(!CheckFilesPresence(filesList)) {
+        return false;
+    }
+
+#if wxUSE_GUI
+    asDialogProgressBar progressBar(_("Loading data from files.\n"), int(filesList.size()));
+#endif
+
+    for (int i = 0; i < filesList.size(); i++) {
+        wxString fileName = filesList[i];
+
+#if wxUSE_GUI
+        // Update the progress bar
+        if (!progressBar.Update(i, wxString::Format(_("File: %s"), fileName))) {
+            asLogWarning(_("The process has been canceled by the user."));
+            return false;
+        }
+#endif
+
+        if (!ExtractFromFile(fileName, dataArea, timeArray, compositeData)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool asDataPredictorArchive::CheckFilesPresence(const VectorString &filesList)
+{
+    for (int i = 0; i < filesList.size(); i++) {
+        if (!wxFile::Exists(filesList[i])) {
+            asLogError(wxString::Format(_("File not found: %s"), filesList[i]));
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                   asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Open the NetCDF file
+    ThreadsManager().CritSectionNetCDF().Enter();
+    asFileNetcdf ncFile(fileName, asFileNetcdf::ReadOnly);
+    if (!ncFile.Open()) {
+        ThreadsManager().CritSectionNetCDF().Leave();
+        return false;
+    }
+
+    // Parse file structure
+    if (!ParseFileStructure(ncFile, dataArea, timeArray, compositeData)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        return false;
+    }
+
+    // Adjust axes if necessary
+    dataArea = AdjustAxes(dataArea, compositeData);
+    if (dataArea) {
+        wxASSERT(dataArea->GetNbComposites() > 0);
+    }
+
+    // Get indexes
+    if (!GetAxesIndexes(ncFile, dataArea, timeArray, compositeData)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        return false;
+    }
+
+    // Load data
+    if (!GetDataFromFile(ncFile, compositeData)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        return false;
+    }
+
+    // Close the nc file
+    ncFile.Close();
+    ThreadsManager().CritSectionNetCDF().Leave();
+
+    return true;
+}
+
+bool asDataPredictorArchive::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
+                                                asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Get full axes from the netcdf file
+    m_fileStructure.axisLon = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLonName));
+    ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
+    m_fileStructure.axisLat = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLatName));
+    ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
+
+    if (m_fileStructure.hasLevelDimension) {
+        m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+        ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);
+    }
+
+    // Time dimension takes ages to load !! Avoid and get the first value.
+    m_fileStructure.axisTimeLength = ncFile.GetVarLength(m_fileStructure.dimTimeName);
+    m_fileStructure.axisTimeFirstValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0));
+    m_fileStructure.axisTimeLastValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, ncFile.GetVarLength(m_fileStructure.dimTimeName) - 1));
+
+    return true;
+}
+
+size_t *asDataPredictorArchive::GetIndexesStartNcdf(int i_area)
+{
+    if (m_fileStructure.hasLevelDimension) {
+        static size_t array[4] = {0, 0, 0, 0};
+        array[0] = (size_t) m_fileIndexes.timeStart;
+        array[1] = (size_t) m_fileIndexes.level;
+        array[2] = (size_t) m_fileIndexes.areas[i_area].latStart;
+        array[3] = (size_t) m_fileIndexes.areas[i_area].lonStart;
+
+        return array;
+    } else {
+        static size_t array[3] = {0, 0, 0};
+        array[0] = (size_t) m_fileIndexes.timeStart;
+        array[1] = (size_t) m_fileIndexes.areas[i_area].latStart;
+        array[2] = (size_t) m_fileIndexes.areas[i_area].lonStart;
+
+        return array;
+    }
+
+    return NULL;
+}
+
+size_t *asDataPredictorArchive::GetIndexesCountNcdf(int i_area)
+{
+    if (m_fileStructure.hasLevelDimension) {
+        static size_t array[4] = {0, 0, 0, 0};
+        array[0] = (size_t) m_fileIndexes.timeCount;
+        array[1] = 1;
+        array[2] = (size_t) m_fileIndexes.areas[i_area].latCount;
+        array[3] = (size_t) m_fileIndexes.areas[i_area].lonCount;
+
+        return array;
+    } else {
+        static size_t array[3] = {0, 0, 0};
+        array[0] = (size_t) m_fileIndexes.timeCount;
+        array[1] = (size_t) m_fileIndexes.areas[i_area].latCount;
+        array[2] = (size_t) m_fileIndexes.areas[i_area].lonCount;
+
+        return array;
+    }
+
+    return NULL;
+}
+
+ptrdiff_t *asDataPredictorArchive::GetIndexesStrideNcdf(int i_area)
+{
+    if (m_fileStructure.hasLevelDimension) {
+        static ptrdiff_t array[4] = {0, 0, 0, 0};
+        array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
+        array[1] = 1;
+        array[2] = (ptrdiff_t) m_fileIndexes.latStep;
+        array[3] = (ptrdiff_t) m_fileIndexes.lonStep;
+
+        return array;
+    } else {
+        static ptrdiff_t array[3] = {0, 0, 0};
+        array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
+        array[1] = (ptrdiff_t) m_fileIndexes.latStep;
+        array[2] = (ptrdiff_t) m_fileIndexes.lonStep;
+
+        return array;
+    }
+
+    return NULL;
+}
+
+bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
+                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    m_fileIndexes.areas.clear();
+
+    // Get the time length
+    double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fileStructure.axisTimeFirstValue);
+    double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fileStructure.axisTimeLastValue);
+    m_fileIndexes.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+    m_fileIndexes.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+
+    // Correct the time start and end
+    double valFirstTime = m_fileStructure.axisTimeFirstValue;
+    m_fileIndexes.timeStart = 0;
+    m_fileIndexes.cutStart = 0;
+    bool firstFile = (compositeData[0].size() == 0);
+    if (firstFile) {
+        m_fileIndexes.cutStart = int(timeArrayIndexStart);
+    }
+    m_fileIndexes.cutEnd = 0;
+    while (valFirstTime < timeArray[timeArrayIndexStart]) {
+        valFirstTime += m_timeStepHours / 24.0;
+        m_fileIndexes.timeStart++;
+    }
+    if (m_fileIndexes.timeStart + m_fileIndexes.timeCount > m_fileStructure.axisTimeLength) {
+        m_fileIndexes.timeCount--;
+        m_fileIndexes.cutEnd++;
+    }
+
+    // Go through every area
+    m_fileIndexes.areas.resize(compositeData.size());
+    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+        // Check if necessary to load the data of lon=360 (so lon=0)
+        m_fileIndexes.areas[i_area].loadFirstXCol = false;
+
+        if (dataArea) {
+            // Get the spatial extent
+            float lonMin = (float)dataArea->GetXaxisCompositeStart(i_area);
+            float lonMax = (float)dataArea->GetXaxisCompositeEnd(i_area);
+            float latMinStart = (float)dataArea->GetYaxisCompositeStart(i_area);
+            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(i_area);
+
+            // The dimensions lengths
+            m_fileIndexes.areas[i_area].lonCount = dataArea->GetXaxisCompositePtsnb(i_area);
+            m_fileIndexes.areas[i_area].latCount = dataArea->GetYaxisCompositePtsnb(i_area);
+
+            if (lonMax == dataArea->GetAxisXmax()) {
+                // Correction if the lon 360 degrees is required (doesn't exist)
+                m_fileIndexes.areas[i_area].loadFirstXCol = true;
+                for (int i_check = 0; i_check < (int) compositeData.size(); i_check++) {
+                    // If so, already loaded in another composite
+                    if (dataArea->GetComposite(i_check).GetXmin() == 0) {
+                        m_fileIndexes.areas[i_area].loadFirstXCol = false;
+                    }
+                }
+                m_fileIndexes.areas[i_area].lonCount--;
+            }
+
+            // Get the spatial indices of the desired data
+            m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                    &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                    lonMin, 0.01f);
+            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+                // If not found, try with negative angles
+                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                        &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                        lonMin - 360, 0.01f);
+            }
+            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+                // If not found, try with angles above 360 degrees
+                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                        &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                        lonMin + 360, 0.01f);
+            }
+            if (m_fileIndexes.areas[i_area].lonStart < 0) {
+                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ",
+                                            lonMin, m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
+                                            m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]));
+                return false;
+            }
+            wxASSERT_MSG(m_fileIndexes.areas[i_area].lonStart >= 0,
+                         wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f",
+                                          m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
+                                          m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1], lonMin));
+
+            int indexStartLat1 = asTools::SortedArraySearch(&m_fileStructure.axisLat[0],
+                                                            &m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1],
+                                                            latMinStart, 0.01f);
+            int indexStartLat2 = asTools::SortedArraySearch(&m_fileStructure.axisLat[0],
+                                                            &m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1],
+                                                            latMinEnd, 0.01f);
+            wxASSERT_MSG(indexStartLat1 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinStart, m_fileStructure.axisLat[0],
+                                          m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
+            wxASSERT_MSG(indexStartLat2 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fileStructure.axisLat[0],
+                                          m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
+            m_fileIndexes.areas[i_area].latStart = wxMin(indexStartLat1, indexStartLat2);
+        } else {
+            m_fileIndexes.areas[i_area].lonStart = 0;
+            m_fileIndexes.areas[i_area].latStart = 0;
+            m_fileIndexes.areas[i_area].lonCount = m_lonPtsnb;
+            m_fileIndexes.areas[i_area].latCount = m_latPtsnb;
+        }
+
+        if (m_fileStructure.hasLevelDimension) {
+            m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0],
+                                                    &m_fileStructure.axisLevel[m_fileStructure.axisLevel.size() - 1],
+                                                    m_level, 0.01f);
+            if (m_fileIndexes.level < 0) {
+                asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
+                                              m_fileVariableName));
+                return false;
+            }
+        } else {
+            if (m_level > 0) {
+                asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
+                                              m_fileVariableName));
+                return false;
+            }
+        }
+
+        // Load data at lon = 360 degrees
+        if (m_fileIndexes.areas[i_area].loadFirstXCol) {
+
+            // Set the indices
+            m_fileIndexes.areas[i_area].lonStartFirstXCol = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                             &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                             360, 0.01f, asHIDE_WARNINGS);
+            if (m_fileIndexes.areas[i_area].lonStartFirstXCol == asOUT_OF_RANGE) {
+                // If not found, try with negative angles
+                m_fileIndexes.areas[i_area].lonStartFirstXCol = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                                 &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                                 0, 0.01f);
+            }
+        }
+
+    }
+
+    return true;
+}
+
+bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData)
+{
+    bool isShort = (ncFile.GetVarType(m_fileVariableName) == NC_SHORT);
+    bool isFloat = (ncFile.GetVarType(m_fileVariableName) == NC_FLOAT);
+
+    if(!isShort && !isFloat) {
+        asLogError(_("Loading data other than short or float is not implemented yet."));
+    }
+
+    // Check if scaling is needed
+    bool scalingNeeded = true;
+    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
+    if (asTools::IsNaN(dataAddOffset))
+        dataAddOffset = 0;
+    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
+    if (asTools::IsNaN(dataScaleFactor))
+        dataScaleFactor = 1;
+    if (dataAddOffset == 0 && dataScaleFactor == 1)
+        scalingNeeded = false;
+
+    VVectorFloat vectData;
+    VVectorFloat vectData360;
+
+    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+
+        // Create the arrays to receive the data
+        VectorFloat dataF, dataF360;
+        VectorShort dataS, dataS360;
+
+        // Resize the arrays to store the new data
+        int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+        wxASSERT(totLength > 0);
+        dataF.resize(totLength);
+        if (isShort) {
+            dataS.resize(totLength);
+        }
+
+        // Fill empty beginning with NaNs
+        int indexBegining = 0;
+        if (m_fileIndexes.cutStart > 0) {
+            int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+            for (int i_empty = 0; i_empty < m_fileIndexes.cutStart; i_empty++) {
+                for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
+                    dataF[indexBegining] = NaNFloat;
+                    indexBegining++;
+                }
+            }
+        }
+
+        // Fill empty end with NaNs
+        int indexEnd = m_fileIndexes.timeCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount - 1;
+        if (m_fileIndexes.cutEnd > 0) {
+            int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+            for (int i_empty = 0; i_empty < m_fileIndexes.cutEnd; i_empty++) {
+                for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
+                    indexEnd++;
+                    dataF[indexEnd] = NaNFloat;
+                }
+            }
+        }
+
+        // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
+        if (isFloat) {
+            ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
+                                GetIndexesStrideNcdf(i_area), &dataF[indexBegining]);
+        } else if (isShort) {
+            ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
+                                GetIndexesStrideNcdf(i_area), &dataS[indexBegining]);
+            for (int i = 0; i < dataS.size(); i++) {
+                dataF[i] = (float) dataS[i];
+            }
+        }
+
+        // Load data at lon = 360 degrees
+        if (m_fileIndexes.areas[i_area].loadFirstXCol) {
+            // Resize the arrays to store the new data
+            int totlength360 = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * 1;
+            dataF360.resize(totlength360);
+            if (isShort) {
+                dataS360.resize(totlength360);
+            }
+
+            // Fill empty begining with NaNs
+            int indexBegining360 = 0;
+            if (m_fileIndexes.cutStart > 0) {
+                int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+                for (int i_empty = 0; i_empty < m_fileIndexes.cutStart; i_empty++) {
+                    for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
+                        dataF360[indexBegining360] = NaNFloat;
+                        indexBegining360++;
+                    }
+                }
+            }
+
+            // Fill empty end with NaNs
+            int indexEnd360 = (m_fileIndexes.timeCount - 1) * (m_fileIndexes.areas[i_area].latCount - 1) * (m_fileIndexes.areas[i_area].lonCount - 1);
+            if (m_fileIndexes.cutEnd > 0) {
+                int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+                for (int i_empty = 0; i_empty < m_fileIndexes.cutEnd; i_empty++) {
+                    for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
+                        indexEnd360++;
+                        dataF360[indexEnd360] = NaNFloat;
+                    }
+                }
+            }
+
+            // Load data at 0 degrees (corresponds to 360 degrees)
+            if (isFloat) {
+                ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
+                                    GetIndexesStrideNcdf(i_area), &dataF360[indexBegining]);
+            } else if (isShort) {
+                ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
+                                    GetIndexesStrideNcdf(i_area), &dataS360[indexBegining]);
+                for (int i = 0; i < dataS360.size(); i++) {
+                    dataF360[i] = (float) dataS360[i];
+                }
+            }
+        }
+
+        // Keep data for later treatment
+        vectData.push_back(dataF);
+        vectData360.push_back(dataF360);
+    }
+
+    // Allocate space into compositeData if not already done
+    if (compositeData[0].capacity() == 0) {
+        int totSize = 0;
+        for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+            totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
+        }
+        compositeData.reserve(totSize);
+    }
+
+    // Transfer data
+    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+        // Extract data
+        VectorFloat data = vectData[i_area];
+        VectorFloat data360 = vectData360[i_area];
+
+        // Loop to extract the data from the array
+        int ind = 0;
+        for (int i_time = 0; i_time < m_fileIndexes.timeArrayCount; i_time++) {
+            Array2DFloat latlonData;
+            if (m_fileIndexes.areas[i_area].loadFirstXCol) {
+                latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount + 1);
+            } else {
+                latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
+            }
+
+            for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
+                for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
+                    ind = i_lon + i_lat * m_fileIndexes.areas[i_area].lonCount + i_time * m_fileIndexes.areas[i_area].lonCount * m_fileIndexes.areas[i_area].latCount;
+
+                    if (scalingNeeded) {
+                        latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                    } else {
+                        latlonData(i_lat, i_lon) = data[ind];
+                    }
+
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
+                        if (data[ind] == m_nanValues[i_nan] || latlonData(i_lat, i_lon) == m_nanValues[i_nan]) {
+                            notNan = false;
+                        }
+                    }
+                    if (!notNan) {
+                        latlonData(i_lat, i_lon) = NaNFloat;
+                    }
+                }
+
+                if (m_fileIndexes.areas[i_area].loadFirstXCol) {
+                    ind = i_lat + i_time * m_fileIndexes.areas[i_area].latCount;
+
+                    if (scalingNeeded) {
+                        latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) = data360[ind] * dataScaleFactor + dataAddOffset;
+                    } else {
+                        latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) = data360[ind];
+                    }
+
+                    // Check if not NaN
+                    bool notNan = true;
+                    for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
+                        if (data360[ind] == m_nanValues[i_nan] ||
+                            latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) == m_nanValues[i_nan]) {
+                            notNan = false;
+                        }
+                    }
+                    if (!notNan) {
+                        latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) = NaNFloat;
+                    }
+                }
+            }
+            compositeData[i_area].push_back(latlonData);
+        }
+        data.clear();
+        data360.clear();
+    }
+
+    return true;
+}
+
 bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 {
     double Xmin = desiredArea->GetAbsoluteXmin();
@@ -381,10 +902,26 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray) const
     }
     fractpart = modf((timeArray.GetFirstDayHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
     if (fractpart > 0.0000001) {
-        asLogError(wxString::Format(_("The desired start (%gh) is not coherent with the data properties."),
+        asLogError(wxString::Format(_("The desired startDate (%gh) is not coherent with the data properties."),
                                     timeArray.GetFirstDayHour()));
         return false;
     }
 
     return true;
+}
+
+VectorString asDataPredictorArchive::GetListOfFiles(asTimeArray &timeArray) const
+{
+    return VectorString();
+}
+
+bool asDataPredictorArchive::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    return false;
+}
+
+double asDataPredictorArchive::ConvertToMjd(double timeValue) const
+{
+    return NaNDouble;
 }

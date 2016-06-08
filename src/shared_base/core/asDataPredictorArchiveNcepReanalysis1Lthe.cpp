@@ -54,15 +54,24 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
     m_xAxisStep = 2.5;
     m_yAxisStep = 2.5;
     m_subFolder = wxEmptyString;
-    m_fileAxisLatName = "lat";
-    m_fileAxisLonName = "lon";
-    m_fileAxisTimeName = "time";
-    m_fileAxisLevelName = "level";
+    m_fileStructure.dimLatName = "lat";
+    m_fileStructure.dimLonName = "lon";
+    m_fileStructure.dimTimeName = "time";
+    m_fileStructure.dimLevelName = "level";
+    m_fileStructure.hasLevelDimension = true;
+}
 
+asDataPredictorArchiveNcepReanalysis1Lthe::~asDataPredictorArchiveNcepReanalysis1Lthe()
+{
+
+}
+
+bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
+{
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt_500hPa", false)) {
         m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential Height";
+        m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
@@ -70,7 +79,7 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
         m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
         m_parameter = GeopotentialHeight;
-        m_parameterName = "Geopotential Height";
+        m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
@@ -96,15 +105,7 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                           m_dataId, LevelEnumToString(m_levelType)));
     }
-}
 
-asDataPredictorArchiveNcepReanalysis1Lthe::~asDataPredictorArchiveNcepReanalysis1Lthe()
-{
-
-}
-
-bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
-{
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
         asLogError(
@@ -125,4 +126,31 @@ bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
     m_initialized = true;
 
     return true;
+}
+
+VectorString asDataPredictorArchiveNcepReanalysis1Lthe::GetListOfFiles(asTimeArray &timeArray) const
+{
+    VectorString files;
+
+    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+
+    return files;
+}
+
+bool asDataPredictorArchiveNcepReanalysis1Lthe::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+}
+
+double asDataPredictorArchiveNcepReanalysis1Lthe::ConvertToMjd(double timeValue) const
+{
+    timeValue = (timeValue / 24.0); // hours to days
+    if (timeValue < 500 * 365) { // New format
+        timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
+    } else { // Old format
+        timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+    }
+
+    return timeValue;
 }

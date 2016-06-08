@@ -245,3 +245,54 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
 
     return true;
 }
+
+bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                              VVArray2DFloat &compositeData)
+{
+    /*
+    VectorString filesList = GetListOfFiles(timeArray);
+
+    if(!CheckFilesPresence(filesList)) {
+        return false;
+    }
+
+#if wxUSE_GUI
+    asDialogProgressBar progressBar(_("Loading data from files.\n"), int(filesList.size()));
+#endif
+
+    for (int i = 0; i < filesList.size(); i++) {
+        wxString fileName = filesList[i];
+
+#if wxUSE_GUI
+        // Update the progress bar
+        if (!progressBar.Update(i, wxString::Format(_("File: %s"), fileName))) {
+            asLogWarning(_("The process has been canceled by the user."));
+            return false;
+        }
+#endif
+
+        if (!ExtractFromFile(fileName, dataArea, timeArray, compositeData)) {
+            return false;
+        }
+    }
+
+    return true;
+*/
+    return false;
+}
+
+VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) const
+{
+    return VectorString();
+}
+
+bool asDataPredictorRealtime::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    return false;
+}
+
+double asDataPredictorRealtime::ConvertToMjd(double timeValue) const
+{
+    return NaNDouble;
+}
