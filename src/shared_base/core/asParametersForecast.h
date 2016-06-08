@@ -41,22 +41,22 @@ class asParametersForecast
 public:
     typedef struct
     {
-        wxString ArchiveDatasetId;
-        wxString ArchiveDataId;
-        wxString RealtimeDatasetId;
-        wxString RealtimeDataId;
-        VectorString PreprocessArchiveDatasetIds;
-        VectorString PreprocessArchiveDataIds;
-        VectorString PreprocessRealtimeDatasetIds;
-        VectorString PreprocessRealtimeDataIds;
+        wxString archiveDatasetId;
+        wxString archiveDataId;
+        wxString realtimeDatasetId;
+        wxString realtimeDataId;
+        VectorString preprocessArchiveDatasetIds;
+        VectorString preprocessArchiveDataIds;
+        VectorString preprocessRealtimeDatasetIds;
+        VectorString preprocessRealtimeDataIds;
     } ParamsPredictorForecast;
 
     typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
 
     typedef struct
     {
-        VectorInt AnalogsNumberLeadTime;
-        VectorParamsPredictorsForecast Predictors;
+        VectorInt analogsNumberLeadTime;
+        VectorParamsPredictorsForecast predictors;
     } ParamsStepForecast;
 
     typedef std::vector<ParamsStepForecast> VectorParamsStepForecast;
@@ -111,46 +111,46 @@ public:
 
     VectorInt GetAnalogsNumberLeadTimeVector(int i_step) const
     {
-        return m_stepsForecast[i_step].AnalogsNumberLeadTime;
+        return m_stepsForecast[i_step].analogsNumberLeadTime;
     }
 
     int GetAnalogsNumberLeadTime(int i_step, int i_leadtime) const
     {
-        wxASSERT((int) m_stepsForecast[i_step].AnalogsNumberLeadTime.size() > i_leadtime);
-        return m_stepsForecast[i_step].AnalogsNumberLeadTime[i_leadtime];
+        wxASSERT((int) m_stepsForecast[i_step].analogsNumberLeadTime.size() > i_leadtime);
+        return m_stepsForecast[i_step].analogsNumberLeadTime[i_leadtime];
     }
 
     wxString GetPredictorArchiveDatasetId(int i_step, int i_predictor) const
     {
-        return m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId;
+        return m_stepsForecast[i_step].predictors[i_predictor].archiveDatasetId;
     }
 
     bool SetPredictorArchiveDatasetId(int i_step, int i_predictor, const wxString &val);
 
     wxString GetPredictorArchiveDataId(int i_step, int i_predictor) const
     {
-        return m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDataId;
+        return m_stepsForecast[i_step].predictors[i_predictor].archiveDataId;
     }
 
     bool SetPredictorArchiveDataId(int i_step, int i_predictor, const wxString &val);
 
     wxString GetPredictorRealtimeDatasetId(int i_step, int i_predictor) const
     {
-        return m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId;
+        return m_stepsForecast[i_step].predictors[i_predictor].realtimeDatasetId;
     }
 
     bool SetPredictorRealtimeDatasetId(int i_step, int i_predictor, const wxString &val);
 
     wxString GetPredictorRealtimeDataId(int i_step, int i_predictor) const
     {
-        return m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDataId;
+        return m_stepsForecast[i_step].predictors[i_predictor].realtimeDataId;
     }
 
     bool SetPredictorRealtimeDataId(int i_step, int i_predictor, const wxString &val);
 
     int GetPreprocessSize(int i_step, int i_predictor) const
     {
-        return (int) m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size();
+        return (int) m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds.size();
     }
 
     wxString GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset) const;

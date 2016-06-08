@@ -45,7 +45,7 @@ void asParametersForecast::AddStep()
 {
     asParameters::AddStep();
     ParamsStepForecast stepForecast;
-    stepForecast.AnalogsNumberLeadTime.push_back(0);
+    stepForecast.analogsNumberLeadTime.push_back(0);
     m_stepsForecast.push_back(stepForecast);
 }
 
@@ -53,12 +53,12 @@ void asParametersForecast::AddPredictorForecast(ParamsStepForecast &step)
 {
     ParamsPredictorForecast predictor;
 
-    predictor.ArchiveDatasetId = wxEmptyString;
-    predictor.ArchiveDataId = wxEmptyString;
-    predictor.RealtimeDatasetId = wxEmptyString;
-    predictor.RealtimeDataId = wxEmptyString;
+    predictor.archiveDatasetId = wxEmptyString;
+    predictor.archiveDataId = wxEmptyString;
+    predictor.realtimeDatasetId = wxEmptyString;
+    predictor.realtimeDataId = wxEmptyString;
 
-    step.Predictors.push_back(predictor);
+    step.predictors.push_back(predictor);
 }
 
 bool asParametersForecast::LoadFromFile(const wxString &filePath)
@@ -493,7 +493,7 @@ void asParametersForecast::InitValues()
 {
     // Initialize the parameters values with the first values of the vectors
     for (int i = 0; i < GetStepsNb(); i++) {
-        SetAnalogsNumber(i, m_stepsForecast[i].AnalogsNumberLeadTime[0]);
+        SetAnalogsNumber(i, m_stepsForecast[i].analogsNumberLeadTime[0]);
     }
 
     // Fixes and checks
@@ -532,7 +532,7 @@ bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int i_step, VectorInt 
             }
         }
     }
-    m_stepsForecast[i_step].AnalogsNumberLeadTime = val;
+    m_stepsForecast[i_step].analogsNumberLeadTime = val;
     return true;
 }
 
@@ -542,7 +542,7 @@ bool asParametersForecast::SetPredictorArchiveDatasetId(int i_step, int i_predic
         asLogError(_("The provided value for the predictor archive dataset ID is null"));
         return false;
     }
-    m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDatasetId = val;
+    m_stepsForecast[i_step].predictors[i_predictor].archiveDatasetId = val;
     return true;
 }
 
@@ -552,7 +552,7 @@ bool asParametersForecast::SetPredictorArchiveDataId(int i_step, int i_predictor
         asLogError(_("The provided value for the predictor archive data ID is null"));
         return false;
     }
-    m_stepsForecast[i_step].Predictors[i_predictor].ArchiveDataId = val;
+    m_stepsForecast[i_step].predictors[i_predictor].archiveDataId = val;
     return true;
 }
 
@@ -562,7 +562,7 @@ bool asParametersForecast::SetPredictorRealtimeDatasetId(int i_step, int i_predi
         asLogError(_("The provided value for the predictor realtime dataset ID is null"));
         return false;
     }
-    m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDatasetId = val;
+    m_stepsForecast[i_step].predictors[i_predictor].realtimeDatasetId = val;
     return true;
 }
 
@@ -572,18 +572,18 @@ bool asParametersForecast::SetPredictorRealtimeDataId(int i_step, int i_predicto
         asLogError(_("The provided value for the predictor realtime data ID is null"));
         return false;
     }
-    m_stepsForecast[i_step].Predictors[i_predictor].RealtimeDataId = val;
+    m_stepsForecast[i_step].predictors[i_predictor].realtimeDataId = val;
     return true;
 }
 
 wxString asParametersForecast::GetPreprocessArchiveDatasetId(int i_step, int i_predictor, int i_dataset) const
 {
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size() >=
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds.size() >=
         (unsigned) (i_dataset + 1)) {
-        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset];
+        return m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds[i_dataset];
     } else {
         asLogError(
-                _("Trying to access to an element outside of PreprocessArchiveDatasetIds in the parameters object."));
+                _("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -596,11 +596,11 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int i_step, int i_predi
         return false;
     }
 
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.size() >=
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds.size() >=
         (unsigned) (i_dataset + 1)) {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds[i_dataset] = val;
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds[i_dataset] = val;
     } else {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDatasetIds.push_back(val);
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds.push_back(val);
     }
 
     return true;
@@ -608,11 +608,11 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int i_step, int i_predi
 
 wxString asParametersForecast::GetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset) const
 {
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size() >= (unsigned) (i_dataset + 1)) {
-        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset];
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds.size() >= (unsigned) (i_dataset + 1)) {
+        return m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds[i_dataset];
     } else {
         asLogError(
-                _("Trying to access to an element outside of PreprocessArchiveDatasetIds in the parameters object."));
+                _("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -624,10 +624,10 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int i_step, int i_predicto
         return false;
     }
 
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.size() >= (unsigned) (i_dataset + 1)) {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds[i_dataset] = val;
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds.size() >= (unsigned) (i_dataset + 1)) {
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds[i_dataset] = val;
     } else {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessArchiveDataIds.push_back(val);
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds.push_back(val);
     }
 
     return true;
@@ -635,12 +635,12 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int i_step, int i_predicto
 
 wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int i_step, int i_predictor, int i_dataset) const
 {
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size() >=
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDatasetIds.size() >=
         (unsigned) (i_dataset + 1)) {
-        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset];
+        return m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDatasetIds[i_dataset];
     } else {
         asLogError(
-                _("Trying to access to an element outside of PreprocessRealtimeDatasetIds in the parameters object."));
+                _("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -653,11 +653,11 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int i_step, int i_pred
         return false;
     }
 
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.size() >=
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDatasetIds.size() >=
         (unsigned) (i_dataset + 1)) {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds[i_dataset] = val;
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDatasetIds[i_dataset] = val;
     } else {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDatasetIds.push_back(val);
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDatasetIds.push_back(val);
     }
 
     return true;
@@ -665,12 +665,12 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int i_step, int i_pred
 
 wxString asParametersForecast::GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset) const
 {
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size() >=
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDataIds.size() >=
         (unsigned) (i_dataset + 1)) {
-        return m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset];
+        return m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDataIds[i_dataset];
     } else {
         asLogError(
-                _("Trying to access to an element outside of PreprocessRealtimeDatasetIds in the parameters object."));
+                _("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -682,11 +682,11 @@ bool asParametersForecast::SetPreprocessRealtimeDataId(int i_step, int i_predict
         return false;
     }
 
-    if (m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.size() >=
+    if (m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDataIds.size() >=
         (unsigned) (i_dataset + 1)) {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds[i_dataset] = val;
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDataIds[i_dataset] = val;
     } else {
-        m_stepsForecast[i_step].Predictors[i_predictor].PreprocessRealtimeDataIds.push_back(val);
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDataIds.push_back(val);
     }
 
     return true;

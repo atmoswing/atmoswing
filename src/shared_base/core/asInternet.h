@@ -53,7 +53,7 @@ private:
 
     struct HttpFile
     {
-        const char *filename;
+        const char *fileName;
         FILE *stream;
     };
 
