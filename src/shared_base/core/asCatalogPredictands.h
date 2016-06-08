@@ -40,15 +40,15 @@ public:
     //!< Structure for data information
     struct DataStruct
     {
-        int Id;
-        wxString OfficialId;
-        wxString Name;
-        wxString Filename;
-        wxString Filepattern;
-        double Start;
-        double End;
-        Coo Coord;
-        float Height;
+        int id;
+        wxString officialId;
+        wxString name;
+        wxString fileName;
+        wxString filePattern;
+        double startDate;
+        double endDate;
+        Coo coord;
+        float height;
     };
 
     asCatalogPredictands(const wxString &filePath);
@@ -129,47 +129,47 @@ public:
 
     int GetStationId(int index) const
     {
-        return m_stations[index].Id;
+        return m_stations[index].id;
     }
 
     wxString GetStationOfficialId(int index) const
     {
-        return m_stations[index].OfficialId;
+        return m_stations[index].officialId;
     }
 
     wxString GetStationName(int index) const
     {
-        return m_stations[index].Name;
+        return m_stations[index].name;
     }
 
     wxString GetStationFilename(int index) const
     {
-        return m_stations[index].Filename;
+        return m_stations[index].fileName;
     }
 
     wxString GetStationFilepattern(int index) const
     {
-        return m_stations[index].Filepattern;
+        return m_stations[index].filePattern;
     }
 
     double GetStationStart(int index) const
     {
-        return m_stations[index].Start;
+        return m_stations[index].startDate;
     }
 
     double GetStationEnd(int index) const
     {
-        return m_stations[index].End;
+        return m_stations[index].endDate;
     }
 
     Coo GetStationCoord(int index) const
     {
-        return m_stations[index].Coord;
+        return m_stations[index].coord;
     }
 
     float GetStationHeight(int index) const
     {
-        return m_stations[index].Height;
+        return m_stations[index].height;
     }
 
     int GetStationsNb() const

@@ -118,37 +118,37 @@ bool asCatalogPredictands::Load()
                             wxXmlNode *nodeDetail = nodeData->GetChildren();
                             while (nodeDetail) {
                                 if (nodeDetail->GetName() == "official_id") {
-                                    station.OfficialId = xmlFile.GetString(nodeDetail);
+                                    station.officialId = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "id") {
                                     wxString idStr = xmlFile.GetString(nodeDetail);
                                     long id;
                                     idStr.ToLong(&id);
-                                    station.Id = id;
+                                    station.id = id;
                                 } else if (nodeDetail->GetName() == "name") {
-                                    station.Name = xmlFile.GetString(nodeDetail);
+                                    station.name = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "x_coordinate") {
                                     wxString coordXStr = xmlFile.GetString(nodeDetail);
                                     double x;
                                     coordXStr.ToDouble(&x);
-                                    station.Coord.x = x;
+                                    station.coord.x = x;
                                 } else if (nodeDetail->GetName() == "y_coordinate") {
                                     wxString coordYStr = xmlFile.GetString(nodeDetail);
                                     double y;
                                     coordYStr.ToDouble(&y);
-                                    station.Coord.y = y;
+                                    station.coord.y = y;
                                 } else if (nodeDetail->GetName() == "height") {
                                     wxString heightStr = xmlFile.GetString(nodeDetail);
                                     double height;
                                     heightStr.ToDouble(&height);
-                                    station.Height = (float) height;
+                                    station.height = (float) height;
                                 } else if (nodeDetail->GetName() == "file_name") {
-                                    station.Filename = xmlFile.GetString(nodeDetail);
+                                    station.fileName = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "file_pattern") {
                                     station.Filepattern = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
                                     station.Start = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.End = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                    station.endDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }
