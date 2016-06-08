@@ -35,15 +35,15 @@ asParametersScoring::asParametersScoring()
 {
     m_calibrationStart = 0;
     m_calibrationEnd = 0;
-    m_forecastScore.Name = wxEmptyString;
-    m_forecastScore.TimeArrayMode = wxEmptyString;
-    m_forecastScore.TimeArrayDate = 0;
-    m_forecastScore.TimeArrayIntervalDays = 0;
-    m_forecastScore.Postprocess = false;
-    m_forecastScore.PostprocessDupliExp = 0;
-    m_forecastScore.PostprocessMethod = wxEmptyString;
-    m_forecastScore.Threshold = NaNFloat; // initialization required
-    m_forecastScore.Quantile = NaNFloat; // initialization required
+    m_forecastScore.name = wxEmptyString;
+    m_forecastScore.timeArrayMode = wxEmptyString;
+    m_forecastScore.timeArrayDate = 0;
+    m_forecastScore.timeArrayIntervalDays = 0;
+    m_forecastScore.postprocess = false;
+    m_forecastScore.postprocessDupliExp = 0;
+    m_forecastScore.postprocessMethod = wxEmptyString;
+    m_forecastScore.threshold = NaNFloat; // initialization required
+    m_forecastScore.quantile = NaNFloat; // initialization required
 }
 
 asParametersScoring::~asParametersScoring()
@@ -55,17 +55,17 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
 {
     ParamsPredictorVect predictor;
 
-    predictor.DataId.push_back(wxEmptyString);
-    predictor.Level.push_back(0);
-    predictor.Xmin.push_back(0);
-    predictor.Xptsnb.push_back(0);
-    predictor.Ymin.push_back(0);
-    predictor.Yptsnb.push_back(0);
-    predictor.TimeHours.push_back(0);
-    predictor.Criteria.push_back(wxEmptyString);
-    predictor.Weight.push_back(1);
+    predictor.dataId.push_back(wxEmptyString);
+    predictor.level.push_back(0);
+    predictor.xMin.push_back(0);
+    predictor.xPtsNb.push_back(0);
+    predictor.yMin.push_back(0);
+    predictor.yPtsNb.push_back(0);
+    predictor.timeHours.push_back(0);
+    predictor.criteria.push_back(wxEmptyString);
+    predictor.weight.push_back(1);
 
-    step.Predictors.push_back(predictor);
+    step.predictors.push_back(predictor);
 }
 
 
@@ -277,7 +277,7 @@ bool asParametersScoring::PreprocessingPropertiesOk()
                 // Check that the data ID is unique
                 for (int i_preproc = 0; i_preproc < preprocSize; i_preproc++) {
                     if (GetPreprocessDataIdVectorSize(i_step, i_ptor, i_preproc) != 1) {
-                        asLogError(_("The preprocess DataId must be unique with the preload option."));
+                        asLogError(_("The preprocess dataId must be unique with the preload option."));
                         return false;
                     }
                 }
@@ -361,10 +361,10 @@ wxString asParametersScoring::Print() const
 
     content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName()));
     if (!asTools::IsNaN(GetForecastScoreQuantile())) {
-        content.Append(wxString::Format("Quantile \t%f\t", GetForecastScoreQuantile()));
+        content.Append(wxString::Format("quantile \t%f\t", GetForecastScoreQuantile()));
     }
     if (!asTools::IsNaN(GetForecastScoreThreshold())) {
-        content.Append(wxString::Format("Threshold \t%f\t", GetForecastScoreThreshold()));
+        content.Append(wxString::Format("threshold \t%f\t", GetForecastScoreThreshold()));
     }
     content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode()));
 

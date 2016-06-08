@@ -79,31 +79,31 @@ public:
 
     VectorString GetForecastScoreNameVector() const
     {
-        return m_forecastScoreVect.Name;
+        return m_forecastScoreVect.name;
     }
 
     bool SetForecastScoreNameVector(VectorString val);
 
     VectorString GetForecastScoreTimeArrayModeVector() const
     {
-        return m_forecastScoreVect.TimeArrayMode;
+        return m_forecastScoreVect.timeArrayMode;
     }
 
     bool SetForecastScoreTimeArrayModeVector(VectorString val);
 
     VectorDouble GetForecastScoreTimeArrayDateVector() const
     {
-        return m_forecastScoreVect.TimeArrayDate;
+        return m_forecastScoreVect.timeArrayDate;
     }
 
     VectorInt GetForecastScoreTimeArrayIntervalDaysVector() const
     {
-        return m_forecastScoreVect.TimeArrayIntervalDays;
+        return m_forecastScoreVect.timeArrayIntervalDays;
     }
 
     VectorFloat GetForecastScorePostprocessDupliExpVector() const
     {
-        return m_forecastScoreVect.PostprocessDupliExp;
+        return m_forecastScoreVect.postprocessDupliExp;
     }
 
     double GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset) const;

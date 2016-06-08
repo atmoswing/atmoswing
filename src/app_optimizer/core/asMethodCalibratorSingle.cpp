@@ -72,7 +72,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
         if (params.GetAnalogsNumberVector(i_step).size() > 1) {
             checkSizes = false;
-            errorField.Append(wxString::Format("AnalogsNumber (step %d), ", i_step));
+            errorField.Append(wxString::Format("analogsNumber (step %d), ", i_step));
         }
         for (int i_predictor = 0; i_predictor < params.GetPredictorsNb(i_step); i_predictor++) {
             if (params.NeedsPreprocessing(i_step, i_predictor)) {
@@ -80,7 +80,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                     if (params.GetPreprocessDataIdVector(i_step, i_predictor, i_pre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("PreprocessDataId (step %d, predictor %d, preprocess %d), ", i_step,
+                                wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ", i_step,
                                                  i_predictor, i_pre));
                     }
                     if (params.GetPreprocessLevelVector(i_step, i_predictor, i_pre).size() > 1) {
@@ -92,7 +92,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                     if (params.GetPreprocessTimeHoursVector(i_step, i_predictor, i_pre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("PreprocessTimeHours (step %d, predictor %d, preprocess %d), ", i_step,
+                                wxString::Format("preprocessTimeHours (step %d, predictor %d, preprocess %d), ", i_step,
                                                  i_predictor, i_pre));
                     }
                 }
