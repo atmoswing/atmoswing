@@ -42,9 +42,9 @@ class asException
 public:
     typedef struct//!< Structure for older exceptions
     {
-        wxString Message;
-        wxString FileName;
-        int LineNum;
+        wxString message;
+        wxString fileName;
+        int lineNum;
     } PrevExceptions;
 
     asException();

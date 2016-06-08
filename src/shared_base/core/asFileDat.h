@@ -39,23 +39,23 @@ class asFileDat
 public:
     struct Pattern
     {
-        wxString Id;
-        wxString Name;
-        FileStructType StructType;
-        int HeaderLines;
-        bool ParseTime;
-        int TimeYearBegin;
-        int TimeYearEnd;
-        int TimeMonthBegin;
-        int TimeMonthEnd;
-        int TimeDayBegin;
-        int TimeDayEnd;
-        int TimeHourBegin;
-        int TimeHourEnd;
-        int TimeMinuteBegin;
-        int TimeMinuteEnd;
-        int DataBegin;
-        int DataEnd;
+        wxString id;
+        wxString name;
+        FileStructType structType;
+        int headerLines;
+        bool parseTime;
+        int timeYearBegin;
+        int timeYearEnd;
+        int timeMonthBegin;
+        int timeMonthEnd;
+        int timeDayBegin;
+        int timeDayEnd;
+        int timeHourBegin;
+        int timeHourEnd;
+        int timeMinuteBegin;
+        int timeMinuteEnd;
+        int dataBegin;
+        int dataEnd;
     };
 
     asFileDat(const wxString &FileName, const ListFileMode &FileMode);

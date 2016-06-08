@@ -59,7 +59,7 @@ size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stre
     struct HttpFile *out = (struct HttpFile *) stream;
     if (!out->stream) {
         // Open file for writing
-        out->stream = fopen(out->filename, "wb");
+        out->stream = fopen(out->fileName, "wb");
         if (!out->stream)
             return 1; // failure, can't open file to write
     }

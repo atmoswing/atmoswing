@@ -144,9 +144,9 @@ bool asCatalogPredictands::Load()
                                 } else if (nodeDetail->GetName() == "file_name") {
                                     station.fileName = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "file_pattern") {
-                                    station.Filepattern = xmlFile.GetString(nodeDetail);
+                                    station.filePattern = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.Start = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                    station.startDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else if (nodeDetail->GetName() == "end") {
                                     station.endDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else {

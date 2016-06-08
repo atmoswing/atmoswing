@@ -81,9 +81,9 @@ asException::asException(const wxString &message, const char *filename, unsigned
     m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
-    Previous.Message = prevexception.m_message;
-    Previous.FileName = prevexception.m_fileName;
-    Previous.LineNum = prevexception.m_lineNum;
+    Previous.message = prevexception.m_message;
+    Previous.fileName = prevexception.m_fileName;
+    Previous.lineNum = prevexception.m_lineNum;
     m_previous.push_back(&Previous);
 
     wxString logMessage;
@@ -101,9 +101,9 @@ asException::asException(const std::string &message, const char *filename, unsig
     m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
-    Previous.Message = prevexception.m_message;
-    Previous.FileName = prevexception.m_fileName;
-    Previous.LineNum = prevexception.m_lineNum;
+    Previous.message = prevexception.m_message;
+    Previous.fileName = prevexception.m_fileName;
+    Previous.lineNum = prevexception.m_lineNum;
     m_previous.push_back(&Previous);
 
     wxString logMessage;
@@ -121,9 +121,9 @@ asException::asException(const char *message, const char *filename, unsigned int
     m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
-    Previous.Message = prevexception.m_message;
-    Previous.FileName = prevexception.m_fileName;
-    Previous.LineNum = prevexception.m_lineNum;
+    Previous.message = prevexception.m_message;
+    Previous.fileName = prevexception.m_fileName;
+    Previous.lineNum = prevexception.m_lineNum;
     m_previous.push_back(&Previous);
 
     wxString logMessage;
@@ -149,9 +149,9 @@ wxString asException::GetFullMessage() const
             wxString prevmessage;
             wxString prevfilename;
 
-            prevlinenum = m_previous[i]->LineNum;
-            prevmessage = m_previous[i]->Message;
-            prevfilename = m_previous[i]->FileName;
+            prevlinenum = m_previous[i]->lineNum;
+            prevmessage = m_previous[i]->message;
+            prevfilename = m_previous[i]->fileName;
             prevmessage.Replace("\n", " // ");
             prevfilename = prevfilename.AfterLast('/');
             prevfilename = prevfilename.AfterLast('\\');
