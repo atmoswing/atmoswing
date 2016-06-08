@@ -285,6 +285,44 @@ public:
     }
 
 protected:
+    struct FileStructure
+    {
+        wxString dimLatName;
+        wxString dimLonName;
+        wxString dimTimeName;
+        wxString dimLevelName;
+        bool hasLevelDimension;
+        Array1DFloat axisLon;
+        Array1DFloat axisLat;
+        Array1DFloat axisLevel;
+        double axisTimeFirstValue;
+        double axisTimeLastValue;
+        size_t axisTimeLength;
+    };
+    struct FileIndexesArea
+    {
+        int lonStart;
+        int lonCount;
+        int latStart;
+        int latCount;
+        bool loadFirstXCol;
+        int lonStartFirstXCol;
+    };
+    struct FileIndexes
+    {
+        std::vector<FileIndexesArea> areas;
+        int lonStep;
+        int latStep;
+        int timeStart;
+        int timeCount;
+        int timeArrayCount;
+        int timeStep;
+        int level;
+        int cutStart;
+        int cutEnd;
+    };
+    FileStructure m_fileStructure;
+    FileIndexes m_fileIndexes;
     bool m_initialized;
     bool m_axesChecked;
     wxString m_subFolder;
@@ -311,30 +349,24 @@ protected:
     VArray2DFloat m_data;
     int m_latPtsnb;
     int m_lonPtsnb;
-    size_t m_latIndexStep;
-    size_t m_lonIndexStep;
-    size_t m_timeIndexStep;
     Array1DFloat m_axisLat;
     Array1DFloat m_axisLon;
     bool m_isPreprocessed;
     bool m_canBeClipped;
-    wxString m_preprocessMethod;
-    wxString m_fileAxisLatName;
-    wxString m_fileAxisLonName;
-    wxString m_fileAxisTimeName;
-    wxString m_fileAxisLevelName;
     wxString m_fileExtension;
+    wxString m_preprocessMethod;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const
-    {
-        return false;
-    }
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const = 0;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData) = 0;
+
+    virtual double ConvertToMjd(double timeValue) const = 0;
+
+    virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
 
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                  VVArray2DFloat &compositeData)
-    {
-        return false;
-    }
+                                  VVArray2DFloat &compositeData) = 0;
 
     bool MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area);
 
@@ -342,8 +374,7 @@ protected:
 
     asGeoAreaCompositeGrid *CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
 
-    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon,
-                                       Array1DFloat &axisDataLat, VVArray2DFloat &compositeData);
+    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, VVArray2DFloat &compositeData);
 
 private:
     wxString m_directoryPath;

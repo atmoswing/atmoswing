@@ -32,6 +32,8 @@
 #include <asIncludes.h>
 #include <asDataPredictor.h>
 
+class asFileNetcdf;
+
 class asDataPredictorArchive
         : public asDataPredictor
 {
@@ -44,6 +46,8 @@ public:
                                                const wxString &directory = wxEmptyString);
 
     virtual bool Init();
+
+    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
@@ -62,7 +66,33 @@ protected:
     double m_originalProviderEnd;
     wxString m_fileNamePattern;
 
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue) const;
+
+    bool CheckFilesPresence(const VectorString &filesList);
+
+    bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                               VVArray2DFloat &compositeData);
+
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
+
+    bool ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                            VVArray2DFloat &compositeData);
+
+    size_t *GetIndexesStartNcdf(int i_area);
+
+    size_t *GetIndexesCountNcdf(int i_area);
+
+    ptrdiff_t *GetIndexesStrideNcdf(int i_area);
+
+    bool GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                        VVArray2DFloat &compositeData);
+
+    bool GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData);
 
 private:
 

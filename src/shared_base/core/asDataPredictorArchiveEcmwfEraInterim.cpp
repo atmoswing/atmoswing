@@ -49,20 +49,31 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_subFolder = wxEmptyString;
-    m_fileAxisLatName = "latitude";
-    m_fileAxisLonName = "longitude";
-    m_fileAxisTimeName = "time";
-    m_fileAxisLevelName = "level";
+    m_fileStructure.dimLatName = "latitude";
+    m_fileStructure.dimLonName = "longitude";
+    m_fileStructure.dimTimeName = "time";
+    m_fileStructure.dimLevelName = "level";
+}
+
+asDataPredictorArchiveEcmwfEraInterim::~asDataPredictorArchiveEcmwfEraInterim()
+{
+
+}
+
+bool asDataPredictorArchiveEcmwfEraInterim::Init()
+{
+    CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
     switch (m_levelType) {
         case PressureLevel:
+            m_fileStructure.hasLevelDimension = true;
             m_subFolder = "pressure";
             m_xAxisStep = 2.5;
             m_yAxisStep = 2.5;
             if (m_dataId.IsSameAs("z", false)) {
                 m_parameter = GeopotentialHeight;
-                m_parameterName = "Geopotential Height";
+                m_parameterName = "Geopotential height";
                 m_fileNamePattern = "ECMWF_ERA40_hgt.nc";
                 m_fileVariableName = "z";
                 m_unit = m;
@@ -74,6 +85,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             break;
 
         case Surface:
+            m_fileStructure.hasLevelDimension = false;
             m_subFolder = "surface";
             m_xAxisStep = 2.5;
             m_yAxisStep = 2.5;
@@ -86,7 +98,8 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             break;
 
         case PotentialTemperatureLevel:
-            m_subFolder = "surface_gauss";
+            m_fileStructure.hasLevelDimension = true;
+            m_subFolder = "xxxx";
             m_xAxisStep = NaNFloat;
             m_yAxisStep = NaNFloat;
             if (m_dataId.IsSameAs("xxxx", false)) {
@@ -98,7 +111,8 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             break;
 
         case PotentialVorticityLevel:
-            m_subFolder = "surface_gauss";
+            m_fileStructure.hasLevelDimension = true;
+            m_subFolder = "xxxx";
             m_xAxisStep = NaNFloat;
             m_yAxisStep = NaNFloat;
             if (m_dataId.IsSameAs("xxxx", false)) {
@@ -109,17 +123,9 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
             }
             break;
 
-        default: asThrowException(_("Level type not implemented for this reanalysis dataset."));
+        default: asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
-}
 
-asDataPredictorArchiveEcmwfEraInterim::~asDataPredictorArchiveEcmwfEraInterim()
-{
-
-}
-
-bool asDataPredictorArchiveEcmwfEraInterim::Init()
-{
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
         asLogError(
@@ -140,5 +146,29 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     m_initialized = true;
 
     return true;
+}
+
+VectorString asDataPredictorArchiveEcmwfEraInterim::GetListOfFiles(asTimeArray &timeArray) const
+{
+    VectorString files;
+
+    //
+
+    return files;
+}
+
+bool asDataPredictorArchiveEcmwfEraInterim::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    //
+
+    return false;
+}
+
+double asDataPredictorArchiveEcmwfEraInterim::ConvertToMjd(double timeValue) const
+{
+    //
+
+    return timeValue;
 }
 

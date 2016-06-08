@@ -45,8 +45,12 @@ public:
     virtual bool Init();
 
 protected:
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                  VVArray2DFloat &compositeData);
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue) const;
 
 private:
 

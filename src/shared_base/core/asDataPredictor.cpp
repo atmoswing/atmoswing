@@ -42,23 +42,21 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_canBeClipped = true;
     m_latPtsnb = 0;
     m_lonPtsnb = 0;
-    m_latIndexStep = 0;
-    m_lonIndexStep = 0;
     m_preprocessMethod = wxEmptyString;
     m_initialized = false;
     m_axesChecked = false;
     m_timeZoneHours = 0.0;
     m_timeStepHours = 0.0;
-    m_timeIndexStep = 0.0;
     m_firstTimeStepHours = 0.0;
     m_xAxisStep = 0.0f;
     m_yAxisStep = 0.0f;
     m_xAxisShift = 0.0f;
     m_yAxisShift = 0.0f;
-    m_fileAxisLatName = wxEmptyString;
-    m_fileAxisLonName = wxEmptyString;
-    m_fileAxisTimeName = wxEmptyString;
-    m_fileAxisLevelName = wxEmptyString;
+    m_fileStructure.dimLatName = wxEmptyString;
+    m_fileStructure.dimLonName = wxEmptyString;
+    m_fileStructure.dimTimeName = wxEmptyString;
+    m_fileStructure.dimLevelName = wxEmptyString;
+    m_fileStructure.hasLevelDimension = true;
     m_fileExtension = wxEmptyString;
 
     if(dataId.Contains('/')) {
@@ -268,7 +266,7 @@ asDataPredictor::Level asDataPredictor::StringToLevelEnum(const wxString &levelS
     } else if (levelStr.CmpNoCase("ModelLevel") == 0 || levelStr.CmpNoCase("model") == 0 || levelStr.CmpNoCase("ml") == 0) {
         return ModelLevel;
     } else {
-        asThrowException(wxString::Format(_("The Level enumeration (%s) entry doesn't exists"), levelStr));
+        asThrowException(wxString::Format(_("The level enumeration (%s) entry doesn't exists"), levelStr));
     }
     return Any;
 }
@@ -334,7 +332,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
 
         // Store time array
         m_time = timeArray.GetTimeArray();
-        m_timeIndexStep = wxMax(timeArray.GetTimeStepHours() / m_timeStepHours, 1);
+        m_fileIndexes.timeStep = wxMax(timeArray.GetTimeStepHours() / m_timeStepHours, 1);
 
         // The desired level
         if (desiredArea) {
@@ -464,11 +462,11 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
 
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false)) {
-            m_lonIndexStep = dataArea->GetXstep() / m_xAxisStep;
-            m_latIndexStep = dataArea->GetYstep() / m_yAxisStep;
+            m_fileIndexes.lonStep = (int)std::round(dataArea->GetXstep() / m_xAxisStep);
+            m_fileIndexes.latStep = (int)std::round(dataArea->GetYstep() / m_yAxisStep);
         } else {
-            m_lonIndexStep = 1;
-            m_latIndexStep = 1;
+            m_fileIndexes.lonStep = 1;
+            m_fileIndexes.latStep = 1;
         }
 
         // Get axes length for preallocation
@@ -481,33 +479,35 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
     return NULL;
 }
 
-asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, Array1DFloat &axisDataLon,
-                                                    Array1DFloat &axisDataLat, VVArray2DFloat &compositeData)
+asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, VVArray2DFloat &compositeData)
 {
+    wxASSERT(m_fileStructure.axisLon.size()>0);
+    wxASSERT(m_fileStructure.axisLat.size()>0);
+
     if (!m_axesChecked) {
         if (dataArea == NULL) {
             // Get axes length for preallocation
-            m_lonPtsnb = axisDataLon.size();
-            m_latPtsnb = axisDataLat.size();
-            m_axisLon = axisDataLon;
-            m_axisLat = axisDataLat;
+            m_lonPtsnb = int(m_fileStructure.axisLon.size());
+            m_latPtsnb = int(m_fileStructure.axisLat.size());
+            m_axisLon = m_fileStructure.axisLon;
+            m_axisLat = m_fileStructure.axisLat;
         } else {
             // Check that requested data do not overtake the file
             for (int i_comp = 0; i_comp < dataArea->GetNbComposites(); i_comp++) {
                 Array1DDouble axisLonComp = dataArea->GetXaxisComposite(i_comp);
 
-                if (axisDataLon[axisDataLon.size() - 1] > axisDataLon[0]) {
+                if (m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] > m_fileStructure.axisLon[0]) {
                     wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
 
                     // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size() - 1] > axisDataLon[axisDataLon.size() - 1] &&
-                        axisLonComp[0] < axisDataLon[axisDataLon.size() - 1] &&
+                    if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
+                        axisLonComp[0] < m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
                         axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
                         asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Xwidth = axisDataLon[axisDataLon.size() - 1] - dataArea->GetAbsoluteXmin();
+                        double Xwidth = m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] - dataArea->GetAbsoluteXmin();
                         wxASSERT(Xwidth >= 0);
                         int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
-                        asLogMessage(wxString::Format(_("Xptsnb = %d."), Xptsnb));
+                        asLogMessage(wxString::Format(_("xPtsNb = %d."), Xptsnb));
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb,
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
@@ -520,13 +520,14 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
 
                     // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size() - 1] > axisDataLon[0] && axisLonComp[0] < axisDataLon[0] &&
+                    if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[0] &&
+                        axisLonComp[0] < m_fileStructure.axisLon[0] &&
                         axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
                         asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Xwidth = axisDataLon[0] - dataArea->GetAbsoluteXmin();
+                        double Xwidth = m_fileStructure.axisLon[0] - dataArea->GetAbsoluteXmin();
                         wxASSERT(Xwidth >= 0);
                         int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
-                        asLogMessage(wxString::Format(_("Xptsnb = %d."), Xptsnb));
+                        asLogMessage(wxString::Format(_("xPtsNb = %d."), Xptsnb));
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb,
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
@@ -551,17 +552,17 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             for (int i_comp = 0; i_comp < dataArea->GetNbComposites(); i_comp++) {
                 Array1DDouble axisLatComp = dataArea->GetYaxisComposite(i_comp);
 
-                if (axisDataLat[axisDataLat.size() - 1] > axisDataLat[0]) {
+                if (m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] > m_fileStructure.axisLat[0]) {
                     wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
 
                     // Condition for change: The composite must not be fully outside (considered as handled).
-                    if (axisLatComp[axisLatComp.size() - 1] > axisDataLat[axisDataLat.size() - 1] &&
-                        axisLatComp[0] < axisDataLat[axisDataLat.size() - 1]) {
+                    if (axisLatComp[axisLatComp.size() - 1] > m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] &&
+                        axisLatComp[0] < m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]) {
                         asLogMessage(_("Correcting the latitude extent according to the file limits."));
-                        double Ywidth = axisDataLat[axisDataLat.size() - 1] - dataArea->GetAbsoluteYmin();
+                        double Ywidth = m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] - dataArea->GetAbsoluteYmin();
                         wxASSERT(Ywidth >= 0);
                         int Yptsnb = 1 + Ywidth / dataArea->GetYstep();
-                        asLogMessage(wxString::Format(_("Yptsnb = %d."), Yptsnb));
+                        asLogMessage(wxString::Format(_("yPtsNb = %d."), Yptsnb));
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), Yptsnb, dataArea->GetYstep(),
@@ -575,12 +576,12 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
 
                     // Condition for change: The composite must not be fully outside (considered as handled).
-                    if (axisLatComp[axisLatComp.size() - 1] > axisDataLat[0] && axisLatComp[0] < axisDataLat[0]) {
+                    if (axisLatComp[axisLatComp.size() - 1] > m_fileStructure.axisLat[0] && axisLatComp[0] < m_fileStructure.axisLat[0]) {
                         asLogMessage(_("Correcting the latitude extent according to the file limits."));
-                        double Ywidth = axisDataLat[0] - dataArea->GetAbsoluteYmin();
+                        double Ywidth = m_fileStructure.axisLat[0] - dataArea->GetAbsoluteYmin();
                         wxASSERT(Ywidth >= 0);
                         int Yptsnb = 1 + Ywidth / dataArea->GetYstep();
-                        asLogMessage(wxString::Format(_("Yptsnb = %d."), Yptsnb));
+                        asLogMessage(wxString::Format(_("yPtsNb = %d."), Yptsnb));
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), Yptsnb, dataArea->GetYstep(),

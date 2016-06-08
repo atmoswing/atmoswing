@@ -223,7 +223,17 @@ protected:
     VectorString m_urls;
     VectorDouble m_dataDates;
 
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue) const;
+
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                  VVArray2DFloat &compositeData);
 
 private:
 
