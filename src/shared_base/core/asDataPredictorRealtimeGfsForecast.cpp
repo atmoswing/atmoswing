@@ -58,7 +58,15 @@ asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxS
     m_restrictTimeHours = 0;
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";
+}
 
+asDataPredictorRealtimeGfsForecast::~asDataPredictorRealtimeGfsForecast()
+{
+
+}
+
+bool asDataPredictorRealtimeGfsForecast::Init()
+{
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt", false)) {
         m_parameter = GeopotentialHeight;
@@ -99,15 +107,7 @@ asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxS
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                           m_dataId, LevelEnumToString(m_levelType)));
     }
-}
 
-asDataPredictorRealtimeGfsForecast::~asDataPredictorRealtimeGfsForecast()
-{
-
-}
-
-bool asDataPredictorRealtimeGfsForecast::Init()
-{
     // Check data ID
     if (m_commandDownload.IsEmpty() || m_fileVariableName.IsEmpty()) {
         asLogError(
@@ -125,6 +125,7 @@ bool asDataPredictorRealtimeGfsForecast::Init()
 bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                                           VVArray2DFloat &compositeData)
 {
+    /*
     // File path
     VectorString filePaths = GetFileNames();
     wxASSERT(filePaths.size() >= (unsigned) timeArray.GetSize());
@@ -305,4 +306,6 @@ bool asDataPredictorRealtimeGfsForecast::ExtractFromFiles(asGeoAreaCompositeGrid
     }
 
     return true;
+*/
+    return false;
 }
