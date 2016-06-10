@@ -283,3 +283,4 @@ bool asGeoAreaCompositeRegularGrid::IsOnGrid(double stepX, double stepY) const
 
     return true;
 }
+

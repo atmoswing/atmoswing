@@ -64,7 +64,6 @@ asGeoPoint::~asGeoPoint()
 
 void asGeoPoint::Init()
 {
-    InitBounds();
     DoCheckPoints();
 }
 
