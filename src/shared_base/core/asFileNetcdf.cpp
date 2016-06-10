@@ -35,11 +35,7 @@ asFileNetcdf::asFileNetcdf(const wxString &fileName, const ListFileMode &fileMod
 {
     m_fileId = 0;
     m_status = 0;
-    m_struct.nDims = 0;
-    m_struct.nUDims = 0;
-    m_struct.nVars = 0;
-    m_struct.nAtts = 0;
-    m_struct.uDimId = 0;
+    m_struct = NcStruct();
     m_struct.format = Classic;
     m_defineMode = false;
 }
@@ -565,7 +561,7 @@ int asFileNetcdf::GetDimId(const wxString &dimName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_dim = 0; i_dim < m_struct.nDims; i_dim++) {
+    for (int i_dim = 0; i_dim < GetDimsNb(); i_dim++) {
         if (m_struct.dims[i_dim].name.IsSameAs(dimName)) {
             id = m_struct.dims[i_dim].id;
         }
@@ -587,7 +583,7 @@ int asFileNetcdf::GetVarId(const wxString &varName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_var = 0; i_var < m_struct.nVars; i_var++) {
+    for (int i_var = 0; i_var < GetVarsNb(); i_var++) {
         if (m_struct.vars[i_var].name.IsSameAs(varName)) {
             id = m_struct.vars[i_var].id;
         }
@@ -610,7 +606,7 @@ int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName)
 
     // Get the attribute id
     if (varName.IsEmpty()) { // Global attribute
-        for (int i_att = 0; i_att < m_struct.nAtts; i_att++) {
+        for (int i_att = 0; i_att < GetGlobAttsNb(); i_att++) {
             if (m_struct.atts[i_att].name.IsSameAs(attName)) {
                 id = m_struct.atts[i_att].id;
             }
@@ -619,7 +615,7 @@ int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName)
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND)
             return asNOT_FOUND;
-        for (int i_att = 0; i_att < m_struct.vars[varId].nAtts; i_att++) {
+        for (int i_att = 0; i_att < GetVarAttsNb(varId); i_att++) {
             if (m_struct.vars[varId].atts[i_att].name.IsSameAs(attName)) {
                 id = m_struct.vars[varId].atts[i_att].id;
             }
@@ -1272,9 +1268,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     // Get value
     m_status = nc_get_vara_short(m_fileId, varId, indexStart, indexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (size_t i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
@@ -1307,9 +1302,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     // Get value
     m_status = nc_get_vara_int(m_fileId, varId, indexStart, indexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (size_t i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
@@ -1342,9 +1336,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     // Get value
     m_status = nc_get_vara_float(m_fileId, varId, indexStart, indexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (size_t i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
@@ -1377,9 +1370,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     // Get value
     m_status = nc_get_vara_double(m_fileId, varId, indexStart, indexCount, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (int i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
@@ -1390,7 +1382,7 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
 }
 
 void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t IndexStride[], short *pValue)
+                                const ptrdiff_t indexStride[], short *pValue)
 {
     wxASSERT(m_opened);
 
@@ -1410,14 +1402,13 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
                                  (int) nctype, (int) NC_SHORT));
 
     // Get value
-    m_status = nc_get_vars_short(m_fileId, varId, indexStart, indexCount, IndexStride, pValue);
+    m_status = nc_get_vars_short(m_fileId, varId, indexStart, indexCount, indexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (int i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
-            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int) IndexStride[i]));
+            data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
         wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
@@ -1426,7 +1417,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
 }
 
 void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t IndexStride[], int *pValue)
+                                const ptrdiff_t indexStride[], int *pValue)
 {
     wxASSERT(m_opened);
 
@@ -1446,14 +1437,13 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
                                  (int) nctype, (int) NC_INT));
 
     // Get value
-    m_status = nc_get_vars_int(m_fileId, varId, indexStart, indexCount, IndexStride, pValue);
+    m_status = nc_get_vars_int(m_fileId, varId, indexStart, indexCount, indexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (int i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
-            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int) IndexStride[i]));
+            data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
         wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
@@ -1462,7 +1452,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
 }
 
 void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t IndexStride[], float *pValue)
+                                const ptrdiff_t indexStride[], float *pValue)
 {
     wxASSERT(m_opened);
 
@@ -1482,14 +1472,13 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
                                  (int) nctype, (int) NC_FLOAT));
 
     // Get value
-    m_status = nc_get_vars_float(m_fileId, varId, indexStart, indexCount, IndexStride, pValue);
+    m_status = nc_get_vars_float(m_fileId, varId, indexStart, indexCount, indexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (int i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
-            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int) IndexStride[i]));
+            data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
         wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
@@ -1498,7 +1487,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
 }
 
 void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart[], const size_t indexCount[],
-                                const ptrdiff_t IndexStride[], double *pValue)
+                                const ptrdiff_t indexStride[], double *pValue)
 {
     wxASSERT(m_opened);
 
@@ -1518,14 +1507,13 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
                                  (int) nctype, (int) NC_DOUBLE));
 
     // Get value
-    m_status = nc_get_vars_double(m_fileId, varId, indexStart, indexCount, IndexStride, pValue);
+    m_status = nc_get_vars_double(m_fileId, varId, indexStart, indexCount, indexStride, pValue);
     if (m_status) {
-        int arrSize = m_struct.vars[varId].nDims;
         wxString data = wxEmptyString;
-        for (int i = 0; i < arrSize; i++) {
+        for (int i = 0; i < GetVarDimsNb(varId); i++) {
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
-            data.Append(wxString::Format("IndexStride[%d]=%d ", i, (int) IndexStride[i]));
+            data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
         wxString msg = _("Requested indices: ") + data;
         asLogError(msg);
@@ -1645,10 +1633,6 @@ void asFileNetcdf::ClearStruct()
 
 bool asFileNetcdf::ParseStruct()
 {
-    int dimId, varId, attId, Format;
-    char dimNameChar[NC_MAX_NAME + 1], varNameChar[NC_MAX_NAME + 1], attNameChar[NC_MAX_NAME + 1];
-    int UnlimDimIds[NC_MAX_DIMS], dimIds[NC_MAX_VAR_DIMS];
-
     // Clear current structure
     ClearStruct();
 
@@ -1656,15 +1640,17 @@ bool asFileNetcdf::ParseStruct()
     CheckDefModeClosed();
 
     // Inquire about the NetCDF Dataset
-    m_status = nc_inq(m_fileId, &m_struct.nDims, &m_struct.nVars, &m_struct.nAtts, &m_struct.uDimId);
+    int nDims, nVars, nAtts, uDimId;
+    m_status = nc_inq(m_fileId, &nDims, &nVars, &nAtts, &uDimId);
     if (m_status)
         HandleErrorNetcdf();
 
     // Get the file format
-    m_status = nc_inq_format(m_fileId, &Format);
+    int format;
+    m_status = nc_inq_format(m_fileId, &format);
     if (m_status)
         HandleErrorNetcdf();
-    switch (Format) {
+    switch (format) {
         case (NC_FORMAT_CLASSIC):
             m_struct.format = Classic;
             break;
@@ -1683,8 +1669,9 @@ bool asFileNetcdf::ParseStruct()
     }
 
     // Inquire about the dimensions
-    for (dimId = 0; dimId < m_struct.nDims; dimId++) {
+    for (int dimId = 0; dimId < nDims; dimId++) {
         size_t length;
+        char dimNameChar[NC_MAX_NAME + 1];
         m_status = nc_inq_dim(m_fileId, dimId, dimNameChar, &length);
         if (m_status)
             HandleErrorNetcdf();
@@ -1696,6 +1683,7 @@ bool asFileNetcdf::ParseStruct()
 
     // FIXME (phorton#1#): Cannot get the Netcdf4 functions ??
     // Find all unlimited dimensions
+    int unlimDimIds[NC_MAX_DIMS];
     /*    if(m_status = nc_inq_unlimdims(m_fileId, &m_struct.nUDims, NULL)) HandleErrorNetcdf();
         m_struct.uDimsIds.resize(m_struct.nUDims);
         if(m_status = nc_inq_unlimdims(m_fileId, &m_struct.nUDims, UnlimDimIds)) HandleErrorNetcdf();
@@ -1705,18 +1693,19 @@ bool asFileNetcdf::ParseStruct()
         }*/
 
     // Find 1 unlimited dimension
-    m_struct.uDimsIds.resize(1);
-    m_status = nc_inq_unlimdim(m_fileId, UnlimDimIds);
+    m_struct.uDimIds.resize(1);
+    m_status = nc_inq_unlimdim(m_fileId, unlimDimIds);
     if (m_status)
         HandleErrorNetcdf();
-    m_struct.uDimsIds[0] = UnlimDimIds[0];
+    m_struct.uDimIds[0] = unlimDimIds[0];
 
     // Resize array to store the global attributes
-    m_struct.atts.resize(m_struct.nAtts);
+    m_struct.atts.resize(nAtts);
 
     // Get the global attributes
-    for (attId = 0; attId < m_struct.nAtts; attId++) {
+    for (int attId = 0; attId < nAtts; attId++) {
         // Get the attribute name
+        char attNameChar[NC_MAX_NAME + 1];
         m_status = nc_inq_attname(m_fileId, NC_GLOBAL, attId, attNameChar);
         if (m_status)
             HandleErrorNetcdf();
@@ -1791,36 +1780,39 @@ bool asFileNetcdf::ParseStruct()
     }
 
     // Resize arrays to store the variables information
-    m_struct.vars.resize(m_struct.nVars);
+    m_struct.vars.resize(nVars);
 
     // Get information about the variables and get limited variables (1D)
-    for (varId = 0; varId < m_struct.nVars; varId++) {
-        m_status = nc_inq_var(m_fileId, varId, varNameChar, &m_struct.vars[varId].type, &m_struct.vars[varId].nDims,
-                              dimIds, &m_struct.vars[varId].nAtts);
+    for (int varId = 0; varId < nVars; varId++) {
+        int nDimsVar, nAttsVar;
+        char varNameChar[NC_MAX_NAME + 1];
+        int dimIds[NC_MAX_VAR_DIMS];
+        m_status = nc_inq_var(m_fileId, varId, varNameChar, &m_struct.vars[varId].type, &nDimsVar, dimIds, &nAttsVar);
         if (m_status)
             HandleErrorNetcdf();
         m_struct.vars[varId].id = varId;
         m_struct.vars[varId].name = wxString(varNameChar, wxConvUTF8);
         m_struct.vars[varId].length = 0;
 
-        m_struct.vars[varId].nDimIds.resize(m_struct.vars[varId].nDims);
-        for (int j = 0; j < m_struct.vars[varId].nDims; j++) {
-            m_struct.vars[varId].nDimIds[j] = dimIds[j];
+        m_struct.vars[varId].dimIds.resize(nDimsVar);
+        for (int j = 0; j < nDimsVar; j++) {
+            m_struct.vars[varId].dimIds[j] = dimIds[j];
         }
 
         // Find the corresponding dimension to get its length
-        for (dimId = 0; dimId < m_struct.nDims; dimId++) {
+        for (int dimId = 0; dimId < m_struct.dims.size(); dimId++) {
             if (m_struct.vars[varId].name.IsSameAs(m_struct.dims[dimId].name)) {
                 m_struct.vars[varId].length = m_struct.dims[dimId].length;
             }
         }
 
         // Resize array to store the attributes information
-        m_struct.vars[varId].atts.resize(m_struct.vars[varId].nAtts);
+        m_struct.vars[varId].atts.resize(nAttsVar);
 
         // Get the attributes information
-        for (attId = 0; attId < m_struct.vars[varId].nAtts; attId++) {
+        for (int attId = 0; attId < nAttsVar; attId++) {
             // Get the attribute name
+            char attNameChar[NC_MAX_NAME + 1];
             m_status = nc_inq_attname(m_fileId, varId, attId, attNameChar);
             if (m_status)
                 HandleErrorNetcdf();

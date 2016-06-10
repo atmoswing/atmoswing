@@ -163,19 +163,29 @@ public:
         return m_fileId;
     }
 
-    int GetNVars() const
+    size_t GetVarsNb() const
     {
-        return m_struct.nVars;
+        return m_struct.vars.size();
     }
 
-    int GetNDims() const
+    size_t GetDimsNb() const
     {
-        return m_struct.nDims;
+        return m_struct.dims.size();
     }
 
-    int GetNGlobAtts() const
+    size_t GetGlobAttsNb() const
     {
-        return m_struct.nAtts;
+        return m_struct.atts.size();
+    }
+
+    size_t GetVarAttsNb(int varId) const
+    {
+        return m_struct.vars[varId].atts.size();
+    }
+
+    size_t GetVarDimsNb(int varId) const
+    {
+        return m_struct.vars[varId].dimIds.size();
     }
 
 protected:
@@ -203,20 +213,13 @@ private:
         wxString name;
         size_t length;
         nc_type type;
-        int nDims;
-        VectorInt nDimIds;
-        int nAtts;
+        VectorInt dimIds;
         std::vector<NcAttStruct> atts;
     };
 
     struct NcStruct
     {
-        int nDims;
-        int nUDims;
-        int nVars;
-        int nAtts;
-        int uDimId;
-        VectorInt uDimsIds;
+        VectorInt uDimIds;
         asFileNetcdf::Format format;
         std::vector<NcDimStruct> dims;
         std::vector<NcVarStruct> vars;
