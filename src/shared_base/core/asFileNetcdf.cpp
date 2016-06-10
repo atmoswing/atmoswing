@@ -153,18 +153,18 @@ void asFileNetcdf::DefDim(const wxString &dimName, const size_t &dimSize)
 {
     wxASSERT(m_opened);
 
-    int DimId;
+    int dimId;
 
     // Check that the file is in define mode
     CheckDefModeOpen();
 
     if (dimSize == 0) {
-        m_status = nc_def_dim(m_fileId, dimName.mb_str(wxConvUTF8), NC_UNLIMITED, &DimId);
+        m_status = nc_def_dim(m_fileId, dimName.mb_str(wxConvUTF8), NC_UNLIMITED, &dimId);
         if (m_status)
             HandleErrorNetcdf();
         //        dimSize = 0;
     } else {
-        m_status = nc_def_dim(m_fileId, dimName.mb_str(wxConvUTF8), dimSize, &DimId);
+        m_status = nc_def_dim(m_fileId, dimName.mb_str(wxConvUTF8), dimSize, &dimId);
         if (m_status)
             HandleErrorNetcdf();
     }
@@ -175,8 +175,8 @@ void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &
 {
     wxASSERT(m_opened);
 
-    int varId, DimId, NDims;
-    VectorInt DimIds;
+    int varId, dimId, NDims;
+    VectorInt dimIds;
 
     // Check that the file is in define mode
     CheckDefModeOpen();
@@ -185,13 +185,13 @@ void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &
 
     for (int i = 0; i < NDims; i++) {
         const char *dimNamesChar = dimNames[i].data();
-        m_status = nc_inq_dimid(m_fileId, dimNamesChar, &DimId);
+        m_status = nc_inq_dimid(m_fileId, dimNamesChar, &dimId);
         if (m_status)
             HandleErrorNetcdf();
-        DimIds.push_back(DimId);
+        dimIds.push_back(dimId);
     }
 
-    m_status = nc_def_var(m_fileId, varName.mb_str(wxConvUTF8), dataType, varSize, &DimIds[0], &varId);
+    m_status = nc_def_var(m_fileId, varName.mb_str(wxConvUTF8), dataType, varSize, &dimIds[0], &varId);
     if (m_status)
         HandleErrorNetcdf();
 }
@@ -968,12 +968,12 @@ size_t asFileNetcdf::GetDimLength(const wxString &dimName)
     // Check that the file is not in define mode
     CheckDefModeClosed();
 
-    int dimid = GetDimId(dimName);
-    if (dimid == asNOT_FOUND)
+    int dimId = GetDimId(dimName);
+    if (dimId == asNOT_FOUND)
         return 0;
 
     // Get the variable length
-    return m_struct.dims[dimid].length;
+    return m_struct.dims[dimId].length;
 }
 
 size_t asFileNetcdf::GetVarLength(const wxString &varName)
@@ -1645,9 +1645,9 @@ void asFileNetcdf::ClearStruct()
 
 bool asFileNetcdf::ParseStruct()
 {
-    int DimId, varId, attId, Format;
+    int dimId, varId, attId, Format;
     char dimNameChar[NC_MAX_NAME + 1], varNameChar[NC_MAX_NAME + 1], attNameChar[NC_MAX_NAME + 1];
-    int UnlimDimIds[NC_MAX_DIMS], DimIds[NC_MAX_VAR_DIMS];
+    int UnlimDimIds[NC_MAX_DIMS], dimIds[NC_MAX_VAR_DIMS];
 
     // Clear current structure
     ClearStruct();
@@ -1682,17 +1682,16 @@ bool asFileNetcdf::ParseStruct()
             return false;
     }
 
-    // Create arrays to store the dimensions information
-    m_struct.dims.resize(m_struct.nDims);
-
     // Inquire about the dimensions
-    for (DimId = 0; DimId < m_struct.nDims; DimId++) {
-        m_status = nc_inq_dim(m_fileId, DimId, dimNameChar, &m_struct.dims[DimId].length);
+    for (dimId = 0; dimId < m_struct.nDims; dimId++) {
+        size_t length;
+        m_status = nc_inq_dim(m_fileId, dimId, dimNameChar, &length);
         if (m_status)
             HandleErrorNetcdf();
-        m_struct.dims[DimId].id = DimId;
-        wxString tmpName(dimNameChar, wxConvUTF8);
-        m_struct.dims[DimId].name = tmpName;
+
+        NcDimStruct nds = {dimId, wxString(dimNameChar, wxConvUTF8), length};
+
+        m_struct.dims.push_back(nds);
     }
 
     // FIXME (phorton#1#): Cannot get the Netcdf4 functions ??
@@ -1797,7 +1796,7 @@ bool asFileNetcdf::ParseStruct()
     // Get information about the variables and get limited variables (1D)
     for (varId = 0; varId < m_struct.nVars; varId++) {
         m_status = nc_inq_var(m_fileId, varId, varNameChar, &m_struct.vars[varId].type, &m_struct.vars[varId].nDims,
-                              DimIds, &m_struct.vars[varId].nAtts);
+                              dimIds, &m_struct.vars[varId].nAtts);
         if (m_status)
             HandleErrorNetcdf();
         m_struct.vars[varId].id = varId;
@@ -1806,13 +1805,13 @@ bool asFileNetcdf::ParseStruct()
 
         m_struct.vars[varId].nDimIds.resize(m_struct.vars[varId].nDims);
         for (int j = 0; j < m_struct.vars[varId].nDims; j++) {
-            m_struct.vars[varId].nDimIds[j] = DimIds[j];
+            m_struct.vars[varId].nDimIds[j] = dimIds[j];
         }
 
         // Find the corresponding dimension to get its length
-        for (DimId = 0; DimId < m_struct.nDims; DimId++) {
-            if (m_struct.vars[varId].name.IsSameAs(m_struct.dims[DimId].name)) {
-                m_struct.vars[varId].length = m_struct.dims[DimId].length;
+        for (dimId = 0; dimId < m_struct.nDims; dimId++) {
+            if (m_struct.vars[varId].name.IsSameAs(m_struct.dims[dimId].name)) {
+                m_struct.vars[varId].length = m_struct.dims[dimId].length;
             }
         }
 
