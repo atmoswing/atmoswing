@@ -305,8 +305,6 @@ protected:
         int lonCount;
         int latStart;
         int latCount;
-        bool loadFirstXCol;
-        int lonStartFirstXCol;
     };
     struct FileIndexes
     {
