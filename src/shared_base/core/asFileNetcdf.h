@@ -206,7 +206,7 @@ private:
         int nDims;
         VectorInt nDimIds;
         int nAtts;
-        std::vector<struct NcAttStruct> atts;
+        std::vector<NcAttStruct> atts;
     };
 
     struct NcStruct
@@ -218,15 +218,15 @@ private:
         int uDimId;
         VectorInt uDimsIds;
         asFileNetcdf::Format format;
-        std::vector<struct NcDimStruct> dims;
-        std::vector<struct NcVarStruct> vars;
-        std::vector<struct NcAttStruct> atts;
+        std::vector<NcDimStruct> dims;
+        std::vector<NcVarStruct> vars;
+        std::vector<NcAttStruct> atts;
     };
 
     int m_fileId;
     int m_status;
     bool m_defineMode;
-    struct NcStruct m_struct;
+    NcStruct m_struct;
 
     void HandleErrorNetcdf();
 
