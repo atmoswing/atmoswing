@@ -30,6 +30,7 @@
 #include "asGeoAreaCompositeRegularGrid.h"
 #include "asGeoAreaGaussianGrid.h"
 #include "asGeoAreaCompositeGaussianGrid.h"
+#include "asTypeDefs.h"
 
 asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep,
                                                             double Ymin, int Yptsnb, double Ystep, float Level,
@@ -65,6 +66,7 @@ asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &C
         : asGeoAreaComposite(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
     m_gridType = Regular;
+    m_lastRowInComposite = false;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level,
@@ -72,12 +74,14 @@ asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(double Xmin, double Xwidth, doubl
         : asGeoAreaComposite(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
 {
     m_gridType = Regular;
+    m_lastRowInComposite = false;
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(float Level, float Height)
         : asGeoAreaComposite(Level, Height)
 {
     m_gridType = Regular;
+    m_lastRowInComposite = false;
 }
 
 int asGeoAreaCompositeGrid::GetXaxisPtsnb() const
@@ -91,7 +95,7 @@ int asGeoAreaCompositeGrid::GetXaxisPtsnb() const
             // Do nothing here
         } else {
             if (GetComposite(i_area).GetYmin() == GetComposite(i_area - 1).GetYmin()) {
-                if (GetXaxisCompositeEnd(i_area) == m_axisXmax) {
+                if (GetXaxisCompositeEnd(i_area) == m_axisXmax || m_lastRowInComposite) {
                     ptsLon += GetXaxisCompositePtsnb(i_area) - 1;
                 } else {
                     ptsLon += GetXaxisCompositePtsnb(i_area);
@@ -238,4 +242,37 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis() const
     }
 
     return Yaxis;
+}
+
+void asGeoAreaCompositeGrid::SetLastRowAsNewComposite()
+{
+    wxASSERT(GetNbComposites() == 1);
+    asGeoArea area1 = GetComposite(0);
+    Coo cornerLR1 = area1.GetCornerLR();
+    Coo cornerUR1 = area1.GetCornerUR();
+
+    Array1DDouble xAxis = GetXaxisComposite(0);
+    cornerLR1.x = xAxis[xAxis.size()-2];
+    cornerUR1.x = xAxis[xAxis.size()-2];
+
+    area1.SetCornerLR(cornerLR1);
+    area1.SetCornerUR(cornerUR1);
+
+    Coo cornerLR2 = area1.GetCornerLR();
+    Coo cornerUR2 = area1.GetCornerUR();
+    Coo cornerLL2 = area1.GetCornerLL();
+    Coo cornerUL2 = area1.GetCornerUL();
+    cornerLR2.x = 0;
+    cornerUR2.x = 0;
+    cornerLL2.x = 0;
+    cornerUL2.x = 0;
+
+    asGeoArea area2(cornerUL2, cornerUR2, cornerLL2, cornerLR2, m_level, m_height, asFLAT_ALLOWED);
+
+    // Add the composite in this specific order to be consistent with the other implementations.
+    m_composites.clear();
+    m_composites.push_back(area2);
+    m_composites.push_back(area1);
+
+    m_lastRowInComposite = true;
 }

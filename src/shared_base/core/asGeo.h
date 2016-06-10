@@ -67,8 +67,6 @@ protected:
     double m_axisYmin;
     double m_axisYmax;
 
-    void InitBounds();
-
 private:
 
 };

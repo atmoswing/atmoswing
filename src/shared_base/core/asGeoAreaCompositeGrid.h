@@ -55,6 +55,8 @@ public:
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 
+    void SetLastRowAsNewComposite();
+
     GridType GetGridType() const
     {
         return m_gridType;
@@ -110,6 +112,7 @@ public:
 
 protected:
     GridType m_gridType;
+    bool m_lastRowInComposite;
 
 private:
 
