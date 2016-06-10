@@ -298,9 +298,7 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
 
     // Go through every area
     m_fileIndexes.areas.resize(compositeData.size());
-    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
-        // Check if necessary to load the data of lon=360 (so lon=0)
-        m_fileIndexes.areas[i_area].loadFirstXCol = false;
+    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
 
         if (dataArea) {
             // Get the spatial extent
@@ -312,18 +310,6 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
             // The dimensions lengths
             m_fileIndexes.areas[i_area].lonCount = dataArea->GetXaxisCompositePtsnb(i_area);
             m_fileIndexes.areas[i_area].latCount = dataArea->GetYaxisCompositePtsnb(i_area);
-
-            if (lonMax == dataArea->GetAxisXmax()) {
-                // Correction if the lon 360 degrees is required (doesn't exist)
-                m_fileIndexes.areas[i_area].loadFirstXCol = true;
-                for (int i_check = 0; i_check < (int) compositeData.size(); i_check++) {
-                    // If so, already loaded in another composite
-                    if (dataArea->GetComposite(i_check).GetXmin() == 0) {
-                        m_fileIndexes.areas[i_area].loadFirstXCol = false;
-                    }
-                }
-                m_fileIndexes.areas[i_area].lonCount--;
-            }
 
             // Get the spatial indices of the desired data
             m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
@@ -388,22 +374,6 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
                 return false;
             }
         }
-
-        // Load data at lon = 360 degrees
-        if (m_fileIndexes.areas[i_area].loadFirstXCol) {
-
-            // Set the indices
-            m_fileIndexes.areas[i_area].lonStartFirstXCol = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
-                                                                             &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                             360, 0.01f, asHIDE_WARNINGS);
-            if (m_fileIndexes.areas[i_area].lonStartFirstXCol == asOUT_OF_RANGE) {
-                // If not found, try with negative angles
-                m_fileIndexes.areas[i_area].lonStartFirstXCol = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
-                                                                                 &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                                 0, 0.01f);
-            }
-        }
-
     }
 
     return true;
@@ -430,13 +400,12 @@ bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloa
         scalingNeeded = false;
 
     VVectorFloat vectData;
-    VVectorFloat vectData360;
 
-    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
 
         // Create the arrays to receive the data
-        VectorFloat dataF, dataF360;
-        VectorShort dataS, dataS360;
+        VectorFloat dataF;
+        VectorShort dataS;
 
         // Resize the arrays to store the new data
         int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
@@ -482,81 +451,28 @@ bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloa
             }
         }
 
-        // Load data at lon = 360 degrees
-        if (m_fileIndexes.areas[i_area].loadFirstXCol) {
-            // Resize the arrays to store the new data
-            int totlength360 = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * 1;
-            dataF360.resize(totlength360);
-            if (isShort) {
-                dataS360.resize(totlength360);
-            }
-
-            // Fill empty begining with NaNs
-            int indexBegining360 = 0;
-            if (m_fileIndexes.cutStart > 0) {
-                int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
-                for (int i_empty = 0; i_empty < m_fileIndexes.cutStart; i_empty++) {
-                    for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                        dataF360[indexBegining360] = NaNFloat;
-                        indexBegining360++;
-                    }
-                }
-            }
-
-            // Fill empty end with NaNs
-            int indexEnd360 = (m_fileIndexes.timeCount - 1) * (m_fileIndexes.areas[i_area].latCount - 1) * (m_fileIndexes.areas[i_area].lonCount - 1);
-            if (m_fileIndexes.cutEnd > 0) {
-                int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
-                for (int i_empty = 0; i_empty < m_fileIndexes.cutEnd; i_empty++) {
-                    for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                        indexEnd360++;
-                        dataF360[indexEnd360] = NaNFloat;
-                    }
-                }
-            }
-
-            // Load data at 0 degrees (corresponds to 360 degrees)
-            if (isFloat) {
-                ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
-                                    GetIndexesStrideNcdf(i_area), &dataF360[indexBegining]);
-            } else if (isShort) {
-                ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
-                                    GetIndexesStrideNcdf(i_area), &dataS360[indexBegining]);
-                for (int i = 0; i < dataS360.size(); i++) {
-                    dataF360[i] = (float) dataS360[i];
-                }
-            }
-        }
-
         // Keep data for later treatment
         vectData.push_back(dataF);
-        vectData360.push_back(dataF360);
     }
 
     // Allocate space into compositeData if not already done
     if (compositeData[0].capacity() == 0) {
         int totSize = 0;
-        for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+        for (int i_area = 0; i_area < compositeData.size(); i_area++) {
             totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
         }
         compositeData.reserve(totSize);
     }
 
     // Transfer data
-    for (int i_area = 0; i_area < (int) compositeData.size(); i_area++) {
+    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
         // Extract data
         VectorFloat data = vectData[i_area];
-        VectorFloat data360 = vectData360[i_area];
 
         // Loop to extract the data from the array
         int ind = 0;
         for (int i_time = 0; i_time < m_fileIndexes.timeArrayCount; i_time++) {
-            Array2DFloat latlonData;
-            if (m_fileIndexes.areas[i_area].loadFirstXCol) {
-                latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount + 1);
-            } else {
-                latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
-            }
+            Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
 
             for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
                 for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
@@ -579,33 +495,10 @@ bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloa
                         latlonData(i_lat, i_lon) = NaNFloat;
                     }
                 }
-
-                if (m_fileIndexes.areas[i_area].loadFirstXCol) {
-                    ind = i_lat + i_time * m_fileIndexes.areas[i_area].latCount;
-
-                    if (scalingNeeded) {
-                        latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) = data360[ind] * dataScaleFactor + dataAddOffset;
-                    } else {
-                        latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) = data360[ind];
-                    }
-
-                    // Check if not NaN
-                    bool notNan = true;
-                    for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
-                        if (data360[ind] == m_nanValues[i_nan] ||
-                            latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) == m_nanValues[i_nan]) {
-                            notNan = false;
-                        }
-                    }
-                    if (!notNan) {
-                        latlonData(i_lat, m_fileIndexes.areas[i_area].lonCount) = NaNFloat;
-                    }
-                }
             }
             compositeData[i_area].push_back(latlonData);
         }
         data.clear();
-        data360.clear();
     }
 
     return true;

@@ -429,14 +429,10 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
         int dataXptsnb, dataYptsnb;
         wxString gridType = desiredArea->GetGridTypeString();
         if (gridType.IsSameAs("Regular", false)) {
-            dataXmin =
-                    floor((desiredArea->GetAbsoluteXmin() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
-            dataYmin =
-                    floor((desiredArea->GetAbsoluteYmin() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
-            double dataXmax =
-                    ceil((desiredArea->GetAbsoluteXmax() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
-            double dataYmax =
-                    ceil((desiredArea->GetAbsoluteYmax() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
+            dataXmin = floor((desiredArea->GetAbsoluteXmin() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
+            dataYmin = floor((desiredArea->GetAbsoluteYmin() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
+            double dataXmax = ceil((desiredArea->GetAbsoluteXmax() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
+            double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
             dataXstep = m_xAxisStep;
             dataYstep = m_yAxisStep;
             dataXptsnb = (dataXmax - dataXmin) / dataXstep + 1;
@@ -496,42 +492,26 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             for (int i_comp = 0; i_comp < dataArea->GetNbComposites(); i_comp++) {
                 Array1DDouble axisLonComp = dataArea->GetXaxisComposite(i_comp);
 
-                if (m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] > m_fileStructure.axisLon[0]) {
-                    wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
+                wxASSERT(m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] > m_fileStructure.axisLon[0]);
+                wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
 
-                    // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
-                        axisLonComp[0] < m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
-                        axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
+                // Condition for change: The composite must not be fully outside (considered as handled).
+                if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
+                    axisLonComp[0] < m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] ) {
+                    // If the last value corresponds to the maximum value of the reference system, create a new composite
+                    if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
+                        dataArea->SetLastRowAsNewComposite();
+                        compositeData = VVArray2DFloat(dataArea->GetNbComposites());
+                    } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
                         asLogMessage(_("Correcting the longitude extent according to the file limits."));
                         double Xwidth = m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] - dataArea->GetAbsoluteXmin();
                         wxASSERT(Xwidth >= 0);
                         int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
                         asLogMessage(wxString::Format(_("xPtsNb = %d."), Xptsnb));
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb,
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
-                                dataArea->GetYstep(), dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
-                } else {
-                    wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled) and the limit is not the coordinate grid border.
-                    if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[0] &&
-                        axisLonComp[0] < m_fileStructure.axisLon[0] &&
-                        axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
-                        asLogMessage(_("Correcting the longitude extent according to the file limits."));
-                        double Xwidth = m_fileStructure.axisLon[0] - dataArea->GetAbsoluteXmin();
-                        wxASSERT(Xwidth >= 0);
-                        int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
-                        asLogMessage(wxString::Format(_("xPtsNb = %d."), Xptsnb));
-                        asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb,
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
-                                dataArea->GetYstep(), dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb, dataArea->GetXstep(),
+                                dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
+                                dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
                         dataArea = newdataArea;
