@@ -276,3 +276,21 @@ void asGeoAreaCompositeGrid::SetLastRowAsNewComposite()
 
     m_lastRowInComposite = true;
 }
+
+void asGeoAreaCompositeGrid::RemoveLastRowOnComposite(int i)
+{
+    wxASSERT(GetNbComposites() > 1);
+    asGeoArea area = GetComposite(i);
+    Coo cornerLR = area.GetCornerLR();
+    Coo cornerUR = area.GetCornerUR();
+
+    Array1DDouble xAxis = GetXaxisComposite(i);
+    cornerLR.x = xAxis[xAxis.size()-2];
+    cornerUR.x = xAxis[xAxis.size()-2];
+
+    area.SetCornerLR(cornerLR);
+    area.SetCornerUR(cornerUR);
+
+    m_composites.clear();
+    m_composites.push_back(area);
+}

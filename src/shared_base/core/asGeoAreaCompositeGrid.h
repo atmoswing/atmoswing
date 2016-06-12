@@ -57,6 +57,8 @@ public:
 
     void SetLastRowAsNewComposite();
 
+	void RemoveLastRowOnComposite(int i);
+
     GridType GetGridType() const
     {
         return m_gridType;
