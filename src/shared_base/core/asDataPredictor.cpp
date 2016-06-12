@@ -458,8 +458,8 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
 
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false)) {
-            m_fileIndexes.lonStep = (int)std::round(dataArea->GetXstep() / m_xAxisStep);
-            m_fileIndexes.latStep = (int)std::round(dataArea->GetYstep() / m_yAxisStep);
+            m_fileIndexes.lonStep = (int)wxRound(dataArea->GetXstep() / m_xAxisStep);
+            m_fileIndexes.latStep = (int)wxRound(dataArea->GetYstep() / m_yAxisStep);
         } else {
             m_fileIndexes.lonStep = 1;
             m_fileIndexes.latStep = 1;
@@ -502,6 +502,8 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
                         dataArea->SetLastRowAsNewComposite();
                         compositeData = VVArray2DFloat(dataArea->GetNbComposites());
+					} else if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() > 1) {
+                        dataArea->RemoveLastRowOnComposite(i_comp);
                     } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
                         asLogMessage(_("Correcting the longitude extent according to the file limits."));
                         double Xwidth = m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] - dataArea->GetAbsoluteXmin();
