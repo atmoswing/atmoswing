@@ -291,6 +291,5 @@ void asGeoAreaCompositeGrid::RemoveLastRowOnComposite(int i)
     area.SetCornerLR(cornerLR);
     area.SetCornerUR(cornerUR);
 
-    m_composites.clear();
-    m_composites.push_back(area);
+    m_composites[i] = area;
 }
