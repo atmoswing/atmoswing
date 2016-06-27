@@ -303,7 +303,6 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
         if (dataArea) {
             // Get the spatial extent
             float lonMin = (float)dataArea->GetXaxisCompositeStart(i_area);
-            float lonMax = (float)dataArea->GetXaxisCompositeEnd(i_area);
             float latMinStart = (float)dataArea->GetYaxisCompositeStart(i_area);
             float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(i_area);
 
