@@ -31,6 +31,7 @@
 
 #include <asIncludes.h>
 #include <asDataPredictor.h>
+#include "asFileGrib2.h"
 
 class asDataPredictorRealtime
         : public asDataPredictor
@@ -224,6 +225,21 @@ protected:
     VectorDouble m_dataDates;
 
     virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    bool ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                             VVArray2DFloat &compositeData);
+
+    bool ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                            VVArray2DFloat &compositeData);
+
+    int *GetIndexesStartGrib(int i_area) const;
+
+    int *GetIndexesCountGrib(int i_area) const;
+
+    bool GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                        VVArray2DFloat &compositeData);
+
+    bool GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData);
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  VVArray2DFloat &compositeData);

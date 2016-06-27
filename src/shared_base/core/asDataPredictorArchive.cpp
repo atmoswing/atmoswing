@@ -122,18 +122,6 @@ bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea,
     return true;
 }
 
-bool asDataPredictorArchive::CheckFilesPresence(const VectorString &filesList)
-{
-    for (int i = 0; i < filesList.size(); i++) {
-        if (!wxFile::Exists(filesList[i])) {
-            asLogError(wxString::Format(_("File not found: %s"), filesList[i]));
-            return false;
-        }
-    }
-
-    return true;
-}
-
 bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                    asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
@@ -142,6 +130,7 @@ bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asG
     asFileNetcdf ncFile(fileName, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
         return false;
     }
 
@@ -149,6 +138,7 @@ bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asG
     if (!ParseFileStructure(ncFile, dataArea, timeArray, compositeData)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
         return false;
     }
 
@@ -162,6 +152,7 @@ bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asG
     if (!GetAxesIndexes(ncFile, dataArea, timeArray, compositeData)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
         return false;
     }
 
@@ -169,6 +160,7 @@ bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asG
     if (!GetDataFromFile(ncFile, compositeData)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
         return false;
     }
 
@@ -201,7 +193,7 @@ bool asDataPredictorArchive::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaC
     return true;
 }
 
-size_t *asDataPredictorArchive::GetIndexesStartNcdf(int i_area)
+size_t *asDataPredictorArchive::GetIndexesStartNcdf(int i_area) const
 {
     if (m_fileStructure.hasLevelDimension) {
         static size_t array[4] = {0, 0, 0, 0};
@@ -223,7 +215,7 @@ size_t *asDataPredictorArchive::GetIndexesStartNcdf(int i_area)
     return NULL;
 }
 
-size_t *asDataPredictorArchive::GetIndexesCountNcdf(int i_area)
+size_t *asDataPredictorArchive::GetIndexesCountNcdf(int i_area) const
 {
     if (m_fileStructure.hasLevelDimension) {
         static size_t array[4] = {0, 0, 0, 0};
@@ -245,7 +237,7 @@ size_t *asDataPredictorArchive::GetIndexesCountNcdf(int i_area)
     return NULL;
 }
 
-ptrdiff_t *asDataPredictorArchive::GetIndexesStrideNcdf(int i_area)
+ptrdiff_t *asDataPredictorArchive::GetIndexesStrideNcdf(int i_area) const
 {
     if (m_fileStructure.hasLevelDimension) {
         static ptrdiff_t array[4] = {0, 0, 0, 0};
