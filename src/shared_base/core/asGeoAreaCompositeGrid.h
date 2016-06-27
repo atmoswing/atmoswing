@@ -114,7 +114,6 @@ public:
 
 protected:
     GridType m_gridType;
-    bool m_lastRowInComposite;
 
 private:
 
