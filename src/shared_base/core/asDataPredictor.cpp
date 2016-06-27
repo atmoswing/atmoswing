@@ -311,6 +311,18 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     return true;
 }
 
+bool asDataPredictor::CheckFilesPresence(const VectorString &filesList)
+{
+    for (int i = 0; i < filesList.size(); i++) {
+        if (!wxFile::Exists(filesList[i])) {
+            asLogError(wxString::Format(_("File not found: %s"), filesList[i]));
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
 {
     if (!m_initialized) {

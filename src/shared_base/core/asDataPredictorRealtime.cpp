@@ -27,6 +27,7 @@
  */
 
 #include "asDataPredictorRealtime.h"
+#include "asFileGrib2.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
@@ -249,27 +250,14 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
 bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                               VVArray2DFloat &compositeData)
 {
-    /*
     VectorString filesList = GetListOfFiles(timeArray);
 
     if(!CheckFilesPresence(filesList)) {
         return false;
     }
 
-#if wxUSE_GUI
-    asDialogProgressBar progressBar(_("Loading data from files.\n"), int(filesList.size()));
-#endif
-
     for (int i = 0; i < filesList.size(); i++) {
         wxString fileName = filesList[i];
-
-#if wxUSE_GUI
-        // Update the progress bar
-        if (!progressBar.Update(i, wxString::Format(_("File: %s"), fileName))) {
-            asLogWarning(_("The process has been canceled by the user."));
-            return false;
-        }
-#endif
 
         if (!ExtractFromFile(fileName, dataArea, timeArray, compositeData)) {
             return false;
@@ -277,13 +265,293 @@ bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea
     }
 
     return true;
-*/
-    return false;
 }
 
 VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) const
 {
-    return VectorString();
+    VectorString filesList;
+
+    for (int i_file = 0; i_file < m_fileNames.size(); i_file++) {
+        wxString filePath = wxEmptyString;
+
+        // Check if the volume is present
+        wxFileName fileName(m_fileNames[i_file]);
+        if (!fileName.HasVolume() && !m_predictorsRealtimeDirectory.IsEmpty()) {
+            filePath = m_predictorsRealtimeDirectory;
+            filePath.Append(DS);
+        }
+        filePath.Append(m_fileNames[i_file]);
+
+        filesList.push_back(filePath);
+    }
+
+    return filesList;
+}
+
+bool asDataPredictorRealtime::ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                  asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Open the NetCDF file
+    asFileGrib2 gbFile(fileName, asFileGrib2::ReadOnly);
+    if (!gbFile.Open()) {
+        wxFAIL;
+        return false;
+    }
+
+    // Parse file structure
+    if (!ParseFileStructure(gbFile, dataArea, timeArray, compositeData)) {
+        gbFile.Close();
+        wxFAIL;
+        return false;
+    }
+
+    // Adjust axes if necessary
+    dataArea = AdjustAxes(dataArea, compositeData);
+    if (dataArea) {
+        wxASSERT(dataArea->GetNbComposites() > 0);
+    }
+
+    // Get indexes
+    if (!GetAxesIndexes(gbFile, dataArea, timeArray, compositeData)) {
+        gbFile.Close();
+        wxFAIL;
+        return false;
+    }
+
+    // Load data
+    if (!GetDataFromFile(gbFile, compositeData)) {
+        gbFile.Close();
+        wxFAIL;
+        return false;
+    }
+
+    // Close the nc file
+    gbFile.Close();
+
+    return true;
+}
+
+bool asDataPredictorRealtime::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
+                                                 asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Get full axes from the netcdf file
+    gbFile.GetXaxis(m_fileStructure.axisLon);
+    gbFile.GetYaxis(m_fileStructure.axisLat);
+
+    if (m_fileStructure.hasLevelDimension) {
+        asLogError(_("The level dimension is not yet implemented for realtime predictors."));
+        return false;
+    }
+
+    return true;
+}
+
+int *asDataPredictorRealtime::GetIndexesStartGrib(int i_area) const
+{
+    if (m_fileStructure.hasLevelDimension) {
+        static int array[3] = {0, 0, 0};
+        array[0] = m_fileIndexes.level;
+        array[1] = m_fileIndexes.areas[i_area].lonStart;
+        array[2] = m_fileIndexes.areas[i_area].latStart;
+
+        return array;
+    } else {
+        static int array[2] = {0, 0};
+        array[0] = m_fileIndexes.areas[i_area].lonStart;
+        array[1] = m_fileIndexes.areas[i_area].latStart;
+
+        return array;
+    }
+
+    return NULL;
+}
+
+int *asDataPredictorRealtime::GetIndexesCountGrib(int i_area) const
+{
+    if (m_fileStructure.hasLevelDimension) {
+        static int array[3] = {0, 0, 0};
+        array[0] = 1;
+        array[1] = m_fileIndexes.areas[i_area].lonCount;
+        array[2] = m_fileIndexes.areas[i_area].latCount;
+
+        return array;
+    } else {
+        static int array[2] = {0, 0};
+        array[0] = m_fileIndexes.areas[i_area].lonCount;
+        array[1] = m_fileIndexes.areas[i_area].latCount;
+
+        return array;
+    }
+
+    return NULL;
+}
+
+bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
+                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    m_fileIndexes.areas.clear();
+
+    // Get the time length
+    m_fileIndexes.timeArrayCount = 1;
+    m_fileIndexes.timeCount = 1;
+
+    // Go through every area
+    m_fileIndexes.areas.resize(compositeData.size());
+    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+
+        if (dataArea) {
+            // Get the spatial extent
+            float lonMin = (float)dataArea->GetXaxisCompositeStart(i_area);
+            float latMinStart = (float)dataArea->GetYaxisCompositeStart(i_area);
+            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(i_area);
+
+            // The dimensions lengths
+            m_fileIndexes.areas[i_area].lonCount = dataArea->GetXaxisCompositePtsnb(i_area);
+            m_fileIndexes.areas[i_area].latCount = dataArea->GetYaxisCompositePtsnb(i_area);
+
+            // Get the spatial indices of the desired data
+            m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                              &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                              lonMin, 0.01f);
+            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+                // If not found, try with negative angles
+                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                                  &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                                  lonMin - 360, 0.01f);
+            }
+            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+                // If not found, try with angles above 360 degrees
+                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                                                                                  &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                                                                                  lonMin + 360, 0.01f);
+            }
+            if (m_fileIndexes.areas[i_area].lonStart < 0) {
+                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ",
+                                            lonMin, m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
+                                            m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]));
+                return false;
+            }
+            wxASSERT_MSG(m_fileIndexes.areas[i_area].lonStart >= 0,
+                         wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f",
+                                          m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
+                                          m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1], lonMin));
+
+            int indexStartLat1 = asTools::SortedArraySearch(&m_fileStructure.axisLat[0],
+                                                            &m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1],
+                                                            latMinStart, 0.01f);
+            int indexStartLat2 = asTools::SortedArraySearch(&m_fileStructure.axisLat[0],
+                                                            &m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1],
+                                                            latMinEnd, 0.01f);
+            wxASSERT_MSG(indexStartLat1 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinStart, m_fileStructure.axisLat[0],
+                                          m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
+            wxASSERT_MSG(indexStartLat2 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fileStructure.axisLat[0],
+                                          m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
+            m_fileIndexes.areas[i_area].latStart = wxMin(indexStartLat1, indexStartLat2);
+        } else {
+            m_fileIndexes.areas[i_area].lonStart = 0;
+            m_fileIndexes.areas[i_area].latStart = 0;
+            m_fileIndexes.areas[i_area].lonCount = m_lonPtsnb;
+            m_fileIndexes.areas[i_area].latCount = m_latPtsnb;
+        }
+
+        if (m_fileStructure.hasLevelDimension) {
+            m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0],
+                                                             &m_fileStructure.axisLevel[m_fileStructure.axisLevel.size() - 1],
+                                                             m_level, 0.01f);
+            if (m_fileIndexes.level < 0) {
+                asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
+                                              m_fileVariableName));
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+
+bool asDataPredictorRealtime::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData)
+{
+    // Check if scaling is needed
+    bool scalingNeeded = true;
+    float dataAddOffset = gbFile.GetOffset();
+    if (asTools::IsNaN(dataAddOffset))
+        dataAddOffset = 0;
+    float dataScaleFactor = gbFile.GetScale();
+    if (asTools::IsNaN(dataScaleFactor))
+        dataScaleFactor = 1;
+    if (dataAddOffset == 0 && dataScaleFactor == 1)
+        scalingNeeded = false;
+
+    VVectorFloat vectData;
+
+    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+
+        // Create the arrays to receive the data
+        VectorFloat dataF;
+
+        // Resize the arrays to store the new data
+        int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+        wxASSERT(totLength > 0);
+        dataF.resize(totLength);
+
+        // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
+        gbFile.GetVarArray(m_fileVariableName, GetIndexesStartGrib(i_area), GetIndexesCountGrib(i_area), m_level,
+                           &dataF[0]);
+
+        // Keep data for later treatment
+        vectData.push_back(dataF);
+    }
+
+    // Allocate space into compositeData if not already done
+    if (compositeData[0].capacity() == 0) {
+        int totSize = 0;
+        for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+            totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
+        }
+        compositeData.reserve(totSize);
+    }
+
+    // Transfer data
+    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+        // Extract data
+        VectorFloat data = vectData[i_area];
+
+        // Loop to extract the data from the array
+        int ind = 0;
+        Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount,
+                                               m_fileIndexes.areas[i_area].lonCount);
+
+        for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
+            for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
+                ind = i_lon + i_lat * m_fileIndexes.areas[i_area].lonCount;
+
+                if (scalingNeeded) {
+                    latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
+                } else {
+                    latlonData(i_lat, i_lon) = data[ind];
+                }
+
+                // Check if not NaN
+                bool notNan = true;
+                for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
+                    if (data[ind] == m_nanValues[i_nan] || latlonData(i_lat, i_lon) == m_nanValues[i_nan]) {
+                        notNan = false;
+                    }
+                }
+                if (!notNan) {
+                    latlonData(i_lat, i_lon) = NaNFloat;
+                }
+            }
+        }
+        compositeData[i_area].push_back(latlonData);
+
+        data.clear();
+    }
+
+    return true;
 }
 
 bool asDataPredictorRealtime::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

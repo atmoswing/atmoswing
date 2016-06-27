@@ -73,8 +73,6 @@ protected:
 
     virtual double ConvertToMjd(double timeValue) const;
 
-    bool CheckFilesPresence(const VectorString &filesList);
-
     bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                VVArray2DFloat &compositeData);
 
@@ -83,11 +81,11 @@ protected:
     bool ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                             VVArray2DFloat &compositeData);
 
-    size_t *GetIndexesStartNcdf(int i_area);
+    size_t *GetIndexesStartNcdf(int i_area) const;
 
-    size_t *GetIndexesCountNcdf(int i_area);
+    size_t *GetIndexesCountNcdf(int i_area) const;
 
-    ptrdiff_t *GetIndexesStrideNcdf(int i_area);
+    ptrdiff_t *GetIndexesStrideNcdf(int i_area) const;
 
     bool GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                         VVArray2DFloat &compositeData);
