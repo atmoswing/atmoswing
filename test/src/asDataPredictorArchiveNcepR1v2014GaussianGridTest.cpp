@@ -52,12 +52,11 @@ TEST(DataPredictorArchiveNcepR1v2014Gaussian, LoadEasy)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_air_2m_gauss_%d.nc");
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
     VArray2DFloat air = predictor->GetData();
@@ -142,12 +141,11 @@ TEST(DataPredictorArchiveNcepR1v2014Gaussian, LoadComposite)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_air_2m_gauss_%d.nc");
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
     VArray2DFloat air = predictor->GetData();
@@ -224,12 +222,11 @@ TEST(DataPredictorArchiveNcepR1v2014Gaussian, LoadBorderLeft)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_air_2m_gauss_%d.nc");
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
     VArray2DFloat air = predictor->GetData();
@@ -294,12 +291,11 @@ TEST(DataPredictorArchiveNcepR1v2014Gaussian, LoadBorderLeftOn720)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_air_2m_gauss_%d.nc");
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
     VArray2DFloat air = predictor->GetData();
@@ -364,12 +360,11 @@ TEST(DataPredictorArchiveNcepR1v2014Gaussian, LoadBorderRight)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_air_2m_gauss_%d.nc");
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
     VArray2DFloat air = predictor->GetData();
@@ -441,12 +436,11 @@ TEST(DataPredictorArchiveNcepR1v2014Gaussian, SetData)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_air_2m_gauss_%d.nc");
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
     Array2DFloat tmp;
