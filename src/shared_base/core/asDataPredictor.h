@@ -294,6 +294,7 @@ protected:
         wxString dimTimeName;
         wxString dimLevelName;
         bool hasLevelDimension;
+        bool singleLevel;
         Array1DFloat axisLon;
         Array1DFloat axisLat;
         Array1DFloat axisLevel;

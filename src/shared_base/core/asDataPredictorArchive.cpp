@@ -349,15 +349,16 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
             m_fileIndexes.areas[i_area].latCount = m_latPtsnb;
         }
 
-        if (m_fileStructure.hasLevelDimension) {
-            m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0],
-                                                    &m_fileStructure.axisLevel[m_fileStructure.axisLevel.size() - 1],
-                                                    m_level, 0.01f);
+        if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
+            m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0], &m_fileStructure.axisLevel[
+                    m_fileStructure.axisLevel.size() - 1], m_level, 0.01f);
             if (m_fileIndexes.level < 0) {
                 asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
                                               m_fileVariableName));
                 return false;
             }
+        } else if (m_fileStructure.hasLevelDimension && m_fileStructure.singleLevel) {
+            m_fileIndexes.level = 0;
         } else {
             if (m_level > 0) {
                 asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
