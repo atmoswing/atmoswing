@@ -50,12 +50,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadEasy)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -137,12 +136,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, GetMinMaxValues)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     EXPECT_FLOAT_EQ(-3, predictor->GetMinValue());
@@ -168,12 +166,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadComposite)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -263,12 +260,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderLeft)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -330,12 +326,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderLeftOn720)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -397,12 +392,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderRight)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -471,12 +465,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLon)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -546,12 +539,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonMoved)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -602,12 +594,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonLat)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -667,12 +658,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonLatTime)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     VArray2DFloat hgt = predictor->GetData();
@@ -721,12 +711,11 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, SetData)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2014)_hgt_%d.nc");
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
     Array2DFloat tmp;

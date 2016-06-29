@@ -79,7 +79,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         int step = 0;
         bool containsNaNs = false;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/data-ncep/");
+        dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
@@ -386,7 +386,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(dataPredictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
@@ -621,7 +621,7 @@ TEST(MethodCalibrator, PreloadingSimple)
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(dataPredictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
@@ -677,7 +677,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(dataPredictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
@@ -764,7 +764,7 @@ void Ref1Preloading()
         bool containsNaNs = false;
         int step = 0;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/data-ncep/");
+        dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
@@ -921,7 +921,7 @@ void Ref1PreloadingSubset()
         int step = 0;
         bool containsNaNs = false;
         wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/data-ncep/");
+        dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
         calibrator.SetPredictorDataDir(dataPredictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
@@ -1027,7 +1027,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(dataPredictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
@@ -1118,7 +1118,7 @@ void Ref2Preloading()
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(dataPredictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
@@ -1283,7 +1283,7 @@ void Ref2SavingIntermediateResults()
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(dataPredictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
@@ -1479,7 +1479,7 @@ void Ref2MergeByHalfAndMultiply()
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(dataPredictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
@@ -1629,7 +1629,7 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     // Preload data
     asMethodCalibratorSingle calibrator;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(dataPredictorFilePath);
     calibrator.SetPredictandDB(NULL);
     asResultsAnalogsDates anaDates;
@@ -1695,7 +1695,7 @@ TEST(MethodCalibrator, NormalizedS1Criteria)
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(dataPredictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
@@ -1758,7 +1758,7 @@ TEST(MethodCalibrator, NormalizedRMSECriteria)
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
     wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep/");
+    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(dataPredictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
