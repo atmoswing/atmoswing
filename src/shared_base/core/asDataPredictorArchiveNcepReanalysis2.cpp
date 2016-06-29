@@ -139,7 +139,8 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
             break;
 
         case SurfaceFlux:
-            m_fileStructure.hasLevelDimension = false;
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_subFolder = "gaussian_grid";
             m_xAxisStep = NaNFloat;
             m_yAxisStep = NaNFloat;

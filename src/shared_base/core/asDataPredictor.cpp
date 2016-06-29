@@ -57,6 +57,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.dimTimeName = wxEmptyString;
     m_fileStructure.dimLevelName = wxEmptyString;
     m_fileStructure.hasLevelDimension = true;
+    m_fileStructure.singleLevel = false;
     m_fileExtension = wxEmptyString;
 
     if(dataId.Contains('/')) {

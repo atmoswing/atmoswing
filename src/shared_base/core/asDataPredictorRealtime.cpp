@@ -456,7 +456,7 @@ bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompo
             m_fileIndexes.areas[i_area].latCount = m_latPtsnb;
         }
 
-        if (m_fileStructure.hasLevelDimension) {
+        if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
             m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0],
                                                              &m_fileStructure.axisLevel[m_fileStructure.axisLevel.size() - 1],
                                                              m_level, 0.01f);
@@ -465,6 +465,8 @@ bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompo
                                               m_fileVariableName));
                 return false;
             }
+        } else if (m_fileStructure.hasLevelDimension && m_fileStructure.singleLevel) {
+            m_fileIndexes.level = 0;
         }
     }
 
