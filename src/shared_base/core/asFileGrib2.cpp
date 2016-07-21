@@ -178,6 +178,14 @@ bool asFileGrib2::ParseStructure()
         free(cgrib);
     }
 
+    // Check unique time value
+    for (int i = 0; i < m_times.size(); ++i) {
+        if(m_times[i] != m_times[0]) {
+            asLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -305,6 +313,15 @@ bool asFileGrib2::GetYaxis(Array1DFloat &vaxis) const
     vaxis = m_yAxes[m_index];
 
     return true;
+}
+
+double asFileGrib2::GetTime() const
+{
+    wxASSERT(m_opened);
+    wxASSERT(m_index != asNOT_FOUND);
+    wxASSERT(m_times.size() > m_index);
+
+    return m_times[m_index];
 }
 
 bool asFileGrib2::SetIndexPosition(const int gribParameterDiscipline, const int gribParameterCategory,
