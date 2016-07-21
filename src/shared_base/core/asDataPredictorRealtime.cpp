@@ -27,11 +27,9 @@
  */
 
 #include "asDataPredictorRealtime.h"
-#include "asFileGrib2.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 #include <asDataPredictorRealtimeGfsForecast.h>
 #include <asInternet.h>
 
@@ -288,71 +286,13 @@ VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) con
     return filesList;
 }
 
-bool asDataPredictorRealtime::ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                  asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-    // Open the NetCDF file
-    asFileGrib2 gbFile(fileName, asFileGrib2::ReadOnly);
-    if (!gbFile.Open()) {
-        wxFAIL;
-        return false;
-    }
-
-    // Parse file structure
-    if (!ParseFileStructure(gbFile, dataArea, timeArray, compositeData)) {
-        gbFile.Close();
-        wxFAIL;
-        return false;
-    }
-
-    // Adjust axes if necessary
-    dataArea = AdjustAxes(dataArea, compositeData);
-    if (dataArea) {
-        wxASSERT(dataArea->GetNbComposites() > 0);
-    }
-
-    // Get indexes
-    if (!GetAxesIndexes(gbFile, dataArea, timeArray, compositeData)) {
-        gbFile.Close();
-        wxFAIL;
-        return false;
-    }
-
-    // Load data
-    if (!GetDataFromFile(gbFile, compositeData)) {
-        gbFile.Close();
-        wxFAIL;
-        return false;
-    }
-
-    // Close the nc file
-    gbFile.Close();
-
-    return true;
-}
-
-bool asDataPredictorRealtime::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
-                                                 asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-    // Get full axes from the netcdf file
-    gbFile.GetXaxis(m_fileStructure.axisLon);
-    gbFile.GetYaxis(m_fileStructure.axisLat);
-
-    if (m_fileStructure.hasLevelDimension) {
-        asLogError(_("The level dimension is not yet implemented for realtime predictors."));
-        return false;
-    }
-
-    return true;
-}
-
 int *asDataPredictorRealtime::GetIndexesStartGrib(int i_area) const
 {
     if (m_fileStructure.hasLevelDimension) {
         static int array[3] = {0, 0, 0};
-        array[0] = m_fileIndexes.level;
-        array[1] = m_fileIndexes.areas[i_area].lonStart;
-        array[2] = m_fileIndexes.areas[i_area].latStart;
+        array[0] = m_fileIndexes.areas[i_area].lonStart;
+        array[1] = m_fileIndexes.areas[i_area].latStart;
+        array[2] = m_fileIndexes.level;
 
         return array;
     } else {
@@ -370,9 +310,9 @@ int *asDataPredictorRealtime::GetIndexesCountGrib(int i_area) const
 {
     if (m_fileStructure.hasLevelDimension) {
         static int array[3] = {0, 0, 0};
-        array[0] = 1;
-        array[1] = m_fileIndexes.areas[i_area].lonCount;
-        array[2] = m_fileIndexes.areas[i_area].latCount;
+        array[0] = m_fileIndexes.areas[i_area].lonCount;
+        array[1] = m_fileIndexes.areas[i_area].latCount;
+        array[2] = 1;
 
         return array;
     } else {
@@ -384,6 +324,13 @@ int *asDataPredictorRealtime::GetIndexesCountGrib(int i_area) const
     }
 
     return NULL;
+}
+
+bool asDataPredictorRealtime::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
+                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    asThrowException(_("Not implemented yet!"));
+    return false;
 }
 
 bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
@@ -473,20 +420,14 @@ bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompo
     return true;
 }
 
+bool asDataPredictorRealtime::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData)
+{
+    asThrowException(_("Not implemented yet!"));
+    return false;
+}
 
 bool asDataPredictorRealtime::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData)
 {
-    // Check if scaling is needed
-    bool scalingNeeded = true;
-    float dataAddOffset = gbFile.GetOffset();
-    if (asTools::IsNaN(dataAddOffset))
-        dataAddOffset = 0;
-    float dataScaleFactor = gbFile.GetScale();
-    if (asTools::IsNaN(dataScaleFactor))
-        dataScaleFactor = 1;
-    if (dataAddOffset == 0 && dataScaleFactor == 1)
-        scalingNeeded = false;
-
     VVectorFloat vectData;
 
     for (int i_area = 0; i_area < compositeData.size(); i_area++) {
@@ -499,9 +440,8 @@ bool asDataPredictorRealtime::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloa
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
 
-        // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-        gbFile.GetVarArray(m_fileVariableName, GetIndexesStartGrib(i_area), GetIndexesCountGrib(i_area), m_level,
-                           &dataF[0]);
+        // Extract data
+        gbFile.GetVarArray(GetIndexesStartGrib(i_area), GetIndexesCountGrib(i_area), &dataF[0]);
 
         // Keep data for later treatment
         vectData.push_back(dataF);
@@ -528,13 +468,10 @@ bool asDataPredictorRealtime::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloa
 
         for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
             for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
-                ind = i_lon + i_lat * m_fileIndexes.areas[i_area].lonCount;
+                int latRevIndex = m_fileIndexes.areas[i_area].latCount - 1 - i_lat; // Axis reversed in Grib file.
+                ind = i_lon + latRevIndex * m_fileIndexes.areas[i_area].lonCount;
 
-                if (scalingNeeded) {
-                    latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
-                } else {
-                    latlonData(i_lat, i_lon) = data[ind];
-                }
+                latlonData(i_lat, i_lon) = data[ind];
 
                 // Check if not NaN
                 bool notNan = true;

@@ -30,6 +30,8 @@
 #define ASDATAPREDICTOR_H
 
 #include <asIncludes.h>
+#include <asFileGrib2.h>
+#include <asFileNetcdf.h>
 
 class asTimeArray;
 
@@ -71,7 +73,7 @@ public:
 
     enum Unit
     {
-        nb, mm, m, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2
+        nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2
     };
 
     enum Level
@@ -338,6 +340,9 @@ protected:
     VectorDouble m_nanValues;
     Parameter m_parameter;
     wxString m_parameterName;
+    int m_gribParameterDiscipline;
+    int m_gribParameterCategory;
+    int m_gribParameterNum;
     Level m_levelType;
     wxString m_fileVariableName;
     Unit m_unit;
@@ -368,6 +373,28 @@ protected:
 
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                   VVArray2DFloat &compositeData) = 0;
+
+    virtual bool GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                VVArray2DFloat &compositeData) = 0;
+
+    virtual bool GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                VVArray2DFloat &compositeData) = 0;
+
+    virtual bool GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData) = 0;
+
+    virtual bool GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData) = 0;
+
+    bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                               VVArray2DFloat &compositeData);
+
+    bool ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                             VVArray2DFloat &compositeData);
+
+    bool ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
+                                             asTimeArray &timeArray, VVArray2DFloat &compositeData);
+
+    bool ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                             VVArray2DFloat &compositeData);
 
     bool MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area);
 
