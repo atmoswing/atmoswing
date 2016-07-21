@@ -61,6 +61,8 @@ public:
 
     bool GetYaxis(Array1DFloat &vaxis) const;
 
+    double GetTime() const;
+
 protected:
 
 private:

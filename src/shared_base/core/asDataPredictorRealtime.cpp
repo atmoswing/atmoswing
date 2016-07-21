@@ -286,55 +286,8 @@ VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) con
     return filesList;
 }
 
-int *asDataPredictorRealtime::GetIndexesStartGrib(int i_area) const
-{
-    if (m_fileStructure.hasLevelDimension) {
-        static int array[3] = {0, 0, 0};
-        array[0] = m_fileIndexes.areas[i_area].lonStart;
-        array[1] = m_fileIndexes.areas[i_area].latStart;
-        array[2] = m_fileIndexes.level;
-
-        return array;
-    } else {
-        static int array[2] = {0, 0};
-        array[0] = m_fileIndexes.areas[i_area].lonStart;
-        array[1] = m_fileIndexes.areas[i_area].latStart;
-
-        return array;
-    }
-
-    return NULL;
-}
-
-int *asDataPredictorRealtime::GetIndexesCountGrib(int i_area) const
-{
-    if (m_fileStructure.hasLevelDimension) {
-        static int array[3] = {0, 0, 0};
-        array[0] = m_fileIndexes.areas[i_area].lonCount;
-        array[1] = m_fileIndexes.areas[i_area].latCount;
-        array[2] = 1;
-
-        return array;
-    } else {
-        static int array[2] = {0, 0};
-        array[0] = m_fileIndexes.areas[i_area].lonCount;
-        array[1] = m_fileIndexes.areas[i_area].latCount;
-
-        return array;
-    }
-
-    return NULL;
-}
-
-bool asDataPredictorRealtime::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-    asThrowException(_("Not implemented yet!"));
-    return false;
-}
-
-bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                             VVArray2DFloat &compositeData)
 {
     m_fileIndexes.areas.clear();
 
@@ -415,79 +368,6 @@ bool asDataPredictorRealtime::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompo
         } else if (m_fileStructure.hasLevelDimension && m_fileStructure.singleLevel) {
             m_fileIndexes.level = 0;
         }
-    }
-
-    return true;
-}
-
-bool asDataPredictorRealtime::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData)
-{
-    asThrowException(_("Not implemented yet!"));
-    return false;
-}
-
-bool asDataPredictorRealtime::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData)
-{
-    VVectorFloat vectData;
-
-    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-
-        // Create the arrays to receive the data
-        VectorFloat dataF;
-
-        // Resize the arrays to store the new data
-        int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
-        wxASSERT(totLength > 0);
-        dataF.resize(totLength);
-
-        // Extract data
-        gbFile.GetVarArray(GetIndexesStartGrib(i_area), GetIndexesCountGrib(i_area), &dataF[0]);
-
-        // Keep data for later treatment
-        vectData.push_back(dataF);
-    }
-
-    // Allocate space into compositeData if not already done
-    if (compositeData[0].capacity() == 0) {
-        int totSize = 0;
-        for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-            totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
-        }
-        compositeData.reserve(totSize);
-    }
-
-    // Transfer data
-    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-        // Extract data
-        VectorFloat data = vectData[i_area];
-
-        // Loop to extract the data from the array
-        int ind = 0;
-        Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount,
-                                               m_fileIndexes.areas[i_area].lonCount);
-
-        for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
-            for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
-                int latRevIndex = m_fileIndexes.areas[i_area].latCount - 1 - i_lat; // Axis reversed in Grib file.
-                ind = i_lon + latRevIndex * m_fileIndexes.areas[i_area].lonCount;
-
-                latlonData(i_lat, i_lon) = data[ind];
-
-                // Check if not NaN
-                bool notNan = true;
-                for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
-                    if (data[ind] == m_nanValues[i_nan] || latlonData(i_lat, i_lon) == m_nanValues[i_nan]) {
-                        notNan = false;
-                    }
-                }
-                if (!notNan) {
-                    latlonData(i_lat, i_lon) = NaNFloat;
-                }
-            }
-        }
-        compositeData[i_area].push_back(latlonData);
-
-        data.clear();
     }
 
     return true;

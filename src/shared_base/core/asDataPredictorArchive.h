@@ -75,22 +75,8 @@ protected:
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
-    size_t *GetIndexesStartNcdf(int i_area) const;
-
-    size_t *GetIndexesCountNcdf(int i_area) const;
-
-    ptrdiff_t *GetIndexesStrideNcdf(int i_area) const;
-
-
-    virtual bool GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                 VVArray2DFloat &compositeData);
-
-    virtual bool GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                VVArray2DFloat &compositeData);
-
-    virtual bool GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData);
-
-    virtual bool GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData);
 
 private:
 

@@ -124,99 +124,41 @@ bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea,
     return true;
 }
 
-size_t *asDataPredictorArchive::GetIndexesStartNcdf(int i_area) const
-{
-    if (m_fileStructure.hasLevelDimension) {
-        static size_t array[4] = {0, 0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeStart;
-        array[1] = (size_t) m_fileIndexes.level;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].latStart;
-        array[3] = (size_t) m_fileIndexes.areas[i_area].lonStart;
-
-        return array;
-    } else {
-        static size_t array[3] = {0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeStart;
-        array[1] = (size_t) m_fileIndexes.areas[i_area].latStart;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].lonStart;
-
-        return array;
-    }
-
-    return NULL;
-}
-
-size_t *asDataPredictorArchive::GetIndexesCountNcdf(int i_area) const
-{
-    if (m_fileStructure.hasLevelDimension) {
-        static size_t array[4] = {0, 0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeCount;
-        array[1] = 1;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].latCount;
-        array[3] = (size_t) m_fileIndexes.areas[i_area].lonCount;
-
-        return array;
-    } else {
-        static size_t array[3] = {0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeCount;
-        array[1] = (size_t) m_fileIndexes.areas[i_area].latCount;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].lonCount;
-
-        return array;
-    }
-
-    return NULL;
-}
-
-ptrdiff_t *asDataPredictorArchive::GetIndexesStrideNcdf(int i_area) const
-{
-    if (m_fileStructure.hasLevelDimension) {
-        static ptrdiff_t array[4] = {0, 0, 0, 0};
-        array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
-        array[1] = 1;
-        array[2] = (ptrdiff_t) m_fileIndexes.latStep;
-        array[3] = (ptrdiff_t) m_fileIndexes.lonStep;
-
-        return array;
-    } else {
-        static ptrdiff_t array[3] = {0, 0, 0};
-        array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
-        array[1] = (ptrdiff_t) m_fileIndexes.latStep;
-        array[2] = (ptrdiff_t) m_fileIndexes.lonStep;
-
-        return array;
-    }
-
-    return NULL;
-}
-
-bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
-                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                            VVArray2DFloat &compositeData)
 {
     m_fileIndexes.areas.clear();
 
     // Get the time length
-    double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fileStructure.axisTimeFirstValue);
-    double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fileStructure.axisTimeLastValue);
-    m_fileIndexes.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
-    m_fileIndexes.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+    if (m_fileStructure.axisTimeLength > 1) {
+        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fileStructure.axisTimeFirstValue);
+        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fileStructure.axisTimeLastValue);
+        m_fileIndexes.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        m_fileIndexes.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
 
-    // Correct the time start and end
-    double valFirstTime = m_fileStructure.axisTimeFirstValue;
-    m_fileIndexes.timeStart = 0;
-    m_fileIndexes.cutStart = 0;
-    bool firstFile = (compositeData[0].size() == 0);
-    if (firstFile) {
-        m_fileIndexes.cutStart = int(timeArrayIndexStart);
-    }
-    m_fileIndexes.cutEnd = 0;
-    while (valFirstTime < timeArray[timeArrayIndexStart]) {
-        valFirstTime += m_timeStepHours / 24.0;
-        m_fileIndexes.timeStart++;
-    }
-    if (m_fileIndexes.timeStart + m_fileIndexes.timeCount > m_fileStructure.axisTimeLength) {
-        m_fileIndexes.timeCount--;
-        m_fileIndexes.cutEnd++;
+        // Correct the time start and end
+        double valFirstTime = m_fileStructure.axisTimeFirstValue;
+        m_fileIndexes.timeStart = 0;
+        m_fileIndexes.cutStart = 0;
+        bool firstFile = (compositeData[0].size() == 0);
+        if (firstFile) {
+            m_fileIndexes.cutStart = int(timeArrayIndexStart);
+        }
+        m_fileIndexes.cutEnd = 0;
+        while (valFirstTime < timeArray[timeArrayIndexStart]) {
+            valFirstTime += m_timeStepHours / 24.0;
+            m_fileIndexes.timeStart++;
+        }
+        if (m_fileIndexes.timeStart + m_fileIndexes.timeCount > m_fileStructure.axisTimeLength) {
+            m_fileIndexes.timeCount--;
+            m_fileIndexes.cutEnd++;
+        }
+    } else {
+        m_fileIndexes.timeArrayCount = 1;
+        m_fileIndexes.timeCount = 1;
+        m_fileIndexes.timeStart = 0;
+        m_fileIndexes.cutStart = 0;
+        m_fileIndexes.cutEnd = 0;
     }
 
     // Go through every area
@@ -300,149 +242,6 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
     }
 
     return true;
-}
-
-bool asDataPredictorArchive::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-
-
-
-
-    return false;
-}
-
-bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData)
-{
-    bool isShort = (ncFile.GetVarType(m_fileVariableName) == NC_SHORT);
-    bool isFloat = (ncFile.GetVarType(m_fileVariableName) == NC_FLOAT);
-
-    if(!isShort && !isFloat) {
-        asLogError(_("Loading data other than short or float is not implemented yet."));
-    }
-
-    // Check if scaling is needed
-    bool scalingNeeded = true;
-    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
-    if (asTools::IsNaN(dataAddOffset))
-        dataAddOffset = 0;
-    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
-    if (asTools::IsNaN(dataScaleFactor))
-        dataScaleFactor = 1;
-    if (dataAddOffset == 0 && dataScaleFactor == 1)
-        scalingNeeded = false;
-
-    VVectorFloat vectData;
-
-    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-
-        // Create the arrays to receive the data
-        VectorFloat dataF;
-        VectorShort dataS;
-
-        // Resize the arrays to store the new data
-        int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
-        wxASSERT(totLength > 0);
-        dataF.resize(totLength);
-        if (isShort) {
-            dataS.resize(totLength);
-        }
-
-        // Fill empty beginning with NaNs
-        int indexBegining = 0;
-        if (m_fileIndexes.cutStart > 0) {
-            int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
-            for (int i_empty = 0; i_empty < m_fileIndexes.cutStart; i_empty++) {
-                for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                    dataF[indexBegining] = NaNFloat;
-                    indexBegining++;
-                }
-            }
-        }
-
-        // Fill empty end with NaNs
-        int indexEnd = m_fileIndexes.timeCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount - 1;
-        if (m_fileIndexes.cutEnd > 0) {
-            int latlonlength = m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
-            for (int i_empty = 0; i_empty < m_fileIndexes.cutEnd; i_empty++) {
-                for (int i_emptylatlon = 0; i_emptylatlon < latlonlength; i_emptylatlon++) {
-                    indexEnd++;
-                    dataF[indexEnd] = NaNFloat;
-                }
-            }
-        }
-
-        // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-        if (isFloat) {
-            ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
-                                GetIndexesStrideNcdf(i_area), &dataF[indexBegining]);
-        } else if (isShort) {
-            ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
-                                GetIndexesStrideNcdf(i_area), &dataS[indexBegining]);
-            for (int i = 0; i < dataS.size(); i++) {
-                dataF[i] = (float) dataS[i];
-            }
-        }
-
-        // Keep data for later treatment
-        vectData.push_back(dataF);
-    }
-
-    // Allocate space into compositeData if not already done
-    if (compositeData[0].capacity() == 0) {
-        int totSize = 0;
-        for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-            totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
-        }
-        compositeData.reserve(totSize);
-    }
-
-    // Transfer data
-    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-        // Extract data
-        VectorFloat data = vectData[i_area];
-
-        // Loop to extract the data from the array
-        int ind = 0;
-        for (int i_time = 0; i_time < m_fileIndexes.timeArrayCount; i_time++) {
-            Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
-
-            for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
-                for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
-                    ind = i_lon + i_lat * m_fileIndexes.areas[i_area].lonCount + i_time * m_fileIndexes.areas[i_area].lonCount * m_fileIndexes.areas[i_area].latCount;
-
-                    if (scalingNeeded) {
-                        latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
-                    } else {
-                        latlonData(i_lat, i_lon) = data[ind];
-                    }
-
-                    // Check if not NaN
-                    bool notNan = true;
-                    for (size_t i_nan = 0; i_nan < m_nanValues.size(); i_nan++) {
-                        if (data[ind] == m_nanValues[i_nan] || latlonData(i_lat, i_lon) == m_nanValues[i_nan]) {
-                            notNan = false;
-                        }
-                    }
-                    if (!notNan) {
-                        latlonData(i_lat, i_lon) = NaNFloat;
-                    }
-                }
-            }
-            compositeData[i_area].push_back(latlonData);
-        }
-        data.clear();
-    }
-
-    return true;
-}
-
-bool asDataPredictorArchive::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData)
-{
-
-
-
-    return false;
 }
 
 bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)

@@ -374,15 +374,22 @@ protected:
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                   VVArray2DFloat &compositeData) = 0;
 
-    virtual bool GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                 VVArray2DFloat &compositeData) = 0;
 
-    virtual bool GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                VVArray2DFloat &compositeData) = 0;
+    size_t *GetIndexesStartNcdf(int i_area) const;
 
-    virtual bool GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData) = 0;
+    size_t *GetIndexesCountNcdf(int i_area) const;
 
-    virtual bool GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData) = 0;
+    ptrdiff_t *GetIndexesStrideNcdf(int i_area) const;
+
+    int *GetIndexesStartGrib(int i_area) const;
+
+    int *GetIndexesCountGrib(int i_area) const;
+
+    bool GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData);
+
+    bool GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData);
 
     bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                VVArray2DFloat &compositeData);
