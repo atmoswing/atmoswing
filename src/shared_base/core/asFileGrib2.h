@@ -32,8 +32,13 @@
 #include "asIncludes.h"
 #include <asFile.h>
 
-#include "gdal_priv.h"
-#include "cpl_conv.h" // for CPLMalloc()
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "grib2.h"
+#ifdef __cplusplus
+}
+#endif
 
 class asFileGrib2
         : public asFile
@@ -47,104 +52,46 @@ public:
 
     virtual bool Close();
 
-    bool GetVarArray(const wxString &VarName, const int IndexStart[], const int IndexCount[], float level,
-                     float *pValue);
+    bool SetIndexPosition(const int gribParameterDiscipline, const int gribParameterCategory,
+                          const int gribParameterNum, const float level);
+
+    bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
     bool GetXaxis(Array1DFloat &uaxis) const;
 
     bool GetYaxis(Array1DFloat &vaxis) const;
 
-    int GetXcellsNb() const
-    {
-        return m_ptorDataset->GetRasterXSize();
-    }
-
-    int GetYcellsNb() const
-    {
-        return m_ptorDataset->GetRasterYSize();
-    }
-
-    int GetXPtsnb() const
-    {
-        return m_ptorBand->GetXSize();
-    }
-
-    int GetYPtsnb() const
-    {
-        return m_ptorBand->GetYSize();
-    }
-
-    int GetBandsNb() const
-    {
-        return m_ptorDataset->GetRasterCount();
-    }
-
-    double GetNaNValue() const
-    {
-        int success;
-        double val = m_ptorBand->GetNoDataValue(&success);
-        if (success == 0)
-            return NaNDouble;
-        return val;
-    }
-
-    double GetXCellSize() const;
-
-    double GetYCellSize() const;
-
-    double GetXOrigin() const;
-
-    double GetYOrigin() const;
-
-    double GetRotation() const;
-
-    int FindBand(const wxString &VarName, float Level) const;
-
-    void SetBand(int i);
-
-    double GetBandEstimatedMax() const;
-
-    double GetBandEstimatedMin() const;
-
-    wxString GetBandDescription() const;
-
-    double GetOffset() const
-    {
-        int offsetSuccess;
-        double offset = m_ptorBand->GetOffset(&offsetSuccess);
-        if (offsetSuccess == 0) {
-            asLogError(_("Failed to get the offset of the grib2 file."));
-            return NaNFloat;
-        }
-        return offset;
-    }
-
-    double GetScale() const
-    {
-        int scaleSuccess;
-        double scale = m_ptorBand->GetScale(&scaleSuccess);
-        if (scaleSuccess == 0) {
-            asLogError(_("Failed to get the scale of the grib2 file."));
-            return NaNFloat;
-        }
-        return scale;
-    }
-
 protected:
 
 private:
-    GDALDataset *m_ptorDataset;
-    GDALRasterBand *m_ptorBand;
-    VVectorString m_metaKeys;
-    VVectorString m_metaValues;
-    VectorString m_bandsVars;
-    VectorFloat m_bandsLevels;
+    FILE *m_filtPtr;
+    int m_index;
+    std::vector<g2int> m_messageOffsets;
+    std::vector<g2int> m_messageSizes;
+    VectorLong m_fieldNum;
+    VectorInt m_parameterDisciplines;
+    VectorInt m_parameterCategories;
+    VectorInt m_parameterNums;
+    VectorDouble m_refTimes;
+    VectorDouble m_times;
+    VectorDouble m_forecastTimes;
+    VectorFloat m_levels;
+    VArray1DFloat m_xAxes;
+    VArray1DFloat m_yAxes;
 
-    bool GDALOpenDataset();
+    bool OpenDataset();
 
-    void ParseMetaData();
+    bool ParseStructure();
 
-    void ParseVarsLevels();
+    void handleGribError(g2int ierr) const;
+
+    void BuildAxes(const gribfield *gfld);
+
+    bool CheckGridDefinition(const gribfield *gfld) const;
+
+    bool CheckProductDefinition(const gribfield *gfld) const;
+
+    void GetLevel(const gribfield *gfld);
 };
 
 #endif // ASFILEGRIB2_H

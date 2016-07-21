@@ -30,11 +30,11 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 #include <asDataPredictorArchiveNcepReanalysis1.h>
 #include <asDataPredictorArchiveNcepReanalysis1Subset.h>
 #include <asDataPredictorArchiveNcepReanalysis1Lthe.h>
 #include <asDataPredictorArchiveNcepReanalysis2.h>
+#include <asDataPredictorArchiveNcepCfsr2.h>
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
 
@@ -64,6 +64,8 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNcepReanalysis1Lthe(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
         predictor = new asDataPredictorArchiveNcepReanalysis2(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR_v2", false)) {
+        predictor = new asDataPredictorArchiveNcepCfsr2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
         predictor = new asDataPredictorArchiveNoaaOisst2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {
@@ -118,77 +120,6 @@ bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea,
             return false;
         }
     }
-
-    return true;
-}
-
-bool asDataPredictorArchive::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                   asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-    // Open the NetCDF file
-    ThreadsManager().CritSectionNetCDF().Enter();
-    asFileNetcdf ncFile(fileName, asFileNetcdf::ReadOnly);
-    if (!ncFile.Open()) {
-        ThreadsManager().CritSectionNetCDF().Leave();
-        wxFAIL;
-        return false;
-    }
-
-    // Parse file structure
-    if (!ParseFileStructure(ncFile, dataArea, timeArray, compositeData)) {
-        ncFile.Close();
-        ThreadsManager().CritSectionNetCDF().Leave();
-        wxFAIL;
-        return false;
-    }
-
-    // Adjust axes if necessary
-    dataArea = AdjustAxes(dataArea, compositeData);
-    if (dataArea) {
-        wxASSERT(dataArea->GetNbComposites() > 0);
-    }
-
-    // Get indexes
-    if (!GetAxesIndexes(ncFile, dataArea, timeArray, compositeData)) {
-        ncFile.Close();
-        ThreadsManager().CritSectionNetCDF().Leave();
-        wxFAIL;
-        return false;
-    }
-
-    // Load data
-    if (!GetDataFromFile(ncFile, compositeData)) {
-        ncFile.Close();
-        ThreadsManager().CritSectionNetCDF().Leave();
-        wxFAIL;
-        return false;
-    }
-
-    // Close the nc file
-    ncFile.Close();
-    ThreadsManager().CritSectionNetCDF().Leave();
-
-    return true;
-}
-
-bool asDataPredictorArchive::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-    // Get full axes from the netcdf file
-    m_fileStructure.axisLon = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLonName));
-    ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
-    m_fileStructure.axisLat = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLatName));
-    ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
-
-    if (m_fileStructure.hasLevelDimension) {
-        m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
-        ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);
-    }
-
-    // Time dimension takes ages to load !! Avoid and get the first value.
-    m_fileStructure.axisTimeLength = ncFile.GetVarLength(m_fileStructure.dimTimeName);
-    m_fileStructure.axisTimeFirstValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0));
-    m_fileStructure.axisTimeLastValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, ncFile.GetVarLength(m_fileStructure.dimTimeName) - 1));
 
     return true;
 }
@@ -371,6 +302,16 @@ bool asDataPredictorArchive::GetAxesIndexes(asFileNetcdf &ncFile, asGeoAreaCompo
     return true;
 }
 
+bool asDataPredictorArchive::GetAxesIndexes(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea,
+                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+
+
+
+
+    return false;
+}
+
 bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData)
 {
     bool isShort = (ncFile.GetVarType(m_fileVariableName) == NC_SHORT);
@@ -494,6 +435,14 @@ bool asDataPredictorArchive::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloa
     }
 
     return true;
+}
+
+bool asDataPredictorArchive::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData)
+{
+
+
+
+    return false;
 }
 
 bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)

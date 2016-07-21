@@ -59,6 +59,9 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
     m_fileExtension = wxEmptyString;
+    m_gribParameterDiscipline = -1;
+    m_gribParameterCategory = -1;
+    m_gribParameterNum = -1;
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
@@ -435,6 +438,158 @@ bool asDataPredictor::LoadFullArea(double date, float level)
     return Load(NULL, timeArray);
 }
 
+
+bool asDataPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                   asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Open the NetCDF file
+    ThreadsManager().CritSectionNetCDF().Enter();
+    asFileNetcdf ncFile(fileName, asFileNetcdf::ReadOnly);
+    if (!ncFile.Open()) {
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Parse file structure
+    if (!ParseFileStructure(ncFile, dataArea, timeArray, compositeData)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Adjust axes if necessary
+    dataArea = AdjustAxes(dataArea, compositeData);
+    if (dataArea) {
+        wxASSERT(dataArea->GetNbComposites() > 0);
+    }
+
+    // Get indexes
+    if (!GetAxesIndexes(ncFile, dataArea, timeArray, compositeData)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Load data
+    if (!GetDataFromFile(ncFile, compositeData)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Close the nc file
+    ncFile.Close();
+    ThreadsManager().CritSectionNetCDF().Leave();
+
+    return true;
+}
+
+bool asDataPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+                                                 asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Open the Grib file
+    ThreadsManager().CritSectionGrib().Enter();
+    asFileGrib2 gbFile(fileName, asFileGrib2::ReadOnly);
+    if (!gbFile.Open()) {
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Set index position
+    if (!gbFile.SetIndexPosition(m_gribParameterDiscipline, m_gribParameterCategory, m_gribParameterNum, m_level)) {
+        gbFile.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Parse file structure
+    if (!ParseFileStructure(gbFile, dataArea, timeArray, compositeData)) {
+        gbFile.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Adjust axes if necessary
+    dataArea = AdjustAxes(dataArea, compositeData);
+    if (dataArea) {
+        wxASSERT(dataArea->GetNbComposites() > 0);
+    }
+
+    // Get indexes
+    if (!GetAxesIndexes(gbFile, dataArea, timeArray, compositeData)) {
+        gbFile.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Load data
+    if (!GetDataFromFile(gbFile, compositeData)) {
+        gbFile.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Close the nc file
+    gbFile.Close();
+    ThreadsManager().CritSectionGrib().Leave();
+
+    return true;
+}
+
+bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
+                                         asTimeArray &timeArray, VVArray2DFloat &compositeData)
+{
+    // Get full axes from the netcdf file
+    m_fileStructure.axisLon = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLonName));
+    ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
+    m_fileStructure.axisLat = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLatName));
+    ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
+
+    if (m_fileStructure.hasLevelDimension) {
+        m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+        ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);
+    }
+
+    // Time dimension takes ages to load !! Avoid and get the first value.
+    m_fileStructure.axisTimeLength = ncFile.GetVarLength(m_fileStructure.dimTimeName);
+    m_fileStructure.axisTimeFirstValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0));
+    m_fileStructure.axisTimeLastValue = ConvertToMjd(
+            ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, ncFile.GetVarLength(m_fileStructure.dimTimeName) - 1));
+
+    return true;
+}
+
+bool asDataPredictor::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                         VVArray2DFloat &compositeData)
+{
+    // Get full axes from the file
+    gbFile.GetXaxis(m_fileStructure.axisLon);
+    gbFile.GetYaxis(m_fileStructure.axisLat);
+
+    if (m_fileStructure.hasLevelDimension) {
+
+
+/*        m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+        ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);*/
+    }
+
+    if (m_fileStructure.hasLevelDimension) {
+        asLogError(_("The level dimension is not yet implemented for realtime predictors."));
+        return false;
+    }
+
+    return true;
+}
+
 asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea)
 {
     if (desiredArea) {
@@ -448,8 +603,8 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
             dataXstep = m_xAxisStep;
             dataYstep = m_yAxisStep;
-            dataXptsnb = (dataXmax - dataXmin) / dataXstep + 1;
-            dataYptsnb = (dataYmax - dataYmin) / dataYstep + 1;
+            dataXptsnb = wxRound((dataXmax - dataXmin) / dataXstep + 1);
+            dataYptsnb = wxRound((dataYmax - dataYmin) / dataYstep + 1);
         } else {
             dataXmin = desiredArea->GetAbsoluteXmin();
             dataYmin = desiredArea->GetAbsoluteYmin();
@@ -471,8 +626,8 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
 
         // Get indexes steps
         if (gridType.IsSameAs("Regular", false)) {
-            m_fileIndexes.lonStep = (int)wxRound(dataArea->GetXstep() / m_xAxisStep);
-            m_fileIndexes.latStep = (int)wxRound(dataArea->GetYstep() / m_yAxisStep);
+            m_fileIndexes.lonStep = wxRound(dataArea->GetXstep() / m_xAxisStep);
+            m_fileIndexes.latStep = wxRound(dataArea->GetYstep() / m_yAxisStep);
         } else {
             m_fileIndexes.lonStep = 1;
             m_fileIndexes.latStep = 1;

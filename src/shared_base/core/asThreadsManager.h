@@ -84,6 +84,11 @@ public:
         return m_critSectionNetCDF;
     }
 
+    wxCriticalSection &CritSectionGrib()
+    {
+        return m_critSectionGrib;
+    }
+
     wxCriticalSection &CritSectionConfig()
     {
         return m_critSectionConfig;
@@ -117,6 +122,7 @@ private:
     wxCriticalSection m_critSectionManager;
     wxCriticalSection m_critSectionPreloadedData;
     wxCriticalSection m_critSectionNetCDF;
+    wxCriticalSection m_critSectionGrib;
     wxCriticalSection m_critSectionConfig;
     wxSemaphore m_semAllDone;
     bool m_waitingUntilAllDone;
