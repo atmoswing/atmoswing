@@ -60,7 +60,7 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    switch (m_levelType) {
+    switch (m_product) {
         case PressureLevel:
             m_fileStructure.hasLevelDimension = true;
             m_fileStructure.singleLevel = true;
@@ -75,10 +75,32 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
                 m_fileStructure.dimLevelName = "isobaric";
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
             break;
+/*
+        case IsentropicLevel:
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
+            m_subFolder = "ipvh";
+            m_xAxisStep = 0.5;
+            m_yAxisStep = 0.5;
+            if (m_dataId.IsSameAs("hgt", false)) {
+                m_parameter = GeopotentialHeight;
+                m_gribCode = {0, 3, 5};
+                m_parameterName = "Geopotential height";
+                m_unit = gpm;
+                m_fileStructure.dimLevelName = "isobaric";
+            } else {
+                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                                  m_dataId, LevelEnumToString(m_product)));
+            }
+            m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
+            break;
+*/
+        case SurfaceFlux:
+            asThrowException(_("Gaussian grids for CFSR are not implemented yet."));
 
         default: asThrowException(_("level type not implemented for this reanalysis dataset."));
     }

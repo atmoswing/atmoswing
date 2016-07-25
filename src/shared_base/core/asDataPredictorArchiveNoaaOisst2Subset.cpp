@@ -82,7 +82,7 @@ bool asDataPredictorArchiveNoaaOisst2Subset::Init()
         m_unit = degC;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, LevelEnumToString(m_levelType)));
+                                          m_dataId, LevelEnumToString(m_product)));
     }
 
     // Check data ID

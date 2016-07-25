@@ -65,7 +65,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    switch (m_levelType) {
+    switch (m_product) {
         case PressureLevel:
             m_fileStructure.hasLevelDimension = true;
             m_subFolder = "pressure";
@@ -79,7 +79,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
                 m_unit = m;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             m_fileNamePattern = m_fileVariableName + ".%d.nc";
             break;
@@ -93,7 +93,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
 
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             break;
 
@@ -106,7 +106,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
 
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             break;
 
@@ -119,7 +119,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
 
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             break;
 
