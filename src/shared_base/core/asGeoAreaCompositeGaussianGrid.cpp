@@ -30,11 +30,11 @@
 
 asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR,
                                                                const Coo &CornerLL, const Coo &CornerLR,
-                                                               asGeoAreaGaussianGrid::GaussianGridType type,
-                                                               float Level, float Height, int flatAllowed)
+                                                               asGeo::GridType type, float Level, float Height,
+                                                               int flatAllowed)
         : asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
-    m_gaussianGridType = type;
+    m_gridType = type;
 
     asGeoAreaGaussianGrid::BuildLonAxis(m_fullAxisX, type);
     asGeoAreaGaussianGrid::BuildLatAxis(m_fullAxisY, type);
@@ -50,11 +50,11 @@ asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &Corner
 }
 
 asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb,
-                                                               asGeoAreaGaussianGrid::GaussianGridType type,
-                                                               float Level, float Height, int flatAllowed)
+                                                               asGeo::GridType type, float Level, float Height,
+                                                               int flatAllowed)
         : asGeoAreaCompositeGrid(Level, Height)
 {
-    m_gaussianGridType = type;
+    m_gridType = type;
 
     asGeoAreaGaussianGrid::BuildLonAxis(m_fullAxisX, type);
     asGeoAreaGaussianGrid::BuildLatAxis(m_fullAxisY, type);
@@ -101,8 +101,7 @@ bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *othera
         return false;
     asGeoAreaCompositeGaussianGrid *otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid *>(otherarea));
 
-    return otherareaGaussian->GetGaussianGridType() == GetGaussianGridType();
-
+    return otherareaGaussian->GetGridType() == GetGridType();
 }
 
 Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb) const

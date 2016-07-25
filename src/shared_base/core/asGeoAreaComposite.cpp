@@ -32,7 +32,7 @@ asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR,
                                        const Coo &CornerLR, float Level, float Height, int flatAllowed)
         : asGeo()
 {
-    // Set the members
+    m_gridType = Regular;
     m_cornerUL = CornerUL;
     m_cornerUR = CornerUR;
     m_cornerLL = CornerLL;
@@ -56,7 +56,7 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
                                        float Height, int flatAllowed)
         : asGeo()
 {
-    // Set the members
+    m_gridType = Regular;
     m_cornerUL.x = Xmin;
     m_cornerUL.y = Ymin + Ywidth;
     m_cornerUR.x = Xmin + Xwidth;
@@ -83,7 +83,7 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
 asGeoAreaComposite::asGeoAreaComposite(float Level, float Height)
         : asGeo()
 {
-    // Set the members
+    m_gridType = Regular;
     m_level = Level;
     m_height = Height;
     m_cornerUL.x = 0;
@@ -108,7 +108,6 @@ asGeoAreaComposite::~asGeoAreaComposite()
 
 void asGeoAreaComposite::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
 {
-    // Set the members
     m_cornerUL.x = Xmin;
     m_cornerUL.y = Ymin + Ywidth;
     m_cornerUR.x = Xmin + Xwidth;

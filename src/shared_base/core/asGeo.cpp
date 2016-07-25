@@ -74,3 +74,17 @@ bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
 
     return true;
 }
+
+wxString asGeo::GetGridTypeString() const
+{
+    switch (m_gridType) {
+        case (Regular):
+            return "Regular";
+        case (GaussianT62):
+            return "GaussianT62";
+        case (GaussianT382):
+            return "GaussianT382";
+        default:
+            return "Not found";
+    }
+}

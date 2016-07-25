@@ -29,10 +29,12 @@
 #include "asGeoAreaGaussianGrid.h"
 
 asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
-                                             const Coo &CornerLR, GaussianGridType type, float Level, float Height,
+                                             const Coo &CornerLR, asGeo::GridType type, float Level, float Height,
                                              int flatAllowed)
         : asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
 {
+    m_gridType = type;
+
     BuildLonAxis(m_fullAxisX, type);
     BuildLatAxis(m_fullAxisY, type);
 
@@ -46,10 +48,12 @@ asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &Cor
         asThrowException(_("The given area does not match a gaussian grid."));
 }
 
-asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type,
+asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeo::GridType type,
                                              float Level, float Height, int flatAllowed)
         : asGeoArea(Level, Height)
 {
+    m_gridType = type;
+
     BuildLonAxis(m_fullAxisX, type);
     BuildLatAxis(m_fullAxisY, type);
 
@@ -78,15 +82,15 @@ asGeoAreaGaussianGrid::~asGeoAreaGaussianGrid()
     //dtor
 }
 
-void asGeoAreaGaussianGrid::BuildLonAxis(Array1DDouble &axis, const GaussianGridType &type)
+void asGeoAreaGaussianGrid::BuildLonAxis(Array1DDouble &axis, const asGeo::GridType &type)
 {
     int ni = 0;
     switch (type) {
-        case (T62): {
+        case (GaussianT62): {
             ni = 192;
             break;
         }
-        case (T382): {
+        case (GaussianT382): {
             ni = 1152;
             break;
         }
@@ -98,10 +102,10 @@ void asGeoAreaGaussianGrid::BuildLonAxis(Array1DDouble &axis, const GaussianGrid
     axis = Array1DDouble::LinSpaced(ni * 3 + 1, -360, 720);
 }
 
-void asGeoAreaGaussianGrid::BuildLatAxis(Array1DDouble &axis, const GaussianGridType &type)
+void asGeoAreaGaussianGrid::BuildLatAxis(Array1DDouble &axis, const asGeo::GridType &type)
 {
     switch (type) {
-        case (T62): {
+        case (GaussianT62): {
             axis.resize(94);
             axis << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522,
                     -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571,
@@ -114,7 +118,7 @@ void asGeoAreaGaussianGrid::BuildLatAxis(Array1DDouble &axis, const GaussianGrid
                     86.653, 88.542;
             break;
         }
-        case (T382): {
+        case (GaussianT382): {
             axis.resize(576);
             axis << -89.761, -89.451, -89.14, -88.828, -88.516, -88.204, -87.892, -87.58, -87.268, -86.955, -86.643,
                     -86.331, -86.019, -85.707, -85.394, -85.082, -84.77, -84.458, -84.146, -83.833, -83.521, -83.209,

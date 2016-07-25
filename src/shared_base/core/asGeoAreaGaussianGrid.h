@@ -36,24 +36,18 @@ class asGeoAreaGaussianGrid
         : public asGeoArea
 {
 public:
-    enum GaussianGridType
-    {
-        T62,
-        T382
-    };
-
     asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                          GaussianGridType type = T62, float Level = asNONE, float Height = asNONE,
+                          asGeo::GridType type, float Level = asNONE, float Height = asNONE,
                           int flatAllowed = asFLAT_ALLOWED);
 
-    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, GaussianGridType type = T62,
+    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeo::GridType type,
                           float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     virtual ~asGeoAreaGaussianGrid();
 
-    static void BuildLonAxis(Array1DDouble &axis, const GaussianGridType &type);
+    static void BuildLonAxis(Array1DDouble &axis, const asGeo::GridType &type);
 
-    static void BuildLatAxis(Array1DDouble &axis, const GaussianGridType &type);
+    static void BuildLatAxis(Array1DDouble &axis, const asGeo::GridType &type);
 
     int GetXaxisPtsnb() const;
 
