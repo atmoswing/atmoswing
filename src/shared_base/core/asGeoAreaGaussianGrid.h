@@ -38,7 +38,8 @@ class asGeoAreaGaussianGrid
 public:
     enum GaussianGridType
     {
-        T62
+        T62,
+        T382
     };
 
     asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
@@ -64,10 +65,11 @@ private:
     Array1DDouble m_fullAxisX;
     Array1DDouble m_fullAxisY;
 
+    void BuildAxes(const GaussianGridType &type);
+
     bool IsOnGrid(const Coo &point) const;
 
     bool IsOnGrid(double Xcoord, double Ycoord) const;
-
 };
 
 #endif // asGeoAreaGaussianGrid_H
