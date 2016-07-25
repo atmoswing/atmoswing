@@ -52,8 +52,7 @@ public:
 
     virtual bool Close();
 
-    bool SetIndexPosition(const int gribParameterDiscipline, const int gribParameterCategory,
-                          const int gribParameterNum, const float level);
+    bool SetIndexPosition(const VectorInt gribCode, const float level);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
