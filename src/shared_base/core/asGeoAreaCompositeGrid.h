@@ -38,7 +38,7 @@ class asGeoAreaCompositeGrid
 public:
     enum GridType //!< Define available parameters sets (for the GUI)
     {
-        Regular, GaussianT62
+        Regular, GaussianT62, GaussianT382
     };
 
     asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
@@ -71,6 +71,8 @@ public:
                 return "Regular";
             case (GaussianT62):
                 return "GaussianT62";
+            case (GaussianT382):
+                return "GaussianT382";
             default:
                 return "Not found";
         }

@@ -30,7 +30,7 @@
 #include "gtest/gtest.h"
 
 
-TEST(GeoAreaCompositeGaussianGrid, ConstructorAlternativeOneArea)
+TEST(GeoAreaCompositeGaussianGrid, GaussianT62OneArea)
 {
     double Xmin = 9.375;
     int Xptsnb = 5;
@@ -44,6 +44,23 @@ TEST(GeoAreaCompositeGaussianGrid, ConstructorAlternativeOneArea)
     EXPECT_EQ(1, geoArea->GetNbComposites());
     EXPECT_DOUBLE_EQ(16.875, geoArea->GetXmax());
     EXPECT_DOUBLE_EQ(37.142, geoArea->GetYmax());
+    wxDELETE(geoArea);
+}
+
+TEST(GeoAreaCompositeGaussianGrid, GaussianT382OneArea)
+{
+    double Xmin = 9.375;
+    int Xptsnb = 20;
+    double Ymin = 29.193;
+    int Yptsnb = 20;
+    double step = 0;
+    wxString gridType = "GaussianT382";
+    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+                                                                          step);
+
+    EXPECT_EQ(1, geoArea->GetNbComposites());
+    EXPECT_NEAR(15.312, geoArea->GetXmax(), 0.001);
+    EXPECT_NEAR(35.126, geoArea->GetYmax(), 0.001);
     wxDELETE(geoArea);
 }
 
