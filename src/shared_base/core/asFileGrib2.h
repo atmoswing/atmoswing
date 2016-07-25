@@ -73,6 +73,7 @@ private:
     VectorInt m_parameterDisciplines;
     VectorInt m_parameterCategories;
     VectorInt m_parameterNums;
+    VectorInt m_levelTypes;
     VectorDouble m_refTimes;
     VectorDouble m_times;
     VectorDouble m_forecastTimes;

@@ -59,7 +59,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
     m_fileExtension = wxEmptyString;
-    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
+    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');

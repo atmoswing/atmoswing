@@ -69,7 +69,7 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
             m_yAxisStep = 0.5;
             if (m_dataId.IsSameAs("hgt", false)) {
                 m_parameter = GeopotentialHeight;
-                m_gribCode = {0, 3, 5};
+                m_gribCode = {0, 3, 5, 100};
                 m_parameterName = "Geopotential height";
                 m_unit = gpm;
                 m_fileStructure.dimLevelName = "isobaric";
