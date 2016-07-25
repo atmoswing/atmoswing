@@ -51,13 +51,11 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
                                                                          Level, Height, flatAllowed);
         return area;
     } else if (type.IsSameAs("GaussianT62", false)) {
-        asGeoAreaGaussianGrid::GaussianGridType gaussianType = asGeoAreaGaussianGrid::T62;
-        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, gaussianType,
+        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, asGeo::GaussianT62,
                                                                           Level, Height, flatAllowed);
         return area;
     } else if (type.IsSameAs("GaussianT382", false)) {
-        asGeoAreaGaussianGrid::GaussianGridType gaussianType = asGeoAreaGaussianGrid::T382;
-        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, gaussianType,
+        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, asGeo::GaussianT382,
                                                                           Level, Height, flatAllowed);
         return area;
     } else {

@@ -38,21 +38,16 @@ class asGeoAreaCompositeGaussianGrid
 {
 public:
     asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                                   asGeoAreaGaussianGrid::GaussianGridType type = asGeoAreaGaussianGrid::T62,
-                                   float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                                   asGeo::GridType type = GaussianT62, float Level = asNONE, float Height = asNONE,
+                                   int flatAllowed = asFLAT_FORBIDDEN);
 
     asGeoAreaCompositeGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb,
-                                   asGeoAreaGaussianGrid::GaussianGridType type = asGeoAreaGaussianGrid::T62,
-                                   float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                                   asGeo::GridType type = GaussianT382, float Level = asNONE, float Height = asNONE,
+                                   int flatAllowed = asFLAT_FORBIDDEN);
 
     virtual ~asGeoAreaCompositeGaussianGrid();
 
     bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const;
-
-    asGeoAreaGaussianGrid::GaussianGridType GetGaussianGridType() const
-    {
-        return m_gaussianGridType;
-    }
 
     double GetXstep() const
     {
@@ -87,15 +82,12 @@ public:
 protected:
 
 private:
-    asGeoAreaGaussianGrid::GaussianGridType m_gaussianGridType;
     Array1DDouble m_fullAxisX;
     Array1DDouble m_fullAxisY;
 
     bool IsOnGrid(const Coo &point) const;
 
     bool IsOnGrid(double Xcoord, double Ycoord) const;
-
-    void BuildGaussianGrid();
 };
 
 #endif // asGeoAreaCompositeGaussianGrid_H
