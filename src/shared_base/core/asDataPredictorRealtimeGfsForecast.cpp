@@ -113,7 +113,7 @@ bool asDataPredictorRealtimeGfsForecast::Init()
         m_unit = mm;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, LevelEnumToString(m_levelType)));
+                                          m_dataId, LevelEnumToString(m_product)));
     }
 
     // Check data ID

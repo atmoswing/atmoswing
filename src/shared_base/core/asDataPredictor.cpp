@@ -63,11 +63,11 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
-        m_levelType = StringToLevelEnum(levelType);
+        m_product = StringToProductEnum(levelType);
         m_dataId = dataId.AfterFirst('/');
     } else {
         asLogMessage(wxString::Format(_("The data ID (%s) does not contain the level type"), dataId));
-        m_levelType = Any;
+        m_product = Any;
     }
 
 }
@@ -249,33 +249,51 @@ asDataPredictor::Unit asDataPredictor::StringToUnitEnum(const wxString &UnitStr)
     return m;
 }
 
-asDataPredictor::Level asDataPredictor::StringToLevelEnum(const wxString &levelStr)
+asDataPredictor::Product asDataPredictor::StringToProductEnum(const wxString &productStr)
 {
-    if (levelStr.CmpNoCase("PressureLevel") == 0 || levelStr.CmpNoCase("press") == 0 || levelStr.CmpNoCase("pl") == 0) {
+    if (productStr.CmpNoCase("PressureLevel") == 0 ||
+        productStr.CmpNoCase("press") == 0 ||
+        productStr.CmpNoCase("pl") == 0) {
         return PressureLevel;
-    } else if (levelStr.CmpNoCase("Surface") == 0 || levelStr.CmpNoCase("surf") == 0 || levelStr.CmpNoCase("sfc") == 0) {
+    } else if (productStr.CmpNoCase("Surface") == 0 ||
+               productStr.CmpNoCase("surf") == 0 ||
+               productStr.CmpNoCase("sfc") == 0) {
         return Surface;
-    } else if (levelStr.CmpNoCase("SurfaceFlux") == 0 || levelStr.CmpNoCase("flux") == 0) {
+    } else if (productStr.CmpNoCase("SurfaceFlux") == 0 ||
+               productStr.CmpNoCase("flux") == 0) {
         return SurfaceFlux;
-    } else if (levelStr.CmpNoCase("OtherFlux") == 0 || levelStr.CmpNoCase("oflux") == 0) {
+    } else if (productStr.CmpNoCase("OtherFlux") == 0 ||
+               productStr.CmpNoCase("oflux") == 0) {
         return OtherFlux;
-    } else if (levelStr.CmpNoCase("Tropopause") == 0 || levelStr.CmpNoCase("tropo") == 0) {
+    } else if (productStr.CmpNoCase("Tropopause") == 0 ||
+               productStr.CmpNoCase("tropo") == 0) {
         return Tropopause;
-    } else if (levelStr.CmpNoCase("PotentialTemperatureLevel") == 0 || levelStr.CmpNoCase("pott") == 0 || levelStr.CmpNoCase("pt") == 0) {
+    } else if (productStr.CmpNoCase("PotentialTemperatureLevel") == 0 ||
+               productStr.CmpNoCase("pott") == 0 ||
+               productStr.CmpNoCase("pt") == 0) {
         return PotentialTemperatureLevel;
-    } else if (levelStr.CmpNoCase("PotentialVorticityLevel") == 0 || levelStr.CmpNoCase("pv") == 0) {
+    } else if (productStr.CmpNoCase("PotentialVorticityLevel") == 0 ||
+               productStr.CmpNoCase("ipv") == 0 ||
+               productStr.CmpNoCase("pv") == 0) {
         return PotentialVorticityLevel;
-    } else if (levelStr.CmpNoCase("ModelLevel") == 0 || levelStr.CmpNoCase("model") == 0 || levelStr.CmpNoCase("ml") == 0) {
+    } else if (productStr.CmpNoCase("ModelLevel") == 0 ||
+               productStr.CmpNoCase("model") == 0 ||
+               productStr.CmpNoCase("ml") == 0) {
         return ModelLevel;
+    } else if (productStr.CmpNoCase("IsentropicLevel") == 0 ||
+               productStr.CmpNoCase("isentropic") == 0 ||
+               productStr.CmpNoCase("theta") == 0 ||
+               productStr.CmpNoCase("isl") == 0) {
+        return IsentropicLevel;
     } else {
-        asThrowException(wxString::Format(_("The level enumeration (%s) entry doesn't exists"), levelStr));
+        asThrowException(wxString::Format(_("The level enumeration (%s) entry doesn't exists"), productStr));
     }
     return Any;
 }
 
-wxString asDataPredictor::LevelEnumToString(Level level)
+wxString asDataPredictor::LevelEnumToString(Product product)
 {
-    switch (level) {
+    switch (product) {
         case (Any):
             return "Any";
         case (PressureLevel):
@@ -294,6 +312,8 @@ wxString asDataPredictor::LevelEnumToString(Level level)
             return "PotentialVorticityLevel";
         case (ModelLevel):
             return "ModelLevel";
+        case (IsentropicLevel):
+            return "IsentropicLevel";
         default:
             asLogError(_("The given data level type in unknown."));
     }
@@ -1379,7 +1399,7 @@ float asDataPredictor::GetMaxValue() const
 
 void asDataPredictor::CheckLevelTypeIsDefined()
 {
-    if(m_levelType == Any) {
+    if(m_product == Any) {
         asThrowException(_("The type of level must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
     }
 }

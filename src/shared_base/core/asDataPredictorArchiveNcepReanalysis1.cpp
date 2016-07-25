@@ -66,7 +66,7 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    switch (m_levelType) {
+    switch (m_product) {
         case PressureLevel:
             m_fileStructure.hasLevelDimension = true;
             m_subFolder = "pressure";
@@ -109,7 +109,7 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
                 m_unit = m_s;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             m_fileNamePattern = m_fileVariableName + ".%d.nc";
             break;
@@ -187,7 +187,7 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
                 m_unit = m_s;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             break;
 
@@ -426,7 +426,7 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
                 m_unit = N_m2;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_levelType)));
+                                                  m_dataId, LevelEnumToString(m_product)));
             }
             break;
         default: asThrowException(_("level type not implemented for this reanalysis dataset."));
