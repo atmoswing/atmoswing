@@ -137,9 +137,8 @@ bool asFileGrib2::ParseStructure()
             m_messageOffsets.push_back(offset);
             m_messageSizes.push_back(currentMessageSize);
             m_fieldNum.push_back(n);
-            m_refTimes.push_back(
-                    asTime::GetMJD((int) listSec1[5], (int) listSec1[6], (int) listSec1[7], (int) listSec1[8],
-                                   (int) listSec1[9]));
+            m_refTimes.push_back(asTime::GetMJD((int) listSec1[5], (int) listSec1[6], (int) listSec1[7],
+                                                (int) listSec1[8], (int) listSec1[9]));
 
             // Get all the metadata for a given data field
             gribfield *gfld;
@@ -169,10 +168,8 @@ bool asFileGrib2::ParseStructure()
             }
 
             m_parameterDisciplines.push_back(0);
-            m_parameterCategories.push_back(
-                    (int) gfld->ipdtmpl[0]); // http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
-            m_parameterNums.push_back(
-                    (int) gfld->ipdtmpl[1]); // http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
+            m_parameterCategories.push_back((int) gfld->ipdtmpl[0]); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
+            m_parameterNums.push_back((int) gfld->ipdtmpl[1]); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
             m_forecastTimes.push_back(gfld->ipdtmpl[8]);
             GetLevel(gfld);
 
@@ -201,6 +198,7 @@ void asFileGrib2::GetLevel(const gribfield *gfld)
         surfVal /= 100; // Pa to hPa
     }
 
+    m_levelTypes.push_back(gfld->ipdtmpl[9]);
     m_levels.push_back(surfVal);
 }
 
@@ -335,7 +333,7 @@ bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
     m_index = asNOT_FOUND;
     for (int i = 0; i < m_parameterNums.size(); ++i) {
         if (m_parameterDisciplines[i] == gribCode[0] && m_parameterCategories[i] == gribCode[1] &&
-            m_parameterNums[i] == gribCode[2] && m_levels[i] == level) {
+            m_parameterNums[i] == gribCode[2] && m_levelTypes[i] == gribCode[3], m_levels[i] == level) {
 
             if (m_index >= 0) {
                 asLogError(_("The desired parameter was found twice in the file."));
