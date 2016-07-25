@@ -104,7 +104,7 @@ bool asFileGrib2::ParseStructure()
     g2int offset(0);
     g2int seekLength(32000);
 
-    for (; ;) {
+    for (;;) {
         // Searches a file for the next GRIB message.
         seekgb(m_filtPtr, seekPosition, seekLength, &offset, &currentMessageSize);
         if (currentMessageSize == 0)
@@ -117,7 +117,7 @@ bool asFileGrib2::ParseStructure()
         }
 
         // Read block of data from stream
-        unsigned char *cgrib = (unsigned char *) malloc((size_t)currentMessageSize);
+        unsigned char *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
         fread(cgrib, sizeof(unsigned char), currentMessageSize, m_filtPtr);
         seekPosition = offset + currentMessageSize;
 
@@ -137,8 +137,9 @@ bool asFileGrib2::ParseStructure()
             m_messageOffsets.push_back(offset);
             m_messageSizes.push_back(currentMessageSize);
             m_fieldNum.push_back(n);
-            m_refTimes.push_back(asTime::GetMJD((int) listSec1[5], (int) listSec1[6], (int) listSec1[7],
-                                                (int) listSec1[8], (int) listSec1[9]));
+            m_refTimes.push_back(
+                    asTime::GetMJD((int) listSec1[5], (int) listSec1[6], (int) listSec1[7], (int) listSec1[8],
+                                   (int) listSec1[9]));
 
             // Get all the metadata for a given data field
             gribfield *gfld;
@@ -151,10 +152,10 @@ bool asFileGrib2::ParseStructure()
             }
 
             m_times.push_back(asTime::GetMJD((int) gfld->idsect[5], (int) gfld->idsect[6], (int) gfld->idsect[7],
-                                    (int) gfld->idsect[8], (int) gfld->idsect[9]));
+                                             (int) gfld->idsect[8], (int) gfld->idsect[9]));
 
             // Grid Definition
-            if(!CheckGridDefinition(gfld)) {
+            if (!CheckGridDefinition(gfld)) {
                 asLogError(_("Grid definition not allowed yet."));
                 return false;
             }
@@ -162,14 +163,16 @@ bool asFileGrib2::ParseStructure()
             BuildAxes(gfld);
 
             // Product Definition
-            if(!CheckProductDefinition(gfld)) {
+            if (!CheckProductDefinition(gfld)) {
                 asLogError(_("Product definition not allowed yet."));
                 return false;
             }
 
             m_parameterDisciplines.push_back(0);
-            m_parameterCategories.push_back((int)gfld->ipdtmpl[0]); // http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
-            m_parameterNums.push_back((int)gfld->ipdtmpl[1]); // http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
+            m_parameterCategories.push_back(
+                    (int) gfld->ipdtmpl[0]); // http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
+            m_parameterNums.push_back(
+                    (int) gfld->ipdtmpl[1]); // http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
             m_forecastTimes.push_back(gfld->ipdtmpl[8]);
             GetLevel(gfld);
 
@@ -180,7 +183,7 @@ bool asFileGrib2::ParseStructure()
 
     // Check unique time value
     for (int i = 0; i < m_times.size(); ++i) {
-        if(m_times[i] != m_times[0]) {
+        if (m_times[i] != m_times[0]) {
             asLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
             return false;
         }
@@ -223,23 +226,23 @@ bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
     }
 
     // Grid Definition Template 3.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp3-0.shtml
-    if(gfld->igdtmpl[0] != 6)
+    if (gfld->igdtmpl[0] != 6)
         return false;
-    if(gfld->igdtmpl[1] != 0)
+    if (gfld->igdtmpl[1] != 0)
         return false;
-    if(gfld->igdtmpl[2] != 0)
+    if (gfld->igdtmpl[2] != 0)
         return false;
-    if(gfld->igdtmpl[3] != 0)
+    if (gfld->igdtmpl[3] != 0)
         return false;
-    if(gfld->igdtmpl[4] != 0)
+    if (gfld->igdtmpl[4] != 0)
         return false;
-    if(gfld->igdtmpl[5] != 0)
+    if (gfld->igdtmpl[5] != 0)
         return false;
-    if(gfld->igdtmpl[6] != 0)
+    if (gfld->igdtmpl[6] != 0)
         return false;
-    if(gfld->igdtmpl[9] != 0)
+    if (gfld->igdtmpl[9] != 0)
         return false;
-    if(gfld->igdtmpl[10] != 0)
+    if (gfld->igdtmpl[10] != 0)
         return false;
 
     return true;
@@ -286,7 +289,7 @@ void asFileGrib2::handleGribError(g2int ierr) const
         asLogError(_("Unrecognized Section encountered."));
     } else if (ierr == 9) {
         asLogError(_("Data Representation Template 5.NN not yet implemented."));
-    } else if (ierr >=10 && ierr <=16) {
+    } else if (ierr >= 10 && ierr <= 16) {
         asLogError(_("Error unpacking a Section."));
     } else {
         asLogError(_("Unknown Grib error."));
@@ -324,14 +327,15 @@ double asFileGrib2::GetTime() const
     return m_times[m_index];
 }
 
-bool asFileGrib2::SetIndexPosition(const int gribParameterDiscipline, const int gribParameterCategory,
-                                   const int gribParameterNum, const float level)
+bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
 {
+    wxASSERT(gribCode.size() == 3);
+
     // Find corresponding data
     m_index = asNOT_FOUND;
     for (int i = 0; i < m_parameterNums.size(); ++i) {
-        if (m_parameterDisciplines[i] == gribParameterDiscipline && m_parameterCategories[i] == gribParameterCategory &&
-            m_parameterNums[i] == gribParameterNum && m_levels[i] == level) {
+        if (m_parameterDisciplines[i] == gribCode[0] && m_parameterCategories[i] == gribCode[1] &&
+            m_parameterNums[i] == gribCode[2] && m_levels[i] == level) {
 
             if (m_index >= 0) {
                 asLogError(_("The desired parameter was found twice in the file."));
@@ -362,7 +366,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     }
 
     // Read block of data from stream
-    unsigned char *cgrib = (unsigned char *) malloc((size_t)m_messageSizes[m_index]);
+    unsigned char *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
     fread(cgrib, sizeof(unsigned char), m_messageSizes[m_index], m_filtPtr);
 
     // Get the data
@@ -375,7 +379,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
         return false;
     }
 
-    if (gfld->unpacked !=1 || gfld->expanded != 1) {
+    if (gfld->unpacked != 1 || gfld->expanded != 1) {
         asLogError(_("The Grib data were not unpacked neither expanded."));
         return false;
     }
@@ -387,16 +391,16 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     int iLonEnd = IndexStart[0] + IndexCount[0] - 1;
     int iLatStart = IndexStart[1];
     int iLatEnd = IndexStart[1] + IndexCount[1] - 1;
-    int nLons = (int)m_xAxes[m_index].size();
-    int nLats = (int)m_yAxes[m_index].size();
+    int nLons = (int) m_xAxes[m_index].size();
+    int nLats = (int) m_yAxes[m_index].size();
     int finalIndex = 0;
 
     if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
-        for (int i_lat = nLats-1; i_lat >= 0; i_lat--) {
+        for (int i_lat = nLats - 1; i_lat >= 0; i_lat--) {
             if (i_lat >= iLatStart && i_lat <= iLatEnd) {
                 for (int i_lon = 0; i_lon < nLons; i_lon++) {
                     if (i_lon >= iLonStart && i_lon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[i_lat*nLons + i_lon];
+                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
                         finalIndex++;
                     }
                 }
@@ -407,7 +411,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
             if (i_lat >= iLatStart && i_lat <= iLatEnd) {
                 for (int i_lon = 0; i_lon < nLons; i_lon++) {
                     if (i_lon >= iLonStart && i_lon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[i_lat*nLons + i_lon];
+                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
                         finalIndex++;
                     }
                 }

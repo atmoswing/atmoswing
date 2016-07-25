@@ -59,9 +59,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
     m_fileExtension = wxEmptyString;
-    m_gribParameterDiscipline = asNOT_FOUND;
-    m_gribParameterCategory = asNOT_FOUND;
-    m_gribParameterNum = asNOT_FOUND;
+    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
@@ -501,7 +499,7 @@ bool asDataPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCom
     }
 
     // Set index position
-    if (!gbFile.SetIndexPosition(m_gribParameterDiscipline, m_gribParameterCategory, m_gribParameterNum, m_level)) {
+    if (!gbFile.SetIndexPosition(m_gribCode, m_level)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;

@@ -69,9 +69,7 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
             m_yAxisStep = 0.5;
             if (m_dataId.IsSameAs("hgt", false)) {
                 m_parameter = GeopotentialHeight;
-                m_gribParameterDiscipline = 0;
-                m_gribParameterCategory = 3;
-                m_gribParameterNum = 5;
+                m_gribCode = {0, 3, 5};
                 m_parameterName = "Geopotential height";
                 m_unit = gpm;
                 m_fileStructure.dimLevelName = "isobaric";
@@ -86,7 +84,7 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_gribParameterNum == asNOT_FOUND) {
+    if (m_fileNamePattern.IsEmpty() || m_gribCode[2] == asNOT_FOUND) {
         asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
                                  m_dataId, m_datasetName));
         return false;

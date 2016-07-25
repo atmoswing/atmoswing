@@ -340,9 +340,7 @@ protected:
     VectorDouble m_nanValues;
     Parameter m_parameter;
     wxString m_parameterName;
-    int m_gribParameterDiscipline;
-    int m_gribParameterCategory;
-    int m_gribParameterNum;
+    VectorInt m_gribCode;
     Level m_levelType;
     wxString m_fileVariableName;
     Unit m_unit;
