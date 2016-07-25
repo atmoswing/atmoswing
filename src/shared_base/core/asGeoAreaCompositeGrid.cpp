@@ -55,6 +55,11 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
         asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, gaussianType,
                                                                           Level, Height, flatAllowed);
         return area;
+    } else if (type.IsSameAs("GaussianT382", false)) {
+        asGeoAreaGaussianGrid::GaussianGridType gaussianType = asGeoAreaGaussianGrid::T382;
+        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, gaussianType,
+                                                                          Level, Height, flatAllowed);
+        return area;
     } else {
         asLogError(wxString::Format(_("Given grid type: %s"), type));
         asThrowException("The given grid type doesn't correspond to any existing option.");

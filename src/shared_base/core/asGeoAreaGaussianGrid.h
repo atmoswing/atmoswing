@@ -51,6 +51,10 @@ public:
 
     virtual ~asGeoAreaGaussianGrid();
 
+    static void BuildLonAxis(Array1DDouble &axis, const GaussianGridType &type);
+
+    static void BuildLatAxis(Array1DDouble &axis, const GaussianGridType &type);
+
     int GetXaxisPtsnb() const;
 
     int GetYaxisPtsnb() const;
@@ -64,8 +68,6 @@ protected:
 private:
     Array1DDouble m_fullAxisX;
     Array1DDouble m_fullAxisY;
-
-    void BuildAxes(const GaussianGridType &type);
 
     bool IsOnGrid(const Coo &point) const;
 
