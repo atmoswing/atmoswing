@@ -1065,9 +1065,8 @@ void asFileNetcdf::GetVar(const wxString &varName, float *pValue)
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_FLOAT));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_FLOAT));
 
     // Get value
     m_status = nc_get_var_float(m_fileId, varId, pValue);
@@ -1090,9 +1089,8 @@ void asFileNetcdf::GetVar(const wxString &varName, double *pValue)
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_DOUBLE)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_DOUBLE));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_DOUBLE));
 
     // Get value
     m_status = nc_get_var_double(m_fileId, varId, pValue);
@@ -1115,9 +1113,8 @@ void asFileNetcdf::GetVar(const wxString &varName, wxString *pValue, const size_
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_STRING)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_STRING));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_STRING));
 
     // Get value
     std::vector<char *> data(totSize);
@@ -1148,9 +1145,8 @@ short asFileNetcdf::GetVarOneShort(const wxString &varName, size_t arrIndex)
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_SHORT)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_SHORT));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_SHORT));
 
     // Get value
     short val;
@@ -1176,9 +1172,8 @@ int asFileNetcdf::GetVarOneInt(const wxString &varName, size_t arrIndex)
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_INT)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_INT));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_INT));
 
     // Get value
     int val;
@@ -1204,9 +1199,8 @@ float asFileNetcdf::GetVarOneFloat(const wxString &varName, size_t arrIndex)
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_FLOAT)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_FLOAT));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_FLOAT));
 
     // Get value
     float val;
@@ -1232,9 +1226,8 @@ double asFileNetcdf::GetVarOneDouble(const wxString &varName, size_t arrIndex)
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_DOUBLE)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_DOUBLE));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_DOUBLE));
 
     // Get value
     double val;
@@ -1261,9 +1254,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_SHORT)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_SHORT));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_SHORT));
 
     // Get value
     m_status = nc_get_vara_short(m_fileId, varId, indexStart, indexCount, pValue);
@@ -1295,9 +1287,8 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
     // Check the given type
     nc_type nctype = m_struct.vars[varId].type;
     if (nctype != NC_INT)
-        asThrowException(
-                wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."), varName,
-                                 (int) nctype, (int) NC_INT));
+        asThrowException(wxString::Format(_("The variable (%s) type (%d) in file doesn't match the desired type (%d)."),
+                                          varName, (int) nctype, (int) NC_INT));
 
     // Get value
     m_status = nc_get_vara_int(m_fileId, varId, indexStart, indexCount, pValue);

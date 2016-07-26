@@ -37,6 +37,7 @@
 #include <asDataPredictorArchiveNcepCfsr2.h>
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
+#include <asDataPredictorArchiveEcmwfEraInterim.h>
 
 
 asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
@@ -66,6 +67,8 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNcepReanalysis2(dataId);
     } else if (datasetId.IsSameAs("NCEP_CFSR_v2", false)) {
         predictor = new asDataPredictorArchiveNcepCfsr2(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
+        predictor = new asDataPredictorArchiveEcmwfEraInterim(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
         predictor = new asDataPredictorArchiveNoaaOisst2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {

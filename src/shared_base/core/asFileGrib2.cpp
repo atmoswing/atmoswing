@@ -89,9 +89,7 @@ bool asFileGrib2::OpenDataset()
     }
 
     // Parse structure
-    ParseStructure();
-
-    return true;
+    return ParseStructure();
 }
 
 /*
