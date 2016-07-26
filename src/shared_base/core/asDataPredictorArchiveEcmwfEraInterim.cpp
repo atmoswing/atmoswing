@@ -33,26 +33,26 @@
 
 
 asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(const wxString &dataId)
-        : asDataPredictorArchiveNcepReanalysis1Subset(dataId)
+        : asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "ECMWF_ERA-40";
+    m_datasetId = "ECMWF_ERA_interim";
     m_originalProvider = "ECMWF";
-    m_datasetName = "ERA-40";
-    m_originalProviderStart = asTime::GetMJD(1957, 9, 1);
-    m_originalProviderEnd = asTime::GetMJD(2002, 8, 31);
+    m_datasetName = "ERA-interim";
+    m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
+    m_originalProviderEnd = NaNDouble;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(-32767);
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_subFolder = wxEmptyString;
     m_fileStructure.dimLatName = "latitude";
     m_fileStructure.dimLonName = "longitude";
     m_fileStructure.dimTimeName = "time";
     m_fileStructure.dimLevelName = "level";
+    m_subFolder = wxEmptyString;
 }
 
 asDataPredictorArchiveEcmwfEraInterim::~asDataPredictorArchiveEcmwfEraInterim()
@@ -64,81 +64,70 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
 {
     CheckLevelTypeIsDefined();
 
+    // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
+
     // Identify data ID and set the corresponding properties.
     switch (m_product) {
         case PressureLevel:
             m_fileStructure.hasLevelDimension = true;
             m_subFolder = "pressure";
-            m_xAxisStep = 2.5;
-            m_yAxisStep = 2.5;
+            m_xAxisStep = 0.75;
+            m_yAxisStep = 0.75;
             if (m_dataId.IsSameAs("z", false)) {
-                m_parameter = GeopotentialHeight;
-                m_parameterName = "Geopotential height";
-                m_fileNamePattern = "ECMWF_ERA40_hgt.nc";
+                m_parameter = Geopotential;
+                m_parameterName = "Geopotential";
                 m_fileVariableName = "z";
-                m_unit = m;
+                m_unit = m2_s2;
+            } else if (m_dataId.IsSameAs("t", false)) {
+                m_parameter = AirTemperature;
+                m_parameterName = "Temperature";
+                m_fileVariableName = "t";
+                m_unit = degK;
+            } else if (m_dataId.IsSameAs("r", false)) {
+                m_parameter = RelativeHumidity;
+                m_parameterName = "Relative humidity";
+                m_fileVariableName = "r";
+                m_unit = percent;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                                   m_dataId, LevelEnumToString(m_product)));
             }
-            m_fileNamePattern = m_fileVariableName + ".%d.nc";
+            m_fileNamePattern = m_fileVariableName + ".nc";
             break;
 
         case Surface:
             m_fileStructure.hasLevelDimension = false;
             m_subFolder = "surface";
-            m_xAxisStep = 2.5;
-            m_yAxisStep = 2.5;
-            if (m_dataId.IsSameAs("xxxx", false)) {
-
+            m_xAxisStep = 0.75;
+            m_yAxisStep = 0.75;
+            if (m_dataId.IsSameAs("tcw", false)) {
+                m_parameter = PrecipitableWater;
+                m_parameterName = "Total column water";
+                m_fileVariableName = "tcw";
+                m_unit = kg_m2;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                                   m_dataId, LevelEnumToString(m_product)));
             }
             break;
 
-        case PotentialTemperatureLevel:
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "xxxx";
-            m_xAxisStep = NaNFloat;
-            m_yAxisStep = NaNFloat;
-            if (m_dataId.IsSameAs("xxxx", false)) {
-
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            break;
-
-        case PotentialVorticityLevel:
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "xxxx";
-            m_xAxisStep = NaNFloat;
-            m_yAxisStep = NaNFloat;
-            if (m_dataId.IsSameAs("xxxx", false)) {
-
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            break;
+        case ModelLevel:
+            asThrowException(_("Model level type not implemented yet for ERA-interim."));
 
         default: asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(
-                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                 m_dataId, m_datasetName));
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                                    m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(
-                wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                 m_dataId, m_datasetName));
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
+                                    m_dataId, m_datasetName));
         return false;
     }
 
@@ -152,7 +141,7 @@ VectorString asDataPredictorArchiveEcmwfEraInterim::GetListOfFiles(asTimeArray &
 {
     VectorString files;
 
-    //
+    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 
     return files;
 }
@@ -160,14 +149,13 @@ VectorString asDataPredictorArchiveEcmwfEraInterim::GetListOfFiles(asTimeArray &
 bool asDataPredictorArchiveEcmwfEraInterim::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
-    //
-
-    return false;
+    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asDataPredictorArchiveEcmwfEraInterim::ConvertToMjd(double timeValue) const
 {
-    //
+    timeValue = (timeValue / 24.0); // hours to days
+    timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span
 
     return timeValue;
 }

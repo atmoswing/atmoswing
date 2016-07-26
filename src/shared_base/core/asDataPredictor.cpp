@@ -574,14 +574,51 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
 
     if (m_fileStructure.hasLevelDimension) {
         m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
-        ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);
+
+        nc_type ncTypeLevel = ncFile.GetVarType(m_fileStructure.dimLevelName);
+        switch (ncTypeLevel) {
+            case NC_FLOAT:
+                ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);
+                break;
+            case NC_INT: {
+                Array1DInt axisLevelInt(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+                ncFile.GetVar(m_fileStructure.dimLevelName, &axisLevelInt[0]);
+                for (int i = 0; i < axisLevelInt.size(); ++i) {
+                    m_fileStructure.axisLevel[i] = (float) axisLevelInt[i];
+                }
+            }
+                break;
+            default:
+                asLogError(_("Variable type not supported yet for the level dimension."));
+                return false;
+        }
     }
 
     // Time dimension takes ages to load !! Avoid and get the first value.
     m_fileStructure.axisTimeLength = ncFile.GetVarLength(m_fileStructure.dimTimeName);
-    m_fileStructure.axisTimeFirstValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0));
-    m_fileStructure.axisTimeLastValue = ConvertToMjd(ncFile.GetVarOneDouble(m_fileStructure.dimTimeName,
-                                                                            ncFile.GetVarLength(m_fileStructure.dimTimeName) - 1));
+
+    double timeFirstVal, timeLastVal;
+    nc_type ncTypeTime = ncFile.GetVarType(m_fileStructure.dimTimeName);
+    switch (ncTypeTime) {
+        case NC_DOUBLE:
+            timeFirstVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0);
+            timeLastVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
+            break;
+        case NC_FLOAT:
+            timeFirstVal = (double)ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, 0);
+            timeLastVal = (double)ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
+            break;
+        case NC_INT:
+            timeFirstVal = (double)ncFile.GetVarOneInt(m_fileStructure.dimTimeName, 0);
+            timeLastVal = (double)ncFile.GetVarOneInt(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
+            break;
+        default:
+            asLogError(_("Variable type not supported yet for the time dimension."));
+            return false;
+    }
+
+    m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal);
+    m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal);
 
     return true;
 }

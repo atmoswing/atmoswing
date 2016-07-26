@@ -49,6 +49,7 @@ public:
         AirTemperature,
         PotentialTemperature,
         GeopotentialHeight,
+        Geopotential,
         PrecipitableWater,
         PrecipitationRate,
         RelativeHumidity,
@@ -73,7 +74,7 @@ public:
 
     enum Unit
     {
-        nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2
+        nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2, m2_s2
     };
 
     enum Product

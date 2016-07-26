@@ -29,12 +29,12 @@
 #define ASDATAPREDICTORARCHIVEECMWFERAINTERIM_H
 
 #include <asIncludes.h>
-#include <asDataPredictorArchiveNcepReanalysis1Subset.h>
+#include <asDataPredictorArchive.h>
 
 class asGeoArea;
 
 class asDataPredictorArchiveEcmwfEraInterim
-        : public asDataPredictorArchiveNcepReanalysis1Subset
+        : public asDataPredictorArchive
 {
 public:
     asDataPredictorArchiveEcmwfEraInterim(const wxString &dataId);
