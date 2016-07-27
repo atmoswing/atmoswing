@@ -38,7 +38,7 @@ asDataPredictorArchiveNcepReanalysis1Subset::asDataPredictorArchiveNcepReanalysi
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "NCEP_Reanalysis_v1_terranum";
+    m_datasetId = "NCEP_Reanalysis_v1_subset";
     m_originalProvider = "NCEP/NCAR";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Reanalysis 1 subset";

@@ -58,6 +58,7 @@ public:
         Wind,
         Uwind,
         Vwind,
+        PotentialVorticity,
         PotentialEvaporation,
         SurfaceLiftedIndex,
         Pressure,
@@ -81,6 +82,7 @@ public:
     {
         Any,
         PressureLevel,
+        PressureLevelAssimilation,
         Surface,
         SurfaceFlux,
         OtherFlux,
@@ -88,7 +90,8 @@ public:
         PotentialTemperatureLevel,
         PotentialVorticityLevel,
         ModelLevel,
-        IsentropicLevel
+        IsentropicLevel,
+        VerticallyIntegrated
     };
 
     asDataPredictor(const wxString &dataId);

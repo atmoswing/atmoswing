@@ -38,7 +38,7 @@ asDataPredictorArchiveNoaaOisst2Subset::asDataPredictorArchiveNoaaOisst2Subset(c
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "NOAA_OISST_v2_terranum";
+    m_datasetId = "NOAA_OISST_v2_subset";
     m_originalProvider = "NOAA";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";

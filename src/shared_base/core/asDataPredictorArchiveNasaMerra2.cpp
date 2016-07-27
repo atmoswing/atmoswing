@@ -93,23 +93,6 @@ bool asDataPredictorArchiveNasaMerra2::Init()
             m_fileNamePattern = "%4d/%02d/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.nc4";
             break;
 
-        case Surface:
-            m_fileStructure.hasLevelDimension = false;
-            m_subFolder = "xxxxx";
-            m_xAxisStep = 0.625;
-            m_yAxisStep = 0.5;
-            if (m_dataId.IsSameAs("prwtr", false)) {
-                m_parameter = PrecipitableWater;
-                m_parameterName = "Precipitable water";
-                m_fileNamePattern = "pr_wtr.eatm.%d.nc";
-                m_fileVariableName = "pr_wtr";
-                m_unit = mm;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            break;
-
         default: asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
