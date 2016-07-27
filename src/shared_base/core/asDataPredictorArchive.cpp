@@ -38,6 +38,7 @@
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
 #include <asDataPredictorArchiveEcmwfEraInterim.h>
+#include <asDataPredictorArchiveNasaMerra2.h>
 
 
 asDataPredictorArchive::asDataPredictorArchive(const wxString &dataId)
@@ -69,6 +70,8 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNcepCfsr2(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
         predictor = new asDataPredictorArchiveEcmwfEraInterim(dataId);
+    } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
+        predictor = new asDataPredictorArchiveNasaMerra2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
         predictor = new asDataPredictorArchiveNoaaOisst2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {
@@ -181,18 +184,18 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
             // Get the spatial indices of the desired data
             m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                     &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                    lonMin, 0.01f);
+                                                                    lonMin, 0.01f, asHIDE_WARNINGS);
             if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
                 m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                         &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                        lonMin - 360, 0.01f);
+                                                                        lonMin - 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
                 m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                         &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                        lonMin + 360, 0.01f);
+                                                                        lonMin + 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fileIndexes.areas[i_area].lonStart < 0) {
                 asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ",
@@ -557,7 +560,7 @@ bool asDataPredictorArchive::ExtractFromFile(const wxString &fileName, asGeoArea
     return false;
 }
 
-double asDataPredictorArchive::ConvertToMjd(double timeValue) const
+double asDataPredictorArchive::ConvertToMjd(double timeValue, double refValue) const
 {
     return NaNDouble;
 }

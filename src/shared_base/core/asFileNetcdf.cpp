@@ -595,6 +595,34 @@ int asFileNetcdf::GetVarId(const wxString &varName)
     return id;
 }
 
+bool asFileNetcdf::HasAttribute(const wxString &attName, const wxString &varName)
+{
+    wxASSERT(m_opened);
+
+    // Check that the file is not in define mode
+    CheckDefModeClosed();
+
+    // Get the attribute id
+    if (varName.IsEmpty()) { // Global attribute
+        for (int i_att = 0; i_att < GetGlobAttsNb(); i_att++) {
+            if (m_struct.atts[i_att].name.IsSameAs(attName)) {
+                return true;
+            }
+        }
+    } else { // Variable attribute
+        int varId = GetVarId(varName);
+        if (varId == asNOT_FOUND)
+            return asNOT_FOUND;
+        for (int i_att = 0; i_att < GetVarAttsNb(varId); i_att++) {
+            if (m_struct.vars[varId].atts[i_att].name.IsSameAs(attName)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName)
 {
     wxASSERT(m_opened);

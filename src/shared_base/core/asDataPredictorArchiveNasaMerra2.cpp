@@ -25,94 +25,90 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#include "asDataPredictorArchiveEcmwfEraInterim.h"
+#include "asDataPredictorArchiveNasaMerra2.h"
+#include "asTypeDefs.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asFileNetcdf.h>
 
 
-asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(const wxString &dataId)
+asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "ECMWF_ERA_interim";
-    m_originalProvider = "ECMWF";
-    m_datasetName = "ERA-interim";
-    m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
+    m_datasetId = "NASA_MERRA_2";
+    m_originalProvider = "NASA";
+    m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
+    m_originalProviderStart = asTime::GetMJD(1980, 1, 1);
     m_originalProviderEnd = NaNDouble;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
-    m_nanValues.push_back(-32767);
+    m_nanValues.push_back(std::pow(10.f, 15.f));
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "latitude";
-    m_fileStructure.dimLonName = "longitude";
+    m_fileStructure.dimLatName = "lat";
+    m_fileStructure.dimLonName = "lon";
     m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
-    m_subFolder = wxEmptyString;
+    m_fileStructure.dimLevelName = "lev";
 }
 
-asDataPredictorArchiveEcmwfEraInterim::~asDataPredictorArchiveEcmwfEraInterim()
+asDataPredictorArchiveNasaMerra2::~asDataPredictorArchiveNasaMerra2()
 {
 
 }
 
-bool asDataPredictorArchiveEcmwfEraInterim::Init()
+bool asDataPredictorArchiveNasaMerra2::Init()
 {
     CheckLevelTypeIsDefined();
-
-    // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
 
     // Identify data ID and set the corresponding properties.
     switch (m_product) {
         case PressureLevel:
             m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "pressure";
-            m_xAxisStep = 0.75;
-            m_yAxisStep = 0.75;
-            if (m_dataId.IsSameAs("z", false)) {
-                m_parameter = Geopotential;
-                m_parameterName = "Geopotential";
-                m_fileVariableName = "z";
-                m_unit = m2_s2;
+            m_subFolder = "M2I6NPANA";
+            m_xAxisStep = 0.625;
+            m_yAxisStep = 0.5;
+            if (m_dataId.IsSameAs("h", false)) {
+                m_parameter = GeopotentialHeight;
+                m_parameterName = "Geopotential height";
+                m_fileVariableName = "H";
+                m_unit = m;
             } else if (m_dataId.IsSameAs("t", false)) {
                 m_parameter = AirTemperature;
-                m_parameterName = "Temperature";
-                m_fileVariableName = "t";
+                m_parameterName = "Air temperature";
+                m_fileVariableName = "T";
                 m_unit = degK;
-            } else if (m_dataId.IsSameAs("r", false)) {
-                m_parameter = RelativeHumidity;
-                m_parameterName = "Relative humidity";
-                m_fileVariableName = "r";
-                m_unit = percent;
+            } else if (m_dataId.IsSameAs("slp", false)) {
+                m_parameter = Pressure;
+                m_parameterName = "Sea-level pressure";
+                m_fileVariableName = "SLP";
+                m_unit = Pa;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                                   m_dataId, LevelEnumToString(m_product)));
             }
-            m_fileNamePattern = m_fileVariableName + ".nc";
+            m_fileNamePattern = "%4d/%02d/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.nc4";
             break;
 
         case Surface:
             m_fileStructure.hasLevelDimension = false;
-            m_subFolder = "surface";
-            m_xAxisStep = 0.75;
-            m_yAxisStep = 0.75;
-            if (m_dataId.IsSameAs("tcw", false)) {
+            m_subFolder = "xxxxx";
+            m_xAxisStep = 0.625;
+            m_yAxisStep = 0.5;
+            if (m_dataId.IsSameAs("prwtr", false)) {
                 m_parameter = PrecipitableWater;
-                m_parameterName = "Total column water";
-                m_fileVariableName = "tcw";
-                m_unit = kg_m2;
+                m_parameterName = "Precipitable water";
+                m_fileNamePattern = "pr_wtr.eatm.%d.nc";
+                m_fileVariableName = "pr_wtr";
+                m_unit = mm;
             } else {
                 asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                                   m_dataId, LevelEnumToString(m_product)));
             }
             break;
-
-        case ModelLevel:
-            asThrowException(_("Model level type not implemented yet for ERA-interim."));
 
         default: asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
@@ -137,26 +133,35 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfEraInterim::GetListOfFiles(asTimeArray &timeArray) const
+VectorString asDataPredictorArchiveNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
 {
     VectorString files;
+    Array1DDouble tArray = timeArray.GetTimeArray();
 
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+    TimeStruct tLast = asTime::GetTimeStruct(20000);
+
+    for (int i = 0; i < tArray.size(); i++) {
+        TimeStruct t = asTime::GetTimeStruct(tArray[i]);
+        if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
+            files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
+                                                                      t.month, t.day));
+            tLast = t;
+        }
+    }
 
     return files;
 }
 
-bool asDataPredictorArchiveEcmwfEraInterim::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+bool asDataPredictorArchiveNasaMerra2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
-double asDataPredictorArchiveEcmwfEraInterim::ConvertToMjd(double timeValue, double refValue) const
+double asDataPredictorArchiveNasaMerra2::ConvertToMjd(double timeValue, double refValue) const
 {
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span
+    wxASSERT(refValue>30000);
+    wxASSERT(refValue<70000);
 
-    return timeValue;
+    return refValue + (timeValue / 1440.0); // minutes to days
 }
-

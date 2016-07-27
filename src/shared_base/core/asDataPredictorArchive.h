@@ -71,7 +71,7 @@ protected:
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  VVArray2DFloat &compositeData);
 
-    virtual double ConvertToMjd(double timeValue) const;
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 

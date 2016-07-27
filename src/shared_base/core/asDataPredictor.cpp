@@ -568,9 +568,32 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
 {
     // Get full axes from the netcdf file
     m_fileStructure.axisLon = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLonName));
-    ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
     m_fileStructure.axisLat = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLatName));
-    ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
+
+    wxASSERT(ncFile.GetVarType(m_fileStructure.dimLonName) == ncFile.GetVarType(m_fileStructure.dimLatName));
+    nc_type ncTypeAxes = ncFile.GetVarType(m_fileStructure.dimLonName);
+    switch (ncTypeAxes) {
+        case NC_FLOAT:
+            ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
+            ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
+            break;
+        case NC_DOUBLE: {
+            Array1DDouble axisLonDouble(ncFile.GetVarLength(m_fileStructure.dimLonName));
+            Array1DDouble axisLatDouble(ncFile.GetVarLength(m_fileStructure.dimLatName));
+            ncFile.GetVar(m_fileStructure.dimLonName, &axisLonDouble[0]);
+            ncFile.GetVar(m_fileStructure.dimLatName, &axisLatDouble[0]);
+            for (int i = 0; i < axisLonDouble.size(); ++i) {
+                m_fileStructure.axisLon[i] = (float) axisLonDouble[i];
+            }
+            for (int i = 0; i < axisLatDouble.size(); ++i) {
+                m_fileStructure.axisLat[i] = (float) axisLatDouble[i];
+            }
+        }
+            break;
+        default:
+            asLogError(_("Variable type not supported yet for the level dimension."));
+            return false;
+    }
 
     if (m_fileStructure.hasLevelDimension) {
         m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
@@ -585,6 +608,14 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
                 ncFile.GetVar(m_fileStructure.dimLevelName, &axisLevelInt[0]);
                 for (int i = 0; i < axisLevelInt.size(); ++i) {
                     m_fileStructure.axisLevel[i] = (float) axisLevelInt[i];
+                }
+            }
+                break;
+            case NC_DOUBLE: {
+                Array1DDouble axisLevelDouble(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+                ncFile.GetVar(m_fileStructure.dimLevelName, &axisLevelDouble[0]);
+                for (int i = 0; i < axisLevelDouble.size(); ++i) {
+                    m_fileStructure.axisLevel[i] = (float) axisLevelDouble[i];
                 }
             }
                 break;
@@ -617,8 +648,14 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
             return false;
     }
 
-    m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal);
-    m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal);
+    double refValue = NaNDouble;
+    if (ncFile.HasAttribute("RangeBeginningDate")) {
+        wxString refValueStr = ncFile.GetAttString("RangeBeginningDate");
+        refValue = asTime::GetTimeFromString(refValueStr);
+    }
+
+    m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal, refValue);
+    m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal, refValue);
 
     return true;
 }
@@ -909,12 +946,13 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
 
     // Check if scaling is needed
     bool scalingNeeded = true;
-    float dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
-    if (asTools::IsNaN(dataAddOffset))
-        dataAddOffset = 0;
-    float dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
-    if (asTools::IsNaN(dataScaleFactor))
-        dataScaleFactor = 1;
+    float dataAddOffset = 0, dataScaleFactor = 1;
+    if (ncFile.HasAttribute("add_offset", m_fileVariableName)) {
+        dataAddOffset = ncFile.GetAttFloat("add_offset", m_fileVariableName);
+    }
+    if (ncFile.HasAttribute("scale_factor", m_fileVariableName)) {
+        dataScaleFactor = ncFile.GetAttFloat("scale_factor", m_fileVariableName);
+    }
     if (dataAddOffset == 0 && dataScaleFactor == 1)
         scalingNeeded = false;
 
@@ -978,7 +1016,8 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
     if (compositeData[0].capacity() == 0) {
         int totSize = 0;
         for (int i_area = 0; i_area < compositeData.size(); i_area++) {
-            totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
+            totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount
+                       * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
         }
         compositeData.reserve(totSize);
     }
@@ -991,11 +1030,20 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
         // Loop to extract the data from the array
         int ind = 0;
         for (int i_time = 0; i_time < m_fileIndexes.timeArrayCount; i_time++) {
-            Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
+            Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount,
+                                                   m_fileIndexes.areas[i_area].lonCount);
 
             for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
                 for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
-                    ind = i_lon + i_lat * m_fileIndexes.areas[i_area].lonCount + i_time * m_fileIndexes.areas[i_area].lonCount * m_fileIndexes.areas[i_area].latCount;
+                    ind = i_lon
+                          + i_lat * m_fileIndexes.areas[i_area].lonCount
+                          + i_time * m_fileIndexes.areas[i_area].lonCount * m_fileIndexes.areas[i_area].latCount;
+                    if (m_fileStructure.axisLat.size()>0 && m_fileStructure.axisLat[1] > m_fileStructure.axisLat[0]) {
+                        int latRevIndex = m_fileIndexes.areas[i_area].latCount - 1 - i_lat;
+                        ind = i_lon
+                              + latRevIndex * m_fileIndexes.areas[i_area].lonCount
+                              + i_time * m_fileIndexes.areas[i_area].lonCount * m_fileIndexes.areas[i_area].latCount;
+                    }
 
                     if (scalingNeeded) {
                         latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
@@ -1065,9 +1113,8 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compo
 
         for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
             for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
-                int latRevIndex = m_fileIndexes.areas[i_area].latCount - 1 - i_lat; // Axis reversed in Grib file.
+                int latRevIndex = m_fileIndexes.areas[i_area].latCount - 1 - i_lat; // Index reversed in Grib files
                 ind = i_lon + latRevIndex * m_fileIndexes.areas[i_area].lonCount;
-
                 latlonData(i_lat, i_lon) = data[ind];
 
                 // Check if not NaN

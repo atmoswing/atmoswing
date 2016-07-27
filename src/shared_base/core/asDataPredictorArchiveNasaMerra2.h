@@ -8,39 +8,38 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- *
- * When distributing Covered Code, include this CDDL Header Notice in
- * each file and include the License file (licence.txt). If applicable,
+ * 
+ * When distributing Covered Code, include this CDDL Header Notice in 
+ * each file and include the License file (licence.txt). If applicable, 
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- *
+ * 
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- *
+ * 
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
-#define ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
+#ifndef ASDATAPREDICTORARCHIVENASAMERRA2_H
+#define ASDATAPREDICTORARCHIVENASAMERRA2_H
 
 #include <asIncludes.h>
 #include <asDataPredictorArchive.h>
 
 class asGeoArea;
 
-class asDataPredictorArchiveNoaaOisst2Subset
+class asDataPredictorArchiveNasaMerra2
         : public asDataPredictorArchive
 {
 public:
-    asDataPredictorArchiveNoaaOisst2Subset(const wxString &dataId);
+    asDataPredictorArchiveNasaMerra2(const wxString &dataId);
 
-    virtual ~asDataPredictorArchiveNoaaOisst2Subset();
+    virtual ~asDataPredictorArchiveNasaMerra2();
 
     bool Init();
 
@@ -56,4 +55,4 @@ private:
 
 };
 
-#endif // ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
+#endif // ASDATAPREDICTORARCHIVENASAMERRA2_H

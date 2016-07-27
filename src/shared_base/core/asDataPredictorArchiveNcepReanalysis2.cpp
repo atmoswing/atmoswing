@@ -359,7 +359,7 @@ bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFile(const wxString &file
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
-double asDataPredictorArchiveNcepReanalysis2::ConvertToMjd(double timeValue) const
+double asDataPredictorArchiveNcepReanalysis2::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue = (timeValue / 24.0); // hours to days
     timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span

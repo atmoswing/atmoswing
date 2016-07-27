@@ -379,7 +379,7 @@ bool asDataPredictorRealtime::ExtractFromFile(const wxString &fileName, asGeoAre
     return false;
 }
 
-double asDataPredictorRealtime::ConvertToMjd(double timeValue) const
+double asDataPredictorRealtime::ConvertToMjd(double timeValue, double refValue) const
 {
     return NaNDouble;
 }
