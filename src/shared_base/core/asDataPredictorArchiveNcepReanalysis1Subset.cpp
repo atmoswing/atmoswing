@@ -166,7 +166,7 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::ExtractFromFile(const wxString
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
-double asDataPredictorArchiveNcepReanalysis1Subset::ConvertToMjd(double timeValue) const
+double asDataPredictorArchiveNcepReanalysis1Subset::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue = (timeValue / 24.0); // hours to days
     if (timeValue < 500 * 365) { // New format

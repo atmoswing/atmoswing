@@ -124,7 +124,7 @@ bool asDataPredictorArchiveNoaaOisst2::ExtractFromFile(const wxString &fileName,
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
-double asDataPredictorArchiveNoaaOisst2::ConvertToMjd(double timeValue) const
+double asDataPredictorArchiveNoaaOisst2::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue += asTime::GetMJD(1978, 1, 1);
 

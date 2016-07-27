@@ -100,6 +100,8 @@ public:
 
     int GetVarId(const wxString &varName);
 
+    bool HasAttribute(const wxString &attName, const wxString &varName = wxEmptyString);
+
     int GetAttId(const wxString &attName, const wxString &varName = wxEmptyString);
 
     short GetAttShort(const wxString &attName, const wxString &varName = wxEmptyString);
