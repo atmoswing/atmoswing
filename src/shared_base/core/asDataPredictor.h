@@ -406,6 +406,8 @@ protected:
     bool ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                              VVArray2DFloat &compositeData);
 
+    bool CheckFileStructure();
+
     bool MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area);
 
     bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
