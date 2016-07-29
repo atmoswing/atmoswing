@@ -657,7 +657,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
     m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal, refValue);
     m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal, refValue);
 
-    return true;
+    return CheckFileStructure();
 }
 
 bool asDataPredictor::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
@@ -668,7 +668,7 @@ bool asDataPredictor::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaComposite
     gbFile.GetYaxis(m_fileStructure.axisLat);
 
     if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
-        asLogError(_("The level dimension is not yet implemented for realtime predictors."));
+        asLogError(_("The level dimension is not yet implemented for Grib files."));
         return false;
     }
 
@@ -676,6 +676,30 @@ bool asDataPredictor::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaComposite
     m_fileStructure.axisTimeLength = 1;
     m_fileStructure.axisTimeFirstValue = gbFile.GetTime();
     m_fileStructure.axisTimeLastValue = gbFile.GetTime();
+
+    return CheckFileStructure();
+}
+
+bool asDataPredictor::CheckFileStructure()
+{
+    // Check for breaks in the longitude axis.
+    if (m_fileStructure.axisLon.size() > 1) {
+        if (m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] < m_fileStructure.axisLon[0]) {
+            int i_break = 0;
+            for (int i = 1; i < m_fileStructure.axisLon.size(); ++i) {
+                if (m_fileStructure.axisLon[i] < m_fileStructure.axisLon[i-1]) {
+                    if (i_break != 0) {
+                        asLogError(_("Longitude axis seems not consistent (multiple breaks)."));
+                        return false;
+                    }
+                    i_break = i;
+                }
+            }
+            for (int i = i_break; i < m_fileStructure.axisLon.size(); ++i) {
+                m_fileStructure.axisLon[i] += 360;
+            }
+        }
+    }
 
     return true;
 }
