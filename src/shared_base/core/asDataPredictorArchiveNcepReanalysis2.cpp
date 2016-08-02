@@ -316,7 +316,7 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
         }
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        asThrowException(_("Product type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
