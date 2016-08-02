@@ -68,6 +68,7 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("anl_p125", false)) {
+        // JRA-55 6-Hourly 1.25 Degree Isobaric Analysis Fields
         m_fileStructure.hasLevelDimension = true;
         m_subFolder = "anl_p125";
         m_xAxisStep = 1.250;
@@ -77,6 +78,81 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential Height";
             m_fileVariableName = "HGT_GDS0_ISBL";
+            m_unit = gpm;
+            m_fileNamePattern.Append("007_hgt");
+        } else if (m_dataId.IsSameAs("rh", false)) {
+            m_parameter = RelativeHumidity;
+            m_parameterName = "Relative humidity";
+            m_fileVariableName = "RH_GDS0_ISBL";
+            m_unit = percent;
+            m_fileNamePattern.Append("052_rh");
+        } else if (m_dataId.IsSameAs("tmp", false)) {
+            m_parameter = AirTemperature;
+            m_parameterName = "Temperature";
+            m_fileVariableName = "TMP_GDS0_ISBL";
+            m_unit = degK;
+            m_fileNamePattern.Append("011_tmp");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern.Append(".%4d%02d01*.nc");
+
+    } else if (m_product.IsSameAs("anl_surf125", false)) {
+        // JRA-55 6-Hourly 1.25 Degree Surface Analysis Fields
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "anl_surf125";
+        m_xAxisStep = 1.250;
+        m_yAxisStep = 1.250;
+        m_fileNamePattern = m_subFolder + ".";
+        if (m_dataId.IsSameAs("slp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Pressure reduced to MSL";
+            m_fileVariableName = "PRMSL_GDS0_MSL";
+            m_unit = Pa;
+            m_fileNamePattern.Append("002_prmsl");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern.Append(".%4d%02d01*.nc");
+
+    } else if (m_product.IsSameAs("anl_column125", false)) {
+        // JRA-55 6-Hourly 1.25 Degree Total Column Analysis Fields
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "anl_column125";
+        m_xAxisStep = 1.250;
+        m_yAxisStep = 1.250;
+        m_fileNamePattern = m_subFolder + ".";
+        if (m_dataId.IsSameAs("pwat", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Precipitable water";
+            m_fileVariableName = "PWAT_GDS0_EATM";
+            m_unit = kg_m2;
+            m_fileNamePattern.Append("054_pwat");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern.Append(".%4d%02d01*.nc");
+
+    } else if (m_product.IsSameAs("anl_isentrop125", false)) {
+        // JRA-55 6-Hourly 1.25 Degree Isentropic Analysis Fields
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "anl_isentrop125";
+        m_xAxisStep = 1.250;
+        m_yAxisStep = 1.250;
+        m_fileNamePattern = m_subFolder + ".";
+        if (m_dataId.IsSameAs("pv", false)) {
+            m_parameter = PotentialVorticity;
+            m_parameterName = "Potential vorticity";
+            m_fileVariableName = "pVOR_GDS0_THEL";
+            m_unit = degKm2_kg_s;
+            m_fileNamePattern.Append("004_pvor");
+        } else if (m_dataId.IsSameAs("hgt", false)) {
+            m_parameter = GeopotentialHeight;
+            m_parameterName = "Geopotential Height";
+            m_fileVariableName = "HGT_GDS0_THEL";
             m_unit = gpm;
             m_fileNamePattern.Append("007_hgt");
         } else {
