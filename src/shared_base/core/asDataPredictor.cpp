@@ -36,6 +36,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
 {
     m_dataId = dataId;
     m_level = 0;
+    m_product = wxEmptyString;
     m_subFolder = wxEmptyString;
     m_isPreprocessed = false;
     m_transformedBy = wxEmptyString;
@@ -63,11 +64,10 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
-        m_product = StringToProductEnum(levelType);
+        m_product = levelType;
         m_dataId = dataId.AfterFirst('/');
     } else {
         asLogMessage(wxString::Format(_("The data ID (%s) does not contain the level type"), dataId));
-        m_product = Any;
     }
 
 }
@@ -247,77 +247,6 @@ asDataPredictor::Unit asDataPredictor::StringToUnitEnum(const wxString &UnitStr)
         asThrowException(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
     }
     return m;
-}
-
-asDataPredictor::Product asDataPredictor::StringToProductEnum(const wxString &productStr)
-{
-    if (productStr.CmpNoCase("PressureLevel") == 0 ||
-        productStr.CmpNoCase("press") == 0 ||
-        productStr.CmpNoCase("pl") == 0) {
-        return PressureLevel;
-    } else if (productStr.CmpNoCase("Surface") == 0 ||
-               productStr.CmpNoCase("surf") == 0 ||
-               productStr.CmpNoCase("sfc") == 0) {
-        return Surface;
-    } else if (productStr.CmpNoCase("SurfaceFlux") == 0 ||
-               productStr.CmpNoCase("flux") == 0) {
-        return SurfaceFlux;
-    } else if (productStr.CmpNoCase("OtherFlux") == 0 ||
-               productStr.CmpNoCase("oflux") == 0) {
-        return OtherFlux;
-    } else if (productStr.CmpNoCase("Tropopause") == 0 ||
-               productStr.CmpNoCase("tropo") == 0) {
-        return Tropopause;
-    } else if (productStr.CmpNoCase("PotentialTemperatureLevel") == 0 ||
-               productStr.CmpNoCase("pott") == 0 ||
-               productStr.CmpNoCase("pt") == 0) {
-        return PotentialTemperatureLevel;
-    } else if (productStr.CmpNoCase("PotentialVorticityLevel") == 0 ||
-               productStr.CmpNoCase("ipv") == 0 ||
-               productStr.CmpNoCase("pv") == 0) {
-        return PotentialVorticityLevel;
-    } else if (productStr.CmpNoCase("ModelLevel") == 0 ||
-               productStr.CmpNoCase("model") == 0 ||
-               productStr.CmpNoCase("ml") == 0) {
-        return ModelLevel;
-    } else if (productStr.CmpNoCase("IsentropicLevel") == 0 ||
-               productStr.CmpNoCase("isentropic") == 0 ||
-               productStr.CmpNoCase("theta") == 0 ||
-               productStr.CmpNoCase("isl") == 0) {
-        return IsentropicLevel;
-    } else {
-        asThrowException(wxString::Format(_("The level enumeration (%s) entry doesn't exists"), productStr));
-    }
-    return Any;
-}
-
-wxString asDataPredictor::LevelEnumToString(Product product)
-{
-    switch (product) {
-        case (Any):
-            return "Any";
-        case (PressureLevel):
-            return "PressureLevel";
-        case (Surface):
-            return "Surface";
-        case (SurfaceFlux):
-            return "SurfaceFlux";
-        case (OtherFlux):
-            return "OtherFlux";
-        case (Tropopause):
-            return "Tropopause";
-        case (PotentialTemperatureLevel):
-            return "PotentialTemperatureLevel";
-        case (PotentialVorticityLevel):
-            return "PotentialVorticityLevel";
-        case (ModelLevel):
-            return "ModelLevel";
-        case (IsentropicLevel):
-            return "IsentropicLevel";
-        default:
-            asLogError(_("The given data level type in unknown."));
-    }
-    return wxEmptyString;
 }
 
 bool asDataPredictor::SetData(VArray2DFloat &val)
@@ -1507,7 +1436,7 @@ float asDataPredictor::GetMaxValue() const
 
 void asDataPredictor::CheckLevelTypeIsDefined()
 {
-    if(m_product == Any) {
+    if(m_product.IsEmpty()) {
         asThrowException(_("The type of level must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
     }
 }

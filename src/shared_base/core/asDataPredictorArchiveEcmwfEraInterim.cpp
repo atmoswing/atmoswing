@@ -67,54 +67,52 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
 
     // Identify data ID and set the corresponding properties.
-    switch (m_product) {
-        case PressureLevel:
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "pressure";
-            m_xAxisStep = 0.75;
-            m_yAxisStep = 0.75;
-            if (m_dataId.IsSameAs("z", false)) {
-                m_parameter = Geopotential;
-                m_parameterName = "Geopotential";
-                m_fileVariableName = "z";
-                m_unit = m2_s2;
-            } else if (m_dataId.IsSameAs("t", false)) {
-                m_parameter = AirTemperature;
-                m_parameterName = "Temperature";
-                m_fileVariableName = "t";
-                m_unit = degK;
-            } else if (m_dataId.IsSameAs("r", false)) {
-                m_parameter = RelativeHumidity;
-                m_parameterName = "Relative humidity";
-                m_fileVariableName = "r";
-                m_unit = percent;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            m_fileNamePattern = m_fileVariableName + ".nc";
-            break;
+    if (m_product.IsSameAs("pressure_levels", false) || m_product.IsSameAs("pressure", false) ||
+        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "pressure_levels";
+        m_xAxisStep = 0.75;
+        m_yAxisStep = 0.75;
+        if (m_dataId.IsSameAs("z", false)) {
+            m_parameter = Geopotential;
+            m_parameterName = "Geopotential";
+            m_fileVariableName = "z";
+            m_unit = m2_s2;
+        } else if (m_dataId.IsSameAs("t", false)) {
+            m_parameter = AirTemperature;
+            m_parameterName = "Temperature";
+            m_fileVariableName = "t";
+            m_unit = degK;
+        } else if (m_dataId.IsSameAs("r", false)) {
+            m_parameter = RelativeHumidity;
+            m_parameterName = "Relative humidity";
+            m_fileVariableName = "r";
+            m_unit = percent;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern = m_fileVariableName + ".nc";
 
-        case Surface:
-            m_fileStructure.hasLevelDimension = false;
-            m_subFolder = "surface";
-            m_xAxisStep = 0.75;
-            m_yAxisStep = 0.75;
-            if (m_dataId.IsSameAs("tcw", false)) {
-                m_parameter = PrecipitableWater;
-                m_parameterName = "Total column water";
-                m_fileVariableName = "tcw";
-                m_unit = kg_m2;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            break;
+    } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
+               m_product.IsSameAs("sfc", false)) {
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "surface";
+        m_xAxisStep = 0.75;
+        m_yAxisStep = 0.75;
+        if (m_dataId.IsSameAs("tcw", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Total column water";
+            m_fileVariableName = "tcw";
+            m_unit = kg_m2;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern = m_fileVariableName + ".nc";
 
-        case ModelLevel:
-            asThrowException(_("Model level type not implemented yet for ERA-interim."));
-
-        default: asThrowException(_("level type not implemented for this reanalysis dataset."));
+    } else {
+        asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID

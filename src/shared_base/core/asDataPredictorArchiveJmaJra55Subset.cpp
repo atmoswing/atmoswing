@@ -67,27 +67,26 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    switch (m_product) {
-        case PressureLevel:
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "anl_p125";
-            m_xAxisStep = 1.250;
-            m_yAxisStep = 1.250;
-            m_fileNamePattern = m_subFolder + ".";
-            if (m_dataId.IsSameAs("hgt", false)) {
-                m_parameter = GeopotentialHeight;
-                m_parameterName = "Geopotential Height";
-                m_fileVariableName = "HGT_GDS0_ISBL";
-                m_unit = gpm;
-                m_fileNamePattern.Append("007_hgt");
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            m_fileNamePattern.Append(".%4d%02d01*.nc");
-            break;
+    if (m_product.IsSameAs("anl_p125", false)) {
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "anl_p125";
+        m_xAxisStep = 1.250;
+        m_yAxisStep = 1.250;
+        m_fileNamePattern = m_subFolder + ".";
+        if (m_dataId.IsSameAs("hgt", false)) {
+            m_parameter = GeopotentialHeight;
+            m_parameterName = "Geopotential Height";
+            m_fileVariableName = "HGT_GDS0_ISBL";
+            m_unit = gpm;
+            m_fileNamePattern.Append("007_hgt");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern.Append(".%4d%02d01*.nc");
 
-        default: asThrowException(_("level type not implemented for this reanalysis dataset."));
+    } else {
+        asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID

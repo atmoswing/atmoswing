@@ -52,7 +52,7 @@ TEST(DataPredictorArchiveNasaMerra2Regular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-nasa-merra2/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NASA_MERRA_2", "press/h",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
@@ -118,7 +118,7 @@ TEST(DataPredictorArchiveNasaMerra2Regular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-nasa-merra2/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NASA_MERRA_2", "press/h",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
