@@ -103,7 +103,7 @@ bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
         m_timeStepHours = 12;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, LevelEnumToString(m_product)));
+                                          m_dataId, m_product));
     }
 
     // Check data ID

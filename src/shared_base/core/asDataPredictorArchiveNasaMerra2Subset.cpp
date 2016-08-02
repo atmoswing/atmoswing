@@ -54,117 +54,117 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    switch (m_product) {
-        case PressureLevel: // inst6_3d_ana_Np: 3d,6-Hourly,Instantaneous,Pressure-Level,Analysis,Analyzed Meteorological Fields V5.12.4 (M2I6NPANA.5.12.4)
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "inst6_3d_ana_Np";
-            m_xAxisStep = 0.625;
-            m_yAxisStep = 0.5;
-            m_timeStepHours = 6;
-            if (m_dataId.IsSameAs("h", false)) {
-                m_parameter = GeopotentialHeight;
-                m_parameterName = "Geopotential height";
-                m_fileVariableName = "H";
-                m_unit = m;
-            } else if (m_dataId.IsSameAs("qv", false)) {
-                m_parameter = SpecificHumidity;
-                m_parameterName = "Specific humidity";
-                m_fileVariableName = "QV";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("t", false)) {
-                m_parameter = AirTemperature;
-                m_parameterName = "Air temperature";
-                m_fileVariableName = "T";
-                m_unit = degK;
-            } else if (m_dataId.IsSameAs("slp", false)) {
-                m_parameter = Pressure;
-                m_parameterName = "Sea-level pressure";
-                m_fileVariableName = "SLP";
-                m_unit = Pa;
-            } else if (m_dataId.IsSameAs("u", false)) {
-                m_parameter = Uwind;
-                m_parameterName = "Eastward wind component";
-                m_fileVariableName = "U";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("v", false)) {
-                m_parameter = Vwind;
-                m_parameterName = "Northward wind component";
-                m_fileVariableName = "V";
-                m_unit = ;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
-            break;
+    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("M2I6NPANA", false)) {
+        // inst6_3d_ana_Np: 3d,6-Hourly,Instantaneous,Pressure-Level,Analysis,Analyzed Meteorological Fields V5.12.4 (M2I6NPANA.5.12.4)
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "inst6_3d_ana_Np";
+        m_xAxisStep = 0.625;
+        m_yAxisStep = 0.5;
+        m_timeStepHours = 6;
+        if (m_dataId.IsSameAs("h", false)) {
+            m_parameter = GeopotentialHeight;
+            m_parameterName = "Geopotential height";
+            m_fileVariableName = "H";
+            m_unit = m;
+        } else if (m_dataId.IsSameAs("qv", false)) {
+            m_parameter = SpecificHumidity;
+            m_parameterName = "Specific humidity";
+            m_fileVariableName = "QV";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("t", false)) {
+            m_parameter = AirTemperature;
+            m_parameterName = "Air temperature";
+            m_fileVariableName = "T";
+            m_unit = degK;
+        } else if (m_dataId.IsSameAs("slp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea-level pressure";
+            m_fileVariableName = "SLP";
+            //                m_unit = Pa;
+        } else if (m_dataId.IsSameAs("u", false)) {
+            m_parameter = Uwind;
+            m_parameterName = "Eastward wind component";
+            m_fileVariableName = "U";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("v", false)) {
+            m_parameter = Vwind;
+            m_parameterName = "Northward wind component";
+            m_fileVariableName = "V";
+            //                m_unit = ;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
-        case PressureLevelAssimilation: // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields V5.12.4 (M2I3NPASM.5.12.4)
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "inst3_3d_asm_Np";
-            m_xAxisStep = 0.625;
-            m_yAxisStep = 0.5;
-            m_timeStepHours = 3;
-            if (m_dataId.IsSameAs("epv", false)) {
-                m_parameter = PotentialVorticity;
-                m_parameterName = "Ertel's potential vorticity";
-                m_fileVariableName = "EPV";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("omega", false)) {
-                m_parameter = Omega;
-                m_parameterName = "Vertical pressure velocity";
-                m_fileVariableName = "OMEGA";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("rh", false)) {
-                m_parameter = RelativeHumidity;
-                m_parameterName = "Relative humidity after moist";
-                m_fileVariableName = "RH";
-                m_unit = percent;
-            } else if (m_dataId.IsSameAs("slp", false)) {
-                m_parameter = Pressure;
-                m_parameterName = "Sea level pressure";
-                m_fileVariableName = "SLP";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("t", false)) {
-                m_parameter = AirTemperature;
-                m_parameterName = "Air temperature";
-                m_fileVariableName = "T";
-                m_unit = degK;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
-            break;
+    } else if (m_product.IsSameAs("inst3_3d_asm_Np", false) || m_product.IsSameAs("M2I3NPASM", false)) {
+        // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields V5.12.4 (M2I3NPASM.5.12.4)
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "inst3_3d_asm_Np";
+        m_xAxisStep = 0.625;
+        m_yAxisStep = 0.5;
+        m_timeStepHours = 3;
+        if (m_dataId.IsSameAs("epv", false)) {
+            m_parameter = PotentialVorticity;
+            m_parameterName = "Ertel's potential vorticity";
+            m_fileVariableName = "EPV";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("omega", false)) {
+            m_parameter = Omega;
+            m_parameterName = "Vertical pressure velocity";
+            m_fileVariableName = "OMEGA";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("rh", false)) {
+            m_parameter = RelativeHumidity;
+            m_parameterName = "Relative humidity after moist";
+            m_fileVariableName = "RH";
+            //                m_unit = percent;
+        } else if (m_dataId.IsSameAs("slp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea level pressure";
+            m_fileVariableName = "SLP";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("t", false)) {
+            m_parameter = AirTemperature;
+            m_parameterName = "Air temperature";
+            m_fileVariableName = "T";
+            //                m_unit = degK;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
-        case VerticallyIntegrated: // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics V5.12.4 (M2I1NXINT.5.12.4)
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "inst1_2d_int_Nx";
-            m_xAxisStep = 0.625;
-            m_yAxisStep = 0.5;
-            m_timeStepHours = 1;
-            if (m_dataId.IsSameAs("epv", false)) {
-                m_parameter = PrecipitableWater;
-                m_parameterName = "Total precipitable ice water";
-                m_fileVariableName = "TQI";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("omega", false)) {
-                m_parameter = PrecipitableWater;
-                m_parameterName = "Total precipitable liquid water";
-                m_fileVariableName = "TQL";
-                m_unit = ;
-            } else if (m_dataId.IsSameAs("rh", false)) {
-                m_parameter = PrecipitableWater;
-                m_parameterName = "Total precipitable water vapor";
-                m_fileVariableName = "TQV";
-                m_unit = ;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
-            break;
+    } else if (m_product.IsSameAs("inst1_2d_int_Nx", false) || m_product.IsSameAs("M2I1NXINT", false)) {
+        // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics V5.12.4 (M2I1NXINT.5.12.4)
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "inst1_2d_int_Nx";
+        m_xAxisStep = 0.625;
+        m_yAxisStep = 0.5;
+        m_timeStepHours = 1;
+        if (m_dataId.IsSameAs("epv", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Total precipitable ice water";
+            m_fileVariableName = "TQI";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("omega", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Total precipitable liquid water";
+            m_fileVariableName = "TQL";
+            //                m_unit = ;
+        } else if (m_dataId.IsSameAs("rh", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Total precipitable water vapor";
+            m_fileVariableName = "TQV";
+            //                m_unit = ;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
-        default: asThrowException(_("level type not implemented for this reanalysis dataset."));
+    } else {
+        asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID

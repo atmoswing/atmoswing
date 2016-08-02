@@ -78,22 +78,6 @@ public:
         nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2, m2_s2
     };
 
-    enum Product
-    {
-        Any,
-        PressureLevel,
-        PressureLevelAssimilation,
-        Surface,
-        SurfaceFlux,
-        OtherFlux,
-        Tropopause,
-        PotentialTemperatureLevel,
-        PotentialVorticityLevel,
-        ModelLevel,
-        IsentropicLevel,
-        VerticallyIntegrated
-    };
-
     asDataPredictor(const wxString &dataId);
 
     virtual ~asDataPredictor();
@@ -103,10 +87,6 @@ public:
     static wxString ParameterEnumToString(Parameter parameter);
 
     static Unit StringToUnitEnum(const wxString &unitStr);
-
-    static Product StringToProductEnum(const wxString &productStr);
-
-    static wxString LevelEnumToString(Product product);
 
     virtual bool Init() = 0;
 
@@ -346,7 +326,7 @@ protected:
     Parameter m_parameter;
     wxString m_parameterName;
     VectorInt m_gribCode;
-    Product m_product;
+    wxString m_product;
     wxString m_fileVariableName;
     Unit m_unit;
     float m_xAxisStep;

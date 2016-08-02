@@ -82,22 +82,20 @@ bool asDataPredictorArchiveNoaaOisst2Subset::Init()
         m_unit = degC;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, LevelEnumToString(m_product)));
+                                          m_dataId, m_product));
     }
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(
-                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                 m_dataId, m_datasetName));
+        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in dataset %s."),
+                                    m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(
-                wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                 m_dataId, m_datasetName));
+        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from dataset %s."),
+                                    m_dataId, m_datasetName));
         return false;
     }
 

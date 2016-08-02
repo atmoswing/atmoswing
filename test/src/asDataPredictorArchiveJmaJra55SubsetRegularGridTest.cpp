@@ -52,7 +52,7 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("JMA_JRA_55_subset", "press/hgt",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
@@ -118,7 +118,7 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, Around360)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("JMA_JRA_55_subset", "press/hgt",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);

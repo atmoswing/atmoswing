@@ -65,35 +65,34 @@ bool asDataPredictorArchiveNasaMerra2::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    switch (m_product) {
-        case PressureLevel:
-            m_fileStructure.hasLevelDimension = true;
-            m_subFolder = "M2I6NPANA";
-            m_xAxisStep = 0.625;
-            m_yAxisStep = 0.5;
-            if (m_dataId.IsSameAs("h", false)) {
-                m_parameter = GeopotentialHeight;
-                m_parameterName = "Geopotential height";
-                m_fileVariableName = "H";
-                m_unit = m;
-            } else if (m_dataId.IsSameAs("t", false)) {
-                m_parameter = AirTemperature;
-                m_parameterName = "Air temperature";
-                m_fileVariableName = "T";
-                m_unit = degK;
-            } else if (m_dataId.IsSameAs("slp", false)) {
-                m_parameter = Pressure;
-                m_parameterName = "Sea-level pressure";
-                m_fileVariableName = "SLP";
-                m_unit = Pa;
-            } else {
-                asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                                  m_dataId, LevelEnumToString(m_product)));
-            }
-            m_fileNamePattern = "%4d/%02d/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.nc4";
-            break;
+    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("M2I6NPANA", false)) {
+        m_fileStructure.hasLevelDimension = true;
+        m_subFolder = "inst6_3d_ana_Np";
+        m_xAxisStep = 0.625;
+        m_yAxisStep = 0.5;
+        if (m_dataId.IsSameAs("h", false)) {
+            m_parameter = GeopotentialHeight;
+            m_parameterName = "Geopotential height";
+            m_fileVariableName = "H";
+            m_unit = m;
+        } else if (m_dataId.IsSameAs("t", false)) {
+            m_parameter = AirTemperature;
+            m_parameterName = "Air temperature";
+            m_fileVariableName = "T";
+            m_unit = degK;
+        } else if (m_dataId.IsSameAs("slp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea-level pressure";
+            m_fileVariableName = "SLP";
+            m_unit = Pa;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern = "%4d/%02d/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.nc4";
 
-        default: asThrowException(_("level type not implemented for this reanalysis dataset."));
+    } else {
+        asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID

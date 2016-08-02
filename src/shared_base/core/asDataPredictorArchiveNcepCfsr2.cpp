@@ -62,51 +62,54 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
 
     // Identify data ID and set the corresponding properties.
-    switch (m_product) {
-        case PressureLevel:
-            m_fileStructure.hasLevelDimension = true;
-            m_fileStructure.singleLevel = true;
-            m_subFolder = "pgbh";
-            m_xAxisStep = 0.5;
-            m_yAxisStep = 0.5;
-            if (m_dataId.IsSameAs("hgt@iso", false)) {
-                m_parameter = GeopotentialHeight;
-                m_gribCode = {0, 3, 5, 100};
-                m_parameterName = "Geopotential height @ Isobaric surface";
-                m_unit = gpm;
-            } else if (m_dataId.IsSameAs("pwat@eal", false)) {
-                m_parameter = PrecipitableWater;
-                m_gribCode = {0, 1, 3, 200};
-                m_parameterName = "Precipitable water @ Entire atmosphere layer";
-                m_unit = kg_m2;
-            } else if (m_dataId.IsSameAs("pres@msl", false)) {
-                m_parameter = Pressure;
-                m_gribCode = {0, 3, 0, 101};
-                m_parameterName = "Pressure @ Mean sea level";
-                m_unit = Pa;
-            } else if (m_dataId.IsSameAs("rh@iso", false)) {
-                m_parameter = RelativeHumidity;
-                m_gribCode = {0, 1, 1, 100};
-                m_parameterName = "Relative humidity @ Isobaric surface";
-                m_unit = percent;
-            } else if (m_dataId.IsSameAs("tmp@iso", false)) {
-                m_parameter = AirTemperature;
-                m_gribCode = {0, 0, 0, 100};
-                m_parameterName = "Temperature @ Isobaric surface";
-                m_unit = degK;
-            } else {
-                asThrowException(wxString::Format(_("Parameter '%s' note implemented yet."), m_dataId));
-            }
-            m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
-            break;
+    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
+        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false)  ||
+            m_product.IsSameAs("pgb", false)) {
+        m_fileStructure.hasLevelDimension = true;
+        m_fileStructure.singleLevel = true;
+        m_subFolder = "pgbh";
+        m_xAxisStep = 0.5;
+        m_yAxisStep = 0.5;
+        if (m_dataId.IsSameAs("hgt@iso", false)) {
+            m_parameter = GeopotentialHeight;
+            m_gribCode = {0, 3, 5, 100};
+            m_parameterName = "Geopotential height @ Isobaric surface";
+            m_unit = gpm;
+        } else if (m_dataId.IsSameAs("pwat@eal", false)) {
+            m_parameter = PrecipitableWater;
+            m_gribCode = {0, 1, 3, 200};
+            m_parameterName = "Precipitable water @ Entire atmosphere layer";
+            m_unit = kg_m2;
+        } else if (m_dataId.IsSameAs("pres@msl", false)) {
+            m_parameter = Pressure;
+            m_gribCode = {0, 3, 0, 101};
+            m_parameterName = "Pressure @ Mean sea level";
+            m_unit = Pa;
+        } else if (m_dataId.IsSameAs("rh@iso", false)) {
+            m_parameter = RelativeHumidity;
+            m_gribCode = {0, 1, 1, 100};
+            m_parameterName = "Relative humidity @ Isobaric surface";
+            m_unit = percent;
+        } else if (m_dataId.IsSameAs("tmp@iso", false)) {
+            m_parameter = AirTemperature;
+            m_gribCode = {0, 0, 0, 100};
+            m_parameterName = "Temperature @ Isobaric surface";
+            m_unit = degK;
+        } else {
+            asThrowException(wxString::Format(_("Parameter '%s' note implemented yet."), m_dataId));
+        }
+        m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
 
-        case IsentropicLevel:
+    } else if (m_product.IsSameAs("isentropic_level", false) || m_product.IsSameAs("isentropic", false) ||
+            m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
             asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
 
-        case SurfaceFlux:
-            asThrowException(_("Gaussian grids for CFSR are not implemented yet."));
+    } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
+               m_product.IsSameAs("flx", false)) {
+        asThrowException(_("Surface fluxes grids for CFSR are not implemented yet."));
 
-        default: asThrowException(_("level type not implemented for this reanalysis dataset."));
+    } else {
+        asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
