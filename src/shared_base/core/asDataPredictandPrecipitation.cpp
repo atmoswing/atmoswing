@@ -359,7 +359,7 @@ bool asDataPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods(
                                                         duration, 0.00001f);
             float val = m_gumbelParamB(i_station, i_duration) * u + m_gumbelParamA(i_station, i_duration);
             wxASSERT(val > 0);
-            wxASSERT(val < 500);
+            wxASSERT(val < 1000);
             m_dailyPrecipitationsForReturnPeriods(i_station, i_retperiod) = val;
         }
     }

@@ -151,7 +151,7 @@ asDataPredictand::TemporalResolution asDataPredictand::StringToTemporalResolutio
         return Weekly;
     } else {
         asThrowException(wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"),
-                                    temporalResolution));
+                                          temporalResolution));
     }
     return Daily;
 }
@@ -190,7 +190,7 @@ asDataPredictand::SpatialAggregation asDataPredictand::StringToSpatialAggregatio
         return Catchment;
     } else {
         asThrowException(wxString::Format(_("The spatialAggregation enumeration (%s) entry doesn't exists"),
-                                    spatialAggregation));
+                                          spatialAggregation));
     }
     return Station;
 }
@@ -260,8 +260,7 @@ asDataPredictand *asDataPredictand::GetInstance(const wxString &filePath)
     // Check version
     float version = ncFile.GetAttFloat("version");
     if (asTools::IsNaN(version) || version <= 1.0) {
-        asLogError(
-                _("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return NULL;
     }
 
@@ -285,8 +284,7 @@ wxString asDataPredictand::GetDBFilePathSaving(const wxString &destinationDir) c
     wxString dataParameterStr = ParameterEnumToString(m_parameter);
     wxString dataTemporalResolutionStr = asDataPredictand::TemporalResolutionEnumToString(m_temporalResolution);
     wxString dataSpatialAggregationStr = asDataPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
-    wxString fileName =
-            dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_datasetId;
+    wxString fileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_datasetId;
 
     wxString predictandDBFilePath = destinationDir + DS + fileName + ".nc";
 
@@ -364,8 +362,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     // Check version
     float version = ncFile.GetAttFloat("version");
     if (asTools::IsNaN(version) || version <= 1.1) {
-        asLogError(
-                _("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return false;
     }
 
@@ -634,9 +631,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
         if (lineContent.Len() >= maxCharWidth) {
             // Check the size of the array
             if (timeIndex >= m_timeLength) {
-                asLogError(wxString::Format(
-                        _("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
-                        (int) timeIndex, (int) m_timeLength));
+                asLogError(wxString::Format(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
+                                            (int) timeIndex, (int) m_timeLength));
                 return false;
             }
 
@@ -690,7 +686,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         }
                     }
 
-                    // Get Precipitation value
+                    // Get predictand value
                     wxString dataStr = lineContent.Mid(filePattern.dataBegin - 1,
                                                        filePattern.dataEnd - filePattern.dataBegin + 1);
 
