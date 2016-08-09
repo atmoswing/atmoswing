@@ -396,6 +396,8 @@ protected:
 
     asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, VVArray2DFloat &compositeData);
 
+    void AssignGribCode(const int arr[]);
+
 private:
     wxString m_directoryPath;
 };

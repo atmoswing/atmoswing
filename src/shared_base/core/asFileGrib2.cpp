@@ -325,7 +325,7 @@ double asFileGrib2::GetTime() const
 
 bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
 {
-    wxASSERT(gribCode.size() == 3);
+    wxASSERT(gribCode.size() == 4);
 
     // Find corresponding data
     m_index = asNOT_FOUND;
