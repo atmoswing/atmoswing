@@ -708,7 +708,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
 
                 // Condition for change: The composite must not be fully outside (considered as handled).
                 if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
-                    axisLonComp[0] < m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] ) {
+                    axisLonComp[0] <= m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] ) {
                     // If the last value corresponds to the maximum value of the reference system, create a new composite
                     if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
                         dataArea->SetLastRowAsNewComposite();
