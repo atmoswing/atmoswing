@@ -72,27 +72,32 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
         m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("hgt@iso", false)) {
             m_parameter = GeopotentialHeight;
-            m_gribCode = {0, 3, 5, 100};
+            int arr[] = {0, 3, 5, 100};
+            AssignGribCode(arr);
             m_parameterName = "Geopotential height @ Isobaric surface";
             m_unit = gpm;
         } else if (m_dataId.IsSameAs("pwat@eal", false)) {
             m_parameter = PrecipitableWater;
-            m_gribCode = {0, 1, 3, 200};
+            int arr[] = {0, 1, 3, 200};
+            AssignGribCode(arr);
             m_parameterName = "Precipitable water @ Entire atmosphere layer";
             m_unit = kg_m2;
         } else if (m_dataId.IsSameAs("pres@msl", false)) {
             m_parameter = Pressure;
-            m_gribCode = {0, 3, 0, 101};
+            int arr[] = {0, 3, 0, 101};
+            AssignGribCode(arr);
             m_parameterName = "Pressure @ Mean sea level";
             m_unit = Pa;
         } else if (m_dataId.IsSameAs("rh@iso", false)) {
             m_parameter = RelativeHumidity;
-            m_gribCode = {0, 1, 1, 100};
+            int arr[] = {0, 1, 1, 100};
+            AssignGribCode(arr);
             m_parameterName = "Relative humidity @ Isobaric surface";
             m_unit = percent;
         } else if (m_dataId.IsSameAs("tmp@iso", false)) {
             m_parameter = AirTemperature;
-            m_gribCode = {0, 0, 0, 100};
+            int arr[] = {0, 0, 0, 100};
+            AssignGribCode(arr);
             m_parameterName = "Temperature @ Isobaric surface";
             m_unit = degK;
         } else {
@@ -125,6 +130,8 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
                                  m_dataId, m_datasetName));
         return false;
     }
+
+    wxASSERT(m_gribCode.size()==4);
 
     // Set to initialized
     m_initialized = true;

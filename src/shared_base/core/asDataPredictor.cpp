@@ -60,7 +60,8 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
     m_fileExtension = wxEmptyString;
-    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
+    int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
+    AssignGribCode(arr);
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
@@ -802,6 +803,14 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
     }
 
     return dataArea;
+}
+
+void asDataPredictor::AssignGribCode(const int arr[])
+{
+    m_gribCode.clear();
+    for (int i = 0; i < 4; ++i) {
+        m_gribCode.push_back(arr[i]);
+    }
 }
 
 size_t *asDataPredictor::GetIndexesStartNcdf(int i_area) const
