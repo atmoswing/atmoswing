@@ -3,6 +3,7 @@
 
 #include "asIncludes.h"
 #include <asParametersScoring.h>
+#include <asParameters.h>
 
 class asFileParametersOptimization;
 
@@ -78,7 +79,7 @@ public:
 
     int GetAnalogsNumberIteration(int i_step)
     {
-        return m_stepsIteration[i_step].AnalogsNumber;
+        return m_stepsIteration[i_step].analogsNumber;
     }
 
     bool SetAnalogsNumberIteration(int i_step, int val)
@@ -87,14 +88,14 @@ public:
             asLogError(_("The provided value for the analogs number is null"));
             return false;
         }
-        m_stepsIteration[i_step].AnalogsNumber = val;
+        m_stepsIteration[i_step].analogsNumber = val;
         return true;
     }
 
     double GetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset)
     {
-        wxASSERT(m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) i_dataset);
-        return m_stepsIteration[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
+        wxASSERT(m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() > (unsigned) i_dataset);
+        return m_stepsIteration[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset];
     }
 
     bool SetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset, double val)
@@ -104,19 +105,19 @@ public:
             return false;
         }
 
-        if (m_stepsIteration[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
-            m_stepsIteration[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
+        if (m_stepsIteration[i_step].predictors[i_predictor].preprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
+            m_stepsIteration[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset] = val;
         } else {
-            wxASSERT(m_stepsIteration[i_step].Predictors[i_predictor].PreprocessTimeHours.size() ==
+            wxASSERT(m_stepsIteration[i_step].predictors[i_predictor].preprocessTimeHours.size() ==
                      (unsigned) i_dataset);
-            m_stepsIteration[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+            m_stepsIteration[i_step].predictors[i_predictor].preprocessTimeHours.push_back(val);
         }
         return true;
     }
 
     double GetPredictorTimeHoursIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].TimeHours;
+        return m_stepsIteration[i_step].predictors[i_predictor].timeHours;
     }
 
     bool SetPredictorTimeHoursIteration(int i_step, int i_predictor, double val)
@@ -125,13 +126,13 @@ public:
             asLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].TimeHours = val;
+        m_stepsIteration[i_step].predictors[i_predictor].timeHours = val;
         return true;
     }
 
     double GetPredictorXminIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Xmin;
+        return m_stepsIteration[i_step].predictors[i_predictor].xMin;
     }
 
     bool SetPredictorXminIteration(int i_step, int i_predictor, double val)
@@ -140,13 +141,13 @@ public:
             asLogError(_("The provided value for Xmin is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Xmin = val;
+        m_stepsIteration[i_step].predictors[i_predictor].xMin = val;
         return true;
     }
 
     int GetPredictorXptsnbIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb;
+        return m_stepsIteration[i_step].predictors[i_predictor].xPtsNb;
     }
 
     bool SetPredictorXptsnbIteration(int i_step, int i_predictor, int val)
@@ -155,13 +156,13 @@ public:
             asLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb = val;
+        m_stepsIteration[i_step].predictors[i_predictor].xPtsNb = val;
         return true;
     }
 
     double GetPredictorYminIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Ymin;
+        return m_stepsIteration[i_step].predictors[i_predictor].yMin;
     }
 
     bool SetPredictorYminIteration(int i_step, int i_predictor, double val)
@@ -170,13 +171,13 @@ public:
             asLogError(_("The provided value for Ymin is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Ymin = val;
+        m_stepsIteration[i_step].predictors[i_predictor].yMin = val;
         return true;
     }
 
     int GetPredictorYptsnbIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb;
+        return m_stepsIteration[i_step].predictors[i_predictor].yPtsNb;
     }
 
     bool SetPredictorYptsnbIteration(int i_step, int i_predictor, int val)
@@ -185,13 +186,13 @@ public:
             asLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb = val;
+        m_stepsIteration[i_step].predictors[i_predictor].yPtsNb = val;
         return true;
     }
 
     float GetPredictorWeightIteration(int i_step, int i_predictor)
     {
-        return m_stepsIteration[i_step].Predictors[i_predictor].Weight;
+        return m_stepsIteration[i_step].predictors[i_predictor].weight;
     }
 
     bool SetPredictorWeightIteration(int i_step, int i_predictor, float val)
@@ -200,7 +201,7 @@ public:
             asLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
-        m_stepsIteration[i_step].Predictors[i_predictor].Weight = val;
+        m_stepsIteration[i_step].predictors[i_predictor].weight = val;
         return true;
     }
 
@@ -221,7 +222,7 @@ public:
 
     int GetAnalogsNumberUpperLimit(int i_step)
     {
-        return m_stepsUpperLimit[i_step].AnalogsNumber;
+        return m_stepsUpperLimit[i_step].analogsNumber;
     }
 
     bool SetAnalogsNumberUpperLimit(int i_step, int val)
@@ -230,14 +231,14 @@ public:
             asLogError(_("The provided value for the analogs number is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].AnalogsNumber = val;
+        m_stepsUpperLimit[i_step].analogsNumber = val;
         return true;
     }
 
     double GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset)
     {
-        wxASSERT(m_stepsUpperLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) i_dataset);
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
+        wxASSERT(m_stepsUpperLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() > (unsigned) i_dataset);
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset];
     }
 
     bool SetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset, double val)
@@ -247,20 +248,20 @@ public:
             return false;
         }
 
-        if (m_stepsUpperLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >=
+        if (m_stepsUpperLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() >=
             (unsigned) (i_dataset + 1)) {
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
+            m_stepsUpperLimit[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset] = val;
         } else {
-            wxASSERT(m_stepsUpperLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() ==
+            wxASSERT(m_stepsUpperLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() ==
                      (unsigned) i_dataset);
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+            m_stepsUpperLimit[i_step].predictors[i_predictor].preprocessTimeHours.push_back(val);
         }
         return true;
     }
 
     double GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].TimeHours;
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].timeHours;
     }
 
     bool SetPredictorTimeHoursUpperLimit(int i_step, int i_predictor, double val)
@@ -269,13 +270,13 @@ public:
             asLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].TimeHours = val;
+        m_stepsUpperLimit[i_step].predictors[i_predictor].timeHours = val;
         return true;
     }
 
     double GetPredictorXminUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Xmin;
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].xMin;
     }
 
     bool SetPredictorXminUpperLimit(int i_step, int i_predictor, double val)
@@ -284,13 +285,13 @@ public:
             asLogError(_("The provided value for Xmin is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Xmin = val;
+        m_stepsUpperLimit[i_step].predictors[i_predictor].xMin = val;
         return true;
     }
 
     int GetPredictorXptsnbUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Xptsnb;
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].xPtsNb;
     }
 
     bool SetPredictorXptsnbUpperLimit(int i_step, int i_predictor, int val)
@@ -299,13 +300,13 @@ public:
             asLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Xptsnb = val;
+        m_stepsUpperLimit[i_step].predictors[i_predictor].xPtsNb = val;
         return true;
     }
 
     double GetPredictorYminUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Ymin;
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].yMin;
     }
 
     bool SetPredictorYminUpperLimit(int i_step, int i_predictor, double val)
@@ -314,13 +315,13 @@ public:
             asLogError(_("The provided value for Ymin is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Ymin = val;
+        m_stepsUpperLimit[i_step].predictors[i_predictor].yMin = val;
         return true;
     }
 
     int GetPredictorYptsnbUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Yptsnb;
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].yPtsNb;
     }
 
     bool SetPredictorYptsnbUpperLimit(int i_step, int i_predictor, int val)
@@ -329,13 +330,13 @@ public:
             asLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Yptsnb = val;
+        m_stepsUpperLimit[i_step].predictors[i_predictor].yPtsNb = val;
         return true;
     }
 
     float GetPredictorWeightUpperLimit(int i_step, int i_predictor)
     {
-        return m_stepsUpperLimit[i_step].Predictors[i_predictor].Weight;
+        return m_stepsUpperLimit[i_step].predictors[i_predictor].weight;
     }
 
     bool SetPredictorWeightUpperLimit(int i_step, int i_predictor, float val)
@@ -344,7 +345,7 @@ public:
             asLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
-        m_stepsUpperLimit[i_step].Predictors[i_predictor].Weight = val;
+        m_stepsUpperLimit[i_step].predictors[i_predictor].weight = val;
         return true;
     }
 
@@ -365,7 +366,7 @@ public:
 
     int GetAnalogsNumberLowerLimit(int i_step)
     {
-        return m_stepsLowerLimit[i_step].AnalogsNumber;
+        return m_stepsLowerLimit[i_step].analogsNumber;
     }
 
     bool SetAnalogsNumberLowerLimit(int i_step, int val)
@@ -374,14 +375,14 @@ public:
             asLogError(_("The provided value for the analogs number is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].AnalogsNumber = val;
+        m_stepsLowerLimit[i_step].analogsNumber = val;
         return true;
     }
 
     double GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset)
     {
-        wxASSERT(m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) i_dataset);
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset];
+        wxASSERT(m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() > (unsigned) i_dataset);
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset];
     }
 
     bool SetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset, double val)
@@ -391,20 +392,20 @@ public:
             return false;
         }
 
-        if (m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() >=
+        if (m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() >=
             (unsigned) (i_dataset + 1)) {
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours[i_dataset] = val;
+            m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset] = val;
         } else {
-            wxASSERT(m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.size() ==
+            wxASSERT(m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours.size() ==
                      (unsigned) i_dataset);
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+            m_stepsLowerLimit[i_step].predictors[i_predictor].preprocessTimeHours.push_back(val);
         }
         return true;
     }
 
     double GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].TimeHours;
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].timeHours;
     }
 
     bool SetPredictorTimeHoursLowerLimit(int i_step, int i_predictor, double val)
@@ -413,13 +414,13 @@ public:
             asLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].TimeHours = val;
+        m_stepsLowerLimit[i_step].predictors[i_predictor].timeHours = val;
         return true;
     }
 
     double GetPredictorXminLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Xmin;
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].xMin;
     }
 
     bool SetPredictorXminLowerLimit(int i_step, int i_predictor, double val)
@@ -428,13 +429,13 @@ public:
             asLogError(_("The provided value for Xmin is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Xmin = val;
+        m_stepsLowerLimit[i_step].predictors[i_predictor].xMin = val;
         return true;
     }
 
     int GetPredictorXptsnbLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Xptsnb;
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].xPtsNb;
     }
 
     bool SetPredictorXptsnbLowerLimit(int i_step, int i_predictor, int val)
@@ -443,13 +444,13 @@ public:
             asLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Xptsnb = val;
+        m_stepsLowerLimit[i_step].predictors[i_predictor].xPtsNb = val;
         return true;
     }
 
     double GetPredictorYminLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Ymin;
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].yMin;
     }
 
     bool SetPredictorYminLowerLimit(int i_step, int i_predictor, double val)
@@ -458,13 +459,13 @@ public:
             asLogError(_("The provided value for Ymin is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Ymin = val;
+        m_stepsLowerLimit[i_step].predictors[i_predictor].yMin = val;
         return true;
     }
 
     int GetPredictorYptsnbLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Yptsnb;
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].yPtsNb;
     }
 
     bool SetPredictorYptsnbLowerLimit(int i_step, int i_predictor, double val)
@@ -473,13 +474,13 @@ public:
             asLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Yptsnb = (int) val;
+        m_stepsLowerLimit[i_step].predictors[i_predictor].yPtsNb = (int) val;
         return true;
     }
 
     float GetPredictorWeightLowerLimit(int i_step, int i_predictor)
     {
-        return m_stepsLowerLimit[i_step].Predictors[i_predictor].Weight;
+        return m_stepsLowerLimit[i_step].predictors[i_predictor].weight;
     }
 
     bool SetPredictorWeightLowerLimit(int i_step, int i_predictor, float val)
@@ -488,18 +489,18 @@ public:
             asLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
-        m_stepsLowerLimit[i_step].Predictors[i_predictor].Weight = val;
+        m_stepsLowerLimit[i_step].predictors[i_predictor].weight = val;
         return true;
     }
 
     bool IsAnalogsNumberLocked(int i_step)
     {
-        return m_stepsLocks[i_step].AnalogsNumber;
+        return m_stepsLocks[i_step].analogsNumber;
     }
 
     void SetAnalogsNumberLock(int i_step, bool val)
     {
-        m_stepsLocks[i_step].AnalogsNumber = val;
+        m_stepsLocks[i_step].analogsNumber = val;
     }
 
     bool IsTimeArrayAnalogsIntervalDaysLocked()
@@ -514,148 +515,148 @@ public:
 
     bool IsPreprocessDataIdLocked(int i_step, int i_predictor, int i_preprocess)
     {
-        wxASSERT(m_stepsLocks[i_step].Predictors[i_predictor].PreprocessDataId.size() > (unsigned) i_preprocess);
-        return m_stepsLocks[i_step].Predictors[i_predictor].PreprocessDataId[i_preprocess];
+        wxASSERT(m_stepsLocks[i_step].predictors[i_predictor].preprocessDataId.size() > (unsigned) i_preprocess);
+        return m_stepsLocks[i_step].predictors[i_predictor].preprocessDataId[i_preprocess];
     }
 
     void SetPreprocessDataIdLock(int i_step, int i_predictor, int i_preprocess, bool val)
     {
-        if (m_stepsLocks[i_step].Predictors[i_predictor].PreprocessDataId.size() > (unsigned) (i_preprocess)) {
-            m_stepsLocks[i_step].Predictors[i_predictor].PreprocessDataId[i_preprocess] = val;
+        if (m_stepsLocks[i_step].predictors[i_predictor].preprocessDataId.size() > (unsigned) (i_preprocess)) {
+            m_stepsLocks[i_step].predictors[i_predictor].preprocessDataId[i_preprocess] = val;
         } else {
-            wxASSERT(m_stepsLocks[i_step].Predictors[i_predictor].PreprocessDataId.size() == (unsigned) i_preprocess);
-            m_stepsLocks[i_step].Predictors[i_predictor].PreprocessDataId.push_back(val);
+            wxASSERT(m_stepsLocks[i_step].predictors[i_predictor].preprocessDataId.size() == (unsigned) i_preprocess);
+            m_stepsLocks[i_step].predictors[i_predictor].preprocessDataId.push_back(val);
         }
     }
 
     bool IsPreprocessLevelLocked(int i_step, int i_predictor, int i_preprocess)
     {
-        wxASSERT(m_stepsLocks[i_step].Predictors[i_predictor].PreprocessLevels.size() > (unsigned) i_preprocess);
-        return m_stepsLocks[i_step].Predictors[i_predictor].PreprocessLevels[i_preprocess];
+        wxASSERT(m_stepsLocks[i_step].predictors[i_predictor].preprocessLevels.size() > (unsigned) i_preprocess);
+        return m_stepsLocks[i_step].predictors[i_predictor].preprocessLevels[i_preprocess];
     }
 
     void SetPreprocessLevelLock(int i_step, int i_predictor, int i_preprocess, bool val)
     {
-        if (m_stepsLocks[i_step].Predictors[i_predictor].PreprocessLevels.size() > (unsigned) (i_preprocess)) {
-            m_stepsLocks[i_step].Predictors[i_predictor].PreprocessLevels[i_preprocess] = val;
+        if (m_stepsLocks[i_step].predictors[i_predictor].preprocessLevels.size() > (unsigned) (i_preprocess)) {
+            m_stepsLocks[i_step].predictors[i_predictor].preprocessLevels[i_preprocess] = val;
         } else {
-            wxASSERT(m_stepsLocks[i_step].Predictors[i_predictor].PreprocessLevels.size() == (unsigned) i_preprocess);
-            m_stepsLocks[i_step].Predictors[i_predictor].PreprocessLevels.push_back(val);
+            wxASSERT(m_stepsLocks[i_step].predictors[i_predictor].preprocessLevels.size() == (unsigned) i_preprocess);
+            m_stepsLocks[i_step].predictors[i_predictor].preprocessLevels.push_back(val);
         }
     }
 
     bool IsPreprocessTimeHoursLocked(int i_step, int i_predictor, int i_preprocess)
     {
-        wxASSERT(m_stepsLocks[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) i_preprocess);
-        return m_stepsLocks[i_step].Predictors[i_predictor].PreprocessTimeHours[i_preprocess];
+        wxASSERT(m_stepsLocks[i_step].predictors[i_predictor].preprocessTimeHours.size() > (unsigned) i_preprocess);
+        return m_stepsLocks[i_step].predictors[i_predictor].preprocessTimeHours[i_preprocess];
     }
 
     void SetPreprocessTimeHoursLock(int i_step, int i_predictor, int i_preprocess, bool val)
     {
-        if (m_stepsLocks[i_step].Predictors[i_predictor].PreprocessTimeHours.size() > (unsigned) (i_preprocess)) {
-            m_stepsLocks[i_step].Predictors[i_predictor].PreprocessTimeHours[i_preprocess] = val;
+        if (m_stepsLocks[i_step].predictors[i_predictor].preprocessTimeHours.size() > (unsigned) (i_preprocess)) {
+            m_stepsLocks[i_step].predictors[i_predictor].preprocessTimeHours[i_preprocess] = val;
         } else {
             wxASSERT(
-                    m_stepsLocks[i_step].Predictors[i_predictor].PreprocessTimeHours.size() == (unsigned) i_preprocess);
-            m_stepsLocks[i_step].Predictors[i_predictor].PreprocessTimeHours.push_back(val);
+                    m_stepsLocks[i_step].predictors[i_predictor].preprocessTimeHours.size() == (unsigned) i_preprocess);
+            m_stepsLocks[i_step].predictors[i_predictor].preprocessTimeHours.push_back(val);
         }
     }
 
     bool IsPredictorTimeHoursLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].TimeHours;
+        return m_stepsLocks[i_step].predictors[i_predictor].timeHours;
     }
 
     void SetPredictorTimeHoursLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].TimeHours = val;
+        m_stepsLocks[i_step].predictors[i_predictor].timeHours = val;
     }
 
     bool IsPredictorDataIdLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].DataId;
+        return m_stepsLocks[i_step].predictors[i_predictor].dataId;
     }
 
     void SetPredictorDataIdLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].DataId = val;
+        m_stepsLocks[i_step].predictors[i_predictor].dataId = val;
     }
 
     bool IsPredictorLevelLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Level;
+        return m_stepsLocks[i_step].predictors[i_predictor].level;
     }
 
     void SetPredictorLevelLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Level = val;
+        m_stepsLocks[i_step].predictors[i_predictor].level = val;
     }
 
     bool IsPredictorXminLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Xmin;
+        return m_stepsLocks[i_step].predictors[i_predictor].xMin;
     }
 
     void SetPredictorXminLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Xmin = val;
+        m_stepsLocks[i_step].predictors[i_predictor].xMin = val;
     }
 
     bool IsPredictorXptsnbLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Xptsnb;
+        return m_stepsLocks[i_step].predictors[i_predictor].xPtsNb;
     }
 
     void SetPredictorXptsnbLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Xptsnb = val;
+        m_stepsLocks[i_step].predictors[i_predictor].xPtsNb = val;
     }
 
     bool IsPredictorYminLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Ymin;
+        return m_stepsLocks[i_step].predictors[i_predictor].yMin;
     }
 
     void SetPredictorYminLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Ymin = val;
+        m_stepsLocks[i_step].predictors[i_predictor].yMin = val;
     }
 
     bool IsPredictorYptsnbLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Yptsnb;
+        return m_stepsLocks[i_step].predictors[i_predictor].yPtsNb;
     }
 
     void SetPredictorYptsnbLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Yptsnb = val;
+        m_stepsLocks[i_step].predictors[i_predictor].yPtsNb = val;
     }
 
     bool IsPredictorWeightLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Weight;
+        return m_stepsLocks[i_step].predictors[i_predictor].weight;
     }
 
     void SetPredictorWeightLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Weight = val;
+        m_stepsLocks[i_step].predictors[i_predictor].weight = val;
     }
 
     bool IsPredictorCriteriaLocked(int i_step, int i_predictor)
     {
-        return m_stepsLocks[i_step].Predictors[i_predictor].Criteria;
+        return m_stepsLocks[i_step].predictors[i_predictor].criteria;
     }
 
     void SetPredictorCriteriaLock(int i_step, int i_predictor, bool val)
     {
-        m_stepsLocks[i_step].Predictors[i_predictor].Criteria = val;
+        m_stepsLocks[i_step].predictors[i_predictor].criteria = val;
     }
 
     bool IncrementAnalogsNumber(int i_step)
     {
-        if (GetAnalogsNumber(i_step) + m_stepsIteration[i_step].AnalogsNumber <=
-            m_stepsUpperLimit[i_step].AnalogsNumber) {
-            SetAnalogsNumber(i_step, GetAnalogsNumber(i_step) + m_stepsIteration[i_step].AnalogsNumber);
+        if (GetAnalogsNumber(i_step) + m_stepsIteration[i_step].analogsNumber <=
+            m_stepsUpperLimit[i_step].analogsNumber) {
+            SetAnalogsNumber(i_step, GetAnalogsNumber(i_step) + m_stepsIteration[i_step].analogsNumber);
             return true;
         } else {
             return false;
@@ -675,10 +676,10 @@ public:
 
     bool IncrementPredictorXmin(int i_step, int i_predictor)
     {
-        if (GetPredictorXmin(i_step, i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Xmin <=
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].Xmin) {
+        if (GetPredictorXmin(i_step, i_predictor) + m_stepsIteration[i_step].predictors[i_predictor].xMin <=
+            m_stepsUpperLimit[i_step].predictors[i_predictor].xMin) {
             SetPredictorXmin(i_step, i_predictor, GetPredictorXmin(i_step, i_predictor) +
-                                                  m_stepsIteration[i_step].Predictors[i_predictor].Xmin);
+                                                  m_stepsIteration[i_step].predictors[i_predictor].xMin);
             return true;
         } else {
             return false;
@@ -687,10 +688,10 @@ public:
 
     bool IncrementPredictorXptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorXptsnb(i_step, i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb <=
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].Xptsnb) {
+        if (GetPredictorXptsnb(i_step, i_predictor) + m_stepsIteration[i_step].predictors[i_predictor].xPtsNb <=
+            m_stepsUpperLimit[i_step].predictors[i_predictor].xPtsNb) {
             SetPredictorXptsnb(i_step, i_predictor, GetPredictorXptsnb(i_step, i_predictor) +
-                                                    m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb);
+                                                    m_stepsIteration[i_step].predictors[i_predictor].xPtsNb);
             return true;
         } else {
             return false;
@@ -699,10 +700,10 @@ public:
 
     bool IncrementPredictorYmin(int i_step, int i_predictor)
     {
-        if (GetPredictorYmin(i_step, i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Ymin <=
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].Ymin) {
+        if (GetPredictorYmin(i_step, i_predictor) + m_stepsIteration[i_step].predictors[i_predictor].yMin <=
+            m_stepsUpperLimit[i_step].predictors[i_predictor].yMin) {
             SetPredictorYmin(i_step, i_predictor, GetPredictorYmin(i_step, i_predictor) +
-                                                  m_stepsIteration[i_step].Predictors[i_predictor].Ymin);
+                                                  m_stepsIteration[i_step].predictors[i_predictor].yMin);
             return true;
         } else {
             return false;
@@ -711,10 +712,10 @@ public:
 
     bool IncrementPredictorYptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorYptsnb(i_step, i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb <=
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].Yptsnb) {
+        if (GetPredictorYptsnb(i_step, i_predictor) + m_stepsIteration[i_step].predictors[i_predictor].yPtsNb <=
+            m_stepsUpperLimit[i_step].predictors[i_predictor].yPtsNb) {
             SetPredictorYptsnb(i_step, i_predictor, GetPredictorYptsnb(i_step, i_predictor) +
-                                                    m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb);
+                                                    m_stepsIteration[i_step].predictors[i_predictor].yPtsNb);
             return true;
         } else {
             return false;
@@ -723,10 +724,10 @@ public:
 
     bool IncrementPredictorTimeHours(int i_step, int i_predictor)
     {
-        if (GetPredictorTimeHours(i_step, i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].TimeHours <=
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].TimeHours) {
+        if (GetPredictorTimeHours(i_step, i_predictor) + m_stepsIteration[i_step].predictors[i_predictor].timeHours <=
+            m_stepsUpperLimit[i_step].predictors[i_predictor].timeHours) {
             SetPredictorTimeHours(i_step, i_predictor, GetPredictorTimeHours(i_step, i_predictor) +
-                                                       m_stepsIteration[i_step].Predictors[i_predictor].TimeHours);
+                                                       m_stepsIteration[i_step].predictors[i_predictor].timeHours);
             return true;
         } else {
             return false;
@@ -735,10 +736,10 @@ public:
 
     bool IncrementPredictorWeight(int i_step, int i_predictor)
     {
-        if (GetPredictorWeight(i_step, i_predictor) + m_stepsIteration[i_step].Predictors[i_predictor].Weight <=
-            m_stepsUpperLimit[i_step].Predictors[i_predictor].Weight) {
+        if (GetPredictorWeight(i_step, i_predictor) + m_stepsIteration[i_step].predictors[i_predictor].weight <=
+            m_stepsUpperLimit[i_step].predictors[i_predictor].weight) {
             SetPredictorWeight(i_step, i_predictor, GetPredictorWeight(i_step, i_predictor) +
-                                                    m_stepsIteration[i_step].Predictors[i_predictor].Weight);
+                                                    m_stepsIteration[i_step].predictors[i_predictor].weight);
             return true;
         } else {
             return false;
@@ -747,9 +748,9 @@ public:
 
     bool DecrementAnalogsNumber(int i_step)
     {
-        if (GetAnalogsNumber(i_step) - m_stepsIteration[i_step].AnalogsNumber >=
-            m_stepsLowerLimit[i_step].AnalogsNumber) {
-            SetAnalogsNumber(i_step, GetAnalogsNumber(i_step) - m_stepsIteration[i_step].AnalogsNumber);
+        if (GetAnalogsNumber(i_step) - m_stepsIteration[i_step].analogsNumber >=
+            m_stepsLowerLimit[i_step].analogsNumber) {
+            SetAnalogsNumber(i_step, GetAnalogsNumber(i_step) - m_stepsIteration[i_step].analogsNumber);
             return true;
         } else {
             return false;
@@ -769,10 +770,10 @@ public:
 
     bool DecrementPredictorXmin(int i_step, int i_predictor)
     {
-        if (GetPredictorXmin(i_step, i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Xmin >=
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].Xmin) {
+        if (GetPredictorXmin(i_step, i_predictor) - m_stepsIteration[i_step].predictors[i_predictor].xMin >=
+            m_stepsLowerLimit[i_step].predictors[i_predictor].xMin) {
             SetPredictorXmin(i_step, i_predictor, GetPredictorXmin(i_step, i_predictor) -
-                                                  m_stepsIteration[i_step].Predictors[i_predictor].Xmin);
+                                                  m_stepsIteration[i_step].predictors[i_predictor].xMin);
             return true;
         } else {
             return false;
@@ -781,10 +782,10 @@ public:
 
     bool DecrementPredictorXptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorXptsnb(i_step, i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb >=
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].Xptsnb) {
+        if (GetPredictorXptsnb(i_step, i_predictor) - m_stepsIteration[i_step].predictors[i_predictor].xPtsNb >=
+            m_stepsLowerLimit[i_step].predictors[i_predictor].xPtsNb) {
             SetPredictorXptsnb(i_step, i_predictor, GetPredictorXptsnb(i_step, i_predictor) -
-                                                    m_stepsIteration[i_step].Predictors[i_predictor].Xptsnb);
+                                                    m_stepsIteration[i_step].predictors[i_predictor].xPtsNb);
             return true;
         } else {
             return false;
@@ -793,10 +794,10 @@ public:
 
     bool DecrementPredictorYmin(int i_step, int i_predictor)
     {
-        if (GetPredictorYmin(i_step, i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Ymin >=
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].Ymin) {
+        if (GetPredictorYmin(i_step, i_predictor) - m_stepsIteration[i_step].predictors[i_predictor].yMin >=
+            m_stepsLowerLimit[i_step].predictors[i_predictor].yMin) {
             SetPredictorYmin(i_step, i_predictor, GetPredictorYmin(i_step, i_predictor) -
-                                                  m_stepsIteration[i_step].Predictors[i_predictor].Ymin);
+                                                  m_stepsIteration[i_step].predictors[i_predictor].yMin);
             return true;
         } else {
             return false;
@@ -805,10 +806,10 @@ public:
 
     bool DecrementPredictorYptsnb(int i_step, int i_predictor)
     {
-        if (GetPredictorYptsnb(i_step, i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb >=
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].Yptsnb) {
+        if (GetPredictorYptsnb(i_step, i_predictor) - m_stepsIteration[i_step].predictors[i_predictor].yPtsNb >=
+            m_stepsLowerLimit[i_step].predictors[i_predictor].yPtsNb) {
             SetPredictorYptsnb(i_step, i_predictor, GetPredictorYptsnb(i_step, i_predictor) -
-                                                    m_stepsIteration[i_step].Predictors[i_predictor].Yptsnb);
+                                                    m_stepsIteration[i_step].predictors[i_predictor].yPtsNb);
             return true;
         } else {
             return false;
@@ -817,10 +818,10 @@ public:
 
     bool DecrementPredictorTimeHours(int i_step, int i_predictor)
     {
-        if (GetPredictorTimeHours(i_step, i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].TimeHours >=
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].TimeHours) {
+        if (GetPredictorTimeHours(i_step, i_predictor) - m_stepsIteration[i_step].predictors[i_predictor].timeHours >=
+            m_stepsLowerLimit[i_step].predictors[i_predictor].timeHours) {
             SetPredictorTimeHours(i_step, i_predictor, GetPredictorTimeHours(i_step, i_predictor) -
-                                                       m_stepsIteration[i_step].Predictors[i_predictor].TimeHours);
+                                                       m_stepsIteration[i_step].predictors[i_predictor].timeHours);
             return true;
         } else {
             return false;
@@ -829,10 +830,10 @@ public:
 
     bool DecrementPredictorWeight(int i_step, int i_predictor)
     {
-        if (GetPredictorWeight(i_step, i_predictor) - m_stepsIteration[i_step].Predictors[i_predictor].Weight >=
-            m_stepsLowerLimit[i_step].Predictors[i_predictor].Weight) {
+        if (GetPredictorWeight(i_step, i_predictor) - m_stepsIteration[i_step].predictors[i_predictor].weight >=
+            m_stepsLowerLimit[i_step].predictors[i_predictor].weight) {
             SetPredictorWeight(i_step, i_predictor, GetPredictorWeight(i_step, i_predictor) -
-                                                    m_stepsIteration[i_step].Predictors[i_predictor].Weight);
+                                                    m_stepsIteration[i_step].predictors[i_predictor].weight);
             return true;
         } else {
             return false;

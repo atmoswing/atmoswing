@@ -85,8 +85,6 @@ if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asInternet.cpp")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asThreadInternetDownload.h")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asThreadInternetDownload.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asFileGrib2.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asFileGrib2.cpp")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtime.h")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtime.cpp")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asDataPredictorRealtimeGfsForecast.h")
@@ -561,7 +559,7 @@ endif (UNIX AND NOT APPLE)
 
 # Global definitions
 add_definitions(-DUSE_JPEG2000)
-#add_definitions(-std=c++11)
+add_definitions(-std=c++11)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
