@@ -35,9 +35,9 @@
 #include <asCatalogPredictands.h>
 
 
-asDataPredictandTemperature::asDataPredictandTemperature(DataParameter dataParameter,
-                                                         DataTemporalResolution dataTemporalResolution,
-                                                         DataSpatialAggregation dataSpatialAggregation)
+asDataPredictandTemperature::asDataPredictandTemperature(Parameter dataParameter,
+                                                         TemporalResolution dataTemporalResolution,
+                                                         SpatialAggregation dataSpatialAggregation)
         : asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor

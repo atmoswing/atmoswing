@@ -170,7 +170,7 @@ bool asFileXml::FileVersionIsOrAbove(const float version) const
 
 void asFileXml::UnknownNode(wxXmlNode *node)
 {
-    asLogError(wxString::Format(_("An unknown element was found in the file: %s"), node->GetName()));
+    asLogMessage(wxString::Format(_("An unknown element was found in the file: %s"), node->GetName()));
 }
 
 bool asFileXml::GetBool(wxXmlNode *node, const bool defaultValue)

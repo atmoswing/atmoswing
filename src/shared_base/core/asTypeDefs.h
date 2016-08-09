@@ -60,6 +60,7 @@ typedef struct
 typedef std::vector<bool> VectorBool;
 typedef std::vector<short> VectorShort;
 typedef std::vector<int> VectorInt;
+typedef std::vector<long> VectorLong;
 typedef std::vector<float> VectorFloat;
 typedef std::vector<double> VectorDouble;
 typedef std::vector<std::string> VectorStdString;

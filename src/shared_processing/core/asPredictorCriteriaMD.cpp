@@ -33,7 +33,7 @@ asPredictorCriteriaMD::asPredictorCriteriaMD(int linAlgebraMethod)
 {
     m_criteria = asPredictorCriteria::MD;
     m_name = "MD";
-    m_fullName = _("Mean Differences");
+    m_fullName = _("Mean Absolute Difference");
     m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNFloat;

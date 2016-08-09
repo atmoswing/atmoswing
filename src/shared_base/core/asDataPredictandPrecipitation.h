@@ -37,8 +37,8 @@ class asDataPredictandPrecipitation
         : public asDataPredictand
 {
 public:
-    asDataPredictandPrecipitation(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
-                                  DataSpatialAggregation dataSpatialAggregation);
+    asDataPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                                  SpatialAggregation dataSpatialAggregation);
 
     virtual ~asDataPredictandPrecipitation();
 

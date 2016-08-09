@@ -36,10 +36,6 @@ class asGeoAreaCompositeGrid
         : public asGeoAreaComposite // Abstract class
 {
 public:
-    enum GridType //!< Define available parameters sets (for the GUI)
-    {
-        Regular, GaussianT62
-    };
 
     asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
                            float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
@@ -55,22 +51,9 @@ public:
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 
-    GridType GetGridType() const
-    {
-        return m_gridType;
-    }
+    void SetLastRowAsNewComposite();
 
-    wxString GetGridTypeString() const
-    {
-        switch (m_gridType) {
-            case (Regular):
-                return "Regular";
-            case (GaussianT62):
-                return "GaussianT62";
-            default:
-                return "Not found";
-        }
-    }
+	void RemoveLastRowOnComposite(int i);
 
     virtual double GetXstep() const = 0;
 
@@ -109,7 +92,6 @@ public:
     Array1DDouble GetYaxis() const;
 
 protected:
-    GridType m_gridType;
 
 private:
 

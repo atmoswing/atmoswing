@@ -88,13 +88,13 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "description") {
                     m_description = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "parameter") {
-                    m_parameter = asGlobEnums::StringToDataParameterEnum(xmlFile.GetString(nodeProp));
+                    m_parameter = asDataPredictand::StringToParameterEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
-                    m_unit = asGlobEnums::StringToDataUnitEnum(xmlFile.GetString(nodeProp));
+                    m_unit = asDataPredictand::StringToUnitEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "temporal_resolution") {
-                    m_temporalResolution = asGlobEnums::StringToDataTemporalResolutionEnum(xmlFile.GetString(nodeProp));
+                    m_temporalResolution = asDataPredictand::StringToTemporalResolutionEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "spatial_aggregation") {
-                    m_spatialAggregation = asGlobEnums::StringToDataSpatialAggregationEnum(xmlFile.GetString(nodeProp));
+                    m_spatialAggregation = asDataPredictand::StringToSpatialAggregationEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "time_zone") {
                     m_timeZoneHours = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
@@ -118,37 +118,37 @@ bool asCatalogPredictands::Load()
                             wxXmlNode *nodeDetail = nodeData->GetChildren();
                             while (nodeDetail) {
                                 if (nodeDetail->GetName() == "official_id") {
-                                    station.OfficialId = xmlFile.GetString(nodeDetail);
+                                    station.officialId = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "id") {
                                     wxString idStr = xmlFile.GetString(nodeDetail);
                                     long id;
                                     idStr.ToLong(&id);
-                                    station.Id = id;
+                                    station.id = id;
                                 } else if (nodeDetail->GetName() == "name") {
-                                    station.Name = xmlFile.GetString(nodeDetail);
+                                    station.name = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "x_coordinate") {
                                     wxString coordXStr = xmlFile.GetString(nodeDetail);
                                     double x;
                                     coordXStr.ToDouble(&x);
-                                    station.Coord.x = x;
+                                    station.coord.x = x;
                                 } else if (nodeDetail->GetName() == "y_coordinate") {
                                     wxString coordYStr = xmlFile.GetString(nodeDetail);
                                     double y;
                                     coordYStr.ToDouble(&y);
-                                    station.Coord.y = y;
+                                    station.coord.y = y;
                                 } else if (nodeDetail->GetName() == "height") {
                                     wxString heightStr = xmlFile.GetString(nodeDetail);
                                     double height;
                                     heightStr.ToDouble(&height);
-                                    station.Height = (float) height;
+                                    station.height = (float) height;
                                 } else if (nodeDetail->GetName() == "file_name") {
-                                    station.Filename = xmlFile.GetString(nodeDetail);
+                                    station.fileName = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "file_pattern") {
-                                    station.Filepattern = xmlFile.GetString(nodeDetail);
+                                    station.filePattern = xmlFile.GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.Start = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                    station.startDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.End = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                    station.endDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }
@@ -180,25 +180,25 @@ bool asCatalogPredictands::Load()
 
     // Get the timestep
     switch (m_temporalResolution) {
-        case (Daily):
+        case (asDataPredictand::Daily):
             m_timeStepHours = 24.0;
             break;
-        case (SixHourly):
+        case (asDataPredictand::SixHourly):
             m_timeStepHours = 6.0;
             break;
-        case (Hourly):
+        case (asDataPredictand::Hourly):
             m_timeStepHours = 1.0;
             break;
-        case (SixHourlyMovingDailyTemporalWindow):
+        case (asDataPredictand::SixHourlyMovingDailyTemporalWindow):
             m_timeStepHours = 6.0;
             break;
-        case (TwoDays):
+        case (asDataPredictand::TwoDays):
             m_timeStepHours = 48.0;
             break;
-        case (ThreeDays):
+        case (asDataPredictand::ThreeDays):
             m_timeStepHours = 72.0;
             break;
-        case (Weekly):
+        case (asDataPredictand::Weekly):
             m_timeStepHours = 168.0;
             break;
         default:

@@ -37,8 +37,8 @@ class asDataPredictandTemperature
         : public asDataPredictand
 {
 public:
-    asDataPredictandTemperature(DataParameter dataParameter, DataTemporalResolution dataTemporalResolution,
-                                DataSpatialAggregation dataSpatialAggregation);
+    asDataPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                                SpatialAggregation dataSpatialAggregation);
 
     virtual ~asDataPredictandTemperature();
 

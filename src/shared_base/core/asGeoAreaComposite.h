@@ -120,7 +120,7 @@ public:
 
     int GetNbComposites() const
     {
-        return m_nbComposites;
+        return (int)m_composites.size();
     }
 
     std::vector<asGeoArea> GetComposites() const
@@ -130,7 +130,7 @@ public:
 
     asGeoArea GetComposite(int Id) const
     {
-        if (Id >= m_nbComposites)
+        if (Id >= m_composites.size())
             asThrowException(_("The composite area doesn't exist."));
         return m_composites[Id];
     }
@@ -138,7 +138,15 @@ public:
     bool IsRectangle() const;
 
 protected:
+    std::vector<asGeoArea> m_composites;
+    float m_level;
+    float m_height;
+
     void CreateComposites();
+
+    bool DoCheckPoints();
+
+    bool CheckConsistency();
 
 private:
     double m_absoluteXmin;
@@ -149,17 +157,9 @@ private:
     Coo m_cornerUR;
     Coo m_cornerLL;
     Coo m_cornerLR;
-    float m_level;
-    float m_height;
-    int m_nbComposites;
-    std::vector<asGeoArea> m_composites;
     int m_flatAllowed;
 
     void Init();
-
-    bool DoCheckPoints();
-
-    bool CheckConsistency();
 };
 
 #endif

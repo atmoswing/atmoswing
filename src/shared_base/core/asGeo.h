@@ -35,11 +35,23 @@ class asGeo
         : public wxObject
 {
 public:
+    enum GridType
+    {
+        Regular, GaussianT62, GaussianT382
+    };
+
     asGeo();
 
     virtual ~asGeo();
 
     bool CheckPoint(Coo &Point, int ChangesAllowed = asEDIT_FORBIDEN);
+
+    GridType GetGridType() const
+    {
+        return m_gridType;
+    }
+
+    wxString GetGridTypeString() const;
 
     double GetAxisXmin() const
     {
@@ -62,12 +74,11 @@ public:
     }
 
 protected:
+    GridType m_gridType;
     double m_axisXmin;
     double m_axisXmax;
     double m_axisYmin;
     double m_axisYmax;
-
-    void InitBounds();
 
 private:
 

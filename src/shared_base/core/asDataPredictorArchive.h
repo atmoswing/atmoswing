@@ -32,6 +32,8 @@
 #include <asIncludes.h>
 #include <asDataPredictor.h>
 
+class asFileNetcdf;
+
 class asDataPredictorArchive
         : public asDataPredictor
 {
@@ -44,6 +46,8 @@ public:
                                                const wxString &directory = wxEmptyString);
 
     virtual bool Init();
+
+    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
@@ -60,10 +64,19 @@ public:
 protected:
     double m_originalProviderStart;
     double m_originalProviderEnd;
-    wxString m_subFolder;
     wxString m_fileNamePattern;
 
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
+
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
+
+    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                VVArray2DFloat &compositeData);
 
 private:
 

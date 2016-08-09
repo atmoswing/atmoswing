@@ -35,9 +35,9 @@
 #include <asCatalogPredictands.h>
 
 
-asDataPredictandLightnings::asDataPredictandLightnings(DataParameter dataParameter,
-                                                       DataTemporalResolution dataTemporalResolution,
-                                                       DataSpatialAggregation dataSpatialAggregation)
+asDataPredictandLightnings::asDataPredictandLightnings(Parameter dataParameter,
+                                                       TemporalResolution dataTemporalResolution,
+                                                       SpatialAggregation dataSpatialAggregation)
         : asDataPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor

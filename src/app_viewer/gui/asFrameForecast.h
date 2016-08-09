@@ -148,7 +148,7 @@ public:
         m_forecastViewer = forecastViewer;
     }
 
-    asWorkspace *GetWorkspace() const
+    asWorkspace *GetWorkspace()
     {
         return &m_workspace;
     }

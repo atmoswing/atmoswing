@@ -462,3 +462,23 @@ TEST(GeoAreaCompositeRegularGrid, GetUYaxisCompositeLimitsMoved)
     EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(0));
     EXPECT_DOUBLE_EQ(40, geoArea.GetYaxisCompositeEnd(1));
 }
+
+TEST(GeoAreaCompositeRegularGrid, SetLastRowAsNewComposite)
+{
+    double Xmin = 340;
+    double Xwidth = 20;
+    double Ymin = 30;
+    double Ywidth = 10;
+    double step = 2.5;
+    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+
+    EXPECT_EQ(1, geoArea.GetNbComposites());
+
+    geoArea.SetLastRowAsNewComposite();
+
+    EXPECT_EQ(2, geoArea.GetNbComposites());
+    EXPECT_DOUBLE_EQ(0, geoArea.GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(0, geoArea.GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(340, geoArea.GetXaxisCompositeStart(1));
+    EXPECT_DOUBLE_EQ(357.5, geoArea.GetXaxisCompositeEnd(1));
+}

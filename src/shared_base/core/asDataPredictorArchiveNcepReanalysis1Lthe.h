@@ -30,12 +30,12 @@
 #define ASDATAPREDICTORARCHIVENCEPREANALYSIS1LTHE_H
 
 #include <asIncludes.h>
-#include <asDataPredictorArchiveNcepReanalysis1Terranum.h>
+#include <asDataPredictorArchiveNcepReanalysis1Subset.h>
 
 class asGeoArea;
 
 class asDataPredictorArchiveNcepReanalysis1Lthe
-        : public asDataPredictorArchiveNcepReanalysis1Terranum
+        : public asDataPredictorArchiveNcepReanalysis1Subset
 {
 public:
     asDataPredictorArchiveNcepReanalysis1Lthe(const wxString &dataId);
@@ -44,11 +44,13 @@ public:
 
     virtual bool Init();
 
-    static VectorString GetDataIdList();
-
-    static VectorString GetDataIdDescriptionList();
-
 protected:
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
 private:
 

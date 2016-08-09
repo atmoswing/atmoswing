@@ -128,7 +128,6 @@ void asGeoArea::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth,
 
 void asGeoArea::Init()
 {
-    InitBounds();
     if (!DoCheckPoints())
         asThrowException(_("Use asGeoAreaComposite in this case."));
     if (!CheckConsistency())

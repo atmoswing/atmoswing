@@ -158,7 +158,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
 
         // Get temporal resolution
-        DataTemporalResolution dataTemporalResolution = Daily;
+        asDataPredictand::TemporalResolution temporalResolution = asDataPredictand::Daily;
         switch (m_choiceDataTempResol->GetSelection()) {
             case wxNOT_FOUND: {
                 asLogError(_("Wrong selection of the temporal resolution option."));
@@ -166,17 +166,17 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // 24 hours
             {
-                dataTemporalResolution = Daily;
+                temporalResolution = asDataPredictand::Daily;
                 break;
             }
             case 1: // 6 hours
             {
-                dataTemporalResolution = SixHourly;
+                temporalResolution = asDataPredictand::SixHourly;
                 break;
             }
             case 2: // Moving temporal window (6/24 hours)
             {
-                dataTemporalResolution = SixHourlyMovingDailyTemporalWindow;
+                temporalResolution = asDataPredictand::SixHourlyMovingDailyTemporalWindow;
                 break;
             }
             default:
@@ -184,7 +184,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
 
         // Get temporal resolution
-        DataSpatialAggregation dataSpatialAggregation = Station;
+        asDataPredictand::SpatialAggregation spatialAggregation = asDataPredictand::Station;
         switch (m_choiceDataSpatAggreg->GetSelection()) {
             case wxNOT_FOUND: {
                 asLogError(_("Wrong selection of the spatial aggregation option."));
@@ -192,17 +192,17 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // Station
             {
-                dataSpatialAggregation = Station;
+                spatialAggregation = asDataPredictand::Station;
                 break;
             }
             case 1: // Groupment
             {
-                dataSpatialAggregation = Groupment;
+                spatialAggregation = asDataPredictand::Groupment;
                 break;
             }
             case 2: // Catchment
             {
-                dataSpatialAggregation = Catchment;
+                spatialAggregation = asDataPredictand::Catchment;
                 break;
             }
             default:
@@ -236,7 +236,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 }
 
                 // Instiantiate a predictand object
-                asDataPredictandPrecipitation predictand(Precipitation, dataTemporalResolution, dataSpatialAggregation);
+                asDataPredictandPrecipitation predictand(asDataPredictand::Precipitation, temporalResolution, spatialAggregation);
                 predictand.SetIsSqrt(makeSqrt);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
@@ -244,14 +244,14 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             case 1: // Temperature
             {
                 // Instiantiate a predictand object
-                asDataPredictandTemperature predictand(AirTemperature, dataTemporalResolution, dataSpatialAggregation);
+                asDataPredictandTemperature predictand(asDataPredictand::AirTemperature, temporalResolution, spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 2: // Lightnings
             {
                 // Instiantiate a predictand object
-                asDataPredictandLightnings predictand(Lightnings, dataTemporalResolution, dataSpatialAggregation);
+                asDataPredictandLightnings predictand(asDataPredictand::Lightnings, temporalResolution, spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }

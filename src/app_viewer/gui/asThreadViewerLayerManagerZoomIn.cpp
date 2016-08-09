@@ -36,15 +36,11 @@ asThreadViewerLayerManagerZoomIn::asThreadViewerLayerManagerZoomIn(vrViewerLayer
                                                                    const vrRealRect &fittedRect)
         : asThread()
 {
-    m_status = Initializing;
-
     m_viewerLayerManager = viewerLayerManager;
     m_critSectionViewerLayerManager = critSectionViewerLayerManager;
     m_rect = fittedRect;
 
     wxASSERT(m_viewerLayerManager);
-
-    m_status = Waiting;
 }
 
 asThreadViewerLayerManagerZoomIn::~asThreadViewerLayerManagerZoomIn()
@@ -54,8 +50,6 @@ asThreadViewerLayerManagerZoomIn::~asThreadViewerLayerManagerZoomIn()
 
 wxThread::ExitCode asThreadViewerLayerManagerZoomIn::Entry()
 {
-    m_status = Working;
-
     m_critSectionViewerLayerManager->Enter();
     m_viewerLayerManager->Zoom(m_rect);
     m_critSectionViewerLayerManager->Leave();
