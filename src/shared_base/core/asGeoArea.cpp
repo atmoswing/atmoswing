@@ -136,8 +136,8 @@ void asGeoArea::Init()
 
 bool asGeoArea::DoCheckPoints()
 {
-    return !(!CheckPoint(m_cornerUL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDEN) ||
-             !CheckPoint(m_cornerLL, asEDIT_FORBIDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDEN));
+    return !(!CheckPoint(m_cornerUL, asEDIT_FORBIDDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDDEN) ||
+             !CheckPoint(m_cornerLL, asEDIT_FORBIDDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDDEN));
 }
 
 bool asGeoArea::CheckConsistency()

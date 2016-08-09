@@ -1416,7 +1416,7 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, con
             }
             break;
         }
-        case (NoOrder): {
+        default: {
             asLogError(_("Incorrect value of the order enumeration."));
             return false;
         }
@@ -1495,7 +1495,7 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
             }
             break;
         }
-        case (NoOrder): {
+        default: {
             asLogError(_("Incorrect value of the order enumeration."));
             return false;
         }
@@ -1625,7 +1625,7 @@ void asTools::QuickSort(T *pArr, const int low, const int high, const Order orde
                     R--;
                 break;
             }
-            case (NoOrder): {
+            default: {
                 asLogError(_("Incorrect value of the order enumeration."));
                 break;
             }
@@ -1678,7 +1678,7 @@ void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int 
                     R--;
                 break;
             }
-            case (NoOrder): {
+            default: {
                 asLogError(_("Incorrect value of the order enumeration."));
                 break;
             }

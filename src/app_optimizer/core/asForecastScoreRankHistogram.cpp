@@ -33,7 +33,6 @@ asForecastScoreRankHistogram::asForecastScoreRankHistogram()
     m_score = asForecastScore::RankHistogram;
     m_name = _("Rank Histogram");
     m_fullName = _("Verification Rank Histogram (Talagrand Diagram)");
-    m_order = NoOrder;
     m_scaleBest = NaNFloat;
     m_scaleWorst = NaNFloat;
 }
