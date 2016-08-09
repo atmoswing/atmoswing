@@ -133,6 +133,11 @@ public:
         return GetYear(m_start);
     }
 
+    int GetFirstDayMonth() const
+    {
+        return GetMonth(m_start);
+    }
+
     double GetFirstDayHour() const
     {
         double fractpart, intpart;
@@ -148,6 +153,11 @@ public:
     int GetLastDayYear() const
     {
         return GetYear(m_end);
+    }
+
+    int GetLastDayMonth() const
+    {
+        return GetMonth(m_end);
     }
 
     double GetLastDayHour() const

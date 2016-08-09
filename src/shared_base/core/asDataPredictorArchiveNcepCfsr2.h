@@ -22,35 +22,35 @@
  */
 
 /*
- * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASDATAPREDICTORARCHIVEECMWFERA40_H
-#define ASDATAPREDICTORARCHIVEECMWFERA40_H
+#ifndef ASDATAPREDICTORARCHIVENCEPCFSR2_H
+#define ASDATAPREDICTORARCHIVENCEPCFSR2_H
 
 #include <asIncludes.h>
-#include <asDataPredictorArchiveNcepReanalysis1Terranum.h>
+#include <asDataPredictorArchive.h>
 
 class asGeoArea;
 
-class asDataPredictorArchiveEcmwfEra40
-        : public asDataPredictorArchiveNcepReanalysis1Terranum
+class asDataPredictorArchiveNcepCfsr2
+        : public asDataPredictorArchive
 {
 public:
-    asDataPredictorArchiveEcmwfEra40(const wxString &dataId);
+    asDataPredictorArchiveNcepCfsr2(const wxString &dataId);
 
-    virtual ~asDataPredictorArchiveEcmwfEra40();
+    virtual ~asDataPredictorArchiveNcepCfsr2();
 
     bool Init();
 
-    static VectorString GetDataIdList();
-
-    static VectorString GetDataIdDescriptionList();
-
 protected:
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
 
 private:
 
 };
 
-#endif // ASDATAPREDICTORARCHIVEECMWFERA40_H
+#endif // ASDATAPREDICTORARCHIVENCEPCFSR2_H

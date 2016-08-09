@@ -26,34 +26,34 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASDATAPREDICTORARCHIVENCEPREANALYSIS1TERRANUM_H
-#define ASDATAPREDICTORARCHIVENCEPREANALYSIS1TERRANUM_H
+#ifndef ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
+#define ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H
 
 #include <asIncludes.h>
 #include <asDataPredictorArchive.h>
 
 class asGeoArea;
 
-class asDataPredictorArchiveNcepReanalysis1Terranum
+class asDataPredictorArchiveNoaaOisst2Subset
         : public asDataPredictorArchive
 {
 public:
-    asDataPredictorArchiveNcepReanalysis1Terranum(const wxString &dataId);
+    asDataPredictorArchiveNoaaOisst2Subset(const wxString &dataId);
 
-    virtual ~asDataPredictorArchiveNcepReanalysis1Terranum();
+    virtual ~asDataPredictorArchiveNoaaOisst2Subset();
 
-    virtual bool Init();
-
-    static VectorString GetDataIdList();
-
-    static VectorString GetDataIdDescriptionList();
+    bool Init();
 
 protected:
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                  VVArray2DFloat &compositeData);
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
 private:
 
 };
 
-#endif // ASDATAPREDICTORARCHIVENCEPREANALYSIS1TERRANUM_H
+#endif // ASDATAPREDICTORARCHIVENOAAOISST2SUBSET_H

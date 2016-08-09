@@ -53,7 +53,7 @@ public:
 
     wxString GetStationName(int i_stat) const;
 
-    float GetSelectedTargetDate() const;
+    float GetSelectedTargetDate();
 
     void SetForecastDisplay(int i);
 

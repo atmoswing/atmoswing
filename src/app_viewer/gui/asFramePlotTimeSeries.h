@@ -75,9 +75,9 @@ private:
 
     void OnTocSelectionChange(wxCommandEvent &event);
 
-    void OnExportTXT(wxCommandEvent &event) const;
+    void OnExportTXT(wxCommandEvent &event);
 
-    void OnExportSVG(wxCommandEvent &event) const;
+    void OnExportSVG(wxCommandEvent &event);
 
     void OnPreview(wxCommandEvent &event);
 

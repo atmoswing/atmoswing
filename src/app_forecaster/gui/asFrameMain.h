@@ -79,15 +79,15 @@ protected:
 
     void Update();
 
-    void OpenFramePredictandDB(wxCommandEvent &event) const;
+    void OpenFramePredictandDB(wxCommandEvent &event);
 
-    void OnConfigureDirectories(wxCommandEvent &event) const;
+    void OnConfigureDirectories(wxCommandEvent &event);
 
-    void OpenFramePreferences(wxCommandEvent &event) const;
+    void OpenFramePreferences(wxCommandEvent &event);
 
-    void OpenFrameAbout(wxCommandEvent &event) const;
+    void OpenFrameAbout(wxCommandEvent &event);
 
-    void OnShowLog(wxCommandEvent &event) const;
+    void OnShowLog(wxCommandEvent &event);
 
     void OnLogLevel1(wxCommandEvent &event);
 

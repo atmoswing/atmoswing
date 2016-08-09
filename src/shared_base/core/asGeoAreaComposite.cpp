@@ -32,7 +32,7 @@ asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR,
                                        const Coo &CornerLR, float Level, float Height, int flatAllowed)
         : asGeo()
 {
-    // Set the members
+    m_gridType = Regular;
     m_cornerUL = CornerUL;
     m_cornerUR = CornerUR;
     m_cornerLL = CornerLL;
@@ -56,7 +56,7 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
                                        float Height, int flatAllowed)
         : asGeo()
 {
-    // Set the members
+    m_gridType = Regular;
     m_cornerUL.x = Xmin;
     m_cornerUL.y = Ymin + Ywidth;
     m_cornerUR.x = Xmin + Xwidth;
@@ -83,10 +83,9 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
 asGeoAreaComposite::asGeoAreaComposite(float Level, float Height)
         : asGeo()
 {
-    // Set the members
+    m_gridType = Regular;
     m_level = Level;
     m_height = Height;
-    m_nbComposites = 0;
     m_cornerUL.x = 0;
     m_cornerUL.y = 0;
     m_cornerUR.x = 0;
@@ -109,7 +108,6 @@ asGeoAreaComposite::~asGeoAreaComposite()
 
 void asGeoAreaComposite::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
 {
-    // Set the members
     m_cornerUL.x = Xmin;
     m_cornerUL.y = Ymin + Ywidth;
     m_cornerUR.x = Xmin + Xwidth;
@@ -133,7 +131,6 @@ void asGeoAreaComposite::Generate(double Xmin, double Xwidth, double Ymin, doubl
 
 void asGeoAreaComposite::Init()
 {
-    InitBounds();
     DoCheckPoints();
     if (!CheckConsistency())
         asThrowException(_("Unable to build a consistent area with the given coordinates."));
@@ -181,7 +178,7 @@ bool asGeoAreaComposite::CheckConsistency()
 double asGeoAreaComposite::GetXmin() const
 {
     double RealXmin = InfDouble;
-    for (int i_area = 0; i_area < m_nbComposites; i_area++) {
+    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
         RealXmin = wxMin(RealXmin, m_composites[i_area].GetXmin());
     }
     return RealXmin;
@@ -190,7 +187,7 @@ double asGeoAreaComposite::GetXmin() const
 double asGeoAreaComposite::GetXmax() const
 {
     double RealXmax = -InfDouble;
-    for (int i_area = 0; i_area < m_nbComposites; i_area++) {
+    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
         RealXmax = wxMax(RealXmax, m_composites[i_area].GetXmax());
     }
     return RealXmax;
@@ -199,7 +196,7 @@ double asGeoAreaComposite::GetXmax() const
 double asGeoAreaComposite::GetYmin() const
 {
     double RealYmin = InfDouble;
-    for (int i_area = 0; i_area < m_nbComposites; i_area++) {
+    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
         RealYmin = wxMin(RealYmin, m_composites[i_area].GetYmin());
     }
     return RealYmin;
@@ -208,7 +205,7 @@ double asGeoAreaComposite::GetYmin() const
 double asGeoAreaComposite::GetYmax() const
 {
     double RealYmax = -InfDouble;
-    for (int i_area = 0; i_area < m_nbComposites; i_area++) {
+    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
         RealYmax = wxMax(RealYmax, m_composites[i_area].GetYmax());
     }
     return RealYmax;
@@ -251,20 +248,17 @@ bool asGeoAreaComposite::IsRectangle() const
 void asGeoAreaComposite::CreateComposites()
 {
     m_composites.clear();
-    m_nbComposites = 0;
 
     if ((m_cornerUL.x <= m_cornerUR.x) & (m_cornerLL.x <= m_cornerLR.x) & (m_cornerLL.y <= m_cornerUL.y) &
         (m_cornerLR.y <= m_cornerUR.y)) {
         asGeoArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_height, m_flatAllowed);
         m_composites.push_back(area);
-        m_nbComposites = 1;
     } else if ((m_cornerUL.x >= m_cornerUR.x) & (m_cornerLL.x >= m_cornerLR.x) & (m_cornerLL.y <= m_cornerUL.y) &
                (m_cornerLR.y <= m_cornerUR.y) & (m_cornerLR.x == m_axisXmin) & (m_cornerUR.x == m_axisXmin)) {
         m_cornerLR.x = m_axisXmax;
         m_cornerUR.x = m_axisXmax;
         asGeoArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_height, m_flatAllowed);
         m_composites.push_back(area);
-        m_nbComposites = 1;
     } else if ((m_cornerUL.x >= m_cornerUR.x) & (m_cornerLL.x >= m_cornerLR.x) & (m_cornerLL.y <= m_cornerUL.y) &
                (m_cornerLR.y <= m_cornerUR.y) & (m_cornerLR.x != m_axisXmin) & (m_cornerUR.x != m_axisXmin)) {
         Coo a1UL = m_cornerUL, a1UR = m_cornerUR, a1LL = m_cornerLL, a1LR = m_cornerLR;
@@ -277,7 +271,6 @@ void asGeoAreaComposite::CreateComposites()
         asGeoArea area2(a2UL, a2UR, a2LL, a2LR, m_level, m_height, m_flatAllowed);
         m_composites.push_back(area1);
         m_composites.push_back(area2);
-        m_nbComposites = 2;
     } else {
         // TODO (phorton#1#): Implement me and check the other functions (GetCenter(), ...)!
         wxString error = "This case is not managed yet (asGeoAreaComposite::CreateComposites):\n ";

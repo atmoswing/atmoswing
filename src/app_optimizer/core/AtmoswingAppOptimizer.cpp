@@ -69,7 +69,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {{wxCMD_LINE_SWITCH, "v",  "ve
                                                    {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
                                                    {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
                                                    {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the calibration parameters"},
-                                                   {wxCMD_LINE_OPTION, NULL, "predicand-db",            "The predictand DB"},
+                                                   {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
                                                    {wxCMD_LINE_OPTION, NULL, "dir-predictors",          "The predictors directory"},
                                                    {wxCMD_LINE_OPTION, NULL, "skip-valid",              "Skip the validation calculation"},
                                                    {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
@@ -368,7 +368,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     }
 
     // Check for a calibration predictand DB
-    if (parser.Found("predicand-db", &m_predictandDB)) {
+    if (parser.Found("predictand-db", &m_predictandDB)) {
         if (g_local) {
             m_predictandDB = wxFileName::GetCwd() + DS + m_predictandDB;
         }

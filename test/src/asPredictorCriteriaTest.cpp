@@ -359,13 +359,12 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
-    predictor->Load(&geoArea, timearray);
+    ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
@@ -458,13 +457,12 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/");
+    predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "hgt",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    predictor->SetFileNamePattern("NCEP_Reanalysis_v1(2003)_hgt_%d.nc");
-    predictor->Load(&geoArea, timearray);
+    ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
     VArray2DFloat hgtOriginal = predictor->GetData();
@@ -572,8 +570,8 @@ TEST(PredictorCriteria, ProcessRSE)
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6, RefPRWTR(0, 0));
-    EXPECT_FLOAT_EQ(20.4, RefPRWTR(1, 1));
+    EXPECT_FLOAT_EQ(13.6f, RefPRWTR(0, 0));
+    EXPECT_FLOAT_EQ(20.4f, RefPRWTR(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -586,8 +584,8 @@ TEST(PredictorCriteria, ProcessRSE)
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3, RefPRWTR(0, 2));
-    EXPECT_FLOAT_EQ(18.1, RefPRWTR(1, 3));
+    EXPECT_FLOAT_EQ(13.3f, RefPRWTR(0, 2));
+    EXPECT_FLOAT_EQ(18.1f, RefPRWTR(1, 3));
 
     // Skip coasent
     file.SkipLines(3);
@@ -778,8 +776,8 @@ TEST(PredictorCriteria, ProcessRMSE)
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6, RefPRWTR12h(0, 0));
-    EXPECT_FLOAT_EQ(20.4, RefPRWTR12h(1, 1));
+    EXPECT_FLOAT_EQ(13.6f, RefPRWTR12h(0, 0));
+    EXPECT_FLOAT_EQ(20.4f, RefPRWTR12h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -792,8 +790,8 @@ TEST(PredictorCriteria, ProcessRMSE)
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3, RefPRWTR24h(0, 0));
-    EXPECT_FLOAT_EQ(18.1, RefPRWTR24h(1, 1));
+    EXPECT_FLOAT_EQ(13.3f, RefPRWTR24h(0, 0));
+    EXPECT_FLOAT_EQ(18.1f, RefPRWTR24h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -986,8 +984,8 @@ TEST(PredictorCriteria, ProcessNRMSE)
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6, RefPRWTR12h(0, 0));
-    EXPECT_FLOAT_EQ(20.4, RefPRWTR12h(1, 1));
+    EXPECT_FLOAT_EQ(13.6f, RefPRWTR12h(0, 0));
+    EXPECT_FLOAT_EQ(20.4f, RefPRWTR12h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -1000,8 +998,8 @@ TEST(PredictorCriteria, ProcessNRMSE)
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3, RefPRWTR24h(0, 0));
-    EXPECT_FLOAT_EQ(18.1, RefPRWTR24h(1, 1));
+    EXPECT_FLOAT_EQ(13.3f, RefPRWTR24h(0, 0));
+    EXPECT_FLOAT_EQ(18.1f, RefPRWTR24h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);

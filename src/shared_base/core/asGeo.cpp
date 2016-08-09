@@ -30,21 +30,16 @@
 
 asGeo::asGeo()
 {
-    InitBounds();
-}
-
-asGeo::~asGeo()
-{
-    //dtor
-}
-
-void asGeo::InitBounds()
-{
     // We always consider WGS84 for the predictors
     m_axisXmin = 0;
     m_axisXmax = 360;
     m_axisYmin = -90;
     m_axisYmax = 90;
+}
+
+asGeo::~asGeo()
+{
+    //dtor
 }
 
 bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
@@ -78,4 +73,18 @@ bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
     }
 
     return true;
+}
+
+wxString asGeo::GetGridTypeString() const
+{
+    switch (m_gridType) {
+        case (Regular):
+            return "Regular";
+        case (GaussianT62):
+            return "GaussianT62";
+        case (GaussianT382):
+            return "GaussianT382";
+        default:
+            return "Not found";
+    }
 }

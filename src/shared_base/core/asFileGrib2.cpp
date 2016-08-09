@@ -29,7 +29,9 @@
 #include "asFileGrib2.h"
 
 asFileGrib2::asFileGrib2(const wxString &FileName, const ListFileMode &FileMode)
-        : asFile(FileName, FileMode)
+        : asFile(FileName, FileMode),
+          m_filtPtr(NULL),
+          m_index(asNOT_FOUND)
 {
     switch (FileMode) {
         case (ReadOnly):
@@ -40,11 +42,8 @@ asFileGrib2::asFileGrib2(const wxString &FileName, const ListFileMode &FileMode)
         case (New):
         case (Append):
         default :
-            asThrowException(_("Grib2 files edition is not implemented."));
+            asThrowException(_("Grib files edition is not implemented."));
     }
-
-    m_ptorBand = NULL;
-    m_ptorDataset = NULL;
 }
 
 asFileGrib2::~asFileGrib2()
@@ -58,7 +57,7 @@ bool asFileGrib2::Open()
         return false;
 
     // Let GDAL open the dataset
-    if (!GDALOpenDataset())
+    if (!OpenDataset())
         return false;
 
     m_opened = true;
@@ -68,250 +67,238 @@ bool asFileGrib2::Open()
 
 bool asFileGrib2::Close()
 {
-    // m_ptorBand : Applications should never destroy GDALRasterBands directly, instead destroy the GDALDataset.
-    // FIXME (Pascal#1#): Why is the dataset pointer nul ??
-    //    wxASSERT(m_ptorDataset);
-    if (m_ptorDataset != NULL) {
-        GDALClose(m_ptorDataset);
-        m_ptorDataset = NULL;
+    if (m_filtPtr != NULL) {
+        m_filtPtr = NULL;
     }
     return true;
 }
 
-bool asFileGrib2::GDALOpenDataset()
+bool asFileGrib2::OpenDataset()
 {
-    // Only need to register grib files and not all
-    GDALRegister_GRIB();
-
     // Filepath
     wxString filePath = m_fileName.GetFullPath();
 
     // Open file
-    m_ptorDataset = (GDALDataset *) GDALOpen(filePath.mb_str(), GA_ReadOnly);
-    if (m_ptorDataset == NULL) // Failed
+    m_filtPtr = fopen(filePath.mb_str(), "r");
+
+    if (m_filtPtr == NULL) // Failed
     {
         asLogError(_("The opening of the grib file failed."));
+        wxFAIL;
         return false;
     }
 
-    // Display some info
-    asLogMessage(wxString::Format(
-            _("GRIB file size is %dx%d (%d bands) with pixel size of (%.3f,%.3f). Origin = (%.3f,%.3f)"), GetXcellsNb(),
-            GetYcellsNb(), GetBandsNb(), GetXCellSize(), GetYCellSize(), GetXOrigin(), GetYOrigin()));
+    // Parse structure
+    return ParseStructure();
+}
 
-    // Parse metadata keys and elements
-    ParseMetaData();
+/*
+ * See http://stackoverflow.com/questions/11767169/using-libgrib2c-in-c-application-linker-error-undefined-reference-to
+ */
+bool asFileGrib2::ParseStructure()
+{
+    g2int currentMessageSize(1);
+    g2int seekPosition(0);
+    g2int offset(0);
+    g2int seekLength(32000);
 
-    // Extract the variables and levels
-    ParseVarsLevels();
+    for (;;) {
+        // Searches a file for the next GRIB message.
+        seekgb(m_filtPtr, seekPosition, seekLength, &offset, &currentMessageSize);
+        if (currentMessageSize == 0)
+            break;    // end loop at EOF or problem
+
+        // Reposition stream position indicator
+        if (fseek(m_filtPtr, offset, SEEK_SET) != 0) {
+            asLogError(_("Grib file read error."));
+            return false;
+        }
+
+        // Read block of data from stream
+        unsigned char *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
+        fread(cgrib, sizeof(unsigned char), currentMessageSize, m_filtPtr);
+        seekPosition = offset + currentMessageSize;
+
+        // Get the number of gridded fields and the number (and maximum size) of Local Use Sections.
+        g2int listSec0[3], listSec1[13], numFields, numLocal;
+        g2int ierr = g2_info(cgrib, listSec0, listSec1, &numFields, &numLocal);
+        wxASSERT(numFields == 1);
+        wxASSERT(numLocal == 0);
+        if (ierr > 0) {
+            handleGribError(ierr);
+            return false;
+        }
+
+        for (long n = 0; n < numFields; n++) {
+
+            // Store elements in vectors here in order to ensure a corresponding lengths.
+            m_messageOffsets.push_back(offset);
+            m_messageSizes.push_back(currentMessageSize);
+            m_fieldNum.push_back(n);
+            m_refTimes.push_back(asTime::GetMJD((int) listSec1[5], (int) listSec1[6], (int) listSec1[7],
+                                                (int) listSec1[8], (int) listSec1[9]));
+
+            // Get all the metadata for a given data field
+            gribfield *gfld;
+            int unpack = 0;
+            g2int expand = 0;
+            ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
+            if (ierr > 0) {
+                handleGribError(ierr);
+                return false;
+            }
+
+            m_times.push_back(asTime::GetMJD((int) gfld->idsect[5], (int) gfld->idsect[6], (int) gfld->idsect[7],
+                                             (int) gfld->idsect[8], (int) gfld->idsect[9]));
+
+            // Grid Definition
+            if (!CheckGridDefinition(gfld)) {
+                asLogError(_("Grid definition not allowed yet."));
+                return false;
+            }
+
+            BuildAxes(gfld);
+
+            // Product Definition
+            if (!CheckProductDefinition(gfld)) {
+                asLogError(_("Product definition not allowed yet."));
+                return false;
+            }
+
+            m_parameterDisciplines.push_back(0);
+            m_parameterCategories.push_back((int) gfld->ipdtmpl[0]); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
+            m_parameterNums.push_back((int) gfld->ipdtmpl[1]); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
+            m_forecastTimes.push_back(gfld->ipdtmpl[8]);
+            GetLevel(gfld);
+
+            g2_free(gfld);
+        }
+        free(cgrib);
+    }
+
+    // Check unique time value
+    for (int i = 0; i < m_times.size(); ++i) {
+        if (m_times[i] != m_times[0]) {
+            asLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
+            return false;
+        }
+    }
 
     return true;
 }
 
-double asFileGrib2::GetXCellSize() const
+void asFileGrib2::GetLevel(const gribfield *gfld)
 {
-    double adfGeoTransform[6];
-    if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
-        return adfGeoTransform[1];
+    float surfVal = gfld->ipdtmpl[11];
+
+    // Type of first fixed surface (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
+    if (gfld->ipdtmpl[9] == 100 || gfld->ipdtmpl[9] == 108) {
+        surfVal /= 100; // Pa to hPa
     }
 
-    return NaNDouble;
+    m_levelTypes.push_back(gfld->ipdtmpl[9]);
+    m_levels.push_back(surfVal);
 }
 
-double asFileGrib2::GetYCellSize() const
+bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
 {
-    double adfGeoTransform[6];
-    if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
-        return adfGeoTransform[5];
+    if (gfld->ipdtnum != 0) {
+        asLogError(_("Only the Product Definition Template 4.0 is implemented so far."));
+        return false;
     }
 
-    return NaNDouble;
+    // Product Definition Template 4.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp4-0.shtml
+    if (gfld->ipdtmpl[7] != 1)
+        return false;
+
+    return true;
 }
 
-double asFileGrib2::GetXOrigin() const
+bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
 {
-    double adfGeoTransform[6];
-    if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
-        return adfGeoTransform[0] + GetXCellSize() / 2.0;
+    if (gfld->igdtnum != 0) {
+        asLogError(_("Only the Grid Definition Template 3.0 is implemented so far."));
+        return false;
     }
 
-    return NaNDouble;
+    // Grid Definition Template 3.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp3-0.shtml
+    if (gfld->igdtmpl[0] != 6)
+        return false;
+    if (gfld->igdtmpl[1] != 0)
+        return false;
+    if (gfld->igdtmpl[2] != 0)
+        return false;
+    if (gfld->igdtmpl[3] != 0)
+        return false;
+    if (gfld->igdtmpl[4] != 0)
+        return false;
+    if (gfld->igdtmpl[5] != 0)
+        return false;
+    if (gfld->igdtmpl[6] != 0)
+        return false;
+    if (gfld->igdtmpl[9] != 0)
+        return false;
+    if (gfld->igdtmpl[10] != 0)
+        return false;
+
+    return true;
 }
 
-double asFileGrib2::GetYOrigin() const
+void asFileGrib2::BuildAxes(const gribfield *gfld)
 {
-    double adfGeoTransform[6];
-    if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
-        double vOrigin = adfGeoTransform[3] + GetYCellSize() / 2.0;
-        while (vOrigin > 90) {
-            vOrigin -= 180;
-            //asLogWarning(_("The latitude origin needed to be fixed due to unconsistencies from GDAL."));
-        }
-        return vOrigin;
+    float scale = 0.000001;
+    int nX = (int) gfld->igdtmpl[7];
+    int nY = (int) gfld->igdtmpl[8];
+    float latStart = float(gfld->igdtmpl[11]) * scale;
+    float lonStart = float(gfld->igdtmpl[12]) * scale;
+    float latEnd = float(gfld->igdtmpl[14]) * scale;
+    float lonEnd = float(gfld->igdtmpl[15]) * scale;
+    if (lonEnd < lonStart) {
+        lonEnd += 360;
     }
 
-    return NaNDouble;
+    Array1DFloat xAxis = Array1DFloat::LinSpaced(nX, lonStart, lonEnd);
+    Array1DFloat yAxis = Array1DFloat::LinSpaced(nY, latStart, latEnd);
+
+    m_xAxes.push_back(xAxis);
+    m_yAxes.push_back(yAxis);
 }
 
-double asFileGrib2::GetRotation() const
+void asFileGrib2::handleGribError(g2int ierr) const
 {
-    wxASSERT(m_opened);
-
-    double adfGeoTransform[6];
-    if (m_ptorDataset->GetGeoTransform(adfGeoTransform) == CE_None) {
-        wxASSERT(adfGeoTransform[2] == adfGeoTransform[4]);
-        return adfGeoTransform[2];
-    }
-
-    return NaNDouble;
-}
-
-void asFileGrib2::SetBand(int i)
-{
-    if (i >= 1 && i <= m_ptorDataset->GetRasterCount()) {
-        m_ptorBand = m_ptorDataset->GetRasterBand(i);
+    if (ierr == 1) {
+        asLogError(_("Beginning characters \"GRIB\" not found."));
+    } else if (ierr == 2) {
+        asLogError(_("GRIB message is not Edition 2."));
+    } else if (ierr == 3) {
+        asLogError(_("Could not find Section 1, where expected."));
+    } else if (ierr == 4) {
+        asLogError(_("End string \"7777\" found, but not where expected."));
+    } else if (ierr == 5) {
+        asLogError(_("End string \"7777\" not found at end of message."));
+    } else if (ierr == 6) {
+        asLogError(_("Invalid section number found... OR"));
+        asLogError(_("... GRIB message did not contain the requested number of data fields."));
+    } else if (ierr == 7) {
+        asLogError(_("End string \"7777\" not found at end of message."));
+    } else if (ierr == 8) {
+        asLogError(_("Unrecognized Section encountered."));
+    } else if (ierr == 9) {
+        asLogError(_("Data Representation Template 5.NN not yet implemented."));
+    } else if (ierr >= 10 && ierr <= 16) {
+        asLogError(_("Error unpacking a Section."));
     } else {
-        asLogError(_("The given indices is not consistent with the number of bands in the GRIB file."));
+        asLogError(_("Unknown Grib error."));
     }
-}
-
-double asFileGrib2::GetBandEstimatedMax() const
-{
-    wxASSERT(m_opened);
-
-    if (m_ptorBand) {
-        int bGotMax;
-        double adfMinMax[2];
-        adfMinMax[1] = m_ptorBand->GetMaximum(&bGotMax);
-        if (!bGotMax)
-            GDALComputeRasterMinMax((GDALRasterBandH) m_ptorBand, TRUE, adfMinMax);
-
-        return adfMinMax[1];
-    }
-
-    return NaNDouble;
-}
-
-double asFileGrib2::GetBandEstimatedMin() const
-{
-    wxASSERT(m_opened);
-
-    if (m_ptorBand) {
-        int bGotMin;
-        double adfMinMax[2];
-        adfMinMax[1] = m_ptorBand->GetMinimum(&bGotMin);
-        if (!bGotMin)
-            GDALComputeRasterMinMax((GDALRasterBandH) m_ptorBand, TRUE, adfMinMax);
-
-        return adfMinMax[0];
-    }
-
-    return NaNDouble;
-}
-
-wxString asFileGrib2::GetBandDescription() const
-{
-    wxASSERT(m_opened);
-    wxASSERT(m_ptorBand);
-    const char *descr = m_ptorBand->GetDescription();
-
-    if (descr) {
-        wxString descrStr(descr, wxConvUTF8);
-        return descrStr;
-    }
-    return wxEmptyString;
-}
-
-void asFileGrib2::ParseMetaData()
-{
-    // Iterate over every band
-    for (int i_band = 1; i_band <= GetBandsNb(); i_band++) {
-        SetBand(i_band);
-
-        // Create a vector of string to store the meta
-        VectorString vKeys;
-        VectorString vValues;
-
-        wxASSERT(m_ptorBand);
-        char **meta = m_ptorBand->GetMetadata();
-
-        // Extract every meta entry for this band
-        while (meta) {
-            char *metaItem = *(meta);
-            if (metaItem == NULL)
-                break;
-            wxString metaItemStr(metaItem, wxConvUTF8);
-
-            wxString metaKey = metaItemStr.Before('=');
-            wxString metaVal = metaItemStr.After('=');
-
-            vKeys.push_back(metaKey);
-            vValues.push_back(metaVal);
-
-            meta++;
-        }
-
-        m_metaKeys.push_back(vKeys);
-        m_metaValues.push_back(vValues);
-    }
-
-}
-
-void asFileGrib2::ParseVarsLevels()
-{
-    m_bandsVars.resize(GetBandsNb());
-    m_bandsLevels.resize(GetBandsNb());
-
-    // Iterate over every band
-    for (int i_band = 0; i_band < GetBandsNb(); i_band++) {
-        m_bandsVars[i_band] = wxEmptyString;
-        m_bandsLevels[i_band] = NaNFloat;
-
-        for (unsigned int i_meta = 0; i_meta < m_metaKeys[i_band].size(); i_meta++) {
-            if (m_metaKeys[i_band][i_meta].IsSameAs("GRIB_ELEMENT")) {
-                m_bandsVars[i_band] = m_metaValues[i_band][i_meta];
-            } else if (m_metaKeys[i_band][i_meta].IsSameAs("GRIB_SHORT_NAME")) {
-                wxString level = m_metaValues[i_band][i_meta];
-                int tag = level.Find("-ISBL");
-                if (tag != wxNOT_FOUND) {
-                    level = level.Remove(tag);
-                    double val;
-                    level.ToDouble(&val);
-                    val = val / (float) 100; // Pa to hPa
-                    m_bandsLevels[i_band] = (float) val;
-                } else {
-                    asLogMessage(_("There was no level information found in the grib file metadata."));
-                    m_bandsLevels[i_band] = 0;
-                }
-            }
-        }
-    }
-
-}
-
-int asFileGrib2::FindBand(const wxString &VarName, float Level) const
-{
-    wxASSERT(m_opened);
-
-    // Iterate over every band
-    for (int i_band = 0; i_band < GetBandsNb(); i_band++) {
-        if (m_bandsVars[i_band].IsSameAs(VarName) && m_bandsLevels[i_band] == Level) {
-            return i_band + 1;
-        }
-    }
-
-    asLogWarning("The desired band couldn't be found in the GRIB file.");
-
-    return asNOT_FOUND;
 }
 
 bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
 {
     wxASSERT(m_opened);
+    wxASSERT(m_index != asNOT_FOUND);
+    wxASSERT(m_xAxes.size() > m_index);
 
-    // Origin is the corner of the cell --> we must correct (first point is first value)
-    uaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetXPtsnb(), GetXOrigin(),
-                                    GetXOrigin() + float(GetXPtsnb() - 1) * GetXCellSize());
+    uaxis = m_xAxes[m_index];
 
     return true;
 }
@@ -319,51 +306,117 @@ bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
 bool asFileGrib2::GetYaxis(Array1DFloat &vaxis) const
 {
     wxASSERT(m_opened);
+    wxASSERT(m_index != asNOT_FOUND);
+    wxASSERT(m_yAxes.size() > m_index);
 
-    // Origin is the corner of the cell --> we must correct (first point is first value)
-    vaxis = Array1DFloat::LinSpaced(Eigen::Sequential, GetYPtsnb(), GetYOrigin(),
-                                    GetYOrigin() + float(GetYPtsnb() - 1) * GetYCellSize());
+    vaxis = m_yAxes[m_index];
 
     return true;
 }
 
-bool asFileGrib2::GetVarArray(const wxString &VarName, const int IndexStart[], const int IndexCount[], float level,
-                              float *pValue)
+double asFileGrib2::GetTime() const
 {
     wxASSERT(m_opened);
+    wxASSERT(m_index != asNOT_FOUND);
+    wxASSERT(m_times.size() > m_index);
 
-    // Check that the metadata already exist
-    if (m_metaKeys.size() == 0)
-        ParseMetaData();
-    if (m_bandsVars.size() == 0) {
-        asLogError("No variable was found in the grib2 file.");
+    return m_times[m_index];
+}
+
+bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
+{
+    wxASSERT(gribCode.size() == 3);
+
+    // Find corresponding data
+    m_index = asNOT_FOUND;
+    for (int i = 0; i < m_parameterNums.size(); ++i) {
+        if (m_parameterDisciplines[i] == gribCode[0] && m_parameterCategories[i] == gribCode[1] &&
+            m_parameterNums[i] == gribCode[2] && m_levelTypes[i] == gribCode[3], m_levels[i] == level) {
+
+            if (m_index >= 0) {
+                asLogError(_("The desired parameter was found twice in the file."));
+                return false;
+            }
+
+            m_index = i;
+        }
+    }
+
+    if (m_index == asNOT_FOUND) {
+        asLogError(_("The desired parameter was not found in the file."));
         return false;
     }
 
-    // Find the band of interest
-    int bandNum = FindBand(VarName, level);
-    if (bandNum == asNOT_FOUND) {
-        asLogError(wxString::Format(_("The given variable (%s) and level (%g) cannot be found in the grib2 file."),
-                                    VarName, level));
-        return false;
-    }
-    SetBand(bandNum);
+    return true;
+}
 
-    // Get data
-    /* The RasterIO call takes the following arguments.
-       CPLErr GDALRasterBand::RasterIO(  GDALRWFlag eRWFlag, int nXOff, int nYOff, int nXSize, int nYSize,
-                                         void * pData, int nBufXSize, int nBufYSize, GDALDataType eBufType,
-                                         int nPixelSpace, int nLineSpace )*/
-    wxASSERT(m_ptorBand);
-    CPLErr error = m_ptorBand->RasterIO(GF_Read, IndexStart[0], IndexStart[1], IndexCount[0], IndexCount[1], pValue,
-                                        IndexCount[0], IndexCount[1], GDT_Float32, 0, 0);
+bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue)
+{
+    wxASSERT(m_opened);
+    wxASSERT(m_index != asNOT_FOUND);
 
-    if (error == CE_Failure) {
-        asLogError(_("Failed to read the grib file."));
+    // Reposition stream position indicator
+    if (fseek(m_filtPtr, m_messageOffsets[m_index], SEEK_SET) != 0) {
+        asLogError(_("Grib file read error."));
         return false;
     }
 
-    //CPLFree(pafScanline);
+    // Read block of data from stream
+    unsigned char *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
+    fread(cgrib, sizeof(unsigned char), m_messageSizes[m_index], m_filtPtr);
+
+    // Get the data
+    gribfield *gfld;
+    int unpack = 1;
+    g2int expand = 1;
+    g2int ierr = g2_getfld(cgrib, m_fieldNum[m_index] + 1, unpack, expand, &gfld);
+    if (ierr > 0) {
+        handleGribError(ierr);
+        return false;
+    }
+
+    if (gfld->unpacked != 1 || gfld->expanded != 1) {
+        asLogError(_("The Grib data were not unpacked neither expanded."));
+        return false;
+    }
+
+    wxASSERT(gfld->ngrdpts > 0);
+    wxASSERT(gfld->ngrdpts == m_xAxes[m_index].size() * m_yAxes[m_index].size());
+
+    int iLonStart = IndexStart[0];
+    int iLonEnd = IndexStart[0] + IndexCount[0] - 1;
+    int iLatStart = IndexStart[1];
+    int iLatEnd = IndexStart[1] + IndexCount[1] - 1;
+    int nLons = (int) m_xAxes[m_index].size();
+    int nLats = (int) m_yAxes[m_index].size();
+    int finalIndex = 0;
+
+    if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
+        for (int i_lat = nLats - 1; i_lat >= 0; i_lat--) {
+            if (i_lat >= iLatStart && i_lat <= iLatEnd) {
+                for (int i_lon = 0; i_lon < nLons; i_lon++) {
+                    if (i_lon >= iLonStart && i_lon <= iLonEnd) {
+                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
+                        finalIndex++;
+                    }
+                }
+            }
+        }
+    } else {
+        for (int i_lat = 0; i_lat < nLats; i_lat++) {
+            if (i_lat >= iLatStart && i_lat <= iLatEnd) {
+                for (int i_lon = 0; i_lon < nLons; i_lon++) {
+                    if (i_lon >= iLonStart && i_lon <= iLonEnd) {
+                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
+                        finalIndex++;
+                    }
+                }
+            }
+        }
+    }
+
+    g2_free(gfld);
+    free(cgrib);
 
     return true;
 }
