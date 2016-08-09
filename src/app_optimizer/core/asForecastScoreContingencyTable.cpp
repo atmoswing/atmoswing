@@ -34,7 +34,6 @@ asForecastScoreContingencyTable::asForecastScoreContingencyTable()
     m_score = asForecastScore::ContingencyTable;
     m_name = _("Contingency table");
     m_fullName = _("Contingency table class");
-    m_order = NoOrder;
     m_scaleBest = NaNFloat;
     m_scaleWorst = NaNFloat;
 }

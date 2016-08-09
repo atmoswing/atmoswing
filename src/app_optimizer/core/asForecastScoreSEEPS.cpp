@@ -34,7 +34,6 @@ asForecastScoreSEEPS::asForecastScoreSEEPS()
     m_score = asForecastScore::SEEPS;
     m_name = _("Stable equitable error in probability space");
     m_fullName = _("Stable equitable error in probability space");
-    m_order = NoOrder;
     m_scaleBest = NaNFloat;
     m_scaleWorst = NaNFloat;
     m_p1 = NaNFloat;
