@@ -72,8 +72,8 @@ find_package(PNG REQUIRED)
 include_directories(${PNG_INCLUDE_DIRS})
 
 # Grib2c
-find_package(Grib2c REQUIRED)
-include_directories(${GRIB2C_INCLUDE_DIR})
+add_library(g2clib STATIC ${src_lib_g2clib})
+include_directories("src/shared_base/libs/g2clib")
 
 # libcURL
 if (BUILD_FORECASTER OR BUILD_VIEWER)
