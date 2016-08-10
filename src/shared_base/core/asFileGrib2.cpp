@@ -139,7 +139,7 @@ bool asFileGrib2::ParseStructure()
                                                 (int) listSec1[8], (int) listSec1[9]));
 
             // Get all the metadata for a given data field
-            gribfield *gfld;
+            gribfield *gfld = NULL;
             int unpack = 0;
             g2int expand = 0;
             ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
@@ -147,6 +147,8 @@ bool asFileGrib2::ParseStructure()
                 handleGribError(ierr);
                 return false;
             }
+
+            wxASSERT(gfld);
 
             m_times.push_back(asTime::GetMJD((int) gfld->idsect[5], (int) gfld->idsect[6], (int) gfld->idsect[7],
                                              (int) gfld->idsect[8], (int) gfld->idsect[9]));
@@ -325,7 +327,7 @@ double asFileGrib2::GetTime() const
 
 bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
 {
-    wxASSERT(gribCode.size() == 3);
+    wxASSERT(gribCode.size() == 4);
 
     // Find corresponding data
     m_index = asNOT_FOUND;
