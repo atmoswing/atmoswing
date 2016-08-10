@@ -34,9 +34,6 @@
 
 TEST(ParametersOptimization, LoadFromFile)
 {
-	wxString str("Testing optimization parameters...\n");
-    printf("%s", str.mb_str(wxConvUTF8).data());
-
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_optimization.xml");
 
