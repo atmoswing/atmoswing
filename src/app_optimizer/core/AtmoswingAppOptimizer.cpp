@@ -381,7 +381,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for a predictors directory
     if (parser.Found("dir-predictors", &m_predictorsDir)) {
-        if (g_local) {
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsDir)) {
             m_predictorsDir = wxFileName::GetCwd() + DS + m_predictorsDir;
         }
 
