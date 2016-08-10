@@ -39,7 +39,7 @@ endif (UNIX AND NOT APPLE)
 
 # Global definitions
 add_definitions(-DUSE_JPEG2000)
-#add_definitions(-std=c++11)
+add_definitions(-std=c++11)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -55,6 +55,8 @@ if (USE_CUDA)
 endif (USE_CUDA)
 
 # Specific definitions
+set_target_properties(g2clib PROPERTIES COMPILE_DEFINITIONS "USE_JPEG2000; USE_PNG")
+
 if (USE_GUI)
     set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
 else (USE_GUI)
