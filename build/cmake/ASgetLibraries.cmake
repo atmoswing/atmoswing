@@ -67,6 +67,10 @@ find_package(Jasper REQUIRED)
 include_directories(${JASPER_INCLUDE_DIR})
 include_directories(${JPEG_INCLUDE_DIR})
 
+# PNG
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIRS})
+
 # Grib2c
 find_package(Grib2c REQUIRED)
 include_directories(${GRIB2C_INCLUDE_DIR})
