@@ -792,7 +792,7 @@ int asTimeArray::GetIndexFirstAfter(double date) const
         return NaNInt;
     }
 
-    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date);
+    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
