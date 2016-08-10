@@ -9,7 +9,7 @@
 #
 
 
-find_library(GRIB2C_LIBRARIES NAMES grib2c libgrib2c)
+find_library(GRIB2C_LIBRARIES NAMES grib2c libgrib2c libg2c)
 find_path(GRIB2C_INCLUDE_DIR NAMES grib2.h)
 
 include(FindPackageHandleStandardArgs)
