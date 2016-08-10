@@ -1446,7 +1446,7 @@ float asDataPredictor::GetMaxValue() const
 void asDataPredictor::CheckLevelTypeIsDefined()
 {
     if(m_product.IsEmpty()) {
-        asThrowException(_("The type of level must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
+        asThrowException(_("The type of product must be defined for this dataset (prefix to the variable name. Ex: press/hgt)."));
     }
 }
 
