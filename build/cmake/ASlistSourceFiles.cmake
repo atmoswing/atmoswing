@@ -111,6 +111,56 @@ if (USE_CUDA)
     endif (WIN32)
 endif (USE_CUDA)
 
+# Grib2c library
+file(GLOB_RECURSE src_lib_g2clib_h src/shared_base/libs/g2clib/*.h)
+set(src_lib_g2clib_c
+        src/shared_base/libs/g2clib/gridtemplates.c
+        src/shared_base/libs/g2clib/drstemplates.c
+        src/shared_base/libs/g2clib/pdstemplates.c
+        src/shared_base/libs/g2clib/gbits.c
+        src/shared_base/libs/g2clib/g2_unpack1.c
+        src/shared_base/libs/g2clib/g2_unpack2.c
+        src/shared_base/libs/g2clib/g2_unpack3.c
+        src/shared_base/libs/g2clib/g2_unpack4.c
+        src/shared_base/libs/g2clib/g2_unpack5.c
+        src/shared_base/libs/g2clib/g2_unpack6.c
+        src/shared_base/libs/g2clib/g2_unpack7.c
+        src/shared_base/libs/g2clib/g2_free.c
+        src/shared_base/libs/g2clib/g2_info.c
+        src/shared_base/libs/g2clib/g2_getfld.c
+        src/shared_base/libs/g2clib/simunpack.c
+        src/shared_base/libs/g2clib/comunpack.c
+        src/shared_base/libs/g2clib/pack_gp.c
+        src/shared_base/libs/g2clib/reduce.c
+        src/shared_base/libs/g2clib/specpack.c
+        src/shared_base/libs/g2clib/specunpack.c
+        src/shared_base/libs/g2clib/rdieee.c
+        src/shared_base/libs/g2clib/mkieee.c
+        src/shared_base/libs/g2clib/int_power.c
+        src/shared_base/libs/g2clib/simpack.c
+        src/shared_base/libs/g2clib/compack.c
+        src/shared_base/libs/g2clib/cmplxpack.c
+        src/shared_base/libs/g2clib/misspack.c
+        src/shared_base/libs/g2clib/jpcpack.c
+        src/shared_base/libs/g2clib/jpcunpack.c
+        src/shared_base/libs/g2clib/pngpack.c
+        src/shared_base/libs/g2clib/pngunpack.c
+        src/shared_base/libs/g2clib/dec_jpeg2000.c
+        src/shared_base/libs/g2clib/enc_jpeg2000.c
+        src/shared_base/libs/g2clib/dec_png.c
+        src/shared_base/libs/g2clib/enc_png.c
+        src/shared_base/libs/g2clib/g2_create.c
+        src/shared_base/libs/g2clib/g2_addlocal.c
+        src/shared_base/libs/g2clib/g2_addgrid.c
+        src/shared_base/libs/g2clib/g2_addfield.c
+        src/shared_base/libs/g2clib/g2_gribend.c
+        src/shared_base/libs/g2clib/getdim.c
+        src/shared_base/libs/g2clib/g2_miss.c
+        src/shared_base/libs/g2clib/getpoly.c
+        src/shared_base/libs/g2clib/seekgb.c
+        )
+list(APPEND src_lib_g2clib ${src_lib_g2clib_h} ${src_lib_g2clib_c})
+
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_shared_base)
 list(REMOVE_DUPLICATES src_shared_processing)
