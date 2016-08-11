@@ -16,13 +16,7 @@ public:
 
     virtual bool Manager() = 0;
 
-    void SetPredictandStationIds(VectorInt val)
-    {
-        m_predictandStationIds = val;
-    }
-
 protected:
-    VectorInt m_predictandStationIds;
     bool m_isOver;
     bool m_skipNext;
     int m_optimizerStage;

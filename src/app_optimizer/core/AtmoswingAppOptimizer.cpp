@@ -763,24 +763,28 @@ int AtmoswingAppOptimizer::OnRun()
                 asMethodCalibratorSingle calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classic", false)) {
                 asMethodCalibratorClassic calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classicp", false)) {
                 asMethodCalibratorClassicPlus calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("varexplocp", false)) {
                 asMethodCalibratorClassicPlusVarExplo calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
@@ -801,6 +805,7 @@ int AtmoswingAppOptimizer::OnRun()
                 asMethodCalibratorEvaluateAllScores calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else {
