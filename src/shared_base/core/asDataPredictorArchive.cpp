@@ -452,7 +452,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
-                       method.IsSameAs("HumidityFlux")) {
+                       method.IsSameAs("HumidityFlux") || method.IsSameAs("HumidityIndex")) {
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != m_axisLat.size()) {
@@ -486,7 +486,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             } else {
-                asLogError(_("Wrong proprocessing definition (cannot be clipped to another area)."));
+                asLogError(_("Wrong preprocessing definition (cannot be clipped to another area)."));
                 return false;
             }
         }
