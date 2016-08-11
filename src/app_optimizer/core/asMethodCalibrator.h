@@ -143,7 +143,13 @@ public:
         return m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat];
     }
 
+    void SetPredictandStationIds(VectorInt val)
+    {
+        m_predictandStationIds = val;
+    }
+
 protected:
+    VectorInt m_predictandStationIds;
     VectorFloat m_scoresCalib;
     VectorFloat m_scoresCalibTemp;
     Order m_scoreOrder;

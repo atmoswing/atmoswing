@@ -69,6 +69,11 @@ bool asMethodCalibrator::Manager()
     if (!params.LoadFromFile(m_paramsFilePath)) {
         return false;
     }
+    if (m_predictandStationIds.size() > 0) {
+        VVectorInt idsVect;
+        idsVect.push_back(m_predictandStationIds);
+        params.SetPredictandStationIdsVector(idsVect);
+    }
     params.InitValues();
     m_originalParams = params;
 
