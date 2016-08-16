@@ -55,6 +55,8 @@ public:
 
     static bool PreprocessAddition(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
 
+    static bool PreprocessAverage(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+
     static bool PreprocessDifference(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
 
     static bool PreprocessMultiplication(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
