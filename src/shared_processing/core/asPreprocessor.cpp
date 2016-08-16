@@ -77,6 +77,8 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictor *> predictors, const
 
     if (method.IsSameAs("Gradients")) {
         return PreprocessGradients(predictors, result);
+    } else if (method.IsSameAs("Addition")) {
+        return PreprocessAddition(predictors, result);
     } else if (method.IsSameAs("Difference")) {
         return PreprocessDifference(predictors, result);
     } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply")) {
@@ -169,6 +171,48 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
 
     // Overwrite the data in the predictor object
     result->SetData(gradients);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
+bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+{
+    // More than one predictor
+    if (predictors.size() < 2) {
+        asLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessAddition"));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+
+    wxASSERT(rowsNb > 1);
+    wxASSERT(colsNb > 1);
+    wxASSERT(timeSize > 0);
+
+    // Create container
+    VArray2DFloat addition(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 0));
+
+    for (int i_time = 0; i_time < timeSize; i_time++) {
+        addition[i_time].fill(0);
+
+        for (int i_row = 0; i_row < rowsNb; i_row++) {
+            for (int i_col = 0; i_col < colsNb; i_col++) {
+                for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+                    wxASSERT(predictors[i_dat]);
+                    addition[i_time](i_row, i_col) += predictors[i_dat]->GetData()[i_time](i_row, i_col);
+                }
+            }
+        }
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(addition);
     result->SetIsPreprocessed(true);
     result->SetCanBeClipped(true);
 

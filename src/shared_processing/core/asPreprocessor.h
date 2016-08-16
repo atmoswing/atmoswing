@@ -53,6 +53,8 @@ public:
 
     static bool PreprocessGradients(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
 
+    static bool PreprocessAddition(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+
     static bool PreprocessDifference(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
 
     static bool PreprocessMultiplication(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
