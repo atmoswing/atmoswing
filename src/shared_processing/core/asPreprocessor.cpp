@@ -196,18 +196,12 @@ bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictor
     wxASSERT(timeSize > 0);
 
     // Create container
-    VArray2DFloat addition(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 0));
+    VArray2DFloat addition(timeSize, Array2DFloat::Zero(rowsNb, colsNb));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        addition[i_time].fill(0);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
-                    wxASSERT(predictors[i_dat]);
-                    addition[i_time](i_row, i_col) += predictors[i_dat]->GetData()[i_time](i_row, i_col);
-                }
-            }
+        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+            wxASSERT(predictors[i_dat]);
+            addition[i_time] += predictors[i_dat]->GetData()[i_time];
         }
     }
 
@@ -239,17 +233,10 @@ bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predict
     wxASSERT(timeSize > 0);
 
     // Create container
-    VArray2DFloat resdiff(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VArray2DFloat resdiff(timeSize, Array2DFloat::Ones(rowsNb, colsNb));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        resdiff[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                resdiff[i_time](i_row, i_col) =
-                        predictors[0]->GetData()[i_time](i_row, i_col) - predictors[1]->GetData()[i_time](i_row, i_col);
-            }
-        }
+        resdiff[i_time] = predictors[0]->GetData()[i_time] - predictors[1]->GetData()[i_time];
     }
 
     // Overwrite the data in the predictor object
@@ -279,18 +266,12 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
     wxASSERT(timeSize > 0);
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VArray2DFloat multi(timeSize, Array2DFloat::Ones(rowsNb, colsNb));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        multi[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
-                    wxASSERT(predictors[i_dat]);
-                    multi[i_time](i_row, i_col) *= predictors[i_dat]->GetData()[i_time](i_row, i_col);
-                }
-            }
+        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+            wxASSERT(predictors[i_dat]);
+            multi[i_time] *= predictors[i_dat]->GetData()[i_time];
         }
     }
 
