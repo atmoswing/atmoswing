@@ -462,6 +462,121 @@ TEST(Preprocessor, Addition)
     wxDELETE(predictor3);
 }
 
+TEST(Preprocessor, Average)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/AllowMultithreading", false);
+
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
+
+    EXPECT_FLOAT_EQ(0, geoarea->GetXmin());
+    EXPECT_FLOAT_EQ(7.5, geoarea->GetXmax());
+    EXPECT_FLOAT_EQ(60, geoarea->GetYmin());
+    EXPECT_NEAR(63.808, geoarea->GetYmax(), 0.001);
+    EXPECT_EQ(5, geoarea->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, geoarea->GetYaxisCompositePtsnb(0));
+
+    asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
+    timearray1.Init();
+    asTimeArray timearray2(asTime::GetMJD(1960, 1, 1, 06), asTime::GetMJD(1960, 1, 5, 06), 24, asTimeArray::Simple);
+    timearray2.Init();
+    asTimeArray timearray3(asTime::GetMJD(1960, 1, 1, 12), asTime::GetMJD(1960, 1, 5, 12), 24, asTimeArray::Simple);
+    timearray3.Init();
+
+    wxString dir = wxFileName::GetCwd();
+    dir.Append("/files/data-ncep-r1/v2003/");
+
+    asDataPredictorArchive *predictor1 = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asDataPredictorArchive *predictor2 = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asDataPredictorArchive *predictor3 = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+
+    ASSERT_TRUE(predictor1->Load(geoarea, timearray1));
+    ASSERT_TRUE(predictor2->Load(geoarea, timearray2));
+    ASSERT_TRUE(predictor3->Load(geoarea, timearray3));
+
+    EXPECT_EQ(5, predictor1->GetLonPtsnb());
+    EXPECT_EQ(3, predictor1->GetLatPtsnb());
+
+    std::vector<asDataPredictorArchive *> vdata;
+    vdata.push_back(predictor1);
+    vdata.push_back(predictor2);
+    vdata.push_back(predictor3);
+
+    wxString method = "Average";
+    asDataPredictorArchive *average = new asDataPredictorArchive(*predictor1);
+    asPreprocessor::Preprocess(vdata, method, average);
+
+    VArray2DFloat avg = average->GetData();
+
+    /* Values day 1, 00h
+    278.3	279.2	279.9	279.9	278.9
+    280.1	280.6	280.3	278.9	276.4
+    280.9	281.0	280.2	278.8	274.7
+
+    Values day 1, 06h
+    279.2	279.7	279.9	279.5	278.2
+    280.5	280.7	279.9	278.3	275.4
+    281.1	281.1	280.2	278.5	274.3
+
+    Values day 1, 12h
+    280.1	280.6	280.6	279.6	277.7
+    280.5	280.1	278.9	276.8	272.8
+    280.9	280.4	278.9	276.1	273.7
+
+    Average
+    279.2	279.8	280.1	279.7	278.3
+    280.4	280.5	279.7	278.0	274.9
+    281.0	280.8	279.8	277.8	274.2
+    */
+
+    EXPECT_NEAR(279.2, avg[0](0, 0), 0.05);
+    EXPECT_NEAR(279.8, avg[0](0, 1), 0.05);
+    EXPECT_NEAR(280.1, avg[0](0, 2), 0.05);
+    EXPECT_NEAR(279.7, avg[0](0, 3), 0.05);
+    EXPECT_NEAR(278.3, avg[0](0, 4), 0.05);
+    EXPECT_NEAR(280.4, avg[0](1, 0), 0.05);
+    EXPECT_NEAR(281.0, avg[0](2, 0), 0.05);
+    EXPECT_NEAR(274.2, avg[0](2, 4), 0.05);
+
+
+    /* Values day 5, 00h
+    279.7	280.5	280.9	280.5	279.3
+    280.5	280.5	279.6	277.9	275.2
+    280.7	280.3	279.1	276.6	273.9
+
+    Values day 5, 06h
+    279.6	280.2	280.2	279.4	278.0
+    280.7	280.4	279.2	277.2	274.0
+    280.5	280.0	278.7	276.0	273.7
+
+    Values day 5, 12h
+    279.0	279.7	279.9	279.2	277.8
+    280.0	279.8	278.6	276.6	273.2
+    279.9	279.3	277.9	274.8	273.1
+
+    Average
+    279.4	280.1	280.3	279.7	278.4
+    280.4	280.2	279.1	277.2	274.1
+    280.4	279.9	278.6	275.8	273.6
+    */
+
+    EXPECT_NEAR(279.4, avg[4](0, 0), 0.05);
+    EXPECT_NEAR(280.1, avg[4](0, 1), 0.05);
+    EXPECT_NEAR(280.3, avg[4](0, 2), 0.05);
+    EXPECT_NEAR(279.7, avg[4](0, 3), 0.05);
+    EXPECT_NEAR(278.4, avg[4](0, 4), 0.05);
+    EXPECT_NEAR(280.4, avg[4](1, 0), 0.05);
+    EXPECT_NEAR(280.4, avg[4](2, 0), 0.05);
+    EXPECT_NEAR(273.6, avg[4](2, 4), 0.05);
+
+
+    wxDELETE(geoarea);
+    wxDELETE(average);
+    wxDELETE(predictor1);
+    wxDELETE(predictor2);
+    wxDELETE(predictor3);
+}
+
 TEST(Preprocessor, Difference)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();

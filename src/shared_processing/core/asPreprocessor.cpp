@@ -79,6 +79,8 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictor *> predictors, const
         return PreprocessGradients(predictors, result);
     } else if (method.IsSameAs("Addition")) {
         return PreprocessAddition(predictors, result);
+    } else if (method.IsSameAs("Average")) {
+        return PreprocessAverage(predictors, result);
     } else if (method.IsSameAs("Difference")) {
         return PreprocessDifference(predictors, result);
     } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply")) {
@@ -207,6 +209,43 @@ bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictor
 
     // Overwrite the data in the predictor object
     result->SetData(addition);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
+bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+{
+    // More than one predictor
+    if (predictors.size() < 2) {
+        asLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessAddition"));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+
+    wxASSERT(rowsNb > 1);
+    wxASSERT(colsNb > 1);
+    wxASSERT(timeSize > 0);
+
+    // Create container
+    VArray2DFloat average(timeSize, Array2DFloat::Zero(rowsNb, colsNb));
+
+    for (int i_time = 0; i_time < timeSize; i_time++) {
+        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+            wxASSERT(predictors[i_dat]);
+            average[i_time] += predictors[i_dat]->GetData()[i_time];
+        }
+        average[i_time] /= predictors.size();
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(average);
     result->SetIsPreprocessed(true);
     result->SetCanBeClipped(true);
 

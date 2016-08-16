@@ -488,24 +488,11 @@ bool asParametersCalibration::SetPreloadingProperties()
                 VectorDouble preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
-                if (method.IsSameAs("Gradients")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
-                } else if (method.IsSameAs("HumidityFlux")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
-                } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
-                           method.IsSameAs("HumidityIndex")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
-                } else if (method.IsSameAs("FormerHumidityIndex")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                if (method.IsSameAs("FormerHumidityIndex")) {
                     VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(i_step, i_ptor, 1);
                     preprocTimeHours.insert(preprocTimeHours.end(), preprocTimeHours2.begin(), preprocTimeHours2.end());
-                } else {
-                    asLogWarning(wxString::Format(
-                            _("The %s preprocessing method is not yet handled with the preload option."), method));
                 }
 
                 if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
