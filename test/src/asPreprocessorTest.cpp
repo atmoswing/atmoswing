@@ -51,8 +51,8 @@ TEST(Preprocessor, Gradients)
     EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
     EXPECT_DOUBLE_EQ(35, geoarea.GetYmin());
     EXPECT_DOUBLE_EQ(40, geoarea.GetYmax());
-    EXPECT_DOUBLE_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
-    EXPECT_DOUBLE_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
 
@@ -218,8 +218,8 @@ TEST(Preprocessor, GradientsMultithreading)
     EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
     EXPECT_DOUBLE_EQ(35, geoarea.GetYmin());
     EXPECT_DOUBLE_EQ(40, geoarea.GetYmax());
-    EXPECT_DOUBLE_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
-    EXPECT_DOUBLE_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
+    EXPECT_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
     EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
 
@@ -345,4 +345,119 @@ TEST(Preprocessor, GradientsMultithreading)
 
     wxDELETE(gradients);
     wxDELETE(predictor);
+}
+
+TEST(Preprocessor, Addition)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/AllowMultithreading", false);
+
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
+
+    EXPECT_FLOAT_EQ(0, geoarea->GetXmin());
+    EXPECT_FLOAT_EQ(7.5, geoarea->GetXmax());
+    EXPECT_FLOAT_EQ(60, geoarea->GetYmin());
+    EXPECT_NEAR(63.808, geoarea->GetYmax(), 0.001);
+    EXPECT_EQ(5, geoarea->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, geoarea->GetYaxisCompositePtsnb(0));
+
+    asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
+    timearray1.Init();
+    asTimeArray timearray2(asTime::GetMJD(1960, 1, 1, 06), asTime::GetMJD(1960, 1, 5, 06), 24, asTimeArray::Simple);
+    timearray2.Init();
+    asTimeArray timearray3(asTime::GetMJD(1960, 1, 1, 12), asTime::GetMJD(1960, 1, 5, 12), 24, asTimeArray::Simple);
+    timearray3.Init();
+
+    wxString dir = wxFileName::GetCwd();
+    dir.Append("/files/data-ncep-r1/v2003/");
+
+    asDataPredictorArchive *predictor1 = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asDataPredictorArchive *predictor2 = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asDataPredictorArchive *predictor3 = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+
+    ASSERT_TRUE(predictor1->Load(geoarea, timearray1));
+    ASSERT_TRUE(predictor2->Load(geoarea, timearray2));
+    ASSERT_TRUE(predictor3->Load(geoarea, timearray3));
+
+    EXPECT_EQ(5, predictor1->GetLonPtsnb());
+    EXPECT_EQ(3, predictor1->GetLatPtsnb());
+
+    std::vector<asDataPredictorArchive *> vdata;
+    vdata.push_back(predictor1);
+    vdata.push_back(predictor2);
+    vdata.push_back(predictor3);
+
+    wxString method = "Addition";
+    asDataPredictorArchive *addition = new asDataPredictorArchive(*predictor1);
+    asPreprocessor::Preprocess(vdata, method, addition);
+
+    VArray2DFloat adds = addition->GetData();
+
+    /* Values day 1, 00h
+    278.3	279.2	279.9	279.9	278.9
+    280.1	280.6	280.3	278.9	276.4
+    280.9	281.0	280.2	278.8	274.7
+
+    Values day 1, 06h
+    279.2	279.7	279.9	279.5	278.2
+    280.5	280.7	279.9	278.3	275.4
+    281.1	281.1	280.2	278.5	274.3
+
+    Values day 1, 12h
+    280.1	280.6	280.6	279.6	277.7
+    280.5	280.1	278.9	276.8	272.8
+    280.9	280.4	278.9	276.1	273.7
+
+    Sum
+    837.6	839.5	840.4	839	    834.8
+    841.1	841.4	839.1	834	    824.6
+    842.9	842.5	839.3	833.4	822.7
+    */
+
+    EXPECT_NEAR(837.6, adds[0](0, 0), 0.05);
+    EXPECT_NEAR(839.5, adds[0](0, 1), 0.05);
+    EXPECT_NEAR(840.4, adds[0](0, 2), 0.05);
+    EXPECT_NEAR(839.0, adds[0](0, 3), 0.05);
+    EXPECT_NEAR(834.8, adds[0](0, 4), 0.05);
+    EXPECT_NEAR(841.1, adds[0](1, 0), 0.05);
+    EXPECT_NEAR(842.9, adds[0](2, 0), 0.05);
+    EXPECT_NEAR(822.7, adds[0](2, 4), 0.05);
+
+
+    /* Values day 5, 00h
+    279.7	280.5	280.9	280.5	279.3
+    280.5	280.5	279.6	277.9	275.2
+    280.7	280.3	279.1	276.6	273.9
+
+    Values day 5, 06h
+    279.6	280.2	280.2	279.4	278.0
+    280.7	280.4	279.2	277.2	274.0
+    280.5	280.0	278.7	276.0	273.7
+
+    Values day 5, 12h
+    279.0	279.7	279.9	279.2	277.8
+    280.0	279.8	278.6	276.6	273.2
+    279.9	279.3	277.9	274.8	273.1
+
+    Sum
+    838.3	840.4	841	    839.1	835.1
+    841.2	840.7	837.4	831.7	822.4
+    841.1	839.6	835.7	827.4	820.7
+    */
+
+    EXPECT_NEAR(838.3, adds[4](0, 0), 0.05);
+    EXPECT_NEAR(840.4, adds[4](0, 1), 0.05);
+    EXPECT_NEAR(841.0, adds[4](0, 2), 0.05);
+    EXPECT_NEAR(839.1, adds[4](0, 3), 0.05);
+    EXPECT_NEAR(835.1, adds[4](0, 4), 0.05);
+    EXPECT_NEAR(841.2, adds[4](1, 0), 0.05);
+    EXPECT_NEAR(841.1, adds[4](2, 0), 0.05);
+    EXPECT_NEAR(820.7, adds[4](2, 4), 0.05);
+
+
+    wxDELETE(geoarea);
+    wxDELETE(addition);
+    wxDELETE(predictor1);
+    wxDELETE(predictor2);
+    wxDELETE(predictor3);
 }
