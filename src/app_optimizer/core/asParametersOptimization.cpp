@@ -830,16 +830,38 @@ bool asParametersOptimization::SetPreloadingProperties()
                 VectorDouble preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
-                preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
-                     h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0);
-                     h += GetPreprocessTimeHoursIteration(i_step, i_ptor, 0)) {
-                    preprocTimeHours.push_back(h);
-                }
-                if (method.IsSameAs("FormerHumidityIndex")) {
+                if (method.IsSameAs("Gradients")) {
+                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+
+                    for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
+                         h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0); h += GetPreprocessTimeHoursIteration(
+                            i_step, i_ptor, 0)) {
+                        preprocTimeHours.push_back(h);
+                    }
+                } else if (method.IsSameAs("HumidityFlux")) {
+                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+
+                    for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
+                         h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0); h += GetPreprocessTimeHoursIteration(
+                            i_step, i_ptor, 0)) {
+                        preprocTimeHours.push_back(h);
+                    }
+                } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
+                           method.IsSameAs("HumidityIndex")) {
+                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+
+                    for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
+                         h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0); h += GetPreprocessTimeHoursIteration(
+                            i_step, i_ptor, 0)) {
+                        preprocTimeHours.push_back(h);
+                    }
+                } else if (method.IsSameAs("FormerHumidityIndex")) {
                     asLogWarning(wxString::Format(_("The %s preprocessing method is not handled in the optimizer."),
                                                   method));
                     return false;
+                } else {
+                    asLogWarning(wxString::Format(
+                            _("The %s preprocessing method is not yet handled with the preload option."), method));
                 }
 
                 if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
