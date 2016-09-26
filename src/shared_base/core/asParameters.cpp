@@ -328,7 +328,8 @@ bool asParameters::ParsePredictors(asFileParametersStandard &fileParams, int i_s
             SetPreload(i_step, i_ptor, fileParams.GetBool(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(i_step, i_ptor, true);
-            return ParsePreprocessedPredictors(fileParams, i_step, i_ptor, nodeParam);
+            if (!ParsePreprocessedPredictors(fileParams, i_step, i_ptor, nodeParam))
+                return false;
         } else if (nodeParam->GetName() == "dataset_id") {
             if (!SetPredictorDatasetId(i_step, i_ptor, fileParams.GetString(nodeParam)))
                 return false;
