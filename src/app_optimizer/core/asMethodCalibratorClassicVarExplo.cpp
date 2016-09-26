@@ -26,20 +26,20 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asMethodCalibratorClassicPlusVarExplo.h"
+#include "asMethodCalibratorClassicVarExplo.h"
 
-asMethodCalibratorClassicPlusVarExplo::asMethodCalibratorClassicPlusVarExplo()
-        : asMethodCalibratorClassicPlus()
+asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo()
+        : asMethodCalibratorClassic()
 {
 
 }
 
-asMethodCalibratorClassicPlusVarExplo::~asMethodCalibratorClassicPlusVarExplo()
+asMethodCalibratorClassicVarExplo::~asMethodCalibratorClassicVarExplo()
 {
 
 }
 
-bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &params)
+bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &params)
 {
 
     int i_step;
@@ -95,7 +95,7 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
 
                             m_originalParams = params;
 
-                            if (!asMethodCalibratorClassicPlus::Calibrate(params))
+                            if (!asMethodCalibratorClassic::Calibrate(params))
                                 return false;
 
                             params = m_originalParams;

@@ -26,9 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asMethodCalibratorClassicPlus.h"
+#include "asMethodCalibratorClassic.h"
 
-asMethodCalibratorClassicPlus::asMethodCalibratorClassicPlus()
+asMethodCalibratorClassic::asMethodCalibratorClassic()
         : asMethodCalibrator(),
           m_plus(false),
           m_stepsLatPertinenceMap(1),
@@ -39,12 +39,12 @@ asMethodCalibratorClassicPlus::asMethodCalibratorClassicPlus()
 
 }
 
-asMethodCalibratorClassicPlus::~asMethodCalibratorClassicPlus()
+asMethodCalibratorClassic::~asMethodCalibratorClassic()
 {
 
 }
 
-bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
+bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
 {
     // Copy of the original parameters set.
     m_originalParams = params;
@@ -199,7 +199,7 @@ bool asMethodCalibratorClassicPlus::Calibrate(asParametersCalibration &params)
     return true;
 }
 
-bool asMethodCalibratorClassicPlus::GetDatesOfBestParameters(asParametersCalibration &params,
+bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration &params,
                                                              asResultsAnalogsDates &anaDatesPrevious, int i_step)
 {
     bool containsNaNs = false;
@@ -228,7 +228,7 @@ bool asMethodCalibratorClassicPlus::GetDatesOfBestParameters(asParametersCalibra
     return true;
 }
 
-bool asMethodCalibratorClassicPlus::AssessDomainResizingPlus(asParametersCalibration &params,
+bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration &params,
                                                              asResultsAnalogsDates &anaDatesPrevious,
                                                              asResultsParametersArray &resultsTested, int i_step,
                                                              const asMethodCalibrator::ParamExploration &explo)
@@ -520,7 +520,7 @@ bool asMethodCalibratorClassicPlus::AssessDomainResizingPlus(asParametersCalibra
     return true;
 }
 
-bool asMethodCalibratorClassicPlus::AssessDomainResizing(asParametersCalibration &params,
+bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params,
                                                          asResultsAnalogsDates &anaDatesPrevious,
                                                          asResultsParametersArray &resultsTested, int i_step,
                                                          const asMethodCalibrator::ParamExploration &explo)
@@ -657,7 +657,7 @@ bool asMethodCalibratorClassicPlus::AssessDomainResizing(asParametersCalibration
     return true;
 }
 
-bool asMethodCalibratorClassicPlus::EvaluateRelevanceMap(const asParametersCalibration &params,
+bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibration &params,
                                                          asResultsAnalogsDates &anaDatesPrevious,
                                                          asResultsParametersArray &resultsTested, int i_step)
 {
@@ -731,7 +731,7 @@ bool asMethodCalibratorClassicPlus::EvaluateRelevanceMap(const asParametersCalib
     return true;
 }
 
-void asMethodCalibratorClassicPlus::BalanceWeights(asParametersCalibration &params, int i_step) const
+void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration &params, int i_step) const
 {
     int ptorsNb = params.GetPredictorsNb(i_step);
     float weight = (float) 1 / (float) (ptorsNb);
@@ -740,7 +740,7 @@ void asMethodCalibratorClassicPlus::BalanceWeights(asParametersCalibration &para
     }
 }
 
-void asMethodCalibratorClassicPlus::GenerateRelevanceMapParameters(asParametersCalibration &params, int i_step,
+void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int i_step,
                                                                    const asMethodCalibrator::ParamExploration &explo)
 {
     ClearTemp();
@@ -786,7 +786,7 @@ void asMethodCalibratorClassicPlus::GenerateRelevanceMapParameters(asParametersC
     wxDELETE(geoArea);
 }
 
-void asMethodCalibratorClassicPlus::SetMinimalArea(asParametersCalibration &params, int i_step,
+void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, int i_step,
                                                    const asMethodCalibrator::ParamExploration &explo) const
 {
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
@@ -800,7 +800,7 @@ void asMethodCalibratorClassicPlus::SetMinimalArea(asParametersCalibration &para
     }
 }
 
-void asMethodCalibratorClassicPlus::GetInitialAnalogNumber(asParametersCalibration &params, int i_step) const
+void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &params, int i_step) const
 {
     int initalAnalogsNb = 0;
     VectorInt initalAnalogsNbVect = params.GetAnalogsNumberVector(i_step);
@@ -823,7 +823,7 @@ void asMethodCalibratorClassicPlus::GetInitialAnalogNumber(asParametersCalibrati
 }
 
 asMethodCalibrator::ParamExploration
-asMethodCalibratorClassicPlus::GetSpatialBoundaries(const asParametersCalibration &params, int i_step) const
+asMethodCalibratorClassic::GetSpatialBoundaries(const asParametersCalibration &params, int i_step) const
 {
     ParamExploration explo;
 
@@ -863,7 +863,7 @@ asMethodCalibratorClassicPlus::GetSpatialBoundaries(const asParametersCalibratio
     return explo;
 }
 
-bool asMethodCalibratorClassicPlus::DoPreloadData(asParametersCalibration &params)
+bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
 {
     try {
         if (!PreloadData(params)) {
@@ -884,7 +884,7 @@ bool asMethodCalibratorClassicPlus::DoPreloadData(asParametersCalibration &param
     return true;
 }
 
-void asMethodCalibratorClassicPlus::GetPlusOptions()
+void asMethodCalibratorClassic::GetPlusOptions()
 {
     if (m_plus) {
         ThreadsManager().CritSectionConfig().Enter();

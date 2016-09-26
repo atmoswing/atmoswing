@@ -42,8 +42,8 @@
 
 #endif
 
-#include "asMethodCalibratorClassicPlus.h"
-#include "asMethodCalibratorClassicPlusVarExplo.h"
+#include "asMethodCalibratorClassic.h"
+#include "asMethodCalibratorClassicVarExplo.h"
 #include "asMethodOptimizerRandomSet.h"
 #include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
@@ -57,7 +57,7 @@ IMPLEMENT_APP(AtmoswingAppOptimizer);
 #include <asIncludes.h>
 #include <asFileAscii.h>
 #include <asMethodCalibratorSingle.h>
-#include <asMethodCalibratorClassicPlus.h>
+#include <asMethodCalibratorClassic.h>
 
 #if wxUSE_GUI
 
@@ -767,14 +767,14 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classic", false)) {
-                asMethodCalibratorClassicPlus calibrator;
+                asMethodCalibratorClassic calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classicp", false)) {
-                asMethodCalibratorClassicPlus calibrator;
+                asMethodCalibratorClassic calibrator;
                 calibrator.SetAsCalibrationPlus();
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
@@ -782,7 +782,8 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("varexplocp", false)) {
-                asMethodCalibratorClassicPlusVarExplo calibrator;
+                asMethodCalibratorClassicVarExplo calibrator;
+                calibrator.SetAsCalibrationPlus();
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictandStationIds(m_predictandStationIds);

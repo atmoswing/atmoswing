@@ -26,19 +26,19 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODCALIBRATORCLASSICPLUS_H
-#define ASMETHODCALIBRATORCLASSICPLUS_H
+#ifndef ASMETHODCALIBRATORCLASSIC_H
+#define ASMETHODCALIBRATORCLASSIC_H
 
 #include <asMethodCalibrator.h>
 
 
-class asMethodCalibratorClassicPlus
+class asMethodCalibratorClassic
         : public asMethodCalibrator
 {
 public:
-    asMethodCalibratorClassicPlus();
+    asMethodCalibratorClassic();
 
-    virtual ~asMethodCalibratorClassicPlus();
+    virtual ~asMethodCalibratorClassic();
 
     void SetAsCalibrationPlus(bool val = true)
     {
@@ -81,4 +81,4 @@ private:
     bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int i_step);
 };
 
-#endif // ASMETHODCALIBRATORCLASSICPLUS_H
+#endif // ASMETHODCALIBRATORCLASSIC_H
