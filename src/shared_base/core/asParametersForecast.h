@@ -175,6 +175,17 @@ private:
     VectorInt m_leadTimeDaysVect;
     VectorParamsStepForecast m_stepsForecast;
     wxString m_predictandDatabase;
+
+    bool ParseDescription(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseTimeProperties(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseAnalogDatesParams(asFileParametersForecast &fileParams, int i_step, const wxXmlNode *nodeProcess);
+
+    bool ParsePreprocessedPredictors(asFileParametersForecast &fileParams, int i_step, int i_ptor,
+                                     const wxXmlNode *nodeParam);
+
+    bool ParseAnalogValuesParams(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif // ASPARAMETERSFORECAST_H

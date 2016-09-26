@@ -145,7 +145,23 @@ private:
     VectorInt m_timeArrayAnalogsIntervalDaysVect;
     ParamsForecastScoreVect m_forecastScoreVect;
 
-    void GetAllPreprocessTimesAndLevels(int i_step, int i_ptor, VectorFloat &preprocLevels, VectorDouble &preprocTimeHours) const;
+    void GetAllPreprocessTimesAndLevels(int i_step, int i_ptor, VectorFloat &preprocLevels,
+                                        VectorDouble &preprocTimeHours) const;
+
+    bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseTimeProperties(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int i_step, const wxXmlNode *nodeProcess);
+
+    bool ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int i_step, int i_ptor,
+                                     const wxXmlNode *nodeParam);
+
+    bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseForecastScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseForecastScoreFinal(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif // ASPARAMETERSCALIBRATION_H
