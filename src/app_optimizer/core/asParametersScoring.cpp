@@ -283,33 +283,28 @@ bool asParametersScoring::PreprocessingPropertiesOk()
                 }
 
                 // Different actions depending on the preprocessing method.
-                if (method.IsSameAs("Gradients")) {
+                wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
+                if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
+                    method.IsSameAs("Average")) {
+                    // No constraints
+                } else if (method.IsSameAs("Gradients")) {
                     if (preprocSize != 1) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."),
-                                preprocSize));
+                        asLogError(wxString::Format(msg, preprocSize, 1, "Gradient"));
                         return false;
                     }
                 } else if (method.IsSameAs("HumidityFlux")) {
                     if (preprocSize != 4) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."),
-                                preprocSize));
+                        asLogError(wxString::Format(msg, preprocSize, 4, "HumidityFlux"));
                         return false;
                     }
-                } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
-                           method.IsSameAs("HumidityIndex")) {
+                } else if (method.IsSameAs("HumidityIndex")) {
                     if (preprocSize != 2) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."),
-                                preprocSize));
+                        asLogError(wxString::Format(msg, preprocSize, 2, "HumidityIndex"));
                         return false;
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
                     if (preprocSize != 4) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."),
-                                preprocSize));
+                        asLogError(wxString::Format(msg, preprocSize, 4, "FormerHumidityIndex"));
                         return false;
                     }
                 } else {
