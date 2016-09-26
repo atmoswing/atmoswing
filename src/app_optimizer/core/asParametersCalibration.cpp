@@ -408,17 +408,25 @@ bool asParametersCalibration::SetSpatialWindowProperties()
 {
     for (int i_step = 0; i_step < GetStepsNb(); i_step++) {
         for (int i_ptor = 0; i_ptor < GetPredictorsNb(i_step); i_ptor++) {
-            double Xshift = std::fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
-            if (Xshift < 0)
-                Xshift += GetPredictorXstep(i_step, i_ptor);
-            if (!SetPredictorXshift(i_step, i_ptor, Xshift))
-                return false;
+            if (GetPredictorXstep(i_step, i_ptor) == 0) {
+                SetPredictorXshift(i_step, i_ptor, 0);
+            } else {
+                double Xshift = std::fmod(GetPredictorXminVector(i_step, i_ptor)[0], GetPredictorXstep(i_step, i_ptor));
+                if (Xshift < 0)
+                    Xshift += GetPredictorXstep(i_step, i_ptor);
+                if (!SetPredictorXshift(i_step, i_ptor, Xshift))
+                    return false;
+            }
 
-            double Yshift = std::fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
-            if (Yshift < 0)
-                Yshift += GetPredictorYstep(i_step, i_ptor);
-            if (!SetPredictorYshift(i_step, i_ptor, Yshift))
-                return false;
+            if(GetPredictorYstep(i_step, i_ptor) == 0) {
+                SetPredictorYshift(i_step, i_ptor, 0);
+            } else {
+                double Yshift = std::fmod(GetPredictorYminVector(i_step, i_ptor)[0], GetPredictorYstep(i_step, i_ptor));
+                if (Yshift < 0)
+                    Yshift += GetPredictorYstep(i_step, i_ptor);
+                if (!SetPredictorYshift(i_step, i_ptor, Yshift))
+                    return false;
+            }
 
             VectorInt uptsnbs = GetPredictorXptsnbVector(i_step, i_ptor);
             VectorInt vptsnbs = GetPredictorYptsnbVector(i_step, i_ptor);
@@ -442,19 +450,11 @@ bool asParametersCalibration::SetPreloadingProperties()
                     return false;
                 if (!SetPreloadYmin(i_step, i_ptor, GetPredictorYminVector(i_step, i_ptor)[0]))
                     return false;
-                int Xbaseptsnb = std::abs(GetPredictorXminVector(i_step, i_ptor)[0] -
-                                          GetPredictorXminVector(i_step, i_ptor)[
-                                                  GetPredictorXminVector(i_step, i_ptor).size() - 1]) /
-                                 GetPredictorXstep(i_step, i_ptor);
-                if (!SetPreloadXptsnb(i_step, i_ptor, Xbaseptsnb + GetPredictorXptsnbVector(i_step, i_ptor)[
-                        GetPredictorXptsnbVector(i_step, i_ptor).size() - 1]))
+                if (!SetPreloadXptsnb(i_step, i_ptor, (int) GetPredictorXminVector(i_step, i_ptor).size() +
+                        GetPredictorXptsnbVector(i_step, i_ptor)[GetPredictorXptsnbVector(i_step, i_ptor).size() - 1]))
                     return false;
-                int Ybaseptsnb = std::abs(GetPredictorYminVector(i_step, i_ptor)[0] -
-                                          GetPredictorYminVector(i_step, i_ptor)[
-                                                  GetPredictorYminVector(i_step, i_ptor).size() - 1]) /
-                                 GetPredictorYstep(i_step, i_ptor);
-                if (!SetPreloadYptsnb(i_step, i_ptor, Ybaseptsnb + GetPredictorYptsnbVector(i_step, i_ptor)[
-                        GetPredictorYptsnbVector(i_step, i_ptor).size() - 1]))
+                if (!SetPreloadYptsnb(i_step, i_ptor, (int) GetPredictorYminVector(i_step, i_ptor).size() +
+                        GetPredictorYptsnbVector(i_step, i_ptor)[GetPredictorYptsnbVector(i_step, i_ptor).size() - 1]))
                     return false;
             }
 
@@ -488,11 +488,24 @@ bool asParametersCalibration::SetPreloadingProperties()
                 VectorDouble preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
-                preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
-                preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
-                if (method.IsSameAs("FormerHumidityIndex")) {
+                if (method.IsSameAs("Gradients") || method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
+                    method.IsSameAs("Addition") || method.IsSameAs("Average")) {
+                    // Get them all
+                    GetAllPreprocessTimesAndLevels(i_step, i_ptor, preprocLevels, preprocTimeHours);
+                } else if (method.IsSameAs("HumidityFlux")) {
+                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                } else if (method.IsSameAs("HumidityIndex")) {
+                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
+                } else if (method.IsSameAs("FormerHumidityIndex")) {
+                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                    preprocTimeHours = GetPreprocessTimeHoursVector(i_step, i_ptor, 0);
                     VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(i_step, i_ptor, 1);
                     preprocTimeHours.insert(preprocTimeHours.end(), preprocTimeHours2.begin(), preprocTimeHours2.end());
+                } else {
+                    asLogWarning(wxString::Format(
+                            _("The %s preprocessing method is not yet handled with the preload option."), method));
                 }
 
                 if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
@@ -504,6 +517,37 @@ bool asParametersCalibration::SetPreloadingProperties()
     }
 
     return true;
+}
+
+void asParametersCalibration::GetAllPreprocessTimesAndLevels(int i_step, int i_ptor, VectorFloat &preprocLevels,
+                                                             VectorDouble &preprocTimeHours) const
+{
+    for (int i_prec = 0; i_prec < GetPreprocessSize(i_step, i_ptor); ++i_prec) {
+        VectorFloat preprocLevelsTmp = GetPreprocessLevelVector(i_step, i_ptor, i_prec);
+        for (int i = 0; i < preprocLevelsTmp.size(); ++i) {
+            bool sameFound = false;
+            for (int k = 0; k < preprocLevels.size(); ++k) {
+                if (preprocLevels[k] == preprocLevelsTmp[i]) {
+                    sameFound = true;
+                }
+            }
+            if (!sameFound) {
+                preprocLevels.push_back(preprocLevelsTmp[i]);
+            }
+        }
+        VectorDouble preprocTimeHoursTmp = GetPreprocessTimeHoursVector(i_step, i_ptor, i_prec);
+        for (int i = 0; i < preprocTimeHoursTmp.size(); ++i) {
+            bool sameFound = false;
+            for (int k = 0; k < preprocTimeHours.size(); ++k) {
+                if (preprocTimeHours[k] == preprocTimeHoursTmp[i]) {
+                    sameFound = true;
+                }
+            }
+            if (!sameFound) {
+                preprocTimeHours.push_back(preprocTimeHoursTmp[i]);
+            }
+        }
+    }
 }
 
 bool asParametersCalibration::InputsOK() const
@@ -987,36 +1031,30 @@ double asParametersCalibration::GetPredictorXminIteration(int i_step, int i_pred
 {
     if (m_stepsVect[i_step].predictors[i_predictor].xMin.size() < 2)
         return 0;
-    int row = (int) floor((float) m_stepsVect[i_step].predictors[i_predictor].xMin.size() / 2.0);
-    double val = m_stepsVect[i_step].predictors[i_predictor].xMin[row] -
-                 m_stepsVect[i_step].predictors[i_predictor].xMin[row - 1];
-    return val;
+
+    return m_stepsVect[i_step].predictors[i_predictor].xMin[1] - m_stepsVect[i_step].predictors[i_predictor].xMin[0];
 }
 
 int asParametersCalibration::GetPredictorXptsnbIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].predictors[i_predictor].xPtsNb.size() < 2)
         return 0;
-    int val = m_stepsVect[i_step].predictors[i_predictor].xPtsNb[1] -
-              m_stepsVect[i_step].predictors[i_predictor].xPtsNb[0];
-    return val;
+
+    return m_stepsVect[i_step].predictors[i_predictor].xPtsNb[1] - m_stepsVect[i_step].predictors[i_predictor].xPtsNb[0];
 }
 
 double asParametersCalibration::GetPredictorYminIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].predictors[i_predictor].yMin.size() < 2)
         return 0;
-    int row = (int) floor((float) m_stepsVect[i_step].predictors[i_predictor].yMin.size() / 2.0);
-    double val = m_stepsVect[i_step].predictors[i_predictor].yMin[row] -
-                 m_stepsVect[i_step].predictors[i_predictor].yMin[row - 1];
-    return val;
+
+    return m_stepsVect[i_step].predictors[i_predictor].yMin[1] - m_stepsVect[i_step].predictors[i_predictor].yMin[0];
 }
 
 int asParametersCalibration::GetPredictorYptsnbIteration(int i_step, int i_predictor) const
 {
     if (m_stepsVect[i_step].predictors[i_predictor].yPtsNb.size() < 2)
         return 0;
-    int val = m_stepsVect[i_step].predictors[i_predictor].yPtsNb[1] -
-              m_stepsVect[i_step].predictors[i_predictor].yPtsNb[0];
-    return val;
+
+    return m_stepsVect[i_step].predictors[i_predictor].yPtsNb[1] - m_stepsVect[i_step].predictors[i_predictor].yPtsNb[0];
 }

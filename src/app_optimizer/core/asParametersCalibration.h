@@ -144,6 +144,8 @@ private:
     VVectorInt m_predictandStationIdsVect;
     VectorInt m_timeArrayAnalogsIntervalDaysVect;
     ParamsForecastScoreVect m_forecastScoreVect;
+
+    void GetAllPreprocessTimesAndLevels(int i_step, int i_ptor, VectorFloat &preprocLevels, VectorDouble &preprocTimeHours) const;
 };
 
 #endif // ASPARAMETERSCALIBRATION_H
