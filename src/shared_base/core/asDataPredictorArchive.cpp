@@ -267,9 +267,13 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double Xmin = desiredArea->GetAbsoluteXmin();
     double Xmax = desiredArea->GetAbsoluteXmax();
     wxASSERT(m_axisLon.size() > 0);
-    int XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmin, 0.0,
+    float toleranceLon = 0.1;
+    if (m_axisLon.size() > 1) {
+        toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
+    }
+    int XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmin, toleranceLon,
                                                  asHIDE_WARNINGS);
-    int XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmax, 0.0,
+    int XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmax, toleranceLon,
                                                asHIDE_WARNINGS);
     if (XstartIndex < 0) {
         XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
@@ -285,11 +289,9 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         }
     }
     if (XstartIndex < 0 || XendIndex < 0) {
-
         asLogError(_("An error occured while trying to clip data to another area."));
-        asLogError(
-                wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin, Xmax, m_axisLon[0],
-                                 m_axisLon[m_axisLon.size() - 1]));
+        asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin, Xmax,
+                                    m_axisLon[0], m_axisLon[m_axisLon.size() - 1]));
         return false;
     }
     int Xlength = XendIndex - XstartIndex + 1;
@@ -297,28 +299,18 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double Ymin = desiredArea->GetAbsoluteYmin();
     double Ymax = desiredArea->GetAbsoluteYmax();
     wxASSERT(m_axisLat.size() > 0);
-    int YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymin, 0.0,
-                                                 asHIDE_WARNINGS);
-    int YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymax, 0.0,
-                                               asHIDE_WARNINGS);
-    if (XstartIndex < 0) {
-        YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1],
-                                                 Ymin + desiredArea->GetAxisYmax());
-        YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1],
-                                               Ymax + desiredArea->GetAxisYmax());
-        if (YstartIndex < 0 || YendIndex < 0) {
-            asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
-            asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Ymin + desiredArea->GetAxisYmax(), Ymax + desiredArea->GetAxisYmax(),
-                                        m_axisLat[0], m_axisLat[m_axisLat.size() - 1]));
-            return false;
-        }
+    float toleranceLat = 0.1;
+    if (m_axisLat.size() > 1) {
+        toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
     }
+    int YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymin, toleranceLat,
+                                                 asHIDE_WARNINGS);
+    int YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymax, toleranceLat,
+                                               asHIDE_WARNINGS);
     if (YstartIndex < 0 || YendIndex < 0) {
         asLogError(_("An error occured while trying to clip data to another area."));
-        asLogError(
-                wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), Ymin, Ymax, m_axisLat[0],
-                                 m_axisLat[m_axisLat.size() - 1]));
+        asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), Ymin, Ymax,
+                                    m_axisLat[0], m_axisLat[m_axisLat.size() - 1]));
         return false;
     }
 
@@ -452,13 +444,13 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
-                       method.IsSameAs("HumidityFlux") || method.IsSameAs("HumidityIndex")) {
+                       method.IsSameAs("HumidityFlux") || method.IsSameAs("HumidityIndex") ||
+                       method.IsSameAs("Addition") || method.IsSameAs("Average")) {
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != m_axisLat.size()) {
                     asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format(
-                            "originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                    asLogError(wxString::Format("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
                             (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
                             (int) m_axisLat.size()));
                     return false;
@@ -532,8 +524,7 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray) const
     }
     if (!asTools::IsNaN(m_originalProviderEnd)) {
         if (timeArray.GetLast() > m_originalProviderEnd) {
-            asLogError(
-                    wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
+            asLogError(wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
                                      asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD),
                                      asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD)));
             return false;
