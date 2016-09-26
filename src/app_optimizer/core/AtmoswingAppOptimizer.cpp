@@ -57,7 +57,7 @@ IMPLEMENT_APP(AtmoswingAppOptimizer);
 #include <asIncludes.h>
 #include <asFileAscii.h>
 #include <asMethodCalibratorSingle.h>
-#include <asMethodCalibratorClassic.h>
+#include <asMethodCalibratorClassicPlus.h>
 
 #if wxUSE_GUI
 
@@ -767,7 +767,7 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classic", false)) {
-                asMethodCalibratorClassic calibrator;
+                asMethodCalibratorClassicPlus calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictandStationIds(m_predictandStationIds);
@@ -775,6 +775,7 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classicp", false)) {
                 asMethodCalibratorClassicPlus calibrator;
+                calibrator.SetAsCalibrationPlus();
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
                 calibrator.SetPredictandStationIds(m_predictandStationIds);
