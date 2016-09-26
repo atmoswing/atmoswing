@@ -813,15 +813,25 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
     bool loopOnLevels = true;
     bool loopOnTimeHours = true;
 
-
-    if (preloadLevelsSize == 0) {
+    if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
+        method.IsSameAs("Average")) {
         loopOnLevels = false;
-        preloadLevelsSize = 1;
-    }
-
-    if (preloadTimeHoursSize == 0) {
         loopOnTimeHours = false;
+        preloadLevelsSize = 1;
         preloadTimeHoursSize = 1;
+    } else if (method.IsSameAs("Gradients") || method.IsSameAs("HumidityIndex") || method.IsSameAs("HumidityFlux") ||
+               method.IsSameAs("FormerHumidityIndex")) {
+        if (preloadLevelsSize == 0) {
+            loopOnLevels = false;
+            preloadLevelsSize = 1;
+        }
+        if (preloadTimeHoursSize == 0) {
+            loopOnTimeHours = false;
+            preloadTimeHoursSize = 1;
+        }
+    } else {
+        asLogError(_("Preprocessing method unknown in PreloadDataWithPreprocessing."));
+        return false;
     }
 
     asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
