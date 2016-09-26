@@ -856,6 +856,29 @@ protected:
 
 private:
 
+    bool ParseDescription(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseTimeProperties(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseAnalogDatesParams(asFileParametersOptimization &fileParams, int i_step, const wxXmlNode *nodeProcess);
+
+    bool ParsePredictors(asFileParametersOptimization &fileParams, int i_step, int i_ptor,
+                         const wxXmlNode *nodeParamBlock);
+
+    bool ParsePreprocessedPredictors(asFileParametersOptimization &fileParams, int i_step, int i_ptor,
+                                     const wxXmlNode *nodeParam);
+
+    bool ParsePreprocessedPredictorDataset(asFileParametersOptimization &fileParams, int i_step, int i_ptor, int i_dataset,
+                                           const wxXmlNode *nodePreprocess);
+
+    bool ParseSpatialWindow(asFileParametersOptimization &fileParams, int i_step, int i_ptor, const wxXmlNode *nodeParam);
+
+    bool ParseAnalogValuesParams(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseForecastScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseForecastScoreFinal(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+
 };
 
 #endif // ASPARAMETERSOPTIMIZATION_H
