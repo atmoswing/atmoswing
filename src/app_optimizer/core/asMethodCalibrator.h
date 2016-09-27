@@ -152,14 +152,12 @@ protected:
     struct ParamExploration {
         double xMinStart;
         double xMinEnd;
-        double xMinIter;
         int xPtsnbStart;
         int xPtsnbEnd;
         int xPtsNbIter;
         double yMinStart;
         double yMinEnd;
-        double yMinIter;
-        int yPtsnbIter;
+        int yPtsNbIter;
         int yPtsnbStart;
         int yPtsnbEnd;
     };
