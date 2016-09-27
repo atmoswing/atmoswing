@@ -49,8 +49,6 @@ asResultsAnalogsForecastScores::~asResultsAnalogsForecastScores()
 void asResultsAnalogsForecastScores::Init(asParametersScoring &params)
 {
     m_predictandStationIds = params.GetPredictandStationIds();
-    if (m_saveIntermediateResults || m_loadIntermediateResults)
-        BuildFileName(params);
 
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
@@ -58,23 +56,26 @@ void asResultsAnalogsForecastScores::Init(asParametersScoring &params)
     m_forecastScores2DArray.resize(0, 0);
 }
 
-void asResultsAnalogsForecastScores::BuildFileName(asParametersScoring &params)
+void asResultsAnalogsForecastScores::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
                                            asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
-    m_filePath.Append(
-            wxString::Format("AnalogsForecastScores_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+    m_filePath.Append(wxString::Format("AnalogsForecastScores_id_%s_step_%d", GetPredictandStationIdsList(),
+                                       m_currentStep));
     m_filePath.Append(".nc");
 }
 
-bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath) const
+bool asResultsAnalogsForecastScores::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
     if (!m_saveIntermediateResults)
         return false;
+
+    BuildFileName();
+
     wxString message = _("Saving intermediate file: ") + m_filePath;
     asLogMessage(message);
 
@@ -137,8 +138,12 @@ bool asResultsAnalogsForecastScores::Load(const wxString &AlternateFilePath)
     // If we don't want to save or the file doesn't exist
     if (!m_loadIntermediateResults)
         return false;
+
+    BuildFileName();
+
     if (!Exists())
         return false;
+
     if (m_currentStep != 0)
         return false;
 

@@ -71,13 +71,13 @@ public:
         m_hasSingleValue = false;
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
+    bool Save(const wxString &AlternateFilePath = wxEmptyString);
 
     bool Load(const wxString &AlternateFilePath = wxEmptyString);
 
 protected:
 
-    void BuildFileName(asParametersScoring &params);
+    void BuildFileName();
 
 private:
     bool m_hasSingleValue;

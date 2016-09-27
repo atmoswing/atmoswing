@@ -49,7 +49,7 @@ asResultsAnalogsScoresMap::~asResultsAnalogsScoresMap()
 
 void asResultsAnalogsScoresMap::Init(asParametersScoring &params)
 {
-    BuildFileName(params);
+    BuildFileName();
 
     // Resize to 0 to avoid keeping old results
     m_mapLon.resize(0);
@@ -62,7 +62,7 @@ void asResultsAnalogsScoresMap::Init(asParametersScoring &params)
     m_level.resize(0);
 }
 
-void asResultsAnalogsScoresMap::BuildFileName(asParametersScoring &params)
+void asResultsAnalogsScoresMap::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
