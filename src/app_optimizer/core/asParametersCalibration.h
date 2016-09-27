@@ -139,6 +139,9 @@ public:
     int GetPredictorYptsnbIteration(int i_step, int i_predictor) const;
 
 protected:
+    VectorDouble GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int i_step, int i_ptor);
+
+    VectorDouble GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int i_step, int i_ptor);
 
 private:
     VVectorInt m_predictandStationIdsVect;

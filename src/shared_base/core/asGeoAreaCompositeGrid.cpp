@@ -64,6 +64,56 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
     }
 }
 
+Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin, double Xmax)
+{
+    Array1DDouble axis;
+
+    // If empty, set Regular.
+    if (type.IsSameAs("GaussianT62", false)) {
+        asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT62);
+    } else if (type.IsSameAs("GaussianT382", false)) {
+        asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT382);
+    } else {
+        asLogError(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+        asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+    }
+
+    int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Xmin);
+    int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Xmax);
+
+    wxASSERT(start >= 0);
+    wxASSERT(end >= 0);
+
+    axis = axis.segment(start, end - start + 1);
+
+    return axis;
+}
+
+Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax)
+{
+    Array1DDouble axis;
+
+    // If empty, set Regular.
+    if (type.IsSameAs("GaussianT62", false)) {
+        asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT62);
+    } else if (type.IsSameAs("GaussianT382", false)) {
+        asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT382);
+    } else {
+        asLogError(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+        asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+    }
+
+    int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Ymin);
+    int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Ymax);
+
+    wxASSERT(start >= 0);
+    wxASSERT(end >= 0);
+
+    axis = axis.segment(start, end - start + 1);
+
+    return axis;
+}
+
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
                                                const Coo &CornerLR, float Level, float Height, int flatAllowed)
         : asGeoAreaComposite(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)

@@ -29,6 +29,7 @@
 #include "asParametersCalibration.h"
 
 #include <asFileParametersCalibration.h>
+#include <asGeoAreaCompositeGrid.h>
 
 asParametersCalibration::asParametersCalibration()
         : asParametersScoring()
@@ -292,7 +293,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                             if (!SetPredictorGridType(i_step, i_ptor, fileParams.GetString(nodeWindow, "regular")))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_min") {
-                            if (!SetPredictorXminVector(i_step, i_ptor, fileParams.GetVectorDouble(nodeWindow)))
+                            if (!SetPredictorXminVector(i_step, i_ptor, GetVectorXmin(fileParams, nodeWindow, i_step, i_ptor)))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_points_nb") {
                             if (!SetPredictorXptsnbVector(i_step, i_ptor, fileParams.GetVectorInt(nodeWindow)))
@@ -301,7 +302,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                             if (!SetPredictorXstep(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_min") {
-                            if (!SetPredictorYminVector(i_step, i_ptor, fileParams.GetVectorDouble(nodeWindow)))
+                            if (!SetPredictorYminVector(i_step, i_ptor, GetVectorYmin(fileParams, nodeWindow, i_step, i_ptor)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_points_nb") {
                             if (!SetPredictorYptsnbVector(i_step, i_ptor, fileParams.GetVectorInt(nodeWindow)))
@@ -590,6 +591,82 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int i_step, int i_p
             }
         }
     }
+}
+
+VectorDouble asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int i_step, int i_ptor)
+{
+    VectorDouble vect;
+    wxString nodeName = node->GetName();
+    wxString method = node->GetAttribute("method");
+    if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
+        vect = fileParams.GetVectorDouble(node);
+    } else if (method.IsSameAs("minmax")) {
+        if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular", false)) {
+            vect = fileParams.GetVectorDouble(node);
+        } else {
+            double min, max;
+
+            wxString valueMinStr = node->GetAttribute("min");
+            if (!valueMinStr.ToDouble(&min)) {
+                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            }
+
+            wxString valueMaxStr = node->GetAttribute("max");
+            if (!valueMaxStr.ToDouble(&max)) {
+                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            }
+
+            Array1DDouble xAxis = asGeoAreaCompositeGrid::GetXaxis(GetPredictorGridType(i_step, i_ptor), min, max);
+            for (int i = 0; i < xAxis.size(); ++i) {
+                vect.push_back(xAxis[i]);
+            }
+        }
+
+    } else {
+        asLogMessage(_("The method is not correctly defined for Xmin in the calibration parameters file."));
+        wxString valueStr = node->GetChildren()->GetContent();
+        vect = asFileParameters::BuildVectorDouble(valueStr);
+    }
+
+    return vect;
+}
+
+VectorDouble asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int i_step, int i_ptor)
+{
+    VectorDouble vect;
+    wxString nodeName = node->GetName();
+    wxString method = node->GetAttribute("method");
+    if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
+        vect = fileParams.GetVectorDouble(node);
+    } else if (method.IsSameAs("minmax")) {
+        if (GetPredictorGridType(i_step, i_ptor).IsSameAs("Regular", false)) {
+            vect = fileParams.GetVectorDouble(node);
+        } else {
+            double min, max;
+
+            wxString valueMinStr = node->GetAttribute("min");
+            if (!valueMinStr.ToDouble(&min)) {
+                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            }
+
+            wxString valueMaxStr = node->GetAttribute("max");
+            if (!valueMaxStr.ToDouble(&max)) {
+                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            }
+
+            Array1DDouble yAxis = asGeoAreaCompositeGrid::GetYaxis(GetPredictorGridType(i_step, i_ptor), min, max);
+            for (int i = 0; i < yAxis.size(); ++i) {
+                vect.push_back(yAxis[i]);
+            }
+        }
+
+    } else {
+        asLogMessage(_("The method is not correctly defined for Xmin in the calibration parameters file."));
+        wxString valueStr = node->GetChildren()->GetContent();
+        vect = asFileParameters::BuildVectorDouble(valueStr);
+    }
+
+    return vect;
 }
 
 bool asParametersCalibration::InputsOK() const

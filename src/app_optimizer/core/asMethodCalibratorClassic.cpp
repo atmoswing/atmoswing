@@ -247,25 +247,25 @@ asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBounda
     explo.xMinStart = params.GetPredictorXminLowerLimit(i_step, 0);
     explo.xMinEnd = params.GetPredictorXminUpperLimit(i_step, 0);
     explo.xPtsNbIter = params.GetPredictorXptsnbIteration(i_step, 0);
-    explo.xPtsnbStart = params.GetPredictorXptsnbLowerLimit(i_step, 0);
-    explo.xPtsnbEnd = params.GetPredictorXptsnbUpperLimit(i_step, 0);
+    explo.xPtsNbStart = params.GetPredictorXptsnbLowerLimit(i_step, 0);
+    explo.xPtsNbEnd = params.GetPredictorXptsnbUpperLimit(i_step, 0);
     explo.yMinStart = params.GetPredictorYminLowerLimit(i_step, 0);
     explo.yMinEnd = params.GetPredictorYminUpperLimit(i_step, 0);
     explo.yPtsNbIter = params.GetPredictorYptsnbIteration(i_step, 0);
-    explo.yPtsnbStart = params.GetPredictorYptsnbLowerLimit(i_step, 0);
-    explo.yPtsnbEnd = params.GetPredictorYptsnbUpperLimit(i_step, 0);
+    explo.yPtsNbStart = params.GetPredictorYptsnbLowerLimit(i_step, 0);
+    explo.yPtsNbEnd = params.GetPredictorYptsnbUpperLimit(i_step, 0);
 
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
         explo.xMinStart = wxMax(explo.xMinStart, params.GetPredictorXminLowerLimit(i_step, i_ptor));
         explo.xMinEnd = wxMin(explo.xMinEnd, params.GetPredictorXminUpperLimit(i_step, i_ptor));
         explo.xPtsNbIter = wxMin(explo.xPtsNbIter, params.GetPredictorXptsnbIteration(i_step, i_ptor));
-        explo.xPtsnbStart = wxMax(explo.xPtsnbStart, params.GetPredictorXptsnbLowerLimit(i_step, i_ptor));
-        explo.xPtsnbEnd = wxMin(explo.xPtsnbEnd, params.GetPredictorXptsnbUpperLimit(i_step, i_ptor));
+        explo.xPtsNbStart = wxMax(explo.xPtsNbStart, params.GetPredictorXptsnbLowerLimit(i_step, i_ptor));
+        explo.xPtsNbEnd = wxMin(explo.xPtsNbEnd, params.GetPredictorXptsnbUpperLimit(i_step, i_ptor));
         explo.yMinStart = wxMax(explo.yMinStart, params.GetPredictorYminLowerLimit(i_step, i_ptor));
         explo.yMinEnd = wxMin(explo.yMinEnd, params.GetPredictorYminUpperLimit(i_step, i_ptor));
         explo.yPtsNbIter = wxMin(explo.yPtsNbIter, params.GetPredictorYptsnbIteration(i_step, i_ptor));
-        explo.yPtsnbStart = wxMax(explo.yPtsnbStart, params.GetPredictorYptsnbLowerLimit(i_step, i_ptor));
-        explo.yPtsnbEnd = wxMax(explo.yPtsnbEnd, params.GetPredictorYptsnbUpperLimit(i_step, i_ptor));
+        explo.yPtsNbStart = wxMax(explo.yPtsNbStart, params.GetPredictorYptsnbLowerLimit(i_step, i_ptor));
+        explo.yPtsNbEnd = wxMax(explo.yPtsNbEnd, params.GetPredictorYptsnbUpperLimit(i_step, i_ptor));
     }
 
     if ((explo.xMinStart != explo.xMinEnd) && explo.xPtsNbIter==0)
@@ -306,8 +306,8 @@ void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, 
             params.SetPredictorXptsnb(i_step, i_ptor, 1);
             params.SetPredictorYptsnb(i_step, i_ptor, 1);
         } else {
-            params.SetPredictorXptsnb(i_step, i_ptor, explo.xPtsnbStart);
-            params.SetPredictorYptsnb(i_step, i_ptor, explo.yPtsnbStart);
+            params.SetPredictorXptsnb(i_step, i_ptor, explo.xPtsNbStart);
+            params.SetPredictorYptsnb(i_step, i_ptor, explo.yPtsNbStart);
         }
     }
 }
@@ -316,12 +316,12 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
                                                const asMethodCalibrator::ParamExploration &explo, Array1DDouble &xAxis,
                                                Array1DDouble &yAxis) const
 {
-    int areaXptnNb = explo.xPtsnbEnd;
-    int areaYptnNb = explo.yPtsnbEnd;
+    int areaXptnNb = explo.xPtsNbEnd;
+    int areaYptnNb = explo.yPtsNbEnd;
 
     asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, 0),
-                                                                          explo.xMinStart, explo.xPtsnbEnd, 0,
-                                                                          explo.yMinStart, explo.yPtsnbEnd, 0);
+                                                                          explo.xMinStart, explo.xPtsNbEnd, 0,
+                                                                          explo.yMinStart, explo.yPtsNbEnd, 0);
 
     while (geoArea->GetXmax() < explo.xMinEnd) {
         wxDELETE(geoArea);
@@ -866,7 +866,7 @@ void asMethodCalibratorClassic::WidenEast(asParametersCalibration &params,
                                           int multipleFactor) const
 {
     int xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor) + multipleFactor * explo.xPtsNbIter;
-    xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsnbEnd), explo.xPtsnbStart);
+    xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
     params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
 }
 
@@ -875,7 +875,7 @@ void asMethodCalibratorClassic::WidenNorth(asParametersCalibration &params,
                                            int multipleFactor) const
 {
     int yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor) + multipleFactor * explo.yPtsNbIter;
-    yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsnbEnd), explo.yPtsnbStart);
+    yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
     params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
 }
 
@@ -884,7 +884,7 @@ void asMethodCalibratorClassic::ReduceEast(asParametersCalibration &params,
                                            int multipleFactor) const
 {
     int xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor) - multipleFactor * explo.xPtsNbIter;
-    xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsnbEnd), explo.xPtsnbStart);
+    xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
     params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
 }
 
@@ -893,7 +893,7 @@ void asMethodCalibratorClassic::ReduceNorth(asParametersCalibration &params,
                                             int multipleFactor) const
 {
     int yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor) - multipleFactor * explo.yPtsNbIter;
-    yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsnbEnd), explo.yPtsnbStart);
+    yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
     params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
 }
 

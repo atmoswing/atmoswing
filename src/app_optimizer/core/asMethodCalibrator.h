@@ -152,14 +152,14 @@ protected:
     struct ParamExploration {
         double xMinStart;
         double xMinEnd;
-        int xPtsnbStart;
-        int xPtsnbEnd;
+        int xPtsNbStart;
+        int xPtsNbEnd;
         int xPtsNbIter;
         double yMinStart;
         double yMinEnd;
         int yPtsNbIter;
-        int yPtsnbStart;
-        int yPtsnbEnd;
+        int yPtsNbStart;
+        int yPtsNbEnd;
     };
     VectorInt m_predictandStationIds;
     VectorFloat m_scoresCalib;
