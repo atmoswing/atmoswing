@@ -49,6 +49,10 @@ public:
                                                int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE,
                                                int flatAllowed = asFLAT_FORBIDDEN);
 
+	static Array1DDouble GetXaxis(const wxString &type, double Xmin, double Xmax);
+
+	static Array1DDouble GetYaxis(const wxString &type, double Ymin, double Ymax);
+
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 
     void SetLastRowAsNewComposite();
