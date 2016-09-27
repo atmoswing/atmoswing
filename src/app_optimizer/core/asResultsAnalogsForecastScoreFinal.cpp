@@ -39,10 +39,8 @@ asResultsAnalogsForecastScoreFinal::asResultsAnalogsForecastScoreFinal()
     m_forecastScore = NaNFloat;
 
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveFinalForecastScore", &m_saveIntermediateResults,
-                              false);
-    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/LoadFinalForecastScore", &m_loadIntermediateResults,
-                              false);
+    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveFinalForecastScore", &m_saveIntermediateResults, false);
+    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/LoadFinalForecastScore", &m_loadIntermediateResults, false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 
@@ -53,15 +51,12 @@ asResultsAnalogsForecastScoreFinal::~asResultsAnalogsForecastScoreFinal()
 
 void asResultsAnalogsForecastScoreFinal::Init(asParametersScoring &params)
 {
-    if (m_saveIntermediateResults || m_loadIntermediateResults)
-        BuildFileName(params);
-
     // Set to nan to avoid keeping old results
     m_forecastScore = NaNFloat;
     m_forecastScoreArray.resize(0);
 }
 
-void asResultsAnalogsForecastScoreFinal::BuildFileName(asParametersScoring &params)
+void asResultsAnalogsForecastScoreFinal::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
@@ -73,11 +68,14 @@ void asResultsAnalogsForecastScoreFinal::BuildFileName(asParametersScoring &para
     m_filePath.Append(".nc");
 }
 
-bool asResultsAnalogsForecastScoreFinal::Save(const wxString &AlternateFilePath) const
+bool asResultsAnalogsForecastScoreFinal::Save(const wxString &AlternateFilePath)
 {
     // If we don't want to save, skip
     if (!m_saveIntermediateResults)
         return false;
+
+    BuildFileName();
+
     wxString message = _("Saving intermediate file: ") + m_filePath;
     asLogMessage(message);
 

@@ -54,7 +54,7 @@ public:
     bool Save(asParametersCalibration &params, const wxString &AlternateFilePath = wxEmptyString);
 
 protected:
-    void BuildFileName(asParametersScoring &params);
+    void BuildFileName();
 
 private:
     Array1DFloat m_mapLon;
