@@ -431,9 +431,9 @@ public:
         }
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
+    bool Save();
 
-    bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    bool Load();
 
     wxString GetPredictandStationIdsString() const;
 

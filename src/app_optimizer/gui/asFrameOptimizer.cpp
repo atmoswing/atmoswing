@@ -207,53 +207,6 @@ void asFrameOptimizer::LoadOptions()
     pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
     m_checkBoxParallelEvaluations->SetValue(parallelEvaluations);
 
-    // Saving and loading of intermediate results files
-    bool saveAnalogDatesStep1;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", &saveAnalogDatesStep1, false);
-    m_checkBoxSaveAnalogDatesStep1->SetValue(saveAnalogDatesStep1);
-    bool saveAnalogDatesStep2;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", &saveAnalogDatesStep2, false);
-    m_checkBoxSaveAnalogDatesStep2->SetValue(saveAnalogDatesStep2);
-    bool saveAnalogDatesStep3;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", &saveAnalogDatesStep3, false);
-    m_checkBoxSaveAnalogDatesStep3->SetValue(saveAnalogDatesStep3);
-    bool saveAnalogDatesStep4;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", &saveAnalogDatesStep4, false);
-    m_checkBoxSaveAnalogDatesStep4->SetValue(saveAnalogDatesStep4);
-    bool saveAnalogDatesAllSteps;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogDatesAllSteps", &saveAnalogDatesAllSteps, false);
-    m_checkBoxSaveAnalogDatesAllSteps->SetValue(saveAnalogDatesAllSteps);
-    bool saveAnalogValues;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveAnalogValues", &saveAnalogValues, false);
-    m_checkBoxSaveAnalogValues->SetValue(saveAnalogValues);
-    bool saveForecastScores;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveForecastScores", &saveForecastScores, false);
-    m_checkBoxSaveForecastScores->SetValue(saveForecastScores);
-    bool saveFinalForecastScore;
-    pConfig->Read("/Optimizer/IntermediateResults/SaveFinalForecastScore", &saveFinalForecastScore, false);
-    m_checkBoxSaveFinalForecastScore->SetValue(saveFinalForecastScore);
-    bool loadAnalogDatesStep1;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", &loadAnalogDatesStep1, false);
-    m_checkBoxLoadAnalogDatesStep1->SetValue(loadAnalogDatesStep1);
-    bool loadAnalogDatesStep2;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", &loadAnalogDatesStep2, false);
-    m_checkBoxLoadAnalogDatesStep2->SetValue(loadAnalogDatesStep2);
-    bool loadAnalogDatesStep3;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", &loadAnalogDatesStep3, false);
-    m_checkBoxLoadAnalogDatesStep3->SetValue(loadAnalogDatesStep3);
-    bool loadAnalogDatesStep4;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", &loadAnalogDatesStep4, false);
-    m_checkBoxLoadAnalogDatesStep4->SetValue(loadAnalogDatesStep4);
-    bool loadAnalogDatesAllSteps;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogDatesAllSteps", &loadAnalogDatesAllSteps, false);
-    m_checkBoxLoadAnalogDatesAllSteps->SetValue(loadAnalogDatesAllSteps);
-    bool loadAnalogValues;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadAnalogValues", &loadAnalogValues, false);
-    m_checkBoxLoadAnalogValues->SetValue(loadAnalogValues);
-    bool loadForecastScores;
-    pConfig->Read("/Optimizer/IntermediateResults/LoadForecastScores", &loadForecastScores, false);
-    m_checkBoxLoadForecastScores->SetValue(loadForecastScores);
-
     // Classic+ calibration
     wxString ClassicPlusResizingIterations = pConfig->Read("/Optimizer/ClassicPlus/ResizingIterations", "1");
     m_textCtrlClassicPlusResizingIterations->SetValue(ClassicPlusResizingIterations);
@@ -394,38 +347,6 @@ void asFrameOptimizer::SaveOptions() const
     pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
     pConfig->Write("/Optimizer/ParallelEvaluations", parallelEvaluations);
-
-    // Saving and loading of intermediate results files
-    bool saveAnalogDatesStep1 = m_checkBoxSaveAnalogDatesStep1->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", saveAnalogDatesStep1);
-    bool saveAnalogDatesStep2 = m_checkBoxSaveAnalogDatesStep2->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", saveAnalogDatesStep2);
-    bool saveAnalogDatesStep3 = m_checkBoxSaveAnalogDatesStep3->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", saveAnalogDatesStep3);
-    bool saveAnalogDatesStep4 = m_checkBoxSaveAnalogDatesStep4->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", saveAnalogDatesStep4);
-    bool saveAnalogDatesAllSteps = m_checkBoxSaveAnalogDatesAllSteps->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesAllSteps", saveAnalogDatesAllSteps);
-    bool saveAnalogValues = m_checkBoxSaveAnalogValues->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", saveAnalogValues);
-    bool saveForecastScores = m_checkBoxSaveForecastScores->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", saveForecastScores);
-    bool saveFinalForecastScore = m_checkBoxSaveFinalForecastScore->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", saveFinalForecastScore);
-    bool loadAnalogDatesStep1 = m_checkBoxLoadAnalogDatesStep1->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", loadAnalogDatesStep1);
-    bool loadAnalogDatesStep2 = m_checkBoxLoadAnalogDatesStep2->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", loadAnalogDatesStep2);
-    bool loadAnalogDatesStep3 = m_checkBoxLoadAnalogDatesStep3->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", loadAnalogDatesStep3);
-    bool loadAnalogDatesStep4 = m_checkBoxLoadAnalogDatesStep4->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", loadAnalogDatesStep4);
-    bool loadAnalogDatesAllSteps = m_checkBoxLoadAnalogDatesAllSteps->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesAllSteps", loadAnalogDatesAllSteps);
-    bool loadAnalogValues = m_checkBoxLoadAnalogValues->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", loadAnalogValues);
-    bool loadForecastScores = m_checkBoxLoadForecastScores->GetValue();
-    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", loadForecastScores);
 
     // Classic+ calibration
     wxString ClassicPlusResizingIterations = m_textCtrlClassicPlusResizingIterations->GetValue();

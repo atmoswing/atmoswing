@@ -71,9 +71,9 @@ public:
         m_hasSingleValue = false;
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString);
+    bool Save();
 
-    bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    bool Load();
 
 protected:
 

@@ -271,7 +271,6 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/General/Responsive", false);
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
-        pConfig->Write("/Paths/IntermediateResultsDir", GetLocalPath() + "temp");
         pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);

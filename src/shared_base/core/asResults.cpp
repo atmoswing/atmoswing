@@ -35,26 +35,24 @@
 
 
 asResults::asResults()
+        : m_fileVersionMajor(1),
+          m_fileVersionMinor(8),
+          m_currentStep(0),
+          m_dateProcessed(0),
+          m_filePath(wxEmptyString)
 {
-    m_saveIntermediateResults = false;
-    m_loadIntermediateResults = false;
-    m_currentStep = 0;
-    m_fileVersionMajor = 1;
-    m_fileVersionMinor = 8;
-    m_dateProcessed = 0;
 }
 
 asResults::~asResults()
 {
-    //dtor
 }
 
-bool asResults::Load(const wxString &AlternateFilePath)
+bool asResults::Load()
 {
     return false;
 }
 
-bool asResults::Save(const wxString &AlternateFilePath) const
+bool asResults::Save()
 {
     return false;
 }

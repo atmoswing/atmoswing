@@ -143,9 +143,6 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
     wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir",
-                                                    asConfig::GetTempDir() + "AtmoSwing");
-    pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
     wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
                                                  asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
     pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);

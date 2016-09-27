@@ -139,7 +139,8 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     // Create and load the forecast
     asResultsAnalogsForecast *forecast = new asResultsAnalogsForecast;
 
-    if (!forecast->Load(filePath)) {
+    forecast->SetFilePath(filePath);
+    if (!forecast->Load()) {
         wxDELETE(forecast);
         return false;
     }
@@ -193,7 +194,8 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     // Create and load the forecast
     asResultsAnalogsForecast *forecast = new asResultsAnalogsForecast;
 
-    if (!forecast->Load(filePath)) {
+    forecast->SetFilePath(filePath);
+    if (!forecast->Load()) {
         wxDELETE(forecast);
         return false;
     }
