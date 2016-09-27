@@ -108,8 +108,11 @@ bool asResultsAnalogsValues::Save()
     ncFile.DefVar("target_values_norm", NC_FLOAT, 2, dimST);
     ncFile.DefVar("target_values_gross", NC_FLOAT, 2, dimST);
     ncFile.DefVar("analog_criteria", NC_FLOAT, 2, dimTA);
+    ncFile.DefVarDeflate("analog_criteria");
     ncFile.DefVar("analog_values_norm", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVarDeflate("analog_values_norm");
     ncFile.DefVar("analog_values_gross", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVarDeflate("analog_values_gross");
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
