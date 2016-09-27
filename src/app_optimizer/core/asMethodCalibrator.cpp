@@ -1459,11 +1459,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     results.SetCurrentStep(i_step);
     results.Init(params);
 
-    // If result file already exists, load it
-    if (results.Load()) {
-        return true;
-    }
-
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
                                  params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
@@ -1613,9 +1608,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
     asLogMessage(_("The processing is over."));
 
-    // Saving intermediate results
-    results.Save();
-
     Cleanup(predictors);
     Cleanup(criteria);
 
@@ -1633,10 +1625,6 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
-
-    // If result file already exists, load it
-    if (results.Load())
-        return true;
 
     // Date array object instantiation for the processor
     asLogMessage(_("Creating a date arrays for the processor."));
@@ -1689,9 +1677,6 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     }
     asLogMessage(_("The processing is over."));
 
-    // Saving intermediate results
-    results.Save();
-
     Cleanup(predictors);
     Cleanup(criteria);
 
@@ -1705,10 +1690,6 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsAnalogsValues &results, asPar
     results.SetCurrentStep(i_step);
     results.Init(params);
 
-    // If result file already exists, load it
-    if (results.Load())
-        return true;
-
     // Set the predictand values to the corresponding analog dates
     wxASSERT(m_predictandDB);
     asLogMessage(_("Start setting the predictand values to the corresponding analog dates."));
@@ -1717,9 +1698,6 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsAnalogsValues &results, asPar
         return false;
     }
     asLogMessage(_("Predictand association over."));
-
-    // Saving intermediate results
-    results.Save();
 
     return true;
 }
@@ -1730,10 +1708,6 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
-
-    // If result file already exists, load it
-    if (results.Load())
-        return true;
 
     // Instantiate a forecast score object
     asLogMessage(_("Instantiating a forecast score object"));
@@ -1764,9 +1738,6 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
         return false;
     }
 
-    // Saving intermediate results
-    results.Save();
-
     wxDELETE(forecastScore);
 
     return true;
@@ -1779,10 +1750,6 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
-
-    // If result file already exists, load it
-    if (results.Load())
-        return true;
 
     // Date array object instantiation for the final score
     asLogMessage(_("Creating a date array for the final score."));
@@ -1806,9 +1773,6 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
         return false;
     }
     asLogMessage(_("Processing over."));
-
-    // Saving intermediate results
-    results.Save();
 
     return true;
 }
@@ -1961,6 +1925,10 @@ bool asMethodCalibrator::Validate(const int bestScoreRow)
         return false;
     if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parameters[bestScoreRow], anaScores, stepsNb - 1))
         return false;
+
+    anaDates.Save();
+    anaValues.Save();
+    anaScores.Save();
 
     m_scoreValid = anaScoreFinal.GetForecastScore();
 
