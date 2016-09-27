@@ -85,7 +85,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir",
                                                                 asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-        resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time,
+        resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time,
                                                    GetPredictandStationIdsList(stationId)));
 
         // Create a complete relevance map

@@ -92,6 +92,7 @@ bool asResultsAnalogsDates::Save()
     ncFile.DefVar("target_dates", NC_FLOAT, 1, DimNames1);
     ncFile.DefVar("analog_criteria", NC_FLOAT, 2, DimNames2);
     ncFile.DefVar("analog_dates", NC_FLOAT, 2, DimNames2);
+    ncFile.DefVarDeflate("analog_dates");
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
