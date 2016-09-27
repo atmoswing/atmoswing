@@ -55,6 +55,8 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
     VArray1DFloat targetValues = anaValues.GetTargetValues();
     Array2DFloat analogsCriteria = anaValues.GetAnalogsCriteria();
     VArray2DFloat analogsValues = anaValues.GetAnalogsValues();
+    wxASSERT(timeTargetSelection.size()>0);
+    wxASSERT(analogsValues.size()>0);
     int timeTargetSelectionLength = anaValues.GetTargetDatesLength();
     int analogsNbDates = analogsValues[0].cols();
     int stationsNb = targetValues.size();
@@ -85,8 +87,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
                         //finalForecastScores(i_targtime) = forecastScore->Assess(targetValues(i_targtime), analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
                     } else {
                         vectForecastScores[i_st](i_targtime) = forecastScore->Assess(targetValues[i_st](i_targtime),
-                                                                                     analogsValues[i_st].row(
-                                                                                             i_targtime),
+                                                                                     analogsValues[i_st].row(i_targtime),
                                                                                      params.GetForecastScoreAnalogsNumber());
                     }
                 } else {

@@ -33,23 +33,25 @@
 #include <wx/tokenzr.h>
 
 asResultsAnalogsForecast::asResultsAnalogsForecast()
-        : asResults()
+        : asResults(),
+          m_methodId(wxEmptyString),
+          m_methodIdDisplay(wxEmptyString),
+          m_specificTag(wxEmptyString),
+          m_specificTagDisplay(wxEmptyString),
+          m_description(wxEmptyString),
+          m_predictandParameter(asDataPredictand::Precipitation),
+          m_predictandTemporalResolution(asDataPredictand::Daily),
+          m_predictandSpatialAggregation(asDataPredictand::Station),
+          m_predictandDatasetId(wxEmptyString),
+          m_predictandDatabase(wxEmptyString),
+          m_forecastsDirectory(wxEmptyString),
+          m_hasReferenceValues(false),
+          m_leadTimeOrigin(0.0)
 {
-    m_filePath = wxEmptyString;
-    m_hasReferenceValues = false;
-    m_leadTimeOrigin = 0.0;
-
-    // Default values for former versions
-    m_predictandParameter = asDataPredictand::Precipitation;
-    m_predictandTemporalResolution = asDataPredictand::Daily;
-    m_predictandSpatialAggregation = asDataPredictand::Station;
-    m_predictandDatasetId = wxEmptyString;
-    m_predictandDatabase = wxEmptyString;
 }
 
 asResultsAnalogsForecast::~asResultsAnalogsForecast()
 {
-    //dtor
 }
 
 void asResultsAnalogsForecast::Init(asParametersForecast &params, double leadTimeOrigin)
@@ -119,7 +121,7 @@ void asResultsAnalogsForecast::BuildFileName()
     m_filePath.Append(filename);
 }
 
-bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
+bool asResultsAnalogsForecast::Save()
 {
     wxASSERT(!m_filePath.IsEmpty());
     wxASSERT(m_targetDates.size() > 0);
@@ -143,14 +145,6 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
     wxString message = _("Saving forecast file: ") + m_filePath;
     asLogMessage(message);
 
-    // Get the file path
-    wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty()) {
-        ResultsFile = m_filePath;
-    } else {
-        ResultsFile = AlternateFilePath;
-    }
-
     // Get the elements size
     size_t Nleadtime = m_targetDates.size();
     size_t Nanalogstot = m_analogsNb.sum();
@@ -160,7 +154,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -325,13 +319,8 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
     return true;
 }
 
-bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
+bool asResultsAnalogsForecast::Load()
 {
-    // Get the file path
-    if (!AlternateFilePath.IsEmpty()) {
-        m_filePath = AlternateFilePath;
-    }
-
     // If we don't want to save or the file doesn't exist
     if (!Exists())
         return false;

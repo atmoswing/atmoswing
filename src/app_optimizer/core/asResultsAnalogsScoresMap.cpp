@@ -65,8 +65,7 @@ void asResultsAnalogsScoresMap::Init(asParametersScoring &params)
 void asResultsAnalogsScoresMap::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
-                                           asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     m_filePath.Append(DS);
     m_filePath.Append("RelevanceMap");
@@ -119,28 +118,20 @@ bool asResultsAnalogsScoresMap::MakeMap()
     return true;
 }
 
-bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params, const wxString &AlternateFilePath)
+bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params)
 {
     // Build the map (spatialize the data)
     MakeMap();
 
-    // Get the file path
-    wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty()) {
-        ResultsFile = m_filePath;
-    } else {
-        ResultsFile = AlternateFilePath;
-    }
-
     // Get the elements size
-    size_t Nlon = m_mapLon.size();
-    size_t Nlat = m_mapLat.size();
-    size_t Nlevel = m_mapLevel.size();
+    size_t Nlon = (size_t)m_mapLon.size();
+    size_t Nlat = (size_t)m_mapLat.size();
+    size_t Nlevel = (size_t)m_mapLevel.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;

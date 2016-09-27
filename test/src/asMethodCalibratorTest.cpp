@@ -216,21 +216,6 @@ TEST(Ref1ProcessingMethodCuda)
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int)asCUDA);
 
-    // Reset intermediate results option
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
-
     Ref1("parameters_calibration_R1_full.xml", false);
 }
 #endif
@@ -241,21 +226,6 @@ TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebra)
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
     pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
-
-    // Reset intermediate results option
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -1300,24 +1270,42 @@ void Ref2SavingIntermediateResults()
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates1, params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
+        anaDates1.Save();
+        ASSERT_TRUE(asFile::Exists(anaDates1.GetFilePath()));
         // Reload
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates2, params, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
+        anaDates2.Init(params);
+        ASSERT_TRUE(anaDates2.Load());
+        ASSERT_TRUE(anaDates2.GetTargetDatesLength()>0);
         step++;
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates1, params, anaDates2, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
+        anaSubDates1.Save();
+        ASSERT_TRUE(asFile::Exists(anaSubDates1.GetFilePath()));
         // Reload
-        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates2, params, anaDates2, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
+        anaSubDates2.Init(params);
+        anaSubDates2.SetCurrentStep(1);
+        ASSERT_TRUE(anaSubDates2.Load());
+        ASSERT_TRUE(anaSubDates2.GetTargetDatesLength()>0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues1, params, anaSubDates2, step));
+        anaValues1.Save();
+        wxLogError(anaValues1.GetFilePath());
+        ASSERT_TRUE(asFile::Exists(anaValues1.GetFilePath()));
         // Reload
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues2, params, anaSubDates2, step));
+        anaValues2.Init(params);
+        anaValues2.SetCurrentStep(1);
+        ASSERT_TRUE(anaValues2.Load());
+        ASSERT_TRUE(anaValues2.GetTargetDatesLength()>0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS1, params, anaValues2, step));
+        anaScoresCRPS1.Save();
+        ASSERT_TRUE(asFile::Exists(anaScoresCRPS1.GetFilePath()));
         // Reload
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS2, params, anaValues2, step));
+        anaScoresCRPS2.Init(params);
+        anaScoresCRPS2.SetCurrentStep(1);
+        ASSERT_TRUE(anaScoresCRPS2.Load());
+        ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size()>0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS2, step));
     } catch (asException &e) {
@@ -1415,37 +1403,9 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
     pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
 
-    pConfig->Write("/Paths/IntermediateResultsDir", tmpDir);
-
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", true);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", true);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", true);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", true);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", true);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", true);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", true);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", true);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", true);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", true);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", true);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", true);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", true);
+    pConfig->Write("/Paths/OptimizerResultsDir", tmpDir);
 
     Ref2SavingIntermediateResults();
-
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep1", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep2", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep3", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogDatesStep4", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveAnalogValues", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveForecastScores", false);
-    pConfig->Write("/Optimizer/IntermediateResults/SaveFinalForecastScore", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep1", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep2", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep3", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogDatesStep4", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadAnalogValues", false);
-    pConfig->Write("/Optimizer/IntermediateResults/LoadForecastScores", false);
 
     wxDir::Remove(tmpDir, wxPATH_RMDIR_RECURSIVE);
 }
