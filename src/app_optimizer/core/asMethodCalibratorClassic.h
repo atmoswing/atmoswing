@@ -79,6 +79,34 @@ private:
                                   asResultsParametersArray &resultsTested, int i_step, const ParamExploration &explo);
 
     bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int i_step);
+
+    void GetSpatialAxes(const asParametersCalibration &params, int i_step, const ParamExploration &explo,
+                        Array1DDouble &xAxis, Array1DDouble &yAxis) const;
+
+    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &xAxis,
+                  int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &yAxis,
+                   int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &xAxis,
+                  int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &yAxis,
+                   int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void WidenEast(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                   int multipleFactor = 1) const;
+
+    void WidenNorth(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                    int multipleFactor = 1) const;
+
+    void ReduceEast(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                    int multipleFactor = 1) const;
+
+    void ReduceNorth(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                     int multipleFactor = 1) const;
+
 };
 
 #endif // ASMETHODCALIBRATORCLASSIC_H
