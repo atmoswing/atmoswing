@@ -64,12 +64,15 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
     }
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin, double Xmax)
+Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep)
 {
     Array1DDouble axis;
 
-    // If empty, set Regular.
-    if (type.IsSameAs("GaussianT62", false)) {
+    if (type.IsSameAs("Regular", false)) {
+        wxASSERT(Xstep > 0);
+        int ni = (int) asTools::Round(360 / Xstep);
+        axis = Array1DDouble::LinSpaced(ni * 3 + 1, -360, 720);
+    } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT62);
     } else if (type.IsSameAs("GaussianT382", false)) {
         asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT382);
@@ -89,12 +92,15 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin
     return axis;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax)
+Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep)
 {
     Array1DDouble axis;
 
-    // If empty, set Regular.
-    if (type.IsSameAs("GaussianT62", false)) {
+    if (type.IsSameAs("Regular", false)) {
+        wxASSERT(Ystep > 0);
+        int ni = (int) asTools::Round(180 / Ystep);
+        axis = Array1DDouble::LinSpaced(ni + 1, -90, 90);
+    } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT62);
     } else if (type.IsSameAs("GaussianT382", false)) {
         asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT382);

@@ -316,30 +316,10 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
                                                const asMethodCalibrator::ParamExploration &explo, Array1DDouble &xAxis,
                                                Array1DDouble &yAxis) const
 {
-    int areaXptnNb = explo.xPtsNbEnd;
-    int areaYptnNb = explo.yPtsNbEnd;
-
-    asGeoAreaCompositeGrid *geoArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, 0),
-                                                                          explo.xMinStart, explo.xPtsNbEnd, 0,
-                                                                          explo.yMinStart, explo.yPtsNbEnd, 0);
-
-    while (geoArea->GetXmax() < explo.xMinEnd) {
-        wxDELETE(geoArea);
-        areaXptnNb++;
-        geoArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, 0), explo.xMinStart,
-                                                      areaXptnNb, 0, explo.yMinStart, areaYptnNb, 0);
-    }
-    while (geoArea->GetYmax() < explo.yMinEnd) {
-        wxDELETE(geoArea);
-        areaYptnNb++;
-        geoArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, 0), explo.xMinStart,
-                                                      areaXptnNb, 0, explo.yMinStart, areaYptnNb, 0);
-    }
-
-    xAxis= geoArea->GetXaxis();
-    yAxis= geoArea->GetYaxis();
-
-    wxDELETE(geoArea);
+    xAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(i_step, 0), explo.xMinStart, explo.xMinEnd,
+                                             params.GetPredictorXstep(i_step, 0));
+    yAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(i_step, 0), explo.yMinStart, explo.yMinEnd,
+                                             params.GetPredictorYstep(i_step, 0));
 }
 
 void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int i_step,
