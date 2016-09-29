@@ -183,7 +183,8 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         ClearTemp();
 
         // Validate
-        Validate();
+        SaveDetails(m_parameters[0]);
+        Validate(m_parameters[0]);
 
         // Keep the best parameters set
         SetBestParameters(resultsBest);

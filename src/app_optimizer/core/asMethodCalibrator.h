@@ -116,7 +116,9 @@ public:
 
     bool Manager();
 
-    virtual bool Validate(const int bestscorerow = 0);
+    bool SaveDetails(asParametersCalibration &params);
+
+    virtual bool Validate(asParametersCalibration &params);
 
     void SetScore(float valCalib)
     {

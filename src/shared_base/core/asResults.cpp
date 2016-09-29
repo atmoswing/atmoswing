@@ -39,6 +39,7 @@ asResults::asResults()
           m_fileVersionMinor(8),
           m_currentStep(0),
           m_dateProcessed(0),
+          m_subFolder(wxEmptyString),
           m_filePath(wxEmptyString)
 {
 }

@@ -55,6 +55,10 @@ void asResultsAnalogsDates::BuildFileName()
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
+    if (!m_subFolder.IsEmpty()) {
+        m_filePath.Append(DS);
+        m_filePath.Append(m_subFolder);
+    }
     m_filePath.Append(DS);
     m_filePath.Append(wxString::Format("AnalogsDates_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
     m_filePath.Append(".nc");

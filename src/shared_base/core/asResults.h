@@ -75,6 +75,11 @@ public:
         m_filePath = val;
     }
 
+    void SetSubFolder(const wxString &val)
+    {
+        m_subFolder = val;
+    }
+
     bool Exists() const;
 
     virtual bool Save();
@@ -87,6 +92,7 @@ protected:
     int m_currentStep;
     VectorInt m_predictandStationIds;
     double m_dateProcessed;
+    wxString m_subFolder;
     wxString m_filePath;
 
     bool DefTargetDatesAttributes(asFileNetcdf &ncFile) const;

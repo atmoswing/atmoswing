@@ -67,6 +67,10 @@ void asResultsAnalogsScoresMap::BuildFileName()
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
+    if (!m_subFolder.IsEmpty()) {
+        m_filePath.Append(DS);
+        m_filePath.Append(m_subFolder);
+    }
     m_filePath.Append(DS);
     m_filePath.Append("RelevanceMap");
     m_filePath.Append(DS);
