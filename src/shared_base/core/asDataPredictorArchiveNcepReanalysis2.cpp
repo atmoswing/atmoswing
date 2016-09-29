@@ -137,30 +137,37 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
 
     } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gaussian_grid", false) ||
             m_product.IsSameAs("gauss", false) || m_product.IsSameAs("flux", false)) {
-        m_fileStructure.hasLevelDimension = true;
-        m_fileStructure.singleLevel = true;
+        m_fileStructure.hasLevelDimension = false;
         m_subFolder = "gaussian_grid";
         m_xAxisStep = NaNFloat;
         m_yAxisStep = NaNFloat;
         if (m_dataId.IsSameAs("air2m", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature 2m";
             m_fileNamePattern = "air.2m.gauss.%d.nc";
             m_fileVariableName = "air";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("shum2m", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = SpecificHumidity;
             m_parameterName = "Specific humidity at 2m";
             m_fileNamePattern = "shum.2m.gauss.%d.nc";
             m_fileVariableName = "shum";
             m_unit = kg_kg;
         } else if (m_dataId.IsSameAs("tmax2m", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = AirTemperature;
             m_parameterName = "Maximum temperature at 2m";
             m_fileNamePattern = "tmax.2m.gauss.%d.nc";
             m_fileVariableName = "tmax";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("tmin2m", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = AirTemperature;
             m_parameterName = "Minimum temperature at 2m";
             m_fileNamePattern = "tmin.2m.gauss.%d.nc";
@@ -173,36 +180,48 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
             m_fileVariableName = "skt";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("soilw0-10", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = SoilMoisture;
             m_parameterName = "Soil moisture (0-10cm)";
             m_fileNamePattern = "soilw.0-10cm.gauss.%d.nc";
             m_fileVariableName = "soilw";
             m_unit = fraction;
         } else if (m_dataId.IsSameAs("soilw10-200", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = SoilMoisture;
             m_parameterName = "Soil moisture (10-200cm)";
             m_fileNamePattern = "soilw.10-200cm.gauss.%d.nc";
             m_fileVariableName = "soilw";
             m_unit = fraction;
         } else if (m_dataId.IsSameAs("tmp0-10", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = SoilTemperature;
             m_parameterName = "Temperature of 0-10cm layer";
             m_fileNamePattern = "tmp.0-10cm.gauss.%d.nc";
             m_fileVariableName = "tmp";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("tmp10-200", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = SoilTemperature;
             m_parameterName = "Temperature of 10-200cm layer";
             m_fileNamePattern = "tmp.10-200cm.gauss.%d.nc";
             m_fileVariableName = "tmp";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("uwnd10m", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = Uwind;
             m_parameterName = "U-wind at 10 m";
             m_fileNamePattern = "uwnd.10m.gauss.%d.nc";
             m_fileVariableName = "uwnd";
             m_unit = m_s;
         } else if (m_dataId.IsSameAs("vwnd10m", false)) {
+            m_fileStructure.hasLevelDimension = true;
+            m_fileStructure.singleLevel = true;
             m_parameter = Vwind;
             m_parameterName = "V-wind at 10 m";
             m_fileNamePattern = "vwnd.10m.gauss.%d.nc";
