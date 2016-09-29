@@ -224,8 +224,8 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         }
 
         // Validate
-        m_parameters.push_back(params);
-        Validate();
+        SaveDetails(params);
+        Validate(params);
 
         // Keep the best parameters set
         results_all.Add(params, anaScoreFinal.GetForecastScore(), m_scoreValid);

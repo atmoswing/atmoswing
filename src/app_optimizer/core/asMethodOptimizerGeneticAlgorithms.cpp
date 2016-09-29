@@ -121,7 +121,8 @@ bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersAr
 
     if (bestscorerow != 0) {
         // Re-validate
-        Validate(&m_parameters[bestscorerow]);
+        SaveDetails(m_parameters[bestscorerow]);
+        Validate(m_parameters[bestscorerow]);
     }
 
     // Sort according to the level and the observation time
@@ -502,7 +503,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     asLogState(_("Optimization over."));
 
     // Validate
-    Validate(&m_parameters[0]);
+    SaveDetails(m_parameters[0]);
+    Validate(m_parameters[0]);
 
     // Print parameters in a text file
     SetSelectedParameters(results_final_population);

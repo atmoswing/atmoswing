@@ -300,7 +300,8 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
 
     if (bestScoreRow != 0) {
         // Re-validate
-        Validate(bestScoreRow);
+        SaveDetails(m_parameters[bestScoreRow]);
+        Validate(m_parameters[bestScoreRow]);
     }
 
     results.Add(m_parameters[bestScoreRow], m_scoresCalib[bestScoreRow], m_scoreValid);
@@ -1872,7 +1873,49 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
     return true;
 }
 
-bool asMethodCalibrator::Validate(const int bestScoreRow)
+bool asMethodCalibrator::SaveDetails(asParametersCalibration &params)
+{
+    asResultsAnalogsDates anaDatesPrevious;
+    asResultsAnalogsDates anaDates;
+    asResultsAnalogsValues anaValues;
+    asResultsAnalogsForecastScores anaScores;
+    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+
+    // Process every step one after the other
+    int stepsNb = params.GetStepsNb();
+    for (int i_step = 0; i_step < stepsNb; i_step++) {
+        bool containsNaNs = false;
+        if (i_step == 0) {
+            if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+                return false;
+        } else {
+            anaDatesPrevious = anaDates;
+            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+                return false;
+        }
+        if (containsNaNs) {
+            asLogError(_("The dates selection contains NaNs"));
+            return false;
+        }
+    }
+    if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+        return false;
+    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+        return false;
+    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+        return false;
+
+    anaDates.SetSubFolder("calibration");
+    anaDates.Save();
+    anaValues.SetSubFolder("calibration");
+    anaValues.Save();
+    anaScores.SetSubFolder("calibration");
+    anaScores.Save();
+
+    return true;
+}
+
+bool asMethodCalibrator::Validate(asParametersCalibration &params)
 {
     bool skipValidation = false;
     wxFileConfig::Get()->Read("/Optimizer/SkipValidation", &skipValidation, false);
@@ -1881,15 +1924,7 @@ bool asMethodCalibrator::Validate(const int bestScoreRow)
         return true;
     }
 
-    if (m_parameters.size() == 0) {
-        asLogError("The parameters array is empty in the validation procedure.");
-        return false;
-    } else if (m_parameters.size() < unsigned(bestScoreRow + 1)) {
-        asLogError("Trying to access parameters outside the array in the validation procedure.");
-        return false;
-    }
-
-    if (!m_parameters[bestScoreRow].HasValidationPeriod()) {
+    if (!params.HasValidationPeriod()) {
         asLogWarning("The parameters have no validation period !");
         return false;
     }
@@ -1903,15 +1938,15 @@ bool asMethodCalibrator::Validate(const int bestScoreRow)
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
     // Process every step one after the other
-    int stepsNb = m_parameters[bestScoreRow].GetStepsNb();
+    int stepsNb = params.GetStepsNb();
     for (int i_step = 0; i_step < stepsNb; i_step++) {
         bool containsNaNs = false;
         if (i_step == 0) {
-            if (!GetAnalogsDates(anaDates, m_parameters[bestScoreRow], i_step, containsNaNs))
+            if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
                 return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, m_parameters[bestScoreRow], anaDatesPrevious, i_step, containsNaNs))
+            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
                 return false;
         }
         if (containsNaNs) {
@@ -1919,15 +1954,18 @@ bool asMethodCalibrator::Validate(const int bestScoreRow)
             return false;
         }
     }
-    if (!GetAnalogsValues(anaValues, m_parameters[bestScoreRow], anaDates, stepsNb - 1))
+    if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScores(anaScores, m_parameters[bestScoreRow], anaValues, stepsNb - 1))
+    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parameters[bestScoreRow], anaScores, stepsNb - 1))
+    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
         return false;
 
+    anaDates.SetSubFolder("validation");
     anaDates.Save();
+    anaValues.SetSubFolder("validation");
     anaValues.Save();
+    anaScores.SetSubFolder("validation");
     anaScores.Save();
 
     m_scoreValid = anaScoreFinal.GetForecastScore();

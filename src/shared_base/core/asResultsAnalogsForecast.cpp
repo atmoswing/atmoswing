@@ -102,6 +102,10 @@ void asResultsAnalogsForecast::BuildFileName()
     // Base directory
     m_filePath = m_forecastsDirectory;
     m_filePath.Append(DS);
+    if (!m_subFolder.IsEmpty()) {
+        m_filePath.Append(DS);
+        m_filePath.Append(m_subFolder);
+    }
 
     // Directory
     wxString dirstructure = "YYYY";

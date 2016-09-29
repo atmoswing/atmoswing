@@ -29,7 +29,9 @@ protected:
         return false;
     }
 
-    bool Validate(asParametersOptimization *params);
+    bool SaveDetails(asParametersOptimization &params);
+
+    bool Validate(asParametersOptimization &params);
 
     void IncrementIterator()
     {
