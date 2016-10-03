@@ -25,7 +25,7 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#include "asDataPredictorArchiveNcepCfsr.h"
+#include "asDataPredictorArchiveNcepCfsrSubset.h"
 #include "asTypeDefs.h"
 
 #include <asTimeArray.h>
@@ -33,14 +33,14 @@
 #include <asFileNetcdf.h>
 
 
-asDataPredictorArchiveNcepCfsr::asDataPredictorArchiveNcepCfsr(const wxString &dataId)
+asDataPredictorArchiveNcepCfsrSubset::asDataPredictorArchiveNcepCfsrSubset(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "NCEP_CFSR";
+    m_datasetId = "NCEP_CFSR_subset";
     m_originalProvider = "NCEP";
-    m_datasetName = "CFSR";
+    m_datasetName = "CFSR Subset";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
     m_timeZoneHours = 0;
@@ -50,16 +50,16 @@ asDataPredictorArchiveNcepCfsr::asDataPredictorArchiveNcepCfsr(const wxString &d
     m_yAxisShift = 0;
 }
 
-asDataPredictorArchiveNcepCfsr::~asDataPredictorArchiveNcepCfsr()
+asDataPredictorArchiveNcepCfsrSubset::~asDataPredictorArchiveNcepCfsrSubset()
 {
 
 }
 
-bool asDataPredictorArchiveNcepCfsr::Init()
+bool asDataPredictorArchiveNcepCfsrSubset::Init()
 {
-    CheckLevelTypeIsDefined();
+    asThrowException("CFSR Subset not implemented yet.");
 
-    // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
+    CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
@@ -139,7 +139,7 @@ bool asDataPredictorArchiveNcepCfsr::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
+VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
 {
     VectorString files;
     Array1DDouble tArray = timeArray.GetTimeArray();
@@ -153,7 +153,7 @@ VectorString asDataPredictorArchiveNcepCfsr::GetListOfFiles(asTimeArray &timeArr
     return files;
 }
 
-bool asDataPredictorArchiveNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+bool asDataPredictorArchiveNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
