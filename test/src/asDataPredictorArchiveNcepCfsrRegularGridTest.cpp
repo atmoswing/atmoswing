@@ -32,7 +32,7 @@
 #include "gtest/gtest.h"
 
 
-TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadEasy)
+TEST(DataPredictorArchiveNcepCfsrRegular, LoadEasy)
 {
     double Xmin = 10;
     double Xwidth = 5;
@@ -49,9 +49,9 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadEasy)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep-cfsrv2/");
+    predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR_v2", "press/hgt@iso",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
@@ -114,7 +114,7 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadComposite)
+TEST(DataPredictorArchiveNcepCfsrRegular, LoadComposite)
 {
     double Xmin = -3;
     double Xwidth = 5;
@@ -131,9 +131,9 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadComposite)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep-cfsrv2/");
+    predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR_v2", "press/hgt@iso",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
@@ -180,7 +180,7 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderLeft)
+TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeft)
 {
     double Xmin = 0;
     double Xwidth = 5;
@@ -197,9 +197,9 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderLeft)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep-cfsrv2/");
+    predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR_v2", "press/hgt@iso",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
@@ -242,7 +242,7 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderLeftOn720)
+TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeftOn720)
 {
     double Xmin = 360;
     double Xwidth = 5;
@@ -259,9 +259,9 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderLeftOn720)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep-cfsrv2/");
+    predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR_v2", "press/hgt@iso",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
@@ -304,7 +304,7 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderRight)
+TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderRight)
 {
     double Xmin = -3;
     double Xwidth = 3;
@@ -321,9 +321,9 @@ TEST(DataPredictorArchiveNcepCfsrV2Regular, LoadBorderRight)
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
-    predictorDataDir.Append("/files/data-ncep-cfsrv2/");
+    predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR_v2", "press/hgt@iso",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));

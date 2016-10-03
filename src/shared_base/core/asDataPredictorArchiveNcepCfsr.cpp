@@ -25,7 +25,7 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#include "asDataPredictorArchiveNcepCfsr2.h"
+#include "asDataPredictorArchiveNcepCfsr.h"
 #include "asTypeDefs.h"
 
 #include <asTimeArray.h>
@@ -33,14 +33,14 @@
 #include <asFileNetcdf.h>
 
 
-asDataPredictorArchiveNcepCfsr2::asDataPredictorArchiveNcepCfsr2(const wxString &dataId)
+asDataPredictorArchiveNcepCfsr::asDataPredictorArchiveNcepCfsr(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "NCEP_CFSR_v2";
+    m_datasetId = "NCEP_CFSR";
     m_originalProvider = "NCEP";
-    m_datasetName = "CFSR 2";
+    m_datasetName = "CFSR";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
     m_timeZoneHours = 0;
@@ -50,12 +50,12 @@ asDataPredictorArchiveNcepCfsr2::asDataPredictorArchiveNcepCfsr2(const wxString 
     m_yAxisShift = 0;
 }
 
-asDataPredictorArchiveNcepCfsr2::~asDataPredictorArchiveNcepCfsr2()
+asDataPredictorArchiveNcepCfsr::~asDataPredictorArchiveNcepCfsr()
 {
 
 }
 
-bool asDataPredictorArchiveNcepCfsr2::Init()
+bool asDataPredictorArchiveNcepCfsr::Init()
 {
     CheckLevelTypeIsDefined();
 
@@ -64,7 +64,7 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false)  ||
-            m_product.IsSameAs("pgb", false)) {
+        m_product.IsSameAs("pgb", false)) {
         m_fileStructure.hasLevelDimension = true;
         m_fileStructure.singleLevel = true;
         m_subFolder = "pgbh";
@@ -106,8 +106,8 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
         m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
 
     } else if (m_product.IsSameAs("isentropic_level", false) || m_product.IsSameAs("isentropic", false) ||
-            m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
-            asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
+               m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
+        asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
 
     } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
                m_product.IsSameAs("flx", false)) {
@@ -120,14 +120,14 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_gribCode[2] == asNOT_FOUND) {
         asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                 m_dataId, m_datasetName));
+                                    m_dataId, m_datasetName));
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
         asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                 m_dataId, m_datasetName));
+                                    m_dataId, m_datasetName));
         return false;
     }
 
@@ -139,7 +139,7 @@ bool asDataPredictorArchiveNcepCfsr2::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepCfsr2::GetListOfFiles(asTimeArray &timeArray) const
+VectorString asDataPredictorArchiveNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
 {
     VectorString files;
     Array1DDouble tArray = timeArray.GetTimeArray();
@@ -153,7 +153,7 @@ VectorString asDataPredictorArchiveNcepCfsr2::GetListOfFiles(asTimeArray &timeAr
     return files;
 }
 
-bool asDataPredictorArchiveNcepCfsr2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+bool asDataPredictorArchiveNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
