@@ -33,13 +33,13 @@
 
 class asGeoArea;
 
-class asDataPredictorArchiveNcepCfsr2
+class asDataPredictorArchiveNcepCfsr
         : public asDataPredictorArchive
 {
 public:
-    asDataPredictorArchiveNcepCfsr2(const wxString &dataId);
+    asDataPredictorArchiveNcepCfsr(const wxString &dataId);
 
-    virtual ~asDataPredictorArchiveNcepCfsr2();
+    virtual ~asDataPredictorArchiveNcepCfsr();
 
     bool Init();
 

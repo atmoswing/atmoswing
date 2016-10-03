@@ -34,7 +34,8 @@
 #include <asDataPredictorArchiveNcepReanalysis1Subset.h>
 #include <asDataPredictorArchiveNcepReanalysis1Lthe.h>
 #include <asDataPredictorArchiveNcepReanalysis2.h>
-#include <asDataPredictorArchiveNcepCfsr2.h>
+#include <asDataPredictorArchiveNcepCfsr.h>
+#include <asDataPredictorArchiveNcepCfsrSubset.h>
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
 #include <asDataPredictorArchiveEcmwfEraInterim.h>
@@ -70,8 +71,10 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNcepReanalysis1Lthe(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
         predictor = new asDataPredictorArchiveNcepReanalysis2(dataId);
-    } else if (datasetId.IsSameAs("NCEP_CFSR_v2", false)) {
-        predictor = new asDataPredictorArchiveNcepCfsr2(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR", false)) {
+        predictor = new asDataPredictorArchiveNcepCfsr(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
+        predictor = new asDataPredictorArchiveNcepCfsrSubset(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
         predictor = new asDataPredictorArchiveEcmwfEraInterim(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_20C", false)) {
