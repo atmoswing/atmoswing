@@ -922,7 +922,9 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
         if (pLast - pArrStart < 0) {
             pLast = (T *) pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *) pArrEnd;
+            pLast = (T *) pArrEnd - 1;
+        } else if (pLast - pArrEnd == 0) {
+            pLast -= 1;
         }
 
         // If the value was not found, return closest value inside tolerance
@@ -976,10 +978,13 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *) pArrStart;
+            pFirst = (T *) pArrStart + 1;
         } else if (pFirst - pArrEnd > 0) {
             pFirst = (T *) pArrEnd;
+        } else if (pFirst - pArrStart == 0) {
+            pFirst += 1;
         }
+
 
         // If the value was not found, return closest value inside tolerance
         if (std::abs(targetvalue - *pFirst) <= std::abs(targetvalue - *(pFirst - 1))) {
@@ -1089,7 +1094,9 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         if (pLast - pArrStart < 0) {
             pLast = (T *) pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *) pArrEnd;
+            pLast = (T *) pArrEnd - 1;
+        } else if (pLast - pArrEnd == 0) {
+            pLast -= 1;
         }
 
         // If the value was not found, return closest value
@@ -1124,9 +1131,11 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *) pArrStart;
+            pFirst = (T *) pArrStart + 1;
         } else if (pFirst - pArrEnd > 0) {
             pFirst = (T *) pArrEnd;
+        } else if (pFirst - pArrStart == 0) {
+            pFirst += 1;
         }
 
         // If the value was not found, return closest value

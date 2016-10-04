@@ -81,15 +81,17 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin
         asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
     }
 
+    wxASSERT(axis.size() > 0);
+
     int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Xmin);
     int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Xmax);
 
     wxASSERT(start >= 0);
     wxASSERT(end >= 0);
+    wxASSERT(end >= start);
+    wxASSERT(axis.size() > end - start + 1);
 
-    axis = axis.segment(start, end - start + 1);
-
-    return axis;
+    return axis.segment(start, end - start + 1);
 }
 
 Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep)
@@ -109,15 +111,17 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin
         asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
     }
 
+    wxASSERT(axis.size() > 0);
+
     int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Ymin);
     int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Ymax);
 
     wxASSERT(start >= 0);
     wxASSERT(end >= 0);
+    wxASSERT(end >= start);
+    wxASSERT(axis.size() > end - start + 1);
 
-    axis = axis.segment(start, end - start + 1);
-
-    return axis;
+    return axis.segment(start, end - start + 1);
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
