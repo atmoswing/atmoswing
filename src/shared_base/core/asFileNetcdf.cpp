@@ -180,8 +180,7 @@ void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &
     NDims = (int) dimNames.size();
 
     for (int i = 0; i < NDims; i++) {
-        const char *dimNamesChar = dimNames[i].data();
-        m_status = nc_inq_dimid(m_fileId, dimNamesChar, &dimId);
+        m_status = nc_inq_dimid(m_fileId, dimNames[i].data(), &dimId);
         if (m_status)
             HandleErrorNetcdf();
         dimIds.push_back(dimId);
@@ -926,7 +925,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
         // Check the given type
         nc_type nctype = m_struct.atts[attId].type;
         if (nctype != NC_CHAR) {
-            wxDELETE(text);
+            wxDELETEA(text);
             asThrowException(
                     wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
                                      attName, (int) nctype, (int) NC_CHAR));
@@ -944,7 +943,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
         wxASSERT(!attrValue.IsEmpty());
         attrValue.Remove(len); // Remove the stuff after the end of the string
         wxASSERT(!attrValue.IsEmpty());
-        wxDELETE(text);
+        wxDELETEA(text);
 
     } else { // Variable attribute
         int varId = GetVarId(varName);
@@ -961,7 +960,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
         // Check the given type
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
         if (nctype != NC_CHAR) {
-            wxDELETE(text);
+            wxDELETEA(text);
             asThrowException(
                     wxString::Format(_("The attribute (%s.%s) type (%d) in file doesn't match the desired type (%d)."),
                                      varName, attName, (int) nctype, (int) NC_CHAR));
@@ -979,7 +978,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
         wxASSERT(!attrValue.IsEmpty());
         attrValue.Remove(len); // Remove the stuff after the end of the string
         wxASSERT(!attrValue.IsEmpty());
-        wxDELETE(text);
+        wxDELETEA(text);
     }
 
     return attrValue;

@@ -292,7 +292,7 @@ void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &
     params.SetAnalogsNumber(i_step, initalAnalogsNb);
     // And the next ones
     if (m_proceedSequentially) {
-        for (int i = i_step; i < params.GetPredictorsNb(i_step); i++) {
+        for (int i = i_step; i < params.GetStepsNb(); i++) {
             params.SetAnalogsNumber(i, initalAnalogsNb);
         }
     }
