@@ -36,6 +36,7 @@
 asDataPredictorArchiveNcepCfsrSubset::asDataPredictorArchiveNcepCfsrSubset(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
+    // Downloaded from http://rda.ucar.edu/datasets/ds093.0/index.html#!cgi-bin/datasets/getSubset?dsnum=093.0&action=customize&_da=y
     // Set the basic properties.
     m_initialized = false;
     m_datasetId = "NCEP_CFSR_subset";
@@ -48,6 +49,10 @@ asDataPredictorArchiveNcepCfsrSubset::asDataPredictorArchiveNcepCfsrSubset(const
     m_firstTimeStepHours = NaNDouble;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
+    m_fileStructure.dimLatName = "lat";
+    m_fileStructure.dimLonName = "lon";
+    m_fileStructure.dimTimeName = "time";
+    m_fileStructure.dimLevelName = "level0";
 }
 
 asDataPredictorArchiveNcepCfsrSubset::~asDataPredictorArchiveNcepCfsrSubset()
@@ -57,61 +62,80 @@ asDataPredictorArchiveNcepCfsrSubset::~asDataPredictorArchiveNcepCfsrSubset()
 
 bool asDataPredictorArchiveNcepCfsrSubset::Init()
 {
-    asThrowException("CFSR Subset not implemented yet.");
-
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
-        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false)  ||
-        m_product.IsSameAs("pgb", false)) {
+        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
+        m_product.IsSameAs("pgb", false) || m_product.IsSameAs("pgbhnl", false)) {
         m_fileStructure.hasLevelDimension = true;
-        m_fileStructure.singleLevel = true;
-        m_subFolder = "pgbh";
+        m_subFolder = "pgbhnl";
         m_xAxisStep = 0.5;
         m_yAxisStep = 0.5;
-        if (m_dataId.IsSameAs("hgt@iso", false)) {
+        if (m_dataId.IsSameAs("hgt", false)) {
             m_parameter = GeopotentialHeight;
-            int arr[] = {0, 3, 5, 100};
-            AssignGribCode(arr);
-            m_parameterName = "Geopotential height @ Isobaric surface";
+            m_parameterName = "Geopotential height";
+            m_fileVariableName = "HGT_L100";
             m_unit = gpm;
-        } else if (m_dataId.IsSameAs("pwat@eal", false)) {
-            m_parameter = PrecipitableWater;
-            int arr[] = {0, 1, 3, 200};
-            AssignGribCode(arr);
-            m_parameterName = "Precipitable water @ Entire atmosphere layer";
-            m_unit = kg_m2;
-        } else if (m_dataId.IsSameAs("pres@msl", false)) {
+            m_subFolder.Append(DS + "hgt");
+        } else if (m_dataId.IsSameAs("gpa", false)) {
+            m_parameter = GeopotentialHeight;
+            m_parameterName = "Geopotential height anomaly";
+            m_fileVariableName = "GP_A_L100";
+            m_unit = gpm;
+            m_subFolder.Append(DS + "hgt");
+            m_fileStructure.dimLevelName = "level1";
+        } else if (m_dataId.IsSameAs("mslp", false)) {
             m_parameter = Pressure;
-            int arr[] = {0, 3, 0, 101};
-            AssignGribCode(arr);
-            m_parameterName = "Pressure @ Mean sea level";
+            m_parameterName = "Mean sea level pressure";
+            m_fileVariableName = "PRES_L101";
             m_unit = Pa;
-        } else if (m_dataId.IsSameAs("rh@iso", false)) {
+            m_subFolder.Append(DS + "mslp");
+            m_fileStructure.hasLevelDimension = false;
+        } else if (m_dataId.IsSameAs("pwat", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Precipitable water";
+            m_fileVariableName = "P_WAT_L200";
+            m_unit = kg_m2;
+            m_subFolder.Append(DS + "pwat");
+            m_fileStructure.hasLevelDimension = false;
+        } else if (m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
-            int arr[] = {0, 1, 1, 100};
-            AssignGribCode(arr);
-            m_parameterName = "Relative humidity @ Isobaric surface";
+            m_parameterName = "Relative humidity";
+            m_fileVariableName = "R_H_L100";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("tmp@iso", false)) {
+            m_subFolder.Append(DS + "rh");
+        } else if (m_dataId.IsSameAs("temp", false)) {
             m_parameter = AirTemperature;
-            int arr[] = {0, 0, 0, 100};
-            AssignGribCode(arr);
-            m_parameterName = "Temperature @ Isobaric surface";
+            m_parameterName = "Temperature";
+            m_fileVariableName = "TMP_L100";
             m_unit = degK;
+            m_subFolder.Append(DS + "temp");
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }
-        m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
+        m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2";
+
+    } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
+               m_product.IsSameAs("flx", false)) {
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "flxf06";
+        m_xAxisStep = NaNFloat;
+        m_yAxisStep = NaNFloat;
+        if (m_dataId.IsSameAs("prate", false)) {
+            m_parameter = PrecipitationRate;
+            m_parameterName = "Precipitation rate";
+            m_fileVariableName = "PRATE_L1_Avg_1";
+            m_unit = kg_m2_s;
+            m_subFolder.Append(DS + "prate");
+        } else {
+            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+        }
+        m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2";
 
     } else if (m_product.IsSameAs("isentropic_level", false) || m_product.IsSameAs("isentropic", false) ||
                m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
         asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
-
-    } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
-               m_product.IsSameAs("flx", false)) {
-        asThrowException(_("Surface fluxes grids for CFSR are not implemented yet."));
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
@@ -131,7 +155,7 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
         return false;
     }
 
-    wxASSERT(m_gribCode.size()==4);
+    wxASSERT(m_gribCode.size() == 4);
 
     // Set to initialized
     m_initialized = true;
@@ -142,19 +166,48 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
 VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
 {
     VectorString files;
-    Array1DDouble tArray = timeArray.GetTimeArray();
 
-    for (int i = 0; i < tArray.size(); i++) {
-        TimeStruct t = asTime::GetTimeStruct(tArray[i]);
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
-                                                                  t.month, t.day, t.year, t.month, t.day, t.hour));
+    double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), 1);
+    double fileEnd = fileStart + 4;
+
+    while (true) {
+        TimeStruct t1 = asTime::GetTimeStruct(fileStart);
+        TimeStruct t2 = asTime::GetTimeStruct(fileEnd);
+        files.push_back(GetFullDirectoryPath() +
+                        wxString::Format(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
+        fileStart = fileEnd + 1;
+        fileEnd = fileStart + 4;
+
+        // Have to be in the same month
+        if (asTime::GetMonth(fileStart) != asTime::GetMonth(fileEnd)) {
+            while (asTime::GetMonth(fileStart) != asTime::GetMonth(fileEnd)) {
+                fileEnd--;
+            }
+        }
+
+        // If following day is a 31st, it is also included
+        if (asTime::GetDay(fileEnd + 1) == 31) {
+            fileEnd++;
+        }
+
+        // Do not go beyond the requested time series
+        if (fileEnd > timeArray.GetEnd()) {
+            while (fileEnd > timeArray.GetEnd()) {
+                fileEnd--;
+            }
+        }
+
+        // Exit condition
+        if (fileStart >= timeArray.GetEnd()) {
+            break;
+        }
     }
 
     return files;
 }
 
 bool asDataPredictorArchiveNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                           asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
 }
