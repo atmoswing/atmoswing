@@ -219,7 +219,6 @@ wxString AtmoswingAppOptimizer::GetLocalPath()
 
 bool AtmoswingAppOptimizer::InitLog()
 {
-
     if (g_local) {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingOptimizer.log");
@@ -435,6 +434,9 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         wxFileConfig::Set(pConfig);
     }
 
+    // Initialize log
+    InitLog();
+
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
     if (parser.Found("log-level", &logLevelStr)) {
@@ -457,9 +459,6 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
         Log().SetLevel((int) logLevel);
     }
-
-    // Initialize log
-    InitLog();
 
     // Check for a calibration params file
     wxString threadsNb = wxEmptyString;
