@@ -189,14 +189,14 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
 {
     VectorString files;
 
-    for (int i_year = timeArray.GetFirstDayYear(); i_year <= timeArray.GetLastDayYear(); i_year++) {
+    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
         int firstMonth = 1;
         int lastMonth = 12;
-        if (i_year==timeArray.GetFirstDayYear()) {
-            firstMonth = timeArray.GetFirstDayMonth();
+        if (i_year== timeArray.GetStartingYear()) {
+            firstMonth = timeArray.GetStartingMonth();
         }
-        if (i_year==timeArray.GetLastDayYear()) {
-            lastMonth = timeArray.GetLastDayMonth();
+        if (i_year== timeArray.GetEndingYear()) {
+            lastMonth = timeArray.GetEndingMonth();
         }
 
         for (int i_month = firstMonth; i_month <= lastMonth; ++i_month) {

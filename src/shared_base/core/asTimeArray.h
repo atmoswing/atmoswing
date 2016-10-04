@@ -128,17 +128,22 @@ public:
         return m_start;
     }
 
-    int GetFirstDayYear() const
+    int GetStartingYear() const
     {
         return GetYear(m_start);
     }
 
-    int GetFirstDayMonth() const
+    int GetStartingMonth() const
     {
         return GetMonth(m_start);
     }
 
-    double GetFirstDayHour() const
+    int GetStartingDay() const
+    {
+        return GetDay(m_start);
+    }
+
+    double GetStartingHour() const
     {
         double fractpart, intpart;
         fractpart = modf(m_start, &intpart);
@@ -150,17 +155,22 @@ public:
         return m_end;
     }
 
-    int GetLastDayYear() const
+    int GetEndingYear() const
     {
         return GetYear(m_end);
     }
 
-    int GetLastDayMonth() const
+    int GetEndingMonth() const
     {
         return GetMonth(m_end);
     }
 
-    double GetLastDayHour() const
+    int GetEndingDay() const
+    {
+        return GetDay(m_end);
+    }
+
+    double GetEndingHour() const
     {
         double fractpart, intpart;
         fractpart = modf(m_end, &intpart);
