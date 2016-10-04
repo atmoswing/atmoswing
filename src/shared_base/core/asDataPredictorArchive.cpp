@@ -545,10 +545,10 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray) const
         asLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
-    fractpart = modf((timeArray.GetFirstDayHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
+    fractpart = modf((timeArray.GetStartingHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
     if (fractpart > 0.0000001) {
         asLogError(wxString::Format(_("The desired startDate (%gh) is not coherent with the data properties."),
-                                    timeArray.GetFirstDayHour()));
+                                    timeArray.GetStartingHour()));
         return false;
     }
 
