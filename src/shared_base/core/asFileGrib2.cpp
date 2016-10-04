@@ -83,7 +83,7 @@ bool asFileGrib2::OpenDataset()
 
     if (m_filtPtr == NULL) // Failed
     {
-        asLogError(_("The opening of the grib file failed."));
+        wxLogError(_("The opening of the grib file failed."));
         wxFAIL;
         return false;
     }
@@ -110,7 +110,7 @@ bool asFileGrib2::ParseStructure()
 
         // Reposition stream position indicator
         if (fseek(m_filtPtr, offset, SEEK_SET) != 0) {
-            asLogError(_("Grib file read error."));
+            wxLogError(_("Grib file read error."));
             return false;
         }
 
@@ -155,7 +155,7 @@ bool asFileGrib2::ParseStructure()
 
             // Grid Definition
             if (!CheckGridDefinition(gfld)) {
-                asLogError(_("Grid definition not allowed yet."));
+                wxLogError(_("Grid definition not allowed yet."));
                 return false;
             }
 
@@ -163,7 +163,7 @@ bool asFileGrib2::ParseStructure()
 
             // Product Definition
             if (!CheckProductDefinition(gfld)) {
-                asLogError(_("Product definition not allowed yet."));
+                wxLogError(_("Product definition not allowed yet."));
                 return false;
             }
 
@@ -181,7 +181,7 @@ bool asFileGrib2::ParseStructure()
     // Check unique time value
     for (int i = 0; i < m_times.size(); ++i) {
         if (m_times[i] != m_times[0]) {
-            asLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
+            wxLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
             return false;
         }
     }
@@ -205,7 +205,7 @@ void asFileGrib2::GetLevel(const gribfield *gfld)
 bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
 {
     if (gfld->ipdtnum != 0) {
-        asLogError(_("Only the Product Definition Template 4.0 is implemented so far."));
+        wxLogError(_("Only the Product Definition Template 4.0 is implemented so far."));
         return false;
     }
 
@@ -219,7 +219,7 @@ bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
 bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
 {
     if (gfld->igdtnum != 0) {
-        asLogError(_("Only the Grid Definition Template 3.0 is implemented so far."));
+        wxLogError(_("Only the Grid Definition Template 3.0 is implemented so far."));
         return false;
     }
 
@@ -269,28 +269,28 @@ void asFileGrib2::BuildAxes(const gribfield *gfld)
 void asFileGrib2::handleGribError(g2int ierr) const
 {
     if (ierr == 1) {
-        asLogError(_("Beginning characters \"GRIB\" not found."));
+        wxLogError(_("Beginning characters \"GRIB\" not found."));
     } else if (ierr == 2) {
-        asLogError(_("GRIB message is not Edition 2."));
+        wxLogError(_("GRIB message is not Edition 2."));
     } else if (ierr == 3) {
-        asLogError(_("Could not find Section 1, where expected."));
+        wxLogError(_("Could not find Section 1, where expected."));
     } else if (ierr == 4) {
-        asLogError(_("End string \"7777\" found, but not where expected."));
+        wxLogError(_("End string \"7777\" found, but not where expected."));
     } else if (ierr == 5) {
-        asLogError(_("End string \"7777\" not found at end of message."));
+        wxLogError(_("End string \"7777\" not found at end of message."));
     } else if (ierr == 6) {
-        asLogError(_("Invalid section number found... OR"));
-        asLogError(_("... GRIB message did not contain the requested number of data fields."));
+        wxLogError(_("Invalid section number found... OR"));
+        wxLogError(_("... GRIB message did not contain the requested number of data fields."));
     } else if (ierr == 7) {
-        asLogError(_("End string \"7777\" not found at end of message."));
+        wxLogError(_("End string \"7777\" not found at end of message."));
     } else if (ierr == 8) {
-        asLogError(_("Unrecognized Section encountered."));
+        wxLogError(_("Unrecognized Section encountered."));
     } else if (ierr == 9) {
-        asLogError(_("Data Representation Template 5.NN not yet implemented."));
+        wxLogError(_("Data Representation Template 5.NN not yet implemented."));
     } else if (ierr >= 10 && ierr <= 16) {
-        asLogError(_("Error unpacking a Section."));
+        wxLogError(_("Error unpacking a Section."));
     } else {
-        asLogError(_("Unknown Grib error."));
+        wxLogError(_("Unknown Grib error."));
     }
 }
 
@@ -336,7 +336,7 @@ bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
             m_parameterNums[i] == gribCode[2] && m_levelTypes[i] == gribCode[3], m_levels[i] == level) {
 
             if (m_index >= 0) {
-                asLogError(_("The desired parameter was found twice in the file."));
+                wxLogError(_("The desired parameter was found twice in the file."));
                 return false;
             }
 
@@ -345,7 +345,7 @@ bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
     }
 
     if (m_index == asNOT_FOUND) {
-        asLogError(_("The desired parameter was not found in the file."));
+        wxLogError(_("The desired parameter was not found in the file."));
         return false;
     }
 
@@ -359,7 +359,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
 
     // Reposition stream position indicator
     if (fseek(m_filtPtr, m_messageOffsets[m_index], SEEK_SET) != 0) {
-        asLogError(_("Grib file read error."));
+        wxLogError(_("Grib file read error."));
         return false;
     }
 
@@ -378,7 +378,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     }
 
     if (gfld->unpacked != 1 || gfld->expanded != 1) {
-        asLogError(_("The Grib data were not unpacked neither expanded."));
+        wxLogError(_("The Grib data were not unpacked neither expanded."));
         return false;
     }
 

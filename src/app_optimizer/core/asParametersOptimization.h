@@ -70,7 +70,7 @@ public:
     bool SetTimeArrayAnalogsIntervalDaysIteration(int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the 'days interval' is null"));
+            wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
         m_timeArrayAnalogsIntervalDaysIteration = val;
@@ -85,7 +85,7 @@ public:
     bool SetAnalogsNumberIteration(int i_step, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the analogs number is null"));
+            wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
         m_stepsIteration[i_step].analogsNumber = val;
@@ -101,7 +101,7 @@ public:
     bool SetPreprocessTimeHoursIteration(int i_step, int i_predictor, int i_dataset, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided iteration value for the preprocess time frame is null"));
+            wxLogError(_("The provided iteration value for the preprocess time frame is null"));
             return false;
         }
 
@@ -123,7 +123,7 @@ public:
     bool SetPredictorTimeHoursIteration(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the time frame is null"));
+            wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
         m_stepsIteration[i_step].predictors[i_predictor].timeHours = val;
@@ -138,7 +138,7 @@ public:
     bool SetPredictorXminIteration(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Xmin is null"));
+            wxLogError(_("The provided value for Xmin is null"));
             return false;
         }
         m_stepsIteration[i_step].predictors[i_predictor].xMin = val;
@@ -153,7 +153,7 @@ public:
     bool SetPredictorXptsnbIteration(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Xptsnb is null"));
+            wxLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
         m_stepsIteration[i_step].predictors[i_predictor].xPtsNb = val;
@@ -168,7 +168,7 @@ public:
     bool SetPredictorYminIteration(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Ymin is null"));
+            wxLogError(_("The provided value for Ymin is null"));
             return false;
         }
         m_stepsIteration[i_step].predictors[i_predictor].yMin = val;
@@ -183,7 +183,7 @@ public:
     bool SetPredictorYptsnbIteration(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Yptsnb is null"));
+            wxLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
         m_stepsIteration[i_step].predictors[i_predictor].yPtsNb = val;
@@ -198,7 +198,7 @@ public:
     bool SetPredictorWeightIteration(int i_step, int i_predictor, float val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the predictor weight is null"));
+            wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
         m_stepsIteration[i_step].predictors[i_predictor].weight = val;
@@ -213,7 +213,7 @@ public:
     bool SetTimeArrayAnalogsIntervalDaysUpperLimit(int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the 'days interval' is null"));
+            wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
         m_timeArrayAnalogsIntervalDaysUpperLimit = val;
@@ -228,7 +228,7 @@ public:
     bool SetAnalogsNumberUpperLimit(int i_step, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the analogs number is null"));
+            wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].analogsNumber = val;
@@ -244,7 +244,7 @@ public:
     bool SetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided upper value value for the preprocess time frame is null"));
+            wxLogError(_("The provided upper value value for the preprocess time frame is null"));
             return false;
         }
 
@@ -267,7 +267,7 @@ public:
     bool SetPredictorTimeHoursUpperLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the time frame is null"));
+            wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].predictors[i_predictor].timeHours = val;
@@ -282,7 +282,7 @@ public:
     bool SetPredictorXminUpperLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Xmin is null"));
+            wxLogError(_("The provided value for Xmin is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].predictors[i_predictor].xMin = val;
@@ -297,7 +297,7 @@ public:
     bool SetPredictorXptsnbUpperLimit(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Xptsnb is null"));
+            wxLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].predictors[i_predictor].xPtsNb = val;
@@ -312,7 +312,7 @@ public:
     bool SetPredictorYminUpperLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Ymin is null"));
+            wxLogError(_("The provided value for Ymin is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].predictors[i_predictor].yMin = val;
@@ -327,7 +327,7 @@ public:
     bool SetPredictorYptsnbUpperLimit(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Yptsnb is null"));
+            wxLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].predictors[i_predictor].yPtsNb = val;
@@ -342,7 +342,7 @@ public:
     bool SetPredictorWeightUpperLimit(int i_step, int i_predictor, float val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the predictor weight is null"));
+            wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
         m_stepsUpperLimit[i_step].predictors[i_predictor].weight = val;
@@ -357,7 +357,7 @@ public:
     bool SetTimeArrayAnalogsIntervalDaysLowerLimit(int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the 'days interval' is null"));
+            wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
         m_timeArrayAnalogsIntervalDaysLowerLimit = val;
@@ -372,7 +372,7 @@ public:
     bool SetAnalogsNumberLowerLimit(int i_step, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the analogs number is null"));
+            wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].analogsNumber = val;
@@ -388,7 +388,7 @@ public:
     bool SetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided lower value value for the preprocess time frame is null"));
+            wxLogError(_("The provided lower value value for the preprocess time frame is null"));
             return false;
         }
 
@@ -411,7 +411,7 @@ public:
     bool SetPredictorTimeHoursLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the time frame is null"));
+            wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].predictors[i_predictor].timeHours = val;
@@ -426,7 +426,7 @@ public:
     bool SetPredictorXminLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Xmin is null"));
+            wxLogError(_("The provided value for Xmin is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].predictors[i_predictor].xMin = val;
@@ -441,7 +441,7 @@ public:
     bool SetPredictorXptsnbLowerLimit(int i_step, int i_predictor, int val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Xptsnb is null"));
+            wxLogError(_("The provided value for Xptsnb is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].predictors[i_predictor].xPtsNb = val;
@@ -456,7 +456,7 @@ public:
     bool SetPredictorYminLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Ymin is null"));
+            wxLogError(_("The provided value for Ymin is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].predictors[i_predictor].yMin = val;
@@ -471,7 +471,7 @@ public:
     bool SetPredictorYptsnbLowerLimit(int i_step, int i_predictor, double val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for Yptsnb is null"));
+            wxLogError(_("The provided value for Yptsnb is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].predictors[i_predictor].yPtsNb = (int) val;
@@ -486,7 +486,7 @@ public:
     bool SetPredictorWeightLowerLimit(int i_step, int i_predictor, float val)
     {
         if (asTools::IsNaN(val)) {
-            asLogError(_("The provided value for the predictor weight is null"));
+            wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
         m_stepsLowerLimit[i_step].predictors[i_predictor].weight = val;

@@ -68,7 +68,7 @@ bool asFileNetcdf::Open()
                 HandleErrorNetcdf();
             m_opened = true;
             if (!ParseStruct()) {
-                asLogError(_("Failed parsing the file structure."));
+                wxLogError(_("Failed parsing the file structure."));
                 ClearStruct();
                 return false;
             }
@@ -81,7 +81,7 @@ bool asFileNetcdf::Open()
                 HandleErrorNetcdf();
             m_opened = true;
             if (!ParseStruct()) {
-                asLogError(_("Failed parsing the file structure."));
+                wxLogError(_("Failed parsing the file structure."));
                 ClearStruct();
                 return false;
             }
@@ -568,7 +568,7 @@ int asFileNetcdf::GetDimId(const wxString &dimName)
     }
 
     if (id == asNOT_FOUND)
-        asLogWarning(wxString::Format(_("The desired variable doesn't exist: %s"), dimName));
+        wxLogWarning(_("The desired variable doesn't exist: %s"), dimName);
 
     return id;
 }
@@ -590,7 +590,7 @@ int asFileNetcdf::GetVarId(const wxString &varName)
     }
 
     if (id == asNOT_FOUND)
-        asLogWarning(wxString::Format(_("The desired variable doesn't exist: %s"), varName));
+        wxLogWarning(_("The desired variable doesn't exist: %s"), varName);
 
     return id;
 }
@@ -651,7 +651,7 @@ int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName)
     }
 
     if (id == asNOT_FOUND)
-        asLogError(wxString::Format(_("The desired attribute doesn't exist: %s"), attName));
+        wxLogError(_("The desired attribute doesn't exist: %s"), attName);
 
     return id;
 }
@@ -1293,8 +1293,7 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1326,8 +1325,7 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1360,8 +1358,7 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1394,8 +1391,7 @@ void asFileNetcdf::GetVarArray(const wxString &varName, const size_t indexStart[
             data.Append(wxString::Format("indexStart[%d]=%d ", i, (int) indexStart[i]));
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1429,8 +1425,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
             data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1464,8 +1459,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
             data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1499,8 +1493,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
             data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1534,8 +1527,7 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
             data.Append(wxString::Format("indexCount[%d]=%d ", i, (int) indexCount[i]));
             data.Append(wxString::Format("indexStride[%d]=%d ", i, (int) indexStride[i]));
         }
-        wxString msg = _("Requested indices: ") + data;
-        asLogError(msg);
+        wxLogError(_("Requested indices: ") + data);
         HandleErrorNetcdf();
     }
 }
@@ -1683,7 +1675,7 @@ bool asFileNetcdf::ParseStruct()
             m_struct.format = Netcdf4Classic;
             break;
         default:
-            asLogError(_("The NetCDF format is unknown"));
+            wxLogError(_("The NetCDF format is unknown"));
             return false;
     }
 
@@ -1783,9 +1775,8 @@ bool asFileNetcdf::ParseStruct()
                 }
 
                 default:
-                    asLogError(wxString::Format(
-                            _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                            nctype, m_struct.atts[attId].name));
+                    wxLogError(_("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
+                               nctype, m_struct.atts[attId].name);
                     return false;
                     break;
             }
@@ -1888,9 +1879,8 @@ bool asFileNetcdf::ParseStruct()
                     }
 
                     default:
-                        asLogError(wxString::Format(
-                                _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                                nctype, m_struct.vars[varId].atts[attId].name));
+                        wxLogError(_("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
+                                   nctype, m_struct.vars[varId].atts[attId].name);
                         return false;
                         break;
                 }

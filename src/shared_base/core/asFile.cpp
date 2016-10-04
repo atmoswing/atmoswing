@@ -65,7 +65,7 @@ bool asFile::Find()
     bool missingFile = false, missingDir = false, mkDir = false, errorRights = false, errorOverwrite = false;
 
     if (!m_fileName.IsOk()) {
-        asLogError(wxString::Format(_("The file path is not OK %s"), m_fileName.GetFullPath()));
+        wxLogError(_("The file path is not OK %s"), m_fileName.GetFullPath());
         return false;
     }
 
@@ -147,29 +147,29 @@ bool asFile::Find()
 
     if (mkDir) {
         if (!wxFileName::Mkdir(m_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
-            asLogError(wxString::Format(_("The directory %s could not be created."), m_fileName.GetPath()));
+            wxLogError(_("The directory %s could not be created."), m_fileName.GetPath());
             return false;
         }
         m_exists = true;
     }
 
     if (missingFile) {
-        asLogError(wxString::Format(_("Cannot find the file %s"), m_fileName.GetFullPath()));
+        wxLogError(_("Cannot find the file %s"), m_fileName.GetFullPath());
         return false;
     }
 
     if (missingDir) {
-        asLogError(wxString::Format(_("Cannot find the directory %s"), m_fileName.GetFullPath()));
+        wxLogError(_("Cannot find the directory %s"), m_fileName.GetFullPath());
         return false;
     }
 
     if (errorRights) {
-        asLogError(_("The file could not be accessed in the desired mode."));
+        wxLogError(_("The file could not be accessed in the desired mode."));
         return false;
     }
 
     if (errorOverwrite) {
-        asLogError(_("The file should be overwritten, which is not allowed in the New mode."));
+        wxLogError(_("The file should be overwritten, which is not allowed in the New mode."));
         return false;
     }
 

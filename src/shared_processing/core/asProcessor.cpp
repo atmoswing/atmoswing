@@ -85,7 +85,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
     // Check the step
     if (step > 0) {
-        asLogError(_("The Analogs SubDates method must be called for this step."));
+        wxLogError(_("The Analogs SubDates method must be called for this step."));
         return false;
     }
 
@@ -106,7 +106,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
     // Check analogs number. Correct if superior to the time serie
     int analogsNb = params.GetAnalogsNumber(step);
     if (analogsNb > timeArrayArchiveSelection.GetSize()) {
-        asLogError(_("The given analog number is superior to the time serie."));
+        wxLogError(_("The given analog number is superior to the time serie."));
         return false;
     }
 
@@ -127,7 +127,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
         // Check criteria ordering
         if (isasc != (criteria[i_ptor]->GetOrder() == Asc)) {
-            asLogError(_("You cannot combine criteria that are ascendant and descendant."));
+            wxLogError(_("You cannot combine criteria that are ascendant and descendant."));
             return false;
         }
     }
@@ -145,10 +145,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
     switch (method) {
 
         case (asMULTITHREADS): {
-            bool enableMessageBox = false;
-            if (Log().IsMessageBoxOnErrorEnabled())
-                enableMessageBox = true;
-            Log().DisableMessageBoxOnError();
 
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
@@ -193,11 +189,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             // Wait until all done
             ThreadsManager().Wait(threadType);
 
-            // Enable message box and flush logs
-            if (enableMessageBox)
-                Log().EnableMessageBoxOnError();
+            // Flush logs
             if (!parallelEvaluations)
-                Log().Flush();
+                wxLog::FlushActive();
 
             for (unsigned int i_threads = 0; i_threads < vContainsNaNs.size(); i_threads++) {
                 if (*vContainsNaNs[i_threads]) {
@@ -206,11 +200,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                 wxDELETE(vContainsNaNs[i_threads]);
             }
             if (containsNaNs) {
-                asLogWarning(_("NaNs were found in the criteria values."));
+                wxLogWarning(_("NaNs were found in the criteria values."));
             }
-
-            if (enableMessageBox)
-                Log().EnableMessageBoxOnError();
 
             break;
         }
@@ -223,7 +214,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             {
                 if(criteria[i_ptor]->GetType()!=criteria[0]->GetType())
                 {
-                    asLogError(_("For CUDA implementation, every predictors in the same analogy level must share the same criterion."));
+                    wxLogError(_("For CUDA implementation, every predictors in the same analogy level must share the same criterion."));
                     return false;
                 }
             }
@@ -233,14 +224,14 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                 case (asPredictorCriteria::S1grads):
                     break;
                 default:
-                    asLogError(wxString::Format(_("The %s criteria is not yet implemented for CUDA."), criteria[0]->GetName()));
+                    wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[0]->GetName());
                     return false;
             }
 
             // To minimize the data copy, we only allow 1 dataset
             if (predictorsArchive[0] != predictorsTarget[0])
             {
-                asLogError(wxString::Format(_("The CUDA implementation is only available in calibration (prefect prog)."), criteria[0]->GetName()));
+                wxLogError(_("The CUDA implementation is only available in calibration (prefect prog)."), criteria[0]->GetName());
                 return false;
             }
 
@@ -367,7 +358,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                         }
                         else
                         {
-                            asLogError(_("The date was not found in the array (Analogs dates fct, CUDA option). That should not happen."));
+                            wxLogError(_("The date was not found in the array (Analogs dates fct, CUDA option). That should not happen."));
                         }
                     }
 
@@ -398,8 +389,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                             if (asTools::IsNaN(vectCriteria[i_dateArch]))
                             {
                                 containsNaNs = true;
-                                asLogWarning(_("NaNs were found in the criteria values."));
-                                asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]) , asTime::GetStringTime(DateArrayOneDay[i_dateArch])));
+                                wxLogWarning(_("NaNs were found in the criteria values."));
+                                wxLogWarning(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[i_dateTarg]) , asTime::GetStringTime(DateArrayOneDay[i_dateArch]));
                             }
 #endif
 
@@ -452,8 +443,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                     }
                     else
                     {
-                        asLogWarning(_("There is not enough available data to satisfy the number of analogs"));
-                        asLogWarning(wxString::Format(_("Analogs number (%d) > vectCriteriaSize (%d), date array size (%d) with %d days intervals."), analogsNb, vectCriteriaSize, dateArrayArchiveSelection.GetSize(), params.GetTimeArrayAnalogsIntervalDays()));
+                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+                        wxLogWarning(_("Analogs number (%d) > vectCriteriaSize (%d), date array size (%d) with %d days intervals."), analogsNb, vectCriteriaSize, dateArrayArchiveSelection.GetSize(), params.GetTimeArrayAnalogsIntervalDays());
                     }
                 }
 
@@ -577,11 +568,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                             }
                             if (asTools::IsNaN(thisscore)) {
                                 containsNaNs = true;
-                                asLogWarning(_("NaNs were found in the criteria values."));
-                                asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),
-                                                              asTime::GetStringTime(timeTargetSelection[i_dateTarg]),
-                                                              asTime::GetStringTime(
-                                                                      dateArrayArchiveSelection[i_dateArch])));
+                                wxLogWarning(_("NaNs were found in the criteria values."));
+                                wxLogWarning(_("Target date: %s, archive date: %s."),
+                                             asTime::GetStringTime(timeTargetSelection[i_dateTarg]),
+                                             asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]));
                             }
 
                             // Check if the array is already full
@@ -624,12 +614,11 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
                             counter++;
                         } else {
-                            asLogError(wxString::Format(
-                                    _("The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."),
-                                    asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]),
-                                    asTime::GetStringTime(timeArchiveData[i_timeArchStart]),
-                                    asTime::GetStringTime(timeArchiveData[timeArchiveDataSize - 1]),
-                                    asTime::GetStringTime(timeTargetSelection[i_dateTarg])));
+                            wxLogError(_("The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."),
+                                       asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]),
+                                       asTime::GetStringTime(timeArchiveData[i_timeArchStart]),
+                                       asTime::GetStringTime(timeArchiveData[timeArchiveDataSize - 1]),
+                                       asTime::GetStringTime(timeTargetSelection[i_dateTarg]));
                         }
                     }
 
@@ -639,7 +628,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                         finalAnalogsCriteria.row(i_dateTarg) = ScoreArrayOneDay.transpose();
                         finalAnalogsDates.row(i_dateTarg) = DateArrayOneDay.transpose();
                     } else {
-                        asLogWarning(_("There is not enough available data to satisfy the number of analogs."));
+                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
                     }
                 }
             }
@@ -746,11 +735,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                             }
                             if (asTools::IsNaN(thisscore)) {
                                 containsNaNs = true;
-                                asLogWarning(_("NaNs were found in the criteria values."));
-                                asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),
-                                                              asTime::GetStringTime(timeTargetSelection[i_dateTarg]),
-                                                              asTime::GetStringTime(
-                                                                      dateArrayArchiveSelection[i_dateArch])));
+                                wxLogWarning(_("NaNs were found in the criteria values."));
+                                wxLogWarning(_("Target date: %s, archive date: %s."),
+                                             asTime::GetStringTime(timeTargetSelection[i_dateTarg]),
+                                             asTime::GetStringTime(dateArrayArchiveSelection[i_dateArch]));
                             }
 
                             // Store in the result array
@@ -758,8 +746,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                             DateArrayOneDay[counter] = (float) timeArchiveData[i_timeArch];
                             counter++;
                         } else {
-                            asLogError(
-                                    _("The date was not found in the array (Analogs dates fct, full array option). That should not happen."));
+                            wxLogError(_("The date was not found in the array (Analogs dates fct, full array option). That should not happen."));
                         }
                     }
 
@@ -778,11 +765,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                         finalAnalogsCriteria.row(i_dateTarg) = ScoreArrayOneDay.head(analogsNb).transpose();
                         finalAnalogsDates.row(i_dateTarg) = DateArrayOneDay.head(analogsNb).transpose();
                     } else {
-                        asLogWarning(_("There is not enough available data to satisfy the number of analogs"));
-                        asLogWarning(wxString::Format(
-                                _("Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
-                                analogsNb, counter, dateArrayArchiveSelection.GetSize(),
-                                params.GetTimeArrayAnalogsIntervalDays()));
+                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+                        wxLogWarning(_("Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
+                                     analogsNb, counter, dateArrayArchiveSelection.GetSize(),
+                                     params.GetTimeArrayAnalogsIntervalDays());
                     }
                 }
             }
@@ -800,7 +786,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
     results.SetAnalogsDates(finalAnalogsDates);
 
     // Display the time the function took
-    asLogMessage(wxString::Format(_("The function asProcessor::GetAnalogsDates took %ldms to execute"), sw.Time()));
+    wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %ldms to execute"), sw.Time());
 
     return true;
 }
@@ -838,7 +824,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
 
     // Check the step
     if (step == 0) {
-        asLogError(_("The  Analogs Dates method cannot be called first."));
+        wxLogError(_("The  Analogs Dates method cannot be called first."));
         return false;
     }
 
@@ -864,8 +850,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
     int analogsNb = params.GetAnalogsNumber(step);
     int analogsNbPrevious = params.GetAnalogsNumber(step - 1);
     if (analogsNb > analogsNbPrevious) {
-        asLogError(wxString::Format(_("The given analog number (%d) is superior to the previous step (%d)."), analogsNb,
-                                    analogsNbPrevious));
+        wxLogError(_("The given analog number (%d) is superior to the previous step (%d)."), analogsNb,
+                   analogsNbPrevious);
         return false;
     }
 
@@ -881,7 +867,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
 
         // Check criteria ordering
         if (isasc != (criteria[i_ptor]->GetOrder() == Asc)) {
-            asLogError(_("You cannot combine criteria that are ascendant and descendant."));
+            wxLogError(_("You cannot combine criteria that are ascendant and descendant."));
             return false;
         }
     }
@@ -901,10 +887,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
 
     switch (method) {
         case (asMULTITHREADS): {
-            bool enableMessageBox = false;
-            if (Log().IsMessageBoxOnErrorEnabled())
-                enableMessageBox = true;
-            Log().DisableMessageBoxOnError();
 
             // Get threads number
             int threadsNb = ThreadsManager().GetAvailableThreadsNb();
@@ -950,11 +932,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
             // Wait until all done
             ThreadsManager().Wait(threadType);
 
-            // Enable message box and flush logs
-            if (enableMessageBox)
-                Log().EnableMessageBoxOnError();
+            // Flush logs
             if (!parallelEvaluations)
-                Log().Flush();
+                wxLog::FlushActive();
 
             for (unsigned int i_threads = 0; i_threads < vContainsNaNs.size() - 1; i_threads++) {
                 if (*vContainsNaNs[i_threads]) {
@@ -963,11 +943,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
                 wxDELETE(vContainsNaNs[i_threads]);
             }
             if (containsNaNs) {
-                asLogWarning(_("NaNs were found in the criteria values."));
+                wxLogWarning(_("NaNs were found in the criteria values."));
             }
-
-            if (enableMessageBox)
-                Log().EnableMessageBoxOnError();
 
             wxASSERT(finalAnalogsDates(0, 0) > 0);
             wxASSERT(finalAnalogsDates(0, 1) > 0);
@@ -1034,30 +1011,15 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
                             float tmpscore = criteria[i_ptor]->Assess(*vTargData[i_ptor], *vArchData[i_ptor],
                                                                       vRowsNb[i_ptor], vColsNb[i_ptor]);
 
-                            /*
-                            // For debugging
-                            wxLogMessage("timeTarget = %s",asTime::GetStringTime(timeTargetSelection[i_anadates]));
-                            wxLogMessage("timeCandidate = %s",asTime::GetStringTime(currentAnalogsDates[i_prevanalogs]));
-                            for (int i=0; i<vRowsNb[i_ptor]; i++ )
-                            {
-                                for (int j=0; j<vColsNb[i_ptor]; j++ )
-                                {
-                                    wxLogMessage("TargData(%d,%d) = %f", i, j, (*vTargData[i_ptor])(i,j));
-                                    wxLogMessage("ArchData(%d,%d) = %f", i, j, (*vArchData[i_ptor])(i,j));
-                                }
-                            }
-                            wxLogMessage("tmpscore=%f",tmpscore);
-                            */
-
                             // Weight and add the score
                             thisscore += tmpscore * params.GetPredictorWeight(step, i_ptor);
                         }
                         if (asTools::IsNaN(thisscore)) {
                             containsNaNs = true;
-                            asLogWarning(_("NaNs were found in the criteria values."));
-                            asLogWarning(wxString::Format(_("Target date: %s, archive date: %s."),
-                                                          asTime::GetStringTime(timeTargetData[i_timeTarg]),
-                                                          asTime::GetStringTime(timeArchiveData[i_timeArch])));
+                            wxLogWarning(_("NaNs were found in the criteria values."));
+                            wxLogWarning(_("Target date: %s, archive date: %s."),
+                                         asTime::GetStringTime(timeTargetData[i_timeTarg]),
+                                         asTime::GetStringTime(timeArchiveData[i_timeArch]));
                         }
 
                         // Check if the array is already full
@@ -1096,8 +1058,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
 
                         counter++;
                     } else {
-                        asLogError(
-                                _("The date was not found in the array (Analogs subdates fct). That should not happen."));
+                        wxLogError(_("The date was not found in the array (Analogs subdates fct). That should not happen."));
                         return false;
                     }
                 }
@@ -1108,8 +1069,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
                     finalAnalogsCriteria.row(i_anadates) = ScoreArrayOneDay.head(analogsNb).transpose();
                     finalAnalogsDates.row(i_anadates) = DateArrayOneDay.head(analogsNb).transpose();
                 } else {
-                    asLogWarning(_("There is not enough available data to satisfy the number of analogs"));
-                    asLogWarning(wxString::Format(_("Analogs number (%d) > counter (%d)"), analogsNb, counter));
+                    wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+                    wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
                 }
             }
 
@@ -1133,7 +1094,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
     results.SetAnalogsDates(finalAnalogsDates);
 
     // Display the time the function took
-    asLogMessage(wxString::Format(_("The function asProcessor::GetAnalogsSubDates took %ldms to execute"), sw.Time()));
+    wxLogVerbose(_("The function asProcessor::GetAnalogsSubDates took %ldms to execute"), sw.Time());
 
     return true;
 }
@@ -1141,9 +1102,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
 bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalogsDates &anaDates, asParameters &params,
                                    asResultsAnalogsValues &results)
 {
-    // Watch
-    //wxStopWatch sw;
-
     // Extract Data
     Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
     Array2DFloat analogsDates = anaDates.GetAnalogsDates();
@@ -1268,9 +1226,8 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                         wxString currDate = asTime::GetStringTime(currentAnalogDate + predictandTimeDays);
                         wxString startDate = asTime::GetStringTime(predictandTime[0]);
                         wxString endDate = asTime::GetStringTime(predictandTime[predictandTime.size() - 1]);
-                        asLogWarning(wxString::Format(
-                                _("The current analog date (%s) was not found in the predictand time array (%s-%s)."),
-                                currDate, startDate, endDate));
+                        wxLogWarning(_("The current analog date (%s) was not found in the predictand time array (%s-%s)."),
+                                     currDate, startDate, endDate);
                         for (int i_st = 0; i_st < (int) stations.size(); i_st++) {
                             finalAnalogValuesNorm[i_st](i_targdatenew, i_anadate) = NaNFloat;
                             finalAnalogValuesGross[i_st](i_targdatenew, i_anadate) = NaNFloat;
@@ -1287,11 +1244,10 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                         }
                     }
                 } else {
-                    asLogError(wxString::Format(
-                            _("The current analog date (%s) is outside of the allowed period (%s-%s))."),
-                            asTime::GetStringTime(currentAnalogDate, "DD.MM.YYYY"),
-                            asTime::GetStringTime(timeStart, "DD.MM.YYYY"),
-                            asTime::GetStringTime(timeEnd, "DD.MM.YYYY")));
+                    wxLogError(_("The current analog date (%s) is outside of the allowed period (%s-%s))."),
+                               asTime::GetStringTime(currentAnalogDate, "DD.MM.YYYY"),
+                               asTime::GetStringTime(timeStart, "DD.MM.YYYY"),
+                               asTime::GetStringTime(timeEnd, "DD.MM.YYYY"));
                     for (int i_st = 0; i_st < (int) stations.size(); i_st++) {
                         finalAnalogValuesNorm[i_st](i_targdatenew, i_anadate) = NaNFloat;
                         finalAnalogValuesGross[i_st](i_targdatenew, i_anadate) = NaNFloat;
@@ -1300,7 +1256,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                 finalAnalogCriteria(i_targdatenew, i_anadate) = analogsCriteria(i_targdate, i_anadate);
 
             } else {
-                asLogError(_("The current analog date is a NaN."));
+                wxLogError(_("The current analog date is a NaN."));
                 finalAnalogCriteria(i_targdatenew, i_anadate) = NaNFloat;
             }
         }
@@ -1326,9 +1282,6 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
     results.SetTargetDates(finalTargetDates);
     results.SetTargetValuesNorm(finalTargetValuesNorm);
     results.SetTargetValuesGross(finalTargetValuesGross);
-
-    // Display the time the function took
-    //asLogMessage(wxString::Format(_("The function asProcessor::GetAnalogsValues took %ldms to execute"), sw.Time()));
 
     return true;
 }

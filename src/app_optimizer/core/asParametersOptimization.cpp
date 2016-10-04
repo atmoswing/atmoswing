@@ -102,10 +102,10 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step)
 
 bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 {
-    asLogMessage(_("Loading parameters file."));
+    wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
-        asLogError(_("The given path to the parameters file is empty."));
+        wxLogError(_("The given path to the parameters file is empty."));
         return false;
     }
 
@@ -169,7 +169,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     FixWeights();
     FixCoordinates();
 
-    asLogMessage(_("Parameters file loaded."));
+    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -690,7 +690,7 @@ asParametersOptimization::ParseForecastScore(asFileParametersOptimization &fileP
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetForecastScoreQuantile(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "postprocessing") {
-            asLogError(_("The postptocessing is not yet fully implemented."));
+            wxLogError(_("The postptocessing is not yet fully implemented."));
         } else {
             fileParams.UnknownNode(nodeParamBlock);
         }
@@ -845,12 +845,10 @@ bool asParametersOptimization::SetPreloadingProperties()
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
-                    asLogWarning(wxString::Format(_("The %s preprocessing method is not handled in the optimizer."),
-                                                  method));
+                    wxLogWarning(_("The %s preprocessing method is not handled in the optimizer."), method);
                     return false;
                 } else {
-                    asLogWarning(wxString::Format(
-                            _("The %s preprocessing method is not yet handled with the preload option."), method));
+                    wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
 
                 if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
@@ -1244,9 +1242,8 @@ bool asParametersOptimization::FixWeights()
 
         // Check total of the locked weights
         if (totWeightLocked > 1) {
-            asLogError(wxString::Format(
-                    _("The sum of the locked weights of the analogy level number %d is higher than 1 (%f)."), i + 1,
-                    totWeightLocked));
+            wxLogError(_("The sum of the locked weights of the analogy level number %d is higher than 1 (%f)."), i + 1,
+                       totWeightLocked);
             return false;
         }
         float totWeightManageable = totWeight - totWeightLocked;

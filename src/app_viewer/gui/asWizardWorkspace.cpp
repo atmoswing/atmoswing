@@ -77,7 +77,7 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
             baseMapPath = wmsDir + "VirtualEarth.xml";
             break;
         default:
-            asLogError(_("Incorrect base map selection."));
+            wxLogError(_("Incorrect base map selection."));
     }
 
     if (!baseMapPath.IsEmpty()) {

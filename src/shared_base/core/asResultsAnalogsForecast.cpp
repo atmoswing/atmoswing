@@ -96,7 +96,7 @@ void asResultsAnalogsForecast::BuildFileName()
     wxASSERT(!m_forecastsDirectory.IsEmpty());
 
     if (m_methodId.IsEmpty() || m_specificTag.IsEmpty()) {
-        asLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
+        wxLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
     }
 
     // Base directory
@@ -146,8 +146,7 @@ bool asResultsAnalogsForecast::Save()
         wxASSERT(m_referenceValues.rows() > 0);
     }
 
-    wxString message = _("Saving forecast file: ") + m_filePath;
-    asLogMessage(message);
+    wxLogVerbose(_("Saving forecast file: %s"), m_filePath);
 
     // Get the elements size
     size_t Nleadtime = m_targetDates.size();
@@ -353,14 +352,13 @@ bool asResultsAnalogsForecast::Load()
     }
 
     if (versionMajor > m_fileVersionMajor || (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
-        asLogError(wxString::Format(
-                _("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot be opened here."),
-                versionMajor, versionMinor));
+        wxLogError(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot be opened here."),
+                   versionMajor, versionMinor);
         return false;
     }
 
     if (versionMajor == 1 && versionMinor == 0) {
-        asLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
+        wxLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
         m_predictandParameter = asDataPredictand::Precipitation;
         m_predictandTemporalResolution = asDataPredictand::Daily;
         m_predictandSpatialAggregation = asDataPredictand::Station;
@@ -396,7 +394,7 @@ bool asResultsAnalogsForecast::Load()
             } else if (ncFile.GetAttInt("predictand_spatial_aggregation") == 1) {
                 m_predictandSpatialAggregation = asDataPredictand::Groupment;
             } else {
-                asLogError(_("The spatial aggregation could not be converted."));
+                wxLogError(_("The spatial aggregation could not be converted."));
                 return false;
             }
         } else {
@@ -719,8 +717,8 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherF
     }
 
     if (!compatible) {
-        asLogError(wxString::Format(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay,
-                                    otherForecast->GetSpecificTagDisplay()));
+        wxLogError(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay,
+                   otherForecast->GetSpecificTagDisplay());
         return false;
     }
 
@@ -804,6 +802,6 @@ int asResultsAnalogsForecast::GetStationRowFromId(int stationId) const
     }
 
     wxFAIL;
-    asLogError(wxString::Format("The station ID %d was not found in the forecast results.", stationId));
+    wxLogError("The station ID %d was not found in the forecast results.", stationId);
     return -1;
 }

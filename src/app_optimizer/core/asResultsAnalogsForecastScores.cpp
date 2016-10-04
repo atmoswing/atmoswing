@@ -70,8 +70,7 @@ bool asResultsAnalogsForecastScores::Save()
 {
     BuildFileName();
 
-    wxString message = _("Saving intermediate file: ") + m_filePath;
-    asLogMessage(message);
+    wxLogVerbose(_("Saving intermediate file: %s") , m_filePath);
 
     // Get the elements size
     size_t Ntime = (size_t)m_forecastScores.rows();

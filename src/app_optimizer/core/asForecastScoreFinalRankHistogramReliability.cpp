@@ -47,7 +47,7 @@ asForecastScoreFinalRankHistogramReliability::~asForecastScoreFinalRankHistogram
 float asForecastScoreFinalRankHistogramReliability::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores,
                                                            asTimeArray &timeArray) const
 {
-    asLogWarning(_("Calling asForecastScoreFinalRankHistogramReliability::Assess means it doesn't do bootstraping."));
+    wxLogWarning(_("Calling asForecastScoreFinalRankHistogramReliability::Assess means it doesn't do bootstraping."));
 
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);

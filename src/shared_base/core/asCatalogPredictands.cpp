@@ -52,7 +52,7 @@ asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
 
     // Get the xml file path
     if (m_catalogFilePath.IsEmpty()) {
-        asLogError(_("No path was given for the predictand catalog."));
+        wxLogError(_("No path was given for the predictand catalog."));
     }
 
     // Initiate some data

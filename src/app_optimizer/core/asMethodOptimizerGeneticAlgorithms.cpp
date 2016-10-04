@@ -159,12 +159,12 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught in GAs: %s"), msg.c_str()));
+        wxLogError(_("Bad allocation caught in GAs: %s"), msg.c_str());
         DeletePreloadedData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Exception in the GAs: %s"), msg.c_str()));
+        wxLogError(_("Exception in the GAs: %s"), msg.c_str());
         DeletePreloadedData();
         return false;
     }
@@ -227,24 +227,24 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Reload previous results
     if (!ResumePreviousRun(params, results_generations)) {
-        asLogError(_("Failed to resume previous runs"));
+        wxLogError(_("Failed to resume previous runs"));
         return false;
     }
 
     // Preload data
     try {
         if (!PreloadData(params)) {
-            asLogError(_("Could not preload the data."));
+            wxLogError(_("Could not preload the data."));
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught in the data preloading (in GAs): %s"), msg.c_str()));
+        wxLogError(_("Bad allocation caught in the data preloading (in GAs): %s"), msg.c_str());
         DeletePreloadedData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Exception in the data preloading (in GAs): %s"), msg.c_str()));
+        wxLogError(_("Exception in the data preloading (in GAs): %s"), msg.c_str());
         DeletePreloadedData();
         return false;
     }
@@ -256,10 +256,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    asLogMessage(_("Loading the Predictand DB."));
+    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath))
         return false;
-    asLogMessage(_("Predictand DB loaded."));
+    wxLogVerbose(_("Predictand DB loaded."));
 
     // Watch
     wxStopWatch sw;
@@ -273,7 +273,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             // Check on the parameters set
             wxASSERT(newParams);
             if (newParams->GetStepsNb() == 0) {
-                asLogError(_("The new parameters set is not correcty initialized."));
+                wxLogError(_("The new parameters set is not correcty initialized."));
                 return false;
             }
 
@@ -284,11 +284,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 #endif
                 if (m_cancel)
                     return false;
-
-                bool enableMessageBox = false;
-                if (Log().IsMessageBoxOnErrorEnabled())
-                    enableMessageBox = true;
-                Log().DisableMessageBoxOnError();
 
                 VectorFloat scoreClim = m_scoreClimatology;
 
@@ -324,9 +319,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     asParametersOptimizationGAs *nextParams = GetNextParameters();
                     wxASSERT(nextParams);
                     if (nextParams->GetStepsNb() == 0) {
-                        asLogError(wxString::Format(
-                                _("The new parameters set is not correcty initialized in the thread array filling (iterator %d/%d)."),
-                                m_iterator, m_paramsNb));
+                        wxLogError(_("The new parameters set is not correcty initialized in the thread array filling (iterator %d/%d)."),
+                                   m_iterator, m_paramsNb);
                         return false;
                     }
 
@@ -354,15 +348,16 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     if (m_cancel)
                         return false;
 
+                    wxLog::FlushActive();
+
                     ThreadsManager().WaitForFreeThread(threadType);
 
                     // Get a parameters set
                     asParametersOptimizationGAs *nextParams = GetNextParameters();
                     wxASSERT(nextParams);
                     if (nextParams->GetStepsNb() == 0) {
-                        asLogError(wxString::Format(
-                                _("The new parameters set is not correctly initialized in the continuous adding (iterator %d/%d)."),
-                                m_iterator, m_paramsNb));
+                        wxLogError(_("The new parameters set is not correctly initialized in the continuous adding (iterator %d/%d)."),
+                                   m_iterator, m_paramsNb);
                         return false;
                     }
 
@@ -380,14 +375,16 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 // Wait until all done
                 ThreadsManager().Wait(threadType);
 
+                wxLog::FlushActive();
+
                 // Check results
                 bool checkOK = true;
                 for (unsigned int i_check = 0; i_check < m_scoresCalib.size(); i_check++) {
                     if (asTools::IsNaN(m_scoresCalib[i_check])) {
-                        asLogError(wxString::Format(_("NaN found in the scores (element %d on %d in m_scoresCalib)."),
-                                                    (int) i_check + 1, (int) m_scoresCalib.size()));
+                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) i_check + 1,
+                                   (int) m_scoresCalib.size());
                         wxString paramsContent = m_parameters[i_check].Print();
-                        asLogError(wxString::Format(_("Parameters #%d: %s"), (int) i_check + 1, paramsContent.c_str()));
+                        wxLogError(_("Parameters #%d: %s"), (int) i_check + 1, paramsContent.c_str());
                         checkOK = false;
                     }
                 }
@@ -395,9 +392,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 if (!checkOK)
                     return false;
 
-                if (enableMessageBox)
-                    Log().EnableMessageBoxOnError();
-                Log().Flush();
+                wxLog::FlushActive();
             } else {
 #ifndef UNIT_TESTING
                 if (g_responsive)
@@ -427,7 +422,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                         anaDatesPrevious = anaDates;
                     }
                     if (containsNaNs) {
-                        asLogError(_("The dates selection contains NaNs"));
+                        wxLogError(_("The dates selection contains NaNs"));
                         return false;
                     }
                 }
@@ -480,14 +475,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                         break;
                     }
                     default: {
-                        asLogError(_("The given natural selection method couldn't be found."));
+                        wxLogError(_("The given natural selection method couldn't be found."));
                         return false;
                     }
                 }
                 m_bestScores.push_back(bestScore);
                 m_meanScores.push_back(meanScore);
 
-                asLogMessageImportant(wxString::Format(_("Mean %g, best %g"), meanScore, bestScore));
+                wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
             }
         }
 
@@ -499,8 +494,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Display processing time
-    asLogMessageImportant(wxString::Format(_("The whole processing took %ldms to execute"), sw.Time()));
-    asLogState(_("Optimization over."));
+    wxLogMessage(_("The whole processing took %ldms to execute"), sw.Time());
+#if wxUSE_GUI
+    wxLogStatus(_("Optimization over."));
+#endif
 
     // Validate
     SaveDetails(m_parameters[0]);
@@ -518,7 +515,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Generate xml file with the best parameters set
     if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) {
-        asLogError(_("The output xml parameters file could not be generated."));
+        wxLogError(_("The output xml parameters file could not be generated."));
     }
 
     // Print stats
@@ -541,15 +538,14 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
         wxDir dir(resultsDir);
         if (!dir.IsOpened()) {
-            asLogWarning(wxString::Format(_("The directory %s could not be opened."), resultsDir.c_str()));
+            wxLogWarning(_("The directory %s could not be opened."), resultsDir.c_str());
         } else {
             // Check if the resulting file is already present
             VectorInt stationId = params.GetPredictandStationIds();
             wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt",
                                                          GetPredictandStationIdsList(stationId).c_str());
             if (dir.HasFiles(finalFilePattern)) {
-                asLogMessageImportant(wxString::Format(_("The directory %s already contains the resulting file."),
-                                                       resultsDir.c_str()));
+                wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir.c_str());
                 return true;
             }
 
@@ -562,13 +558,13 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 while (dir.GetNext(&generationsFileName)) {
                 } // Select the last available.
 
-                asLogWarning(_("Previous intermediate results were found and will be loaded."));
+                wxLogWarning(_("Previous intermediate results were found and will be loaded."));
                 wxPrintf(_("Previous intermediate results were found and will be loaded.\n"));
                 wxString filePath = resultsDir;
                 filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
                 asFileAscii prevResults(filePath, asFile::ReadOnly);
                 if (!prevResults.Open()) {
-                    asLogError(wxString::Format(_("Couldn't open the file %s."), filePath.c_str()));
+                    wxLogError(_("Couldn't open the file %s."), filePath.c_str());
                     return false;
                 }
                 prevResults.SkipLines(1);
@@ -587,8 +583,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                         break;
                     } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                                (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        asLogError(
-                                _("The number of steps do not correspond between the current and the previous parameters."));
+                        wxLogError(_("The number of steps do not correspond between the current and the previous parameters."));
                         return false;
                     }
 
@@ -604,8 +599,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                         break;
                     } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                                (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        asLogError(
-                                _("The number of predictors do not correspond between the current and the previous parameters."));
+                        wxLogError(_("The number of predictors do not correspond between the current and the previous parameters."));
                         return false;
                     }
 
@@ -621,8 +615,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                         break;
                     } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                                (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        asLogError(
-                                _("The number of atmospheric levels do not correspond between the current and the previous parameters."));
+                        wxLogError(_("The number of atmospheric levels do not correspond between the current and the previous parameters."));
                         return false;
                     }
 
@@ -638,8 +631,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                         break;
                     } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                                (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-                        asLogError(
-                                _("The number of S1 criteria on gradients do not correspond between the current and the previous parameters."));
+                        wxLogError(_("The number of S1 criteria on gradients do not correspond between the current and the previous parameters."));
                         return false;
                     }
 
@@ -677,16 +669,13 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 } while (!prevResults.EndOfFile());
                 prevResults.Close();
 
-                asLogMessageImportant(
-                        wxString::Format(_("%d former results have been reloaded."), results_generations.GetCount()));
-                wxPrintf(
-                        wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
+                wxLogMessage(_("%d former results have been reloaded."), results_generations.GetCount());
+                wxPrintf(_("%d former results have been reloaded.\n"), results_generations.GetCount());
 
                 // Check that it is consistent with the population size
                 if (vectParams.size() % m_popSize != 0) {
-                    asLogError(wxString::Format(
-                            _("The number of former results is not consistent with the population size (%d)."),
-                            m_popSize));
+                    wxLogError(_("The number of former results is not consistent with the population size (%d)."),
+                               m_popSize);
                     return false;
                 }
 
@@ -731,7 +720,7 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
 {
     // Get a first parameters set to get the number of unknown variables
     params.InitRandomValues();
-    asLogMessage(wxString::Format(_("The population is made of %d individuals."), m_popSize));
+    wxLogVerbose(_("The population is made of %d individuals."), m_popSize);
 
     // Create the corresponding number of parameters
     m_scoresCalib.resize(m_popSize);
@@ -792,7 +781,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
                 if (m_iterator == m_paramsNb) {
                     m_optimizerStage = asCHECK_CONVERGENCE;
                     if (!Optimize())
-                        asLogError(_("The parameters could not be optimized"));
+                        wxLogError(_("The parameters could not be optimized"));
                     return params;
                 }
             }
@@ -803,7 +792,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
                m_iterator == m_paramsNb) {
         m_optimizerStage = asCHECK_CONVERGENCE;
         if (!Optimize())
-            asLogError(_("The parameters could not be optimized"));
+            wxLogError(_("The parameters could not be optimized"));
     } else {
         wxLogError(_("This should not happen (in GetNextParameters)..."));
     }
@@ -823,7 +812,7 @@ bool asMethodOptimizerGeneticAlgorithms::Optimize()
             return false;
         if (stopiterations) {
             m_isOver = true;
-            asLogMessage(_("Optimization process over."));
+            wxLogVerbose(_("Optimization process over."));
             return true;
         }
 
@@ -840,11 +829,11 @@ bool asMethodOptimizerGeneticAlgorithms::Optimize()
         m_skipNext = true;
         m_generationNb++;
 
-        asLogMessageImportant(wxString::Format(_("Generation number %d"), m_generationNb));
+        wxLogMessage(_("Generation number %d"), m_generationNb);
 
         return true;
     } else {
-        asLogError(_("Optimization stage undefined"));
+        wxLogError(_("Optimization stage undefined"));
     }
 
     return false;
@@ -893,7 +882,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
                 int prevBestIndex = asTools::MinArrayIndex(&m_scoresCalibTemp[0],
                                                            &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (m_scoresCalibTemp[prevBestIndex] < actualBest) {
-                    asLogMessageImportant(_("Application of elitism after mutation."));
+                    wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
                     int randomRow = asTools::Random(0, m_scoresCalib.size() - 1, 1);
                     m_parameters[randomRow] = m_parametersTemp[prevBestIndex];
@@ -907,7 +896,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
                 int prevBestIndex = asTools::MaxArrayIndex(&m_scoresCalibTemp[0],
                                                            &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (m_scoresCalibTemp[prevBestIndex] > actualBest) {
-                    asLogMessageImportant(_("Application of elitism after mutation."));
+                    wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
                     int randomRow = asTools::Random(0, m_scoresCalib.size() - 1, 1);
                     m_parameters[randomRow] = m_parametersTemp[prevBestIndex];
@@ -917,7 +906,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
                 break;
             }
             default: {
-                asLogError(_("Score order not correctly defined."));
+                wxLogError(_("Score order not correctly defined."));
                 return false;
             }
         }
@@ -938,7 +927,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection()
                 float actualBest = asTools::MinArray(&m_scoresCalibTemp[0],
                                                      &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (prevBest < actualBest) {
-                    asLogMessageImportant(_("Application of elitism in the natural selection."));
+                    wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
                     int randomRow = asTools::Random(0, m_scoresCalibTemp.size() - 1, 1);
                     m_parametersTemp[randomRow] = m_parameters[0];
@@ -951,7 +940,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection()
                 float actualBest = asTools::MaxArray(&m_scoresCalibTemp[0],
                                                      &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (prevBest > actualBest) {
-                    asLogMessageImportant(_("Application of elitism in the natural selection."));
+                    wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
                     int randomRow = asTools::Random(0, m_scoresCalibTemp.size() - 1, 1);
                     m_parametersTemp[randomRow] = m_parameters[0];
@@ -960,7 +949,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection()
                 break;
             }
             default: {
-                asLogError(_("Score order not correctly defined."));
+                wxLogError(_("Score order not correctly defined."));
                 return false;
             }
         }
@@ -973,7 +962,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
 {
     // NB: The parameters and scores are already sorted !
 
-    asLogMessage(_("Applying natural selection."));
+    wxLogVerbose(_("Applying natural selection."));
 
     ClearTemp();
 
@@ -988,7 +977,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
 
     switch (m_naturalSelectionType) {
         case (RatioElitism): {
-            asLogMessage(_("Natural selection: ratio elitism"));
+            wxLogVerbose(_("Natural selection: ratio elitism"));
 
             for (int i = 0; i < intermediateGenerationSize; i++) {
                 m_parametersTemp.push_back(m_parameters[i]);
@@ -998,7 +987,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
         }
 
         case (Tournament): {
-            asLogMessage(_("Natural selection: tournament"));
+            wxLogVerbose(_("Natural selection: tournament"));
 
             double tournamentSelectionProbability;
             pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability",
@@ -1050,7 +1039,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
         }
 
         default: {
-            asLogError(_("The given natural selection method couldn't be found."));
+            wxLogError(_("The given natural selection method couldn't be found."));
             return false;
         }
     }
@@ -1067,7 +1056,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
     wxASSERT(m_parametersTemp.size() == m_scoresCalibTemp.size());
 
-    asLogMessage(_("Applying mating."));
+    wxLogVerbose(_("Applying mating."));
 
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -1086,11 +1075,11 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
     while (m_parametersTemp.size() < (unsigned) m_popSize) {
         // Couples selection only in the parents pool
-        asLogMessage(_("Selecting couples."));
+        wxLogVerbose(_("Selecting couples."));
         int partner1 = 0, partner2 = 0;
         switch (m_couplesSelectionType) {
             case (RankPairing): {
-                asLogMessage(_("Couples selection: rank pairing"));
+                wxLogVerbose(_("Couples selection: rank pairing"));
 
                 partner1 = counter * 2; // pairs
                 partner2 = counter * 2 + 1; // impairs
@@ -1104,7 +1093,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (Random): {
-                asLogMessage(_("Couples selection: random"));
+                wxLogVerbose(_("Couples selection: random"));
 
                 partner1 = asTools::Random(0, sizeParents - 1, 1);
                 partner2 = asTools::Random(0, sizeParents - 1, 1);
@@ -1112,7 +1101,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (RouletteWheelRank): {
-                asLogMessage(_("Couples selection: roulette wheel rank"));
+                wxLogVerbose(_("Couples selection: roulette wheel rank"));
 
                 // If the first round, initialize the probabilities.
                 if (!initialized) {
@@ -1129,7 +1118,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                     }
                     if (abs(probabilities[probabilities.size() - 1] - 1.0) > 0.00001) {
                         double diff = probabilities[probabilities.size() - 1] - 1.0;
-                        asLogWarning(wxString::Format(_("probabilities[last]-1.0=%f"), diff));
+                        wxLogWarning(_("probabilities[last]-1.0=%f"), diff);
                     }
                     initialized = true;
                 }
@@ -1146,7 +1135,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (RouletteWheelScore): {
-                asLogMessage(_("Couples selection: roulette wheel score"));
+                wxLogVerbose(_("Couples selection: roulette wheel score"));
 
                 // If the first round, initialize the probabilities.
                 if (!initialized) {
@@ -1163,13 +1152,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             double probCumul = prob + probabilities[probabilities.size() - 1];
                             probabilities.push_back(probCumul);
                         } else {
-                            asLogError(_("The sum of the probabilities is null."));
+                            wxLogError(_("The sum of the probabilities is null."));
                             return false;
                         }
                     }
                     if (abs(probabilities[probabilities.size() - 1] - 1.0) > 0.00001) {
                         double diff = probabilities[probabilities.size() - 1] - 1.0;
-                        asLogWarning(wxString::Format(_("probabilities[last]-1.0=%f"), diff));
+                        wxLogWarning(_("probabilities[last]-1.0=%f"), diff);
                     }
                     initialized = true;
                 }
@@ -1185,17 +1174,15 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                                                            partner2prob);
 
                 if (partner1 < 0) {
-                    asLogError(_("Could not find a value in the probability distribution."));
-                    asLogError(wxString::Format("probabilities[0] = %g, &probabilities[%d] = %g, partner1prob = %g",
-                                                probabilities[0], (int) probabilities.size() - 1,
-                                                probabilities[probabilities.size() - 1], partner1prob));
+                    wxLogError(_("Could not find a value in the probability distribution."));
+                    wxLogError("probabilities[0] = %g, &probabilities[%d] = %g, partner1prob = %g", probabilities[0],
+                               (int) probabilities.size() - 1, probabilities[probabilities.size() - 1], partner1prob);
                     return false;
                 }
                 if (partner2 < 0) {
-                    asLogError(_("Could not find a value in the probability distribution."));
-                    asLogError(wxString::Format("probabilities[0] = %g, &probabilities[%d] = %g, partner2prob = %g",
-                                                probabilities[0], (int) probabilities.size() - 1,
-                                                probabilities[probabilities.size() - 1], partner2prob));
+                    wxLogError(_("Could not find a value in the probability distribution."));
+                    wxLogError("probabilities[0] = %g, &probabilities[%d] = %g, partner2prob = %g", probabilities[0],
+                               (int) probabilities.size() - 1, probabilities[probabilities.size() - 1], partner2prob);
                     return false;
                 }
 
@@ -1203,7 +1190,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (TournamentCompetition): {
-                asLogMessage(_("Couples selection: tournament"));
+                wxLogVerbose(_("Couples selection: tournament"));
 
                 // Get nb of points
                 int couplesSelectionTournamentNb;
@@ -1212,14 +1199,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                               &couplesSelectionTournamentNb, 3);
                 ThreadsManager().CritSectionConfig().Leave();
                 if (couplesSelectionTournamentNb < 2) {
-                    asLogWarning(_("The number of individuals for tournament selection is inferior to 2."));
-                    asLogWarning(_("The number of individuals for tournament selection has been changed."));
+                    wxLogWarning(_("The number of individuals for tournament selection is inferior to 2."));
+                    wxLogWarning(_("The number of individuals for tournament selection has been changed."));
                     couplesSelectionTournamentNb = 2;
                 }
                 if (couplesSelectionTournamentNb > sizeParents / 2) {
-                    asLogWarning(
-                            _("The number of individuals for tournament selection superior to the half of the intermediate population."));
-                    asLogWarning(_("The number of individuals for tournament selection has been changed."));
+                    wxLogWarning(_("The number of individuals for tournament selection superior to the half of the intermediate population."));
+                    wxLogWarning(_("The number of individuals for tournament selection has been changed."));
                     couplesSelectionTournamentNb = sizeParents / 2;
                 }
 
@@ -1247,12 +1233,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             default: {
-                asLogError(_("The desired couples selection method is not yet implemented."));
+                wxLogError(_("The desired couples selection method is not yet implemented."));
             }
 
         }
 
-        asLogMessage(wxString::Format("partner1 = %d, partner2 = %d", partner1, partner2));
+        wxLogVerbose("partner1 = %d, partner2 = %d", partner1, partner2);
 
 
         // Check that we don't have the same individual
@@ -1260,13 +1246,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             counterSame++;
             if (counterSame >= 100) {
                 for (int i = 0; i < sizeParents; i++) {
-                    asLogWarning(wxString::Format(_("m_scoresCalibTemp[%d] = %f"), i, m_scoresCalibTemp[i]));
+                    wxLogWarning(_("m_scoresCalibTemp[%d] = %f"), i, m_scoresCalibTemp[i]);
                 }
 
                 for (unsigned int i = 0; i < probabilities.size(); i++) {
-                    asLogWarning(wxString::Format(_("probabilities[%d] = %f"), i, probabilities[i]));
+                    wxLogWarning(_("probabilities[%d] = %f"), i, probabilities[i]);
                 }
-                asLogError(_("The same two partners were chosen more than 100 times. Lost in a loop."));
+                wxLogError(_("The same two partners were chosen more than 100 times. Lost in a loop."));
                 return false;
             }
             continue;
@@ -1275,10 +1261,10 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
         }
 
         // Chromosomes crossings
-        asLogMessage(_("Crossing chromosomes."));
+        wxLogVerbose(_("Crossing chromosomes."));
         switch (m_crossoverType) {
             case (SinglePointCrossover): {
-                asLogMessage(_("Crossing: single point crossover"));
+                wxLogVerbose(_("Crossing: single point crossover"));
 
                 // Get nb of points
                 int crossoverNbPoints = 1;
@@ -1317,7 +1303,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (DoublePointsCrossover): {
-                asLogMessage(_("Crossing: double points crossover"));
+                wxLogVerbose(_("Crossing: double points crossover"));
 
                 // Get nb of points
                 int crossoverNbPoints = 2;
@@ -1334,13 +1320,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
                                 if (crossingPoints[i_pts] == crossingPoint) {
                                     crossingPoints.erase(crossingPoints.begin() + i_pts);
-                                    asLogMessage(_("Crossing point already selected. Selection of a new one."));
+                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
                                     i_cross--;
                                     break;
                                 }
                             }
                         } else {
-                            asLogMessage(_("There are more crossing points than chromosomes."));
+                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -1370,7 +1356,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (MultiplePointsCrossover): {
-                asLogMessage(_("Crossing: multiple points crossover"));
+                wxLogVerbose(_("Crossing: multiple points crossover"));
 
                 // Get nb of points
                 int crossoverNbPoints;
@@ -1382,7 +1368,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 if (crossoverNbPoints >= chromosomeLength) {
-                    asLogError(_("The desired crossings number is superior or equal to the genes number."));
+                    wxLogError(_("The desired crossings number is superior or equal to the genes number."));
                     return false;
                 }
 
@@ -1395,13 +1381,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
                                 if (crossingPoints[i_pts] == crossingPoint) {
                                     crossingPoints.erase(crossingPoints.begin() + i_pts);
-                                    asLogMessage(_("Crossing point already selected. Selection of a new one."));
+                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
                                     i_cross--;
                                     break;
                                 }
                             }
                         } else {
-                            asLogMessage(_("There are more crossing points than chromosomes."));
+                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -1431,7 +1417,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (UniformCrossover): {
-                asLogMessage(_("Crossing: uniform crossover"));
+                wxLogVerbose(_("Crossing: uniform crossover"));
 
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
@@ -1485,7 +1471,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (LimitedBlending): {
-                asLogMessage(_("Crossing: limited blending"));
+                wxLogVerbose(_("Crossing: limited blending"));
 
                 // Get nb of points
                 int crossoverNbPoints;
@@ -1509,13 +1495,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
                                 if (crossingPoints[i_pts] == crossingPoint) {
                                     crossingPoints.erase(crossingPoints.begin() + i_pts);
-                                    asLogMessage(_("Crossing point already selected. Selection of a new one."));
+                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
                                     i_cross--;
                                     break;
                                 }
                             }
                         } else {
-                            asLogMessage(_("There are more crossing points than chromosomes."));
+                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -1545,7 +1531,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (LinearCrossover): {
-                asLogMessage(_("Crossing: linear crossover"));
+                wxLogVerbose(_("Crossing: linear crossover"));
 
                 // Get nb of points
                 int crossoverNbPoints;
@@ -1565,13 +1551,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
                                 if (crossingPoints[i_pts] == crossingPoint) {
                                     crossingPoints.erase(crossingPoints.begin() + i_pts);
-                                    asLogMessage(_("Crossing point already selected. Selection of a new one."));
+                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
                                     i_cross--;
                                     break;
                                 }
                             }
                         } else {
-                            asLogMessage(_("There are more crossing points than chromosomes."));
+                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -1617,7 +1603,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (HeuristicCrossover): {
-                asLogMessage(_("Crossing: heuristic crossover"));
+                wxLogVerbose(_("Crossing: heuristic crossover"));
 
                 // Get nb of points
                 int crossoverNbPoints;
@@ -1641,13 +1627,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
                                 if (crossingPoints[i_pts] == crossingPoint) {
                                     crossingPoints.erase(crossingPoints.begin() + i_pts);
-                                    asLogMessage(_("Crossing point already selected. Selection of a new one."));
+                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
                                     i_cross--;
                                     break;
                                 }
                             }
                         } else {
-                            asLogMessage(_("There are more crossing points than chromosomes."));
+                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -1677,7 +1663,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (BinaryLikeCrossover): {
-                asLogMessage(_("Crossing: binary-like crossover"));
+                wxLogVerbose(_("Crossing: binary-like crossover"));
 
                 // Get nb of points
                 ThreadsManager().CritSectionConfig().Enter();
@@ -1701,13 +1687,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
                                 if (crossingPoints[i_pts] == crossingPoint) {
                                     crossingPoints.erase(crossingPoints.begin() + i_pts);
-                                    asLogMessage(_("Crossing point already selected. Selection of a new one."));
+                                    wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
                                     i_cross--;
                                     break;
                                 }
                             }
                         } else {
-                            asLogMessage(_("There are more crossing points than chromosomes."));
+                            wxLogVerbose(_("There are more crossing points than chromosomes."));
                         }
                     }
                     crossingPoints.push_back(crossingPoint);
@@ -1737,7 +1723,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (LinearInterpolation): {
-                asLogMessage(_("Crossing: linear interpolation"));
+                wxLogVerbose(_("Crossing: linear interpolation"));
 
                 // Proceed to crossover
                 wxASSERT(m_parametersTemp.size() > (unsigned) partner1);
@@ -1763,7 +1749,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             case (FreeInterpolation): {
-                asLogMessage(_("Crossing: free interpolation"));
+                wxLogVerbose(_("Crossing: free interpolation"));
 
                 // Proceed to crossover
                 wxASSERT(m_parametersTemp.size() > (unsigned) partner1);
@@ -1789,7 +1775,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             }
 
             default: {
-                asLogError(_("The desired chromosomes crossing is not yet implemented."));
+                wxLogError(_("The desired chromosomes crossing is not yet implemented."));
             }
         }
 
@@ -1808,7 +1794,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
 {
     // NB: The parameters and scores are already sorted !
 
-    asLogMessage(_("Applying mutations."));
+    wxLogVerbose(_("Applying mutations."));
 
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -2045,7 +2031,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
         }
 
         default: {
-            asLogError(_("The desired mutation method is not yet implemented."));
+            wxLogError(_("The desired mutation method is not yet implemented."));
         }
     }
 

@@ -301,7 +301,7 @@ public:
     float GetReferenceValue(int i_stat, int i_ref) const
     {
         if (!m_hasReferenceValues) {
-            asLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
+            wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
             return NaNFloat;
         }
 
@@ -315,7 +315,7 @@ public:
     Array2DFloat GetReferenceValues() const
     {
         if (!m_hasReferenceValues) {
-            asLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
+            wxLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
             Array2DFloat nodata(0, 0);
             return nodata;
         }

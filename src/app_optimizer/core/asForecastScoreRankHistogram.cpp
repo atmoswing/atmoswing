@@ -52,7 +52,7 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
 
     // NaNs are not allowed as it messes up the ranks
     if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(ObservedVal)) {
-        asLogError(_("NaNs were found in the Rank Histogram processing function. Cannot continue."));
+        wxLogError(_("NaNs were found in the Rank Histogram processing function. Cannot continue."));
         return NaNFloat;
     }
 

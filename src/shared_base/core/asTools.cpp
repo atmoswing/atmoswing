@@ -933,12 +933,12 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
                     }
                     return asOUT_OF_RANGE;
                 }
                 if (showWarning == asSHOW_WARNINGS) {
-                    asLogWarning(_("The value was not found in the array."));
+                    wxLogWarning(_("The value was not found in the array."));
                 }
                 return asNOT_FOUND;
             }
@@ -949,12 +949,12 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
                     }
                     return asOUT_OF_RANGE;
                 }
                 if (showWarning == asSHOW_WARNINGS) {
-                    asLogWarning(_("The value was not found in the array."));
+                    wxLogWarning(_("The value was not found in the array."));
                 }
                 return asNOT_FOUND;
             }
@@ -989,12 +989,12 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
                     }
                     return asOUT_OF_RANGE;
                 }
                 if (showWarning == asSHOW_WARNINGS) {
-                    asLogWarning(_("The value was not found in the array."));
+                    wxLogWarning(_("The value was not found in the array."));
                 }
                 return asNOT_FOUND;
             }
@@ -1005,12 +1005,12 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
                     }
                     return asOUT_OF_RANGE;
                 }
                 if (showWarning == asSHOW_WARNINGS) {
-                    asLogWarning(_("The value was not found in the array."));
+                    wxLogWarning(_("The value was not found in the array."));
                 }
                 return asNOT_FOUND;
             }
@@ -1065,7 +1065,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         // Check that the value is whithin the array
         if (targetvalue > *pLast || targetvalue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1102,7 +1102,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1185,7 +1185,7 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         // Check that the value is whithin the array
         if (targetvalue > *pLast || targetvalue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1217,7 +1217,7 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1296,7 +1296,7 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         // Check that the value is whithin the array
         if (targetvalue > *pLast || targetvalue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1328,7 +1328,7 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         // Check that the value is whithin the array
         if (targetvalue < *pLast || targetvalue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                asLogWarning(wxString::Format(_("The value (%f) is out of the array range."), float(targetvalue)));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1417,7 +1417,7 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, con
             break;
         }
         default: {
-            asLogError(_("Incorrect value of the order enumeration."));
+            wxLogError(_("Incorrect value of the order enumeration."));
             return false;
         }
     }
@@ -1466,13 +1466,13 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     int ovlength = (int) (pArrOtherEnd - pArrOtherStart);
 
     if (vlength != ovlength) {
-        asLogError(_("The dimension of the two arrays are not equal."));
+        wxLogError(_("The dimension of the two arrays are not equal."));
         return false;
     } else if (vlength == 0) {
-        asLogMessage(_("The array has an unique value."));
+        wxLogVerbose(_("The array has an unique value."));
         return true;
     } else if (vlength < 0) {
-        asLogError(_("The array has a negative size..."));
+        wxLogError(_("The array has a negative size..."));
         return false;
     }
 
@@ -1496,7 +1496,7 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
             break;
         }
         default: {
-            asLogError(_("Incorrect value of the order enumeration."));
+            wxLogError(_("Incorrect value of the order enumeration."));
             return false;
         }
     }
@@ -1543,10 +1543,10 @@ bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
         int low = 0, high = vlength;
         asTools::QuickSort<T>(pArrRefStart, low, high, order);
     } else if (vlength == 0) {
-        asLogMessage(_("The array has an unique value."));
+        wxLogVerbose(_("The array has an unique value."));
         return true;
     } else {
-        asLogError(_("The array has a negative size..."));
+        wxLogError(_("The array has a negative size..."));
         return false;
     }
     return true;
@@ -1585,13 +1585,13 @@ bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *
         int low = 0, high = vlength;
         asTools::QuickSortMulti<T>(pArrRefStart, pArrOtherStart, low, high, order);
     } else if (vlength != ovlength) {
-        asLogError(_("The dimension of the two arrays are not equal."));
+        wxLogError(_("The dimension of the two arrays are not equal."));
         return false;
     } else if (vlength == 0) {
-        asLogMessage(_("The array has an unique value."));
+        wxLogVerbose(_("The array has an unique value."));
         return true;
     } else {
-        asLogError(_("The array has a negative size..."));
+        wxLogError(_("The array has a negative size..."));
         return false;
     }
     return true;
@@ -1626,7 +1626,7 @@ void asTools::QuickSort(T *pArr, const int low, const int high, const Order orde
                 break;
             }
             default: {
-                asLogError(_("Incorrect value of the order enumeration."));
+                wxLogError(_("Incorrect value of the order enumeration."));
                 break;
             }
         }
@@ -1679,7 +1679,7 @@ void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int 
                 break;
             }
             default: {
-                asLogError(_("Incorrect value of the order enumeration."));
+                wxLogError(_("Incorrect value of the order enumeration."));
                 break;
             }
         }

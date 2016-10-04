@@ -90,7 +90,7 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         }
 
         default: {
-            asLogError(_("The calculation method was not correcty set"));
+            wxLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }
@@ -99,7 +99,7 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
         return 100.0f * (dividend / divisor); // Can be NaN
     } else {
         if (dividend == 0) {
-            asLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
+            wxLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
             return NaNFloat;

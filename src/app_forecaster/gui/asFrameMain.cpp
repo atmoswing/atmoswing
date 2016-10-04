@@ -163,11 +163,11 @@ void asFrameMain::OnInit()
 
     if (!batchFilePath.IsEmpty()) {
         if (!m_batchForecasts.Load(batchFilePath)) {
-            asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+            wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
         }
 
         if (!OpenBatchForecasts()) {
-            asLogWarning(_("Failed to open the batch file ") + batchFilePath);
+            wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
         }
     } else {
         asWizardBatchForecasts wizard(this, &m_batchForecasts);
@@ -198,11 +198,11 @@ void asFrameMain::OnOpenBatchForecasts(wxCommandEvent &event)
 
     // Do open the batch file
     if (!m_batchForecasts.Load(batchFilePath)) {
-        asLogError(_("Failed to open the batch file ") + batchFilePath);
+        wxLogError(_("Failed to open the batch file ") + batchFilePath);
     }
 
     if (!OpenBatchForecasts()) {
-        asLogError(_("Failed to open the batch file ") + batchFilePath);
+        wxLogError(_("Failed to open the batch file ") + batchFilePath);
     }
 
 }
@@ -241,7 +241,7 @@ bool asFrameMain::SaveBatchForecasts()
     UpdateBatchForecasts();
 
     if (!m_batchForecasts.Save()) {
-        asLogError(_("Could not save the batch file."));
+        wxLogError(_("Could not save the batch file."));
         return false;
     }
 
@@ -425,7 +425,7 @@ void asFrameMain::OnStatusMethodUpdate(wxCommandEvent &event)
         m_ledProcessing->SetState(awxLED_OFF);
         m_ledSaving->SetState(awxLED_OFF);
     } else {
-        asLogError(_("Event not identified."));
+        wxLogError(_("Event not identified."));
     }
 }
 
@@ -465,10 +465,10 @@ void asFrameMain::LaunchForecasting(wxCommandEvent &event)
     // Get date
     double forecastDate = GetForecastDate();
     wxString forecastDateStr = asTime::GetStringTime(forecastDate, "DD.MM.YYYY hh:mm");
-    asLogMessage(wxString::Format(_("Trying to run the forecast for the date %s"), forecastDateStr));
+    wxLogVerbose(_("Trying to run the forecast for the date %s"), forecastDateStr);
 
     if (m_forecaster) {
-        asLogError(_("The forecaster is already processing."));
+        wxLogError(_("The forecaster is already processing."));
         return;
     }
 
@@ -476,7 +476,7 @@ void asFrameMain::LaunchForecasting(wxCommandEvent &event)
     m_forecaster = new asMethodForecasting(&m_batchForecasts, this);
     m_forecaster->SetForecastDate(forecastDate);
     if (!m_forecaster->Manager()) {
-        asLogError(_("Failed processing the forecast."));
+        wxLogError(_("Failed processing the forecast."));
 
         wxDELETE(m_forecaster);
 
@@ -488,7 +488,7 @@ void asFrameMain::LaunchForecasting(wxCommandEvent &event)
 
     // Log message
     wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
-    asLogMessage(wxString::Format(_("Forecast processed for the date %s"), realForecastDateStr));
+    wxLogVerbose(_("Forecast processed for the date %s"), realForecastDateStr);
 
     wxDELETE(m_forecaster);
 }

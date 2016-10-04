@@ -65,7 +65,7 @@ float asForecastScoreFinalTS::Assess(Array1DFloat &targetDates, Array1DFloat &fo
                 } else if (forecastScores[i] == 4) {
                     //
                 } else {
-                    asLogError(wxString::Format(_("The TS score (%f) is not an authorized value."), forecastScores[i]));
+                    wxLogError(_("The TS score (%f) is not an authorized value."), forecastScores[i]);
                     return NaNFloat;
                 }
             }

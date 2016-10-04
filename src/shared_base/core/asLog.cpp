@@ -35,14 +35,6 @@ asLog::asLog()
 {
     m_logFile = NULL;
     m_logChain = NULL;
-    m_level = 2;
-    m_target = asLog::File;
-    m_active = true;
-    m_messageBoxOnError = false;
-#if wxUSE_GUI
-    m_messageBoxOnError = true;
-#endif
-    m_state = wxEmptyString;
 }
 
 asLog::~asLog()
@@ -94,150 +86,12 @@ bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
     return true;
 }
 
-bool asLog::IsVerbose()
+void asLog::SetLevel(int val)
 {
-    return m_level >= 3;
-}
-
-void asLog::SetLogNull()
-{
-    wxLogNull log;
-}
-
-void asLog::Suspend()
-{
-    wxLog::Suspend();
-    wxLogMessage(_("Log suspended."));
-}
-
-void asLog::Resume()
-{
-    wxLog::Resume();
-    wxLogMessage(_("Log resumed."));
-}
-
-void asLog::Flush()
-{
-#if wxUSE_GUI
-    if (m_logChain) {
-        m_logChain->Flush();
-    } else if (m_logFile) {
-        m_logFile->Flush();
+    switch (val) {
+        case 1 : wxLog::SetLogLevel(wxLOG_Error);
+        case 2 : wxLog::SetLogLevel(wxLOG_Message);
+        case 3 : wxLog::SetLogLevel(wxLOG_Info);
+        default: wxLog::SetLogLevel(wxLOG_Message);
     }
-#else
-    if (m_logFile) {
-        m_logFile->Flush();
-    }
-#endif
-}
-
-void asLog::Error(const wxString &msg)
-{
-    if (m_level >= 1) {
-        if (g_guiMode && m_active) {
-            m_critSectionLog.Enter();
-            wxLogError(msg);
-            if (m_messageBoxOnError) {
-#if wxUSE_GUI
-                wxMessageBox(msg, _("An error occured"));
-#endif
-            }
-            m_critSectionLog.Leave();
-        } else {
-            bool processed = false;
-
-            if (m_target == asLog::File || m_target == asLog::Both) {
-                wxLogError(msg);
-                processed = true;
-            }
-
-            if (m_target == asLog::Screen || m_target == asLog::Both) {
-                wxMessageOutput *msgOut = wxMessageOutput::Get();
-                if (msgOut) {
-                    wxString msgNew = _("Error: ") + msg;
-                    msgOut->Printf(msgNew);
-                    processed = true;
-                } else {
-                    wxFAIL_MSG(_("No wxMessageOutput object?"));
-                }
-            }
-
-            if (!processed) {
-                wxPrintf("Error: %s\n", msg);
-            }
-        }
-    }
-}
-
-void asLog::Warning(const wxString &msg)
-{
-    if (m_level >= 2) {
-        if (g_guiMode && m_active) {
-            m_critSectionLog.Enter();
-            wxLogWarning(msg);
-            m_critSectionLog.Leave();
-        } else {
-            bool processed = false;
-
-            if (m_target == asLog::File || m_target == asLog::Both) {
-                wxLogWarning(msg);
-                processed = true;
-            }
-
-            if (m_target == asLog::Screen || m_target == asLog::Both) {
-                wxMessageOutput *msgOut = wxMessageOutput::Get();
-                if (msgOut) {
-                    wxString msgNew = _("Warning: ") + msg;
-                    msgOut->Printf(msgNew);
-                    processed = true;
-                } else {
-                    wxFAIL_MSG(_("No wxMessageOutput object?"));
-                }
-            }
-
-            if (!processed) {
-                wxPrintf("Warning: %s\n", msg);
-            }
-        }
-    }
-}
-
-void asLog::Message(const wxString &msg, bool force)
-{
-    if ((m_level > 0 && force) || m_level >= 3) {
-        if (g_guiMode && m_active) {
-            m_critSectionLog.Enter();
-            wxLogMessage(msg);
-            m_critSectionLog.Leave();
-        } else {
-            bool processed = false;
-
-            if (m_target == asLog::File || m_target == asLog::Both) {
-                wxLogMessage(msg);
-                processed = true;
-            }
-
-            if (m_target == asLog::Screen || m_target == asLog::Both) {
-                wxMessageOutput *msgOut = wxMessageOutput::Get();
-                if (msgOut) {
-                    msgOut->Printf(msg);
-                    processed = true;
-                } else {
-                    wxFAIL_MSG(_("No wxMessageOutput object?"));
-                }
-            }
-
-            if (!processed) {
-                wxPrintf("%s\n", msg);
-            }
-        }
-    }
-}
-
-void asLog::State(const wxString &msg)
-{
-    m_critSectionLog.Enter();
-    m_state = msg;
-    m_critSectionLog.Leave();
-    Message(msg); // Also log it
 }

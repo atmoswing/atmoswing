@@ -111,7 +111,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
         results.SetForecastScores(finalForecastScores);
     } else {
         if (stationsNb > 1) {
-            asLogError(_("The processing of multivariate complex scores is not implemented yet."));
+            wxLogError(_("The processing of multivariate complex scores is not implemented yet."));
             return false;
         }
 

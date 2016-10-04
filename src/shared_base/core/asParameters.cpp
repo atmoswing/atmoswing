@@ -137,10 +137,10 @@ void asParameters::AddPredictor(int i_step)
 
 bool asParameters::LoadFromFile(const wxString &filePath)
 {
-    asLogMessage(_("Loading parameters file."));
+    wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
-        asLogError(_("The given path to the parameters file is empty."));
+        wxLogError(_("The given path to the parameters file is empty."));
         return false;
     }
 
@@ -193,7 +193,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     FixWeights();
     FixCoordinates();
 
-    asLogMessage(_("Parameters file loaded."));
+    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -528,14 +528,14 @@ bool asParameters::SetPreloadingProperties()
                 wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
                 if (method.IsSameAs("Gradients")) {
                     if (preprocSize != 1) {
-                        asLogError(wxString::Format(msg, preprocSize, 1, "Gradient"));
+                        wxLogError(msg, preprocSize, 1, "Gradient");
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
                     preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
                 } else if (method.IsSameAs("HumidityFlux")) {
                     if (preprocSize != 4) {
-                        asLogError(wxString::Format(msg, preprocSize, 4, "HumidityFlux"));
+                        wxLogError(msg, preprocSize, 4, "HumidityFlux");
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
@@ -543,22 +543,21 @@ bool asParameters::SetPreloadingProperties()
                 } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
                            method.IsSameAs("HumidityIndex")) {
                     if (preprocSize != 2) {
-                        asLogError(wxString::Format(msg, preprocSize, 2, "HumidityIndex"));
+                        wxLogError(msg, preprocSize, 2, "HumidityIndex");
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
                     preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
                     if (preprocSize != 4) {
-                        asLogError(wxString::Format(msg, preprocSize, 4, "FormerHumidityIndex"));
+                        wxLogError(msg, preprocSize, 4, "FormerHumidityIndex");
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(i_step, i_ptor, 0));
                     preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 0));
                     preprocTimeHours.push_back(GetPreprocessTimeHours(i_step, i_ptor, 1));
                 } else {
-                    asLogWarning(wxString::Format(
-                            _("The %s preprocessing method is not yet handled with the preload option."), method));
+                    wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
 
                 if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
@@ -576,34 +575,33 @@ bool asParameters::InputsOK() const
 {
     // Time properties
     if (GetArchiveStart() <= 0) {
-        asLogError(_("The beginning of the archive period was not provided in the parameters file."));
+        wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
     if (GetArchiveEnd() <= 0) {
-        asLogError(_("The end of the archive period was not provided in the parameters file."));
+        wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayTargetTimeStepHours() <= 0) {
-        asLogError(_("The time step was not provided in the parameters file."));
+        wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
-        asLogError(_("The time step was not provided in the parameters file."));
+        wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
         GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
         if (GetTimeArrayTargetPredictandSerieName().IsEmpty()) {
-            asLogError(
-                    _("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
+            wxLogError(_("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
             return false;
         }
         if (GetTimeArrayTargetPredictandMinThreshold() == GetTimeArrayTargetPredictandMaxThreshold()) {
-            asLogError(_("The provided min/max predictand thresholds are equal in the parameters file."));
+            wxLogError(_("The provided min/max predictand thresholds are equal in the parameters file."));
             return false;
         }
     }
@@ -611,12 +609,11 @@ bool asParameters::InputsOK() const
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
         if (GetTimeArrayAnalogsIntervalDays() <= 0) {
-            asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
+            wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
         if (GetTimeArrayAnalogsExcludeDays() <= 0) {
-            asLogError(
-                    _("The number of days to exclude around the target date was not provided in the parameters file."));
+            wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
     }
@@ -624,68 +621,57 @@ bool asParameters::InputsOK() const
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumber(i) <= 0) {
-            asLogError(
-                    wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            wxLogError(_("The number of analogs (step %d) was not provided in the parameters file."), i);
             return false;
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 if (GetPreprocessMethod(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
-                            i, j));
+                    wxLogError(_("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (GetPreprocessDatasetId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessDataId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                 }
             } else {
                 if (GetPredictorDatasetId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The dataset (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    wxLogError(_("The dataset (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
                 if (GetPredictorDataId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The data (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    wxLogError(_("The data (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
             }
 
             if (GetPredictorGridType(i, j).IsEmpty()) {
-                asLogError(
-                        wxString::Format(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i,
-                                         j));
+                wxLogError(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i, j);
                 return false;
             }
             if (GetPredictorXptsnb(i, j) == 0) {
-                asLogError(wxString::Format(
-                        _("The X points nb value (step %d, predictor %d) was not provided in the parameters file."), i,
-                        j));
+                wxLogError(_("The X points nb value (step %d, predictor %d) was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorYptsnb(i, j) == 0) {
-                asLogError(wxString::Format(
-                        _("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."), i,
-                        j));
+                wxLogError(_("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorCriteria(i, j).IsEmpty()) {
-                asLogError(wxString::Format(
-                        _("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                wxLogError(_("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
         }
@@ -780,7 +766,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
     VectorInt ids;
 
     if (stationIdsString.IsEmpty()) {
-        asLogError(_("The station ID was not provided."));
+        wxLogError(_("The station ID was not provided."));
         return ids;
     }
 
@@ -795,13 +781,13 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
 
         // Check that it contains only 1 opening bracket
         if (subStr.Find("(") != wxNOT_FOUND) {
-            asLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
+            wxLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
             return ids;
         }
 
         // Check that it contains 1 closing bracket at the end
         if (subStr.Find(")") != subStr.size() - 1 && subStr.Find(")'") != subStr.size() - 2) {
-            asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
+            wxLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
             return ids;
         }
 
@@ -821,7 +807,7 @@ VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
         // Check for single value
         if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND ||
             stationIdsString.Find(",") != wxNOT_FOUND) {
-            asLogError(_("The format of the station ID is not correct (should be only digits)."));
+            wxLogError(_("The format of the station ID is not correct (should be only digits)."));
             return ids;
         }
         int id = wxAtoi(stationIdsString);
@@ -1157,7 +1143,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
 bool asParameters::SetTimeArrayTargetTimeStepHours(double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the target time step is null"));
+        wxLogError(_("The provided value for the target time step is null"));
         return false;
     }
     m_timeArrayTargetTimeStepHours = val;
@@ -1167,7 +1153,7 @@ bool asParameters::SetTimeArrayTargetTimeStepHours(double val)
 bool asParameters::SetTimeArrayAnalogsTimeStepHours(double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the analogs time step is null"));
+        wxLogError(_("The provided value for the analogs time step is null"));
         return false;
     }
     m_timeArrayAnalogsTimeStepHours = val;
@@ -1177,7 +1163,7 @@ bool asParameters::SetTimeArrayAnalogsTimeStepHours(double val)
 bool asParameters::SetTimeArrayTargetMode(const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the target time array mode is null"));
+        wxLogError(_("The provided value for the target time array mode is null"));
         return false;
     }
     m_timeArrayTargetMode = val;
@@ -1187,7 +1173,7 @@ bool asParameters::SetTimeArrayTargetMode(const wxString &val)
 bool asParameters::SetTimeArrayTargetPredictandSerieName(const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictand serie name is null"));
+        wxLogError(_("The provided value for the predictand serie name is null"));
         return false;
     }
     m_timeArrayTargetPredictandSerieName = val;
@@ -1197,7 +1183,7 @@ bool asParameters::SetTimeArrayTargetPredictandSerieName(const wxString &val)
 bool asParameters::SetTimeArrayTargetPredictandMinThreshold(float val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictand min threshold is null"));
+        wxLogError(_("The provided value for the predictand min threshold is null"));
         return false;
     }
     m_timeArrayTargetPredictandMinThreshold = val;
@@ -1207,7 +1193,7 @@ bool asParameters::SetTimeArrayTargetPredictandMinThreshold(float val)
 bool asParameters::SetTimeArrayTargetPredictandMaxThreshold(float val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictand max threshold is null"));
+        wxLogError(_("The provided value for the predictand max threshold is null"));
         return false;
     }
     m_timeArrayTargetPredictandMaxThreshold = val;
@@ -1217,7 +1203,7 @@ bool asParameters::SetTimeArrayTargetPredictandMaxThreshold(float val)
 bool asParameters::SetTimeArrayAnalogsMode(const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the analogy time array mode is null"));
+        wxLogError(_("The provided value for the analogy time array mode is null"));
         return false;
     }
     m_timeArrayAnalogsMode = val;
@@ -1227,7 +1213,7 @@ bool asParameters::SetTimeArrayAnalogsMode(const wxString &val)
 bool asParameters::SetTimeArrayAnalogsExcludeDays(int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the 'exclude days' is null"));
+        wxLogError(_("The provided value for the 'exclude days' is null"));
         return false;
     }
     m_timeArrayAnalogsExcludeDays = val;
@@ -1237,7 +1223,7 @@ bool asParameters::SetTimeArrayAnalogsExcludeDays(int val)
 bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the analogs interval days is null"));
+        wxLogError(_("The provided value for the analogs interval days is null"));
         return false;
     }
     m_timeArrayAnalogsIntervalDays = val;
@@ -1248,7 +1234,7 @@ bool asParameters::SetPredictandStationIds(VectorInt val)
 {
     for (int i = 0; i < (int) val.size(); i++) {
         if (asTools::IsNaN(val[i])) {
-            asLogError(_("The provided value for the predictand ID is null"));
+            wxLogError(_("The provided value for the predictand ID is null"));
             return false;
         }
     }
@@ -1271,7 +1257,7 @@ bool asParameters::SetPredictandStationIds(wxString val)
 bool asParameters::SetPredictandDatasetId(const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictand dataset ID is null"));
+        wxLogError(_("The provided value for the predictand dataset ID is null"));
         return false;
     }
     m_predictandDatasetId = val;
@@ -1281,7 +1267,7 @@ bool asParameters::SetPredictandDatasetId(const wxString &val)
 bool asParameters::SetPredictandTimeHours(double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictand time (hours) is null"));
+        wxLogError(_("The provided value for the predictand time (hours) is null"));
         return false;
     }
     m_predictandTimeHours = val;
@@ -1291,7 +1277,7 @@ bool asParameters::SetPredictandTimeHours(double val)
 bool asParameters::SetAnalogsNumber(int i_step, int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the analogs number is null"));
+        wxLogError(_("The provided value for the analogs number is null"));
         return false;
     }
     m_steps[i_step].analogsNumber = val;
@@ -1301,12 +1287,12 @@ bool asParameters::SetAnalogsNumber(int i_step, int val)
 bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, VectorString val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided preload data IDs vector is empty."));
+        wxLogError(_("The provided preload data IDs vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (val[i].IsEmpty()) {
-                asLogError(_("There are empty values in the provided preload data IDs vector."));
+                wxLogError(_("There are empty values in the provided preload data IDs vector."));
                 return false;
             }
         }
@@ -1318,7 +1304,7 @@ bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, VectorString v
 bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, wxString val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided preload data id parameter is empty."));
+        wxLogError(_("The provided preload data id parameter is empty."));
         return false;
     }
 
@@ -1331,12 +1317,12 @@ bool asParameters::SetPreloadDataIds(int i_step, int i_predictor, wxString val)
 bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided preload time (hours) vector is empty."));
+        wxLogError(_("The provided preload time (hours) vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (asTools::IsNaN(val[i])) {
-                asLogError(_("There are NaN values in the provided preload time (hours) vector."));
+                wxLogError(_("There are NaN values in the provided preload time (hours) vector."));
                 return false;
             }
         }
@@ -1348,7 +1334,7 @@ bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble
 bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided preload time parameter is a NaN."));
+        wxLogError(_("The provided preload time parameter is a NaN."));
         return false;
     }
 
@@ -1360,12 +1346,12 @@ bool asParameters::SetPreloadTimeHours(int i_step, int i_predictor, double val)
 bool asParameters::SetPreloadLevels(int i_step, int i_predictor, VectorFloat val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided 'preload levels' vector is empty."));
+        wxLogError(_("The provided 'preload levels' vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (asTools::IsNaN(val[i])) {
-                asLogError(_("There are NaN values in the provided 'preload levels' vector."));
+                wxLogError(_("There are NaN values in the provided 'preload levels' vector."));
                 return false;
             }
         }
@@ -1377,7 +1363,7 @@ bool asParameters::SetPreloadLevels(int i_step, int i_predictor, VectorFloat val
 bool asParameters::SetPreloadLevels(int i_step, int i_predictor, float val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided preload level parameter is a NaN."));
+        wxLogError(_("The provided preload level parameter is a NaN."));
         return false;
     }
 
@@ -1389,7 +1375,7 @@ bool asParameters::SetPreloadLevels(int i_step, int i_predictor, float val)
 bool asParameters::SetPreloadXmin(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the preload xMin is null"));
+        wxLogError(_("The provided value for the preload xMin is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].preloadXmin = val;
@@ -1399,7 +1385,7 @@ bool asParameters::SetPreloadXmin(int i_step, int i_predictor, double val)
 bool asParameters::SetPreloadXptsnb(int i_step, int i_predictor, int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the preload points number on X is null"));
+        wxLogError(_("The provided value for the preload points number on X is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].preloadXptsnb = val;
@@ -1409,7 +1395,7 @@ bool asParameters::SetPreloadXptsnb(int i_step, int i_predictor, int val)
 bool asParameters::SetPreloadYmin(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the preload yMin is null"));
+        wxLogError(_("The provided value for the preload yMin is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].preloadYmin = val;
@@ -1419,7 +1405,7 @@ bool asParameters::SetPreloadYmin(int i_step, int i_predictor, double val)
 bool asParameters::SetPreloadYptsnb(int i_step, int i_predictor, int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the preload points number on Y is null"));
+        wxLogError(_("The provided value for the preload points number on Y is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].preloadYptsnb = val;
@@ -1429,7 +1415,7 @@ bool asParameters::SetPreloadYptsnb(int i_step, int i_predictor, int val)
 bool asParameters::SetPreprocessMethod(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess method is null"));
+        wxLogError(_("The provided value for the preprocess method is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].preprocessMethod = val;
@@ -1441,7 +1427,7 @@ wxString asParameters::GetPreprocessDatasetId(int i_step, int i_predictor, int i
     if (m_steps[i_step].predictors[i_predictor].preprocessDatasetIds.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].predictors[i_predictor].preprocessDatasetIds[i_dataset];
     } else {
-        asLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -1449,7 +1435,7 @@ wxString asParameters::GetPreprocessDatasetId(int i_step, int i_predictor, int i
 bool asParameters::SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess dataset ID is null"));
+        wxLogError(_("The provided value for the preprocess dataset ID is null"));
         return false;
     }
 
@@ -1468,7 +1454,7 @@ wxString asParameters::GetPreprocessDataId(int i_step, int i_predictor, int i_da
     if (m_steps[i_step].predictors[i_predictor].preprocessDataIds.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].predictors[i_predictor].preprocessDataIds[i_dataset];
     } else {
-        asLogError(_("Trying to access to an element outside of preprocessDataIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessDataIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -1476,7 +1462,7 @@ wxString asParameters::GetPreprocessDataId(int i_step, int i_predictor, int i_da
 bool asParameters::SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess data ID is null"));
+        wxLogError(_("The provided value for the preprocess data ID is null"));
         return false;
     }
 
@@ -1495,7 +1481,7 @@ float asParameters::GetPreprocessLevel(int i_step, int i_predictor, int i_datase
     if (m_steps[i_step].predictors[i_predictor].preprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].predictors[i_predictor].preprocessLevels[i_dataset];
     } else {
-        asLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
         return NaNFloat;
     }
 }
@@ -1503,7 +1489,7 @@ float asParameters::GetPreprocessLevel(int i_step, int i_predictor, int i_datase
 bool asParameters::SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the preprocess level is null"));
+        wxLogError(_("The provided value for the preprocess level is null"));
         return false;
     }
 
@@ -1522,7 +1508,7 @@ double asParameters::GetPreprocessTimeHours(int i_step, int i_predictor, int i_d
     if (m_steps[i_step].predictors[i_predictor].preprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
         return m_steps[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset];
     } else {
-        asLogError(_("Trying to access to an element outside of preprocessTimeHours (std) in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessTimeHours (std) in the parameters object."));
         return NaNDouble;
     }
 }
@@ -1530,7 +1516,7 @@ double asParameters::GetPreprocessTimeHours(int i_step, int i_predictor, int i_d
 bool asParameters::SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the preprocess time (hours) is null"));
+        wxLogError(_("The provided value for the preprocess time (hours) is null"));
         return false;
     }
 
@@ -1547,7 +1533,7 @@ bool asParameters::SetPreprocessTimeHours(int i_step, int i_predictor, int i_dat
 bool asParameters::SetPredictorDatasetId(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor dataset is null"));
+        wxLogError(_("The provided value for the predictor dataset is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].datasetId = val;
@@ -1557,7 +1543,7 @@ bool asParameters::SetPredictorDatasetId(int i_step, int i_predictor, const wxSt
 bool asParameters::SetPredictorDataId(int i_step, int i_predictor, wxString val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor data is null"));
+        wxLogError(_("The provided value for the predictor data is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].dataId = val;
@@ -1567,7 +1553,7 @@ bool asParameters::SetPredictorDataId(int i_step, int i_predictor, wxString val)
 bool asParameters::SetPredictorLevel(int i_step, int i_predictor, float val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor level is null"));
+        wxLogError(_("The provided value for the predictor level is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].level = val;
@@ -1577,7 +1563,7 @@ bool asParameters::SetPredictorLevel(int i_step, int i_predictor, float val)
 bool asParameters::SetPredictorGridType(int i_step, int i_predictor, wxString val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor grid type is null"));
+        wxLogError(_("The provided value for the predictor grid type is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].gridType = val;
@@ -1587,7 +1573,7 @@ bool asParameters::SetPredictorGridType(int i_step, int i_predictor, wxString va
 bool asParameters::SetPredictorXmin(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor xMin is null"));
+        wxLogError(_("The provided value for the predictor xMin is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].xMin = val;
@@ -1597,7 +1583,7 @@ bool asParameters::SetPredictorXmin(int i_step, int i_predictor, double val)
 bool asParameters::SetPredictorXptsnb(int i_step, int i_predictor, int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor points number on X is null"));
+        wxLogError(_("The provided value for the predictor points number on X is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].xPtsNb = val;
@@ -1607,7 +1593,7 @@ bool asParameters::SetPredictorXptsnb(int i_step, int i_predictor, int val)
 bool asParameters::SetPredictorXstep(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor X step is null"));
+        wxLogError(_("The provided value for the predictor X step is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].xStep = val;
@@ -1617,7 +1603,7 @@ bool asParameters::SetPredictorXstep(int i_step, int i_predictor, double val)
 bool asParameters::SetPredictorXshift(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor X shift is null"));
+        wxLogError(_("The provided value for the predictor X shift is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].xShift = val;
@@ -1627,7 +1613,7 @@ bool asParameters::SetPredictorXshift(int i_step, int i_predictor, double val)
 bool asParameters::SetPredictorYmin(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor yMin is null"));
+        wxLogError(_("The provided value for the predictor yMin is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].yMin = val;
@@ -1637,7 +1623,7 @@ bool asParameters::SetPredictorYmin(int i_step, int i_predictor, double val)
 bool asParameters::SetPredictorYptsnb(int i_step, int i_predictor, int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor points number on Y is null"));
+        wxLogError(_("The provided value for the predictor points number on Y is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].yPtsNb = val;
@@ -1647,7 +1633,7 @@ bool asParameters::SetPredictorYptsnb(int i_step, int i_predictor, int val)
 bool asParameters::SetPredictorYstep(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor Y step is null"));
+        wxLogError(_("The provided value for the predictor Y step is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].yStep = val;
@@ -1657,7 +1643,7 @@ bool asParameters::SetPredictorYstep(int i_step, int i_predictor, double val)
 bool asParameters::SetPredictorYshift(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor Y shift is null"));
+        wxLogError(_("The provided value for the predictor Y shift is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].yShift = val;
@@ -1667,7 +1653,7 @@ bool asParameters::SetPredictorYshift(int i_step, int i_predictor, double val)
 bool asParameters::SetPredictorFlatAllowed(int i_step, int i_predictor, int val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the 'flat allowed' property is null"));
+        wxLogError(_("The provided value for the 'flat allowed' property is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].flatAllowed = val;
@@ -1677,7 +1663,7 @@ bool asParameters::SetPredictorFlatAllowed(int i_step, int i_predictor, int val)
 bool asParameters::SetPredictorTimeHours(int i_step, int i_predictor, double val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor time (hours) is null"));
+        wxLogError(_("The provided value for the predictor time (hours) is null"));
         return false;
     }
 
@@ -1689,7 +1675,7 @@ bool asParameters::SetPredictorTimeHours(int i_step, int i_predictor, double val
 bool asParameters::SetPredictorCriteria(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor criteria is null"));
+        wxLogError(_("The provided value for the predictor criteria is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].criteria = val;
@@ -1699,7 +1685,7 @@ bool asParameters::SetPredictorCriteria(int i_step, int i_predictor, const wxStr
 bool asParameters::SetPredictorWeight(int i_step, int i_predictor, float val)
 {
     if (asTools::IsNaN(val)) {
-        asLogError(_("The provided value for the predictor weight is null"));
+        wxLogError(_("The provided value for the predictor weight is null"));
         return false;
     }
     m_steps[i_step].predictors[i_predictor].weight = val;

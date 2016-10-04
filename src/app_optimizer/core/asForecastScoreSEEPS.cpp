@@ -65,10 +65,10 @@ float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &Forcas
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
-        asLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
+        wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNFloat;
     } else if (nbForecasts <= 2) {
-        asLogWarning(_("Not enough elements to process the CRPS."));
+        wxLogWarning(_("Not enough elements to process the CRPS."));
         return NaNFloat;
     }
 

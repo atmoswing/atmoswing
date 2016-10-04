@@ -150,7 +150,7 @@ bool asResultsAnalogsDates::Load()
 
     // Check last value
     if (m_targetDates[m_targetDates.size() - 1] < m_targetDates[0]) {
-        asLogError(_("The target date array is not consistent in the temp file (last value makes no sense)."));
+        wxLogError(_("The target date array is not consistent in the temp file (last value makes no sense)."));
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
     }

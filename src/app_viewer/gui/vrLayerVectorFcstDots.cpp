@@ -62,7 +62,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry *geometry, void *data)
     }
 
     if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
-        asLogError(_("Error creating feature"));
+        wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;
     }
@@ -129,7 +129,7 @@ void vrLayerVectorFcstDots::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
         _Paint(gc, path, normValue);
         _AddLabel(gc, point, realValue);
     } else {
-        asLogError(_("Drawing of the symbol failed."));
+        wxLogError(_("Drawing of the symbol failed."));
     }
 
     return;

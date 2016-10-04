@@ -47,7 +47,7 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
                 return false;
         }
         if (containsNaNs) {
-            asLogError(_("The dates selection contains NaNs"));
+            wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }
@@ -71,7 +71,7 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
 bool asMethodOptimizer::Validate(asParametersOptimization &params)
 {
     if (!params.HasValidationPeriod()) {
-        asLogWarning("The parameters have no validation period !");
+        wxLogWarning("The parameters have no validation period !");
         return false;
     }
 
@@ -96,7 +96,7 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
                 return false;
         }
         if (containsNaNs) {
-            asLogError(_("The dates selection contains NaNs"));
+            wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }

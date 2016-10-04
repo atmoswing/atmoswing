@@ -158,7 +158,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         errorField = errorField.Remove(errorField.Length() - 3, 2); // Removes the last coma
         wxString errorMessage =
                 _("The following parameters are not compatible with the single assessment: ") + errorField;
-        asLogError(errorMessage);
+        wxLogError(errorMessage);
         return false;
     }
 
@@ -206,7 +206,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                     return false;
             }
             if (containsNaNs) {
-                asLogError(_("The dates selection contains NaNs"));
+                wxLogError(_("The dates selection contains NaNs"));
                 return false;
             }
             if (!GetAnalogsValues(anaValues, params, anaDates, i_step))
