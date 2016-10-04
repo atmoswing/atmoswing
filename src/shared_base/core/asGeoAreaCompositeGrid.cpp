@@ -38,7 +38,7 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
 {
     // If empty, set Regular.
     if (type.IsEmpty()) {
-        asLogMessage(_("The given grid type is empty. A regular grid has been considered."));
+        wxLogVerbose(_("The given grid type is empty. A regular grid has been considered."));
         double Xwidth = (double) (Xptsnb - 1) * Xstep;
         double Ywidth = (double) (Yptsnb - 1) * Ystep;
         asGeoAreaCompositeGrid *area = new asGeoAreaCompositeRegularGrid(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep,
@@ -59,7 +59,7 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
                                                                           Level, Height, flatAllowed);
         return area;
     } else {
-        asLogError(wxString::Format(_("Given grid type: %s"), type));
+        wxLogError(_("Given grid type: %s"), type);
         asThrowException("The given grid type doesn't correspond to any existing option.");
     }
 }
@@ -77,7 +77,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin
     } else if (type.IsSameAs("GaussianT382", false)) {
         asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT382);
     } else {
-        asLogError(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+        wxLogError(_("Cannot build axis for the given grid type (%s)."), type);
         asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
     }
 
@@ -105,7 +105,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin
     } else if (type.IsSameAs("GaussianT382", false)) {
         asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT382);
     } else {
-        asLogError(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+        wxLogError(_("Cannot build axis for the given grid type (%s)."), type);
         asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
     }
 
@@ -274,7 +274,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis() const
             // Do nothing here
         } else {
             if (GetComposite(i_area).GetXmin() == GetComposite(i_area - 1).GetXmin()) {
-                asLogError(_("This function has not been tested"));
+                wxLogError(_("This function has not been tested"));
 
                 Array1DDouble Yaxisbis = GetYaxisComposite(i_area);
 

@@ -162,13 +162,13 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                 wxString fileName = fileNames[i_file];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[i_file];
-                asLogMessage(wxString::Format(_("Downloading file %s."), filePath)); // Do not log the URL, it bugs !
+                wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
                 if (!currentFilePath.DirExists()) {
                     if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
-                        asLogError(_("The directory to save real-time predictors data cannot be created."));
+                        wxLogError(_("The directory to save real-time predictors data cannot be created."));
                         wxDELETE(errorbuffer);
                         return asFAILED;
                     }
@@ -180,7 +180,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                                                wxString::Format(_("Downloading: %d / %d files"), i_file + 1,
                                                                 (int) urls.size());
                 if (!ProgressBar.Update(i_file, updatedialogmessage)) {
-                    asLogMessage(_("The download has been canceled by the user."));
+                    wxLogVerbose(_("The download has been canceled by the user."));
                     wxDELETE(errorbuffer);
                     return asCANCELLED;
                 }
@@ -225,13 +225,12 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
                     // Log in case of failure
                     if (CURLE_OK != res) {
-                        asLogWarning(wxString::Format(_("Failed downloading file. Curl error code: %d"), int(res)));
-                        asLogWarning(wxString::Format(_("Curl error message: %s"), errorbuffer));
+                        wxLogWarning(_("Failed downloading file. Curl error code: %d"), int(res));
+                        wxLogWarning(_("Curl error message: %s"), errorbuffer);
                         wxDELETE(errorbuffer);
                         return asFAILED;
                     } else {
-                        asLogMessage(wxString::Format(_("File %d/%d downloaded successfully."), i_file + 1,
-                                                      (int) urls.size()));
+                        wxLogVerbose(_("File %d/%d downloaded successfully."), i_file + 1, (int) urls.size());
                     }
                 }
             }

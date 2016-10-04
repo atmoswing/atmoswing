@@ -678,7 +678,7 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
             break;
         }
         default: {
-            asLogError(_("Incorrect method."));
+            wxLogError(_("Incorrect method."));
         }
     }
 
@@ -804,7 +804,7 @@ TimeStruct asTime::GetTimeStruct(double mjd, int method)
             break;
 
         default:
-            asLogError(_("Incorrect method."));
+            wxLogError(_("Incorrect method."));
     }
 
     return date;

@@ -91,10 +91,12 @@ bool asMethodCalibrator::Manager()
     // Calibrate
     if (Calibrate(params)) {
         // Display processing time
-        asLogMessageImportant(wxString::Format(_("The whole processing took %ldms to execute"), sw.Time()));
-        asLogState(_("Calibration over."));
+        wxLogMessage(_("The whole processing took %ldms to execute"), sw.Time());
+#if wxUSE_GUI
+        wxLogStatus(_("Calibration over."));
+#endif
     } else {
-        asLogError(_("The parameters could not be calibrated"));
+        wxLogError(_("The parameters could not be calibrated"));
     }
 
     // Delete preloaded data and cleanup
@@ -353,7 +355,7 @@ bool asMethodCalibrator::ProceedToDataPreloading(asParametersScoring &params)
     ThreadsManager().CritSectionConfig().Leave();
 
     if (parallelDataLoad) {
-        asLogMessage(_("Preloading data with threads."));
+        wxLogVerbose(_("Preloading data with threads."));
     }
 
     for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
@@ -403,7 +405,7 @@ bool asMethodCalibrator::ProceedToDataPreloading(asParametersScoring &params)
     if (parallelDataLoad) {
         // Wait until all done
         ThreadsManager().Wait(asThread::PreloadData);
-        asLogMessage(_("Data preloaded with threads."));
+        wxLogVerbose(_("Data preloaded with threads."));
     }
 
     return true;
@@ -417,16 +419,14 @@ bool asMethodCalibrator::CheckDataIsPreloaded(const asParametersScoring &params)
                 if (!params.NeedsPreprocessing(i_step, i_ptor)) {
                     for (int i_dat = 0; i_dat < params.GetPredictorDataIdVector(i_step, i_ptor).size(); i_dat++) {
                         if (!HasPreloadedData(i_step, i_ptor, i_dat)) {
-                            asLogError(wxString::Format(
-                                    _("No data was preloaded for step %d, predictor %d and variable '%s' (num %d)."),
-                                    i_step, i_ptor, params.GetPredictorDataIdVector(i_step, i_ptor)[i_dat], i_dat));
+                            wxLogError(_("No data was preloaded for step %d, predictor %d and variable '%s' (num %d)."),
+                                       i_step, i_ptor, params.GetPredictorDataIdVector(i_step, i_ptor)[i_dat], i_dat);
                             return false;
                         }
                     }
                 }
                 if (!HasPreloadedData(i_step, i_ptor)) {
-                    asLogError(
-                            wxString::Format(_("No data was preloaded for step %d and predictor %d."), i_step, i_ptor));
+                    wxLogError(_("No data was preloaded for step %d and predictor %d."), i_step, i_ptor);
                     return false;
                 }
             }
@@ -645,7 +645,7 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
     }
 
     if (share) {
-        asLogMessage(_("Share data pointer"));
+        wxLogVerbose(_("Share data pointer"));
 
         VectorFloat preloadLevels = params.GetPreloadLevels(i_step, i_ptor);
         VectorDouble preloadTimeHours = params.GetPreloadTimeHours(i_step, i_ptor);
@@ -677,7 +677,7 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int i_step,
 
 bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &params, int i_step, int i_ptor, int i_dat)
 {
-    asLogMessage(wxString::Format(_("Preloading data for predictor %d of step %d."), i_ptor, i_step));
+    wxLogVerbose(_("Preloading data for predictor %d of step %d."), i_ptor, i_step);
 
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
@@ -704,13 +704,12 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
             // target dates, but the dates are not the same.
             double ptorStart = timeStartData - double(params.GetTimeShiftDays()) + preloadTimeHours[i_hour] / 24.0;
 
-            // For debugging:
-            // wxLogMessage("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()),
-            // preloadTimeHours[i_hour]/24.0, ptorStart);
-            // wxLogMessage("ptorStart = %s", asTime::GetStringTime(ptorStart));
-            // wxLogMessage("timeStartData = %s", asTime::GetStringTime(timeStartData));
-            // wxLogMessage("params.GetTimeShiftDays() = %f", double(params.GetTimeShiftDays()));
-            // wxLogMessage("preloadTimeHours[i_hour]/24.0 = %f", preloadTimeHours[i_hour]/24.0);
+            wxLogDebug("%f - %f + %f = %f", timeStartData, double(params.GetTimeShiftDays()),
+                       preloadTimeHours[i_hour] / 24.0, ptorStart);
+            wxLogDebug("ptorStart = %s", asTime::GetStringTime(ptorStart));
+            wxLogDebug("timeStartData = %s", asTime::GetStringTime(timeStartData));
+            wxLogDebug("params.GetTimeShiftDays() = %f", double(params.GetTimeShiftDays()));
+            wxLogDebug("preloadTimeHours[i_hour]/24.0 = %f", preloadTimeHours[i_hour] / 24.0);
 
             double ptorEnd = timeEndData - double(params.GetTimeShiftDays()) + preloadTimeHours[i_hour] / 24.0;
 
@@ -725,12 +724,10 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
                 double diff = Ymax - geo.GetAxisYmax();
                 int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(i_step, i_ptor));
                 params.SetPreloadYptsnb(i_step, i_ptor, params.GetPreloadYptsnb(i_step, i_ptor) - removePts);
-                asLogMessage(
-                        wxString::Format(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."),
-                                         Ymax, Ymax - diff));
-                asLogMessage(
-                        wxString::Format(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Ymax, geo.GetAxisYmax(),
-                                         params.GetPredictorYstep(i_step, i_ptor)));
+                wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), Ymax,
+                             Ymax - diff);
+                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Ymax, geo.GetAxisYmax(),
+                             params.GetPredictorYstep(i_step, i_ptor));
             }
 
             wxASSERT(params.GetPreloadXptsnb(i_step, i_ptor) > 0);
@@ -747,41 +744,39 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
 
             // Check the starting dates coherence
             if (predictor->GetOriginalProviderStart() > ptorStart) {
-                asLogError(wxString::Format(
-                        _("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData)."),
-                        asTime::GetStringTime(ptorStart),
-                        asTime::GetStringTime(predictor->GetOriginalProviderStart())));
+                wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData)."),
+                           asTime::GetStringTime(ptorStart),
+                           asTime::GetStringTime(predictor->GetOriginalProviderStart()));
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
             }
 
             // Data loading
-            asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."), preloadDataIds[i_dat],
-                                          (int) preloadLevels[i_level], (int) preloadTimeHours[i_hour]));
+            wxLogVerbose(_("Loading %s data for level %d, %d h."), preloadDataIds[i_dat], (int) preloadLevels[i_level],
+                         (int) preloadTimeHours[i_hour]);
             try {
                 if (!predictor->Load(area, timeArray)) {
-                    asLogWarning(wxString::Format(_("The data (%s for level %d, at %d h) could not be loaded."),
-                                                  preloadDataIds[i_dat], (int) preloadLevels[i_level],
-                                                  (int) preloadTimeHours[i_hour]));
+                    wxLogWarning(_("The data (%s for level %d, at %d h) could not be loaded."), preloadDataIds[i_dat],
+                                 (int) preloadLevels[i_level], (int) preloadTimeHours[i_hour]);
                     wxDELETE(area);
                     wxDELETE(predictor);
                     continue; // The requested data can be missing (e.g. level not available).
                 }
             } catch (std::bad_alloc &ba) {
                 wxString msg(ba.what(), wxConvUTF8);
-                asLogError(wxString::Format(_("Bad allocation in the data preloading: %s"), msg));
+                wxLogError(_("Bad allocation in the data preloading: %s"), msg);
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
             } catch (std::exception &e) {
                 wxString msg(e.what(), wxConvUTF8);
-                asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg));
+                wxLogError(_("Exception in the data preloading: %s"), msg);
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
             }
-            asLogMessage(_("Data loaded."));
+            wxLogVerbose(_("Data loaded."));
             wxDELETE(area);
 
             m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] = predictor;
@@ -793,7 +788,7 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
 
 bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &params, int i_step, int i_ptor)
 {
-    asLogMessage(wxString::Format(_("Preloading data for predictor preprocessed %d of step %d."), i_ptor, i_step));
+    wxLogVerbose(_("Preloading data for predictor preprocessed %d of step %d."), i_ptor, i_step);
 
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
@@ -831,11 +826,11 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
             preloadTimeHoursSize = 1;
         }
     } else {
-        asLogError(_("Preprocessing method unknown in PreloadDataWithPreprocessing."));
+        wxLogError(_("Preprocessing method unknown in PreloadDataWithPreprocessing."));
         return false;
     }
 
-    asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
+    wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
     // Load data for every level and every hour
     for (unsigned int i_level = 0; i_level < preloadLevelsSize; i_level++) {
@@ -843,8 +838,8 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
             std::vector<asDataPredictorArchive *> predictorsPreprocess;
 
             for (int i_prepro = 0; i_prepro < preprocessSize; i_prepro++) {
-                asLogMessage(wxString::Format(_("Preloading data for predictor %d (preprocess %d) of step %d."), i_ptor,
-                                              i_prepro, i_step));
+                wxLogVerbose(_("Preloading data for predictor %d (preprocess %d) of step %d."), i_ptor, i_prepro,
+                             i_step);
 
                 // Get level
                 float level;
@@ -911,9 +906,8 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                     double diff = Ymax - geo.GetAxisYmax();
                     int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(i_step, i_ptor));
                     params.SetPreloadYptsnb(i_step, i_ptor, params.GetPreloadYptsnb(i_step, i_ptor) - removePts);
-                    asLogMessage(wxString::Format(
-                            _("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), Ymax,
-                            Ymax - diff));
+                    wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), Ymax,
+                                 Ymax - diff);
                 }
 
                 // Area object instantiation
@@ -927,10 +921,9 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
 
                 // Check the starting dates coherence
                 if (predictorPreprocess->GetOriginalProviderStart() > ptorStart) {
-                    asLogError(wxString::Format(
-                            _("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
-                            asTime::GetStringTime(ptorStart),
-                            asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
+                    wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadData, preprocessing)."),
+                               asTime::GetStringTime(ptorStart),
+                               asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart()));
                     wxDELETE(area);
                     wxDELETE(predictorPreprocess);
                     Cleanup(predictorsPreprocess);
@@ -938,11 +931,10 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 }
 
                 // Data loading
-                asLogMessage(wxString::Format(_("Loading %s data for level %d, %d h."),
-                                              params.GetPreprocessDataId(i_step, i_ptor, i_prepro), (int) level,
-                                              (int) timeHours));
+                wxLogVerbose(_("Loading %s data for level %d, %d h."),
+                             params.GetPreprocessDataId(i_step, i_ptor, i_prepro), (int) level, (int) timeHours);
                 if (!predictorPreprocess->Load(area, timeArray)) {
-                    asLogError(_("The data could not be loaded."));
+                    wxLogError(_("The data could not be loaded."));
                     wxDELETE(area);
                     wxDELETE(predictorPreprocess);
                     return false;
@@ -951,12 +943,12 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 predictorsPreprocess.push_back(predictorPreprocess);
             }
 
-            asLogMessage(_("Preprocessing data."));
+            wxLogVerbose(_("Preprocessing data."));
             asDataPredictorArchive *predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
             try {
                 if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor),
                                                 predictor)) {
-                    asLogError(_("Data preprocessing failed."));
+                    wxLogError(_("Data preprocessing failed."));
                     wxDELETE(predictor);
                     Cleanup(predictorsPreprocess);
                     return false;
@@ -964,19 +956,19 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 m_preloadedArchive[i_step][i_ptor][0][i_level][i_hour] = predictor;
             } catch (std::bad_alloc &ba) {
                 wxString msg(ba.what(), wxConvUTF8);
-                asLogError(wxString::Format(_("Bad allocation caught in the data preprocessing: %s"), msg));
+                wxLogError(_("Bad allocation caught in the data preprocessing: %s"), msg);
                 wxDELETE(predictor);
                 Cleanup(predictorsPreprocess);
                 return false;
             } catch (std::exception &e) {
                 wxString msg(e.what(), wxConvUTF8);
-                asLogError(wxString::Format(_("Exception in the data preprocessing: %s"), msg));
+                wxLogError(_("Exception in the data preprocessing: %s"), msg);
                 wxDELETE(predictor);
                 Cleanup(predictorsPreprocess);
                 return false;
             }
             Cleanup(predictorsPreprocess);
-            asLogMessage(_("Preprocessing over."));
+            wxLogVerbose(_("Preprocessing over."));
         }
     }
 
@@ -997,7 +989,7 @@ bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, as
         // Loop through every predictor
         for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
             if (!PreloadData(params)) {
-                asLogError(_("Could not preload the data."));
+                wxLogError(_("Could not preload the data."));
                 return false;
             }
 
@@ -1006,7 +998,7 @@ bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, as
                     return false;
                 }
             } else {
-                asLogMessage(_("Loading data."));
+                wxLogVerbose(_("Loading data."));
 
                 if (!params.NeedsPreprocessing(i_step, i_ptor)) {
                     if (!ExtractDataWithoutPreprocessing(predictors, params, i_step, i_ptor, timeStartData, timeEndData)) {
@@ -1018,23 +1010,23 @@ bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, as
                     }
                 }
 
-                asLogMessage(_("Data loaded"));
+                wxLogVerbose(_("Data loaded"));
             }
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation in the data loading: %s"), msg));
+        wxLogError(_("Bad allocation in the data loading: %s"), msg);
         return false;
     } catch (asException &e) {
         wxString fullMessage = e.GetFullMessage();
         if (!fullMessage.IsEmpty()) {
-            asLogError(fullMessage);
+            wxLogError(fullMessage);
         }
-        asLogError(_("Failed to load data."));
+        wxLogError(_("Failed to load data."));
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Exception in the data loading: %s"), msg));
+        wxLogError(_("Exception in the data loading: %s"), msg);
         return false;
     }
 
@@ -1044,7 +1036,7 @@ bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, as
 bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
                                               int i_step, int i_ptor)
 {
-    asLogMessage(_("Using preloaded data."));
+    wxLogVerbose(_("Using preloaded data."));
 
     bool doPreprocessGradients = false;
 
@@ -1117,11 +1109,11 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
 
     // Check indices
     if (i_level == asNOT_FOUND || i_level == asOUT_OF_RANGE) {
-        asLogError(wxString::Format(_("The level (%f) could not be found in the preloaded data."), level));
+        wxLogError(_("The level (%f) could not be found in the preloaded data."), level);
         return false;
     }
     if (i_hour == asNOT_FOUND || i_hour == asOUT_OF_RANGE) {
-        asLogError(wxString::Format(_("The hour (%d) could not be found in the preloaded data."), (int) time));
+        wxLogError(_("The hour (%d) could not be found in the preloaded data."), (int) time);
         return false;
     }
 
@@ -1133,7 +1125,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     wxASSERT((unsigned) i_hour < m_preloadedArchive[i_step][i_ptor][i_dat][i_level].size());
     if (m_preloadedArchive[i_step][i_ptor][i_dat][i_level][i_hour] == NULL) {
         if (!GetRandomValidData(params, i_step, i_ptor, i_dat)) {
-            asLogError(_("The pointer to preloaded data is null."));
+            wxLogError(_("The pointer to preloaded data is null."));
             return false;
         }
 
@@ -1158,9 +1150,8 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     wxASSERT(desiredArea);
 
     if (!desiredPredictor->ClipToArea(desiredArea)) {
-        asLogError(wxString::Format(
-                _("The data could not be extracted (i_step = %d, i_ptor = %d, i_dat = %d, i_level = %d, i_hour = %d)."),
-                i_step, i_ptor, i_dat, i_level, i_hour));
+        wxLogError(_("The data could not be extracted (i_step = %d, i_ptor = %d, i_dat = %d, i_level = %d, i_hour = %d)."),
+                   i_step, i_ptor, i_dat, i_level, i_hour);
         wxDELETE(desiredArea);
         wxDELETE(desiredPredictor);
         return false;
@@ -1173,7 +1164,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
 
         asDataPredictorArchive *newPredictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
         if (!asPreprocessor::Preprocess(predictorsPreprocess, "Gradients", newPredictor)) {
-            asLogError(_("Data preprocessing failed."));
+            wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
             return false;
         }
@@ -1222,9 +1213,8 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredi
 
     // Check the starting dates coherence
     if (predictor->GetOriginalProviderStart() > ptorStart) {
-        asLogError(wxString::Format(
-                _("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, no preprocessing)."),
-                asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart())));
+        wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, no preprocessing)."),
+                   asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart()));
         wxDELETE(area);
         wxDELETE(predictor);
         return false;
@@ -1232,7 +1222,7 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredi
 
     // Data loading
     if (!predictor->Load(area, timeArray)) {
-        asLogError(_("The data could not be loaded."));
+        wxLogError(_("The data could not be loaded."));
         wxDELETE(area);
         wxDELETE(predictor);
         return false;
@@ -1251,7 +1241,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
 
     int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
 
-    asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
+    wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
     for (int i_prep = 0; i_prep < preprocessSize; i_prep++) {
         // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
@@ -1287,10 +1277,9 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
 
         // Check the starting dates coherence
         if (predictorPreprocess->GetOriginalProviderStart() > ptorStart) {
-            asLogError(wxString::Format(
-                    _("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, preprocessing)."),
-                    asTime::GetStringTime(ptorStart),
-                    asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart())));
+            wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, preprocessing)."),
+                       asTime::GetStringTime(ptorStart),
+                       asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart()));
             wxDELETE(area);
             wxDELETE(predictorPreprocess);
             Cleanup(predictorsPreprocess);
@@ -1299,7 +1288,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
 
         // Data loading
         if (!predictorPreprocess->Load(area, timeArray)) {
-            asLogError(_("The data could not be loaded."));
+            wxLogError(_("The data could not be loaded."));
             wxDELETE(area);
             wxDELETE(predictorPreprocess);
             Cleanup(predictorsPreprocess);
@@ -1320,7 +1309,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
 
     asDataPredictorArchive *predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
     if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor), predictor)) {
-        asLogError(_("Data preprocessing failed."));
+        wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
         return false;
     }
@@ -1484,19 +1473,19 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         params.GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
         VectorInt stations = params.GetPredictandStationIds();
         if (stations.size() > 1) {
-            asLogError(_("You cannot use predictand thresholds with the multivariate approach."));
+            wxLogError(_("You cannot use predictand thresholds with the multivariate approach."));
             return false;
         }
 
         if (!timeArrayTarget.Init(*m_predictandDB, params.GetTimeArrayTargetPredictandSerieName(), stations[0],
                                   params.GetTimeArrayTargetPredictandMinThreshold(),
                                   params.GetTimeArrayTargetPredictandMaxThreshold())) {
-            asLogError(_("The time array mode for the target dates is not correctly defined."));
+            wxLogError(_("The time array mode for the target dates is not correctly defined."));
             return false;
         }
     } else {
         if (!timeArrayTarget.Init()) {
-            asLogError(_("The time array mode for the target dates is not correctly defined."));
+            wxLogError(_("The time array mode for the target dates is not correctly defined."));
             return false;
         }
     }
@@ -1515,12 +1504,11 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
     // Check on the archive length
     if (timeArrayArchive.GetSize() < 100) {
-        asLogError(
-                wxString::Format(_("The time array is not consistent in asMethodCalibrator::GetAnalogsDates: size=%d."),
-                                 timeArrayArchive.GetSize()));
+        wxLogError(_("The time array is not consistent in asMethodCalibrator::GetAnalogsDates: size=%d."),
+                   timeArrayArchive.GetSize());
         return false;
     }
-    asLogMessage(_("Date arrays created."));
+    wxLogVerbose(_("Date arrays created."));
     /*
         // Calculate needed memory
         wxLongLong neededMem = 0;
@@ -1542,16 +1530,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
         if(freeMemSize==-1)
         {
-            asLogMessage(wxString::Format(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"),
-                                          neededMemMb));
+            wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
         }
         else
         {
-            asLogMessage(wxString::Format(_("Needed memory for data: %.2f Mb (%.2f Mb available)"),
-                                          neededMemMb, freeMemMb));
+            wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
             if(neededMemMb>freeMemMb)
             {
-                asLogError(_("Data cannot fit into available memory."));
+                wxLogError(_("Data cannot fit into available memory."));
                 return false;
             }
         }
@@ -1559,7 +1545,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     // Load the predictor data
     std::vector<asDataPredictor *> predictors;
     if (!LoadData(predictors, params, i_step, timeStartData, timeEndData)) {
-        asLogError(_("Failed loading predictor data."));
+        wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
         return false;
     }
@@ -1598,16 +1584,16 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
 
     // Send data and criteria to processor
-    asLogMessage(_("Start processing the comparison."));
+    wxLogVerbose(_("Start processing the comparison."));
 
     if (!asProcessor::GetAnalogsDates(predictors, predictors, timeArrayData, timeArrayArchive, timeArrayData,
                                       timeArrayTarget, criteria, params, i_step, results, containsNaNs)) {
-        asLogError(_("Failed processing the analogs dates."));
+        wxLogError(_("Failed processing the analogs dates."));
         Cleanup(predictors);
         Cleanup(criteria);
         return false;
     }
-    asLogMessage(_("The processing is over."));
+    wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictors);
     Cleanup(criteria);
@@ -1628,19 +1614,19 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     results.Init(params);
 
     // Date array object instantiation for the processor
-    asLogMessage(_("Creating a date arrays for the processor."));
+    wxLogVerbose(_("Creating a date arrays for the processor."));
     double timeStart = params.GetArchiveStart();
     double timeEnd = params.GetArchiveEnd();
     timeEnd = wxMin(timeEnd,
                     timeEnd - params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
     asTimeArray timeArrayArchive(timeStart, timeEnd, params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
-    asLogMessage(_("Date arrays created."));
+    wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
     std::vector<asDataPredictor *> predictors;
     if (!LoadData(predictors, params, i_step, timeStart, timeEnd)) {
-        asLogError(_("Failed loading predictor data."));
+        wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
         return false;
     }
@@ -1648,7 +1634,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     // Create the score objects
     std::vector<asPredictorCriteria *> criteria;
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-        asLogMessage(_("Creating a criterion object."));
+        wxLogVerbose(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
         if(criterion->NeedsDataRange()) {
@@ -1657,7 +1643,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
             criterion->SetDataRange(predictors[i_ptor]);
         }
         criteria.push_back(criterion);
-        asLogMessage(_("Criterion object created."));
+        wxLogVerbose(_("Criterion object created."));
     }
 
     // Inline the data when possible
@@ -1668,15 +1654,15 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     }
 
     // Send data and criteria to processor
-    asLogMessage(_("Start processing the comparison."));
+    wxLogVerbose(_("Start processing the comparison."));
     if (!asProcessor::GetAnalogsSubDates(predictors, predictors, timeArrayArchive, timeArrayArchive, anaDates, criteria,
                                          params, i_step, results, containsNaNs)) {
-        asLogError(_("Failed processing the analogs dates."));
+        wxLogError(_("Failed processing the analogs dates."));
         Cleanup(predictors);
         Cleanup(criteria);
         return false;
     }
-    asLogMessage(_("The processing is over."));
+    wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictors);
     Cleanup(criteria);
@@ -1693,12 +1679,12 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsAnalogsValues &results, asPar
 
     // Set the predictand values to the corresponding analog dates
     wxASSERT(m_predictandDB);
-    asLogMessage(_("Start setting the predictand values to the corresponding analog dates."));
+    wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
     if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, results)) {
-        asLogError(_("Failed setting the predictand values to the corresponding analog dates."));
+        wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
         return false;
     }
-    asLogMessage(_("Predictand association over."));
+    wxLogVerbose(_("Predictand association over."));
 
     return true;
 }
@@ -1711,13 +1697,13 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     results.Init(params);
 
     // Instantiate a forecast score object
-    asLogMessage(_("Instantiating a forecast score object"));
+    wxLogVerbose(_("Instantiating a forecast score object"));
     asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
     forecastScore->SetQuantile(params.GetForecastScoreQuantile());
     forecastScore->SetThreshold(params.GetForecastScoreThreshold());
 
     if (forecastScore->UsesClimatology() && m_scoreClimatology.size() == 0) {
-        asLogMessage(_("Processing the score of the climatology."));
+        wxLogVerbose(_("Processing the score of the climatology."));
 
         VArray1DFloat climatologyData = GetClimatologyData(params);
         VectorInt stationIds = params.GetPredictandStationIds();
@@ -1730,11 +1716,11 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     }
 
     // Pass data and score to processor
-    asLogMessage(_("Start processing the forecast score."));
+    wxLogVerbose(_("Start processing the forecast score."));
 
     if (!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results,
                                                             m_scoreClimatology)) {
-        asLogError(_("Failed processing the forecast score."));
+        wxLogError(_("Failed processing the forecast score."));
         wxDELETE(forecastScore);
         return false;
     }
@@ -1753,7 +1739,7 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
     results.Init(params);
 
     // Date array object instantiation for the final score
-    asLogMessage(_("Creating a date array for the final score."));
+    wxLogVerbose(_("Creating a date array for the final score."));
     double timeStart = params.GetCalibrationStart();
     double timeEnd = params.GetCalibrationEnd() + 1;
     while (timeEnd > params.GetCalibrationEnd() + 0.999) {
@@ -1765,15 +1751,15 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
     // TODO (phorton#1#): Fix me: add every options for the Init function (generic version)
     //    timeArray.Init(params.GetForecastScoreTimeArrayDate(), params.GetForecastScoreTimeArrayIntervalDays());
     timeArray.Init();
-    asLogMessage(_("Date array created."));
+    wxLogVerbose(_("Date array created."));
 
     // Pass data and score to processor
-    asLogMessage(_("Start processing the final score."));
+    wxLogVerbose(_("Start processing the final score."));
     if (!asProcessorForecastScore::GetAnalogsForecastScoreFinal(anaScores, timeArray, params, results)) {
-        asLogError(_("Failed to process the final score."));
+        wxLogError(_("Failed to process the final score."));
         return false;
     }
-    asLogMessage(_("Processing over."));
+    wxLogVerbose(_("Processing over."));
 
     return true;
 }
@@ -1811,7 +1797,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
                 return false;
         }
         if (containsNaNs) {
-            asLogError(_("The dates selection contains NaNs"));
+            wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
         if (!GetAnalogsValues(anaValues, params, anaDates, i_step))
@@ -1860,7 +1846,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
                     return false;
             }
             if (containsNaNs) {
-                asLogError(_("The dates selection contains NaNs"));
+                wxLogError(_("The dates selection contains NaNs"));
                 return false;
             }
 
@@ -1894,7 +1880,7 @@ bool asMethodCalibrator::SaveDetails(asParametersCalibration &params)
                 return false;
         }
         if (containsNaNs) {
-            asLogError(_("The dates selection contains NaNs"));
+            wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }
@@ -1925,7 +1911,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration &params)
     }
 
     if (!params.HasValidationPeriod()) {
-        asLogWarning("The parameters have no validation period !");
+        wxLogWarning("The parameters have no validation period !");
         return false;
     }
 
@@ -1950,7 +1936,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration &params)
                 return false;
         }
         if (containsNaNs) {
-            asLogError(_("The dates selection contains NaNs"));
+            wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }

@@ -56,8 +56,7 @@ bool asFileWorkspace::CheckRootElement() const
         return false;
 
     if (!GetRoot()->GetAttribute("target").IsSameAs("viewer", false)) {
-        asLogError(
-                wxString::Format(_("The file %s is not a parameters file for the Viewer."), m_fileName.GetFullName()));
+        wxLogError(_("The file %s is not a parameters file for the Viewer."), m_fileName.GetFullName());
         return false;
     }
     return true;

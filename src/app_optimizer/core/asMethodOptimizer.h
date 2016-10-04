@@ -25,7 +25,7 @@ protected:
 
     virtual bool Calibrate(asParametersCalibration &params)
     {
-        asLogError(_("asMethodOptimizer do optimize, not calibrate..."));
+        wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
         return false;
     }
 

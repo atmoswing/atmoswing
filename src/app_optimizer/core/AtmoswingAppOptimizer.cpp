@@ -128,10 +128,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                                  "\n \t\t\t\t 1: errors"
                                  "\n \t\t\t\t 2: warnings"
                                  "\n \t\t\t\t 3: verbose" },
-    { wxCMD_LINE_OPTION, NULL, "log-target", "Set log target"
-                                 "\n \t\t\t\t file: file only"
-                                 "\n \t\t\t\t prompt: command prompt"
-                                 "\n \t\t\t\t both: command prompt and file (default)" },
 
                                                    {wxCMD_LINE_NONE}};
 
@@ -252,11 +248,9 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     g_verboseMode = false;
     g_responsive = false;
 
-    Log().DisableMessageBoxOnError();
-
     // Warn the user if reloading previous results
     if (g_resumePreviousRun) {
-        asLogWarning(wxString::Format(_("An existing directory was found for the run number %d"), g_runNb));
+        wxLogWarning(_("An existing directory was found for the run number %d"), g_runNb);
         printf("Warning: An existing directory was found for the run number %d\n", g_runNb);
     }
 
@@ -300,8 +294,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         // Check that the number of groups are identical.
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
         if (groupsNb != pConfigRef->GetNumberOfGroups(true)) {
-            asLogError(wxString::Format(_("The number of groups (%d) differ from the previous config file (%d)."),
-                                        groupsNb, int(pConfigRef->GetNumberOfGroups())));
+            wxLogError(_("The number of groups (%d) differ from the previous config file (%d)."), groupsNb,
+                       int(pConfigRef->GetNumberOfGroups()));
             m_forceQuit = true;
         }
 
@@ -327,9 +321,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
                         pConfigRef->Read(entryName, &valRef);
 
                         if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef)) {
-                            asLogError(wxString::Format(
-                                    _("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
-                                    entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str()));
+                            wxLogError(_("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
+                                       entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str());
                             m_forceQuit = true;
                         }
                     } while (pConfigNow->GetNextEntry(entryName, entryIndex));
@@ -465,34 +458,6 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         Log().SetLevel((int) logLevel);
     }
 
-    // Check for the log target option
-    wxString logTargetStr = wxEmptyString;
-    if (parser.Found("log-target", &logTargetStr)) {
-        // Check and apply
-        if (logTargetStr.IsSameAs("file", false)) {
-            Log().SetTarget(asLog::File);
-        } else if (logTargetStr.IsSameAs("screen", false)) {
-            Log().SetTarget(asLog::Screen);
-        } else if (logTargetStr.IsSameAs("both", false)) {
-            Log().SetTarget(asLog::Both);
-        } else {
-            Log().SetTarget(asLog::Both);
-
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-            if (msgOut) {
-                msgOut->Printf(_("The given log target (%s) does not correspond to any possible option."),
-                               logTargetStr);
-            }
-        }
-    } else {
-        Log().SetTarget(asLog::Both);
-    }
-
-    // Check if the user asked for the silent mode
-    if (parser.Found("silent")) {
-        Log().SetTarget(asLog::File);
-    }
-
     // Initialize log
     InitLog();
 
@@ -509,7 +474,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         if (!wxFileName::FileExists(m_calibParamsFile)) {
-            asLogError(wxString::Format(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile));
+            wxLogError(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile);
             return false;
         }
     }
@@ -521,7 +486,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         if (!wxFileName::FileExists(m_predictandDB)) {
-            asLogError(wxString::Format(_("The given predictand DB (%s) couldn't be found."), m_predictandDB));
+            wxLogError(_("The given predictand DB (%s) couldn't be found."), m_predictandDB);
             return false;
         }
     }
@@ -533,7 +498,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         if (!wxFileName::DirExists(m_predictorsDir)) {
-            asLogError(wxString::Format(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir));
+            wxLogError(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir);
             return false;
         }
     }
@@ -722,10 +687,10 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a calibration method option
     if (parser.Found("calibration-method", &m_calibMethod)) {
         if (!InitForCmdLineOnly()) {
-            asLogError(_("Initialization for command-line interface failed."));
+            wxLogError(_("Initialization for command-line interface failed."));
             return false;
         }
-        asLogMessage(wxString::Format(_("Given calibration method: %s"), m_calibMethod));
+        wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
         return true;
     }
 
@@ -735,23 +700,23 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 int AtmoswingAppOptimizer::OnRun()
 {
     if (m_forceQuit) {
-        asLogError(_("The calibration will not be processed."));
+        wxLogError(_("The calibration will not be processed."));
         return 0;
     }
 
     if (!g_guiMode) {
         if (m_calibParamsFile.IsEmpty()) {
-            asLogError(_("The parameters file is not given."));
+            wxLogError(_("The parameters file is not given."));
             return 1001;
         }
 
         if (m_predictandDB.IsEmpty()) {
-            asLogError(_("The predictand DB is not given."));
+            wxLogError(_("The predictand DB is not given."));
             return 1002;
         }
 
         if (m_predictorsDir.IsEmpty()) {
-            asLogError(_("The predictors directory is not given."));
+            wxLogError(_("The predictors directory is not given."));
             return 1003;
         }
 
@@ -816,18 +781,18 @@ int AtmoswingAppOptimizer::OnRun()
             }
         } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
+            wxLogError(_("Bad allocation caught: %s"), msg);
             return 1011;
         } catch (asException &e) {
             wxString fullMessage = e.GetFullMessage();
             if (!fullMessage.IsEmpty()) {
-                asLogError(fullMessage);
+                wxLogError(fullMessage);
             }
-            asLogError(_("Failed to process the calibration."));
+            wxLogError(_("Failed to process the calibration."));
             return 1010;
         }
 
-        asLogMessageImportant(_("Calibration over."));
+        wxLogMessage(_("Calibration over."));
 
         return 0;
     }
@@ -867,16 +832,16 @@ void AtmoswingAppOptimizer::CleanUp()
 
 bool AtmoswingAppOptimizer::OnExceptionInMainLoop()
 {
-    asLogError(_("An exception occured in the main loop"));
+    wxLogError(_("An exception occured in the main loop"));
     return false;
 }
 
 void AtmoswingAppOptimizer::OnFatalException()
 {
-    asLogError(_("An fatal exception occured"));
+    wxLogError(_("An fatal exception occured"));
 }
 
 void AtmoswingAppOptimizer::OnUnhandledException()
 {
-    asLogError(_("An unhandled exception occured"));
+    wxLogError(_("An unhandled exception occured"));
 }

@@ -32,7 +32,7 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
 
     // Set the climatology score value
     if (m_scoreClimatology->size() != 0) {
-        asLogMessage(_("Process score of the climatology"));
+        wxLogVerbose(_("Process score of the climatology"));
         m_optimizer->SetScoreClimatology(*m_scoreClimatology);
     }
 
@@ -40,7 +40,7 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
     int stepsNb = m_params->GetStepsNb();
 
     if (stepsNb == 0) {
-        asLogError(_("The number of processing steps is null in asThreadMethodOptimizerGeneticAlgorithms."));
+        wxLogError(_("The number of processing steps is null in asThreadMethodOptimizerGeneticAlgorithms."));
         return NULL;
     }
 
@@ -48,37 +48,37 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
         bool containsNaNs = false;
         if (i_step == 0) {
             if (!m_optimizer->GetAnalogsDates(anaDates, *m_params, i_step, containsNaNs)) {
-                asLogError(_("Failed processing the analogs dates"));
+                wxLogError(_("Failed processing the analogs dates"));
                 return NULL;
             }
             anaDatesPrevious = anaDates;
         } else {
             if (!m_optimizer->GetAnalogsSubDates(anaDates, *m_params, anaDatesPrevious, i_step, containsNaNs)) {
-                asLogError(_("Failed processing the analogs sub dates"));
+                wxLogError(_("Failed processing the analogs sub dates"));
                 return NULL;
             }
             anaDatesPrevious = anaDates;
         }
         if (containsNaNs) {
-            asLogError(_("The dates selection contains NaNs"));
+            wxLogError(_("The dates selection contains NaNs"));
             return NULL;
         }
         if (anaDates.GetTargetDates().size() == 0 || anaDates.GetAnalogsDates().size() == 0 ||
             anaDates.GetAnalogsCriteria().size() == 0) {
-            asLogError(_("The asResultsAnalogsDates object is empty in asThreadMethodOptimizerGeneticAlgorithms."));
+            wxLogError(_("The asResultsAnalogsDates object is empty in asThreadMethodOptimizerGeneticAlgorithms."));
             return NULL;
         }
     }
     if (!m_optimizer->GetAnalogsValues(anaValues, *m_params, anaDates, stepsNb - 1)) {
-        asLogError(_("Failed processing the analogs values"));
+        wxLogError(_("Failed processing the analogs values"));
         return NULL;
     }
     if (!m_optimizer->GetAnalogsForecastScores(anaScores, *m_params, anaValues, stepsNb - 1)) {
-        asLogError(_("Failed processing the forecast scores"));
+        wxLogError(_("Failed processing the forecast scores"));
         return NULL;
     }
     if (!m_optimizer->GetAnalogsForecastScoreFinal(anaScoreFinal, *m_params, anaScores, stepsNb - 1)) {
-        asLogError(_("Failed processing the final score"));
+        wxLogError(_("Failed processing the final score"));
         return NULL;
     }
     *m_finalScoreCalib = anaScoreFinal.GetForecastScore();

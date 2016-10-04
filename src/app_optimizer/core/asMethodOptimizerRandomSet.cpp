@@ -61,7 +61,7 @@ bool asMethodOptimizerRandomSet::Manager()
 
     // Preload data
     if (!PreloadData(params)) {
-        asLogError(_("Could not preload the data."));
+        wxLogError(_("Could not preload the data."));
         return false;
     }
 
@@ -72,10 +72,10 @@ bool asMethodOptimizerRandomSet::Manager()
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
-    asLogMessage(_("Loading the Predictand DB."));
+    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath))
         return false;
-    asLogMessage(_("Predictand DB loaded."));
+    wxLogVerbose(_("Predictand DB loaded."));
 
     // Watch
     wxStopWatch sw;
@@ -93,11 +93,6 @@ bool asMethodOptimizerRandomSet::Manager()
 #endif
                 if (m_cancel)
                     return false;
-
-                bool enableMessageBox = false;
-                if (Log().IsMessageBoxOnErrorEnabled())
-                    enableMessageBox = true;
-                Log().DisableMessageBoxOnError();
 
                 VectorFloat scoreClim = m_scoreClimatology;
 
@@ -177,8 +172,8 @@ bool asMethodOptimizerRandomSet::Manager()
                 bool checkOK = true;
                 for (unsigned int i_check = 0; i_check < m_scoresCalib.size(); i_check++) {
                     if (asTools::IsNaN(m_scoresCalib[i_check])) {
-                        asLogError(wxString::Format(_("NaN found in the scores (element %d on %d in m_scoresCalib)."),
-                                                    (int) i_check + 1, (int) m_scoresCalib.size()));
+                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) i_check + 1,
+                                   (int) m_scoresCalib.size());
                         checkOK = false;
                     }
                 }
@@ -186,8 +181,6 @@ bool asMethodOptimizerRandomSet::Manager()
                 if (!checkOK)
                     return false;
 
-                if (enableMessageBox)
-                    Log().EnableMessageBoxOnError();
             } else {
 #ifndef UNIT_TESTING
                 if (g_responsive)
@@ -217,7 +210,7 @@ bool asMethodOptimizerRandomSet::Manager()
                         anaDatesPrevious = anaDates;
                     }
                     if (containsNaNs) {
-                        asLogError(_("The dates selection contains NaNs"));
+                        wxLogError(_("The dates selection contains NaNs"));
                         return false;
                     }
                 }
@@ -247,8 +240,10 @@ bool asMethodOptimizerRandomSet::Manager()
     }
 
     // Display processing time
-    asLogMessageImportant(wxString::Format(_("The whole processing took %ldms to execute"), sw.Time()));
-    asLogState(_("Optimization over."));
+    wxLogMessage(_("The whole processing took %ldms to execute"), sw.Time());
+#if wxUSE_GUI
+    wxLogStatus(_("Optimization over."));
+#endif
 
     // Print parameters in a text file
     SetBestParameters(results_best);
@@ -296,7 +291,7 @@ asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
         params = &m_parameters[m_iterator];
     } else {
         if (!Optimize(*params))
-            asLogError(_("The parameters could not be optimized"));
+            wxLogError(_("The parameters could not be optimized"));
     }
 
     return params;
@@ -305,6 +300,6 @@ asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
 bool asMethodOptimizerRandomSet::Optimize(asParametersOptimization &params)
 {
     m_isOver = true;
-    asLogMessage(_("Random method over."));
+    wxLogVerbose(_("Random method over."));
     return true;
 }

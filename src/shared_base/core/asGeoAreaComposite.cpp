@@ -281,7 +281,7 @@ void asGeoAreaComposite::CreateComposites()
         error.Append(wxString::Format("m_cornerUL.y = %g\n", m_cornerUL.y));
         error.Append(wxString::Format("m_cornerLR.y = %g\n", m_cornerLR.y));
         error.Append(wxString::Format("m_cornerUR.y = %g\n", m_cornerUR.y));
-        asLogError(error);
+        wxLogError(error);
         asThrowException(_("This case is not managed yet."));
     }
 }

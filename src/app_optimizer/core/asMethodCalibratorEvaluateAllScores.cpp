@@ -160,7 +160,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         errorField = errorField.Remove(errorField.Length() - 3, 2); // Removes the last coma
         wxString errorMessage =
                 _("The following parameters are not compatible with the EvaluateAllScores assessment: ") + errorField;
-        asLogError(errorMessage);
+        wxLogError(errorMessage);
         return false;
     }
 
@@ -176,7 +176,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         ClearAll();
 
         VectorInt stationId = stationsId[i_stat];
-        asLogMessageImportant(wxString::Format(_("Processing station %s"), GetPredictandStationIdsList(stationId)));
+        wxLogMessage(_("Processing station %s"), GetPredictandStationIdsList(stationId));
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results;
@@ -214,7 +214,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                     return false;
             }
             if (containsNaNs) {
-                asLogError(_("The dates selection contains NaNs"));
+                wxLogError(_("The dates selection contains NaNs"));
                 return false;
             }
         }
@@ -251,7 +251,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                         return false;
                 }
                 if (containsNaNs) {
-                    asLogError(_("The dates selection contains NaNs"));
+                    wxLogError(_("The dates selection contains NaNs"));
                     return false;
                 }
             }
@@ -289,7 +289,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             quantiles.push_back(0.9f);
 
             for (unsigned int i_score = 0; i_score < scoresContingency.size(); i_score++) {
-                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContingency[i_score]));
+                wxLogMessage(_("Processing %s"), scoresContingency[i_score]);
                 for (unsigned int i_thres = 0; i_thres < thresholds.size(); i_thres++) {
                     for (unsigned int i_pc = 0; i_pc < quantiles.size(); i_pc++) {
                         params.SetForecastScoreName(scoresContingency[i_score]);
@@ -315,7 +315,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresQuantile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
 
             for (unsigned int i_score = 0; i_score < scoresQuantile.size(); i_score++) {
-                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresQuantile[i_score]));
+                wxLogMessage(_("Processing %s"), scoresQuantile[i_score]);
                 for (unsigned int i_pc = 0; i_pc < quantiles.size(); i_pc++) {
                     params.SetForecastScoreName(scoresQuantile[i_score]);
                     params.SetForecastScoreQuantile(quantiles[i_pc]);
@@ -337,7 +337,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresThreshold.push_back("BSS"); // BSS - Brier skill score
 
             for (unsigned int i_score = 0; i_score < scoresThreshold.size(); i_score++) {
-                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresThreshold[i_score]));
+                wxLogMessage(_("Processing %s"), scoresThreshold[i_score]);
                 for (unsigned int i_thres = 0; i_thres < thresholds.size(); i_thres++) {
                     params.SetForecastScoreName(scoresThreshold[i_score]);
                     params.SetForecastScoreThreshold(thresholds[i_thres]);
@@ -373,7 +373,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
 
             for (unsigned int i_score = 0; i_score < scoresContinuous.size(); i_score++) {
-                asLogMessageImportant(wxString::Format(_("Processing %s"), scoresContinuous[i_score]));
+                wxLogMessage(_("Processing %s"), scoresContinuous[i_score]);
                 params.SetForecastScoreName(scoresContinuous[i_score]);
                 if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
                     return false;
@@ -393,7 +393,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
          */
 
         if (processRankHistogramScores) {
-            asLogMessageImportant(_("Processing the Verification Rank Histogram"));
+            wxLogMessage(_("Processing the Verification Rank Histogram"));
 
             int boostrapNb = 10000;
             params.SetForecastScoreName("RankHistogram");

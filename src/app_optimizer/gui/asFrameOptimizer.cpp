@@ -468,30 +468,30 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
     try {
         switch (m_choiceMethod->GetSelection()) {
             case wxNOT_FOUND: {
-                asLogError(_("Wrong method selection."));
+                wxLogError(_("Wrong method selection."));
                 break;
             }
             case 0: // Single
             {
-                asLogMessage(_("Proceeding to single assessment."));
+                wxLogVerbose(_("Proceeding to single assessment."));
                 m_methodOptimizer = new asMethodOptimizerSingle();
                 break;
             }
             case 1: // Classic
             {
-                asLogMessage(_("Proceeding to classic calibration."));
+                wxLogVerbose(_("Proceeding to classic calibration."));
                 m_methodOptimizer = new asMethodOptimizerClassic();
                 break;
             }
             case 2: // Classic+
             {
-                asLogMessage(_("Proceeding to classic+ calibration."));
+                wxLogVerbose(_("Proceeding to classic+ calibration."));
                 m_methodOptimizer = new asMethodOptimizerClassicPlus();
                 break;
             }
             case 3: // Variables exploration with classic+
             {
-                asLogMessage(_("Proceeding to variables exploration."));
+                wxLogVerbose(_("Proceeding to variables exploration."));
                 m_methodOptimizer = new asMethodOptimizerClassicPlusVarExplo();
                 break;
             }
@@ -507,18 +507,18 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
             }
             case 6: // Scores evaluation
             {
-                asLogMessage(_("Proceeding to all scores evaluation."));
+                wxLogVerbose(_("Proceeding to all scores evaluation."));
                 m_methodOptimizer = new asMethodOptimizerEvaluateAllScores();
                 break;
             }
             case 7: // Only predictand values
             {
-                asLogMessage(_("Proceeding to predictand values saving."));
+                wxLogVerbose(_("Proceeding to predictand values saving."));
                 m_methodOptimizer = new asMethodOptimizerSingleOnlyValues();
                 break;
             }
             default:
-                asLogError(_("Chosen method not defined yet."));
+                wxLogError(_("Chosen method not defined yet."));
         }
 
         if (m_methodOptimizer) {
@@ -529,14 +529,14 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
-        asLogError(_("Failed to process the calibration."));
+        wxLogError(_("Bad allocation caught: %s"), msg);
+        wxLogError(_("Failed to process the calibration."));
     } catch (asException &e) {
         wxString fullMessage = e.GetFullMessage();
         if (!fullMessage.IsEmpty()) {
-            asLogError(fullMessage);
+            wxLogError(fullMessage);
         }
-        asLogError(_("Failed to process the optimization."));
+        wxLogError(_("Failed to process the optimization."));
     }
 
     wxDELETE(m_methodOptimizer);

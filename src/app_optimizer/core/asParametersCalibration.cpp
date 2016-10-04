@@ -52,10 +52,10 @@ void asParametersCalibration::AddStep()
 
 bool asParametersCalibration::LoadFromFile(const wxString &filePath)
 {
-    asLogMessage(_("Loading parameters file."));
+    wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
-        asLogError(_("The given path to the parameters file is empty."));
+        wxLogError(_("The given path to the parameters file is empty."));
         return false;
     }
 
@@ -119,7 +119,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     FixWeights();
     FixCoordinates();
 
-    asLogMessage(_("Parameters file loaded."));
+    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -422,7 +422,7 @@ bool asParametersCalibration::ParseForecastScore(asFileParametersCalibration &fi
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetForecastScoreQuantile(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "postprocessing") {
-            asLogError(_("The postptocessing is not yet fully implemented."));
+            wxLogError(_("The postptocessing is not yet fully implemented."));
         } else {
             fileParams.UnknownNode(nodeParamBlock);
         }
@@ -547,8 +547,7 @@ bool asParametersCalibration::SetPreloadingProperties()
                     VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(i_step, i_ptor, 1);
                     preprocTimeHours.insert(preprocTimeHours.end(), preprocTimeHours2.begin(), preprocTimeHours2.end());
                 } else {
-                    asLogWarning(wxString::Format(
-                            _("The %s preprocessing method is not yet handled with the preload option."), method));
+                    wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
 
                 if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
@@ -608,12 +607,12 @@ VectorDouble asParametersCalibration::GetVectorXmin(asFileParametersCalibration 
 
             wxString valueMinStr = node->GetAttribute("min");
             if (!valueMinStr.ToDouble(&min)) {
-                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
             wxString valueMaxStr = node->GetAttribute("max");
             if (!valueMaxStr.ToDouble(&max)) {
-                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
             Array1DDouble xAxis = asGeoAreaCompositeGrid::GetXaxis(GetPredictorGridType(i_step, i_ptor), min, max);
@@ -623,7 +622,7 @@ VectorDouble asParametersCalibration::GetVectorXmin(asFileParametersCalibration 
         }
 
     } else {
-        asLogMessage(_("The method is not correctly defined for Xmin in the calibration parameters file."));
+        wxLogVerbose(_("The method is not correctly defined for Xmin in the calibration parameters file."));
         wxString valueStr = node->GetChildren()->GetContent();
         vect = asFileParameters::BuildVectorDouble(valueStr);
     }
@@ -646,12 +645,12 @@ VectorDouble asParametersCalibration::GetVectorYmin(asFileParametersCalibration 
 
             wxString valueMinStr = node->GetAttribute("min");
             if (!valueMinStr.ToDouble(&min)) {
-                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
             wxString valueMaxStr = node->GetAttribute("max");
             if (!valueMaxStr.ToDouble(&max)) {
-                asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
             Array1DDouble yAxis = asGeoAreaCompositeGrid::GetYaxis(GetPredictorGridType(i_step, i_ptor), min, max);
@@ -661,7 +660,7 @@ VectorDouble asParametersCalibration::GetVectorYmin(asFileParametersCalibration 
         }
 
     } else {
-        asLogMessage(_("The method is not correctly defined for Xmin in the calibration parameters file."));
+        wxLogVerbose(_("The method is not correctly defined for Xmin in the calibration parameters file."));
         wxString valueStr = node->GetChildren()->GetContent();
         vect = asFileParameters::BuildVectorDouble(valueStr);
     }
@@ -673,49 +672,48 @@ bool asParametersCalibration::InputsOK() const
 {
     // Time properties
     if (GetArchiveStart() <= 0) {
-        asLogError(_("The beginning of the archive period was not provided in the parameters file."));
+        wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
     if (GetArchiveEnd() <= 0) {
-        asLogError(_("The end of the archive period was not provided in the parameters file."));
+        wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
     if (GetCalibrationStart() <= 0) {
-        asLogError(_("The beginning of the calibration period was not provided in the parameters file."));
+        wxLogError(_("The beginning of the calibration period was not provided in the parameters file."));
         return false;
     }
 
     if (GetCalibrationEnd() <= 0) {
-        asLogError(_("The end of the calibration period was not provided in the parameters file."));
+        wxLogError(_("The end of the calibration period was not provided in the parameters file."));
         return false;
     }
 
     if (GetValidationYearsVector().size() <= 0) {
-        asLogMessage(_("The validation period was not provided in the parameters file (it can be on purpose)."));
+        wxLogVerbose(_("The validation period was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
 
     if (GetTimeArrayTargetTimeStepHours() <= 0) {
-        asLogError(_("The time step was not provided in the parameters file."));
+        wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
-        asLogError(_("The time step was not provided in the parameters file."));
+        wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
         GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
         if (GetTimeArrayTargetPredictandSerieName().IsEmpty()) {
-            asLogError(
-                    _("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
+            wxLogError(_("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
             return false;
         }
         if (GetTimeArrayTargetPredictandMinThreshold() == GetTimeArrayTargetPredictandMaxThreshold()) {
-            asLogError(_("The provided min/max predictand thresholds are equal in the parameters file."));
+            wxLogError(_("The provided min/max predictand thresholds are equal in the parameters file."));
             return false;
         }
     }
@@ -723,12 +721,11 @@ bool asParametersCalibration::InputsOK() const
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
         if (GetTimeArrayAnalogsIntervalDaysVector().size() == 0) {
-            asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
+            wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
         if (GetTimeArrayAnalogsExcludeDays() <= 0) {
-            asLogError(
-                    _("The number of days to exclude around the target date was not provided in the parameters file."));
+            wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
     }
@@ -736,100 +733,84 @@ bool asParametersCalibration::InputsOK() const
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberVector(i).size() == 0) {
-            asLogError(
-                    wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
+            wxLogError(wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."),
+                                        i));
             return false;
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 if (GetPreprocessMethod(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
-                            i, j));
+                    wxLogError(_("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (GetPreprocessDatasetId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessDataIdVector(i, j, k).size() == 0) {
-                        asLogError(wxString::Format(
-                                _("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessLevelVector(i, j, k).size() == 0) {
-                        asLogError(wxString::Format(
-                                _("The level for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The level for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessTimeHoursVector(i, j, k).size() == 0) {
-                        asLogError(wxString::Format(
-                                _("The time for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The time for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                 }
             } else {
                 if (GetPredictorDatasetId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The dataset (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    wxLogError(_("The dataset (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
                 if (GetPredictorDataIdVector(i, j).size() == 0) {
-                    asLogError(wxString::Format(
-                            _("The data (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    wxLogError(_("The data (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
                 if (GetPredictorLevelVector(i, j).size() == 0) {
-                    asLogError(wxString::Format(
-                            _("The level (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    wxLogError(_("The level (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
                 if (GetPredictorTimeHoursVector(i, j).size() == 0) {
-                    asLogError(wxString::Format(
-                            _("The time (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                    wxLogError(_("The time (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
             }
 
             if (GetPredictorGridType(i, j).IsEmpty()) {
-                asLogError(
-                        wxString::Format(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i,
-                                         j));
+                wxLogError(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i, j);
                 return false;
             }
             if (GetPredictorXminVector(i, j).size() == 0) {
-                asLogError(wxString::Format(
-                        _("The X min value (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                wxLogError(_("The X min value (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
             if (GetPredictorXptsnbVector(i, j).size() == 0) {
-                asLogError(wxString::Format(
-                        _("The X points nb value (step %d, predictor %d) was not provided in the parameters file."), i,
-                        j));
+                wxLogError(_("The X points nb value (step %d, predictor %d) was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorYminVector(i, j).size() == 0) {
-                asLogError(wxString::Format(
-                        _("The Y min value (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                wxLogError(_("The Y min value (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
             if (GetPredictorYptsnbVector(i, j).size() == 0) {
-                asLogError(wxString::Format(
-                        _("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."), i,
-                        j));
+                wxLogError(_("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorCriteriaVector(i, j).size() == 0) {
-                asLogError(wxString::Format(
-                        _("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                wxLogError(_("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
         }
@@ -837,19 +818,19 @@ bool asParametersCalibration::InputsOK() const
 
     // Analog values
     if (GetPredictandStationIdsVector().size() == 0) {
-        asLogWarning(_("The station ID was not provided in the parameters file (it can be on purpose)."));
+        wxLogWarning(_("The station ID was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
 
     // Forecast scores
     if (GetForecastScoreNameVector().size() == 0) {
-        asLogWarning(_("The forecast score was not provided in the parameters file."));
+        wxLogWarning(_("The forecast score was not provided in the parameters file."));
         return false;
     }
 
     // Forecast score final
     if (GetForecastScoreTimeArrayModeVector().size() == 0) {
-        asLogWarning(_("The final forecast score was not provided in the parameters file."));
+        wxLogWarning(_("The final forecast score was not provided in the parameters file."));
         return false;
     }
 
@@ -935,18 +916,18 @@ void asParametersCalibration::InitValues()
 bool asParametersCalibration::SetPredictandStationIdsVector(VVectorInt val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided predictand ID vector is empty."));
+        wxLogError(_("The provided predictand ID vector is empty."));
         return false;
     } else {
         if (val[0].size() < 1) {
-            asLogError(_("The provided predictand ID vector is empty."));
+            wxLogError(_("The provided predictand ID vector is empty."));
             return false;
         }
 
         for (int i = 0; i < (int) val.size(); i++) {
             for (int j = 0; j < (int) val[i].size(); j++) {
                 if (asTools::IsNaN(val[i][j])) {
-                    asLogError(_("There are NaN values in the provided predictand ID vector."));
+                    wxLogError(_("There are NaN values in the provided predictand ID vector."));
                     return false;
                 }
             }
@@ -961,12 +942,12 @@ bool asParametersCalibration::SetPredictandStationIdsVector(VVectorInt val)
 bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided 'interval days' vector is empty."));
+        wxLogError(_("The provided 'interval days' vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (asTools::IsNaN(val[i])) {
-                asLogError(_("There are NaN values in the provided 'interval days' vector."));
+                wxLogError(_("There are NaN values in the provided 'interval days' vector."));
                 return false;
             }
         }
@@ -978,17 +959,17 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt va
 bool asParametersCalibration::SetForecastScoreNameVector(VectorString val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided forecast scores vector is empty."));
+        wxLogError(_("The provided forecast scores vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (val[i].IsEmpty()) {
-                asLogError(_("There are NaN values in the provided forecast scores vector."));
+                wxLogError(_("There are NaN values in the provided forecast scores vector."));
                 return false;
             }
 
             if (val[i].IsSameAs("RankHistogram", false) || val[i].IsSameAs("RankHistogramReliability", false)) {
-                asLogError(_("The rank histogram can only be processed in the 'all scores' evalution method."));
+                wxLogError(_("The rank histogram can only be processed in the 'all scores' evalution method."));
                 return false;
             }
         }
@@ -1000,12 +981,12 @@ bool asParametersCalibration::SetForecastScoreNameVector(VectorString val)
 bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(VectorString val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided time array mode vector for the forecast score is empty."));
+        wxLogError(_("The provided time array mode vector for the forecast score is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (val[i].IsEmpty()) {
-                asLogError(_("There are NaN values in the provided time array mode vector for the forecast score."));
+                wxLogError(_("There are NaN values in the provided time array mode vector for the forecast score."));
                 return false;
             }
         }
@@ -1024,8 +1005,7 @@ double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int i_step, int
                                        &m_stepsVect[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset][lastrow]);
         return val;
     } else {
-        asLogError(
-                _("Trying to access to an element outside of preprocessTimeHours (lower limit) in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessTimeHours (lower limit) in the parameters object."));
         return NaNDouble;
     }
 }
@@ -1090,8 +1070,7 @@ double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int i_step, int
                                        &m_stepsVect[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset][lastrow]);
         return val;
     } else {
-        asLogError(
-                _("Trying to access to an element outside of preprocessTimeHours (upper limit) in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessTimeHours (upper limit) in the parameters object."));
         return NaNDouble;
     }
 }

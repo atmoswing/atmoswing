@@ -60,12 +60,12 @@ asDataPredictorRealtime *asDataPredictorRealtime::GetInstance(const wxString &da
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
         predictor = new asDataPredictorRealtimeGfsForecast(dataId);
     } else {
-        asLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
+        wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return NULL;
     }
 
     if (!predictor->Init()) {
-        asLogError(_("The predictor did not initialize correctly."));
+        wxLogError(_("The predictor did not initialize correctly."));
     }
 
     return predictor;
@@ -326,9 +326,9 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
                                                                                   lonMin + 360, 0.01f);
             }
             if (m_fileIndexes.areas[i_area].lonStart < 0) {
-                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ",
-                                            lonMin, m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
-                                            m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]));
+                wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
+                           m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
+                           m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]);
                 return false;
             }
             wxASSERT_MSG(m_fileIndexes.areas[i_area].lonStart >= 0,
@@ -361,8 +361,7 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
                                                              &m_fileStructure.axisLevel[m_fileStructure.axisLevel.size() - 1],
                                                              m_level, 0.01f);
             if (m_fileIndexes.level < 0) {
-                asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
-                                              m_fileVariableName));
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName);
                 return false;
             }
         } else if (m_fileStructure.hasLevelDimension && m_fileStructure.singleLevel) {

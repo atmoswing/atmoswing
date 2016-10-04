@@ -1290,7 +1290,6 @@ void Ref2SavingIntermediateResults()
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues1, params, anaSubDates2, step));
         anaValues1.Save();
-        wxLogError(anaValues1.GetFilePath());
         ASSERT_TRUE(asFile::Exists(anaValues1.GetFilePath()));
         // Reload
         anaValues2.Init(params);

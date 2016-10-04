@@ -88,7 +88,7 @@ wxString asDataPredictand::ParameterEnumToString(asDataPredictand::Parameter par
         case (Wind):
             return "Wind";
         default:
-            asLogError(_("The given data parameter type in unknown."));
+            wxLogError(_("The given data parameter type in unknown."));
     }
     return wxEmptyString;
 }
@@ -174,7 +174,7 @@ wxString asDataPredictand::TemporalResolutionEnumToString(asDataPredictand::Temp
         case (Weekly):
             return "Weekly";
         default:
-            asLogError(_("The given data temporal resolution type in unknown."));
+            wxLogError(_("The given data temporal resolution type in unknown."));
     }
     return wxEmptyString;
 }
@@ -205,7 +205,7 @@ wxString asDataPredictand::SpatialAggregationEnumToString(asDataPredictand::Spat
         case (Catchment):
             return "Catchment";
         default:
-            asLogError(_("The given data spatial aggregation type in unknown."));
+            wxLogError(_("The given data spatial aggregation type in unknown."));
     }
     return wxEmptyString;
 }
@@ -240,7 +240,7 @@ asDataPredictand *asDataPredictand::GetInstance(Parameter parameter,
             return db;
         }
         default:
-            asLogError(_("The predictand parameter is not listed in the asDataPredictand instance factory."));
+            wxLogError(_("The predictand parameter is not listed in the asDataPredictand instance factory."));
             return NULL;
     }
 }
@@ -248,19 +248,19 @@ asDataPredictand *asDataPredictand::GetInstance(Parameter parameter,
 asDataPredictand *asDataPredictand::GetInstance(const wxString &filePath)
 {
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), filePath));
+    wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) {
-        asLogError(wxString::Format(_("Couldn't open file %s"), filePath));
+        wxLogError(_("Couldn't open file %s"), filePath);
         return NULL;
     } else {
-        asLogMessage(_("File successfully opened"));
+        wxLogVerbose(_("File successfully opened"));
     }
 
     // Check version
     float version = ncFile.GetAttFloat("version");
     if (asTools::IsNaN(version) || version <= 1.0) {
-        asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return NULL;
     }
 
@@ -331,11 +331,11 @@ bool asDataPredictand::InitMembers(const wxString &catalogFilePath)
 bool asDataPredictand::InitBaseContainers()
 {
     if (m_stationsNb < 1) {
-        asLogError(_("The stations number is inferior to 1."));
+        wxLogError(_("The stations number is inferior to 1."));
         return false;
     }
     if (m_timeLength < 1) {
-        asLogError(_("The time length is inferior to 1."));
+        wxLogError(_("The time length is inferior to 1."));
         return false;
     }
     m_stationNames.resize(m_stationsNb);
@@ -362,7 +362,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     // Check version
     float version = ncFile.GetAttFloat("version");
     if (asTools::IsNaN(version) || version <= 1.1) {
-        asLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return false;
     }
 
@@ -568,7 +568,7 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
         wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"),
                                                     catalog.GetStationFilename(i_station));
         if (!ProgressBar.Update(i_station, fileNameMessage)) {
-            asLogError(_("The process has been canceled by the user."));
+            wxLogError(_("The process has been canceled by the user."));
             return false;
         }
 #endif
@@ -615,8 +615,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     int startIndex = asTools::SortedArraySearch(&m_time[0], &m_time[m_time.size() - 1],
                                                 currentData.GetStationStart(stationIndex));
     if (startIndex == asOUT_OF_RANGE || startIndex == asNOT_FOUND) {
-        asLogError(wxString::Format(_("The given start date for \"%s\" is out of the catalog range."),
-                                    currentData.GetStationName(stationIndex)));
+        wxLogError(_("The given start date for \"%s\" is out of the catalog range."),
+                   currentData.GetStationName(stationIndex));
         return false;
     }
 
@@ -631,8 +631,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
         if (lineContent.Len() >= maxCharWidth) {
             // Check the size of the array
             if (timeIndex >= m_timeLength) {
-                asLogError(wxString::Format(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
-                                            (int) timeIndex, (int) m_timeLength));
+                wxLogError(_("The time index is larger than the matrix (timeIndex = %d, m_timeLength = %d)."),
+                           timeIndex, m_timeLength);
                 return false;
             }
 
@@ -656,7 +656,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                                             filePattern.timeDayEnd - filePattern.timeDayBegin + 1).ToDouble(
                                     &valTimeDay);
                         } else {
-                            asLogError(_("The data file pattern is not correctly defined."));
+                            wxLogError(_("The data file pattern is not correctly defined."));
                             return false;
                         }
 
@@ -681,7 +681,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                                     dateData, asTime::GetStringTime(dateData, "DD.MM.YYYY"), m_time(timeIndex),
                                     asTime::GetStringTime(m_time(timeIndex), "DD.MM.YYYY"),
                                     currentData.GetStationFilename(stationIndex));
-                            asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage));
+                            wxLogError(_("The time value doesn't match: %s"), errorMessage);
                             return false;
                         }
                     }
@@ -720,30 +720,27 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                             if ((unsigned) filePattern.timeYearBegin > vColumns.size() ||
                                 (unsigned) filePattern.timeMonthBegin > vColumns.size() ||
                                 (unsigned) filePattern.timeDayBegin > vColumns.size()) {
-                                asLogError(
-                                        _("The data file pattern is not correctly defined. Trying to access an element (date) after the line width."));
+                                wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (date) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeYearBegin - 1].ToDouble(&valTimeYear);
                             vColumns[filePattern.timeMonthBegin - 1].ToDouble(&valTimeMonth);
                             vColumns[filePattern.timeDayBegin - 1].ToDouble(&valTimeDay);
                         } else {
-                            asLogError(_("The data file pattern is not correctly defined."));
+                            wxLogError(_("The data file pattern is not correctly defined."));
                             return false;
                         }
 
                         if (filePattern.timeHourBegin != 0) {
                             if ((unsigned) filePattern.timeHourBegin > vColumns.size()) {
-                                asLogError(
-                                        _("The data file pattern is not correctly defined. Trying to access an element (hour) after the line width."));
+                                wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (hour) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeHourBegin - 1].ToDouble(&valTimeHour);
                         }
                         if (filePattern.timeMinuteBegin != 0) {
                             if ((unsigned) filePattern.timeMinuteBegin > vColumns.size()) {
-                                asLogError(
-                                        _("The data file pattern is not correctly defined. Trying to access an element (minute) after the line width."));
+                                wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (minute) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeMinuteBegin - 1].ToDouble(&valTimeMinute);
@@ -759,7 +756,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                                     dateData, asTime::GetStringTime(dateData, "DD.MM.YYYY"), m_time(timeIndex),
                                     asTime::GetStringTime(m_time(timeIndex), "DD.MM.YYYY"),
                                     currentData.GetStationFilename(stationIndex));
-                            asLogError(wxString::Format(_("The time value doesn't match: %s"), errorMessage));
+                            wxLogError(_("The time value doesn't match: %s"), errorMessage);
                             return false;
                         }
                     }
@@ -776,7 +773,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
             }
         } else {
             if (lineContent.Len() > 1) {
-                asLogError(_("The line length doesn't match."));
+                wxLogError(_("The line length doesn't match."));
                 return false;
             }
         }
@@ -787,8 +784,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     int endIndex = asTools::SortedArraySearch(&m_time[0], &m_time[m_time.size() - 1],
                                               currentData.GetStationEnd(stationIndex));
     if (endIndex == asOUT_OF_RANGE || endIndex == asNOT_FOUND) {
-        asLogError(wxString::Format(_("The given end date for \"%s\" is out of the catalog range."),
-                                    currentData.GetStationName(stationIndex)));
+        wxLogError(_("The given end date for \"%s\" is out of the catalog range."),
+                   currentData.GetStationName(stationIndex));
         return false;
     }
 
@@ -796,7 +793,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     if (endIndex - startIndex != timeIndex - startIndex - 1) {
         wxString messageTime = wxString::Format(_("The length of the data in \"%s / %s\" is not coherent"),
                                                 currentData.GetName(), currentData.GetStationName(stationIndex));
-        asLogError(messageTime);
+        wxLogError(messageTime);
         return false;
     }
 
@@ -834,8 +831,7 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
         aggregate = false;
     } else if (timeStepDays > m_timeStepDays) {
         if (std::fmod(timeStepDays, m_timeStepDays) > 0.0000001) {
-            asLogError(
-                    _("The timestep for the extraction of the predictands maximums has to be a multiple of the data timestep."));
+            wxLogError(_("The timestep for the extraction of the predictands maximums has to be a multiple of the data timestep."));
             Array2DFloat emptyMatrix;
             emptyMatrix << NaNFloat;
             return emptyMatrix;
@@ -848,8 +844,7 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
         indexTimeSpanUp = floor((timeStepDays / m_timeStepDays) / 2);
         indexTimeSpanDown = ceil((timeStepDays / m_timeStepDays) / 2) - 1;
     } else {
-        asLogError(
-                _("The timestep for the extraction of the predictands maximums cannot be lower than the data timestep."));
+        wxLogError(_("The timestep for the extraction of the predictands maximums cannot be lower than the data timestep."));
         Array2DFloat emptyMatrix;
         emptyMatrix << NaNFloat;
         return emptyMatrix;

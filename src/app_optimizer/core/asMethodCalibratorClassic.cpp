@@ -69,7 +69,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     for (unsigned int i_stat = 0; i_stat < stationsId.size(); i_stat++) {
         VectorInt stationId = stationsId[i_stat];
 
-        asLogMessage(wxString::Format(_("Calibrating station %s."), GetPredictandStationIdsList(stationId)));
+        wxLogVerbose(_("Calibrating station %s."), GetPredictandStationIdsList(stationId));
 
         // Reset the score of the climatology
         m_scoreClimatology.clear();
@@ -89,7 +89,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                                                    GetPredictandStationIdsList(stationId)));
 
         // Create a complete relevance map
-        asLogMessage(_("Creating the complete relevance map for a given predictor."));
+        wxLogVerbose(_("Creating the complete relevance map for a given predictor."));
 
         // Get a copy of the original parameters
         params = m_originalParams;
@@ -134,9 +134,9 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 wxASSERT(m_parameters.size() == 1);
                 ClearTemp();
 
-                asLogMessageImportant(wxString::Format(_("Best point on relevance map: %.2f lat, %.2f lon"),
-                                                       m_parameters[m_parameters.size() - 1].GetPredictorYmin(i_step, 0),
-                                                       m_parameters[m_parameters.size() - 1].GetPredictorXmin(i_step, 0)));
+                wxLogMessage(_("Best point on relevance map: %.2f lat, %.2f lon"),
+                             m_parameters[m_parameters.size() - 1].GetPredictorYmin(i_step, 0),
+                             m_parameters[m_parameters.size() - 1].GetPredictorXmin(i_step, 0));
 
                 // Resize domain
                 if(!AssessDomainResizing(params, anaDatesPrevious, resultsTested, i_step, explo))
@@ -163,7 +163,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         }
 
         // Finally calibrate the number of analogs for every step
-        asLogMessage(_("Find the analogs number for every step."));
+        wxLogVerbose(_("Find the analogs number for every step."));
         ClearTemp();
         asResultsAnalogsDates tempDates;
         if (!SubProcessAnalogsNumber(params, tempDates))
@@ -223,17 +223,17 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
 {
     try {
         if (!PreloadData(params)) {
-            asLogError(_("Could not preload the data."));
+            wxLogError(_("Could not preload the data."));
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught in the data preloading: %s"), msg));
+        wxLogError(_("Bad allocation caught in the data preloading: %s"), msg);
         DeletePreloadedData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Exception in the data preloading: %s"), msg));
+        wxLogError(_("Exception in the data preloading: %s"), msg);
         DeletePreloadedData();
         return false;
     }
@@ -393,7 +393,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
             bool continueLoop = true;
             anaDatesPreviousSubRuns = anaDatesPrevious;
             for (int sub_step = i_step; sub_step < params.GetStepsNb(); sub_step++) {
-                asLogMessage(wxString::Format(_("Process sub-level %d"), sub_step));
+                wxLogVerbose(_("Process sub-level %d"), sub_step);
                 bool containsNaNs = false;
                 if (sub_step == 0) {
                     if (!GetAnalogsDates(anaDates, m_parametersTemp[i_param], sub_step, containsNaNs))
@@ -426,7 +426,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
         resultsTested.Add(m_parametersTemp[i_param], anaScoreFinal.GetForecastScore());
     }
 
-    asLogMessageImportant(wxString::Format(_("Time to process the relevance map: %ldms"), swMap.Time()));
+    wxLogMessage(_("Time to process the relevance map: %ldms"), swMap.Time());
 
     return true;
 }
@@ -436,7 +436,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                                                      asResultsParametersArray &resultsTested, int i_step,
                                                      const asMethodCalibrator::ParamExploration &explo)
 {
-    asLogMessage(wxString::Format(_("Resize the spatial domain for every predictor.")));
+    wxLogVerbose(_("Resize the spatial domain for every predictor."));
 
     wxStopWatch swEnlarge;
 
@@ -480,7 +480,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                         break;
                     }
                     default:
-                        asLogError(_("Resizing not correctly defined."));
+                        wxLogError(_("Resizing not correctly defined."));
                 }
             }
 
@@ -518,7 +518,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                 bool continueLoop = true;
                 anaDatesPreviousSubRuns = anaDatesPrevious;
                 for (int sub_step = i_step; sub_step < params.GetStepsNb(); sub_step++) {
-                    asLogMessage(wxString::Format(_("Process sub-level %d"), sub_step));
+                    wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
                     if (sub_step == 0) {
                         if (!GetAnalogsDates(anaDates, params, sub_step, containsNaNs))
@@ -558,7 +558,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
     }
 
-    asLogMessageImportant(wxString::Format(_("Time to process the first resizing procedure: %ldms"), swEnlarge.Time()));
+    wxLogMessage(_("Time to process the first resizing procedure: %ldms"), swEnlarge.Time());
 
     return true;
 }
@@ -568,7 +568,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                                                          asResultsParametersArray &resultsTested, int i_step,
                                                          const asMethodCalibrator::ParamExploration &explo)
 {
-    asLogMessage(wxString::Format(_("Reshape again (calibration plus) the spatial domain for every predictor.")));
+    wxLogVerbose(_("Reshape again (calibration plus) the spatial domain for every predictor."));
 
     ClearTemp();
 
@@ -716,7 +716,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                         break;
                     }
                     default:
-                        asLogError(_("Resizing not correctly defined."));
+                        wxLogError(_("Resizing not correctly defined."));
                 }
             }
 
@@ -755,7 +755,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                 bool continueLoop = true;
                 anaDatesPreviousSubRuns = anaDatesPrevious;
                 for (int sub_step = i_step; sub_step < params.GetStepsNb(); sub_step++) {
-                    asLogMessage(wxString::Format(_("Process sub-level %d"), sub_step));
+                    wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
                     if (sub_step == 0) {
                         if (!GetAnalogsDates(anaDates, params, sub_step, containsNaNs))
@@ -784,16 +784,15 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
 
             // If better, keep it and start again
             if (KeepIfBetter(params, anaScoreFinal)) {
-                asLogMessageImportant(
-                        wxString::Format("Improved spatial window size and position (move %d, factor %d)", i_resizing,
-                                         multipleFactor));
+                wxLogMessage("Improved spatial window size and position (move %d, factor %d)", i_resizing,
+                             multipleFactor);
                 i_resizing = 0;
                 multipleFactor = 1;
             }
         }
     }
 
-    asLogMessageImportant(wxString::Format(_("Time to process the second resizing procedure: %ldms"), swResize.Time()));
+    wxLogMessage(_("Time to process the second resizing procedure: %ldms"), swResize.Time());
 
     return true;
 }
@@ -892,15 +891,14 @@ bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration
         anaDatesPrevious = anaDatesPreviousNew;
     }
     if (containsNaNs) {
-        asLogError(_("The final dates selection contains NaNs"));
+        wxLogError(_("The final dates selection contains NaNs"));
 
         double tmpYmin = m_parameters[m_parameters.size() - 1].GetPredictorYmin(i_step, 0);
         double tmpXmin = m_parameters[m_parameters.size() - 1].GetPredictorXmin(i_step, 0);
         int tmpYptsnb = m_parameters[m_parameters.size() - 1].GetPredictorYptsnb(i_step, 0);
         int tmpXptsnb = m_parameters[m_parameters.size() - 1].GetPredictorXptsnb(i_step, 0);
-        asLogMessageImportant(
-                wxString::Format(_("Area: Ymin = %.2f, Yptsnb = %d, Xmin = %.2f, Xptsnb = %d"), tmpYmin, tmpYptsnb,
-                                 tmpXmin, tmpXptsnb));
+        wxLogMessage(_("Area: Ymin = %.2f, Yptsnb = %d, Xmin = %.2f, Xptsnb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
+                     tmpXptsnb);
 
         return false;
     }

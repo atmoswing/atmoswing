@@ -82,13 +82,13 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
             wxString fileName = m_fileNames[i_file];
             wxString filePath = m_destinationDir + DS + fileName;
             wxString url = m_urls[i_file];
-            asLogMessage(wxString::Format(_("Downloading file %s."), filePath)); // Do not log the URL, it bugs !
+            wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
 
             // Use of a wxFileName object to create the directory.
             wxFileName currentFilePath = wxFileName(filePath);
             if (!currentFilePath.DirExists()) {
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
-                    asLogError(_("The directory to save real-time predictors data cannot be created."));
+                    wxLogError(_("The directory to save real-time predictors data cannot be created."));
                     wxDELETE(errorbuffer);
                     return (wxThread::ExitCode) 1;
                 }
@@ -133,12 +133,12 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
                 // Log in case of failure
                 if (CURLE_OK != res) {
-                    asLogError(_("Failed downloading file."));
-                    asLogError(wxString::Format(_("Curl error message: %s"), errorbuffer));
+                    wxLogError(_("Failed downloading file."));
+                    wxLogError(_("Curl error message: %s"), errorbuffer);
                     wxDELETE(errorbuffer);
                     return (wxThread::ExitCode) 1;
                 } else {
-                    asLogMessage(wxString::Format(_("File %s downloaded successfully."), fileName));
+                    wxLogVerbose(_("File %s downloaded successfully."), fileName);
                 }
             }
         }

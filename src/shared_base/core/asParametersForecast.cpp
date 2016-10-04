@@ -63,10 +63,10 @@ void asParametersForecast::AddPredictorForecast(ParamsStepForecast &step)
 
 bool asParametersForecast::LoadFromFile(const wxString &filePath)
 {
-    asLogMessage(_("Loading parameters file."));
+    wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
-        asLogError(_("The given path to the parameters file is empty."));
+        wxLogError(_("The given path to the parameters file is empty."));
         return false;
     }
 
@@ -121,7 +121,7 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     FixWeights();
     FixCoordinates();
 
-    asLogMessage(_("Parameters file loaded."));
+    wxLogVerbose(_("Parameters file loaded."));
 
     return true;
 }
@@ -383,39 +383,38 @@ bool asParametersForecast::InputsOK() const
 {
     // Time properties
     if (GetLeadTimeDaysVector().size() == 0) {
-        asLogError(_("The lead times were not provided in the parameters file."));
+        wxLogError(_("The lead times were not provided in the parameters file."));
         return false;
     }
 
     if (GetArchiveStart() <= 0) {
-        asLogError(_("The beginning of the archive period was not provided in the parameters file."));
+        wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
     if (GetArchiveEnd() <= 0) {
-        asLogError(_("The end of the archive period was not provided in the parameters file."));
+        wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayTargetTimeStepHours() <= 0) {
-        asLogError(_("The time step was not provided in the parameters file."));
+        wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
-        asLogError(_("The time step was not provided in the parameters file."));
+        wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
         if (GetTimeArrayAnalogsIntervalDays() <= 0) {
-            asLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
+            wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
         if (GetTimeArrayAnalogsExcludeDays() <= 0) {
-            asLogError(
-                    _("The number of days to exclude around the target date was not provided in the parameters file."));
+            wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
     }
@@ -423,94 +422,79 @@ bool asParametersForecast::InputsOK() const
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberLeadTimeVector(i).size() != GetLeadTimeDaysVector().size()) {
-            asLogError(wxString::Format(
-                    _("The length of the analogs numbers (step %d) do not match the number of lead times."), i));
+            wxLogError(_("The length of the analogs numbers (step %d) do not match the number of lead times."), i);
             return false;
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 if (GetPreprocessMethod(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
-                            i, j));
+                    wxLogError(_("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (GetPreprocessRealtimeDatasetId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The realtime dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The realtime dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessRealtimeDataId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The realtime data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The realtime data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessArchiveDatasetId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The archive dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The archive dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                     if (GetPreprocessArchiveDataId(i, j, k).IsEmpty()) {
-                        asLogError(wxString::Format(
-                                _("The archive data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
-                                i, j));
+                        wxLogError(_("The archive data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                                   i, j);
                         return false;
                     }
                 }
             } else {
                 if (GetPredictorRealtimeDatasetId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The realtime dataset (step %d, predictor %d) was not provided in the parameters file."),
-                            i, j));
+                    wxLogError(_("The realtime dataset (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
                 if (GetPredictorRealtimeDataId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The realtime data (step %d, predictor %d) was not provided in the parameters file."), i,
-                            j));
+                    wxLogError(_("The realtime data (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
                 if (GetPredictorArchiveDatasetId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The archive dataset (step %d, predictor %d) was not provided in the parameters file."),
-                            i, j));
+                    wxLogError(_("The archive dataset (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
                 if (GetPredictorArchiveDataId(i, j).IsEmpty()) {
-                    asLogError(wxString::Format(
-                            _("The archive data (step %d, predictor %d) was not provided in the parameters file."), i,
-                            j));
+                    wxLogError(_("The archive data (step %d, predictor %d) was not provided in the parameters file."),
+                               i, j);
                     return false;
                 }
             }
 
             if (GetPredictorGridType(i, j).IsEmpty()) {
-                asLogError(
-                        wxString::Format(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i,
-                                         j));
+                wxLogError(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i, j);
                 return false;
             }
             if (GetPredictorXptsnb(i, j) == 0) {
-                asLogError(wxString::Format(
-                        _("The X points nb value (step %d, predictor %d) was not provided in the parameters file."), i,
-                        j));
+                wxLogError(_("The X points nb value (step %d, predictor %d) was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorYptsnb(i, j) == 0) {
-                asLogError(wxString::Format(
-                        _("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."), i,
-                        j));
+                wxLogError(_("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."),
+                           i, j);
                 return false;
             }
             if (GetPredictorCriteria(i, j).IsEmpty()) {
-                asLogError(wxString::Format(
-                        _("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j));
+                wxLogError(_("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
         }
@@ -535,12 +519,12 @@ void asParametersForecast::InitValues()
 bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided 'lead time (days)' vector is empty."));
+        wxLogError(_("The provided 'lead time (days)' vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (asTools::IsNaN(val[i])) {
-                asLogError(_("There are NaN values in the provided 'lead time (days)' vector."));
+                wxLogError(_("There are NaN values in the provided 'lead time (days)' vector."));
                 return false;
             }
         }
@@ -552,12 +536,12 @@ bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
 bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int i_step, VectorInt val)
 {
     if (val.size() < 1) {
-        asLogError(_("The provided analogs numbers vector (fct of the lead time) is empty."));
+        wxLogError(_("The provided analogs numbers vector (fct of the lead time) is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (asTools::IsNaN(val[i])) {
-                asLogError(_("There are NaN values in the provided analogs numbers vector (fct of the lead time)."));
+                wxLogError(_("There are NaN values in the provided analogs numbers vector (fct of the lead time)."));
                 return false;
             }
         }
@@ -569,7 +553,7 @@ bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int i_step, VectorInt 
 bool asParametersForecast::SetPredictorArchiveDatasetId(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor archive dataset ID is null"));
+        wxLogError(_("The provided value for the predictor archive dataset ID is null"));
         return false;
     }
     m_stepsForecast[i_step].predictors[i_predictor].archiveDatasetId = val;
@@ -579,7 +563,7 @@ bool asParametersForecast::SetPredictorArchiveDatasetId(int i_step, int i_predic
 bool asParametersForecast::SetPredictorArchiveDataId(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor archive data ID is null"));
+        wxLogError(_("The provided value for the predictor archive data ID is null"));
         return false;
     }
     m_stepsForecast[i_step].predictors[i_predictor].archiveDataId = val;
@@ -589,7 +573,7 @@ bool asParametersForecast::SetPredictorArchiveDataId(int i_step, int i_predictor
 bool asParametersForecast::SetPredictorRealtimeDatasetId(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor realtime dataset ID is null"));
+        wxLogError(_("The provided value for the predictor realtime dataset ID is null"));
         return false;
     }
     m_stepsForecast[i_step].predictors[i_predictor].realtimeDatasetId = val;
@@ -599,7 +583,7 @@ bool asParametersForecast::SetPredictorRealtimeDatasetId(int i_step, int i_predi
 bool asParametersForecast::SetPredictorRealtimeDataId(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the predictor realtime data ID is null"));
+        wxLogError(_("The provided value for the predictor realtime data ID is null"));
         return false;
     }
     m_stepsForecast[i_step].predictors[i_predictor].realtimeDataId = val;
@@ -612,8 +596,7 @@ wxString asParametersForecast::GetPreprocessArchiveDatasetId(int i_step, int i_p
         (unsigned) (i_dataset + 1)) {
         return m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDatasetIds[i_dataset];
     } else {
-        asLogError(
-                _("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -622,7 +605,7 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int i_step, int i_predi
                                                          const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess archive dataset ID is null"));
+        wxLogError(_("The provided value for the preprocess archive dataset ID is null"));
         return false;
     }
 
@@ -641,8 +624,7 @@ wxString asParametersForecast::GetPreprocessArchiveDataId(int i_step, int i_pred
     if (m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds.size() >= (unsigned) (i_dataset + 1)) {
         return m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveDataIds[i_dataset];
     } else {
-        asLogError(
-                _("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -650,7 +632,7 @@ wxString asParametersForecast::GetPreprocessArchiveDataId(int i_step, int i_pred
 bool asParametersForecast::SetPreprocessArchiveDataId(int i_step, int i_predictor, int i_dataset, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess archive data ID is null"));
+        wxLogError(_("The provided value for the preprocess archive data ID is null"));
         return false;
     }
 
@@ -669,8 +651,7 @@ wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int i_step, int i_
         (unsigned) (i_dataset + 1)) {
         return m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDatasetIds[i_dataset];
     } else {
-        asLogError(
-                _("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -679,7 +660,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int i_step, int i_pred
                                                           const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess realtime dataset ID is null"));
+        wxLogError(_("The provided value for the preprocess realtime dataset ID is null"));
         return false;
     }
 
@@ -699,8 +680,7 @@ wxString asParametersForecast::GetPreprocessRealtimeDataId(int i_step, int i_pre
         (unsigned) (i_dataset + 1)) {
         return m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeDataIds[i_dataset];
     } else {
-        asLogError(
-                _("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -708,7 +688,7 @@ wxString asParametersForecast::GetPreprocessRealtimeDataId(int i_step, int i_pre
 bool asParametersForecast::SetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset, const wxString &val)
 {
     if (val.IsEmpty()) {
-        asLogError(_("The provided value for the preprocess realtime data ID is null"));
+        wxLogError(_("The provided value for the preprocess realtime data ID is null"));
         return false;
     }
 

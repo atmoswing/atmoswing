@@ -75,7 +75,7 @@ float asPredictorCriteriaMD::Assess(const Array2DFloat &refData, const Array2DFl
         }
 
         default: {
-            asLogError(_("The calculation method was not correctly set"));
+            wxLogError(_("The calculation method was not correctly set"));
             return NaNFloat;
         }
     }

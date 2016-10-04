@@ -29,8 +29,7 @@ bool asFileParametersOptimization::CheckRootElement() const
         return false;
 
     if (!GetRoot()->GetAttribute("target").IsSameAs("calibrator", false)) {
-        asLogError(wxString::Format(_("The file %s is not a parameters file for the Calibrator."),
-                                    m_fileName.GetFullName()));
+        wxLogError(_("The file %s is not a parameters file for the Calibrator."), m_fileName.GetFullName());
         return false;
     }
     return true;

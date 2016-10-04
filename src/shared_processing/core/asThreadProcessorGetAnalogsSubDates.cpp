@@ -181,7 +181,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 
                 counter++;
             } else {
-                asLogError(_("The date was not found in the array (Analogs subdates fct). That should not happen."));
+                wxLogError(_("The date was not found in the array (Analogs subdates fct). That should not happen."));
                 return (wxThread::ExitCode) 1;
             }
         }
@@ -192,8 +192,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
             m_pFinalAnalogsCriteria->row(i_dateTarg) = ScoreArrayOneDay.head(analogsNb).transpose();
             m_pFinalAnalogsDates->row(i_dateTarg) = DateArrayOneDay.head(analogsNb).transpose();
         } else {
-            asLogWarning(_("There is not enough available data to satisfy the number of analogs"));
-            asLogWarning(wxString::Format(_("Analogs number (%d) > counter (%d)"), analogsNb, counter));
+            wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+            wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
             return (wxThread::ExitCode) 1;
         }
     }
