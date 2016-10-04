@@ -30,6 +30,9 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
+#include <wx/filename.h>
+#include <wx/filefn.h>
+#include <wx/dir.h>
 
 
 asDataPredictor::asDataPredictor(const wxString &dataId)
@@ -263,12 +266,40 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     return true;
 }
 
-bool asDataPredictor::CheckFilesPresence(const VectorString &filesList)
+bool asDataPredictor::CheckFilesPresence(VectorString &filesList)
 {
     for (int i = 0; i < filesList.size(); i++) {
         if (!wxFile::Exists(filesList[i])) {
-            asLogError(wxString::Format(_("File not found: %s"), filesList[i]));
-            return false;
+            // Search recursively in the parent directory
+            wxFileName fileName(filesList[i]);
+            while (true) {
+                // Check for wildcards
+                if (wxIsWild(fileName.GetPath())) {
+                    asLogError(wxString::Format(_("No wildcard is yet authorized in the path (%s)"), fileName.GetPath()));
+                    return false;
+                } else if (wxIsWild(fileName.GetFullName())) {
+                    wxArrayString files;
+                    size_t nb = wxDir::GetAllFiles(fileName.GetPath(), &files, fileName.GetFullName());
+                    if (nb == 1) {
+                        filesList[i] = files[0];
+                        break;
+                    } else if (nb > 1) {
+                        asLogError(wxString::Format(_("Multiple files were found matching the name %s"), fileName.GetFullName()));
+                        return false;
+                    }
+                }
+
+                if (fileName.GetDirCount()<2) {
+                    asLogError(wxString::Format(_("File not found: %s"), filesList[i]));
+                    return false;
+                }
+
+                fileName.RemoveLastDir();
+                if (fileName.Exists()) {
+                    filesList[i] = fileName.GetFullPath();
+                    break;
+                }
+            }
         }
     }
 
