@@ -95,7 +95,7 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
+        m_fileNamePattern = m_fileVariableName + "/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
     } else if (m_product.IsSameAs("inst3_3d_asm_Np", false) || m_product.IsSameAs("M2I3NPASM", false)) {
         // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields V5.12.4 (M2I3NPASM.5.12.4)
@@ -133,7 +133,7 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
+        m_fileNamePattern = m_fileVariableName + "/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
     } else if (m_product.IsSameAs("inst1_2d_int_Nx", false) || m_product.IsSameAs("M2I1NXINT", false)) {
         // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics V5.12.4 (M2I1NXINT.5.12.4)
@@ -161,7 +161,7 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + "/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
+        m_fileNamePattern = m_fileVariableName + "/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));

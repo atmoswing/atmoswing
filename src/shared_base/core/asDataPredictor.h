@@ -92,7 +92,7 @@ public:
 
     void CheckLevelTypeIsDefined();
 
-    bool CheckFilesPresence(const VectorString &filesList);
+    bool CheckFilesPresence(VectorString &filesList);
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
 
