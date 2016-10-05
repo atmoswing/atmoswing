@@ -114,7 +114,7 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }
-        m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2";
+        m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
     } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
                m_product.IsSameAs("flx", false)) {
@@ -131,7 +131,7 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }
-        m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2";
+        m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
     } else if (m_product.IsSameAs("isentropic_level", false) || m_product.IsSameAs("isentropic", false) ||
                m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
@@ -142,7 +142,7 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_gribCode[2] == asNOT_FOUND) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;
@@ -155,8 +155,6 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
         return false;
     }
 
-    wxASSERT(m_gribCode.size() == 4);
-
     // Set to initialized
     m_initialized = true;
 
@@ -167,7 +165,8 @@ VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &t
 {
     VectorString files;
 
-    double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), 1);
+    int firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
+    double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
 
     while (true) {
@@ -209,5 +208,13 @@ VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &t
 bool asDataPredictorArchiveNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
-    return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
+    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+}
+
+double asDataPredictorArchiveNcepCfsrSubset::ConvertToMjd(double timeValue, double refValue) const
+{
+    wxASSERT(refValue>30000);
+    wxASSERT(refValue<70000);
+
+    return refValue + (timeValue / 24.0); // hours to days
 }
