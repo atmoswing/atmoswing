@@ -193,11 +193,11 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             if (!parallelEvaluations)
                 wxLog::FlushActive();
 
-            for (unsigned int i_threads = 0; i_threads < vContainsNaNs.size(); i_threads++) {
-                if (*vContainsNaNs[i_threads]) {
+            for (unsigned int i = 0; i < vContainsNaNs.size(); i++) {
+                if (*vContainsNaNs[i]) {
                     containsNaNs = true;
                 }
-                wxDELETE(vContainsNaNs[i_threads]);
+                wxDELETE(vContainsNaNs[i]);
             }
             if (containsNaNs) {
                 wxLogWarning(_("NaNs were found in the criteria values."));
@@ -936,11 +936,11 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
             if (!parallelEvaluations)
                 wxLog::FlushActive();
 
-            for (unsigned int i_threads = 0; i_threads < vContainsNaNs.size() - 1; i_threads++) {
-                if (*vContainsNaNs[i_threads]) {
+            for (unsigned int i = 0; i < vContainsNaNs.size(); i++) {
+                if (*vContainsNaNs[i]) {
                     containsNaNs = true;
                 }
-                wxDELETE(vContainsNaNs[i_threads]);
+                wxDELETE(vContainsNaNs[i]);
             }
             if (containsNaNs) {
                 wxLogWarning(_("NaNs were found in the criteria values."));
