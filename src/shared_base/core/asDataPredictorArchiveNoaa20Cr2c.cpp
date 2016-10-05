@@ -110,6 +110,47 @@ bool asDataPredictorArchiveNoaa20Cr2c::Init()
         }
         m_fileNamePattern = m_fileVariableName + ".%d.nc";
 
+    } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
+               m_product.IsSameAs("monolevel", false)) {
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "monolevel";
+        m_xAxisStep = 2;
+        m_yAxisStep = 2;
+        if (m_dataId.IsSameAs("prwtr", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Precipitable water";
+            m_fileNamePattern = "pr_wtr.eatm.%d.nc";
+            m_fileVariableName = "pr_wtr";
+            m_unit = mm;
+        } else if (m_dataId.IsSameAs("mslp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea level pressure";
+            m_fileNamePattern = "prmsl.%d.nc";
+            m_fileVariableName = "prmsl";
+            m_unit = Pa;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+
+    } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gauss", false) ||
+               m_product.IsSameAs("gaussian", false) || m_product.IsSameAs("flux", false)) {
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "gaussian";
+        m_xAxisStep = NaNFloat;
+        m_yAxisStep = NaNFloat;
+        if (m_dataId.IsSameAs("prate", false)) {
+            m_parameter = PrecipitationRate;
+            m_parameterName = "Precipitation rate";
+            m_fileNamePattern = "prate.%d.nc";
+            m_fileVariableName = "prate";
+            m_unit = kg_m2_s;
+            m_subFolder.Append(DS + "monolevel");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+
     } else {
         asThrowException(_("Product type not implemented for this reanalysis dataset."));
     }

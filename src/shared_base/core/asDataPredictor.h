@@ -51,6 +51,7 @@ public:
         GeopotentialHeight,
         Geopotential,
         PrecipitableWater,
+        Precipitation,
         PrecipitationRate,
         RelativeHumidity,
         SpecificHumidity,

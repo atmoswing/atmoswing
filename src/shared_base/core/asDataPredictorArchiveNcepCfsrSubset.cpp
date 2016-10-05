@@ -189,13 +189,6 @@ VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &t
             fileEnd++;
         }
 
-        // Do not go beyond the requested time series
-        if (fileEnd > timeArray.GetEnd()) {
-            while (fileEnd > timeArray.GetEnd()) {
-                fileEnd--;
-            }
-        }
-
         // Exit condition
         if (fileStart >= timeArray.GetEnd()) {
             break;
