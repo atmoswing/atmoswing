@@ -49,6 +49,8 @@ protected:
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  VVArray2DFloat &compositeData);
 
+    double ConvertToMjd(double timeValue, double refValue) const;
+
 private:
 
 };

@@ -610,8 +610,12 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
     }
 
     double refValue = NaNDouble;
-    if (ncFile.HasAttribute("RangeBeginningDate")) {
+    if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
         wxString refValueStr = ncFile.GetAttString("RangeBeginningDate");
+        refValue = asTime::GetTimeFromString(refValueStr);
+    } else if(m_datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
+        wxString refValueStr = ncFile.GetAttString("units", "time");
+        refValueStr = refValueStr.Mid(12, 10);
         refValue = asTime::GetTimeFromString(refValueStr);
     }
 
