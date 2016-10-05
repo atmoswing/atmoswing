@@ -73,7 +73,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
         m_subFolder = "pressure_levels";
         m_xAxisStep = 0.75;
         m_yAxisStep = 0.75;
-        if (m_dataId.IsSameAs("z", false)) {
+        if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
             m_fileVariableName = "z";
@@ -83,7 +83,7 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
             m_parameterName = "Temperature";
             m_fileVariableName = "t";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("r", false)) {
+        } else if (m_dataId.IsSameAs("r", false) || m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileVariableName = "r";
@@ -105,6 +105,16 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
             m_parameterName = "Total column water";
             m_fileVariableName = "tcw";
             m_unit = kg_m2;
+        } else if (m_dataId.IsSameAs("tp", false)) {
+            m_parameter = Precipitation;
+            m_parameterName = "Total precipitation";
+            m_fileVariableName = "tp";
+            m_unit = m;
+        } else if (m_dataId.IsSameAs("mslp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea level pressure";
+            m_fileVariableName = "mslp";
+            m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
