@@ -67,10 +67,10 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure_levels", false) || m_product.IsSameAs("pressure", false) ||
+    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
         m_fileStructure.hasLevelDimension = true;
-        m_subFolder = "pressure_levels";
+        m_subFolder = "pressure_level";
         m_xAxisStep = 0.75;
         m_yAxisStep = 0.75;
         if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
@@ -110,10 +110,10 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
             m_parameterName = "Total precipitation";
             m_fileVariableName = "tp";
             m_unit = m;
-        } else if (m_dataId.IsSameAs("mslp", false)) {
+        } else if (m_dataId.IsSameAs("mslp", false) || m_dataId.IsSameAs("msl", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
-            m_fileVariableName = "mslp";
+            m_fileVariableName = "msl";
             m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
