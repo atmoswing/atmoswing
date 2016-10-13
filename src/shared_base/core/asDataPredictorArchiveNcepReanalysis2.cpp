@@ -87,8 +87,8 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
             m_fileVariableName = "rhum";
             m_unit = percent;
         } else if (m_dataId.IsSameAs("omega", false)) {
-            m_parameter = Omega;
-            m_parameterName = "Omega (Vertical Velocity)";
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
             m_fileVariableName = "omega";
             m_unit = Pa_s;
         } else if (m_dataId.IsSameAs("uwnd", false)) {

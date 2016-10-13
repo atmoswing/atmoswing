@@ -110,7 +110,7 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
             m_fileVariableName = "EPV";
             //                m_unit = ;
         } else if (m_dataId.IsSameAs("omega", false)) {
-            m_parameter = Omega;
+            m_parameter = VerticalVelocity;
             m_parameterName = "Vertical pressure velocity";
             m_fileVariableName = "OMEGA";
             //                m_unit = ;

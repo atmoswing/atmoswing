@@ -80,8 +80,8 @@ bool asDataPredictorArchiveNoaa20Cr2c::Init()
             m_fileVariableName = "hgt";
             m_unit = m;
         } else if (m_dataId.IsSameAs("omega", false)) {
-            m_parameter = Omega;
-            m_parameterName = "Omega (Vertical Velocity)";
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
             m_fileVariableName = "omega";
             m_unit = Pa_s;
         } else if (m_dataId.IsSameAs("rhum", false)) {

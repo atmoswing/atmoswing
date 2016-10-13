@@ -92,8 +92,8 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
             m_fileVariableName = "shum";
             m_unit = kg_kg;
         } else if (m_dataId.IsSameAs("omega", false)) {
-            m_parameter = Omega;
-            m_parameterName = "Omega (Vertical Velocity)";
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical Velocity";
             m_fileVariableName = "omega";
             m_unit = Pa_s;
         } else if (m_dataId.IsSameAs("uwnd", false)) {
@@ -136,8 +136,8 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
             m_fileVariableName = "lftx4";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("omega", false)) {
-            m_parameter = Omega;
-            m_parameterName = "Omega (vertical velocity)";
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
             m_fileNamePattern = "omega.sig995.%d.nc";
             m_fileVariableName = "omega";
             m_unit = Pa_s;

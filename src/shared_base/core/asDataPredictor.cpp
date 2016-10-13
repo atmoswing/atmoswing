@@ -95,8 +95,8 @@ asDataPredictor::Parameter asDataPredictor::StringToParameterEnum(const wxString
         return RelativeHumidity;
     } else if (ParameterStr.CmpNoCase("SpecificHumidity") == 0) {
         return SpecificHumidity;
-    } else if (ParameterStr.CmpNoCase("Omega") == 0) {
-        return Omega;
+    } else if (ParameterStr.CmpNoCase("VerticalVelocity") == 0) {
+        return VerticalVelocity;
     } else if (ParameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
     } else if (ParameterStr.CmpNoCase("Uwind") == 0) {
@@ -154,8 +154,8 @@ wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataP
             return "RelativeHumidity";
         case (SpecificHumidity):
             return "SpecificHumidity";
-        case (Omega):
-            return "Omega";
+        case (VerticalVelocity):
+            return "VerticalVelocity";
         case (Wind):
             return "Wind";
         case (Uwind):
