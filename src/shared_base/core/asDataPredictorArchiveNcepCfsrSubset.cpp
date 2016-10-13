@@ -111,6 +111,12 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
             m_fileVariableName = "TMP_L100";
             m_unit = degK;
             m_subFolder.Append(DS + "temp");
+        } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("vvel", false)) {
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical Velocity";
+            m_fileVariableName = "V_VEL_L100";
+            m_unit = Pa_s;
+            m_subFolder.Append(DS + "vvel");
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }

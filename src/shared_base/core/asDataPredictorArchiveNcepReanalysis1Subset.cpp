@@ -84,8 +84,8 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Init()
         m_unit = degK;
     } else if (m_dataId.IsSameAs("omega", false)) {
         m_fileStructure.hasLevelDimension = true;
-        m_parameter = Omega;
-        m_parameterName = "Omega (Vertical Velocity)";
+        m_parameter = VerticalVelocity;
+        m_parameterName = "Vertical velocity";
         m_fileNamePattern = "omega.nc";
         m_fileVariableName = "omega";
         m_unit = Pa_s;

@@ -55,7 +55,7 @@ public:
         PrecipitationRate,
         RelativeHumidity,
         SpecificHumidity,
-        Omega,
+        VerticalVelocity,
         Wind,
         Uwind,
         Vwind,

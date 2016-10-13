@@ -88,6 +88,11 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
             m_parameterName = "Relative humidity";
             m_fileVariableName = "r";
             m_unit = percent;
+        } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("w", false)) {
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
+            m_fileVariableName = "w";
+            m_unit = Pa_s;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
