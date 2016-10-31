@@ -47,6 +47,7 @@ asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxStrin
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(std::pow(10.f, 15.f));
+    m_nanValues.push_back(std::pow(10.f, 15.f)-1);
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_fileStructure.dimLatName = "lat";
@@ -125,8 +126,20 @@ VectorString asDataPredictorArchiveNasaMerra2::GetListOfFiles(asTimeArray &timeA
     for (int i = 0; i < tArray.size(); i++) {
         TimeStruct t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-            files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
-                                                                      t.month, t.day));
+
+            wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
+                                                                      t.month, t.day);
+            if (t.year < 1992) {
+                path.Replace("MERRA2_*00", "MERRA2_100");
+            } else if (t.year < 2001) {
+                path.Replace("MERRA2_*00", "MERRA2_200");
+            } else if (t.year < 2011) {
+                path.Replace("MERRA2_*00", "MERRA2_300");
+            } else {
+                path.Replace("MERRA2_*00", "MERRA2_400");
+            }
+
+            files.push_back(path);
             tLast = t;
         }
     }
