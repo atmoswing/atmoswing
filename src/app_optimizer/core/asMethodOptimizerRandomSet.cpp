@@ -39,14 +39,12 @@ bool asMethodOptimizerRandomSet::Manager()
     if (m_predictandStationIds.size() > 0) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
-    InitParameters(params);
-    m_originalParams = params;
 
     // Reset the score of the climatology
     m_scoreClimatology.clear();
 
     // Create a result object to save the parameters sets
-    VectorInt stationId = m_originalParams.GetPredictandStationIds();
+    VectorInt stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
     results_all.Init(
@@ -64,6 +62,10 @@ bool asMethodOptimizerRandomSet::Manager()
         wxLogError(_("Could not preload the data."));
         return false;
     }
+
+    // Store parameter after preloading !
+    InitParameters(params);
+    m_originalParams = params;
 
     // Get a forecast score object to extract the score order
     asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
@@ -240,7 +242,7 @@ bool asMethodOptimizerRandomSet::Manager()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %ldms to execute"), sw.Time());
+    wxLogMessage(_("The whole processing took %.2f min to execute"), float(sw.Time()/60000));
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif

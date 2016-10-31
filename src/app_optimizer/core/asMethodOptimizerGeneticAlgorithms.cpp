@@ -205,8 +205,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     if (m_predictandStationIds.size() > 0) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
-    InitParameters(params);
-    m_originalParams = params;
 
     // Create a result object to save the parameters sets
     VectorInt stationId = params.GetPredictandStationIds();
@@ -248,6 +246,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
         DeletePreloadedData();
         return false;
     }
+
+    // Store parameter after preloading !
+    InitParameters(params);
+    m_originalParams = params;
 
     // Get a forecast score object to extract the score order
     asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
@@ -494,7 +496,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %ldms to execute"), sw.Time());
+    wxLogMessage(_("The whole processing took %.2f min to execute"), float(sw.Time()/60000));
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
