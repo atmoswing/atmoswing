@@ -89,9 +89,21 @@ bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
 void asLog::SetLevel(int val)
 {
     switch (val) {
-        case 1 : wxLog::SetLogLevel(wxLOG_Error);
-        case 2 : wxLog::SetLogLevel(wxLOG_Message);
-        case 3 : wxLog::SetLogLevel(wxLOG_Info);
-        default: wxLog::SetLogLevel(wxLOG_Message);
+        case 1 :
+            wxLog::SetLogLevel(wxLOG_Error);
+            break;
+        case 2 :
+            wxLog::SetLogLevel(wxLOG_Message);
+            break;
+        case 3 :
+            wxLog::SetVerbose();
+            wxLog::SetLogLevel(wxLOG_Info);
+            break;
+        case 4 :
+            wxLog::SetVerbose();
+            wxLog::SetLogLevel(wxLOG_Progress);
+            break;
+        default:
+            wxLog::SetLogLevel(wxLOG_Message);
     }
 }
