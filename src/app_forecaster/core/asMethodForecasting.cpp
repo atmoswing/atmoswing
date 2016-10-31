@@ -141,8 +141,8 @@ bool asMethodForecasting::Manager()
 #endif
             } else {
                 // Display processing time
-                wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %ld ms to execute"),
-                             params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), sw.Time());
+                wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %f min to execute"),
+                             params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time()/60000));
 
 #if wxUSE_GUI
                 // Send event
