@@ -46,9 +46,6 @@ asMethodCalibratorClassic::~asMethodCalibratorClassic()
 
 bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
 {
-    // Copy of the original parameters set.
-    m_originalParams = params;
-
     // Get preferences
     GetPlusOptions();
 
@@ -58,6 +55,9 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     // Preload data
     if(!DoPreloadData(params))
         return false;
+
+    // Copy of the original parameters set.
+    m_originalParams = params;
 
     // Create result object to save the final parameters sets
     asResultsParametersArray resultsAll;
@@ -222,6 +222,7 @@ void asMethodCalibratorClassic::GetPlusOptions()
 bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
 {
     try {
+        wxLogMessage("Preloading data (if required).");
         if (!PreloadData(params)) {
             wxLogError(_("Could not preload the data."));
             return false;
@@ -237,6 +238,7 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
         DeletePreloadedData();
         return false;
     }
+    wxLogMessage("Data preloading is over.");
     return true;
 }
 
@@ -426,7 +428,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
         resultsTested.Add(m_parametersTemp[i_param], anaScoreFinal.GetForecastScore());
     }
 
-    wxLogMessage(_("Time to process the relevance map: %ldms"), swMap.Time());
+    wxLogMessage(_("Time to process the relevance map: %f min."), float(swMap.Time()/60000));
 
     return true;
 }
@@ -558,7 +560,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
     }
 
-    wxLogMessage(_("Time to process the first resizing procedure: %ldms"), swEnlarge.Time());
+    wxLogMessage(_("Time to process the first resizing procedure: %f min."), float(swEnlarge.Time()/60000));
 
     return true;
 }
@@ -792,7 +794,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
         }
     }
 
-    wxLogMessage(_("Time to process the second resizing procedure: %ldms"), swResize.Time());
+    wxLogMessage(_("Time to process the second resizing procedure: %f min"), float(swResize.Time()/60000));
 
     return true;
 }

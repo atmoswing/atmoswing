@@ -91,7 +91,7 @@ bool asMethodCalibrator::Manager()
     // Calibrate
     if (Calibrate(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %ldms to execute"), sw.Time());
+        wxLogMessage(_("The whole processing took %.2f min to execute"), float(sw.Time()/60000));
 #if wxUSE_GUI
         wxLogStatus(_("Calibration over."));
 #endif
@@ -1083,6 +1083,10 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
         if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("Gradients")) {
             level = params.GetPreprocessLevel(i_step, i_ptor, 0);
             time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
+            if(params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("S1") || params.GetPredictorCriteria(i_step, i_ptor).IsSameAs("NS1")) {
+                wxLogError(_("The criteria value has not been changed after the gradient preprocessing."));
+                return false;
+            }
         } else if (params.GetPreprocessMethod(i_step, i_ptor).IsSameAs("HumidityIndex")) {
             level = params.GetPreprocessLevel(i_step, i_ptor, 0);
             time = params.GetPreprocessTimeHours(i_step, i_ptor, 0);
