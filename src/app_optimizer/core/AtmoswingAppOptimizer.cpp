@@ -124,10 +124,10 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: options GAsMutationsMultiScaleProb" },
 
     { wxCMD_LINE_OPTION, NULL, "log-level", "Set a log level"
-                                 "\n \t\t\t\t 0: minimum"
                                  "\n \t\t\t\t 1: errors"
                                  "\n \t\t\t\t 2: warnings"
-                                 "\n \t\t\t\t 3: verbose" },
+                                 "\n \t\t\t\t 3: verbose"
+                                 "\n \t\t\t\t 4: debug" },
 
                                                    {wxCMD_LINE_NONE}};
 
@@ -444,14 +444,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         logLevelStr.ToLong(&logLevel);
 
         // Check and apply
-        if (logLevel == 0) {
-            Log().SetLevel(0);
-        } else if (logLevel == 1) {
-            Log().SetLevel(1);
-        } else if (logLevel == 2) {
-            Log().SetLevel(2);
-        } else if (logLevel == 3) {
-            Log().SetLevel(3);
+        if (logLevel >= 1 && logLevel <= 4) {
+            Log().SetLevel((int)logLevel);
         } else {
             Log().SetLevel(2);
         }
