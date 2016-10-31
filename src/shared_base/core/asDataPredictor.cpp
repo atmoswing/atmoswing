@@ -268,7 +268,22 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
 
 bool asDataPredictor::CheckFilesPresence(VectorString &filesList)
 {
+    if (filesList.size() == 0) {
+        wxLogError(_("Empty files list."));
+        return false;
+    }
+
+    int nbDirsToRemove = 0;
+
     for (int i = 0; i < filesList.size(); i++) {
+        if (i > 0 && nbDirsToRemove > 0) {
+            wxFileName fileName(filesList[i]);
+            for (int j = 0; j < nbDirsToRemove; ++j) {
+                fileName.RemoveLastDir();
+            }
+            filesList[i] = fileName.GetFullPath();
+        }
+
         if (!wxFile::Exists(filesList[i])) {
             // Search recursively in the parent directory
             wxFileName fileName(filesList[i]);
@@ -284,20 +299,26 @@ bool asDataPredictor::CheckFilesPresence(VectorString &filesList)
                         filesList[i] = files[0];
                         break;
                     } else if (nb > 1) {
-                        wxLogError(_("Multiple files were found matching the name %s"), fileName.GetFullName());
+                        wxLogError(_("Multiple files were found matching the name %s:"), fileName.GetFullName());
+                        for (int j = 0; j < nb; ++j) {
+                            wxLogError(files[j]);
+                        }
                         return false;
                     }
                 }
 
-                if (fileName.GetDirCount()<2) {
-                    wxLogError(_("File not found: %s"), filesList[i]);
-                    return false;
-                }
+                if (i == 0) {
+                    if (fileName.GetDirCount()<2) {
+                        wxLogError(_("File not found: %s"), filesList[i]);
+                        return false;
+                    }
 
-                fileName.RemoveLastDir();
-                if (fileName.Exists()) {
-                    filesList[i] = fileName.GetFullPath();
-                    break;
+                    fileName.RemoveLastDir();
+                    nbDirsToRemove++;
+                    if (fileName.Exists()) {
+                        filesList[i] = fileName.GetFullPath();
+                        break;
+                    }
                 }
             }
         }
