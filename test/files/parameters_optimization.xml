@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<atmoswing version="1.0" target="calibrator">
+<atmoswing version="1.0" target="optimizer">
   <description>
     <method_id>PC-AZ3o</method_id>
     <method_id_display>Circulation optimized</method_id_display>

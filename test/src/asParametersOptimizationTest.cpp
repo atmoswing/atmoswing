@@ -38,7 +38,7 @@ TEST(ParametersOptimization, LoadFromFile)
     filepath.Append("/files/parameters_optimization.xml");
 
     asParametersOptimization params;
-    params.LoadFromFile(filepath);
+    ASSERT_TRUE(params.LoadFromFile(filepath));
 
 	params.InitRandomValues();
 
