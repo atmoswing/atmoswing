@@ -85,8 +85,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     // Create root nodes
     if (!fileParams.EditRootElement())
         return false;
-    fileParams.GetRoot()->AddAttribute("target", "optimizer");
-
 
     // Description
     wxXmlNode *nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
