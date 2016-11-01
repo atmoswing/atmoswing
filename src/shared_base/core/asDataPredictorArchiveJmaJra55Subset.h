@@ -52,6 +52,7 @@ protected:
     virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
 private:
+    bool m_monthlyFiles;
 
 };
 
