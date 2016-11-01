@@ -173,7 +173,7 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
             valFirstTime += m_timeStepHours / 24.0;
             m_fileIndexes.timeStart++;
         }
-        if (m_fileIndexes.timeStart + m_fileIndexes.timeCount > m_fileStructure.axisTimeLength) {
+        if (m_fileIndexes.timeStart + (m_fileIndexes.timeCount - 1) * m_fileIndexes.timeStep > m_fileStructure.axisTimeLength) {
             m_fileIndexes.timeCount--;
             m_fileIndexes.cutEnd++;
         }
