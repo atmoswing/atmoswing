@@ -41,6 +41,13 @@ asFileParameters::~asFileParameters()
 
 VectorInt asFileParameters::BuildVectorInt(int min, int max, int step)
 {
+    if (min>max) {
+        asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
+    }
+    if (step==0) {
+        asThrowException(_("Error when building a vector from the parameters file: step=0."));
+    }
+
     int stepsnb = 1 + (max - min) / step;
     VectorInt vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
@@ -74,6 +81,13 @@ VectorInt asFileParameters::BuildVectorInt(wxString str)
 
 VectorFloat asFileParameters::BuildVectorFloat(float min, float max, float step)
 {
+    if (min>max) {
+        asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+    }
+    if (step==0) {
+        asThrowException(_("Error when building a vector from the parameters file: step=0."));
+    }
+
     int stepsnb = 1 + (max - min) / step;
     VectorFloat vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
@@ -107,6 +121,13 @@ VectorFloat asFileParameters::BuildVectorFloat(wxString str)
 
 VectorDouble asFileParameters::BuildVectorDouble(double min, double max, double step)
 {
+    if (min>max) {
+        asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+    }
+    if (step==0) {
+        asThrowException(_("Error when building a vector from the parameters file: step=0."));
+    }
+
     int stepsnb = 1 + (max - min) / step;
     VectorDouble vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {

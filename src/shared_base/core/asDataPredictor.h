@@ -275,6 +275,11 @@ public:
         return m_yAxisShift;
     }
 
+    void SetTimeStepHours(double val)
+    {
+        m_timeStepHours = val;
+    }
+
 protected:
     struct FileStructure
     {
