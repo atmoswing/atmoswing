@@ -66,6 +66,7 @@ bool asDataPredictorArchiveJmaJra55CSubset::Init()
         m_fileStructure.dimLonName = "g0_lon_3";
         m_fileStructure.dimTimeName = "initial_time0_hours";
         m_fileStructure.dimLevelName = "lv_ISBL1";
+        m_monthlyFiles = true;
         if (m_dataId.IsSameAs("hgt", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential Height";
@@ -106,6 +107,7 @@ bool asDataPredictorArchiveJmaJra55CSubset::Init()
         m_fileStructure.dimLatName = "g0_lat_1";
         m_fileStructure.dimLonName = "g0_lon_2";
         m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_monthlyFiles = false;
         if (m_dataId.IsSameAs("slp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Pressure reduced to MSL";
@@ -128,6 +130,7 @@ bool asDataPredictorArchiveJmaJra55CSubset::Init()
         m_fileStructure.dimLatName = "g0_lat_1";
         m_fileStructure.dimLonName = "g0_lon_2";
         m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_monthlyFiles = false;
         if (m_dataId.IsSameAs("pwat", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
@@ -146,16 +149,24 @@ bool asDataPredictorArchiveJmaJra55CSubset::Init()
         m_subFolder = "fcst_phy2m125";
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
-        m_fileNamePattern = m_subFolder + ".C.";
-        m_fileStructure.dimLatName = "g0_lat_2";
-        m_fileStructure.dimLonName = "g0_lon_3";
+        m_fileStructure.dimLatName = "g0_lat_1";
+        m_fileStructure.dimLonName = "g0_lon_2";
         m_fileStructure.dimTimeName = "initial_time0_hours";
-        if (m_dataId.IsSameAs("tprat", false)) {
+        m_monthlyFiles = false;
+        if (m_dataId.IsSameAs("tprat3h", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation";
             m_fileVariableName = "TPRAT_GDS0_SFC_ave3h";
             m_unit = mm_d;
-            m_fileNamePattern.Append("061_tprat");
+            m_subFolder = "fcst_phy2m125/tprat_00h-03h";
+            m_fileNamePattern.Append("fcst_phy2m125.C.061_tprat");
+        } else if (m_dataId.IsSameAs("tprat6h", false)) {
+            m_parameter = Precipitation;
+            m_parameterName = "Total precipitation";
+            m_fileVariableName = "TPRAT_GDS0_SFC_ave3h";
+            m_unit = mm_d;
+            m_subFolder = "fcst_phy2m125/tprat_03h-06h";
+            m_fileNamePattern.Append("fcst_phy2m125.C.061_tprat");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
@@ -173,6 +184,7 @@ bool asDataPredictorArchiveJmaJra55CSubset::Init()
         m_fileStructure.dimLonName = "g0_lon_3";
         m_fileStructure.dimTimeName = "initial_time0_hours";
         m_fileStructure.dimLevelName = "lv_THEL1";
+        m_monthlyFiles = true;
         if (m_dataId.IsSameAs("pv", false)) {
             m_parameter = PotentialVorticity;
             m_parameterName = "Potential vorticity";

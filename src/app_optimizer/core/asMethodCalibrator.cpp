@@ -91,7 +91,7 @@ bool asMethodCalibrator::Manager()
     // Calibrate
     if (Calibrate(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.2f min to execute"), float(sw.Time()/60000));
+        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time())/60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Calibration over."));
 #endif
