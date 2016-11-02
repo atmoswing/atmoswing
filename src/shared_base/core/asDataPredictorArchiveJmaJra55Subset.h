@@ -44,6 +44,8 @@ public:
     bool Init();
 
 protected:
+    bool m_monthlyFiles;
+
     virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
@@ -52,7 +54,6 @@ protected:
     virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
 private:
-    bool m_monthlyFiles;
 
 };
 
