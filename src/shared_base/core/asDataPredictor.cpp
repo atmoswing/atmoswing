@@ -469,7 +469,6 @@ bool asDataPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaC
     if (!GetAxesIndexes(dataArea, timeArray, compositeData)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
-        wxFAIL;
         return false;
     }
 
