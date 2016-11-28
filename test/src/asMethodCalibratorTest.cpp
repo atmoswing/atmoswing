@@ -1567,6 +1567,8 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
 
 TEST(MethodCalibrator, PrelodingWithLevelCorrection)
 {
+    wxLogNull logNull;
+
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
@@ -1597,11 +1599,11 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        EXPECT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
         EXPECT_TRUE(anaDates.GetAnalogsDatesLength() > 0);
         EXPECT_FALSE(containsNaNs);
         step++;
-        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
+        EXPECT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
