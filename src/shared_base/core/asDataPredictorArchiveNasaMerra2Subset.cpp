@@ -199,7 +199,7 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
     } else if (m_product.IsSameAs("tavg1_2d_flx_Nx", false) || m_product.IsSameAs("M2T1NXFLX", false)) {
         // tavg1_2d_flx_Nx:  2d,1-Hourly,Time-Averaged,Single-Level,Assimilation,Surface Flux Diagnostics V5.12.4 (M2T1NXFLX)
         m_fileStructure.hasLevelDimension = false;
-        m_subFolder = "inst1_2d_int_Nx";
+        m_subFolder = "tavg1_2d_flx_Nx";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
         m_timeStepHours = 1;
