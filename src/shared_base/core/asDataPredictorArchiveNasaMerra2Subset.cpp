@@ -190,6 +190,11 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
             m_parameterName = "Total precipitable water vapor";
             m_fileVariableName = "TQV";
             m_unit = kg_m2;
+        } else if (m_dataId.IsSameAs("t10m", false)) {
+            m_parameter = AirTemperature;
+            m_parameterName = "10-meter air temperature";
+            m_fileVariableName = "T10M";
+            m_unit = degK;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
