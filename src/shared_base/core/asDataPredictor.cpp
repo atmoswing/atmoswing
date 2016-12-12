@@ -631,7 +631,8 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
 
     double refValue = NaNDouble;
     if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
-        wxString refValueStr = ncFile.GetAttString("RangeBeginningDate");
+        wxString refValueStr = ncFile.GetAttString("units", "time");
+        refValueStr = refValueStr.Remove(0, 14);
         refValue = asTime::GetTimeFromString(refValueStr);
     } else if(m_datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
         wxString refValueStr = ncFile.GetAttString("units", "time");
