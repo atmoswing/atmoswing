@@ -753,12 +753,12 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
             }
 
             // Data loading
-            wxLogVerbose(_("Loading %s data for level %d, %d h."), preloadDataIds[i_dat], (int) preloadLevels[i_level],
-                         (int) preloadTimeHours[i_hour]);
+            wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[i_dat], (int) preloadLevels[i_level],
+                         preloadTimeHours[i_hour]);
             try {
                 if (!predictor->Load(area, timeArray)) {
-                    wxLogWarning(_("The data (%s for level %d, at %d h) could not be loaded."), preloadDataIds[i_dat],
-                                 (int) preloadLevels[i_level], (int) preloadTimeHours[i_hour]);
+                    wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[i_dat],
+                                 (int) preloadLevels[i_level], preloadTimeHours[i_hour]);
                     wxDELETE(area);
                     wxDELETE(predictor);
                     continue; // The requested data can be missing (e.g. level not available).
@@ -931,8 +931,8 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 }
 
                 // Data loading
-                wxLogVerbose(_("Loading %s data for level %d, %d h."),
-                             params.GetPreprocessDataId(i_step, i_ptor, i_prepro), (int) level, (int) timeHours);
+                wxLogVerbose(_("Loading %s data for level %d, %gh."),
+                             params.GetPreprocessDataId(i_step, i_ptor, i_prepro), (int) level, timeHours);
                 if (!predictorPreprocess->Load(area, timeArray)) {
                     wxLogError(_("The data could not be loaded."));
                     wxDELETE(area);
