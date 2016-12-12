@@ -538,14 +538,14 @@ bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray) const
     }
     double intpart, fractpart;
     fractpart = modf(timeArray.GetTimeStepDays() / (m_timeStepHours / 24.0), &intpart);
-    if (fractpart > 0.0001) {
+    if (fractpart > 0.0001 && fractpart < 0.9999) {
         wxLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
     fractpart = modf((timeArray.GetStartingHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
-    if (fractpart > 0.0001) {
-        wxLogError(_("The desired startDate (%gh) is not coherent with the data properties."),
-                   timeArray.GetStartingHour());
+    if (fractpart > 0.0001 && fractpart < 0.9999) {
+        wxLogError(_("The desired startDate (%gh) is not coherent with the data properties (fractpart = %g)."),
+                   timeArray.GetStartingHour(), fractpart);
         return false;
     }
 
