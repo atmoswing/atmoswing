@@ -223,11 +223,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                                                GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
 
-    // Reload previous results
-    if (!ResumePreviousRun(params, results_generations)) {
-        wxLogError(_("Failed to resume previous runs"));
-        return false;
-    }
+    // Initialize parameters before loading data.
+    InitParameters(params);
 
     // Preload data
     try {
@@ -247,8 +244,13 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
         return false;
     }
 
+    // Reload previous results
+    if (!ResumePreviousRun(params, results_generations)) {
+        wxLogError(_("Failed to resume previous runs"));
+        return false;
+    }
+
     // Store parameter after preloading !
-    InitParameters(params);
     m_originalParams = params;
 
     // Get a forecast score object to extract the score order
@@ -574,7 +576,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 // Check that the content match the current parameters
                 wxString fileLine = prevResults.GetLineContent();
                 wxString firstLineCopy = fileLine;
-                wxString currentParamsPrint = m_originalParams.Print();
+                wxString currentParamsPrint = params.Print();
                 int indexInFile, indexInParams;
 
                 // Compare number of steps
