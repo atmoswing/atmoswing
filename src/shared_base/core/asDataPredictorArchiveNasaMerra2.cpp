@@ -36,6 +36,7 @@
 asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
+    // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
     m_initialized = false;
     m_datasetId = "NASA_MERRA_2";
