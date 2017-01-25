@@ -781,6 +781,23 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     return true;
 }
 
+int asTimeArray::GetClosestIndex(double date) const
+{
+    wxASSERT(m_initialized);
+
+    if (date - 0.00001 > m_end || date + 0.00001 < m_start) { // Add a second for precision issues
+        wxLogWarning(_("Trying to get a date outside of the time array."));
+        return NaNInt;
+    }
+
+    int index = asTools::SortedArraySearchClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+
+    if (index == asOUT_OF_RANGE)
+        return 0;
+
+    return index;
+}
+
 int asTimeArray::GetIndexFirstAfter(double date) const
 {
     wxASSERT(m_initialized);

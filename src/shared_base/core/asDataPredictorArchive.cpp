@@ -185,6 +185,9 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
         m_fileIndexes.cutEnd = 0;
     }
 
+    wxASSERT(m_fileIndexes.timeArrayCount > 0);
+    wxASSERT(m_fileIndexes.timeCount > 0);
+
     // Go through every area
     m_fileIndexes.areas.resize(compositeData.size());
     for (int i_area = 0; i_area < compositeData.size(); i_area++) {
