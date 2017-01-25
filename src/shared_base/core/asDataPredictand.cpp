@@ -878,9 +878,9 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
 
             // Find begining and end of the year
             int rowstart = asTools::SortedArraySearchFloor(&m_time[0], &m_time[m_timeLength - 1],
-                                                           asTime::GetMJD(i_year, 1, 1), asHIDE_WARNINGS);
+                                                           asTime::GetMJD(i_year, 1, 1), 0, asHIDE_WARNINGS);
             int rowend = asTools::SortedArraySearchFloor(&m_time[0], &m_time[m_timeLength - 1],
-                                                         asTime::GetMJD(i_year, 12, 31, 59, 59), asHIDE_WARNINGS);
+                                                         asTime::GetMJD(i_year, 12, 31, 59, 59), 0, asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
                 if (i_year == yearEnd) {
                     rowend = m_timeLength - 1;

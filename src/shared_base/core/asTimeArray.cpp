@@ -785,12 +785,14 @@ int asTimeArray::GetIndexFirstAfter(double date) const
 {
     wxASSERT(m_initialized);
 
-    if (date > m_end) {
+    double tolerance = 0.00001;
+
+    if (date - tolerance > m_end) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNInt;
     }
 
-    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -802,12 +804,14 @@ int asTimeArray::GetIndexFirstBefore(double date) const
 {
     wxASSERT(m_initialized);
 
-    if (date < m_start) {
+    double tolerance = 0.00001;
+
+    if (date + tolerance < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNInt;
     }
 
-    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return GetSize() - 1;
@@ -832,9 +836,9 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart,
+        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
                                                         asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd,
+        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
                                                        asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
@@ -885,9 +889,9 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart,
+        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
                                                         asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd,
+        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
                                                        asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
