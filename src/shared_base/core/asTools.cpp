@@ -873,24 +873,24 @@ Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double
     return resultArray;
 }
 
-int asTools::SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int tolerance, const int showWarning)
+int asTools::SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance, const int showWarning)
 {
-    return SortedArraySearchT<int>(pArrStart, pArrEnd, targetvalue, tolerance, showWarning);
+    return SortedArraySearchT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearch(const float *pArrStart, const float *pArrEnd, const float targetvalue, const float tolerance, const int showWarning)
+int asTools::SortedArraySearch(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance, const int showWarning)
 {
-    return SortedArraySearchT<float>(pArrStart, pArrEnd, targetvalue, tolerance, showWarning);
+    return SortedArraySearchT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearch(const double *pArrStart, const double *pArrEnd, const double targetvalue, const double tolerance,
+int asTools::SortedArraySearch(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
                                int showWarning)
 {
-    return SortedArraySearchT<double>(pArrStart, pArrEnd, targetvalue, tolerance, showWarning);
+    return SortedArraySearchT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const T tolerance, const int showWarning)
+int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -908,9 +908,9 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue - tolerance > *pMid) {
+            if (targetValue - tolerance > *pMid) {
                 pFirst = pMid + 1;
-            } else if (targetvalue + tolerance < *pMid) {
+            } else if (targetValue + tolerance < *pMid) {
                 pLast = pMid - 1;
             } else {
                 // Return found index
@@ -928,14 +928,14 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
         }
 
         // If the value was not found, return closest value inside tolerance
-        if (std::abs(targetvalue - *pLast) <= std::abs(targetvalue - *(pLast + 1))) {
-            if (std::abs(targetvalue - *pLast) <= tolerance) {
+        if (std::abs(targetValue - *pLast) <= std::abs(targetValue - *(pLast + 1))) {
+            if (std::abs(targetValue - *pLast) <= tolerance) {
                 return int(pLast - pArrStart);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
-                if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
+                if (targetValue > *pArrEnd || targetValue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -945,13 +945,13 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 return asNOT_FOUND;
             }
         } else {
-            if (std::abs(targetvalue - *(pLast + 1)) <= tolerance) {
+            if (std::abs(targetValue - *(pLast + 1)) <= tolerance) {
                 return int(pLast - pArrStart + 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
-                if (targetvalue > *pArrEnd || targetvalue < *pArrStart) {
+                if (targetValue > *pArrEnd || targetValue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -966,9 +966,9 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue - tolerance > *pMid) {
+            if (targetValue - tolerance > *pMid) {
                 pLast = pMid - 1;
-            } else if (targetvalue + tolerance < *pMid) {
+            } else if (targetValue + tolerance < *pMid) {
                 pFirst = pMid + 1;
             } else {
                 // Return found index
@@ -987,14 +987,14 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
 
 
         // If the value was not found, return closest value inside tolerance
-        if (std::abs(targetvalue - *pFirst) <= std::abs(targetvalue - *(pFirst - 1))) {
-            if (std::abs(targetvalue - *pFirst) <= tolerance) {
+        if (std::abs(targetValue - *pFirst) <= std::abs(targetValue - *(pFirst - 1))) {
+            if (std::abs(targetValue - *pFirst) <= tolerance) {
                 return int(pFirst - pArrStart);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
-                if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
+                if (targetValue < *pArrEnd || targetValue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1004,13 +1004,13 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 return asNOT_FOUND;
             }
         } else {
-            if (std::abs(targetvalue - *(pLast + 1)) <= tolerance) {
+            if (std::abs(targetValue - *(pLast + 1)) <= tolerance) {
                 return int(pFirst - pArrStart - 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
-                if (targetvalue < *pArrEnd || targetvalue > *pArrStart) {
+                if (targetValue < *pArrEnd || targetValue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1022,14 +1022,14 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
         }
     } else {
         if (pLast - pFirst == 0) {
-            if (*pFirst >= targetvalue - tolerance && *pFirst <= targetvalue + tolerance) {
+            if (*pFirst >= targetValue - tolerance && *pFirst <= targetValue + tolerance) {
                 return 0; // Value corresponds
             } else {
                 return asOUT_OF_RANGE;
             }
         }
 
-        if (*pFirst >= targetvalue - tolerance && *pFirst <= targetvalue + tolerance) {
+        if (*pFirst >= targetValue - tolerance && *pFirst <= targetValue + tolerance) {
             return 0; // Value corresponds
         } else {
             return asOUT_OF_RANGE;
@@ -1037,23 +1037,23 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
     }
 }
 
-int asTools::SortedArraySearchClosest(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int showWarning)
+int asTools::SortedArraySearchClosest(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
 {
-    return SortedArraySearchClosestT<int>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchClosestT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchClosest(const float *pArrStart, const float *pArrEnd, const float targetvalue, const int showWarning)
+int asTools::SortedArraySearchClosest(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
 {
-    return SortedArraySearchClosestT<float>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchClosestT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchClosest(const double *pArrStart, const double *pArrEnd, const double targetvalue, const int showWarning)
+int asTools::SortedArraySearchClosest(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
 {
-    return SortedArraySearchClosestT<double>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchClosestT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const int showWarning)
+int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1068,9 +1068,9 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
     // Check array order
     if (*pLast > *pFirst) {
         // Check that the value is whithin the array
-        if (targetvalue > *pLast || targetvalue < *pFirst) {
+        if (targetValue > *pLast || targetValue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1079,9 +1079,9 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue > *pMid) {
+            if (targetValue > *pMid) {
                 pFirst = pMid + 1;
-            } else if (targetvalue < *pMid) {
+            } else if (targetValue < *pMid) {
                 pLast = pMid - 1;
             } else {
                 // Return found index
@@ -1100,16 +1100,16 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         }
 
         // If the value was not found, return closest value
-        if (std::abs(targetvalue - *pLast) <= std::abs(targetvalue - *(pLast + 1))) {
+        if (std::abs(targetValue - *pLast) <= std::abs(targetValue - *(pLast + 1))) {
             return int(pLast - pArrStart);
         } else {
             return int(pLast - pArrStart + 1);
         }
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
-        if (targetvalue < *pLast || targetvalue > *pFirst) {
+        if (targetValue < *pLast || targetValue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1118,9 +1118,9 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue > *pMid) {
+            if (targetValue > *pMid) {
                 pLast = pMid - 1;
-            } else if (targetvalue < *pMid) {
+            } else if (targetValue < *pMid) {
                 pFirst = pMid + 1;
             } else {
                 // Return found index
@@ -1139,21 +1139,21 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
         }
 
         // If the value was not found, return closest value
-        if (std::abs(targetvalue - *pFirst) <= std::abs(targetvalue - *(pFirst - 1))) {
+        if (std::abs(targetValue - *pFirst) <= std::abs(targetValue - *(pFirst - 1))) {
             return int(pFirst - pArrStart);
         } else {
             return int(pFirst - pArrStart - 1);
         }
     } else {
         if (pLast - pFirst == 0) {
-            if (*pFirst == targetvalue) {
+            if (*pFirst == targetValue) {
                 return 0; // Value corresponds
             } else {
                 return asOUT_OF_RANGE;
             }
         }
 
-        if (*pFirst == targetvalue) {
+        if (*pFirst == targetValue) {
             return 0; // Value corresponds
         } else {
             return asOUT_OF_RANGE;
@@ -1161,23 +1161,23 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
     }
 }
 
-int asTools::SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int showWarning)
+int asTools::SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
 {
-    return SortedArraySearchFloorT<int>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchFloorT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetvalue, const int showWarning)
+int asTools::SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
 {
-    return SortedArraySearchFloorT<float>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchFloorT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetvalue, const int showWarning)
+int asTools::SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
 {
-    return SortedArraySearchFloorT<double>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchFloorT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const int showWarning)
+int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1192,9 +1192,9 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
     // Check array order
     if (*pLast > *pFirst) {
         // Check that the value is whithin the array
-        if (targetvalue > *pLast || targetvalue < *pFirst) {
+        if (targetValue > *pLast || targetValue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1203,9 +1203,9 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue > *pMid) {
+            if (targetValue > *pMid) {
                 pFirst = pMid + 1;
-            } else if (targetvalue < *pMid) {
+            } else if (targetValue < *pMid) {
                 pLast = pMid - 1;
             } else {
                 // Return found index
@@ -1224,9 +1224,9 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         return int(pLast - pArrStart);
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
-        if (targetvalue < *pLast || targetvalue > *pFirst) {
+        if (targetValue < *pLast || targetValue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1235,9 +1235,9 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue > *pMid) {
+            if (targetValue > *pMid) {
                 pLast = pMid - 1;
-            } else if (targetvalue < *pMid) {
+            } else if (targetValue < *pMid) {
                 pFirst = pMid + 1;
             } else {
                 // Return found index
@@ -1256,14 +1256,14 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
         return int(pFirst - pArrStart);
     } else {
         if (pLast - pFirst == 0) {
-            if (*pFirst == targetvalue) {
+            if (*pFirst == targetValue) {
                 return 0; // Value corresponds
             } else {
                 return asOUT_OF_RANGE;
             }
         }
 
-        if (*pFirst == targetvalue) {
+        if (*pFirst == targetValue) {
             return 0; // Value corresponds
         } else {
             return asOUT_OF_RANGE;
@@ -1272,23 +1272,23 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
 }
 
 
-int asTools::SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetvalue, const int showWarning)
+int asTools::SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
 {
-    return SortedArraySearchCeilT<int>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchCeilT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetvalue, const int showWarning)
+int asTools::SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
 {
-    return SortedArraySearchCeilT<float>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchCeilT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetvalue, const int showWarning)
+int asTools::SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
 {
-    return SortedArraySearchCeilT<double>(pArrStart, pArrEnd, targetvalue, showWarning);
+    return SortedArraySearchCeilT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const int showWarning)
+int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1303,9 +1303,9 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
     // Check array order
     if (*pLast > *pFirst) {
         // Check that the value is whithin the array
-        if (targetvalue > *pLast || targetvalue < *pFirst) {
+        if (targetValue > *pLast || targetValue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1314,9 +1314,9 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue > *pMid) {
+            if (targetValue > *pMid) {
                 pFirst = pMid + 1;
-            } else if (targetvalue < *pMid) {
+            } else if (targetValue < *pMid) {
                 pLast = pMid - 1;
             } else {
                 // Return found index
@@ -1335,9 +1335,9 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         return int(pLast - pArrStart + 1);
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
-        if (targetvalue < *pLast || targetvalue > *pFirst) {
+        if (targetValue < *pLast || targetValue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), float(targetvalue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1346,9 +1346,9 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         while (pFirst <= pLast) {
             vlength = (int) (pLast - pFirst);
             pMid = pFirst + vlength / 2;
-            if (targetvalue > *pMid) {
+            if (targetValue > *pMid) {
                 pLast = pMid - 1;
-            } else if (targetvalue < *pMid) {
+            } else if (targetValue < *pMid) {
                 pFirst = pMid + 1;
             } else {
                 // Return found index
@@ -1367,14 +1367,14 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
         return int(pFirst - pArrStart - 1);
     } else {
         if (pLast - pFirst == 0) {
-            if (*pFirst == targetvalue) {
+            if (*pFirst == targetValue) {
                 return 0; // Value corresponds
             } else {
                 return asOUT_OF_RANGE;
             }
         }
 
-        if (*pFirst == targetvalue) {
+        if (*pFirst == targetValue) {
             return 0; // Value corresponds
         } else {
             return asOUT_OF_RANGE;
