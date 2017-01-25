@@ -187,30 +187,30 @@ public:
                                          const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetValue,
-                                      const int showWarning = asSHOW_WARNINGS);
+                                      const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetValue,
-                                      const int showWarning = asSHOW_WARNINGS);
+                                      const float tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetValue,
-                                      const int showWarning = asSHOW_WARNINGS);
+                                      const double tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
-    static int SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T tValue,
-                                       const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue,
+                                       const T tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetValue,
-                                     const int showWarning = asSHOW_WARNINGS);
+                                     const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetValue,
-                                     const int showWarning = asSHOW_WARNINGS);
+                                     const float tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetValue,
-                                     const int showWarning = asSHOW_WARNINGS);
+                                     const double tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
     static int SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue,
-                                      const int showWarning = asSHOW_WARNINGS);
+                                      const T tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static bool SortedArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val);
 

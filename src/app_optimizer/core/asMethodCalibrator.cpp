@@ -1342,7 +1342,8 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
                                                                   &predictandTime[predictandTime.size() - 1],
                                                                   timeStart);
     int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
-                                                                 &predictandTime[predictandTime.size() - 1], timeEnd);
+                                                                 &predictandTime[predictandTime.size() - 1],
+                                                                 timeEnd);
 
     for (int i_st = 0; i_st < (int) stationIds.size(); i_st++) {
         Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[i_st]);

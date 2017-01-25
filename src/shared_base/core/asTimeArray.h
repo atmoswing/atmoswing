@@ -229,6 +229,8 @@ public:
         return m_timeArray(m_timeArray.rows() - 1);
     }
 
+    int GetClosestIndex(double date) const;
+
     int GetIndexFirstAfter(double date) const;
 
     int GetIndexFirstBefore(double date) const;
