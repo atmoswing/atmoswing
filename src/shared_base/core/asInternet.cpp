@@ -86,9 +86,6 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
     parallelRequests = 1;
 
     if (parallelRequests > 1) {
-        // Disable message box
-        g_pLog->DisableMessageBoxOnError();
-
         // Must initialize libcurl before any threads are started
         curl_global_init(CURL_GLOBAL_ALL);
 
@@ -116,8 +113,6 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 
         // Enable message box and flush the logs
 #if wxUSE_GUI
-        g_pLog->EnableMessageBoxOnError();
-        g_pLog->Flush();
         wxTheApp->Yield();
 #else
         g_pLog->Flush();

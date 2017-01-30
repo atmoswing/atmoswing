@@ -30,13 +30,13 @@
 
 #include "wx/fileconf.h"
 
-#include "asMethodOptimizerClassic.h"
-#include "asMethodOptimizerClassicPlus.h"
-#include "asMethodOptimizerClassicPlusVarExplo.h"
-#include "asMethodOptimizerSingle.h"
+#include "asMethodCalibratorClassic.h"
+#include "asMethodCalibratorClassic.h"
+#include "asMethodCalibratorClassicVarExplo.h"
+#include "asMethodCalibratorSingle.h"
 #include "asMethodOptimizerRandomSet.h"
-#include "asMethodOptimizerEvaluateAllScores.h"
-#include "asMethodOptimizerSingleOnlyValues.h"
+#include "asMethodCalibratorEvaluateAllScores.h"
+#include "asMethodCalibratorSingleOnlyValues.h"
 #include "images.h"
 #include "asFramePreferencesOptimizer.h"
 #include "asFrameAbout.h"
@@ -46,7 +46,7 @@ asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
         : asFrameOptimizerVirtual(parent)
 {
     m_logWindow = NULL;
-    m_methodOptimizer = NULL;
+    m_methodCalibrator = NULL;
 
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
