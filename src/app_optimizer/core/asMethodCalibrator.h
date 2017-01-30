@@ -41,6 +41,7 @@
 #include <asResultsAnalogsForecastScoreFinal.h>
 #include <asResultsAnalogsScoresMap.h>
 #include <asParametersCalibration.h>
+#include <asParametersOptimization.h>
 #include <asPredictorCriteria.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asTimeArray.h>
@@ -115,7 +116,9 @@ public:
 
     bool Manager();
 
-    virtual bool Validate(const int bestscorerow = 0);
+    bool SaveDetails(asParametersCalibration &params);
+
+    virtual bool Validate(asParametersCalibration &params);
 
     void SetScore(float valCalib)
     {
@@ -142,7 +145,25 @@ public:
         return m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat];
     }
 
+    void SetPredictandStationIds(VectorInt val)
+    {
+        m_predictandStationIds = val;
+    }
+
 protected:
+    struct ParamExploration {
+        double xMinStart;
+        double xMinEnd;
+        int xPtsNbStart;
+        int xPtsNbEnd;
+        int xPtsNbIter;
+        double yMinStart;
+        double yMinEnd;
+        int yPtsNbIter;
+        int yPtsNbStart;
+        int yPtsNbEnd;
+    };
+    VectorInt m_predictandStationIds;
     VectorFloat m_scoresCalib;
     VectorFloat m_scoresCalibTemp;
     Order m_scoreOrder;
@@ -195,6 +216,10 @@ private:
     bool HasPreloadedData(int i_step, int i_ptor, int i_dat) const;
 
     bool GetRandomValidData(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+
+    bool CheckDataIsPreloaded(const asParametersScoring &params) const;
+
+    bool ProceedToDataPreloading(asParametersScoring &params);
 };
 
 #endif // ASMETHODCALIBRATOR_H
