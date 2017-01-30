@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Jan  9 2017)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -40,54 +40,54 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameOptimizerVirtual
+/// Class asFrameCalibrationVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameOptimizerVirtual : public wxFrame 
+class asFrameCalibrationVirtual : public wxFrame 
 {
 	private:
 	
 	protected:
-		wxPanel* m_panelMain;
-		wxNotebook* m_notebookBase;
-		wxPanel* m_panelControls;
-		wxStaticText* m_staticTextMethod;
-		wxChoice* m_choiceMethod;
-		wxStaticText* m_staticTextFileParameters;
-		wxFilePickerCtrl* m_filePickerParameters;
-		wxStaticText* m_staticTextFilePredictand;
-		wxFilePickerCtrl* m_filePickerPredictand;
-		wxStaticText* m_staticTextPredictorDir;
-		wxDirPickerCtrl* m_dirPickerPredictor;
-		wxStaticText* m_staticTextOptimizerResultsDir;
-		wxDirPickerCtrl* m_dirPickerOptimizerResults;
-		wxCheckBox* m_checkBoxParallelEvaluations;
-		wxStaticText* m_staticTextStateLabel;
-		wxStaticText* m_staticTextState;
-		wxPanel* m_panelOptions;
-		wxNotebook* m_notebookOptions;
-		wxPanel* m_panelSingle;
-		wxStaticText* m_staticTextClassicPlusStepsLonPertinenceMap;
-		wxTextCtrl* m_textCtrlClassicPlusStepsLonPertinenceMap;
-		wxStaticText* m_staticTextClassicPlusStepsLatPertinenceMap;
-		wxTextCtrl* m_textCtrlClassicPlusStepsLatPertinenceMap;
-		wxStaticText* m_staticTextClassicPlusResizingIterations;
-		wxTextCtrl* m_textCtrlClassicPlusResizingIterations;
-		wxCheckBox* m_checkBoxProceedSequentially;
-		wxStaticText* m_staticTextSpacer;
-		wxCheckBox* m_checkBoxClassicPlusResize;
+		wxPanel* m_PanelMain;
+		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelControls;
+		wxStaticText* m_StaticTextMethod;
+		wxChoice* m_ChoiceMethod;
+		wxStaticText* m_StaticTextFileParameters;
+		wxFilePickerCtrl* m_FilePickerParameters;
+		wxStaticText* m_StaticTextFilePredictand;
+		wxFilePickerCtrl* m_FilePickerPredictand;
+		wxStaticText* m_StaticTextPredictorDir;
+		wxDirPickerCtrl* m_DirPickerPredictor;
+		wxStaticText* m_StaticTextCalibrationResultsDir;
+		wxDirPickerCtrl* m_DirPickerCalibrationResults;
+		wxCheckBox* m_CheckBoxParallelEvaluations;
+		wxStaticText* m_StaticTextStateLabel;
+		wxStaticText* m_StaticTextState;
+		wxPanel* m_PanelOptions;
+		wxNotebook* m_NotebookOptions;
+		wxPanel* m_PanelSingle;
+		wxStaticText* m_StaticTextClassicPlusStepsLonPertinenceMap;
+		wxTextCtrl* m_TextCtrlClassicPlusStepsLonPertinenceMap;
+		wxStaticText* m_StaticTextClassicPlusStepsLatPertinenceMap;
+		wxTextCtrl* m_TextCtrlClassicPlusStepsLatPertinenceMap;
+		wxStaticText* m_StaticTextClassicPlusResizingIterations;
+		wxTextCtrl* m_TextCtrlClassicPlusResizingIterations;
+		wxCheckBox* m_CheckBoxProceedSequentially;
+		wxStaticText* m_StaticTextSpacer;
+		wxCheckBox* m_CheckBoxClassicPlusResize;
 		wxStaticText* m_staticText66;
 		wxStaticText* m_staticText67;
-		wxStaticText* m_staticTextMonteCarloRandomNb;
-		wxTextCtrl* m_textCtrlMonteCarloRandomNb;
-		wxStaticText* m_staticTextVarExploStepToExplore;
-		wxTextCtrl* m_textCtrlVarExploStepToExplore;
-		wxButton* m_buttonSaveDefault;
-		wxMenuBar* m_menuBar;
-		wxMenu* m_menuOptions;
-		wxMenu* m_menuLog;
-		wxMenu* m_menuLogLevel;
-		wxMenu* m_menuHelp;
-		wxToolBar* m_toolBar;
+		wxStaticText* m_StaticTextMonteCarloRandomNb;
+		wxTextCtrl* m_TextCtrlMonteCarloRandomNb;
+		wxStaticText* m_StaticTextVarExploStepToExplore;
+		wxTextCtrl* m_TextCtrlVarExploStepToExplore;
+		wxButton* m_ButtonSaveDefault;
+		wxMenuBar* m_MenuBar;
+		wxMenu* m_MenuOptions;
+		wxMenu* m_MenuLog;
+		wxMenu* m_MenuLogLevel;
+		wxMenu* m_MenuHelp;
+		wxToolBar* m_ToolBar;
 		wxStatusBar* m_statusBar1;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -102,56 +102,56 @@ class asFrameOptimizerVirtual : public wxFrame
 	
 	public:
 		
-		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameCalibrationVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Calibrator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~asFrameOptimizerVirtual();
+		~asFrameCalibrationVirtual();
 	
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFramePreferencesOptimizerVirtual
+/// Class asFramePreferencesCalibratorVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePreferencesOptimizerVirtual : public wxFrame 
+class asFramePreferencesCalibratorVirtual : public wxFrame 
 {
 	private:
 	
 	protected:
-		wxPanel* m_panelBase;
-		wxNotebook* m_notebookBase;
-		wxPanel* m_panelGeneralCommon;
-		wxRadioBox* m_radioBoxLogLevel;
-		wxCheckBox* m_checkBoxDisplayLogWindow;
-		wxCheckBox* m_checkBoxSaveLogFile;
-		wxStaticText* m_staticTextArchivePredictorsDir;
-		wxDirPickerCtrl* m_dirPickerArchivePredictors;
-		wxStaticText* m_staticTextPredictandDBDir;
-		wxDirPickerCtrl* m_dirPickerPredictandDB;
-		wxPanel* m_panelAdvanced;
-		wxNotebook* m_notebookAdvanced;
-		wxPanel* m_panelGeneral;
-		wxRadioBox* m_radioBoxGui;
-		wxCheckBox* m_checkBoxResponsiveness;
-		wxPanel* m_panelProcessing;
-		wxCheckBox* m_checkBoxAllowMultithreading;
-		wxStaticText* m_staticTextThreadsNb;
-		wxTextCtrl* m_textCtrlThreadsNb;
-		wxStaticText* m_staticTextThreadsPriority;
-		wxSlider* m_sliderThreadsPriority;
-		wxRadioBox* m_radioBoxProcessingMethods;
-		wxRadioBox* m_radioBoxLinearAlgebra;
-		wxPanel* m_panelUserDirectories;
-		wxStaticText* m_staticTextIntermediateResultsDir;
-		wxDirPickerCtrl* m_dirPickerIntermediateResults;
-		wxStaticText* m_staticTextUserDirLabel;
-		wxStaticText* m_staticTextUserDir;
-		wxStaticText* m_staticTextLogFileLabel;
-		wxStaticText* m_staticTextLogFile;
-		wxStaticText* m_staticTextPrefFileLabel;
-		wxStaticText* m_staticTextPrefFile;
-		wxStdDialogButtonSizer* m_buttonsConfirmation;
-		wxButton* m_buttonsConfirmationOK;
-		wxButton* m_buttonsConfirmationApply;
-		wxButton* m_buttonsConfirmationCancel;
+		wxPanel* m_PanelBase;
+		wxNotebook* m_NotebookBase;
+		wxPanel* m_PanelGeneralCommon;
+		wxRadioBox* m_RadioBoxLogLevel;
+		wxCheckBox* m_CheckBoxDisplayLogWindow;
+		wxCheckBox* m_CheckBoxSaveLogFile;
+		wxStaticText* m_StaticTextArchivePredictorsDir;
+		wxDirPickerCtrl* m_DirPickerArchivePredictors;
+		wxStaticText* m_StaticTextPredictandDBDir;
+		wxDirPickerCtrl* m_DirPickerPredictandDB;
+		wxPanel* m_PanelAdvanced;
+		wxNotebook* m_NotebookAdvanced;
+		wxPanel* m_PanelGeneral;
+		wxRadioBox* m_RadioBoxGui;
+		wxCheckBox* m_CheckBoxResponsiveness;
+		wxPanel* m_PanelProcessing;
+		wxCheckBox* m_CheckBoxAllowMultithreading;
+		wxStaticText* m_StaticTextThreadsNb;
+		wxTextCtrl* m_TextCtrlThreadsNb;
+		wxStaticText* m_StaticTextThreadsPriority;
+		wxSlider* m_SliderThreadsPriority;
+		wxRadioBox* m_RadioBoxProcessingMethods;
+		wxRadioBox* m_RadioBoxLinearAlgebra;
+		wxPanel* m_PanelUserDirectories;
+		wxStaticText* m_StaticTextIntermediateResultsDir;
+		wxDirPickerCtrl* m_DirPickerIntermediateResults;
+		wxStaticText* m_StaticTextUserDirLabel;
+		wxStaticText* m_StaticTextUserDir;
+		wxStaticText* m_StaticTextLogFileLabel;
+		wxStaticText* m_StaticTextLogFile;
+		wxStaticText* m_StaticTextPrefFileLabel;
+		wxStaticText* m_StaticTextPrefFile;
+		wxStdDialogButtonSizer* m_ButtonsConfirmation;
+		wxButton* m_ButtonsConfirmationOK;
+		wxButton* m_ButtonsConfirmationApply;
+		wxButton* m_ButtonsConfirmationCancel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
@@ -162,9 +162,9 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 	
 	public:
 		
-		asFramePreferencesOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFramePreferencesCalibratorVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~asFramePreferencesOptimizerVirtual();
+		~asFramePreferencesCalibratorVirtual();
 	
 };
 
