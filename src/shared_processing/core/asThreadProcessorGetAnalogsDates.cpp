@@ -215,7 +215,7 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                             }
                             else
                             {
-                                asLogError(_("Date restriction mode not correctly defined."));
+                                wxLogError(_("Date restriction mode not correctly defined."));
                                 return (wxThread::ExitCode)1;
                             }
 
@@ -280,12 +280,9 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
 
                     counter++;
                 } else {
-                    asLogError(
-                            _("The date was not found in the array (Analogs Dates fct, multithreaded option). That should not happen."));
-                    asLogError(wxString::Format(_("Start: %g, end: %g, desired value: %g."),
-                                                timeArchiveData[i_timeArchStart],
-                                                timeArchiveData[timeArchiveDataSize - 1],
-                                                dateArrayArchiveSelection[i_dateArch]));
+                    wxLogError(_("The date was not found in the array (Analogs Dates fct, multithreaded option). That should not happen."));
+                    wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[i_timeArchStart],
+                               timeArchiveData[timeArchiveDataSize - 1], dateArrayArchiveSelection[i_dateArch]);
                     return (wxThread::ExitCode) 1;
                 }
             }
@@ -296,15 +293,13 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
                 m_pFinalAnalogsCriteria->row(i_dateTarg) = ScoreArrayOneDay.transpose();
                 m_pFinalAnalogsDates->row(i_dateTarg) = DateArrayOneDay.transpose();
             } else {
-                asLogError(_("There is not enough available data to satisfy the number of analogs:"));
-                asLogError(wxString::Format(
-                        _("   Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
-                        analogsNb, counter, dateArrayArchiveSelection.GetSize(),
-                        m_params.GetTimeArrayAnalogsIntervalDays()));
-                asLogError(wxString::Format(
-                        _("   Date array start (%.0f), date array end (%.0f), timestep (%.0f), dateTarg (%.0f)."),
-                        timeArchiveData[0], timeArchiveData[timeArchiveDataSize - 1],
-                        m_params.GetTimeArrayAnalogsTimeStepHours(), timeTargetSelection[i_timeTarg]));
+                wxLogError(_("There is not enough available data to satisfy the number of analogs:"));
+                wxLogError(_("   Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
+                           analogsNb, counter, dateArrayArchiveSelection.GetSize(),
+                           m_params.GetTimeArrayAnalogsIntervalDays());
+                wxLogError(_("   Date array start (%.0f), date array end (%.0f), timestep (%.0f), dateTarg (%.0f)."),
+                           timeArchiveData[0], timeArchiveData[timeArchiveDataSize - 1],
+                           m_params.GetTimeArrayAnalogsTimeStepHours(), timeTargetSelection[i_timeTarg]);
                 return (wxThread::ExitCode) 1;
             }
         }
