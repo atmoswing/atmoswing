@@ -42,8 +42,9 @@
 
 #endif
 
-#include "asMethodCalibratorClassicPlus.h"
-#include "asMethodCalibratorClassicPlusVarExplo.h"
+#include "asMethodCalibratorClassic.h"
+#include "asMethodCalibratorClassicVarExplo.h"
+#include "asMethodOptimizerRandomSet.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 
 
@@ -63,35 +64,36 @@ IMPLEMENT_APP(AtmoswingAppOptimizer);
 
 #endif
 
-static const wxCmdLineEntryDesc g_cmdLineDesc[] = {{wxCMD_LINE_SWITCH, "v",  "version",                 "Show version number and quit"},
-                                                   {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
-                                                   {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
-                                                   {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
-                                                   {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
-                                                   {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the calibration parameters"},
-                                                   {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
-                                                   {wxCMD_LINE_OPTION, NULL, "dir-predictors",          "The predictors directory"},
-                                                   {wxCMD_LINE_OPTION, NULL, "skip-valid",              "Skip the validation calculation"},
-                                                   {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
-                                                                                                                "\n \t\t\t\t single: single assessment"
-                                                                                                                "\n \t\t\t\t classic: classic calibration"
-                                                                                                                "\n \t\t\t\t classicp: classic+ calibration"
-                                                                                                                "\n \t\t\t\t varexplocp: variables exploration classic+"
-                                                                                                                "\n \t\t\t\t evalscores: evaluate all scores"},
-                                                   {wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration",   "Classic plus: resizing iteration"},
-                                                   {wxCMD_LINE_OPTION, NULL, "cp-lat-step",             "Classic plus: steps in latitudes for the relevance map"},
-                                                   {wxCMD_LINE_OPTION, NULL, "cp-lon-step",             "Classic plus: steps in longitudes for the relevance map"},
-                                                   {wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially"},
-                                                   {wxCMD_LINE_OPTION, NULL, "ve-step",                 "Variables exploration: step"},
-                                                   {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
-                                                                                                                "\n \t\t\t\t 0: minimum"
-                                                                                                                "\n \t\t\t\t 1: errors"
-                                                                                                                "\n \t\t\t\t 2: warnings"
-                                                                                                                "\n \t\t\t\t 3: verbose"},
-                                                   {wxCMD_LINE_OPTION, NULL, "log-target",              "Set log target"
-                                                                                                                "\n \t\t\t\t file: file only"
-                                                                                                                "\n \t\t\t\t prompt: command prompt"
-                                                                                                                "\n \t\t\t\t both: command prompt and file (default)"},
+static const wxCmdLineEntryDesc g_cmdLineDesc[] =
+{
+    { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
+    { wxCMD_LINE_SWITCH, "s", "silent", "Silent mode" },
+    { wxCMD_LINE_SWITCH, "l", "local", "Work in local directory" },
+    { wxCMD_LINE_OPTION, "n", "threads-nb", "Number of threads to use" },
+    { wxCMD_LINE_OPTION, "r", "run-number", "Choice of number associated with the run" },
+    { wxCMD_LINE_OPTION, "f", "file-parameters", "File containing the calibration parameters" },
+    { wxCMD_LINE_OPTION, NULL, "predictand-db", "The predictand DB" },
+    { wxCMD_LINE_OPTION, NULL, "station-id", "The predictand station ID" },
+    { wxCMD_LINE_OPTION, NULL, "dir-predictors", "The predictors directory" },
+    { wxCMD_LINE_OPTION, NULL, "skip-valid", "Skip the validation calculation" },
+    { wxCMD_LINE_OPTION, NULL, "calibration-method", "Choice of the calibration method"
+                                 "\n \t\t\t\t single: single assessment"
+                                 "\n \t\t\t\t classic: classic calibration"
+                                 "\n \t\t\t\t classicp: classic+ calibration"
+                                 "\n \t\t\t\t varexplocp: variables exploration classic+"
+                                 "\n \t\t\t\t evalscores: evaluate all scores" },
+    { wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration", "Classic plus: resizing iteration" },
+    { wxCMD_LINE_OPTION, NULL, "cp-lat-step", "Classic plus: steps in latitudes for the relevance map" },
+    { wxCMD_LINE_OPTION, NULL, "cp-lon-step", "Classic plus: steps in longitudes for the relevance map" },
+    { wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially" },
+    { wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step" },
+    { wxCMD_LINE_OPTION, NULL, "mc-runs-nb", "Monte Carlo: options MonteCarloRandomNb" },
+
+    { wxCMD_LINE_OPTION, NULL, "log-level", "Set a log level"
+                                 "\n \t\t\t\t 1: errors"
+                                 "\n \t\t\t\t 2: warnings"
+                                 "\n \t\t\t\t 3: verbose"
+                                 "\n \t\t\t\t 4: debug" },
 
                                                    {wxCMD_LINE_NONE}};
 
@@ -111,12 +113,17 @@ bool AtmoswingAppOptimizer::OnInit()
     g_local = false;
     m_calibParamsFile = wxEmptyString;
     m_predictandDB = wxEmptyString;
+    m_predictandStationIds = VectorInt(0);
     m_predictorsDir = wxEmptyString;
     m_calibMethod = wxEmptyString;
+    m_forceQuit = false;
 
     // Call default behaviour (mandatory for command-line mode)
-    if (!wxApp::OnInit()) // When false, we are in CL mode
+    if (!wxApp::OnInit()) {
+        CleanUp();
         return false;
+    }
+
 
 #if wxUSE_GUI
 
@@ -162,14 +169,8 @@ bool AtmoswingAppOptimizer::OnInit()
     return true;
 }
 
-bool AtmoswingAppOptimizer::InitForCmdLineOnly()
+wxString AtmoswingAppOptimizer::GetLocalPath()
 {
-    g_guiMode = false;
-    g_unitTesting = false;
-    g_silentMode = true;
-    g_verboseMode = false;
-    g_responsive = false;
-
     // Prepare local path
     wxString localPath = wxFileName::GetCwd() + DS;
     if (g_runNb > 0) {
@@ -179,15 +180,44 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         localPath.Append(DS);
     }
 
+    return localPath;
+}
+
+bool AtmoswingAppOptimizer::InitLog()
+{
     if (g_local) {
-        wxString fullPath = localPath;
+        wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingOptimizer.log");
+        if (g_resumePreviousRun) {
+            int increment = 1;
+            while (wxFileName::Exists(fullPath)) {
+                increment++;
+                fullPath = GetLocalPath();
+                fullPath.Append(wxString::Format("AtmoSwingOptimizer-%d.log", increment));
+            }
+        }
+
         Log().CreateFileOnlyAtPath(fullPath);
     } else {
         Log().CreateFileOnly("AtmoSwingOptimizer.log");
     }
 
-    Log().DisableMessageBoxOnError();
+    return true;
+}
+
+bool AtmoswingAppOptimizer::InitForCmdLineOnly()
+{
+    g_guiMode = false;
+    g_unitTesting = false;
+    g_silentMode = true;
+    g_verboseMode = false;
+    g_responsive = false;
+
+    // Warn the user if reloading previous results
+    if (g_resumePreviousRun) {
+        wxLogWarning(_("An existing directory was found for the run number %d"), g_runNb);
+        printf("Warning: An existing directory was found for the run number %d\n", g_runNb);
+    }
 
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
@@ -200,18 +230,71 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/General/Responsive", false);
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
-        pConfig->Write("/Paths/IntermediateResultsDir", localPath + "temp");
-        pConfig->Write("/Paths/OptimizerResultsDir", localPath + "results");
+        pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/Processing/AllowMultithreading", true);
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
-        pConfig->Write("/Optimizer/ParallelEvaluations", true);
-        pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+        pConfig->Write("/Processing/AllowMultithreading", true);
+        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
+            pConfig->Write("/Optimizer/ParallelEvaluations", true);
+        }
 
         pConfig->Flush();
 
+    }
+
+    // Check that the config files correspond if reloading data
+    if (g_resumePreviousRun) {
+        wxConfigBase *pConfigNow = wxFileConfig::Get();
+        wxString refIniPath = GetLocalPath();
+        refIniPath.Append("AtmoSwing.ini");
+        wxFileConfig *pConfigRef = new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath,
+                                                    wxCONFIG_USE_LOCAL_FILE);
+
+        // Check that the number of groups are identical.
+        int groupsNb = pConfigNow->GetNumberOfGroups(true);
+        if (groupsNb != pConfigRef->GetNumberOfGroups(true)) {
+            wxLogError(_("The number of groups (%d) differ from the previous config file (%d)."), groupsNb,
+                       int(pConfigRef->GetNumberOfGroups()));
+            m_forceQuit = true;
+        }
+
+        // We only compare the content of the Calibration group.
+        pConfigNow->SetPath("Optimizer");
+        pConfigRef->SetPath("Optimizer");
+
+        wxString subGroupName;
+        long subGroupIndex;
+
+        if (pConfigNow->GetFirstGroup(subGroupName, subGroupIndex)) {
+            do {
+                pConfigNow->SetPath(subGroupName);
+                pConfigRef->SetPath(subGroupName);
+
+                wxString entryName;
+                long entryIndex;
+
+                if (pConfigNow->GetFirstEntry(entryName, entryIndex)) {
+                    do {
+                        wxString valRef, valNow;
+                        pConfigNow->Read(entryName, &valNow);
+                        pConfigRef->Read(entryName, &valRef);
+
+                        if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef)) {
+                            wxLogError(_("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
+                                       entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str());
+                            m_forceQuit = true;
+                        }
+                    } while (pConfigNow->GetNextEntry(entryName, entryIndex));
+                }
+
+                pConfigNow->SetPath("..");
+                pConfigRef->SetPath("..");
+            } while (pConfigNow->GetNextGroup(subGroupName, subGroupIndex));
+        }
+
+        wxDELETE(pConfigRef);
     }
 
     return true;
@@ -275,14 +358,27 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
             localPath.Append(wxString::Format("%d", g_runNb));
             localPath.Append(DS);
 
-            // Create directory
-            wxFileName userDir = wxFileName::DirName(localPath);
-            userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+            // Check if path already exists
+            if (wxFileName::Exists(localPath)) {
+                g_resumePreviousRun = true;
+            } else {
+                // Create directory
+                wxFileName userDir = wxFileName::DirName(localPath);
+                userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+            }
         }
 
         // Create local ini file
         wxString iniPath = localPath;
         iniPath.Append("AtmoSwing.ini");
+        if (g_resumePreviousRun) {
+            int increment = 1;
+            while (wxFileName::Exists(iniPath)) {
+                increment++;
+                iniPath = localPath;
+                iniPath.Append(wxString::Format("AtmoSwing-%d.ini", increment));
+            }
+        }
 
         // Set the local config object
         wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
@@ -300,6 +396,9 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         wxFileConfig::Set(pConfig);
     }
 
+    // Initialize log
+    InitLog();
+
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
     if (parser.Found("log-level", &logLevelStr)) {
@@ -307,46 +406,14 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         logLevelStr.ToLong(&logLevel);
 
         // Check and apply
-        if (logLevel == 0) {
-            Log().SetLevel(0);
-        } else if (logLevel == 1) {
-            Log().SetLevel(1);
-        } else if (logLevel == 2) {
-            Log().SetLevel(2);
-        } else if (logLevel == 3) {
-            Log().SetLevel(3);
+        if (logLevel >= 1 && logLevel <= 4) {
+            Log().SetLevel((int)logLevel);
         } else {
             Log().SetLevel(2);
         }
     } else {
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
         Log().SetLevel((int) logLevel);
-    }
-
-    // Check for the log target option
-    wxString logTargetStr = wxEmptyString;
-    if (parser.Found("log-target", &logTargetStr)) {
-        // Check and apply
-        if (logTargetStr.IsSameAs("file", false)) {
-            Log().SetTarget(asLog::File);
-        } else if (logTargetStr.IsSameAs("screen", false)) {
-            Log().SetTarget(asLog::Screen);
-        } else if (logTargetStr.IsSameAs("both", false)) {
-            Log().SetTarget(asLog::Both);
-        } else {
-            Log().SetTarget(asLog::Both);
-
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-            if (msgOut) {
-                msgOut->Printf(_("The given log target (%s) does not correspond to any possible option."),
-                               logTargetStr);
-            }
-        }
-    }
-
-    // Check if the user asked for the silent mode
-    if (parser.Found("silent")) {
-        Log().SetTarget(asLog::File);
     }
 
     // Check for a calibration params file
@@ -362,7 +429,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         if (!wxFileName::FileExists(m_calibParamsFile)) {
-            asLogError(wxString::Format(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile));
+            wxLogError(_("The given calibration file (%s) couldn't be found."), m_calibParamsFile);
             return false;
         }
     }
@@ -374,7 +441,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         if (!wxFileName::FileExists(m_predictandDB)) {
-            asLogError(wxString::Format(_("The given predictand DB (%s) couldn't be found."), m_predictandDB));
+            wxLogError(_("The given predictand DB (%s) couldn't be found."), m_predictandDB);
             return false;
         }
     }
@@ -386,7 +453,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         if (!wxFileName::DirExists(m_predictorsDir)) {
-            asLogError(wxString::Format(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir));
+            wxLogError(_("The given predictors directory (%s) couldn't be found."), m_predictorsDir);
             return false;
         }
     }
@@ -419,9 +486,20 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         wxFileConfig::Get()->Write("/Optimizer/VariablesExplo/Step", option);
     }
 
+    // Monte Carlo
+    if (parser.Found("mc-runs-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/MonteCarlo/RandomNb", option);
+    }
+
     // Skip validation option
     if (parser.Found("skip-valid", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/SkipValidation", option);
+    }
+
+    // Station ID
+    wxString stationIdStr = wxEmptyString;
+    if (parser.Found("station-id", &stationIdStr)) {
+        m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
     }
 
     /*
@@ -430,9 +508,11 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for a calibration method option
     if (parser.Found("calibration-method", &m_calibMethod)) {
-        if (!InitForCmdLineOnly())
+        if (!InitForCmdLineOnly()) {
+            wxLogError(_("Initialization for command-line interface failed."));
             return false;
-        asLogMessage(wxString::Format(_("Given calibration method: %s"), m_calibMethod));
+        }
+        wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
         return true;
     }
 
@@ -441,19 +521,24 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
 int AtmoswingAppOptimizer::OnRun()
 {
+    if (m_forceQuit) {
+        wxLogError(_("The calibration will not be processed."));
+        return 0;
+    }
+
     if (!g_guiMode) {
         if (m_calibParamsFile.IsEmpty()) {
-            asLogError(_("The parameters file is not given."));
+            wxLogError(_("The parameters file is not given."));
             return 1001;
         }
 
         if (m_predictandDB.IsEmpty()) {
-            asLogError(_("The predictand DB is not given."));
+            wxLogError(_("The predictand DB is not given."));
             return 1002;
         }
 
         if (m_predictorsDir.IsEmpty()) {
-            asLogError(_("The predictors directory is not given."));
+            wxLogError(_("The predictors directory is not given."));
             return 1003;
         }
 
@@ -464,30 +549,44 @@ int AtmoswingAppOptimizer::OnRun()
                 asMethodCalibratorSingle calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classic", false)) {
                 asMethodCalibratorClassic calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("classicp", false)) {
-                asMethodCalibratorClassicPlus calibrator;
+                asMethodCalibratorClassic calibrator;
+                calibrator.SetAsCalibrationPlus();
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("varexplocp", false)) {
-                asMethodCalibratorClassicPlusVarExplo calibrator;
+                asMethodCalibratorClassicVarExplo calibrator;
+                calibrator.SetAsCalibrationPlus();
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
+            } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
+                asMethodOptimizerRandomSet optimizer;
+                optimizer.SetParamsFilePath(m_calibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_predictandDB);
+                optimizer.SetPredictandStationIds(m_predictandStationIds);
+                optimizer.SetPredictorDataDir(m_predictorsDir);
+                optimizer.Manager();
             } else if (m_calibMethod.IsSameAs("evalscores", false)) {
                 asMethodCalibratorEvaluateAllScores calibrator;
                 calibrator.SetParamsFilePath(m_calibParamsFile);
                 calibrator.SetPredictandDBFilePath(m_predictandDB);
+                calibrator.SetPredictandStationIds(m_predictandStationIds);
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else {
@@ -497,18 +596,18 @@ int AtmoswingAppOptimizer::OnRun()
             }
         } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);
-            asLogError(wxString::Format(_("Bad allocation caught: %s"), msg));
+            wxLogError(_("Bad allocation caught: %s"), msg);
             return 1011;
         } catch (asException &e) {
             wxString fullMessage = e.GetFullMessage();
             if (!fullMessage.IsEmpty()) {
-                asLogError(fullMessage);
+                wxLogError(fullMessage);
             }
-            asLogError(_("Failed to process the calibration."));
+            wxLogError(_("Failed to process the calibration."));
             return 1010;
         }
 
-        asLogMessageImportant(_("Calibration over."));
+        wxLogMessage(_("Calibration over."));
 
         return 0;
     }
@@ -518,9 +617,16 @@ int AtmoswingAppOptimizer::OnRun()
 
 int AtmoswingAppOptimizer::OnExit()
 {
+    CleanUp();
+
+    return 0;
+}
+
+void AtmoswingAppOptimizer::CleanUp()
+{
 #if wxUSE_GUI
     // Instance checker
-    wxDELETE(m_singleInstanceChecker);
+        wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)
@@ -532,28 +638,25 @@ int AtmoswingAppOptimizer::OnExit()
 
 #if wxUSE_GUI
     // Delete images
-    cleanup_images();
+        cleanup_images();
 #endif
 
     // CleanUp
     wxApp::CleanUp();
-
-    return 0;
 }
 
 bool AtmoswingAppOptimizer::OnExceptionInMainLoop()
 {
-    asLogError(_("An exception occured in the main loop"));
+    wxLogError(_("An exception occured in the main loop"));
     return false;
 }
 
 void AtmoswingAppOptimizer::OnFatalException()
 {
-    asLogError(_("An fatal exception occured"));
+    wxLogError(_("An fatal exception occured"));
 }
 
 void AtmoswingAppOptimizer::OnUnhandledException()
 {
-    asLogError(_("An unhandled exception occured"));
+    wxLogError(_("An unhandled exception occured"));
 }
-
