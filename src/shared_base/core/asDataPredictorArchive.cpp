@@ -34,7 +34,8 @@
 #include <asDataPredictorArchiveNcepReanalysis1Subset.h>
 #include <asDataPredictorArchiveNcepReanalysis1Lthe.h>
 #include <asDataPredictorArchiveNcepReanalysis2.h>
-#include <asDataPredictorArchiveNcepCfsr2.h>
+#include <asDataPredictorArchiveNcepCfsr.h>
+#include <asDataPredictorArchiveNcepCfsrSubset.h>
 #include <asDataPredictorArchiveNoaaOisst2.h>
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
 #include <asDataPredictorArchiveEcmwfEraInterim.h>
@@ -42,6 +43,7 @@
 #include <asDataPredictorArchiveNasaMerra2.h>
 #include <asDataPredictorArchiveNasaMerra2Subset.h>
 #include <asDataPredictorArchiveJmaJra55Subset.h>
+#include <asDataPredictorArchiveJmaJra55CSubset.h>
 #include <asDataPredictorArchiveNoaa20Cr2c.h>
 
 
@@ -70,8 +72,10 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNcepReanalysis1Lthe(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
         predictor = new asDataPredictorArchiveNcepReanalysis2(dataId);
-    } else if (datasetId.IsSameAs("NCEP_CFSR_v2", false)) {
-        predictor = new asDataPredictorArchiveNcepCfsr2(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR", false)) {
+        predictor = new asDataPredictorArchiveNcepCfsr(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
+        predictor = new asDataPredictorArchiveNcepCfsrSubset(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
         predictor = new asDataPredictorArchiveEcmwfEraInterim(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_20C", false)) {
@@ -82,6 +86,8 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNasaMerra2Subset(dataId);
     } else if (datasetId.IsSameAs("JMA_JRA_55_subset", false)) {
         predictor = new asDataPredictorArchiveJmaJra55Subset(dataId);
+    } else if (datasetId.IsSameAs("JMA_JRA_55C_subset", false)) {
+        predictor = new asDataPredictorArchiveJmaJra55CSubset(dataId);
     } else if (datasetId.IsSameAs("NOAA_20CR_v2c", false)) {
         predictor = new asDataPredictorArchiveNoaa20Cr2c(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
@@ -89,7 +95,7 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
     } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {
         predictor = new asDataPredictorArchiveNoaaOisst2Subset(dataId);
     } else {
-        asLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
+        wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return NULL;
     }
 
@@ -98,7 +104,7 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
     }
 
     if (!predictor->Init()) {
-        asLogError(_("The predictor did not initialize correctly."));
+        wxLogError(_("The predictor did not initialize correctly."));
         return NULL;
     }
 
@@ -129,7 +135,7 @@ bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea,
 #if wxUSE_GUI
         // Update the progress bar
         if (!progressBar.Update(i, wxString::Format(_("File: %s"), fileName))) {
-            asLogWarning(_("The process has been canceled by the user."));
+            wxLogWarning(_("The process has been canceled by the user."));
             return false;
         }
 #endif
@@ -167,7 +173,7 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
             valFirstTime += m_timeStepHours / 24.0;
             m_fileIndexes.timeStart++;
         }
-        if (m_fileIndexes.timeStart + m_fileIndexes.timeCount > m_fileStructure.axisTimeLength) {
+        if (m_fileIndexes.timeStart + (m_fileIndexes.timeCount - 1) * m_fileIndexes.timeStep > m_fileStructure.axisTimeLength) {
             m_fileIndexes.timeCount--;
             m_fileIndexes.cutEnd++;
         }
@@ -178,6 +184,9 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
         m_fileIndexes.cutStart = 0;
         m_fileIndexes.cutEnd = 0;
     }
+
+    wxASSERT(m_fileIndexes.timeArrayCount > 0);
+    wxASSERT(m_fileIndexes.timeCount > 0);
 
     // Go through every area
     m_fileIndexes.areas.resize(compositeData.size());
@@ -210,9 +219,9 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
                                                                         lonMin + 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fileIndexes.areas[i_area].lonStart < 0) {
-                asLogError(wxString::Format("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ",
-                                            lonMin, m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
-                                            m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]));
+                wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
+                           m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
+                           m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]);
                 return false;
             }
             wxASSERT_MSG(m_fileIndexes.areas[i_area].lonStart >= 0,
@@ -244,16 +253,14 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
             m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0], &m_fileStructure.axisLevel[
                     m_fileStructure.axisLevel.size() - 1], m_level, 0.01f);
             if (m_fileIndexes.level < 0) {
-                asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
-                                              m_fileVariableName));
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName);
                 return false;
             }
         } else if (m_fileStructure.hasLevelDimension && m_fileStructure.singleLevel) {
             m_fileIndexes.level = 0;
         } else {
             if (m_level > 0) {
-                asLogWarning(wxString::Format(_("The desired level (%g) does not exist for %s"), m_level,
-                                              m_fileVariableName));
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName);
                 return false;
             }
         }
@@ -267,9 +274,13 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double Xmin = desiredArea->GetAbsoluteXmin();
     double Xmax = desiredArea->GetAbsoluteXmax();
     wxASSERT(m_axisLon.size() > 0);
-    int XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmin, 0.0,
+    float toleranceLon = 0.1;
+    if (m_axisLon.size() > 1) {
+        toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
+    }
+    int XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmin, toleranceLon,
                                                  asHIDE_WARNINGS);
-    int XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmax, 0.0,
+    int XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmax, toleranceLon,
                                                asHIDE_WARNINGS);
     if (XstartIndex < 0) {
         XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
@@ -277,19 +288,16 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
                                                Xmax + desiredArea->GetAxisXmax());
         if (XstartIndex < 0 || XendIndex < 0) {
-            asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
-            asLogError(wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Xmin + desiredArea->GetAxisXmax(), Xmax + desiredArea->GetAxisXmax(),
-                                        m_axisLon[0], m_axisLon[m_axisLon.size() - 1]));
+            wxLogError(_("An error occured while trying to clip data to another area (extended axis)."));
+            wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin + desiredArea->GetAxisXmax(),
+                       Xmax + desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
             return false;
         }
     }
     if (XstartIndex < 0 || XendIndex < 0) {
-
-        asLogError(_("An error occured while trying to clip data to another area."));
-        asLogError(
-                wxString::Format(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin, Xmax, m_axisLon[0],
-                                 m_axisLon[m_axisLon.size() - 1]));
+        wxLogError(_("An error occured while trying to clip data to another area."));
+        wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin, Xmax, m_axisLon[0],
+                   m_axisLon[m_axisLon.size() - 1]);
         return false;
     }
     int Xlength = XendIndex - XstartIndex + 1;
@@ -297,28 +305,18 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double Ymin = desiredArea->GetAbsoluteYmin();
     double Ymax = desiredArea->GetAbsoluteYmax();
     wxASSERT(m_axisLat.size() > 0);
-    int YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymin, 0.0,
-                                                 asHIDE_WARNINGS);
-    int YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymax, 0.0,
-                                               asHIDE_WARNINGS);
-    if (XstartIndex < 0) {
-        YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1],
-                                                 Ymin + desiredArea->GetAxisYmax());
-        YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1],
-                                               Ymax + desiredArea->GetAxisYmax());
-        if (YstartIndex < 0 || YendIndex < 0) {
-            asLogError(_("An error occured while trying to clip data to another area (extended axis)."));
-            asLogError(wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."),
-                                        Ymin + desiredArea->GetAxisYmax(), Ymax + desiredArea->GetAxisYmax(),
-                                        m_axisLat[0], m_axisLat[m_axisLat.size() - 1]));
-            return false;
-        }
+    float toleranceLat = 0.1;
+    if (m_axisLat.size() > 1) {
+        toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
     }
+    int YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymin, toleranceLat,
+                                                 asHIDE_WARNINGS);
+    int YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymax, toleranceLat,
+                                               asHIDE_WARNINGS);
     if (YstartIndex < 0 || YendIndex < 0) {
-        asLogError(_("An error occured while trying to clip data to another area."));
-        asLogError(
-                wxString::Format(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), Ymin, Ymax, m_axisLat[0],
-                                 m_axisLat[m_axisLat.size() - 1]));
+        wxLogError(_("An error occured while trying to clip data to another area."));
+        wxLogError(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), Ymin, Ymax, m_axisLat[0],
+                   m_axisLat[m_axisLat.size() - 1]);
         return false;
     }
 
@@ -354,7 +352,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         }
     } else {
         if (!CanBeClipped()) {
-            asLogError(_("The preprocessed area cannot be clipped to another area."));
+            wxLogError(_("The preprocessed area cannot be clipped to another area."));
             return false;
         }
 
@@ -364,11 +362,10 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != 2 * m_axisLat.size()) {
-                    asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format(
-                            "originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
-                            (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
-                            (int) m_axisLat.size()));
+                    wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                               (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
+                               (int) m_axisLat.size());
                     return false;
                 }
 
@@ -417,11 +414,10 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != 2 * m_axisLat.size()) {
-                    asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format(
-                            "originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
-                            (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
-                            (int) m_axisLat.size()));
+                    wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                               (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
+                               (int) m_axisLat.size());
                     return false;
                 }
 
@@ -452,15 +448,15 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
-                       method.IsSameAs("HumidityFlux")) {
+                       method.IsSameAs("HumidityFlux") || method.IsSameAs("HumidityIndex") ||
+                       method.IsSameAs("Addition") || method.IsSameAs("Average")) {
                 VArray2DFloat originalData = m_data;
 
                 if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != m_axisLat.size()) {
-                    asLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
-                    asLogError(wxString::Format(
-                            "originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
-                            (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
-                            (int) m_axisLat.size()));
+                    wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                               (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
+                               (int) m_axisLat.size());
                     return false;
                 }
 
@@ -486,7 +482,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             } else {
-                asLogError(_("Wrong proprocessing definition (cannot be clipped to another area)."));
+                wxLogError(_("Wrong preprocessing definition (cannot be clipped to another area)."));
                 return false;
             }
         }
@@ -518,43 +514,41 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 bool asDataPredictorArchive::CheckTimeArray(asTimeArray &timeArray) const
 {
     if (!timeArray.IsSimpleMode()) {
-        asLogError(_("The data loading only accepts time arrays in simple mode."));
+        wxLogError(_("The data loading only accepts time arrays in simple mode."));
         return false;
     }
 
     // Check against original dataset
     if (timeArray.GetFirst() < m_originalProviderStart) {
-        asLogError(wxString::Format(
-                _("The requested date (%s) is anterior to the beginning of the original dataset (%s)."),
-                asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD),
-                asTime::GetStringTime(m_originalProviderStart, YYYYMMDD)));
+        wxLogError(_("The requested date (%s) is anterior to the beginning of the original dataset (%s)."),
+                   asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD),
+                   asTime::GetStringTime(m_originalProviderStart, YYYYMMDD));
         return false;
     }
     if (!asTools::IsNaN(m_originalProviderEnd)) {
         if (timeArray.GetLast() > m_originalProviderEnd) {
-            asLogError(
-                    wxString::Format(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
-                                     asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD),
-                                     asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD)));
+            wxLogError(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
+                       asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD),
+                       asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD));
             return false;
         }
     }
 
     // Check the time steps
     if ((timeArray.GetTimeStepDays() > 0) && (m_timeStepHours / 24.0 > timeArray.GetTimeStepDays())) {
-        asLogError(_("The desired timestep is smaller than the data timestep."));
+        wxLogError(_("The desired timestep is smaller than the data timestep."));
         return false;
     }
     double intpart, fractpart;
     fractpart = modf(timeArray.GetTimeStepDays() / (m_timeStepHours / 24.0), &intpart);
-    if (fractpart > 0.0000001) {
-        asLogError(_("The desired timestep is not a multiple of the data timestep."));
+    if (fractpart > 0.0001 && fractpart < 0.9999) {
+        wxLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
-    fractpart = modf((timeArray.GetFirstDayHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
-    if (fractpart > 0.0000001) {
-        asLogError(wxString::Format(_("The desired startDate (%gh) is not coherent with the data properties."),
-                                    timeArray.GetFirstDayHour()));
+    fractpart = modf((timeArray.GetStartingHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
+    if (fractpart > 0.0001 && fractpart < 0.9999) {
+        wxLogError(_("The desired startDate (%gh) is not coherent with the data properties (fractpart = %g)."),
+                   timeArray.GetStartingHour(), fractpart);
         return false;
     }
 
