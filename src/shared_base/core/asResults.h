@@ -70,16 +70,21 @@ public:
         return m_filePath;
     }
 
-    void SetDateProcessed(const wxString &val)
+    void SetFilePath(const wxString &val)
     {
         m_filePath = val;
     }
 
+    void SetSubFolder(const wxString &val)
+    {
+        m_subFolder = val;
+    }
+
     bool Exists() const;
 
-    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
+    virtual bool Save();
 
-    virtual bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    virtual bool Load();
 
 protected:
     int m_fileVersionMajor;
@@ -87,9 +92,8 @@ protected:
     int m_currentStep;
     VectorInt m_predictandStationIds;
     double m_dateProcessed;
+    wxString m_subFolder;
     wxString m_filePath;
-    bool m_saveIntermediateResults;
-    bool m_loadIntermediateResults;
 
     bool DefTargetDatesAttributes(asFileNetcdf &ncFile) const;
 

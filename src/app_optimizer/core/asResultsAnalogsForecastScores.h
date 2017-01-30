@@ -94,12 +94,12 @@ public:
         m_forecastScores2DArray = forecastScores;
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
+    bool Save();
 
-    bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    bool Load();
 
 protected:
-    void BuildFileName(asParametersScoring &params);
+    void BuildFileName();
 
 private:
     Array1DFloat m_targetDates;

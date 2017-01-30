@@ -33,66 +33,46 @@
 
 
 asResultsAnalogsForecastScoreFinal::asResultsAnalogsForecastScoreFinal()
-        : asResults()
+        : asResults(),
+          m_hasSingleValue(true),
+          m_forecastScore(NaNFloat)
 {
-    m_hasSingleValue = true;
-    m_forecastScore = NaNFloat;
-
-    ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/SaveFinalForecastScore", &m_saveIntermediateResults,
-                              false);
-    wxFileConfig::Get()->Read("/Optimizer/IntermediateResults/LoadFinalForecastScore", &m_loadIntermediateResults,
-                              false);
-    ThreadsManager().CritSectionConfig().Leave();
 }
 
 asResultsAnalogsForecastScoreFinal::~asResultsAnalogsForecastScoreFinal()
 {
-    //dtor
 }
 
 void asResultsAnalogsForecastScoreFinal::Init(asParametersScoring &params)
 {
-    if (m_saveIntermediateResults || m_loadIntermediateResults)
-        BuildFileName(params);
-
     // Set to nan to avoid keeping old results
     m_forecastScore = NaNFloat;
     m_forecastScoreArray.resize(0);
 }
 
-void asResultsAnalogsForecastScoreFinal::BuildFileName(asParametersScoring &params)
+void asResultsAnalogsForecastScoreFinal::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/IntermediateResultsDir",
-                                           asConfig::GetDefaultUserWorkingDir() + "IntermediateResults" + DS);
+    m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
+    if (!m_subFolder.IsEmpty()) {
+        m_filePath.Append(DS);
+        m_filePath.Append(m_subFolder);
+    }
     m_filePath.Append(DS);
-    m_filePath.Append(
-            wxString::Format("AnalogsForecastScoreFinal_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+    m_filePath.Append(wxString::Format("AnalogsForecastScoreFinal_id_%s_step_%d", GetPredictandStationIdsList(),
+                                       m_currentStep));
     m_filePath.Append(".nc");
 }
 
-bool asResultsAnalogsForecastScoreFinal::Save(const wxString &AlternateFilePath) const
+bool asResultsAnalogsForecastScoreFinal::Save()
 {
-    // If we don't want to save, skip
-    if (!m_saveIntermediateResults)
-        return false;
-    wxString message = _("Saving intermediate file: ") + m_filePath;
-    asLogMessage(message);
-
-    // Get the file path
-    wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty()) {
-        ResultsFile = m_filePath;
-    } else {
-        ResultsFile = AlternateFilePath;
-    }
+    BuildFileName();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -129,7 +109,7 @@ bool asResultsAnalogsForecastScoreFinal::Save(const wxString &AlternateFilePath)
     return true;
 }
 
-bool asResultsAnalogsForecastScoreFinal::Load(const wxString &AlternateFilePath)
+bool asResultsAnalogsForecastScoreFinal::Load()
 {
     // Makes no sense to load at this stage.
     return false;

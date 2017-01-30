@@ -138,9 +138,9 @@ public:
         return m_targetDates.size();
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
+    bool Save();
 
-    bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    bool Load();
 
 protected:
     void BuildFileName();
