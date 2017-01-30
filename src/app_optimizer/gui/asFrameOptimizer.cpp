@@ -182,8 +182,8 @@ void asFrameOptimizer::DisplayLogLevelMenu()
 
 void asFrameOptimizer::Cancel(wxCommandEvent &event)
 {
-    if (m_methodOptimizer) {
-        m_methodOptimizer->Cancel();
+    if (m_methodCalibrator) {
+        m_methodCalibrator->Cancel();
     }
 }
 
@@ -201,7 +201,7 @@ void asFrameOptimizer::LoadOptions()
     m_dirPickerPredictor->SetPath(PredictorDir);
     wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
                                                  asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
-    m_dirPickerOptimizerResults->SetPath(OptimizerResultsDir);
+    m_dirPickerCalibrationResults->SetPath(OptimizerResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
     m_checkBoxParallelEvaluations->SetValue(parallelEvaluations);
@@ -219,11 +219,11 @@ void asFrameOptimizer::LoadOptions()
 
     // Variables exploration
     wxString VarExploStep = pConfig->Read("/Optimizer/VariablesExplo/Step");
-    m_TextCtrlVarExploStepToExplore->SetValue(VarExploStep);
+    m_textCtrlVarExploStepToExplore->SetValue(VarExploStep);
 
     // Monte Carlo
     wxString MonteCarloRandomNb = pConfig->Read("/Optimizer/MonteCarlo/RandomNb", "1000");
-    m_TextCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
+    m_textCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
 
 }
 
@@ -244,7 +244,7 @@ void asFrameOptimizer::SaveOptions() const
     pConfig->Write("/Paths/PredictandDBFilePath", PredictandDBFilePath);
     wxString PredictorDir = m_dirPickerPredictor->GetPath();
     pConfig->Write("/Paths/PredictorDir", PredictorDir);
-    wxString OptimizerResultsDir = m_dirPickerOptimizerResults->GetPath();
+    wxString OptimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
     pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
     pConfig->Write("/Optimizer/ParallelEvaluations", parallelEvaluations);
@@ -264,7 +264,7 @@ void asFrameOptimizer::SaveOptions() const
     pConfig->Write("/Optimizer/VariablesExplo/Step", VarExploStep);
 
     // Monte Carlo
-    wxString MonteCarloRandomNb = m_TextCtrlMonteCarloRandomNb->GetValue();
+    wxString MonteCarloRandomNb = m_textCtrlMonteCarloRandomNb->GetValue();
     pConfig->Write("/Optimizer/MonteCarlo/RandomNb", MonteCarloRandomNb);
 
     pConfig->Flush();
@@ -290,53 +290,53 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
             case 0: // Single
             {
                 wxLogVerbose(_("Proceeding to single assessment."));
-                m_methodOptimizer = new asMethodOptimizerSingle();
+                m_methodCalibrator = new asMethodCalibratorSingle();
                 break;
             }
             case 1: // Classic
             {
                 wxLogVerbose(_("Proceeding to classic calibration."));
-                m_methodOptimizer = new asMethodOptimizerClassic();
+                m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 2: // Classic+
             {
                 wxLogVerbose(_("Proceeding to classic+ calibration."));
-                m_methodOptimizer = new asMethodOptimizerClassicPlus();
+                m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 3: // Variables exploration with classic+
             {
                 wxLogVerbose(_("Proceeding to variables exploration."));
-                m_methodOptimizer = new asMethodOptimizerClassicPlusVarExplo();
+                m_methodCalibrator = new asMethodCalibratorClassicVarExplo();
                 break;
             }
             case 4: // Random sets
             {
-                m_MethodOptimizer = new asMethodOptimizerRandomSet();
+                m_methodCalibrator = new asMethodOptimizerRandomSet();
                 break;
             }
             case 5: // Scores evaluation
             {
                 wxLogVerbose(_("Proceeding to all scores evaluation."));
-                m_methodOptimizer = new asMethodOptimizerEvaluateAllScores();
+                m_methodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
             case 6: // Only predictand values
             {
                 wxLogVerbose(_("Proceeding to predictand values saving."));
-                m_methodOptimizer = new asMethodOptimizerSingleOnlyValues();
+                m_methodCalibrator = new asMethodCalibratorSingleOnlyValues();
                 break;
             }
             default:
                 wxLogError(_("Chosen method not defined yet."));
         }
 
-        if (m_methodOptimizer) {
-            m_methodOptimizer->SetParamsFilePath(m_filePickerParameters->GetPath());
-            m_methodOptimizer->SetPredictandDBFilePath(m_filePickerPredictand->GetPath());
-            m_methodOptimizer->SetPredictorDataDir(m_dirPickerPredictor->GetPath());
-            m_methodOptimizer->Manager();
+        if (m_methodCalibrator) {
+            m_methodCalibrator->SetParamsFilePath(m_filePickerParameters->GetPath());
+            m_methodCalibrator->SetPredictandDBFilePath(m_filePickerPredictand->GetPath());
+            m_methodCalibrator->SetPredictorDataDir(m_dirPickerPredictor->GetPath());
+            m_methodCalibrator->Manager();
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
@@ -350,7 +350,7 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
         wxLogError(_("Failed to process the optimization."));
     }
 
-    wxDELETE(m_methodOptimizer);
+    wxDELETE(m_methodCalibrator);
 
     wxMessageBox(_("Optimizer over."));
 }
