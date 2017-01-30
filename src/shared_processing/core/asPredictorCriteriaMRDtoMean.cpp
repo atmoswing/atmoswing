@@ -68,7 +68,7 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
                               (std::abs(evalData(i, j) + refData(i, j)) * 0.5);
                     } else {
                         if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
-                            asLogWarning(_("Division by zero in the predictor criteria."));
+                            wxLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
                     }
@@ -91,7 +91,7 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
                         rd += dividend / divisor;
                     } else {
                         if (dividend != 0) {
-                            asLogWarning(_("Division by zero in the predictor criteria."));
+                            wxLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
                     }
@@ -102,7 +102,7 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
         }
 
         default: {
-            asLogError(_("The calculation method was not correcty set"));
+            wxLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }

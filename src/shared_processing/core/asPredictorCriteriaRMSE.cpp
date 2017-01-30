@@ -80,7 +80,7 @@ float asPredictorCriteriaRMSE::Assess(const Array2DFloat &refData, const Array2D
         }
 
         default: {
-            asLogError(_("The calculation method was not correctly set"));
+            wxLogError(_("The calculation method was not correctly set"));
             return NaNFloat;
         }
     }

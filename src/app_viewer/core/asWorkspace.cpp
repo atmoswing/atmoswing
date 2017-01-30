@@ -53,11 +53,11 @@ bool asWorkspace::Load(const wxString &filePath)
     m_filePath = filePath;
     asFileWorkspace fileWorkspace(filePath, asFile::ReadOnly);
     if (!fileWorkspace.Open()) {
-        asLogError(_("Cannot open the workspace file."));
+        wxLogError(_("Cannot open the workspace file."));
         return false;
     }
     if (!fileWorkspace.CheckRootElement()) {
-        asLogError(_("Errors were found in the workspace file."));
+        wxLogError(_("Errors were found in the workspace file."));
         return false;
     }
 
@@ -131,7 +131,7 @@ bool asWorkspace::Load(const wxString &filePath)
                 || m_layerPaths.size()!=m_layerBrushStyles.size()
 #endif
                     ) {
-                asLogError(_("The number of elements in the layers is not consistent in the workspace file."));
+                wxLogError(_("The number of elements in the layers is not consistent in the workspace file."));
                 return false;
             }
 

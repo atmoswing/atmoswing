@@ -35,63 +35,11 @@ asLog &Log()
     return *g_pLog;
 }
 
-void asLogError(const wxString &msg)
-{
-    g_pLog->Error(msg);
-}
-
-void asLogError(const wxChar *msg)
-{
-    g_pLog->Error(msg);
-}
-
-void asLogWarning(const wxString &msg)
-{
-    g_pLog->Warning(msg);
-}
-
-void asLogWarning(const wxChar *msg)
-{
-    g_pLog->Warning(msg);
-}
-
-void asLogMessage(const wxString &msg)
-{
-    g_pLog->Message(msg);
-}
-
-void asLogMessage(const wxChar *msg)
-{
-    g_pLog->Message(msg);
-}
-
-void asLogMessageImportant(const wxString &msg)
-{
-    g_pLog->Message(msg, true);
-}
-
-void asLogMessageImportant(const wxChar *msg)
-{
-    g_pLog->Message(msg, true);
-}
-
-void asLogState(const wxString &msg)
-{
-    g_pLog->State(msg);
-}
-
-void asLogState(const wxChar *msg)
-{
-    g_pLog->State(msg);
-}
-
-wxString asGetState()
-{
-    return g_pLog->GetState();
-}
-
 void DeleteLog()
 {
+    if (g_pLog) {
+        wxLog::FlushActive();
+    }
     wxDELETE(g_pLog);
     delete wxLog::SetActiveTarget(NULL);
 }

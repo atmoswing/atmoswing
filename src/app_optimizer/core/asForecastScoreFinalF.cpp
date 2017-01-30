@@ -65,7 +65,7 @@ float asForecastScoreFinalF::Assess(Array1DFloat &targetDates, Array1DFloat &for
                 } else if (forecastScores[i] == 4) {
                     countD++;
                 } else {
-                    asLogError(wxString::Format(_("The F score (%f) is not an authorized value."), forecastScores[i]));
+                    wxLogError(_("The F score (%f) is not an authorized value."), forecastScores[i]);
                     return NaNFloat;
                 }
             }

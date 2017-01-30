@@ -65,13 +65,13 @@ bool asDataPredictandPrecipitation::InitContainers()
 bool asDataPredictandPrecipitation::Load(const wxString &filePath)
 {
     // Open the NetCDF file
-    asLogMessage(wxString::Format(_("Opening the file %s"), filePath));
+    wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) {
-        asLogError(wxString::Format(_("Couldn't open file %s"), filePath));
+        wxLogError(_("Couldn't open file %s"), filePath);
         return false;
     } else {
-        asLogMessage(_("File successfully opened"));
+        wxLogVerbose(_("File successfully opened"));
     }
 
     // Load common data
@@ -197,8 +197,9 @@ bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFil
                                                       const wxString &AlternatePatternDir,
                                                       const wxString &AlternateDestinationDir)
 {
-    if (!g_unitTesting)
-        asLogMessage(_("Building the predictand DB."));
+    if (!g_unitTesting) {
+        wxLogVerbose(_("Building the predictand DB."));
+    }
 
     // Initialize the members
     if (!InitMembers(catalogFilePath))
@@ -228,8 +229,9 @@ bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFil
 
     Save(AlternateDestinationDir);
 
-    if (!g_unitTesting)
-        asLogMessage(_("Predictand DB saved."));
+    if (!g_unitTesting) {
+        wxLogVerbose(_("Predictand DB saved."));
+    }
 
 #if wxUSE_GUI
     if (!g_silentMode) {
@@ -270,7 +272,7 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
         duration.resize(4);
         duration << 7, 14, 21, 28;
     } else {
-        asLogError(_("The data time steps is not correctly defined."));
+        wxLogError(_("The data time steps is not correctly defined."));
         duration.resize(7);
         duration << 1, 2, 3, 4, 5, 7, 10;
     }
@@ -294,7 +296,7 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
 
 #if wxUSE_GUI
         if (!ProgressBar.Update(i_duration)) {
-            asLogError(_("The process has been canceled by the user."));
+            wxLogError(_("The process has been canceled by the user."));
             return false;
         }
 #endif
@@ -306,12 +308,10 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
             // Check the length of the data
             int dataLength = asTools::CountNotNaN(&currentAnnualMax(0), &currentAnnualMax(arrayEnd));
             if (dataLength < 20) {
-                asLogError(
-                        _("Caution, a time serie is shorter than 20 years. It is too short to process a Gumbel adjustment."));
+                wxLogError(_("Caution, a time serie is shorter than 20 years. It is too short to process a Gumbel adjustment."));
                 return false;
             } else if (dataLength < 30) {
-                asLogWarning(
-                        _("Caution, a time serie is shorter than 30 years. It is a bit short to process a Gumbel adjustment."));
+                wxLogWarning(_("Caution, a time serie is shorter than 30 years. It is a bit short to process a Gumbel adjustment."));
             }
 
             if (!asTools::SortArray(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), Asc))

@@ -41,6 +41,13 @@ asFileParameters::~asFileParameters()
 
 VectorInt asFileParameters::BuildVectorInt(int min, int max, int step)
 {
+    if (min>max) {
+        asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
+    }
+    if (step==0) {
+        asThrowException(_("Error when building a vector from the parameters file: step=0."));
+    }
+
     int stepsnb = 1 + (max - min) / step;
     VectorInt vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
@@ -74,6 +81,13 @@ VectorInt asFileParameters::BuildVectorInt(wxString str)
 
 VectorFloat asFileParameters::BuildVectorFloat(float min, float max, float step)
 {
+    if (min>max) {
+        asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+    }
+    if (step==0) {
+        asThrowException(_("Error when building a vector from the parameters file: step=0."));
+    }
+
     int stepsnb = 1 + (max - min) / step;
     VectorFloat vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
@@ -107,6 +121,13 @@ VectorFloat asFileParameters::BuildVectorFloat(wxString str)
 
 VectorDouble asFileParameters::BuildVectorDouble(double min, double max, double step)
 {
+    if (min>max) {
+        asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
+    }
+    if (step==0) {
+        asThrowException(_("Error when building a vector from the parameters file: step=0."));
+    }
+
     int stepsnb = 1 + (max - min) / step;
     VectorDouble vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
@@ -164,7 +185,7 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
         long value;
         wxString valueStr = node->GetChildren()->GetContent();
         if (!valueStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         vect.push_back((int) value);
     } else if (method.IsSameAs("array")) {
@@ -175,27 +196,25 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
 
         wxString valueMinStr = node->GetAttribute("min");
         if (!valueMinStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         int min = (int) value;
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         int max = (int) value;
 
-        wxString valueStepStr = node->GetAttribute("step");
+        wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         int step = (int) value;
 
         vect = BuildVectorInt(min, max, step);
     } else {
-        asLogMessage(
-                wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."),
-                                 nodeName));
+        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
     }
@@ -215,7 +234,7 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
         double value;
         wxString valueStr = node->GetChildren()->GetContent();
         if (!valueStr.ToDouble(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         vect.push_back((float) value);
     } else if (method.IsSameAs("array")) {
@@ -226,27 +245,25 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
 
         wxString valueMinStr = node->GetAttribute("min");
         if (!valueMinStr.ToDouble(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         float min = (float) value;
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToDouble(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         float max = (float) value;
 
-        wxString valueStepStr = node->GetAttribute("step");
+        wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToDouble(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         float step = (float) value;
 
         vect = BuildVectorFloat(min, max, step);
     } else {
-        asLogMessage(
-                wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."),
-                                 nodeName));
+        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);
     }
@@ -266,7 +283,7 @@ VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
         double value;
         wxString valueStr = node->GetChildren()->GetContent();
         if (!valueStr.ToDouble(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         vect.push_back(value);
     } else if (method.IsSameAs("array")) {
@@ -277,24 +294,22 @@ VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
 
         wxString valueMinStr = node->GetAttribute("min");
         if (!valueMinStr.ToDouble(&min)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToDouble(&max)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
 
-        wxString valueStepStr = node->GetAttribute("step");
+        wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToDouble(&step)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
 
         vect = BuildVectorDouble(min, max, step);
     } else {
-        asLogMessage(
-                wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."),
-                                 nodeName));
+        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorDouble(valueStr);
     }
@@ -319,9 +334,7 @@ VectorString asFileParameters::GetVectorString(wxXmlNode *node)
         wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     } else {
-        asLogMessage(
-                wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."),
-                                 nodeName));
+        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
         wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     }
@@ -378,19 +391,19 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
 
         wxString valueMinStr = node->GetAttribute("min");
         if (!valueMinStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         int min = (int) value;
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         int max = (int) value;
 
-        wxString valueStepStr = node->GetAttribute("step");
+        wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToLong(&value)) {
-            asLogError(wxString::Format(_("Failed at converting the value of the element %s (XML file)."), nodeName));
+            wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
         int step = (int) value;
 
@@ -401,9 +414,7 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
             vect.push_back(id);
         }
     } else {
-        asLogMessage(
-                wxString::Format(_("The method is not correctly defined for %s in the calibration parameters file."),
-                                 nodeName));
+        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
         return VVectorInt(0);
     }
 
@@ -419,7 +430,7 @@ VectorInt asFileParameters::GetStationIds(wxString stationIdsString)
     VectorInt ids;
 
     if (stationIdsString.IsEmpty()) {
-        asLogError(_("The station ID was not provided."));
+        wxLogError(_("The station ID was not provided."));
         return ids;
     }
 
@@ -429,13 +440,13 @@ VectorInt asFileParameters::GetStationIds(wxString stationIdsString)
 
         // Check that it contains only 1 opening bracket
         if (subStr.Find("(") != wxNOT_FOUND) {
-            asLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
+            wxLogError(_("The format of the station ID is not correct (more than one opening bracket)."));
             return ids;
         }
 
         // Check that it contains 1 closing bracket at the end
         if (subStr.Find(")") != (int) subStr.size() - 1) {
-            asLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
+            wxLogError(_("The format of the station ID is not correct (location of the closing bracket)."));
             return ids;
         }
 
@@ -455,7 +466,7 @@ VectorInt asFileParameters::GetStationIds(wxString stationIdsString)
         // Check for single value
         if (stationIdsString.Find("(") != wxNOT_FOUND || stationIdsString.Find(")") != wxNOT_FOUND ||
             stationIdsString.Find(",") != wxNOT_FOUND) {
-            asLogError(_("The format of the station ID is not correct (should be only digits)."));
+            wxLogError(_("The format of the station ID is not correct (should be only digits)."));
             return ids;
         }
         int id = wxAtoi(stationIdsString);

@@ -56,10 +56,10 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
-        asLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
+        wxLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
         return NaNFloat;
     } else if (nbForecasts <= 2) {
-        asLogWarning(_("Not enough elements to process the Brier score."));
+        wxLogWarning(_("Not enough elements to process the Brier score."));
         return NaNFloat;
     }
 

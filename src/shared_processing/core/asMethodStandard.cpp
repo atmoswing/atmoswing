@@ -68,7 +68,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
 
     if (predictandDBFilePath.IsEmpty()) {
         if (m_predictandDBFilePath.IsEmpty()) {
-            asLogError(_("There is no predictand database file selected."));
+            wxLogError(_("There is no predictand database file selected."));
             return false;
         }
 
@@ -77,7 +77,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
             return false;
 
         if (!m_predictandDB->Load(m_predictandDBFilePath)) {
-            asLogError(_("Couldn't load the predictand database."));
+            wxLogError(_("Couldn't load the predictand database."));
             return false;
         }
     } else {
@@ -86,7 +86,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
             return false;
 
         if (!m_predictandDB->Load(predictandDBFilePath)) {
-            asLogError(_("Couldn't load the predictand database."));
+            wxLogError(_("Couldn't load the predictand database."));
             return false;
         }
     }

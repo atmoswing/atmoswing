@@ -74,7 +74,7 @@ bool asMethodForecasting::Manager()
     m_cancel = false;
 
     if (asTools::IsNaN(m_forecastDate)) {
-        asLogError(_("The date of the forecast has not been defined."));
+        wxLogError(_("The date of the forecast has not been defined."));
         return false;
     }
 
@@ -129,7 +129,7 @@ bool asMethodForecasting::Manager()
 
             // Forecast
             if (!Forecast(params)) {
-                asLogError(_("The forecast could not be achived"));
+                wxLogError(_("The forecast could not be achived"));
 
 #if wxUSE_GUI
                 // Send event
@@ -141,9 +141,8 @@ bool asMethodForecasting::Manager()
 #endif
             } else {
                 // Display processing time
-                asLogMessageImportant(
-                        wxString::Format(_("Processing of the forecast \"%s\" - \"%s\" took %ld ms to execute"),
-                                         params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), sw.Time()));
+                wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %.3f min to execute"),
+                             params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time())/60000f);
 
 #if wxUSE_GUI
                 // Send event
@@ -160,7 +159,7 @@ bool asMethodForecasting::Manager()
         if (m_batchForecasts->HasExports()) {
             if (m_batchForecasts->ExportSyntheticXml()) {
                 if (!m_aggregator.ExportSyntheticXml(m_batchForecasts->GetExportsOutputDirectory())) {
-                    asLogError(_("The export of the synthetic xml failed."));
+                    wxLogError(_("The export of the synthetic xml failed."));
                 }
             }
         }
@@ -171,13 +170,14 @@ bool asMethodForecasting::Manager()
             if (!g_silentMode)
                 wxMessageBox(fullMessage);
 #else
-            asLogError(fullMessage);
+            wxLogError(fullMessage);
 #endif
         }
         return false;
     }
-
-    asLogState(_("Forecasting over."));
+#if wxUSE_STATUSBAR
+    wxLogStatus(_("Forecasting over."));
+#endif
     Cleanup();
 
     return true;
@@ -204,7 +204,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         resultsCheck.SetCurrentStep(stepsNb - 1);
         resultsCheck.Init(params, m_forecastDate);
         if (resultsCheck.Exists()) {
-            asLogMessage(_("Forecast already exists."));
+            wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
                 asResultsAnalogsForecast *results = new asResultsAnalogsForecast();
@@ -244,7 +244,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         // Check again if result already exists (if change in date)
         resultsCheck.Init(params, m_forecastDate);
         if (resultsCheck.Exists()) {
-            asLogMessage(_("Forecast already exists."));
+            wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
                 asResultsAnalogsForecast *results = new asResultsAnalogsForecast();
@@ -275,10 +275,10 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         return false;
 
     // Load the Predictand DB
-    asLogMessage(_("Loading the Predictand DB."));
+    wxLogVerbose(_("Loading the Predictand DB."));
     if (!LoadPredictandDB(m_predictandDBFilePath))
         return false;
-    asLogMessage(_("Predictand DB loaded."));
+    wxLogVerbose(_("Predictand DB loaded."));
 
 #if wxUSE_GUI
     if (g_responsive)
@@ -397,7 +397,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
         if (m_cancel)
             return false;
 
-        asLogMessage(_("Downloading data."));
+        wxLogVerbose(_("Downloading data."));
 
 #if wxUSE_GUI
         if (g_responsive)
@@ -424,7 +424,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
             resultsCheck.Init(params, m_forecastDate);
             if (resultsCheck.Exists()) {
-                asLogMessage(_("Forecast already exists."));
+                wxLogVerbose(_("Forecast already exists."));
 #if wxUSE_GUI
                 if (g_responsive)
                     wxGetApp().Yield();
@@ -468,7 +468,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                         resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
                         resultsCheck.Init(params, m_forecastDate);
                         if (resultsCheck.Exists()) {
-                            asLogMessage(_("Forecast already exists."));
+                            wxLogVerbose(_("Forecast already exists."));
 #if wxUSE_GUI
                             if (g_responsive)
                                 wxGetApp().Yield();
@@ -480,8 +480,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                         predictorRealtime->BuildFilenamesUrls();
                         counterFails++;
                     } else {
-                        asLogError(
-                                _("The maximum attempts is reached to download the real-time predictor. Forecasting failed."));
+                        wxLogError(_("The maximum attempts is reached to download the real-time predictor. Forecasting failed."));
                         wxDELETE(predictorRealtime);
                         return false;
                     }
@@ -553,8 +552,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                             predictorRealtimePreprocess->BuildFilenamesUrls();
                             counterFails++;
                         } else {
-                            asLogError(
-                                    _("The maximum attempts is reached to download the real-time predictor. Forecasting failed."));
+                            wxLogError(_("The maximum attempts is reached to download the real-time predictor. Forecasting failed."));
                             wxDELETE(predictorRealtimePreprocess);
                             return false;
                         }
@@ -569,7 +567,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             }
         }
 
-        asLogMessage(_("Data downloaded."));
+        wxLogVerbose(_("Data downloaded."));
     }
 
     return true;
@@ -649,12 +647,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
     // Check archive time array length
     if (timeArrayArchive.GetSize() < 100) {
-        asLogError(wxString::Format(
-                _("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),
-                timeArrayArchive.GetSize()));
+        wxLogError(_("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),
+                   timeArrayArchive.GetSize());
         return false;
     }
-    asLogMessage(_("Date array created."));
+    wxLogVerbose(_("Date array created."));
 
     // Calculate needed memory
     wxLongLong neededMem = 0;
@@ -673,13 +670,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     freeMemMb /= 1048576.0; // To Mb
 
     if (freeMemSize == -1) {
-        asLogMessage( wxString::Format(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"),
-                                       neededMemMb));
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
     } else {
-        asLogMessage(
-                wxString::Format(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb));
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
         if (neededMemMb > freeMemMb) {
-            asLogError(_("Data cannot fit into available memory."));
+            wxLogError(_("Data cannot fit into available memory."));
             return false;
         }
     }
@@ -694,7 +689,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
     // Loop through every predictor
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-        asLogMessage(wxString::Format(_("Loading data (step %d, predictor nb %d)."), i_step, i_ptor));
+        wxLogVerbose(_("Loading data (step %d, predictor nb %d)."), i_step, i_ptor);
 
 #if wxUSE_GUI
         if (g_responsive)
@@ -758,10 +753,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                                           (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
             for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
-                    asLogError(wxString::Format(
-                            _("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
-                            i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                    asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
+                    wxLogError(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
+                               i, listTimeArray[i], i, timeArrayDataTarget[i]);
+                    wxLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
                     return false;
@@ -778,10 +772,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
             // Check the starting dates coherence
             if (predictorArchive->GetOriginalProviderStart() > ptorStartArchive) {
-                asLogError(wxString::Format(
-                        _("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                        asTime::GetStringTime(ptorStartArchive),
-                        asTime::GetStringTime(predictorArchive->GetOriginalProviderStart())));
+                wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
+                           asTime::GetStringTime(ptorStartArchive),
+                           asTime::GetStringTime(predictorArchive->GetOriginalProviderStart()));
                 wxDELETE(area);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
@@ -789,9 +782,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             }
 
             // Archive data loading
-            asLogMessage(_("Loading archive data."));
+            wxLogVerbose(_("Loading archive data."));
             if (!predictorArchive->Load(area, timeArrayDataArchive)) {
-                asLogError(_("Archive data could not be loaded."));
+                wxLogError(_("Archive data could not be loaded."));
                 wxDELETE(area);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
@@ -802,9 +795,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             m_storagePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
-            asLogMessage(_("Loading GCM forecast data."));
+            wxLogVerbose(_("Loading GCM forecast data."));
             if (!predictorRealtime->Load(area, timeArrayDataTarget)) {
-                asLogError(_("Real-time data could not be loaded."));
+                wxLogError(_("Real-time data could not be loaded."));
                 wxDELETE(area);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -816,7 +809,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         } else {
             int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
 
-            asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
+            wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
             for (int i_prepro = 0; i_prepro < preprocessSize; i_prepro++) {
 #if wxUSE_GUI
@@ -882,10 +875,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
-                        asLogError(wxString::Format(
-                                _("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
-                                i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                        asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
+                        wxLogError(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
+                                   i, listTimeArray[i], i, timeArrayDataTarget[i]);
+                        wxLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
                         return false;
@@ -902,10 +894,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 // Check the starting dates coherence
                 if (predictorArchivePreprocess->GetOriginalProviderStart() > ptorStartArchive) {
-                    asLogError(wxString::Format(
-                            _("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                            asTime::GetStringTime(ptorStartArchive),
-                            asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart())));
+                    wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
+                               asTime::GetStringTime(ptorStartArchive),
+                               asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart()));
                     wxDELETE(area);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
@@ -913,9 +904,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 }
 
                 // Archive data loading
-                asLogMessage(_("Loading archive data."));
+                wxLogVerbose(_("Loading archive data."));
                 if (!predictorArchivePreprocess->Load(area, timeArrayDataArchive)) {
-                    asLogError(_("Archive data could not be loaded."));
+                    wxLogError(_("Archive data could not be loaded."));
                     wxDELETE(area);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
@@ -924,9 +915,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 m_storagePredictorsArchivePreprocess.push_back(predictorArchivePreprocess);
 
                 // Realtime data loading
-                asLogMessage(_("Loading forecast data."));
+                wxLogVerbose(_("Loading forecast data."));
                 if (!predictorRealtimePreprocess->Load(area, timeArrayDataTarget)) {
-                    asLogError(_("Real-time data could not be loaded."));
+                    wxLogError(_("Real-time data could not be loaded."));
                     wxDELETE(area);
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
@@ -952,7 +943,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
             if (!asPreprocessor::Preprocess(m_storagePredictorsArchivePreprocess,
                                             params.GetPreprocessMethod(i_step, i_ptor), predictorArchive)) {
-                asLogError(_("Data preprocessing failed."));
+                wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 return false;
             }
@@ -968,7 +959,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
             if (!asPreprocessor::Preprocess(m_storagePredictorsRealtimePreprocess,
                                             params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime)) {
-                asLogError(_("Data preprocessing failed."));
+                wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -982,10 +973,10 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             DeletePreprocessData();
         }
 
-        asLogMessage(_("Data loaded"));
+        wxLogVerbose(_("Data loaded"));
 
         // Instantiate a score object
-        asLogMessage(_("Creating a criterion object."));
+        wxLogVerbose(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
         if(criterion->NeedsDataRange()) {
@@ -994,7 +985,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             criterion->SetDataRange(m_storagePredictorsArchive[i_ptor]);
         }
         m_storageCriteria.push_back(criterion);
-        asLogMessage(_("Criterion object created."));
+        wxLogVerbose(_("Criterion object created."));
 
     }
 
@@ -1009,7 +1000,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 #endif
 
     // Send data and criteria to processor
-    asLogMessage(_("Start processing the comparison."));
+    wxLogVerbose(_("Start processing the comparison."));
 
     Array1DDouble timeArrayTargetVect = timeArrayTarget.GetTimeArray();
     Array1DDouble timeArrayTargetVectUnique(1);
@@ -1032,7 +1023,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         if (!asProcessor::GetAnalogsDates(m_storagePredictorsArchive, m_storagePredictorsRealtime, timeArrayArchive,
                                           timeArrayArchive, timeArrayTarget, timeArrayTargetLeadTime, m_storageCriteria,
                                           params, i_step, anaDates, containsNaNs)) {
-            asLogError(_("Failed processing the analogs dates."));
+            wxLogError(_("Failed processing the analogs dates."));
             return false;
         }
 
@@ -1066,7 +1057,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     results.Init(params, m_forecastDate);
 
     // Date array object instantiation for the processor
-    asLogMessage(_("Creating a date arrays for the processor."));
+    wxLogVerbose(_("Creating a date arrays for the processor."));
 
     // Archive time array
     double timeStartArchive = params.GetArchiveStart();
@@ -1133,12 +1124,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
     // Check archive time array length
     if (timeArrayArchive.GetSize() < 100) {
-        asLogError(wxString::Format(
-                _("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),
-                timeArrayArchive.GetSize()));
+        wxLogError(_("The time array is not consistent in asMethodForecasting::GetAnalogsDates: size=%d."),
+                   timeArrayArchive.GetSize());
         return false;
     }
-    asLogMessage(_("Date array created."));
+    wxLogVerbose(_("Date array created."));
 
     // Calculate needed memory
     wxLongLong neededMem = 0;
@@ -1157,13 +1147,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     freeMemMb /= 1048576.0; // To Mb
 
     if (freeMemSize == -1) {
-        asLogMessage(
-                wxString::Format(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb));
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
     } else {
-        asLogMessage(
-                wxString::Format(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb));
+        wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
         if (neededMemMb > freeMemMb) {
-            asLogError(_("Data cannot fit into available memory."));
+            wxLogError(_("Data cannot fit into available memory."));
             return false;
         }
     }
@@ -1178,7 +1166,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
     // Loop through every predictor
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-        asLogMessage(_("Loading data."));
+        wxLogVerbose(_("Loading data."));
 
         if (!params.NeedsPreprocessing(i_step, i_ptor)) {
             // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
@@ -1237,10 +1225,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                                           (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
             for (unsigned int i = 0; i < (unsigned) timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
-                    asLogError(wxString::Format(
-                            _("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
-                            i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                    asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
+                    wxLogError(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
+                               i, listTimeArray[i], i, timeArrayDataTarget[i]);
+                    wxLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                     wxDELETE(predictorArchive);
                     wxDELETE(predictorRealtime);
                     return false;
@@ -1257,10 +1244,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             // Check the starting dates coherence
             if (predictorArchive->GetOriginalProviderStart() > ptorStartArchive) {
-                asLogError(wxString::Format(
-                        _("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                        asTime::GetStringTime(ptorStartArchive),
-                        asTime::GetStringTime(predictorArchive->GetOriginalProviderStart())));
+                wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
+                           asTime::GetStringTime(ptorStartArchive),
+                           asTime::GetStringTime(predictorArchive->GetOriginalProviderStart()));
                 wxDELETE(area);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
@@ -1269,7 +1255,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             // Archive data loading
             if (!predictorArchive->Load(area, timeArrayDataArchive)) {
-                asLogError(_("Archive data could not be loaded."));
+                wxLogError(_("Archive data could not be loaded."));
                 wxDELETE(area);
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
@@ -1279,7 +1265,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             // Realtime data loading
             if (!predictorRealtime->Load(area, timeArrayDataTarget)) {
-                asLogError(_("Real-time data could not be loaded."));
+                wxLogError(_("Real-time data could not be loaded."));
                 wxDELETE(area);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -1289,7 +1275,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         } else {
             int preprocessSize = params.GetPreprocessSize(i_step, i_ptor);
 
-            asLogMessage(wxString::Format(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize));
+            wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
             for (int i_prepro = 0; i_prepro < preprocessSize; i_prepro++) {
                 // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
@@ -1349,10 +1335,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                                               (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
                 for (unsigned int i = 0; i < (unsigned) timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
-                        asLogError(wxString::Format(
-                                _("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
-                                i, listTimeArray[i], i, timeArrayDataTarget[i]));
-                        asLogError(_("It is likely that the lead times you defined go beyond the data availability."));
+                        wxLogError(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
+                                   i, listTimeArray[i], i, timeArrayDataTarget[i]);
+                        wxLogError(_("It is likely that the lead times you defined go beyond the data availability."));
                         wxDELETE(predictorArchivePreprocess);
                         wxDELETE(predictorRealtimePreprocess);
                         return false;
@@ -1369,10 +1354,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
                 // Check the starting dates coherence
                 if (predictorArchivePreprocess->GetOriginalProviderStart() > ptorStartArchive) {
-                    asLogError(wxString::Format(
-                            _("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                            asTime::GetStringTime(ptorStartArchive),
-                            asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart())));
+                    wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
+                               asTime::GetStringTime(ptorStartArchive),
+                               asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart()));
                     wxDELETE(area);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
@@ -1381,7 +1365,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
                 // Archive data loading
                 if (!predictorArchivePreprocess->Load(area, timeArrayDataArchive)) {
-                    asLogError(_("Archive data could not be loaded."));
+                    wxLogError(_("Archive data could not be loaded."));
                     wxDELETE(area);
                     wxDELETE(predictorArchivePreprocess);
                     wxDELETE(predictorRealtimePreprocess);
@@ -1391,7 +1375,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
                 // Realtime data loading
                 if (!predictorRealtimePreprocess->Load(area, timeArrayDataTarget)) {
-                    asLogError(_("Real-time data could not be loaded."));
+                    wxLogError(_("Real-time data could not be loaded."));
                     wxDELETE(area);
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
@@ -1428,7 +1412,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             if (!asPreprocessor::Preprocess(m_storagePredictorsArchivePreprocess,
                                             params.GetPreprocessMethod(i_step, i_ptor), predictorArchive)) {
-                asLogError(_("Data preprocessing failed."));
+                wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 return false;
             }
@@ -1444,7 +1428,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             if (!asPreprocessor::Preprocess(m_storagePredictorsRealtimePreprocess,
                                             params.GetPreprocessMethod(i_step, i_ptor), predictorRealtime)) {
-                asLogError(_("Data preprocessing failed."));
+                wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -1457,10 +1441,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             DeletePreprocessData();
         }
 
-        asLogMessage(_("Data loaded"));
+        wxLogVerbose(_("Data loaded"));
 
         // Instantiate a score object
-        asLogMessage(_("Creating a criterion object."));
+        wxLogVerbose(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
                                                                           linAlgebraMethod);
         if(criterion->NeedsDataRange()) {
@@ -1469,7 +1453,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             criterion->SetDataRange(m_storagePredictorsArchive[i_ptor]);
         }
         m_storageCriteria.push_back(criterion);
-        asLogMessage(_("Criterion object created."));
+        wxLogVerbose(_("Criterion object created."));
 
     }
 
@@ -1484,7 +1468,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 #endif
 
     // Send data and criteria to processor
-    asLogMessage(_("Start processing the comparison."));
+    wxLogVerbose(_("Start processing the comparison."));
 
     Array1DFloat leadTimes = resultsPrev.GetTargetDates();
 
@@ -1522,7 +1506,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         if (!asProcessor::GetAnalogsSubDates(m_storagePredictorsArchive, m_storagePredictorsRealtime, timeArrayArchive,
                                              timeArrayTarget, anaDatesPrev, m_storageCriteria, params, i_step, anaDates,
                                              containsNaNs)) {
-            asLogError(_("Failed processing the analogs dates."));
+            wxLogError(_("Failed processing the analogs dates."));
             return false;
         }
 
@@ -1574,7 +1558,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
 
     Array1DFloat leadTimes = results.GetTargetDates();
 
-    asLogMessage(_("Start setting the predictand values to the corresponding analog dates."));
+    wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
 
     // Loop over the lead times
     for (int i_leadtime = 0; i_leadtime < leadTimes.size(); i_leadtime++) {
@@ -1613,7 +1597,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
             anaValues.Init(params);
 
             if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, anaValues)) {
-                asLogError(_("Failed setting the predictand values to the corresponding analog dates."));
+                wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
                 return false;
             }
 
@@ -1632,7 +1616,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     }
 #endif
 
-    asLogMessage(_("Predictands association over."));
+    wxLogVerbose(_("Predictands association over."));
 
     return true;
 }

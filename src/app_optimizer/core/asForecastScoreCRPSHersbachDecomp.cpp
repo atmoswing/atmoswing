@@ -47,7 +47,7 @@ asForecastScoreCRPSHersbachDecomp::~asForecastScoreCRPSHersbachDecomp()
 
 float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
 {
-    asLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
+    wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
     return NaNFloat;
 }
 
@@ -59,7 +59,7 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
 
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        asLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
+        wxLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
         return Array2DFloat();
     }
 
@@ -68,7 +68,7 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
 
     // NaNs are not allowed as it messes up the ranks
     if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(ObservedVal)) {
-        asLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
+        wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
         return Array2DFloat();
     }
 

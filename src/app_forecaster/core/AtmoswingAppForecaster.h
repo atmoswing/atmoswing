@@ -40,7 +40,9 @@
 class AtmoswingAppForecaster
         : public wxApp
 #else
-    class AtmoswingAppForecaster : public wxAppConsole
+
+class AtmoswingAppForecaster
+        : public wxAppConsole
 #endif
 {
 public:

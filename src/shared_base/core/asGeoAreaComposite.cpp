@@ -168,8 +168,7 @@ bool asGeoAreaComposite::CheckConsistency()
     if ((m_cornerUL.x > m_cornerUR.x) || (m_cornerLL.x > m_cornerLR.x) || (m_cornerLL.y > m_cornerUL.y) ||
         (m_cornerLR.y > m_cornerUR.y)) {
         // Do not proceed to change
-        wxLogVerbose(
-                    _("The given coordinates are not increasing. This is a normal behavior if the area is on the coordinates edge."));
+        wxLogVerbose(_("The given coordinates are not increasing. This is a normal behavior if the area is on the coordinates edge."));
     }
 
     return true;
@@ -282,7 +281,7 @@ void asGeoAreaComposite::CreateComposites()
         error.Append(wxString::Format("m_cornerUL.y = %g\n", m_cornerUL.y));
         error.Append(wxString::Format("m_cornerLR.y = %g\n", m_cornerLR.y));
         error.Append(wxString::Format("m_cornerUR.y = %g\n", m_cornerUR.y));
-        asLogError(error);
+        wxLogError(error);
         asThrowException(_("This case is not managed yet."));
     }
 }
