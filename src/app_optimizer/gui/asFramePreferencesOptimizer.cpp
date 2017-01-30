@@ -138,9 +138,6 @@ void asFramePreferencesOptimizer::LoadPreferences()
     m_radioBoxLinearAlgebra->SetSelection((int) ProcessingLinAlgebra);
 
     // User directories
-    wxString IntermediateResultsDir = pConfig->Read("/Paths/IntermediateResultsDir",
-                                                    asConfig::GetTempDir() + "AtmoSwing");
-    m_dirPickerIntermediateResults->SetPath(IntermediateResultsDir);
     wxString userpath = asConfig::GetUserDataDir();
     m_staticTextUserDir->SetLabel(userpath);
     wxString logpath = asConfig::GetLogDir();
@@ -167,8 +164,6 @@ void asFramePreferencesOptimizer::SavePreferences() const
     // Paths
     wxString PredictandDBDir = m_dirPickerPredictandDB->GetPath();
     pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString IntermediateResultsDir = m_dirPickerIntermediateResults->GetPath();
-    pConfig->Write("/Paths/IntermediateResultsDir", IntermediateResultsDir);
     wxString ArchivePredictorsDir = m_dirPickerArchivePredictors->GetPath();
     pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
 
