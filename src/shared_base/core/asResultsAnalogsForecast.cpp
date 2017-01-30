@@ -33,23 +33,25 @@
 #include <wx/tokenzr.h>
 
 asResultsAnalogsForecast::asResultsAnalogsForecast()
-        : asResults()
+        : asResults(),
+          m_methodId(wxEmptyString),
+          m_methodIdDisplay(wxEmptyString),
+          m_specificTag(wxEmptyString),
+          m_specificTagDisplay(wxEmptyString),
+          m_description(wxEmptyString),
+          m_predictandParameter(asDataPredictand::Precipitation),
+          m_predictandTemporalResolution(asDataPredictand::Daily),
+          m_predictandSpatialAggregation(asDataPredictand::Station),
+          m_predictandDatasetId(wxEmptyString),
+          m_predictandDatabase(wxEmptyString),
+          m_forecastsDirectory(wxEmptyString),
+          m_hasReferenceValues(false),
+          m_leadTimeOrigin(0.0)
 {
-    m_filePath = wxEmptyString;
-    m_hasReferenceValues = false;
-    m_leadTimeOrigin = 0.0;
-
-    // Default values for former versions
-    m_predictandParameter = asDataPredictand::Precipitation;
-    m_predictandTemporalResolution = asDataPredictand::Daily;
-    m_predictandSpatialAggregation = asDataPredictand::Station;
-    m_predictandDatasetId = wxEmptyString;
-    m_predictandDatabase = wxEmptyString;
 }
 
 asResultsAnalogsForecast::~asResultsAnalogsForecast()
 {
-    //dtor
 }
 
 void asResultsAnalogsForecast::Init(asParametersForecast &params, double leadTimeOrigin)
@@ -94,12 +96,16 @@ void asResultsAnalogsForecast::BuildFileName()
     wxASSERT(!m_forecastsDirectory.IsEmpty());
 
     if (m_methodId.IsEmpty() || m_specificTag.IsEmpty()) {
-        asLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
+        wxLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
     }
 
     // Base directory
     m_filePath = m_forecastsDirectory;
     m_filePath.Append(DS);
+    if (!m_subFolder.IsEmpty()) {
+        m_filePath.Append(DS);
+        m_filePath.Append(m_subFolder);
+    }
 
     // Directory
     wxString dirstructure = "YYYY";
@@ -119,7 +125,7 @@ void asResultsAnalogsForecast::BuildFileName()
     m_filePath.Append(filename);
 }
 
-bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
+bool asResultsAnalogsForecast::Save()
 {
     wxASSERT(!m_filePath.IsEmpty());
     wxASSERT(m_targetDates.size() > 0);
@@ -140,16 +146,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
         wxASSERT(m_referenceValues.rows() > 0);
     }
 
-    wxString message = _("Saving forecast file: ") + m_filePath;
-    asLogMessage(message);
-
-    // Get the file path
-    wxString ResultsFile;
-    if (AlternateFilePath.IsEmpty()) {
-        ResultsFile = m_filePath;
-    } else {
-        ResultsFile = AlternateFilePath;
-    }
+    wxLogVerbose(_("Saving forecast file: %s"), m_filePath);
 
     // Get the elements size
     size_t Nleadtime = m_targetDates.size();
@@ -160,7 +157,7 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(ResultsFile, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
     if (!ncFile.Open()) {
         ThreadsManager().CritSectionNetCDF().Leave();
         return false;
@@ -325,13 +322,8 @@ bool asResultsAnalogsForecast::Save(const wxString &AlternateFilePath) const
     return true;
 }
 
-bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
+bool asResultsAnalogsForecast::Load()
 {
-    // Get the file path
-    if (!AlternateFilePath.IsEmpty()) {
-        m_filePath = AlternateFilePath;
-    }
-
     // If we don't want to save or the file doesn't exist
     if (!Exists())
         return false;
@@ -360,14 +352,13 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
     }
 
     if (versionMajor > m_fileVersionMajor || (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
-        asLogError(wxString::Format(
-                _("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot be opened here."),
-                versionMajor, versionMinor));
+        wxLogError(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot be opened here."),
+                   versionMajor, versionMinor);
         return false;
     }
 
     if (versionMajor == 1 && versionMinor == 0) {
-        asLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
+        wxLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
         m_predictandParameter = asDataPredictand::Precipitation;
         m_predictandTemporalResolution = asDataPredictand::Daily;
         m_predictandSpatialAggregation = asDataPredictand::Station;
@@ -403,7 +394,7 @@ bool asResultsAnalogsForecast::Load(const wxString &AlternateFilePath)
             } else if (ncFile.GetAttInt("predictand_spatial_aggregation") == 1) {
                 m_predictandSpatialAggregation = asDataPredictand::Groupment;
             } else {
-                asLogError(_("The spatial aggregation could not be converted."));
+                wxLogError(_("The spatial aggregation could not be converted."));
                 return false;
             }
         } else {
@@ -726,8 +717,8 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherF
     }
 
     if (!compatible) {
-        asLogError(wxString::Format(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay,
-                                    otherForecast->GetSpecificTagDisplay()));
+        wxLogError(_("The forecasts \"%s\" and \"%s\" are not compatible"), m_specificTagDisplay,
+                   otherForecast->GetSpecificTagDisplay());
         return false;
     }
 
@@ -811,6 +802,6 @@ int asResultsAnalogsForecast::GetStationRowFromId(int stationId) const
     }
 
     wxFAIL;
-    asLogError(wxString::Format("The station ID %d was not found in the forecast results.", stationId));
+    wxLogError("The station ID %d was not found in the forecast results.", stationId);
     return -1;
 }
