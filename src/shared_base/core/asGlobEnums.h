@@ -60,7 +60,7 @@ enum
 
 enum
 {
-    asEDIT_FORBIDEN, asEDIT_ALLOWED
+    asEDIT_FORBIDDEN, asEDIT_ALLOWED
 };
 
 enum
@@ -95,6 +95,14 @@ enum
 enum
 {
     asMULTITHREADS = 0, asINSERT = 1, asFULL_ARRAY = 2, asCUDA = 3,
+};
+
+// Optimization stages
+enum
+{
+    asINITIALIZATION,
+    asREASSESSMENT,
+    asCHECK_CONVERGENCE
 };
 
 // Windows ID
@@ -144,7 +152,6 @@ enum Order
 {
     Asc,    // Ascendant
     Desc,    // Descendant
-    NoOrder
 };
 
 enum Season
@@ -153,7 +160,6 @@ enum Season
     MAM,    // Spring
     JJA,    // Summer
     SON,    // Fall
-    NoSeason
 };
 
 enum TimeFormat
@@ -176,4 +182,3 @@ enum TimeFormat
 };
 
 #endif // ASGLOBENUMS_H_INCLUDED
-

@@ -38,7 +38,7 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
 {
     // If empty, set Regular.
     if (type.IsEmpty()) {
-        asLogMessage(_("The given grid type is empty. A regular grid has been considered."));
+        wxLogVerbose(_("The given grid type is empty. A regular grid has been considered."));
         double Xwidth = (double) (Xptsnb - 1) * Xstep;
         double Ywidth = (double) (Yptsnb - 1) * Ystep;
         asGeoAreaCompositeGrid *area = new asGeoAreaCompositeRegularGrid(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep,
@@ -59,9 +59,69 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
                                                                           Level, Height, flatAllowed);
         return area;
     } else {
-        asLogError(wxString::Format(_("Given grid type: %s"), type));
+        wxLogError(_("Given grid type: %s"), type);
         asThrowException("The given grid type doesn't correspond to any existing option.");
     }
+}
+
+Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep)
+{
+    Array1DDouble axis;
+
+    if (type.IsSameAs("Regular", false)) {
+        wxASSERT(Xstep > 0);
+        int ni = (int) asTools::Round(360 / Xstep);
+        axis = Array1DDouble::LinSpaced(ni * 3 + 1, -360, 720);
+    } else if (type.IsSameAs("GaussianT62", false)) {
+        asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT62);
+    } else if (type.IsSameAs("GaussianT382", false)) {
+        asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT382);
+    } else {
+        wxLogError(_("Cannot build axis for the given grid type (%s)."), type);
+        asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+    }
+
+    wxASSERT(axis.size() > 0);
+
+    int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Xmin);
+    int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Xmax);
+
+    wxASSERT(start >= 0);
+    wxASSERT(end >= 0);
+    wxASSERT(end >= start);
+    wxASSERT(axis.size() > end - start + 1);
+
+    return axis.segment(start, end - start + 1);
+}
+
+Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep)
+{
+    Array1DDouble axis;
+
+    if (type.IsSameAs("Regular", false)) {
+        wxASSERT(Ystep > 0);
+        int ni = (int) asTools::Round(180 / Ystep);
+        axis = Array1DDouble::LinSpaced(ni + 1, -90, 90);
+    } else if (type.IsSameAs("GaussianT62", false)) {
+        asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT62);
+    } else if (type.IsSameAs("GaussianT382", false)) {
+        asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT382);
+    } else {
+        wxLogError(_("Cannot build axis for the given grid type (%s)."), type);
+        asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
+    }
+
+    wxASSERT(axis.size() > 0);
+
+    int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Ymin);
+    int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], Ymax);
+
+    wxASSERT(start >= 0);
+    wxASSERT(end >= 0);
+    wxASSERT(end >= start);
+    wxASSERT(axis.size() > end - start + 1);
+
+    return axis.segment(start, end - start + 1);
 }
 
 asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
@@ -218,7 +278,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis() const
             // Do nothing here
         } else {
             if (GetComposite(i_area).GetXmin() == GetComposite(i_area - 1).GetXmin()) {
-                asLogError(_("This function has not been tested"));
+                wxLogError(_("This function has not been tested"));
 
                 Array1DDouble Yaxisbis = GetYaxisComposite(i_area);
 
