@@ -67,13 +67,13 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure_levels", false) || m_product.IsSameAs("pressure", false) ||
+    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
         m_fileStructure.hasLevelDimension = true;
-        m_subFolder = "pressure_levels";
+        m_subFolder = "pressure_level";
         m_xAxisStep = 0.75;
         m_yAxisStep = 0.75;
-        if (m_dataId.IsSameAs("z", false)) {
+        if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
             m_fileVariableName = "z";
@@ -83,11 +83,16 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
             m_parameterName = "Temperature";
             m_fileVariableName = "t";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("r", false)) {
+        } else if (m_dataId.IsSameAs("r", false) || m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileVariableName = "r";
             m_unit = percent;
+        } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("w", false)) {
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
+            m_fileVariableName = "w";
+            m_unit = Pa_s;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
@@ -105,6 +110,16 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
             m_parameterName = "Total column water";
             m_fileVariableName = "tcw";
             m_unit = kg_m2;
+        } else if (m_dataId.IsSameAs("tp", false)) {
+            m_parameter = Precipitation;
+            m_parameterName = "Total precipitation";
+            m_fileVariableName = "tp";
+            m_unit = m;
+        } else if (m_dataId.IsSameAs("mslp", false) || m_dataId.IsSameAs("msl", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea level pressure";
+            m_fileVariableName = "msl";
+            m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
@@ -117,15 +132,15 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
