@@ -160,57 +160,57 @@ public:
     static Array1DDouble ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
                                              const double tolerance = 0.000000001);
 
-    static int SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetvalue,
+    static int SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetValue,
                                  const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearch(const float *pArrStart, const float *pArrEnd, const float targetvalue,
+    static int SortedArraySearch(const float *pArrStart, const float *pArrEnd, const float targetValue,
                                  const float tolerance = 0.0, const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearch(const double *pArrStart, const double *pArrEnd, const double targetvalue,
+    static int SortedArraySearch(const double *pArrStart, const double *pArrEnd, const double targetValue,
                                  const double tolerance = 0.0, const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
-    static int SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T targetvalue, const T tolerance = 0,
+    static int SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance = 0,
                                   const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearchClosest(const int *pArrStart, const int *pArrEnd, const int targetvalue,
+    static int SortedArraySearchClosest(const int *pArrStart, const int *pArrEnd, const int targetValue,
                                         const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearchClosest(const float *pArrStart, const float *pArrEnd, const float targetvalue,
+    static int SortedArraySearchClosest(const float *pArrStart, const float *pArrEnd, const float targetValue,
                                         const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearchClosest(const double *pArrStart, const double *pArrEnd, const double targetvalue,
+    static int SortedArraySearchClosest(const double *pArrStart, const double *pArrEnd, const double targetValue,
                                         const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
-    static int SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, const T targetvalue,
+    static int SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue,
                                          const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetvalue,
-                                      const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetValue,
+                                      const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetvalue,
-                                      const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetValue,
+                                      const float tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
-    static int SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetvalue,
-                                      const int showWarning = asSHOW_WARNINGS);
-
-    template<class T>
-    static int SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetvalue,
-                                       const int showWarning = asSHOW_WARNINGS);
-
-    static int SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetvalue,
-                                     const int showWarning = asSHOW_WARNINGS);
-
-    static int SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetvalue,
-                                     const int showWarning = asSHOW_WARNINGS);
-
-    static int SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetvalue,
-                                     const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetValue,
+                                      const double tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
-    static int SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetvalue,
-                                      const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue,
+                                       const T tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+
+    static int SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetValue,
+                                     const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+
+    static int SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetValue,
+                                     const float tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+
+    static int SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetValue,
+                                     const double tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+
+    template<class T>
+    static int SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue,
+                                      const T tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     static bool SortedArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val);
 
