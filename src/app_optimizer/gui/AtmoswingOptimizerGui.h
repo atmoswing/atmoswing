@@ -40,9 +40,9 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFrameCalibrationVirtual
+/// Class asFrameOptimizerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameCalibrationVirtual : public wxFrame 
+class asFrameOptimizerVirtual : public wxFrame
 {
 	private:
 	
@@ -102,16 +102,16 @@ class asFrameCalibrationVirtual : public wxFrame
 	
 	public:
 		
-		asFrameCalibrationVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Calibrator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~asFrameCalibrationVirtual();
+		~asFrameOptimizerVirtual();
 	
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asFramePreferencesCalibratorVirtual
+/// Class asFramePreferencesOptimizerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePreferencesCalibratorVirtual : public wxFrame 
+class asFramePreferencesOptimizerVirtual : public wxFrame
 {
 	private:
 	
@@ -162,9 +162,9 @@ class asFramePreferencesCalibratorVirtual : public wxFrame
 	
 	public:
 		
-		asFramePreferencesCalibratorVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFramePreferencesOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~asFramePreferencesCalibratorVirtual();
+		~asFramePreferencesOptimizerVirtual();
 	
 };
 
