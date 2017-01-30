@@ -120,7 +120,7 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(Criteria criteriaEnum, int
             return criteria;
         }
         default: {
-            asLogError(_("The predictor criteria was not correctly defined."));
+            wxLogError(_("The predictor criteria was not correctly defined."));
             asPredictorCriteria *criteria = new asPredictorCriteriaSAD(linAlgebraMethod);
             return criteria;
         }
@@ -172,7 +172,7 @@ asPredictorCriteria *asPredictorCriteria::GetInstance(const wxString &criteriaSt
         asPredictorCriteria *criteria = new asPredictorCriteriaRSE(linAlgebraMethod);
         return criteria;
     } else {
-        asLogError(_("The predictor criteria was not correctly defined."));
+        wxLogError(_("The predictor criteria was not correctly defined."));
         asPredictorCriteria *criteria = new asPredictorCriteriaSAD(linAlgebraMethod);
         return criteria;
     }

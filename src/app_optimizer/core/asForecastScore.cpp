@@ -172,7 +172,7 @@ asForecastScore *asForecastScore::GetInstance(Score scoreEnum)
             return score;
         }
         default: {
-            asLogError(_("The forecast score was not correctly set (undefined)."));
+            wxLogError(_("The forecast score was not correctly set (undefined)."));
             return NULL;
         }
     }
@@ -271,7 +271,7 @@ asForecastScore *asForecastScore::GetInstance(const wxString &scoreString)
         asForecastScore *score = new asForecastScoreRankHistogram();
         return score;
     } else {
-        asLogError(wxString::Format(_("The forecast score was not correctly set (cannot use %s)."), scoreString));
+        wxLogError(_("The forecast score was not correctly set (cannot use %s)."), scoreString);
         asForecastScore *score = new asForecastScoreCRPSAR();
         return score;
     }
@@ -284,7 +284,7 @@ asForecastScore::~asForecastScore()
 
 Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const
 {
-    asLogError(_("This asForecastScore class has no AssessOnArrays method implemented !"));
+    wxLogError(_("This asForecastScore class has no AssessOnArrays method implemented !"));
 
     return Array1DFloat();
 }
@@ -296,13 +296,13 @@ bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &Forcast
                  _("The required elements number is above the vector length in the score calculation."));
     wxASSERT(nbElements > 1);
     if (ForcastVals.rows() < nbElements) {
-        asLogError(_("The required elements number is above the vector length in the score calculation."));
+        wxLogError(_("The required elements number is above the vector length in the score calculation."));
         return false;
     }
 
     // Check that the observed value is not a NaN
     if (asTools::IsNaN(ObservedVal)) {
-        asLogWarning(_("The observed value is a NaN for the CRPS score calculation."));
+        wxLogWarning(_("The observed value is a NaN for the CRPS score calculation."));
         return false;
     }
 
@@ -318,10 +318,9 @@ int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &Fo
         // Add a check to not overflow the array
         if (i_val >= nbElements) {
             if (i_val == ForcastVals.rows()) {
-                asLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
-                asLogWarning(
-                        wxString::Format(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements,
-                                         nbForecasts, nbNans));
+                wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
+                wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements,
+                             nbForecasts, nbNans);
                 break;
             }
         }
@@ -336,7 +335,7 @@ int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &Fo
     }
 
     if (nbForecasts < 1) {
-        asLogError(_("Not enough data to perform the score calculation."));
+        wxLogError(_("Not enough data to perform the score calculation."));
         return asNOT_FOUND;
     }
 

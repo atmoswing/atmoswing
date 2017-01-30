@@ -198,7 +198,7 @@ bool asFileAscii::SkipLines(int linesNb)
         if (!m_file.eof()) {
             GetLineContent();
         } else {
-            asLogError(_("Reached the end of the file while skipping lines."));
+            wxLogError(_("Reached the end of the file while skipping lines."));
             return false;
         }
     }
@@ -216,7 +216,7 @@ bool asFileAscii::SkipElements(int elementNb)
         if (!m_file.eof()) {
             m_file >> tmp;
         } else {
-            asLogError(_("Reached the end of the file while skipping lines."));
+            wxLogError(_("Reached the end of the file while skipping lines."));
             return false;
         }
     }

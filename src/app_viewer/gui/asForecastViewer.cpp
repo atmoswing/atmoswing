@@ -176,7 +176,7 @@ void asForecastViewer::SetForecastDisplay(int i)
     m_forecastDisplaySelection = i;
 
     wxString display = m_displayForecast.Item(m_forecastDisplaySelection);
-    asLogMessage(wxString::Format(_("Selected display : %s."), display));
+    wxLogVerbose(_("Selected display : %s."), display);
 
     Redraw();
 }
@@ -186,7 +186,7 @@ void asForecastViewer::SetQuantile(int i)
     m_quantileSelection = i;
 
     wxString quantile = m_displayQuantiles.Item(m_quantileSelection);
-    asLogMessage(wxString::Format(_("Selected quantile : %s."), quantile));
+    wxLogVerbose(_("Selected quantile : %s."), quantile);
 
     Redraw();
 }
@@ -273,7 +273,7 @@ void asForecastViewer::Redraw()
                                                         &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
                                                         returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
-            asLogError(_("The desired reference value is not available in the forecast file."));
+            wxLogError(_("The desired reference value is not available in the forecast file."));
             m_viewerLayerManager->FreezeEnd();
             return;
         }
@@ -363,8 +363,7 @@ void asForecastViewer::Redraw()
             }
 
             if (!forecast) {
-                asLogWarning(wxString::Format(_("%s is not associated to any forecast"),
-                                              forecasts[0]->GetStationName(i_stat)));
+                wxLogWarning(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(i_stat));
                 continue;
             }
 
@@ -520,8 +519,7 @@ void asForecastViewer::Redraw()
             }
 
             if (!forecast) {
-                asLogWarning(wxString::Format(_("%s is not associated to any forecast"),
-                                              forecasts[0]->GetStationName(i_stat)));
+                wxLogWarning(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(i_stat));
                 continue;
             }
 
@@ -546,7 +544,7 @@ void asForecastViewer::Redraw()
 
             // Check available lead times
             if (forecast->GetTargetDatesLength() <= m_leadTimeIndex) {
-                asLogError(_("Lead time not available for this forecast."));
+                wxLogError(_("Lead time not available for this forecast."));
                 m_leadTimeIndex = forecast->GetTargetDatesLength() - 1;
             }
 

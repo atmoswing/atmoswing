@@ -71,7 +71,7 @@ asForecastScoreFinal::asForecastScoreFinal(const wxString &periodString)
     } else if (periodString.CmpNoCase("Spring") == 0) {
         m_period = asForecastScoreFinal::Spring;
     } else {
-        asLogError(_("The final forecast score period was not correctly set."));
+        wxLogError(_("The final forecast score period was not correctly set."));
         m_period = asForecastScoreFinal::Total;
     }
 }
@@ -169,7 +169,7 @@ asForecastScoreFinal *asForecastScoreFinal::GetInstance(const wxString &scoreStr
         asForecastScoreFinal *score = new asForecastScoreFinalRankHistogramReliability(periodString);
         return score;
     } else {
-        asLogError(_("The final forecast score was not correctly set."));
+        wxLogError(_("The final forecast score was not correctly set."));
         asForecastScoreFinal *score = new asForecastScoreFinalMean(periodString);
         return score;
     }
@@ -183,12 +183,12 @@ asForecastScoreFinal::~asForecastScoreFinal()
 Array1DFloat asForecastScoreFinal::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores,
                                                  asTimeArray &timeArray) const
 {
-    asLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
+    wxLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
     return Array1DFloat();
 }
 
 float asForecastScoreFinal::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray) const
 {
-    asLogError(_("This asForecastScoreFinal class has no Assess method implemented with a 2D array as argument !"));
+    wxLogError(_("This asForecastScoreFinal class has no Assess method implemented with a 2D array as argument !"));
     return NaNFloat;
 }

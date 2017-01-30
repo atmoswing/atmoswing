@@ -314,7 +314,7 @@ bool asFramePlotDistributions::PlotPredictands()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
-        asLogError(_("The forecast contains NaNs. Plotting has been canceled."));
+        wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
         return false;
     }
 
@@ -375,7 +375,7 @@ bool asFramePlotDistributions::PlotPredictands()
                     DoPlotClassicQuantiles = true;
                     break;
                 default:
-                    asLogError(_("The option was not found."));
+                    wxLogError(_("The option was not found."));
 
             }
         }
@@ -424,7 +424,7 @@ bool asFramePlotDistributions::PlotCriteria()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     Array1DFloat criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     if (asTools::HasNaN(&criteria[0], &criteria[criteria.size() - 1])) {
-        asLogError(_("The forecast criteria contains NaNs. Plotting has been canceled."));
+        wxLogError(_("The forecast criteria contains NaNs. Plotting has been canceled."));
         return false;
     }
 
@@ -517,7 +517,7 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The return periods couldn't be added to the plot"));
+            wxLogError(_("The return periods couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -553,7 +553,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
         if (val > m_xmaxPredictands)
             m_xmaxPredictands = val;
     } else {
-        asLogError(_("The 10 year return period was not found in the data."));
+        wxLogError(_("The 10 year return period was not found in the data."));
     }
 }
 
@@ -603,7 +603,7 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The analogs data couldn't be added to the plot"));
+        wxLogError(_("The analogs data couldn't be added to the plot"));
     }
 
     plotData.Destroy();
@@ -654,7 +654,7 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The analogs data couldn't be added to the plot"));
+        wxLogError(_("The analogs data couldn't be added to the plot"));
     }
 
     plotData.Destroy();
@@ -704,7 +704,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The analogs data couldn't be added to the plot"));
+            wxLogError(_("The analogs data couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -768,7 +768,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The analogs data couldn't be added to the plot"));
+        wxLogError(_("The analogs data couldn't be added to the plot"));
     }
 
     plotData.Destroy();
@@ -817,7 +817,7 @@ void asFramePlotDistributions::PlotClassicQuantiles()
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The quantiles couldn't be added to the plot"));
+            wxLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -858,7 +858,7 @@ void asFramePlotDistributions::PlotCriteriaCurve()
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The analogs data couldn't be added to the plot"));
+        wxLogError(_("The analogs data couldn't be added to the plot"));
     }
 
     plotData.Destroy();

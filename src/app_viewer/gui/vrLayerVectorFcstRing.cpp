@@ -62,7 +62,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry *geometry, void *data)
     }
 
     if (m_layer->CreateFeature(feature) != OGRERR_NONE) {
-        asLogError(_("Error creating feature"));
+        wxLogError(_("Error creating feature"));
         OGRFeature::DestroyFeature(feature);
         return wxNOT_FOUND;
     }
@@ -150,7 +150,7 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
         */
         gc->StrokePath(path);
     } else {
-        asLogError(_("Drawing of the symbol failed."));
+        wxLogError(_("Drawing of the symbol failed."));
     }
 
 }

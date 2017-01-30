@@ -124,7 +124,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
 {
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
-        asLogError(wxString::Format(_("The file %s could not be found."), filePath));
+        wxLogError(_("The file %s could not be found."), filePath);
         return false;
     }
 
@@ -132,21 +132,22 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     wxFileName fname(filePath);
     wxString extension = fname.GetExt();
     if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst")) {
-        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension));
+        wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
         return false;
     }
 
     // Create and load the forecast
     asResultsAnalogsForecast *forecast = new asResultsAnalogsForecast;
 
-    if (!forecast->Load(filePath)) {
+    forecast->SetFilePath(filePath);
+    if (!forecast->Load()) {
         wxDELETE(forecast);
         return false;
     }
 
     // Check the lead time origin
     if ((m_leadTimeOrigin != 0) && (forecast->GetLeadTimeOrigin() != m_leadTimeOrigin)) {
-        asLogMessage("The forecast file has another lead time origin. Previous files were removed.");
+        wxLogVerbose("The forecast file has another lead time origin. Previous files were removed.");
         ClearForecasts();
     }
     m_leadTimeOrigin = forecast->GetLeadTimeOrigin();
@@ -164,7 +165,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
         }
 #else
         if (doRefresh) {
-            asLogMessage("The GUI should be refreshed.");
+            wxLogVerbose("The GUI should be refreshed.");
         }
 #endif
     } else {
@@ -178,7 +179,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
 {
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
-        asLogError(wxString::Format(_("The file %s could not be found."), filePath));
+        wxLogError(_("The file %s could not be found."), filePath);
         return false;
     }
 
@@ -186,14 +187,15 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     wxFileName fname(filePath);
     wxString extension = fname.GetExt();
     if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst")) {
-        asLogError(wxString::Format(_("The file extension (%s) is not correct (must be .asff)."), extension));
+        wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
         return false;
     }
 
     // Create and load the forecast
     asResultsAnalogsForecast *forecast = new asResultsAnalogsForecast;
 
-    if (!forecast->Load(filePath)) {
+    forecast->SetFilePath(filePath);
+    if (!forecast->Load()) {
         wxDELETE(forecast);
         return false;
     }
@@ -205,8 +207,8 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
     m_aggregator->AddPastForecast(methodRow, forecastRow, forecast);
 
-    asLogMessage(wxString::Format("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(),
-                                  forecast->GetSpecificTag(), forecast->GetLeadTimeOriginString()));
+    wxLogVerbose("Past forecast of %s - %s of the %s loaded", forecast->GetMethodId(), forecast->GetSpecificTag(),
+                 forecast->GetLeadTimeOriginString());
 
     return true;
 }

@@ -75,7 +75,7 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
         }
 
         default: {
-            asLogError(_("The calculation method was not correcty set"));
+            wxLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }

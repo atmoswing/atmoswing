@@ -68,7 +68,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
                               wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j)));
                     } else {
                         if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
-                            asLogWarning(_("Division by zero in the predictor criteria."));
+                            wxLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
                     }
@@ -90,7 +90,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
                         rd += dividend / divisor;
                     } else {
                         if (dividend != 0) {
-                            asLogWarning(_("Division by zero in the predictor criteria."));
+                            wxLogWarning(_("Division by zero in the predictor criteria."));
                             return NaNFloat;
                         }
                     }
@@ -101,7 +101,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
         }
 
         default: {
-            asLogError(_("The calculation method was not correcty set"));
+            wxLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }

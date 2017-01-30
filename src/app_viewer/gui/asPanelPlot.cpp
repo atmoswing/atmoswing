@@ -164,7 +164,7 @@ void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent &event)
     } else if (eventType == wxEVT_PLOTCTRL_CURSOR_CHANGED) {
         event.Skip();
     } else if (eventType == wxEVT_PLOTCTRL_ERROR) {
-        asLogError(event.GetString());
+        wxLogError(event.GetString());
         event.Skip();
     } else if (eventType == wxEVT_PLOTCTRL_BEGIN_TITLE_EDIT) {
         event.Skip();
@@ -215,7 +215,7 @@ void asPanelPlot::ExportSVG()
         GetPlotCtrl()->DrawWholePlot(&svgDC, rect, dpi);
 
         if (!svgDC.IsOk()) {
-            asLogError(_("The svg DC is not OK."));
+            wxLogError(_("The svg DC is not OK."));
             return;
         }
     }

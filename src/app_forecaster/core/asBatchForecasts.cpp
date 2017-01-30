@@ -55,11 +55,11 @@ bool asBatchForecasts::Load(const wxString &filePath)
     m_filePath = filePath;
     asFileBatchForecasts fileBatch(filePath, asFile::ReadOnly);
     if (!fileBatch.Open()) {
-        asLogError(_("Cannot open the batch file."));
+        wxLogError(_("Cannot open the batch file."));
         return false;
     }
     if (!fileBatch.CheckRootElement()) {
-        asLogError(_("Errors were found in the batch file."));
+        wxLogError(_("Errors were found in the batch file."));
         return false;
     }
 

@@ -65,8 +65,7 @@ float asForecastScoreFinalGSS::Assess(Array1DFloat &targetDates, Array1DFloat &f
                 } else if (forecastScores[i] == 4) {
                     countD++;
                 } else {
-                    asLogError(
-                            wxString::Format(_("The GSS score (%f) is not an authorized value."), forecastScores[i]));
+                    wxLogError(_("The GSS score (%f) is not an authorized value."), forecastScores[i]);
                     return NaNFloat;
                 }
             }
