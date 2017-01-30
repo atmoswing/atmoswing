@@ -397,7 +397,7 @@ TEST(TimeArray, GetFirstDayHour)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_FLOAT_EQ(12.5, timearray.GetFirstDayHour());
+    EXPECT_FLOAT_EQ(12.5, timearray.GetStartingHour());
 }
 
 TEST(TimeArray, GetLastDayHour)
@@ -408,7 +408,7 @@ TEST(TimeArray, GetLastDayHour)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_FLOAT_EQ(18.5, timearray.GetLastDayHour());
+    EXPECT_FLOAT_EQ(18.5, timearray.GetEndingHour());
 }
 
 TEST(TimeArray, GetFirstDayYear)
@@ -419,7 +419,7 @@ TEST(TimeArray, GetFirstDayYear)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_EQ(1950, timearray.GetFirstDayYear());
+    EXPECT_EQ(1950, timearray.GetStartingYear());
 }
 
 TEST(TimeArray, GetLastDayYear)
@@ -430,7 +430,7 @@ TEST(TimeArray, GetLastDayYear)
     asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_EQ(2008, timearray.GetLastDayYear());
+    EXPECT_EQ(2008, timearray.GetEndingYear());
 }
 
 TEST(TimeArray, GetSize)
