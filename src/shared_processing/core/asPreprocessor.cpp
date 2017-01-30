@@ -77,6 +77,10 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictor *> predictors, const
 
     if (method.IsSameAs("Gradients")) {
         return PreprocessGradients(predictors, result);
+    } else if (method.IsSameAs("Addition")) {
+        return PreprocessAddition(predictors, result);
+    } else if (method.IsSameAs("Average")) {
+        return PreprocessAverage(predictors, result);
     } else if (method.IsSameAs("Difference")) {
         return PreprocessDifference(predictors, result);
     } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply")) {
@@ -92,7 +96,7 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictor *> predictors, const
     } else if (method.IsSameAs("WindSpeed")) {
         return PreprocessWindSpeed(predictors, result);
     } else {
-        asLogError(_("The preprocessing method was not correctly defined."));
+        wxLogError(_("The preprocessing method was not correctly defined."));
         return false;
     }
 }
@@ -110,7 +114,7 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
     wxASSERT(predictors.size() > 0);
     wxASSERT(predictors.size() == 1);
     if (predictors.size() != 1) {
-        asLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
+        wxLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
         return false;
     }
 
@@ -160,7 +164,7 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
             // std::cout << "\n" << std::endl;
             // std::cout << predictors[0]->GetData()[i_time] << std::endl;
 
-            asLogError(_("NaN found during gradients preprocessing !"));
+            wxLogError(_("NaN found during gradients preprocessing !"));
             return false;
         }
 
@@ -175,11 +179,84 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
     return true;
 }
 
+bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+{
+    // More than one predictor
+    if (predictors.size() < 2) {
+        wxLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessAddition"));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+
+    wxASSERT(rowsNb > 1);
+    wxASSERT(colsNb > 1);
+    wxASSERT(timeSize > 0);
+
+    // Create container
+    VArray2DFloat addition(timeSize, Array2DFloat::Zero(rowsNb, colsNb));
+
+    for (int i_time = 0; i_time < timeSize; i_time++) {
+        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+            wxASSERT(predictors[i_dat]);
+            addition[i_time] += predictors[i_dat]->GetData()[i_time];
+        }
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(addition);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
+bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+{
+    // More than one predictor
+    if (predictors.size() < 2) {
+        wxLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessAddition"));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+
+    wxASSERT(rowsNb > 1);
+    wxASSERT(colsNb > 1);
+    wxASSERT(timeSize > 0);
+
+    // Create container
+    VArray2DFloat average(timeSize, Array2DFloat::Zero(rowsNb, colsNb));
+
+    for (int i_time = 0; i_time < timeSize; i_time++) {
+        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+            wxASSERT(predictors[i_dat]);
+            average[i_time] += predictors[i_dat]->GetData()[i_time];
+        }
+        average[i_time] /= predictors.size();
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(average);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
 bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
 {
     // More than one predictor
     if (predictors.size() != 2) {
-        asLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
+        wxLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessDifference"));
         return false;
     }
 
@@ -195,17 +272,10 @@ bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predict
     wxASSERT(timeSize > 0);
 
     // Create container
-    VArray2DFloat resdiff(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VArray2DFloat resdiff(timeSize, Array2DFloat::Ones(rowsNb, colsNb));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        resdiff[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                resdiff[i_time](i_row, i_col) =
-                        predictors[0]->GetData()[i_time](i_row, i_col) - predictors[1]->GetData()[i_time](i_row, i_col);
-            }
-        }
+        resdiff[i_time] = predictors[0]->GetData()[i_time] - predictors[1]->GetData()[i_time];
     }
 
     // Overwrite the data in the predictor object
@@ -220,7 +290,7 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
 {
     // More than one predictor
     if (predictors.size() < 2) {
-        asLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
+        wxLogError(_("The number of predictors must be superior to 1 in asPreprocessor::PreprocessMultiplication"));
         return false;
     }
 
@@ -235,18 +305,12 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
     wxASSERT(timeSize > 0);
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VArray2DFloat multi(timeSize, Array2DFloat::Ones(rowsNb, colsNb));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        multi[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
-                    wxASSERT(predictors[i_dat]);
-                    multi[i_time](i_row, i_col) *= predictors[i_dat]->GetData()[i_time](i_row, i_col);
-                }
-            }
+        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+            wxASSERT(predictors[i_dat]);
+            multi[i_time] *= predictors[i_dat]->GetData()[i_time];
         }
     }
 
@@ -263,7 +327,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
     // More than one predictor
     int inputSize = predictors.size();
     if (inputSize != 4) {
-        asLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
+        wxLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
         return false;
     }
 
@@ -371,13 +435,11 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
     int inputSize = predictors.size();
     int factorSize = inputSize / 2;
     if (inputSize < 2) {
-        asLogError(
-                _("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        wxLogError(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
         return false;
     }
     if (inputSize % 2 != 0) {
-        asLogError(
-                _("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
+        wxLogError(_("The number of predictors must be dividable by 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
         return false;
     }
 
@@ -437,7 +499,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
     // More than one predictor
     int inputSize = predictors.size();
     if (inputSize != 4) {
-        asLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
+        wxLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
         return false;
     }
     wxASSERT(predictors[0]);
@@ -492,7 +554,7 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predicto
     // More than one predictor
     int inputSize = predictors.size();
     if (inputSize != 2) {
-        asLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
+        wxLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
         return false;
     }
 
