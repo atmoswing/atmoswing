@@ -40,10 +40,72 @@ public:
 
     virtual ~asMethodCalibratorClassic();
 
+    void SetAsCalibrationPlus(bool val = true)
+    {
+        m_plus = val;
+    }
+
 protected:
     virtual bool Calibrate(asParametersCalibration &params);
 
 private:
+    bool m_plus;
+    int m_stepsLatPertinenceMap;
+    int m_stepsLonPertinenceMap;
+    int m_resizingIterations;
+    bool m_proceedSequentially;
+
+    void GetPlusOptions();
+
+    bool DoPreloadData(asParametersCalibration &params);
+
+    ParamExploration GetSpatialBoundaries(const asParametersCalibration &params, int i_step) const;
+
+    void GetInitialAnalogNumber(asParametersCalibration &params, int i_step) const;
+
+    void SetMinimalArea(asParametersCalibration &params, int i_step, const ParamExploration &explo) const;
+
+    void GenerateRelevanceMapParameters(asParametersCalibration &params, int i_step, const ParamExploration &explo);
+
+    void BalanceWeights(asParametersCalibration &params, int i_step) const;
+
+    bool EvaluateRelevanceMap(const asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
+                              asResultsParametersArray &resultsTested, int i_step);
+
+    bool AssessDomainResizing(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
+                              asResultsParametersArray &resultsTested, int i_step, const ParamExploration &explo);
+
+    bool AssessDomainResizingPlus(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
+                                  asResultsParametersArray &resultsTested, int i_step, const ParamExploration &explo);
+
+    bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int i_step);
+
+    void GetSpatialAxes(const asParametersCalibration &params, int i_step, const ParamExploration &explo,
+                        Array1DDouble &xAxis, Array1DDouble &yAxis) const;
+
+    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &xAxis,
+                  int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &yAxis,
+                   int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &xAxis,
+                  int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &yAxis,
+                   int i_step, int i_ptor, int multipleFactor = 1) const;
+
+    void WidenEast(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                   int multipleFactor = 1) const;
+
+    void WidenNorth(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                    int multipleFactor = 1) const;
+
+    void ReduceEast(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                    int multipleFactor = 1) const;
+
+    void ReduceNorth(asParametersCalibration &params, const ParamExploration &explo, int i_step, int i_ptor,
+                     int multipleFactor = 1) const;
 
 };
 

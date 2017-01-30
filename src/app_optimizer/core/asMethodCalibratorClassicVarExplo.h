@@ -29,16 +29,16 @@
 #ifndef ASMETHODCALIBRATORCLASSICPLUSVAREXPLO_H
 #define ASMETHODCALIBRATORCLASSICPLUSVAREXPLO_H
 
-#include <asMethodCalibratorClassicPlus.h>
+#include <asMethodCalibratorClassic.h>
 
 
-class asMethodCalibratorClassicPlusVarExplo
-        : public asMethodCalibratorClassicPlus
+class asMethodCalibratorClassicVarExplo
+        : public asMethodCalibratorClassic
 {
 public:
-    asMethodCalibratorClassicPlusVarExplo();
+    asMethodCalibratorClassicVarExplo();
 
-    virtual ~asMethodCalibratorClassicPlusVarExplo();
+    virtual ~asMethodCalibratorClassicVarExplo();
 
 protected:
     virtual bool Calibrate(asParametersCalibration &params);

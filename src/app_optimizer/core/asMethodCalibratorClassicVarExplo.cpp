@@ -26,41 +26,41 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asMethodCalibratorClassicPlusVarExplo.h"
+#include "asMethodCalibratorClassicVarExplo.h"
 
-asMethodCalibratorClassicPlusVarExplo::asMethodCalibratorClassicPlusVarExplo()
-        : asMethodCalibratorClassicPlus()
+asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo()
+        : asMethodCalibratorClassic()
 {
 
 }
 
-asMethodCalibratorClassicPlusVarExplo::~asMethodCalibratorClassicPlusVarExplo()
+asMethodCalibratorClassicVarExplo::~asMethodCalibratorClassicVarExplo()
 {
 
 }
 
-bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &params)
+bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &params)
 {
 
     int i_step;
     wxFileConfig::Get()->Read("/Optimizer/VariablesExplo/Step", &i_step, params.GetStepsNb() - 1);
 
-    asLogMessageImportant(wxString::Format(_("Processing variables exploration for step %d"), i_step));
-    asLogMessageImportant(wxString::Format(_("Processing %d variables, %d hours, %d levels, %d criteria."),
-                                           (int) params.GetPredictorDataIdVector(i_step, 0).size(),
-                                           (int) params.GetPredictorTimeHoursVector(i_step, 0).size(),
-                                           (int) params.GetPredictorLevelVector(i_step, 0).size(),
-                                           (int) params.GetPredictorCriteriaVector(i_step, 0).size()));
+    wxLogMessage(_("Processing variables exploration for step %d"), i_step);
+    wxLogMessage(_("Processing %d variables, %d hours, %d levels, %d criteria."),
+                 (int) params.GetPredictorDataIdVector(i_step, 0).size(),
+                 (int) params.GetPredictorTimeHoursVector(i_step, 0).size(),
+                 (int) params.GetPredictorLevelVector(i_step, 0).size(),
+                 (int) params.GetPredictorCriteriaVector(i_step, 0).size());
 
     if (i_step >= params.GetStepsNb()) {
-        asLogError(_("The given step number for variables exploration is above available steps."));
+        wxLogError(_("The given step number for variables exploration is above available steps."));
         return false;
     }
 
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
         if (params.NeedsPreprocessing(i_step, i_ptor)) {
 
-            asLogError(_("Calibration method not implemented to work with preprocessed data."));
+            wxLogError(_("Calibration method not implemented to work with preprocessed data."));
             return false;
         } else {
             VectorString vPredictorDataId = params.GetPredictorDataIdVector(i_step, i_ptor);
@@ -95,7 +95,7 @@ bool asMethodCalibratorClassicPlusVarExplo::Calibrate(asParametersCalibration &p
 
                             m_originalParams = params;
 
-                            if (!asMethodCalibratorClassicPlus::Calibrate(params))
+                            if (!asMethodCalibratorClassic::Calibrate(params))
                                 return false;
 
                             params = m_originalParams;
