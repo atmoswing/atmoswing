@@ -84,8 +84,8 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Init()
         m_unit = degK;
     } else if (m_dataId.IsSameAs("omega", false)) {
         m_fileStructure.hasLevelDimension = true;
-        m_parameter = Omega;
-        m_parameterName = "Omega (Vertical Velocity)";
+        m_parameter = VerticalVelocity;
+        m_parameterName = "Vertical velocity";
         m_fileNamePattern = "omega.nc";
         m_fileVariableName = "omega";
         m_unit = Pa_s;
@@ -131,17 +131,15 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(
-                wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                 m_dataId, m_datasetName));
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(
-                wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                 m_dataId, m_datasetName));
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
