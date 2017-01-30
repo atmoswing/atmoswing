@@ -25,36 +25,28 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASDATAPREDICTORARCHIVEJMAJRA55SUBSET_H
-#define ASDATAPREDICTORARCHIVEJMAJRA55SUBSET_H
+#ifndef ASDATAPREDICTORARCHIVEJMAJRA55CSUBSET_H
+#define ASDATAPREDICTORARCHIVEJMAJRA55CSUBSET_H
 
 #include <asIncludes.h>
-#include <asDataPredictorArchive.h>
+#include <asDataPredictorArchiveJmaJra55Subset.h>
 
 class asGeoArea;
 
-class asDataPredictorArchiveJmaJra55Subset
-        : public asDataPredictorArchive
+class asDataPredictorArchiveJmaJra55CSubset
+        : public asDataPredictorArchiveJmaJra55Subset
 {
 public:
-    asDataPredictorArchiveJmaJra55Subset(const wxString &dataId);
+    asDataPredictorArchiveJmaJra55CSubset(const wxString &dataId);
 
-    virtual ~asDataPredictorArchiveJmaJra55Subset();
+    virtual ~asDataPredictorArchiveJmaJra55CSubset();
 
     bool Init();
 
 protected:
-    bool m_monthlyFiles;
-
-    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
-
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 VVArray2DFloat &compositeData);
-
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
 private:
 
 };
 
-#endif // ASDATAPREDICTORARCHIVEJMAJRA55SUBSET_H
+#endif // ASDATAPREDICTORARCHIVEJMAJRA55CSUBSET_H

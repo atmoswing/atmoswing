@@ -25,7 +25,7 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#include "asDataPredictorArchiveJmaJra55Subset.h"
+#include "asDataPredictorArchiveJmaJra55CSubset.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
@@ -33,37 +33,26 @@
 #include <wx/dir.h>
 
 
-asDataPredictorArchiveJmaJra55Subset::asDataPredictorArchiveJmaJra55Subset(const wxString &dataId)
-        : asDataPredictorArchive(dataId)
+asDataPredictorArchiveJmaJra55CSubset::asDataPredictorArchiveJmaJra55CSubset(const wxString &dataId)
+        : asDataPredictorArchiveJmaJra55Subset(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
-    m_datasetId = "JMA_JRA_55_subset";
-    m_originalProvider = "JMA";
-    m_transformedBy = "NCAR/UCAR Data Subset";
-    m_datasetName = "Japanese 55-year Reanalysis";
-    m_originalProviderStart = asTime::GetMJD(1958, 1, 1);
-    m_originalProviderEnd = NaNDouble;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
-    m_nanValues.push_back(32767);
-    m_nanValues.push_back(std::pow(10.f, 20.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_monthlyFiles = true;
+    m_datasetId = "JMA_JRA_55C_subset";
+    m_datasetName = "Japanese 55-year Reanalysis Conventional";
+    m_originalProviderStart = asTime::GetMJD(1973, 1, 1);
+    m_originalProviderEnd = asTime::GetMJD(2012, 12, 31, 18);
 }
 
-asDataPredictorArchiveJmaJra55Subset::~asDataPredictorArchiveJmaJra55Subset()
+asDataPredictorArchiveJmaJra55CSubset::~asDataPredictorArchiveJmaJra55CSubset()
 {
 
 }
 
-bool asDataPredictorArchiveJmaJra55Subset::Init()
+bool asDataPredictorArchiveJmaJra55CSubset::Init()
 {
     CheckLevelTypeIsDefined();
 
-    // Get data: http://rda.ucar.edu/datasets/ds628.0/index.html#!cgi-bin/datasets/getSubset?dsnum=628.0&listAction=customize&_da=y
+    // Get data: http://rda.ucar.edu/datasets/ds628.2/index.html#!cgi-bin/datasets/getSubset?dsnum=628.2&listAction=customize&_da=y
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("anl_p125", false)) {
@@ -72,7 +61,7 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_subFolder = "anl_p125";
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_subFolder + ".C.";
         m_fileStructure.dimLatName = "g0_lat_2";
         m_fileStructure.dimLonName = "g0_lon_3";
         m_fileStructure.dimTimeName = "initial_time0_hours";
@@ -114,7 +103,7 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_subFolder = "anl_surf125";
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_subFolder + ".C.";
         m_fileStructure.dimLatName = "g0_lat_1";
         m_fileStructure.dimLonName = "g0_lon_2";
         m_fileStructure.dimTimeName = "initial_time0_hours";
@@ -137,7 +126,7 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_subFolder = "anl_column125";
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_subFolder + ".C.";
         m_fileStructure.dimLatName = "g0_lat_1";
         m_fileStructure.dimLonName = "g0_lon_2";
         m_fileStructure.dimTimeName = "initial_time0_hours";
@@ -157,6 +146,7 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
     } else if (m_product.IsSameAs("fcst_phy2m125", false)) {
         // JRA-55 3-Hourly 1.25 Degree 2-Dimensional Average Diagnostic Fields
         m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "fcst_phy2m125";
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
         m_fileStructure.dimLatName = "g0_lat_1";
@@ -169,14 +159,14 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
             m_fileVariableName = "TPRAT_GDS0_SFC_ave3h";
             m_unit = mm_d;
             m_subFolder = "fcst_phy2m125/tprat_00h-03h";
-            m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
+            m_fileNamePattern.Append("fcst_phy2m125.C.061_tprat");
         } else if (m_dataId.IsSameAs("tprat6h", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation";
             m_fileVariableName = "TPRAT_GDS0_SFC_ave3h";
             m_unit = mm_d;
             m_subFolder = "fcst_phy2m125/tprat_03h-06h";
-            m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
+            m_fileNamePattern.Append("fcst_phy2m125.C.061_tprat");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
@@ -189,7 +179,7 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_subFolder = "anl_isentrop125";
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_subFolder + ".C.";
         m_fileStructure.dimLatName = "g0_lat_2";
         m_fileStructure.dimLonName = "g0_lon_3";
         m_fileStructure.dimTimeName = "initial_time0_hours";
@@ -235,66 +225,4 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
     m_initialized = true;
 
     return true;
-}
-
-VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
-{
-    VectorString files;
-
-    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
-        int firstMonth = 1;
-        int lastMonth = 12;
-        if (i_year == timeArray.GetStartingYear()) {
-            firstMonth = timeArray.GetStartingMonth();
-        }
-        if (i_year == timeArray.GetEndingYear()) {
-            lastMonth = timeArray.GetEndingMonth();
-        }
-
-        if (m_monthlyFiles) {
-            for (int i_month = firstMonth; i_month <= lastMonth; ++i_month) {
-                wxString filePattern = wxString::Format(m_fileNamePattern, i_year, i_month);
-                wxArrayString listFiles;
-                size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
-
-                if (nbFiles == 0) {
-                    asThrowException(wxString::Format(_("No JRA-55 file found for this pattern : %s."), filePattern));
-                } else if (nbFiles > 1) {
-                    asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."),
-                                                      filePattern));
-                }
-
-                files.push_back(listFiles.Item(0));
-            }
-        } else {
-            wxString filePattern = wxString::Format(m_fileNamePattern, i_year, firstMonth);
-            wxArrayString listFiles;
-            size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
-
-            if (nbFiles == 0) {
-                asThrowException(wxString::Format(_("No JRA-55 file found for this pattern : %s."), filePattern));
-            } else if (nbFiles > 1) {
-                asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."),
-                                                  filePattern));
-            }
-
-            files.push_back(listFiles.Item(0));
-        }
-    }
-
-    return files;
-}
-
-bool asDataPredictorArchiveJmaJra55Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
-}
-
-double asDataPredictorArchiveJmaJra55Subset::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-
-    return timeValue;
 }
