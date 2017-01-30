@@ -52,7 +52,7 @@ float asForecastScoreCRPSsharpnessEP::Assess(float ObservedVal, const Array1DFlo
 
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(0, ForcastVals, nbElements)) {
-        asLogWarning(_("The inputs are not conform in the CRPS processing function"));
+        wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
         return NaNFloat;
     }
 

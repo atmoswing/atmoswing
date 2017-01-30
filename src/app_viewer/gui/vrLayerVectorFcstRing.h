@@ -59,8 +59,7 @@ public:
     void SetMaxValue(double val)
     {
         if (val < 0.1) {
-            asLogWarning(
-                    _("The given maximum value for the vrLayerVectorFcstRing class was too small, so it has been increased."));
+            wxLogWarning(_("The given maximum value for the vrLayerVectorFcstRing class was too small, so it has been increased."));
             val = 0.1;
         }
         m_valueMax = val;

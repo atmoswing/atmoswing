@@ -29,8 +29,10 @@
 #ifndef ASPARAMETERS_H
 #define ASPARAMETERS_H
 
+#include <wx/xml/xml.h>
 #include "asIncludes.h"
 #include "asDataPredictand.h"
+#include "asFileParametersStandard.h"
 
 
 class asParameters
@@ -636,6 +638,19 @@ private:
     asDataPredictand::SpatialAggregation m_predictandSpatialAggregation;
     wxString m_predictandDatasetId;
     double m_predictandTimeHours;
+
+    bool ParseDescription(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseTimeProperties(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+
+    bool ParseAnalogDatesParams(asFileParametersStandard &fileParams, int i_step, const wxXmlNode *nodeProcess);
+
+    bool ParsePredictors(asFileParametersStandard &fileParams, int i_step, int i_ptor, const wxXmlNode *nodeParamBlock);
+
+    bool ParsePreprocessedPredictors(asFileParametersStandard &fileParams, int i_step, int i_ptor,
+                                     const wxXmlNode *nodeParam);
+
+    bool ParseAnalogValuesParams(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
 
 };
 

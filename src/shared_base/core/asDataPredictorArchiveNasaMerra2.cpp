@@ -36,6 +36,7 @@
 asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
+    // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
     m_initialized = false;
     m_datasetId = "NASA_MERRA_2";
@@ -47,6 +48,7 @@ asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxStrin
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_nanValues.push_back(std::pow(10.f, 15.f));
+    m_nanValues.push_back(std::pow(10.f, 15.f)-1);
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_fileStructure.dimLatName = "lat";
@@ -89,7 +91,7 @@ bool asDataPredictorArchiveNasaMerra2::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = "%4d/%02d/MERRA2_100.inst6_3d_ana_Np.%4d%02d%02d.nc4";
+        m_fileNamePattern = "%4d/%02d/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.nc4";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
@@ -97,15 +99,15 @@ bool asDataPredictorArchiveNasaMerra2::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -125,8 +127,20 @@ VectorString asDataPredictorArchiveNasaMerra2::GetListOfFiles(asTimeArray &timeA
     for (int i = 0; i < tArray.size(); i++) {
         TimeStruct t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-            files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
-                                                                      t.month, t.day));
+
+            wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
+                                                                      t.month, t.day);
+            if (t.year < 1992) {
+                path.Replace("MERRA2_*00", "MERRA2_100");
+            } else if (t.year < 2001) {
+                path.Replace("MERRA2_*00", "MERRA2_200");
+            } else if (t.year < 2011) {
+                path.Replace("MERRA2_*00", "MERRA2_300");
+            } else {
+                path.Replace("MERRA2_*00", "MERRA2_400");
+            }
+
+            files.push_back(path);
             tLast = t;
         }
     }

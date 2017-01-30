@@ -54,77 +54,12 @@ public:
 
     bool CreateFileOnlyAtPath(const wxString &fullPath);
 
-    void SetLogNull();
-
-    static void Suspend();
-
-    static void Resume();
-
-    virtual void Flush();
-
-    bool IsVerbose();
-
-    void Error(const wxString &msg);
-
-    void Warning(const wxString &msg);
-
-    void Message(const wxString &msg, bool force = false);
-
-    void State(const wxString &msg);
-
-    bool IsMessageBoxOnErrorEnabled() const
-    {
-        return m_messageBoxOnError;
-    }
-
-    void DisableMessageBoxOnError()
-    {
-        m_messageBoxOnError = false;
-    }
-
-    void EnableMessageBoxOnError()
-    {
-        m_messageBoxOnError = true;
-    }
-
-    void StopLogging()
-    {
-        m_active = false;
-    }
-
-    void ResumeLogging()
-    {
-        m_active = true;
-    }
-
-    void SetLevel(int val)
-    {
-        m_level = val;
-    }
-
-    void SetTarget(int val)
-    {
-        m_target = val;
-    }
-
-    wxString GetState()
-    {
-        m_critSectionLog.Enter();
-        wxString state = m_state;
-        m_critSectionLog.Leave();
-        return state;
-    }
+    void SetLevel(int val);
 
 protected:
 private:
     wxFFile *m_logFile;
     wxLogChain *m_logChain;
-    wxCriticalSection m_critSectionLog;
-    int m_level;
-    int m_target;
-    bool m_active;
-    bool m_messageBoxOnError;
-    wxString m_state;
 };
 
 #endif // ASLOG_H

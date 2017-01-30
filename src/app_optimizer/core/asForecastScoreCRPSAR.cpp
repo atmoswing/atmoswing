@@ -51,7 +51,7 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
 
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        asLogWarning(_("The inputs are not conform in the CRPS processing function"));
+        wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
         return NaNFloat;
     }
 
@@ -62,10 +62,10 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
-        asLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
+        wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNFloat;
     } else if (nbForecasts <= 2) {
-        asLogWarning(_("Not enough elements to process the CRPS."));
+        wxLogWarning(_("Not enough elements to process the CRPS."));
         return NaNFloat;
     }
 

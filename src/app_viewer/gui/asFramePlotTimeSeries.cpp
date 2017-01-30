@@ -322,8 +322,8 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
         float leadtimeStart = oldestForecast->GetTargetDates()[0];
         float leadtimeEnd = forecast->GetTargetDates()[forecast->GetTargetDatesLength() - 1];
 
-        wxLogMessage(asTime::GetStringTime(leadtimeStart));
-        wxLogMessage(asTime::GetStringTime(leadtimeEnd));
+        wxLogVerbose(asTime::GetStringTime(leadtimeStart));
+        wxLogVerbose(asTime::GetStringTime(leadtimeEnd));
 
         Array1DFloat leadtimes = Array1DFloat::LinSpaced(leadtimeEnd - leadtimeStart + 1, leadtimeStart, leadtimeEnd);
 
@@ -398,7 +398,7 @@ bool asFramePlotTimeSeries::Plot()
     for (unsigned int i_leadtime = 0; i_leadtime < m_leadTimes.size(); i_leadtime++) {
         Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_selectedStation);
         if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
-            asLogError(_("The forecast contains NaNs. Plotting has been canceled."));
+            wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
             return false;
         }
     }
@@ -466,7 +466,7 @@ bool asFramePlotTimeSeries::Plot()
                     DoPlotInterpretation = true;
                     break;
                 default:
-                    asLogError(_("The option was not found."));
+                    wxLogError(_("The option was not found."));
 
             }
         }
@@ -557,7 +557,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods()
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The return periods couldn't be added to the plot"));
+            wxLogError(_("The return periods couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -593,7 +593,7 @@ void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod)
         if (val > m_maxVal)
             m_maxVal = val;
     } else {
-        asLogError(_("The 10 year return period was not found in the data."));
+        wxLogError(_("The 10 year return period was not found in the data."));
     }
 }
 
@@ -647,7 +647,7 @@ void asFramePlotTimeSeries::PlotAllAnalogs()
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The analogs data couldn't be added to the plot"));
+        wxLogError(_("The analogs data couldn't be added to the plot"));
     }
 
     plotData.Destroy();
@@ -706,7 +706,7 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb)
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The analogs data couldn't be added to the plot"));
+            wxLogError(_("The analogs data couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -765,7 +765,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The quantiles couldn't be added to the plot"));
+            wxLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -834,7 +834,7 @@ void asFramePlotTimeSeries::PlotPastForecast(int i)
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The quantiles couldn't be added to the plot"));
+            wxLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -914,7 +914,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
             bool send_event = false;
             plotctrl->AddCurve(plotData, select, send_event);
         } else {
-            asLogError(_("The quantiles couldn't be added to the plot"));
+            wxLogError(_("The quantiles couldn't be added to the plot"));
         }
 
         plotData.Destroy();
@@ -951,7 +951,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The quantiles couldn't be added to the plot"));
+        wxLogError(_("The quantiles couldn't be added to the plot"));
     }
 
     plotData.Destroy();
@@ -1013,7 +1013,7 @@ void asFramePlotTimeSeries::PlotInterpretation()
         bool send_event = false;
         plotctrl->AddCurve(plotData, select, send_event);
     } else {
-        asLogError(_("The interpretation curve couldn't be added to the plot"));
+        wxLogError(_("The interpretation curve couldn't be added to the plot"));
     }
 
     plotData.Destroy();

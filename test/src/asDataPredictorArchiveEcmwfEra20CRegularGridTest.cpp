@@ -53,6 +53,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadEasy)
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
                                                                             predictorDataDir);
+    predictor->SetTimeStepHours(3);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
@@ -118,6 +119,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadComposite)
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
                                                                             predictorDataDir);
+    predictor->SetTimeStepHours(3);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
@@ -184,6 +186,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadBorderLeft)
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
                                                                             predictorDataDir);
+    predictor->SetTimeStepHours(3);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
@@ -248,6 +251,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadBorderRight)
 
     asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
                                                                             predictorDataDir);
+    predictor->SetTimeStepHours(3);
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 

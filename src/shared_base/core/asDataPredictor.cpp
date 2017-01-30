@@ -30,6 +30,9 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
+#include <wx/filename.h>
+#include <wx/filefn.h>
+#include <wx/dir.h>
 
 
 asDataPredictor::asDataPredictor(const wxString &dataId)
@@ -60,14 +63,15 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
     m_fileExtension = wxEmptyString;
-    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
+    int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
+    AssignGribCode(arr);
 
     if(dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
         m_product = levelType;
         m_dataId = dataId.AfterFirst('/');
     } else {
-        asLogMessage(wxString::Format(_("The data ID (%s) does not contain the level type"), dataId));
+        wxLogVerbose(_("The data ID (%s) does not contain the level type"), dataId);
     }
 
 }
@@ -91,8 +95,8 @@ asDataPredictor::Parameter asDataPredictor::StringToParameterEnum(const wxString
         return RelativeHumidity;
     } else if (ParameterStr.CmpNoCase("SpecificHumidity") == 0) {
         return SpecificHumidity;
-    } else if (ParameterStr.CmpNoCase("Omega") == 0) {
-        return Omega;
+    } else if (ParameterStr.CmpNoCase("VerticalVelocity") == 0) {
+        return VerticalVelocity;
     } else if (ParameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
     } else if (ParameterStr.CmpNoCase("Uwind") == 0) {
@@ -150,8 +154,8 @@ wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataP
             return "RelativeHumidity";
         case (SpecificHumidity):
             return "SpecificHumidity";
-        case (Omega):
-            return "Omega";
+        case (VerticalVelocity):
+            return "VerticalVelocity";
         case (Wind):
             return "Wind";
         case (Uwind):
@@ -185,7 +189,7 @@ wxString asDataPredictor::ParameterEnumToString(asDataPredictor::Parameter dataP
         case (SeaSurfaceTemperatureAnomaly):
             return "SeaSurfaceTemperatureAnomaly";
         default:
-            asLogError(_("The given data parameter type in unknown."));
+            wxLogError(_("The given data parameter type in unknown."));
     }
     return wxEmptyString;
 }
@@ -262,12 +266,61 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     return true;
 }
 
-bool asDataPredictor::CheckFilesPresence(const VectorString &filesList)
+bool asDataPredictor::CheckFilesPresence(VectorString &filesList)
 {
+    if (filesList.size() == 0) {
+        wxLogError(_("Empty files list."));
+        return false;
+    }
+
+    int nbDirsToRemove = 0;
+
     for (int i = 0; i < filesList.size(); i++) {
+        if (i > 0 && nbDirsToRemove > 0) {
+            wxFileName fileName(filesList[i]);
+            for (int j = 0; j < nbDirsToRemove; ++j) {
+                fileName.RemoveLastDir();
+            }
+            filesList[i] = fileName.GetFullPath();
+        }
+
         if (!wxFile::Exists(filesList[i])) {
-            asLogError(wxString::Format(_("File not found: %s"), filesList[i]));
-            return false;
+            // Search recursively in the parent directory
+            wxFileName fileName(filesList[i]);
+            while (true) {
+                // Check for wildcards
+                if (wxIsWild(fileName.GetPath())) {
+                    wxLogError(_("No wildcard is yet authorized in the path (%s)"), fileName.GetPath());
+                    return false;
+                } else if (wxIsWild(fileName.GetFullName())) {
+                    wxArrayString files;
+                    size_t nb = wxDir::GetAllFiles(fileName.GetPath(), &files, fileName.GetFullName());
+                    if (nb == 1) {
+                        filesList[i] = files[0];
+                        break;
+                    } else if (nb > 1) {
+                        wxLogError(_("Multiple files were found matching the name %s:"), fileName.GetFullName());
+                        for (int j = 0; j < nb; ++j) {
+                            wxLogError(files[j]);
+                        }
+                        return false;
+                    }
+                }
+
+                if (i == 0) {
+                    if (fileName.GetDirCount()<2) {
+                        wxLogError(_("File not found: %s"), filesList[i]);
+                        return false;
+                    }
+
+                    fileName.RemoveLastDir();
+                    nbDirsToRemove++;
+                    if (fileName.Exists()) {
+                        filesList[i] = fileName.GetFullPath();
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -278,7 +331,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
 {
     if (!m_initialized) {
         if (!Init()) {
-            asLogError(wxString::Format(_("Error at initialization of the predictor dataset %s."), m_datasetName));
+            wxLogError(_("Error at initialization of the predictor dataset %s."), m_datasetName);
             return false;
         }
     }
@@ -286,7 +339,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
     try {
         // Check the time array
         if (!CheckTimeArray(timeArray)) {
-            asLogError(_("The time array is not valid to load data."));
+            wxLogError(_("The time array is not valid to load data."));
             return false;
         }
 
@@ -312,28 +365,28 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         // Extract composite data from files
         VVArray2DFloat compositeData(compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
-            asLogWarning(_("Extracting data from files failed."));
+            wxLogWarning(_("Extracting data from files failed."));
             wxDELETE(dataArea);
             return false;
         }
 
         // Merge the composites into m_data
         if (!MergeComposites(compositeData, dataArea)) {
-            asLogError(_("Merging the composites failed."));
+            wxLogError(_("Merging the composites failed."));
             wxDELETE(dataArea);
             return false;
         }
 
         // Interpolate the loaded data on the desired grid
         if (desiredArea && !InterpolateOnGrid(dataArea, desiredArea)) {
-            asLogError(_("Interpolation failed."));
+            wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
             return false;
         }
 
         // Check the data container length
         if ((unsigned) m_time.size() != m_data.size()) {
-            asLogError(_("The date and the data array lengths do not match."));
+            wxLogError(_("The date and the data array lengths do not match."));
             wxDELETE(dataArea);
             return false;
         }
@@ -341,14 +394,14 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         wxDELETE(dataArea);
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        asLogError(wxString::Format(_("Bad allocation caught when loading data: %s"), msg));
+        wxLogError(_("Bad allocation caught when loading data: %s"), msg);
         return false;
     } catch (asException &e) {
         wxString fullMessage = e.GetFullMessage();
         if (!fullMessage.IsEmpty()) {
-            asLogError(fullMessage);
+            wxLogError(fullMessage);
         }
-        asLogError(_("Failed to load data."));
+        wxLogError(_("Failed to load data."));
         return false;
     }
 
@@ -416,7 +469,6 @@ bool asDataPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaC
     if (!GetAxesIndexes(dataArea, timeArray, compositeData)) {
         ncFile.Close();
         ThreadsManager().CritSectionNetCDF().Leave();
-        wxFAIL;
         return false;
     }
 
@@ -520,7 +572,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
         }
             break;
         default:
-            asLogError(_("Variable type not supported yet for the level dimension."));
+            wxLogError(_("Variable type not supported yet for the level dimension."));
             return false;
     }
 
@@ -549,7 +601,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
             }
                 break;
             default:
-                asLogError(_("Variable type not supported yet for the level dimension."));
+                wxLogError(_("Variable type not supported yet for the level dimension."));
                 return false;
         }
     }
@@ -573,13 +625,18 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaComposit
             timeLastVal = (double)ncFile.GetVarOneInt(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
             break;
         default:
-            asLogError(_("Variable type not supported yet for the time dimension."));
+            wxLogError(_("Variable type not supported yet for the time dimension."));
             return false;
     }
 
     double refValue = NaNDouble;
-    if (ncFile.HasAttribute("RangeBeginningDate")) {
-        wxString refValueStr = ncFile.GetAttString("RangeBeginningDate");
+    if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
+        wxString refValueStr = ncFile.GetAttString("units", "time");
+        refValueStr = refValueStr.Remove(0, 14);
+        refValue = asTime::GetTimeFromString(refValueStr);
+    } else if(m_datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
+        wxString refValueStr = ncFile.GetAttString("units", "time");
+        refValueStr = refValueStr.Mid(12, 10);
         refValue = asTime::GetTimeFromString(refValueStr);
     }
 
@@ -597,7 +654,7 @@ bool asDataPredictor::ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaComposite
     gbFile.GetYaxis(m_fileStructure.axisLat);
 
     if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
-        asLogError(_("The level dimension is not yet implemented for Grib files."));
+        wxLogError(_("The level dimension is not yet implemented for Grib files."));
         return false;
     }
 
@@ -618,7 +675,7 @@ bool asDataPredictor::CheckFileStructure()
             for (int i = 1; i < m_fileStructure.axisLon.size(); ++i) {
                 if (m_fileStructure.axisLon[i] < m_fileStructure.axisLon[i-1]) {
                     if (i_break != 0) {
-                        asLogError(_("Longitude axis seems not consistent (multiple breaks)."));
+                        wxLogError(_("Longitude axis seems not consistent (multiple breaks)."));
                         return false;
                     }
                     i_break = i;
@@ -657,7 +714,7 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataYptsnb = desiredArea->GetYaxisPtsnb();
             if (!asTools::IsNaN(m_xAxisStep) && !asTools::IsNaN(m_yAxisStep) &&
                 (dataXstep != m_xAxisStep || dataYstep != m_yAxisStep)) {
-                asLogError(_("Interpolation is not allowed on irregular grids."));
+                wxLogError(_("Interpolation is not allowed on irregular grids."));
                 return NULL;
             }
         }
@@ -716,11 +773,11 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
 					} else if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() > 1) {
                         dataArea->RemoveLastRowOnComposite(i_comp);
                     } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
-                        asLogMessage(_("Correcting the longitude extent according to the file limits."));
+                        wxLogVerbose(_("Correcting the longitude extent according to the file limits."));
                         double Xwidth = m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] - dataArea->GetAbsoluteXmin();
                         wxASSERT(Xwidth >= 0);
                         int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
-                        asLogMessage(wxString::Format(_("xPtsNb = %d."), Xptsnb));
+                        wxLogDebug(_("xPtsNb = %d."), Xptsnb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb, dataArea->GetXstep(),
                                 dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
@@ -751,11 +808,11 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     // Condition for change: The composite must not be fully outside (considered as handled).
                     if (axisLatComp[axisLatComp.size() - 1] > m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] &&
                         axisLatComp[0] < m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]) {
-                        asLogMessage(_("Correcting the latitude extent according to the file limits."));
+                        wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
                         double Ywidth = m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] - dataArea->GetAbsoluteYmin();
                         wxASSERT(Ywidth >= 0);
                         int Yptsnb = 1 + Ywidth / dataArea->GetYstep();
-                        asLogMessage(wxString::Format(_("yPtsNb = %d."), Yptsnb));
+                        wxLogDebug(_("yPtsNb = %d."), Yptsnb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), Yptsnb, dataArea->GetYstep(),
@@ -770,11 +827,11 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
 
                     // Condition for change: The composite must not be fully outside (considered as handled).
                     if (axisLatComp[axisLatComp.size() - 1] > m_fileStructure.axisLat[0] && axisLatComp[0] < m_fileStructure.axisLat[0]) {
-                        asLogMessage(_("Correcting the latitude extent according to the file limits."));
+                        wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
                         double Ywidth = m_fileStructure.axisLat[0] - dataArea->GetAbsoluteYmin();
                         wxASSERT(Ywidth >= 0);
                         int Yptsnb = 1 + Ywidth / dataArea->GetYstep();
-                        asLogMessage(wxString::Format(_("yPtsNb = %d."), Yptsnb));
+                        wxLogDebug(_("yPtsNb = %d."), Yptsnb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), Yptsnb, dataArea->GetYstep(),
@@ -802,6 +859,14 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
     }
 
     return dataArea;
+}
+
+void asDataPredictor::AssignGribCode(const int arr[])
+{
+    m_gribCode.clear();
+    for (int i = 0; i < 4; ++i) {
+        m_gribCode.push_back(arr[i]);
+    }
 }
 
 size_t *asDataPredictor::GetIndexesStartNcdf(int i_area) const
@@ -894,7 +959,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
     bool isFloat = (ncFile.GetVarType(m_fileVariableName) == NC_FLOAT);
 
     if(!isShort && !isFloat) {
-        asLogError(_("Loading data other than short or float is not implemented yet."));
+        wxLogError(_("Loading data other than short or float is not implemented yet."));
     }
 
     // Check if scaling is needed
@@ -1157,7 +1222,7 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
                 blockLR.resize(compositeData[i_area][0].rows(), compositeData[i_area][0].cols());
                 isblockLR = i_area;
             } else {
-                asLogError(_("The data composite was not identified."));
+                wxLogError(_("The data composite was not identified."));
                 return false;
             }
         }
@@ -1175,15 +1240,15 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
                 } else if (i_area == isblockLL) {
                     blockLL = compositeData[i_area][i_time];
                     // TODO (phorton#1#): Implement me!
-                    asLogError(_("Not yet implemented."));
+                    wxLogError(_("Not yet implemented."));
                     return false;
                 } else if (i_area == isblockLR) {
                     blockLR = compositeData[i_area][i_time];
                     // TODO (phorton#1#): Implement me!
-                    asLogError(_("Not yet implemented."));
+                    wxLogError(_("Not yet implemented."));
                     return false;
                 } else {
-                    asLogError(_("The data composite cannot be build."));
+                    wxLogError(_("The data composite cannot be build."));
                     return false;
                 }
             }
@@ -1302,10 +1367,9 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
 
                 if (indexYfloor == asOUT_OF_RANGE || indexYfloor == asNOT_FOUND || indexYceil == asOUT_OF_RANGE ||
                     indexYceil == asNOT_FOUND) {
-                    asLogError(wxString::Format(
-                            _("The desired point is not available in the data for interpolation. Latitude %f was not found inbetween %f (index %d) to %f (index %d) (size = %d)."),
-                            axisFinalLat[i_lat], axisDataLat[indexLastLat], indexLastLat, axisDataLat[axisDataLatEnd],
-                            axisDataLatEnd, (int) axisDataLat.size()));
+                    wxLogError(_("The desired point is not available in the data for interpolation. Latitude %f was not found inbetween %f (index %d) to %f (index %d) (size = %d)."),
+                               axisFinalLat[i_lat], axisDataLat[indexLastLat], indexLastLat,
+                               axisDataLat[axisDataLatEnd], axisDataLatEnd, (int) axisDataLat.size());
                     return false;
                 }
                 wxASSERT_MSG(indexYfloor >= 0,
@@ -1337,9 +1401,8 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
 
                     if (indexXfloor == asOUT_OF_RANGE || indexXfloor == asNOT_FOUND || indexXceil == asOUT_OF_RANGE ||
                         indexXceil == asNOT_FOUND) {
-                        asLogError(wxString::Format(
-                                _("The desired point is not available in the data for interpolation. Longitude %f was not found inbetween %f to %f."),
-                                axisFinalLon[i_lon], axisDataLon[indexLastLon], axisDataLon[axisDataLonEnd]));
+                        wxLogError(_("The desired point is not available in the data for interpolation. Longitude %f was not found inbetween %f to %f."),
+                                   axisFinalLon[i_lon], axisDataLon[indexLastLon], axisDataLon[axisDataLonEnd]);
                         return false;
                     }
 

@@ -82,7 +82,7 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
         }
 
         default: {
-            asLogError(_("The calculation method was not correcty set"));
+            wxLogError(_("The calculation method was not correcty set"));
             return NaNFloat;
         }
     }
@@ -91,7 +91,7 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
     wxASSERT(refData.size() > 0);
 
     if (finalsize == 0) {
-        asLogMessage(_("Only NaNs in the criteria calculation."));
+        wxLogVerbose(_("Only NaNs in the criteria calculation."));
         return NaNFloat;
     }
 

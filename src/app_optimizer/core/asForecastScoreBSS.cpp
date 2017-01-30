@@ -89,7 +89,7 @@ bool asForecastScoreBSS::ProcessScoreClimatology(const Array1DFloat &refVals, co
 
     m_scoreClimatology = asTools::Mean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
-    asLogMessage(wxString::Format(_("Score of the climatology: %g."), m_scoreClimatology));
+    wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
 
     return true;
 }

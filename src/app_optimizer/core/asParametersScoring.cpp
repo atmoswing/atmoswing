@@ -71,10 +71,10 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
 
 bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath) const
 {
-    asLogMessage(_("Generating parameters file."));
+    wxLogVerbose(_("Generating parameters file."));
 
     if (filePath.IsEmpty()) {
-        asLogError(_("The given path to the parameters file is empty."));
+        wxLogError(_("The given path to the parameters file is empty."));
         return false;
     }
 
@@ -85,8 +85,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     // Create root nodes
     if (!fileParams.EditRootElement())
         return false;
-    fileParams.GetRoot()->AddAttribute("target", "optimizer");
-
 
     // Description
     wxXmlNode *nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
@@ -260,7 +258,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     if (!fileParams.Close())
         return false;
 
-    asLogMessage(_("Parameters file generated."));
+    wxLogVerbose(_("Parameters file generated."));
 
     return true;
 }
@@ -277,44 +275,38 @@ bool asParametersScoring::PreprocessingPropertiesOk()
                 // Check that the data ID is unique
                 for (int i_preproc = 0; i_preproc < preprocSize; i_preproc++) {
                     if (GetPreprocessDataIdVectorSize(i_step, i_ptor, i_preproc) != 1) {
-                        asLogError(_("The preprocess dataId must be unique with the preload option."));
+                        wxLogError(_("The preprocess dataId must be unique with the preload option."));
                         return false;
                     }
                 }
 
                 // Different actions depending on the preprocessing method.
-                if (method.IsSameAs("Gradients")) {
+                wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
+                if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
+                    method.IsSameAs("Average")) {
+                    // No constraints
+                } else if (method.IsSameAs("Gradients")) {
                     if (preprocSize != 1) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (1) in the preprocessing Gradients method."),
-                                preprocSize));
+                        wxLogError(msg, preprocSize, 1, "Gradient");
                         return false;
                     }
                 } else if (method.IsSameAs("HumidityFlux")) {
                     if (preprocSize != 4) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing HumidityFlux method."),
-                                preprocSize));
+                        wxLogError(msg, preprocSize, 4, "HumidityFlux");
                         return false;
                     }
-                } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
-                           method.IsSameAs("HumidityIndex")) {
+                } else if (method.IsSameAs("HumidityIndex")) {
                     if (preprocSize != 2) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (2) in the preprocessing Multiply method."),
-                                preprocSize));
+                        wxLogError(msg, preprocSize, 2, "HumidityIndex");
                         return false;
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
                     if (preprocSize != 4) {
-                        asLogError(wxString::Format(
-                                _("The size of the provided predictors (%d) does not match the requirements (4) in the preprocessing FormerHumidityIndex method."),
-                                preprocSize));
+                        wxLogError(msg, preprocSize, 4, "FormerHumidityIndex");
                         return false;
                     }
                 } else {
-                    asLogWarning(wxString::Format(
-                            _("The %s preprocessing method is not yet handled with the preload option."), method));
+                    wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
             }
         }
@@ -388,8 +380,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     iRight = stringVals.Find("\t");
     strVal = stringVals.SubString(iLeft, iRight - 1);
     if (!strVal.IsSameAs(GetForecastScoreName())) {
-        asLogError(wxString::Format(_("The current score (%s) doesn't correspond to the previous one (%s)."),
-                                    GetForecastScoreName(), strVal));
+        wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName(),
+                   strVal);
         wxPrintf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
                                   GetForecastScoreName(), strVal));
         return false;

@@ -51,10 +51,7 @@ asDataPredictorArchiveJmaJra55Subset::asDataPredictorArchiveJmaJra55Subset(const
     m_nanValues.push_back(std::pow(10.f, 20.f));
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "g0_lat_2";
-    m_fileStructure.dimLonName = "g0_lon_3";
-    m_fileStructure.dimTimeName = "initial_time0_hours";
-    m_fileStructure.dimLevelName = "lv_ISBL1";
+    m_monthlyFiles = true;
 }
 
 asDataPredictorArchiveJmaJra55Subset::~asDataPredictorArchiveJmaJra55Subset()
@@ -66,6 +63,8 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
 {
     CheckLevelTypeIsDefined();
 
+    // Get data: http://rda.ucar.edu/datasets/ds628.0/index.html#!cgi-bin/datasets/getSubset?dsnum=628.0&listAction=customize&_da=y
+
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("anl_p125", false)) {
         // JRA-55 6-Hourly 1.25 Degree Isobaric Analysis Fields
@@ -74,6 +73,11 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
+        m_fileStructure.dimLatName = "g0_lat_2";
+        m_fileStructure.dimLonName = "g0_lon_3";
+        m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_fileStructure.dimLevelName = "lv_ISBL1";
+        m_monthlyFiles = true;
         if (m_dataId.IsSameAs("hgt", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential Height";
@@ -92,6 +96,12 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
             m_fileVariableName = "TMP_GDS0_ISBL";
             m_unit = degK;
             m_fileNamePattern.Append("011_tmp");
+        } else if (m_dataId.IsSameAs("vvel", false)) {
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
+            m_fileVariableName = "VVEL_GDS0_ISBL";
+            m_unit = Pa_s;
+            m_fileNamePattern.Append("039_vvel");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
@@ -105,6 +115,10 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
+        m_fileStructure.dimLatName = "g0_lat_1";
+        m_fileStructure.dimLonName = "g0_lon_2";
+        m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_monthlyFiles = false;
         if (m_dataId.IsSameAs("slp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Pressure reduced to MSL";
@@ -124,12 +138,45 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
+        m_fileStructure.dimLatName = "g0_lat_1";
+        m_fileStructure.dimLonName = "g0_lon_2";
+        m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_monthlyFiles = false;
         if (m_dataId.IsSameAs("pwat", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileVariableName = "PWAT_GDS0_EATM";
             m_unit = kg_m2;
             m_fileNamePattern.Append("054_pwat");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+        m_fileNamePattern.Append(".%4d%02d01*.nc");
+
+    } else if (m_product.IsSameAs("fcst_phy2m125", false)) {
+        // JRA-55 3-Hourly 1.25 Degree 2-Dimensional Average Diagnostic Fields
+        m_fileStructure.hasLevelDimension = false;
+        m_xAxisStep = 1.250;
+        m_yAxisStep = 1.250;
+        m_fileStructure.dimLatName = "g0_lat_1";
+        m_fileStructure.dimLonName = "g0_lon_2";
+        m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_monthlyFiles = false;
+        if (m_dataId.IsSameAs("tprat3h", false)) {
+            m_parameter = Precipitation;
+            m_parameterName = "Total precipitation";
+            m_fileVariableName = "TPRAT_GDS0_SFC_ave3h";
+            m_unit = mm_d;
+            m_subFolder = "fcst_phy2m125/tprat_00h-03h";
+            m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
+        } else if (m_dataId.IsSameAs("tprat6h", false)) {
+            m_parameter = Precipitation;
+            m_parameterName = "Total precipitation";
+            m_fileVariableName = "TPRAT_GDS0_SFC_ave3h";
+            m_unit = mm_d;
+            m_subFolder = "fcst_phy2m125/tprat_03h-06h";
+            m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
@@ -143,6 +190,11 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
         m_xAxisStep = 1.250;
         m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
+        m_fileStructure.dimLatName = "g0_lat_2";
+        m_fileStructure.dimLonName = "g0_lon_3";
+        m_fileStructure.dimTimeName = "initial_time0_hours";
+        m_fileStructure.dimLevelName = "lv_THEL1";
+        m_monthlyFiles = true;
         if (m_dataId.IsSameAs("pv", false)) {
             m_parameter = PotentialVorticity;
             m_parameterName = "Potential vorticity";
@@ -167,15 +219,15 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -189,25 +241,41 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
 {
     VectorString files;
 
-    for (int i_year = timeArray.GetFirstDayYear(); i_year <= timeArray.GetLastDayYear(); i_year++) {
+    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
         int firstMonth = 1;
         int lastMonth = 12;
-        if (i_year==timeArray.GetFirstDayYear()) {
-            firstMonth = timeArray.GetFirstDayMonth();
+        if (i_year == timeArray.GetStartingYear()) {
+            firstMonth = timeArray.GetStartingMonth();
         }
-        if (i_year==timeArray.GetLastDayYear()) {
-            lastMonth = timeArray.GetLastDayMonth();
+        if (i_year == timeArray.GetEndingYear()) {
+            lastMonth = timeArray.GetEndingMonth();
         }
 
-        for (int i_month = firstMonth; i_month <= lastMonth; ++i_month) {
-            wxString filePattern = wxString::Format(m_fileNamePattern, i_year, i_month);
+        if (m_monthlyFiles) {
+            for (int i_month = firstMonth; i_month <= lastMonth; ++i_month) {
+                wxString filePattern = wxString::Format(m_fileNamePattern, i_year, i_month);
+                wxArrayString listFiles;
+                size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
+
+                if (nbFiles == 0) {
+                    asThrowException(wxString::Format(_("No JRA-55 file found for this pattern : %s."), filePattern));
+                } else if (nbFiles > 1) {
+                    asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."),
+                                                      filePattern));
+                }
+
+                files.push_back(listFiles.Item(0));
+            }
+        } else {
+            wxString filePattern = wxString::Format(m_fileNamePattern, i_year, firstMonth);
             wxArrayString listFiles;
             size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
-            if (nbFiles==0) {
+            if (nbFiles == 0) {
                 asThrowException(wxString::Format(_("No JRA-55 file found for this pattern : %s."), filePattern));
-            } else if (nbFiles>1) {
-                asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
+            } else if (nbFiles > 1) {
+                asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."),
+                                                  filePattern));
             }
 
             files.push_back(listFiles.Item(0));

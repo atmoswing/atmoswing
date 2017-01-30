@@ -94,9 +94,9 @@ public:
         return (int) m_analogsDates.cols();
     }
 
-    bool Save(const wxString &AlternateFilePath = wxEmptyString) const;
+    bool Save();
 
-    bool Load(const wxString &AlternateFilePath = wxEmptyString);
+    bool Load();
 
 protected:
     void BuildFileName();

@@ -51,10 +51,10 @@ public:
 
     bool MakeMap();
 
-    bool Save(asParametersCalibration &params, const wxString &AlternateFilePath = wxEmptyString);
+    bool Save(asParametersCalibration &params);
 
 protected:
-    void BuildFileName(asParametersScoring &params);
+    void BuildFileName();
 
 private:
     Array1DFloat m_mapLon;

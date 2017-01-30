@@ -178,12 +178,12 @@ public:
     bool SetValidationYearsVector(VectorInt val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided validation years vector is empty."));
+            wxLogError(_("The provided validation years vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided validation years vector."));
+                    wxLogError(_("There are NaN values in the provided validation years vector."));
                     return false;
                 }
             }
@@ -205,7 +205,7 @@ public:
     bool SetForecastScoreName(const wxString &val)
     {
         if (val.IsEmpty()) {
-            asLogError(_("The provided forecast score is null"));
+            wxLogError(_("The provided forecast score is null"));
             return false;
         }
         m_forecastScore.name = val;
@@ -245,7 +245,7 @@ public:
     bool SetForecastScoreTimeArrayMode(const wxString &val)
     {
         if (val.IsEmpty()) {
-            asLogError(_("The provided time array mode for the forecast score is null"));
+            wxLogError(_("The provided time array mode for the forecast score is null"));
             return false;
         }
         m_forecastScore.timeArrayMode = val;
@@ -267,12 +267,12 @@ public:
     bool SetAnalogsNumberVector(int i_step, VectorInt val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided analogs number vector is empty."));
+            wxLogError(_("The provided analogs number vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided analogs number vector."));
+                    wxLogError(_("There are NaN values in the provided analogs number vector."));
                     return false;
                 }
             }
@@ -284,12 +284,12 @@ public:
     bool SetPreprocessTimeHoursVector(int i_step, int i_predictor, int i_dataset, VectorDouble val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided preprocess time (hours) vector is empty."));
+            wxLogError(_("The provided preprocess time (hours) vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
+                    wxLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
                     return false;
                 }
             }
@@ -313,12 +313,12 @@ public:
     bool SetPredictorXminVector(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided xMin vector is empty."));
+            wxLogError(_("The provided xMin vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided xMin vector."));
+                    wxLogError(_("There are NaN values in the provided xMin vector."));
                     return false;
                 }
             }
@@ -335,12 +335,12 @@ public:
     bool SetPredictorXptsnbVector(int i_step, int i_predictor, VectorInt val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided xPtsNb vector is empty."));
+            wxLogError(_("The provided xPtsNb vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided xPtsNb vector."));
+                    wxLogError(_("There are NaN values in the provided xPtsNb vector."));
                     return false;
                 }
             }
@@ -357,12 +357,12 @@ public:
     bool SetPredictorYminVector(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided yMin vector is empty."));
+            wxLogError(_("The provided yMin vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided yMin vector."));
+                    wxLogError(_("There are NaN values in the provided yMin vector."));
                     return false;
                 }
             }
@@ -379,12 +379,12 @@ public:
     bool SetPredictorYptsnbVector(int i_step, int i_predictor, VectorInt val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided yPtsNb vector is empty."));
+            wxLogError(_("The provided yPtsNb vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided yPtsNb vector."));
+                    wxLogError(_("There are NaN values in the provided yPtsNb vector."));
                     return false;
                 }
             }
@@ -401,12 +401,12 @@ public:
     bool SetPredictorTimeHoursVector(int i_step, int i_predictor, VectorDouble val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided predictor time (hours) vector is empty."));
+            wxLogError(_("The provided predictor time (hours) vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided predictor time (hours) vector."));
+                    wxLogError(_("There are NaN values in the provided predictor time (hours) vector."));
                     return false;
                 }
             }
@@ -423,12 +423,12 @@ public:
     bool SetPredictorWeightVector(int i_step, int i_predictor, VectorFloat val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided predictor weights vector is empty."));
+            wxLogError(_("The provided predictor weights vector is empty."));
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided predictor weights vector."));
+                    wxLogError(_("There are NaN values in the provided predictor weights vector."));
                     return false;
                 }
             }
@@ -442,7 +442,7 @@ public:
         if (m_stepsVect[i_step].predictors[i_predictor].preprocessDataId.size() >= (unsigned) (i_dataset + 1)) {
             return m_stepsVect[i_step].predictors[i_predictor].preprocessDataId[i_dataset];
         } else {
-            asLogError(_("Trying to access to an element outside of preprocessDataId in the parameters object."));
+            wxLogError(_("Trying to access to an element outside of preprocessDataId in the parameters object."));
             VectorString empty;
             return empty;
         }
@@ -451,12 +451,12 @@ public:
     bool SetPreprocessDataIdVector(int i_step, int i_predictor, int i_dataset, VectorString val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided preprocess data ID vector is empty."));
+            wxLogError(_("The provided preprocess data ID vector is empty."));
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
                 if (val[i].IsEmpty()) {
-                    asLogError(_("There are NaN values in the provided preprocess data ID vector."));
+                    wxLogError(_("There are NaN values in the provided preprocess data ID vector."));
                     return false;
                 }
             }
@@ -477,7 +477,7 @@ public:
         if (m_stepsVect[i_step].predictors[i_predictor].preprocessLevels.size() >= (unsigned) (i_dataset + 1)) {
             return m_stepsVect[i_step].predictors[i_predictor].preprocessLevels[i_dataset];
         } else {
-            asLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
+            wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
             VectorFloat empty;
             return empty;
         }
@@ -486,12 +486,12 @@ public:
     bool SetPreprocessLevelVector(int i_step, int i_predictor, int i_dataset, VectorFloat val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided preprocess levels vector is empty."));
+            wxLogError(_("The provided preprocess levels vector is empty."));
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided preprocess levels vector."));
+                    wxLogError(_("There are NaN values in the provided preprocess levels vector."));
                     return false;
                 }
             }
@@ -514,8 +514,7 @@ public:
         if (m_stepsVect[i_step].predictors[i_predictor].preprocessTimeHours.size() >= (unsigned) (i_dataset + 1)) {
             return m_stepsVect[i_step].predictors[i_predictor].preprocessTimeHours[i_dataset];
         } else {
-            asLogError(
-                    _("Trying to access to an element outside of preprocessTimeHours (vect) in the parameters object."));
+            wxLogError(_("Trying to access to an element outside of preprocessTimeHours (vect) in the parameters object."));
             VectorDouble empty;
             return empty;
         }
@@ -529,12 +528,12 @@ public:
     bool SetPredictorDataIdVector(int i_step, int i_predictor, VectorString val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided data ID vector is empty."));
+            wxLogError(_("The provided data ID vector is empty."));
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
                 if (val[i].IsEmpty()) {
-                    asLogError(_("There are NaN values in the provided data ID vector."));
+                    wxLogError(_("There are NaN values in the provided data ID vector."));
                     return false;
                 }
             }
@@ -551,12 +550,12 @@ public:
     bool SetPredictorLevelVector(int i_step, int i_predictor, VectorFloat val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided predictor levels vector is empty."));
+            wxLogError(_("The provided predictor levels vector is empty."));
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
                 if (asTools::IsNaN(val[i])) {
-                    asLogError(_("There are NaN values in the provided predictor levels vector."));
+                    wxLogError(_("There are NaN values in the provided predictor levels vector."));
                     return false;
                 }
             }
@@ -573,12 +572,12 @@ public:
     bool SetPredictorCriteriaVector(int i_step, int i_predictor, VectorString val)
     {
         if (val.size() < 1) {
-            asLogError(_("The provided predictor criteria vector is empty."));
+            wxLogError(_("The provided predictor criteria vector is empty."));
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
                 if (val[i].IsEmpty()) {
-                    asLogError(_("There are NaN values in the provided predictor criteria vector."));
+                    wxLogError(_("There are NaN values in the provided predictor criteria vector."));
                     return false;
                 }
             }

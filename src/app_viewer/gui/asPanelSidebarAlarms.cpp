@@ -317,7 +317,7 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
             break;
         }
         default: {
-            asLogError(_("Incorrect mode for the alarm panel."));
+            wxLogError(_("Incorrect mode for the alarm panel."));
         }
     }
 

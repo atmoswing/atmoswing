@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Jan  9 2017)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -21,7 +21,7 @@
 
 asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 600,600 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 600,500 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
@@ -39,7 +39,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_staticTextMethod->Wrap( -1 );
 	bSizer5->Add( m_staticTextMethod, 0, wxALL, 5 );
 	
-	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Evaluate all scores"), _("Only predictand values") };
+	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Evaluate all scores"), _("Only predictand values") };
 	int m_choiceMethodNChoices = sizeof( m_choiceMethodChoices ) / sizeof( wxString );
 	m_choiceMethod = new wxChoice( m_panelControls, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodNChoices, m_choiceMethodChoices, 0 );
 	m_choiceMethod->SetSelection( 0 );
@@ -66,12 +66,12 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_dirPickerPredictor = new wxDirPickerCtrl( m_panelControls, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	bSizer5->Add( m_dirPickerPredictor, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextOptimizerResultsDir = new wxStaticText( m_panelControls, wxID_ANY, _("Directory to save optimization outputs"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTextOptimizerResultsDir->Wrap( -1 );
-	bSizer5->Add( m_staticTextOptimizerResultsDir, 0, wxALL, 5 );
+	m_staticTextCalibrationResultsDir = new wxStaticText( m_panelControls, wxID_ANY, _("Directory to save calibration outputs"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextCalibrationResultsDir->Wrap( -1 );
+	bSizer5->Add( m_staticTextCalibrationResultsDir, 0, wxALL, 5 );
 	
-	m_dirPickerOptimizerResults = new wxDirPickerCtrl( m_panelControls, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
-	bSizer5->Add( m_dirPickerOptimizerResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_dirPickerCalibrationResults = new wxDirPickerCtrl( m_panelControls, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
+	bSizer5->Add( m_dirPickerCalibrationResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_checkBoxParallelEvaluations = new wxCheckBox( m_panelControls, wxID_ANY, _("Parallel evaluations when possible (competes with multithreading in the processor)"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer5->Add( m_checkBoxParallelEvaluations, 0, wxALL, 5 );
@@ -123,7 +123,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->Add( m_staticTextClassicPlusStepsLonPertinenceMap, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusStepsLonPertinenceMap = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlClassicPlusStepsLonPertinenceMap->SetMaxLength( 0 ); 
 	fgSizer21->Add( m_textCtrlClassicPlusStepsLonPertinenceMap, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_staticTextClassicPlusStepsLatPertinenceMap = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Multiple of the steps in lat for pertinence map"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -131,7 +130,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->Add( m_staticTextClassicPlusStepsLatPertinenceMap, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusStepsLatPertinenceMap = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlClassicPlusStepsLatPertinenceMap->SetMaxLength( 0 ); 
 	fgSizer21->Add( m_textCtrlClassicPlusStepsLatPertinenceMap, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_staticTextClassicPlusResizingIterations = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Iterations in final resizing attempts"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -139,7 +137,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->Add( m_staticTextClassicPlusResizingIterations, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusResizingIterations = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlClassicPlusResizingIterations->SetMaxLength( 0 ); 
 	fgSizer21->Add( m_textCtrlClassicPlusResizingIterations, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_checkBoxProceedSequentially = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, _("Proceed sequentially (standard)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -182,7 +179,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	sbSizer12->Add( m_staticTextMonteCarloRandomNb, 0, wxALL, 5 );
 	
 	m_textCtrlMonteCarloRandomNb = new wxTextCtrl( sbSizer12->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlMonteCarloRandomNb->SetMaxLength( 0 ); 
 	sbSizer12->Add( m_textCtrlMonteCarloRandomNb, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
@@ -196,7 +192,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	sbSizer91->Add( m_staticTextVarExploStepToExplore, 0, wxALL, 5 );
 	
 	m_textCtrlVarExploStepToExplore = new wxTextCtrl( sbSizer91->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlVarExploStepToExplore->SetMaxLength( 0 ); 
 	sbSizer91->Add( m_textCtrlVarExploStepToExplore, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -206,7 +201,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_panelSingle->SetSizer( fgSizer3 );
 	m_panelSingle->Layout();
 	fgSizer3->Fit( m_panelSingle );
-	m_notebookOptions->AddPage( m_panelSingle, _("Calibration"), true );
+	m_notebookOptions->AddPage( m_panelSingle, _("Calibration"), false );
 	
 	bSizer28->Add( m_notebookOptions, 1, wxEXPAND | wxALL, 5 );
 	
@@ -236,7 +231,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	
 	this->SetSizer( bSizer4 );
 	this->Layout();
-	bSizer4->Fit( this );
 	m_menuBar = new wxMenuBar( 0 );
 	m_menuOptions = new wxMenu();
 	wxMenuItem* m_menuItemPreferences;
@@ -252,17 +246,17 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	
 	m_menuLogLevel = new wxMenu();
 	wxMenuItem* m_menuLogLevelItem = new wxMenuItem( m_menuLog, wxID_ANY, _("Log level"), wxEmptyString, wxITEM_NORMAL, m_menuLogLevel );
-	wxMenuItem* m_menuItemLogLevel1;
-	m_menuItemLogLevel1 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Only errors") ) , wxEmptyString, wxITEM_CHECK );
-	m_menuLogLevel->Append( m_menuItemLogLevel1 );
+	wxMenuItem* m_MenuItemLogLevel1;
+	m_MenuItemLogLevel1 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Only errors") ) , wxEmptyString, wxITEM_CHECK );
+	m_menuLogLevel->Append( m_MenuItemLogLevel1 );
 	
-	wxMenuItem* m_menuItemLogLevel2;
-	m_menuItemLogLevel2 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Errors and warnings") ) , wxEmptyString, wxITEM_CHECK );
-	m_menuLogLevel->Append( m_menuItemLogLevel2 );
+	wxMenuItem* m_MenuItemLogLevel2;
+	m_MenuItemLogLevel2 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Errors and warnings") ) , wxEmptyString, wxITEM_CHECK );
+	m_menuLogLevel->Append( m_MenuItemLogLevel2 );
 	
-	wxMenuItem* m_menuItemLogLevel3;
-	m_menuItemLogLevel3 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Verbose") ) , wxEmptyString, wxITEM_CHECK );
-	m_menuLogLevel->Append( m_menuItemLogLevel3 );
+	wxMenuItem* m_MenuItemLogLevel3;
+	m_MenuItemLogLevel3 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Verbose") ) , wxEmptyString, wxITEM_CHECK );
+	m_menuLogLevel->Append( m_MenuItemLogLevel3 );
 	
 	m_menuLog->Append( m_menuLogLevelItem );
 	
@@ -289,9 +283,9 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_buttonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ), NULL, this );
 	this->Connect( m_menuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePreferences ) );
 	this->Connect( m_menuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnShowLog ) );
-	this->Connect( m_menuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel1 ) );
-	this->Connect( m_menuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel2 ) );
-	this->Connect( m_menuItemLogLevel3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel3 ) );
+	this->Connect( m_MenuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel1 ) );
+	this->Connect( m_MenuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel2 ) );
+	this->Connect( m_MenuItemLogLevel3->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel3 ) );
 	this->Connect( m_menuItemAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFrameAbout ) );
 }
 
@@ -388,7 +382,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_panelGeneralCommon->SetSizer( bSizer16 );
 	m_panelGeneralCommon->Layout();
 	bSizer16->Fit( m_panelGeneralCommon );
-	m_notebookBase->AddPage( m_panelGeneralCommon, _("General"), false );
+	m_notebookBase->AddPage( m_panelGeneralCommon, _("General"), true );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
@@ -418,7 +412,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_panelGeneral->SetSizer( bSizer271 );
 	m_panelGeneral->Layout();
 	bSizer271->Fit( m_panelGeneral );
-	m_notebookAdvanced->AddPage( m_panelGeneral, _("General"), false );
+	m_notebookAdvanced->AddPage( m_panelGeneral, _("General"), true );
 	m_panelProcessing = new wxPanel( m_notebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1611;
 	bSizer1611 = new wxBoxSizer( wxVERTICAL );
@@ -438,7 +432,6 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	bSizer221->Add( m_staticTextThreadsNb, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlThreadsNb = new wxTextCtrl( sbSizer15->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	m_textCtrlThreadsNb->SetMaxLength( 0 ); 
 	bSizer221->Add( m_textCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
@@ -480,7 +473,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_panelProcessing->SetSizer( bSizer1611 );
 	m_panelProcessing->Layout();
 	bSizer1611->Fit( m_panelProcessing );
-	m_notebookAdvanced->AddPage( m_panelProcessing, _("Processing"), true );
+	m_notebookAdvanced->AddPage( m_panelProcessing, _("Processing"), false );
 	m_panelUserDirectories = new wxPanel( m_notebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer24;
 	bSizer24 = new wxBoxSizer( wxVERTICAL );
@@ -514,9 +507,9 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_staticTextUserDir->Wrap( -1 );
 	fgSizer9->Add( m_staticTextUserDir, 0, wxALL, 5 );
 	
-	m_staticTextLogFileLabel = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("Log file:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTextLogFileLabel->Wrap( -1 );
-	fgSizer9->Add( m_staticTextLogFileLabel, 0, wxALL, 5 );
+	m_staticTextLogFileLabels = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("Log file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextLogFileLabels->Wrap( -1 );
+	fgSizer9->Add( m_staticTextLogFileLabels, 0, wxALL, 5 );
 	
 	m_staticTextLogFile = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextLogFile->Wrap( -1 );
@@ -548,7 +541,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_panelAdvanced->SetSizer( bSizer26 );
 	m_panelAdvanced->Layout();
 	bSizer26->Fit( m_panelAdvanced );
-	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced"), true );
+	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced"), false );
 	
 	bSizer15->Add( m_notebookBase, 1, wxEXPAND | wxALL, 5 );
 	

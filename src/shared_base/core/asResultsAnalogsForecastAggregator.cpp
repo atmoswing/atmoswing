@@ -70,7 +70,7 @@ bool asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast *forecast)
                 for (int forecastRow = 0; forecastRow < (int) m_forecasts[methodRow].size(); forecastRow++) {
                     asResultsAnalogsForecast *otherForecast = m_forecasts[methodRow][forecastRow];
                     if (forecast->IsSameAs(otherForecast)) {
-                        asLogMessage(_("This forecast has already been loaded."));
+                        wxLogVerbose(_("This forecast has already been loaded."));
                         return false;
                     }
                 }
@@ -80,9 +80,9 @@ bool asResultsAnalogsForecastAggregator::Add(asResultsAnalogsForecast *forecast)
                 createNewMethodRow = false;
                 break;
             } else {
-                asLogError(wxString::Format(_("The forecast \"%s\" (%s) is not fully compatible with \"%s\" (%s)"),
-                                            forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
-                                            refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay()));
+                wxLogError(_("The forecast \"%s\" (%s) is not fully compatible with \"%s\" (%s)"),
+                           forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
+                           refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay());
                 return false;
             }
         }
@@ -128,10 +128,9 @@ bool asResultsAnalogsForecastAggregator::AddPastForecast(int methodRow, int fore
     if (compatible) {
         m_pastForecasts[methodRow][forecastRow].push_back(forecast);
     } else {
-        asLogError(wxString::Format(
-                _("The past forecast \"%s\" (%s) is not fully compatible with the current version of \"%s\" (%s)"),
-                forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(), refForecast->GetSpecificTagDisplay(),
-                refForecast->GetMethodIdDisplay()));
+        wxLogError(_("The past forecast \"%s\" (%s) is not fully compatible with the current version of \"%s\" (%s)"),
+                   forecast->GetSpecificTagDisplay(), forecast->GetMethodIdDisplay(),
+                   refForecast->GetSpecificTagDisplay(), refForecast->GetMethodIdDisplay());
         return false;
     }
 
@@ -434,7 +433,7 @@ int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationId(int m
         }
     }
 
-    asLogWarning(wxString::Format(_("No specific forecast was found for station ID %d"), stationId));
+    wxLogWarning(_("No specific forecast was found for station ID %d"), stationId);
 
     return 0;
 }
@@ -453,7 +452,7 @@ int asResultsAnalogsForecastAggregator::GetForecastRowSpecificForStationRow(int 
         }
     }
 
-    asLogWarning(wxString::Format(_("No specific forecast was found for station n°%d"), stationRow));
+    wxLogWarning(_("No specific forecast was found for station n°%d"), stationRow);
 
     return 0;
 }
@@ -599,7 +598,7 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
                                                             &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
                                                             returnPeriodRef);
             if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
-                asLogError(_("The desired return period is not available in the forecast file."));
+                wxLogError(_("The desired return period is not available in the forecast file."));
             }
         }
 

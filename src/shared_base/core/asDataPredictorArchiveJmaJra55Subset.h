@@ -44,6 +44,8 @@ public:
     bool Init();
 
 protected:
+    bool m_monthlyFiles;
+
     virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,

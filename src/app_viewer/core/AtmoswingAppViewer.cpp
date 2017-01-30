@@ -93,7 +93,7 @@ bool AtmoswingAppViewer::OnInit()
         const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
-            //asLogError(_("Program already running, aborting."));
+            //wxLogError(_("Program already running, aborting."));
             wxMessageBox(_("Program already running, aborting."));
             return false;
         }

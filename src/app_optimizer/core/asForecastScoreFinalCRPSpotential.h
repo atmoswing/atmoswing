@@ -43,7 +43,7 @@ public:
     virtual ~asForecastScoreFinalCRPSpotential();
 
     float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const {
-        asLogError(_("The CRPS score needs a 2D array as input !"));
+        wxLogError(_("The CRPS score needs a 2D array as input !"));
         return NaNFloat;
     }
 

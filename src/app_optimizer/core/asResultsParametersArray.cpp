@@ -60,7 +60,7 @@ void asResultsParametersArray::BuildFileName(const wxString &fileTag)
     m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-    m_filePath.Append(wxString::Format("/Optimizer/%s_%s.txt", time, fileTag));
+    m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
 }
 
 void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib)

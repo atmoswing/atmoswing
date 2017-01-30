@@ -343,23 +343,23 @@ asFrameForecast::~asFrameForecast()
 
     // Kill the process if still running
     if (m_processForecast != NULL) {
-        asLogMessage(_("Killing the forecast running process."));
+        wxLogVerbose(_("Killing the forecast running process."));
         wxKillError killError = m_processForecast->Kill(m_processForecast->GetPid());
         switch (killError) {
             case (wxKILL_OK): // no error
-                asLogMessage(_("The forecast process has been killed successfully."));
+                wxLogVerbose(_("The forecast process has been killed successfully."));
                 break;
             case (wxKILL_BAD_SIGNAL): // no such signal
-                asLogError(_("The forecast process couldn't be killed (bad signal)."));
+                wxLogError(_("The forecast process couldn't be killed (bad signal)."));
                 break;
             case (wxKILL_ACCESS_DENIED): // permission denied
-                asLogError(_("The forecast process couldn't be killed (access denied)."));
+                wxLogError(_("The forecast process couldn't be killed (access denied)."));
                 break;
             case (wxKILL_NO_PROCESS): //  no such process
-                asLogError(_("The forecast process couldn't be killed (no process)."));
+                wxLogError(_("The forecast process couldn't be killed (no process)."));
                 break;
             case (wxKILL_ERROR): //  another, unspecified error
-                asLogError(_("The forecast process couldn't be killed (error)."));
+                wxLogError(_("The forecast process couldn't be killed (error)."));
                 break;
         }
     }
@@ -392,11 +392,11 @@ void asFrameForecast::Init()
 
     if (!workspaceFilePath.IsEmpty()) {
         if (!m_workspace.Load(workspaceFilePath)) {
-            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+            wxLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
 
         if (!OpenWorkspace(!forecastFilesProvided)) {
-            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+            wxLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
     } else {
         asWizardWorkspace wizard(this);
@@ -406,11 +406,11 @@ void asFrameForecast::Init()
 
         if (!workspaceFilePath.IsEmpty()) {
             if (!m_workspace.Load(workspaceFilePath)) {
-                asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+                wxLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
             }
 
             if (!OpenWorkspace()) {
-                asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+                wxLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
             }
         }
     }
@@ -497,11 +497,11 @@ void asFrameForecast::OnOpenWorkspace(wxCommandEvent &event)
 
     // Do open the workspace
     if (!m_workspace.Load(workspaceFilePath)) {
-        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+        wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
     }
 
     if (!OpenWorkspace()) {
-        asLogError(_("Failed to open the workspace file ") + workspaceFilePath);
+        wxLogError(_("Failed to open the workspace file ") + workspaceFilePath);
     }
 
 }
@@ -611,7 +611,7 @@ bool asFrameForecast::SaveWorkspace()
     }
 
     if (!m_workspace.Save()) {
-        asLogError(_("Could not save the worspace."));
+        wxLogError(_("Could not save the worspace."));
         return false;
     }
 
@@ -632,11 +632,11 @@ void asFrameForecast::OnNewWorkspace(wxCommandEvent &event)
 
     if (!workspaceFilePath.IsEmpty()) {
         if (!m_workspace.Load(workspaceFilePath)) {
-            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+            wxLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
 
         if (!OpenWorkspace()) {
-            asLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
+            wxLogWarning(_("Failed to open the workspace file ") + workspaceFilePath);
         }
     }
 }
@@ -705,14 +705,13 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
                     wxASSERT(layer);
                     m_viewerLayerManager->Add(-1, layer, render, NULL, visibility);
                 } else {
-                    asLogError(
-                            wxString::Format(_("The GIS layer type %s does not correspond to allowed values."), type));
+                    wxLogError(_("The GIS layer type %s does not correspond to allowed values."), type);
                 }
             } else {
-                asLogWarning(wxString::Format(_("The file %s cound not be opened."), path));
+                wxLogWarning(_("The file %s cound not be opened."), path);
             }
         } else {
-            asLogWarning(wxString::Format(_("The file %s cound not be found."), path));
+            wxLogWarning(_("The file %s cound not be found."), path);
         }
     }
 
@@ -790,18 +789,18 @@ void asFrameForecast::LaunchForecastingNow(wxCommandEvent &event)
     wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir() + "atmoswing-forecaster");
 
     if (forecasterPath.IsEmpty()) {
-        asLogError(_("Please set the path to the forecaster in the preferences."));
+        wxLogError(_("Please set the path to the forecaster in the preferences."));
         return;
     }
 
     // Set option
     wxString options = wxString::Format(" -fn -ll 2 -lt file");
     forecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath));
+    wxLogVerbose(_("Sending command: %s"), forecasterPath);
 
     // Create a process
     if (m_processForecast != NULL) {
-        asLogError(_("There is already a running forecast process. Please wait."));
+        wxLogError(_("There is already a running forecast process. Please wait."));
         return;
     }
     m_processForecast = new wxProcess(this);
@@ -814,7 +813,7 @@ void asFrameForecast::LaunchForecastingNow(wxCommandEvent &event)
 
     if (processId == 0) // if wxEXEC_ASYNC
     {
-        asLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
+        wxLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
         wxDELETE(m_processForecast);
         return;
     }
@@ -832,7 +831,7 @@ void asFrameForecast::LaunchForecastingPast(wxCommandEvent &event)
     wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir() + "atmoswing-forecaster");
 
     if (forecasterPath.IsEmpty()) {
-        asLogError(_("Please set the path to the forecaster in the preferences."));
+        wxLogError(_("Please set the path to the forecaster in the preferences."));
         return;
     }
 
@@ -840,11 +839,11 @@ void asFrameForecast::LaunchForecastingPast(wxCommandEvent &event)
     int nbPrevDays = m_workspace.GetTimeSeriesPlotPastDaysNb();
     wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
     forecasterPath.Append(options);
-    asLogMessage(wxString::Format(_("Sending command: %s"), forecasterPath));
+    wxLogVerbose(_("Sending command: %s"), forecasterPath);
 
     // Create a process
     if (m_processForecast != NULL) {
-        asLogError(_("There is already a running forecast process. Please wait."));
+        wxLogError(_("There is already a running forecast process. Please wait."));
         return;
     }
     m_processForecast = new wxProcess(this);
@@ -857,7 +856,7 @@ void asFrameForecast::LaunchForecastingPast(wxCommandEvent &event)
 
     if (processId == 0) // if wxEXEC_ASYNC
     {
-        asLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
+        wxLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
         wxDELETE(m_processForecast);
         return;
     }
@@ -868,7 +867,7 @@ void asFrameForecast::OnForecastProcessTerminate(wxProcessEvent &event)
     m_toolBar->EnableTool(asID_RUN, true);
     m_toolBar->EnableTool(asID_RUN_PREVIOUS, true);
 
-    asLogMessage("The forecast processing is over.");
+    wxLogVerbose("The forecast processing is over.");
 
     if (m_launchedPresentForecast) {
         if (m_forecastManager->GetMethodsNb() > 0) {
@@ -895,7 +894,7 @@ void asFrameForecast::OpenFrameForecaster(wxCommandEvent &event)
     wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir() + "atmoswing-forecaster");
 
     if (forecasterPath.IsEmpty()) {
-        asLogError(_("Please set the path to the forecaster in the preferences."));
+        wxLogError(_("Please set the path to the forecaster in the preferences."));
         return;
     }
 
@@ -904,7 +903,7 @@ void asFrameForecast::OpenFrameForecaster(wxCommandEvent &event)
 
     if (processId == 0) // if wxEXEC_ASYNC
     {
-        asLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
+        wxLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
     }
 }
 
@@ -1038,7 +1037,7 @@ bool asFrameForecast::OpenLayers(const wxArrayString &names)
     // Open files
     for (unsigned int i = 0; i < names.GetCount(); i++) {
         if (!m_layerManager->Open(wxFileName(names.Item(i)))) {
-            asLogError(_("The layer could not be opened."));
+            wxLogError(_("The layer could not be opened."));
             return false;
         }
     }
@@ -1100,7 +1099,7 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event)
     }
 
     if (layersName.IsEmpty()) {
-        asLogError(_("No layer opened, nothing to close."));
+        wxLogError(_("No layer opened, nothing to close."));
 #if defined (__WIN32__)
         m_critSectionViewerLayerManager.Leave();
 #endif
@@ -1176,7 +1175,7 @@ void asFrameForecast::OpenForecastsFromTmpList()
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
     if(!filePaths.Open()) {
-        asLogWarning(_("List of the forecasts not found."));
+        wxLogWarning(_("List of the forecasts not found."));
         return;
     }
     while (!filePaths.EndOfFile()) {
@@ -1198,12 +1197,12 @@ bool asFrameForecast::OpenRecentForecasts()
     wxString forecastsDirectory = m_workspace.GetForecastsDirectory();
 
     if (forecastsDirectory.IsEmpty()) {
-        asLogError("The directory containing the forecasts was not provided.");
+        wxLogError("The directory containing the forecasts was not provided.");
         return false;
     }
 
     if (!wxFileName::DirExists(forecastsDirectory)) {
-        asLogError("The directory that is supposed to contain the forecasts does not exist.");
+        wxLogError("The directory that is supposed to contain the forecasts does not exist.");
         return false;
     }
 
@@ -1229,7 +1228,7 @@ bool asFrameForecast::OpenRecentForecasts()
     // If does not exist, warn the user and return
     if (!fullPath.Exists()) {
         fullPath = wxFileName(basePath);
-        asLogError(wxString::Format(_("No recent forecast was found under %s"), fullPath.GetFullPath()));
+        wxLogError(_("No recent forecast was found under %s"), fullPath.GetFullPath());
         return false;
     }
 
@@ -1244,7 +1243,7 @@ bool asFrameForecast::OpenRecentForecasts()
         wxFileName fileName(files[i]);
         wxString fileDate = fileName.GetFullName().SubString(0, 9);
         if (!fileDate.IsNumber()) {
-            asLogWarning(_("A file with an unconventional name was found in the forecasts directory."));
+            wxLogWarning(_("A file with an unconventional name was found in the forecasts directory."));
             continue;
         }
 
@@ -1268,7 +1267,7 @@ bool asFrameForecast::OpenRecentForecasts()
 
     // Open the forecasts
     if (!OpenForecast(recentFiles)) {
-        asLogError(_("Failed to open the forecasts."));
+        wxLogError(_("Failed to open the forecasts."));
         return false;
     }
 
@@ -1302,7 +1301,7 @@ void asFrameForecast::SwitchForecast(double increment)
     wxBusyCursor wait;
 
     if (m_forecastManager->GetMethodsNb() == 0) {
-        asLogError("There is no opened forecast.");
+        wxLogError("There is no opened forecast.");
         return;
     }
 
@@ -1321,7 +1320,7 @@ void asFrameForecast::SwitchForecast(double increment)
     wxString forecastsBaseDirectory = forecastFileName.GetPath();
 
     if (!wxFileName::DirExists(forecastsBaseDirectory)) {
-        asLogError("The directory that is supposed to contain the forecasts does not exist.");
+        wxLogError("The directory that is supposed to contain the forecasts does not exist.");
         return;
     }
 
@@ -1351,7 +1350,7 @@ void asFrameForecast::SwitchForecast(double increment)
             break;
 
         if (i == 99) {
-            asLogError(wxString::Format(_("No previous/next forecast was found under %s"), fullPath.GetFullPath()));
+            wxLogError(_("No previous/next forecast was found under %s"), fullPath.GetFullPath());
             return;
         }
     }
@@ -1374,7 +1373,7 @@ void asFrameForecast::SwitchForecast(double increment)
     // Open the forecasts
     m_forecastManager->ClearForecasts();
     if (!OpenForecast(accurateFiles)) {
-        asLogError(_("Failed to open the forecasts."));
+        wxLogError(_("Failed to open the forecasts."));
         return;
     }
 
@@ -1447,7 +1446,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
 
         bool successOpen = m_forecastManager->Open(names.Item(i), doRefresh);
         if (!successOpen) {
-            asLogError(wxString::Format(_("The forecast file %d could not be opened (%s)."), i, names.Item(i)));
+            wxLogError(_("The forecast file %d could not be opened (%s)."), i, names.Item(i));
 #if defined (__WIN32__)
             m_critSectionViewerLayerManager.Leave();
 #endif
@@ -1563,7 +1562,7 @@ void asFrameForecast::FitExtentToForecasts()
         // Force new extent
         m_viewerLayerManager->InitializeExtent(extent);
     } else {
-        asLogError(_("The forecasts layer was not found."));
+        wxLogError(_("The forecasts layer was not found."));
     }
 
     ReloadViewerLayerManager();
@@ -1576,14 +1575,14 @@ void asFrameForecast::OnMoveLayer(wxCommandEvent &event)
 
     // Check than more than 1 layer
     if (m_viewerLayerManager->GetCount() <= 1) {
-        asLogError(_("Moving layer not possible with less than 2 layers"));
+        wxLogError(_("Moving layer not possible with less than 2 layers"));
         return;
     }
 
     // Get selection
     int iOldPos = m_panelSidebarGisLayers->GetTocCtrl()->GetSelection();
     if (iOldPos == wxNOT_FOUND) {
-        asLogError(_("No layer selected, select a layer first"));
+        wxLogError(_("No layer selected, select a layer first"));
         return;
     }
 
@@ -1741,7 +1740,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
                 layer->SetSelectedIDs(station);
 
             } else {
-                asLogError(_("The desired layer was not found."));
+                wxLogError(_("The desired layer was not found."));
             }
 
             ReloadViewerLayerManager();
@@ -1755,8 +1754,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
         wxPoint movedPos = msg->m_position;
         wxPoint2DDouble movedRealPt;
         if (!coord->ConvertFromPixels(movedPos, movedRealPt)) {
-            asLogError(
-                    wxString::Format(_("Error converting point : %d, %d to real coordinate"), movedPos.x, movedPos.y));
+            wxLogError(_("Error converting point : %d, %d to real coordinate"), movedPos.x, movedPos.y);
             wxDELETE(msg);
             return;
         }
@@ -1766,7 +1764,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
         coord->SetExtent(actExtent);
         ReloadViewerLayerManager();
     } else {
-        asLogError(_("Operation not supported now. Please contact the developers."));
+        wxLogError(_("Operation not supported now. Please contact the developers."));
     }
 
     wxDELETE(msg);

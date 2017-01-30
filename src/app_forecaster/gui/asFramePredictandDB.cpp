@@ -138,22 +138,22 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         // Get paths
         wxString catalogFilePath = m_filePickerCatalogPath->GetPath();
         if (catalogFilePath.IsEmpty()) {
-            asLogError(_("The given path for the predictand catalog is empty."));
+            wxLogError(_("The given path for the predictand catalog is empty."));
             return;
         }
         wxString pathDataDir = m_dirPickerDataDir->GetPath();
         if (pathDataDir.IsEmpty()) {
-            asLogError(_("The given path for the data directory is empty."));
+            wxLogError(_("The given path for the data directory is empty."));
             return;
         }
         wxString pathDestinationDir = m_dirPickerDestinationDir->GetPath();
         if (pathDestinationDir.IsEmpty()) {
-            asLogError(_("The given path for the output destination is empty."));
+            wxLogError(_("The given path for the output destination is empty."));
             return;
         }
         wxString pathPatternsDir = m_dirPickerPatternsDir->GetPath();
         if (pathPatternsDir.IsEmpty()) {
-            asLogError(_("The given path for the patterns directory is empty."));
+            wxLogError(_("The given path for the patterns directory is empty."));
             return;
         }
 
@@ -161,7 +161,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         asDataPredictand::TemporalResolution temporalResolution = asDataPredictand::Daily;
         switch (m_choiceDataTempResol->GetSelection()) {
             case wxNOT_FOUND: {
-                asLogError(_("Wrong selection of the temporal resolution option."));
+                wxLogError(_("Wrong selection of the temporal resolution option."));
                 break;
             }
             case 0: // 24 hours
@@ -180,14 +180,14 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 break;
             }
             default:
-                asLogError(_("Wrong selection of the temporal resolution option."));
+                wxLogError(_("Wrong selection of the temporal resolution option."));
         }
 
         // Get temporal resolution
         asDataPredictand::SpatialAggregation spatialAggregation = asDataPredictand::Station;
         switch (m_choiceDataSpatAggreg->GetSelection()) {
             case wxNOT_FOUND: {
-                asLogError(_("Wrong selection of the spatial aggregation option."));
+                wxLogError(_("Wrong selection of the spatial aggregation option."));
                 break;
             }
             case 0: // Station
@@ -206,13 +206,13 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 break;
             }
             default:
-                asLogError(_("Wrong selection of the spatial aggregation option."));
+                wxLogError(_("Wrong selection of the spatial aggregation option."));
         }
 
         // Get data parameter
         switch (m_choiceDataParam->GetSelection()) {
             case wxNOT_FOUND: {
-                asLogError(_("Wrong selection of the data parameter option."));
+                wxLogError(_("Wrong selection of the data parameter option."));
                 break;
             }
             case 0: // Precipitation
@@ -224,7 +224,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                     wxString valReturnPeriodString = m_textCtrlReturnPeriod->GetValue();
                     valReturnPeriodString.ToDouble(&valReturnPeriod);
                     if ((valReturnPeriod < 1) | (valReturnPeriod > 1000)) {
-                        asLogError(_("The given return period is not consistent."));
+                        wxLogError(_("The given return period is not consistent."));
                         return;
                     }
                 }
@@ -257,16 +257,16 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 3: // Other
             {
-                asLogError(_("Generic predictand database not yet implemented."));
+                wxLogError(_("Generic predictand database not yet implemented."));
                 break;
             }
             default:
-                asLogError(_("Wrong selection of the data parameter option."));
+                wxLogError(_("Wrong selection of the data parameter option."));
         }
     } catch (asException &e) {
         wxString fullMessage = e.GetFullMessage();
         if (!fullMessage.IsEmpty()) {
-            asLogError(fullMessage);
+            wxLogError(fullMessage);
         }
     }
 }

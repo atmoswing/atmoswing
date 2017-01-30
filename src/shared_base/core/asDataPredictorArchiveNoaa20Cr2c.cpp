@@ -80,8 +80,8 @@ bool asDataPredictorArchiveNoaa20Cr2c::Init()
             m_fileVariableName = "hgt";
             m_unit = m;
         } else if (m_dataId.IsSameAs("omega", false)) {
-            m_parameter = Omega;
-            m_parameterName = "Omega (Vertical Velocity)";
+            m_parameter = VerticalVelocity;
+            m_parameterName = "Vertical velocity";
             m_fileVariableName = "omega";
             m_unit = Pa_s;
         } else if (m_dataId.IsSameAs("rhum", false)) {
@@ -110,21 +110,62 @@ bool asDataPredictorArchiveNoaa20Cr2c::Init()
         }
         m_fileNamePattern = m_fileVariableName + ".%d.nc";
 
+    } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
+               m_product.IsSameAs("monolevel", false)) {
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "monolevel";
+        m_xAxisStep = 2;
+        m_yAxisStep = 2;
+        if (m_dataId.IsSameAs("prwtr", false)) {
+            m_parameter = PrecipitableWater;
+            m_parameterName = "Precipitable water";
+            m_fileNamePattern = "pr_wtr.eatm.%d.nc";
+            m_fileVariableName = "pr_wtr";
+            m_unit = mm;
+        } else if (m_dataId.IsSameAs("mslp", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Sea level pressure";
+            m_fileNamePattern = "prmsl.%d.nc";
+            m_fileVariableName = "prmsl";
+            m_unit = Pa;
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+
+    } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gauss", false) ||
+               m_product.IsSameAs("gaussian", false) || m_product.IsSameAs("flux", false)) {
+        m_fileStructure.hasLevelDimension = false;
+        m_subFolder = "gaussian";
+        m_xAxisStep = NaNFloat;
+        m_yAxisStep = NaNFloat;
+        if (m_dataId.IsSameAs("prate", false)) {
+            m_parameter = PrecipitationRate;
+            m_parameterName = "Precipitation rate";
+            m_fileNamePattern = "prate.%d.nc";
+            m_fileVariableName = "prate";
+            m_unit = kg_m2_s;
+            m_subFolder.Append(DS + "monolevel");
+        } else {
+            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                              m_dataId, m_product));
+        }
+
     } else {
         asThrowException(_("Product type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        asLogError(wxString::Format(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        asLogError(wxString::Format(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                                    m_dataId, m_datasetName));
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -138,7 +179,7 @@ VectorString asDataPredictorArchiveNoaa20Cr2c::GetListOfFiles(asTimeArray &timeA
 {
     VectorString files;
 
-    for (int i_year = timeArray.GetFirstDayYear(); i_year <= timeArray.GetLastDayYear(); i_year++) {
+    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
         files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, i_year));
     }
 
