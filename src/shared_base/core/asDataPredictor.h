@@ -51,10 +51,11 @@ public:
         GeopotentialHeight,
         Geopotential,
         PrecipitableWater,
+        Precipitation,
         PrecipitationRate,
         RelativeHumidity,
         SpecificHumidity,
-        Omega,
+        VerticalVelocity,
         Wind,
         Uwind,
         Vwind,
@@ -75,7 +76,8 @@ public:
 
     enum Unit
     {
-        nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2, m2_s2, degKm2_kg_s
+        unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2,
+        m2_s2, degKm2_kg_s, mm_d
     };
 
     asDataPredictor(const wxString &dataId);
@@ -92,7 +94,7 @@ public:
 
     void CheckLevelTypeIsDefined();
 
-    bool CheckFilesPresence(const VectorString &filesList);
+    bool CheckFilesPresence(VectorString &filesList);
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
 
@@ -273,6 +275,11 @@ public:
         return m_yAxisShift;
     }
 
+    void SetTimeStepHours(double val)
+    {
+        m_timeStepHours = val;
+    }
+
 protected:
     struct FileStructure
     {
@@ -395,6 +402,8 @@ protected:
     asGeoAreaCompositeGrid *CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
 
     asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, VVArray2DFloat &compositeData);
+
+    void AssignGribCode(const int arr[]);
 
 private:
     wxString m_directoryPath;
