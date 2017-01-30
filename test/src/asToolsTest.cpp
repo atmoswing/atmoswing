@@ -1168,7 +1168,7 @@ TEST(Tools, SortedArraySearchFloorDoubleAscOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[9];
     double targetvalue = 1000;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1218,7 +1218,7 @@ TEST(Tools, SortedArraySearchFloorDoubleDescOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[9];
     double targetvalue = -1.23;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1238,7 +1238,7 @@ TEST(Tools, SortedArraySearchFloorDoubleUniqueValOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[0];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1258,7 +1258,7 @@ TEST(Tools, SortedArraySearchFloorDoubleArraySameValOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[3];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1308,7 +1308,7 @@ TEST(Tools, SortedArraySearchCeilDoubleAscOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[9];
     double targetvalue = 1000;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1358,7 +1358,7 @@ TEST(Tools, SortedArraySearchCeilDoubleDescOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[9];
     double targetvalue = -1.23;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1378,7 +1378,7 @@ TEST(Tools, SortedArraySearchCeilDoubleUniqueValOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[0];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
@@ -1398,7 +1398,7 @@ TEST(Tools, SortedArraySearchCeilDoubleArraySameValOutofRange)
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[3];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, Result);
 }
 
