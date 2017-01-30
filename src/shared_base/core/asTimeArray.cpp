@@ -73,7 +73,7 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, const w
                slctModeString.CmpNoCase("PredictandThresholds") == 0) {
         m_mode = PredictandThresholds;
     } else {
-        asLogError(wxString::Format(_("Time array mode not correctly defined (%s)!"), slctModeString));
+        wxLogError(_("Time array mode not correctly defined (%s)!"), slctModeString);
     }
 
     // Get values
@@ -163,7 +163,7 @@ bool asTimeArray::Init()
         case SingleDay: {
             int year = GetYear(m_start);
             if (IsYearForbidden(year)) {
-                asLogError(_("The given date "));
+                wxLogError(_("The given date "));
             }
             m_timeArray.resize(1);
             m_timeArray[0] = m_start;
@@ -172,7 +172,7 @@ bool asTimeArray::Init()
         case Simple: {
             m_timeArray.resize(0);
             if (!BuildArraySimple()) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -181,7 +181,7 @@ bool asTimeArray::Init()
             m_timeArray.resize(0);
             double forecastdate = 51544; //01.01.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -190,7 +190,7 @@ bool asTimeArray::Init()
             m_timeArray.resize(0);
             double forecastdate = 51635; //01.04.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -199,7 +199,7 @@ bool asTimeArray::Init()
             m_timeArray.resize(0);
             double forecastdate = 51726; //01.07.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -208,7 +208,7 @@ bool asTimeArray::Init()
             m_timeArray.resize(0);
             double forecastdate = 51818; //01.10.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -218,7 +218,7 @@ bool asTimeArray::Init()
             break;
         }
         default: {
-            asLogError(_("The time array mode is not correctly set"));
+            wxLogError(_("The time array mode is not correctly set"));
             return false;
         }
     }
@@ -241,7 +241,7 @@ bool asTimeArray::Init(double forecastdate, double exclusiondays)
     m_exclusionDays = exclusiondays;
 
     if (!BuildArraySeasons(forecastdate)) {
-        asLogError(_("Time array creation failed"));
+        wxLogError(_("Time array creation failed"));
         return false;
     }
 
@@ -265,7 +265,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
     m_exclusionDays = exclusiondays;
 
     if (!BuildArrayDaysInterval(forecastdate)) {
-        asLogError(_("Time array creation failed"));
+        wxLogError(_("Time array creation failed"));
         return false;
     }
 
@@ -281,12 +281,12 @@ bool asTimeArray::Init(asDataPredictand &predictand, const wxString &serieName, 
 
     wxASSERT(m_mode == PredictandThresholds);
     if (m_mode != PredictandThresholds) {
-        asLogError(_("The time array mode is not correctly set"));
+        wxLogError(_("The time array mode is not correctly set"));
         return false;
     }
 
     if (!BuildArrayPredictandThresholds(predictand, serieName, stationId, minThreshold, maxThreshold)) {
-        asLogError(_("Time array creation failed"));
+        wxLogError(_("Time array creation failed"));
         return false;
     }
 
@@ -305,7 +305,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
     switch (m_mode) {
         case Simple: {
             if (!BuildArraySimple()) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -313,7 +313,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         case SeasonDJF: {
             forecastdate = 51544; //01.01.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -321,7 +321,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         case SeasonMAM: {
             forecastdate = 51635; //01.04.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -329,7 +329,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         case SeasonJJA: {
             forecastdate = 51726; //01.07.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -337,7 +337,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
         case SeasonSON: {
             forecastdate = 51818; //01.10.2000
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -347,7 +347,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
             wxASSERT(forecastdate < 88069); // Before 2100
             m_exclusionDays = exclusiondays;
             if (!BuildArraySeasons(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
@@ -358,20 +358,20 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
             m_intervalDays = intervaldays;
             m_exclusionDays = exclusiondays;
             if (!BuildArrayDaysInterval(forecastdate)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
         }
         case PredictandThresholds: {
             if (!BuildArrayPredictandThresholds(predictand, serieName, stationId, minThreshold, maxThreshold)) {
-                asLogError(_("Time array creation failed"));
+                wxLogError(_("Time array creation failed"));
                 return false;
             }
             break;
         }
         default: {
-            asLogError(_("The time array mode is not correctly set"));
+            wxLogError(_("The time array mode is not correctly set"));
             return false;
         }
     }
@@ -709,7 +709,7 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
 {
     // Build a simple array for reference
     if (!BuildArraySimple()) {
-        asLogError(_("Time array creation failed"));
+        wxLogError(_("Time array creation failed"));
     }
 
     // Get the time arrays
@@ -724,7 +724,7 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     } else if (serieName.IsSameAs("DataGross")) {
         predictandData = predictand.GetDataGrossStation(stationId);
     } else {
-        asLogError(_("The predictand serie is not correctly defined in the time array construction."));
+        wxLogError(_("The predictand serie is not correctly defined in the time array construction."));
         return false;
     }
 
@@ -755,24 +755,22 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
             } else {
                 if (HasForbiddenYears()) {
                     if (!IsYearForbidden(GetYear(predictandTimeArray[i]))) {
-                        asLogWarning(wxString::Format(
-                                _("The day %s was not considered in the timearray due to difference in hours with %s."),
-                                asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm"),
-                                asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm")));
+                        wxLogWarning(_("The day %s was not considered in the timearray due to difference in hours with %s."),
+                                     asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm"),
+                                     asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm"));
                     }
                 } else {
-                    asLogWarning(wxString::Format(
-                            _("The day %s was not considered in the timearray due to difference in hours with %s."),
-                            asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm"),
-                            asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm")));
+                    wxLogWarning(_("The day %s was not considered in the timearray due to difference in hours with %s."),
+                                 asTime::GetStringTime(fullTimeArray[rowTimeArray], "DD.MM.YYYY hh:mm"),
+                                 asTime::GetStringTime(predictandTimeArray[i], "DD.MM.YYYY hh:mm"));
                 }
             }
         }
     }
-    asLogMessage(wxString::Format(_("%d days were in the precipitation range and %d were not."), counter, countOut));
+    wxLogVerbose(_("%d days were in the precipitation range and %d were not."), counter, countOut);
 
     if (counter == 0) {
-        asLogError(_("The selection of the dates on the predictand threshold is empty!"));
+        wxLogError(_("The selection of the dates on the predictand threshold is empty!"));
         return false;
     }
 
@@ -783,16 +781,35 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     return true;
 }
 
+int asTimeArray::GetClosestIndex(double date) const
+{
+    wxASSERT(m_initialized);
+
+    if (date - 0.00001 > m_end || date + 0.00001 < m_start) { // Add a second for precision issues
+        wxLogWarning(_("Trying to get a date outside of the time array."));
+        return NaNInt;
+    }
+
+    int index = asTools::SortedArraySearchClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+
+    if (index == asOUT_OF_RANGE)
+        return 0;
+
+    return index;
+}
+
 int asTimeArray::GetIndexFirstAfter(double date) const
 {
     wxASSERT(m_initialized);
 
-    if (date > m_end) {
-        asLogWarning(_("Trying to get a date outside of the time array."));
+    double tolerance = 0.00001;
+
+    if (date - tolerance > m_end) { // Add a second for precision issues
+        wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNInt;
     }
 
-    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -804,12 +821,14 @@ int asTimeArray::GetIndexFirstBefore(double date) const
 {
     wxASSERT(m_initialized);
 
-    if (date < m_start) {
-        asLogWarning(_("Trying to get a date outside of the time array."));
+    double tolerance = 0.00001;
+
+    if (date + tolerance < m_start) { // Add a second for precision issues
+        wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNInt;
     }
 
-    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return GetSize() - 1;
@@ -834,9 +853,9 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart,
+        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
                                                         asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd,
+        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
                                                        asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
@@ -849,7 +868,7 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
                 flags.segment(0, indexEnd + 1).setOnes();
             } else {
-                asLogWarning(_("The given year to remove fall outside of the time array."));
+                wxLogWarning(_("The given year to remove fall outside of the time array."));
             }
         }
     }
@@ -887,9 +906,9 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart,
+        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
                                                         asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd,
+        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
                                                        asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
@@ -902,7 +921,7 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
                 flags.segment(0, indexEnd + 1).setOnes();
             } else {
-                asLogWarning(_("The given year to remove fall outside of the time array."));
+                wxLogWarning(_("The given year to remove fall outside of the time array."));
             }
         }
     }
