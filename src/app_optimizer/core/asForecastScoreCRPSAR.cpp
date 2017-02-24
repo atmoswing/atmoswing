@@ -95,16 +95,16 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
                 // Left of the observed value
                 if (x[i + 1] <= x0) {
                     // Next value also left side of observed value
-                    CRPS += (x[i + 1] - x[i]) * (Fx[i] ^ 2 + Fx[i + 1] ^ 2) / 2;
+                    CRPS += (x[i + 1] - x[i]) * (Fx[i] * Fx[i] + Fx[i + 1] * Fx[i + 1]) / 2;
                 } else {
                     // Observation in between 2 values
                     float F0 = (Fx[i + 1] - Fx[i]) * (x0 - x[i]) / (x[i + 1] - x[i]) + Fx[i];
-                    CRPS += (x0 - x[i]) * (F0 ^ 2 + Fx[i] ^ 2) / 2;
-                    CRPS += (x[i + 1] - x0) * ((F0 - 1) ^ 2 + (Fx[i + 1] - 1) ^ 2) / 2;
+                    CRPS += (x0 - x[i]) * (F0 * F0 + Fx[i] * Fx[i]) / 2;
+                    CRPS += (x[i + 1] - x0) * ((F0 - 1) * (F0 - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
                 }
             } else {
                 // Right of the observed value
-                CRPS += (x[i + 1] - x[i]) * ((Fx[i] - 1) ^ 2 + (Fx[i + 1] - 1) ^ 2) / 2;
+                CRPS += (x[i + 1] - x[i]) * ((Fx[i] - 1) * (Fx[i] - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
             }
         }
     }
