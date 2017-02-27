@@ -39,7 +39,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_staticTextMethod->Wrap( -1 );
 	bSizer5->Add( m_staticTextMethod, 0, wxALL, 5 );
 	
-	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Evaluate all scores"), _("Only predictand values") };
+	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Genetic algorithms"), _("Evaluate all scores"), _("Only predictand values") };
 	int m_choiceMethodNChoices = sizeof( m_choiceMethodChoices ) / sizeof( wxString );
 	m_choiceMethod = new wxChoice( m_panelControls, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodNChoices, m_choiceMethodChoices, 0 );
 	m_choiceMethod->SetSelection( 0 );
@@ -76,10 +76,101 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_checkBoxParallelEvaluations = new wxCheckBox( m_panelControls, wxID_ANY, _("Parallel evaluations when possible (competes with multithreading in the processor)"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer5->Add( m_checkBoxParallelEvaluations, 0, wxALL, 5 );
 	
+	wxBoxSizer* bSizer131;
+	bSizer131 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxStaticBoxSizer* sbSizer8;
+	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( m_panelControls, wxID_ANY, _("Intermediate results saving options") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer141;
+	bSizer141 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticTextSaveAnalogDates = new wxStaticText( m_panelControls, wxID_ANY, _("Analog dates steps:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextSaveAnalogDates->Wrap( -1 );
+	bSizer141->Add( m_staticTextSaveAnalogDates, 0, wxALL, 5 );
+	
+	m_checkBoxSaveAnalogDatesStep1 = new wxCheckBox( m_panelControls, wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer141->Add( m_checkBoxSaveAnalogDatesStep1, 0, wxALL, 5 );
+	
+	m_checkBoxSaveAnalogDatesStep2 = new wxCheckBox( m_panelControls, wxID_ANY, _("2"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer141->Add( m_checkBoxSaveAnalogDatesStep2, 0, wxALL, 5 );
+	
+	m_checkBoxSaveAnalogDatesStep3 = new wxCheckBox( m_panelControls, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer141->Add( m_checkBoxSaveAnalogDatesStep3, 0, wxALL, 5 );
+	
+	m_checkBoxSaveAnalogDatesStep4 = new wxCheckBox( m_panelControls, wxID_ANY, _("4"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer141->Add( m_checkBoxSaveAnalogDatesStep4, 0, wxALL, 5 );
+	
+	
+	sbSizer8->Add( bSizer141, 0, wxEXPAND, 5 );
+	
+	m_checkBoxSaveAnalogDatesAllSteps = new wxCheckBox( m_panelControls, wxID_ANY, _("All analog dates steps (overwrite previous)"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer8->Add( m_checkBoxSaveAnalogDatesAllSteps, 0, wxALL, 5 );
+	
+	m_checkBoxSaveAnalogValues = new wxCheckBox( m_panelControls, wxID_ANY, _("Analog values"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer8->Add( m_checkBoxSaveAnalogValues, 0, wxALL, 5 );
+	
+	m_checkBoxSaveForecastScores = new wxCheckBox( m_panelControls, wxID_ANY, _("Forecast scores"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer8->Add( m_checkBoxSaveForecastScores, 0, wxALL, 5 );
+	
+	m_checkBoxSaveFinalForecastScore = new wxCheckBox( m_panelControls, wxID_ANY, _("Final forecast score"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer8->Add( m_checkBoxSaveFinalForecastScore, 0, wxALL, 5 );
+	
+	m_staticText60 = new wxStaticText( m_panelControls, wxID_ANY, _("Options are always desactivated at initialization !"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText60->Wrap( -1 );
+	sbSizer8->Add( m_staticText60, 0, wxALL, 5 );
+	
+	
+	bSizer131->Add( sbSizer8, 1, wxEXPAND|wxALL, 5 );
+	
+	wxStaticBoxSizer* sbSizer81;
+	sbSizer81 = new wxStaticBoxSizer( new wxStaticBox( m_panelControls, wxID_ANY, _("Intermediate results loading options") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer1411;
+	bSizer1411 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticTextLoadAnalogDates = new wxStaticText( m_panelControls, wxID_ANY, _("Analog dates steps:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextLoadAnalogDates->Wrap( -1 );
+	bSizer1411->Add( m_staticTextLoadAnalogDates, 0, wxALL, 5 );
+	
+	m_checkBoxLoadAnalogDatesStep1 = new wxCheckBox( m_panelControls, wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1411->Add( m_checkBoxLoadAnalogDatesStep1, 0, wxALL, 5 );
+	
+	m_checkBoxLoadAnalogDatesStep2 = new wxCheckBox( m_panelControls, wxID_ANY, _("2"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1411->Add( m_checkBoxLoadAnalogDatesStep2, 0, wxALL, 5 );
+	
+	m_checkBoxLoadAnalogDatesStep3 = new wxCheckBox( m_panelControls, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1411->Add( m_checkBoxLoadAnalogDatesStep3, 0, wxALL, 5 );
+	
+	m_checkBoxLoadAnalogDatesStep4 = new wxCheckBox( m_panelControls, wxID_ANY, _("4"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer1411->Add( m_checkBoxLoadAnalogDatesStep4, 0, wxALL, 5 );
+	
+	
+	sbSizer81->Add( bSizer1411, 0, wxEXPAND, 5 );
+	
+	m_checkBoxLoadAnalogDatesAllSteps = new wxCheckBox( m_panelControls, wxID_ANY, _("All analog dates steps (overwrite previous)"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer81->Add( m_checkBoxLoadAnalogDatesAllSteps, 0, wxALL, 5 );
+	
+	m_checkBoxLoadAnalogValues = new wxCheckBox( m_panelControls, wxID_ANY, _("Analog values"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer81->Add( m_checkBoxLoadAnalogValues, 0, wxALL, 5 );
+	
+	m_checkBoxLoadForecastScores = new wxCheckBox( m_panelControls, wxID_ANY, _("Forecast scores"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer81->Add( m_checkBoxLoadForecastScores, 0, wxALL, 5 );
+	
+	m_staticText61 = new wxStaticText( m_panelControls, wxID_ANY, _("Options are always desactivated at initialization !"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText61->Wrap( -1 );
+	sbSizer81->Add( m_staticText61, 0, wxALL, 5 );
+	
+	
+	bSizer131->Add( sbSizer81, 1, wxEXPAND|wxALL, 5 );
+	
+	
+	bSizer5->Add( bSizer131, 1, wxEXPAND, 5 );
+	
 	wxBoxSizer* bSizer23;
 	bSizer23 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticTextStateLabel = new wxStaticText( m_panelControls, wxID_ANY, _("Calibration state: "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextStateLabel = new wxStaticText( m_panelControls, wxID_ANY, _("Optimizer state: "), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextStateLabel->Wrap( -1 );
 	m_staticTextStateLabel->Hide();
 	
@@ -118,35 +209,35 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->SetFlexibleDirection( wxBOTH );
 	fgSizer21->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticTextClassicPlusStepsLonPertinenceMap = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Multiple of the steps in lon for pertinence map"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextClassicPlusStepsLonPertinenceMap = new wxStaticText( m_panelSingle, wxID_ANY, _("Multiple of the steps in lon for pertinence map"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextClassicPlusStepsLonPertinenceMap->Wrap( -1 );
 	fgSizer21->Add( m_staticTextClassicPlusStepsLonPertinenceMap, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusStepsLonPertinenceMap = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	fgSizer21->Add( m_textCtrlClassicPlusStepsLonPertinenceMap, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextClassicPlusStepsLatPertinenceMap = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Multiple of the steps in lat for pertinence map"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextClassicPlusStepsLatPertinenceMap = new wxStaticText( m_panelSingle, wxID_ANY, _("Multiple of the steps in lat for pertinence map"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextClassicPlusStepsLatPertinenceMap->Wrap( -1 );
 	fgSizer21->Add( m_staticTextClassicPlusStepsLatPertinenceMap, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusStepsLatPertinenceMap = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	fgSizer21->Add( m_textCtrlClassicPlusStepsLatPertinenceMap, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextClassicPlusResizingIterations = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Iterations in final resizing attempts"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextClassicPlusResizingIterations = new wxStaticText( m_panelSingle, wxID_ANY, _("Iterations in final resizing attempts"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextClassicPlusResizingIterations->Wrap( -1 );
 	fgSizer21->Add( m_staticTextClassicPlusResizingIterations, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusResizingIterations = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
 	fgSizer21->Add( m_textCtrlClassicPlusResizingIterations, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_checkBoxProceedSequentially = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, _("Proceed sequentially (standard)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxProceedSequentially = new wxCheckBox( m_panelSingle, wxID_ANY, _("Proceed sequentially (standard)"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer21->Add( m_checkBoxProceedSequentially, 0, wxALL, 5 );
 	
-	m_staticTextSpacer = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextSpacer = new wxStaticText( m_panelSingle, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextSpacer->Wrap( -1 );
 	fgSizer21->Add( m_staticTextSpacer, 0, wxALL, 5 );
 	
-	m_checkBoxClassicPlusResize = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, _("Resize the spatial windows separately"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxClassicPlusResize = new wxCheckBox( m_panelSingle, wxID_ANY, _("Resize the spatial windows separately"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxClassicPlusResize->Enable( false );
 	
 	fgSizer21->Add( m_checkBoxClassicPlusResize, 0, wxALL, 5 );
@@ -160,11 +251,11 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	wxStaticBoxSizer* sbSizer9;
 	sbSizer9 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("No option for") ), wxVERTICAL );
 	
-	m_staticText66 = new wxStaticText( sbSizer9->GetStaticBox(), wxID_ANY, _("Single assessment"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText66 = new wxStaticText( m_panelSingle, wxID_ANY, _("Single assessment"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText66->Wrap( -1 );
 	sbSizer9->Add( m_staticText66, 0, wxALL, 5 );
 	
-	m_staticText67 = new wxStaticText( sbSizer9->GetStaticBox(), wxID_ANY, _("Classic calibration"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText67 = new wxStaticText( m_panelSingle, wxID_ANY, _("Classic calibration"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText67->Wrap( -1 );
 	sbSizer9->Add( m_staticText67, 0, wxALL, 5 );
 	
@@ -174,7 +265,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	wxStaticBoxSizer* sbSizer12;
 	sbSizer12 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Monte-Carlo") ), wxVERTICAL );
 	
-	m_staticTextMonteCarloRandomNb = new wxStaticText( sbSizer12->GetStaticBox(), wxID_ANY, _("Number of random param. sets"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextMonteCarloRandomNb = new wxStaticText( m_panelSingle, wxID_ANY, _("Number of random param. sets"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextMonteCarloRandomNb->Wrap( -1 );
 	sbSizer12->Add( m_staticTextMonteCarloRandomNb, 0, wxALL, 5 );
 	
@@ -187,7 +278,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	wxStaticBoxSizer* sbSizer91;
 	sbSizer91 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Variables exploration") ), wxVERTICAL );
 	
-	m_staticTextVarExploStepToExplore = new wxStaticText( sbSizer91->GetStaticBox(), wxID_ANY, _("Step to explore (0-based)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextVarExploStepToExplore = new wxStaticText( m_panelSingle, wxID_ANY, _("Step to explore (0-based)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextVarExploStepToExplore->Wrap( -1 );
 	sbSizer91->Add( m_staticTextVarExploStepToExplore, 0, wxALL, 5 );
 	
@@ -198,37 +289,447 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer3->Add( sbSizer91, 1, wxEXPAND|wxALL, 5 );
 	
 	
-	m_panelSingle->SetSizer( fgSizer3 );
-	m_panelSingle->Layout();
-	fgSizer3->Fit( m_panelSingle );
-	m_notebookOptions->AddPage( m_panelSingle, _("Calibration"), false );
+	m_PanelSingle->SetSizer( fgSizer3 );
+	m_PanelSingle->Layout();
+	fgSizer3->Fit( m_PanelSingle );
+	m_NotebookOptions->AddPage( m_PanelSingle, _("Optimizer"), true );
+	m_PanelGeneticAlgoritms = new wxPanel( m_NotebookOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer111;
+	bSizer111 = new wxBoxSizer( wxVERTICAL );
 	
-	bSizer28->Add( m_notebookOptions, 1, wxEXPAND | wxALL, 5 );
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneticAlgoritms, wxID_ANY, _("Operators") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer11;
+	fgSizer11 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer11->SetFlexibleDirection( wxBOTH );
+	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsNaturalSelectionOperator = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Natural selection"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsNaturalSelectionOperator->Wrap( -1 );
+	fgSizer11->Add( m_StaticTextGAsNaturalSelectionOperator, 0, wxALL, 5 );
+	
+	wxString m_ChoiceGAsNaturalSelectionOperatorChoices[] = { _("Ratio elitism"), _("Tournament") };
+	int m_ChoiceGAsNaturalSelectionOperatorNChoices = sizeof( m_ChoiceGAsNaturalSelectionOperatorChoices ) / sizeof( wxString );
+	m_ChoiceGAsNaturalSelectionOperator = new wxChoice( m_PanelGeneticAlgoritms, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceGAsNaturalSelectionOperatorNChoices, m_ChoiceGAsNaturalSelectionOperatorChoices, 0 );
+	m_ChoiceGAsNaturalSelectionOperator->SetSelection( 0 );
+	fgSizer11->Add( m_ChoiceGAsNaturalSelectionOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGAsCouplesSelectionOperator = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Couples selection"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCouplesSelectionOperator->Wrap( -1 );
+	fgSizer11->Add( m_StaticTextGAsCouplesSelectionOperator, 0, wxALL, 5 );
+	
+	wxString m_ChoiceGAsCouplesSelectionOperatorChoices[] = { _("Rank pairing"), _("Randomly"), _("Roulette wheel on rank"), _("Roulette wheel on score"), _("Tournament") };
+	int m_ChoiceGAsCouplesSelectionOperatorNChoices = sizeof( m_ChoiceGAsCouplesSelectionOperatorChoices ) / sizeof( wxString );
+	m_ChoiceGAsCouplesSelectionOperator = new wxChoice( m_PanelGeneticAlgoritms, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceGAsCouplesSelectionOperatorNChoices, m_ChoiceGAsCouplesSelectionOperatorChoices, 0 );
+	m_ChoiceGAsCouplesSelectionOperator->SetSelection( 0 );
+	fgSizer11->Add( m_ChoiceGAsCouplesSelectionOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGAsCrossoverOperator = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Crossover"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverOperator->Wrap( -1 );
+	fgSizer11->Add( m_StaticTextGAsCrossoverOperator, 0, wxALL, 5 );
+	
+	wxString m_ChoiceGAsCrossoverOperatorChoices[] = { _("Single point crossover"), _("Double points crossover"), _("Multiple points crossover"), _("Uniform crossover"), _("Limited blending"), _("Linear crossover"), _("Heuristic crossover"), _("Binary-like crossover"), _("Linear interpolation"), _("Free interpolation") };
+	int m_ChoiceGAsCrossoverOperatorNChoices = sizeof( m_ChoiceGAsCrossoverOperatorChoices ) / sizeof( wxString );
+	m_ChoiceGAsCrossoverOperator = new wxChoice( m_PanelGeneticAlgoritms, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceGAsCrossoverOperatorNChoices, m_ChoiceGAsCrossoverOperatorChoices, 0 );
+	m_ChoiceGAsCrossoverOperator->SetSelection( 0 );
+	fgSizer11->Add( m_ChoiceGAsCrossoverOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	m_StaticTextGAsMutationOperator = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Mutation"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationOperator->Wrap( -1 );
+	fgSizer11->Add( m_StaticTextGAsMutationOperator, 0, wxALL, 5 );
+	
+	wxString m_ChoiceGAsMutationOperatorChoices[] = { _("Uniform constant"), _("Uniform variable"), _("Normal constant"), _("Normal variable"), _("Non-uniform"), _("Self adaptation rate"), _("Self adaptation radius"), _("Self adaptation rate chromosome"), _("Self adaptation radius chromosome"), _("Multi scale") };
+	int m_ChoiceGAsMutationOperatorNChoices = sizeof( m_ChoiceGAsMutationOperatorChoices ) / sizeof( wxString );
+	m_ChoiceGAsMutationOperator = new wxChoice( m_PanelGeneticAlgoritms, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_ChoiceGAsMutationOperatorNChoices, m_ChoiceGAsMutationOperatorChoices, 0 );
+	m_ChoiceGAsMutationOperator->SetSelection( 0 );
+	fgSizer11->Add( m_ChoiceGAsMutationOperator, 0, wxALL|wxEXPAND, 5 );
 	
 	
-	m_panelOptions->SetSizer( bSizer28 );
-	m_panelOptions->Layout();
-	bSizer28->Fit( m_panelOptions );
-	m_notebookBase->AddPage( m_panelOptions, _("Options"), false );
+	sbSizer5->Add( fgSizer11, 1, wxEXPAND, 5 );
+	
+	
+	bSizer12->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer6;
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_PanelGeneticAlgoritms, wxID_ANY, _("General options") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer121;
+	fgSizer121 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer121->SetFlexibleDirection( wxBOTH );
+	fgSizer121->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsRunNumbers = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Runs number"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsRunNumbers->Wrap( -1 );
+	fgSizer121->Add( m_StaticTextGAsRunNumbers, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsRunNumbers = new wxTextCtrl( m_PanelGeneticAlgoritms, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsRunNumbers->SetMaxLength( 0 ); 
+	fgSizer121->Add( m_TextCtrlGAsRunNumbers, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsPopulationSize = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Population's size"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsPopulationSize->Wrap( -1 );
+	fgSizer121->Add( m_StaticTextGAsPopulationSize, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsPopulationSize = new wxTextCtrl( m_PanelGeneticAlgoritms, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsPopulationSize->SetMaxLength( 0 ); 
+	fgSizer121->Add( m_TextCtrlGAsPopulationSize, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsConvergenceNb = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Convergence after"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsConvergenceNb->Wrap( -1 );
+	fgSizer121->Add( m_StaticTextGAsConvergenceNb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsConvergenceNb = new wxTextCtrl( m_PanelGeneticAlgoritms, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsConvergenceNb->SetMaxLength( 0 ); 
+	fgSizer121->Add( m_TextCtrlGAsConvergenceNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsRatioIntermGen = new wxStaticText( m_PanelGeneticAlgoritms, wxID_ANY, _("Ratio interm. gen."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsRatioIntermGen->Wrap( -1 );
+	fgSizer121->Add( m_StaticTextGAsRatioIntermGen, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsRatioIntermGen = new wxTextCtrl( m_PanelGeneticAlgoritms, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsRatioIntermGen->SetMaxLength( 0 ); 
+	fgSizer121->Add( m_TextCtrlGAsRatioIntermGen, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	sbSizer6->Add( fgSizer121, 0, wxEXPAND, 5 );
+	
+	m_CheckBoxGAsAllowElitism = new wxCheckBox( m_PanelGeneticAlgoritms, wxID_ANY, _("Allow elitism for the best"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer6->Add( m_CheckBoxGAsAllowElitism, 0, wxALL, 5 );
+	
+	
+	bSizer12->Add( sbSizer6, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	bSizer111->Add( bSizer12, 0, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer14;
+	bSizer14 = new wxBoxSizer( wxVERTICAL );
+	
+	m_NotebookGAoptions = new wxNotebook( m_PanelGeneticAlgoritms, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_PanelSelections = new wxPanel( m_NotebookGAoptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer13;
+	bSizer13 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer141;
+	fgSizer141 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer141->SetFlexibleDirection( wxBOTH );
+	fgSizer141->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsNaturalSlctTournamentProb = new wxStaticText( m_PanelSelections, wxID_ANY, _("Natural slct tournament: prob"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsNaturalSlctTournamentProb->Wrap( -1 );
+	fgSizer141->Add( m_StaticTextGAsNaturalSlctTournamentProb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsNaturalSlctTournamentProb = new wxTextCtrl( m_PanelSelections, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsNaturalSlctTournamentProb->SetMaxLength( 0 ); 
+	fgSizer141->Add( m_TextCtrlGAsNaturalSlctTournamentProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer13->Add( fgSizer141, 1, wxEXPAND|wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer151;
+	fgSizer151 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer151->SetFlexibleDirection( wxBOTH );
+	fgSizer151->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsCouplesSlctTournamentNb = new wxStaticText( m_PanelSelections, wxID_ANY, _("Couples slct tournament: nb ind."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCouplesSlctTournamentNb->Wrap( -1 );
+	fgSizer151->Add( m_StaticTextGAsCouplesSlctTournamentNb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsCouplesSlctTournamentNb = new wxTextCtrl( m_PanelSelections, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsCouplesSlctTournamentNb->SetMaxLength( 0 ); 
+	fgSizer151->Add( m_TextCtrlGAsCouplesSlctTournamentNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer13->Add( fgSizer151, 1, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelSelections->SetSizer( bSizer13 );
+	m_PanelSelections->Layout();
+	bSizer13->Fit( m_PanelSelections );
+	m_NotebookGAoptions->AddPage( m_PanelSelections, _("Natural and couple selections"), false );
+	m_PanelCrossover = new wxPanel( m_NotebookGAoptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer10;
+	bSizer10 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer14;
+	fgSizer14 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer14->SetFlexibleDirection( wxBOTH );
+	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsCrossoverMultipleNbPts = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Multiple crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverMultipleNbPts->Wrap( -1 );
+	fgSizer14->Add( m_StaticTextGAsCrossoverMultipleNbPts, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsCrossoverMultipleNbPts = new wxTextCtrl( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsCrossoverMultipleNbPts->SetMaxLength( 0 ); 
+	fgSizer14->Add( m_TextCtrlGAsCrossoverMultipleNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsCrossoverBlendingNbPts = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Blending crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverBlendingNbPts->Wrap( -1 );
+	fgSizer14->Add( m_StaticTextGAsCrossoverBlendingNbPts, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsCrossoverBlendingNbPts = new wxTextCtrl( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsCrossoverBlendingNbPts->SetMaxLength( 0 ); 
+	fgSizer14->Add( m_TextCtrlGAsCrossoverBlendingNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsCrossoverBlendingShareBeta = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Blending crossover: share beta"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverBlendingShareBeta->Wrap( -1 );
+	fgSizer14->Add( m_StaticTextGAsCrossoverBlendingShareBeta, 0, wxALL, 5 );
+	
+	m_CheckBoxGAsCrossoverBlendingShareBeta = new wxCheckBox( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer14->Add( m_CheckBoxGAsCrossoverBlendingShareBeta, 0, wxALL, 5 );
+	
+	m_StaticTextGAsCrossoverLinearNbPts = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Linear crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverLinearNbPts->Wrap( -1 );
+	fgSizer14->Add( m_StaticTextGAsCrossoverLinearNbPts, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsCrossoverLinearNbPts = new wxTextCtrl( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsCrossoverLinearNbPts->SetMaxLength( 0 ); 
+	fgSizer14->Add( m_TextCtrlGAsCrossoverLinearNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer10->Add( fgSizer14, 1, wxEXPAND|wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer15;
+	fgSizer15 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer15->SetFlexibleDirection( wxBOTH );
+	fgSizer15->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsCrossoverHeuristicNbPts = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Heuristic crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverHeuristicNbPts->Wrap( -1 );
+	fgSizer15->Add( m_StaticTextGAsCrossoverHeuristicNbPts, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsCrossoverHeuristicNbPts = new wxTextCtrl( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsCrossoverHeuristicNbPts->SetMaxLength( 0 ); 
+	fgSizer15->Add( m_TextCtrlGAsCrossoverHeuristicNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsCrossoverHeuristicShareBeta = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Heuristic crossover: share beta"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverHeuristicShareBeta->Wrap( -1 );
+	fgSizer15->Add( m_StaticTextGAsCrossoverHeuristicShareBeta, 0, wxALL, 5 );
+	
+	m_CheckBoxGAsCrossoverHeuristicShareBeta = new wxCheckBox( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer15->Add( m_CheckBoxGAsCrossoverHeuristicShareBeta, 0, wxALL, 5 );
+	
+	m_StaticTextGAsCrossoverBinLikeNbPts = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Binary-like crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverBinLikeNbPts->Wrap( -1 );
+	fgSizer15->Add( m_StaticTextGAsCrossoverBinLikeNbPts, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsCrossoverBinLikeNbPts = new wxTextCtrl( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsCrossoverBinLikeNbPts->SetMaxLength( 0 ); 
+	fgSizer15->Add( m_TextCtrlGAsCrossoverBinLikeNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsCrossoverBinLikeShareBeta = new wxStaticText( m_PanelCrossover, wxID_ANY, _("Binary-like crossover: share beta"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsCrossoverBinLikeShareBeta->Wrap( -1 );
+	fgSizer15->Add( m_StaticTextGAsCrossoverBinLikeShareBeta, 0, wxALL, 5 );
+	
+	m_CheckBoxGAsCrossoverBinLikeShareBeta = new wxCheckBox( m_PanelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer15->Add( m_CheckBoxGAsCrossoverBinLikeShareBeta, 0, wxALL, 5 );
+	
+	
+	bSizer10->Add( fgSizer15, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelCrossover->SetSizer( bSizer10 );
+	m_PanelCrossover->Layout();
+	bSizer10->Fit( m_PanelCrossover );
+	m_NotebookGAoptions->AddPage( m_PanelCrossover, _("Crossover"), false );
+	m_PanelMutation = new wxPanel( m_NotebookGAoptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer13;
+	fgSizer13 = new wxFlexGridSizer( 7, 2, 0, 0 );
+	fgSizer13->SetFlexibleDirection( wxBOTH );
+	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsMutationsUniformCstProb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Uniform constant: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsUniformCstProb->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsUniformCstProb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsUniformCstProb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsUniformCstProb->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsUniformCstProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalCstProb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal constant: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalCstProb->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsNormalCstProb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalCstProb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalCstProb->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsNormalCstProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalCstStdDev = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal constant: std dev"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalCstStdDev->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsNormalCstStdDev, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalCstStdDev = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalCstStdDev->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsNormalCstStdDev, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsUniformVarMaxGensNb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Uniform variable: on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsUniformVarMaxGensNb->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsUniformVarMaxGensNb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsUniformVarMaxGensNb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsUniformVarMaxGensNb->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsUniformVarMaxGensNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsUniformVarProbStart = new wxStaticText( m_PanelMutation, wxID_ANY, _("Uniform variable: starting probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsUniformVarProbStart->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsUniformVarProbStart, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsUniformVarProbStart = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsUniformVarProbStart->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsUniformVarProbStart, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsUniformVarProbEnd = new wxStaticText( m_PanelMutation, wxID_ANY, _("Uniform variable: ending probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsUniformVarProbEnd->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsUniformVarProbEnd, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsUniformVarProbEnd = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsUniformVarProbEnd->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsUniformVarProbEnd, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsMultiScaleProb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Multi-scale: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsMultiScaleProb->Wrap( -1 );
+	fgSizer13->Add( m_StaticTextGAsMutationsMultiScaleProb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsMultiScaleProb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsMultiScaleProb->SetMaxLength( 0 ); 
+	fgSizer13->Add( m_TextCtrlGAsMutationsMultiScaleProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer11->Add( fgSizer13, 1, wxEXPAND|wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer191;
+	fgSizer191 = new wxFlexGridSizer( 9, 2, 0, 0 );
+	fgSizer191->SetFlexibleDirection( wxBOTH );
+	fgSizer191->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_StaticTextGAsMutationsNormalVarMaxGensNbProb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal variable: prob on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalVarMaxGensNbProb->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNormalVarMaxGensNbProb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalVarMaxGensNbProb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalVarMaxGensNbProb->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNormalVarMaxGensNbProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalVarMaxGensNbStdDev = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal variable: std dev on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalVarMaxGensNbStdDev->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNormalVarMaxGensNbStdDev, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNormalVarMaxGensNbStdDev, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalVarProbStart = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal variable: starting probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalVarProbStart->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNormalVarProbStart, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalVarProbStart = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalVarProbStart->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNormalVarProbStart, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalVarProbEnd = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal variable: ending probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalVarProbEnd->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNormalVarProbEnd, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalVarProbEnd = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalVarProbEnd->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNormalVarProbEnd, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalVarStdDevStart = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal variable: starting std dev"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalVarStdDevStart->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNormalVarStdDevStart, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalVarStdDevStart = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalVarStdDevStart->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNormalVarStdDevStart, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNormalVarStdDevEnd = new wxStaticText( m_PanelMutation, wxID_ANY, _("Normal variable: ending std dev"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNormalVarStdDevEnd->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNormalVarStdDevEnd, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNormalVarStdDevEnd = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNormalVarStdDevEnd->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNormalVarStdDevEnd, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNonUniformProb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Non-uniform: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNonUniformProb->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNonUniformProb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNonUniformProb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNonUniformProb->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNonUniformProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNonUniformGensNb = new wxStaticText( m_PanelMutation, wxID_ANY, _("Non-uniform: on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNonUniformGensNb->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNonUniformGensNb, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNonUniformGensNb = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNonUniformGensNb->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNonUniformGensNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_StaticTextGAsMutationsNonUniformMinRate = new wxStaticText( m_PanelMutation, wxID_ANY, _("Non-uniform: minimum rate"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_StaticTextGAsMutationsNonUniformMinRate->Wrap( -1 );
+	fgSizer191->Add( m_StaticTextGAsMutationsNonUniformMinRate, 0, wxALL, 5 );
+	
+	m_TextCtrlGAsMutationsNonUniformMinRate = new wxTextCtrl( m_PanelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	m_TextCtrlGAsMutationsNonUniformMinRate->SetMaxLength( 0 ); 
+	fgSizer191->Add( m_TextCtrlGAsMutationsNonUniformMinRate, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer11->Add( fgSizer191, 1, wxEXPAND|wxALL, 5 );
+	
+	
+	m_PanelMutation->SetSizer( bSizer11 );
+	m_PanelMutation->Layout();
+	bSizer11->Fit( m_PanelMutation );
+	m_NotebookGAoptions->AddPage( m_PanelMutation, _("Mutation"), true );
+	
+	bSizer14->Add( m_NotebookGAoptions, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	bSizer111->Add( bSizer14, 0, wxEXPAND, 5 );
+	
+	
+	m_PanelGeneticAlgoritms->SetSizer( bSizer111 );
+	m_PanelGeneticAlgoritms->Layout();
+	bSizer111->Fit( m_PanelGeneticAlgoritms );
+	m_NotebookOptions->AddPage( m_PanelGeneticAlgoritms, _("Genetic algoritms"), false );
+	
+	bSizer28->Add( m_NotebookOptions, 1, wxEXPAND | wxALL, 5 );
+	
+	
+	
+	
+	m_PanelOptions->SetSizer( bSizer28 );
+	m_PanelOptions->Layout();
+	bSizer28->Fit( m_PanelOptions );
+	m_NotebookBase->AddPage( m_PanelOptions, _("Options"), false );
 	
 	bSizer29->Add( m_notebookBase, 1, wxALL|wxEXPAND, 5 );
-	
+
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
-	
+
 	m_buttonSaveDefault = new wxButton( m_panelMain, wxID_ANY, _("Save as default"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer15->Add( m_buttonSaveDefault, 0, wxALIGN_RIGHT, 5 );
-	
-	
+
+
 	bSizer29->Add( bSizer15, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxRIGHT, 5 );
-	
-	
+
+
 	m_panelMain->SetSizer( bSizer29 );
 	m_panelMain->Layout();
 	bSizer29->Fit( m_panelMain );
 	bSizer4->Add( m_panelMain, 1, wxEXPAND, 5 );
-	
-	
+
+
 	this->SetSizer( bSizer4 );
 	this->Layout();
 	m_menuBar = new wxMenuBar( 0 );
@@ -243,17 +744,17 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	wxMenuItem* m_menuItemShowLog;
 	m_menuItemShowLog = new wxMenuItem( m_menuLog, wxID_ANY, wxString( _("Show Log Window") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuLog->Append( m_menuItemShowLog );
-	
+
 	m_menuLogLevel = new wxMenu();
 	wxMenuItem* m_menuLogLevelItem = new wxMenuItem( m_menuLog, wxID_ANY, _("Log level"), wxEmptyString, wxITEM_NORMAL, m_menuLogLevel );
 	wxMenuItem* m_MenuItemLogLevel1;
 	m_MenuItemLogLevel1 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Only errors") ) , wxEmptyString, wxITEM_CHECK );
 	m_menuLogLevel->Append( m_MenuItemLogLevel1 );
-	
+
 	wxMenuItem* m_MenuItemLogLevel2;
 	m_MenuItemLogLevel2 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Errors and warnings") ) , wxEmptyString, wxITEM_CHECK );
 	m_menuLogLevel->Append( m_MenuItemLogLevel2 );
-	
+
 	wxMenuItem* m_MenuItemLogLevel3;
 	m_MenuItemLogLevel3 = new wxMenuItem( m_menuLogLevel, wxID_ANY, wxString( _("Verbose") ) , wxEmptyString, wxITEM_CHECK );
 	m_menuLogLevel->Append( m_MenuItemLogLevel3 );
@@ -276,7 +777,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_toolBar->Realize(); 
 	
 	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
-	
 	this->Centre( wxBOTH );
 	
 	// Connect Events
@@ -326,21 +826,21 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	
 	wxString m_radioBoxLogLevelChoices[] = { _("Errors only (recommanded)"), _("Errors and warnings"), _("Verbose") };
 	int m_radioBoxLogLevelNChoices = sizeof( m_radioBoxLogLevelChoices ) / sizeof( wxString );
-	m_radioBoxLogLevel = new wxRadioBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLogLevelNChoices, m_radioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
+	m_radioBoxLogLevel = new wxRadioBox( m_panelGeneralCommon, wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLogLevelNChoices, m_radioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
 	m_radioBoxLogLevel->SetSelection( 0 );
 	bSizer20->Add( m_radioBoxLogLevel, 1, wxALL|wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer8;
-	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Outputs") ), wxVERTICAL );
+	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Outputs") ), wxVERTICAL );
 	
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxDisplayLogWindow = new wxCheckBox( m_panelGeneralCommon, wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxDisplayLogWindow->SetValue(true); 
 	bSizer21->Add( m_checkBoxDisplayLogWindow, 0, wxALL, 5 );
 	
-	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxSaveLogFile = new wxCheckBox( m_panelGeneralCommon, wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxSaveLogFile->SetValue(true); 
 	m_checkBoxSaveLogFile->Enable( false );
 	
@@ -361,18 +861,18 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxStaticBoxSizer* sbSizer18;
 	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneralCommon, wxID_ANY, _("Directories") ), wxVERTICAL );
 	
-	m_staticTextArchivePredictorsDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextArchivePredictorsDir = new wxStaticText( m_panelGeneralCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextArchivePredictorsDir->Wrap( -1 );
 	sbSizer18->Add( m_staticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerArchivePredictors = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_dirPickerArchivePredictors = new wxDirPickerCtrl( m_panelGeneralCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_dirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
-	m_staticTextPredictandDBDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Default predictand DB directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextPredictandDBDir = new wxStaticText( m_panelGeneralCommon, wxID_ANY, _("Default predictand DB directory"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextPredictandDBDir->Wrap( -1 );
 	sbSizer18->Add( m_staticTextPredictandDBDir, 0, wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerPredictandDB = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_dirPickerPredictandDB = new wxDirPickerCtrl( m_panelGeneralCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer18->Add( m_dirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -401,7 +901,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxStaticBoxSizer* sbSizer151;
 	sbSizer151 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneral, wxID_ANY, _("Advanced options") ), wxVERTICAL );
 	
-	m_checkBoxResponsiveness = new wxCheckBox( sbSizer151->GetStaticBox(), wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxResponsiveness = new wxCheckBox( m_panelGeneral, wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxResponsiveness->SetValue(true); 
 	sbSizer151->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
 	
@@ -420,14 +920,14 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxStaticBoxSizer* sbSizer15;
 	sbSizer15 = new wxStaticBoxSizer( new wxStaticBox( m_panelProcessing, wxID_ANY, _("Multithreading") ), wxVERTICAL );
 	
-	m_checkBoxAllowMultithreading = new wxCheckBox( sbSizer15->GetStaticBox(), wxID_ANY, _("Allow multithreading"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxAllowMultithreading = new wxCheckBox( m_panelProcessing, wxID_ANY, _("Allow multithreading"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxAllowMultithreading->SetValue(true); 
 	sbSizer15->Add( m_checkBoxAllowMultithreading, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer221;
 	bSizer221 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticTextThreadsNb = new wxStaticText( sbSizer15->GetStaticBox(), wxID_ANY, _("Max nb of threads"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextThreadsNb = new wxStaticText( m_panelProcessing, wxID_ANY, _("Max nb of threads"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextThreadsNb->Wrap( -1 );
 	bSizer221->Add( m_staticTextThreadsNb, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -440,11 +940,11 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxBoxSizer* bSizer241;
 	bSizer241 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticTextThreadsPriority = new wxStaticText( sbSizer15->GetStaticBox(), wxID_ANY, _("Threads priority"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextThreadsPriority = new wxStaticText( m_panelProcessing, wxID_ANY, _("Threads priority"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextThreadsPriority->Wrap( -1 );
 	bSizer241->Add( m_staticTextThreadsPriority, 0, wxALL, 5 );
 	
-	m_sliderThreadsPriority = new wxSlider( sbSizer15->GetStaticBox(), wxID_ANY, 95, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_LABELS );
+	m_sliderThreadsPriority = new wxSlider( m_panelProcessing, wxID_ANY, 95, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_LABELS );
 	bSizer241->Add( m_sliderThreadsPriority, 1, wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -481,11 +981,11 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxStaticBoxSizer* sbSizer411;
 	sbSizer411 = new wxStaticBoxSizer( new wxStaticBox( m_panelUserDirectories, wxID_ANY, _("Working directories") ), wxVERTICAL );
 	
-	m_staticTextIntermediateResultsDir = new wxStaticText( sbSizer411->GetStaticBox(), wxID_ANY, _("Directory to save intermediate temporary results"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextIntermediateResultsDir = new wxStaticText( m_panelUserDirectories, wxID_ANY, _("Directory to save intermediate temporary results"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextIntermediateResultsDir->Wrap( -1 );
 	sbSizer411->Add( m_staticTextIntermediateResultsDir, 0, wxALL, 5 );
 	
-	m_dirPickerIntermediateResults = new wxDirPickerCtrl( sbSizer411->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_dirPickerIntermediateResults = new wxDirPickerCtrl( m_panelUserDirectories, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
 	sbSizer411->Add( m_dirPickerIntermediateResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	
@@ -499,11 +999,11 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	fgSizer9->SetFlexibleDirection( wxBOTH );
 	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticTextUserDirLabel = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("User working directory:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextUserDirLabel = new wxStaticText( m_panelUserDirectories, wxID_ANY, _("User working directory:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextUserDirLabel->Wrap( -1 );
 	fgSizer9->Add( m_staticTextUserDirLabel, 0, wxALL, 5 );
 	
-	m_staticTextUserDir = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextUserDir = new wxStaticText( m_panelUserDirectories, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextUserDir->Wrap( -1 );
 	fgSizer9->Add( m_staticTextUserDir, 0, wxALL, 5 );
 	
@@ -511,15 +1011,15 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_staticTextLogFileLabels->Wrap( -1 );
 	fgSizer9->Add( m_staticTextLogFileLabels, 0, wxALL, 5 );
 	
-	m_staticTextLogFile = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextLogFile = new wxStaticText( m_panelUserDirectories, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextLogFile->Wrap( -1 );
 	fgSizer9->Add( m_staticTextLogFile, 0, wxALL, 5 );
 	
-	m_staticTextPrefFileLabel = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("Preferences file:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextPrefFileLabel = new wxStaticText( m_panelUserDirectories, wxID_ANY, _("Preferences file:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextPrefFileLabel->Wrap( -1 );
 	fgSizer9->Add( m_staticTextPrefFileLabel, 0, wxALL, 5 );
 	
-	m_staticTextPrefFile = new wxStaticText( sbSizer17->GetStaticBox(), wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextPrefFile = new wxStaticText( m_panelUserDirectories, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextPrefFile->Wrap( -1 );
 	fgSizer9->Add( m_staticTextPrefFile, 0, wxALL, 5 );
 	
@@ -574,7 +1074,6 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_buttonsConfirmationCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::CloseFrame ), NULL, this );
 	m_buttonsConfirmationOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::SaveAndClose ), NULL, this );
 }
-
 asFramePreferencesOptimizerVirtual::~asFramePreferencesOptimizerVirtual()
 {
 	// Disconnect Events
