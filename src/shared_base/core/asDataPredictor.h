@@ -215,6 +215,11 @@ public:
         m_isPreprocessed = val;
     }
 
+    bool IsEnsemble() const
+    {
+        return m_isEnsemble;
+    }
+
     bool CanBeClipped() const
     {
         return m_canBeClipped;
@@ -280,6 +285,25 @@ public:
         m_timeStepHours = val;
     }
 
+    void SelectFirstMember()
+    {
+        if (!m_isEnsemble) {
+            asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
+        }
+
+        m_fileIndexes.member = 0;
+    }
+
+    void SelectMember(int memberNum)
+    {
+        if (!m_isEnsemble) {
+            asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
+        }
+
+        // memberNum is 1-based, netcdf index is 0-based
+        m_fileIndexes.member = memberNum-1;
+    }
+
 protected:
     struct FileStructure
     {
@@ -287,11 +311,13 @@ protected:
         wxString dimLonName;
         wxString dimTimeName;
         wxString dimLevelName;
+        wxString dimMemberName;
         bool hasLevelDimension;
         bool singleLevel;
         Array1DFloat axisLon;
         Array1DFloat axisLat;
         Array1DFloat axisLevel;
+        Array1DInt axisMember;
         double axisTimeFirstValue;
         double axisTimeLastValue;
         size_t axisTimeLength;
@@ -315,6 +341,7 @@ protected:
         int level;
         int cutStart;
         int cutEnd;
+        int member;
     };
     FileStructure m_fileStructure;
     FileIndexes m_fileIndexes;
@@ -348,6 +375,7 @@ protected:
     Array1DFloat m_axisLat;
     Array1DFloat m_axisLon;
     bool m_isPreprocessed;
+    bool m_isEnsemble;
     bool m_canBeClipped;
     wxString m_fileExtension;
     wxString m_preprocessMethod;

@@ -324,7 +324,6 @@ bool asResultsAnalogsForecast::Save()
 
 bool asResultsAnalogsForecast::Load()
 {
-    // If we don't want to save or the file doesn't exist
     if (!Exists())
         return false;
     if (m_currentStep != 0)

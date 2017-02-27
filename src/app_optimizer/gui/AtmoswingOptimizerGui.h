@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun  5 2014)
+// C++ code generated with wxFormBuilder (version Jan  9 2017)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -58,8 +58,8 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxFilePickerCtrl* m_filePickerPredictand;
 		wxStaticText* m_staticTextPredictorDir;
 		wxDirPickerCtrl* m_dirPickerPredictor;
-		wxStaticText* m_staticTextOptimizerResultsDir;
-		wxDirPickerCtrl* m_dirPickerOptimizerResults;
+		wxStaticText* m_staticTextCalibrationResultsDir;
+		wxDirPickerCtrl* m_dirPickerCalibrationResults;
 		wxCheckBox* m_checkBoxParallelEvaluations;
 		wxStaticText* m_staticTextSaveAnalogDates;
 		wxCheckBox* m_checkBoxSaveAnalogDatesStep1;
@@ -195,7 +195,7 @@ class asFrameOptimizerVirtual : public wxFrame
 	
 	public:
 		
-		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameOptimizerVirtual();
 	
@@ -237,7 +237,7 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		wxDirPickerCtrl* m_dirPickerIntermediateResults;
 		wxStaticText* m_staticTextUserDirLabel;
 		wxStaticText* m_staticTextUserDir;
-		wxStaticText* m_staticTextLogFileLabel;
+		wxStaticText* m_staticTextLogFileLabels;
 		wxStaticText* m_staticTextLogFile;
 		wxStaticText* m_staticTextPrefFileLabel;
 		wxStaticText* m_staticTextPrefFile;

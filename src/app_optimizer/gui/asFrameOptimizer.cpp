@@ -31,8 +31,7 @@
 #include "wx/fileconf.h"
 
 #include "asMethodOptimizerClassic.h"
-#include "asMethodOptimizerClassicPlus.h"
-#include "asMethodOptimizerClassicPlusVarExplo.h"
+#include "asMethodOptimizerClassicVarExplo.h"
 #include "asMethodOptimizerSingle.h"
 #include "asMethodOptimizerRandomSet.h"
 #include "asMethodOptimizerGeneticAlgorithms.h"
@@ -202,7 +201,7 @@ void asFrameOptimizer::LoadOptions()
     m_dirPickerPredictor->SetPath(PredictorDir);
     wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
                                                  asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
-    m_dirPickerOptimizerResults->SetPath(OptimizerResultsDir);
+    m_dirPickerCalibrationResults->SetPath(OptimizerResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
     m_checkBoxParallelEvaluations->SetValue(parallelEvaluations);
@@ -220,11 +219,11 @@ void asFrameOptimizer::LoadOptions()
 
     // Variables exploration
     wxString VarExploStep = pConfig->Read("/Optimizer/VariablesExplo/Step");
-    m_TextCtrlVarExploStepToExplore->SetValue(VarExploStep);
+    m_textCtrlVarExploStepToExplore->SetValue(VarExploStep);
 
     // Monte Carlo
     wxString MonteCarloRandomNb = pConfig->Read("/Optimizer/MonteCarlo/RandomNb", "1000");
-    m_TextCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
+    m_textCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
 
     // Genetic algorithms
     long NaturalSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 1l);
@@ -343,7 +342,7 @@ void asFrameOptimizer::SaveOptions() const
     pConfig->Write("/Paths/PredictandDBFilePath", PredictandDBFilePath);
     wxString PredictorDir = m_dirPickerPredictor->GetPath();
     pConfig->Write("/Paths/PredictorDir", PredictorDir);
-    wxString OptimizerResultsDir = m_dirPickerOptimizerResults->GetPath();
+    wxString OptimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
     pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
     pConfig->Write("/Optimizer/ParallelEvaluations", parallelEvaluations);
@@ -363,7 +362,7 @@ void asFrameOptimizer::SaveOptions() const
     pConfig->Write("/Optimizer/VariablesExplo/Step", VarExploStep);
 
     // Monte Carlo
-    wxString MonteCarloRandomNb = m_TextCtrlMonteCarloRandomNb->GetValue();
+    wxString MonteCarloRandomNb = m_textCtrlMonteCarloRandomNb->GetValue();
     pConfig->Write("/Optimizer/MonteCarlo/RandomNb", MonteCarloRandomNb);
 
     // Genetic algorithms
@@ -486,23 +485,23 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
             case 2: // Classic+
             {
                 wxLogVerbose(_("Proceeding to classic+ calibration."));
-                m_methodOptimizer = new asMethodOptimizerClassicPlus();
+                m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 3: // Variables exploration with classic+
             {
                 wxLogVerbose(_("Proceeding to variables exploration."));
-                m_methodOptimizer = new asMethodOptimizerClassicPlusVarExplo();
+                m_methodCalibrator = new asMethodCalibratorClassicVarExplo();
                 break;
             }
             case 4: // Random sets
             {
-                m_MethodOptimizer = new asMethodOptimizerRandomSet();
+                m_methodOptimizer = new asMethodOptimizerRandomSet();
                 break;
             }
             case 5: // Genetic algorithms
             {
-                m_MethodOptimizer = new asMethodOptimizerGeneticAlgorithms();
+                m_methodOptimizer = new asMethodOptimizerGeneticAlgorithms();
                 break;
             }
             case 6: // Scores evaluation

@@ -175,8 +175,10 @@ bool asMethodForecasting::Manager()
         }
         return false;
     }
-#if wxUSE_STATUSBAR
-    wxLogStatus(_("Forecasting over."));
+#if wxUSE_GUI
+    #if wxUSE_STATUSBAR
+        wxLogStatus(_("Forecasting over."));
+    #endif
 #endif
     Cleanup();
 
@@ -208,7 +210,8 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
                 asResultsAnalogsForecast *results = new asResultsAnalogsForecast();
-                results->Load(resultsCheck.GetFilePath());
+                results->SetFilePath(resultsCheck.GetFilePath());
+                results->Load();
                 m_aggregator.Add(results);
             }
 #if wxUSE_GUI
@@ -248,7 +251,8 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
                 asResultsAnalogsForecast *results = new asResultsAnalogsForecast();
-                results->Load(resultsCheck.GetFilePath());
+                results->SetFilePath(resultsCheck.GetFilePath());
+                results->Load();
                 m_aggregator.Add(results);
             }
 #if wxUSE_GUI

@@ -72,10 +72,6 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                                                           "\n \t\t\t\t 1: errors"
                                                           "\n \t\t\t\t 2: warnings (default)"
                                                           "\n \t\t\t\t 3: verbose"},
-        {wxCMD_LINE_OPTION, "t",  "log-target",    "Set log target"
-                                                          "\n \t\t\t\t file: file only (default)"
-                                                          "\n \t\t\t\t screen: on screen"
-                                                          "\n \t\t\t\t both: on screen and in file"},
         {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
         {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
         {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
@@ -178,7 +174,6 @@ bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
     }
     Log().CreateFileOnly("AtmoSwingForecaster.log");
     Log().SetLevel((int) logLevel);
-    Log().DisableMessageBoxOnError();
 
     return true;
 }
@@ -247,27 +242,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
             if (msgOut) {
                 msgOut->Printf(_("The given log level (%s) does not correspond to any possible option (0-3)."),
                                logLevelStr);
-            }
-        }
-    }
-
-    // Check for the log target option
-    wxString logTargetStr = wxEmptyString;
-    if (parser.Found("log-target", &logTargetStr)) {
-        // Check and apply
-        if (logTargetStr.IsSameAs("file", false)) {
-            Log().SetTarget(asLog::File);
-        } else if (logTargetStr.IsSameAs("screen", false)) {
-            Log().SetTarget(asLog::Screen);
-        } else if (logTargetStr.IsSameAs("both", false)) {
-            Log().SetTarget(asLog::Both);
-        } else {
-            Log().SetTarget(asLog::File);
-
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-            if (msgOut) {
-                msgOut->Printf(_("The given log target (%s) does not correspond to any possible option."),
-                               logTargetStr);
             }
         }
     }
