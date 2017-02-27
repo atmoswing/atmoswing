@@ -63,6 +63,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileStructure.dimLevelName = wxEmptyString;
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
+    m_fileIndexes.member = 0;
     m_fileExtension = wxEmptyString;
     int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
     AssignGribCode(arr);
