@@ -40,8 +40,8 @@ asDataPredictorArchiveNoaa20Cr2c::asDataPredictorArchiveNoaa20Cr2c(const wxStrin
     m_datasetId = "NOAA_20CR_v2c";
     m_originalProvider = "NOAA";
     m_datasetName = "Twentieth Century Reanalysis (v2c)";
-    m_originalProviderStart = asTime::GetMJD(1871, 1, 1);
-    m_originalProviderEnd = asTime::GetMJD(2012, 12, 31, 18);
+    m_originalProviderStart = asTime::GetMJD(1850, 1, 1);
+    m_originalProviderEnd = asTime::GetMJD(2014, 12, 31, 18);
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;

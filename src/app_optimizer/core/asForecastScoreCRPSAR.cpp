@@ -24,6 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2016-2017 Pascal Horton, University of Bern.
  */
 
 #include "asForecastScoreCRPSAR.h"
@@ -57,80 +58,56 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
 
     // Create the container to sort the data
     Array1DFloat x(nbElements);
-    float xObs = ObservedVal;
+    float x0 = ObservedVal;
 
     // Remove the NaNs and copy content
-    int nbForecasts = CleanNans(ForcastVals, x, nbElements);
-    if (nbForecasts == asNOT_FOUND) {
+    int n = CleanNans(ForcastVals, x, nbElements);
+    if (n == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNFloat;
-    } else if (nbForecasts <= 2) {
+    } else if (n <= 2) {
         wxLogWarning(_("Not enough elements to process the CRPS."));
         return NaNFloat;
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbForecasts - 1], Asc);
+    asTools::SortArray(&x[0], &x[n - 1], Asc);
 
     float CRPS = 0;
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
+    Array1DFloat Fx = asTools::GetCumulativeFrequency(n);
 
-    // Indices for the left and right part (according to xObs) of the distribution
-    int indLeftStart = 0;
-    int indLeftEnd = 0;
-    int indRightStart = nbForecasts - 1;
-    int indRightEnd = nbForecasts - 1;
+    // Add rectangle on right side if observed value is on the right of the distribution
+    if (x0 > x[n - 1]) {
+        CRPS += x0 - x[n - 1];
+    }
 
-    // Find FxObs, fix xObs and integrate beyond limits
-    float xObsCorr = xObs;
-    if (xObs <= x[0]) // If xObs before the distribution
-    {
-        indRightStart = 0;
-        xObsCorr = x[indRightStart];
-        CRPS += (xObsCorr - xObs);
-    } else if (xObs > x[nbForecasts - 1]) // If xObs after the distribution
-    {
-        indLeftEnd = nbForecasts - 1;
-        xObsCorr = x[indLeftEnd];
-        CRPS += (xObs - xObsCorr);
-    } else // If xObs inside the distribution
-    {
-        indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts - 1], xObs);
-        if ((indLeftEnd != nbForecasts - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
-            indRightStart = indLeftEnd + 1;
-            float FxObs;
-            if (x(indRightStart) == x(indLeftEnd)) {
-                FxObs = (F(indLeftEnd) + F(indRightStart)) * 0.5;
+    // Add rectangle on the left side if observed value is on the left of the distribution
+    if (x0 < x[0]) {
+        CRPS += x[0] - x0;
+    }
+
+    // Integrate the distribution
+    if (n > 1) {
+        for (int i = 0; i < n - 1; i++) {
+            if (x[i] < x0) {
+                // Left of the observed value
+                if (x[i + 1] <= x0) {
+                    // Next value also left side of observed value
+                    CRPS += (x[i + 1] - x[i]) * (Fx[i] * Fx[i] + Fx[i + 1] * Fx[i + 1]) / 2;
+                } else {
+                    // Observation in between 2 values
+                    float F0 = (Fx[i + 1] - Fx[i]) * (x0 - x[i]) / (x[i + 1] - x[i]) + Fx[i];
+                    CRPS += (x0 - x[i]) * (F0 * F0 + Fx[i] * Fx[i]) / 2;
+                    CRPS += (x[i + 1] - x0) * ((F0 - 1) * (F0 - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
+                }
             } else {
-                FxObs = F(indLeftEnd) + (F(indRightStart) - F(indLeftEnd)) * (xObs - x(indLeftEnd)) /
-                                        (x(indRightStart) - x(indLeftEnd));
+                // Right of the observed value
+                CRPS += (x[i + 1] - x[i]) * ((Fx[i] - 1) * (Fx[i] - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
             }
-            // Integrate the CRPS around FxObs
-            CRPS += (FxObs * FxObs - F(indLeftEnd) * F(indLeftEnd)) *
-                    (xObsCorr - 0.5 * (x[indLeftEnd] + xObsCorr)); // Left
-            CRPS += ((1 - FxObs) * (1 - FxObs) - (1 - F(indRightStart)) * (1 - F(indRightStart))) *
-                    (0.5 * (xObsCorr + x[indRightStart]) - xObsCorr); // Right
         }
     }
-
-    // Integrate on the left part below F(0). First slice from the bottom.
-    CRPS += (F(indLeftStart) * F(indLeftStart)) * (xObsCorr - x[indLeftStart]);
-
-    // Integrate on the left part
-    for (int i = indLeftStart; i < indLeftEnd; i++) {
-        CRPS += (F(i + 1) * F(i + 1) - F(i) * F(i)) * (xObsCorr - 0.5f * (x[i] + x[i + 1]));
-    }
-
-    // Integrate on the right part
-    for (int i = indRightStart; i < indRightEnd; i++) {
-        CRPS += ((1.0f - F(i)) * (1.0f - F(i)) - (1.0f - F(i + 1)) * (1.0f - F(i + 1))) *
-                (0.5f * (x[i] + x[i + 1]) - xObsCorr);
-    }
-
-    // Integrate on the right part above F(indRightEnd). First slice from the bottom.
-    CRPS += ((1 - F(indRightEnd)) * (1 - F(indRightEnd))) * (x[indRightEnd] - xObsCorr);
 
     return CRPS;
 }
